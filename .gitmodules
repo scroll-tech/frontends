@@ -16,3 +16,6 @@
 [submodule "faucet"]
 	path = faucet
 	url = git@github.com:scroll-tech/eth-faucet.git
+[submodule "tutorial"]
+	path = tutorial
+	url = git@github.com:scroll-tech/scroll-doc-generator.git
