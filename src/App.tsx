@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 
-import Documentation from "./Components/Documentation"
 import Home from "./Components/Home"
 import IframeEmbedding from "./Components/IframeEmbedding"
 import Layout from "./Components/Layout"
@@ -11,7 +10,7 @@ import {
   pathL1Explorer,
   pathL2Explorer,
   pathRollupExplorer,
-  rollupExplorerUrl,
+  rollupExplorerUrl
 } from "./Constants"
 
 function App() {
@@ -21,7 +20,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           {/* TODO: Constant strings for URLs */}
-          <Route path="documentation" element={<Documentation />} />
+          {/* <Route path="documentation" element={<Documentation />} /> */}
           <Route
             path={pathL1Explorer}
             element={<IframeEmbedding url={l1ExplorerUrl} />}

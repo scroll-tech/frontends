@@ -4,7 +4,7 @@ function Home() {
   return (
     <div className="Home">
       <img src={logo} className="ScrollLogo" alt="logo" />
-      <p>Welcome to Scroll's Developer Portal</p>
+      <p>Welcome to Scroll</p>
     </div>
   )
 }

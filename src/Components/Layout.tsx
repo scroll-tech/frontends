@@ -1,11 +1,8 @@
 import { Link, Outlet } from "react-router-dom"
 import {
-  bridgeUrl,
-  faucetUrl,
   pathL1Explorer,
   pathL2Explorer,
-  pathRollupExplorer,
-  swapUrl,
+  pathRollupExplorer
 } from "../Constants"
 
 import "./Layout.css"
@@ -15,31 +12,15 @@ const Layout = () => {
     <div className="Layout">
       <nav className="RouterLinks">
         <Link to="/">Home</Link>
-        <Link to="/documentation">Documentation</Link>
-        <a
-          className="ExternalLink"
-          href={faucetUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Faucet ↗
-        </a>
-        <a
-          className="ExternalLink"
-          href={bridgeUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Bridge ↗
-        </a>
-        <a
+        {/* <Link to="/documentation">Documentation</Link> */}
+        {/* <a
           className="ExternalLink"
           href={swapUrl}
           target="_blank"
           rel="noopener noreferrer"
         >
           Swap ↗
-        </a>
+        </a> */}
 
         <Link to={pathL1Explorer}>L1 Block Explorer</Link>
 
