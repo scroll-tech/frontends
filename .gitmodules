@@ -1,0 +1,6 @@
+[submodule "dev-portal"]
+	path = dev-portal
+	url = git@github.com:scroll-tech/dev-portal.git
+[submodule "homepage"]
+	path = homepage
+	url = git@github.com:scroll-tech/homepage.git
