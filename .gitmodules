@@ -4,3 +4,15 @@
 [submodule "homepage"]
 	path = homepage
 	url = git@github.com:scroll-tech/homepage.git
+[submodule "rollupscan"]
+	path = rollupscan
+	url = git@github.com:scroll-tech/rollup-explorer-frontend.git
+[submodule "bridge"]
+	path = bridge
+	url = git@github.com:scroll-tech/bridge-frontend.git
+[submodule "swap"]
+	path = swap
+	url = git@github.com:scroll-dev/uniswap-interface.git
+[submodule "faucet"]
+	path = faucet
+	url = git@github.com:scroll-tech/eth-faucet.git
