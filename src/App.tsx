@@ -1,44 +1,49 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { Routes, Route } from "react-router-dom";
+// import "./App.css";
+import { MetaMaskProvider } from "metamask-react";
+import { WhitelistContextProvider } from "./hooks/useWhitelist";
+import Login from "./pages/login";
+import Header from "@/components/Header";
+import { useEffect, useState } from "react";
+import Home from "./pages/home";
+import Faucet from "./pages/faucet";
+import AddNetwork from "./pages/faucet/add-network";
 
-import Home from "./Components/Home"
-import IframeEmbedding from "./Components/IframeEmbedding"
-import Layout from "./Components/Layout"
-import NotFound from "./Components/NotFound"
-import {
-  l1ExplorerUrl,
-  l2ExplorerUrl,
-  pathL1Explorer,
-  pathL2Explorer,
-  pathRollupExplorer,
-  rollupExplorerUrl
-} from "./Constants"
+const DOMAIN_STAGING = "staging-prealpha.scroll.io";
 
 function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          {/* TODO: Constant strings for URLs */}
-          {/* <Route path="documentation" element={<Documentation />} /> */}
-          <Route
-            path={pathL1Explorer}
-            element={<IframeEmbedding url={l1ExplorerUrl} />}
-          />
-          <Route
-            path={pathL2Explorer}
-            element={<IframeEmbedding url={l2ExplorerUrl} />}
-          />
-          <Route
-            path={pathRollupExplorer}
-            element={<IframeEmbedding url={rollupExplorerUrl} />}
-          />
+  const [headerType, setHeaderType] = useState("path");
 
-          <Route path="*" element={<NotFound />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  )
+  useEffect(() => {
+    const pathHeaderDomains = [DOMAIN_STAGING, "localhost"];
+    const isPath = pathHeaderDomains.some(
+      (path) => ~window.location.href.indexOf(path)
+    );
+    if (isPath) {
+      setHeaderType("path");
+    } else {
+      setHeaderType("subdomain");
+    }
+  }, []);
+
+  return (
+    <div className="App bg-body-bg">
+      <MetaMaskProvider>
+        <WhitelistContextProvider
+          fallback={(hasPermission: boolean, loading: boolean) => (
+            <Login hasPermission={hasPermission} loading={loading} />
+          )}
+        >
+          <Header backgroundColor="#fff" activeTab="Faucet" type="path" />
+          <Routes>
+            <Route path="/" element={<Home />}></Route>
+            <Route path="/faucet" element={<Faucet />}></Route>
+            <Route path="/faucet/add-network" element={<AddNetwork />}></Route>
+          </Routes>
+        </WhitelistContextProvider>
+      </MetaMaskProvider>
+    </div>
+  );
 }
 
-export default App
+export default App;

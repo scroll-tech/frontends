@@ -1,11 +1,11 @@
-import { Link, Outlet } from "react-router-dom"
+import { Link, Outlet } from "react-router-dom";
 import {
   pathL1Explorer,
   pathL2Explorer,
-  pathRollupExplorer
-} from "../Constants"
+  pathRollupExplorer,
+} from "@/constants";
 
-import "./Layout.css"
+import "./Layout.css";
 
 const Layout = () => {
   return (
@@ -33,7 +33,7 @@ const Layout = () => {
         <Outlet />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;
