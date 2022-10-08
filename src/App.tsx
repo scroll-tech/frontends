@@ -4,10 +4,12 @@ import { MetaMaskProvider } from "metamask-react";
 import { WhitelistContextProvider } from "./hooks/useWhitelist";
 import Login from "./pages/login";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import { useEffect, useState } from "react";
 import Home from "./pages/home";
 import Faucet from "./pages/faucet";
 import AddNetwork from "./pages/faucet/add-network";
+import RollupScan from "./pages/rollup";
 
 const DOMAIN_STAGING = "staging-prealpha.scroll.io";
 
@@ -27,7 +29,7 @@ function App() {
   }, []);
 
   return (
-    <div className="App bg-body-bg">
+    <div className="App bg-body-bg min-h-[100vh]">
       <MetaMaskProvider>
         <WhitelistContextProvider
           fallback={(hasPermission: boolean, loading: boolean) => (
@@ -39,7 +41,9 @@ function App() {
             <Route path="/" element={<Home />}></Route>
             <Route path="/faucet" element={<Faucet />}></Route>
             <Route path="/faucet/add-network" element={<AddNetwork />}></Route>
+            <Route path="/rollupscan" element={<RollupScan />}></Route>
           </Routes>
+          <Footer />
         </WhitelistContextProvider>
       </MetaMaskProvider>
     </div>

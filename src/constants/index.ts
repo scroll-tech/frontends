@@ -1,5 +1,3 @@
-import { TenMpSharp } from "@mui/icons-material";
-
 const SCROLL_ENVIRONMENT_PRODUCTION = "MAIN"; // `MAIN` is production, `STAGING` is staging
 const SCROLL_ENVIRONMENT =
   process.env.REACT_APP_SCROLL_ENVIRONMENT || SCROLL_ENVIRONMENT_PRODUCTION;

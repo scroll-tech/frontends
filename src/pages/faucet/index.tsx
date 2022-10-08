@@ -7,6 +7,9 @@ import Faq from "./components/faq";
 import { Link } from "react-router-dom";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import { getAddress } from "@ethersproject/address";
+import "./index.less";
+// import useSWR from 'swr'
 
 const CAN_CLAIM_FROM = "canClaimFrom",
   TX_HASH_DATA = "TxHashData",
@@ -47,7 +50,9 @@ export default function Home() {
 
   useEffect(() => {
     async function fetchInfo() {
-      const res = await fetch("./api/info");
+      const res = await fetch(
+        process.env.REACT_APP_FAUCET_BASE_API_URL + "/api/info"
+      );
       const info = await res.json();
       setFaucetInfo(info);
       document.title = `Scroll ${faucetInfo.network} Faucet`;
@@ -73,38 +78,40 @@ export default function Home() {
   const handleRequest = async () => {
     if (loading) return;
     let formData = new FormData();
-    formData.append("address", account as string);
+    formData.append("address", getAddress(account as string));
     setLoading(true);
-    // const res = await fetch("/api/claim", {
-    //   method: "POST",
-    //   body: formData,
-    // });
-
-    const TxHashData = {
-      eth_tx_hash:
-        "0x7e51b35480105d5a0f279810432ceada5079eb3b6329976837206c01e8cb1c6b",
-      erc20_tx_hash:
-        "0xbaf941112b20fa13ff3b430303ca6f81b652c7cefde2b3ebae9313297cc316ad",
-    };
-    const canClaimFrom = dayjs().add(1, "minute").format("YYYY-MM-DD H:m:s");
-    setCanClaimFrom(canClaimFrom);
-    setTxHashData(TxHashData);
-    localStorage.setItem(CAN_CLAIM_FROM, canClaimFrom);
-    localStorage.setItem(TX_HASH_DATA, JSON.stringify(TxHashData));
+    const res = await fetch(
+      process.env.REACT_APP_FAUCET_BASE_API_URL + "/api/claim",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+    if (res.ok) {
+      const TxHashData = await res.json();
+      const canClaimFrom = dayjs().add(1, "day").format("YYYY-MM-DD H:m:s");
+      setCanClaimFrom(canClaimFrom);
+      setTxHashData(TxHashData);
+      localStorage.setItem(CAN_CLAIM_FROM, canClaimFrom);
+      localStorage.setItem(TX_HASH_DATA, JSON.stringify(TxHashData));
+    } else {
+      const message = await res.text();
+      //get hms
+      const re = /((\d+)h)?((\d+)m)?((\d+)s)/i;
+      const rateLimitDuration: any = message.match(re);
+      if (rateLimitDuration) {
+        const canClaimFrom = dayjs()
+          .add(rateLimitDuration[2], "h")
+          .add(rateLimitDuration[4], "m")
+          .add(rateLimitDuration[6], "s")
+          .format("YYYY-MM-DD H:m:s");
+        setCanClaimFrom(canClaimFrom);
+        localStorage.setItem(CAN_CLAIM_FROM, canClaimFrom);
+      }
+      setErrorMessage(message);
+      setOpen(true);
+    }
     setLoading(false);
-    // if (res.ok) {
-    //   const TxHashData = await res.json();
-    //   const canClaimFrom = dayjs().add(1, "day").format("YYYY-MM-DD H:m:s");
-    //   setCanClaimFrom(canClaimFrom);
-    //   setTxHashData(TxHashData);
-    //   localStorage.setItem(CAN_CLAIM_FROM, canClaimFrom);
-    //   localStorage.setItem(TX_HASH_DATA, JSON.stringify(TxHashData));
-    // } else {
-    //   //TODO set claim time
-    //   const message = await res.text();
-    //   setErrorMessage(message);
-    //   setOpen(true);
-    // }
   };
 
   const handleClose = () => {
@@ -215,7 +222,7 @@ export default function Home() {
 
   return (
     <>
-      <main className="px-[16px]">
+      <main className="px-[16px] faucet-app">
         <div className="h-[72vh] w-full flex items-center flex-col mb-[60px] md:h-[630px]">
           <div className=" mt-[20px] mb-[40px] text-right max-w-[1140px] w-full">
             <button className="w-[178px] h-[50px] text-[#333] border border-[#333] rounded-[4px] cursor-text font-semibold">

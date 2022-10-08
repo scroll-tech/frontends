@@ -5,11 +5,18 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      borderRadius: {
+        DEFAULT: "6px",
+      },
       screens: {
         md: "768px",
         lg: "1024px",
       },
       colors: {
+        red: {
+          DEFAULT: "#EB7106",
+          dark: "#EB7106",
+        },
         "body-title": {
           DEFAULT: "#595959",
           dark: "#595959",
@@ -59,6 +66,14 @@ module.exports = {
     fontFamily: {
       sans: ['"SF UI Text"', ...defaultTheme.fontFamily.sans],
       display: ['"Pulp Display"', ...defaultTheme.fontFamily.sans],
+    },
+    fontSize: {
+      sm: ["12px", "18px"],
+      md: ["14px", "22px"],
+      base: ["16px", "26px"],
+      "base-middle": ["16px", "16px"],
+      lg: ["20px", "30px"],
+      xl: ["34px", "45px"],
     },
   },
   plugins: [],
