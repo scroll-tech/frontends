@@ -3,7 +3,7 @@ import MTable from "./MTable";
 import Card from "./Card";
 import { Row } from "antd";
 import { useLastBlockNums } from "@/hooks/useLastBlockNums";
-import "antd/dist/antd.css";
+import "antd/dist/antd.min.css";
 import "./index.less";
 
 const Blocks = () => {
