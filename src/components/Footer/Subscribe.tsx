@@ -40,16 +40,16 @@ const Subscribe = () => {
     ));
   return (
     <>
-      <div className="md:(min-w-416px) relative">
+      <div className="relative">
         <p className="text-md mb-[14px] font-display">Follow</p>
         <div className="flex  my-[20px]">{renderMedias()}</div>
         <MailchimpSubscribe
           url={url}
           render={({ subscribe, status, message }: any) => (
             <div>
-              <div className="flex flex-col mb-[20px] items-center rounded overflow-hidden md:flex-row">
+              <div className="flex flex-col mb-[20px] items-center rounded overflow-hidden lg:flex-row">
                 <input
-                  className="w-full flex-shrink-0 rounded border h-[50px] text-base outline-none mb-[12px] pl-[24px] placeholder:text-charcoal-50  md:w-[254px] md:rounded-none md:border-transparent md:mb-0"
+                  className="w-full flex-shrink-0 rounded border h-[50px] text-base outline-none mb-[12px] pl-[24px] placeholder:text-charcoal-50  lg:w-[254px] lg:rounded-none lg:border-transparent lg:mb-0"
                   type="email"
                   placeholder="Enter email address"
                   onChange={(event: any) => setEmail(event.target.value)}
@@ -64,12 +64,12 @@ const Subscribe = () => {
               </div>
 
               {status === "error" && (
-                <div className="text-[18px] leading-21px text-red  max-w-[400px] font-medium absolute">
+                <div className="text-[18px] leading-21px text-red   font-medium absolute">
                   {message}
                 </div>
               )}
               {status === "success" && (
-                <div className="text-base text-body-title  leading-[21px] max-w-[400px] font-medium absolute">
+                <div className="text-base text-body-title  leading-[21px]  font-medium absolute">
                   Thank you for subscribing!
                 </div>
               )}
