@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { getAddress } from "@ethersproject/address";
+import Button from "@/components/Button/Button";
 import "./index.less";
 // import useSWR from 'swr'
 
@@ -123,15 +124,9 @@ export default function Home() {
     if (completed) {
       // Render a completed state
       return (
-        <button
-          onClick={handleRequest}
-          className={`relative py-[18px] mx-auto ${
-            loading ? "opacity-75" : ""
-          } font-semibold px-[28px] bg-[#EB7106] rounded-[6px] button text-[16px] text-[#fff] mt-[30px] flex justify-center items-center`}
-        >
-          {loading && <div className="loader" />}
-          <span>Request {faucetInfo.network} Scroll Tokens</span>
-        </button>
+        <Button className="mt-[30px]" loading={loading} onClick={handleRequest}>
+          Request {faucetInfo.network} Scroll Tokens
+        </Button>
       );
     } else {
       // Render a countdown

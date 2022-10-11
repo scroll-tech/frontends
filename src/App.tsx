@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 // import "./App.css";
 import { MetaMaskProvider } from "metamask-react";
 import { WhitelistContextProvider } from "./hooks/useWhitelist";
+import AppWrapper from "./contexts";
 import Login from "./pages/login";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -31,20 +32,25 @@ function App() {
   return (
     <div className="App bg-body-bg min-h-[100vh]">
       <MetaMaskProvider>
-        <WhitelistContextProvider
-          fallback={(hasPermission: boolean, loading: boolean) => (
-            <Login hasPermission={hasPermission} loading={loading} />
-          )}
-        >
-          <Header backgroundColor="#fff" activeTab="Faucet" type="path" />
-          <Routes>
-            <Route path="/" element={<Home />}></Route>
-            <Route path="/faucet" element={<Faucet />}></Route>
-            <Route path="/faucet/add-network" element={<AddNetwork />}></Route>
-            <Route path="/rollupscan" element={<RollupScan />}></Route>
-          </Routes>
-          <Footer />
-        </WhitelistContextProvider>
+        <AppWrapper>
+          <WhitelistContextProvider
+            fallback={(hasPermission: boolean, loading: boolean) => (
+              <Login hasPermission={hasPermission} loading={loading} />
+            )}
+          >
+            <Header backgroundColor="#fff" activeTab="Faucet" type="path" />
+            <Routes>
+              <Route path="/" element={<Home />}></Route>
+              <Route path="/faucet" element={<Faucet />}></Route>
+              <Route
+                path="/faucet/add-network"
+                element={<AddNetwork />}
+              ></Route>
+              <Route path="/rollupscan" element={<RollupScan />}></Route>
+            </Routes>
+            <Footer />
+          </WhitelistContextProvider>
+        </AppWrapper>
       </MetaMaskProvider>
     </div>
   );

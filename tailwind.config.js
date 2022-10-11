@@ -17,6 +17,10 @@ module.exports = {
           DEFAULT: "#EB7106",
           dark: "#EB7106",
         },
+        "red-light": {
+          DEFAULT: "#F18740",
+          dark: "#F18740",
+        },
         "body-title": {
           DEFAULT: "#595959",
           dark: "#595959",
@@ -62,18 +66,18 @@ module.exports = {
           dark: "#FFD7E2",
         },
       },
+      fontSize: {
+        sm: ["12px", "18px"],
+        md: ["14px", "22px"],
+        base: ["16px", "26px"],
+        "base-middle": ["16px", "16px"],
+        lg: ["20px", "30px"],
+        xl: ["34px", "45px"],
+      },
     },
     fontFamily: {
       sans: ['"SF UI Text"', ...defaultTheme.fontFamily.sans],
       display: ['"Pulp Display"', ...defaultTheme.fontFamily.sans],
-    },
-    fontSize: {
-      sm: ["12px", "18px"],
-      md: ["14px", "22px"],
-      base: ["16px", "26px"],
-      "base-middle": ["16px", "16px"],
-      lg: ["20px", "30px"],
-      xl: ["34px", "45px"],
     },
   },
   plugins: [],
