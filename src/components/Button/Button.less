@@ -2,18 +2,38 @@
 @btn-prefix-cls: ~"@{scroll-prefix}-btn";
 
 .@{btn-prefix-cls} {
-  @apply px-7 py-4 text-base font-semibold rounded;
+  @apply px-7 py-4 text-base font-semibold;
+  &:hover {
+    @apply shadow-base;
+  }
 
   &-default {
     @apply bg-red text-white;
+
+    &:hover,
+    &:active,
+    &:focus {
+      @apply bg-red-light shadow-base;
+    }
   }
 
-  &-primary {
+  &-secondary {
+    @apply bg-white text-charcoal border border-charcoal;
+
+    &:hover,
+    &:active,
+    &:focus {
+      @apply border-red-light text-red;
+    }
   }
 
-  &:hover,
-  &:active,
-  &:focus {
-    background: bg-red-light;
+  &-disabled {
+    @apply bg-charcoal-10 text-charcoal-30;
+
+    &:hover,
+    &:active,
+    &:focus {
+      @apply cursor-not-allowed shadow-none bg-charcoal-10 text-charcoal-30;
+    }
   }
 }

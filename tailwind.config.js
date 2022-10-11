@@ -5,6 +5,9 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      boxShadow: {
+        base: "6px 9px 0px 0px#fee7e0",
+      },
       borderRadius: {
         DEFAULT: "6px",
       },
@@ -29,13 +32,21 @@ module.exports = {
           DEFAULT: "#f3f4f6",
           dark: "#f3f4f6",
         },
-        heading: {
+        charcoal: {
           DEFAULT: "#333333",
           dark: "#333333",
         },
-        placeholder: {
-          DEFAULT: "#333333 50%",
-          dark: "#333333 50%",
+        "charcoal-50": {
+          DEFAULT: "#33333380",
+          dark: "#33333380",
+        },
+        "charcoal-30": {
+          DEFAULT: "#3333334d",
+          dark: "#3333334d",
+        },
+        "charcoal-10": {
+          DEFAULT: "#3333331a",
+          dark: "#3333331a",
         },
         outline: {
           DEFAULT: "#C9CBCE",

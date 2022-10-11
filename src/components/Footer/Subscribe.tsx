@@ -46,7 +46,7 @@ const Subscribe = () => {
             <div>
               <div className="flex flex-col mb-[20px] items-center rounded overflow-hidden md:flex-row">
                 <input
-                  className="w-full h-[50px] text-base outline-none border-none border-0 pl-[24px] placeholder:text-placeholder  md:w-[254px] "
+                  className="w-full h-[50px] text-base outline-none border-none border-0 pl-[24px] placeholder:text-charcoal-50  md:w-[254px] "
                   type="email"
                   placeholder="Enter email address"
                   onChange={(event: any) => console.log(event.target.value)}

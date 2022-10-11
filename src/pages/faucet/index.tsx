@@ -124,7 +124,14 @@ export default function Home() {
     if (completed) {
       // Render a completed state
       return (
-        <Button className="mt-[30px]" loading={loading} onClick={handleRequest}>
+        <Button
+          className="mt-[30px]"
+          // type="secondary"
+          // disabled
+          // fullWidth
+          loading={loading}
+          onClick={handleRequest}
+        >
           Request {faucetInfo.network} Scroll Tokens
         </Button>
       );

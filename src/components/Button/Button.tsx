@@ -14,6 +14,7 @@ interface ButtonProps {
   disabled?: boolean;
   type?: string;
   ghost?: boolean;
+  rounded?: boolean;
 }
 
 const Button: FC<ButtonProps> = (props) => {
@@ -30,16 +31,19 @@ const Button: FC<ButtonProps> = (props) => {
     fullWidth = false,
     type = "default",
     ghost = false,
+    rounded = true,
     ...buttonProps
   } = props;
 
   const classes = classNames(
     `${prefixCls}-btn`,
     {
+      [`${prefixCls}-btn-disabled`]: disabled,
       [`${prefixCls}-btn-${type}`]: type,
       [`${prefixCls}-btn-background-ghost`]: ghost,
       [`${prefixCls}-btn-loading`]: loading,
-      [`${prefixCls}-btn-disabled`]: disabled,
+      ["w-full"]: fullWidth,
+      ["rounded"]: rounded,
     },
     className
   );
@@ -57,7 +61,11 @@ const Button: FC<ButtonProps> = (props) => {
     )?.(e);
   };
 
-  return <button className={classes}>{children}</button>;
+  return (
+    <button disabled={disabled} onClick={handleClick} className={classes}>
+      {children}
+    </button>
+  );
 };
 
 export default Button;
