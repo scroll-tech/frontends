@@ -1,25 +1,28 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import MailchimpSubscribe from "react-mailchimp-subscribe";
+import Button from "@/components/Button/Button";
 // import { IntrinsicAttributes } from '@types/react-mailchimp-subscribe'
 
 const url =
   "https://gmail.us14.list-manage.com/subscribe/post?u=3b1d822eb27b2fa64d82d430b&id=0b4603244e";
 
 const Subscribe = () => {
+  const [email, setEmail] = useState("");
+
   const medias = [
     {
       name: "Twitter",
-      imgSrc: "/imgs/login/twitter.png",
+      imgSrc: "/imgs/footer/twitter.png",
       href: "https://twitter.com/Scroll_ZKP",
     },
     {
       name: "Discord",
-      imgSrc: "/imgs/login/discord.png",
+      imgSrc: "/imgs/footer/discord.png",
       href: "https://discord.gg/s84eJSdFhn",
     },
     {
       name: "Github",
-      imgSrc: "/imgs/login/github.png",
+      imgSrc: "/imgs/footer/github.png",
       href: "https://github.com/scroll-tech",
     },
   ];
@@ -46,17 +49,18 @@ const Subscribe = () => {
             <div>
               <div className="flex flex-col mb-[20px] items-center rounded overflow-hidden md:flex-row">
                 <input
-                  className="w-full h-[50px] text-base outline-none border-none border-0 pl-[24px] placeholder:text-charcoal-50  md:w-[254px] "
+                  className="w-full flex-shrink-0 rounded border h-[50px] text-base outline-none mb-[12px] pl-[24px] placeholder:text-charcoal-50  md:w-[254px] md:rounded-none md:border-transparent md:mb-0"
                   type="email"
                   placeholder="Enter email address"
-                  onChange={(event: any) => console.log(event.target.value)}
+                  onChange={(event: any) => setEmail(event.target.value)}
                 />
-                <button
-                  className="px-[16px] bg-red h-[50px] font-semibold text-base text-white"
-                  onClick={() => subscribe({ EMAIL: "1@qq.com" })}
+                <Button
+                  fullWidth
+                  rounded={false}
+                  onClick={() => subscribe({ EMAIL: email })}
                 >
                   Subscribe to Newsletter
-                </button>
+                </Button>
               </div>
 
               {status === "error" && (

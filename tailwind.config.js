@@ -5,11 +5,17 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      lineHeight: {
+        "18px": "18px",
+      },
       boxShadow: {
         base: "6px 9px 0px 0px#fee7e0",
       },
       borderRadius: {
         DEFAULT: "6px",
+      },
+      borderColor: {
+        DEFAULT: "#C9CBCE",
       },
       screens: {
         md: "768px",
