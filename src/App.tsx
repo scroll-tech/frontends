@@ -30,7 +30,7 @@ function App() {
   }, []);
 
   return (
-    <div className="App bg-body-bg min-h-[100vh]">
+    <div className="App bg-white min-h-[100vh]">
       <MetaMaskProvider>
         <AppWrapper>
           <WhitelistContextProvider

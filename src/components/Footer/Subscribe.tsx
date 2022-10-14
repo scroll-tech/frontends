@@ -55,8 +55,11 @@ const Subscribe = () => {
                   onChange={(event: any) => setEmail(event.target.value)}
                 />
                 <Button
-                  fullWidth
-                  rounded={false}
+                  // fullWidth
+                  // round/d={false}
+                  sx={{ borderRadius: 0 }}
+                  color="primary"
+                  variant="contained"
                   onClick={() => subscribe({ EMAIL: email })}
                 >
                   Subscribe to Newsletter

@@ -3,20 +3,24 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
 import "./styles/globals.less";
+import { ThemeProvider } from "@mui/material/styles";
 import reportWebVitals from "./reportWebVitals";
 import { MetaMaskProvider } from "metamask-react";
 import { BrowserRouter } from "react-router-dom";
+import themeLight from "./theme/light";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <MetaMaskProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </MetaMaskProvider>
+    <ThemeProvider theme={themeLight}>
+      <MetaMaskProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </MetaMaskProvider>
+    </ThemeProvider>
   </React.StrictMode>
 );
 

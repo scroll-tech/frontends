@@ -125,12 +125,11 @@ export default function Home() {
       // Render a completed state
       return (
         <Button
-          className="mt-[30px]"
-          // type="secondary"
-          // disabled
-          // fullWidth
-          loading={loading}
-          onClick={handleRequest}
+          // color="primary"
+          // variant="contained"
+          // variant="outlined";
+          sx={{ marginTop: "30px" }}
+          // onClick={handleRequest}
         >
           Request {faucetInfo.network} Scroll Tokens
         </Button>

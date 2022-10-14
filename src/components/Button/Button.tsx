@@ -1,71 +1,21 @@
-import React, { FC } from "react";
-import classNames from "classnames";
-import { useApp } from "@/contexts";
-import "./Button.less";
+import * as React from "react";
+import { styled } from "@mui/material/styles";
+import Button, { ButtonProps } from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
+import { purple } from "@mui/material/colors";
 
-interface ButtonProps {
-  large?: boolean;
-  children?: any;
-  onClick?: any;
-  loading?: boolean;
-  isDarkMode?: boolean;
-  fullWidth?: boolean;
-  className?: string;
-  disabled?: boolean;
-  type?: string;
-  ghost?: boolean;
-  rounded?: boolean;
-}
+const CustomizedButton = styled(Button)<ButtonProps>(({ theme }) => ({
+  // color: "text-red",
+  // backgroundColor: purple[500],
+  // textTransform: "inherit",
+  // fontSize: "16px",
+  // lineHeight: "18px",
+  // padding: "16px 28px",
+  // boxShadow: "none",
+  // whiteSpace: "nowrap",
+  // "&:hover": {
+  //   boxShadow: "6px 9px 0px 0px #FEE7E0",
+  // },
+}));
 
-const Button: FC<ButtonProps> = (props) => {
-  const {
-    theme: { prefixCls },
-  } = useApp();
-
-  const {
-    className,
-    children,
-    large = false,
-    disabled = false,
-    loading = false,
-    fullWidth = false,
-    type = "default",
-    ghost = false,
-    rounded = true,
-    ...buttonProps
-  } = props;
-
-  const classes = classNames(
-    `${prefixCls}-btn`,
-    {
-      [`${prefixCls}-btn-disabled`]: disabled,
-      [`${prefixCls}-btn-${type}`]: type,
-      [`${prefixCls}-btn-background-ghost`]: ghost,
-      [`${prefixCls}-btn-loading`]: loading,
-      ["w-full"]: fullWidth,
-      ["rounded"]: rounded,
-    },
-    className
-  );
-
-  const handleClick = (
-    e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement, MouseEvent>
-  ) => {
-    const { onClick } = props;
-    if (loading || disabled) {
-      e.preventDefault();
-      return;
-    }
-    (
-      onClick as React.MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>
-    )?.(e);
-  };
-
-  return (
-    <button disabled={disabled} onClick={handleClick} className={classes}>
-      {children}
-    </button>
-  );
-};
-
-export default Button;
+export default CustomizedButton;
