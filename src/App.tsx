@@ -9,6 +9,7 @@ import Footer from "@/components/Footer";
 import { useEffect, useState } from "react";
 import Home from "./pages/home";
 import Faucet from "./pages/faucet";
+import Bridge from "./pages/bridge";
 import AddNetwork from "./pages/faucet/add-network";
 import RollupScan from "./pages/rollup";
 
@@ -42,6 +43,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />}></Route>
               <Route path="/faucet" element={<Faucet />}></Route>
+              <Route path="/bridge" element={<Bridge />}></Route>
               <Route
                 path="/faucet/add-network"
                 element={<AddNetwork />}
