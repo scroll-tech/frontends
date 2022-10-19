@@ -20,25 +20,24 @@ interface StyleProps {
 export type ButtonProps = Partial<StyleProps> &
   MuiButtonProps & { boxShadow?: any; minWidth?: string };
 
-// TODO: ???
-// const useStyles = makeStyles((theme) => ({
-//   root: ({ highlighted, large, flat, isDarkMode, fullWidth }: StyleProps) => ({
-//     textTransform: 'none',
-//     padding: large ? '1.6rem 2.8rem' : '0.8rem 2.8rem',
-//     minHeight: large ? '5rem' : '4.0rem',
-//     fontSize: large ? '1.6rem' : '1.4rem',
-//     width: fullWidth ? '100%' : 'auto',
-//     transition: 'background-color 0.15s ease-out, box-shadow 0.15s ease-out',
-//   }),
-//   disabled: {
-//     backgroundColor: '#E8E8E8',
-//     color: 'rgba(51, 51, 51, 0.3)',
-//   },
-//   spinner: {
-//     display: 'inline-flex',
-//     marginLeft: '1rem',
-//   },
-// }));
+const useStyles = makeStyles<any>()((theme, { large, fullWidth }) => ({
+  root: {
+    textTransform: "none",
+    padding: large ? "1.6rem 2.8rem" : "0.8rem 2.8rem",
+    minHeight: large ? "5rem" : "4rem",
+    fontSize: large ? "1.6rem" : "1.4rem",
+    width: fullWidth ? "100%" : "auto",
+    transition: "background-color 0.15s ease-out, box-shadow 0.15s ease-out",
+  },
+  disabled: {
+    backgroundColor: "#E8E8E8",
+    color: "rgba(51, 51, 51, 0.3)",
+  },
+  spinner: {
+    display: "inline-flex",
+    marginLeft: "1rem",
+  },
+}));
 
 const LargeButton: FC<ButtonProps> = (props) => {
   const {
@@ -56,31 +55,22 @@ const LargeButton: FC<ButtonProps> = (props) => {
     fullWidth = false,
     ...buttonProps
   } = props;
-  // const styles = useStyles({ highlighted, large, flat, fullWidth });
-  const styles = {} as any;
+  const { classes, cx } = useStyles({ large, fullWidth });
 
   return (
-    // <Flex
-    //   justifyCenter
-    //   alignCenter
-    //   borderRadius={borderRadius || '3.0rem'}
-    //   fullWidth
-    // >
-    <div className="">
-      <MuiButton
-        {...buttonProps}
-        disabled={disabled || loading}
-        className={`${styles.root} ${className}`}
-        classes={{ disabled: styles.disabled }}
-      >
-        {children}
-        {loading ? (
-          <div className={styles.spinner}>
-            <CircularProgress size={large ? "2rem" : size} />
-          </div>
-        ) : null}
-      </MuiButton>
-    </div>
+    <MuiButton
+      {...buttonProps}
+      disabled={disabled || loading}
+      className={cx(classes.root, className)}
+      classes={{ disabled: classes.disabled }}
+    >
+      {children}
+      {loading ? (
+        <div className={classes.spinner}>
+          <CircularProgress size={large ? "2rem" : size} />
+        </div>
+      ) : null}
+    </MuiButton>
   );
 };
 

@@ -100,6 +100,7 @@ const Web3ContextProvider = ({ children }: any) => {
   }, []);
 
   useEffect(() => {
+    console.log(connectedWallets, "connectedWallets");
     if (!connectedWallets.length) return;
 
     const connectedWalletsLabelArray = connectedWallets.map(
@@ -149,7 +150,8 @@ const Web3ContextProvider = ({ children }: any) => {
     }
   }, [onboard, connect]);
 
-  const connectWallet = async () => {
+  const connectWallet = () => {
+    console.log("connectWallet");
     try {
       localStorage.clear();
       connect();

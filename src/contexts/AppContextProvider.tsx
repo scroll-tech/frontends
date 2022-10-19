@@ -6,16 +6,20 @@ import { networks } from "@/constants/networks";
 import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import L1_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L1_GATEWAY_ROUTER_PROXY_ADDR.json";
 import L2_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L2_GATEWAY_ROUTER_PROXY_ADDR.json";
+import useTxHistory, { TxHistory } from "@/hooks/useTxHistory";
 
 type AppContextProps = {
   networks: any[];
   networksAndSigners: any;
+  txHistory: TxHistory;
 };
 
 const AppContext = createContext<AppContextProps | undefined>(undefined);
 
 const AppContextProvider = ({ children }: any) => {
   const { provider, address, connectedNetworkId } = useWeb3Context();
+
+  const txHistory = useTxHistory();
 
   const [networksAndSigners, setNetworksAndSigners] = useState({
     [ChainId.SCROLL_LAYER_1]: {},
@@ -78,6 +82,7 @@ const AppContextProvider = ({ children }: any) => {
       value={{
         networks,
         networksAndSigners,
+        txHistory,
       }}
     >
       {children}

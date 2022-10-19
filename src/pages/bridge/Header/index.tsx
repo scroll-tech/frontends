@@ -18,18 +18,13 @@ const Header = () => {
     setOpen(true);
   };
 
-  console.log(buttonRef, "????");
-
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-end bg-white">
       {address ? (
         <>
           <Button
-            flat
             onClick={handleClickAddress}
-            // px={ensAvatar ? 3 : 4}
             ref={buttonRef}
-            // color="info"
             variant="outlined"
             large
           >
@@ -43,10 +38,8 @@ const Header = () => {
         </>
       ) : (
         <Button
-          highlighted
           onClick={connectWallet}
-          minWidth="12rem"
-          // color="info"
+          // minWidth="12rem"
           variant="outlined"
           large
         >
