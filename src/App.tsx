@@ -38,7 +38,7 @@ function App() {
               <Login hasPermission={hasPermission} loading={loading} />
             )}
           >
-            <Header backgroundColor="#fff" activeTab="Faucet" type="path" />
+            <Header />
             <Routes>
               <Route path="/" element={<Home />}></Route>
               <Route path="/faucet" element={<Faucet />}></Route>

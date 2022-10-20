@@ -15,6 +15,21 @@ const palette = {
     main: "#eb7106",
     dark: "#F18740",
   },
+  action: {
+    active: "#EB7106",
+    hover: "#e8c1ff",
+    selected: "#B32EFF",
+    disabled: "white",
+  },
+  text: {
+    primary: "#333333",
+    secondary: "#595959",
+    placeholder: "#33333380",
+    disabled: "#3333334D",
+  },
+  border: {
+    main: "#C9CBCE",
+  },
 };
 
 const colors = {

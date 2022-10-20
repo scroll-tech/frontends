@@ -8,6 +8,7 @@ import reportWebVitals from "./reportWebVitals";
 import { MetaMaskProvider } from "metamask-react";
 import { BrowserRouter } from "react-router-dom";
 import themeLight from "./theme/light";
+import "./styles/index.less";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

@@ -1,0 +1,19 @@
+.ant-menu-item-selected,
+.ant-menu-submenu-selected {
+  @apply !text-red;
+  &:after {
+    @apply !border-red;
+  }
+}
+.ant-menu-overflow-item {
+  @apply !px-7;
+  &:hover {
+    @apply !text-red;
+    .ant-menu-title-content {
+      @apply !text-red;
+    }
+    &:after {
+      @apply !border-red;
+    }
+  }
+}
