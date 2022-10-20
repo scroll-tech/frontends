@@ -1,10 +1,6 @@
-import MuiLink, { LinkProps } from "@mui/material/Link";
+import MuiLink from "@mui/material/Link";
 
-interface Props {
-  external?: boolean;
-}
-
-const Link = (props: any) => {
+const Link = (props) => {
   const { external, ...restProps } = props;
   return (
     <MuiLink

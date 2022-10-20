@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { Popper } from "@mui/material";
 import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import Button from "../components/Button";
 import AccountDetails from "./AccountDetails";
@@ -14,19 +15,19 @@ const Header = () => {
     setOpen(false);
   };
 
-  const handleClickAddress = () => {
+  const handleClickAddress = (event) => {
     setOpen(true);
   };
 
   return (
-    <div className="flex items-center justify-end bg-white">
+    <div className="flex items-center justify-end bg-white px-[4.2rem]">
       {address ? (
         <>
           <Button
-            onClick={handleClickAddress}
             ref={buttonRef}
             variant="outlined"
             large
+            onClick={handleClickAddress}
           >
             {truncateAddress(address)}
           </Button>
@@ -37,12 +38,7 @@ const Header = () => {
           ></AccountDetails>
         </>
       ) : (
-        <Button
-          onClick={connectWallet}
-          // minWidth="12rem"
-          variant="outlined"
-          large
-        >
+        <Button onClick={connectWallet} variant="outlined" large>
           Connect a Wallet
         </Button>
       )}

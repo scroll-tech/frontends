@@ -10,7 +10,6 @@ import {
   TableCell,
   SvgIcon,
 } from "@mui/material";
-import classNames from "classnames";
 import { makeStyles } from "tss-react/mui";
 import { ReactComponent as RightArrowIcon } from "@/assets/svgs/arrow-right.svg";
 // import { Flex } from '../ui';
@@ -56,7 +55,7 @@ const useStyles = makeStyles()((theme) => {
 });
 
 const TransactionsList = (props: any) => {
-  const { classes } = useStyles();
+  const { classes, cx } = useStyles();
   const { transactions, clearTransaction } = useTxHistory();
 
   const explorerLink = useCallback(
@@ -74,7 +73,14 @@ const TransactionsList = (props: any) => {
 
   return (
     <>
-      <div className={classNames("flex", "items-center", classes.tableTitle)}>
+      <div
+        className={cx(
+          "flex",
+          "items-center",
+          "justify-between",
+          classes.tableTitle
+        )}
+      >
         <Typography variant="h6" color="textSecondary">
           Recent Bridge Transactions
         </Typography>
@@ -99,13 +105,7 @@ const TransactionsList = (props: any) => {
                 </TableCell> */}
                 {/* <TableCell align="right">{tx.calories}</TableCell> */}
                 <TableCell>
-                  <div
-                    className={classNames(
-                      "flex",
-                      "items-center",
-                      classes.hashLink
-                    )}
-                  >
+                  <div className={cx("flex", "items-center", classes.hashLink)}>
                     <Typography variant="body1">
                       {tx.fromNetwork.name}
                     </Typography>

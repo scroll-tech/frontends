@@ -5,6 +5,7 @@ import AppProvider from "@/contexts/AppContextProvider";
 import ThemeProvider from "./theme";
 import Header from "./Header";
 import Send from "./Send";
+import styles from "./index.module.css";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -32,8 +33,10 @@ const Bridge = () => {
       <QueryClientProvider client={queryClient}>
         <Web3Provider>
           <AppProvider>
-            <Header />
-            <Send />
+            <div className={styles.bridge}>
+              <Header />
+              <Send />
+            </div>
           </AppProvider>
         </Web3Provider>
       </QueryClientProvider>

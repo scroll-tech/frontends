@@ -44,6 +44,12 @@ const useStyles = makeStyles()((theme) => {
       transition: "all 0.15s ease-out",
     },
     selectItem: {
+      "&.Mui-selected": {
+        backgroundColor: "rgba(201, 203, 206, 0.2)",
+        "&:hover, &:focus": {
+          backgroundColor: "rgba(201, 203, 206, 0.2)",
+        },
+      },
       [theme.breakpoints.down("xs")]: {
         minHeight: "3.8rem",
       },
@@ -135,6 +141,7 @@ const SendAmountSelectorCard: FC<Props> = (props) => {
           <div></div>
         ) : (
           <LargeTextField
+            className="flex-1"
             value={value}
             onChange={handleInputChange}
             placeholder="0.00"

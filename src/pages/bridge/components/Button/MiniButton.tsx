@@ -1,4 +1,3 @@
-import classNames from "classnames";
 import { makeStyles } from "tss-react/mui";
 import { ButtonProps } from "@mui/material/Button";
 import { SvgIcon, Typography } from "@mui/material";
@@ -37,10 +36,10 @@ export type Props = ButtonProps & {
 
 const MiniButton = (props: Props) => {
   const { icon, viewBox, label, className, ...restProps } = props;
-  const { classes } = useStyles();
+  const { classes, cx } = useStyles();
 
   return (
-    <button className={classNames(classes.button, className)} {...restProps}>
+    <button className={cx(classes.button, className)} {...restProps}>
       <SvgIcon
         style={{ fontSize: "1.8rem" }}
         viewBox={viewBox}

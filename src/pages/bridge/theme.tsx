@@ -21,6 +21,7 @@ const lightTheme = {
         root: {
           fontWeight: 600,
           borderRadius: "0.6rem",
+          lineHeight: 1,
           color: paletteOptions.primary.contrastText,
           backgroundColor: paletteOptions.primary.main,
           transition: defaultTransition,
@@ -102,7 +103,7 @@ const lightTheme = {
       styleOverrides: {
         root: {
           transition: defaultTransition,
-          "&$selected": {
+          "&.Mui-selected": {
             backgroundColor: "rgba(201, 203, 206, 0.2)",
             color: paletteOptions.text.primary,
             "&:hover": {
@@ -179,10 +180,10 @@ const lightTheme = {
             minWidth: 0,
             borderRadius: "3rem",
           },
-          "&$selected": {
+          "&.Mui-selected": {
             color: paletteOptions.primary.main,
           },
-          "&:hover:not($selected)": {
+          "&:hover:not(.Mui-selected)": {
             color: paletteOptions.text.primary,
           },
         },
@@ -271,13 +272,14 @@ const lightTheme = {
           fontSize: "1.6rem",
           fontWeight: 600,
           cursor: "pointer",
+          textDecorationColor: "#00A6F2",
         },
       },
     },
     MuiTableRow: {
       styleOverrides: {
         root: {
-          "&:nth-last-child(1) .MuiTableCell-root": {
+          "&:nth-last-of-type(1) .MuiTableCell-root": {
             borderBottom: "unset",
           },
         },

@@ -71,8 +71,14 @@ const useInputStyles = makeStyles<any>()(
 );
 
 const LargeTextField: FC<LargeTextFieldProps> = (props) => {
-  const { units, leftAlign = false, centerAlign, ...textFieldProps } = props;
-  const { classes } = useStyles();
+  const {
+    className,
+    units,
+    leftAlign = false,
+    centerAlign,
+    ...textFieldProps
+  } = props;
+  const { classes, cx } = useStyles();
   const { classes: inputStyles } = useInputStyles({
     leftAlign,
     centerAlign,
@@ -80,7 +86,7 @@ const LargeTextField: FC<LargeTextFieldProps> = (props) => {
 
   return (
     <MuiTextField
-      className={classes.root}
+      className={cx(classes.root, className)}
       variant="standard"
       InputProps={{
         classes: inputStyles,

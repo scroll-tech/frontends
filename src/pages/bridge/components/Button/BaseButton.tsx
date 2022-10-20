@@ -27,7 +27,7 @@ const useStyles = makeStyles<any>()((theme, { large, fullWidth }) => ({
     minHeight: large ? "5rem" : "4rem",
     fontSize: large ? "1.6rem" : "1.4rem",
     width: fullWidth ? "100%" : "auto",
-    transition: "background-color 0.15s ease-out, box-shadow 0.15s ease-out",
+    transition: "all 0.15s ease-out",
   },
   disabled: {
     backgroundColor: "#E8E8E8",
