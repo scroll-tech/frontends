@@ -1,4 +1,4 @@
-import { Box, MenuItem, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { makeStyles } from "tss-react/mui";
 
 interface Props {
@@ -16,22 +16,27 @@ const useStyles = makeStyles()((theme) => {
       border: "1.5px solid #E8E8E8",
       borderRadius: "2rem",
       padding: "0px 2.2rem 0px 1rem",
+      maxWidth: "25rem",
+      [theme.breakpoints.down("sm")]: {
+        maxWidth: "15.2rem",
+      },
     },
     networkLabel: {
       marginLeft: "0.4rem",
       overflow: "hidden",
       textOverflow: "ellipsis",
+      whiteSpace: "nowrap",
     },
     networkIconContainer: {
       display: "flex",
       justifyContent: "center",
-      // border: '1.5px solid #E8E8E8',
     },
     networkIcon: {
       display: "flex",
       height: "2.2rem",
       margin: "0.7rem",
-      [theme.breakpoints.down("xs")]: {
+      maxWidth: "unset",
+      [theme.breakpoints.down("sm")]: {
         margin: "0.7rem 0",
       },
     },

@@ -35,7 +35,7 @@ const useStyles = makeStyles()((theme) => {
     container: {
       width: "100%",
       boxSizing: "border-box",
-      [theme.breakpoints.down("xs")]: {
+      [theme.breakpoints.down("sm")]: {
         width: "100%",
         padding: "1.6rem",
       },
@@ -50,7 +50,10 @@ const useStyles = makeStyles()((theme) => {
           backgroundColor: "rgba(201, 203, 206, 0.2)",
         },
       },
-      [theme.breakpoints.down("xs")]: {
+      ".MuiTypography-root": {
+        cursor: "pointer",
+      },
+      [theme.breakpoints.down("sm")]: {
         minHeight: "3.8rem",
       },
     },

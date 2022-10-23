@@ -16,3 +16,11 @@ export const shallowEquals = (a?: DependencyList, b?: DependencyList) => {
 export function findNetworkBySlug(slug: string, networks: any[]) {
   return find(networks, ["slug", slug]);
 }
+
+export function requireEnv(entry) {
+  if (process.env[entry]) {
+    return process.env[entry]!;
+  } else {
+    throw new Error(`${entry} not defined in .env`);
+  }
+}

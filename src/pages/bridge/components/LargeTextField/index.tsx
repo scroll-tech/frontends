@@ -21,7 +21,7 @@ const useStyles = makeStyles()((theme) => {
     adornment: {
       width: "auto",
       textAlign: "right",
-      [theme.breakpoints.down("xs")]: {
+      [theme.breakpoints.down("sm")]: {
         fontSize: theme.typography.subtitle1.fontSize,
       },
     },
@@ -47,7 +47,7 @@ const useInputStyles = makeStyles<any>()(
       transition: "all 0.15s ease-out",
       borderRadius: "1rem",
       width: "100%",
-      [theme.breakpoints.down("xs")]: {
+      [theme.breakpoints.down("sm")]: {
         width: "100%",
         padding: ".5rem .6rem",
         fontSize: theme.typography.subtitle2.fontSize,
@@ -60,7 +60,7 @@ const useInputStyles = makeStyles<any>()(
       color: theme.palette.text.primary,
       textOverflow: "clip",
       padding: "6px 4px",
-      [theme.breakpoints.down("xs")]: {
+      [theme.breakpoints.down("sm")]: {
         fontSize: "2.4rem",
       },
     },

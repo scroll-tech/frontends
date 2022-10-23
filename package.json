@@ -48,7 +48,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "craco start",
+    "start": "BROWSER=none craco start",
     "build": "CI=false && craco build",
     "test": "craco test",
     "lint": "eslint --fix \"**/*.{ts,tsx}\"",

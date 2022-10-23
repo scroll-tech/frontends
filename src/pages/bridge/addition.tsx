@@ -87,7 +87,7 @@ export const typographyOptions = {
   subtitle2: {
     fontSize: "1.6rem",
     fontWeight: 400,
-    [breakpoints.down("xs")]: {
+    [breakpoints.down("sm")]: {
       fontSize: "1.4rem",
     },
   },

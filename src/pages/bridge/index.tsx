@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { CacheProvider } from "@emotion/react";
+import createCache from "@emotion/cache";
 import { QueryClient, QueryClientProvider } from "react-query";
 import Web3Provider from "@/contexts/Web3ContextProvider";
 import AppProvider from "@/contexts/AppContextProvider";
@@ -6,6 +7,11 @@ import ThemeProvider from "./theme";
 import Header from "./Header";
 import Send from "./Send";
 import styles from "./index.module.css";
+
+export const muiCache = createCache({
+  key: "mui",
+  prepend: true,
+});
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -29,18 +35,20 @@ const Bridge = () => {
   //   onboard[0]["style"].display = "none";
   // }, []);
   return (
-    <ThemeProvider>
-      <QueryClientProvider client={queryClient}>
-        <Web3Provider>
-          <AppProvider>
-            <div className={styles.bridge}>
-              <Header />
-              <Send />
-            </div>
-          </AppProvider>
-        </Web3Provider>
-      </QueryClientProvider>
-    </ThemeProvider>
+    <CacheProvider value={muiCache}>
+      <ThemeProvider>
+        <QueryClientProvider client={queryClient}>
+          <Web3Provider>
+            <AppProvider>
+              <div className={styles.bridge}>
+                <Header />
+                <Send />
+              </div>
+            </AppProvider>
+          </Web3Provider>
+        </QueryClientProvider>
+      </ThemeProvider>
+    </CacheProvider>
   );
 };
 

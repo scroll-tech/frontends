@@ -10,7 +10,7 @@ const useStyles = makeStyles()((theme) => {
       lineHeight: "4.4rem",
       borderRadius: "2rem",
       backgroundColor: "#EBEBEB",
-      [theme.breakpoints.down("xs")]: {
+      [theme.breakpoints.down("sm")]: {
         height: "3.8rem",
         lineHeight: "3.8rem",
         padding: "0 calc(12px + 1.2rem) 0 1rem",

@@ -37,7 +37,7 @@ const useStyles = makeStyles()((theme) => {
       width: "auto",
       height: "3rem",
       objectFit: "contain",
-      [theme.breakpoints.down("xs")]: {
+      [theme.breakpoints.down("sm")]: {
         height: "1.6rem",
       },
     },

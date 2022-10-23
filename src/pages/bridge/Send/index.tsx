@@ -291,6 +291,7 @@ const Send: FC = () => {
 
           {warningTip && (
             <Alert
+              variant="standard"
               severity={sendError ? "error" : "warning"}
               style={{ marginTop: "2.4rem" }}
             >

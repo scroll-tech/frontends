@@ -68,6 +68,7 @@ const lightTheme = {
         root: {
           color: "#333",
           backgroundColor: paletteOptions.background.default,
+          padding: "12px",
           "&:hover": {
             backgroundColor: paletteOptions.background.default,
             // mobile
@@ -220,7 +221,7 @@ const lightTheme = {
           padding: "2rem",
           width: "100%",
           boxSizing: "border-box",
-          [breakpoints.down("xs")]: {
+          [breakpoints.down("sm")]: {
             flexDirection: "column",
             textAlign: "center",
             padding: " 1.6rem 3rem",
@@ -229,10 +230,16 @@ const lightTheme = {
         standardWarning: {
           color: paletteOptions.warning.main,
           backgroundColor: paletteOptions.warning.light,
+          ".MuiAlert-icon": {
+            color: paletteOptions.warning.main,
+          },
         },
         standardError: {
           color: paletteOptions.error.main,
           backgroundColor: paletteOptions.error.light,
+          ".MuiAlert-icon": {
+            color: paletteOptions.error.main,
+          },
         },
         icon: {
           display: "flex",
@@ -240,7 +247,7 @@ const lightTheme = {
           fontSize: "3rem",
           marginRight: "1.6rem",
           padding: 0,
-          [breakpoints.down("xs")]: {
+          [breakpoints.down("sm")]: {
             justifyContent: "center",
             marginRight: 0,
           },
@@ -288,7 +295,7 @@ const lightTheme = {
     MuiTableCell: {
       styleOverrides: {
         root: {
-          [breakpoints.down("xs")]: {
+          [breakpoints.down("sm")]: {
             padding: "1.6rem 2.4rem",
           },
         },
@@ -333,7 +340,7 @@ const lightTheme = {
           "&.Mui-expanded": {
             margin: "3.6rem 0",
           },
-          [breakpoints.down("xs")]: {
+          [breakpoints.down("sm")]: {
             margin: "3.2rem 0",
             "&.Mui-expanded": {
               margin: "3.2rem 0 1.6rem",
@@ -353,7 +360,7 @@ const lightTheme = {
     MuiDialog: {
       styleOverrides: {
         paper: {
-          [breakpoints.down("xs")]: {
+          [breakpoints.down("sm")]: {
             margin: "0 1.6rem",
           },
         },

@@ -13,13 +13,12 @@ const SendTranferButton = ({ onClick }) => {
         "flex",
         "items-center",
         "justify-center",
-        "my-1",
         "cursor-pointer",
         styles.sendTransfer
       )}
       onClick={onClick}
     >
-      <IconButton aria-label="transfer" disableRipple>
+      <IconButton className="bg-white" disableRipple>
         <SvgIcon className={styles.sendTransferIcon} component={TransferIcon} />
       </IconButton>
     </div>

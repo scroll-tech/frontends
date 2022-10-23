@@ -2,3 +2,7 @@
 :root {
   font-size: 62.5%;
 }
+
+html {
+  overflow: unset !important;
+}

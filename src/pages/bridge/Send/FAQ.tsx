@@ -15,7 +15,7 @@ const useStyles = makeStyles()((theme: Theme) => {
     wrapper: {
       width: "92rem",
       margin: "14rem auto",
-      [theme.breakpoints.down("xs")]: {
+      [theme.breakpoints.down("sm")]: {
         width: "100%",
         marginTop: "6.4rem",
       },
@@ -29,7 +29,7 @@ const useStyles = makeStyles()((theme: Theme) => {
     },
     title: {
       marginBottom: "3.6rem",
-      [theme.breakpoints.down("xs")]: {
+      [theme.breakpoints.down("sm")]: {
         marginBottom: "1rem",
       },
     },
@@ -117,11 +117,11 @@ const FAQ = () => {
             className={classes.orderedParagraph}
           >
             4. View transactions’ and blocks’ statuses in the{" "}
-            <Link href={SiteMap.L1Explorer} target="_blank">
+            <Link href={SiteMap.L1Explorer} external>
               Scroll L1
             </Link>
             ,{" "}
-            <Link href={SiteMap.L2Explorer} target="_blank">
+            <Link href={SiteMap.L2Explorer} external>
               Scroll L2
             </Link>{" "}
             Block Explorers and the{" "}

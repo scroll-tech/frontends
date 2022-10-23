@@ -23,7 +23,7 @@ const useStyles = makeStyles()((theme) => {
       boxShadow: "unset",
       border: "1px solid #C9CBCE",
       borderRadius: "1rem",
-      [theme.breakpoints.down("xs")]: {
+      [theme.breakpoints.down("sm")]: {
         border: "unset",
         borderRadius: "unset",
         margin: "0 -2rem",
@@ -40,7 +40,7 @@ const useStyles = makeStyles()((theme) => {
     tableTitle: {
       marginTop: "2.8rem",
       marginBottom: "3rem",
-      [theme.breakpoints.down("xs")]: {
+      [theme.breakpoints.down("sm")]: {
         marginTop: "1.6rem",
         marginBottom: "1.6rem",
       },

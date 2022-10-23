@@ -26,7 +26,7 @@ const useStyles = makeStyles()((theme) => {
     },
     section: {
       padding: "0.8rem 6.2rem 5rem",
-      [theme.breakpoints.up("xs")]: {
+      [theme.breakpoints.up("sm")]: {
         padding: "0.8rem 4.2rem 4rem",
       },
     },
