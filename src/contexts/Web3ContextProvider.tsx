@@ -1,43 +1,25 @@
-/* eslint-disable */
-// import Onboard from 'bnc-onboard';
-import { ReactNode } from "react";
 import {
-  Web3OnboardProvider,
+  createContext,
+  useContext,
+  useEffect,
+  useCallback,
+  useState,
+} from "react";
+import {
   init,
   useConnectWallet,
   useSetChain,
   useWallets,
 } from "@web3-onboard/react";
 import injectedModule from "@web3-onboard/injected-wallets";
-import walletConnectModule from "@web3-onboard/walletconnect";
-// import {
-//   WalletCheckInit,
-//   WalletSelectModuleOptions,
-// } from 'bnc-onboard/dist/src/interfaces';
-import {
-  createContext,
-  FC,
-  useContext,
-  useEffect,
-  useCallback,
-  useMemo,
-  useState,
-} from "react";
 import { ethers, BigNumber, providers } from "ethers";
 import LogRocket from "logrocket";
 
-import mmLogo from "@/assets/images/metamask.png";
-// import { blocknativeDappid } from 'src/config';
 import logger from "@/utils/logger";
-import { convertHexadecimal } from "@/utils";
-import { loadState, saveState } from "@/utils/localStorage";
-// import './onboardStyles.css';
-// import { ChainId, ChainSlug } from '@hop-protocol/sdk'
-
-// import { ChainId } from '@/constants';
+import { convertHexadecimal, toHexadecimal } from "@/utils";
+import { loadState, saveState, clearState } from "@/utils/localStorage";
 import { networks } from "@/constants";
 
-// TODO: modularize
 type Props = {
   onboard: any;
   provider: providers.Web3Provider | undefined;
@@ -53,36 +35,45 @@ type Props = {
 const Web3Context = createContext<Props | undefined>(undefined);
 
 const injected = injectedModule();
-const walletConnect = walletConnectModule();
-// TODO: modularize
-// const walletSelectOptions: WalletSelectModuleOptions = {
-//   heading: 'Connect Wallet',
-//   description: '',
-//   wallets: [{ walletName: 'metamask', preferred: true, iconSrc: mmLogo }],
-// };
 
-// // TODO: modularize
-// const walletChecks: WalletCheckInit[] = [
-//   { checkName: 'derivationPath' },
-//   { checkName: 'accounts' },
-//   { checkName: 'connect' },
-//   { checkName: 'network' },
-//   { checkName: 'balance' },
-// ];
-
-const INFURA_ID = "84842078b09946638c03157f83405213";
+// const INFURA_ID = "84842078b09946638c03157f83405213";
 const cacheKey = "connectedWallets";
 
 const web3Onboard = init({
   wallets: [injected],
-  chains: [
-    {
-      id: "0x1",
-      token: "ETH",
-      label: "Ethereum Mainnet",
-      rpcUrl: `https://mainnet.infura.io/v3/${INFURA_ID}`,
+  chains: networks.map(
+    ({ networkId, nativeTokenSymbol, name, rpcUrl, imageUrl }) => ({
+      id: toHexadecimal(networkId),
+      token: nativeTokenSymbol as string,
+      label: name,
+      rpcUrl: rpcUrl as string,
+    })
+  ),
+  appMetadata: {
+    name: "Scroll",
+    icon: "https://scroll.io/img/logo.png",
+    description: "Scroll Prealpha",
+  },
+  // i18n: {
+  //   en: {
+  //     connect: {
+  //       selectingWallet: {
+  //         header: "select Wallet",
+  //       },
+  //     },
+  //   },
+  // },
+  connect: {
+    showSidebar: false,
+  },
+  accountCenter: {
+    desktop: {
+      enabled: false,
     },
-  ],
+    mobile: {
+      enabled: false,
+    },
+  },
 });
 
 const Web3ContextProvider = ({ children }: any) => {
@@ -100,16 +91,12 @@ const Web3ContextProvider = ({ children }: any) => {
   }, []);
 
   useEffect(() => {
-    console.log(connectedWallets, "connectedWallets");
     if (!connectedWallets.length) return;
 
     const connectedWalletsLabelArray = connectedWallets.map(
       ({ label }) => label
     );
-    window.localStorage.setItem(
-      cacheKey,
-      JSON.stringify(connectedWalletsLabelArray)
-    );
+    saveState(cacheKey, connectedWalletsLabelArray);
   }, [connectedWallets]);
 
   useEffect(() => {
@@ -120,16 +107,6 @@ const Web3ContextProvider = ({ children }: any) => {
         wallet.provider,
         "any"
       );
-      // if (wallet.provider.enable && !wallet.provider.isMetaMask) {
-      //   // needed for WalletConnect and some wallets
-      //   await wallet.provider.enable();
-      // } else {
-      //   try {
-      //     await ethersProvider.send('eth_requestAccounts', []);
-      //   } catch (error) {
-      //     console.error(error);
-      //   }
-      // }
       setProvider(ethersProvider);
     }
 
@@ -151,9 +128,8 @@ const Web3ContextProvider = ({ children }: any) => {
   }, [onboard, connect]);
 
   const connectWallet = () => {
-    console.log("connectWallet");
     try {
-      localStorage.clear();
+      clearState();
       connect();
     } catch (err) {
       logger.error(err);
@@ -162,7 +138,7 @@ const Web3ContextProvider = ({ children }: any) => {
 
   const disconnectWallet = () => {
     try {
-      localStorage.clear();
+      clearState();
       wallet && disconnect(wallet);
     } catch (error) {
       logger.error(error);

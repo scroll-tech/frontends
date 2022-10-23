@@ -55,3 +55,11 @@ export function putState(
 
   return saveState(key, subState);
 }
+
+export function clearState(key?) {
+  if (!key) {
+    localStorage.clear();
+    return;
+  }
+  removeItem(key);
+}

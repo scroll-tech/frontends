@@ -1,5 +1,6 @@
 import { BigNumberish, utils, BigNumber, FixedNumber } from "ethers";
 import { formatUnits } from "ethers/lib/utils";
+import { values } from "lodash";
 import numbro from "numbro";
 
 export const commafy = (
@@ -37,6 +38,10 @@ export const truncateHash = (hash: string) => {
 
 export const convertHexadecimal = (value: string): number => {
   return parseInt(value, 16);
+};
+
+export const toHexadecimal = (value: number): string => {
+  return `0x${value.toString(16)}`;
 };
 
 export const toTokenDisplay = (

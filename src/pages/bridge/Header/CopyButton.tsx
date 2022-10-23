@@ -1,5 +1,5 @@
 import { useState, SyntheticEvent } from "react";
-import { Tooltip } from "@mui/material";
+import { Tooltip, Zoom } from "@mui/material";
 import copy from "copy-to-clipboard";
 import { ReactComponent as CopyIcon } from "@/assets/svgs/copy.svg";
 import MiniButton from "../components/Button/MiniButton";
@@ -21,8 +21,14 @@ const CopyButton = (props: any) => {
   };
 
   return (
-    <Tooltip title={text} open={!!text} placement="top" arrow>
-      <>
+    <Tooltip
+      title={text}
+      open={!!text}
+      TransitionComponent={Zoom}
+      placement="top"
+      arrow
+    >
+      <span>
         <MiniButton
           icon={CopyIcon}
           viewBox="0 0 21 20"
@@ -30,7 +36,7 @@ const CopyButton = (props: any) => {
           onClick={handleClick}
           {...restProps}
         ></MiniButton>
-      </>
+      </span>
     </Tooltip>
   );
 };
