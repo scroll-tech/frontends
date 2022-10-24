@@ -25,10 +25,6 @@ const lightTheme = {
           color: paletteOptions.primary.contrastText,
           backgroundColor: paletteOptions.primary.main,
           transition: defaultTransition,
-          "&:disabled": {
-            backgroundColor: "rgba(51, 51, 51, 0.1)",
-            color: "rgba(51, 51, 51, 0.3)",
-          },
           "&:hover": {
             boxShadow: "#FEE7E0 0.4rem 0.4rem",
             // mobile
@@ -40,12 +36,17 @@ const lightTheme = {
         },
         textPrimary: {
           color: paletteOptions.primary.contrastText,
+          backgroundColor: `${paletteOptions.primary.main} !important`,
           "&:hover": {
-            backgroundColor: paletteOptions.primary.light,
+            backgroundColor: `${paletteOptions.primary.light} !important`,
             // mobile
             "@media (hover: none)": {
               backgroundColor: paletteOptions.primary.light,
             },
+          },
+          "&:disabled": {
+            backgroundColor: "rgba(51, 51, 51, 0.1) !important",
+            color: "rgba(51, 51, 51, 0.3)",
           },
         },
         outlined: {
@@ -59,6 +60,10 @@ const lightTheme = {
             "@media (hover: none)": {
               backgroundColor: paletteOptions.background.default,
             },
+          },
+          "&:disabled": {
+            backgroundColor: "rgba(51, 51, 51, 0.1) !important",
+            color: "rgba(51, 51, 51, 0.3)",
           },
         },
       },
@@ -257,7 +262,7 @@ const lightTheme = {
         },
       },
     },
-    MuiDiveder: {
+    MuiDivider: {
       styleOverrides: {
         root: {
           backgroundColor: "#C9CBCE",

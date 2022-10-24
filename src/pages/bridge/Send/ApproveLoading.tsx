@@ -65,7 +65,7 @@ const ApproveLoading = (props) => {
             Approve USDC
           </Typography>
           <Typography variant="body1">
-            Approve on your Metamask wallet
+            Approve on your MetaMask wallet
           </Typography>
         </div>
       </DialogContent>

@@ -163,9 +163,9 @@ const FAQ = () => {
             color="textSecondary"
             className={classes.orderedParagraph}
           >
-            3. Click on Send. A pop up window from Metamask will ask you for the
+            3. Click on Send. A pop up window from MetaMask will ask you for the
             transfer confirmation. If this is your first time transferring USDC,
-            Metamask will ask you to Approve the Scroll Bridge contract to
+            MetaMask will ask you to Approve the Scroll Bridge contract to
             access your USDC token.
           </Typography>
           <Typography

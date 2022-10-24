@@ -30,19 +30,6 @@ const useStyles = makeStyles()((theme) => {
 
 const useInputStyles = makeStyles<any>()(
   (theme, { leftAlign, centerAlign }) => ({
-    "@global": {
-      "@keyframes loadingEffect": {
-        "0%": {
-          opacity: 0.9,
-        },
-        "50%": {
-          opacity: 0.3,
-        },
-        "100%": {
-          opacity: 0.9,
-        },
-      },
-    },
     root: {
       transition: "all 0.15s ease-out",
       borderRadius: "1rem",
@@ -63,9 +50,6 @@ const useInputStyles = makeStyles<any>()(
       [theme.breakpoints.down("sm")]: {
         fontSize: "2.4rem",
       },
-    },
-    focused: {
-      borderRadius: "1rem",
     },
   })
 );

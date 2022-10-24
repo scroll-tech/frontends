@@ -65,7 +65,7 @@ const SendLoading = (props) => {
             Sending {value} from {from} to {to}
           </Typography>
           <Typography variant="body1">
-            Confirm this transaction on your Metamask wallet
+            Confirm this transaction on your MetaMask wallet
           </Typography>
         </div>
       </DialogContent>

@@ -87,18 +87,18 @@ const Send: FC = () => {
       return (
         <>
           Your wallet is connected to an unsupported network. Select{" "}
-          <b>{fromNetwork.name}</b> on Metasmask.
+          <b>{fromNetwork.name}</b> on MetaMask.
         </>
       );
     } else if (warning) {
       return warning;
-    } else if (sendError && sendError.code !== 4001) {
+    } else if (sendError && sendError.code !== "ACTION_REJECTED") {
       return (
         <>
-          The transaction failed. Your Metamask wallet might not be up to date.
+          The transaction failed. Your MetaMask wallet might not be up to date.
           <b>
             <u style={{ textUnderlineOffset: "0.4rem" }}>
-              Reset your Metamask account
+              Reset your MetaMask account
             </u>
           </b>
           {" before using Scroll Bridge."}
@@ -230,6 +230,12 @@ const Send: FC = () => {
     setApproving(false);
   };
 
+  const handleChangeFromAmount = (value) => {
+    setSendError(undefined);
+    const amountIn = sanitizeNumericalString(value);
+    setFromTokenAmount(amountIn);
+  };
+
   const approveButtonActive = needsApproval;
   return (
     <StyleContext.Provider value={styles}>
@@ -259,15 +265,7 @@ const Send: FC = () => {
             value={fromTokenAmount}
             token={selectedToken}
             label={"From"}
-            onChange={(value) => {
-              if (!value) {
-                setFromTokenAmount("");
-                return;
-              }
-              setSendError(undefined);
-              const amountIn = sanitizeNumericalString(value);
-              setFromTokenAmount(amountIn);
-            }}
+            onChange={handleChangeFromAmount}
             selectedNetwork={fromNetwork}
             networkOptions={networks}
             onNetworkChange={handleFromNetworkChange}

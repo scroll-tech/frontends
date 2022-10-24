@@ -101,11 +101,6 @@ const useStyles = makeStyles()((theme) => {
       backgroundColor: theme.palette.primary.dark,
       color: theme.palette.primary.main,
     },
-    // container: {
-    //   flexWrap: 'nowrap',
-    // },
-    networkContainer: {},
-    inputContainer: {},
   };
 });
 
@@ -126,15 +121,13 @@ const SendAmountSelectorCard: FC<Props> = (props) => {
 
   const balanceLabel = useMemo(() => {
     return toTokenDisplay(balance, token?.decimals);
-  }, [balance]);
+  }, [balance, token]);
 
   const isToCard = useMemo(() => label === "To", [label]);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-    if (onChange) {
-      onChange(value);
-    }
+    onChange?.(value);
   };
 
   return (

@@ -1,3 +1,5 @@
+import { ChainId, RPCUrl } from "./common";
+
 const SCROLL_ENVIRONMENT_PRODUCTION = "MAIN"; // `MAIN` is production, `STAGING` is staging
 const SCROLL_ENVIRONMENT =
   process.env.REACT_APP_SCROLL_ENVIRONMENT || SCROLL_ENVIRONMENT_PRODUCTION;
@@ -6,16 +8,6 @@ const RUNNING_IN_PRODUCTION =
 
 const TESTNET_NAME =
   "Testnet" + (!RUNNING_IN_PRODUCTION ? " [" + SCROLL_ENVIRONMENT + "]" : "");
-
-export const ChainId = {
-  SCROLL_LAYER_1: parseInt(process.env.REACT_APP_CHAIN_ID_L1 as string),
-  SCROLL_LAYER_2: parseInt(process.env.REACT_APP_CHAIN_ID_L2 as string),
-};
-
-export const RPCUrl = {
-  SCROLL_LAYER_1: process.env.REACT_APP_EXTERNAL_RPC_URI_L1,
-  SCROLL_LAYER_2: process.env.REACT_APP_EXTERNAL_RPC_URI_L2,
-};
 
 const addresses = [
   {
@@ -182,3 +174,4 @@ export let pathRollupExplorer = "rollupExplorer";
 
 export * from "./gateway";
 export * from "./networks";
+export * from "./common";

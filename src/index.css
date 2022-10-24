@@ -35,9 +35,15 @@ body {
 
 @font-face {
   font-family: "SF UI Text";
-  src: url("./assets/fonts/SFUIText-Bold.ttf");
+  src: url("./assets/fonts/SFUIText-Regular.ttf") format("truetype");
   font-style: normal;
-  font-weight: 700;
+  font-weight: 400;
+}
+@font-face {
+  font-family: "SF UI Text";
+  src: url("./assets/fonts/SFUIText-Medium.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 500;
 }
 
 @font-face {
@@ -56,7 +62,7 @@ body {
 
 @font-face {
   font-family: "SF UI Text";
-  src: url("./assets/fonts/SFUIText-Semibold.ttf");
+  src: url("./assets/fonts/SFUIText-Bold.ttf") format("truetype");
   font-style: normal;
   font-weight: 600;
 }
