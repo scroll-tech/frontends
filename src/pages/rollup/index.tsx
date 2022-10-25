@@ -12,8 +12,8 @@ const Blocks = () => {
     <div className="rollup-app">
       <main>
         <div>
-          <div className="wrapper py-[40px] min-h-[calc(100vh_-_544px)] md:(py-[60px] min-h-[calc(100vh_-_556px)) ">
-            <Row className="bg-[#f6f7f8] flex " gutter={16}>
+          <div className="wrapper py-[40px] min-h-[calc(100vh_-_544px)] md:!py-[60px] md:min-h-[calc(100vh_-_556px)] ">
+            <Row className=" flex mb-[20px]" gutter={16}>
               <Card
                 title="Last Pre-committed Block No."
                 value={lastBlockNums?.precommitted_num ?? 0}

@@ -96,6 +96,12 @@ module.exports = {
       sans: ['"SF UI Text"', ...defaultTheme.fontFamily.sans],
       display: ['"Pulp Display"', ...defaultTheme.fontFamily.sans],
     },
+    screens: {
+      sm: "600px",
+      md: "900px",
+      lg: "1200px",
+      xl: "1536px",
+    },
   },
   plugins: [],
 };

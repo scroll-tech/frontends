@@ -64,7 +64,7 @@ function TokenAddress({ etherscanPrefix, symbol, address, ERC20 }: any) {
 export default function Home() {
   return (
     <>
-      <div className="p-4 mx-[8px] lg:p-8">
+      <div className="p-4 mx-[8px] mb-[40px] lg:p-8">
         <SectionTitle title="Configure MetaMask for our testnet">
           <div className="px-4 py-5 sm:grid sm:grid-cols-1 sm:gap-4 sm:px-6">
             Note: Please completely remove any previous Scroll L1 and L2

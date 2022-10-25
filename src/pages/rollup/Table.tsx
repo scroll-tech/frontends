@@ -187,6 +187,7 @@ const App: React.FC = () => {
       pagination={pagination}
       loading={loading}
       onChange={handleTableChange}
+      className="border-[1px] border-outline rounded overflow-hidden"
     />
   );
 };

@@ -5,6 +5,7 @@ import {
   WalletConnectedStatus,
   WhitelistContextProps,
 } from "@/hooks/useWhitelist";
+import { Box, Link, Button, Stack, Fade, Container } from "@mui/material";
 
 import CircularProgress from "@mui/material/CircularProgress";
 import Community from "./community";
@@ -22,58 +23,65 @@ const Login = ({ hasPermission, loading }: WhitelistContextProps) => {
   }, [ethereum]);
 
   return (
-    <div className="min-h-[100vh] flex flex-col  items-center justify-center">
-      <div className="card w-auto mt-[24px] bg-white  px-16 py-32 shadow-md rounded ">
-        <p className="text-[26px]  leading-[30px] font-medium text-center">
-          Welcome to Scroll’s Pre-Alpha {TESTNET_NAME}
-        </p>
-        <p className="text-center mx-auto mt-[16px]">
-          A native zkEVM Layer 2 solution for Ethereum
-        </p>
-        <div
-          onClick={() => {
-            if (status === WalletConnectedStatus.UNAVAILABLE || account) return;
-            connect();
-          }}
-          className={`w-full py-[16px] px-[24px] flex justify-center items-center rounded border  my-[20px] relative ${
-            status === WalletConnectedStatus.UNAVAILABLE || account
-              ? "cursor-not-allowed  opacity-50"
-              : "cursor-pointer hover:shadow-md"
-          }`}
-        >
-          {loading && <CircularProgress className="absolute left-[20px]" />}
-          <img className="w-[60px]" src="/imgs/login/metamask-fox.png" />
-          <div className="ml-[16px]">
-            <p className="text-[18px] font-bold">Connect MetaMask</p>
-          </div>
-        </div>
-        {status === WalletConnectedStatus.UNAVAILABLE && (
-          <>
-            <p className="text-[14px] text-center">Don't have a wallet?</p>
-            <p className="text-center">
-              <a
-                className="text-[14px] underline"
-                target="_blank"
-                href="https://metamask.io/download/"
-              >
-                Download MetaMask here
-              </a>
-            </p>
-          </>
-        )}
-
-        {account && !hasPermission && !loading ? (
-          <p className="text-center">
-            You're not authorized yet. Join our{" "}
-            <a href="https://signup.scroll.io/" className="underline">
-              waitlist
+    <main className="h-[100vh] flex justify-center items-center flex-col px-[16px]">
+      <img
+        alt="logo"
+        className="w-[160px] mb-[26px]"
+        src="/imgs/login/logo_with_text.png"
+      />
+      <p className="text-charcoal text-center text-[28px]  leading-[32px] mb-[16px] font-display md:text-[34px]  md:leading-[40px]">
+        Welcome to Scroll’s Pre-Apha Testnet
+      </p>
+      <p className="max-w-[380px] text-center text-[16px] text-[#595959] leading-[26px] ">
+        Scroll is a zkEVM-based zkRollup on Ethereum which enables native
+        compatibility for existing Ethereum applications and tools.
+      </p>
+      {account ? (
+        <div className="bg-[#FFF8CB] rounded-[10px] py-[18px] px-[28px] max-w-[390px] text-center mt-[24px] md:py-[24px] md:px-[32px]">
+          <img
+            alt="warning logo"
+            className="w-[26px] mb-[8px] mx-auto"
+            src="/imgs/login/warning.svg"
+          />
+          <p className="text-[16px] max-w-[375px] leading-[26px] text-[#C14800]">
+            Your wallet address is not whitelisted yet.{" "}
+            <a
+              href="https://signup.scroll.io/"
+              className="underline font-semibold"
+            >
+              Sign Up
             </a>{" "}
-            now!
+            to Scroll testnet.
           </p>
-        ) : null}
-      </div>
-      <Community />
-    </div>
+        </div>
+      ) : (
+        <>
+          <Button
+            onClick={() => {
+              if (status === WalletConnectedStatus.UNAVAILABLE || account)
+                return;
+              connect();
+            }}
+            color="primary"
+            variant="contained"
+            sx={{ marginTop: "25px" }}
+          >
+            Connect Metamask Wallet
+          </Button>
+          <p className=" mt-[18px] text-[#595959]">
+            Address not whitelisted yet?{" "}
+            <a
+              href="https://signup.scroll.io/"
+              className="text-[#00A6F2] font-semibold"
+            >
+              Sign Up
+            </a>
+          </p>
+        </>
+      )}
+
+      {/* <Loading /> */}
+    </main>
   );
 };
 

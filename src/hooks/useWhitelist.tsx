@@ -47,12 +47,14 @@ export const WhitelistContextProvider = (props: Props) => {
   useEffect(() => {
     if (status === WalletConnectedStatus.CONNECTED && account) {
       setLoading(true);
-      const query = new LC.Query(process.env.REACT_APP_LEANCLOUD_DB as string);
-      query.equalTo("walletAddress", account.toString().toLowerCase());
-      query
-        .find()
-        .then((res) => {
-          if (res.length) {
+
+      fetch(
+        "/whitelist/api/get_subscriber?waddr=" +
+          account.toString().toLowerCase()
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.subscriber) {
             setHasPermission(true);
           } else {
             setHasPermission(false);

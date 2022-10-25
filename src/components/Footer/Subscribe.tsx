@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import MailchimpSubscribe from "react-mailchimp-subscribe";
 import Button from "@/components/Button/Button";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 // import { IntrinsicAttributes } from '@types/react-mailchimp-subscribe'
 
 const url =
@@ -8,6 +10,8 @@ const url =
 
 const Subscribe = () => {
   const [email, setEmail] = useState("");
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up("md"));
 
   const medias = [
     {
@@ -55,9 +59,13 @@ const Subscribe = () => {
                   onChange={(event: any) => setEmail(event.target.value)}
                 />
                 <Button
-                  // fullWidth
-                  // round/d={false}
-                  sx={{ borderRadius: 0 }}
+                  fullWidth={!matches}
+                  sx={{
+                    borderRadius: {
+                      sm: "6px",
+                      md: 0,
+                    },
+                  }}
                   color="primary"
                   variant="contained"
                   onClick={() => subscribe({ EMAIL: email })}

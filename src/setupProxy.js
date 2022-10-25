@@ -9,4 +9,11 @@ module.exports = function (app) {
       pathRewrite: { "/faucetapi": "" },
     })
   );
+  app.use(
+    "/whitelist",
+    createProxyMiddleware({
+      target: "https://staging-prealpha.scroll.io/",
+      changeOrigin: true,
+    })
+  );
 };

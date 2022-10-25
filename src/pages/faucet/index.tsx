@@ -125,11 +125,10 @@ export default function Home() {
       // Render a completed state
       return (
         <Button
-          // color="primary"
-          // variant="contained"
-          // variant="outlined";
+          color="primary"
+          variant="contained"
           sx={{ marginTop: "30px" }}
-          // onClick={handleRequest}
+          onClick={handleRequest}
         >
           Request {faucetInfo.network} Scroll Tokens
         </Button>
@@ -138,7 +137,7 @@ export default function Home() {
       // Render a countdown
       return (
         <div className="w-full max-w-[473px] mx-auto ">
-          <button className="mx-auto cursor-not-allowed py-[14px] px-[22px] flex justify-center items-center bg-[#3333331a] rounded-[6px] text-[14px] text-[#333] mt-[30px] md:mt-[50px] md:py-[18px] md:px-[28px] md:text-[16px] ">
+          <button className="mx-auto cursor-not-allowed py-[14px] px-[22px] flex justify-center items-center bg-[#3333331a] rounded-[6px] text-base text-[#333] mt-[30px] md:mt-[50px] md:py-[18px] md:px-[28px] md:text-[16px] ">
             <img
               alt="warning logo"
               className="w-[23px] mr-[12px] md:mr-[15px]"
@@ -147,10 +146,10 @@ export default function Home() {
             <strong className="mr-[4px]">
               Wait {hours}h{minutes}m{seconds}s
             </strong>
-            requesting tokens.
+            before requesting tokens.
           </button>
           {TxHashData ? (
-            <div className="border rounded-[6px] border-[#C9CBCE] mt-[37px]">
+            <div className="border rounded-[10px] border-[#C9CBCE] mt-[37px]">
               <table className="w-full max-w-[473px]">
                 <thead className="bg-[#C9CBCE33]">
                   <tr>
@@ -226,7 +225,7 @@ export default function Home() {
       <main className="px-[16px] faucet-app">
         <div className="h-[72vh] w-full flex items-center flex-col mb-[60px] md:h-[630px]">
           <div className=" mt-[20px] mb-[40px] text-right max-w-[1140px] w-full">
-            <button className="w-[178px] h-[50px] text-[#333] border border-[#333] rounded-[4px] cursor-text font-semibold">
+            <button className="w-[178px] h-[50px] text-[#333] border border-[#333] text-base rounded-[4px] cursor-text font-semibold">
               {truncatedAccountHash(account as string)}
             </button>
           </div>
@@ -245,7 +244,7 @@ export default function Home() {
                 <img
                   alt="warning logo"
                   className="w-[26px] mb-[8px] mx-auto"
-                  src="/imgs/faucet/warning.png"
+                  src="/imgs/faucet/warning.svg"
                 />
                 <p className="text-[16px] max-w-[400px] leading-[26px] text-[#C14800]">
                   Your wallet is connected to an unsupported network. Select{" "}
@@ -255,7 +254,7 @@ export default function Home() {
                   network on Metasmask.
                 </p>
               </div>
-              <p className="mt-[25px] text-[#595959]">
+              <p className="mt-[25px] text-[#595959] text-base">
                 Scroll L1 and L2 not added yet?
                 <Link to="add-network">
                   <span className="text-[#00A6F2] cursor-pointer font-semibold">

@@ -1,19 +1,23 @@
 import { NavLink } from "react-router-dom";
 import * as React from "react";
 import { ExpandMore } from "@mui/icons-material";
-import { Box, Link, Button, Stack, Fade } from "@mui/material";
+import { Box, Link, Button, Stack, Fade, Container } from "@mui/material";
 import { styled } from "@mui/system";
 import navigations from "./constans";
 
-const NavStack = styled(Stack)(
+const StyledBox = styled(Stack)(
   ({ theme }) => `
-  line-height: 69px;
   border-bottom: 1px solid ${theme.palette.border.main};
-  padding-left: 16px;
-  padding-right: 16px;
 `
 );
 
+const HeaderContainer = styled(Container)(
+  ({ theme }) => `
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+  `
+);
 const LinkStyledButton = styled(NavLink)(
   ({ theme }) => `
   font-size: 16px;
@@ -74,6 +78,7 @@ const SubMenuButton = styled(Box)(
     margin-right: 4px;
     line-height: 72px;
     position: relative;
+    cursor: pointer;
     &:after {
       content: '';
       left: 0;
@@ -104,6 +109,7 @@ const SubMenuList = styled(Box)(
     border-radius: 10px;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
     `
 );
 
@@ -168,21 +174,19 @@ const App = () => {
   );
 
   return (
-    <NavStack
-      direction="row"
-      justifyContent="space-between"
-      alignItems="center"
-    >
-      <Link href="/" className="flex">
-        <img
-          src="https://scroll.io/img/logo_with_text.png"
-          alt="logo"
-          className="cursor-pointer w-[96px] h-auto"
-        />
-      </Link>
-      <Box>{list()}</Box>
-      <Button href="https://guide.scroll.io/">User Guide</Button>
-    </NavStack>
+    <StyledBox>
+      <HeaderContainer>
+        <Link href="/" className="flex">
+          <img
+            src="https://scroll.io/img/logo_with_text.png"
+            alt="logo"
+            className="cursor-pointer w-[96px] h-auto"
+          />
+        </Link>
+        <Box>{list()}</Box>
+        <Button href="https://guide.scroll.io/">User Guide</Button>
+      </HeaderContainer>
+    </StyledBox>
   );
 };
 

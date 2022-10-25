@@ -11,7 +11,7 @@ interface DataType {
 const Card: React.FC<DataType> = ({ title, value, description }: DataType) => {
   return (
     <Col sm={24} md={8} className="w-full">
-      <div className="bg-white py-[16px] px-[20px] rounded mb-[20px] ">
+      <div className="bg-white  py-[16px] px-[20px] rounded mb-[20px] border-[1px] border-outline">
         <div className="text-[16px] text-[#00000073] mb-[20px]">
           {title}
           <Tooltip title={description}>

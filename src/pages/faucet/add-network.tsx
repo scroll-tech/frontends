@@ -1,6 +1,7 @@
 import { Addresses, ChainId } from "@/constants";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import "./index.less";
 
 function AddNetwork() {
   const [step, setStep] = useState(ChainId.SCROLL_LAYER_1);
@@ -44,7 +45,7 @@ function AddNetwork() {
     });
   };
   return (
-    <main className="h-[90vh]  flex justify-center items-center flex-col px-[16px]">
+    <main className="faucet-app h-[90vh] flex justify-center items-center flex-col px-[16px]">
       <p className="text-[#333] text-center text-[28px]  leading-[32px] mb-[16px] font-display md:text-[34px]  md:leading-[40px]">
         Add Scroll L1 and L2
       </p>
@@ -56,11 +57,12 @@ function AddNetwork() {
 
       <div className="w-[80%] flex justify-between items-center mt-[67px] max-w-[500px] md:w-full">
         <div
-          className={`w-[30px] flex justify-center items-center h-[30px] rounded-[15px] border  l1-circle ${
-            step === ChainId.SCROLL_LAYER_1
-              ? "border-[#E8E8E8]"
-              : "bg-[#00C331] border-[#00C331]"
-          }`}
+          className={`w-[30px] flex justify-center items-center h-[30px] rounded-[15px] border l1-circle after:content['Add Scroll L1']
+           ${
+             step === ChainId.SCROLL_LAYER_1
+               ? "border-[#E8E8E8]"
+               : "bg-[#00C331] border-[#00C331]"
+           }`}
         >
           <img
             className="w-[13px]"
@@ -104,7 +106,7 @@ function AddNetwork() {
           <>
             <button className="flex justify-center items-center">
               <Link to="/faucet">
-                <span className="text-[#00A6F2] font-semibold text-[#00A6F2]">
+                <span className="text-[#00A6F2] text-base font-semibold text-[#00A6F2]">
                   Done. Request Tokens
                 </span>
               </Link>
@@ -116,7 +118,7 @@ function AddNetwork() {
             </button>
             <button
               onClick={() => setStep(ChainId.SCROLL_LAYER_1)}
-              className="flex justify-center font-semibold items-center text-[#00A6F2]"
+              className="flex justify-center text-base font-semibold items-center text-[#00A6F2]"
             >
               <img
                 className="w-[15px] mr-[10px]"
@@ -129,7 +131,7 @@ function AddNetwork() {
         ) : (
           <button
             onClick={() => setStep(ChainId.SCROLL_LAYER_2)}
-            className="text-[#00A6F2] flex font-semibold  justify-center items-center"
+            className="text-[#00A6F2] text-base flex font-semibold  justify-center items-center"
           >
             Done. Add Scroll L2
             <img

@@ -68,6 +68,15 @@ const light: ThemeOptions = createTheme({
     ...palette,
   },
   components: {
+    MuiContainer: {
+      styleOverrides: {
+        root: {
+          "&.MuiContainer-maxWidthLg": {
+            maxWidth: "1300px",
+          },
+        },
+      },
+    },
     MuiButton: {
       defaultProps: {
         variant: "outlined",
