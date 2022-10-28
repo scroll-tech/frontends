@@ -9,12 +9,12 @@ import {
   TableRow,
   TableCell,
   SvgIcon,
+  Stack,
 } from "@mui/material";
 import { makeStyles } from "tss-react/mui";
 import { ReactComponent as RightArrowIcon } from "@/assets/svgs/arrow-right.svg";
-// import { Flex } from '../ui';
-import useTxHistory from "@/hooks/useTxHistory";
-import { truncateHash } from "src/utils";
+import { useApp } from "@/contexts/AppContextProvider";
+import { truncateHash, generateExploreLink } from "@/utils";
 import Link from "@/components/Link";
 
 const useStyles = makeStyles()((theme) => {
@@ -56,12 +56,10 @@ const useStyles = makeStyles()((theme) => {
 
 const TransactionsList = (props: any) => {
   const { classes, cx } = useStyles();
-  const { transactions, clearTransaction } = useTxHistory();
 
-  const explorerLink = useCallback(
-    (tx: any) => `${tx.fromNetwork.explorer}tx/${tx.hash}`,
-    []
-  );
+  const {
+    txHistory: { transactions },
+  } = useApp();
 
   if (!transactions?.length) {
     return (
@@ -84,7 +82,7 @@ const TransactionsList = (props: any) => {
         <Typography variant="h6" color="textSecondary">
           Recent Bridge Transactions
         </Typography>
-        <Link component="button" underline="none" onClick={clearTransaction}>
+        <Link component="button" underline="none">
           Clear All
         </Link>
       </div>
@@ -92,33 +90,41 @@ const TransactionsList = (props: any) => {
         <Table aria-label="Tx Table">
           <TableHead className={classes.tableHeader}>
             <TableRow>
-              {/* <TableCell>Status</TableCell> */}
-              {/* <TableCell>Amount</TableCell> */}
+              <TableCell>Amount</TableCell>
               <TableCell>Tx Hash</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {transactions?.map((tx: any) => (
-              <TableRow key={tx.hash}>
-                {/* <TableCell>
-                  {tx.status}
-                </TableCell> */}
-                {/* <TableCell align="right">{tx.calories}</TableCell> */}
+              <TableRow key={tx.fromHash}>
+                <TableCell align="right">{tx.amount}</TableCell>
                 <TableCell>
                   <div className={cx("flex", "items-center", classes.hashLink)}>
-                    <Typography variant="body1">
-                      {tx.fromNetwork.name}
-                    </Typography>
+                    <Stack direction="column">
+                      <Typography variant="body1">{tx.fromName}</Typography>
+                      <Link
+                        external
+                        href={generateExploreLink(tx.fromExplore, tx.fromHash)}
+                      >
+                        {truncateHash(tx.fromHash)}
+                      </Link>
+                    </Stack>
+
                     <SvgIcon
                       className={classes.rightArrowIcon}
                       component={RightArrowIcon}
                       viewBox="0 0 15 8"
                     ></SvgIcon>
-                    <Typography variant="body1">{tx.toNetwork.name}</Typography>
+                    <Stack direction="column">
+                      <Typography variant="body1">{tx.toName}</Typography>
+                      <Link
+                        external
+                        href={generateExploreLink(tx.toExplore, tx.toHash)}
+                      >
+                        {tx.toHash ? truncateHash(tx.toHash) : "-"}
+                      </Link>
+                    </Stack>
                   </div>
-                  <Link external href={explorerLink(tx)}>
-                    {truncateHash(tx.hash)}
-                  </Link>
                 </TableCell>
               </TableRow>
             ))}

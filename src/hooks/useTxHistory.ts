@@ -1,106 +1,115 @@
-import { useCallback, Dispatch, SetStateAction } from "react";
-import { useLocalStorage } from "react-use";
-import find from "lodash/find";
-import { filterByHash } from "@/utils";
-
+import { useCallback, useEffect, useMemo } from "react";
+import useSWR from "swr";
+import { ChainId, networks } from "@/constants";
+import { toTokenDisplay } from "@/utils";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
+import { useTxStore } from "@/stores/txStore";
 export interface TxHistory {
-  transactions?: any[];
-  setTransactions: Dispatch<SetStateAction<any[] | undefined>>;
+  blockNumbers: number[];
+  frontTransactions: any;
+  transactions?: any;
   addTransaction: (tx: any) => void;
-  // removeTransaction: (tx: any) => void;
-  // updateTransaction: (tx: any, updateOpts: any, matchingHash?: string) => void;
+  updateTransaction: (tx, updateOpts) => void;
   clearTransaction: () => void;
 }
 
-export interface UpdateTransactionOptions {
-  pending?: boolean;
-  pendingDestinationConfirmation?: boolean;
-  destNetworkName?: string;
-  destTxHash?: string;
-  replaced?: boolean | string;
-}
+const useTxHistory = (page = 1, networksAndSigners) => {
+  const { connectedNetworkId, address } = useWeb3Context();
+  const txStore = useTxStore();
+  const { frontTransactions, addTransaction, updateTransaction } = txStore;
 
-const cacheKey = "recentTransactions";
-
-const localStorageSerializationOptions = {
-  raw: false,
-  serializer: (value: any[]) => {
-    return JSON.stringify(value);
-  },
-  deserializer: (value: string) => {
-    return JSON.parse(value);
-  },
-};
-
-const useTxHistory = (defaultTxs: any[] = []): TxHistory => {
-  const [transactions, setTransactions] = useLocalStorage<any[]>(
-    cacheKey,
-    defaultTxs,
-    localStorageSerializationOptions
-  );
-
-  // 这里就是将返回值存起来的地方
-  function filterSortAndSetTransactions(
-    tx: any,
-    txs?: any[],
-    hashFilter?: string
-  ) {
-    // 由于新的交易的replaced永远为true，这就意味着需要移除原有交易历史记录中hash相同的数据，以新的替代
-    const filtered = filterByHash(txs, hashFilter);
-
-    // TODO: 此方法需要被重写，transaction需要被存进数据里
-    // NOTICE: 由于交易不记录时间戳，所以sort无效
-    setTransactions([tx, ...filtered].slice(0, 3));
-  }
-
-  // 完成一次send后会调用此方法，参数为交易执行的返回结果
-
-  const addTransaction = useCallback(
-    (tx: any) => {
-      // If tx exists with hash == tx.replaced, remove it
-      const match = find(transactions, ["hash", tx.replaced]);
-      filterSortAndSetTransactions(tx, transactions, match?.hash);
-    },
-    [transactions]
-  );
-
-  // 只留下最新的三条记录？
-  // const removeTransaction = useCallback(
-  //   (tx: any) => {
-  //     // If tx exists with hash == tx.replaced, remove it
-  //     const filtered = filterByHash(transactions, tx.hash);
-  //     setTransactions(sortByRecentTimestamp(filtered).slice(0, 3));
-  //   },
-  //   [transactions]
-  // );
-
-  // const updateTransaction = useCallback(
-  //   (
-  //     tx: any,
-  //     updateOpts: UpdateTransactionOptions,
-  //     matchingHash?: string
-  //   ) => {
-  //     for (const key in updateOpts) {
-  //       tx[key] = updateOpts[key];
-  //     }
-  //     filterSortAndSetTransactions(tx, transactions, matchingHash || tx.hash);
-  //   },
-  //   [transactions]
-  // );
-
-  const clearTransaction = useCallback(() => {
-    setTransactions([]);
+  const fetchTxList = useCallback((url) => {
+    return fetch(url).then((r) => r.json());
   }, []);
-  // this will make sure to update in local storage the updated pending status,
-  // so it doesn't show as pending indefinitely on reload.
-  // This wouldn't be an issue if useEffect worked properly with array nested
-  // of nested objects and it detected property changes.
+
+  const { data } = useSWR<any>(
+    () => {
+      if (address && page)
+        return `/bridgeapi/txs?address=${address}&page=${page}`;
+      return null;
+    },
+    fetchTxList,
+    {
+      refreshInterval: 2000,
+    }
+  );
+
+  const fetchBlockNumber = useCallback(async () => {
+    if (connectedNetworkId) {
+      const fetchL1blockNumber =
+        networksAndSigners[ChainId.SCROLL_LAYER_1].provider.getBlockNumber();
+      const fetchL2BlockNumber =
+        networksAndSigners[ChainId.SCROLL_LAYER_2].provider.getBlockNumber();
+
+      const blockNumbers = await Promise.allSettled([
+        fetchL1blockNumber,
+        fetchL2BlockNumber,
+      ]);
+
+      return blockNumbers.map((item) =>
+        item.status === "fulfilled" ? item.value : -1
+      );
+    }
+    return [-1, -1];
+  }, [networksAndSigners, connectedNetworkId]);
+
+  const { data: blockNumbers } = useSWR<any>(
+    "eth_blockNumber",
+    fetchBlockNumber,
+    {
+      refreshInterval: 2000,
+    }
+  );
+  console.log(blockNumbers, "blockNumbers");
+
+  const transactions = useMemo(() => {
+    if (data?.data.result.length && blockNumbers) {
+      return data.data.result.slice(0, 3).map((tx) => {
+        const amount = toTokenDisplay(tx.amount);
+        const fromName = networks[+!tx.isL1].name;
+        const fromExplore = networks[+!tx.isL1].explorer;
+        const fromHash = tx.hash;
+        const toName = networks[+tx.isL1].name;
+        const toExplore = networks[+tx.isL1].explorer;
+        const toHash = tx.finalizeTx?.hash;
+        return {
+          amount,
+          fromName,
+          fromExplore,
+          fromHash,
+          toName,
+          toExplore,
+          toHash,
+        };
+      });
+    }
+  }, [data, blockNumbers]);
+
+  useEffect(() => {
+    if (data?.data.result) {
+      const historyList = data.data.result;
+      // const historyHashList = frontTransactions.map(item=>item.hash);
+      frontTransactions.slice(0, 3).forEach((item) => {
+        const currentTx = historyList.find((i) => i.hash === item.hash);
+        if (currentTx?.finalizeTx) {
+          updateTransaction(item, {
+            toHash: currentTx.finalizeTx.hash,
+            toBlockNumber: currentTx.finalizeTx.blockNumber,
+            toStatus: "success",
+          });
+        }
+      });
+    }
+  }, [data, frontTransactions]);
+
+  const clearTransaction = () => {};
+
   return {
+    blockNumbers,
+    frontTransactions,
     transactions,
-    setTransactions,
     addTransaction,
-    // removeTransaction,
-    // updateTransaction,
+    updateTransaction,
     clearTransaction,
   };
 };

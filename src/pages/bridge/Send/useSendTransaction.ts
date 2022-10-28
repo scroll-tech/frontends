@@ -1,6 +1,6 @@
 // import { HopBridge } from '@hop-protocol/sdk'
 import { BigNumber } from "ethers";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { ChainId } from "@/constants";
 import { useApp } from "@/contexts/AppContextProvider";
 import { useWeb3Context } from "@/contexts/Web3ContextProvider";
@@ -24,9 +24,9 @@ export function useSendTransaction(props) {
 
   const {
     networksAndSigners,
-    txHistory: { addTransaction },
+    txHistory: { addTransaction, updateTransaction },
   } = useApp();
-  const [tx, setTx] = useState<any>();
+  // const [tx, setTx] = useState<any>();
   const [sending, setSending] = useState<boolean>(false);
   const { checkConnectedNetworkId } = useWeb3Context();
   const parsedAmount = useMemo(() => {
@@ -34,24 +34,9 @@ export function useSendTransaction(props) {
     return amountToBN(fromTokenAmount, selectedToken.decimals);
   }, [fromTokenAmount, selectedToken?.decimals]);
 
-  useEffect(() => {
-    if (tx) {
-      addTransaction({
-        hash: tx.hash,
-        networkName: "optimism",
-        fromNetwork,
-        toNetwork,
-        pending: false,
-        destNetworkName: "polygon",
-        replaced: true,
-      });
-    }
-  }, [tx]);
-
   const send = async () => {
     try {
       setError(null);
-      setTx(undefined);
 
       const networkId = Number(fromNetwork.networkId);
       const isNetworkConnected = await checkConnectedNetworkId(networkId);
@@ -78,6 +63,24 @@ export function useSendTransaction(props) {
     setSending(false);
   };
 
+  const handleTransaction = (tx, updateOpts?) => {
+    if (updateOpts) {
+      updateTransaction(tx, updateOpts);
+      return;
+    }
+    addTransaction({
+      hash: tx.hash,
+      fromName: fromNetwork.name,
+      toName: toNetwork.name,
+      fromExplore: fromNetwork.explorer,
+      toExplore: toNetwork.explorer,
+      amount: fromTokenAmount,
+      fromStatus: "pending",
+      toStatus: "waiting",
+      isL1: tx.isL1,
+    });
+  };
+
   const sendl1ToL2 = async () => {
     if (selectedToken.isNativeToken) {
       const tx: any = await networksAndSigners[ChainId.SCROLL_LAYER_1].gateway[
@@ -85,12 +88,24 @@ export function useSendTransaction(props) {
       ](0, {
         value: parsedAmount,
       });
-      setTx(tx);
+      handleTransaction(tx);
+      const txResult = await tx.wait();
+      handleTransaction(tx, {
+        fromStatus: "success",
+        toStatus: "pending",
+        fromBlockNumber: txResult.blockNumber,
+      });
     } else {
       const tx: any = await networksAndSigners[ChainId.SCROLL_LAYER_1].gateway[
         "depositERC20(address,uint256,uint256)"
       ](selectedToken.address[fromNetwork.chainId], parsedAmount, 0);
-      setTx(tx);
+      handleTransaction(tx);
+      const txResult = await tx.wait();
+      handleTransaction(tx, {
+        fromStatus: "success",
+        toStatus: "pending",
+        fromBlockNumber: txResult.blockNumber,
+      });
     }
   };
 
@@ -101,12 +116,24 @@ export function useSendTransaction(props) {
       ](0, {
         value: parsedAmount,
       });
-      setTx(tx);
+      handleTransaction(tx);
+      const txResult = await tx.wait();
+      handleTransaction(tx, {
+        fromStatus: "success",
+        toStatus: "pending",
+        fromBlockNumber: txResult.blockNumber,
+      });
     } else {
       const tx: any = await networksAndSigners[ChainId.SCROLL_LAYER_2].gateway[
         "withdrawERC20(address,uint256,uint256)"
       ](selectedToken.address[fromNetwork.chainId], parsedAmount, 0);
-      setTx(tx);
+      handleTransaction(tx);
+      const txResult = await tx.wait();
+      handleTransaction(tx, {
+        fromStatus: "success",
+        toStatus: "pending",
+        fromBlockNumber: txResult.blockNumber,
+      });
     }
   };
 
@@ -114,7 +141,5 @@ export function useSendTransaction(props) {
     send,
     sending,
     setSending,
-    tx,
-    setTx,
   };
 }

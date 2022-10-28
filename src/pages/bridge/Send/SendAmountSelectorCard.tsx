@@ -100,6 +100,10 @@ const useStyles = makeStyles()((theme) => {
       border: "none",
       backgroundColor: theme.palette.primary.dark,
       color: theme.palette.primary.main,
+      [theme.breakpoints.down("sm")]: {
+        height: "2.2rem",
+        lineHeight: "2.2rem",
+      },
     },
   };
 });
@@ -128,6 +132,40 @@ const SendAmountSelectorCard: FC<Props> = (props) => {
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     onChange?.(value);
+  };
+
+  // TODO: max
+  const handleMaxClick = async () => {
+    //   if (!(onChange && balance && token &&   deadline)) {
+    //     return
+    //   }
+    //   let nativeTokenMaxGasCost = BigNumber.from(0)
+    //   if (token.isNativeToken) {
+    //     if (!toNetwork && setWarning) {
+    //       return setWarning('Please set a destination network to determine max value')
+    //     }
+    //     const options = {
+    //       balance,
+    //       token,
+    //       fromNetwork,
+    //       toNetwork,
+    //       deadline,
+    //     }
+    //     try {
+    //       const estimatedGasCost = await estimateSend(options)
+    //       if (estimatedGasCost) {
+    //         nativeTokenMaxGasCost = estimatedGasCost
+    //       }
+    //     } catch (error) {
+    //       logger.error(error)
+    //     }
+    //   }
+    //   let totalAmount = balance.sub(nativeTokenMaxGasCost)
+    //   if (totalAmount.lt(0)) {
+    //     totalAmount = BigNumber.from(0)
+    //   }
+    //   const maxValue = formatUnits(totalAmount, token.decimals)
+    //   onChange(maxValue)
   };
 
   return (
@@ -172,15 +210,15 @@ const SendAmountSelectorCard: FC<Props> = (props) => {
           setNetwork={onNetworkChange}
         />
         {loadingBalance ? (
-          <Skeleton variant="text" width="15.0rem"></Skeleton>
+          <Skeleton variant="text" width="15rem"></Skeleton>
         ) : balance ? (
-          <div className="flex items-center justify-end">
+          <div className="flex items-center justify-end flex-wrap">
             <Typography variant="subtitle2" color="textSecondary" align="right">
               Balance: {balanceLabel}
             </Typography>
             {/* {balance.gt(0) && !disableInput ? (
               <button
-                className={styles.maxButton}
+                className={classes.maxButton}
                 onClick={handleMaxClick}
                 title="Max amount you can send while still having enough to cover fees"
               >

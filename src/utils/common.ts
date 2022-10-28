@@ -1,5 +1,6 @@
 import find from "lodash/find";
 import { DependencyList } from "react";
+import { ChainId } from "@/constants";
 
 export const shallowEquals = (a?: DependencyList, b?: DependencyList) => {
   if (a?.length !== b?.length) return false;
@@ -24,3 +25,7 @@ export function requireEnv(entry) {
     throw new Error(`${entry} not defined in .env`);
   }
 }
+
+export const generateExploreLink = (explorer, hash) => {
+  return `${explorer}tx/${hash}`;
+};

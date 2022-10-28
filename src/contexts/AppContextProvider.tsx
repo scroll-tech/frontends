@@ -19,12 +19,12 @@ const AppContext = createContext<AppContextProps | undefined>(undefined);
 const AppContextProvider = ({ children }: any) => {
   const { provider, address, connectedNetworkId } = useWeb3Context();
 
-  const txHistory = useTxHistory();
-
   const [networksAndSigners, setNetworksAndSigners] = useState({
     [ChainId.SCROLL_LAYER_1]: {},
     [ChainId.SCROLL_LAYER_2]: {},
   });
+
+  const txHistory = useTxHistory(1, networksAndSigners);
 
   const update = async (
     web3Provider: providers.Web3Provider,

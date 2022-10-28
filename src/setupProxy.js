@@ -16,4 +16,14 @@ module.exports = function (app) {
       changeOrigin: true,
     })
   );
+  app.use(
+    "/bridgeapi",
+    createProxyMiddleware({
+      target: "http://192.168.10.118:3000",
+      changeOrigin: true,
+      secure: false,
+      pathRewrite: { "/bridgeapi": "/api" },
+      timeout: 50000,
+    })
+  );
 };

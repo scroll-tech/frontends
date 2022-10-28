@@ -89,6 +89,7 @@ export const typographyOptions = {
     fontWeight: 400,
     [breakpoints.down("sm")]: {
       fontSize: "1.4rem",
+      fontWeight: 500,
     },
   },
   // 用到了

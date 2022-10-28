@@ -34,7 +34,7 @@ import classNames from "classnames";
 
 const Send: FC = () => {
   const { classes: styles, cx } = useSendStyles();
-  const { txHistory, networksAndSigners } = useApp();
+  const { networksAndSigners } = useApp();
 
   const [fromNetwork, setFromNetwork] = useState(networks[0]);
   const [toNetwork, setToNetwork] = useState(networks[1]);
@@ -146,7 +146,6 @@ const Send: FC = () => {
     setSendError,
     setError,
     toNetwork,
-    txHistory,
     selectedToken,
   });
 

@@ -12,7 +12,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import Button from "@/pages/bridge/components/Button";
 import ManageWallet from "@/pages/bridge/Header/ManageWallet";
-import TransactionList from "@/pages/bridge/Header/TransactionList";
+import TransactionHistory from "@/pages/bridge/Header/TransactionHistory";
+import RecentTransactionList from "../Send/RecentTransactionList";
 import { truncateAddress } from "@/utils";
 
 const useStyles = makeStyles()((theme) => ({
@@ -153,8 +154,9 @@ const AddressButton = () => {
                     />
                   )}
                   <Divider></Divider>
+                  <RecentTransactionList></RecentTransactionList>
                   <div className={cx("relative", classes.transactionsList)}>
-                    <TransactionList />
+                    <TransactionHistory />
                   </div>
                 </div>
               </Card>
