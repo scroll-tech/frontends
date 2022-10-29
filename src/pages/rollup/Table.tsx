@@ -6,6 +6,7 @@ import { Tooltip } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { l1ExplorerUrl, l2ExplorerUrl } from "@/constants/index";
+import moment from "moment";
 
 interface DataType {
   block_height: number;
@@ -95,8 +96,7 @@ const App: React.FC = () => {
       dataIndex: "block_timestamp",
       key: "block_timestamp",
       render: (_, { block_timestamp }) => (
-        // <>{moment(new Date(+block_timestamp * 1000)).fromNow()}</>
-        <>{block_timestamp}</>
+        <>{moment(new Date(+block_timestamp * 1000)).fromNow()}</>
       ),
     },
     {

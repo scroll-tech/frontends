@@ -7,9 +7,6 @@ import {
 } from "@/hooks/useWhitelist";
 import { Box, Link, Button, Stack, Fade, Container } from "@mui/material";
 
-import CircularProgress from "@mui/material/CircularProgress";
-import Community from "./community";
-
 const Login = ({ hasPermission, loading }: WhitelistContextProps) => {
   const { status, connect, account, chainId, ethereum } = useMetaMask();
   const [autoConnect, setAutoConnect] = useState(false);

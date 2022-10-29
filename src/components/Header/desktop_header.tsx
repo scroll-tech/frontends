@@ -162,6 +162,10 @@ const App = () => {
                   </SubMenuList>
                 </Fade>
               </SubMenuButton>
+            ) : item.isExternal ? (
+              <LinkStyledButton to={item.key} key={item.key}>
+                {item.label}{" "}
+              </LinkStyledButton>
             ) : (
               <LinkStyledButton to={item.key} key={item.key}>
                 {item.label}{" "}
@@ -176,13 +180,13 @@ const App = () => {
   return (
     <StyledBox>
       <HeaderContainer>
-        <Link href="/" className="flex">
+        <NavLink to="/" className="flex">
           <img
             src="https://scroll.io/img/logo_with_text.png"
             alt="logo"
             className="cursor-pointer w-[96px] h-auto"
           />
-        </Link>
+        </NavLink>
         <Box>{list()}</Box>
         <Button href="https://guide.scroll.io/">User Guide</Button>
       </HeaderContainer>

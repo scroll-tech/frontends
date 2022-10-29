@@ -36,33 +36,17 @@ export const WhitelistContextProvider = (props: Props) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    LC.init({
-      appId: "hvIeDclG2pt2nzAdbKWM0qms-MdYXbMMI",
-      appKey: "lKObgvpdxLT2JK839oxSM4Fn",
-      serverURL: "https://leancloud.scroll.io",
-      serverURLs: "https://leancloud.scroll.io",
-    });
+    // LC.init({
+    //   appId: "hvIeDclG2pt2nzAdbKWM0qms-MdYXbMMI",
+    //   appKey: "lKObgvpdxLT2JK839oxSM4Fn",
+    //   serverURL: "https://leancloud.scroll.io",
+    //   serverURLs: "https://leancloud.scroll.io",
+    // });
   }, []);
 
   useEffect(() => {
     if (status === WalletConnectedStatus.CONNECTED && account) {
-      setLoading(true);
-
-      fetch(
-        "/whitelist/api/get_subscriber?waddr=" +
-          account.toString().toLowerCase()
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.subscriber) {
-            setHasPermission(true);
-          } else {
-            setHasPermission(false);
-          }
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+      setHasPermission(true);
     } else {
       setHasPermission(false);
     }

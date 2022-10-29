@@ -145,13 +145,13 @@ const App = () => {
       justifyContent="space-between"
       alignItems="center"
     >
-      <Link href="/" className="flex">
+      <NavLink to="/" className="flex">
         <img
           src="https://scroll.io/img/logo_with_text.png"
           alt="logo"
           className="cursor-pointer w-[96px] h-auto"
         />
-      </Link>
+      </NavLink>
       <Box>
         <MenuIcon onClick={() => toggleDrawer(true)} />
         <SwipeableDrawer
