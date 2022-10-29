@@ -4,9 +4,9 @@
   status = 200
 
 [[redirects]]
-  from = "/faucetapi/*"
+  from = "/faucetapi"
   to = "https://staging-prealpha.scroll.io/faucet/:splat"
 
 [[redirects]]
-  from = "/whitelist/*"
+  from = "/whitelist"
   to = "https://staging-prealpha.scroll.io/whitelist/:splat"
