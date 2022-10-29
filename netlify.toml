@@ -1,6 +1,6 @@
 [[redirects]]
   from = "/faucetapi"
-  to = "https://staging-prealpha.scroll.io/faucet/api/info"
+  to = "https://staging-prealpha.scroll.io/faucet/:splat"
 
 [[redirects]]
   from = "/early-dev"
