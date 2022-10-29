@@ -5,7 +5,11 @@
 
 [[redirects]]
   from = "/faucetapi"
-  to = "https://staging-prealpha.scroll.io/faucet/:splat"
+  to = "https://staging-prealpha.scroll.io/faucet/api/info"
+
+[[redirects]]
+  from = "/early-dev"
+  to = "https://scrollzkp.typeform.com/early-dev"
 
 [[redirects]]
   from = "/whitelist"
