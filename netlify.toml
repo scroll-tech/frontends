@@ -1,9 +1,4 @@
 [[redirects]]
-  from = "/*"
-  to = "/"
-  status = 200
-
-[[redirects]]
   from = "/faucetapi"
   to = "https://staging-prealpha.scroll.io/faucet/api/info"
 
@@ -14,3 +9,9 @@
 [[redirects]]
   from = "/whitelist"
   to = "https://staging-prealpha.scroll.io/whitelist/:splat"
+
+[[redirects]]
+  from = "/*"
+  to = "/"
+  status = 200
+
