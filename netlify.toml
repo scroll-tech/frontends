@@ -1,3 +1,23 @@
+
+[[redirects]]
+  from = "/faucetapi/*"
+  to = "https://staging-prealpha.scroll.io/faucet/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/early-dev"
+  to = "https://scrollzkp.typeform.com/early-dev"
+
+[[redirects]]
+  from = "/whitelist/*"
+  to = "https://staging-prealpha.scroll.io/whitelist/:splat"
+
+[[redirects]]
+  from = "/*"
+  to = "/"
+  status = 200
+
 [context.staging.environment]
   REACT_APP_SCROLL_ENVIRONMENT="STAGING"
   REACT_APP_CHAIN_ID_L1="5343511"
@@ -31,24 +51,3 @@
   REACT_APP_L2_GATEWAY_ROUTER_PROXY_ADDR="0x704dA9Bc96A89b98f7a3890AbA3DeeBB8b69b043"                   
   REACT_APP_L1_USDC_ADDRESS="0xe905a71Ab1C5048D6a6c46BA57E2e22a1fAEF2FF"                    
   REACT_APP_L2_USDC_ADDRESS="0xcbc4965a800018172275afcc3378Bd4F0e953673" 
-
-[[redirects]]
-  from = "/faucetapi/*"
-  to = "https://staging-prealpha.scroll.io/faucet/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/early-dev"
-  to = "https://scrollzkp.typeform.com/early-dev"
-
-[[redirects]]
-  from = "/whitelist/*"
-  to = "https://staging-prealpha.scroll.io/whitelist/:splat"
-
-[[redirects]]
-  from = "/*"
-  to = "/"
-  status = 200
-
-
