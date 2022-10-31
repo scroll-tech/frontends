@@ -35,10 +35,14 @@
 [[redirects]]
   from = "/faucetapi/*"
   to = "https://staging-prealpha.scroll.io/faucet/:splat"
+  status = 200
+  force = true
 
 [[redirects]]
   from = "/early-dev"
   to = "https://scrollzkp.typeform.com/early-dev"
+  status = 200
+  force = true
 
 [[redirects]]
   from = "/whitelist/*"
