@@ -14,23 +14,23 @@ body {
 
 @font-face {
   font-family: "Pulp Display";
-  src: url("./assets/fonts/PulpDisplay-SemiBold.ttf");
+  src: url("./assets/fonts/PulpDisplay-Regular.ttf") format("truetype");
   font-style: normal;
-  font-weight: 600;
+  font-weight: 400;
 }
 
 @font-face {
   font-family: "Pulp Display";
-  src: url("./assets/fonts/PulpDisplay-Regular.ttf");
-  font-style: normal;
-  font-weight: normal;
-}
-
-@font-face {
-  font-family: "Pulp Display";
-  src: url("./assets/fonts/PulpDisplay-Medium.ttf");
+  src: url("./assets/fonts/PulpDisplay-Medium.ttf") format("truetype");
   font-style: normal;
   font-weight: 500;
+}
+
+@font-face {
+  font-family: "Pulp Display";
+  src: url("./assets/fonts/PulpDisplay-SemiBold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 600;
 }
 
 @font-face {
@@ -39,6 +39,7 @@ body {
   font-style: normal;
   font-weight: 400;
 }
+
 @font-face {
   font-family: "SF UI Text";
   src: url("./assets/fonts/SFUIText-Medium.ttf") format("truetype");
@@ -48,21 +49,14 @@ body {
 
 @font-face {
   font-family: "SF UI Text";
-  src: url("./assets/fonts/SFUIText-Regular.ttf");
+  src: url("./assets/fonts/SFUIText-Semibold.ttf") format("truetype");
   font-style: normal;
-  font-weight: normal;
-}
-
-@font-face {
-  font-family: "SF UI Text";
-  src: url("./assets/fonts/SFUIText-Medium.ttf");
-  font-style: normal;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 @font-face {
   font-family: "SF UI Text";
   src: url("./assets/fonts/SFUIText-Bold.ttf") format("truetype");
   font-style: normal;
-  font-weight: 600;
+  font-weight: 700;
 }
