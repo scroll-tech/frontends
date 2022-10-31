@@ -48,4 +48,9 @@
   from = "/whitelist/*"
   to = "https://staging-prealpha.scroll.io/whitelist/:splat"
 
+[[redirects]]
+  from = "/*"
+  to = "/"
+  status = 200
+
 
