@@ -25,7 +25,7 @@ const addresses = [
       rpcUrls: [RPCUrl.SCROLL_LAYER_1],
       blockExplorerUrls: [process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L1],
     },
-    usdcAddress: "0xc00FbEf12f2f41dc36C3A928caD93E0C132A2B4B", // TODO: refactor
+    usdcAddress: process.env.REACT_APP_L1_USDC_ADDRESS,
   },
 
   {
@@ -43,8 +43,8 @@ const addresses = [
       rpcUrls: [RPCUrl.SCROLL_LAYER_2],
       blockExplorerUrls: [process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L2],
     },
-    usdcAddress: "0x80732890c93c6D9c6C23E06F888eD0CB88A06018", // TODO: refactor
-    uniV2TokenAddress: "0x4f4eb5ac461c115191390d1760109f1ea185e609", // TODO: refactor
+    usdcAddress: process.env.REACT_APP_L2_USDC_ADDRESS,
+    uniV2TokenAddress: process.env.REACT_APP_L2_UNIV2_ADDRESS,
   },
 ];
 
