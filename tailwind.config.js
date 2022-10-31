@@ -8,6 +8,29 @@ module.exports = {
       lineHeight: {
         "18px": "18px",
       },
+      maxWidth: {
+        "7xl": "130rem",
+      },
+      padding: {
+        1: "0.4rem",
+        2: "0.8rem",
+        3: "1.2rem",
+        4: "1.6rem",
+        5: "2rem",
+        6: "2.4rem",
+        7: "2.8rem",
+        8: "3.2rem",
+      },
+      margin: {
+        1: "0.4rem",
+        2: "0.8rem",
+        3: "1.2rem",
+        4: "1.6rem",
+        5: "2rem",
+        6: "2.4rem",
+        7: "2.8rem",
+        8: "3.2rem",
+      },
       boxShadow: {
         base: "6px 9px 0px 0px#fee7e0",
       },

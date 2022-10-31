@@ -11,6 +11,7 @@ import Faucet from "./pages/faucet";
 import Bridge from "./pages/bridge";
 import AddNetwork from "./pages/faucet/add-network";
 import RollupScan from "./pages/rollup";
+import ScrollToTop from "@/hooks/useScrollToTop";
 
 function App() {
   return (
@@ -22,24 +23,26 @@ function App() {
               <Login hasPermission={hasPermission} loading={loading} />
             )}
           >
-            <Header />
-            <Routes>
-              <Route path="/" element={<Home />}></Route>
-              <Route path="/faucet" element={<Faucet />}></Route>
-              <Route path="/bridge" element={<Bridge />}></Route>
-              <Route
-                path="/faucet/add-network"
-                element={<AddNetwork />}
-              ></Route>
-              <Route
-                path="/swap"
-                element={
-                  <IframeEmbedding url="https://prealpha.scroll.io/swap" />
-                }
-              ></Route>
-              <Route path="/rollupscan" element={<RollupScan />}></Route>
-            </Routes>
-            <Footer />
+            <ScrollToTop>
+              <Header />
+              <Routes>
+                <Route path="/" element={<Home />}></Route>
+                <Route path="/faucet" element={<Faucet />}></Route>
+                <Route path="/bridge" element={<Bridge />}></Route>
+                <Route
+                  path="/faucet/add-network"
+                  element={<AddNetwork />}
+                ></Route>
+                <Route
+                  path="/swap"
+                  element={
+                    <IframeEmbedding url="https://prealpha.scroll.io/swap" />
+                  }
+                ></Route>
+                <Route path="/rollupscan" element={<RollupScan />}></Route>
+              </Routes>
+              <Footer />
+            </ScrollToTop>
           </WhitelistContextProvider>
         </AppWrapper>
       </MetaMaskProvider>

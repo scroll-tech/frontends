@@ -6,8 +6,9 @@ import MuiAccordionSummary, {
   AccordionSummaryProps,
 } from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
+import { NavLink } from "react-router-dom";
 
-import { Addresses, ChainId } from "@/constants";
+import { Addresses, ChainId, SiteMap } from "@/constants";
 
 const addToMetaMask = async (autoconnect: any) => {
   await window.ethereum.request({
@@ -92,46 +93,46 @@ export default function CustomizedAccordions() {
             <ul className="pl-[20px] list-decimal">
               <li>
                 Receive test tokens from the{" "}
-                <a className="link-button" href="/">
+                <NavLink className="link-button" to={SiteMap.Faucet}>
                   Faucet
-                </a>
+                </NavLink>
                 ,to the Scroll L1 network.
               </li>
               <li>
                 Transfer and withdraw test tokens in{" "}
-                <a className="link-button" href="https://bridge.scroll.io/">
+                <NavLink className="link-button" to={SiteMap.Bridge}>
                   Bridge
-                </a>
+                </NavLink>
                 .
               </li>
               <li>
                 Swap test tokens or provide liquidity in{" "}
-                <a className="link-button" href="https://swap.scroll.io">
+                <NavLink className="link-button" to={SiteMap.Swap}>
                   Swap
-                </a>
+                </NavLink>
                 .
               </li>
               <li>
                 View transactions’ and blocks’ statuses in the{" "}
-                <a className="link-button" href="https://l1scan.scroll.io/">
+                <a className="link-button" href={SiteMap.L1Explorer}>
                   Scroll L1
                 </a>
                 ,
-                <a className="link-button" href="https://l2scan.scroll.io/">
+                <a className="link-button" href={SiteMap.L2Explorer}>
                   Scroll L2
                 </a>
                 Block Explorers and the
-                <a className="link-button" href="https://rollupscan.scroll.io/">
+                <NavLink className="link-button" to={SiteMap.RollupExplorer}>
                   Rollup Explorer
-                </a>
+                </NavLink>
                 .
               </li>
             </ul>
             More instructions
-            <a className="link-button" href="https://prealpha.scroll.io">
+            <NavLink className="link-button" to={SiteMap.Home}>
               {" "}
               here
-            </a>
+            </NavLink>
           </div>
         </AccordionDetails>
       </Accordion>
@@ -160,9 +161,9 @@ export default function CustomizedAccordions() {
               </li>
               <li>
                 Transfer and withdraw test tokens in{" "}
-                <a className="link-button" href="https://bridge.scroll.io/">
+                <NavLink className="link-button" to={SiteMap.Bridge}>
                   Bridge
-                </a>
+                </NavLink>
                 .
               </li>
               <li>
@@ -183,7 +184,7 @@ export default function CustomizedAccordions() {
               </li>
               <li>
                 Check the transaction status in your wallet or on the{" "}
-                <a className="link-button" href="https://l1scan.scroll.io/">
+                <a className="link-button" href={SiteMap.L1Explorer}>
                   Scroll L1 Block Explorer
                 </a>
                 .
@@ -205,7 +206,10 @@ export default function CustomizedAccordions() {
         <AccordionDetails>
           <p className="text-[16px] leading-[26px] pb-[40px] text-[#595959] max-w-680px">
             Click{" "}
-            <a className="link-button" href="https://scroll.io/">
+            <a
+              className="link-button"
+              href="https://scroll.mirror.xyz/nDAbJbSIJdQIWqp9kn8J0MVS4s6pYBwHmK7keidQs-k"
+            >
               here
             </a>{" "}
             for Scroll architecture overview
