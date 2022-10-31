@@ -8,13 +8,6 @@ Scroll's Monorepo for Frontends
 The final goal for this repo is to contain a single React app written in TypeScript to accommodate for all frontend functionality, optimising for a smooth frontend user exprience.
 
 
-## Status Quo
-
-Currently, the individual frontend modules are linked to as submodules. The `dev-portal` module is being refactored first and will live here as the starting point of the target single-app structure.
-
-This repo will also contain re-usable components such as Header and Footer for use in the submodules while we transition.
-
-
 ## Available Scripts
 
 In the project directory, you can run:
@@ -56,3 +49,6 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 ## Deployment
 
 Using Netlify: https://app.netlify.com/teams/scroll/overview
+
+- https://staging--prealpha.netlify.app/
+- https://main--prealpha.netlify.app/
