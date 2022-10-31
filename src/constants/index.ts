@@ -1,3 +1,5 @@
+import { ChainId, RPCUrl } from "./common";
+
 const SCROLL_ENVIRONMENT_PRODUCTION = "MAIN"; // `MAIN` is production, `STAGING` is staging
 const SCROLL_ENVIRONMENT =
   process.env.REACT_APP_SCROLL_ENVIRONMENT || SCROLL_ENVIRONMENT_PRODUCTION;
@@ -13,16 +15,14 @@ const addresses = [
     etherscanPrefix: process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L1,
     formattedName: "Scroll L1 " + TESTNET_NAME,
     autoconnect: {
-      chainId:
-        "0x" +
-        parseInt(process.env.REACT_APP_CHAIN_ID_L1 as string).toString(16),
+      chainId: "0x" + ChainId.SCROLL_LAYER_1.toString(16),
       chainName: "Scroll L1 " + TESTNET_NAME,
       nativeCurrency: {
         name: TESTNET_NAME + " Ethereum",
         symbol: process.env.REACT_APP_ETH_SYMBOL,
         decimals: 18,
       },
-      rpcUrls: [process.env.REACT_APP_EXTERNAL_RPC_URI_L1],
+      rpcUrls: [RPCUrl.SCROLL_LAYER_1],
       blockExplorerUrls: [process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L1],
     },
     usdcAddress: "0xc00FbEf12f2f41dc36C3A928caD93E0C132A2B4B", // TODO: refactor
@@ -33,16 +33,14 @@ const addresses = [
     etherscanPrefix: process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L2,
     formattedName: "Scroll L2 " + TESTNET_NAME,
     autoconnect: {
-      chainId:
-        "0x" +
-        parseInt(process.env.REACT_APP_CHAIN_ID_L2 as string).toString(16),
+      chainId: "0x" + ChainId.SCROLL_LAYER_2.toString(16),
       chainName: "Scroll L2 " + TESTNET_NAME,
       nativeCurrency: {
         name: TESTNET_NAME + " Ethereum",
         symbol: process.env.REACT_APP_ETH_SYMBOL,
         decimals: 18,
       },
-      rpcUrls: [process.env.REACT_APP_EXTERNAL_RPC_URI_L2],
+      rpcUrls: [RPCUrl.SCROLL_LAYER_2],
       blockExplorerUrls: [process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L2],
     },
     usdcAddress: "0x80732890c93c6D9c6C23E06F888eD0CB88A06018", // TODO: refactor
@@ -113,11 +111,6 @@ const documentation = [
   },
 ];
 
-const ChainId = {
-  SCROLL_LAYER_1: 534351,
-  SCROLL_LAYER_2: 534354,
-};
-
 const Addresses = {
   [ChainId.SCROLL_LAYER_1]: {
     network: "Scroll L1 Testnet",
@@ -131,7 +124,7 @@ const Addresses = {
         symbol: "ETH",
         decimals: 18,
       },
-      rpcUrls: ["https://prealpha.scroll.io/l1"],
+      rpcUrls: [RPCUrl.SCROLL_LAYER_1],
       blockExplorerUrls: ["https://l1scan.scroll.io/"],
     },
     usdcAddress: "0xc00FbEf12f2f41dc36C3A928caD93E0C132A2B4B",
@@ -148,7 +141,7 @@ const Addresses = {
         symbol: "ETH",
         decimals: 18,
       },
-      rpcUrls: ["https://prealpha.scroll.io/l2"],
+      rpcUrls: [RPCUrl.SCROLL_LAYER_2],
       blockExplorerUrls: ["https://l2scan.scroll.io/"],
     },
     usdcAddress: "0x80732890c93c6D9c6C23E06F888eD0CB88A06018",
@@ -167,7 +160,6 @@ export {
   documentation,
   TESTNET_NAME,
   SCROLL_ENVIRONMENT,
-  ChainId,
   Addresses,
   ModalStatus,
 };
@@ -179,3 +171,7 @@ export let rollupExplorerUrl = "https://prealpha.scroll.io/rollupscan";
 export let pathL1Explorer = "l1Explorer";
 export let pathL2Explorer = "l2Explorer";
 export let pathRollupExplorer = "rollupExplorer";
+
+export * from "./gateway";
+export * from "./networks";
+export * from "./common";
