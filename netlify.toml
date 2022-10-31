@@ -41,8 +41,6 @@
 [[redirects]]
   from = "/early-dev"
   to = "https://scrollzkp.typeform.com/early-dev"
-  status = 200
-  force = true
 
 [[redirects]]
   from = "/whitelist/*"
