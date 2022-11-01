@@ -24,7 +24,13 @@ export function useSendTransaction(props) {
 
   const {
     networksAndSigners,
-    txHistory: { addTransaction, updateTransaction },
+    txHistory: {
+      addTransaction,
+      updateTransaction,
+      frontTransactions,
+      changePageSize,
+    },
+    switchBridgeForm,
   } = useApp();
   // const [tx, setTx] = useState<any>();
   const [sending, setSending] = useState<boolean>(false);
@@ -42,13 +48,20 @@ export function useSendTransaction(props) {
       const isNetworkConnected = await checkConnectedNetworkId(networkId);
       if (!isNetworkConnected) return;
       setSending(true);
-
+      let tx;
       try {
         if (fromNetwork.isLayer1) {
-          await sendl1ToL2();
+          tx = await sendl1ToL2();
         } else if (!fromNetwork.isLayer1 && toNetwork.isLayer1) {
-          await sendl2ToL1();
+          tx = await sendl2ToL1();
         }
+        setSending(false);
+        switchBridgeForm(false);
+        handleTransaction(tx);
+        const txResult = await tx.wait();
+        handleTransaction(tx, {
+          fromBlockNumber: txResult.blockNumber,
+        });
       } catch (error) {
         setSendError(error);
       }
@@ -60,7 +73,6 @@ export function useSendTransaction(props) {
       }
       logger.error(err);
     }
-    setSending(false);
   };
 
   const handleTransaction = (tx, updateOpts?) => {
@@ -75,65 +87,39 @@ export function useSendTransaction(props) {
       fromExplore: fromNetwork.explorer,
       toExplore: toNetwork.explorer,
       amount: fromTokenAmount,
-      fromStatus: "pending",
-      toStatus: "waiting",
+      fromStatus: "Pending",
+      toStatus: "Pending",
       isL1: tx.isL1,
     });
+    // TODO:
+    // changePageSize(frontTransactions.length + 1);
   };
 
-  const sendl1ToL2 = async () => {
+  const sendl1ToL2 = () => {
     if (selectedToken.isNativeToken) {
-      const tx: any = await networksAndSigners[ChainId.SCROLL_LAYER_1].gateway[
+      return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway[
         "depositETH(uint256)"
       ](0, {
         value: parsedAmount,
       });
-      handleTransaction(tx);
-      const txResult = await tx.wait();
-      handleTransaction(tx, {
-        fromStatus: "success",
-        toStatus: "pending",
-        fromBlockNumber: txResult.blockNumber,
-      });
     } else {
-      const tx: any = await networksAndSigners[ChainId.SCROLL_LAYER_1].gateway[
+      return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway[
         "depositERC20(address,uint256,uint256)"
       ](selectedToken.address[fromNetwork.chainId], parsedAmount, 0);
-      handleTransaction(tx);
-      const txResult = await tx.wait();
-      handleTransaction(tx, {
-        fromStatus: "success",
-        toStatus: "pending",
-        fromBlockNumber: txResult.blockNumber,
-      });
     }
   };
 
-  const sendl2ToL1 = async () => {
+  const sendl2ToL1 = () => {
     if (selectedToken.isNativeToken) {
-      const tx: any = await networksAndSigners[ChainId.SCROLL_LAYER_2].gateway[
+      return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway[
         "withdrawETH(uint256)"
       ](0, {
         value: parsedAmount,
       });
-      handleTransaction(tx);
-      const txResult = await tx.wait();
-      handleTransaction(tx, {
-        fromStatus: "success",
-        toStatus: "pending",
-        fromBlockNumber: txResult.blockNumber,
-      });
     } else {
-      const tx: any = await networksAndSigners[ChainId.SCROLL_LAYER_2].gateway[
+      return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway[
         "withdrawERC20(address,uint256,uint256)"
       ](selectedToken.address[fromNetwork.chainId], parsedAmount, 0);
-      handleTransaction(tx);
-      const txResult = await tx.wait();
-      handleTransaction(tx, {
-        fromStatus: "success",
-        toStatus: "pending",
-        fromBlockNumber: txResult.blockNumber,
-      });
     }
   };
 

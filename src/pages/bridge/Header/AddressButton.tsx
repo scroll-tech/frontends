@@ -13,12 +13,11 @@ import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import Button from "@/pages/bridge/components/Button";
 import ManageWallet from "@/pages/bridge/Header/ManageWallet";
 import TransactionHistory from "@/pages/bridge/Header/TransactionHistory";
-import RecentTransactionList from "../Send/RecentTransactionList";
 import { truncateAddress } from "@/utils";
 
 const useStyles = makeStyles()((theme) => ({
   container: {
-    width: "64.4rem",
+    width: "74.4rem",
     boxSizing: "border-box",
     boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.2)",
     [theme.breakpoints.down("sm")]: {
@@ -147,14 +146,11 @@ const AddressButton = () => {
                   <CloseIcon onClick={handleClose} />
                 </div>
                 <div>
-                  {!!address && (
-                    <ManageWallet
-                      classes={classes}
-                      onDisconnect={handleDisconnect}
-                    />
-                  )}
+                  <ManageWallet
+                    classes={classes}
+                    onDisconnect={handleDisconnect}
+                  />
                   <Divider></Divider>
-                  <RecentTransactionList></RecentTransactionList>
                   <div className={cx("relative", classes.transactionsList)}>
                     <TransactionHistory />
                   </div>

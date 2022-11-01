@@ -21,11 +21,9 @@ import {
   useSufficientBalance,
 } from "@/hooks";
 import { sanitizeNumericalString, amountToBN } from "@/utils";
-import SendHeader from "./SendHeader";
 import SendTranferButton from "./SendTransferButton";
 import { useSendStyles, StyleContext } from "./useSendStyles";
 import { useSendTransaction } from "./useSendTransaction";
-import FAQ from "./FAQ";
 import SendLoading from "./SendLoading";
 import ApproveLoading from "./ApproveLoading";
 
@@ -67,7 +65,7 @@ const Send: FC = () => {
     if (connectedNetworkId) {
       connectedNetworkId === toNetwork.chainId && handleSwitchDirection();
     }
-  }, [connectedNetworkId]);
+  }, [connectedNetworkId, toNetwork]);
 
   const { sufficientBalance, warning } = useSufficientBalance(
     selectedToken,
@@ -140,7 +138,11 @@ const Send: FC = () => {
   // Send tokens
   // ==============================================================================================
 
-  const { send, sending, setSending } = useSendTransaction({
+  const {
+    send: handleSendTransaction,
+    sending,
+    setSending,
+  } = useSendTransaction({
     fromNetwork,
     fromTokenAmount,
     setSendError,
@@ -256,11 +258,6 @@ const Send: FC = () => {
           styles.sendWrapper
         )}
       >
-        <SendHeader
-          classes={styles}
-          from={fromNetwork.name}
-          to={toNetwork.name}
-        />
         <div
           className={classNames(
             "flex",
@@ -319,7 +316,7 @@ const Send: FC = () => {
           ) : isCorrectNetwork ? (
             <Button
               className={styles.button}
-              onClick={send}
+              onClick={handleSendTransaction}
               disabled={!sendButtonActive}
               fullWidth
               large
@@ -350,7 +347,6 @@ const Send: FC = () => {
             onClose={handleCloseSendLoading}
           ></SendLoading>
         </div>
-        <FAQ></FAQ>
       </div>
     </StyleContext.Provider>
   );

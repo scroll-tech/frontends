@@ -1,21 +1,9 @@
-import { useCallback } from "react";
-import {
-  Typography,
-  Table,
-  TableContainer,
-  Paper,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-  SvgIcon,
-  Stack,
-} from "@mui/material";
+import { useMemo } from "react";
+import { Typography } from "@mui/material";
 import { makeStyles } from "tss-react/mui";
-import { ReactComponent as RightArrowIcon } from "@/assets/svgs/arrow-right.svg";
 import { useApp } from "@/contexts/AppContextProvider";
-import { truncateHash, generateExploreLink } from "@/utils";
 import Link from "@/components/Link";
+import TxTable from "../components/TxTable";
 
 const useStyles = makeStyles()((theme) => {
   return {
@@ -30,13 +18,6 @@ const useStyles = makeStyles()((theme) => {
         width: "calc(100% + 4rem)",
       },
     },
-    hashLink: {
-      marginBottom: "0.8rem",
-    },
-    rightArrowIcon: {
-      fontSize: "1.8rem",
-      margin: "0 1.2rem",
-    },
     tableTitle: {
       marginTop: "2.8rem",
       marginBottom: "3rem",
@@ -48,18 +29,24 @@ const useStyles = makeStyles()((theme) => {
     tableHeader: {
       backgroundColor: "rgba(201, 203, 206, 0.2)",
     },
-
-    txStatusInfo: {},
-    txStatusCloseButton: {},
   };
 });
+
+const rowsPerPage = 3;
 
 const TransactionsList = (props: any) => {
   const { classes, cx } = useStyles();
 
   const {
-    txHistory: { transactions },
+    txHistory: { transactions, page },
   } = useApp();
+
+  const pageTxList = useMemo(() => {
+    return transactions.slice(
+      (page - 1) * rowsPerPage,
+      (page - 1) * rowsPerPage + rowsPerPage
+    );
+  }, [transactions, page]);
 
   if (!transactions?.length) {
     return (
@@ -86,51 +73,7 @@ const TransactionsList = (props: any) => {
           Clear All
         </Link>
       </div>
-      <TableContainer component={Paper} className={classes.tableWrapper}>
-        <Table aria-label="Tx Table">
-          <TableHead className={classes.tableHeader}>
-            <TableRow>
-              <TableCell>Amount</TableCell>
-              <TableCell>Tx Hash</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {transactions?.map((tx: any) => (
-              <TableRow key={tx.fromHash}>
-                <TableCell align="right">{tx.amount}</TableCell>
-                <TableCell>
-                  <div className={cx("flex", "items-center", classes.hashLink)}>
-                    <Stack direction="column">
-                      <Typography variant="body1">{tx.fromName}</Typography>
-                      <Link
-                        external
-                        href={generateExploreLink(tx.fromExplore, tx.fromHash)}
-                      >
-                        {truncateHash(tx.fromHash)}
-                      </Link>
-                    </Stack>
-
-                    <SvgIcon
-                      className={classes.rightArrowIcon}
-                      component={RightArrowIcon}
-                      viewBox="0 0 15 8"
-                    ></SvgIcon>
-                    <Stack direction="column">
-                      <Typography variant="body1">{tx.toName}</Typography>
-                      <Link
-                        external
-                        href={generateExploreLink(tx.toExplore, tx.toHash)}
-                      >
-                        {tx.toHash ? truncateHash(tx.toHash) : "-"}
-                      </Link>
-                    </Stack>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <TxTable data={pageTxList} pagination></TxTable>
     </>
   );
 };

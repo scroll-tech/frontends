@@ -5,8 +5,10 @@ import Web3Provider from "@/contexts/Web3ContextProvider";
 import AppProvider from "@/contexts/AppContextProvider";
 import ThemeProvider from "./theme";
 import Header from "./Header";
-import Send from "./Send";
+import Content from "./Content";
 import styles from "./index.module.css";
+import BridgeTitle from "./BridgeTitle";
+import FAQ from "./FAQ";
 
 export const muiCache = createCache({
   key: "mui",
@@ -30,10 +32,6 @@ const queryClient = new QueryClient({
 });
 
 const Bridge = () => {
-  // useEffect(() => {
-  //   const onboard = document.getElementsByTagName("onboard-v2");
-  //   onboard[0]["style"].display = "none";
-  // }, []);
   return (
     <CacheProvider value={muiCache}>
       <ThemeProvider>
@@ -42,7 +40,9 @@ const Bridge = () => {
             <AppProvider>
               <div className={styles.bridge}>
                 <Header />
-                <Send />
+                <BridgeTitle />
+                <Content></Content>
+                <FAQ></FAQ>
               </div>
             </AppProvider>
           </Web3Provider>

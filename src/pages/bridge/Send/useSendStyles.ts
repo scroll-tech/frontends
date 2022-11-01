@@ -20,30 +20,11 @@ export const useSendStyles = makeStyles()((theme) => ({
       padding: "2.8rem 1.6rem",
     },
   },
-  header: {
-    display: "flex",
-    justifyContent: "center",
-    position: "relative",
-    marginTop: "8rem",
-    transition: "all 0.15s ease-out",
-    [theme.breakpoints.down("sm")]: {
-      marginTop: "4rem",
-    },
-  },
+
   sendSelect: {
     marginBottom: "4.2rem",
   },
-  sendLabel: {
-    marginBottom: "1.2rem",
-  },
-  sendDesc: {
-    width: "calc(56.8rem - 8rem)",
-    textAlign: "center",
-    [theme.breakpoints.down("sm")]: {
-      width: "calc(100% - 12rem)",
-    },
-    letterSpacing: "0.025rem",
-  },
+
   sendTransfer: {
     margin: "-1rem 0",
     borderRadius: "50%",

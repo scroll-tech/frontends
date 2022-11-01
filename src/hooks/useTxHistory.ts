@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useMemo } from "react";
+import {
+  useState,
+  useCallback,
+  useEffect,
+  useMemo,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import useSWR from "swr";
 import { ChainId, networks } from "@/constants";
 import { toTokenDisplay } from "@/utils";
@@ -11,21 +18,57 @@ export interface TxHistory {
   addTransaction: (tx: any) => void;
   updateTransaction: (tx, updateOpts) => void;
   clearTransaction: () => void;
+  changePage: Dispatch<SetStateAction<number>>;
+  changePageSize: Dispatch<SetStateAction<number>>;
+  total: number;
+  page: number;
 }
 
-const useTxHistory = (page = 1, networksAndSigners) => {
+export const WAIT_CONFIRMATIONS = 10;
+
+export const PAGE_SIZE = 3;
+
+const useTxHistory = (networksAndSigners) => {
   const { connectedNetworkId, address } = useWeb3Context();
   const txStore = useTxStore();
-  const { frontTransactions, addTransaction, updateTransaction } = txStore;
+  const [page, changePage] = useState(1);
+  const [pageSize, changePageSize] = useState(18);
+  const {
+    frontTransactions,
+    transactions,
+    addTransaction,
+    updateTransaction,
+    generateTransactions,
+  } = txStore;
 
   const fetchTxList = useCallback((url) => {
     return fetch(url).then((r) => r.json());
   }, []);
 
-  const { data } = useSWR<any>(
+  // TODO: do refresh
+  // const needInterval = useMemo(()=>{
+  //   const tx = transactions.
+  //     const fromConfirmations =
+  //     tx.fromBlockNumber && blockNumbers
+  //       ? blockNumbers[+!tx.isL1] - tx.fromBlockNumber
+  //       : 0;
+  //   const toConfirmations =
+  //     tx.toBlockNumber && blockNumbers
+  //       ? blockNumbers[+tx.isL1] - tx.toBlockNumber
+  //       : 0;
+
+  //   if (
+  //     fromConfirmations >= WAIT_CONFIRMATIONS &&
+  //     toConfirmations >= WAIT_CONFIRMATIONS
+  //   ) {
+  //     updateTransaction(tx, { replaced: true });
+  //   }
+  // }, [transactions])
+
+  const { data, error } = useSWR<any>(
     () => {
-      if (address && page)
-        return `/bridgeapi/txs?address=${address}&page=${page}`;
+      if (address && page && pageSize)
+        return `/bridgeapi/txs?address=${address}&page=${1}&pageSize=${pageSize}`;
       return null;
     },
     fetchTxList,
@@ -60,15 +103,20 @@ const useTxHistory = (page = 1, networksAndSigners) => {
       refreshInterval: 2000,
     }
   );
+
   console.log(blockNumbers, "blockNumbers");
 
-  const transactions = useMemo(() => {
-    if (data?.data.result.length && blockNumbers) {
-      return data.data.result.slice(0, 3).map((tx) => {
+  useEffect(() => {
+    if (data?.data?.result.length) {
+      const historyList = data.data.result;
+      const hashList = historyList.map((item) => item.hash);
+      const frontList = frontTransactions.filter((item) =>
+        hashList.includes(item.hash)
+      );
+      const backList = historyList.map((tx) => {
         const amount = toTokenDisplay(tx.amount);
         const fromName = networks[+!tx.isL1].name;
         const fromExplore = networks[+!tx.isL1].explorer;
-        const fromHash = tx.hash;
         const toName = networks[+tx.isL1].name;
         const toExplore = networks[+tx.isL1].explorer;
         const toHash = tx.finalizeTx?.hash;
@@ -76,31 +124,20 @@ const useTxHistory = (page = 1, networksAndSigners) => {
           amount,
           fromName,
           fromExplore,
-          fromHash,
+          fromBlockNumber: tx.blockNumber,
+          hash: tx.hash,
           toName,
           toExplore,
           toHash,
+          toBlockNumber: tx.finalizeTx?.blockNumber,
+          isL1: tx.isL1,
         };
       });
-    }
-  }, [data, blockNumbers]);
-
-  useEffect(() => {
-    if (data?.data.result) {
-      const historyList = data.data.result;
-      // const historyHashList = frontTransactions.map(item=>item.hash);
-      frontTransactions.slice(0, 3).forEach((item) => {
-        const currentTx = historyList.find((i) => i.hash === item.hash);
-        if (currentTx?.finalizeTx) {
-          updateTransaction(item, {
-            toHash: currentTx.finalizeTx.hash,
-            toBlockNumber: currentTx.finalizeTx.blockNumber,
-            toStatus: "success",
-          });
-        }
-      });
+      generateTransactions([...frontList, ...backList]);
     }
   }, [data, frontTransactions]);
+
+  console.log(data?.data?.total, "total");
 
   const clearTransaction = () => {};
 
@@ -111,6 +148,10 @@ const useTxHistory = (page = 1, networksAndSigners) => {
     addTransaction,
     updateTransaction,
     clearTransaction,
+    changePage,
+    changePageSize,
+    page,
+    total: data?.data?.total,
   };
 };
 

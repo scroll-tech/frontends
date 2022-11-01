@@ -98,7 +98,7 @@ export const typographyOptions = {
     fontWeight: 400,
   },
   body2: {
-    fontSize: "1.2rem",
+    fontSize: "1.4rem",
     fontWeight: 400,
   },
   button: {

@@ -1,4 +1,12 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  Dispatch,
+  SetStateAction,
+  useMemo,
+} from "react";
 import { JsonRpcProvider } from "@ethersproject/providers";
 import { ethers, providers } from "ethers";
 import { ChainId, RPCUrl, GatewayRouterProxyAddr } from "@/constants";
@@ -12,6 +20,8 @@ type AppContextProps = {
   networks: any[];
   networksAndSigners: any;
   txHistory: TxHistory;
+  formVisible: boolean;
+  switchBridgeForm: Dispatch<SetStateAction<boolean>>;
 };
 
 const AppContext = createContext<AppContextProps | undefined>(undefined);
@@ -24,7 +34,11 @@ const AppContextProvider = ({ children }: any) => {
     [ChainId.SCROLL_LAYER_2]: {},
   });
 
-  const txHistory = useTxHistory(1, networksAndSigners);
+  const txHistory = useTxHistory(networksAndSigners);
+
+  const { transactions } = txHistory;
+
+  const [bridgeForm, switchBridgeForm] = useState(false);
 
   const update = async (
     web3Provider: providers.Web3Provider,
@@ -77,12 +91,20 @@ const AppContextProvider = ({ children }: any) => {
     }
   }, [provider, address, connectedNetworkId]);
 
+  const formVisible = useMemo(() => {
+    if (bridgeForm) return true;
+    else if (transactions?.length) return false;
+    return true;
+  }, [bridgeForm, transactions]);
+
   return (
     <AppContext.Provider
       value={{
         networks,
         networksAndSigners,
         txHistory,
+        formVisible,
+        switchBridgeForm,
       }}
     >
       {children}
