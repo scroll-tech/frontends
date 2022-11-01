@@ -27,7 +27,7 @@ const Login = ({ hasPermission, loading }: WhitelistContextProps) => {
         src="/imgs/login/logo_with_text.png"
       />
       <p className="text-charcoal text-center text-[28px]  leading-[32px] mb-[16px] font-display md:text-[34px]  md:leading-[40px]">
-        Welcome to Scroll’s Pre-Apha Testnet
+        Welcome to Scroll’s Pre-Apha Testnet {status}
       </p>
       <p className="max-w-[380px] text-center text-[16px] text-[#595959] leading-[26px] ">
         Scroll is a zkEVM-based zkRollup on Ethereum which enables native
@@ -53,18 +53,28 @@ const Login = ({ hasPermission, loading }: WhitelistContextProps) => {
         </div>
       ) : (
         <>
-          <Button
-            onClick={() => {
-              if (status === WalletConnectedStatus.UNAVAILABLE || account)
-                return;
-              connect();
-            }}
-            color="primary"
-            variant="contained"
-            sx={{ marginTop: "25px" }}
-          >
-            Connect Metamask Wallet
-          </Button>
+          {status === WalletConnectedStatus.UNAVAILABLE ? (
+            <Button
+              onClick={() => {
+                window.location.href = "https://metamask.io/download/";
+              }}
+              color="primary"
+              variant="contained"
+              sx={{ marginTop: "25px" }}
+            >
+              Download MetaMask here
+            </Button>
+          ) : (
+            <Button
+              onClick={() => connect()}
+              color="primary"
+              variant="contained"
+              sx={{ marginTop: "25px" }}
+            >
+              Connect Metamask Wallet
+            </Button>
+          )}
+
           <p className=" mt-[18px] text-[#595959]">
             Address not whitelisted yet?{" "}
             <a
