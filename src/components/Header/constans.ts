@@ -1,5 +1,10 @@
 const navigations = [
   {
+    label: "Home",
+    key: "",
+    href: "/",
+  },
+  {
     label: "Faucet",
     key: "faucet",
     href: "/faucet",
