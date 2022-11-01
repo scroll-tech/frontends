@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import {
   Typography,
   Table,
@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { makeStyles } from "tss-react/mui";
 import Link from "@/components/Link";
-import { WAIT_CONFIRMATIONS, PAGE_SIZE } from "@/hooks/useTxHistory";
+import { WAIT_CONFIRMATIONS } from "@/hooks/useTxHistory";
 import { truncateHash, generateExploreLink } from "@/utils";
 import { useApp } from "@/contexts/AppContextProvider";
 
@@ -59,17 +59,13 @@ const useStyles = makeStyles()((theme) => {
   };
 });
 
-const TransactionsList = (props: any) => {
+const TxTable = (props: any) => {
   const { data, pagination } = props;
 
-  const { classes, cx } = useStyles();
-
-  const {
-    txHistory: { page, total, changePage },
-  } = useApp();
+  const { classes } = useStyles();
 
   const handleChangePage = (e, newPage) => {
-    changePage(newPage);
+    pagination?.onChange?.(newPage);
   };
 
   return (
@@ -93,8 +89,8 @@ const TransactionsList = (props: any) => {
       <div className="flex justify-end mt-[2.8rem]">
         {pagination && (
           <Pagination
-            page={page}
-            count={Math.ceil(total / PAGE_SIZE)}
+            page={pagination?.page}
+            count={pagination?.count}
             onChange={handleChangePage}
           />
         )}
@@ -107,7 +103,7 @@ const TxRow = (props) => {
   const { tx } = props;
 
   const {
-    txHistory: { blockNumbers, updateTransaction },
+    txHistory: { blockNumbers },
   } = useApp();
 
   const { classes, cx } = useStyles();
@@ -130,24 +126,28 @@ const TxRow = (props) => {
   //   }
   // }, [tx, blockNumbers]);
 
-  const statusWithConfirmations = (blockNumber, isL1, to) => {
-    const confirmations =
-      blockNumber && blockNumbers
-        ? blockNumbers[+!(isL1 ^ to)] - blockNumber
-        : 0;
-    if (confirmations >= WAIT_CONFIRMATIONS) {
-      return ["Success", WAIT_CONFIRMATIONS];
-    }
-    return ["Pending", confirmations];
-  };
+  const statusWithConfirmations = useCallback(
+    (blockNumber, isL1, to) => {
+      const confirmations =
+        blockNumber && blockNumbers
+          ? blockNumbers[+!(isL1 ^ to)] - blockNumber
+          : 0;
+      if (confirmations >= WAIT_CONFIRMATIONS) {
+        return ["Success", WAIT_CONFIRMATIONS];
+      }
+      return ["Pending", confirmations];
+    },
+    [blockNumbers]
+  );
 
   const fromStatusConfirmations = useMemo(() => {
     return statusWithConfirmations(tx.fromBlockNumber, tx.isL1, false);
-  }, [tx]);
+  }, [tx, statusWithConfirmations]);
 
   const toStatusConfirmations = useMemo(() => {
     return statusWithConfirmations(tx.toBlockNumber, tx.isL1, true);
-  }, [tx]);
+  }, [tx, statusWithConfirmations]);
+
   return (
     <TableRow key={tx.hash}>
       <TableCell>
@@ -210,4 +210,4 @@ const TxRow = (props) => {
   );
 };
 
-export default TransactionsList;
+export default TxTable;

@@ -1,6 +1,8 @@
 import create from "zustand";
 import { persist } from "zustand/middleware";
 import produce from "immer";
+import { networks } from "@/constants";
+import { toTokenDisplay } from "@/utils";
 
 interface TxStore {
   frontTransactions: any[];
@@ -54,10 +56,37 @@ export const useTxStore = create<TxStore>()(
           ),
         }));
       },
-      generateTransactions: (transactions) => {
-        set((state) => ({
-          transactions: transactions,
-        }));
+      generateTransactions: (historyList) => {
+        set((state) => {
+          const hashList = historyList.map((item) => item.hash);
+          const frontList = state.frontTransactions.filter(
+            (item) => !hashList.includes(item.hash)
+          );
+          const backList = historyList.map((tx) => {
+            const amount = toTokenDisplay(tx.amount);
+            const fromName = networks[+!tx.isL1].name;
+            const fromExplore = networks[+!tx.isL1].explorer;
+            const toName = networks[+tx.isL1].name;
+            const toExplore = networks[+tx.isL1].explorer;
+            const toHash = tx.finalizeTx?.hash;
+            return {
+              amount,
+              fromName,
+              fromExplore,
+              fromBlockNumber: tx.blockNumber,
+              hash: tx.hash,
+              toName,
+              toExplore,
+              toHash,
+              toBlockNumber: tx.finalizeTx?.blockNumber,
+              isL1: tx.isL1,
+            };
+          });
+          return {
+            frontTransactions: frontList,
+            transactions: [...frontList, ...backList],
+          };
+        });
       },
     }),
     {

@@ -3,6 +3,7 @@ import { Typography } from "@mui/material";
 import { makeStyles } from "tss-react/mui";
 import { useApp } from "@/contexts/AppContextProvider";
 import Link from "@/components/Link";
+import { PAGE_SIZE } from "@/hooks/useTxHistory";
 import TxTable from "../components/TxTable";
 
 const useStyles = makeStyles()((theme) => {
@@ -38,7 +39,7 @@ const TransactionsList = (props: any) => {
   const { classes, cx } = useStyles();
 
   const {
-    txHistory: { transactions, page },
+    txHistory: { transactions, page, total, frontTransactions, changePage },
   } = useApp();
 
   const pageTxList = useMemo(() => {
@@ -73,7 +74,14 @@ const TransactionsList = (props: any) => {
           Clear All
         </Link>
       </div>
-      <TxTable data={pageTxList} pagination></TxTable>
+      <TxTable
+        data={pageTxList}
+        pagination={{
+          count: Math.ceil((total + frontTransactions.length) / PAGE_SIZE),
+          page,
+          onChange: changePage,
+        }}
+      ></TxTable>
     </>
   );
 };

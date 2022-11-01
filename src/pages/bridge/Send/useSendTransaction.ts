@@ -1,7 +1,7 @@
 // import { HopBridge } from '@hop-protocol/sdk'
 import { BigNumber } from "ethers";
 import { useMemo, useState } from "react";
-import { ChainId } from "@/constants";
+import { ChainId, networks } from "@/constants";
 import { useApp } from "@/contexts/AppContextProvider";
 import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import logger from "@/utils/logger";
@@ -87,12 +87,8 @@ export function useSendTransaction(props) {
       fromExplore: fromNetwork.explorer,
       toExplore: toNetwork.explorer,
       amount: fromTokenAmount,
-      fromStatus: "Pending",
-      toStatus: "Pending",
-      isL1: tx.isL1,
+      isL1: fromNetwork.name === networks[0].name,
     });
-    // TODO:
-    // changePageSize(frontTransactions.length + 1);
   };
 
   const sendl1ToL2 = () => {

@@ -2,13 +2,11 @@ import {
   useState,
   useCallback,
   useEffect,
-  useMemo,
   Dispatch,
   SetStateAction,
 } from "react";
 import useSWR from "swr";
-import { ChainId, networks } from "@/constants";
-import { toTokenDisplay } from "@/utils";
+import { ChainId } from "@/constants";
 import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import { useTxStore } from "@/stores/txStore";
 export interface TxHistory {
@@ -108,36 +106,9 @@ const useTxHistory = (networksAndSigners) => {
 
   useEffect(() => {
     if (data?.data?.result.length) {
-      const historyList = data.data.result;
-      const hashList = historyList.map((item) => item.hash);
-      const frontList = frontTransactions.filter((item) =>
-        hashList.includes(item.hash)
-      );
-      const backList = historyList.map((tx) => {
-        const amount = toTokenDisplay(tx.amount);
-        const fromName = networks[+!tx.isL1].name;
-        const fromExplore = networks[+!tx.isL1].explorer;
-        const toName = networks[+tx.isL1].name;
-        const toExplore = networks[+tx.isL1].explorer;
-        const toHash = tx.finalizeTx?.hash;
-        return {
-          amount,
-          fromName,
-          fromExplore,
-          fromBlockNumber: tx.blockNumber,
-          hash: tx.hash,
-          toName,
-          toExplore,
-          toHash,
-          toBlockNumber: tx.finalizeTx?.blockNumber,
-          isL1: tx.isL1,
-        };
-      });
-      generateTransactions([...frontList, ...backList]);
+      generateTransactions(data.data.result);
     }
-  }, [data, frontTransactions]);
-
-  console.log(data?.data?.total, "total");
+  }, [data]);
 
   const clearTransaction = () => {};
 
