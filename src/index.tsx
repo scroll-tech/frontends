@@ -9,9 +9,6 @@ import { MetaMaskProvider } from "metamask-react";
 import { BrowserRouter } from "react-router-dom";
 import themeLight from "./theme/light";
 import "./styles/index.less";
-import LogRocket from "logrocket";
-
-LogRocket.init("gv6zc9/bridge-l4zwe");
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

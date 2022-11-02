@@ -30,7 +30,6 @@
     "http-proxy-middleware": "^2.0.6",
     "leancloud-storage": "^4.13.2",
     "lodash": "^4.17.21",
-    "logrocket": "^3.0.1",
     "metamask-react": "^2.4.0",
     "numbro": "^2.3.6",
     "react": "^18.2.0",

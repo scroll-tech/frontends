@@ -27,7 +27,7 @@ const Login = ({ hasPermission, loading }: WhitelistContextProps) => {
         src="/imgs/login/logo_with_text.png"
       />
       <p className="text-charcoal text-center text-[28px]  leading-[32px] mb-[16px] font-display md:text-[34px]  md:leading-[40px]">
-        Welcome to Scroll’s Pre-Apha Testnet {status}
+        Welcome to Scroll’s Pre-Apha Testnet
       </p>
       <p className="max-w-[380px] text-center text-[16px] text-[#595959] leading-[26px] ">
         Scroll is a zkEVM-based zkRollup on Ethereum which enables native
