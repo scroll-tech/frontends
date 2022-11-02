@@ -1,4 +1,4 @@
-import { Addresses, ChainId } from "@/constants";
+import { Addresses, ChainId, TESTNET_NAME } from "@/constants";
 import React, { useEffect, useState } from "react";
 import { useMetaMask } from "metamask-react";
 import Countdown from "react-countdown";
@@ -249,7 +249,7 @@ export default function Home() {
                 <p className="text-[16px] max-w-[400px] leading-[26px] text-[#C14800]">
                   Your wallet is connected to an unsupported network. Select{" "}
                   <button className="font-bold" onClick={switchNetwork}>
-                    Scroll L1
+                    Scroll L1 {TESTNET_NAME}
                   </button>{" "}
                   network on Metasmask.
                 </p>
@@ -259,7 +259,7 @@ export default function Home() {
                 <Link to="add-network">
                   <span className="text-[#00A6F2] cursor-pointer font-semibold">
                     {" "}
-                    Add Scroll L1 and L2
+                    Add Scroll L1{TESTNET_NAME} and L2{TESTNET_NAME}
                   </span>
                 </Link>
               </p>

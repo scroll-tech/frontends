@@ -8,7 +8,14 @@ import MuiAccordionSummary, {
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import { NavLink } from "react-router-dom";
 
-import { Addresses, ChainId, SiteMap } from "@/constants";
+import {
+  Addresses,
+  ChainId,
+  SiteMap,
+  TESTNET_NAME,
+  l1ExplorerUrl,
+  l2ExplorerUrl,
+} from "@/constants";
 
 const addToMetaMask = async (autoconnect: any) => {
   await window.ethereum.request({
@@ -96,7 +103,7 @@ export default function CustomizedAccordions() {
                 <NavLink className="link-button" to={SiteMap.Faucet}>
                   Faucet
                 </NavLink>
-                ,to the Scroll L1 network.
+                ,to the Scroll L1 {TESTNET_NAME} network.
               </li>
               <li>
                 Transfer and withdraw test tokens in{" "}
@@ -114,11 +121,11 @@ export default function CustomizedAccordions() {
               </li>
               <li>
                 View transactions’ and blocks’ statuses in the{" "}
-                <a className="link-button" href={SiteMap.L1Explorer}>
+                <a className="link-button" href={l1ExplorerUrl}>
                   Scroll L1
                 </a>
                 ,
-                <a className="link-button" href={SiteMap.L2Explorer}>
+                <a className="link-button" href={l2ExplorerUrl}>
                   Scroll L2
                 </a>
                 Block Explorers and the
@@ -184,7 +191,7 @@ export default function CustomizedAccordions() {
               </li>
               <li>
                 Check the transaction status in your wallet or on the{" "}
-                <a className="link-button" href={SiteMap.L1Explorer}>
+                <a className="link-button" href={l1ExplorerUrl}>
                   Scroll L1 Block Explorer
                 </a>
                 .

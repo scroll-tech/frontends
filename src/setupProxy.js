@@ -4,7 +4,7 @@ module.exports = function (app) {
   app.use(
     "/faucetapi",
     createProxyMiddleware({
-      target: "https://prealpha.scroll.io/faucet",
+      target: "https://staging-prealpha.scroll.io/faucet",
       changeOrigin: true,
       pathRewrite: { "/faucetapi": "" },
     })

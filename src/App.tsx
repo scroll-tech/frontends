@@ -36,7 +36,7 @@ function App() {
                 <Route
                   path="/swap"
                   element={
-                    <IframeEmbedding url="https://prealpha.scroll.io/swap" />
+                    <IframeEmbedding url="https://staging-prealpha.scroll.io/swap" />
                   }
                 ></Route>
                 <Route path="/rollupscan" element={<RollupScan />}></Route>
