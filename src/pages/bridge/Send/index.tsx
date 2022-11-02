@@ -11,6 +11,7 @@ import {
   ETH_SYMBOL,
   tokens,
   ChainId,
+  Addresses,
 } from "@/constants";
 import { useApp } from "@/contexts/AppContextProvider";
 import {
@@ -236,6 +237,19 @@ const Send: FC = () => {
     setFromTokenAmount(amountIn);
   };
 
+  const switchNetwork = async () => {
+    const networkId = Number(fromNetwork.networkId);
+    console.log([Addresses[networkId].autoconnect]);
+    try {
+      await window.ethereum.request({
+        method: "wallet_addEthereumChain",
+        params: [Addresses[networkId].autoconnect],
+      });
+      console.log("error");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const approveButtonActive = needsApproval;
   return (
     <StyleContext.Provider value={styles}>
@@ -308,7 +322,7 @@ const Send: FC = () => {
             >
               Approve USDC
             </Button>
-          ) : (
+          ) : isCorrectNetwork ? (
             <Button
               className={styles.button}
               onClick={send}
@@ -318,6 +332,16 @@ const Send: FC = () => {
               color="primary"
             >
               Send {selectedToken.symbol} to {toNetwork.name}
+            </Button>
+          ) : (
+            <Button
+              className={styles.button}
+              onClick={switchNetwork}
+              fullWidth
+              large
+              color="primary"
+            >
+              Switch to {fromNetwork.name}
             </Button>
           )}
           <ApproveLoading

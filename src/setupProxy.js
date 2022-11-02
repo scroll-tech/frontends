@@ -4,7 +4,7 @@ module.exports = function (app) {
   app.use(
     "/faucetapi",
     createProxyMiddleware({
-      target: "https://prealpha.scroll.io/faucet",
+      target: process.env.REACT_APP_BASE_URI + "/faucet",
       changeOrigin: true,
       pathRewrite: { "/faucetapi": "" },
     })
@@ -12,7 +12,7 @@ module.exports = function (app) {
   app.use(
     "/whitelist",
     createProxyMiddleware({
-      target: "https://staging-prealpha.scroll.io/",
+      target: process.env.REACT_APP_BASE_URI,
       changeOrigin: true,
     })
   );

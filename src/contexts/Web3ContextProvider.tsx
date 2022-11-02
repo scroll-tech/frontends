@@ -13,8 +13,6 @@ import {
 } from "@web3-onboard/react";
 import injectedModule from "@web3-onboard/injected-wallets";
 import { ethers, BigNumber, providers } from "ethers";
-import LogRocket from "logrocket";
-
 import logger from "@/utils/logger";
 import { convertHexadecimal, toHexadecimal } from "@/utils";
 import { loadState, saveState, clearState } from "@/utils/localStorage";
@@ -108,12 +106,6 @@ const Web3ContextProvider = ({ children }: any) => {
         "any"
       );
       setProvider(ethersProvider);
-    }
-
-    if (wallet?.accounts[0]?.address) {
-      LogRocket.identify(wallet.accounts[0].address, {
-        platform: "Scroll Bridge",
-      });
     }
   }, [wallet]);
 

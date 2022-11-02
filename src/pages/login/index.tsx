@@ -53,18 +53,28 @@ const Login = ({ hasPermission, loading }: WhitelistContextProps) => {
         </div>
       ) : (
         <>
-          <Button
-            onClick={() => {
-              if (status === WalletConnectedStatus.UNAVAILABLE || account)
-                return;
-              connect();
-            }}
-            color="primary"
-            variant="contained"
-            sx={{ marginTop: "25px" }}
-          >
-            Connect Metamask Wallet
-          </Button>
+          {status === WalletConnectedStatus.UNAVAILABLE ? (
+            <Button
+              onClick={() => {
+                window.location.href = "https://metamask.io/download/";
+              }}
+              color="primary"
+              variant="contained"
+              sx={{ marginTop: "25px" }}
+            >
+              Download MetaMask here
+            </Button>
+          ) : (
+            <Button
+              onClick={() => connect()}
+              color="primary"
+              variant="contained"
+              sx={{ marginTop: "25px" }}
+            >
+              Connect Metamask Wallet
+            </Button>
+          )}
+
           <p className=" mt-[18px] text-[#595959]">
             Address not whitelisted yet?{" "}
             <a

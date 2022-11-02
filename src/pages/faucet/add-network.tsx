@@ -1,4 +1,4 @@
-import { Addresses, ChainId } from "@/constants";
+import { Addresses, ChainId, TESTNET_NAME } from "@/constants";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./index.less";
@@ -47,7 +47,7 @@ function AddNetwork() {
   return (
     <main className="faucet-app h-[90vh] flex justify-center items-center flex-col px-[16px]">
       <p className="text-[#333] text-center text-[28px]  leading-[32px] mb-[16px] font-display md:text-[34px]  md:leading-[40px]">
-        Add Scroll L1 and L2
+        Add Scroll L1 and L2 {TESTNET_NAME}
       </p>
       <p className="max-w-[746px] text-center text-[16px] text-[#595959] leading-[26px]">
         The Pre-Alpha Testnet consists of Scroll L1 and Scroll L2 test network,
@@ -95,7 +95,9 @@ function AddNetwork() {
           {Addresses[step].autoconnect.chainName}
         </div>
         <button
-          onClick={() => addTokenToMetaMask(Addresses[step].usdcAddress)}
+          onClick={() =>
+            addTokenToMetaMask(Addresses[step].usdcAddress as string)
+          }
           className="w-[260px] font-semibold  h-[50px] border border-[#333333] rounded-[6px] text-[#333333] add-button"
         >
           Add {faucetInfo.usdcSymbol} to {Addresses[step].autoconnect.chainName}
@@ -125,7 +127,7 @@ function AddNetwork() {
                 alt="left arrow"
                 src="/imgs/faucet/left-arrow.png"
               />
-              Add Scroll L1
+              Add Scroll L1 {TESTNET_NAME}
             </button>
           </>
         ) : (
@@ -133,7 +135,7 @@ function AddNetwork() {
             onClick={() => setStep(ChainId.SCROLL_LAYER_2)}
             className="text-[#00A6F2] text-base flex font-semibold  justify-center items-center"
           >
-            Done. Add Scroll L2
+            Done. Add Scroll L2 {TESTNET_NAME}
             <img
               className="w-[15px]  ml-[10px]"
               alt="right arrow"

@@ -36,7 +36,9 @@ function App() {
                 <Route
                   path="/swap"
                   element={
-                    <IframeEmbedding url="https://prealpha.scroll.io/swap" />
+                    <IframeEmbedding
+                      url={process.env.REACT_APP_BASE_URI + "/swap"}
+                    />
                   }
                 ></Route>
                 <Route path="/rollupscan" element={<RollupScan />}></Route>
