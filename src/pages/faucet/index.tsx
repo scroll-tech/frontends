@@ -4,11 +4,12 @@ import { useMetaMask } from "metamask-react";
 import Countdown from "react-countdown";
 import dayjs from "dayjs";
 import Faq from "./components/faq";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { getAddress } from "@ethersproject/address";
 import Button from "@/components/Button/Button";
+import { signInTwitter, requestAccessToken, testFetchUserInfo } from "./helper";
 import "./index.less";
 // import useSWR from 'swr'
 
@@ -25,6 +26,10 @@ export default function Home() {
     localStorage.getItem(CAN_CLAIM_FROM) || Date.now()
   );
 
+  const [searchParams] = useSearchParams();
+
+  console.log(searchParams, "searchParams");
+
   const [faucetInfo, setFaucetInfo] = useState({
     account: "0x0000000000000000000000000000000000000000",
     network: "Testnet",
@@ -40,6 +45,15 @@ export default function Home() {
   );
 
   const [wrongNetwork, setWrongNetwork] = useState(false);
+
+  useEffect(() => {
+    const code = searchParams.get("code");
+    if (code) {
+      requestAccessToken(code).then((token) => {
+        testFetchUserInfo(token);
+      });
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     if (chainId && +chainId === ChainId.SCROLL_LAYER_1) {
@@ -78,6 +92,7 @@ export default function Home() {
 
   const handleRequest = async () => {
     if (loading) return;
+
     let formData = new FormData();
     formData.append("address", getAddress(account as string));
     setLoading(true);
@@ -128,7 +143,7 @@ export default function Home() {
           color="primary"
           variant="contained"
           sx={{ marginTop: "30px" }}
-          onClick={handleRequest}
+          onClick={signInTwitter}
         >
           Request {faucetInfo.network} Scroll Tokens
         </Button>
