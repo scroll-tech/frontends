@@ -49,9 +49,10 @@ export default function Home() {
   useEffect(() => {
     const code = searchParams.get("code");
     if (code) {
-      requestAccessToken(code).then((token) => {
-        testFetchUserInfo(token);
-      });
+      // requestAccessToken(code).then((token) => {
+      //   // testFetchUserInfo(token);
+      // });
+      handleRequest(code);
     }
   }, [searchParams]);
 
@@ -90,11 +91,16 @@ export default function Home() {
     });
   };
 
-  const handleRequest = async () => {
+  const handleRequest = async (code) => {
     if (loading) return;
 
     let formData = new FormData();
     formData.append("address", getAddress(account as string));
+    formData.append("code", code);
+    formData.append(
+      "redirect_uri",
+      window.location.origin + window.location.pathname
+    );
     setLoading(true);
     const res = await fetch(
       process.env.REACT_APP_FAUCET_BASE_API_URL + "/api/claim",
