@@ -11,7 +11,7 @@ const codeVerifier = requireEnv("REACT_APP_CODE_VERIFIER");
 export const signInTwitter = async () => {
   const searcParams = new URLSearchParams({
     response_type: "code",
-    scope: "users.read offline.access",
+    scope: "users.read tweet.read offline.access",
     code_challenge: codeChallenge,
     code_challenge_method: codeChallengeMethod,
     redirect_uri: window.location.href,
