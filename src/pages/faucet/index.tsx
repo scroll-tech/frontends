@@ -28,8 +28,6 @@ export default function Home() {
 
   const [searchParams] = useSearchParams();
 
-  console.log(searchParams, "searchParams");
-
   const [faucetInfo, setFaucetInfo] = useState({
     account: "0x0000000000000000000000000000000000000000",
     network: "Testnet",
@@ -48,12 +46,14 @@ export default function Home() {
 
   useEffect(() => {
     const code = searchParams.get("code");
+    const abortController = new AbortController();
     if (code) {
-      // requestAccessToken(code).then((token) => {
-      //   // testFetchUserInfo(token);
-      // });
-      handleRequest(code);
+      handleRequest(code, abortController.signal);
     }
+
+    return () => {
+      abortController.abort();
+    };
   }, [searchParams]);
 
   useEffect(() => {
@@ -91,7 +91,7 @@ export default function Home() {
     });
   };
 
-  const handleRequest = async (code) => {
+  const handleRequest = async (code, signal) => {
     if (loading) return;
 
     let formData = new FormData();
@@ -107,6 +107,7 @@ export default function Home() {
       {
         method: "POST",
         body: formData,
+        signal,
       }
     );
     if (res.ok) {
