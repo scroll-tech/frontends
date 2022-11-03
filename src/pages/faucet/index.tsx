@@ -9,7 +9,7 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { getAddress } from "@ethersproject/address";
 import Button from "@/components/Button/Button";
-import { signInTwitter, requestAccessToken, testFetchUserInfo } from "./helper";
+import { signInTwitter } from "./helper";
 import "./index.less";
 // import useSWR from 'swr'
 
@@ -255,9 +255,12 @@ export default function Home() {
             Request testnet Scroll tokens
           </p>
           <p className="max-w-[560px] text-center  text-[#595959] text-[16px] leading-[26px]">
-            Funds you receive through the Scroll faucet are not real funds.
-            Request tokens every 24h and receive {faucetInfo.payoutEth}{" "}
-            {faucetInfo.ethSymbol} & {faucetInfo.payoutUsdc}
+            Funds you receive through the Scroll faucet are not real funds. To
+            prevent faucet botting, you will be lead to sign in with Twitter. We
+            request read-only access. Your Twitter account must have at least 1
+            Tweet, 50 followers, and be older than 1 month. Request tokens every
+            24h and receive {faucetInfo.payoutEth} {faucetInfo.ethSymbol} &{" "}
+            {faucetInfo.payoutUsdc}
             {faucetInfo.usdcSymbol} per request.
           </p>
           {wrongNetwork ? (
