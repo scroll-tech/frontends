@@ -130,10 +130,6 @@ const LinkButton = styled(Link)(
 const App = () => {
   const [checked, setChecked] = React.useState(false);
 
-  const handleChange = () => {
-    setChecked((prev) => !prev);
-  };
-
   const list = () => (
     <Stack direction="row" justifyContent="space-between" alignItems="center">
       {navigations.map((item: any) => {
@@ -141,13 +137,13 @@ const App = () => {
           <>
             {item.children ? (
               <SubMenuButton
-                onMouseEnter={handleChange}
-                onMouseLeave={handleChange}
+                onMouseEnter={() => setChecked(true)}
+                onMouseLeave={() => setChecked(false)}
                 key={item.key}
               >
                 {item.label} <ExpandMore sx={{ marginLeft: "6px" }} />
                 <Fade in={checked}>
-                  <SubMenuList>
+                  <SubMenuList onClick={() => setChecked(false)}>
                     {item.children?.map((subItem: any) =>
                       subItem.isExternal ? (
                         <LinkButton underline="none" href={subItem.href}>

@@ -137,7 +137,7 @@ export default function Home() {
       // Render a countdown
       return (
         <div className="w-full max-w-[473px] mx-auto ">
-          <button className="mx-auto cursor-not-allowed py-[14px] px-[22px] flex justify-center items-center bg-[#3333331a] rounded-[6px] text-base text-[#333] mt-[30px] md:mt-[50px] md:py-[18px] md:px-[28px] md:text-[16px] ">
+          <button className="mx-auto text-[14px] cursor-not-allowed py-[14px] px-[10px] flex justify-center items-center bg-[#3333331a] rounded-[6px]  text-[#333] mt-[30px] md:mt-[50px] md:text-base md:py-[18px] md:px-[28px] md:text-[16px] ">
             <img
               alt="warning logo"
               className="w-[23px] mr-[12px] md:mr-[15px]"
@@ -247,11 +247,13 @@ export default function Home() {
                   src="/imgs/faucet/warning.svg"
                 />
                 <p className="text-[16px] max-w-[400px] leading-[26px] text-[#C14800]">
-                  Your wallet is connected to an unsupported network. Select{" "}
-                  <button className="font-bold" onClick={switchNetwork}>
-                    Scroll L1 {TESTNET_NAME}
+                  Your wallet is connected to an unsupported network.
+                  <button
+                    className="font-bold underline"
+                    onClick={switchNetwork}
+                  >
+                    Switch to Scroll L1 {TESTNET_NAME}
                   </button>{" "}
-                  network on Metasmask.
                 </p>
               </div>
               <p className="mt-[25px] text-[#595959] text-base">

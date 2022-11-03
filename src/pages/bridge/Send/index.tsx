@@ -85,12 +85,7 @@ const Send: FC = () => {
   // network->sufficient->tx error
   const warningTip = useMemo(() => {
     if (!isCorrectNetwork) {
-      return (
-        <>
-          Your wallet is connected to an unsupported network. Select{" "}
-          <b>{fromNetwork.name}</b> on MetaMask.
-        </>
-      );
+      return <>Your wallet is connected to an unsupported network.</>;
     } else if (warning) {
       return warning;
     } else if (sendError && sendError.code !== "ACTION_REJECTED") {
