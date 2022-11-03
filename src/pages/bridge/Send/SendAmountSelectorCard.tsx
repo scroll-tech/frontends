@@ -9,7 +9,7 @@ import SelectOption from "../components/RaisedSelect/SelectOption";
 import { toTokenDisplay } from "@/utils";
 import { tokens } from "@/constants/networks";
 
-import NetworkSelector from "./NetworkSelector";
+import NetworkLabel from "./NetworkLabel";
 import SelectedToken from "./SelectedToken";
 
 type Props = {
@@ -27,7 +27,7 @@ type Props = {
   disableInput?: boolean;
   deadline?: any;
   setWarning?: (message: string) => void;
-  handleBridgeChange?: (event: ChangeEvent<{ value: unknown }>) => void;
+  onChangeToken?: (event: ChangeEvent<{ value: unknown }>) => void;
 };
 
 const useStyles = makeStyles()((theme) => {
@@ -115,11 +115,10 @@ const SendAmountSelectorCard: FC<Props> = (props) => {
     token,
     onChange,
     selectedNetwork,
-    onNetworkChange,
     balance,
     loadingBalance = false,
     disableInput = false,
-    handleBridgeChange,
+    onChangeToken,
   } = props;
   const { classes } = useStyles();
 
@@ -187,7 +186,7 @@ const SendAmountSelectorCard: FC<Props> = (props) => {
         {isToCard ? (
           <SelectedToken icon={token.TokenImage}>{token.symbol}</SelectedToken>
         ) : (
-          <RaisedSelect value={token.symbol} onChange={handleBridgeChange}>
+          <RaisedSelect value={token.symbol} onChange={onChangeToken}>
             {Object.keys(tokens).map((token) => (
               <MenuItem
                 value={token}
@@ -205,10 +204,7 @@ const SendAmountSelectorCard: FC<Props> = (props) => {
         )}
       </div>
       <div className="flex justify-between items-center w-full mt-4">
-        <NetworkSelector
-          network={selectedNetwork}
-          setNetwork={onNetworkChange}
-        />
+        <NetworkLabel network={selectedNetwork} />
         {loadingBalance ? (
           <Skeleton variant="text" width="15rem"></Skeleton>
         ) : balance ? (

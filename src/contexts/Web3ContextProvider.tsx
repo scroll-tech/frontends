@@ -13,6 +13,8 @@ import {
 } from "@web3-onboard/react";
 import injectedModule from "@web3-onboard/injected-wallets";
 import { ethers, BigNumber, providers } from "ethers";
+import { useTxStore } from "@/stores/txStore";
+
 import logger from "@/utils/logger";
 import { convertHexadecimal, toHexadecimal } from "@/utils";
 import { loadState, saveState, clearState } from "@/utils/localStorage";
@@ -78,11 +80,14 @@ const Web3ContextProvider = ({ children }: any) => {
   const [provider, setProvider] = useState<
     providers.Web3Provider | undefined
   >();
+
   const [onboard, setOnboard] = useState<any>(null);
 
   const [{ wallet }, connect, disconnect] = useConnectWallet();
   const [{ chains, connectedChain, settingChain }, setChain] = useSetChain();
   const connectedWallets = useWallets();
+
+  const { clearTransactions } = useTxStore();
 
   useEffect(() => {
     setOnboard(web3Onboard);
@@ -116,12 +121,14 @@ const Web3ContextProvider = ({ children }: any) => {
         await connect({ autoSelect: previouslyConnectedWallets[0] });
       };
       setWalletFromLocalStorage();
+    } else {
+      clearTransactions();
     }
   }, [onboard, connect]);
 
   const connectWallet = () => {
     try {
-      clearState();
+      clearTransactions();
       connect();
     } catch (err) {
       logger.error(err);
@@ -130,7 +137,7 @@ const Web3ContextProvider = ({ children }: any) => {
 
   const disconnectWallet = () => {
     try {
-      clearState();
+      clearTransactions();
       wallet && disconnect(wallet);
     } catch (error) {
       logger.error(error);

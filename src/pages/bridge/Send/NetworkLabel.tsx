@@ -3,9 +3,6 @@ import { makeStyles } from "tss-react/mui";
 
 interface Props {
   network?: any;
-  setNetwork?: (network: any) => void;
-  onChange?: (e: any) => void;
-  availableNetworks?: any[] | any[];
 }
 
 const useStyles = makeStyles()((theme) => {
@@ -43,12 +40,7 @@ const useStyles = makeStyles()((theme) => {
   };
 });
 
-function NetworkSelector({
-  network,
-  setNetwork,
-  availableNetworks,
-  onChange,
-}: Props) {
+function NetworkSelector({ network }: Props) {
   const { classes, cx } = useStyles();
 
   return (

@@ -45,7 +45,7 @@ const Send: FC = () => {
   const [approving, setApproving] = useState<boolean>(false);
 
   // Change the bridge if user selects different token to send
-  const handleBridgeChange = (event: ChangeEvent<{ value: unknown }>) => {
+  const handleChangeToken = (event: ChangeEvent<{ value: unknown }>) => {
     const tokenSymbol = event.target.value as string;
     const selectedToken = tokens[tokenSymbol];
     setSelectedToken(selectedToken);
@@ -65,7 +65,7 @@ const Send: FC = () => {
     if (connectedNetworkId) {
       connectedNetworkId === toNetwork.chainId && handleSwitchDirection();
     }
-  }, [connectedNetworkId, toNetwork]);
+  }, [connectedNetworkId]);
 
   const { sufficientBalance, warning } = useSufficientBalance(
     selectedToken,
@@ -101,24 +101,6 @@ const Send: FC = () => {
     }
     return null;
   }, [isCorrectNetwork, warning, sendError]);
-
-  // Change the fromNetwork
-  const handleFromNetworkChange = (network: any | undefined) => {
-    if (network?.slug === toNetwork?.slug) {
-      handleSwitchDirection();
-    } else {
-      setFromNetwork(network);
-    }
-  };
-
-  // Change the toNetwork
-  const handleToNetworkChange = (network: any | undefined) => {
-    if (network?.slug === fromNetwork?.slug) {
-      handleSwitchDirection();
-    } else {
-      setToNetwork(network);
-    }
-  };
 
   // Switch the fromNetwork <--> toNetwork
   const handleSwitchDirection = () => {
@@ -273,11 +255,10 @@ const Send: FC = () => {
             onChange={handleChangeFromAmount}
             selectedNetwork={fromNetwork}
             networkOptions={networks}
-            onNetworkChange={handleFromNetworkChange}
             balance={fromBalance}
             loadingBalance={loadingFromBalance}
             fromNetwork={fromNetwork}
-            handleBridgeChange={handleBridgeChange}
+            onChangeToken={handleChangeToken}
           />
           <SendTranferButton onClick={handleSwitchDirection} />
           <SendAmountSelectorCard
@@ -286,7 +267,6 @@ const Send: FC = () => {
             label={"To"}
             selectedNetwork={toNetwork}
             networkOptions={networks}
-            onNetworkChange={handleToNetworkChange}
             balance={toBalance}
             loadingBalance={loadingToBalance}
             disableInput

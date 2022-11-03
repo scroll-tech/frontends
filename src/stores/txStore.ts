@@ -5,12 +5,13 @@ import { networks } from "@/constants";
 import { toTokenDisplay } from "@/utils";
 
 interface TxStore {
-  frontTransactions: any[];
-  transactions: any[];
+  frontTransactions: Transaction[];
+  transactions: Transaction[];
   addTransaction: (tx) => void;
   updateTransaction: (hash, tx) => void;
   slimTransactions: (hashList) => void;
   generateTransactions: (transactions) => void;
+  clearTransactions: () => void;
 }
 
 interface Network {
@@ -21,10 +22,14 @@ interface Network {
 
 interface Transaction {
   hash: string;
-  status: string;
+  fromName: string;
+  toName: string;
+  fromExplore: string;
+  toExplore: string;
   amount: string;
-  from: Network;
-  to: Network;
+  isL1: boolean;
+  fromBlockNumber?: number;
+  toBlockNumber?: number;
 }
 
 export const useTxStore = create<TxStore>()(
@@ -88,9 +93,15 @@ export const useTxStore = create<TxStore>()(
           };
         });
       },
+      clearTransactions: () => {
+        set({
+          frontTransactions: [],
+          transactions: [],
+        });
+      },
     }),
     {
-      name: "user-tx-storage",
+      name: "bridgeTransactions",
     }
   )
 );
