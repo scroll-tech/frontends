@@ -35,10 +35,7 @@ const Accordion = styled((props: AccordionProps) => (
 }));
 
 const AccordionSummary = styled((props: AccordionSummaryProps) => (
-  <MuiAccordionSummary
-    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: "1.08rem" }} />}
-    {...props}
-  />
+  <MuiAccordionSummary expandIcon={<ArrowForwardIosSharpIcon />} {...props} />
 ))(({ theme }) => ({
   backgroundColor: "transparent",
   padding: 0,
@@ -47,6 +44,7 @@ const AccordionSummary = styled((props: AccordionSummaryProps) => (
   },
   "& .MuiAccordionSummary-expandIconWrapper": {
     transform: "rotate(90deg)",
+    color: "#333",
   },
 }));
 
