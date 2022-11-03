@@ -4,12 +4,12 @@ import { useMetaMask } from "metamask-react";
 import Countdown from "react-countdown";
 import dayjs from "dayjs";
 import Faq from "./components/faq";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { getAddress } from "@ethersproject/address";
 import Button from "@/components/Button/Button";
-import { signInTwitter } from "./helper";
+import { signInTwitter, FAUCET_CODE_KEY } from "./helper";
 import "./index.less";
 // import useSWR from 'swr'
 
@@ -25,8 +25,6 @@ export default function Home() {
   const [canClaimFrom, setCanClaimFrom] = useState(
     localStorage.getItem(CAN_CLAIM_FROM) || Date.now()
   );
-
-  const [searchParams] = useSearchParams();
 
   const [faucetInfo, setFaucetInfo] = useState({
     account: "0x0000000000000000000000000000000000000000",
@@ -45,16 +43,12 @@ export default function Home() {
   const [wrongNetwork, setWrongNetwork] = useState(false);
 
   useEffect(() => {
-    const code = searchParams.get("code");
-    const abortController = new AbortController();
+    const code = localStorage.getItem(FAUCET_CODE_KEY);
     if (code) {
-      handleRequest(code, abortController.signal);
+      handleRequest(code);
+      localStorage.removeItem(FAUCET_CODE_KEY);
     }
-
-    return () => {
-      abortController.abort();
-    };
-  }, [searchParams]);
+  }, []);
 
   useEffect(() => {
     if (chainId && +chainId === ChainId.SCROLL_LAYER_1) {
@@ -91,7 +85,7 @@ export default function Home() {
     });
   };
 
-  const handleRequest = async (code, signal) => {
+  const handleRequest = async (code) => {
     if (loading) return;
 
     let formData = new FormData();
@@ -107,7 +101,6 @@ export default function Home() {
       {
         method: "POST",
         body: formData,
-        signal,
       }
     );
     if (res.ok) {
