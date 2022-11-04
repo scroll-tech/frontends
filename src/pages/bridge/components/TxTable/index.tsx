@@ -16,6 +16,7 @@ import {
 import { makeStyles } from "tss-react/mui";
 import Link from "@/components/Link";
 import { WAIT_CONFIRMATIONS } from "@/hooks/useTxHistory";
+import useSymbol from "@/hooks/useSymbol";
 import { truncateHash, generateExploreLink } from "@/utils";
 import { useApp } from "@/contexts/AppContextProvider";
 
@@ -158,6 +159,8 @@ const TxRow = (props) => {
     return statusWithConfirmations(tx.toBlockNumber, tx.isL1, true);
   }, [tx, statusWithConfirmations]);
 
+  const { loading: symbolLoading, symbol } = useSymbol(tx.symbolToken);
+
   return (
     <TableRow key={tx.hash}>
       <TableCell>
@@ -201,7 +204,14 @@ const TxRow = (props) => {
           )}
         </Stack>
       </TableCell>
-      <TableCell>{`${tx.amount} ETH`}</TableCell>
+      <TableCell>
+        <span>{tx.amount} </span>
+        {symbolLoading ? (
+          <Skeleton variant="text" width="5rem"></Skeleton>
+        ) : (
+          <span>{symbol}</span>
+        )}
+      </TableCell>
       <TableCell>
         <Stack direction="column">
           <Stack direction="row" spacing="0.8rem">

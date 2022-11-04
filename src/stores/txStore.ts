@@ -25,6 +25,7 @@ interface Transaction {
   isL1: boolean;
   fromBlockNumber?: number;
   toBlockNumber?: number;
+  symbolToken: undefined | string;
 }
 
 const formatBackTxList = (backList) => {
@@ -46,6 +47,7 @@ const formatBackTxList = (backList) => {
       toExplore,
       toBlockNumber: tx.finalizeTx?.blockNumber,
       isL1: tx.isL1,
+      symbolToken: tx.isL1 ? tx.l1Token : tx.l2Token,
     };
   });
 };
