@@ -75,10 +75,6 @@ const useStyles = makeStyles()((theme) => ({
   },
   popper: {
     zIndex: theme.zIndex.modal,
-    [theme.breakpoints.down("sm")]: {
-      top: "50% !important",
-      transform: "translateY(-50%) !important",
-    },
   },
   backdrop: {
     zIndex: -1,

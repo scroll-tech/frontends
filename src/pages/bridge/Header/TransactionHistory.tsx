@@ -46,6 +46,7 @@ const TransactionsList = (props: any) => {
       frontTransactions,
       comboPageTransactions,
       pageTransactions,
+      clearTransactions,
     },
   } = useApp();
 
@@ -80,7 +81,7 @@ const TransactionsList = (props: any) => {
         <Typography variant="h6" color="textSecondary">
           Recent Bridge Transactions
         </Typography>
-        <Link component="button" underline="none">
+        <Link component="button" underline="none" onClick={clearTransactions}>
           Clear All
         </Link>
       </div>

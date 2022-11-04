@@ -21,15 +21,19 @@ import { useApp } from "@/contexts/AppContextProvider";
 
 const useStyles = makeStyles()((theme) => {
   return {
+    tableContainer: {
+      [theme.breakpoints.down("sm")]: {
+        paddingBottom: "1.6rem",
+        overflowX: "scroll",
+        whiteSpace: "nowrap",
+      },
+    },
     tableWrapper: {
       boxShadow: "unset",
       border: "1px solid #C9CBCE",
       borderRadius: "1rem",
       [theme.breakpoints.down("sm")]: {
-        border: "unset",
-        borderRadius: "unset",
-        margin: "0 -2rem",
-        width: "calc(100% + 4rem)",
+        width: "max-content",
       },
     },
     tableTitle: {
@@ -57,6 +61,21 @@ const useStyles = makeStyles()((theme) => {
       color: "#2FCE74",
       backgroundColor: "rgba(47, 206, 116, 0.1)",
     },
+    pagination: {
+      ".MuiPaginationItem-text": {
+        fontSize: "1.6rem",
+      },
+      ".MuiPaginationItem-root": {
+        color: theme.palette.text.secondary,
+      },
+      ".MuiPaginationItem-root.Mui-selected": {
+        fontWeight: 700,
+        backgroundColor: "unset",
+      },
+      ".MuiSvgIcon-root": {
+        fontSize: "2.4rem",
+      },
+    },
   };
 });
 
@@ -71,31 +90,37 @@ const TxTable = (props: any) => {
 
   return (
     <>
-      <TableContainer component={Paper} className={classes.tableWrapper}>
-        <Table aria-label="Tx Table">
-          <TableHead className={classes.tableHeader}>
-            <TableRow>
-              <TableCell>Status</TableCell>
-              <TableCell>Amount</TableCell>
-              <TableCell>Tx Hash</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data?.map((tx: any) => (
-              <TxRow key={tx.hash} tx={tx}></TxRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <div className="flex justify-end mt-[2.8rem]">
-        {pagination && (
+      <div className={classes.tableContainer}>
+        <TableContainer component={Paper} className={classes.tableWrapper}>
+          <Table aria-label="Tx Table">
+            <TableHead className={classes.tableHeader}>
+              <TableRow>
+                <TableCell>Status</TableCell>
+                <TableCell>Amount</TableCell>
+                <TableCell>Tx Hash</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {data?.map((tx: any) => (
+                <TxRow key={tx.hash} tx={tx}></TxRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
+      {pagination && (
+        <div className="flex justify-end mt-[2.8rem]">
           <Pagination
+            size="small"
+            classes={{
+              root: classes.pagination,
+            }}
             page={pagination?.page}
             count={pagination?.count}
             onChange={handleChangePage}
           />
-        )}
-      </div>
+        </div>
+      )}
     </>
   );
 };

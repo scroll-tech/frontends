@@ -18,6 +18,7 @@ const useStyles = makeStyles()((theme: Theme) => {
       [theme.breakpoints.down("sm")]: {
         width: "100%",
         marginTop: "6.4rem",
+        padding: "0 1.6rem",
       },
       "@global": {
         ".MuiTypography-root": {
