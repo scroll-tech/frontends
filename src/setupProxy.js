@@ -20,6 +20,7 @@ module.exports = function (app) {
     "/bridgeapi",
     createProxyMiddleware({
       target: "http://192.168.10.118:3000",
+      // target: "https://staging-prealpha.scroll.io/",
       changeOrigin: true,
       secure: false,
       pathRewrite: { "/bridgeapi": "/api" },

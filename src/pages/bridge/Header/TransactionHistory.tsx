@@ -1,6 +1,7 @@
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 import { Typography } from "@mui/material";
 import { makeStyles } from "tss-react/mui";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import { useApp } from "@/contexts/AppContextProvider";
 import Link from "@/components/Link";
 import { PAGE_SIZE } from "@/hooks/useTxHistory";
@@ -38,24 +39,33 @@ const rowsPerPage = 3;
 const TransactionsList = (props: any) => {
   const { classes, cx } = useStyles();
 
+  const { address } = useWeb3Context();
   const {
-    txHistory: { transactions, page, total, frontTransactions, changePage },
+    txHistory: {
+      total,
+      frontTransactions,
+      comboPageTransactions,
+      pageTransactions,
+    },
   } = useApp();
 
-  const pageTxList = useMemo(() => {
-    return transactions.slice(
-      (page - 1) * rowsPerPage,
-      (page - 1) * rowsPerPage + rowsPerPage
-    );
-  }, [transactions, page]);
+  const [page, setPage] = useState(1);
 
-  if (!transactions?.length) {
+  useEffect(() => {
+    comboPageTransactions(address, page, rowsPerPage);
+  }, [address, page]);
+
+  if (!pageTransactions?.length) {
     return (
       <Typography variant="body1" color="textSecondary">
         Your transactions will appear here...
       </Typography>
     );
   }
+
+  const handleChangePage = (currentPage) => {
+    setPage(currentPage);
+  };
 
   return (
     <>
@@ -75,11 +85,11 @@ const TransactionsList = (props: any) => {
         </Link>
       </div>
       <TxTable
-        data={pageTxList}
+        data={pageTransactions}
         pagination={{
           count: Math.ceil((total + frontTransactions.length) / PAGE_SIZE),
           page,
-          onChange: changePage,
+          onChange: handleChangePage,
         }}
       ></TxTable>
     </>

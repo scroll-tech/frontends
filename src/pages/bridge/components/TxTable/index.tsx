@@ -11,6 +11,7 @@ import {
   Stack,
   Chip,
   Pagination,
+  Skeleton,
 } from "@mui/material";
 import { makeStyles } from "tss-react/mui";
 import Link from "@/components/Link";
@@ -108,30 +109,14 @@ const TxRow = (props) => {
 
   const { classes, cx } = useStyles();
 
-  // useEffect(() => {
-  //   const fromConfirmations =
-  //     tx.fromBlockNumber && blockNumbers
-  //       ? blockNumbers[+!tx.isL1] - tx.fromBlockNumber
-  //       : 0;
-  //   const toConfirmations =
-  //     tx.toBlockNumber && blockNumbers
-  //       ? blockNumbers[+tx.isL1] - tx.toBlockNumber
-  //       : 0;
-
-  //   if (
-  //     fromConfirmations >= WAIT_CONFIRMATIONS &&
-  //     toConfirmations >= WAIT_CONFIRMATIONS
-  //   ) {
-  //     updateTransaction(tx, { replaced: true });
-  //   }
-  // }, [tx, blockNumbers]);
-
   const statusWithConfirmations = useCallback(
     (blockNumber, isL1, to) => {
-      const confirmations =
-        blockNumber && blockNumbers
-          ? blockNumbers[+!(isL1 ^ to)] - blockNumber
-          : 0;
+      if (!blockNumbers) {
+        return ["Synchronizing", 0];
+      }
+      const confirmations = blockNumber
+        ? blockNumbers[+!(isL1 ^ to)] - blockNumber
+        : 0;
       if (confirmations >= WAIT_CONFIRMATIONS) {
         return ["Success", WAIT_CONFIRMATIONS];
       }
@@ -152,24 +137,43 @@ const TxRow = (props) => {
     <TableRow key={tx.hash}>
       <TableCell>
         <Stack direction="column" spacing="1.4rem">
-          <Chip
-            label={fromStatusConfirmations[0]}
-            className={cx(
-              classes.chip,
-              fromStatusConfirmations[0] === "Success"
-                ? classes.successChip
-                : classes.pendingChip
-            )}
-          ></Chip>
-          <Chip
-            label={toStatusConfirmations[0]}
-            className={cx(
-              classes.chip,
-              toStatusConfirmations[0] === "Success"
-                ? classes.successChip
-                : classes.pendingChip
-            )}
-          ></Chip>
+          {blockNumbers ? (
+            <>
+              <Chip
+                label={fromStatusConfirmations[0]}
+                className={cx(
+                  classes.chip,
+                  fromStatusConfirmations[0] === "Success"
+                    ? classes.successChip
+                    : classes.pendingChip
+                )}
+              ></Chip>
+              <Chip
+                label={toStatusConfirmations[0]}
+                className={cx(
+                  classes.chip,
+                  toStatusConfirmations[0] === "Success"
+                    ? classes.successChip
+                    : classes.pendingChip
+                )}
+              ></Chip>
+            </>
+          ) : (
+            <>
+              <Skeleton
+                variant="rectangular"
+                width="12.6rem"
+                height="3.8rem"
+                className="rounded-[1.6rem]"
+              />
+              <Skeleton
+                variant="rectangular"
+                width="12.6rem"
+                height="3.8rem"
+                className="rounded-[1.6rem]"
+              />
+            </>
+          )}
         </Stack>
       </TableCell>
       <TableCell>{`${tx.amount} ETH`}</TableCell>
@@ -177,7 +181,11 @@ const TxRow = (props) => {
         <Stack direction="column">
           <Stack direction="row" spacing="0.8rem">
             <Typography variant="body1">{tx.fromName}: </Typography>
-            <Link external href={generateExploreLink(tx.fromExplore, tx.hash)}>
+            <Link
+              external
+              href={generateExploreLink(tx.fromExplore, tx.hash)}
+              className="leading-normal"
+            >
               {truncateHash(tx.hash)}
             </Link>
           </Stack>
@@ -194,6 +202,7 @@ const TxRow = (props) => {
               <Link
                 external
                 href={generateExploreLink(tx.toExplore, tx.toHash)}
+                className="leading-normal"
               >
                 {truncateHash(tx.toHash)}
               </Link>

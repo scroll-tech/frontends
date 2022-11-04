@@ -27,8 +27,8 @@ export function useSendTransaction(props) {
     txHistory: {
       addTransaction,
       updateTransaction,
-      frontTransactions,
-      changePageSize,
+      // frontTransactions,
+      // changePageSize,
     },
     switchBridgeForm,
   } = useApp();

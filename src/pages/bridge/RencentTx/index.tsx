@@ -1,4 +1,5 @@
 import { useApp } from "@/contexts/AppContextProvider";
+import { cx } from "@emotion/css";
 import Button from "../components/Button";
 import TxTable from "../components/TxTable";
 
@@ -12,7 +13,7 @@ const RencentTx = (props: any) => {
     switchBridgeForm(true);
   };
   return (
-    <div className="w-[70rem] mx-[auto] text-center mt-[6.4rem]">
+    <div className={cx("w-[70rem]", "mx-[auto]", "text-center", "mt-[6.4rem]")}>
       <TxTable data={transactions.slice(0, 2)}></TxTable>
       <Button
         className="w-[28.2rem] mt-[4rem]"
