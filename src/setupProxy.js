@@ -4,8 +4,7 @@ module.exports = function (app) {
   app.use(
     "/faucetapi",
     createProxyMiddleware({
-      // target: process.env.REACT_APP_BASE_URI + "/faucet",
-      target: "http://192.168.10.113:8080",
+      target: process.env.REACT_APP_BASE_URI + "/faucet",
       changeOrigin: true,
       pathRewrite: { "/faucetapi": "" },
     })
