@@ -10,8 +10,10 @@ import Home from "./pages/home";
 import Faucet from "./pages/faucet";
 import Bridge from "./pages/bridge";
 import AddNetwork from "./pages/faucet/add-network";
-import RollupScan from "./pages/rollup";
+import RollupScan from "./pages/rollup/index";
 import Swap from "./pages/swap";
+import RollupScanBatch from "./pages/rollup/batch";
+import RollupScanBlock from "./pages/rollup/block";
 import ScrollToTop from "@/hooks/useScrollToTop";
 
 function App() {
@@ -36,6 +38,14 @@ function App() {
                 ></Route>
                 <Route path="/swap" element={<Swap />}></Route>
                 <Route path="/rollupscan" element={<RollupScan />}></Route>
+                <Route
+                  path="/rollupscan/batch/:batchId"
+                  element={<RollupScanBatch />}
+                ></Route>
+                <Route
+                  path="/rollupscan/block/:batchId"
+                  element={<RollupScanBlock />}
+                ></Route>
               </Routes>
               <Footer />
             </ScrollToTop>

@@ -11,13 +11,12 @@ export const boxShadows = {
 };
 
 const palette = {
-  primary: {
-    main: "#eb7106",
-    dark: "#F18740",
-  },
+  // primary: {
+  //   main: "#eb7106",
+  //   dark: "#F18740",
+  // },
   action: {
     active: "#EB7106",
-    hover: "#e8c1ff",
     selected: "#B32EFF",
     disabled: "white",
   },
@@ -60,16 +59,31 @@ const colors = {
   },
 };
 
-const light: ThemeOptions = createTheme({
+const theme = createTheme({
   shape: {
     borderRadius: 6,
   },
   palette: {
     ...palette,
   },
-  // TODO: typographyOptions out of use, side effects can't be determined
   typography: {
-    fontFamily: "SF UI Text",
+    fontFamily: [
+      "SF UI Text",
+      "ui-sans-serif",
+      "system-ui",
+      "-apple-system",
+      "BlinkMacSystemFont",
+      "Segoe UI",
+      "Roboto",
+      "Helvetica Neue",
+      "Arial",
+      "Noto Sans",
+      "sans-serif",
+      "Apple Color Emoji",
+      "Segoe UI Emoji",
+      "Segoe UI Symbol",
+      "Noto Color Emoji",
+    ].join(","),
   },
   components: {
     MuiContainer: {
@@ -105,6 +119,10 @@ const light: ThemeOptions = createTheme({
           style: {
             boxShadow: boxShadows.button.default,
             lineHeight: "18px",
+            background: "#EB7106",
+            "&:hover": {
+              background: "#F18740",
+            },
           },
         },
         {
@@ -117,6 +135,7 @@ const light: ThemeOptions = createTheme({
             "&:hover": {
               background: "#ffffff",
               color: colors.orange.DEFAULT,
+              border: `1px solid ${colors.orange.DEFAULT}`,
             },
           },
         },
@@ -125,4 +144,35 @@ const light: ThemeOptions = createTheme({
   },
 });
 
-export default light;
+theme.typography.h3 = {
+  fontFamily: [
+    "Pulp Display",
+    "ui-sans-serif",
+    "system-ui",
+    "-apple-system",
+    "BlinkMacSystemFont",
+    "Roboto",
+    "Helvetica Neue",
+  ].join(","),
+  fontWeight: 400,
+  fontSize: "3.4rem",
+  lineHeight: "4rem",
+  [theme.breakpoints.down("md")]: {
+    fontSize: "2.4rem",
+    lineHeight: "3.2rem",
+  },
+};
+
+theme.typography.body1 = {
+  fontWeight: 400,
+  fontSize: "1.6rem",
+  lineHeight: "2.6rem",
+  letterSpacing: "-0.3px",
+  color: palette.text.secondary,
+  [theme.breakpoints.down("md")]: {
+    fontSize: "1.6rem",
+    lineHeight: "2.6rem",
+  },
+};
+
+export default theme;
