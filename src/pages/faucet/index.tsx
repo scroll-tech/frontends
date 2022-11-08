@@ -9,6 +9,7 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { getAddress } from "@ethersproject/address";
 import Button from "@/components/Button/Button";
+import { signInTwitter, FAUCET_CODE_KEY } from "./helper";
 import "./index.less";
 // import useSWR from 'swr'
 
@@ -40,6 +41,14 @@ export default function Home() {
   );
 
   const [wrongNetwork, setWrongNetwork] = useState(false);
+
+  useEffect(() => {
+    const code = localStorage.getItem(FAUCET_CODE_KEY);
+    if (code) {
+      handleRequest(code);
+      localStorage.removeItem(FAUCET_CODE_KEY);
+    }
+  }, []);
 
   useEffect(() => {
     if (chainId && +chainId === ChainId.SCROLL_LAYER_1) {
@@ -76,10 +85,16 @@ export default function Home() {
     });
   };
 
-  const handleRequest = async () => {
+  const handleRequest = async (code) => {
     if (loading) return;
+
     let formData = new FormData();
     formData.append("address", getAddress(account as string));
+    formData.append("code", code);
+    formData.append(
+      "redirect_uri",
+      window.location.origin + window.location.pathname
+    );
     setLoading(true);
     const res = await fetch(
       process.env.REACT_APP_FAUCET_BASE_API_URL + "/api/claim",
@@ -128,7 +143,7 @@ export default function Home() {
           color="primary"
           variant="contained"
           sx={{ marginTop: "30px" }}
-          onClick={handleRequest}
+          onClick={signInTwitter}
         >
           Request {faucetInfo.network} Scroll Tokens
         </Button>
@@ -233,9 +248,12 @@ export default function Home() {
             Request testnet Scroll tokens
           </p>
           <p className="max-w-[560px] text-center  text-[#595959] text-[16px] leading-[26px]">
-            Funds you receive through the Scroll faucet are not real funds.
-            Request tokens every 24h and receive {faucetInfo.payoutEth}{" "}
-            {faucetInfo.ethSymbol} & {faucetInfo.payoutUsdc}
+            Funds you receive through the Scroll faucet are not real funds. To
+            prevent faucet botting, you will be lead to sign in with Twitter. We
+            request read-only access. Your Twitter account must have at least 1
+            Tweet, 50 followers, and be older than 1 month. Request tokens every
+            24h and receive {faucetInfo.payoutEth} {faucetInfo.ethSymbol} &{" "}
+            {faucetInfo.payoutUsdc}
             {faucetInfo.usdcSymbol} per request.
           </p>
           {wrongNetwork ? (
