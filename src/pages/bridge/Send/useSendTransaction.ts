@@ -24,15 +24,9 @@ export function useSendTransaction(props) {
 
   const {
     networksAndSigners,
-    txHistory: {
-      addTransaction,
-      updateTransaction,
-      // frontTransactions,
-      // changePageSize,
-    },
+    txHistory: { addTransaction, updateTransaction },
     switchBridgeForm,
   } = useApp();
-  // const [tx, setTx] = useState<any>();
   const [sending, setSending] = useState<boolean>(false);
   const { checkConnectedNetworkId } = useWeb3Context();
   const parsedAmount = useMemo(() => {
@@ -88,7 +82,7 @@ export function useSendTransaction(props) {
       toExplore: toNetwork.explorer,
       amount: fromTokenAmount,
       isL1: fromNetwork.name === networks[0].name,
-      symbolToken: selectedToken.address[fromNetwork.chainId],
+      symbolToken: selectedToken.address?.[fromNetwork.chainId],
     });
   };
 

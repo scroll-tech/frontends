@@ -5,30 +5,37 @@ import { networks } from "@/constants";
 import { toTokenDisplay } from "@/utils";
 
 interface TxStore {
+  page: number;
+  total: number;
+  loading: boolean;
+  error: string;
   frontTransactions: Transaction[];
   transactions: Transaction[];
   pageTransactions: Transaction[];
   addTransaction: (tx) => void;
   updateTransaction: (hash, tx) => void;
-  slimTransactions: (hashList) => void;
   generateTransactions: (transactions) => void;
   comboPageTransactions: (address, page, rowsPerPage) => void;
   clearTransactions: () => void;
 }
 interface Transaction {
   hash: string;
+  toHash?: string;
   fromName: string;
   toName: string;
   fromExplore: string;
   toExplore: string;
-  amount: string;
-  isL1: boolean;
   fromBlockNumber?: number;
   toBlockNumber?: number;
-  symbolToken: undefined | string;
+  amount: string;
+  isL1: boolean;
+  symbolToken?: string;
 }
 
 const formatBackTxList = (backList) => {
+  if (!backList.length) {
+    return [];
+  }
   return backList.map((tx) => {
     const amount = toTokenDisplay(tx.amount);
     const fromName = networks[+!tx.isL1].name;
@@ -55,13 +62,21 @@ const formatBackTxList = (backList) => {
 export const useTxStore = create<TxStore>()(
   persist(
     (set, get) => ({
+      page: 1,
+      total: 0,
       frontTransactions: [],
+      loading: false,
+      error: "",
+      // frontTransactions + backendTransactions.slice(0, 3)
       transactions: [],
       pageTransactions: [],
+      // when user send a transaction
       addTransaction: (newTx) =>
         set((state) => ({
           frontTransactions: [newTx, ...state.frontTransactions],
+          transactions: [newTx, ...state.transactions],
         })),
+      // wait transaction success in from network
       updateTransaction: (oldTx, updateOpts) =>
         set(
           produce((state) => {
@@ -75,23 +90,29 @@ export const useTxStore = create<TxStore>()(
             }
           })
         ),
-      slimTransactions: (hashList) => {
-        set((state) => ({
-          frontTransactions: state.frontTransactions.filter(
-            (item) => !hashList.includes(item.hash)
-          ),
-        }));
-      },
+      // polling transactions
+      // slim frontTransactions and keep the latest 3 backTransactions
       generateTransactions: (historyList) => {
         set((state) => {
-          const hashList = historyList.map((item) => item.hash);
-          const frontList = state.frontTransactions.filter(
-            (item) => !hashList.includes(item.hash)
+          const frontHashList = state.frontTransactions.map(
+            (item) => item.hash
           );
-          const backList = formatBackTxList(historyList);
+          const pendingFrontList = state.frontTransactions.filter(
+            (item, index) => !historyList[index]
+          );
+
+          const backList = historyList.filter((item) => item);
+          const syncList = formatBackTxList(backList);
+
+          const restList = state.transactions.filter(
+            (item) => ![...frontHashList].includes(item.hash)
+          );
+
           return {
-            frontTransactions: frontList,
-            transactions: [...frontList, ...backList],
+            frontTransactions: pendingFrontList,
+            transactions: pendingFrontList.concat(
+              [...syncList, ...restList].slice(0, 3)
+            ),
           };
         });
       },
@@ -100,20 +121,25 @@ export const useTxStore = create<TxStore>()(
           frontTransactions: [],
           transactions: [],
           pageTransactions: [],
+          page: 1,
+          total: 0,
         });
       },
+
+      // page transactions
       comboPageTransactions: async (address, page, rowsPerPage) => {
-        const pickTxFromPool = get().transactions.slice(
-          (page - 1) * rowsPerPage,
-          (page - 1) * rowsPerPage + rowsPerPage
-        );
-        if (pickTxFromPool.length === rowsPerPage) {
-          set({ pageTransactions: pickTxFromPool });
+        const frontTransactions = get().frontTransactions;
+        set({ loading: true });
+        if (frontTransactions.length >= rowsPerPage) {
+          set({
+            pageTransactions: frontTransactions.slice(0, rowsPerPage),
+            page,
+            loading: false,
+          });
           return;
         }
-        const limit = rowsPerPage - pickTxFromPool.length;
-        const offset =
-          (page - 1) * rowsPerPage - get().frontTransactions.length;
+        const limit = rowsPerPage - frontTransactions.length;
+        const offset = (page - 1) * rowsPerPage - frontTransactions.length;
 
         const result = await fetch(
           `/bridgeapi/txs?address=${address}&offset=${offset}&limit=${limit}`
@@ -121,10 +147,22 @@ export const useTxStore = create<TxStore>()(
         const data = await result.json();
         set({
           pageTransactions: [
-            ...pickTxFromPool,
+            ...frontTransactions,
             ...formatBackTxList(data.data.result),
           ],
+          total: data.data.total,
+          page,
+          loading: false,
         });
+        if (page === 1) {
+          // keep transactions always latest
+          set({
+            transactions: [
+              ...frontTransactions,
+              ...formatBackTxList(data.data.result),
+            ],
+          });
+        }
       },
     }),
     {

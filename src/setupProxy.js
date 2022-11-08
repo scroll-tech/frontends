@@ -10,21 +10,21 @@ module.exports = function (app) {
     })
   );
   app.use(
-    "/whitelist",
-    createProxyMiddleware({
-      target: process.env.REACT_APP_BASE_URI,
-      changeOrigin: true,
-    })
-  );
-  app.use(
     "/bridgeapi",
     createProxyMiddleware({
       target: "http://192.168.50.3:3000",
-      // target: "https://staging-prealpha.scroll.io/bridgehistoryapi",
+      // target: process.env.REACT_APP_BASE_URI + "/bridgehistoryapi",
       changeOrigin: true,
       secure: false,
       pathRewrite: { "/bridgeapi": "/api" },
       timeout: 50000,
+    })
+  );
+  app.use(
+    "/whitelist",
+    createProxyMiddleware({
+      target: process.env.REACT_APP_BASE_URI,
+      changeOrigin: true,
     })
   );
 };

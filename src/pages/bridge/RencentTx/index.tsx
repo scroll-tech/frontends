@@ -5,7 +5,7 @@ import TxTable from "../components/TxTable";
 
 const useStyles = makeStyles()((theme) => ({
   wrapper: {
-    width: "70rem",
+    width: "max-content",
     margin: "6.4rem auto 0",
     textAlign: "center",
     [theme.breakpoints.down("sm")]: {

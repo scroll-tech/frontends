@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from "react";
 import useSWR from "swr";
-import { ChainId } from "@/constants";
+import { ChainId, BRIDGE_PAGE_SIZE } from "@/constants";
 import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import { useTxStore } from "@/stores/txStore";
 export interface TxHistory {
@@ -12,14 +12,7 @@ export interface TxHistory {
   updateTransaction: (tx, updateOpts) => void;
   clearTransactions: () => void;
   comboPageTransactions: (address, page, rowsPerPage) => void;
-  total: number;
 }
-
-export const WAIT_CONFIRMATIONS = 10;
-
-const FRONT_CACHE_MAX_NUMBER = 3;
-
-export const PAGE_SIZE = 3;
 
 const useTxHistory = (networksAndSigners) => {
   const { connectedNetworkId, address } = useWeb3Context();
@@ -35,23 +28,36 @@ const useTxHistory = (networksAndSigners) => {
     clearTransactions,
   } = txStore;
 
-  const fetchTxList = useCallback((url) => {
-    return fetch(url).then((r) => r.json());
+  const fetchTxList = useCallback(({ txs }) => {
+    return fetch("/bridgeapi/txsbyhashes", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ txs }),
+    }).then((res) => res.json());
   }, []);
 
+  // fetch to hash/blockNumber from backend
   const { data, error } = useSWR<any>(
     () => {
-      if (address)
-        return `/bridgeapi/txs?address=${address}&page=${1}&pageSize=${
-          frontTransactions.length || FRONT_CACHE_MAX_NUMBER
-        }`;
+      const txs = frontTransactions.map((item) => item.hash);
+      if (txs.length && address) {
+        return { txs };
+      }
       return null;
     },
     fetchTxList,
     {
-      refreshInterval: frontTransactions.length ? 2000 : 0,
+      refreshInterval: 2000,
     }
   );
+
+  useEffect(() => {
+    if (address) {
+      comboPageTransactions(address, 1, BRIDGE_PAGE_SIZE);
+    }
+  }, [address]);
 
   const fetchBlockNumber = useCallback(async () => {
     if (connectedNetworkId) {
@@ -83,7 +89,7 @@ const useTxHistory = (networksAndSigners) => {
   console.log(blockNumbers, "blockNumbers");
 
   useEffect(() => {
-    if (data?.data?.result.length && blockNumbers) {
+    if (data?.data?.result.length) {
       generateTransactions(data.data.result);
     }
   }, [data]);
@@ -97,10 +103,6 @@ const useTxHistory = (networksAndSigners) => {
     updateTransaction,
     clearTransactions,
     comboPageTransactions,
-    // changePage,
-    // changePageSize,
-    // page,
-    total: data?.data?.total,
   };
 };
 

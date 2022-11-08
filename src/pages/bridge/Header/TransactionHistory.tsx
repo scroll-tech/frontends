@@ -1,11 +1,16 @@
-import { useEffect, useState } from "react";
-import { Typography } from "@mui/material";
+import {
+  CircularProgress,
+  Typography,
+  Snackbar,
+  Alert,
+  Stack,
+} from "@mui/material";
 import { makeStyles } from "tss-react/mui";
 import { useWeb3Context } from "@/contexts/Web3ContextProvider";
-import { useApp } from "@/contexts/AppContextProvider";
 import Link from "@/components/Link";
-import { PAGE_SIZE } from "@/hooks/useTxHistory";
+import { useTxStore } from "@/stores/txStore";
 import TxTable from "../components/TxTable";
+import { BRIDGE_PAGE_SIZE } from "@/constants";
 
 const useStyles = makeStyles()((theme) => {
   return {
@@ -34,27 +39,21 @@ const useStyles = makeStyles()((theme) => {
   };
 });
 
-const rowsPerPage = 3;
-
 const TransactionsList = (props: any) => {
   const { classes, cx } = useStyles();
 
   const { address } = useWeb3Context();
+
   const {
-    txHistory: {
-      total,
-      frontTransactions,
-      comboPageTransactions,
-      pageTransactions,
-      clearTransactions,
-    },
-  } = useApp();
-
-  const [page, setPage] = useState(1);
-
-  useEffect(() => {
-    comboPageTransactions(address, page, rowsPerPage);
-  }, [address, page]);
+    page,
+    total,
+    loading,
+    error,
+    frontTransactions,
+    pageTransactions,
+    clearTransactions,
+    comboPageTransactions,
+  } = useTxStore();
 
   if (!pageTransactions?.length) {
     return (
@@ -65,7 +64,7 @@ const TransactionsList = (props: any) => {
   }
 
   const handleChangePage = (currentPage) => {
-    setPage(currentPage);
+    comboPageTransactions(address, currentPage, BRIDGE_PAGE_SIZE);
   };
 
   return (
@@ -78,21 +77,33 @@ const TransactionsList = (props: any) => {
           classes.tableTitle
         )}
       >
-        <Typography variant="h6" color="textSecondary">
-          Recent Bridge Transactions
-        </Typography>
+        <Stack direction="row" spacing="2rem">
+          <Typography variant="h6" color="textSecondary">
+            Recent Bridge Transactions
+          </Typography>
+          {loading && <CircularProgress size={24}></CircularProgress>}
+        </Stack>
+
         <Link component="button" underline="none" onClick={clearTransactions}>
           Clear All
         </Link>
       </div>
       <TxTable
+        // loading={loading}
         data={pageTransactions}
         pagination={{
-          count: Math.ceil((total + frontTransactions.length) / PAGE_SIZE),
+          count: Math.ceil(
+            (total + frontTransactions.length) / BRIDGE_PAGE_SIZE
+          ),
           page,
           onChange: handleChangePage,
         }}
       ></TxTable>
+      {error && (
+        <Snackbar autoHideDuration={6000}>
+          <Alert severity="error">{error}</Alert>
+        </Snackbar>
+      )}
     </>
   );
 };

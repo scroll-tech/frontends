@@ -12,10 +12,11 @@ import {
   Chip,
   Pagination,
   Skeleton,
+  CircularProgress,
 } from "@mui/material";
 import { makeStyles } from "tss-react/mui";
 import Link from "@/components/Link";
-import { WAIT_CONFIRMATIONS } from "@/hooks/useTxHistory";
+import { WAIT_CONFIRMATIONS } from "@/constants";
 import useSymbol from "@/hooks/useSymbol";
 import { truncateHash, generateExploreLink } from "@/utils";
 import { useApp } from "@/contexts/AppContextProvider";
@@ -81,7 +82,7 @@ const useStyles = makeStyles()((theme) => {
 });
 
 const TxTable = (props: any) => {
-  const { data, pagination } = props;
+  const { data, pagination, loading } = props;
 
   const { classes } = useStyles();
 
@@ -102,9 +103,15 @@ const TxTable = (props: any) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {data?.map((tx: any) => (
-                <TxRow key={tx.hash} tx={tx}></TxRow>
-              ))}
+              {loading ? (
+                <CircularProgress></CircularProgress>
+              ) : (
+                <>
+                  {data?.map((tx: any) => (
+                    <TxRow key={tx.hash} tx={tx}></TxRow>
+                  ))}
+                </>
+              )}
             </TableBody>
           </Table>
         </TableContainer>
@@ -242,7 +249,7 @@ const TxRow = (props) => {
                 {truncateHash(tx.toHash)}
               </Link>
             ) : (
-              "-"
+              <span className="leading-normal">-</span>
             )}
           </Stack>
           <Typography variant="body2" color="textSecondary">

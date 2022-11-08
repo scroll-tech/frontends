@@ -14,10 +14,12 @@ import Button from "@/pages/bridge/components/Button";
 import ManageWallet from "@/pages/bridge/Header/ManageWallet";
 import TransactionHistory from "@/pages/bridge/Header/TransactionHistory";
 import { truncateAddress } from "@/utils";
+import { BRIDGE_PAGE_SIZE } from "@/constants";
+import { useTxStore } from "@/stores/txStore";
 
 const useStyles = makeStyles()((theme) => ({
   container: {
-    width: "74.4rem",
+    width: "max-content",
     boxSizing: "border-box",
     boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.2)",
     [theme.breakpoints.down("sm")]: {
@@ -86,6 +88,7 @@ const useStyles = makeStyles()((theme) => ({
 
 const AddressButton = () => {
   const { address, disconnectWallet } = useWeb3Context();
+  const { comboPageTransactions, page } = useTxStore();
   const [open, setOpen] = useState(false);
   const buttonRef = useRef(null);
 
@@ -93,6 +96,9 @@ const AddressButton = () => {
 
   const handleOpen = () => {
     setOpen(true);
+    if (page !== 1) {
+      comboPageTransactions(address, 1, BRIDGE_PAGE_SIZE);
+    }
   };
 
   const handleClose = () => {
