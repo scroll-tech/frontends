@@ -102,7 +102,8 @@ const documentation = [
   {
     name: "Architecture Overview",
     description: "",
-    link: "https://scroll.mirror.xyz/nDAbJbSIJdQIWqp9kn8J0MVS4s6pYBwHmK7keidQs-k",
+    link:
+      "https://scroll.mirror.xyz/nDAbJbSIJdQIWqp9kn8J0MVS4s6pYBwHmK7keidQs-k",
   },
   {
     name: "User Guide",
@@ -177,3 +178,5 @@ export * from "./gateway";
 export * from "./networks";
 export * from "./common";
 export * from "./transaction";
+export * from "./config";
+export * from "./medias";

@@ -19,7 +19,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/system";
 import Logo from "../Logo";
-import navigations from "./constans";
+import { navigations, homeNavigations } from "./constants";
 
 const NavStack = styled(Stack)(
   ({ theme }) => `
@@ -61,7 +61,7 @@ const MenuContent = styled(Box)(
 `
 );
 
-const App = () => {
+const App = (props) => {
   const [open, setOpen] = React.useState(false);
   const [activeCollapse, setActiveCollapse] = React.useState("");
 
@@ -82,7 +82,7 @@ const App = () => {
       }}
       component="nav"
     >
-      {navigations.map((item) => {
+      {(props.isHomepage ? homeNavigations : navigations).map((item) => {
         if (item.href) {
           return (
             <ListButton key={item.key} onClick={() => toggleDrawer(false)}>
@@ -178,12 +178,23 @@ const App = () => {
               />
             </Stack>
             {list()}
-            <Button
-              sx={{ marginTop: "32px", marginLeft: "36px" }}
-              href="https://guide.scroll.io/"
-            >
-              User Guide
-            </Button>
+            {props.isHomepage ? (
+              <Button
+                color="primary"
+                variant="contained"
+                href="https://prealpha.scroll.io/"
+                sx={{ position: "relative", left: "2rem" }}
+              >
+                Join Pre-Alpha Testnet
+              </Button>
+            ) : (
+              <Button
+                sx={{ marginTop: "32px", marginLeft: "36px" }}
+                href="https://guide.scroll.io/"
+              >
+                User Guide
+              </Button>
+            )}
           </MenuContent>
         </SwipeableDrawer>
       </Box>

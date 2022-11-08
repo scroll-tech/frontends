@@ -72,3 +72,8 @@ body {
   font-style: normal;
   font-weight: 700;
 }
+
+:root {
+  --swiper-theme-color: #eb7106;
+  /* --swiper-pagination-bullet-inactive-color: #595959; */
+}

@@ -183,6 +183,21 @@ const theme = createTheme({
             },
           },
         },
+        {
+          props: { variant: "outlined", color: "secondary" },
+          style: {
+            background: "#ffffff",
+            borderColor: colors.orange.DEFAULT,
+            color: colors.orange.DEFAULT,
+            border: `1px solid ${colors.orange.DEFAULT}`,
+            width: "21.5rem",
+            "&:hover": {
+              background: "#ffffff",
+              color: colors.orange.DEFAULT,
+              border: `1px solid ${colors.orange.DEFAULT}`,
+            },
+          },
+        },
       ],
     },
     MuiAlert: {
@@ -224,6 +239,27 @@ const theme = createTheme({
   },
 });
 
+theme.typography.h2 = {
+  fontFamily: [
+    "Pulp Display",
+    "ui-sans-serif",
+    "system-ui",
+    "-apple-system",
+    "BlinkMacSystemFont",
+    "Roboto",
+    "Helvetica Neue",
+  ].join(","),
+  fontWeight: 400,
+  fontSize: "4.8rem",
+  lineHeight: "5.6rem",
+  letterSpacing: "-0.26px",
+  color: theme.palette.text.primary,
+  [theme.breakpoints.down("md")]: {
+    fontSize: "2.4rem",
+    lineHeight: "3.2rem",
+  },
+};
+
 theme.typography.h3 = {
   fontFamily: [
     "Pulp Display",
@@ -243,6 +279,17 @@ theme.typography.h3 = {
   },
 };
 
+theme.typography.subtitle1 = {
+  fontSize: "2rem",
+  lineHeight: "3.2rem",
+  letterSpacing: "-0.3px",
+  color: palette.text.secondary,
+  [theme.breakpoints.down("md")]: {
+    fontSize: "1.6rem",
+    lineHeight: "2.6rem",
+  },
+};
+
 theme.typography.body1 = {
   fontWeight: 400,
   fontSize: "1.6rem",
@@ -251,6 +298,18 @@ theme.typography.body1 = {
   color: palette.text.secondary,
   [theme.breakpoints.down("md")]: {
     fontSize: "1.6rem",
+    lineHeight: "2.6rem",
+  },
+};
+
+theme.typography.body2 = {
+  fontWeight: 400,
+  fontSize: "1.4rem",
+  lineHeight: "2.6rem",
+  letterSpacing: "-0.3px",
+  color: palette.text.secondary,
+  [theme.breakpoints.down("md")]: {
+    fontSize: "1.4rem",
     lineHeight: "2.6rem",
   },
 };

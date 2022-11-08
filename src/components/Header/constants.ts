@@ -1,3 +1,27 @@
+const homeNavigations: any = [
+  {
+    label: "Home",
+    key: "",
+    href: "/",
+  },
+  {
+    label: "Blog",
+    key: "blog",
+    href: "/blog",
+  },
+  {
+    label: "Team",
+    key: "team",
+    href: "/team",
+  },
+  {
+    label: "Careers",
+    key: "careers",
+    href: "https://jobs.lever.co/ScrollFoundation",
+    isExternal: true,
+  },
+];
+
 const navigations = [
   {
     label: "Home",
@@ -45,4 +69,4 @@ const navigations = [
   },
 ];
 
-export default navigations;
+export { navigations, homeNavigations };
