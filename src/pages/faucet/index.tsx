@@ -148,14 +148,21 @@ export default function Home() {
     if (completed) {
       // Render a completed state
       return (
-        <Button
-          color="primary"
-          variant="contained"
-          sx={{ marginTop: "30px" }}
-          onClick={signInTwitter}
-        >
-          Request {faucetInfo.network} Scroll Tokens
-        </Button>
+        <>
+          <Button
+            color="primary"
+            variant="contained"
+            sx={{ marginTop: "30px" }}
+            onClick={signInTwitter}
+          >
+            Sign In With Twitter And Request {faucetInfo.network} Scroll Tokens
+          </Button>
+          <MuiAlert severity="info" className="mt-[30px] w-[60em]">
+            To prevent faucet botting, you must sign in with <b>Twitter</b>. We
+            request read-only access. Your Twitter account must have at least 1
+            Tweet, 30 followers, and be older than 1 month.
+          </MuiAlert>
+        </>
       );
     } else {
       // Render a countdown
@@ -257,12 +264,9 @@ export default function Home() {
             Request testnet Scroll tokens
           </p>
           <p className="max-w-[560px] text-center  text-[#595959] text-[16px] leading-[26px]">
-            Funds you receive through the Scroll faucet are not real funds. To
-            prevent faucet botting, you will be lead to sign in with Twitter. We
-            request read-only access. Your Twitter account must have at least 1
-            Tweet, 50 followers, and be older than 1 month. Request tokens every
-            24h and receive {faucetInfo.payoutEth} {faucetInfo.ethSymbol} &{" "}
-            {faucetInfo.payoutUsdc}
+            Funds you receive through the Scroll faucet are not real funds.
+            Request tokens every 24h and receive {faucetInfo.payoutEth}{" "}
+            {faucetInfo.ethSymbol} & {faucetInfo.payoutUsdc}
             {faucetInfo.usdcSymbol} per request.
           </p>
           {wrongNetwork ? (
