@@ -25,17 +25,6 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <script>
-      if (
-        window.location.pathname === "/faucet" &&
-        window.location.search.match(/\?state=\w+&code=\w+/g)
-      ) {
-        const searchParams = new URLSearchParams(window.location.search);
-        localStorage.setItem("faucet_code", searchParams.get("code"));
-        window.location.href =
-          window.location.origin + window.location.pathname;
-      }
-    </script>
     <div id="root"></div>
     <!--
       This HTML file is a template.
