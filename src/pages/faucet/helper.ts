@@ -6,8 +6,6 @@ const codeChallenge = requireEnv("REACT_APP_CODE_CHALLENGE");
 const codeChallengeMethod = requireEnv("REACT_APP_CODE_CHALLENGE_METHOD");
 const randomState = requireEnv("REACT_APP_STATE");
 
-export const FAUCET_CODE_KEY = "faucet_code";
-
 export const signInTwitter = async () => {
   const searcParams = new URLSearchParams({
     response_type: "code",

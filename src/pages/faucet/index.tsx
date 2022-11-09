@@ -4,12 +4,12 @@ import { useMetaMask } from "metamask-react";
 import Countdown from "react-countdown";
 import dayjs from "dayjs";
 import Faq from "./components/faq";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { getAddress } from "@ethersproject/address";
 import Button from "@/components/Button/Button";
-import { signInTwitter, FAUCET_CODE_KEY } from "./helper";
+import { signInTwitter } from "./helper";
 import "./index.less";
 // import useSWR from 'swr'
 
@@ -19,6 +19,10 @@ const CAN_CLAIM_FROM = "canClaimFrom",
 
 export default function Home() {
   const { account, chainId } = useMetaMask();
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [authorizationCode, setAuthorizationCode] = useState("");
+
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
@@ -43,12 +47,17 @@ export default function Home() {
   const [wrongNetwork, setWrongNetwork] = useState(false);
 
   useEffect(() => {
-    const code = localStorage.getItem(FAUCET_CODE_KEY);
-    if (code) {
-      handleRequest(code);
-      localStorage.removeItem(FAUCET_CODE_KEY);
+    const queryCode = searchParams.get("code");
+    if (queryCode) {
+      setAuthorizationCode(queryCode);
+      setSearchParams({});
+      return;
     }
-  }, []);
+    if (authorizationCode) {
+      handleRequest(authorizationCode);
+      setAuthorizationCode("");
+    }
+  }, [searchParams, authorizationCode]);
 
   useEffect(() => {
     if (chainId && +chainId === ChainId.SCROLL_LAYER_1) {
