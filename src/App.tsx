@@ -11,6 +11,7 @@ import Faucet from "./pages/faucet";
 import Bridge from "./pages/bridge";
 import AddNetwork from "./pages/faucet/add-network";
 import RollupScan from "./pages/rollup";
+import Swap from "./pages/swap";
 import ScrollToTop from "@/hooks/useScrollToTop";
 
 function App() {
@@ -33,14 +34,7 @@ function App() {
                   path="/faucet/add-network"
                   element={<AddNetwork />}
                 ></Route>
-                <Route
-                  path="/swap"
-                  element={
-                    <IframeEmbedding
-                      url={process.env.REACT_APP_BASE_URI + "/swap"}
-                    />
-                  }
-                ></Route>
+                <Route path="/swap" element={<Swap />}></Route>
                 <Route path="/rollupscan" element={<RollupScan />}></Route>
               </Routes>
               <Footer />
