@@ -20,8 +20,6 @@ type AppContextProps = {
   networks: any[];
   networksAndSigners: any;
   txHistory: TxHistory;
-  formVisible: boolean;
-  switchBridgeForm: Dispatch<SetStateAction<boolean>>;
 };
 
 const AppContext = createContext<AppContextProps | undefined>(undefined);
@@ -35,10 +33,6 @@ const AppContextProvider = ({ children }: any) => {
   });
 
   const txHistory = useTxHistory(networksAndSigners);
-
-  const { transactions } = txHistory;
-
-  const [bridgeForm, switchBridgeForm] = useState(false);
 
   const update = async (
     web3Provider: providers.Web3Provider,
@@ -91,20 +85,12 @@ const AppContextProvider = ({ children }: any) => {
     }
   }, [provider, address, connectedNetworkId]);
 
-  const formVisible = useMemo(() => {
-    if (bridgeForm) return true;
-    else if (transactions?.length) return false;
-    return true;
-  }, [bridgeForm, transactions]);
-
   return (
     <AppContext.Provider
       value={{
         networks,
         networksAndSigners,
         txHistory,
-        formVisible,
-        switchBridgeForm,
       }}
     >
       {children}

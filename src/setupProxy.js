@@ -12,7 +12,7 @@ module.exports = function (app) {
   app.use(
     "/bridgeapi",
     createProxyMiddleware({
-      target: "http://192.168.50.3:3000",
+      target: "http://192.168.50.2:3000",
       // target: process.env.REACT_APP_BASE_URI + "/bridgehistoryapi",
       changeOrigin: true,
       secure: false,

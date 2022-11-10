@@ -15,7 +15,8 @@ import ManageWallet from "@/pages/bridge/Header/ManageWallet";
 import TransactionHistory from "@/pages/bridge/Header/TransactionHistory";
 import { truncateAddress } from "@/utils";
 import { BRIDGE_PAGE_SIZE } from "@/constants";
-import { useTxStore } from "@/stores/txStore";
+import useBridgeVisibleStore from "@/stores/bridgeVisibleStore";
+import useTxStore from "@/stores/txStore";
 
 const useStyles = makeStyles()((theme) => ({
   container: {
@@ -88,21 +89,19 @@ const useStyles = makeStyles()((theme) => ({
 
 const AddressButton = () => {
   const { address, disconnectWallet } = useWeb3Context();
-  const { comboPageTransactions, page } = useTxStore();
-  const [open, setOpen] = useState(false);
+  const { comboPageTransactions } = useTxStore();
+  const { historyVisible, changeHistoryVisible } = useBridgeVisibleStore();
   const buttonRef = useRef(null);
 
   const { classes, cx } = useStyles();
 
   const handleOpen = () => {
-    setOpen(true);
-    if (page !== 1) {
-      comboPageTransactions(address, 1, BRIDGE_PAGE_SIZE);
-    }
+    changeHistoryVisible(true);
+    comboPageTransactions(address, 1, BRIDGE_PAGE_SIZE);
   };
 
   const handleClose = () => {
-    setOpen(false);
+    changeHistoryVisible(false);
   };
 
   const handleDisconnect = () => {
@@ -115,9 +114,9 @@ const AddressButton = () => {
       <Button ref={buttonRef} variant="outlined" large onClick={handleOpen}>
         {truncateAddress(address)}
       </Button>
-      <Backdrop open={open} className={classes.backdrop}>
+      <Backdrop open={historyVisible} className={classes.backdrop}>
         <Popper
-          open={open}
+          open={historyVisible}
           anchorEl={buttonRef.current}
           placement="bottom-end"
           className={classes.popper}

@@ -8,7 +8,7 @@ import {
 import { makeStyles } from "tss-react/mui";
 import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import Link from "@/components/Link";
-import { useTxStore } from "@/stores/txStore";
+import useTxStore from "@/stores/txStore";
 import TxTable from "../components/TxTable";
 import { BRIDGE_PAGE_SIZE } from "@/constants";
 

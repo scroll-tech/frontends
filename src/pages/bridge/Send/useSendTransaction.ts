@@ -2,8 +2,10 @@
 import { BigNumber } from "ethers";
 import { useMemo, useState } from "react";
 import { ChainId, networks } from "@/constants";
-import { useApp } from "@/contexts/AppContextProvider";
 import { useWeb3Context } from "@/contexts/Web3ContextProvider";
+import { useApp } from "@/contexts/AppContextProvider";
+import useTxStore from "@/stores/txStore";
+import useBridgeVisibleStore from "@/stores/bridgeVisibleStore";
 import logger from "@/utils/logger";
 import { amountToBN } from "@/utils";
 
@@ -22,11 +24,9 @@ export function useSendTransaction(props) {
     selectedToken,
   } = props;
 
-  const {
-    networksAndSigners,
-    txHistory: { addTransaction, updateTransaction },
-    switchBridgeForm,
-  } = useApp();
+  const { networksAndSigners } = useApp();
+  const { addTransaction, updateTransaction } = useTxStore();
+  const { changeBridgeFormVisible } = useBridgeVisibleStore();
   const [sending, setSending] = useState<boolean>(false);
   const { checkConnectedNetworkId } = useWeb3Context();
   const parsedAmount = useMemo(() => {
@@ -50,7 +50,7 @@ export function useSendTransaction(props) {
           tx = await sendl2ToL1();
         }
         setSending(false);
-        switchBridgeForm(false);
+        changeBridgeFormVisible(false);
         handleTransaction(tx);
         const txResult = await tx.wait();
         handleTransaction(tx, {
@@ -58,6 +58,7 @@ export function useSendTransaction(props) {
         });
       } catch (error) {
         setSendError(error);
+        setSending(false);
       }
     } catch (err: any) {
       if (!/cancelled/gi.test(err.message)) {

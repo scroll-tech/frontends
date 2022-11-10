@@ -2,31 +2,22 @@ import { useCallback, useEffect } from "react";
 import useSWR from "swr";
 import { ChainId, BRIDGE_PAGE_SIZE } from "@/constants";
 import { useWeb3Context } from "@/contexts/Web3ContextProvider";
-import { useTxStore } from "@/stores/txStore";
+import useBridgeVisibleStore from "@/stores/bridgeVisibleStore";
+import useTxStore from "@/stores/txStore";
 export interface TxHistory {
   blockNumbers: number[];
-  frontTransactions: any;
-  transactions?: any;
-  pageTransactions?: any;
-  addTransaction: (tx: any) => void;
-  updateTransaction: (tx, updateOpts) => void;
-  clearTransactions: () => void;
-  comboPageTransactions: (address, page, rowsPerPage) => void;
 }
 
 const useTxHistory = (networksAndSigners) => {
   const { connectedNetworkId, address } = useWeb3Context();
-  const txStore = useTxStore();
   const {
-    frontTransactions,
     transactions,
     pageTransactions,
-    addTransaction,
-    updateTransaction,
     generateTransactions,
     comboPageTransactions,
-    clearTransactions,
-  } = txStore;
+  } = useTxStore();
+
+  const { historyVisible, bridgeFormVisible } = useBridgeVisibleStore();
 
   const fetchTxList = useCallback(({ txs }) => {
     return fetch("/bridgeapi/txsbyhashes", {
@@ -41,8 +32,18 @@ const useTxHistory = (networksAndSigners) => {
   // fetch to hash/blockNumber from backend
   const { data, error } = useSWR<any>(
     () => {
-      const txs = frontTransactions.map((item) => item.hash);
-      if (txs.length && address) {
+      const recentAndHistoryTransactions = [
+        ...transactions,
+        ...pageTransactions,
+      ];
+      const pendingTransactions = recentAndHistoryTransactions.filter(
+        (item) => !item.toHash
+      );
+
+      if (pendingTransactions.length && address) {
+        const txs = pendingTransactions
+          .map((item) => item.hash)
+          .filter((item, index, arr) => index === arr.indexOf(item));
         return { txs };
       }
       return null;
@@ -96,13 +97,6 @@ const useTxHistory = (networksAndSigners) => {
 
   return {
     blockNumbers,
-    frontTransactions,
-    transactions,
-    pageTransactions,
-    addTransaction,
-    updateTransaction,
-    clearTransactions,
-    comboPageTransactions,
   };
 };
 

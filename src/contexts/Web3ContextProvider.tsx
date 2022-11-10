@@ -13,11 +13,11 @@ import {
 } from "@web3-onboard/react";
 import injectedModule from "@web3-onboard/injected-wallets";
 import { ethers, BigNumber, providers } from "ethers";
-import { useTxStore } from "@/stores/txStore";
+import useTxStore from "@/stores/txStore";
 
 import logger from "@/utils/logger";
 import { convertHexadecimal, toHexadecimal } from "@/utils";
-import { loadState, saveState, clearState } from "@/utils/localStorage";
+import { loadState, saveState } from "@/utils/localStorage";
 import { networks } from "@/constants";
 
 type Props = {

@@ -75,6 +75,8 @@ const Send: FC = () => {
     fromBalance
   );
 
+  console.log(sufficientBalance, warning, "sufficientBalance");
+
   const isCorrectNetwork = useMemo(
     () => connectedNetworkId && fromNetwork.networkId === connectedNetworkId,
     [connectedNetworkId, fromNetwork]

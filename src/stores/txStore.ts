@@ -59,7 +59,7 @@ const formatBackTxList = (backList) => {
   });
 };
 
-export const useTxStore = create<TxStore>()(
+const useTxStore = create<TxStore>()(
   persist(
     (set, get) => ({
       page: 1,
@@ -93,28 +93,40 @@ export const useTxStore = create<TxStore>()(
       // polling transactions
       // slim frontTransactions and keep the latest 3 backTransactions
       generateTransactions: (historyList) => {
-        set((state) => {
-          const frontHashList = state.frontTransactions.map(
+        const realHistoryList = historyList.filter((item) => item);
+        if (realHistoryList.length) {
+          const formattedHistoryList = formatBackTxList(realHistoryList);
+          const formattedHistoryListHash = formattedHistoryList.map(
             (item) => item.hash
           );
-          const pendingFrontList = state.frontTransactions.filter(
-            (item, index) => !historyList[index]
+          const formattedHistoryListMap = Object.fromEntries(
+            formattedHistoryList.map((item) => [item.hash, item])
           );
-
-          const backList = historyList.filter((item) => item);
-          const syncList = formatBackTxList(backList);
-
-          const restList = state.transactions.filter(
-            (item) => ![...frontHashList].includes(item.hash)
+          const pendingFrontList = get().frontTransactions.filter(
+            (item) => !formattedHistoryListHash.includes(item.hash)
           );
+          const pendingFrontListHash = pendingFrontList.map(
+            (item) => item.hash
+          );
+          const syncList = formattedHistoryList.filter(
+            (item) => !pendingFrontListHash.includes(item.hash)
+          );
+          const restList = get().transactions.filter((item) => item.toHash);
 
-          return {
-            frontTransactions: pendingFrontList,
+          const refreshPageTransaction = get().pageTransactions.map((item) => {
+            if (formattedHistoryListMap[item.hash]) {
+              return formattedHistoryListMap[item.hash];
+            }
+            return item;
+          });
+          set({
             transactions: pendingFrontList.concat(
-              [...syncList, ...restList].slice(0, 3)
+              [...syncList, ...restList].slice(0, 2)
             ),
-          };
-        });
+            frontTransactions: pendingFrontList,
+            pageTransactions: refreshPageTransaction,
+          });
+        }
       },
       clearTransactions: () => {
         set({
@@ -130,19 +142,29 @@ export const useTxStore = create<TxStore>()(
       comboPageTransactions: async (address, page, rowsPerPage) => {
         const frontTransactions = get().frontTransactions;
         set({ loading: true });
-        if (frontTransactions.length >= rowsPerPage) {
+        const offset = (page - 1) * rowsPerPage;
+        // const offset = gap > 0 ? gap : 0;
+        if (frontTransactions.length >= rowsPerPage + offset) {
           set({
-            pageTransactions: frontTransactions.slice(0, rowsPerPage),
+            pageTransactions: frontTransactions.slice(
+              offset,
+              offset + rowsPerPage
+            ),
             page,
             loading: false,
           });
           return;
         }
-        const limit = rowsPerPage - frontTransactions.length;
-        const offset = (page - 1) * rowsPerPage - frontTransactions.length;
+
+        const currentPageFrontTransactions = frontTransactions.slice(
+          (page - 1) * rowsPerPage
+        );
+        const gap = (page - 1) * rowsPerPage - frontTransactions.length;
+        const relativeOffset = gap > 0 ? gap : 0;
+        const limit = rowsPerPage - currentPageFrontTransactions.length;
 
         const result = await fetch(
-          `/bridgeapi/txs?address=${address}&offset=${offset}&limit=${limit}`
+          `/bridgeapi/txs?address=${address}&offset=${relativeOffset}&limit=${limit}`
         );
         const data = await result.json();
         set({
@@ -170,3 +192,5 @@ export const useTxStore = create<TxStore>()(
     }
   )
 );
+
+export default useTxStore;

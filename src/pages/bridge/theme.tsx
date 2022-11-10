@@ -369,13 +369,6 @@ const lightTheme = {
         },
       },
     },
-    MuiStack: {
-      styleOverrides: {
-        root: {
-          alignItems: "center",
-        },
-      },
-    },
   },
 };
 

@@ -1,4 +1,5 @@
-import { useApp } from "@/contexts/AppContextProvider";
+import useTxStore from "@/stores/txStore";
+import useBridgeVisibleStore from "@/stores/bridgeVisibleStore";
 import { makeStyles } from "tss-react/mui";
 import Button from "../components/Button";
 import TxTable from "../components/TxTable";
@@ -23,15 +24,13 @@ const useStyles = makeStyles()((theme) => ({
 }));
 
 const RencentTx = (props: any) => {
-  const {
-    txHistory: { transactions },
-    switchBridgeForm,
-  } = useApp();
+  const { transactions } = useTxStore();
+  const { changeBridgeFormVisible } = useBridgeVisibleStore();
 
   const { classes } = useStyles();
 
   const handleGoBridge = () => {
-    switchBridgeForm(true);
+    changeBridgeFormVisible(true);
   };
   return (
     <div className={classes.wrapper}>

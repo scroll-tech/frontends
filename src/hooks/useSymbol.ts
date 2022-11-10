@@ -12,7 +12,7 @@ const useSymbol = (address: string) => {
     () => (provider ? { address, provider } : null),
     async ({ address, provider }) => {
       if (!address) {
-        return "ETH";
+        return "TSETH";
       }
       const symbolMap = loadState(TokenSymbolMapKey);
       if (symbolMap?.[address]) {
