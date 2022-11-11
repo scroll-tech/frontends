@@ -7,7 +7,7 @@ interface VisibleStore {
   changeBridgeFormVisible: (value) => void;
 }
 
-const useBridgeVisibleStore = create<VisibleStore>()((set, get) => ({
+const useBridgeStore = create<VisibleStore>()((set, get) => ({
   historyVisible: false,
   bridgeFormVisible: false,
 
@@ -24,4 +24,4 @@ const useBridgeVisibleStore = create<VisibleStore>()((set, get) => ({
   },
 }));
 
-export default useBridgeVisibleStore;
+export default useBridgeStore;

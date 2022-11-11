@@ -1,16 +1,10 @@
-import {
-  CircularProgress,
-  Typography,
-  Snackbar,
-  Alert,
-  Stack,
-} from "@mui/material";
+import { CircularProgress, Typography, Stack } from "@mui/material";
 import { makeStyles } from "tss-react/mui";
-import { useWeb3Context } from "@/contexts/Web3ContextProvider";
+import { useApp } from "@/contexts/AppContextProvider";
 import Link from "@/components/Link";
 import useTxStore from "@/stores/txStore";
-import TxTable from "../components/TxTable";
 import { BRIDGE_PAGE_SIZE } from "@/constants";
+import TxTable from "../components/TxTable";
 
 const useStyles = makeStyles()((theme) => {
   return {
@@ -42,17 +36,17 @@ const useStyles = makeStyles()((theme) => {
 const TransactionsList = (props: any) => {
   const { classes, cx } = useStyles();
 
-  const { address } = useWeb3Context();
+  const {
+    txHistory: { refreshPageTransactions },
+  } = useApp();
 
   const {
     page,
     total,
     loading,
-    error,
     frontTransactions,
     pageTransactions,
     clearTransactions,
-    comboPageTransactions,
   } = useTxStore();
 
   if (!pageTransactions?.length) {
@@ -64,7 +58,7 @@ const TransactionsList = (props: any) => {
   }
 
   const handleChangePage = (currentPage) => {
-    comboPageTransactions(address, currentPage, BRIDGE_PAGE_SIZE);
+    refreshPageTransactions(currentPage);
   };
 
   return (
@@ -89,7 +83,6 @@ const TransactionsList = (props: any) => {
         </Link>
       </div>
       <TxTable
-        // loading={loading}
         data={pageTransactions}
         pagination={{
           count: Math.ceil(
@@ -99,11 +92,6 @@ const TransactionsList = (props: any) => {
           onChange: handleChangePage,
         }}
       ></TxTable>
-      {error && (
-        <Snackbar autoHideDuration={6000}>
-          <Alert severity="error">{error}</Alert>
-        </Snackbar>
-      )}
     </>
   );
 };

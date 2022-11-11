@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import { makeStyles } from "tss-react/mui";
 import Link from "@/components/Link";
-import { WAIT_CONFIRMATIONS } from "@/constants";
+import { networks } from "@/constants";
 import useSymbol from "@/hooks/useSymbol";
 import { truncateHash, generateExploreLink } from "@/utils";
 import { useApp } from "@/contexts/AppContextProvider";
@@ -24,19 +24,17 @@ import { useApp } from "@/contexts/AppContextProvider";
 const useStyles = makeStyles()((theme) => {
   return {
     tableContainer: {
+      whiteSpace: "nowrap",
       [theme.breakpoints.down("sm")]: {
         paddingBottom: "1.6rem",
         overflowX: "scroll",
-        whiteSpace: "nowrap",
       },
     },
     tableWrapper: {
       boxShadow: "unset",
       border: "1px solid #C9CBCE",
       borderRadius: "1rem",
-      [theme.breakpoints.down("sm")]: {
-        width: "max-content",
-      },
+      width: "70rem",
     },
     tableTitle: {
       marginTop: "2.8rem",
@@ -150,8 +148,9 @@ const TxRow = (props) => {
       const confirmations = blockNumber
         ? blockNumbers[+!(isL1 ^ to)] - blockNumber
         : 0;
-      if (confirmations >= WAIT_CONFIRMATIONS) {
-        return ["Success", WAIT_CONFIRMATIONS];
+      const waitConfirmations = networks[+!(isL1 ^ to)].waitConfirmations;
+      if (confirmations >= waitConfirmations) {
+        return ["Success", waitConfirmations];
       }
       return ["Pending", confirmations];
     },
@@ -211,7 +210,7 @@ const TxRow = (props) => {
           )}
         </Stack>
       </TableCell>
-      <TableCell>
+      <TableCell className="w-full">
         <span>{tx.amount} </span>
         {symbolLoading ? (
           <Skeleton variant="text" width="5rem"></Skeleton>
@@ -233,7 +232,8 @@ const TxRow = (props) => {
           </Stack>
 
           <Typography variant="body2" color="textSecondary">
-            {fromStatusConfirmations[1]}/{WAIT_CONFIRMATIONS} confirmations
+            {fromStatusConfirmations[1]}/{networks[+!tx.isL1].waitConfirmations}{" "}
+            confirmations
           </Typography>
         </Stack>
 
@@ -253,7 +253,8 @@ const TxRow = (props) => {
             )}
           </Stack>
           <Typography variant="body2" color="textSecondary">
-            {toStatusConfirmations[1]}/{WAIT_CONFIRMATIONS} confirmations
+            {toStatusConfirmations[1]}/{networks[+tx.isL1].waitConfirmations}{" "}
+            confirmations
           </Typography>
         </Stack>
       </TableCell>

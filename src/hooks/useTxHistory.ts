@@ -1,11 +1,14 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useSWR from "swr";
 import { ChainId, BRIDGE_PAGE_SIZE } from "@/constants";
 import { useWeb3Context } from "@/contexts/Web3ContextProvider";
-import useBridgeVisibleStore from "@/stores/bridgeVisibleStore";
+// import useBridgeStore from "@/stores/bridgeStore";
 import useTxStore from "@/stores/txStore";
 export interface TxHistory {
   blockNumbers: number[];
+  errorMessage: string;
+  refreshPageTransactions: (page) => void;
+  changeErrorMessage: (value) => void;
 }
 
 const useTxHistory = (networksAndSigners) => {
@@ -17,7 +20,7 @@ const useTxHistory = (networksAndSigners) => {
     comboPageTransactions,
   } = useTxStore();
 
-  const { historyVisible, bridgeFormVisible } = useBridgeVisibleStore();
+  const [errorMessage, setErrorMessage] = useState("");
 
   const fetchTxList = useCallback(({ txs }) => {
     return fetch("/bridgeapi/txsbyhashes", {
@@ -26,22 +29,27 @@ const useTxHistory = (networksAndSigners) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ txs }),
-    }).then((res) => res.json());
+    }).then((res) => {
+      if (!res.ok) {
+        throw new Error("Fail to refresh transactions, something wrong...");
+      }
+      return res.json();
+    });
   }, []);
 
   // fetch to hash/blockNumber from backend
-  const { data, error } = useSWR<any>(
+  const { data } = useSWR<any>(
     () => {
       const recentAndHistoryTransactions = [
         ...transactions,
         ...pageTransactions,
       ];
-      const pendingTransactions = recentAndHistoryTransactions.filter(
+      const needToRefreshTransactions = recentAndHistoryTransactions.filter(
         (item) => !item.toHash
       );
 
-      if (pendingTransactions.length && address) {
-        const txs = pendingTransactions
+      if (needToRefreshTransactions.length && address) {
+        const txs = needToRefreshTransactions
           .map((item) => item.hash)
           .filter((item, index, arr) => index === arr.indexOf(item));
         return { txs };
@@ -50,15 +58,12 @@ const useTxHistory = (networksAndSigners) => {
     },
     fetchTxList,
     {
+      onError: (error, key) => {
+        setErrorMessage(error.message);
+      },
       refreshInterval: 2000,
     }
   );
-
-  useEffect(() => {
-    if (address) {
-      comboPageTransactions(address, 1, BRIDGE_PAGE_SIZE);
-    }
-  }, [address]);
 
   const fetchBlockNumber = useCallback(async () => {
     if (connectedNetworkId) {
@@ -89,6 +94,23 @@ const useTxHistory = (networksAndSigners) => {
 
   console.log(blockNumbers, "blockNumbers");
 
+  const refreshPageTransactions = useCallback(
+    (page) => {
+      if (address) {
+        try {
+          comboPageTransactions(address, page, BRIDGE_PAGE_SIZE);
+        } catch (e: any) {
+          setErrorMessage(e.toString());
+        }
+      }
+    },
+    [address]
+  );
+
+  useEffect(() => {
+    refreshPageTransactions(1);
+  }, [refreshPageTransactions]);
+
   useEffect(() => {
     if (data?.data?.result.length) {
       generateTransactions(data.data.result);
@@ -97,6 +119,9 @@ const useTxHistory = (networksAndSigners) => {
 
   return {
     blockNumbers,
+    errorMessage,
+    refreshPageTransactions,
+    changeErrorMessage: setErrorMessage,
   };
 };
 

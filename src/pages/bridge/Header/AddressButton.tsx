@@ -10,13 +10,12 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useWeb3Context } from "@/contexts/Web3ContextProvider";
+import { useApp } from "@/contexts/AppContextProvider";
 import Button from "@/pages/bridge/components/Button";
 import ManageWallet from "@/pages/bridge/Header/ManageWallet";
 import TransactionHistory from "@/pages/bridge/Header/TransactionHistory";
 import { truncateAddress } from "@/utils";
-import { BRIDGE_PAGE_SIZE } from "@/constants";
-import useBridgeVisibleStore from "@/stores/bridgeVisibleStore";
-import useTxStore from "@/stores/txStore";
+import useBridgeStore from "@/stores/bridgeStore";
 
 const useStyles = makeStyles()((theme) => ({
   container: {
@@ -89,15 +88,17 @@ const useStyles = makeStyles()((theme) => ({
 
 const AddressButton = () => {
   const { address, disconnectWallet } = useWeb3Context();
-  const { comboPageTransactions } = useTxStore();
-  const { historyVisible, changeHistoryVisible } = useBridgeVisibleStore();
+  const {
+    txHistory: { refreshPageTransactions },
+  } = useApp();
+  const { historyVisible, changeHistoryVisible } = useBridgeStore();
   const buttonRef = useRef(null);
 
   const { classes, cx } = useStyles();
 
   const handleOpen = () => {
     changeHistoryVisible(true);
-    comboPageTransactions(address, 1, BRIDGE_PAGE_SIZE);
+    refreshPageTransactions(1);
   };
 
   const handleClose = () => {

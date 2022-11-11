@@ -1,5 +1,5 @@
 import useTxStore from "@/stores/txStore";
-import useBridgeVisibleStore from "@/stores/bridgeVisibleStore";
+import useBridgeStore from "@/stores/bridgeStore";
 import { makeStyles } from "tss-react/mui";
 import Button from "../components/Button";
 import TxTable from "../components/TxTable";
@@ -25,7 +25,7 @@ const useStyles = makeStyles()((theme) => ({
 
 const RencentTx = (props: any) => {
   const { transactions } = useTxStore();
-  const { changeBridgeFormVisible } = useBridgeVisibleStore();
+  const { changeBridgeFormVisible } = useBridgeStore();
 
   const { classes } = useStyles();
 

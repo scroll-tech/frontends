@@ -8,7 +8,6 @@ interface TxStore {
   page: number;
   total: number;
   loading: boolean;
-  error: string;
   frontTransactions: Transaction[];
   transactions: Transaction[];
   pageTransactions: Transaction[];
@@ -66,8 +65,7 @@ const useTxStore = create<TxStore>()(
       total: 0,
       frontTransactions: [],
       loading: false,
-      error: "",
-      // frontTransactions + backendTransactions.slice(0, 3)
+      // frontTransactions + backendTransactions.slice(0, 2)
       transactions: [],
       pageTransactions: [],
       // when user send a transaction
@@ -166,6 +164,9 @@ const useTxStore = create<TxStore>()(
         const result = await fetch(
           `/bridgeapi/txs?address=${address}&offset=${relativeOffset}&limit=${limit}`
         );
+        if (!result.ok) {
+          throw new Error("Fail to fetch transactions, something wrong...");
+        }
         const data = await result.json();
         set({
           pageTransactions: [
@@ -177,11 +178,11 @@ const useTxStore = create<TxStore>()(
           loading: false,
         });
         if (page === 1) {
-          // keep transactions always latest
+          // keep transactions always frontList + the latest two history list
           set({
             transactions: [
               ...frontTransactions,
-              ...formatBackTxList(data.data.result),
+              ...formatBackTxList(data.data.result).slice(0, 2),
             ],
           });
         }

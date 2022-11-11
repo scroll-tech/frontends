@@ -5,7 +5,7 @@ import { ChainId, networks } from "@/constants";
 import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import { useApp } from "@/contexts/AppContextProvider";
 import useTxStore from "@/stores/txStore";
-import useBridgeVisibleStore from "@/stores/bridgeVisibleStore";
+import useBridgeStore from "@/stores/bridgeStore";
 import logger from "@/utils/logger";
 import { amountToBN } from "@/utils";
 
@@ -26,7 +26,7 @@ export function useSendTransaction(props) {
 
   const { networksAndSigners } = useApp();
   const { addTransaction, updateTransaction } = useTxStore();
-  const { changeBridgeFormVisible } = useBridgeVisibleStore();
+  const { changeBridgeFormVisible } = useBridgeStore();
   const [sending, setSending] = useState<boolean>(false);
   const { checkConnectedNetworkId } = useWeb3Context();
   const parsedAmount = useMemo(() => {
