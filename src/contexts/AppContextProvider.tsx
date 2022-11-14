@@ -1,4 +1,12 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  Dispatch,
+  SetStateAction,
+  useMemo,
+} from "react";
 import { JsonRpcProvider } from "@ethersproject/providers";
 import { ethers, providers } from "ethers";
 import { ChainId, RPCUrl, GatewayRouterProxyAddr } from "@/constants";
@@ -19,12 +27,12 @@ const AppContext = createContext<AppContextProps | undefined>(undefined);
 const AppContextProvider = ({ children }: any) => {
   const { provider, address, connectedNetworkId } = useWeb3Context();
 
-  const txHistory = useTxHistory();
-
   const [networksAndSigners, setNetworksAndSigners] = useState({
     [ChainId.SCROLL_LAYER_1]: {},
     [ChainId.SCROLL_LAYER_2]: {},
   });
+
+  const txHistory = useTxHistory(networksAndSigners);
 
   const update = async (
     web3Provider: providers.Web3Provider,

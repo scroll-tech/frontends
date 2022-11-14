@@ -1,6 +1,5 @@
 import { BigNumberish, utils, BigNumber, FixedNumber } from "ethers";
 import { formatUnits } from "ethers/lib/utils";
-import { values } from "lodash";
 import numbro from "numbro";
 
 export const commafy = (

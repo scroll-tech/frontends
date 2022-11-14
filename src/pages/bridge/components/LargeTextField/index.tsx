@@ -32,13 +32,7 @@ const useInputStyles = makeStyles<any>()(
   (theme, { leftAlign, centerAlign }) => ({
     root: {
       transition: "all 0.15s ease-out",
-      borderRadius: "1rem",
       width: "100%",
-      [theme.breakpoints.down("sm")]: {
-        width: "100%",
-        padding: ".5rem .6rem",
-        fontSize: theme.typography.subtitle2.fontSize,
-      },
     },
     input: {
       textAlign: leftAlign ? "left" : centerAlign ? "center" : "right",
@@ -72,6 +66,7 @@ const LargeTextField: FC<LargeTextFieldProps> = (props) => {
     <MuiTextField
       className={cx(classes.root, className)}
       variant="standard"
+      autoComplete="off"
       InputProps={{
         classes: inputStyles,
         disableUnderline: true,

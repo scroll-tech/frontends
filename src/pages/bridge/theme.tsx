@@ -11,10 +11,8 @@ const defaultTransition = "all 0.15s ease-out";
 
 const lightTheme = {
   palette: paletteOptions,
-  // padding,
   typography: typographyOptions,
   breakpoints,
-  // shadows: ["0px 4px 4px rgba(0, 0, 0, 0.1)", "none"],
   components: {
     MuiButton: {
       styleOverrides: {

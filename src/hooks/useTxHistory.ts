@@ -1,107 +1,127 @@
-import { useCallback, Dispatch, SetStateAction } from "react";
-import { useLocalStorage } from "react-use";
-import find from "lodash/find";
-import { filterByHash } from "@/utils";
-
+import { useCallback, useEffect, useState } from "react";
+import useSWR from "swr";
+import { ChainId, BRIDGE_PAGE_SIZE } from "@/constants";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
+// import useBridgeStore from "@/stores/bridgeStore";
+import useTxStore from "@/stores/txStore";
 export interface TxHistory {
-  transactions?: any[];
-  setTransactions: Dispatch<SetStateAction<any[] | undefined>>;
-  addTransaction: (tx: any) => void;
-  // removeTransaction: (tx: any) => void;
-  // updateTransaction: (tx: any, updateOpts: any, matchingHash?: string) => void;
-  clearTransaction: () => void;
+  blockNumbers: number[];
+  errorMessage: string;
+  refreshPageTransactions: (page) => void;
+  changeErrorMessage: (value) => void;
 }
 
-export interface UpdateTransactionOptions {
-  pending?: boolean;
-  pendingDestinationConfirmation?: boolean;
-  destNetworkName?: string;
-  destTxHash?: string;
-  replaced?: boolean | string;
-}
-
-const cacheKey = "recentTransactions";
-
-const localStorageSerializationOptions = {
-  raw: false,
-  serializer: (value: any[]) => {
-    return JSON.stringify(value);
-  },
-  deserializer: (value: string) => {
-    return JSON.parse(value);
-  },
-};
-
-const useTxHistory = (defaultTxs: any[] = []): TxHistory => {
-  const [transactions, setTransactions] = useLocalStorage<any[]>(
-    cacheKey,
-    defaultTxs,
-    localStorageSerializationOptions
-  );
-
-  // 这里就是将返回值存起来的地方
-  function filterSortAndSetTransactions(
-    tx: any,
-    txs?: any[],
-    hashFilter?: string
-  ) {
-    // 由于新的交易的replaced永远为true，这就意味着需要移除原有交易历史记录中hash相同的数据，以新的替代
-    const filtered = filterByHash(txs, hashFilter);
-
-    // TODO: 此方法需要被重写，transaction需要被存进数据里
-    // NOTICE: 由于交易不记录时间戳，所以sort无效
-    setTransactions([tx, ...filtered].slice(0, 3));
-  }
-
-  // 完成一次send后会调用此方法，参数为交易执行的返回结果
-
-  const addTransaction = useCallback(
-    (tx: any) => {
-      // If tx exists with hash == tx.replaced, remove it
-      const match = find(transactions, ["hash", tx.replaced]);
-      filterSortAndSetTransactions(tx, transactions, match?.hash);
-    },
-    [transactions]
-  );
-
-  // 只留下最新的三条记录？
-  // const removeTransaction = useCallback(
-  //   (tx: any) => {
-  //     // If tx exists with hash == tx.replaced, remove it
-  //     const filtered = filterByHash(transactions, tx.hash);
-  //     setTransactions(sortByRecentTimestamp(filtered).slice(0, 3));
-  //   },
-  //   [transactions]
-  // );
-
-  // const updateTransaction = useCallback(
-  //   (
-  //     tx: any,
-  //     updateOpts: UpdateTransactionOptions,
-  //     matchingHash?: string
-  //   ) => {
-  //     for (const key in updateOpts) {
-  //       tx[key] = updateOpts[key];
-  //     }
-  //     filterSortAndSetTransactions(tx, transactions, matchingHash || tx.hash);
-  //   },
-  //   [transactions]
-  // );
-
-  const clearTransaction = useCallback(() => {
-    setTransactions([]);
-  }, []);
-  // this will make sure to update in local storage the updated pending status,
-  // so it doesn't show as pending indefinitely on reload.
-  // This wouldn't be an issue if useEffect worked properly with array nested
-  // of nested objects and it detected property changes.
-  return {
+const useTxHistory = (networksAndSigners) => {
+  const { connectedNetworkId, address } = useWeb3Context();
+  const {
     transactions,
-    setTransactions,
-    addTransaction,
-    // removeTransaction,
-    // updateTransaction,
-    clearTransaction,
+    pageTransactions,
+    generateTransactions,
+    comboPageTransactions,
+  } = useTxStore();
+
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const fetchTxList = useCallback(({ txs }) => {
+    return fetch("/bridgeapi/txsbyhashes", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ txs }),
+    }).then((res) => {
+      if (!res.ok) {
+        throw new Error("Fail to refresh transactions, something wrong...");
+      }
+      return res.json();
+    });
+  }, []);
+
+  // fetch to hash/blockNumber from backend
+  const { data } = useSWR<any>(
+    () => {
+      const recentAndHistoryTransactions = [
+        ...transactions,
+        ...pageTransactions,
+      ];
+      const needToRefreshTransactions = recentAndHistoryTransactions.filter(
+        (item) => !item.toHash
+      );
+
+      if (needToRefreshTransactions.length && address) {
+        const txs = needToRefreshTransactions
+          .map((item) => item.hash)
+          .filter((item, index, arr) => index === arr.indexOf(item));
+        return { txs };
+      }
+      return null;
+    },
+    fetchTxList,
+    {
+      onError: (error, key) => {
+        setErrorMessage(error.message);
+      },
+      refreshInterval: 2000,
+    }
+  );
+
+  const fetchBlockNumber = useCallback(async () => {
+    if (connectedNetworkId) {
+      const fetchL1blockNumber =
+        networksAndSigners[ChainId.SCROLL_LAYER_1].provider.getBlockNumber();
+      const fetchL2BlockNumber =
+        networksAndSigners[ChainId.SCROLL_LAYER_2].provider.getBlockNumber();
+
+      const blockNumbers = await Promise.allSettled([
+        fetchL1blockNumber,
+        fetchL2BlockNumber,
+      ]);
+
+      return blockNumbers.map((item) =>
+        item.status === "fulfilled" ? item.value : -1
+      );
+    }
+    return null;
+  }, [networksAndSigners, connectedNetworkId]);
+
+  const { data: blockNumbers } = useSWR<any>(
+    "eth_blockNumber",
+    fetchBlockNumber,
+    {
+      refreshInterval: 2000,
+    }
+  );
+
+  console.log(blockNumbers, "blockNumbers");
+
+  const refreshPageTransactions = useCallback(
+    (page) => {
+      if (address) {
+        try {
+          comboPageTransactions(address, page, BRIDGE_PAGE_SIZE);
+        } catch (e: any) {
+          setErrorMessage(e.toString());
+        }
+      }
+    },
+    [address]
+  );
+
+  useEffect(() => {
+    refreshPageTransactions(1);
+  }, [refreshPageTransactions]);
+
+  useEffect(() => {
+    if (data?.data?.result.length) {
+      generateTransactions(data.data.result);
+    }
+  }, [data]);
+
+  return {
+    blockNumbers,
+    errorMessage,
+    refreshPageTransactions,
+    changeErrorMessage: setErrorMessage,
   };
 };
 

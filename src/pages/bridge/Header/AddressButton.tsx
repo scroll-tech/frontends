@@ -10,14 +10,16 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useWeb3Context } from "@/contexts/Web3ContextProvider";
+import { useApp } from "@/contexts/AppContextProvider";
 import Button from "@/pages/bridge/components/Button";
 import ManageWallet from "@/pages/bridge/Header/ManageWallet";
-import TransactionList from "@/pages/bridge/Header/TransactionList";
+import TransactionHistory from "@/pages/bridge/Header/TransactionHistory";
 import { truncateAddress } from "@/utils";
+import useBridgeStore from "@/stores/bridgeStore";
 
 const useStyles = makeStyles()((theme) => ({
   container: {
-    width: "64.4rem",
+    width: "max-content",
     boxSizing: "border-box",
     boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.2)",
     [theme.breakpoints.down("sm")]: {
@@ -75,10 +77,6 @@ const useStyles = makeStyles()((theme) => ({
   },
   popper: {
     zIndex: theme.zIndex.modal,
-    [theme.breakpoints.down("sm")]: {
-      top: "50% !important",
-      transform: "translateY(-50%) !important",
-    },
   },
   backdrop: {
     zIndex: -1,
@@ -90,17 +88,21 @@ const useStyles = makeStyles()((theme) => ({
 
 const AddressButton = () => {
   const { address, disconnectWallet } = useWeb3Context();
-  const [open, setOpen] = useState(false);
+  const {
+    txHistory: { refreshPageTransactions },
+  } = useApp();
+  const { historyVisible, changeHistoryVisible } = useBridgeStore();
   const buttonRef = useRef(null);
 
   const { classes, cx } = useStyles();
 
   const handleOpen = () => {
-    setOpen(true);
+    changeHistoryVisible(true);
+    refreshPageTransactions(1);
   };
 
   const handleClose = () => {
-    setOpen(false);
+    changeHistoryVisible(false);
   };
 
   const handleDisconnect = () => {
@@ -113,9 +115,9 @@ const AddressButton = () => {
       <Button ref={buttonRef} variant="outlined" large onClick={handleOpen}>
         {truncateAddress(address)}
       </Button>
-      <Backdrop open={open} className={classes.backdrop}>
+      <Backdrop open={historyVisible} className={classes.backdrop}>
         <Popper
-          open={open}
+          open={historyVisible}
           anchorEl={buttonRef.current}
           placement="bottom-end"
           className={classes.popper}
@@ -146,15 +148,13 @@ const AddressButton = () => {
                   <CloseIcon onClick={handleClose} />
                 </div>
                 <div>
-                  {!!address && (
-                    <ManageWallet
-                      classes={classes}
-                      onDisconnect={handleDisconnect}
-                    />
-                  )}
+                  <ManageWallet
+                    classes={classes}
+                    onDisconnect={handleDisconnect}
+                  />
                   <Divider></Divider>
                   <div className={cx("relative", classes.transactionsList)}>
-                    <TransactionList />
+                    <TransactionHistory />
                   </div>
                 </div>
               </Card>

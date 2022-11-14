@@ -21,11 +21,9 @@ import {
   useSufficientBalance,
 } from "@/hooks";
 import { sanitizeNumericalString, amountToBN } from "@/utils";
-import SendHeader from "./SendHeader";
 import SendTranferButton from "./SendTransferButton";
 import { useSendStyles, StyleContext } from "./useSendStyles";
 import { useSendTransaction } from "./useSendTransaction";
-import FAQ from "./FAQ";
 import SendLoading from "./SendLoading";
 import ApproveLoading from "./ApproveLoading";
 
@@ -34,7 +32,7 @@ import classNames from "classnames";
 
 const Send: FC = () => {
   const { classes: styles, cx } = useSendStyles();
-  const { txHistory, networksAndSigners } = useApp();
+  const { networksAndSigners } = useApp();
 
   const [fromNetwork, setFromNetwork] = useState(networks[0]);
   const [toNetwork, setToNetwork] = useState(networks[1]);
@@ -47,7 +45,7 @@ const Send: FC = () => {
   const [approving, setApproving] = useState<boolean>(false);
 
   // Change the bridge if user selects different token to send
-  const handleBridgeChange = (event: ChangeEvent<{ value: unknown }>) => {
+  const handleChangeToken = (event: ChangeEvent<{ value: unknown }>) => {
     const tokenSymbol = event.target.value as string;
     const selectedToken = tokens[tokenSymbol];
     setSelectedToken(selectedToken);
@@ -69,17 +67,18 @@ const Send: FC = () => {
     }
   }, [connectedNetworkId]);
 
+  const isCorrectNetwork = useMemo(
+    () => !!connectedNetworkId && fromNetwork.networkId === connectedNetworkId,
+    [connectedNetworkId, fromNetwork]
+  );
+
   const { sufficientBalance, warning } = useSufficientBalance(
     selectedToken,
     networksAndSigners[fromNetwork.networkId],
     amountToBN(fromTokenAmount || "0", selectedToken.decimals),
     undefined,
-    fromBalance
-  );
-
-  const isCorrectNetwork = useMemo(
-    () => connectedNetworkId && fromNetwork.networkId === connectedNetworkId,
-    [connectedNetworkId, fromNetwork]
+    fromBalance,
+    isCorrectNetwork
   );
 
   // network->sufficient->tx error
@@ -104,24 +103,6 @@ const Send: FC = () => {
     return null;
   }, [isCorrectNetwork, warning, sendError]);
 
-  // Change the fromNetwork
-  const handleFromNetworkChange = (network: any | undefined) => {
-    if (network?.slug === toNetwork?.slug) {
-      handleSwitchDirection();
-    } else {
-      setFromNetwork(network);
-    }
-  };
-
-  // Change the toNetwork
-  const handleToNetworkChange = (network: any | undefined) => {
-    if (network?.slug === fromNetwork?.slug) {
-      handleSwitchDirection();
-    } else {
-      setToNetwork(network);
-    }
-  };
-
   // Switch the fromNetwork <--> toNetwork
   const handleSwitchDirection = () => {
     setFromNetwork(toNetwork);
@@ -140,13 +121,16 @@ const Send: FC = () => {
   // Send tokens
   // ==============================================================================================
 
-  const { send, sending, setSending } = useSendTransaction({
+  const {
+    send: handleSendTransaction,
+    sending,
+    setSending,
+  } = useSendTransaction({
     fromNetwork,
     fromTokenAmount,
     setSendError,
     setError,
     toNetwork,
-    txHistory,
     selectedToken,
   });
 
@@ -257,11 +241,6 @@ const Send: FC = () => {
           styles.sendWrapper
         )}
       >
-        <SendHeader
-          classes={styles}
-          from={fromNetwork.name}
-          to={toNetwork.name}
-        />
         <div
           className={classNames(
             "flex",
@@ -277,11 +256,10 @@ const Send: FC = () => {
             onChange={handleChangeFromAmount}
             selectedNetwork={fromNetwork}
             networkOptions={networks}
-            onNetworkChange={handleFromNetworkChange}
             balance={fromBalance}
             loadingBalance={loadingFromBalance}
             fromNetwork={fromNetwork}
-            handleBridgeChange={handleBridgeChange}
+            onChangeToken={handleChangeToken}
           />
           <SendTranferButton onClick={handleSwitchDirection} />
           <SendAmountSelectorCard
@@ -290,7 +268,6 @@ const Send: FC = () => {
             label={"To"}
             selectedNetwork={toNetwork}
             networkOptions={networks}
-            onNetworkChange={handleToNetworkChange}
             balance={toBalance}
             loadingBalance={loadingToBalance}
             disableInput
@@ -320,7 +297,7 @@ const Send: FC = () => {
           ) : isCorrectNetwork ? (
             <Button
               className={styles.button}
-              onClick={send}
+              onClick={handleSendTransaction}
               disabled={!sendButtonActive}
               fullWidth
               large
@@ -351,7 +328,6 @@ const Send: FC = () => {
             onClose={handleCloseSendLoading}
           ></SendLoading>
         </div>
-        <FAQ></FAQ>
       </div>
     </StyleContext.Provider>
   );
