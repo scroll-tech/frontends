@@ -6,6 +6,12 @@
   force = true
 
 [[redirects]]
+  from = "/bridgeapi/*"
+  to = "https://staging-prealpha.scroll.io/bridgehistoryapi/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
   from = "/early-dev"
   to = "https://scrollzkp.typeform.com/early-dev"
 
