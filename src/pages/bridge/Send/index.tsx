@@ -67,19 +67,18 @@ const Send: FC = () => {
     }
   }, [connectedNetworkId]);
 
+  const isCorrectNetwork = useMemo(
+    () => !!connectedNetworkId && fromNetwork.networkId === connectedNetworkId,
+    [connectedNetworkId, fromNetwork]
+  );
+
   const { sufficientBalance, warning } = useSufficientBalance(
     selectedToken,
     networksAndSigners[fromNetwork.networkId],
     amountToBN(fromTokenAmount || "0", selectedToken.decimals),
     undefined,
-    fromBalance
-  );
-
-  console.log(sufficientBalance, warning, "sufficientBalance");
-
-  const isCorrectNetwork = useMemo(
-    () => connectedNetworkId && fromNetwork.networkId === connectedNetworkId,
-    [connectedNetworkId, fromNetwork]
+    fromBalance,
+    isCorrectNetwork
   );
 
   // network->sufficient->tx error

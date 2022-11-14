@@ -8,7 +8,8 @@ function useSufficientBalance(
   token?: any,
   amount?: BigNumber,
   estimatedGasCost?: BigNumber,
-  tokenBalance: BigNumber = BigNumber.from(0)
+  tokenBalance: BigNumber = BigNumber.from(0),
+  isCorrectNetwork?: boolean
 ) {
   const [sufficientBalance, setSufficientBalance] = useState(false);
   const [warning, setWarning] = useState("");
@@ -16,6 +17,9 @@ function useSufficientBalance(
 
   useEffect(() => {
     async function checkEnoughBalance() {
+      if (!isCorrectNetwork) {
+        return;
+      }
       if (!(amount && token && token.signer)) {
         setWarning("");
         return setSufficientBalance(false);
