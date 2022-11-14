@@ -165,7 +165,7 @@ const TxRow = (props) => {
     return statusWithConfirmations(tx.toBlockNumber, tx.isL1, true);
   }, [tx, statusWithConfirmations]);
 
-  const { loading: symbolLoading, symbol } = useSymbol(tx.symbolToken);
+  const { loading: symbolLoading, symbol } = useSymbol(tx.symbolToken, tx.isL1);
 
   return (
     <TableRow key={tx.hash}>
@@ -213,7 +213,11 @@ const TxRow = (props) => {
       <TableCell className="w-full">
         <span>{tx.amount} </span>
         {symbolLoading ? (
-          <Skeleton variant="text" width="5rem"></Skeleton>
+          <Skeleton
+            variant="text"
+            width="5rem"
+            className="inline-block"
+          ></Skeleton>
         ) : (
           <span>{symbol}</span>
         )}

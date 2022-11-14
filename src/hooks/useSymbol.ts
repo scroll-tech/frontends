@@ -1,15 +1,28 @@
 import { ethers } from "ethers";
 import useSWR from "swr";
-import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import L1_erc20ABI from "@/assets/abis/L1_erc20ABI.json";
 import { loadState, saveState } from "@/utils/localStorage";
+import { useApp } from "@/contexts/AppContextProvider";
+import { ChainId } from "@/constants";
 
 const TokenSymbolMapKey = "tokenSymbolMap";
 
-const useSymbol = (address: string) => {
-  const { provider } = useWeb3Context();
+const useSymbol = (address: string, isL1: boolean) => {
+  const { networksAndSigners } = useApp();
   const { data, error } = useSWR(
-    () => (provider ? { address, provider } : null),
+    () => {
+      const provider =
+        networksAndSigners[
+          isL1 ? ChainId.SCROLL_LAYER_1 : ChainId.SCROLL_LAYER_2
+        ].provider;
+      if (provider) {
+        return {
+          address,
+          provider,
+        };
+      }
+      return null;
+    },
     async ({ address, provider }) => {
       if (!address) {
         return "TSETH";
