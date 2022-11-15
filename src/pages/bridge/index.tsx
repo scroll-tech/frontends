@@ -8,6 +8,8 @@ import Content from "./Content";
 import BridgeTitle from "./BridgeTitle";
 import FAQ from "./FAQ";
 import styles from "./index.module.css";
+import BridgeTitle from "./BridgeTitle";
+import FAQ from "./FAQ";
 
 export const muiCache = createCache({
   key: "mui",
