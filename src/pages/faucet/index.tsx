@@ -1,6 +1,6 @@
 import { Addresses, ChainId, TESTNET_NAME } from "@/constants";
 import React, { useEffect, useState } from "react";
-import { useMetaMask } from "metamask-react";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import Countdown from "react-countdown";
 import dayjs from "dayjs";
 import Faq from "./components/faq";
@@ -18,7 +18,7 @@ const CAN_CLAIM_FROM = "canClaimFrom",
   L1_SCAN_URL = "https://l1scan.scroll.io";
 
 export default function Home() {
-  const { account, chainId } = useMetaMask();
+  const { walletCurrentAddress, chainId } = useWeb3Context();
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [authorizationCode, setAuthorizationCode] = useState("");
@@ -60,7 +60,7 @@ export default function Home() {
   }, [searchParams, authorizationCode]);
 
   useEffect(() => {
-    if (chainId && +chainId === ChainId.SCROLL_LAYER_1) {
+    if (chainId === ChainId.SCROLL_LAYER_1) {
       setWrongNetwork(false);
     } else {
       setWrongNetwork(true);
@@ -98,7 +98,7 @@ export default function Home() {
     if (loading) return;
 
     let formData = new FormData();
-    formData.append("address", getAddress(account as string));
+    formData.append("address", getAddress(walletCurrentAddress as string));
     formData.append("code", code);
     formData.append(
       "redirect_uri",
@@ -257,7 +257,7 @@ export default function Home() {
         <div className="h-[72vh] w-full flex items-center flex-col mb-[60px] md:h-[630px]">
           <div className=" mt-[20px] mb-[40px] text-right max-w-[1140px] w-full">
             <button className="w-[178px] h-[50px] text-[#333] border border-[#333] text-base rounded-[4px] cursor-text font-semibold">
-              {truncatedAccountHash(account as string)}
+              {truncatedAccountHash(walletCurrentAddress as string)}
             </button>
           </div>
           <p className="text-[#333] text-center text-[26px]  leading-[32px] mb-[16px] font-display md:text-[34px]  md:leading-[40px] capitalize">

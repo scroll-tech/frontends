@@ -87,11 +87,12 @@ const useStyles = makeStyles()((theme) => ({
 }));
 
 const AddressButton = () => {
-  const { address, disconnectWallet } = useWeb3Context();
+  const { walletCurrentAddress, disconnectWallet } = useWeb3Context();
   const {
     txHistory: { refreshPageTransactions },
   } = useApp();
   const { historyVisible, changeHistoryVisible } = useBridgeStore();
+  const [open, setOpen] = useState(false);
   const buttonRef = useRef(null);
 
   const { classes, cx } = useStyles();
@@ -113,7 +114,7 @@ const AddressButton = () => {
   return (
     <>
       <Button ref={buttonRef} variant="outlined" large onClick={handleOpen}>
-        {truncateAddress(address)}
+        {truncateAddress(walletCurrentAddress as string)}
       </Button>
       <Backdrop open={historyVisible} className={classes.backdrop}>
         <Popper

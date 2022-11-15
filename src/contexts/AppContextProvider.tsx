@@ -25,7 +25,7 @@ type AppContextProps = {
 const AppContext = createContext<AppContextProps | undefined>(undefined);
 
 const AppContextProvider = ({ children }: any) => {
-  const { provider, address, connectedNetworkId } = useWeb3Context();
+  const { provider, walletCurrentAddress, chainId } = useWeb3Context();
 
   const [networksAndSigners, setNetworksAndSigners] = useState({
     [ChainId.SCROLL_LAYER_1]: {},
@@ -80,10 +80,10 @@ const AppContextProvider = ({ children }: any) => {
   };
 
   useEffect(() => {
-    if (provider && address) {
-      update(provider, address.toString());
+    if (provider && walletCurrentAddress) {
+      update(provider, walletCurrentAddress);
     }
-  }, [provider, address, connectedNetworkId]);
+  }, [provider, walletCurrentAddress, chainId]);
 
   return (
     <AppContext.Provider

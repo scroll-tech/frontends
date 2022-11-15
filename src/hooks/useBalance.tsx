@@ -46,19 +46,17 @@ async function fetchBalance(
 }
 
 const useBalance = (token: any, networksAndSigners?: any, network?: any) => {
-  const { address, connectedNetworkId } = useWeb3Context();
-  const queryKey = `${token?.symbol}:${
-    network?.name
-  }:${address?.toString()}:${connectedNetworkId?.toString()}`;
+  const { walletCurrentAddress, chainId } = useWeb3Context();
+  const queryKey = `${token?.symbol}:${network?.name}:${walletCurrentAddress}:${chainId}`;
   const { isLoading, isError, data, error } = useQuery(
     [queryKey],
     async () => {
-      if (token && address) {
+      if (token && walletCurrentAddress) {
         return await fetchBalance(
           token,
           networksAndSigners,
           network,
-          address.toString()
+          walletCurrentAddress
         );
       }
     },

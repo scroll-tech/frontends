@@ -23,9 +23,9 @@ import { networks } from "@/constants";
 type Props = {
   onboard: any;
   provider: providers.Web3Provider | undefined;
-  address: any;
+  walletCurrentAddress?: string;
   balance?: BigNumber;
-  connectedNetworkId: number | undefined;
+  chainId?: number;
   connectWallet: () => void;
   disconnectWallet: () => void;
   walletName: string | undefined;
@@ -162,8 +162,8 @@ const Web3ContextProvider = ({ children }: any) => {
       value={{
         onboard,
         provider,
-        address: wallet?.accounts[0]?.address,
-        connectedNetworkId: connectedChain
+        walletCurrentAddress: wallet?.accounts[0]?.address,
+        chainId: connectedChain
           ? convertHexadecimal(connectedChain.id)
           : undefined,
         connectWallet,
