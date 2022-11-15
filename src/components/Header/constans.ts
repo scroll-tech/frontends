@@ -17,8 +17,8 @@ const navigations = [
   {
     label: "Swap",
     key: "swap",
-    href: "https://prealpha.scroll.io/swap",
-    isExternal: true,
+    href: "/swap",
+    isExternal: false,
   },
   {
     label: "Explorers",
@@ -32,13 +32,13 @@ const navigations = [
       {
         label: "L1 Block Explorer",
         key: "l1BlockExplorer",
-        href: "https://l1scan.scroll.io/",
+        href: process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L1,
         isExternal: true,
       },
       {
         label: "L2 Block Explorer",
         key: "l2BlockExplorer",
-        href: "https://l2scan.scroll.io/",
+        href: process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L2,
         isExternal: true,
       },
     ],
