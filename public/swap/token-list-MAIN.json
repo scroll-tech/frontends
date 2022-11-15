@@ -1,0 +1,29 @@
+{
+  "name": "Scroll L2 Tokens",
+  "logoURI": "https://scroll.io/img/logo.png",
+  "keywords": ["defi", "DEFI"],
+  "timestamp": "2022-09-19T00:00:00.000Z",
+  "tokens": [
+    {
+      "chainId": 534354,
+      "address": "0x80732890c93c6D9c6C23E06F888eD0CB88A06018",
+      "name": "TSUSDC",
+      "symbol": "TSUSDC",
+      "decimals": 18,
+      "logoURI": "https://prealpha.scroll.io/swap/images/usd-coin.png"
+    },
+    {
+      "chainId": 534354,
+      "address": "0x05fDbDfaE180345C6Cff5316c286727CF1a43327",
+      "name": "TSWETH",
+      "symbol": "TSWETH",
+      "decimals": 18,
+      "logoURI": "https://prealpha.scroll.io/swap/images/weth.png"
+    }
+  ],
+  "version": {
+    "major": 3,
+    "minor": 0,
+    "patch": 0
+  }
+}

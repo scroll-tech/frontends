@@ -140,10 +140,10 @@ const Send: FC = () => {
     }
   }, [sending]);
 
-  const txValue = useMemo(
-    () => `${fromTokenAmount} ${selectedToken.symbol}`,
-    [fromTokenAmount, selectedToken]
-  );
+  const txValue = useMemo(() => `${fromTokenAmount} ${selectedToken.symbol}`, [
+    fromTokenAmount,
+    selectedToken,
+  ]);
 
   const { checkApproval } = useApprove(selectedToken);
 
@@ -172,7 +172,7 @@ const Send: FC = () => {
         Token,
         StandardERC20GatewayProxyAddr[connectedNetworkId]
       );
-    } catch (err: any) {
+    } catch (err) {
       console.log("~~~err", err);
       return false;
     }

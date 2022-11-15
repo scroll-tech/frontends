@@ -1,0 +1,37 @@
+{
+  "name": "STAGING SCRL2 Tokens",
+  "logoURI": "https://scroll.io/img/logo.png",
+  "keywords": ["defi", "DEFI"],
+  "timestamp": "2022-09-19T00:00:00.000Z",
+  "tokens": [
+    {
+      "chainId": 5343541,
+      "address": "0xbe3763173594A13be39E8Ab199BF4132294a74BA",
+      "name": "TSUSDC",
+      "symbol": "TSUSDC",
+      "decimals": 18,
+      "logoURI": "https://staging-prealpha.scroll.io/swap/images/usd-coin.png"
+    },
+    {
+      "chainId": 5343541,
+      "address": "0xd98a852133bE69178d9EfDc168848684b1dEf608",
+      "name": "TSWETH",
+      "symbol": "TSWETH",
+      "decimals": 18,
+      "logoURI": "https://staging-prealpha.scroll.io/swap/images/weth.png"
+    },
+    {
+      "chainId": 5343541,
+      "address": "0x4f4eb5ac461c115191390d1760109f1ea185e609",
+      "name": "TSUNI2",
+      "symbol": "TSUNI2",
+      "decimals": 18,
+      "logoURI": "https://staging-prealpha.scroll.io/swap/images/uni-v2.png"
+    }
+  ],
+  "version": {
+    "major": 3,
+    "minor": 0,
+    "patch": 0
+  }
+}
