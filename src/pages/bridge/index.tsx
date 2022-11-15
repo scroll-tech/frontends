@@ -5,9 +5,9 @@ import AppProvider from "@/contexts/AppContextProvider";
 import ThemeProvider from "./theme";
 import Header from "./Header";
 import Content from "./Content";
-import styles from "./index.module.css";
 import BridgeTitle from "./BridgeTitle";
 import FAQ from "./FAQ";
+import styles from "./index.module.css";
 
 export const muiCache = createCache({
   key: "mui",
