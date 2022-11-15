@@ -53,6 +53,10 @@ const web3Onboard = init({
     name: "Scroll",
     icon: "https://scroll.io/img/logo.png",
     description: "Scroll Prealpha",
+    recommendedInjectedWallets: [
+      { name: "MetaMask", url: "https://metamask.io" },
+      { name: "BlockWallet", url: "https://blockwallet.io" },
+    ],
   },
   // i18n: {
   //   en: {
