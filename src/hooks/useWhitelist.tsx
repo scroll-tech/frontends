@@ -1,12 +1,6 @@
-import React, {
-  useCallback,
-  useEffect,
-  useState,
-  useContext,
-  createContext,
-} from "react";
-import { useMetaMask } from "metamask-react";
+import React, { useEffect, useState, useContext, createContext } from "react";
 import LC from "leancloud-storage";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 
 export const WalletConnectedStatus = {
   INITIALIZING: "initializing",
@@ -31,7 +25,7 @@ const WhitelistContext = createContext<WhitelistContextProps>({
 });
 
 export const WhitelistContextProvider = (props: Props) => {
-  const { status, connect, account, chainId, ethereum } = useMetaMask();
+  const { walletCurrentAddress } = useWeb3Context();
   const [hasPermission, setHasPermission] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -45,12 +39,12 @@ export const WhitelistContextProvider = (props: Props) => {
   }, []);
 
   useEffect(() => {
-    if (status === WalletConnectedStatus.CONNECTED && account) {
+    if (walletCurrentAddress) {
       setHasPermission(true);
     } else {
       setHasPermission(false);
     }
-  }, [status, account]);
+  }, [walletCurrentAddress]);
   if (!hasPermission) {
     return props.fallback(hasPermission, loading);
   }

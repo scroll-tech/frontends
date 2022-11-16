@@ -12,7 +12,7 @@ export interface TxHistory {
 }
 
 const useTxHistory = (networksAndSigners) => {
-  const { connectedNetworkId, address } = useWeb3Context();
+  const { chainId, walletCurrentAddress } = useWeb3Context();
   const {
     transactions,
     pageTransactions,
@@ -48,7 +48,7 @@ const useTxHistory = (networksAndSigners) => {
         (item) => !item.toHash
       );
 
-      if (needToRefreshTransactions.length && address) {
+      if (needToRefreshTransactions.length && walletCurrentAddress) {
         const txs = needToRefreshTransactions
           .map((item) => item.hash)
           .filter((item, index, arr) => index === arr.indexOf(item));
@@ -66,11 +66,13 @@ const useTxHistory = (networksAndSigners) => {
   );
 
   const fetchBlockNumber = useCallback(async () => {
-    if (connectedNetworkId) {
-      const fetchL1blockNumber =
-        networksAndSigners[ChainId.SCROLL_LAYER_1].provider.getBlockNumber();
-      const fetchL2BlockNumber =
-        networksAndSigners[ChainId.SCROLL_LAYER_2].provider.getBlockNumber();
+    if (chainId) {
+      const fetchL1blockNumber = networksAndSigners[
+        ChainId.SCROLL_LAYER_1
+      ].provider.getBlockNumber();
+      const fetchL2BlockNumber = networksAndSigners[
+        ChainId.SCROLL_LAYER_2
+      ].provider.getBlockNumber();
 
       const blockNumbers = await Promise.allSettled([
         fetchL1blockNumber,
@@ -82,7 +84,7 @@ const useTxHistory = (networksAndSigners) => {
       );
     }
     return null;
-  }, [networksAndSigners, connectedNetworkId]);
+  }, [networksAndSigners, chainId]);
 
   const { data: blockNumbers } = useSWR<any>(
     "eth_blockNumber",
@@ -96,15 +98,15 @@ const useTxHistory = (networksAndSigners) => {
 
   const refreshPageTransactions = useCallback(
     (page) => {
-      if (address) {
+      if (walletCurrentAddress) {
         try {
-          comboPageTransactions(address, page, BRIDGE_PAGE_SIZE);
-        } catch (e: any) {
-          setErrorMessage(e.toString());
+          comboPageTransactions(walletCurrentAddress, page, BRIDGE_PAGE_SIZE);
+        } catch (e) {
+          setErrorMessage((e as any).toString());
         }
       }
     },
-    [address]
+    [walletCurrentAddress]
   );
 
   useEffect(() => {

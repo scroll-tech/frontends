@@ -1,23 +1,9 @@
-import { useMetaMask } from "metamask-react";
-import { useEffect, useState } from "react";
-import { TESTNET_NAME } from "@/constants";
-import {
-  WalletConnectedStatus,
-  WhitelistContextProps,
-} from "@/hooks/useWhitelist";
-import { Box, Link, Button, Stack, Fade, Container } from "@mui/material";
+import { WhitelistContextProps } from "@/hooks/useWhitelist";
+import { Button } from "@mui/material";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 
 const Login = ({ hasPermission, loading }: WhitelistContextProps) => {
-  const { status, connect, account, chainId, ethereum } = useMetaMask();
-  const [autoConnect, setAutoConnect] = useState(false);
-  useEffect(() => {
-    // if (ethereum === null) {
-    //   setAutoConnect(true);
-    // }
-    // if (status === WalletConnectedStatus.NOT_CONNECTED && autoConnect) {
-    //   connect();
-    // }
-  }, [ethereum]);
+  const { walletCurrentAddress, connectWallet } = useWeb3Context();
 
   return (
     <main className="h-[100vh] flex justify-center items-center flex-col px-[16px]">
@@ -33,7 +19,7 @@ const Login = ({ hasPermission, loading }: WhitelistContextProps) => {
         Scroll is a zkEVM-based zkRollup on Ethereum which enables native
         compatibility for existing Ethereum applications and tools.
       </p>
-      {account ? (
+      {walletCurrentAddress ? (
         <div className="bg-[#FFF8CB] rounded-[10px] py-[18px] px-[28px] max-w-[390px] text-center mt-[24px] md:py-[24px] md:px-[32px]">
           <img
             alt="warning logo"
@@ -53,27 +39,14 @@ const Login = ({ hasPermission, loading }: WhitelistContextProps) => {
         </div>
       ) : (
         <>
-          {status === WalletConnectedStatus.UNAVAILABLE ? (
-            <Button
-              onClick={() => {
-                window.location.href = "https://metamask.io/download/";
-              }}
-              color="primary"
-              variant="contained"
-              sx={{ marginTop: "25px" }}
-            >
-              Download MetaMask here
-            </Button>
-          ) : (
-            <Button
-              onClick={() => connect()}
-              color="primary"
-              variant="contained"
-              sx={{ marginTop: "25px" }}
-            >
-              Connect Metamask Wallet
-            </Button>
-          )}
+          <Button
+            onClick={connectWallet}
+            color="primary"
+            variant="contained"
+            sx={{ marginTop: "25px" }}
+          >
+            Connect Wallet
+          </Button>
 
           <p className=" mt-[18px] text-[#595959]">
             Address not whitelisted yet?{" "}

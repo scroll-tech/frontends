@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { MetaMaskProvider } from "metamask-react";
+import Web3Provider from "@/contexts/Web3ContextProvider";
 import { WhitelistContextProvider } from "./hooks/useWhitelist";
 import AppWrapper from "./contexts";
 import Login from "./pages/login";
@@ -17,7 +17,7 @@ import ScrollToTop from "@/hooks/useScrollToTop";
 function App() {
   return (
     <div className="App bg-white min-h-[100vh]">
-      <MetaMaskProvider>
+      <Web3Provider>
         <AppWrapper>
           <WhitelistContextProvider
             fallback={(hasPermission: boolean, loading: boolean) => (
@@ -41,7 +41,7 @@ function App() {
             </ScrollToTop>
           </WhitelistContextProvider>
         </AppWrapper>
-      </MetaMaskProvider>
+      </Web3Provider>
     </div>
   );
 }

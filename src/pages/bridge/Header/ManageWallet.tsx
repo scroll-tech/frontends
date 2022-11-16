@@ -8,7 +8,7 @@ import { truncateAddress } from "@/utils";
 
 const ManageWallet = (props: any) => {
   const { classes, onDisconnect } = props;
-  const { address } = useWeb3Context();
+  const { walletCurrentAddress } = useWeb3Context();
 
   return (
     <div
@@ -20,10 +20,13 @@ const ManageWallet = (props: any) => {
       )}
     >
       <Link className={classes.address} component="span" underline="none">
-        {truncateAddress(address)}
+        {truncateAddress(walletCurrentAddress as string)}
       </Link>
       <div className="flex">
-        <CopyButton value={address} className={classes.copyButton}></CopyButton>
+        <CopyButton
+          value={walletCurrentAddress}
+          className={classes.copyButton}
+        ></CopyButton>
         <MiniButton
           icon={ExitIcon}
           viewBox="0 0 17 17"

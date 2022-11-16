@@ -5,7 +5,6 @@ import "./index.css";
 import "./styles/globals.less";
 import { ThemeProvider } from "@mui/material/styles";
 import reportWebVitals from "./reportWebVitals";
-import { MetaMaskProvider } from "metamask-react";
 import { BrowserRouter } from "react-router-dom";
 import themeLight from "./theme/light";
 import "./styles/index.less";
@@ -16,11 +15,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={themeLight}>
-      <MetaMaskProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </MetaMaskProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </ThemeProvider>
   </React.StrictMode>
 );

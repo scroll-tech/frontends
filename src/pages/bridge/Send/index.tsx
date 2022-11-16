@@ -37,7 +37,7 @@ const Send: FC = () => {
   const [fromNetwork, setFromNetwork] = useState(networks[0]);
   const [toNetwork, setToNetwork] = useState(networks[1]);
   const [selectedToken, setSelectedToken] = useState(tokens[ETH_SYMBOL]);
-  const { checkConnectedNetworkId, connectedNetworkId } = useWeb3Context();
+  const { checkConnectedNetworkId, chainId } = useWeb3Context();
 
   const [fromTokenAmount, setFromTokenAmount] = useState<string>();
   const [sendError, setSendError] = useState<any>();
@@ -62,14 +62,14 @@ const Send: FC = () => {
   );
 
   useEffect(() => {
-    if (connectedNetworkId) {
-      connectedNetworkId === toNetwork.chainId && handleSwitchDirection();
+    if (chainId) {
+      chainId === toNetwork.chainId && handleSwitchDirection();
     }
-  }, [connectedNetworkId]);
+  }, [chainId]);
 
   const isCorrectNetwork = useMemo(
-    () => !!connectedNetworkId && fromNetwork.networkId === connectedNetworkId,
-    [connectedNetworkId, fromNetwork]
+    () => !!chainId && fromNetwork.networkId === chainId,
+    [chainId, fromNetwork]
   );
 
   const { sufficientBalance, warning } = useSufficientBalance(
@@ -154,7 +154,7 @@ const Send: FC = () => {
         networksAndSigners[ChainId.SCROLL_LAYER_2].gateway
       ) ||
       !Number(fromTokenAmount) ||
-      connectedNetworkId !== fromNetwork.chainId ||
+      chainId !== fromNetwork.chainId ||
       selectedToken.isNativeToken
     ) {
       return false;
@@ -165,12 +165,12 @@ const Send: FC = () => {
       const Token = new ethers.Contract(
         (selectedToken as any).address[fromNetwork.chainId],
         L1_erc20ABI,
-        networksAndSigners[connectedNetworkId].signer
+        networksAndSigners[chainId].signer
       );
       return checkApproval(
         parsedAmount,
         Token,
-        StandardERC20GatewayProxyAddr[connectedNetworkId]
+        StandardERC20GatewayProxyAddr[chainId]
       );
     } catch (err) {
       console.log("~~~err", err);
@@ -187,11 +187,10 @@ const Send: FC = () => {
     const Token = new ethers.Contract(
       (selectedToken as any).address[fromNetwork.chainId],
       L1_erc20ABI,
-      networksAndSigners[connectedNetworkId as number].signer
+      networksAndSigners[chainId as number].signer
     );
-    // console.log('aa', Token.address === selectedToken.address[fromNetwork.chainId])
     const tx = await Token.approve(
-      StandardERC20GatewayProxyAddr[connectedNetworkId as number],
+      StandardERC20GatewayProxyAddr[chainId as number],
       ethers.constants.MaxUint256
       // parsedAmount
     );
