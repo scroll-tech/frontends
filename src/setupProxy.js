@@ -1,6 +1,6 @@
 const { createProxyMiddleware } = require("http-proxy-middleware");
 
-module.exports = function (app) {
+module.exports = function(app) {
   app.use(
     "/faucetapi",
     createProxyMiddleware({
@@ -12,8 +12,7 @@ module.exports = function (app) {
   app.use(
     "/bridgeapi",
     createProxyMiddleware({
-      target: "http://192.168.50.2:3000",
-      // target: process.env.REACT_APP_BASE_URI + "/bridgehistoryapi",
+      target: process.env.REACT_APP_BASE_URI + "/bridgehistoryapi",
       changeOrigin: true,
       secure: false,
       pathRewrite: { "/bridgeapi": "/api" },

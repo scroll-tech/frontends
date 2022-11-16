@@ -52,12 +52,10 @@ const Send: FC = () => {
   };
   const { balance: fromBalance, loading: loadingFromBalance } = useBalance(
     selectedToken,
-    networksAndSigners,
     fromNetwork
   );
   const { balance: toBalance, loading: loadingToBalance } = useBalance(
     selectedToken,
-    networksAndSigners,
     toNetwork
   );
 
