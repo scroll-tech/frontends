@@ -2,20 +2,26 @@ import { NavLink } from "react-router-dom";
 import * as React from "react";
 import { ExpandMore } from "@mui/icons-material";
 import { Box, Link, Button, Stack, Fade, Container } from "@mui/material";
+// import { styled } from '@mui/material/styles';
 import { styled } from "@mui/system";
 import navigations from "./constans";
 
 const StyledBox = styled(Stack)(
   ({ theme }) => `
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+  background-color: #fff;
   border-bottom: 1px solid ${theme.palette.border.main};
-`
+  `
 );
-
 const HeaderContainer = styled(Container)(
   ({ theme }) => `
    display: flex;
    justify-content: space-between;
    align-items: center;
+   
   `
 );
 const LinkStyledButton = styled(NavLink)(

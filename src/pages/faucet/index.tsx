@@ -250,7 +250,7 @@ export default function Home() {
     <>
       <main className="px-[16px] faucet-app">
         <div className="h-[72vh] w-full flex items-center flex-col mb-[60px] md:h-[630px]">
-          <div className=" mt-[30px] mb-[40px] text-right max-w-[1268px] px-[8px] w-full">
+          <div className=" mt-[30px] mb-[80px] text-right max-w-[1268px] px-[8px] w-full">
             <button className="w-[178px] h-[50px] text-[#333] border border-[#333] text-base rounded-[4px] cursor-text font-semibold">
               {truncateAddress(walletCurrentAddress as string)}
             </button>
