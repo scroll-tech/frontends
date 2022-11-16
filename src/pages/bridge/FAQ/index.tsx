@@ -56,29 +56,6 @@ const FAQ = () => {
           expandIcon={<ExpandMoreIcon color="secondary" />}
           id="1"
         >
-          <Typography variant="h6">What is a blockchain Bridge?</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography variant="body1" color="textSecondary">
-            All blockchains develop in isolated environments, this means they
-            cannot natively communicate, and tokens cannot move freely between
-            blockchains.
-          </Typography>
-          <Typography
-            variant="body1"
-            color="textSecondary"
-            className={classes.specialParagraph}
-          >
-            A blockchain bridge is a tool connecting two blockchains to enable
-            interactions between them.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon color="secondary" />}
-          id="2"
-        >
           <Typography variant="h6">How do I get started?</Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -133,6 +110,30 @@ const FAQ = () => {
           </Typography>
         </AccordionDetails>
       </Accordion>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon color="secondary" />}
+          id="2"
+        >
+          <Typography variant="h6">What is a blockchain Bridge?</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography variant="body1" color="textSecondary">
+            All blockchains develop in isolated environments, this means they
+            cannot natively communicate, and tokens cannot move freely between
+            blockchains.
+          </Typography>
+          <Typography
+            variant="body1"
+            color="textSecondary"
+            className={classes.specialParagraph}
+          >
+            A blockchain bridge is a tool connecting two blockchains to enable
+            interactions between them.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon color="secondary" />}

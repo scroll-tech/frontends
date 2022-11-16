@@ -97,7 +97,7 @@ const TxTable = (props: any) => {
               <TableRow>
                 <TableCell>Status</TableCell>
                 <TableCell>Amount</TableCell>
-                <TableCell>Tx Hash</TableCell>
+                <TableCell>Txn Hash</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

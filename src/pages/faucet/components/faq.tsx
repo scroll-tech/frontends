@@ -70,24 +70,6 @@ export default function CustomizedAccordions() {
       >
         <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
           <h2 className="h-[56px] font-medium flex  items-center leading-[26px] border-[#C9CBCE] border-bottom-[1px] text-[18px] text-[#333]  md:text-[20px] md:h-[96px]">
-            What is a testnet faucet?
-          </h2>
-        </AccordionSummary>
-        <AccordionDetails>
-          <p className="text-[16px] leading-[26px] pb-[40px] text-[#595959] max-w-[680px]">
-            Testnets act like a sandbox, where developers can test out features
-            before the mainnet launch. Users provide their wallet address and in
-            exchange receive ‘’test tokens’’ (no real world value), to interact
-            with the testnet and share feedback.
-          </p>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion
-        expanded={expanded === "panel2"}
-        onChange={handleChange("panel2")}
-      >
-        <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-          <h2 className="h-[56px] font-medium flex  items-center leading-[26px] border-[#C9CBCE] border-bottom-[1px] text-[18px] text-[#333]  md:text-[20px] md:h-[96px]">
             How do I get started?
           </h2>
         </AccordionSummary>
@@ -101,7 +83,7 @@ export default function CustomizedAccordions() {
                 <NavLink className="link-button" to={SiteMap.Faucet}>
                   Faucet
                 </NavLink>
-                ,to the Scroll L1 {TESTNET_NAME} network.
+                , to the Scroll L1 {TESTNET_NAME} network.
               </li>
               <li>
                 Transfer and withdraw test tokens in{" "}
@@ -122,11 +104,11 @@ export default function CustomizedAccordions() {
                 <a className="link-button" href={l1ExplorerUrl}>
                   Scroll L1
                 </a>
-                ,
+                ,{" "}
                 <a className="link-button" href={l2ExplorerUrl}>
                   Scroll L2
-                </a>
-                Block Explorers and the
+                </a>{" "}
+                Block Explorers and the{" "}
                 <NavLink className="link-button" to={SiteMap.RollupExplorer}>
                   Rollup Explorer
                 </NavLink>
@@ -139,6 +121,24 @@ export default function CustomizedAccordions() {
               here
             </NavLink>
           </div>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion
+        expanded={expanded === "panel2"}
+        onChange={handleChange("panel2")}
+      >
+        <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
+          <h2 className="h-[56px] font-medium flex  items-center leading-[26px] border-[#C9CBCE] border-bottom-[1px] text-[18px] text-[#333]  md:text-[20px] md:h-[96px]">
+            What is a testnet faucet?
+          </h2>
+        </AccordionSummary>
+        <AccordionDetails>
+          <p className="text-[16px] leading-[26px] pb-[40px] text-[#595959] max-w-[680px]">
+            Testnets act like a sandbox, where developers can test out features
+            before the mainnet launch. Users provide their wallet address and in
+            exchange receive ‘’test tokens’’ (no real world value), to interact
+            with the testnet and share feedback.
+          </p>
         </AccordionDetails>
       </Accordion>
       <Accordion
