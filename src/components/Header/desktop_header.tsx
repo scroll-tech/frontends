@@ -8,7 +8,7 @@ import navigations from "./constans";
 
 const StyledBox = styled(Stack)(
   ({ theme }) => `
-  position: fixed;
+  position: sticky;
   top: 0;
   width: 100%;
   z-index: 999;

@@ -2,14 +2,14 @@ import create from "zustand";
 
 interface VisibleStore {
   historyVisible: boolean;
-  bridgeFormVisible: boolean;
+  recentTxVisible: boolean;
   changeHistoryVisible: (value) => void;
-  changeBridgeFormVisible: (value) => void;
+  changeRecentTxVisible: (value) => void;
 }
 
 const useBridgeStore = create<VisibleStore>()((set, get) => ({
   historyVisible: false,
-  bridgeFormVisible: false,
+  recentTxVisible: false,
 
   changeHistoryVisible: (value) => {
     set({
@@ -17,9 +17,9 @@ const useBridgeStore = create<VisibleStore>()((set, get) => ({
     });
   },
 
-  changeBridgeFormVisible: (value) => {
+  changeRecentTxVisible: (value) => {
     set({
-      bridgeFormVisible: value,
+      recentTxVisible: value,
     });
   },
 }));

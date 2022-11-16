@@ -25,12 +25,12 @@ const useStyles = makeStyles()((theme) => ({
 
 const RencentTx = (props: any) => {
   const { transactions } = useTxStore();
-  const { changeBridgeFormVisible } = useBridgeStore();
+  const { changeRecentTxVisible } = useBridgeStore();
 
   const { classes } = useStyles();
 
   const handleGoBridge = () => {
-    changeBridgeFormVisible(true);
+    changeRecentTxVisible(false);
   };
   return (
     <div className={classes.wrapper}>

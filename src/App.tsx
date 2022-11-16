@@ -16,7 +16,7 @@ import ScrollToTop from "@/hooks/useScrollToTop";
 
 function App() {
   return (
-    <div className="App bg-white min-h-[100vh] pt-[82px]">
+    <div className="App bg-white min-h-[100vh]">
       <Web3Provider>
         <AppWrapper>
           <WhitelistContextProvider
