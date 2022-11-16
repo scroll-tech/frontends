@@ -26,7 +26,7 @@ const LinkStyledButton = styled(NavLink)(
   padding-right: 25px;
   margin-left: 4px;
   margin-right: 4px;
-  line-height: 72px;
+  line-height: 82px;
   position: relative;
   &:after {
     content: '';
@@ -76,7 +76,7 @@ const SubMenuButton = styled(Box)(
     padding-right: 25px;
     margin-left: 4px;
     margin-right: 4px;
-    line-height: 72px;
+    line-height: 82px;
     position: relative;
     cursor: pointer;
     &:after {

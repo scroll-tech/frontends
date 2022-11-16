@@ -9,6 +9,7 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { getAddress } from "@ethersproject/address";
 import Button from "@/components/Button/Button";
+import { truncateAddress, truncateHash } from "@/utils";
 import { signInTwitter } from "./helper";
 import "./index.less";
 // import useSWR from 'swr'
@@ -79,14 +80,6 @@ export default function Home() {
     fetchInfo();
   }, []);
 
-  const truncatedAccountHash = (hash: string) => {
-    return hash ? `${hash.substring(0, 5)}…${hash.substring(38, 42)}` : "-";
-  };
-
-  const truncatedTxHash = (hash: string) => {
-    return hash ? `${hash.substring(0, 6)}…${hash.substring(38, 42)}` : "-";
-  };
-
   const switchNetwork = async () => {
     await window.ethereum.request({
       method: "wallet_addEthereumChain",
@@ -114,7 +107,9 @@ export default function Home() {
     );
     if (res.ok) {
       const TxHashData = await res.json();
-      const canClaimFrom = dayjs().add(1, "day").format("YYYY-MM-DD H:m:s");
+      const canClaimFrom = dayjs()
+        .add(1, "day")
+        .format("YYYY-MM-DD H:m:s");
       setCanClaimFrom(canClaimFrom);
       setTxHashData(TxHashData);
       localStorage.setItem(CAN_CLAIM_FROM, canClaimFrom);
@@ -215,7 +210,7 @@ export default function Home() {
                         target="_blank"
                         rel="noreferrer"
                       >
-                        {truncatedTxHash(TxHashData.eth_tx_hash)}
+                        {truncateHash(TxHashData.eth_tx_hash)}
                       </a>
                     </td>
                   </tr>
@@ -238,7 +233,7 @@ export default function Home() {
                         target="_blank"
                         rel="noreferrer"
                       >
-                        {truncatedTxHash(TxHashData.erc20_tx_hash)}
+                        {truncateHash(TxHashData.erc20_tx_hash)}
                       </a>
                     </td>
                   </tr>
@@ -255,9 +250,9 @@ export default function Home() {
     <>
       <main className="px-[16px] faucet-app">
         <div className="h-[72vh] w-full flex items-center flex-col mb-[60px] md:h-[630px]">
-          <div className=" mt-[20px] mb-[40px] text-right max-w-[1140px] w-full">
+          <div className=" mt-[30px] mb-[40px] text-right max-w-[1268px] px-[8px] w-full">
             <button className="w-[178px] h-[50px] text-[#333] border border-[#333] text-base rounded-[4px] cursor-text font-semibold">
-              {truncatedAccountHash(walletCurrentAddress as string)}
+              {truncateAddress(walletCurrentAddress as string)}
             </button>
           </div>
           <p className="text-[#333] text-center text-[26px]  leading-[32px] mb-[16px] font-display md:text-[34px]  md:leading-[40px] capitalize">

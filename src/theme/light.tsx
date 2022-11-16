@@ -67,6 +67,10 @@ const light: ThemeOptions = createTheme({
   palette: {
     ...palette,
   },
+  // TODO: typographyOptions out of use, side effects can't be determined
+  typography: {
+    fontFamily: "SF UI Text",
+  },
   components: {
     MuiContainer: {
       styleOverrides: {
@@ -85,12 +89,13 @@ const light: ThemeOptions = createTheme({
       styleOverrides: {
         root: {
           fontSize: "16px",
+          fontWeight: 600,
           lineHeight: "1",
           padding: "16px 28px",
           textTransform: "inherit",
           whiteSpace: "nowrap",
           "&:hover": {
-            boxShadow: "6px 9px 0px 0px #fee7e0",
+            boxShadow: "#FEE7E0 0.4rem 0.4rem",
           },
         },
       },
@@ -108,6 +113,7 @@ const light: ThemeOptions = createTheme({
             background: "#ffffff",
             borderColor: colors.charcoal.DEFAULT,
             color: colors.charcoal.DEFAULT,
+            border: `1px solid ${colors.charcoal.DEFAULT}`,
             "&:hover": {
               background: "#ffffff",
               color: colors.orange.DEFAULT,
