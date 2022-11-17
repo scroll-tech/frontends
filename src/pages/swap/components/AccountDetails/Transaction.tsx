@@ -1,8 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { CheckCircle, Triangle } from "react-feather";
-
-import { useActiveWeb3React } from "../../hooks";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import { getEtherscanLink } from "../../utils";
 import { ExternalLink } from "../../theme";
 import { useAllTransactions } from "../../state/transactions/hooks";
@@ -41,7 +40,7 @@ const IconWrapper = styled.div<{ pending: boolean; success?: boolean }>`
 `;
 
 export default function Transaction({ hash }: { hash: string }) {
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3Context();
   const allTransactions = useAllTransactions();
 
   const tx = allTransactions?.[hash];

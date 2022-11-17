@@ -4,6 +4,7 @@ import {
   useEffect,
   useCallback,
   useState,
+  useMemo,
 } from "react";
 import {
   init,
@@ -12,6 +13,7 @@ import {
   useWallets,
 } from "@web3-onboard/react";
 import injectedModule from "@web3-onboard/injected-wallets";
+import { getAddress } from "@ethersproject/address";
 import { ethers, BigNumber, providers } from "ethers";
 import useTxStore from "@/stores/txStore";
 
@@ -29,7 +31,7 @@ type Props = {
   connectWallet: () => void;
   disconnectWallet: () => void;
   walletName: string | undefined;
-  checkConnectedNetworkId: (networkId: number) => Promise<boolean>;
+  checkConnectedChainId: (networkId: number) => boolean;
 };
 
 const Web3Context = createContext<Props | undefined>(undefined);
@@ -148,8 +150,8 @@ const Web3ContextProvider = ({ children }: any) => {
     }
   };
 
-  const checkConnectedNetworkId = useCallback(
-    async (networkId: number): Promise<boolean> => {
+  const checkConnectedChainId = useCallback(
+    (networkId: number): boolean => {
       if (
         connectedChain &&
         networkId === convertHexadecimal(connectedChain.id)
@@ -161,19 +163,27 @@ const Web3ContextProvider = ({ children }: any) => {
     [connectedChain]
   );
 
+  const walletCurrentAddress = useMemo(
+    () =>
+      wallet?.accounts[0]?.address
+        ? getAddress(wallet.accounts[0].address)
+        : undefined,
+    [wallet]
+  );
+
   return (
     <Web3Context.Provider
       value={{
         onboard,
         provider,
-        walletCurrentAddress: wallet?.accounts[0]?.address,
+        walletCurrentAddress,
         chainId: connectedChain
           ? convertHexadecimal(connectedChain.id)
           : undefined,
         connectWallet,
         disconnectWallet,
         walletName: wallet?.label,
-        checkConnectedNetworkId,
+        checkConnectedChainId,
       }}
     >
       {children}

@@ -1,17 +1,17 @@
 import { useMemo } from "react";
 import { JSBI } from "uniswap-v2-sdk-scroll";
 import { NEVER_RELOAD, useSingleCallResult } from "../state/multicall/hooks";
-import { useActiveWeb3React } from "./index";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import { useSocksController } from "./useContract";
 
 export default function useSocksBalance(): JSBI | undefined {
-  const { account } = useActiveWeb3React();
+  const { walletCurrentAddress } = useWeb3Context();
   const socksContract = useSocksController();
 
   const { result } = useSingleCallResult(
     socksContract,
     "balanceOf",
-    [account ?? undefined],
+    [walletCurrentAddress ?? undefined],
     NEVER_RELOAD
   );
   const data = result?.[0];

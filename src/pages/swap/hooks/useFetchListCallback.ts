@@ -3,22 +3,22 @@ import { TokenList } from "@uniswap/token-lists";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { ChainId } from "uniswap-v2-sdk-scroll";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import { getNetworkLibrary, NETWORK_CHAIN_ID } from "../connectors";
 import { AppDispatch } from "../state";
 import { fetchTokenList } from "../state/lists/actions";
 import getTokenList from "../utils/getTokenList";
 import resolveENSContentHash from "../utils/resolveENSContentHash";
-import { useActiveWeb3React } from "./index";
 
 export function useFetchListCallback(): (
   listUrl: string
 ) => Promise<TokenList> {
-  const { chainId, library } = useActiveWeb3React();
+  const { chainId, provider } = useWeb3Context();
   const dispatch = useDispatch<AppDispatch>();
 
   const ensResolver = useCallback(
     (ensName: string) => {
-      if (!library || chainId !== ChainId.MAINNET) {
+      if (!provider || chainId !== ChainId.MAINNET) {
         if (NETWORK_CHAIN_ID === ChainId.MAINNET) {
           const networkLibrary = getNetworkLibrary();
           if (networkLibrary) {
@@ -27,9 +27,9 @@ export function useFetchListCallback(): (
         }
         throw new Error("Could not construct mainnet ENS resolver");
       }
-      return resolveENSContentHash(ensName, library);
+      return resolveENSContentHash(ensName, provider);
     },
-    [chainId, library]
+    [chainId, provider]
   );
 
   return useCallback(

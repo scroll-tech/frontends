@@ -1,7 +1,7 @@
 import React, { useCallback, useContext } from "react";
 import { useDispatch } from "react-redux";
 import styled, { ThemeContext } from "styled-components";
-import { useActiveWeb3React } from "../../hooks";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import { AppDispatch } from "../../state";
 import { clearAllTransactions } from "../../state/transactions/actions";
 import { shortenAddress } from "../../utils";
@@ -9,20 +9,8 @@ import { AutoRow } from "../Row";
 import Copy from "./Copy";
 import Transaction from "./Transaction";
 
-import { SUPPORTED_WALLETS } from "../../constants";
 import { ReactComponent as Close } from "../../assets/images/x.svg";
 import { getEtherscanLink } from "../../utils";
-import {
-  injected,
-  walletconnect,
-  walletlink,
-  fortmatic,
-  portis,
-} from "../../connectors";
-import CoinbaseWalletIcon from "../../assets/images/coinbaseWalletIcon.svg";
-import WalletConnectIcon from "../../assets/images/walletConnectIcon.svg";
-import FortmaticIcon from "../../assets/images/fortmaticIcon.png";
-import PortisIcon from "../../assets/images/portisIcon.png";
 import Identicon from "../Identicon";
 import { ButtonSecondary } from "../Button";
 import { ExternalLink as LinkIcon } from "react-feather";
@@ -204,10 +192,6 @@ const WalletAction = styled(ButtonSecondary)`
   }
 `;
 
-const MainWalletAction = styled(WalletAction)`
-  color: ${({ theme }) => theme.primary1};
-`;
-
 function renderTransactions(transactions: string[]) {
   return (
     <TransactionListWrapper>
@@ -233,65 +217,24 @@ export default function AccountDetails({
   ENSName,
   openOptions,
 }: AccountDetailsProps) {
-  const { chainId, account, connector } = useActiveWeb3React();
+  const { disconnectWallet, chainId, walletCurrentAddress } = useWeb3Context();
   const theme = useContext(ThemeContext);
   const dispatch = useDispatch<AppDispatch>();
 
   function formatConnectorName() {
     const { ethereum } = window;
     const isMetaMask = !!(ethereum && ethereum.isMetaMask);
-    const name = Object.keys(SUPPORTED_WALLETS)
-      .filter(
-        (k) =>
-          SUPPORTED_WALLETS[k].connector === connector &&
-          (connector !== injected || isMetaMask === (k === "METAMASK"))
-      )
-      .map((k) => SUPPORTED_WALLETS[k].name)[0];
+    // TODO: need to optimize
+    const name = isMetaMask ? "MetaMask" : "BlockWallet";
     return <WalletName>Connected with {name}</WalletName>;
   }
 
   function getStatusIcon() {
-    if (connector === injected) {
-      return (
-        <IconWrapper size={16}>
-          <Identicon />
-        </IconWrapper>
-      );
-    } else if (connector === walletconnect) {
-      return (
-        <IconWrapper size={16}>
-          <img src={WalletConnectIcon} alt={"wallet connect logo"} />
-        </IconWrapper>
-      );
-    } else if (connector === walletlink) {
-      return (
-        <IconWrapper size={16}>
-          <img src={CoinbaseWalletIcon} alt={"coinbase wallet logo"} />
-        </IconWrapper>
-      );
-    } else if (connector === fortmatic) {
-      return (
-        <IconWrapper size={16}>
-          <img src={FortmaticIcon} alt={"fortmatic logo"} />
-        </IconWrapper>
-      );
-    } else if (connector === portis) {
-      return (
-        <>
-          <IconWrapper size={16}>
-            <img src={PortisIcon} alt={"portis logo"} />
-            <MainWalletAction
-              onClick={() => {
-                portis.portis.showPortis();
-              }}
-            >
-              Show Portis
-            </MainWalletAction>
-          </IconWrapper>
-        </>
-      );
-    }
-    return null;
+    return (
+      <IconWrapper size={16}>
+        <Identicon />
+      </IconWrapper>
+    );
   }
 
   const clearAllTransactionsCallback = useCallback(() => {
@@ -311,27 +254,15 @@ export default function AccountDetails({
               <AccountGroupingRow>
                 {formatConnectorName()}
                 <div>
-                  {connector !== injected && connector !== walletlink && (
-                    <WalletAction
-                      style={{
-                        fontSize: "1.32rem",
-                        fontWeight: 400,
-                        marginRight: "8px",
-                      }}
-                      onClick={() => {
-                        (connector as any).close();
-                      }}
-                    >
-                      Disconnect
-                    </WalletAction>
-                  )}
                   <WalletAction
-                    style={{ fontSize: "1.32rem", fontWeight: 400 }}
-                    onClick={() => {
-                      openOptions();
+                    style={{
+                      fontSize: "1.32rem",
+                      fontWeight: 400,
+                      marginRight: "8px",
                     }}
+                    onClick={disconnectWallet}
                   >
-                    Change
+                    Disconnect
                   </WalletAction>
                 </div>
               </AccountGroupingRow>
@@ -348,7 +279,10 @@ export default function AccountDetails({
                     <>
                       <div>
                         {getStatusIcon()}
-                        <p> {account && shortenAddress(account)}</p>
+                        <p>
+                          {walletCurrentAddress &&
+                            shortenAddress(walletCurrentAddress)}
+                        </p>
                       </div>
                     </>
                   )}
@@ -359,21 +293,18 @@ export default function AccountDetails({
                   <>
                     <AccountControl>
                       <div>
-                        {account && (
-                          <Copy toCopy={account}>
+                        {walletCurrentAddress && (
+                          <Copy toCopy={walletCurrentAddress}>
                             <span style={{ marginLeft: "4px" }}>
                               Copy Address
                             </span>
                           </Copy>
                         )}
-                        {chainId && account && (
+                        {chainId && walletCurrentAddress && (
                           <AddressLink
                             hasENS={!!ENSName}
                             isENS={true}
-                            href={
-                              chainId &&
-                              getEtherscanLink(chainId, ENSName, "address")
-                            }
+                            href={getEtherscanLink(chainId, ENSName, "address")}
                           >
                             <LinkIcon size={16} />
                             <span style={{ marginLeft: "4px" }}>
@@ -388,18 +319,22 @@ export default function AccountDetails({
                   <>
                     <AccountControl>
                       <div>
-                        {account && (
-                          <Copy toCopy={account}>
+                        {walletCurrentAddress && (
+                          <Copy toCopy={walletCurrentAddress}>
                             <span style={{ marginLeft: "4px" }}>
                               Copy Address
                             </span>
                           </Copy>
                         )}
-                        {chainId && account && (
+                        {chainId && walletCurrentAddress && (
                           <AddressLink
                             hasENS={!!ENSName}
                             isENS={false}
-                            href={getEtherscanLink(chainId, account, "address")}
+                            href={getEtherscanLink(
+                              chainId,
+                              walletCurrentAddress,
+                              "address"
+                            )}
                           >
                             <LinkIcon size={16} />
                             <span style={{ marginLeft: "4px" }}>

@@ -15,7 +15,7 @@ import { FixedSizeList } from "react-window";
 import { Text } from "rebass";
 import { ThemeContext } from "styled-components";
 import { Currency, ETHER, Token } from "uniswap-v2-sdk-scroll";
-import { useActiveWeb3React } from "../../hooks";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import { useAllTokens, useToken } from "../../hooks/Tokens";
 import { useSelectedListInfo } from "../../state/lists/hooks";
 import { CloseIcon, LinkStyledButton, TYPE } from "../../theme";
@@ -52,7 +52,7 @@ export function CurrencySearch({
   onChangeList,
 }: CurrencySearchProps) {
   const { t } = useTranslation();
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3Context();
   const theme = useContext(ThemeContext);
 
   const fixedList = useRef<FixedSizeList>();

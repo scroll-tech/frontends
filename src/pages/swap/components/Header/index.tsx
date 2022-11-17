@@ -3,9 +3,8 @@ import { Text } from "rebass";
 import { ChainId } from "uniswap-v2-sdk-scroll";
 
 import styled from "styled-components";
-
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import Logo from "../../assets/images/logo.png";
-import { useActiveWeb3React } from "../../hooks";
 import { useDarkModeManager } from "../../state/user/hooks";
 import { useETHBalances } from "../../state/wallet/hooks";
 import { YellowCard } from "../Card";
@@ -117,12 +116,13 @@ const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
 };
 
 export default function Header() {
-  const { account, chainId } = useActiveWeb3React();
+  const { walletCurrentAddress, chainId } = useWeb3Context();
+
   const [darkMode] = useDarkModeManager();
 
-  const userEthBalance = useETHBalances(account ? [account] : [])?.[
-    account ?? ""
-  ];
+  const userEthBalance = useETHBalances(
+    walletCurrentAddress ? [walletCurrentAddress] : []
+  )?.[walletCurrentAddress ?? ""];
 
   return (
     <div style={{ display: "block", width: "100%" }}>
@@ -167,10 +167,10 @@ export default function Header() {
                 )}
               </TestnetWrapper>
               <AccountElement
-                active={!!account}
+                active={!!walletCurrentAddress}
                 style={{ pointerEvents: "auto" }}
               >
-                {account && userEthBalance ? (
+                {walletCurrentAddress && userEthBalance ? (
                   <BalanceText
                     style={{ flexShrink: 0 }}
                     pl="1.2rem"

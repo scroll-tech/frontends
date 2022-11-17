@@ -1,22 +1,10 @@
-import { AbstractConnector } from "@web3-react/abstract-connector";
-import { UnsupportedChainIdError, useWeb3React } from "@web3-react/core";
 import { darken, lighten } from "polished";
-import React, { useMemo, useEffect, useState } from "react";
+import { useMemo } from "react";
 import { Activity } from "react-feather";
-import { useTranslation } from "react-i18next";
-import styled, { css } from "styled-components";
-import CoinbaseWalletIcon from "../../assets/images/coinbaseWalletIcon.svg";
-import FortmaticIcon from "../../assets/images/fortmaticIcon.png";
-import PortisIcon from "../../assets/images/portisIcon.png";
-import WalletConnectIcon from "../../assets/images/walletConnectIcon.svg";
-import {
-  fortmatic,
-  injected,
-  portis,
-  walletconnect,
-  walletlink,
-} from "../../connectors";
-import { NetworkContextName } from "../../constants";
+import styled from "styled-components";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
+import { Addresses } from "@/constants";
+import { SUPPORTED_CHAINID } from "../../constants";
 import useENSName from "../../hooks/useENSName";
 import { useHasSocks } from "../../hooks/useSocksBalance";
 import { useWalletModalToggle } from "../../state/application/hooks";
@@ -33,16 +21,6 @@ import Loader from "../Loader";
 
 import { RowBetween } from "../Row";
 import WalletModal from "../WalletModal";
-
-const IconWrapper = styled.div<{ size?: number }>`
-  ${({ theme }) => theme.flexColumnNoWrap};
-  align-items: center;
-  justify-content: center;
-  & > * {
-    height: ${({ size }) => (size ? size + "px" : "32px")};
-    width: ${({ size }) => (size ? size + "px" : "32px")};
-  }
-`;
 
 const Web3StatusGeneric = styled(ButtonSecondary)`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -65,33 +43,6 @@ const Web3StatusError = styled(Web3StatusGeneric)`
   :focus {
     background-color: ${({ theme }) => darken(0.1, theme.red1)};
   }
-`;
-
-const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
-  background-color: ${({ theme }) => theme.primary4};
-  border: none;
-  color: ${({ theme }) => theme.primaryText1};
-  font-weight: 500;
-
-  :hover,
-  :focus {
-    border: 1px solid ${({ theme }) => darken(0.05, theme.primary4)};
-    color: ${({ theme }) => theme.primaryText1};
-  }
-
-  ${({ faded }) =>
-    faded &&
-    css`
-      background-color: ${({ theme }) => theme.primary5};
-      border: 1px solid ${({ theme }) => theme.primary5};
-      color: ${({ theme }) => theme.primaryText1};
-
-      :hover,
-      :focus {
-        border: 1px solid ${({ theme }) => darken(0.05, theme.primary4)};
-        color: ${({ theme }) => darken(0.05, theme.primaryText1)};
-      }
-    `}
 `;
 
 const Web3StatusConnected = styled(Web3StatusGeneric)<{ pending?: boolean }>`
@@ -148,43 +99,14 @@ const SOCK = (
 );
 
 // eslint-disable-next-line react/prop-types
-function StatusIcon({ connector }: { connector: AbstractConnector }) {
-  if (connector === injected) {
-    return <Identicon />;
-  } else if (connector === walletconnect) {
-    return (
-      <IconWrapper size={16}>
-        <img src={WalletConnectIcon} alt={""} />
-      </IconWrapper>
-    );
-  } else if (connector === walletlink) {
-    return (
-      <IconWrapper size={16}>
-        <img src={CoinbaseWalletIcon} alt={""} />
-      </IconWrapper>
-    );
-  } else if (connector === fortmatic) {
-    return (
-      <IconWrapper size={16}>
-        <img src={FortmaticIcon} alt={""} />
-      </IconWrapper>
-    );
-  } else if (connector === portis) {
-    return (
-      <IconWrapper size={16}>
-        <img src={PortisIcon} alt={""} />
-      </IconWrapper>
-    );
-  }
-  return null;
+function StatusIcon() {
+  return <Identicon />;
 }
 
 function Web3StatusInner() {
-  const { t } = useTranslation();
-  const { account, connector, error } = useWeb3React();
+  const { walletCurrentAddress, checkConnectedChainId } = useWeb3Context();
 
-  const { ENSName } = useENSName(account ?? undefined);
-  const [isConnected, setIsConnected] = useState(false);
+  const { ENSName } = useENSName(walletCurrentAddress ?? undefined);
   const allTransactions = useAllTransactions();
 
   const sortedRecentTransactions = useMemo(() => {
@@ -200,18 +122,18 @@ function Web3StatusInner() {
   const hasSocks = useHasSocks();
   const toggleWalletModal = useWalletModalToggle();
 
-  useEffect(() => {
-    const checkIfConnected = () => {
-      (window.ethereum as any)
-        .request({ method: "eth_requestAccounts" })
-        .then(() => {
-          setIsConnected(true);
-        });
-    };
-    checkIfConnected();
-  }, []);
+  const handleSwitchNetwork = async () => {
+    try {
+      await window.ethereum.request({
+        method: "wallet_addEthereumChain",
+        params: [Addresses[SUPPORTED_CHAINID].autoconnect],
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  if (account) {
+  if (checkConnectedChainId(SUPPORTED_CHAINID)) {
     return (
       <Web3StatusConnected
         id="web3-status-connected"
@@ -225,43 +147,29 @@ function Web3StatusInner() {
         ) : (
           <>
             {hasSocks ? SOCK : null}
-            <Text>{ENSName || shortenAddress(account)}</Text>
+            <Text>
+              {ENSName || shortenAddress(walletCurrentAddress as string)}
+            </Text>
           </>
         )}
-        {!hasPendingTransactions && connector && (
-          <StatusIcon connector={connector} />
-        )}
+        {!hasPendingTransactions && <StatusIcon />}
       </Web3StatusConnected>
     );
-  } else if (error || isConnected) {
+  } else if (walletCurrentAddress) {
     return (
-      <Web3StatusError onClick={toggleWalletModal}>
+      <Web3StatusError onClick={handleSwitchNetwork}>
         <NetworkIcon />
-        <Text>
-          {error instanceof UnsupportedChainIdError
-            ? "Wrong Network"
-            : "Wrong Network"}
-        </Text>
+        <Text>Wrong Network</Text>
       </Web3StatusError>
     );
-  } else {
-    return (
-      <Web3StatusConnect
-        id="connect-wallet"
-        onClick={toggleWalletModal}
-        faded={!account}
-      >
-        <Text>{t("Connect to a wallet")}</Text>
-      </Web3StatusConnect>
-    );
   }
+  return null;
 }
 
 export default function Web3Status() {
-  const { active, account } = useWeb3React();
-  const contextNetwork = useWeb3React(NetworkContextName);
+  const { walletCurrentAddress } = useWeb3Context();
 
-  const { ENSName } = useENSName(account ?? undefined);
+  const { ENSName } = useENSName(walletCurrentAddress ?? undefined);
 
   const allTransactions = useAllTransactions();
 
@@ -276,10 +184,6 @@ export default function Web3Status() {
   const confirmed = sortedRecentTransactions
     .filter((tx) => tx.receipt)
     .map((tx) => tx.hash);
-
-  if (!contextNetwork.active && !active) {
-    return null;
-  }
 
   return (
     <>

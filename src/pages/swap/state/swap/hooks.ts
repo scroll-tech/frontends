@@ -11,8 +11,9 @@ import {
   TokenAmount,
   Trade,
 } from "uniswap-v2-sdk-scroll";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
+
 import { useV1Trade } from "../../data/V1";
-import { useActiveWeb3React } from "../../hooks";
 import { useCurrency } from "../../hooks/Tokens";
 import { useTradeExactIn, useTradeExactOut } from "../../hooks/Trades";
 import useENS from "../../hooks/useENS";
@@ -139,7 +140,7 @@ export function useDerivedSwapInfo(): {
   inputError?: string;
   v1Trade: Trade | undefined;
 } {
-  const { account } = useActiveWeb3React();
+  const { walletCurrentAddress } = useWeb3Context();
 
   const toggledVersion = useToggledVersion();
 
@@ -155,12 +156,13 @@ export function useDerivedSwapInfo(): {
   const outputCurrency = useCurrency(outputCurrencyId);
   const recipientLookup = useENS(recipient ?? undefined);
   const to: string | null =
-    (recipient === null ? account : recipientLookup.address) ?? null;
+    (recipient === null ? walletCurrentAddress : recipientLookup.address) ??
+    null;
 
-  const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
-    inputCurrency ?? undefined,
-    outputCurrency ?? undefined,
-  ]);
+  const relevantTokenBalances = useCurrencyBalances(
+    walletCurrentAddress ?? undefined,
+    [inputCurrency ?? undefined, outputCurrency ?? undefined]
+  );
 
   const isExactIn: boolean = independentField === Field.INPUT;
   const parsedAmount = tryParseAmount(
@@ -198,7 +200,7 @@ export function useDerivedSwapInfo(): {
   );
 
   let inputError: string | undefined;
-  if (!account) {
+  if (!walletCurrentAddress) {
     inputError = "Connect Wallet";
   }
 
@@ -327,7 +329,7 @@ export function useDefaultsFromURLSearch():
       outputCurrencyId: string | undefined;
     }
   | undefined {
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3Context();
   const dispatch = useDispatch<AppDispatch>();
   const parsedQs = useParsedQueryString();
   const [result, setResult] = useState<

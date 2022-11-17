@@ -17,7 +17,7 @@ import {
 } from "../state/transactions/hooks";
 import { calculateGasMargin } from "../utils";
 import { computeSlippageAdjustedAmounts } from "../utils/prices";
-import { useActiveWeb3React } from "./index";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import { useTokenContract } from "./useContract";
 import { Version } from "./useToggledVersion";
 
@@ -33,12 +33,12 @@ export function useApproveCallback(
   amountToApprove?: CurrencyAmount,
   spender?: string
 ): [ApprovalState, () => Promise<void>] {
-  const { account } = useActiveWeb3React();
+  const { walletCurrentAddress } = useWeb3Context();
   const token =
     amountToApprove instanceof TokenAmount ? amountToApprove.token : undefined;
   const currentAllowance = useTokenAllowance(
     token,
-    account ?? undefined,
+    walletCurrentAddress ?? undefined,
     spender
   );
   const pendingApproval = useHasPendingApproval(token?.address, spender);

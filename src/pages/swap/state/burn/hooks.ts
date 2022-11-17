@@ -8,10 +8,10 @@ import {
   Percent,
   TokenAmount,
 } from "uniswap-v2-sdk-scroll";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import { usePair } from "../../data/Reserves";
 import { useTotalSupply } from "../../data/TotalSupply";
 
-import { useActiveWeb3React } from "../../hooks";
 import { wrappedCurrency } from "../../utils/wrappedCurrency";
 import { AppDispatch, AppState } from "../index";
 import { tryParseAmount } from "../swap/hooks";
@@ -35,7 +35,7 @@ export function useDerivedBurnInfo(
   };
   error?: string;
 } {
-  const { account, chainId } = useActiveWeb3React();
+  const { walletCurrentAddress, chainId } = useWeb3Context();
 
   const { independentField, typedValue } = useBurnState();
 
@@ -43,9 +43,10 @@ export function useDerivedBurnInfo(
   const [, pair] = usePair(currencyA, currencyB);
 
   // balances
-  const relevantTokenBalances = useTokenBalances(account ?? undefined, [
-    pair?.liquidityToken,
-  ]);
+  const relevantTokenBalances = useTokenBalances(
+    walletCurrentAddress ?? undefined,
+    [pair?.liquidityToken]
+  );
   const userLiquidity: undefined | TokenAmount =
     relevantTokenBalances?.[pair?.liquidityToken?.address ?? ""];
 
@@ -169,7 +170,7 @@ export function useDerivedBurnInfo(
   };
 
   let error: string | undefined;
-  if (!account) {
+  if (!walletCurrentAddress) {
     error = "Connect Wallet";
   }
 

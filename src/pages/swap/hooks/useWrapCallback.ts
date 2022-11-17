@@ -1,9 +1,9 @@
 import { useMemo } from "react";
 import { Currency, currencyEquals, ETHER, WETH } from "uniswap-v2-sdk-scroll";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import { tryParseAmount } from "../state/swap/hooks";
 import { useTransactionAdder } from "../state/transactions/hooks";
 import { useCurrencyBalance } from "../state/wallet/hooks";
-import { useActiveWeb3React } from "./index";
 import { useWETHContract } from "./useContract";
 
 export enum WrapType {
@@ -28,9 +28,12 @@ export default function useWrapCallback(
   execute?: undefined | (() => Promise<void>);
   inputError?: string;
 } {
-  const { chainId, account } = useActiveWeb3React();
+  const { chainId, walletCurrentAddress } = useWeb3Context();
   const wethContract = useWETHContract();
-  const balance = useCurrencyBalance(account ?? undefined, inputCurrency);
+  const balance = useCurrencyBalance(
+    walletCurrentAddress ?? undefined,
+    inputCurrency
+  );
   // we can always parse the amount typed as the input currency, since wrapping is 1:1
   const inputAmount = useMemo(() => tryParseAmount(typedValue, inputCurrency), [
     inputCurrency,

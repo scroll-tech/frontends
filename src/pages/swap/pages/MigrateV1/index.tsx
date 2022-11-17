@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { ThemeContext } from "styled-components";
 import { JSBI, Token } from "uniswap-v2-sdk-scroll";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import { LightCard } from "../../components/Card";
 import { AutoColumn } from "../../components/Column";
 import V1PositionCard from "../../components/PositionCard/V1";
@@ -15,7 +16,6 @@ import { AutoRow } from "../../components/Row";
 import { SearchInput } from "../../components/SearchModal/styleds";
 import { Dots } from "../../components/swap/styleds";
 import { useAllTokenV1Exchanges } from "../../data/V1";
-import { useActiveWeb3React } from "../../hooks";
 import { useAllTokens, useToken } from "../../hooks/Tokens";
 import { useSelectedTokenList } from "../../state/lists/hooks";
 import { useAddUserToken } from "../../state/user/hooks";
@@ -27,7 +27,7 @@ import { EmptyState } from "./EmptyState";
 
 export default function MigrateV1() {
   const theme = useContext(ThemeContext);
-  const { account, chainId } = useActiveWeb3React();
+  const { walletCurrentAddress, chainId } = useWeb3Context();
 
   const [tokenSearch, setTokenSearch] = useState<string>("");
   const handleTokenSearchChange = useCallback(
@@ -64,7 +64,7 @@ export default function MigrateV1() {
     V1LiquidityBalances,
     V1LiquidityBalancesLoading,
   ] = useTokenBalancesWithLoadingIndicator(
-    account ?? undefined,
+    walletCurrentAddress ?? undefined,
     V1LiquidityTokens
   );
   const allV1PairsWithLiquidity = V1LiquidityTokens.filter(
@@ -106,7 +106,7 @@ export default function MigrateV1() {
           Uniswap V1 and deposit it into Uniswap V2.
         </TYPE.body>
 
-        {!account ? (
+        {!walletCurrentAddress ? (
           <LightCard padding="40px">
             <TYPE.body color={theme.text3} textAlign="center">
               Connect to a wallet to view your V1 liquidity.

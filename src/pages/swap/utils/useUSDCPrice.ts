@@ -9,7 +9,7 @@ import {
 } from "uniswap-v2-sdk-scroll";
 import { USDC } from "../constants";
 import { PairState, usePairs } from "../data/Reserves";
-import { useActiveWeb3React } from "../hooks";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import { wrappedCurrency } from "./wrappedCurrency";
 
 /**
@@ -17,7 +17,7 @@ import { wrappedCurrency } from "./wrappedCurrency";
  * @param currency currency to compute the USDC price of
  */
 export default function useUSDCPrice(currency?: Currency): Price | undefined {
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3Context();
   const wrapped = wrappedCurrency(currency, chainId);
   const tokenPairs: [Currency | undefined, Currency | undefined][] = useMemo(
     () => [

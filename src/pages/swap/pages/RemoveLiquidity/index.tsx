@@ -14,6 +14,7 @@ import {
   Percent,
   WETH,
 } from "uniswap-v2-sdk-scroll";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import {
   ButtonConfirmed,
   ButtonError,
@@ -34,7 +35,6 @@ import TransactionConfirmationModal, {
 import CurrencyLogo from "../../components/CurrencyLogo";
 import Slider from "../../components/Slider";
 import { ROUTER_ADDRESS } from "../../constants";
-import { useActiveWeb3React } from "../../hooks";
 import { useCurrency } from "../../hooks/Tokens";
 import { usePairContract } from "../../hooks/useContract";
 
@@ -78,7 +78,7 @@ export default function RemoveLiquidity({
     useCurrency(currencyIdA) ?? undefined,
     useCurrency(currencyIdB) ?? undefined,
   ];
-  const { account, chainId, library } = useActiveWeb3React();
+  const { walletCurrentAddress, chainId, provider } = useWeb3Context();
   const [tokenA, tokenB] = useMemo(
     () => [
       wrappedCurrency(currencyA, chainId),
@@ -154,12 +154,12 @@ export default function RemoveLiquidity({
     ROUTER_ADDRESS
   );
   async function onAttemptToApprove() {
-    if (!pairContract || !pair || !library)
+    if (!pairContract || !pair || !provider)
       throw new Error("missing dependencies");
     const liquidityAmount = parsedAmounts[Field.LIQUIDITY];
     if (!liquidityAmount) throw new Error("missing liquidity amount");
     // try to gather a signature for permission
-    const nonce = await pairContract.nonces(account);
+    const nonce = await pairContract.nonces(walletCurrentAddress);
 
     const deadlineForSignature: number =
       Math.ceil(Date.now() / 1000) + deadline;
@@ -184,7 +184,7 @@ export default function RemoveLiquidity({
       { name: "deadline", type: "uint256" },
     ];
     const message = {
-      owner: account,
+      owner: walletCurrentAddress,
       spender: ROUTER_ADDRESS,
       value: liquidityAmount.raw.toString(),
       nonce: nonce.toHexString(),
@@ -200,8 +200,8 @@ export default function RemoveLiquidity({
       message,
     });
 
-    library
-      .send("eth_signTypedData_v4", [account, data])
+    provider
+      .send("eth_signTypedData_v4", [walletCurrentAddress, data])
       .then(splitSignature)
       .then((signature) => {
         setSignatureData({
@@ -244,7 +244,7 @@ export default function RemoveLiquidity({
   // tx sending
   const addTransaction = useTransactionAdder();
   async function onRemove() {
-    if (!chainId || !library || !account)
+    if (!chainId || !provider || !walletCurrentAddress)
       throw new Error("missing dependencies");
     const {
       [Field.CURRENCY_A]: currencyAmountA,
@@ -253,7 +253,7 @@ export default function RemoveLiquidity({
     if (!currencyAmountA || !currencyAmountB) {
       throw new Error("missing currency amounts");
     }
-    const router = getRouterContract(chainId, library, account);
+    const router = getRouterContract(chainId, provider, walletCurrentAddress);
 
     const amountsMin = {
       [Field.CURRENCY_A]: calculateSlippageAmount(
@@ -295,7 +295,7 @@ export default function RemoveLiquidity({
           amountsMin[
             currencyBIsETH ? Field.CURRENCY_B : Field.CURRENCY_A
           ].toString(),
-          account,
+          walletCurrentAddress,
           deadlineFromNow,
         ];
       }
@@ -308,7 +308,7 @@ export default function RemoveLiquidity({
           liquidityAmount.raw.toString(),
           amountsMin[Field.CURRENCY_A].toString(),
           amountsMin[Field.CURRENCY_B].toString(),
-          account,
+          walletCurrentAddress,
           deadlineFromNow,
         ];
       }
@@ -330,7 +330,7 @@ export default function RemoveLiquidity({
           amountsMin[
             currencyBIsETH ? Field.CURRENCY_B : Field.CURRENCY_A
           ].toString(),
-          account,
+          walletCurrentAddress,
           signatureData.deadline,
           false,
           signatureData.v,
@@ -347,7 +347,7 @@ export default function RemoveLiquidity({
           liquidityAmount.raw.toString(),
           amountsMin[Field.CURRENCY_A].toString(),
           amountsMin[Field.CURRENCY_B].toString(),
-          account,
+          walletCurrentAddress,
           signatureData.deadline,
           false,
           signatureData.v,
@@ -804,7 +804,7 @@ export default function RemoveLiquidity({
               </div>
             )}
             <div style={{ position: "relative" }}>
-              {!account ? (
+              {!walletCurrentAddress ? (
                 <ButtonLight onClick={toggleWalletModal}>
                   Connect Wallet
                 </ButtonLight>

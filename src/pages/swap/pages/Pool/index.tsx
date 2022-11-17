@@ -2,6 +2,7 @@ import React, { useContext, useMemo } from "react";
 import { Link } from "react-router-dom-v5";
 import { ThemeContext } from "styled-components";
 import { Pair } from "uniswap-v2-sdk-scroll";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import { SwapPoolTabs } from "../../components/NavigationTabs";
 
 import { Text } from "rebass";
@@ -16,7 +17,6 @@ import { TYPE } from "../../theme";
 
 import { Dots } from "../../components/swap/styleds";
 import { usePairs } from "../../data/Reserves";
-import { useActiveWeb3React } from "../../hooks";
 import {
   toV2LiquidityToken,
   useTrackedTokenPairs,
@@ -25,7 +25,7 @@ import AppBody from "../AppBody";
 
 export default function Pool() {
   const theme = useContext(ThemeContext);
-  const { account } = useActiveWeb3React();
+  const { walletCurrentAddress } = useWeb3Context();
 
   // fetch the user's balances of all tracked V2 LP tokens
   const trackedTokenPairs = useTrackedTokenPairs();
@@ -45,7 +45,7 @@ export default function Pool() {
     v2PairsBalances,
     fetchingV2PairBalances,
   ] = useTokenBalancesWithLoadingIndicator(
-    account ?? undefined,
+    walletCurrentAddress ?? undefined,
     liquidityTokens
   );
 
@@ -94,7 +94,7 @@ export default function Pool() {
               <Question text="When you add liquidity, you are given pool tokens that represent your share. If you don’t see a pool you joined in this list, try importing a pool below." />
             </RowBetween>
 
-            {!account ? (
+            {!walletCurrentAddress ? (
               <LightCard padding="40px">
                 <TYPE.body color={theme.text3} textAlign="center">
                   Connect to a wallet to view your liquidity.

@@ -16,7 +16,8 @@ import {
   V1_FACTORY_ADDRESSES,
 } from "../constants/v1";
 import { getContract } from "../utils";
-import { useActiveWeb3React } from "./index";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
+import { SUPPORTED_CHAINID } from "../constants";
 
 // returns null on errors
 function useContract(
@@ -24,28 +25,30 @@ function useContract(
   ABI: any,
   withSignerIfPossible = true
 ): Contract | null {
-  const { library, account } = useActiveWeb3React();
+  const { provider, walletCurrentAddress } = useWeb3Context();
 
   return useMemo(() => {
-    if (!address || !ABI || !library) return null;
+    if (!address || !ABI || !provider) return null;
     try {
       return getContract(
         address,
         ABI,
-        library,
-        withSignerIfPossible && account ? account : undefined
+        provider,
+        withSignerIfPossible && walletCurrentAddress
+          ? walletCurrentAddress
+          : undefined
       );
     } catch (error) {
       console.error("Failed to get contract", error);
       return null;
     }
-  }, [address, ABI, library, withSignerIfPossible, account]);
+  }, [address, ABI, provider, withSignerIfPossible, walletCurrentAddress]);
 }
 
 export function useV1FactoryContract(): Contract | null {
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3Context();
   return useContract(
-    chainId && V1_FACTORY_ADDRESSES[chainId],
+    V1_FACTORY_ADDRESSES[chainId as number],
     V1_FACTORY_ABI,
     false
   );
@@ -72,9 +75,11 @@ export function useTokenContract(
 export function useWETHContract(
   withSignerIfPossible?: boolean
 ): Contract | null {
-  const { chainId } = useActiveWeb3React();
+  const { checkConnectedChainId } = useWeb3Context();
   return useContract(
-    chainId ? WETH[chainId].address : undefined,
+    checkConnectedChainId(SUPPORTED_CHAINID)
+      ? WETH[SUPPORTED_CHAINID].address
+      : undefined,
     WETH_ABI,
     withSignerIfPossible
   );
@@ -83,7 +88,7 @@ export function useWETHContract(
 export function useENSRegistrarContract(
   withSignerIfPossible?: boolean
 ): Contract | null {
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3Context();
   let address: string | undefined;
   if (chainId) {
     switch (chainId) {
@@ -120,16 +125,16 @@ export function usePairContract(
 }
 
 export function useMulticallContract(): Contract | null {
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3Context();
   return useContract(
-    chainId && MULTICALL_NETWORKS[chainId],
+    MULTICALL_NETWORKS[chainId as number],
     MULTICALL_ABI,
     false
   );
 }
 
 export function useSocksController(): Contract | null {
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3Context();
   return useContract(
     chainId === ChainId.MAINNET
       ? "0x65770b5283117639760beA3F867b69b3697a91dd"

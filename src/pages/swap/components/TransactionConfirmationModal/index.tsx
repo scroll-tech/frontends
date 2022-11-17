@@ -3,6 +3,7 @@ import { AlertTriangle, ArrowUpCircle } from "react-feather";
 import { Text } from "rebass";
 import styled, { ThemeContext } from "styled-components";
 import { ChainId } from "uniswap-v2-sdk-scroll";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import Circle from "../../assets/images/blue-loader.svg";
 import { ExternalLink } from "../../theme";
 import { CloseIcon, Spinner } from "../../theme/components";
@@ -11,7 +12,6 @@ import { AutoColumn, ColumnCenter } from "../Column";
 import Modal from "../Modal";
 import { RowBetween } from "../Row";
 
-import { useActiveWeb3React } from "../../hooks";
 import { getEtherscanLink } from "../../utils";
 
 const Wrapper = styled.div`
@@ -203,7 +203,7 @@ export default function TransactionConfirmationModal({
   pendingText,
   content,
 }: ConfirmationModalProps) {
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3Context();
 
   if (!chainId) return null;
 

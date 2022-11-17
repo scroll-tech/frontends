@@ -1,3 +1,4 @@
+import { requireEnv } from "@/utils";
 import { AbstractConnector } from "@web3-react/abstract-connector";
 import { ChainId, JSBI, Percent, Token, WETH } from "uniswap-v2-sdk-scroll";
 
@@ -190,3 +191,5 @@ export const BETTER_TRADE_LINK_THRESHOLD = new Percent(
   JSBI.BigInt(75),
   JSBI.BigInt(10000)
 );
+
+export const SUPPORTED_CHAINID = +requireEnv("REACT_APP_CHAIN_ID_L2");

@@ -1,7 +1,8 @@
 import { darken } from "polished";
-import React, { useCallback, useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import styled, { ThemeContext } from "styled-components";
 import { Currency, Pair } from "uniswap-v2-sdk-scroll";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import { ReactComponent as DropDown } from "../../assets/images/dropdown.svg";
 import { useCurrencyBalance } from "../../state/wallet/hooks";
 import { TYPE } from "../../theme";
@@ -12,7 +13,6 @@ import { RowBetween } from "../Row";
 import CurrencySearchModal from "../SearchModal/CurrencySearchModal";
 
 import { useTranslation } from "react-i18next";
-import { useActiveWeb3React } from "../../hooks";
 
 const InputRow = styled.div<{ selected: boolean }>`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -155,9 +155,10 @@ export default function CurrencyInputPanel({
   const { t } = useTranslation();
 
   const [modalOpen, setModalOpen] = useState(false);
-  const { account } = useActiveWeb3React();
+  const { walletCurrentAddress } = useWeb3Context();
+
   const selectedCurrencyBalance = useCurrencyBalance(
-    account ?? undefined,
+    walletCurrentAddress ?? undefined,
     currency ?? undefined
   );
   const theme = useContext(ThemeContext);
@@ -175,7 +176,7 @@ export default function CurrencyInputPanel({
               <TYPE.body color={theme.text2} fontWeight={500} fontSize={14}>
                 {label}
               </TYPE.body>
-              {account && (
+              {walletCurrentAddress && (
                 <TYPE.body
                   onClick={onMax}
                   color={theme.text2}
@@ -204,9 +205,12 @@ export default function CurrencyInputPanel({
                   onUserInput(val);
                 }}
               />
-              {account && currency && showMaxButton && label !== "To" && (
-                <StyledBalanceMax onClick={onMax}>MAX</StyledBalanceMax>
-              )}
+              {walletCurrentAddress &&
+                currency &&
+                showMaxButton &&
+                label !== "To" && (
+                  <StyledBalanceMax onClick={onMax}>MAX</StyledBalanceMax>
+                )}
             </>
           )}
           <CurrencySelect
