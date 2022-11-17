@@ -147,12 +147,16 @@ export default function Home() {
           <Button
             color="primary"
             variant="contained"
-            sx={{ marginTop: "30px" }}
+            sx={{
+              marginTop: "30px",
+              whiteSpace: "normal",
+            }}
+            className="w-full md:w-auto"
             onClick={signInTwitter}
           >
             Sign In With Twitter And Request {faucetInfo.network} Scroll Tokens
           </Button>
-          <MuiAlert severity="info" className="mt-[30px] w-[60em]">
+          <MuiAlert severity="info" className="my-[30px] w-full md:w-[60em] ">
             To prevent faucet botting, you must sign in with <b>Twitter</b>. We
             request read-only access. Your Twitter account must have at least 1
             Tweet, 30 followers, and be older than 1 month.
@@ -249,7 +253,7 @@ export default function Home() {
   return (
     <>
       <main className="px-[16px] faucet-app">
-        <div className="h-[72vh] w-full flex items-center flex-col mb-[60px] md:h-[630px]">
+        <div className="w-full flex items-center flex-col mb-[60px] md:h-[630px]">
           <div className=" mt-[30px] mb-[80px] text-right max-w-[1268px] px-[8px] w-full">
             <button className="w-[178px] h-[50px] text-[#333] border border-[#333] text-base rounded-[4px] cursor-text font-semibold">
               {truncateAddress(walletCurrentAddress as string)}
