@@ -4,11 +4,18 @@ import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { ChainId } from "uniswap-v2-sdk-scroll";
 import { useWeb3Context } from "@/contexts/Web3ContextProvider";
-import { getNetworkLibrary, NETWORK_CHAIN_ID } from "../connectors";
 import { AppDispatch } from "../state";
 import { fetchTokenList } from "../state/lists/actions";
 import getTokenList from "../utils/getTokenList";
 import resolveENSContentHash from "../utils/resolveENSContentHash";
+import { getProvider } from "../utils/provider";
+
+export const NETWORK_CHAIN_ID: number = parseInt(
+  process.env.REACT_APP_CHAIN_ID ?? "1"
+);
+
+const NETWORK_URL =
+  "https://mainnet.infura.io/v3/099fc58e0de9451d80b18d7c74caa7c1"; // TODO: Refactor
 
 export function useFetchListCallback(): (
   listUrl: string
@@ -20,14 +27,14 @@ export function useFetchListCallback(): (
     (ensName: string) => {
       if (!provider || chainId !== ChainId.MAINNET) {
         if (NETWORK_CHAIN_ID === ChainId.MAINNET) {
-          const networkLibrary = getNetworkLibrary();
-          if (networkLibrary) {
-            return resolveENSContentHash(ensName, networkLibrary);
+          const networkProvider = getProvider(NETWORK_CHAIN_ID, NETWORK_URL);
+          if (networkProvider) {
+            return resolveENSContentHash(ensName, networkProvider);
           }
         }
         throw new Error("Could not construct mainnet ENS resolver");
       }
-      return resolveENSContentHash(ensName, provider);
+      return resolveENSContentHash(ensName, provider!);
     },
     [chainId, provider]
   );
