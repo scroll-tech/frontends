@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import * as React from "react";
 import { ExpandMore } from "@mui/icons-material";
 import { Box, Link, Button, Stack, Fade, Container } from "@mui/material";
-// import { styled } from '@mui/material/styles';
+import Logo from "@/components/Logo";
 import { styled } from "@mui/system";
 import navigations from "./constans";
 
@@ -183,11 +183,7 @@ const App = () => {
     <StyledBox>
       <HeaderContainer>
         <NavLink to="/" className="flex">
-          <img
-            src="https://scroll.io/img/logo_with_text.png"
-            alt="logo"
-            className="cursor-pointer w-[96px] h-auto"
-          />
+          <Logo></Logo>
         </NavLink>
         <Box>{list()}</Box>
         <Button href="https://guide.scroll.io/">User Guide</Button>

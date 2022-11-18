@@ -262,7 +262,7 @@ export default function Home() {
           <p className="text-[#333] text-center text-[26px]  leading-[32px] mb-[16px] font-display md:text-[34px]  md:leading-[40px] capitalize">
             Request testnet Scroll tokens
           </p>
-          <p className="max-w-[560px] text-center  text-[#595959] text-[16px] leading-[26px]">
+          <p className="max-w-[560px] text-center mx-[24px] text-[#595959] text-[16px] leading-[26px]">
             Funds you receive through the Scroll faucet are not real funds.
             Request tokens every 24h and receive {faucetInfo.payoutEth}{" "}
             {faucetInfo.ethSymbol} & {faucetInfo.payoutUsdc}
@@ -270,31 +270,30 @@ export default function Home() {
           </p>
           {wrongNetwork ? (
             <>
-              <div className="bg-[#FFF8CB] py-[18px] px-[28px] rounded-[10px] max-w-[480px] text-center mt-[24px] md:py-[24px] md:px-[32px]">
+              <div className="bg-[#FFF8CB] py-[18px] px-[34px] mx-[24px] rounded-[10px] max-w-[480px] text-center my-[28px] md:py-[24px] md:px-[32px]">
                 <img
                   alt="warning logo"
                   className="w-[26px] mb-[8px] mx-auto"
                   src="/imgs/faucet/warning.svg"
                 />
-                <p className="text-[16px] max-w-[400px] leading-[26px] text-[#C14800]">
-                  Your wallet is connected to an unsupported network.
-                  <button
-                    className="font-bold underline"
-                    onClick={switchNetwork}
-                  >
-                    Switch to Scroll L1 {TESTNET_NAME}
+                <p className="text-[14px]  max-w-[400px] leading-[26px] text-[#C14800] md:text-[16px]">
+                  Your wallet is connected to an unsupported network. Select{" "}
+                  <button className="font-bold" onClick={switchNetwork}>
+                    Scroll L1 {TESTNET_NAME}
                   </button>{" "}
+                  on wallet.
                 </p>
               </div>
-              <p className="mt-[25px] text-[#595959] text-base">
-                Scroll L1 and L2 not added yet?
+              <div className="flex flex-col text-[#595959] text-center text-[14px] md:flex-row md:text-[16px]">
+                <p className="mb-[6px] md:mr-[6px]">
+                  Scroll L1 and L2 not added yet?
+                </p>
                 <Link to="add-network">
                   <span className="text-[#00A6F2] cursor-pointer font-semibold">
-                    {" "}
                     Add Scroll L1{TESTNET_NAME} and L2{TESTNET_NAME}
                   </span>
                 </Link>
-              </p>
+              </div>
             </>
           ) : (
             <Countdown
