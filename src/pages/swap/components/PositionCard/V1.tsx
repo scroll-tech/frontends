@@ -4,7 +4,7 @@ import { Token, TokenAmount, WETH } from "uniswap-v2-sdk-scroll";
 
 import { Text } from "rebass";
 import { ThemeContext } from "styled-components";
-import { useActiveWeb3React } from "../../hooks";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import { ButtonSecondary } from "../Button";
 import { AutoColumn } from "../Column";
 import DoubleCurrencyLogo from "../DoubleLogo";
@@ -19,7 +19,7 @@ interface PositionCardProps extends RouteComponentProps<{}> {
 function V1PositionCard({ token, V1LiquidityBalance }: PositionCardProps) {
   const theme = useContext(ThemeContext);
 
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3Context();
 
   return (
     <HoverCard>

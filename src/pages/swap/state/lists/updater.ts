@@ -5,7 +5,7 @@ import {
 } from "@uniswap/token-lists";
 import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useActiveWeb3React } from "../../hooks";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import { useFetchListCallback } from "../../hooks/useFetchListCallback";
 import useInterval from "../../hooks/useInterval";
 import useIsWindowVisible from "../../hooks/useIsWindowVisible";
@@ -14,7 +14,7 @@ import { AppDispatch, AppState } from "../index";
 import { acceptListUpdate } from "./actions";
 
 export default function Updater(): null {
-  const { library } = useActiveWeb3React();
+  const { provider } = useWeb3Context();
   const dispatch = useDispatch<AppDispatch>();
   const lists = useSelector<AppState, AppState["lists"]["byUrl"]>(
     (state) => state.lists.byUrl
@@ -33,8 +33,8 @@ export default function Updater(): null {
     );
   }, [fetchList, isWindowVisible, lists]);
 
-  // fetch all lists every 10 minutes, but only after we initialize library
-  useInterval(fetchAllListsCallback, library ? 1000 * 60 * 10 : null);
+  // fetch all lists every 10 minutes, but only after we initialize provider
+  useInterval(fetchAllListsCallback, provider ? 1000 * 60 * 10 : null);
 
   // whenever a list is not loaded and not loading, try again to load it
   useEffect(() => {
@@ -47,7 +47,7 @@ export default function Updater(): null {
         );
       }
     });
-  }, [dispatch, fetchList, library, lists]);
+  }, [dispatch, fetchList, provider, lists]);
 
   // automatically update lists if versions are minor/patch
   useEffect(() => {

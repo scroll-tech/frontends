@@ -13,6 +13,7 @@ import {
   TokenAmount,
   WETH,
 } from "uniswap-v2-sdk-scroll";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import {
   ButtonError,
   ButtonLight,
@@ -31,7 +32,6 @@ import TransactionConfirmationModal, {
 
 import { ROUTER_ADDRESS } from "../../constants";
 import { PairState } from "../../data/Reserves";
-import { useActiveWeb3React } from "../../hooks";
 import { useCurrency } from "../../hooks/Tokens";
 import {
   ApprovalState,
@@ -71,7 +71,7 @@ export default function AddLiquidity({
   },
   history,
 }: RouteComponentProps<{ currencyIdA?: string; currencyIdB?: string }>) {
-  const { account, chainId, library } = useActiveWeb3React();
+  const { walletCurrentAddress, chainId, provider } = useWeb3Context();
   const theme = useContext(ThemeContext);
 
   const currencyA = useCurrency(currencyIdA);
@@ -157,8 +157,8 @@ export default function AddLiquidity({
   const addTransaction = useTransactionAdder();
 
   async function onAdd() {
-    if (!chainId || !library || !account) return;
-    const router = getRouterContract(chainId, library, account);
+    if (!chainId || !provider || !walletCurrentAddress) return;
+    const router = getRouterContract(chainId, provider, walletCurrentAddress);
 
     const {
       [Field.CURRENCY_A]: parsedAmountA,
@@ -199,7 +199,7 @@ export default function AddLiquidity({
         amountsMin[
           tokenBIsETH ? Field.CURRENCY_B : Field.CURRENCY_A
         ].toString(), // eth min
-        account,
+        walletCurrentAddress,
         deadlineFromNow,
       ];
       value = BigNumber.from(
@@ -215,7 +215,7 @@ export default function AddLiquidity({
         parsedAmountB.raw.toString(),
         amountsMin[Field.CURRENCY_A].toString(),
         amountsMin[Field.CURRENCY_B].toString(),
-        account,
+        walletCurrentAddress,
         deadlineFromNow,
       ];
       value = null;
@@ -469,7 +469,7 @@ export default function AddLiquidity({
                 </>
               )}
 
-            {!account ? (
+            {!walletCurrentAddress ? (
               <ButtonLight onClick={toggleWalletModal}>
                 Connect Wallet
               </ButtonLight>

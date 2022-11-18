@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Plus } from "react-feather";
 import { Text } from "rebass";
 import { Currency, ETHER, JSBI, TokenAmount } from "uniswap-v2-sdk-scroll";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import { ButtonDropdownLight } from "../../components/Button";
 import { LightCard } from "../../components/Card";
 import { AutoColumn, ColumnCenter } from "../../components/Column";
@@ -11,7 +12,6 @@ import { MinimalPositionCard } from "../../components/PositionCard";
 import Row from "../../components/Row";
 import CurrencySearchModal from "../../components/SearchModal/CurrencySearchModal";
 import { PairState, usePair } from "../../data/Reserves";
-import { useActiveWeb3React } from "../../hooks";
 import { usePairAdder } from "../../state/user/hooks";
 import { useTokenBalance } from "../../state/wallet/hooks";
 import { StyledInternalLink } from "../../theme";
@@ -25,7 +25,7 @@ enum Fields {
 }
 
 export default function PoolFinder() {
-  const { account } = useActiveWeb3React();
+  const { walletCurrentAddress } = useWeb3Context();
 
   const [showSearch, setShowSearch] = useState<boolean>(false);
   const [activeField, setActiveField] = useState<number>(Fields.TOKEN1);
@@ -54,7 +54,7 @@ export default function PoolFinder() {
     );
 
   const position: TokenAmount | undefined = useTokenBalance(
-    account ?? undefined,
+    walletCurrentAddress ?? undefined,
     pair?.liquidityToken
   );
   const hasPosition = Boolean(
@@ -79,7 +79,7 @@ export default function PoolFinder() {
   const prerequisiteMessage = (
     <LightCard padding="45px 10px">
       <Text textAlign="center">
-        {!account
+        {!walletCurrentAddress
           ? "Connect to a wallet to find pools"
           : "Select a token to find your liquidity."}
       </Text>

@@ -8,7 +8,7 @@ import {
   TokenAmount,
 } from "uniswap-v2-sdk-scroll";
 import ERC20_INTERFACE from "../../constants/abis/erc20";
-import { useActiveWeb3React } from "../../hooks";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import { useAllTokens } from "../../hooks/Tokens";
 import { useMulticallContract } from "../../hooks/useContract";
 import { isAddress } from "../../utils";
@@ -169,11 +169,14 @@ export function useCurrencyBalance(
 export function useAllTokenBalances(): {
   [tokenAddress: string]: TokenAmount | undefined;
 } {
-  const { account } = useActiveWeb3React();
+  const { walletCurrentAddress } = useWeb3Context();
   const allTokens = useAllTokens();
   const allTokensArray = useMemo(() => Object.values(allTokens ?? {}), [
     allTokens,
   ]);
-  const balances = useTokenBalances(account ?? undefined, allTokensArray);
+  const balances = useTokenBalances(
+    walletCurrentAddress ?? undefined,
+    allTokensArray
+  );
   return balances ?? {};
 }

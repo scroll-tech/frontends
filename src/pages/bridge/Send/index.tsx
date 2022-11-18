@@ -37,7 +37,7 @@ const Send: FC = () => {
   const [fromNetwork, setFromNetwork] = useState({} as any);
   const [toNetwork, setToNetwork] = useState({} as any);
   const [selectedToken, setSelectedToken] = useState(tokens[ETH_SYMBOL]);
-  const { checkConnectedNetworkId, chainId, walletName } = useWeb3Context();
+  const { checkConnectedChainId, chainId, walletName } = useWeb3Context();
 
   const [fromTokenAmount, setFromTokenAmount] = useState<string>();
   const [sendError, setSendError] = useState<any>();
@@ -192,7 +192,7 @@ const Send: FC = () => {
     const networkId = Number(fromNetwork.networkId);
     // eslint-disable-next-line
     const parsedAmount = amountToBN(fromTokenAmount, selectedToken.decimals);
-    const isNetworkConnected = await checkConnectedNetworkId(networkId);
+    const isNetworkConnected = await checkConnectedChainId(networkId);
     if (!isNetworkConnected) return;
     const Token = new ethers.Contract(
       (selectedToken as any).address[fromNetwork.chainId],

@@ -1,7 +1,5 @@
-import { AbstractConnector } from "@web3-react/abstract-connector";
+import { requireEnv } from "@/utils";
 import { ChainId, JSBI, Percent, Token, WETH } from "uniswap-v2-sdk-scroll";
-
-import { injected } from "../connectors";
 
 export const ROUTER_ADDRESS = process.env.REACT_APP_ROUTER_ADDRESS as string;
 
@@ -124,31 +122,6 @@ export const PINNED_PAIRS: {
   ],
 };
 
-export interface WalletInfo {
-  connector?: AbstractConnector;
-  name: string;
-  iconName: string;
-  description: string;
-  href: string | null;
-  color: string;
-  primary?: true;
-  mobile?: true;
-  mobileOnly?: true;
-}
-
-export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
-  METAMASK: {
-    connector: injected,
-    name: "MetaMask",
-    iconName: "metamask.png",
-    description: "Easy-to-use browser extension.",
-    href: null,
-    color: "#E8831D",
-  },
-};
-
-export const NetworkContextName = "NETWORK";
-
 // default allowed slippage, in bips
 export const INITIAL_ALLOWED_SLIPPAGE = 50;
 // 20 minutes, denominated in seconds
@@ -190,3 +163,5 @@ export const BETTER_TRADE_LINK_THRESHOLD = new Percent(
   JSBI.BigInt(75),
   JSBI.BigInt(10000)
 );
+
+export const SUPPORTED_CHAINID = +requireEnv("REACT_APP_CHAIN_ID_L2");

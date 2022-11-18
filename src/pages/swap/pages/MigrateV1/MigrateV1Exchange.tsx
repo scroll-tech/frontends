@@ -14,6 +14,7 @@ import {
   TokenAmount,
   WETH,
 } from "uniswap-v2-sdk-scroll";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import { ButtonConfirmed } from "../../components/Button";
 import { LightCard, PinkCard, YellowCard } from "../../components/Card";
 import { AutoColumn } from "../../components/Column";
@@ -28,7 +29,6 @@ import {
 import { MIGRATOR_ADDRESS } from "../../constants/abis/migrator";
 import { PairState, usePair } from "../../data/Reserves";
 import { useTotalSupply } from "../../data/TotalSupply";
-import { useActiveWeb3React } from "../../hooks";
 import { useToken } from "../../hooks/Tokens";
 import {
   ApprovalState,
@@ -89,7 +89,7 @@ export function V1LiquidityInfo({
   tokenWorth: TokenAmount;
   ethWorth: CurrencyAmount;
 }) {
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3Context();
 
   return (
     <>
@@ -149,7 +149,7 @@ function V1PairMigration({
   liquidityTokenAmount: TokenAmount;
   token: Token;
 }) {
-  const { account, chainId } = useActiveWeb3React();
+  const { walletCurrentAddress, chainId } = useWeb3Context();
   const totalSupply = useTotalSupply(liquidityTokenAmount.token);
   const exchangeETHBalance = useETHBalances([
     liquidityTokenAmount.token.address,
@@ -254,7 +254,7 @@ function V1PairMigration({
         token.address,
         minAmountToken.toString(),
         minAmountETH.toString(),
-        account,
+        walletCurrentAddress,
         Math.floor(new Date().getTime() / 1000) + DEFAULT_DEADLINE_FROM_NOW
       )
       .then((response: TransactionResponse) => {
@@ -272,7 +272,14 @@ function V1PairMigration({
       .catch(() => {
         setConfirmingMigration(false);
       });
-  }, [minAmountToken, minAmountETH, migrator, token, account, addTransaction]);
+  }, [
+    minAmountToken,
+    minAmountETH,
+    migrator,
+    token,
+    walletCurrentAddress,
+    addTransaction,
+  ]);
 
   const noLiquidityTokens =
     !!liquidityTokenAmount && liquidityTokenAmount.equalTo(ZERO);
@@ -427,7 +434,7 @@ export default function MigrateV1Exchange({
   },
 }: RouteComponentProps<{ address: string }>) {
   const validatedAddress = isAddress(address);
-  const { chainId, account } = useActiveWeb3React();
+  const { chainId, walletCurrentAddress } = useWeb3Context();
 
   const exchangeContract = useV1ExchangeContract(
     validatedAddress ? validatedAddress : undefined
@@ -455,7 +462,7 @@ export default function MigrateV1Exchange({
     [chainId, validatedAddress, token]
   );
   const userLiquidityBalance = useTokenBalance(
-    account ?? undefined,
+    walletCurrentAddress ?? undefined,
     liquidityToken
   );
 
@@ -479,7 +486,7 @@ export default function MigrateV1Exchange({
           </div>
         </AutoRow>
 
-        {!account ? (
+        {!walletCurrentAddress ? (
           <TYPE.largeHeader>You must connect an account.</TYPE.largeHeader>
         ) : validatedAddress && chainId && token?.equals(WETH[chainId]) ? (
           <>

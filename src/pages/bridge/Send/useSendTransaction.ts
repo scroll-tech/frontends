@@ -28,7 +28,7 @@ export function useSendTransaction(props) {
   const { addTransaction, updateTransaction } = useTxStore();
   const { changeRecentTxVisible } = useBridgeStore();
   const [sending, setSending] = useState<boolean>(false);
-  const { checkConnectedNetworkId } = useWeb3Context();
+  const { checkConnectedChainId } = useWeb3Context();
   const parsedAmount = useMemo(() => {
     if (!fromTokenAmount || !selectedToken) return BigNumber.from(0);
     return amountToBN(fromTokenAmount, selectedToken.decimals);
@@ -39,7 +39,7 @@ export function useSendTransaction(props) {
       setError(null);
 
       const networkId = Number(fromNetwork.networkId);
-      const isNetworkConnected = await checkConnectedNetworkId(networkId);
+      const isNetworkConnected = await checkConnectedChainId(networkId);
       if (!isNetworkConnected) return;
       setSending(true);
       let tx;

@@ -9,6 +9,7 @@ import {
   Trade,
   TradeType,
 } from "uniswap-v2-sdk-scroll";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import {
   BIPS_BASE,
   DEFAULT_DEADLINE_FROM_NOW,
@@ -24,7 +25,6 @@ import {
 } from "../utils";
 import isZero from "../utils/isZero";
 import v1SwapArguments from "../utils/v1SwapArguments";
-import { useActiveWeb3React } from "./index";
 import { useV1ExchangeContract } from "./useContract";
 import useENS from "./useENS";
 import { Version } from "./useToggledVersion";
@@ -65,11 +65,11 @@ function useSwapCallArguments(
   deadline: number = DEFAULT_DEADLINE_FROM_NOW, // in seconds from now
   recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
 ): SwapCall[] {
-  const { account, chainId, library } = useActiveWeb3React();
+  const { walletCurrentAddress, chainId, provider } = useWeb3Context();
 
   const { address: recipientAddress } = useENS(recipientAddressOrName);
   const recipient =
-    recipientAddressOrName === null ? account : recipientAddress;
+    recipientAddressOrName === null ? walletCurrentAddress : recipientAddress;
 
   const v1Exchange = useV1ExchangeContract(
     useV1TradeExchangeAddress(trade),
@@ -81,8 +81,8 @@ function useSwapCallArguments(
     if (
       !trade ||
       !recipient ||
-      !library ||
-      !account ||
+      !provider ||
+      !walletCurrentAddress ||
       !tradeVersion ||
       !chainId
     )
@@ -90,7 +90,7 @@ function useSwapCallArguments(
 
     const contract: Contract | null =
       tradeVersion === Version.v2
-        ? getRouterContract(chainId, library, account)
+        ? getRouterContract(chainId, provider, walletCurrentAddress)
         : v1Exchange;
     if (!contract) {
       return [];
@@ -144,11 +144,11 @@ function useSwapCallArguments(
     }
     return swapMethods.map((parameters) => ({ parameters, contract }));
   }, [
-    account,
+    walletCurrentAddress,
     allowedSlippage,
     chainId,
     deadline,
-    library,
+    provider,
     recipient,
     trade,
     v1Exchange,
@@ -167,7 +167,7 @@ export function useSwapCallback(
   callback: null | (() => Promise<string>);
   error: string | null;
 } {
-  const { account, chainId, library } = useActiveWeb3React();
+  const { walletCurrentAddress, chainId, provider } = useWeb3Context();
 
   const swapCalls = useSwapCallArguments(
     trade,
@@ -180,10 +180,10 @@ export function useSwapCallback(
 
   const { address: recipientAddress } = useENS(recipientAddressOrName);
   const recipient =
-    recipientAddressOrName === null ? account : recipientAddress;
+    recipientAddressOrName === null ? walletCurrentAddress : recipientAddress;
 
   return useMemo(() => {
-    if (!trade || !library || !account || !chainId) {
+    if (!trade || !provider || !walletCurrentAddress || !chainId) {
       return {
         state: SwapCallbackState.INVALID,
         callback: null,
@@ -294,8 +294,8 @@ export function useSwapCallback(
         return contract[methodName](...args, {
           gasLimit: calculateGasMargin(gasEstimate),
           ...(value && !isZero(value)
-            ? { value, from: account }
-            : { from: account }),
+            ? { value, from: walletCurrentAddress }
+            : { from: walletCurrentAddress }),
         })
           .then((response: any) => {
             const inputSymbol = trade.inputAmount.currency.symbol;
@@ -305,7 +305,7 @@ export function useSwapCallback(
 
             const base = `Swap ${inputAmount} ${inputSymbol} for ${outputAmount} ${outputSymbol}`;
             const withRecipient =
-              recipient === account
+              recipient === walletCurrentAddress
                 ? base
                 : `${base} to ${
                     recipientAddressOrName && isAddress(recipientAddressOrName)
@@ -339,8 +339,8 @@ export function useSwapCallback(
     };
   }, [
     trade,
-    library,
-    account,
+    provider,
+    walletCurrentAddress,
     chainId,
     recipient,
     recipientAddressOrName,

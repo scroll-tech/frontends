@@ -1,3 +1,4 @@
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import { TransactionResponse } from "@ethersproject/abstract-provider";
 import { AddressZero } from "@ethersproject/constants";
 import { Contract } from "@ethersproject/contracts";
@@ -21,7 +22,6 @@ import { AutoRow } from "../../components/Row";
 import { Dots } from "../../components/swap/styleds";
 import { DEFAULT_DEADLINE_FROM_NOW } from "../../constants";
 import { useTotalSupply } from "../../data/TotalSupply";
-import { useActiveWeb3React } from "../../hooks";
 import { useToken } from "../../hooks/Tokens";
 import { useV1ExchangeContract } from "../../hooks/useContract";
 import { NEVER_RELOAD, useSingleCallResult } from "../../state/multicall/hooks";
@@ -50,7 +50,7 @@ function V1PairRemoval({
   liquidityTokenAmount: TokenAmount;
   token: Token;
 }) {
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3Context();
   const totalSupply = useTotalSupply(liquidityTokenAmount.token);
   const exchangeETHBalance = useETHBalances([
     liquidityTokenAmount.token.address,
@@ -174,7 +174,7 @@ export default function RemoveV1Exchange({
   },
 }: RouteComponentProps<{ address: string }>) {
   const validatedAddress = isAddress(address);
-  const { chainId, account } = useActiveWeb3React();
+  const { chainId, walletCurrentAddress } = useWeb3Context();
 
   const exchangeContract = useV1ExchangeContract(
     validatedAddress ? validatedAddress : undefined,
@@ -202,7 +202,7 @@ export default function RemoveV1Exchange({
     [chainId, validatedAddress, token]
   );
   const userLiquidityBalance = useTokenBalance(
-    account ?? undefined,
+    walletCurrentAddress ?? undefined,
     liquidityToken
   );
 
@@ -226,7 +226,7 @@ export default function RemoveV1Exchange({
           </div>
         </AutoRow>
 
-        {!account ? (
+        {!walletCurrentAddress ? (
           <TYPE.largeHeader>You must connect an account.</TYPE.largeHeader>
         ) : userLiquidityBalance && token && exchangeContract ? (
           <V1PairRemoval

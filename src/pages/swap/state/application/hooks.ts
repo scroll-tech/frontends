@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from "react";
-import { useActiveWeb3React } from "../../hooks";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import {
   addPopup,
   PopupContent,
@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { AppState } from "../index";
 
 export function useBlockNumber(): number | undefined {
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3Context();
 
   return useSelector(
     (state: AppState) => state.application.blockNumber[chainId ?? -1]

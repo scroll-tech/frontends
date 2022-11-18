@@ -14,7 +14,7 @@ import {
   ETHER,
   Token,
 } from "uniswap-v2-sdk-scroll";
-import { useActiveWeb3React } from "../../hooks";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import { useIsUserAddedToken } from "../../hooks/Tokens";
 import {
   useSelectedTokenList,
@@ -118,12 +118,15 @@ function CurrencyRow({
   otherSelected: boolean;
   style: CSSProperties;
 }) {
-  const { account, chainId } = useActiveWeb3React();
+  const { walletCurrentAddress, chainId } = useWeb3Context();
   const key = currencyKey(currency);
   const selectedTokenList = useSelectedTokenList();
   const isOnSelectedList = isTokenOnList(selectedTokenList, currency);
   const customAdded = useIsUserAddedToken(currency);
-  const balance = useCurrencyBalance(account ?? undefined, currency);
+  const balance = useCurrencyBalance(
+    walletCurrentAddress ?? undefined,
+    currency
+  );
 
   const removeToken = useRemoveUserAddedToken();
   const addToken = useAddUserToken();
@@ -174,7 +177,11 @@ function CurrencyRow({
       </Column>
       <TokenTags currency={currency} />
       <RowFixed style={{ justifySelf: "flex-end" }}>
-        {balance ? <Balance balance={balance} /> : account ? <Loader /> : null}
+        {balance ? (
+          <Balance balance={balance} />
+        ) : walletCurrentAddress ? (
+          <Loader />
+        ) : null}
       </RowFixed>
     </MenuItem>
   );

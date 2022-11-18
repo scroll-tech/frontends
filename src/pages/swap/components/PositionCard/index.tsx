@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { JSBI, Pair, Percent } from "uniswap-v2-sdk-scroll";
 import { useTotalSupply } from "../../data/TotalSupply";
 
-import { useActiveWeb3React } from "../../hooks";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import { useTokenBalance } from "../../state/wallet/hooks";
 import { currencyId } from "../../utils/currencyId";
 import { unwrappedToken } from "../../utils/wrappedCurrency";
@@ -42,7 +42,7 @@ export function MinimalPositionCard({
   showUnwrapped = false,
   border,
 }: PositionCardProps) {
-  const { account } = useActiveWeb3React();
+  const { walletCurrentAddress } = useWeb3Context();
 
   const currency0 = showUnwrapped ? pair.token0 : unwrappedToken(pair.token0);
   const currency1 = showUnwrapped ? pair.token1 : unwrappedToken(pair.token1);
@@ -50,7 +50,7 @@ export function MinimalPositionCard({
   const [showMore, setShowMore] = useState(false);
 
   const userPoolBalance = useTokenBalance(
-    account ?? undefined,
+    walletCurrentAddress ?? undefined,
     pair.liquidityToken
   );
   const totalPoolTokens = useTotalSupply(pair.liquidityToken);
@@ -155,7 +155,7 @@ export function MinimalPositionCard({
 }
 
 export default function FullPositionCard({ pair, border }: PositionCardProps) {
-  const { account } = useActiveWeb3React();
+  const { walletCurrentAddress } = useWeb3Context();
 
   const currency0 = unwrappedToken(pair.token0);
   const currency1 = unwrappedToken(pair.token1);
@@ -163,7 +163,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
   const [showMore, setShowMore] = useState(false);
 
   const userPoolBalance = useTokenBalance(
-    account ?? undefined,
+    walletCurrentAddress ?? undefined,
     pair.liquidityToken
   );
   const totalPoolTokens = useTotalSupply(pair.liquidityToken);

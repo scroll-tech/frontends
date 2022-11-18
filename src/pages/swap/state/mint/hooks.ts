@@ -10,10 +10,11 @@ import {
   Price,
   TokenAmount,
 } from "uniswap-v2-sdk-scroll";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
+
 import { PairState, usePair } from "../../data/Reserves";
 import { useTotalSupply } from "../../data/TotalSupply";
 
-import { useActiveWeb3React } from "../../hooks";
 import {
   wrappedCurrency,
   wrappedCurrencyAmount,
@@ -45,7 +46,7 @@ export function useDerivedMintInfo(
   poolTokenPercentage?: Percent;
   error?: string;
 } {
-  const { account, chainId } = useActiveWeb3React();
+  const { walletCurrentAddress, chainId } = useWeb3Context();
 
   const { independentField, typedValue, otherTypedValue } = useMintState();
 
@@ -73,7 +74,7 @@ export function useDerivedMintInfo(
     Boolean(totalSupply && JSBI.equal(totalSupply.raw, ZERO));
 
   // balances
-  const balances = useCurrencyBalances(account ?? undefined, [
+  const balances = useCurrencyBalances(walletCurrentAddress ?? undefined, [
     currencies[Field.CURRENCY_A],
     currencies[Field.CURRENCY_B],
   ]);
@@ -192,7 +193,7 @@ export function useDerivedMintInfo(
   }, [liquidityMinted, totalSupply]);
 
   let error: string | undefined;
-  if (!account) {
+  if (!walletCurrentAddress) {
     error = "Connect Wallet";
   }
 

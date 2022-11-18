@@ -4,7 +4,7 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { ChainId, Pair, Token } from "uniswap-v2-sdk-scroll";
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from "../../constants";
 
-import { useActiveWeb3React } from "../../hooks";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import { useAllTokens } from "../../hooks/Tokens";
 import { AppDispatch, AppState } from "../index";
 import {
@@ -146,7 +146,7 @@ export function useRemoveUserAddedToken(): (
 }
 
 export function useUserAddedTokens(): Token[] {
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3Context();
   const serializedTokensMap = useSelector<AppState, AppState["user"]["tokens"]>(
     ({ user: { tokens } }) => tokens
   );
@@ -196,7 +196,7 @@ export function toV2LiquidityToken([tokenA, tokenB]: [Token, Token]): Token {
  * Returns all the pairs of tokens that are tracked by the user for the current chain ID.
  */
 export function useTrackedTokenPairs(): [Token, Token][] {
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3Context();
   const tokens = useAllTokens();
 
   // pinned pairs

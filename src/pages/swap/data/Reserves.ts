@@ -2,7 +2,7 @@ import { Interface } from "@ethersproject/abi";
 import IUniswapV2Pair from "@uniswap/v2-core/build/IUniswapV2Pair.json";
 import { useMemo } from "react";
 import { Currency, Pair, TokenAmount } from "uniswap-v2-sdk-scroll";
-import { useActiveWeb3React } from "../hooks";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 
 import { useMultipleContractSingleData } from "../state/multicall/hooks";
 import { wrappedCurrency } from "../utils/wrappedCurrency";
@@ -19,7 +19,7 @@ export enum PairState {
 export function usePairs(
   currencies: [Currency | undefined, Currency | undefined][]
 ): [PairState, Pair | null][] {
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3Context();
 
   const tokens = useMemo(
     () =>

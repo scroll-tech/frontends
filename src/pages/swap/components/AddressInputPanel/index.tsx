@@ -1,7 +1,7 @@
 import React, { useContext, useCallback } from "react";
 import styled, { ThemeContext } from "styled-components";
 import useENS from "../../hooks/useENS";
-import { useActiveWeb3React } from "../../hooks";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import { ExternalLink, TYPE } from "../../theme";
 import { AutoColumn } from "../Column";
 import { RowBetween } from "../Row";
@@ -77,7 +77,7 @@ export default function AddressInputPanel({
   // triggers whenever the typed value changes
   onChange: (value: string) => void;
 }) {
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3Context();
   const theme = useContext(ThemeContext);
 
   const { address, loading, name } = useENS(value);

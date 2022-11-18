@@ -16,7 +16,7 @@ import {
   TradeType,
   WETH,
 } from "uniswap-v2-sdk-scroll";
-import { useActiveWeb3React } from "../hooks";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import { useAllTokens } from "../hooks/Tokens";
 import { useV1FactoryContract } from "../hooks/useContract";
 import { Version } from "../hooks/useToggledVersion";
@@ -102,7 +102,7 @@ export function useAllTokenV1Exchanges(): { [exchangeAddress: string]: Token } {
 
 // returns whether any of the tokens in the user's token list have liquidity on v1
 export function useUserHasLiquidityInAllTokens(): boolean | undefined {
-  const { account, chainId } = useActiveWeb3React();
+  const { walletCurrentAddress, chainId } = useWeb3Context();
 
   const exchanges = useAllTokenV1Exchanges();
   const v1ExchangeLiquidityTokens = useMemo(
@@ -116,7 +116,7 @@ export function useUserHasLiquidityInAllTokens(): boolean | undefined {
   );
 
   const balances = useTokenBalances(
-    account ?? undefined,
+    walletCurrentAddress ?? undefined,
     v1ExchangeLiquidityTokens
   );
 

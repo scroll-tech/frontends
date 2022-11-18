@@ -40,9 +40,10 @@ import Loader from "../../components/Loader";
 import {
   BETTER_TRADE_LINK_THRESHOLD,
   INITIAL_ALLOWED_SLIPPAGE,
+  SUPPORTED_CHAINID,
 } from "../../constants";
 import { getTradeVersion, isTradeBetter } from "../../data/V1";
-import { useActiveWeb3React } from "../../hooks";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import { useCurrency } from "../../hooks/Tokens";
 import {
   ApprovalState,
@@ -99,7 +100,7 @@ export default function Swap() {
     setDismissTokenWarning(true);
   }, []);
 
-  const { account } = useActiveWeb3React();
+  const { walletCurrentAddress, checkConnectedChainId } = useWeb3Context();
   const theme = useContext(ThemeContext);
 
   // toggle wallet when disconnected
@@ -285,7 +286,7 @@ export default function Swap() {
           action:
             recipient === null
               ? "Swap w/o Send"
-              : (recipientAddress ?? recipient) === account
+              : (recipientAddress ?? recipient) === walletCurrentAddress
               ? "Swap w/o Send + recipient"
               : "Swap w/ Send",
           label: [
@@ -306,7 +307,7 @@ export default function Swap() {
       });
   }, [
     tradeToConfirm,
-    account,
+    walletCurrentAddress,
     priceImpactWithoutFee,
     recipient,
     recipientAddress,
@@ -519,10 +520,12 @@ export default function Swap() {
             )}
           </AutoColumn>
           <BottomGrouping>
-            {!account ? (
-              <ButtonLight onClick={toggleWalletModal}>
-                Connect Wallet
-              </ButtonLight>
+            {!checkConnectedChainId(SUPPORTED_CHAINID) ? (
+              <ButtonError disabled>
+                <Text fontSize={20} fontWeight={500}>
+                  Wrong NetWork
+                </Text>
+              </ButtonError>
             ) : showWrap ? (
               <ButtonPrimary
                 disabled={Boolean(wrapInputError)}

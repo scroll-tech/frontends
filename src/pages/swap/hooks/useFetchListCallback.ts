@@ -3,33 +3,40 @@ import { TokenList } from "@uniswap/token-lists";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { ChainId } from "uniswap-v2-sdk-scroll";
-import { getNetworkLibrary, NETWORK_CHAIN_ID } from "../connectors";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import { AppDispatch } from "../state";
 import { fetchTokenList } from "../state/lists/actions";
 import getTokenList from "../utils/getTokenList";
 import resolveENSContentHash from "../utils/resolveENSContentHash";
-import { useActiveWeb3React } from "./index";
+import { getProvider } from "../utils/provider";
+
+export const NETWORK_CHAIN_ID: number = parseInt(
+  process.env.REACT_APP_CHAIN_ID ?? "1"
+);
+
+const NETWORK_URL =
+  "https://mainnet.infura.io/v3/099fc58e0de9451d80b18d7c74caa7c1"; // TODO: Refactor
 
 export function useFetchListCallback(): (
   listUrl: string
 ) => Promise<TokenList> {
-  const { chainId, library } = useActiveWeb3React();
+  const { chainId, provider } = useWeb3Context();
   const dispatch = useDispatch<AppDispatch>();
-
+  // only if user add token with ENS name
   const ensResolver = useCallback(
     (ensName: string) => {
-      if (!library || chainId !== ChainId.MAINNET) {
+      if (!provider || chainId !== ChainId.MAINNET) {
         if (NETWORK_CHAIN_ID === ChainId.MAINNET) {
-          const networkLibrary = getNetworkLibrary();
-          if (networkLibrary) {
-            return resolveENSContentHash(ensName, networkLibrary);
+          const networkProvider = getProvider(NETWORK_CHAIN_ID, NETWORK_URL);
+          if (networkProvider) {
+            return resolveENSContentHash(ensName, networkProvider);
           }
         }
         throw new Error("Could not construct mainnet ENS resolver");
       }
-      return resolveENSContentHash(ensName, library);
+      return resolveENSContentHash(ensName, provider!);
     },
-    [chainId, library]
+    [chainId, provider]
   );
 
   return useCallback(

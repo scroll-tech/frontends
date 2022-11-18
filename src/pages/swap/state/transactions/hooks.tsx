@@ -1,8 +1,8 @@
 import { TransactionResponse } from "@ethersproject/providers";
 import { useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 
-import { useActiveWeb3React } from "../../hooks";
 import { AppDispatch, AppState } from "../index";
 import { addTransaction } from "./actions";
 import { TransactionDetails } from "./reducer";
@@ -15,7 +15,7 @@ export function useTransactionAdder(): (
     approval?: { tokenAddress: string; spender: string };
   }
 ) => void {
-  const { chainId, account } = useActiveWeb3React();
+  const { chainId, walletCurrentAddress } = useWeb3Context();
   const dispatch = useDispatch<AppDispatch>();
 
   return useCallback(
@@ -29,7 +29,7 @@ export function useTransactionAdder(): (
         approval?: { tokenAddress: string; spender: string };
       } = {}
     ) => {
-      if (!account) return;
+      if (!walletCurrentAddress) return;
       if (!chainId) return;
 
       const { hash } = response;
@@ -37,16 +37,22 @@ export function useTransactionAdder(): (
         throw Error("No transaction hash found.");
       }
       dispatch(
-        addTransaction({ hash, from: account, chainId, approval, summary })
+        addTransaction({
+          hash,
+          from: walletCurrentAddress,
+          chainId,
+          approval,
+          summary,
+        })
       );
     },
-    [dispatch, chainId, account]
+    [dispatch, chainId, walletCurrentAddress]
   );
 }
 
 // returns all the transactions for the current chain
 export function useAllTransactions(): { [txHash: string]: TransactionDetails } {
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3Context();
 
   const state = useSelector<AppState, AppState["transactions"]>(
     (state) => state.transactions
