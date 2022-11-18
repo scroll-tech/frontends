@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { makeStyles } from "tss-react/mui";
 import CloseIcon from "@mui/icons-material/Close";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 
 const useStyles = makeStyles()((theme) => {
   return {
@@ -38,6 +39,7 @@ const useStyles = makeStyles()((theme) => {
 
 const SendLoading = (props) => {
   const { value, from, to, open, onClose } = props;
+  const { walletName } = useWeb3Context();
   const { classes } = useStyles();
 
   return (
@@ -65,7 +67,7 @@ const SendLoading = (props) => {
             Sending {value} from {from} to {to}
           </Typography>
           <Typography variant="body1">
-            Confirm this transaction on your MetaMask wallet
+            Confirm this transaction on your {walletName} wallet
           </Typography>
         </div>
       </DialogContent>

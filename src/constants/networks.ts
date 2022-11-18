@@ -2,13 +2,13 @@
 import { requireEnv } from "@/utils";
 import { ChainId, RPCUrl, ETH_SYMBOL, USDC_SYMBOL } from "./common";
 
+const curEnv = requireEnv("REACT_APP_SCROLL_ENVIRONMENT");
+const l1Explorer = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1");
+const l2Explorer = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2");
+
 export const networks = [
   {
-    name:
-      "Scroll L1 Testnet" +
-      (process.env.REACT_APP_SCROLL_ENVIRONMENT === "MAIN"
-        ? ""
-        : " [" + process.env.REACT_APP_SCROLL_ENVIRONMENT + "]"),
+    name: "Scroll L1 Testnet" + (curEnv === "MAIN" ? "" : " [" + curEnv + "]"),
     slug: "layer1",
     imageUrl:
       "https://prealpha.scroll.io/bridge/static/media/mainnet.0e3a60e3.svg",
@@ -23,11 +23,7 @@ export const networks = [
     waitConfirmations: 12,
   },
   {
-    name:
-      "Scroll L2 Testnet" +
-      (process.env.REACT_APP_SCROLL_ENVIRONMENT === "MAIN"
-        ? ""
-        : " [" + process.env.REACT_APP_SCROLL_ENVIRONMENT + "]"),
+    name: "Scroll L2 Testnet" + (curEnv === "MAIN" ? "" : " [" + curEnv + "]"),
     slug: "layer2",
     imageUrl: "https://scroll.io/img/logo.png",
     provider: null,
@@ -68,7 +64,7 @@ export const SiteMap = {
   Faucet: "/faucet/",
   Bridge: "/bridge/",
   Swap: "/swap/",
-  L1Explorer: "https://l1scan.scroll.io/",
-  L2Explorer: "https://l2scan.scroll.io/",
+  L1Explorer: l1Explorer,
+  L2Explorer: l2Explorer,
   RollupExplorer: "/rollupscan/",
 };

@@ -97,7 +97,7 @@ const TxTable = (props: any) => {
               <TableRow>
                 <TableCell>Status</TableCell>
                 <TableCell>Amount</TableCell>
-                <TableCell>Tx Hash</TableCell>
+                <TableCell>Txn Hash</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -224,42 +224,42 @@ const TxRow = (props) => {
       </TableCell>
       <TableCell>
         <Stack direction="column">
-          <Stack direction="row" spacing="0.8rem">
-            <Typography variant="body1">{tx.fromName}: </Typography>
+          <Typography variant="body1">From {tx.fromName}: </Typography>
+          <Stack direction="row" spacing="0.8rem" className="align-center">
             <Link
               external
               href={generateExploreLink(tx.fromExplore, tx.hash)}
-              className="leading-normal"
+              className="leading-normal flex-1"
             >
               {truncateHash(tx.hash)}
             </Link>
+            <Typography variant="body2" color="textSecondary">
+              {fromStatusConfirmations[1]}/
+              {networks[+!tx.isL1].waitConfirmations} confirmations
+            </Typography>
           </Stack>
-
-          <Typography variant="body2" color="textSecondary">
-            {fromStatusConfirmations[1]}/{networks[+!tx.isL1].waitConfirmations}{" "}
-            confirmations
-          </Typography>
         </Stack>
 
         <Stack direction="column" className="mt-[1.2rem]">
-          <Stack direction="row" spacing="0.8rem">
-            <Typography variant="body1">{tx.toName}: </Typography>
+          <Typography variant="body1">To {tx.toName}: </Typography>
+          <Stack direction="row" spacing="0.8rem" className="align-center">
             {tx.toHash ? (
               <Link
                 external
                 href={generateExploreLink(tx.toExplore, tx.toHash)}
-                className="leading-normal"
+                className="leading-normal flex-1"
               >
                 {truncateHash(tx.toHash)}
               </Link>
             ) : (
               <span className="leading-normal">-</span>
             )}
+
+            <Typography variant="body2" color="textSecondary">
+              {toStatusConfirmations[1]}/{networks[+tx.isL1].waitConfirmations}{" "}
+              confirmations
+            </Typography>
           </Stack>
-          <Typography variant="body2" color="textSecondary">
-            {toStatusConfirmations[1]}/{networks[+tx.isL1].waitConfirmations}{" "}
-            confirmations
-          </Typography>
         </Stack>
       </TableCell>
     </TableRow>

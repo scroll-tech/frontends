@@ -18,10 +18,12 @@ import {
   Stack,
 } from "@mui/material";
 import { styled } from "@mui/system";
+import Logo from "../Logo";
 import navigations from "./constans";
 
 const NavStack = styled(Stack)(
   ({ theme }) => `
+  height: 69px;
   line-height: 69px;
   border-bottom: 1px solid ${theme.palette.border.main};
   padding-left: 16px;
@@ -76,6 +78,7 @@ const App = () => {
       sx={{
         width: "100%",
         paddingLeft: "20px",
+        fontSize: "16px",
       }}
       component="nav"
     >
@@ -98,9 +101,9 @@ const App = () => {
             <ListButton onClick={() => toggleCollapse(item.key)}>
               {item.label}{" "}
               {activeCollapse === item.key ? (
-                <ExpandLess sx={{ marginLeft: "6px" }} />
+                <ExpandLess fontSize="large" sx={{ marginLeft: "6px" }} />
               ) : (
-                <ExpandMore sx={{ marginLeft: "6px" }} />
+                <ExpandMore fontSize="large" sx={{ marginLeft: "6px" }} />
               )}
             </ListButton>
             <Collapse
@@ -140,20 +143,22 @@ const App = () => {
   );
 
   return (
-    <NavStack
-      direction="row"
-      justifyContent="space-between"
-      alignItems="center"
-    >
-      <NavLink to="/" className="flex">
-        <img
-          src="https://scroll.io/img/logo_with_text.png"
-          alt="logo"
-          className="cursor-pointer w-[96px] h-auto"
+    <>
+      <NavStack
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        <NavLink to="/" className="flex">
+          <Logo></Logo>
+        </NavLink>
+        <MenuIcon
+          fontSize="large"
+          sx={{ color: "text.primary" }}
+          onClick={() => toggleDrawer(true)}
         />
-      </NavLink>
+      </NavStack>
       <Box>
-        <MenuIcon onClick={() => toggleDrawer(true)} />
         <SwipeableDrawer
           open={open}
           anchor="right"
@@ -165,7 +170,10 @@ const App = () => {
             onKeyDown={() => toggleDrawer(false)}
           >
             <Stack sx={{ alignItems: "end" }}>
-              <CloseRounded onClick={() => toggleDrawer(false)} />
+              <CloseRounded
+                fontSize="large"
+                onClick={() => toggleDrawer(false)}
+              />
             </Stack>
             {list()}
             <Button
@@ -177,7 +185,7 @@ const App = () => {
           </MenuContent>
         </SwipeableDrawer>
       </Box>
-    </NavStack>
+    </>
   );
 };
 

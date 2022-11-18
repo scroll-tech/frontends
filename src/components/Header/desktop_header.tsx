@@ -2,20 +2,26 @@ import { NavLink } from "react-router-dom";
 import * as React from "react";
 import { ExpandMore } from "@mui/icons-material";
 import { Box, Link, Button, Stack, Fade, Container } from "@mui/material";
+import Logo from "@/components/Logo";
 import { styled } from "@mui/system";
 import navigations from "./constans";
 
 const StyledBox = styled(Stack)(
   ({ theme }) => `
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+  background-color: #fff;
   border-bottom: 1px solid ${theme.palette.border.main};
-`
+  `
 );
-
 const HeaderContainer = styled(Container)(
   ({ theme }) => `
    display: flex;
    justify-content: space-between;
    align-items: center;
+   
   `
 );
 const LinkStyledButton = styled(NavLink)(
@@ -26,7 +32,7 @@ const LinkStyledButton = styled(NavLink)(
   padding-right: 25px;
   margin-left: 4px;
   margin-right: 4px;
-  line-height: 72px;
+  line-height: 82px;
   position: relative;
   &:after {
     content: '';
@@ -76,7 +82,7 @@ const SubMenuButton = styled(Box)(
     padding-right: 25px;
     margin-left: 4px;
     margin-right: 4px;
-    line-height: 72px;
+    line-height: 82px;
     position: relative;
     cursor: pointer;
     &:after {
@@ -177,11 +183,7 @@ const App = () => {
     <StyledBox>
       <HeaderContainer>
         <NavLink to="/" className="flex">
-          <img
-            src="https://scroll.io/img/logo_with_text.png"
-            alt="logo"
-            className="cursor-pointer w-[96px] h-auto"
-          />
+          <Logo></Logo>
         </NavLink>
         <Box>{list()}</Box>
         <Button href="https://guide.scroll.io/">User Guide</Button>

@@ -1,13 +1,6 @@
 import { useState, useRef } from "react";
 import { makeStyles } from "tss-react/mui";
-import {
-  Popper,
-  Typography,
-  Card,
-  Backdrop,
-  Divider,
-  ClickAwayListener,
-} from "@mui/material";
+import { Popper, Typography, Card, Backdrop, Divider, ClickAwayListener } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import { useApp } from "@/contexts/AppContextProvider";
@@ -113,7 +106,7 @@ const AddressButton = () => {
 
   return (
     <>
-      <Button ref={buttonRef} variant="outlined" large onClick={handleOpen}>
+      <Button className="w-[178px]" ref={buttonRef} variant="outlined" large onClick={handleOpen}>
         {truncateAddress(walletCurrentAddress as string)}
       </Button>
       <Backdrop open={historyVisible} className={classes.backdrop}>
@@ -149,10 +142,7 @@ const AddressButton = () => {
                   <CloseIcon onClick={handleClose} />
                 </div>
                 <div>
-                  <ManageWallet
-                    classes={classes}
-                    onDisconnect={handleDisconnect}
-                  />
+                  <ManageWallet classes={classes} onDisconnect={handleDisconnect} />
                   <Divider></Divider>
                   <div className={cx("relative", classes.transactionsList)}>
                     <TransactionHistory />

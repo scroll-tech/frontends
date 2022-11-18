@@ -34,10 +34,10 @@ const Send: FC = () => {
   const { classes: styles, cx } = useSendStyles();
   const { networksAndSigners } = useApp();
 
-  const [fromNetwork, setFromNetwork] = useState(networks[0]);
-  const [toNetwork, setToNetwork] = useState(networks[1]);
+  const [fromNetwork, setFromNetwork] = useState({} as any);
+  const [toNetwork, setToNetwork] = useState({} as any);
   const [selectedToken, setSelectedToken] = useState(tokens[ETH_SYMBOL]);
-  const { checkConnectedNetworkId, chainId } = useWeb3Context();
+  const { checkConnectedNetworkId, chainId, walletName } = useWeb3Context();
 
   const [fromTokenAmount, setFromTokenAmount] = useState<string>();
   const [sendError, setSendError] = useState<any>();
@@ -52,18 +52,21 @@ const Send: FC = () => {
   };
   const { balance: fromBalance, loading: loadingFromBalance } = useBalance(
     selectedToken,
-    networksAndSigners,
     fromNetwork
   );
   const { balance: toBalance, loading: loadingToBalance } = useBalance(
     selectedToken,
-    networksAndSigners,
     toNetwork
   );
 
   useEffect(() => {
-    if (chainId) {
-      chainId === toNetwork.chainId && handleSwitchDirection();
+    if (chainId && Object.values(ChainId).includes(chainId)) {
+      setFromNetwork(networks.find((item) => item.chainId === chainId));
+      setToNetwork(networks.find((item) => item.chainId !== chainId));
+    } else if (chainId) {
+      setFromNetwork(networks[0]);
+      setToNetwork(networks[1]);
+      switchNetwork(networks[0].chainId);
     }
   }, [chainId]);
 
@@ -84,16 +87,22 @@ const Send: FC = () => {
   // network->sufficient->tx error
   const warningTip = useMemo(() => {
     if (!isCorrectNetwork) {
-      return <>Your wallet is connected to an unsupported network.</>;
+      return (
+        <>
+          Your wallet is connected to an unsupported network. Select{" "}
+          <b>{fromNetwork.name}</b> network on {walletName}.
+        </>
+      );
     } else if (warning) {
       return warning;
     } else if (sendError && sendError.code !== "ACTION_REJECTED") {
       return (
         <>
-          The transaction failed. Your MetaMask wallet might not be up to date.
+          The transaction failed. Your {walletName} wallet might not be up to
+          date.
           <b>
             <u style={{ textUnderlineOffset: "0.4rem" }}>
-              Reset your MetaMask account
+              Reset your {walletName} account
             </u>
           </b>
           {" before using Scroll Bridge."}
@@ -107,6 +116,7 @@ const Send: FC = () => {
   const handleSwitchDirection = () => {
     setFromNetwork(toNetwork);
     setToNetwork(fromNetwork);
+    switchNetwork(toNetwork.chainId);
   };
 
   const handleApprove = async () => {
@@ -165,12 +175,12 @@ const Send: FC = () => {
       const Token = new ethers.Contract(
         (selectedToken as any).address[fromNetwork.chainId],
         L1_erc20ABI,
-        networksAndSigners[chainId].signer
+        networksAndSigners[chainId as number].signer
       );
       return checkApproval(
         parsedAmount,
         Token,
-        StandardERC20GatewayProxyAddr[chainId]
+        StandardERC20GatewayProxyAddr[chainId as number]
       );
     } catch (err) {
       console.log("~~~err", err);
@@ -215,19 +225,20 @@ const Send: FC = () => {
     setFromTokenAmount(amountIn);
   };
 
-  const switchNetwork = async () => {
-    const networkId = Number(fromNetwork.networkId);
-    console.log([Addresses[networkId].autoconnect]);
+  const switchNetwork = async (networkId) => {
     try {
+      // cancel switch network in MetaMask would not throw error and the result is null just like successfully switched
       await window.ethereum.request({
         method: "wallet_addEthereumChain",
         params: [Addresses[networkId].autoconnect],
       });
-      console.log("error");
     } catch (error) {
-      console.log(error);
+      console.log(error, "error");
+      setFromNetwork(networks.find((item) => item.chainId === chainId));
+      setToNetwork(networks.find((item) => item.chainId !== chainId));
     }
   };
+
   const approveButtonActive = needsApproval;
   return (
     <StyleContext.Provider value={styles}>
@@ -293,26 +304,17 @@ const Send: FC = () => {
             >
               Approve USDC
             </Button>
-          ) : isCorrectNetwork ? (
+          ) : (
             <Button
               className={styles.button}
               onClick={handleSendTransaction}
               disabled={!sendButtonActive}
+              loading={sending}
               fullWidth
               large
               color="primary"
             >
               Send {selectedToken.symbol} to {toNetwork.name}
-            </Button>
-          ) : (
-            <Button
-              className={styles.button}
-              onClick={switchNetwork}
-              fullWidth
-              large
-              color="primary"
-            >
-              Switch to {fromNetwork.name}
             </Button>
           )}
           <ApproveLoading

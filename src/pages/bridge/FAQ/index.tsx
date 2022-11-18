@@ -7,6 +7,7 @@ import {
 } from "@mui/material";
 import { makeStyles } from "tss-react/mui";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import Link from "@/components/Link";
 import { SiteMap } from "@/constants";
 
@@ -45,6 +46,7 @@ const useStyles = makeStyles()((theme: Theme) => {
 });
 
 const FAQ = () => {
+  const { walletName } = useWeb3Context();
   const { classes } = useStyles();
   return (
     <div className={classes.wrapper}>
@@ -55,29 +57,6 @@ const FAQ = () => {
         <AccordionSummary
           expandIcon={<ExpandMoreIcon color="secondary" />}
           id="1"
-        >
-          <Typography variant="h6">What is a blockchain Bridge?</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography variant="body1" color="textSecondary">
-            All blockchains develop in isolated environments, this means they
-            cannot natively communicate, and tokens cannot move freely between
-            blockchains.
-          </Typography>
-          <Typography
-            variant="body1"
-            color="textSecondary"
-            className={classes.specialParagraph}
-          >
-            A blockchain bridge is a tool connecting two blockchains to enable
-            interactions between them.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon color="secondary" />}
-          id="2"
         >
           <Typography variant="h6">How do I get started?</Typography>
         </AccordionSummary>
@@ -136,6 +115,30 @@ const FAQ = () => {
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon color="secondary" />}
+          id="2"
+        >
+          <Typography variant="h6">What is a blockchain Bridge?</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography variant="body1" color="textSecondary">
+            All blockchains develop in isolated environments, this means they
+            cannot natively communicate, and tokens cannot move freely between
+            blockchains.
+          </Typography>
+          <Typography
+            variant="body1"
+            color="textSecondary"
+            className={classes.specialParagraph}
+          >
+            A blockchain bridge is a tool connecting two blockchains to enable
+            interactions between them.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon color="secondary" />}
           id="3"
         >
           <Typography variant="h6">
@@ -164,9 +167,10 @@ const FAQ = () => {
             color="textSecondary"
             className={classes.orderedParagraph}
           >
-            3. Click on Send. A pop up window from MetaMask will ask you for the
-            transfer confirmation. If this is your first time transferring USDC,
-            MetaMask will ask you to Approve the Scroll Bridge contract to
+            3. Click on Send. A pop up window from {walletName} will ask you for
+            the transfer confirmation. If this is your first time transferring
+            USDC,
+            {walletName} will ask you to Approve the Scroll Bridge contract to
             access your USDC token.
           </Typography>
           <Typography

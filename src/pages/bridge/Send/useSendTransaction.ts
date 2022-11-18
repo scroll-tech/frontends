@@ -26,7 +26,7 @@ export function useSendTransaction(props) {
 
   const { networksAndSigners } = useApp();
   const { addTransaction, updateTransaction } = useTxStore();
-  const { changeBridgeFormVisible } = useBridgeStore();
+  const { changeRecentTxVisible } = useBridgeStore();
   const [sending, setSending] = useState<boolean>(false);
   const { checkConnectedNetworkId } = useWeb3Context();
   const parsedAmount = useMemo(() => {
@@ -50,7 +50,7 @@ export function useSendTransaction(props) {
           tx = await sendl2ToL1();
         }
         setSending(false);
-        changeBridgeFormVisible(false);
+        changeRecentTxVisible(true);
         handleTransaction(tx);
         const txResult = await tx.wait();
         handleTransaction(tx, {
@@ -60,7 +60,7 @@ export function useSendTransaction(props) {
         setSendError(error);
         setSending(false);
       }
-    } catch (err: any) {
+    } catch (err) {
       if (!/cancelled/gi.test(err.message)) {
         setError(err);
       } else {

@@ -14,6 +14,15 @@ const lightTheme = {
   typography: typographyOptions,
   breakpoints,
   components: {
+    MuiContainer: {
+      styleOverrides: {
+        root: {
+          "&.MuiContainer-maxWidthLg": {
+            maxWidth: "1300px",
+          },
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {
@@ -378,10 +387,7 @@ const Theme = ({ children }) => {
   // const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   // console.log(prefersDarkMode, "prefersDarkMode");
 
-  const theme = useMemo(
-    () => createTheme(prefersDarkMode ? lightTheme : darkTheme),
-    []
-  );
+  const theme = useMemo(() => createTheme(prefersDarkMode ? lightTheme : darkTheme), []);
 
   return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
 };

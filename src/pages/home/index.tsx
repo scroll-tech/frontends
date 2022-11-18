@@ -1,5 +1,5 @@
 import SectionTitle from "./components/sectionTitle";
-
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import {
   addresses,
   navigation,
@@ -12,7 +12,7 @@ import {
  * @param {temp: any} autoconnect details
  * @returns {ReactElement}
  */
-function AddNetworkButton({ autoconnect }: any) {
+function AddNetworkButton({ autoconnect, walletName }: any) {
   /**
    * Adds network to MetaMask
    */
@@ -28,12 +28,18 @@ function AddNetworkButton({ autoconnect }: any) {
       onClick={addToMetaMask}
       className="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer"
     >
-      Add to MetaMask
+      Add to {walletName}
     </a>
   );
 }
 
-function TokenAddress({ etherscanPrefix, symbol, address, ERC20 }: any) {
+function TokenAddress({
+  etherscanPrefix,
+  symbol,
+  address,
+  ERC20,
+  walletName,
+}: any) {
   /**
    * Adds token to MetaMask
    */
@@ -56,26 +62,28 @@ function TokenAddress({ etherscanPrefix, symbol, address, ERC20 }: any) {
       onClick={addToMetaMask}
       className="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer"
     >
-      Add to MetaMask
+      Add to {walletName}
     </a>
   );
 }
 
 export default function Home() {
+  const { walletName } = useWeb3Context();
   return (
     <>
       <div className="p-4 mx-[8px] mb-[40px] lg:p-8">
-        <SectionTitle title="Configure MetaMask for our testnet">
+        <SectionTitle title={`Configure ${walletName} for our testnet`}>
           <div className="px-4 py-5 sm:grid sm:grid-cols-1 sm:gap-4 sm:px-6">
             Note: Please completely remove any previous Scroll L1 and L2
-            networks from your MetaMask before proceeding. After re-adding each
-            of them:
+            networks from your {walletName} before proceeding. After re-adding
+            each of them:
             <a
               className="text-indigo-600 hover:text-indigo-500 cursor-pointer"
               target="_blank"
               href="https://guide.scroll.io/user-guide/common-errors#incorrect-nonce-error-when-sending-a-transaction-in-metamask"
+              rel="noreferrer"
             >
-              Reset MetaMask for both networks
+              Reset {walletName} for both networks
             </a>
           </div>
           <div className="text-left">
@@ -97,6 +105,7 @@ export default function Home() {
                     <div className="ml-4 flex-shrink-0">
                       <AddNetworkButton
                         autoconnect={addresses[0].autoconnect}
+                        walletName={walletName}
                       />
                     </div>
                   </li>
@@ -112,6 +121,7 @@ export default function Home() {
                         etherscanPrefix={addresses[0].etherscanPrefix}
                         symbol={process.env.REACT_APP_USDC_SYMBOL}
                         address={addresses[0].usdcAddress}
+                        walletName={walletName}
                       />
                     </div>
                   </li>
@@ -136,6 +146,7 @@ export default function Home() {
                     <div className="ml-4 flex-shrink-0">
                       <AddNetworkButton
                         autoconnect={addresses[1].autoconnect}
+                        walletName={walletName}
                       />
                     </div>
                   </li>
@@ -152,6 +163,7 @@ export default function Home() {
                         etherscanPrefix={addresses[1].etherscanPrefix}
                         symbol={process.env.REACT_APP_USDC_SYMBOL}
                         address={addresses[1].usdcAddress}
+                        walletName={walletName}
                       />
                     </div>
                   </li>
@@ -168,6 +180,7 @@ export default function Home() {
                         etherscanPrefix={addresses[1].etherscanPrefix}
                         symbol={process.env.REACT_APP_UNI_V2_TOKEN_SYMBOL}
                         address={addresses[1].uniV2TokenAddress}
+                        walletName={walletName}
                       />
                     </div>
                   </li>

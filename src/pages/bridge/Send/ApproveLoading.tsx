@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { makeStyles } from "tss-react/mui";
 import CloseIcon from "@mui/icons-material/Close";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 
 const useStyles = makeStyles()((theme) => {
   return {
@@ -38,6 +39,7 @@ const useStyles = makeStyles()((theme) => {
 
 const ApproveLoading = (props) => {
   const { open, onClose } = props;
+  const { walletName } = useWeb3Context();
   const { classes } = useStyles();
 
   return (
@@ -65,7 +67,7 @@ const ApproveLoading = (props) => {
             Approve USDC
           </Typography>
           <Typography variant="body1">
-            Approve on your MetaMask wallet
+            Approve on your {walletName} wallet
           </Typography>
         </div>
       </DialogContent>

@@ -9,6 +9,7 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { getAddress } from "@ethersproject/address";
 import Button from "@/components/Button/Button";
+import { truncateAddress, truncateHash } from "@/utils";
 import { signInTwitter } from "./helper";
 import "./index.less";
 // import useSWR from 'swr'
@@ -18,7 +19,7 @@ const CAN_CLAIM_FROM = "canClaimFrom",
   L1_SCAN_URL = "https://l1scan.scroll.io";
 
 export default function Home() {
-  const { walletCurrentAddress, chainId } = useWeb3Context();
+  const { walletCurrentAddress, chainId, walletName } = useWeb3Context();
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [authorizationCode, setAuthorizationCode] = useState("");
@@ -79,14 +80,6 @@ export default function Home() {
     fetchInfo();
   }, []);
 
-  const truncatedAccountHash = (hash: string) => {
-    return hash ? `${hash.substring(0, 5)}…${hash.substring(38, 42)}` : "-";
-  };
-
-  const truncatedTxHash = (hash: string) => {
-    return hash ? `${hash.substring(0, 6)}…${hash.substring(38, 42)}` : "-";
-  };
-
   const switchNetwork = async () => {
     await window.ethereum.request({
       method: "wallet_addEthereumChain",
@@ -114,7 +107,9 @@ export default function Home() {
     );
     if (res.ok) {
       const TxHashData = await res.json();
-      const canClaimFrom = dayjs().add(1, "day").format("YYYY-MM-DD H:m:s");
+      const canClaimFrom = dayjs()
+        .add(1, "day")
+        .format("YYYY-MM-DD H:m:s");
       setCanClaimFrom(canClaimFrom);
       setTxHashData(TxHashData);
       localStorage.setItem(CAN_CLAIM_FROM, canClaimFrom);
@@ -152,12 +147,16 @@ export default function Home() {
           <Button
             color="primary"
             variant="contained"
-            sx={{ marginTop: "30px" }}
+            sx={{
+              marginTop: "30px",
+              whiteSpace: "normal",
+            }}
+            className="w-full md:w-auto"
             onClick={signInTwitter}
           >
             Sign In With Twitter And Request {faucetInfo.network} Scroll Tokens
           </Button>
-          <MuiAlert severity="info" className="mt-[30px] w-[60em]">
+          <MuiAlert severity="info" className="my-[30px] w-full md:w-[60em] ">
             To prevent faucet botting, you must sign in with <b>Twitter</b>. We
             request read-only access. Your Twitter account must have at least 1
             Tweet, 30 followers, and be older than 1 month.
@@ -215,7 +214,7 @@ export default function Home() {
                         target="_blank"
                         rel="noreferrer"
                       >
-                        {truncatedTxHash(TxHashData.eth_tx_hash)}
+                        {truncateHash(TxHashData.eth_tx_hash)}
                       </a>
                     </td>
                   </tr>
@@ -238,7 +237,7 @@ export default function Home() {
                         target="_blank"
                         rel="noreferrer"
                       >
-                        {truncatedTxHash(TxHashData.erc20_tx_hash)}
+                        {truncateHash(TxHashData.erc20_tx_hash)}
                       </a>
                     </td>
                   </tr>
@@ -254,16 +253,16 @@ export default function Home() {
   return (
     <>
       <main className="px-[16px] faucet-app">
-        <div className="h-[72vh] w-full flex items-center flex-col mb-[60px] md:h-[630px]">
-          <div className=" mt-[20px] mb-[40px] text-right max-w-[1140px] w-full">
+        <div className="w-full flex items-center flex-col mb-[60px] md:h-[630px]">
+          <div className=" mt-[30px] mb-[80px] text-right max-w-[1268px] px-[8px] w-full">
             <button className="w-[178px] h-[50px] text-[#333] border border-[#333] text-base rounded-[4px] cursor-text font-semibold">
-              {truncatedAccountHash(walletCurrentAddress as string)}
+              {truncateAddress(walletCurrentAddress as string)}
             </button>
           </div>
           <p className="text-[#333] text-center text-[26px]  leading-[32px] mb-[16px] font-display md:text-[34px]  md:leading-[40px] capitalize">
             Request testnet Scroll tokens
           </p>
-          <p className="max-w-[560px] text-center  text-[#595959] text-[16px] leading-[26px]">
+          <p className="max-w-[560px] text-center mx-[24px] text-[#595959] text-[16px] leading-[26px]">
             Funds you receive through the Scroll faucet are not real funds.
             Request tokens every 24h and receive {faucetInfo.payoutEth}{" "}
             {faucetInfo.ethSymbol} & {faucetInfo.payoutUsdc}
@@ -271,31 +270,30 @@ export default function Home() {
           </p>
           {wrongNetwork ? (
             <>
-              <div className="bg-[#FFF8CB] py-[18px] px-[28px] rounded-[10px] max-w-[480px] text-center mt-[24px] md:py-[24px] md:px-[32px]">
+              <div className="bg-[#FFF8CB] py-[18px] px-[34px] mx-[24px] rounded-[10px] max-w-[480px] text-center my-[28px] md:py-[24px] md:px-[32px]">
                 <img
                   alt="warning logo"
                   className="w-[26px] mb-[8px] mx-auto"
                   src="/imgs/faucet/warning.svg"
                 />
-                <p className="text-[16px] max-w-[400px] leading-[26px] text-[#C14800]">
-                  Your wallet is connected to an unsupported network.
-                  <button
-                    className="font-bold underline"
-                    onClick={switchNetwork}
-                  >
-                    Switch to Scroll L1 {TESTNET_NAME}
+                <p className="text-[14px]  max-w-[400px] leading-[26px] text-[#C14800] md:text-[16px]">
+                  Your wallet is connected to an unsupported network. Select{" "}
+                  <button className="font-bold" onClick={switchNetwork}>
+                    Scroll L1 {TESTNET_NAME}
                   </button>{" "}
+                  on {walletName}.
                 </p>
               </div>
-              <p className="mt-[25px] text-[#595959] text-base">
-                Scroll L1 and L2 not added yet?
+              <div className="flex flex-col text-[#595959] text-center text-[14px] md:flex-row md:text-[16px]">
+                <p className="mb-[6px] md:mr-[6px]">
+                  Scroll L1 and L2 not added yet?
+                </p>
                 <Link to="add-network">
                   <span className="text-[#00A6F2] cursor-pointer font-semibold">
-                    {" "}
                     Add Scroll L1{TESTNET_NAME} and L2{TESTNET_NAME}
                   </span>
                 </Link>
-              </p>
+              </div>
             </>
           ) : (
             <Countdown
