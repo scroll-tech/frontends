@@ -19,7 +19,7 @@ const CAN_CLAIM_FROM = "canClaimFrom",
   L1_SCAN_URL = "https://l1scan.scroll.io";
 
 export default function Home() {
-  const { walletCurrentAddress, chainId } = useWeb3Context();
+  const { walletCurrentAddress, chainId, walletName } = useWeb3Context();
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [authorizationCode, setAuthorizationCode] = useState("");
@@ -281,7 +281,7 @@ export default function Home() {
                   <button className="font-bold" onClick={switchNetwork}>
                     Scroll L1 {TESTNET_NAME}
                   </button>{" "}
-                  on wallet.
+                  on {walletName}.
                 </p>
               </div>
               <div className="flex flex-col text-[#595959] text-center text-[14px] md:flex-row md:text-[16px]">

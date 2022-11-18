@@ -37,7 +37,7 @@ const Send: FC = () => {
   const [fromNetwork, setFromNetwork] = useState({} as any);
   const [toNetwork, setToNetwork] = useState({} as any);
   const [selectedToken, setSelectedToken] = useState(tokens[ETH_SYMBOL]);
-  const { checkConnectedNetworkId, chainId } = useWeb3Context();
+  const { checkConnectedNetworkId, chainId, walletName } = useWeb3Context();
 
   const [fromTokenAmount, setFromTokenAmount] = useState<string>();
   const [sendError, setSendError] = useState<any>();
@@ -90,7 +90,7 @@ const Send: FC = () => {
       return (
         <>
           Your wallet is connected to an unsupported network. Select{" "}
-          <b>{fromNetwork.name}</b> network on MetaMask.
+          <b>{fromNetwork.name}</b> network on {walletName}.
         </>
       );
     } else if (warning) {
@@ -98,10 +98,11 @@ const Send: FC = () => {
     } else if (sendError && sendError.code !== "ACTION_REJECTED") {
       return (
         <>
-          The transaction failed. Your MetaMask wallet might not be up to date.
+          The transaction failed. Your {walletName} wallet might not be up to
+          date.
           <b>
             <u style={{ textUnderlineOffset: "0.4rem" }}>
-              Reset your MetaMask account
+              Reset your {walletName} account
             </u>
           </b>
           {" before using Scroll Bridge."}
