@@ -22,7 +22,7 @@ export function useFetchListCallback(): (
 ) => Promise<TokenList> {
   const { chainId, provider } = useWeb3Context();
   const dispatch = useDispatch<AppDispatch>();
-
+  // only if user add token with ENS name
   const ensResolver = useCallback(
     (ensName: string) => {
       if (!provider || chainId !== ChainId.MAINNET) {
