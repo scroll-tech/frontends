@@ -226,44 +226,36 @@ const lightTheme = {
     },
     MuiAlert: {
       styleOverrides: {
-        root: {
+        root: ({ ownerState }) => ({
           borderRadius: "1rem",
           fontSize: "1.6rem",
           lineHeight: "2.6rem",
           padding: "2rem",
           width: "100%",
           boxSizing: "border-box",
+          color:
+            ownerState.severity && paletteOptions[ownerState.severity].main,
+          backgroundColor:
+            ownerState.severity && paletteOptions[ownerState.severity].light,
           [breakpoints.down("sm")]: {
             flexDirection: "column",
             textAlign: "center",
             padding: " 1.6rem 3rem",
           },
-        },
-        standardWarning: {
-          color: paletteOptions.warning.main,
-          backgroundColor: paletteOptions.warning.light,
-          ".MuiAlert-icon": {
-            color: paletteOptions.warning.main,
-          },
-        },
-        standardError: {
-          color: paletteOptions.error.main,
-          backgroundColor: paletteOptions.error.light,
-          ".MuiAlert-icon": {
-            color: paletteOptions.error.main,
-          },
-        },
-        icon: {
+        }),
+        icon: ({ ownerState }) => ({
           display: "flex",
           alignItems: "center",
           fontSize: "3rem",
           marginRight: "1.6rem",
           padding: 0,
+          color: `${ownerState.severity &&
+            paletteOptions[ownerState.severity].main} !important`,
           [breakpoints.down("sm")]: {
             justifyContent: "center",
             marginRight: 0,
           },
-        },
+        }),
         message: {
           padding: 0,
         },
@@ -387,7 +379,10 @@ const Theme = ({ children }) => {
   // const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   // console.log(prefersDarkMode, "prefersDarkMode");
 
-  const theme = useMemo(() => createTheme(prefersDarkMode ? lightTheme : darkTheme), []);
+  const theme = useMemo(
+    () => createTheme(prefersDarkMode ? lightTheme : darkTheme),
+    []
+  );
 
   return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
 };
