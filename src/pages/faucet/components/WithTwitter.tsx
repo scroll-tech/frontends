@@ -1,12 +1,12 @@
-import { Alert, Button } from "@mui/material";
+import { Alert, Button, CircularProgress, Stack } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import useStorage from "squirrel-gill";
 import Link from "@/components/Link";
-import { signInTwitter } from "../helper";
+import { redirectSignInTwitter } from "../helper";
 
 const WithTwitter = (props) => {
-  const { loading, onRequest } = props;
+  const { loginLoading, requestLoading, onRequest } = props;
 
   const [user, setUser] = useStorage(localStorage, "user");
 
@@ -36,12 +36,21 @@ const WithTwitter = (props) => {
           Twitter account connected
         </Alert>
         <LoadingButton
-          loading={loading}
-          loadingPosition="end"
+          loading={requestLoading}
+          loadingIndicator={
+            <Stack direction="row" spacing={2}>
+              <span>Requesting Tokens</span>
+              <CircularProgress
+                color="inherit"
+                size={18}
+                thickness={4}
+              ></CircularProgress>
+            </Stack>
+          }
           variant="contained"
           onClick={onRequest}
         >
-          {loading ? "Requesting Tokens" : "Request Testnet Scroll Tokens"}
+          Request Testnet Scroll Tokens
         </LoadingButton>
         <Link
           underline="always"
@@ -80,18 +89,18 @@ const WithTwitter = (props) => {
         requested. Twitter account requirements: older than 1 month, 1 tweet, 30
         followers.
       </Alert>
-      <Button
-        color="primary"
-        variant="contained"
+      <LoadingButton
+        loading={loginLoading}
         sx={{
-          whiteSpace: "normal",
           width: "24.5rem",
         }}
+        variant="contained"
+        loadingPosition="start"
         startIcon={<TwitterIcon />}
-        onClick={signInTwitter}
+        onClick={redirectSignInTwitter}
       >
         Log in to Twitter
-      </Button>
+      </LoadingButton>
     </>
   );
 };

@@ -32,6 +32,7 @@ export default function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [authorizationCode, setAuthorizationCode] = useState("");
 
+  const [loginLoading, setLoginLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
@@ -70,10 +71,19 @@ export default function Home() {
       return;
     }
     if (authorizationCode) {
-      // handleRequest(authorizationCode);
-      // TODO: await get user
-      setUser({ name: "Holybasil_37", token: "kkkk" });
-      setAuthorizationCode("");
+      setLoginLoading(true);
+      loginTwitter(authorizationCode)
+        .then(({ username, token }) => {
+          setUser({ name: username, token });
+          setAuthorizationCode("");
+        })
+        .catch((err) => {
+          setOpen(true);
+          setErrorMessage(err.message);
+        })
+        .finally(() => {
+          setLoginLoading(false);
+        });
     }
   }, [searchParams, authorizationCode]);
 
@@ -102,10 +112,6 @@ export default function Home() {
     let formData = new FormData();
     formData.append("address", getAddress(walletCurrentAddress as string));
     formData.append("token", user?.token);
-    formData.append(
-      "redirect_uri",
-      window.location.origin + window.location.pathname
-    );
     setLoading(true);
     const res = await fetch(
       process.env.REACT_APP_FAUCET_BASE_API_URL + "/api/claim",
@@ -121,9 +127,18 @@ export default function Home() {
         .format("YYYY-MM-DD H:m:s");
       setCanClaimFrom(canClaimFrom);
       setTxHashData(TxHashData);
+      setUser({ ...user, token: TxHashData.token });
       localStorage.setItem(CAN_CLAIM_FROM, canClaimFrom);
       localStorage.setItem(TX_HASH_DATA, JSON.stringify(TxHashData));
+    } else if (res.status === 401) {
+      setUser(null);
+      setErrorMessage("Login status is invalid, please sign in again");
+      setOpen(true);
     } else {
+      const token = res.headers.get("x-token");
+      if (token) {
+        setUser({ ...user, token });
+      }
       const message = await res.text();
       //get hms
       const re = /((\d+)h)?((\d+)m)?((\d+)s)/i;
@@ -151,7 +166,13 @@ export default function Home() {
   const renderer = ({ hours, minutes, seconds, completed }: any) => {
     if (completed) {
       // Render a completed state
-      return <WithTwitter loading={loading} onRequest={handleRequest} />;
+      return (
+        <WithTwitter
+          loginLoading={loginLoading}
+          requestLoading={loading}
+          onRequest={handleRequest}
+        />
+      );
     } else {
       // Render a countdown
       return (

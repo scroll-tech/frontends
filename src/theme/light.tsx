@@ -1,8 +1,5 @@
 import { createTheme } from "@mui/material/styles";
-import createBreakpoints from "@mui/system/createTheme/createBreakpoints";
 import { ThemeOptions } from "@mui/material";
-
-const breakpoints = createBreakpoints({});
 
 export const boxShadows = {
   button: {
@@ -113,6 +110,18 @@ const theme = createTheme({
         },
       },
     },
+    MuiLoadingButton: {
+      styleOverrides: {
+        root: {
+          "&.Mui-disabled": {
+            backgroundColor: "rgba(51, 51, 51, 0.1)",
+          },
+        },
+        loadingIndicator: {
+          color: "rgba(51, 51, 51, 0.3)",
+        },
+      },
+    },
     MuiButton: {
       defaultProps: {
         variant: "outlined",
@@ -161,7 +170,7 @@ const theme = createTheme({
     },
     MuiAlert: {
       styleOverrides: {
-        root: ({ ownerState }) => ({
+        root: ({ theme, ownerState }) => ({
           borderRadius: "1rem",
           fontSize: "1.6rem",
           lineHeight: "2.6rem",
@@ -171,13 +180,13 @@ const theme = createTheme({
           color: ownerState.severity && palette[ownerState.severity].main,
           backgroundColor:
             ownerState.severity && palette[ownerState.severity].light,
-          [breakpoints.down("sm")]: {
+          [theme.breakpoints.down("sm")]: {
             flexDirection: "column",
             textAlign: "center",
             padding: " 1.6rem 3rem",
           },
         }),
-        icon: ({ ownerState }) => ({
+        icon: ({ theme, ownerState }) => ({
           display: "flex",
           alignItems: "center",
           fontSize: "2.4rem",
@@ -185,7 +194,7 @@ const theme = createTheme({
           padding: 0,
           color: `${ownerState.severity &&
             palette[ownerState.severity].main} !important`,
-          [breakpoints.down("sm")]: {
+          [theme.breakpoints.down("sm")]: {
             justifyContent: "center",
             marginRight: 0,
           },
