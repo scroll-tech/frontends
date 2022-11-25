@@ -9,14 +9,15 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { getAddress } from "@ethersproject/address";
 import Button from "@/components/Button/Button";
-import { truncateAddress, truncateHash } from "@/utils";
+import { requireEnv, truncateAddress, truncateHash } from "@/utils";
 import { signInTwitter } from "./helper";
 import "./index.less";
 // import useSWR from 'swr'
 
 const CAN_CLAIM_FROM = "canClaimFrom",
-  TX_HASH_DATA = "TxHashData",
-  L1_SCAN_URL = "https://l1scan.scroll.io";
+  TX_HASH_DATA = "TxHashData";
+
+const L1_SCAN_URL = requireEnv("REACT_APP_L1_SCAN_URL");
 
 export default function Home() {
   const { walletCurrentAddress, chainId, walletName } = useWeb3Context();
