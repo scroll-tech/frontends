@@ -140,7 +140,7 @@ const App = () => {
     <Stack direction="row" justifyContent="space-between" alignItems="center">
       {navigations.map((item: any) => {
         return (
-          <>
+          <Box key={item.key}>
             {item.children ? (
               <SubMenuButton
                 onMouseEnter={() => setChecked(true)}
@@ -152,11 +152,18 @@ const App = () => {
                   <SubMenuList onClick={() => setChecked(false)}>
                     {item.children?.map((subItem: any) =>
                       subItem.isExternal ? (
-                        <LinkButton underline="none" href={subItem.href}>
+                        <LinkButton
+                          underline="none"
+                          key={subItem.label}
+                          href={subItem.href}
+                        >
                           {subItem.label}
                         </LinkButton>
                       ) : (
-                        <LinkStyledSubButton to={subItem.href}>
+                        <LinkStyledSubButton
+                          key={subItem.label}
+                          to={subItem.href}
+                        >
                           {subItem.label}
                         </LinkStyledSubButton>
                       )
@@ -173,7 +180,7 @@ const App = () => {
                 {item.label}{" "}
               </LinkStyledButton>
             )}
-          </>
+          </Box>
         );
       })}
     </Stack>

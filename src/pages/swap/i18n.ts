@@ -23,7 +23,7 @@ i18next
       "zh-TW",
     ],
     backend: {
-      loadPath: "./locales/{{lng}}.json",
+      loadPath: "/swap/locales/{{lng}}.json",
     },
     react: {
       useSuspense: true,

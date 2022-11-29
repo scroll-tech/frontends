@@ -33,3 +33,4 @@ declare module "multihashes" {
   ): { code: number; name: string; length: number; digest: Uint8Array };
   declare function toB58String(hash: Uint8Array): string;
 }
+declare module "dayjs";
