@@ -18,11 +18,14 @@ const Blocks = () => {
         <>
           <Breadcrumbs
             aria-label="breadcrumb"
+            sx={{ fontWeight: 600 }}
             separator={<NavigateNextIcon fontSize="large" />}
           >
             <Link to="/rollupscan">All results</Link>
             <Link to={`/rollupscan/batch/${params.batchId}`}>Batch 1</Link>
-            <Typography color="text.primary">Block {params.blockId}</Typography>
+            <Typography color="text.primary" sx={{ fontWeight: 600 }}>
+              Block {params.blockId}
+            </Typography>
           </Breadcrumbs>
           <Table blocks={blocks} />
         </>

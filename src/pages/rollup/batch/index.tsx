@@ -101,10 +101,13 @@ const Blocks = () => {
         <>
           <Breadcrumbs
             aria-label="breadcrumb"
+            sx={{ fontWeight: 600 }}
             separator={<NavigateNext fontSize="large" />}
           >
             <RouterLink to="/rollupscan">All results</RouterLink>
-            <Typography color="text.primary">Batch {batch.index}</Typography>
+            <Typography sx={{ fontWeight: 600 }} color="text.primary">
+              Batch {batch.index}
+            </Typography>
           </Breadcrumbs>
           <Box
             sx={{
