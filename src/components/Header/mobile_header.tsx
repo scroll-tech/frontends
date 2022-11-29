@@ -85,7 +85,7 @@ const App = () => {
       {navigations.map((item) => {
         if (item.href) {
           return (
-            <ListButton onClick={() => toggleDrawer(false)}>
+            <ListButton key={item.key} onClick={() => toggleDrawer(false)}>
               {item.isExternal ? (
                 <ExternalLink underline="none" href={item.href}>
                   {item.label}
@@ -97,7 +97,7 @@ const App = () => {
           );
         }
         return (
-          <>
+          <React.Fragment key={item.key}>
             <ListButton onClick={() => toggleCollapse(item.key)}>
               {item.label}{" "}
               {activeCollapse === item.key ? (
@@ -117,6 +117,7 @@ const App = () => {
                     <ListButton
                       onClick={() => toggleDrawer(false)}
                       sx={{ pl: 4 }}
+                      key={subItem.key}
                     >
                       <ExternalLink underline="none" href={subItem.href}>
                         {subItem.label}
@@ -127,6 +128,7 @@ const App = () => {
                     <ListButton
                       onClick={() => toggleDrawer(false)}
                       sx={{ pl: 4 }}
+                      key={subItem.key}
                     >
                       <LinkStyledButton to={subItem.href}>
                         {subItem.label}
@@ -136,7 +138,7 @@ const App = () => {
                 )}
               </List>
             </Collapse>
-          </>
+          </React.Fragment>
         );
       })}
     </List>

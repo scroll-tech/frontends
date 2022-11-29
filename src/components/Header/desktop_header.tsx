@@ -140,7 +140,7 @@ const App = () => {
     <Stack direction="row" justifyContent="space-between" alignItems="center">
       {navigations.map((item: any) => {
         return (
-          <Box key={item.key}>
+          <React.Fragment key={item.key}>
             {item.children ? (
               <SubMenuButton
                 onMouseEnter={() => setChecked(true)}
@@ -180,7 +180,7 @@ const App = () => {
                 {item.label}{" "}
               </LinkStyledButton>
             )}
-          </Box>
+          </React.Fragment>
         );
       })}
     </Stack>
