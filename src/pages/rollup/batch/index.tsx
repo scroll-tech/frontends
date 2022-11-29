@@ -72,7 +72,7 @@ const Blocks = () => {
   const renderLink = (hash: string | null) => {
     if (hash) {
       return (
-        <Link href={`${l1ExplorerUrl}/block/${batch.hash}`} underline="none">
+        <Link href={`${l1ExplorerUrl}block/${hash}`} underline="none">
           <Box display="flex" alignItems="center">
             <Typography sx={{ color: "#00A6F2", fontWeight: 600 }}>
               {truncatedHash(hash)}
