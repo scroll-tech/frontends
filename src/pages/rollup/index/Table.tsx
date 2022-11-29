@@ -193,7 +193,7 @@ const App: React.FC = () => {
             </TableHead>
             <TableBody>
               {data.map((row: any) => (
-                <TableRow key={row.block_height}>
+                <TableRow key={row.id}>
                   <TableCell>
                     <RouterLink to={`batch/${row.id}`}>
                       <Typography sx={{ color: "#00A6F2", fontWeight: 600 }}>{row.index}</Typography>

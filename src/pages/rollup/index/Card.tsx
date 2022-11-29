@@ -19,7 +19,7 @@ const Card = styled(Box)(({ theme }) => ({
   paddingTop: "2.7rem",
   paddingBottom: "2.2rem",
   // cursor: "pointer",
-  "&:first-child": {
+  "&:first-of-type": {
     marginRight: "3.2rem",
   },
   "&:hover": {},
@@ -28,7 +28,7 @@ const Card = styled(Box)(({ theme }) => ({
     paddingRight: "1rem",
     paddingTop: "1.4rem",
     paddingBottom: "1.1rem",
-    "&:first-child": {
+    "&:first-of-type": {
       marginRight: "2.4rem",
     },
   },

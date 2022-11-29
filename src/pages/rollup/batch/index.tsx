@@ -34,7 +34,7 @@ const BoxItem = styled(Box)(({ theme }) => ({
   alignItems: "center",
   [theme.breakpoints.down("md")]: {
     height: "7.4rem",
-    "& > :nth-child(2)": {
+    "& > :nth-of-type(2)": {
       textAlign: "right",
       display: "block",
       width: "100%",

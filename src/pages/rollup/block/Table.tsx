@@ -50,7 +50,7 @@ const BlockTable: React.FC<BlockTableProps> = (props: { blocks: any }) => {
         </TableHead>
         <TableBody>
           {props.blocks.map((row: any) => (
-            <StyledTableRow key={row.block_height}>
+            <StyledTableRow key={row.hash}>
               <TableCell scope="row">
                 <Link
                   href={`${l2ExplorerUrl}/block/${row.hash}`}
