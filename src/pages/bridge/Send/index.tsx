@@ -11,7 +11,6 @@ import {
   ETH_SYMBOL,
   tokens,
   ChainId,
-  Addresses,
 } from "@/constants";
 import { useApp } from "@/contexts/AppContextProvider";
 import {
@@ -20,7 +19,7 @@ import {
   useBalance,
   useSufficientBalance,
 } from "@/hooks";
-import { sanitizeNumericalString, amountToBN } from "@/utils";
+import { sanitizeNumericalString, amountToBN, switchNetwork } from "@/utils";
 import SendTranferButton from "./SendTransferButton";
 import { useSendStyles, StyleContext } from "./useSendStyles";
 import { useSendTransaction } from "./useSendTransaction";
@@ -37,7 +36,12 @@ const Send: FC = () => {
   const [fromNetwork, setFromNetwork] = useState({} as any);
   const [toNetwork, setToNetwork] = useState({} as any);
   const [selectedToken, setSelectedToken] = useState(tokens[ETH_SYMBOL]);
-  const { checkConnectedChainId, chainId, walletName } = useWeb3Context();
+  const {
+    checkConnectedChainId,
+    chainId,
+    walletName,
+    walletCurrentAddress,
+  } = useWeb3Context();
 
   const [fromTokenAmount, setFromTokenAmount] = useState<string>();
   const [sendError, setSendError] = useState<any>();
@@ -66,7 +70,10 @@ const Send: FC = () => {
     } else if (chainId) {
       setFromNetwork(networks[0]);
       setToNetwork(networks[1]);
-      switchNetwork(networks[0].chainId);
+      handleSwitchNetwork(networks[0].chainId);
+    } else {
+      setFromNetwork(networks[0]);
+      setToNetwork(networks[1]);
     }
   }, [chainId]);
 
@@ -78,15 +85,19 @@ const Send: FC = () => {
   const { sufficientBalance, warning } = useSufficientBalance(
     selectedToken,
     networksAndSigners[fromNetwork.networkId],
-    amountToBN(fromTokenAmount || "0", selectedToken.decimals),
+    fromTokenAmount
+      ? amountToBN(fromTokenAmount, selectedToken.decimals)
+      : undefined,
     undefined,
-    fromBalance,
+    fromBalance ?? undefined,
     isCorrectNetwork
   );
 
   // network->sufficient->tx error
   const warningTip = useMemo(() => {
-    if (!isCorrectNetwork) {
+    if (!walletCurrentAddress) {
+      return "Please connect wallet first";
+    } else if (!isCorrectNetwork) {
       return (
         <>
           Your wallet is connected to an unsupported network. Select{" "}
@@ -116,7 +127,7 @@ const Send: FC = () => {
   const handleSwitchDirection = () => {
     setFromNetwork(toNetwork);
     setToNetwork(fromNetwork);
-    switchNetwork(toNetwork.chainId);
+    handleSwitchNetwork(toNetwork.chainId);
   };
 
   const handleApprove = async () => {
@@ -225,13 +236,10 @@ const Send: FC = () => {
     setFromTokenAmount(amountIn);
   };
 
-  const switchNetwork = async (networkId) => {
+  const handleSwitchNetwork = async (networkId) => {
     try {
       // cancel switch network in MetaMask would not throw error and the result is null just like successfully switched
-      await window.ethereum.request({
-        method: "wallet_addEthereumChain",
-        params: [Addresses[networkId].autoconnect],
-      });
+      await switchNetwork(networkId);
     } catch (error) {
       console.log(error, "error");
       setFromNetwork(networks.find((item) => item.chainId === chainId));
@@ -298,6 +306,7 @@ const Send: FC = () => {
               className={styles.button}
               disabled={!approveButtonActive}
               onClick={handleApprove}
+              loading={approving}
               fullWidth
               large
               color="primary"

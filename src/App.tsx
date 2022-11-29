@@ -1,11 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 import Web3Provider from "@/contexts/Web3ContextProvider";
-import { WhitelistContextProvider } from "./hooks/useWhitelist";
 import AppWrapper from "./contexts";
-import Login from "./pages/login";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import IframeEmbedding from "@/components/IframeEmbedding";
 import Home from "./pages/home";
 import Faucet from "./pages/faucet";
 import Bridge from "./pages/bridge";
@@ -21,35 +18,29 @@ function App() {
     <div className="App bg-white min-h-[100vh]">
       <Web3Provider>
         <AppWrapper>
-          <WhitelistContextProvider
-            fallback={(hasPermission: boolean, loading: boolean) => (
-              <Login hasPermission={hasPermission} loading={loading} />
-            )}
-          >
-            <ScrollToTop>
-              <Header />
-              <Routes>
-                <Route path="/" element={<Home />}></Route>
-                <Route path="/faucet" element={<Faucet />}></Route>
-                <Route path="/bridge" element={<Bridge />}></Route>
-                <Route
-                  path="/faucet/add-network"
-                  element={<AddNetwork />}
-                ></Route>
-                <Route path="/swap" element={<Swap />}></Route>
-                <Route path="/rollupscan" element={<RollupScan />}></Route>
-                <Route
-                  path="/rollupscan/batch/:batchId"
-                  element={<RollupScanBatch />}
-                ></Route>
-                <Route
-                  path="/rollupscan/block/:batchId"
-                  element={<RollupScanBlock />}
-                ></Route>
-              </Routes>
-              <Footer />
-            </ScrollToTop>
-          </WhitelistContextProvider>
+          <ScrollToTop>
+            <Header />
+            <Routes>
+              <Route path="/" element={<Home />}></Route>
+              <Route path="/faucet" element={<Faucet />}></Route>
+              <Route path="/bridge" element={<Bridge />}></Route>
+              <Route
+                path="/faucet/add-network"
+                element={<AddNetwork />}
+              ></Route>
+              <Route path="/swap" element={<Swap />}></Route>
+              <Route path="/rollupscan" element={<RollupScan />}></Route>
+              <Route
+                path="/rollupscan/batch/:batchId"
+                element={<RollupScanBatch />}
+              ></Route>
+              <Route
+                path="/rollupscan/block/:batchId"
+                element={<RollupScanBlock />}
+              ></Route>
+            </Routes>
+            <Footer />
+          </ScrollToTop>
         </AppWrapper>
       </Web3Provider>
     </div>

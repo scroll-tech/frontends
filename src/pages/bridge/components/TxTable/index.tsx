@@ -252,7 +252,7 @@ const TxRow = (props) => {
                 {truncateHash(tx.toHash)}
               </Link>
             ) : (
-              <span className="leading-normal">-</span>
+              <span className="leading-normal flex-1">-</span>
             )}
 
             <Typography variant="body2" color="textSecondary">

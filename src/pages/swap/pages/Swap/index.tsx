@@ -77,6 +77,7 @@ import {
 } from "../../utils/prices";
 import AppBody from "../AppBody";
 import { ClickableText } from "../Pool/styleds";
+import { switchNetwork } from "@/utils";
 
 export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch();
@@ -100,11 +101,8 @@ export default function Swap() {
     setDismissTokenWarning(true);
   }, []);
 
-  const { walletCurrentAddress, checkConnectedChainId } = useWeb3Context();
+  const { walletCurrentAddress, connectWallet } = useWeb3Context();
   const theme = useContext(ThemeContext);
-
-  // toggle wallet when disconnected
-  const toggleWalletModal = useWalletModalToggle();
 
   // for expert mode
   const toggleSettings = useToggleSettingsMenu();
@@ -372,6 +370,11 @@ export default function Swap() {
     [onCurrencySelection]
   );
 
+  const handleConnectWallet = () => {
+    connectWallet();
+    switchNetwork(SUPPORTED_CHAINID);
+  };
+
   return (
     <>
       <TokenWarningModal
@@ -520,12 +523,10 @@ export default function Swap() {
             )}
           </AutoColumn>
           <BottomGrouping>
-            {!checkConnectedChainId(SUPPORTED_CHAINID) ? (
-              <ButtonError disabled>
-                <Text fontSize={20} fontWeight={500}>
-                  Wrong NetWork
-                </Text>
-              </ButtonError>
+            {!walletCurrentAddress ? (
+              <ButtonLight onClick={handleConnectWallet}>
+                Connect Wallet
+              </ButtonLight>
             ) : showWrap ? (
               <ButtonPrimary
                 disabled={Boolean(wrapInputError)}

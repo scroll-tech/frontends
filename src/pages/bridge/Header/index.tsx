@@ -14,7 +14,7 @@ const Header = () => {
         </>
       ) : (
         <Button onClick={connectWallet} variant="outlined" large>
-          Connect a Wallet
+          Connect Wallet
         </Button>
       )}
     </Container>
