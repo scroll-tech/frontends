@@ -1,8 +1,7 @@
-import { WhitelistContextProps } from "@/hooks/useWhitelist";
 import { Button } from "@mui/material";
 import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 
-const Login = ({ hasPermission, loading }: WhitelistContextProps) => {
+const Login = () => {
   const { walletCurrentAddress, connectWallet } = useWeb3Context();
 
   return (

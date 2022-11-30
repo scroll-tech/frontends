@@ -11,6 +11,9 @@ const useBalance = (token: any, network?: any) => {
 
   async function fetchBalance({ provider, token, network, address }) {
     try {
+      if (!address || !provider) {
+        return null;
+      }
       if (network.isLayer1) {
         if (token.isNativeToken) {
           return await provider.getBalance(address);
@@ -42,7 +45,7 @@ const useBalance = (token: any, network?: any) => {
   const { data, error } = useSWR(
     () => {
       const provider = networksAndSigners[network.networkId].provider;
-      if (provider && walletCurrentAddress && network && token) {
+      if (network && token) {
         return {
           provider,
           token,
@@ -57,9 +60,8 @@ const useBalance = (token: any, network?: any) => {
       refreshInterval: 3e3,
     }
   );
-
   return {
-    loading: !data && !error,
+    loading: data === undefined && !error,
     balance: data,
     error,
   };

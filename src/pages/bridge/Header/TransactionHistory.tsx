@@ -75,7 +75,7 @@ const TransactionsList = (props: any) => {
           <Typography variant="h6" color="textSecondary">
             Recent Bridge Transactions
           </Typography>
-          {loading && <CircularProgress size={24}></CircularProgress>}
+          {loading && <CircularProgress size={24} />}
         </Stack>
 
         <Link component="button" underline="none" onClick={clearTransactions}>
@@ -91,7 +91,7 @@ const TransactionsList = (props: any) => {
           page,
           onChange: handleChangePage,
         }}
-      ></TxTable>
+      />
     </>
   );
 };

@@ -1,5 +1,5 @@
 import { Addresses, ChainId, TESTNET_NAME } from "@/constants";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import Countdown from "react-countdown";
 import dayjs from "dayjs";
@@ -20,7 +20,12 @@ const CAN_CLAIM_FROM = "canClaimFrom",
 const L1_SCAN_URL = requireEnv("REACT_APP_L1_SCAN_URL");
 
 export default function Home() {
-  const { walletCurrentAddress, chainId, walletName } = useWeb3Context();
+  const {
+    walletCurrentAddress,
+    chainId,
+    walletName,
+    connectWallet,
+  } = useWeb3Context();
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [authorizationCode, setAuthorizationCode] = useState("");
@@ -46,7 +51,14 @@ export default function Home() {
       JSON.parse(localStorage.getItem(TX_HASH_DATA) as string)
   );
 
-  const [wrongNetwork, setWrongNetwork] = useState(false);
+  const networkStatus = useMemo(() => {
+    if (chainId === ChainId.SCROLL_LAYER_1) {
+      return 1;
+    } else if (chainId) {
+      return 2;
+    }
+    return 3;
+  }, [chainId]);
 
   useEffect(() => {
     const queryCode = searchParams.get("code");
@@ -60,14 +72,6 @@ export default function Home() {
       setAuthorizationCode("");
     }
   }, [searchParams, authorizationCode]);
-
-  useEffect(() => {
-    if (chainId === ChainId.SCROLL_LAYER_1) {
-      setWrongNetwork(false);
-    } else {
-      setWrongNetwork(true);
-    }
-  }, [chainId]);
 
   useEffect(() => {
     async function fetchInfo() {
@@ -256,9 +260,15 @@ export default function Home() {
       <main className="px-[16px] faucet-app">
         <div className="w-full flex items-center flex-col mb-[60px] md:h-[630px]">
           <div className=" mt-[30px] mb-[80px] text-right max-w-[1268px] px-[8px] w-full">
-            <button className="w-[178px] h-[50px] text-[#333] border border-[#333] text-base rounded-[4px] cursor-text font-semibold">
-              {truncateAddress(walletCurrentAddress as string)}
-            </button>
+            {walletCurrentAddress ? (
+              <button className="w-[178px] h-[50px] text-[#333] border border-[#333] text-base rounded-[4px] cursor-text font-semibold">
+                {truncateAddress(walletCurrentAddress as string)}
+              </button>
+            ) : (
+              <Button onClick={connectWallet} variant="outlined">
+                Connect Wallet
+              </Button>
+            )}
           </div>
           <p className="text-[#333] text-center text-[26px]  leading-[32px] mb-[16px] font-display md:text-[34px]  md:leading-[40px] capitalize">
             Request testnet Scroll tokens
@@ -269,7 +279,13 @@ export default function Home() {
             {faucetInfo.ethSymbol} & {faucetInfo.payoutUsdc}
             {faucetInfo.usdcSymbol} per request.
           </p>
-          {wrongNetwork ? (
+          {networkStatus === 1 ? (
+            <Countdown
+              key={canClaimFrom}
+              date={canClaimFrom}
+              renderer={renderer}
+            />
+          ) : (
             <>
               <div className="bg-[#FFF8CB] py-[18px] px-[34px] mx-[24px] rounded-[10px] max-w-[480px] text-center my-[28px] md:py-[24px] md:px-[32px]">
                 <img
@@ -277,13 +293,23 @@ export default function Home() {
                   className="w-[26px] mb-[8px] mx-auto"
                   src="/imgs/faucet/warning.svg"
                 />
-                <p className="text-[14px]  max-w-[400px] leading-[26px] text-[#C14800] md:text-[16px]">
-                  Your wallet is connected to an unsupported network. Select{" "}
-                  <button className="font-bold" onClick={switchNetwork}>
-                    Scroll L1 {TESTNET_NAME}
-                  </button>{" "}
-                  on {walletName}.
-                </p>
+                {networkStatus === 2 ? (
+                  <p className="text-[14px]  max-w-[400px] leading-[26px] text-[#C14800] md:text-[16px]">
+                    Your wallet is connected to an unsupported network. Select{" "}
+                    <button className="font-bold" onClick={switchNetwork}>
+                      Scroll L1 {TESTNET_NAME}
+                    </button>{" "}
+                    on {walletName}.
+                  </p>
+                ) : (
+                  <p className="text-[14px]  max-w-[400px] leading-[26px] text-[#C14800] md:text-[16px]">
+                    Please{" "}
+                    <button className="font-bold" onClick={connectWallet}>
+                      Connect Wallet
+                    </button>{" "}
+                    first.
+                  </p>
+                )}
               </div>
               <div className="flex flex-col text-[#595959] text-center text-[14px] md:flex-row md:text-[16px]">
                 <p className="mb-[6px] md:mr-[6px]">
@@ -296,12 +322,6 @@ export default function Home() {
                 </Link>
               </div>
             </>
-          ) : (
-            <Countdown
-              key={canClaimFrom}
-              date={canClaimFrom}
-              renderer={renderer}
-            />
           )}
         </div>
         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>

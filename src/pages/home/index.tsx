@@ -67,12 +67,26 @@ function TokenAddress({
   );
 }
 
+function ConnectWalletButton() {
+  const { connectWallet } = useWeb3Context();
+  return (
+    <a
+      onClick={connectWallet}
+      className="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer"
+    >
+      Connect Wallet
+    </a>
+  );
+}
+
 export default function Home() {
   const { walletName } = useWeb3Context();
   return (
     <>
       <div className="p-4 mx-[8px] mb-[40px] lg:p-8">
-        <SectionTitle title={`Configure ${walletName} for our testnet`}>
+        <SectionTitle
+          title={`Configure ${walletName || "wallet"} for our testnet`}
+        >
           <div className="px-4 py-5 sm:grid sm:grid-cols-1 sm:gap-4 sm:px-6">
             Note: Please completely remove any previous Scroll L1 and L2
             networks from your {walletName} before proceeding. After re-adding
@@ -83,7 +97,7 @@ export default function Home() {
               href="https://guide.scroll.io/user-guide/common-errors#incorrect-nonce-error-when-sending-a-transaction-in-metamask"
               rel="noreferrer"
             >
-              Reset {walletName} for both networks
+              Reset {walletName || "wallet"} for both networks
             </a>
           </div>
           <div className="text-left">
@@ -103,10 +117,14 @@ export default function Home() {
                       </span>
                     </div>
                     <div className="ml-4 flex-shrink-0">
-                      <AddNetworkButton
-                        autoconnect={addresses[0].autoconnect}
-                        walletName={walletName}
-                      />
+                      {walletName ? (
+                        <AddNetworkButton
+                          autoconnect={addresses[0].autoconnect}
+                          walletName={walletName}
+                        />
+                      ) : (
+                        <ConnectWalletButton />
+                      )}
                     </div>
                   </li>
                   <li className="pl-3 pr-4 py-3 flex items-center justify-between text-base">
@@ -117,12 +135,16 @@ export default function Home() {
                       </span>
                     </div>
                     <div className="ml-4 flex-shrink-0">
-                      <TokenAddress
-                        etherscanPrefix={addresses[0].etherscanPrefix}
-                        symbol={process.env.REACT_APP_USDC_SYMBOL}
-                        address={addresses[0].usdcAddress}
-                        walletName={walletName}
-                      />
+                      {walletName ? (
+                        <TokenAddress
+                          etherscanPrefix={addresses[0].etherscanPrefix}
+                          symbol={process.env.REACT_APP_USDC_SYMBOL}
+                          address={addresses[0].usdcAddress}
+                          walletName={walletName}
+                        />
+                      ) : (
+                        <ConnectWalletButton />
+                      )}
                     </div>
                   </li>
                 </ul>
@@ -144,10 +166,14 @@ export default function Home() {
                       </span>
                     </div>
                     <div className="ml-4 flex-shrink-0">
-                      <AddNetworkButton
-                        autoconnect={addresses[1].autoconnect}
-                        walletName={walletName}
-                      />
+                      {walletName ? (
+                        <AddNetworkButton
+                          autoconnect={addresses[1].autoconnect}
+                          walletName={walletName}
+                        />
+                      ) : (
+                        <ConnectWalletButton />
+                      )}
                     </div>
                   </li>
 
@@ -159,12 +185,16 @@ export default function Home() {
                       </span>
                     </div>
                     <div className="ml-4 flex-shrink-0">
-                      <TokenAddress
-                        etherscanPrefix={addresses[1].etherscanPrefix}
-                        symbol={process.env.REACT_APP_USDC_SYMBOL}
-                        address={addresses[1].usdcAddress}
-                        walletName={walletName}
-                      />
+                      {walletName ? (
+                        <TokenAddress
+                          etherscanPrefix={addresses[1].etherscanPrefix}
+                          symbol={process.env.REACT_APP_USDC_SYMBOL}
+                          address={addresses[1].usdcAddress}
+                          walletName={walletName}
+                        />
+                      ) : (
+                        <ConnectWalletButton />
+                      )}
                     </div>
                   </li>
 
@@ -176,12 +206,16 @@ export default function Home() {
                       </span>
                     </div>
                     <div className="ml-4 flex-shrink-0">
-                      <TokenAddress
-                        etherscanPrefix={addresses[1].etherscanPrefix}
-                        symbol={process.env.REACT_APP_UNI_V2_TOKEN_SYMBOL}
-                        address={addresses[1].uniV2TokenAddress}
-                        walletName={walletName}
-                      />
+                      {walletName ? (
+                        <TokenAddress
+                          etherscanPrefix={addresses[1].etherscanPrefix}
+                          symbol={process.env.REACT_APP_UNI_V2_TOKEN_SYMBOL}
+                          address={addresses[1].uniV2TokenAddress}
+                          walletName={walletName}
+                        />
+                      ) : (
+                        <ConnectWalletButton />
+                      )}
                     </div>
                   </li>
                 </ul>
@@ -250,7 +284,7 @@ export default function Home() {
                 system status
               </a>
             </dt>
-            <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:col-span-2"></dd>
+            <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:col-span-2" />
           </div>
 
           <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -266,7 +300,7 @@ export default function Home() {
                 Discord
               </a>
             </dt>
-            <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:col-span-2"></dd>
+            <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:col-span-2" />
           </div>
 
           <div className=" bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -282,7 +316,7 @@ export default function Home() {
                 feedback form
               </a>
             </dt>
-            <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:col-span-2"></dd>
+            <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:col-span-2" />
           </div>
         </SectionTitle>
       </div>

@@ -1,7 +1,7 @@
 import { darken, lighten } from "polished";
 import { useMemo } from "react";
 import { Activity } from "react-feather";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import { Addresses } from "@/constants";
 import { SUPPORTED_CHAINID } from "../../constants";
@@ -21,6 +21,7 @@ import Loader from "../Loader";
 
 import { RowBetween } from "../Row";
 import WalletModal from "../WalletModal";
+import { switchNetwork } from "@/utils";
 
 const Web3StatusGeneric = styled(ButtonSecondary)`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -43,6 +44,33 @@ const Web3StatusError = styled(Web3StatusGeneric)`
   :focus {
     background-color: ${({ theme }) => darken(0.1, theme.red1)};
   }
+`;
+
+const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
+  background-color: ${({ theme }) => theme.primary4};
+  border: none;
+  color: ${({ theme }) => theme.primaryText1};
+  font-weight: 500;
+
+  :hover,
+  :focus {
+    border: 1px solid ${({ theme }) => darken(0.05, theme.primary4)};
+    color: ${({ theme }) => theme.primaryText1};
+  }
+
+  ${({ faded }) =>
+    faded &&
+    css`
+      background-color: ${({ theme }) => theme.primary5};
+      border: 1px solid ${({ theme }) => theme.primary5};
+      color: ${({ theme }) => theme.primaryText1};
+
+      :hover,
+      :focus {
+        border: 1px solid ${({ theme }) => darken(0.05, theme.primary4)};
+        color: ${({ theme }) => darken(0.05, theme.primaryText1)};
+      }
+    `}
 `;
 
 const Web3StatusConnected = styled(Web3StatusGeneric)<{ pending?: boolean }>`
@@ -104,7 +132,11 @@ function StatusIcon() {
 }
 
 function Web3StatusInner() {
-  const { walletCurrentAddress, checkConnectedChainId } = useWeb3Context();
+  const {
+    walletCurrentAddress,
+    checkConnectedChainId,
+    connectWallet,
+  } = useWeb3Context();
 
   const { ENSName } = useENSName(walletCurrentAddress ?? undefined);
   const allTransactions = useAllTransactions();
@@ -124,13 +156,15 @@ function Web3StatusInner() {
 
   const handleSwitchNetwork = async () => {
     try {
-      await window.ethereum.request({
-        method: "wallet_addEthereumChain",
-        params: [Addresses[SUPPORTED_CHAINID].autoconnect],
-      });
+      await switchNetwork(SUPPORTED_CHAINID);
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleConnectWallet = async () => {
+    connectWallet();
+    switchNetwork(SUPPORTED_CHAINID);
   };
 
   if (checkConnectedChainId(SUPPORTED_CHAINID)) {
@@ -163,7 +197,15 @@ function Web3StatusInner() {
       </Web3StatusError>
     );
   }
-  return null;
+  return (
+    <Web3StatusConnect
+      id="connect-wallet"
+      onClick={handleConnectWallet}
+      faded={!walletCurrentAddress}
+    >
+      <Text>Connect wallet</Text>
+    </Web3StatusConnect>
+  );
 }
 
 export default function Web3Status() {

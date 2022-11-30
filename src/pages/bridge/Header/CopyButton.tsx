@@ -35,7 +35,7 @@ const CopyButton = (props: any) => {
           label="Copy Address"
           onClick={handleClick}
           {...restProps}
-        ></MiniButton>
+        />
       </span>
     </Tooltip>
   );
