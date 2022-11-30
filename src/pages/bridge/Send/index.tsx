@@ -1,6 +1,7 @@
 import { ChangeEvent, FC, useEffect, useMemo, useState } from "react";
 import { ethers } from "ethers";
 import Alert from "@mui/material/Alert";
+import Link from "@/components/Link";
 import Button from "../components/Button";
 import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import SendAmountSelectorCard from "./SendAmountSelectorCard";
@@ -41,6 +42,7 @@ const Send: FC = () => {
     chainId,
     walletName,
     walletCurrentAddress,
+    connectWallet,
   } = useWeb3Context();
 
   const [fromTokenAmount, setFromTokenAmount] = useState<string>();
@@ -96,7 +98,22 @@ const Send: FC = () => {
   // network->sufficient->tx error
   const warningTip = useMemo(() => {
     if (!walletCurrentAddress) {
-      return "Please connect wallet first";
+      return (
+        <>
+          Please{" "}
+          <Link
+            component="button"
+            sx={{
+              color: "warning.main",
+            }}
+            underline="none"
+            onClick={connectWallet}
+          >
+            Connect Wallet
+          </Link>{" "}
+          first
+        </>
+      );
     } else if (!isCorrectNetwork) {
       return (
         <>
@@ -329,14 +346,14 @@ const Send: FC = () => {
           <ApproveLoading
             open={approving}
             onClose={handleCloseApproveLoading}
-          ></ApproveLoading>
+          />
           <SendLoading
             value={txValue}
             from={fromNetwork.name}
             to={toNetwork.name}
             open={sending}
             onClose={handleCloseSendLoading}
-          ></SendLoading>
+          />
         </div>
       </div>
     </StyleContext.Provider>

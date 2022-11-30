@@ -10,7 +10,7 @@ const Header = () => {
     <Container className="flex items-center justify-end bg-white mt-12">
       {walletCurrentAddress ? (
         <>
-          <AddressButton></AddressButton>
+          <AddressButton />
         </>
       ) : (
         <Button onClick={connectWallet} variant="outlined" large>

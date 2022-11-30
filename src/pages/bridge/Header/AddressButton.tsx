@@ -1,6 +1,13 @@
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import { makeStyles } from "tss-react/mui";
-import { Popper, Typography, Card, Backdrop, Divider, ClickAwayListener } from "@mui/material";
+import {
+  Popper,
+  Typography,
+  Card,
+  Backdrop,
+  Divider,
+  ClickAwayListener,
+} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import { useApp } from "@/contexts/AppContextProvider";
@@ -85,7 +92,6 @@ const AddressButton = () => {
     txHistory: { refreshPageTransactions },
   } = useApp();
   const { historyVisible, changeHistoryVisible } = useBridgeStore();
-  const [open, setOpen] = useState(false);
   const buttonRef = useRef(null);
 
   const { classes, cx } = useStyles();
@@ -106,7 +112,13 @@ const AddressButton = () => {
 
   return (
     <>
-      <Button className="w-[178px]" ref={buttonRef} variant="outlined" large onClick={handleOpen}>
+      <Button
+        className="w-[178px]"
+        ref={buttonRef}
+        variant="outlined"
+        large
+        onClick={handleOpen}
+      >
         {truncateAddress(walletCurrentAddress as string)}
       </Button>
       <Backdrop open={historyVisible} className={classes.backdrop}>
@@ -142,8 +154,11 @@ const AddressButton = () => {
                   <CloseIcon onClick={handleClose} />
                 </div>
                 <div>
-                  <ManageWallet classes={classes} onDisconnect={handleDisconnect} />
-                  <Divider></Divider>
+                  <ManageWallet
+                    classes={classes}
+                    onDisconnect={handleDisconnect}
+                  />
+                  <Divider />
                   <div className={cx("relative", classes.transactionsList)}>
                     <TransactionHistory />
                   </div>

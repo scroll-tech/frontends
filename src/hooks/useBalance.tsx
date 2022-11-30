@@ -11,7 +11,7 @@ const useBalance = (token: any, network?: any) => {
 
   async function fetchBalance({ provider, token, network, address }) {
     try {
-      if (!address) {
+      if (!address || !provider) {
         return null;
       }
       if (network.isLayer1) {
@@ -45,7 +45,7 @@ const useBalance = (token: any, network?: any) => {
   const { data, error } = useSWR(
     () => {
       const provider = networksAndSigners[network.networkId].provider;
-      if (provider && network && token) {
+      if (network && token) {
         return {
           provider,
           token,

@@ -26,13 +26,13 @@ const ManageWallet = (props: any) => {
         <CopyButton
           value={walletCurrentAddress}
           className={classes.copyButton}
-        ></CopyButton>
+        />
         <MiniButton
           icon={ExitIcon}
           viewBox="0 0 17 17"
           label="Disconnect"
           onClick={onDisconnect}
-        ></MiniButton>
+        />
       </div>
     </div>
   );
