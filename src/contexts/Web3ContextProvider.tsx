@@ -124,7 +124,12 @@ const Web3ContextProvider = ({ children }: any) => {
     const previouslyConnectedWallets = loadState(cacheKey);
     if (previouslyConnectedWallets?.length) {
       const setWalletFromLocalStorage = async () => {
-        await connect({ autoSelect: previouslyConnectedWallets[0] });
+        await connect({
+          autoSelect: {
+            label: previouslyConnectedWallets[0],
+            disableModals: true,
+          },
+        });
       };
       setWalletFromLocalStorage();
     } else {
