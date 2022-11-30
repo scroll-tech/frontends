@@ -64,6 +64,9 @@
         {
           "avoidEscape": true
         }
+      ],
+      "react/self-closing-comp": [
+        2
       ]
     }
   },
