@@ -40,7 +40,6 @@ const ExternalLink = styled(Link)(({ theme }) => ({
 const StatusChip = styled(Chip)(({ theme }) => ({
   color: "#ffffff",
   textTransform: "capitalize",
-  fontWeight: 500,
   "&.precommitted": {
     backgroundColor: "#ffb21c1A",
     color: "#ffb21c",
@@ -61,6 +60,9 @@ const StatusChip = styled(Chip)(({ theme }) => ({
     backgroundColor: "#f13b761A",
     color: "#f13b76",
   },
+  "& > .MuiChip-label": {
+    fontWeight: 500,
+  }
 }));
 
 interface DataType {
@@ -203,7 +205,7 @@ const App: React.FC = () => {
                   <TableCell>{row.total_tx_num}</TableCell>
                   <TableCell>
                     {
-                      row.commit_tx_hash ? <ExternalLink href={`${l1ExplorerUrl}/block/${row.commit_tx_hash}`} sx={{ color: "#00A6F2", fontWeight: 600 }} underline="none">
+                      row.commit_tx_hash ? <ExternalLink href={`${l1ExplorerUrl}tx/${row.commit_tx_hash}`} sx={{ color: "#00A6F2", fontWeight: 600 }} underline="none">
                         {truncatedHash(row.commit_tx_hash)}
                       </ExternalLink> : "-"
                     }
@@ -211,7 +213,7 @@ const App: React.FC = () => {
                   <TableCell>
                     {
                       row.finalize_tx_hash
-                        ? <ExternalLink href={`${l1ExplorerUrl}/block/${row.finalize_tx_hash}`} sx={{ color: "#00A6F2", fontWeight: 600 }} underline="none">
+                        ? <ExternalLink href={`${l1ExplorerUrl}tx/${row.finalize_tx_hash}`} sx={{ color: "#00A6F2", fontWeight: 600 }} underline="none">
                           {truncatedHash(row.finalize_tx_hash)}
                         </ExternalLink> : "-"
                     }
