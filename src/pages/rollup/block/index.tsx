@@ -9,7 +9,7 @@ import Table from "./Table";
 
 const Blocks = () => {
   const params = useParams();
-  const { blocks } = useBlockList(params.batchId);
+  const { blocks } = useBlockList(params.batchIndex);
 
   return (
     <Box className="wrapper mx-auto" sx={{ marginBottom: "16rem" }}>
@@ -22,7 +22,7 @@ const Blocks = () => {
             separator={<NavigateNextIcon fontSize="large" />}
           >
             <Link to="/rollupscan">All results</Link>
-            <Link to={`/rollupscan/batch/${params.batchId}`}>Batch 1</Link>
+            <Link to={`/rollupscan/batch/${params.batchIndex}`}>Batch 1</Link>
             <Typography color="text.primary" sx={{ fontWeight: 600 }}>
               Block {params.blockId}
             </Typography>

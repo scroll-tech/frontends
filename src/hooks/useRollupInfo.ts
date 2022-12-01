@@ -17,9 +17,9 @@ export function useLastBlockNums() {
   };
 }
 
-export function useBatchDetail(batchId) {
+export function useBatchDetail(batchIndex) {
   const { data, error } = useSWR(
-    `${process.env.REACT_APP_ROLLUPSCAN_BASE_API_URL}/batch?batch_id=${batchId}`,
+    `${process.env.REACT_APP_ROLLUPSCAN_BASE_API_URL}/batch?index=${batchIndex}`,
     fetcher
   );
   return {
@@ -29,9 +29,9 @@ export function useBatchDetail(batchId) {
   };
 }
 
-export function useBlockList(batchId) {
+export function useBlockList(batchIndex) {
   const { data, error } = useSWR(
-    `${process.env.REACT_APP_ROLLUPSCAN_BASE_API_URL}/blocks?batch_id=${batchId}`,
+    `${process.env.REACT_APP_ROLLUPSCAN_BASE_API_URL}/blocks?batch_index=${batchIndex}`,
     fetcher
   );
   return {
@@ -40,3 +40,15 @@ export function useBlockList(batchId) {
     isError: error,
   };
 }
+
+// export function useGetBlatchId(blockHash) {
+//   const { data, error } = useSWR(
+//     `${process.env.REACT_APP_ROLLUPSCAN_BASE_API_URL}/search?block_hash=${blockHash}`,
+//     fetcher
+//   );
+//   return {
+//     blocks: data?.blocks,
+//     isLoading: !error && !data,
+//     isError: error,
+//   };
+// }
