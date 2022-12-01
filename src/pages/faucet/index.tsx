@@ -8,11 +8,11 @@ import Faq from "./components/faq";
 import { Link, useSearchParams } from "react-router-dom";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import Button from "@/components/Button/Button";
 import { getAddress } from "@ethersproject/address";
 import WithTwitter from "./components/WithTwitter";
 import { loginTwitter } from "./helper";
 import { requireEnv, truncateAddress, truncateHash } from "@/utils";
-
 import "./index.less";
 // import useSWR from 'swr'
 
