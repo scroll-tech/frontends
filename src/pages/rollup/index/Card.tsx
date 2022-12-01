@@ -18,11 +18,10 @@ const Card = styled(Box)(({ theme }) => ({
   paddingLeft: "6rem",
   paddingTop: "2.7rem",
   paddingBottom: "2.2rem",
-  // cursor: "pointer",
+  cursor: "pointer",
   "&:first-of-type": {
     marginRight: "3.2rem",
   },
-  "&:hover": {},
   [theme.breakpoints.down("md")]: {
     paddingLeft: "1.4rem",
     paddingRight: "1rem",
@@ -44,21 +43,31 @@ const CardTitle = styled(Typography)(({ theme }) => ({
   },
 }));
 
-const InfoCard = ({ title, value, description }: any) => {
+const BatchIndex = styled(Typography)(({ theme }) => ({
+  fontWeight: 500,
+  marginRight: "0.6rem",
+  display: "inline-block",
+  "&:hover": {
+    opacity: 0.8,
+  },
+}));
+
+const InfoCard = ({ title, value, total, description }: any) => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
   const moveToTargetPage = () => {
-    // const pageSize = +(
-    //     searchParams.get("per_page") || DEFAULT_PAGE_SIZE
-    //   ) as number,
-    //   current = +(searchParams.get("page") || DEFAULT_PAGE) as number;
-    // navigate(`/rollupscan/?page=2&per_page=${pageSize}`, {
-    //   replace: true,
-    // });
+    const pageSize = +(
+      searchParams.get("per_page") || DEFAULT_PAGE_SIZE
+    ) as number;
+
+    const page = Math.floor((total - 3) / pageSize);
+
+    window.location.href = `/rollupscan/?page=${page}&per_page=${pageSize}`;
   };
-  const moveToBatchDetail = () => {
-    // navigate(`/rollupscan/batch/${value}`);
+  const moveToBatchDetail = (e) => {
+    e.stopPropagation();
+    navigate(`/rollupscan/batch/${value}`);
   };
 
   return (
@@ -69,13 +78,9 @@ const InfoCard = ({ title, value, description }: any) => {
           <InfoOutlinedIcon sx={{ fontSize: "2rem" }} />
         </Tooltip>
       </Box>
-      <Typography
-        onClick={moveToBatchDetail}
-        variant="h3"
-        sx={{ fontWeight: 500, marginRight: "0.6rem" }}
-      >
+      <BatchIndex onClick={moveToBatchDetail} variant="h3">
         {value}
-      </Typography>
+      </BatchIndex>
     </Card>
   );
 };

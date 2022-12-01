@@ -145,9 +145,7 @@ const App: React.FC = () => {
     };
     if (!isNil(page) && !isNil(rowsPerPage)) {
       fetchData(params);
-      if(page !== 0) {
-        navigate(`/rollupscan/?page=${page}&per_page=${rowsPerPage}`);
-      }
+      navigate(`/rollupscan/?page=${page}&per_page=${rowsPerPage}`);
     }
   }, [rowsPerPage,page ]);
 
@@ -197,7 +195,7 @@ const App: React.FC = () => {
               {data.map((row: any) => (
                 <TableRow key={row.id}>
                   <TableCell>
-                    <RouterLink to={`batch/${row.id}`}>
+                    <RouterLink to={`batch/${row.index}`}>
                       <Typography sx={{ color: "#00A6F2", fontWeight: 600 }}>{row.index}</Typography>
                     </RouterLink>{" "}
                   </TableCell>

@@ -45,7 +45,7 @@ const BoxItem = styled(Box)(({ theme }) => ({
 
 const Blocks = () => {
   const params = useParams();
-  const { batch } = useBatchDetail(params.batchId);
+  const { batch } = useBatchDetail(params.batchIndex);
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
 
@@ -127,7 +127,7 @@ const Blocks = () => {
             <Divider />
             <BoxItem>
               <LabelTypography>Blocks</LabelTypography>
-              <RouterLink to={`/rollupscan/block/${batch.id}`}>
+              <RouterLink to={`/rollupscan/block/${batch.index}`}>
                 <Typography sx={{ fontWeight: 600, color: "#00A6F2" }}>
                   {batch.end_block_number - batch.start_block_number + 1}
                 </Typography>

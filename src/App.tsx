@@ -31,11 +31,11 @@ function App() {
               <Route path="/swap" element={<Swap />}></Route>
               <Route path="/rollupscan" element={<RollupScan />}></Route>
               <Route
-                path="/rollupscan/batch/:batchId"
+                path="/rollupscan/batch/:batchIndex"
                 element={<RollupScanBatch />}
               ></Route>
               <Route
-                path="/rollupscan/block/:batchId"
+                path="/rollupscan/block/:batchIndex"
                 element={<RollupScanBlock />}
               ></Route>
             </Routes>

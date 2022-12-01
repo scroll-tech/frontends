@@ -56,17 +56,31 @@ export default function Searchbar(props) {
 
   const handleSearch = () => {
     if (value === "") return;
-    fetch(
-      `${process.env.REACT_APP_ROLLUPSCAN_BASE_API_URL}/batch?batch_id=${value}`
-    )
-      .then((res) => res.json())
-      .then(({ batch }) => {
-        if (batch) {
-          navigate(`/rollupscan/batch/${value}`);
-        } else {
-          props.setNoData(true);
-        }
-      });
+    if (value.startsWith("0x")) {
+      fetch(
+        `${process.env.REACT_APP_ROLLUPSCAN_BASE_API_URL}/search?block_hash=${value}`
+      )
+        .then((res) => res.json())
+        .then(({ batch_index }) => {
+          if (~batch_index) {
+            navigate(`/rollupscan/block/${batch_index}`);
+          } else {
+            props.setNoData(true);
+          }
+        });
+    } else {
+      fetch(
+        `${process.env.REACT_APP_ROLLUPSCAN_BASE_API_URL}/batch?index=${value}`
+      )
+        .then((res) => res.json())
+        .then(({ batch }) => {
+          if (batch) {
+            navigate(`/rollupscan/batch/${value}`);
+          } else {
+            props.setNoData(true);
+          }
+        });
+    }
   };
 
   return (
@@ -81,7 +95,7 @@ export default function Searchbar(props) {
       <InputBase
         sx={{ ml: 1, flex: 1 }}
         autoFocus
-        placeholder="Search by batch hash"
+        placeholder="Search by batch index or block hash"
         inputProps={{ "aria-label": "Search by batch hash" }}
         onKeyDown={handleKeyDown}
         onKeyUp={handleKeyUp}
