@@ -2,15 +2,17 @@ import { Addresses, ChainId, TESTNET_NAME } from "@/constants";
 import React, { useEffect, useMemo, useState } from "react";
 import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import Countdown from "react-countdown";
+import useStorage from "squirrel-gill";
 import dayjs from "dayjs";
 import Faq from "./components/faq";
 import { Link, useSearchParams } from "react-router-dom";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-import { getAddress } from "@ethersproject/address";
 import Button from "@/components/Button/Button";
+import { getAddress } from "@ethersproject/address";
+import WithTwitter from "./components/WithTwitter";
+import { loginTwitter } from "./helper";
 import { requireEnv, truncateAddress, truncateHash } from "@/utils";
-import { signInTwitter } from "./helper";
 import "./index.less";
 // import useSWR from 'swr'
 
@@ -26,10 +28,12 @@ export default function Home() {
     walletName,
     connectWallet,
   } = useWeb3Context();
+  const [user, setUser] = useStorage(localStorage, "user");
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [authorizationCode, setAuthorizationCode] = useState("");
 
+  const [loginLoading, setLoginLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
@@ -68,8 +72,19 @@ export default function Home() {
       return;
     }
     if (authorizationCode) {
-      handleRequest(authorizationCode);
-      setAuthorizationCode("");
+      setLoginLoading(true);
+      loginTwitter(authorizationCode)
+        .then(({ username, token }) => {
+          setUser({ name: username, token });
+          setAuthorizationCode("");
+        })
+        .catch((err) => {
+          setOpen(true);
+          setErrorMessage(err.message);
+        })
+        .finally(() => {
+          setLoginLoading(false);
+        });
     }
   }, [searchParams, authorizationCode]);
 
@@ -92,16 +107,12 @@ export default function Home() {
     });
   };
 
-  const handleRequest = async (code) => {
+  const handleRequest = async () => {
     if (loading) return;
 
     let formData = new FormData();
     formData.append("address", getAddress(walletCurrentAddress as string));
-    formData.append("code", code);
-    formData.append(
-      "redirect_uri",
-      window.location.origin + window.location.pathname
-    );
+    formData.append("token", user?.token);
     setLoading(true);
     const res = await fetch(
       process.env.REACT_APP_FAUCET_BASE_API_URL + "/api/claim",
@@ -117,9 +128,18 @@ export default function Home() {
         .format("YYYY-MM-DD H:m:s");
       setCanClaimFrom(canClaimFrom);
       setTxHashData(TxHashData);
+      setUser({ ...user, token: TxHashData.token });
       localStorage.setItem(CAN_CLAIM_FROM, canClaimFrom);
       localStorage.setItem(TX_HASH_DATA, JSON.stringify(TxHashData));
+    } else if (res.status === 401) {
+      setUser(null);
+      setErrorMessage("Login status is invalid, please sign in again");
+      setOpen(true);
     } else {
+      const token = res.headers.get("x-token");
+      if (token) {
+        setUser({ ...user, token });
+      }
       const message = await res.text();
       //get hms
       const re = /((\d+)h)?((\d+)m)?((\d+)s)/i;
@@ -148,25 +168,11 @@ export default function Home() {
     if (completed) {
       // Render a completed state
       return (
-        <>
-          <Button
-            color="primary"
-            variant="contained"
-            sx={{
-              marginTop: "30px",
-              whiteSpace: "normal",
-            }}
-            className="w-full md:w-auto"
-            onClick={signInTwitter}
-          >
-            Sign In With Twitter And Request {faucetInfo.network} Scroll Tokens
-          </Button>
-          <MuiAlert severity="info" className="my-[30px] w-full md:w-[60em] ">
-            To prevent faucet botting, you must sign in with <b>Twitter</b>. We
-            request read-only access. Your Twitter account must have at least 1
-            Tweet, 30 followers, and be older than 1 month.
-          </MuiAlert>
-        </>
+        <WithTwitter
+          loginLoading={loginLoading}
+          requestLoading={loading}
+          onRequest={handleRequest}
+        />
       );
     } else {
       // Render a countdown
@@ -258,7 +264,7 @@ export default function Home() {
   return (
     <>
       <main className="px-[16px] faucet-app">
-        <div className="w-full flex items-center flex-col mb-[60px] md:h-[630px]">
+        <div className="w-full flex items-center flex-col mb-[120px] md:h-[630px]">
           <div className=" mt-[30px] mb-[80px] text-right max-w-[1268px] px-[8px] w-full">
             {walletCurrentAddress ? (
               <button className="w-[178px] h-[50px] text-[#333] border border-[#333] text-base rounded-[4px] cursor-text font-semibold">

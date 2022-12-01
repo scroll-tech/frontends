@@ -1,4 +1,5 @@
 import * as React from "react";
+import type {} from "@mui/lab/themeAugmentation";
 import { red } from "@mui/material/colors";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 

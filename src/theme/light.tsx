@@ -1,5 +1,4 @@
 import { createTheme } from "@mui/material/styles";
-
 import { ThemeOptions } from "@mui/material";
 
 export const boxShadows = {
@@ -28,6 +27,22 @@ const palette = {
   },
   border: {
     main: "#C9CBCE",
+  },
+  info: {
+    light: "#E5F6FE",
+    main: "#0095DA",
+  },
+  success: {
+    light: "#E0FEE7",
+    main: "#00A82A",
+  },
+  warning: {
+    light: "#FFF8CB",
+    main: "#C14800",
+  },
+  error: {
+    light: "#FFD7E2",
+    main: "#DC3347",
   },
 };
 
@@ -95,6 +110,18 @@ const theme = createTheme({
         },
       },
     },
+    MuiLoadingButton: {
+      styleOverrides: {
+        root: {
+          "&.Mui-disabled": {
+            backgroundColor: "rgba(51, 51, 51, 0.1)",
+          },
+        },
+        loadingIndicator: {
+          color: "rgba(51, 51, 51, 0.3)",
+        },
+      },
+    },
     MuiButton: {
       defaultProps: {
         variant: "outlined",
@@ -140,6 +167,42 @@ const theme = createTheme({
           },
         },
       ],
+    },
+    MuiAlert: {
+      styleOverrides: {
+        root: ({ theme, ownerState }) => ({
+          borderRadius: "1rem",
+          fontSize: "1.6rem",
+          lineHeight: "2.6rem",
+          padding: "2rem",
+          width: "100%",
+          boxSizing: "border-box",
+          color: ownerState.severity && palette[ownerState.severity].main,
+          backgroundColor:
+            ownerState.severity && palette[ownerState.severity].light,
+          [theme.breakpoints.down("sm")]: {
+            flexDirection: "column",
+            textAlign: "center",
+            padding: " 1.6rem 3rem",
+          },
+        }),
+        icon: ({ theme, ownerState }) => ({
+          display: "flex",
+          alignItems: "center",
+          fontSize: "2.4rem",
+          marginRight: "1.8rem",
+          padding: 0,
+          color: `${ownerState.severity &&
+            palette[ownerState.severity].main} !important`,
+          [theme.breakpoints.down("sm")]: {
+            justifyContent: "center",
+            marginRight: 0,
+          },
+        }),
+        message: {
+          padding: 0,
+        },
+      },
     },
   },
 });

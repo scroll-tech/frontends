@@ -18,9 +18,13 @@ export const paletteOptions = {
     main: "#595959",
     // light: '#6660777f',
   },
+  info: {
+    light: "#E5F6FE",
+    main: "#0095DA",
+  },
   success: {
-    light: "#26BC681A",
-    main: "#26BC68",
+    light: "#E0FEE7",
+    main: "#00A82A",
   },
   warning: {
     light: "#FFF8CB",
