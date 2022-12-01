@@ -20,6 +20,8 @@ const CAN_CLAIM_FROM = "canClaimFrom",
   TX_HASH_DATA = "TxHashData";
 
 const L1_SCAN_URL = requireEnv("REACT_APP_L1_SCAN_URL");
+const curEnv = requireEnv("REACT_APP_SCROLL_ENVIRONMENT");
+const isProduction = curEnv === "MAIN";
 
 export default function Home() {
   const {
@@ -123,12 +125,17 @@ export default function Home() {
     );
     if (res.ok) {
       const TxHashData = await res.json();
-      const canClaimFrom = dayjs()
-        .add(1, "day")
-        .format("YYYY-MM-DD H:m:s");
+      const canClaimFrom = isProduction
+        ? dayjs()
+            .add(1, "day")
+            .format("YYYY-MM-DD H:m:s")
+        : dayjs()
+            .add(3, "minute")
+            .format("YYYY-MM-DD H:m:s");
       setCanClaimFrom(canClaimFrom);
       setTxHashData(TxHashData);
-      setUser({ ...user, token: TxHashData.token });
+      const token = res.headers.get("x-token");
+      setUser({ ...user, token });
       localStorage.setItem(CAN_CLAIM_FROM, canClaimFrom);
       localStorage.setItem(TX_HASH_DATA, JSON.stringify(TxHashData));
     } else if (res.status === 401) {
@@ -146,7 +153,7 @@ export default function Home() {
       const rateLimitDuration: any = message.match(re);
       if (rateLimitDuration) {
         const canClaimFrom = dayjs()
-          .add(rateLimitDuration[2], "h")
+          .add(rateLimitDuration[2] ?? 0, "h")
           .add(rateLimitDuration[4], "m")
           .add(rateLimitDuration[6], "s")
           .format("YYYY-MM-DD H:m:s");
