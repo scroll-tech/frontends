@@ -44,7 +44,7 @@ const BlockTable: React.FC<BlockTableProps> = (props: { blocks: any }) => {
             </TableCell>
             <TableCell>Age</TableCell>
             <TableCell>
-              <Tooltip title={TxnTooltip} name="Txn" />
+              <Tooltip title={TxnTooltip} name="Transactions" />
             </TableCell>
           </TableRow>
         </TableHead>

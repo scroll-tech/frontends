@@ -185,7 +185,7 @@ const App: React.FC = () => {
               <TableRow>
                 <TableCell><Tooltip title={BatchIndexTooltip} name="Batch Index" /></TableCell>
                 <TableCell>Age</TableCell>
-                <TableCell><Tooltip title={TxnTooltip} name="Txn" /></TableCell>
+                <TableCell><Tooltip title={TxnTooltip} name="Transactions" /></TableCell>
                 <TableCell><Tooltip title={CommitTxHashTooltip} name="Commit Tx Hash" /></TableCell>
                 <TableCell><Tooltip title={FinalizedTxHashTooltip} name="Finalized Tx Hash" /></TableCell>
                 <TableCell><Tooltip title={renderStatusHeaderText()} name="status" /></TableCell>

@@ -122,6 +122,23 @@ const theme = createTheme({
         },
       },
     },
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          fontSize: "1.4rem",
+        },
+      },
+    },
+    MuiChip: {
+      styleOverrides: {
+        root: {
+          fontSize: "1.6rem",
+          height: "3.8rem",
+          borderRadius: "1.9rem",
+          padding: "0 1.6rem",
+        },
+      },
+    },
     MuiButton: {
       defaultProps: {
         variant: "outlined",

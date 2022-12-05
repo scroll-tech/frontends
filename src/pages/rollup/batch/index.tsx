@@ -58,7 +58,8 @@ const Blocks = () => {
       .fromNow()
       .toString()} (${dayjs(date)
       .utc()
-      .format("MMM-DD-YYYY hh:mm:ss A +UTC")})`;
+      .local()
+      .format("MMM-DD-YYYY hh:mm:ss A Z UTC")})`;
   };
 
   const truncatedHash = (hash: string) => {
@@ -121,7 +122,7 @@ const Blocks = () => {
             </BoxItem>
             <Divider />
             <BoxItem>
-              <LabelTypography>Txn</LabelTypography>
+              <LabelTypography>Transactions</LabelTypography>
               <Typography>{batch.total_tx_num}</Typography>
             </BoxItem>
             <Divider />
@@ -137,7 +138,7 @@ const Blocks = () => {
 
             <BoxItem>
               <>
-                <LabelTypography>Commit Txn Hash</LabelTypography>
+                <LabelTypography>Commit Tx Hash</LabelTypography>
                 {renderLink(batch.commit_tx_hash)}
               </>
             </BoxItem>
@@ -158,7 +159,7 @@ const Blocks = () => {
 
             <BoxItem>
               <>
-                <LabelTypography>Finalized Txn Hash</LabelTypography>
+                <LabelTypography>Finalized Tx Hash</LabelTypography>
                 {renderLink(batch.finalize_tx_hash)}
               </>
             </BoxItem>
