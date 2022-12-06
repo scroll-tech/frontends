@@ -65,7 +65,7 @@ const Team = () => {
           href="https://jobs.lever.co/ScrollFoundation"
           sx={{ display: "table", margin: "0 auto", marginBottom: "12rem" }}
         >
-          View Job Roles
+          View Open Positions
         </Button>
       </WrapperBox>
       <Avatars />
@@ -79,7 +79,7 @@ const Team = () => {
         href="https://jobs.lever.co/ScrollFoundation"
         sx={{ display: "table", margin: "0 auto" }}
       >
-        View Job Roles
+        View Open Positions
       </Button>
     </TeamContainer>
   );

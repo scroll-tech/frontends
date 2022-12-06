@@ -270,7 +270,7 @@ const Home = () => {
                 sx={{ height: "5rem" }}
                 href="https://jobs.lever.co/ScrollFoundation"
               >
-                View Job Roles
+                View Open Positions
               </Button>
               <RocketImg src={RocketIcon} />
             </Box>

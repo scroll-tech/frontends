@@ -15,8 +15,8 @@ const homeNavigations: any = [
     href: "/team",
   },
   {
-    label: "Careers",
-    key: "careers",
+    label: "Join Us",
+    key: "Join Us",
     href: "https://jobs.lever.co/ScrollFoundation",
     isExternal: true,
   },
