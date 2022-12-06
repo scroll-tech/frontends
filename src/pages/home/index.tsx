@@ -308,7 +308,7 @@ export default function Home() {
               <div className="mr-[4px]">
                 <img className="w-[20px]" src="/imgs/home/github.png" />
               </div>
-              Open an issue or a PR
+              Open an issue/PR
               <a
                 href="https://github.com/scroll-tech"
                 className="ml-[4px] font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer"
