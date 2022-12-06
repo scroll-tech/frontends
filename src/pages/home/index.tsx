@@ -247,7 +247,7 @@ export default function Home() {
           ))}
         </SectionTitle>
 
-        <SectionTitle title="Documentation">
+        <SectionTitle title="Read the documentation">
           {documentation.map((item, idx) => (
             <div
               key={item.name}
@@ -274,9 +274,9 @@ export default function Home() {
           <div className=" bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
             <dt className="text-base font-medium text-black flex">
               <div className="mr-[4px]">
-                <img className="w-[20px]" src="/imgs/home/github.png" />
+                <img className="w-[20px]" src="/imgs/home/note.png" />
               </div>
-              Check our
+              First, check our
               <a
                 href="https://status.scroll.io"
                 className="ml-[4px] font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer"
@@ -306,14 +306,14 @@ export default function Home() {
           <div className=" bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
             <dt className="text-base font-medium text-black flex">
               <div className="mr-[4px]">
-                <img className="w-[20px]" src="/imgs/home/note.png" />
+                <img className="w-[20px]" src="/imgs/home/github.png" />
               </div>
-              Fill out our
+              Open an issue or a PR
               <a
-                href="https://forms.gle/HrB2S7iRmVaVALFy5"
+                href="https://github.com/scroll-tech"
                 className="ml-[4px] font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer"
               >
-                feedback form
+                in our GitHub
               </a>
             </dt>
             <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:col-span-2" />
