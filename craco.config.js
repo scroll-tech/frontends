@@ -1,6 +1,7 @@
 const CracoLessPlugin = require("craco-less");
 const webpack = require("webpack");
 const path = require("path");
+const { loaderByName, addBeforeLoader } = require("@craco/craco");
 
 module.exports = {
   plugins: [
@@ -39,5 +40,16 @@ module.exports = {
         Buffer: ["buffer", "Buffer"],
       }),
     ],
+    configure: function(webpackConfig) {
+      webpackConfig.module.rules.push({
+        test: /\.mjs$/,
+        include: /node_modules/,
+        type: "javascript/auto",
+        resolve: {
+          fullySpecified: false,
+        },
+      });
+      return webpackConfig;
+    },
   },
 };

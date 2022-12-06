@@ -4,7 +4,8 @@ import { ExpandMore } from "@mui/icons-material";
 import { Box, Link, Button, Stack, Fade, Container } from "@mui/material";
 import Logo from "@/components/Logo";
 import { styled } from "@mui/system";
-import navigations from "./constans";
+import { navigations, homeNavigations } from "./constants";
+import { medias } from "@/constants/medias";
 
 const StyledBox = styled(Stack)(
   ({ theme }) => `
@@ -24,6 +25,41 @@ const HeaderContainer = styled(Container)(
    
   `
 );
+
+const MenuLinkButton = styled(Link)(
+  ({ theme }) => `
+  font-size: 16px;
+  font-weight: 600;
+  padding-left: 25px;
+  padding-right: 25px;
+  margin-left: 4px;
+  margin-right: 4px;
+  line-height: 82px;
+  position: relative;
+  color: #000;
+  &:after {
+    content: '';
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    position: absolute;
+    border-bottom: 0 solid ${theme.palette.action.active};
+  }
+  &:hover{
+    color: ${theme.palette.action.active};
+    &:after{
+        border-bottom-width: 2px;
+    }
+  }
+  &.active {
+    color: ${theme.palette.action.active};
+    &:after{
+        border-bottom-width: 2px;
+    }
+  } 
+`
+);
+
 const LinkStyledButton = styled(NavLink)(
   ({ theme }) => `
   font-size: 16px;
@@ -133,12 +169,22 @@ const LinkButton = styled(Link)(
 `
 );
 
-const App = () => {
-  const [checked, setChecked] = React.useState(false);
+const MediaLink = styled("a")(
+  ({ theme }) => `
+        height: 1.9rem;
+        width: 2.4rem;
+        margin-right: 2.2rem;
+        &:hover {
+          opacity: 0.8;
+        }
+      `
+);
 
+const App = (props) => {
+  const [checked, setChecked] = React.useState(false);
   const list = () => (
     <Stack direction="row" justifyContent="space-between" alignItems="center">
-      {navigations.map((item: any) => {
+      {(props.isHomepage ? homeNavigations : navigations).map((item: any) => {
         return (
           <React.Fragment key={item.key}>
             {item.children ? (
@@ -172,9 +218,9 @@ const App = () => {
                 </Fade>
               </SubMenuButton>
             ) : item.isExternal ? (
-              <LinkStyledButton to={item.key} key={item.key}>
+              <MenuLinkButton underline="none" href={item.href} key={item.key}>
                 {item.label}{" "}
-              </LinkStyledButton>
+              </MenuLinkButton>
             ) : (
               <LinkStyledButton to={item.key} key={item.key}>
                 {item.label}{" "}
@@ -193,7 +239,29 @@ const App = () => {
           <Logo></Logo>
         </NavLink>
         <Box>{list()}</Box>
-        <Button href="https://guide.scroll.io/">User Guide</Button>
+        {props.isHomepage ? (
+          <Box display="flex" alignItems="center">
+            {medias.map((media) => (
+              <MediaLink
+                href={media.href}
+                key={media.name}
+                sx={{
+                  background: `url(${media.imgSrc}) center / contain no-repeat `,
+                }}
+                className={media.name}
+              />
+            ))}
+            <Button
+              color="primary"
+              variant="contained"
+              href="https://prealpha.scroll.io/"
+            >
+              Join Pre-Alpha Testnet
+            </Button>
+          </Box>
+        ) : (
+          <Button href="https://guide.scroll.io/">User Guide</Button>
+        )}
       </HeaderContainer>
     </StyledBox>
   );
