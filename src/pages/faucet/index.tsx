@@ -8,6 +8,7 @@ import Faq from "./components/faq";
 import { Link, useSearchParams } from "react-router-dom";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import TextButton from "@/components/TextButton";
 import Button from "@/components/Button/Button";
 import { getAddress } from "@ethersproject/address";
 import WithTwitter from "./components/WithTwitter";
@@ -274,7 +275,7 @@ export default function Home() {
         <div className="w-full flex items-center flex-col mb-[120px] md:h-[630px]">
           <div className=" mt-[30px] mb-[80px] text-right max-w-[1268px] px-[8px] w-full">
             {walletCurrentAddress ? (
-              <button className="w-[178px] h-[50px] text-[#333] border border-[#333] text-base rounded-[4px] cursor-text font-semibold">
+              <button className="w-[178px] h-[50px] text-[#333] border border-[#333] text-base rounded-[6px] cursor-text font-semibold">
                 {truncateAddress(walletCurrentAddress as string)}
               </button>
             ) : (
@@ -309,17 +310,17 @@ export default function Home() {
                 {networkStatus === 2 ? (
                   <p className="text-[14px]  max-w-[400px] leading-[26px] text-[#C14800] md:text-[16px]">
                     Your wallet is connected to an unsupported network. Select{" "}
-                    <button className="font-bold" onClick={switchNetwork}>
+                    <TextButton onClick={switchNetwork}>
                       Scroll L1 {TESTNET_NAME}
-                    </button>{" "}
+                    </TextButton>{" "}
                     on {walletName}.
                   </p>
                 ) : (
                   <p className="text-[14px]  max-w-[400px] leading-[26px] text-[#C14800] md:text-[16px]">
                     Please{" "}
-                    <button className="font-bold" onClick={connectWallet}>
+                    <TextButton onClick={connectWallet}>
                       Connect Wallet
-                    </button>{" "}
+                    </TextButton>{" "}
                     first.
                   </p>
                 )}

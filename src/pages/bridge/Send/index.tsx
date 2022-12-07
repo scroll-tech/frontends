@@ -1,7 +1,7 @@
 import { ChangeEvent, FC, useEffect, useMemo, useState } from "react";
 import { ethers } from "ethers";
 import Alert from "@mui/material/Alert";
-import Link from "@/components/Link";
+import TextButton from "@/components/TextButton";
 import Button from "../components/Button";
 import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import SendAmountSelectorCard from "./SendAmountSelectorCard";
@@ -67,6 +67,7 @@ const Send: FC = () => {
 
   useEffect(() => {
     if (chainId && Object.values(ChainId).includes(chainId)) {
+      console.log("zheli");
       setFromNetwork(networks.find((item) => item.chainId === chainId));
       setToNetwork(networks.find((item) => item.chainId !== chainId));
     } else if (chainId) {
@@ -100,17 +101,7 @@ const Send: FC = () => {
     if (!walletCurrentAddress) {
       return (
         <>
-          Please{" "}
-          <Link
-            component="button"
-            sx={{
-              color: "warning.main",
-            }}
-            underline="none"
-            onClick={connectWallet}
-          >
-            Connect Wallet
-          </Link>{" "}
+          Please <TextButton onClick={connectWallet}>Connect Wallet</TextButton>{" "}
           first
         </>
       );
@@ -118,7 +109,12 @@ const Send: FC = () => {
       return (
         <>
           Your wallet is connected to an unsupported network. Select{" "}
-          <b>{fromNetwork.name}</b> network on {walletName}.
+          <TextButton
+            onClick={() => handleSwitchNetwork(fromNetwork.networkId)}
+          >
+            {fromNetwork.name}
+          </TextButton>{" "}
+          network on {walletName}.
         </>
       );
     } else if (warning) {
@@ -143,7 +139,7 @@ const Send: FC = () => {
       );
     }
     return null;
-  }, [isCorrectNetwork, warning, sendError]);
+  }, [walletCurrentAddress, isCorrectNetwork, warning, sendError]);
 
   // Switch the fromNetwork <--> toNetwork
   const handleSwitchDirection = () => {
@@ -264,8 +260,9 @@ const Send: FC = () => {
       await switchNetwork(networkId);
     } catch (error) {
       console.log(error, "error");
-      setFromNetwork(networks.find((item) => item.chainId === chainId));
-      setToNetwork(networks.find((item) => item.chainId !== chainId));
+      // MetaMask不允许重复popup让用户confirm switch network 所以这是会是undefined
+      // setFromNetwork(networks.find((item) => item.chainId === chainId));
+      // setToNetwork(networks.find((item) => item.chainId !== chainId));
     }
   };
 
