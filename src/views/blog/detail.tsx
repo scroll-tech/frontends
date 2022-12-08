@@ -5,6 +5,7 @@ import ReactMarkdown from "react-markdown";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import rehypeRaw from "rehype-raw";
+import remarkGfm from "remark-gfm";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { Link as RouterLink } from "react-router-dom";
 import { styled } from "@mui/system";
@@ -73,7 +74,7 @@ const BlogDetail = () => {
         </Link>
         <ReactMarkdown
           children={blog as string}
-          remarkPlugins={[remarkMath]}
+          remarkPlugins={[remarkMath, remarkGfm]}
           rehypePlugins={[rehypeKatex, rehypeRaw]}
           className="markdown-body"
         />

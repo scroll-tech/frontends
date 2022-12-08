@@ -77,3 +77,11 @@ body {
   --swiper-theme-color: #eb7106;
   /* --swiper-pagination-bullet-inactive-color: #595959; */
 }
+
+.markdown-body ol {
+  list-style-type: decimal;
+}
+
+.markdown-body ul {
+  list-style-type: disc;
+}
