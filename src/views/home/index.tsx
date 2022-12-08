@@ -244,7 +244,7 @@ const Home = () => {
       </SectionBox>
 
       <SectionBox>
-        <TitleTypography variant="h2">Learning Hub</TitleTypography>
+        <TitleTypography variant="h2">Scroll Blog</TitleTypography>
         <SubTitleTypography variant="subtitle1" sx={{ maxWidth: "70rem" }}>
           Learn about Scroll's technology, research, and latest developments.
         </SubTitleTypography>

@@ -56,8 +56,8 @@ const Team = () => {
         <SubTitleTypography variant="subtitle1">
           Scroll is a globally distributed team. We are united in our goal to
           improve Ethereum while maintaining decentralization and transparency.
-          Join our team to work together with experts in zero knowledge
-          cryptography and distributed systems on cutting edge technology.
+          Join our team to work with experts in zero-knowledge cryptography
+          and distributed systems on cutting edge technology.
         </SubTitleTypography>
         <Button
           color="primary"
