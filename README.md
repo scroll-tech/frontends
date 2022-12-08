@@ -10,6 +10,8 @@ The final goal for this repo is to contain a single React app written in TypeScr
 
 ## Available Scripts
 
+Before running locally, make sure to duplicate `.env.template` to a new file called `.env`, and update its values if necessary.
+
 In the project directory, you can run:
 
 ### `yarn start`
@@ -19,6 +21,8 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
+
+To run the **homepage**, run `yarn start:homepage`.
 
 ### `yarn test`
 

@@ -60,19 +60,19 @@ const features = [
     icon: SecurityIcon,
     title: "Security",
     description:
-      "Scroll’s protocol is currently undergoing multiple third-party audits to ensure security. Additionally, Scroll is a completely open-sourced project, providing maximal transparency.",
+      "Scroll's protocol is currently undergoing multiple third-party audits to ensure security. Scroll also values transparency and is working to build its platform openly and in collaboration with the community.",
   },
   {
     icon: ScalabilityIcon,
     title: "Scalability",
     description:
-      "Scroll processes transactions off-chain, and proves correct execution using zero-knowledge proofs. This results in higher throughput and lower costs, in comparison to Ethereum L1.",
+      "Scroll processes transactions off-chain, and posts succinct proofs of correctness on-chain. This results in higher throughput and lower costs in comparison to the Ethereum base layer.",
   },
   {
     icon: EVMEquivalenceIcon,
     title: "EVM Equivalence",
     description:
-      "Existing smart contracts currently on Ethereum will be able to seamlessly migrate to Scroll. The Ethereum developer experience, including existing debugging tools, will also be the same.",
+      "Developing on Scroll feels the same as developing on Ethereum. Any EVM-compatible smart contract can be effortlessly deployed to Scroll's network.",
   },
 ];
 

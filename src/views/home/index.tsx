@@ -207,8 +207,8 @@ const Home = () => {
             Join the Scroll Testnet
           </TitleTypography>
           <SubTitleTypography variant="subtitle1" sx={{ maxWidth: "53rem" }}>
-            The future is here: interact with dapps, deploy smart contracts and
-            explore L2 blocks on Scroll’s Testnet.
+            The future is here: interact with dApps, deploy smart contracts, and
+            explore L2 blocks on Scroll's Testnet.
           </SubTitleTypography>
           <Box>
             <JoinTestnetButton />
@@ -233,11 +233,9 @@ const Home = () => {
                 },
               }}
             >
-              After achieving Phase 1, we’re now working on{" "}
-              <span style={{ fontWeight: 600 }}>Phase 2: zkEVM Testnet</span>.{" "}
-              <br />
-              We’re thrilled for the community to try it out and share helpful
-              feedback.
+              After successfully building a zkEVM POC,
+              we are now working on our <span style={{ fontWeight: 600 }}>zkEVM Testnet</span>.
+              The Testnet is currently live and open to the public.
             </SubTitleTypography>
             <JoinTestnetButton />
           </RoadmapInfo>
@@ -246,7 +244,10 @@ const Home = () => {
       </SectionBox>
 
       <SectionBox>
-        <TitleTypography variant="h2">Learning Hub</TitleTypography>
+        <TitleTypography variant="h2">Scroll Blog</TitleTypography>
+        <SubTitleTypography variant="subtitle1" sx={{ maxWidth: "70rem" }}>
+          Learn about Scroll's technology, research, and latest developments.
+        </SubTitleTypography>
         <Article />
       </SectionBox>
 
@@ -278,7 +279,7 @@ const Home = () => {
           <MediaCard>
             <MediaTitle>
               Want the latest updates?
-              <br /> Check out our social medias
+              <br /> Check out our social media
             </MediaTitle>
             <MediaSummary>
               Be part of our community and stay up to date with all things

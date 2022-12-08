@@ -277,9 +277,9 @@ const Blog = () => {
   return (
     <BlogContainer>
       <WrapperBox>
-        <TitleTypography variant="h2">Learning Hub</TitleTypography>
+        <TitleTypography variant="h2">Scroll Blog</TitleTypography>
         <SubTitleTypography variant="subtitle1">
-          Learn about Scroll’s technology, research, and latest developments.
+          Learn about Scroll's technology, research, and latest developments.
         </SubTitleTypography>
       </WrapperBox>
 

@@ -100,15 +100,15 @@ const roadmaps = [
     completed: true,
   },
   {
-    name: "Layer-2 proof outsourcing",
+    name: "Proof outsourcing",
     completed: false,
   },
   {
-    name: "zkEVM mainnet",
+    name: "zkEVM Mainnet",
     completed: false,
   },
   {
-    name: "Decentralised sequencer & more efficient zkVM",
+    name: "Decentralized sequencer",
     completed: false,
   },
 ];
