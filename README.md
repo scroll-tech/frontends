@@ -10,7 +10,7 @@ The final goal for this repo is to contain a single React app written in TypeScr
 
 ## Available Scripts
 
-Before running locally, make sure to duplicate `.env.template` to a new file called `.env`.
+Before running locally, make sure to duplicate `.env.template` to a new file called `.env`, and update its values if necessary.
 
 In the project directory, you can run:
 

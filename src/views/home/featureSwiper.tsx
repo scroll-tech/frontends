@@ -60,7 +60,7 @@ const features = [
     icon: SecurityIcon,
     title: "Security",
     description:
-      "Scroll's protocol is currently undergoing multiple third-party audits to ensure security. Additionally, Scroll is a completely open-sourced project, providing maximal transparency.",
+      "Scroll's protocol is currently undergoing multiple third-party audits to ensure security. Scroll also values transparency and is working to build its platform openly and in collaboration with the community.",
   },
   {
     icon: ScalabilityIcon,
