@@ -16,18 +16,23 @@ const Subscribe = () => {
   const medias = [
     {
       name: "Twitter",
-      imgSrc: "/imgs/footer/twitter.png",
+      imgSrc: "/imgs/footer/twitter.svg",
       href: "https://twitter.com/Scroll_ZKP",
     },
     {
       name: "Discord",
-      imgSrc: "/imgs/footer/discord.png",
+      imgSrc: "/imgs/footer/discord.svg",
       href: "https://discord.gg/s84eJSdFhn",
     },
     {
       name: "Github",
-      imgSrc: "/imgs/footer/github.png",
+      imgSrc: "/imgs/footer/github.svg",
       href: "https://github.com/scroll-tech",
+    },
+    {
+      name: "Youtube",
+      imgSrc: "/imgs/footer/youtube.svg",
+      href: "https://www.youtube.com/@Scroll_ZKP",
     },
   ];
 

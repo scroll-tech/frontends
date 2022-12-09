@@ -14,6 +14,11 @@ const medias = [
     imgSrc: "/imgs/media/github.png",
     href: "https://github.com/scroll-tech",
   },
+  {
+    name: "Youtube",
+    imgSrc: "/imgs/media/youtube.png",
+    href: "https://www.youtube.com/@Scroll_ZKP",
+  },
 ];
 
 export { medias };
