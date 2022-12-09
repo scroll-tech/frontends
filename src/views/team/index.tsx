@@ -1,5 +1,6 @@
 import { Box, Typography, Button, Link } from "@mui/material";
 import { styled } from "@mui/system";
+import { useNavigate } from "react-router-dom";
 import WrapperBox from "@/components/WrapperBox";
 import Avatars from "./avatars";
 import Photowall from "./photowall";
@@ -47,6 +48,8 @@ const Avatar = styled("img")(
 );
 
 const Team = () => {
+  const navigate = useNavigate();
+
   return (
     <TeamContainer sx={{ margin: "14rem auto" }}>
       <WrapperBox>
@@ -56,13 +59,13 @@ const Team = () => {
         <SubTitleTypography variant="subtitle1">
           Scroll is a globally distributed team. We are united in our goal to
           improve Ethereum while maintaining decentralization and transparency.
-          Join our team to work with experts in zero-knowledge cryptography
-          and distributed systems on cutting edge technology.
+          Join our team to work with experts in zero-knowledge cryptography and
+          distributed systems on cutting edge technology.
         </SubTitleTypography>
         <Button
           color="primary"
           variant="contained"
-          href="https://jobs.lever.co/ScrollFoundation"
+          onClick={() => navigate("/join-us")}
           sx={{ display: "table", margin: "0 auto", marginBottom: "12rem" }}
         >
           View Open Positions
@@ -76,7 +79,7 @@ const Team = () => {
       <Button
         color="primary"
         variant="contained"
-        href="https://jobs.lever.co/ScrollFoundation"
+        onClick={() => navigate("/join-us")}
         sx={{ display: "table", margin: "0 auto" }}
       >
         View Open Positions

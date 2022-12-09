@@ -1,12 +1,28 @@
-function IframeEmbedding(props: { url: string }) {
+import { styled } from "@mui/system";
+
+const Iframe = styled("iframe")(({ theme }) => ({}));
+
+function IframeEmbedding(props: {
+  url: string;
+  DesktopHeight: string;
+  MobileHeight: string;
+}) {
   return (
     <div className="w-full">
-      <iframe
+      <Iframe
         title="url"
-        className="w-full  min-h-[800px]"
+        className="w-full"
         id="Iframe"
+        seamless
+        frameBorder="0"
         src={props.url}
-      ></iframe>
+        sx={{
+          height: {
+            md: props.DesktopHeight,
+            xs: props.MobileHeight,
+          },
+        }}
+      ></Iframe>
     </div>
   );
 }

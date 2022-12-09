@@ -1,6 +1,7 @@
 import { Button, Box, Typography, useMediaQuery } from "@mui/material";
 import { styled } from "@mui/system";
 import { useTheme } from "@mui/material/styles";
+import { useNavigate } from "react-router-dom";
 
 import BridgeScreenshot from "@/assets/images/homepage/home/bridge-screenshot.png";
 import BridgeScreenshotMobile from "@/assets/images/homepage/home/bridge-screenshot-m.png";
@@ -175,6 +176,7 @@ const JoinTestnetButton = (props) => (
 const Home = () => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
+  const navigate = useNavigate();
 
   return (
     <ContainerBox>
@@ -233,9 +235,9 @@ const Home = () => {
                 },
               }}
             >
-              After successfully building a zkEVM POC,
-              we are now working on our <span style={{ fontWeight: 600 }}>zkEVM Testnet</span>.
-              The Testnet is currently live and open to the public.
+              After successfully building a zkEVM POC, we are now working on our{" "}
+              <span style={{ fontWeight: 600 }}>zkEVM Testnet</span>. The
+              Testnet is currently live and open to the public.
             </SubTitleTypography>
             <JoinTestnetButton />
           </RoadmapInfo>
@@ -269,7 +271,7 @@ const Home = () => {
               <Button
                 color="secondary"
                 sx={{ height: "5rem" }}
-                href="https://jobs.lever.co/ScrollFoundation"
+                onClick={() => navigate("/join-us")}
               >
                 View Open Positions
               </Button>

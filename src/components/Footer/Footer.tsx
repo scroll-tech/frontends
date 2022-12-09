@@ -18,7 +18,7 @@ const Footer = () => {
         },
         {
           name: "Join Us",
-          href: "https://jobs.lever.co/ScrollFoundation",
+          href: "https://scroll.io/join-us",
         },
       ],
     },

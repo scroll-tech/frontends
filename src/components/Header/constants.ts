@@ -17,7 +17,7 @@ const homeNavigations: any = [
   {
     label: "Join Us",
     key: "Join Us",
-    href: "https://jobs.lever.co/ScrollFoundation",
+    href: "/join-us",
     isExternal: true,
   },
 ];
