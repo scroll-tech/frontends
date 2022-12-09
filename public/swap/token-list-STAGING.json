@@ -6,7 +6,7 @@
   "tokens": [
     {
       "chainId": 5343541,
-      "address": "0xbe3763173594A13be39E8Ab199BF4132294a74BA",
+      "address": "0x415f01fb0abfb7b9eedc3f746031235f7d0021bc",
       "name": "TSUSDC",
       "symbol": "TSUSDC",
       "decimals": 18,
@@ -14,7 +14,7 @@
     },
     {
       "chainId": 5343541,
-      "address": "0xd98a852133bE69178d9EfDc168848684b1dEf608",
+      "address": "0xE3c0cC31695b2112c29E5261df794088521cc64f",
       "name": "TSWETH",
       "symbol": "TSWETH",
       "decimals": 18,
@@ -22,7 +22,7 @@
     },
     {
       "chainId": 5343541,
-      "address": "0x4f4eb5ac461c115191390d1760109f1ea185e609",
+      "address": "0x821488866bac2cf3f62f59f0a1a43acf50d842b5",
       "name": "TSUNI2",
       "symbol": "TSUNI2",
       "decimals": 18,
