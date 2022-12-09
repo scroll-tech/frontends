@@ -18,7 +18,6 @@ const homeNavigations: any = [
     label: "Join Us",
     key: "Join Us",
     href: "/join-us",
-    isExternal: true,
   },
 ];
 
