@@ -38,8 +38,9 @@ export function useSendTransaction(props) {
     try {
       setError(null);
 
-      const networkId = Number(fromNetwork.networkId);
-      const isNetworkConnected = await checkConnectedChainId(networkId);
+      const isNetworkConnected = await checkConnectedChainId(
+        fromNetwork.chainId
+      );
       if (!isNetworkConnected) return;
       setSending(true);
       let tx;
