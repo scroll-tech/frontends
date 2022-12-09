@@ -3,7 +3,7 @@ import { Box, Typography, Divider } from "@mui/material";
 import { styled } from "@mui/system";
 import SecurityIcon from "@/assets/images/homepage/home/security.png";
 import ScalabilityIcon from "@/assets/images/homepage/home/scalability.png";
-import EVMEquivalenceIcon from "@/assets/images/homepage/home/EVM-equivalence.png";
+import EVMEquivalenceIcon from "@/assets/images/homepage/home/EVM-equivalence.svg";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper";
 import useMediaQuery from "@mui/material/useMediaQuery";
