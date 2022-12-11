@@ -1,6 +1,16 @@
 [
   {
-    "type": "Research",
+    "type": "Technical",
+    "id": "proofGeneration",
+    "date": "2022-12-13",
+    "title": "The Anatomy of Proof Generation",
+    "posterTitle": "Proof Generation",
+    "summary": "A technical deep dive into the computational costs of proof generation.",
+    "blogLink": "/blog/proofGeneration",
+    "posterImg": "/imgs/homepage/blog/poster_2.png"
+  },
+  {
+    "type": "Technical",
     "id": "kzg",
     "date": "2022-10-25",
     "title": "KZG in Practice: Polynomial Commitment Schemes and Their Usage in Scaling Ethereum",
@@ -10,14 +20,14 @@
     "posterImg": "/imgs/homepage/blog/poster_1.png"
   },
   {
-    "type": "Technical",
+    "type": "Announcement",
     "id": "5",
     "date": "2022-10-09",
     "title": "Upgrading the Scroll Pre-Alpha Testnet",
     "posterTitle": "Scroll Pre-Alpha Testnet",
-    "summary": "Our new testnet upgrade enables smart contract deployment on Scroll. This allows developers to write and deploy their own contracts on Scroll…",
+    "summary": "Our new testnet upgrade enables smart contract deployment on Scroll.",
     "blogLink": "",
-    "posterImg": "/imgs/homepage/blog/poster_2.png",
+    "posterImg": "/imgs/homepage/blog/poster_6.png",
     "externalLink": "https://scroll.mirror.xyz/FYzq9QWb2UhS00p-AOFMBh1Oq6SCqLA6L855GAHczOw"
   },
   {
@@ -28,30 +38,29 @@
     "posterTitle": "Scroll's Architecture Overview",
     "summary": "Scroll is an EVM-equivalent zkRollup to scale Ethereum. Technically speaking, Scroll is built upon two major pieces…",
     "blogLink": "",
-    "posterImg": "/imgs/homepage/blog/poster_3.png",
+    "posterImg": "/imgs/homepage/blog/poster_5.png",
     "externalLink": "https://scroll.mirror.xyz/nDAbJbSIJdQIWqp9kn8J0MVS4s6pYBwHmK7keidQs-k"
   },
   {
-    "type": "Technical",
+    "type": "General",
     "id": "3",
     "date": "2022-07-21",
-    "title": "Technical principles",
-    "posterTitle": "Technical principles",
+    "title": "Technical Principles",
+    "posterTitle": "Technical Principles",
     "summary": "To scale Ethereum with our zkEVM-based zkRollup, we have designed Scroll based on a set of technical principles which… ",
     "blogLink": "",
     "posterImg": "/imgs/homepage/blog/poster_4.png",
     "externalLink": "https://mirror.xyz/scroll.eth/N7cAie4ul0PdSxNdv2FTqgMV2JEkhOJocsxfeqe4SFE"
   },
-
   {
     "type": "General",
     "id": "0",
     "date": "2022-07-19",
-    "title": "Scroll pre-alpha testnet",
-    "posterTitle": "Scroll pre-alpha testnet",
+    "title": "Scroll Pre-Alpha Testnet",
+    "posterTitle": "Scroll Pre-Alpha Testnet",
     "summary": "After over a year of building our zkEVM-based zkRollup in close collaboration with the PSE (Privacy and Scaling… ",
     "blogLink": "",
-    "posterImg": "/imgs/homepage/blog/poster_5.png",
+    "posterImg": "/imgs/homepage/blog/poster_3.png",
     "externalLink": "https://mirror.xyz/scroll.eth/XQyXDgyxoefag6hcBgGJFz8qrb10rmSU-zUBvY3Q9_A"
   },
   {
@@ -62,11 +71,11 @@
     "posterTitle": "Vision and Values",
     "summary": "The promise of Ethereum is to build a decentralized computing platform widely accessible to all. Though it has come… ",
     "blogLink": "/blog/Vision-and-Values",
-    "posterImg": "/imgs/homepage/blog/poster_6.png",
+    "posterImg": "/imgs/homepage/blog/poster_2.png",
     "externalLink": "https://mirror.xyz/scroll.eth/EYn7ODhQAnNWABwWcu5xZLts_wEXTZAEWyTgExGS1DA"
   },
   {
-    "type": "Research",
+    "type": "General",
     "id": "zkEVM",
     "date": "2021-09-28",
     "title": "zkEVM",

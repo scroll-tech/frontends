@@ -133,7 +133,7 @@ const BlogList = styled("ul")(
 
 const Blog = () => {
   const listType = ["Newest", "Oldest"];
-  const categories = ["All", "Research", "General", "Technical"];
+  const categories = ["All", "Announcement", "General", "Technical"];
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
   const [filterOpen, setFilterOpen] = useState(false);
