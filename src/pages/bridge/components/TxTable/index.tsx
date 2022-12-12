@@ -102,11 +102,11 @@ const TxTable = (props: any) => {
             </TableHead>
             <TableBody>
               {loading ? (
-                <CircularProgress></CircularProgress>
+                <CircularProgress />
               ) : (
                 <>
                   {data?.map((tx: any) => (
-                    <TxRow key={tx.hash} tx={tx}></TxRow>
+                    <TxRow key={tx.hash} tx={tx} />
                   ))}
                 </>
               )}
@@ -145,9 +145,11 @@ const TxRow = (props) => {
       if (!blockNumbers) {
         return ["Synchronizing", 0];
       }
-      const confirmations = blockNumber
-        ? blockNumbers[+!(isL1 ^ to)] - blockNumber
-        : 0;
+
+      const confirmations =
+        blockNumber && blockNumbers[+!(isL1 ^ to)] - blockNumber > 0
+          ? blockNumbers[+!(isL1 ^ to)] - blockNumber
+          : 0;
       const waitConfirmations = networks[+!(isL1 ^ to)].waitConfirmations;
       if (confirmations >= waitConfirmations) {
         return ["Success", waitConfirmations];
@@ -181,7 +183,7 @@ const TxRow = (props) => {
                     ? classes.successChip
                     : classes.pendingChip
                 )}
-              ></Chip>
+              />
               <Chip
                 label={toStatusConfirmations[0]}
                 className={cx(
@@ -190,7 +192,7 @@ const TxRow = (props) => {
                     ? classes.successChip
                     : classes.pendingChip
                 )}
-              ></Chip>
+              />
             </>
           ) : (
             <>
@@ -213,11 +215,7 @@ const TxRow = (props) => {
       <TableCell className="w-full">
         <span>{tx.amount} </span>
         {symbolLoading ? (
-          <Skeleton
-            variant="text"
-            width="5rem"
-            className="inline-block"
-          ></Skeleton>
+          <Skeleton variant="text" width="5rem" className="inline-block" />
         ) : (
           <span>{symbol}</span>
         )}

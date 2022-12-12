@@ -36,14 +36,23 @@ export const networks = [
   },
 ];
 
-export interface Token {
+type BaseToken = {
   chainId: number;
   name: string;
   symbol: string;
   decimals: number;
-  native?: boolean;
   logoURI: string;
-}
+};
+
+export type NativeToken = BaseToken & {
+  native: boolean;
+};
+
+export type ERC20Token = BaseToken & {
+  address: string;
+};
+
+export type Token = NativeToken | ERC20Token;
 export const nativeTokenList: Token[] = [
   {
     chainId: 5343511,

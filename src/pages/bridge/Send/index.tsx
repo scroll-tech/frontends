@@ -12,6 +12,8 @@ import {
   networks,
   ChainId,
   Token,
+  NativeToken,
+  ERC20Token,
   ETH_SYMBOL,
 } from "@/constants";
 import { useApp } from "@/contexts/AppContextProvider";
@@ -203,7 +205,7 @@ const Send: FC = () => {
     setSendError,
     setError,
     toNetwork,
-    fromToken,
+    selectedToken: fromToken,
   });
 
   useEffect(() => {
@@ -227,7 +229,7 @@ const Send: FC = () => {
       ) ||
       !Number(fromTokenAmount) ||
       chainId !== fromNetwork.chainId ||
-      fromToken.native
+      (fromToken as NativeToken).native
     ) {
       return false;
     }
@@ -235,7 +237,7 @@ const Send: FC = () => {
     try {
       const parsedAmount = amountToBN(fromTokenAmount, fromToken.decimals);
       const Token = new ethers.Contract(
-        (fromToken as any).address[fromNetwork.chainId],
+        (fromToken as ERC20Token).address,
         L1_erc20ABI,
         networksAndSigners[chainId as number].signer
       );
@@ -256,7 +258,7 @@ const Send: FC = () => {
     const isNetworkConnected = await checkConnectedChainId(fromNetwork.chainId);
     if (!isNetworkConnected) return;
     const Token = new ethers.Contract(
-      (fromToken as any).address[fromNetwork.chainId],
+      (fromToken as ERC20Token).address,
       L1_erc20ABI,
       networksAndSigners[chainId as number].signer
     );
