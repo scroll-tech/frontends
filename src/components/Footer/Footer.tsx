@@ -10,7 +10,7 @@ const Footer = () => {
       items: [
         {
           name: "Scroll.io",
-          href: "http://scroll.io/",
+          href: "https://scroll.io/",
         },
         {
           name: "Team",
