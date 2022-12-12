@@ -391,7 +391,7 @@ From this summary, it is clear that phase 2 and phase 3 are dominated by the hea
 
 ### Paths toward acceleration
 
-With this new light shed on the computational bottlenecks of proof generation, we can begin to reason about how the overall process can be accelerated. There are many approaches to acceleration, all of which are being actively pursued across the community:
+With this new light shed on the computational bottlenecks of proof generation, we can begin to reason about how the overall process can be accelerated. There are many approaches to acceleration being actively pursued across the community. Listed below are four primary paths toward acceleration:
 
 **1. Hardware acceleration for heavy computations**
 
