@@ -10,7 +10,7 @@ As ZKPs have become increasingly feasible over the past few years, they have unl
 
 Despite their promising potential, most of today's ZKP systems face a major limitation: proof generation is slow and expensive.
 
-This limitation is commonly posed as a criticism of ZKP technology, and rightly so (for now, at least). Generating a proof attesting to the correct execution of some program requires *many* orders of magnitude more computation than the program's original execution. Complex computations therefore become very expensive (sometimes *prohibitively expensive*) to generate proofs for. This high cost limits the universe of applications for which ZKP technology can be feasibly applied.
+This limitation is commonly posed as a criticism of ZKP technology, and rightly so (for now, at least). Generating a proof attesting to the correct execution of some program requires *many* orders of magnitude more computation than the program's original execution. Complex programs therefore become very expensive (sometimes *prohibitively expensive*) to generate proofs for. This high cost limits the universe of applications for which ZKP technology can be feasibly applied.
 
 In this article, we'll aim to understand *why* proof generation is so expensive. In order to do so, we'll need to break down *how* proof generation works on a technical level, and see exactly which types of computations are involved. Once understanding the inner workings of proof generation, we can explore various ideas of how to accelerate it.
 
@@ -30,7 +30,7 @@ Let $n$ be some very large integer. For convenience, we'll assume $n$ is a power
 
 A verifier could naively check this statement themselves by computing $f_2$, and then $f_3$, and then $f_4$, and so on until reaching $f_n$, and then checking whether or not $f_n = k$. However, this requires many steps of computation (remember that $n$ is very large).
 
-Ideally we'd like the proof $\pi$ to be “efficiently-verifiable" - the verifier should be able to verify the proof much more quickly and efficiently than recomputing $f_n$ explicitly.
+Ideally we'd like the proof $\pi$ to be "efficiently-verifiable" - the verifier should be able to verify the proof much more quickly and efficiently than recomputing $f_n$ explicitly.
 
 ## Overview of Plonk-based proof generation
 
@@ -38,14 +38,14 @@ In this post, we will focus specifically on explaining Plonk-based proof systems
 
 Since the [Plonk](https://eprint.iacr.org/2019/953.pdf) proof system was originally proposed in 2019, many extensions and variations have been developed. The family of Plonk-based proof systems has gained tremendous adoption, and is being used widely.
 
-At Scroll, we are using “[Halo 2](https://electriccoin.co/blog/ecc-releases-code-for-halo-2/)," which is a Plonk-based proof system built and maintained by our wonderful friends at [Zcash](https://z.cash/). We [modify Halo 2](https://github.com/privacy-scaling-explorations/halo2) to use KZG as its polynomial commitment scheme (rather than its default scheme, [IPA](https://dankradfeist.de/ethereum/2021/07/27/inner-product-arguments.html)) in order to achieve more efficient on-chain proof verification.
+At Scroll, we are using "[Halo 2](https://electriccoin.co/blog/ecc-releases-code-for-halo-2/)," which is a Plonk-based proof system built and maintained by our wonderful friends at [Zcash](https://z.cash/). We [modify Halo 2](https://github.com/privacy-scaling-explorations/halo2) to use KZG as its polynomial commitment scheme (rather than its default scheme, [IPA](https://dankradfeist.de/ethereum/2021/07/27/inner-product-arguments.html)) in order to achieve more efficient on-chain proof verification.
 
 ### The phases of proof generation
 
 At a high level, proof generation consists of three phases:
 
-- **Phase 1**: write out the “witness"
-    - The “witness" (also sometimes known as the “trace") refers to some data that shows *why* a statement is true.
+- **Phase 1**: write out the "witness"
+    - The "witness" (also sometimes known as the "trace") refers to some data that shows *why* a statement is true.
         - For example, in the Square-Fibonacci case, we would write out the step-by-step computation in a table, one step per row.
         - The first row would contain $[f_0, f_1, f_2]$, where $f_2 = (f_0)^2 + (f_1)^2$. The second row would contain $[f_1, f_2, f_3]$, where $f_3 = (f_1)^2 + (f_2)^2$, and so on, until reaching the last row containing $[f_{n-2}, f_{n-1}, f_{n}]$.
 - **Phase 2**: commit to the witness
@@ -53,7 +53,7 @@ At a high level, proof generation consists of three phases:
     - Using a polynomial commitment scheme for this step allows us to prove certain properties about the original witness referencing just the succinct commitment.
 - **Phase 3**: prove that the witness is correct
     - The witness generated in phase 1 must obey certain properties to be valid.
-        - For example, in the Square-Fibonacci case, the mathematical relation $f_{i+2} = (f_{i})^2 + (f_{i+1})^2$ must hold within each row.
+        - For example, in the Square-Fibonacci case, the mathematical relation $f_{i} = (f_{i-2})^2 + (f_{i-1})^2$ must hold within each row.
     - A short proof that the original witness satisfies these properties can be generated. Verification of the proof does not require access to the original witness table - verification can be performed referencing only the succinct commitment generated in phase 2.
 
 We will dive into each of these three phases more deeply, and explore the computations required for each.
@@ -69,17 +69,17 @@ A polynomial $P(x) = \sum_{i=0}^{n-1} p_i x^i$ of degree $(n-1)$ can be represen
     - $P(x)$ can be represented as a tuple of its $n$ coefficients: $[p_0, p_1, \ldots, p_{n-1}]$
 2. **Evaluation form**
     - $P(x)$ can be represented as a tuple of $n$ distinct evaluations: $[P(x_0), P(x_1), \ldots, P(x_{n-1})]$
-        - The set of values $\{ x_0, x_1, \ldots, x_{n-1} \}$ over which the polynomial is evaluated is known as the “evaluation domain"
+        - The set of values $\{ x_0, x_1, \ldots, x_{n-1} \}$ over which the polynomial is evaluated is known as the "evaluation domain"
 
-Converting from coefficient form to evaluation form is known as the “Fourier transform," and converting in the reverse direction is known as the “inverse Fourier transform." 
+Converting from coefficient form to evaluation form is known as the "Fourier transform," and converting in the reverse direction is known as the "inverse Fourier transform." 
 
-Each of these two transforms can be achieved in $O(n^2)$ computation using simple methods. From coefficient form, we can simply evaluate the polynomial at each $x_i$ in evaluation domain. From evaluation form, we can use [Lagrange interpolation](https://en.wikipedia.org/wiki/Lagrange_polynomial#Definition) to obtain the unique degree $(n-1)$ polynomial passing through each of the $n$ points.
+Each of these two transforms can naively be achieved in $O(n^2)$ computation using simple methods. From coefficient form, we can simply evaluate the polynomial at each $x_i$ in evaluation domain. From evaluation form, we can use [Lagrange interpolation](https://en.wikipedia.org/wiki/Lagrange_polynomial#Definition) to obtain the unique degree $(n-1)$ polynomial passing through each of the $n$ points.
 
 We will be working with polynomials of very high degree, and so we'd ideally like these transforms to be more efficient. This is where the *fast* Fourier transform comes in. 
 
 ### Fast Fourier transform (FFT)
 
-The efficiency of the transforms can be improved by imposing some additional structure. Proof systems generally only consider polynomials over a [finite field](https://en.wikipedia.org/wiki/Finite_field), and so we will restrict each coefficient $p_i$ and each evaluation point $x_i$ to be elements of a finite field $\mathbb{F}_q$. Additionally, we will restrict the evaluation domain (the $x_i$'s) to be a multiplicative subgroup of $\mathbb{F}_q$. In other words, the evaluation domain can be written as $\{ \omega^0, \omega^1, \ldots, \omega^{n-1} \}$ for some element $\omega \in \mathbb{F}_q$ with order $n$ (i.e. $\omega^n = 1 \mod q$). The elements in this set are called “$n^{th}$ roots of unity," since exponentiating any of them to the power of $n$ will result in 1, the “unity" element. 
+The efficiency of the transforms can be improved by imposing some additional structure. Proof systems generally only consider polynomials over a [finite field](https://en.wikipedia.org/wiki/Finite_field), and so we will restrict each coefficient $p_i$ and each evaluation point $x_i$ to be elements of a finite field $\mathbb{F}_q$. Additionally, we will restrict the evaluation domain (the $x_i$'s) to be a multiplicative subgroup of $\mathbb{F}_q$. In other words, the evaluation domain can be written as $\{ \omega^0, \omega^1, \ldots, \omega^{n-1} \}$ for some element $\omega \in \mathbb{F}_q$ with order $n$ (i.e. $\omega^n = 1 \mod q$). The elements in this set are called "$n^{th}$ roots of unity," since exponentiating any of them to the power of $n$ will result in 1, the "unity" element. 
 
 This additional structure imposed over the evaluation domain enables some nice mathematical symmetries that can be leveraged to make the transforms more efficient. The **fast Fourier transform (FFT)** algorithm takes advantage of these symmetries to achieve a Fourier transform in $O(n \log n)$. The **inverse fast Fourier transform (iFFT)** algorithm similarly achieves an inverse Fourier transform in $O(n \log n)$.
 
@@ -91,20 +91,20 @@ With these preliminaries out of the way, we can proceed with our description of 
 
 ### The trace table
 
-The **trace table** is a 2-dimensional matrix where the “witness," or “trace," is written down. The trace table also includes other values, in addition to the witness, that are useful in demonstrating that the witness is correct. Each cell in the trace table is an element of a large finite field $\mathbb{F}_q$.
+The **trace table** is a 2-dimensional matrix where the "witness," or "trace," is written down. The trace table also includes other values, in addition to the witness, that are useful in demonstrating that the witness is correct. Each cell in the trace table is an element of a large finite field $\mathbb{F}_q$.
 
 Here's what a trace table might look like for our working example:
 <img src="/imgs/homepage/blog/proofGeneration/tracetable_1.png" width="550"/>
 
-The first three columns labeled $A, B, C$ represent the “witness data" (also known as the “private input"). Each row lists three sequential Square-Fibonacci numbers. The $i^{th}$ row $(f_i, f_{i+1}, f_{i+2})$ can be seen as a witness for (or “attesting to") the $(i+2)^{th}$ Square-Fibonacci number, as it explicitly shows the previous two values used to compute it. 
+The first three columns labeled $A, B, C$ represent the "witness data" (also known as the "private input"). Each row lists three sequential Square-Fibonacci numbers. The $i^{th}$ row $(f_i, f_{i+1}, f_{i+2})$ can be seen as a witness for (or "attesting to") the $(i+2)^{th}$ Square-Fibonacci number, as it explicitly shows the previous two values used to compute it. 
 
-The $S$ column is known as a “selector" column. It indicates that a certain mathematical relation, or “custom gate," should hold over the elements of that row. In this case, a “1" in the $S$ column indicates that the first three elements of the row $(a, b, c)$ must satisfy $c = a^2 + b^2 \mod q$. A “0" in the $S$ column indicates that this custom gate condition does *not* need to be satisfied. Note that in the last row, the witness data is blank, and so the selector is turned off. We insert this blank row for convenience, so that the height of the table becomes $n$, an even power of 2.
+The $S$ column is known as a "selector" column. It indicates that a certain mathematical relation, or "custom gate," should hold over the elements of that row. In this case, a "1" in the $S$ column indicates that the first three elements of the row $(a, b, c)$ must satisfy $c = a^2 + b^2 \mod q$. A "0" in the $S$ column indicates that this custom gate condition does *not* need to be satisfied. Note that in the last row, the witness data is blank, and so the selector is turned off. We insert this blank row for convenience, so that the height of the table becomes $n$, an even power of 2.
 
-The $P$ column is known as a “public input" column. This column contains inputs to the circuit that are publicly known. In this case, the first two values in the Square-Fibonacci sequence $f_0, f_1$ are publicly known, and $k$ is the value in the statement to be proved.
+The $P$ column is known as a "public input" column. This column contains inputs to the circuit that are publicly known. In this case, the first two values in the Square-Fibonacci sequence $f_0, f_1$ are publicly known, and $k$ is the value in the statement to be proved.
 
 ### Witness generation
 
-The process of actually filling in the trace table is called “witness generation."
+The process of actually filling in the trace table is called "witness generation."
 
 This process requires iterating over each cell in the table and filling in its appropriate value. In general, a cell's value is either copied in from an external source, or computed based on surrounding entries. The latter requires arithmetic over elements in $\mathbb{F}_q$, since each cell of the trace table is an element of this large finite field.
 
@@ -112,7 +112,7 @@ Arithmetic over large finite field elements is more expensive to compute than ar
 
 In our working example, filling in the witness table involves computing $f_{i+2} = (f_{i})^2 + (f_{i+1})^2 \mod q$ at each row $i$, requiring multiplications and additions over $\mathbb{F}_q$.
 
-For this particular example, the total computation required by witness generation is essentially the same as the total computation required to perform the original computation (computing the $n^{th}$ Square-Fibonacci number), as each row of the witness corresponds one-to-one with a step of the computation.
+For this particular example, the total computation required by witness generation is essentially the same as the total computation required to perform the original computation (computing the $n^{th}$ Square-Fibonacci number). Each row of the witness corresponds one-to-one with a step of the original computation.
 
 However, for more complex examples[^2], the computation required for witness generation is usually much larger than the original computation. Each individual step of a complex computation may need to be represented by *many* witness rows (>1000 in some cases). This more complex representation, or "arithmetization," usually leads to a significant blow up in the size of the trace table.
 
@@ -120,15 +120,15 @@ Overall, if a trace table is very large and there are a lot of entries to comput
 
 ### Additional processing
 
-Once the witness data (or “private input") has been filled in and committed to, there is some additional processing of the trace table that takes place.
+Once the witness data (or "private input") has been filled in and committed to, there is some additional processing of the trace table that takes place.
 
-Auxiliary columns (also called “virtual columns") are extra columns generated to facilitate proving the trace's validity. There are certain types of constraints which necessitate these auxiliary columns.
+Auxiliary columns (also called "virtual columns") are extra columns generated to facilitate proving the trace's validity. There are certain types of constraints which necessitate these auxiliary columns.
 
-One such constraint is the “wiring constraint." This constraint enforces that some set of cells in the trace table take on the same value. In the Square-Fibonacci trace table, we need such a constraint to enforce that each row proceeds sequentially from the previous one: for two consecutive rows $[a_i, b_i, c_i]$ and $[a_{i+1}, b_{i+1}, c_{i+1}]$, we enforce that $a_{i+1} = b_i$ and $b_{i+1} = c_i$. 
+One such constraint is the "wiring constraint." This constraint enforces that some set of cells in the trace table take on the same value. In the Square-Fibonacci trace table, we need such a constraint to enforce that each row proceeds sequentially from the previous one: for two consecutive rows $[a_i, b_i, c_i]$ and $[a_{i+1}, b_{i+1}, c_{i+1}]$, we enforce that $a_{i+1} = b_i$ and $b_{i+1} = c_i$. 
 
-At a high level[^3], an intermediate “accumulator polynomial" is computed from the witness data, and stored in evaluation form as an extra auxiliary column $Z$. Proving that the wiring constraint holds then reduces to proving that certain constraints hold over $Z$ and its relation to the other witness columns.
+At a high level[^3], an intermediate "accumulator polynomial" is computed from the witness data, and stored in evaluation form as an extra auxiliary column $Z$. Proving that the wiring constraint holds then reduces to proving that certain constraints hold over $Z$ and its relation to the other witness columns.
 
-Another type of constraint which requires auxiliary columns is lookup tables. First introduced in 2020 by [plookup](https://eprint.iacr.org/2020/315.pdf), lookup tables allow for efficient set-membership checks. The computation required by auxiliary column generations for lookups can involve sorting in addtion to arithmetic operations.
+Another type of constraint which requires auxiliary columns is lookup tables. First introduced in 2020 by [plookup](https://eprint.iacr.org/2020/315.pdf), lookup tables allow for efficient set-membership checks. The computation required by auxiliary column generations for lookups can involve sorting in addition to arithmetic operations.
 
 Note that auxiliary columns are computed only after the witness data has been fully generated and committed to. Auxiliary column values don't just depend on the witness data, but also on some additional randomness. This randomness is computed using the [Fiat-Shamir heuristic](https://en.wikipedia.org/wiki/Fiat%E2%80%93Shamir_heuristic), and the transcript on which it depends includes the commitments to the witness data.
 
@@ -144,7 +144,7 @@ Note that auxiliary columns are computed only after the witness data has been fu
 
 ### Interpreting the trace table columns as polynomials
 
-Consider column $A$ from our trace table. This column, along with all the others, is simply a length-$n$ vector of finite field elements. We can think of this vector as the evaluation form of a unique polynomial $A(x)$ with degree $(n-1)$: the $i^{th}$ element of $A$ corresponds to the evaluation $A(\omega^i)$. Here, $\omega \in \mathbb{F}_q$ is as defined in the “Polynomial preliminaries" section - it has order $n$.
+Consider column $A$ from our trace table. This column, along with all the others, is simply a length-$n$ vector of finite field elements. We can think of this vector as the evaluation form of a unique polynomial $A(x)$ with degree $(n-1)$: the $i^{th}$ element of $A$ corresponds to the evaluation $A(\omega^i)$. Here, $\omega \in \mathbb{F}_q$ is as defined in the "Polynomial preliminaries" section - it has order $n$.
 
 Here's what our trace table (including the auxiliary column $Z$) looks like, interpreted as column polynomials in evaluation form:
 <img src="/imgs/homepage/blog/proofGeneration/tracetable_2.png" width="700"/>
@@ -153,13 +153,13 @@ Here's what our trace table (including the auxiliary column $Z$) looks like, int
 
 Now that we see how to interpret the columns as polynomials, we can commit to each of them using a polynomial commitment scheme.
 
-This allows us to “compress" each column into a short representation. Doing this for all the columns yields a succinct representation of the entire trace table.
+This allows us to "compress" each column into a short representation. Doing this for all the columns yields a succinct representation of the entire trace table.
 
 Using a polynomial commitment scheme also allows us to generate proofs of evaluation - the prover can convince a verifier that the committed polynomial passes through a particular point, without revealing the entire polynomial.
 
 ### Computing KZG commitments
 
-This subsection will give a brief overview of the mathematical computation required to compute KZG commitments for each column. For a more thorough treatment of the math, see Dankrad Feist's posts on [KZG](https://dankradfeist.de/ethereum/2020/06/16/kate-polynomial-commitments.html) and [PCS multiproofs](https://dankradfeist.de/ethereum/2021/06/18/pcs-multiproofs.html) (in the latter article, see the sections titled “Evaluation form" and “Lagrange polynomials").
+This subsection will give a brief overview of the mathematical computation required to compute KZG commitments for each column. For a more thorough treatment of the math, see Dankrad Feist's posts on [KZG](https://dankradfeist.de/ethereum/2020/06/16/kate-polynomial-commitments.html) and [PCS multiproofs](https://dankradfeist.de/ethereum/2021/06/18/pcs-multiproofs.html) (in the latter article, see the sections titled "Evaluation form" and "Lagrange polynomials").
 
 First a bit of notation: let $[r]_1$ denote $r \cdot g$, where $g$ is a generator for the elliptic curve group $\mathbb{G}_1$.
 
@@ -167,7 +167,7 @@ Let $\tau \in \mathbb{F}_p$ denote the secret value used in the KZG trusted setu
 
 Suppose $A(x)$ is the column polynomial that we want to commit to. The KZG commitment to be computed for this polynomial is $[A(\tau)]_1$.
 
-If we knew $A(x)$ in coefficient form, denoting its $i^{th}$ coefficient as $A^{(i)}$, we could compute the commitment value as follows:
+If we had $A(x)$ in coefficient form, denoting its $i^{th}$ coefficient as $A^{(i)}$, we could compute the commitment value as follows:
 
 $$
 [A(\tau)]_1 = \sum_{i=0}^{n-1} A^{(i)}\cdot [\tau^i]_1
@@ -177,8 +177,8 @@ However, this would require converting $A(x)$ from evaluation form to its coeffi
 
 It turns out that there is a way of efficiently computing $[A(\tau)]_1$ directly from $A(x)$'s evaluation form. We can achieve this by utilizing [Lagrange basis polynomials](https://en.wikipedia.org/wiki/Lagrange_polynomial):
 
-- For a polynomial $A(x)$ evaluated over the evaluation domain $(x_0, x_1, \ldots, x_{n-1})$
-    - Define $n$ “Lagrange basis polynomials":
+- For a polynomial $A(x)$ evaluated over the evaluation domain $\{ x_0, x_1, \ldots, x_{n-1} \}$
+    - Define $n$ "Lagrange basis polynomials":
         - For $0 \leq i < n$
             - $\ell_{i}(x):= \prod_{j \neq i} \frac{x-x_j}{x_i - x_j}$
     - We can then write $A(x) = \sum_{i=0}^{n-1} A(x_i) \cdot \ell_i(x)$
@@ -186,7 +186,7 @@ It turns out that there is a way of efficiently computing $[A(\tau)]_1$ directly
         - Therefore, we can write
             - $[A(\tau)]_1 = [\sum_{i=0}^{n-1} A(x_i) \cdot \ell_i(\tau)]_1 = \sum_{i=0}^{n-1} A(x_i) \cdot [\ell_i(\tau)]_1$
 
-In our case, the evaluation domain is $(x_0, x_1, \ldots, x_{n-1}) = (\omega^0, \omega^1, \ldots, \omega^{n-1})$, and so each basis polynomial can be precomputed as $\ell_i(x) = \prod_{j \neq i} \frac{x - \omega^j}{\omega^i - \omega^j}$. Further, since the same secret $\tau$ is used every time, each $[\ell_i(\tau)]_1$ can be precomputed:
+In our case, the evaluation domain is $\{ x_0, x_1, \ldots, x_{n-1} \} = \{ \omega^0, \omega^1, \ldots, \omega^{n-1} \}$, and so each basis polynomial can be precomputed as $\ell_i(x) = \prod_{j \neq i} \frac{x - \omega^j}{\omega^i - \omega^j}$. Further, since the same secret $\tau$ is used every time, each $[\ell_i(\tau)]_1$ can be precomputed:
 
 $$
 [\ell_i(\tau)]_1 = \left[ \sum_{j=0}^{n-1} \ell_i^{(j)}\cdot \tau^j \right]_1= \sum_{j=0}^{n-1} \ell_i^{(j)} \cdot [\tau^j]_1
@@ -202,7 +202,7 @@ Note that each $A(\omega^i)$ is an element of $\mathbb{F}_q$ (it's just the $i^{
 
 ### Multi-scalar multiplication (MSM)
 
-In general, the problem of computing the dot product between a vector of scalars and a vector of group elements is known as “**multi-scalar multiplication**," or “**MSM**" for short.
+In general, the problem of computing the dot product between a vector of scalars and a vector of group elements is known as "**multi-scalar multiplication**," or "**MSM**" for short.
 
 Despite sounding simple, MSMs are not trivial to compute, as they involve arithmetic over group elements. This group arithmetic is generally even more expensive than the large finite field arithmetic we encountered in phase 1. In our case, we are working with an elliptic curve group, in which a single addition of two elements requires many finite field arithmetic operations.
 
@@ -239,7 +239,7 @@ $$
 
 For shorthand, we'll label the left-hand side $\phi_0(x) := S(x) \cdot (A(x)^2 + B(x)^2 - C(x))$.
 
-All out constraints can be expressed in the following form:
+All our constraints can be expressed in the following form:
 
 $$
 \phi_i(x) = 0, \text{ for all } x \in \{ \omega^0, \omega^1, \ldots, \omega^{n-1}\}
@@ -276,7 +276,7 @@ $$
 & \iff \exists Q(x) \text{ s.t. } \phi(x) = Q(x) \cdot (x^n - 1) \end{aligned}
 $$
 
-So, if we want to prove that all constraints hold across every row, then it is equivalent to prove that there exists a polynomial $Q(x)$ which satisfies the above property. This polynomial is generally referred to as the “quotient polynomial."
+So, if we want to prove that all constraints hold across every row, then it is equivalent to prove that there exists a polynomial $Q(x)$ which satisfies the above property. This polynomial is generally referred to as the "quotient polynomial."
 
 ### Computing and committing to the quotient polynomial
 
@@ -324,7 +324,7 @@ This can be achieved by the following routine:
 1.  Sample a random point $\alpha \in \mathbb{F}_q$
 2. Generate and output KZG evaluation proofs[^7] for all column polynomials and the quotient polynomial at the point $\alpha$
     - To generate a KZG proof of an evaluation $A(\alpha) = z$, we compute and output $\left[ \frac{A(\tau) - z}{(\tau - \alpha)}\right]_1$
-    - Similarly to commitments, this value is computed as an MSM
+    - Similarly to the KZG commitments, this value is computed as an MSM
         - Each column polynomial requires a size $n$ MSM
         - The quotient polynomial requires 2 size $n$ MSMs
 
@@ -346,7 +346,7 @@ $$
 
 If the property in step 2 holds at $\alpha$, then (with near certainty) it holds everywhere, since $\alpha$ is sampled at random.[^8]
 
-Each evaluation proof verification requires computing an [elliptic curve pairing](https://vitalik.ca/general/2017/01/14/exploring_ecp.html). Verifying the quotient polynomial formula requires some finite field arithmetic (to compute the right side of the equation). In sum, the computation required for verification is lightweight in comparison to computation required for proof generation, and is generally able to be performed efficiently on-chain.
+Each evaluation proof verification requires computing an [elliptic curve pairing](https://vitalik.ca/general/2017/01/14/exploring_ecp.html). Verifying the quotient polynomial formula requires some finite field arithmetic (to compute the right-hand side of the equation). In sum, the computation required for verification is lightweight in comparison to the computation required for proof generation, and is generally able to be performed efficiently on-chain.
 
 ### Phase 3 cost summary
 
@@ -407,13 +407,13 @@ Many proof systems, including the one we studied here, have natural opportunitie
 
 **4. Alternative proof systems**
 
-This theoretical approach aims to reduce or eliminate the necessity of certain computational bottlenecks at the level of the proof system. There is a rich design space of proof systems, filled with various computational tradeoffs. Exploring this design space can lead to further efficiencies for proof generation.
+This article covered the computational requirements of a single particular proof system. This proof system is just one of many - there exists a very large design space of theoretical proof systems, with each proof system having its own set of computational requirements and tradeoffs. Research is actively ongoing to further explore this design space, and to design theoretical constructions that reduce or eliminate computational bottlenecks.
 
 [^1]: The Square-Fibonacci example is inspired by this [wonderful tutorial](https://starkware.co/stark-101/) from StarkWare.
 
 [^2]: For example, if our trace table elements were modulo $p$, rather than the same modulo $q$ as in the Square-Fibonacci problem, then each computation step would involve [non-native field arithmetic](https://hackmd.io/@arielg/B13JoihA8) (i.e. computing $\mathbb{F}_q$ arithmetic in $\mathbb{F}_p$, with $q \neq p$). The representation of each computation would fan out to multiple rows and constraints.
 
-[^3]: To understand wire constraints in Plonk more deeply, I recommend the following resources: Vitalik's [post](https://vitalik.ca/general/2019/09/22/plonk.html) on Plonk (see “Copy constraints" section), Aztec's [notes](https://hackmd.io/@aztec-network/plonk-arithmetiization-air) on arithmetization, and Ariel Gabizon's [notes](https://hackmd.io/@arielg/ByFgSDA7D) on multiset checks.
+[^3]: To understand wire constraints in Plonk more deeply, I recommend the following resources: Vitalik's [post](https://vitalik.ca/general/2019/09/22/plonk.html) on Plonk (see "Copy constraints" section), Aztec's [notes](https://hackmd.io/@aztec-network/plonk-arithmetiization-air) on arithmetization, and Ariel Gabizon's [notes](https://hackmd.io/@arielg/ByFgSDA7D) on multiset checks.
 
 [^4]: This follows from the [Schwartz-Zippel Lemma](https://en.wikipedia.org/wiki/Schwartz%E2%80%93Zippel_lemma).
 
