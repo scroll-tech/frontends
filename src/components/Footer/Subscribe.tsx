@@ -42,6 +42,7 @@ const Subscribe = () => {
         className="flex mr-[36px] items-center text-body-title"
         href={media.href}
         key={media.name}
+        target="_blank"
       >
         <img src={media.imgSrc} className="w-[20px] mr-[8px]" />
         {media.name}

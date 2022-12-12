@@ -244,6 +244,7 @@ const App = (props) => {
             {medias.map((media) => (
               <MediaLink
                 href={media.href}
+                target="_blank"
                 key={media.name}
                 sx={{
                   background: `url(${media.imgSrc}) center / contain no-repeat `,
