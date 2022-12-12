@@ -8,6 +8,7 @@ import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import L1_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L1_GATEWAY_ROUTER_PROXY_ADDR.json";
 import L2_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L2_GATEWAY_ROUTER_PROXY_ADDR.json";
 import useTxHistory, { TxHistory } from "@/hooks/useTxHistory";
+import { isProduction } from "@/utils";
 
 type AppContextProps = {
   networks: any[];
@@ -17,6 +18,8 @@ type AppContextProps = {
 };
 
 const AppContext = createContext<AppContextProps | undefined>(undefined);
+
+const branchName = isProduction ? "main" : "staging";
 
 const AppContextProvider = ({ children }: any) => {
   const { provider, walletCurrentAddress, chainId } = useWeb3Context();
@@ -74,7 +77,7 @@ const AppContextProvider = ({ children }: any) => {
   };
 
   const { data: tokenList, error } = useSWR(
-    "https://scroll-tech.github.io/token-list/scroll.tokenlist.json",
+    `https://cdn.jsdelivr.net/gh/scroll-tech/token-list@${branchName}/scroll.tokenlist.json`,
     async (url) => {
       const res = await fetch(url);
       if (res.ok) {

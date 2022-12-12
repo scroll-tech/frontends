@@ -13,16 +13,19 @@ import Button from "@/components/Button/Button";
 import { getAddress } from "@ethersproject/address";
 import WithTwitter from "./components/WithTwitter";
 import { loginTwitter } from "./helper";
-import { requireEnv, truncateAddress, truncateHash } from "@/utils";
+import {
+  isProduction,
+  requireEnv,
+  truncateAddress,
+  truncateHash,
+} from "@/utils";
 import "./index.less";
 // import useSWR from 'swr'
 
 const CAN_CLAIM_FROM = "canClaimFrom",
   TX_HASH_DATA = "TxHashData";
 
-const L1_SCAN_URL = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1")
-const curEnv = requireEnv("REACT_APP_SCROLL_ENVIRONMENT");
-const isProduction = curEnv === "MAIN";
+const L1_SCAN_URL = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1");
 
 export default function Home() {
   const {
