@@ -33,9 +33,14 @@ const NavStack = styled(Stack)(
 
 const LinkStyledButton = styled(NavLink)(
   ({ theme }) => `
+  width: 100%;
   &.active {
     color: ${theme.palette.action.active}
   } 
+  &:hover {
+    color: ${theme.palette.action.active}
+  } 
+  padding: 2rem 1.6rem;
 `
 );
 
@@ -48,8 +53,7 @@ const ExternalLink = styled(Link)(
 const ListButton = styled(ListItemButton)(
   ({ theme }) => `
   font-weight: 600;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding: 0;
 `
 );
 

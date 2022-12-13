@@ -9,12 +9,18 @@ import { Pagination } from "swiper";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 
+const FeatureWrapper = styled(Box)(({ theme }) => ({}));
+
 const FeatureBox = styled(Box)(
   ({ theme }) => `
         width: 38rem;
         height: 54rem;
         background: #ffffff;
         border-radius: 5px;
+        ${theme.breakpoints.down("lg")} {
+          width: 30vw;
+          height: 50rem;
+        };
         ${theme.breakpoints.down("md")} {
             width: 91.8vw;
             max-width: 35.8rem;
@@ -30,6 +36,10 @@ const FeatureIcon = styled("img")(
   ({ theme }) => `
            height: 9.6rem;
            margin: 4.4rem auto;
+           &.small {
+              height: 6rem;
+              margin: 6.2rem auto;
+           }
           `
 );
 
@@ -49,6 +59,9 @@ const FeatureTitle = styled(Typography)(
 const FeatureDescription = styled(Typography)(
   ({ theme }) => `
           margin: 0 3.5rem;
+          ${theme.breakpoints.down("lg")} {
+            margin: 0 1.6rem;
+          };
           ${theme.breakpoints.down("md")} {
             margin: 0 2.4rem;
         };
@@ -81,7 +94,7 @@ const FeatureSwiper = () => {
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
 
   return (
-    <Box className={isDesktop ? "wrapper" : ""}>
+    <FeatureWrapper className={isDesktop ? "wrapper" : ""}>
       <Swiper
         slidesPerView={isDesktop ? 3 : 1.08}
         spaceBetween={isDesktop ? 0 : 8}
@@ -91,10 +104,13 @@ const FeatureSwiper = () => {
         }}
         modules={[Pagination]}
       >
-        {features.map((feature) => (
+        {features.map((feature, idx) => (
           <SwiperSlide key={feature.icon}>
             <FeatureBox>
-              <FeatureIcon src={feature.icon} />
+              <FeatureIcon
+                src={feature.icon}
+                className={idx === 2 ? "small" : ""}
+              />
               <Divider />
               <FeatureTitle variant="subtitle1">{feature.title}</FeatureTitle>
               <FeatureDescription>{feature.description}</FeatureDescription>
@@ -102,7 +118,7 @@ const FeatureSwiper = () => {
           </SwiperSlide>
         ))}
       </Swiper>
-    </Box>
+    </FeatureWrapper>
   );
 };
 
