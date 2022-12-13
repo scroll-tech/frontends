@@ -22,7 +22,9 @@ const Blocks = () => {
             separator={<NavigateNextIcon fontSize="large" />}
           >
             <Link to="/rollupscan">All results</Link>
-            <Link to={`/rollupscan/batch/${params.batchIndex}`}>Batch 1</Link>
+            <Link to={`/rollupscan/batch/${params.batchIndex}`}>
+              Batch {params.batchIndex}
+            </Link>
             <Typography color="text.primary" sx={{ fontWeight: 600 }}>
               Block {params.blockId}
             </Typography>
