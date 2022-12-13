@@ -23,7 +23,7 @@ const homeNavigations: any = [
 
 const navigations = [
   {
-    label: "Home",
+    label: "Prealpha",
     key: "",
     href: "./",
   },

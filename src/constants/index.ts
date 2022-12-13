@@ -50,7 +50,7 @@ const addresses = [
 
 const navigation = [
   {
-    name: "Home",
+    name: "Prealpha",
     description: "Main Portal",
     subdomainOrPath: "",
   },
