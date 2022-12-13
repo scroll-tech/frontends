@@ -1,10 +1,11 @@
+# these two redirects are for MAIN only, as a transitional help
 [[redirects]]
   from = "/l1/*"
-  to = "https://staging-prealpha-rpc.scroll.io/l1/:splat"
+  to = "https://prealpha-rpc.scroll.io/l1/:splat"
   status = 200
 [[redirects]]
   from = "/l2/*"
-  to = "https://staging-prealpha-rpc.scroll.io/l2/:splat"
+  to = "https://prealpha-rpc.scroll.io/l2/:splat"
   status = 200
   
 [[redirects]]
