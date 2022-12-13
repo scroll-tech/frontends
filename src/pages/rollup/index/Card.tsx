@@ -62,7 +62,7 @@ const InfoCard = ({ title, value, total, description }: any) => {
 
     const page = Math.floor((total - 3) / pageSize);
 
-    window.location.href = `/rollupscan/?page=${page}&per_page=${pageSize}`;
+    window.location.href = `./?page=${page}&per_page=${pageSize}`;
   };
   const moveToBatchDetail = (e) => {
     e.stopPropagation();
