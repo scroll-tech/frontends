@@ -21,18 +21,24 @@ const ArticleBox = styled(Box)(
 
 const Articles = (props) => {
   const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
-
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const isUnderLarge = useMediaQuery(theme.breakpoints.down("lg"));
+  let slidesPerView = 3;
+  if (isMobile) {
+    slidesPerView = 1;
+  } else if (isUnderLarge) {
+    slidesPerView = 2;
+  }
   return (
     <Swiper
-      slidesPerView={isDesktop ? 3 : 1}
+      slidesPerView={slidesPerView}
       spaceBetween={0}
-      centeredSlides={!isDesktop}
+      centeredSlides={isMobile}
       pagination={{
         clickable: true,
       }}
       modules={[Pagination]}
-      className={isDesktop ? "wrapper" : ""}
+      className={!isMobile ? "wrapper" : ""}
     >
       {props.blogs.map((blog) => (
         <SwiperSlide key={blog.title}>

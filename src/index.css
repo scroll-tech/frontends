@@ -78,6 +78,22 @@ body {
   /* --swiper-pagination-bullet-inactive-color: #595959; */
 }
 
+@media screen and (min-width: 900px) {
+  .swiper-slide {
+    display: flex;
+    flex-direction: column;
+  }
+  .swiper-slide:nth-of-type(1) {
+    align-items: flex-start;
+  }
+  .swiper-slide:nth-of-type(2) {
+    align-items: center;
+  }
+  .swiper-slide:nth-last-of-type(1) {
+    align-items: flex-end;
+  }
+}
+
 .markdown-body ol {
   list-style-type: decimal;
 }

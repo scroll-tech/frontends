@@ -256,6 +256,11 @@ const App = (props) => {
               color="primary"
               variant="contained"
               href="https://prealpha.scroll.io/"
+              sx={{
+                "@media(max-width: 1000px)": {
+                  display: "none",
+                },
+              }}
             >
               Join Pre-Alpha Testnet
             </Button>
