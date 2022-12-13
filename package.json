@@ -30,6 +30,7 @@
     "http-proxy-middleware": "^2.0.6",
     "leancloud-storage": "^4.13.2",
     "lodash": "^4.17.21",
+    "markdown-navbar": "^1.4.3",
     "numbro": "^2.3.6",
     "react": "^18.2.0",
     "react-countdown": "^2.3.2",
