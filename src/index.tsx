@@ -1,16 +1,14 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App";
-import Homepage from "./Homepage";
-import "./index.css";
-import "./styles/globals.less";
-import { ThemeProvider } from "@mui/material/styles";
-import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter } from "react-router-dom";
-import themeLight from "./theme/light";
-import "./styles/index.less";
-import { AppType } from "@/constants";
-
+import { ThemeProvider } from "@mui/material/styles"
+import React from "react"
+import ReactDOM from "react-dom/client"
+import { BrowserRouter, Route, Routes } from "react-router-dom"
+import App from "./App"
+import Homepage from "./Homepage"
+import "./index.css"
+import reportWebVitals from "./reportWebVitals"
+import "./styles/globals.less"
+import "./styles/index.less"
+import themeLight from "./theme/light"
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
@@ -18,11 +16,10 @@ root.render(
   <React.StrictMode>
     <ThemeProvider theme={themeLight}>
       <BrowserRouter>
-        {process.env.REACT_APP_BUILD_TARGET === AppType.HOMEPAGE ? (
-          <Homepage />
-        ) : (
-          <App />
-        )}
+        <Routes>
+          <Route path="/prealpha/*" element={<App />} />
+          <Route path="/*" element={<Homepage />} />
+        </Routes>
       </BrowserRouter>
     </ThemeProvider>
   </React.StrictMode>

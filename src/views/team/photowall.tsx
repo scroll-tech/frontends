@@ -1,10 +1,10 @@
 import { Box } from "@mui/material";
 import { styled } from "@mui/system";
-import Pic1 from "@/assets/images/homepage/team/pic_1.png";
-import Pic2 from "@/assets/images/homepage/team/pic_2.png";
-import Pic3 from "@/assets/images/homepage/team/pic_3.png";
-import Pic4 from "@/assets/images/homepage/team/pic_4.png";
-import Pic5 from "@/assets/images/homepage/team/pic_5.png";
+import Pic1 from "@/assets/images/homepage/team/pic_1.jpg";
+import Pic2 from "@/assets/images/homepage/team/pic_2.jpg";
+import Pic3 from "@/assets/images/homepage/team/pic_3.jpg";
+import Pic4 from "@/assets/images/homepage/team/pic_4.jpg";
+import Pic5 from "@/assets/images/homepage/team/pic_5.jpg";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 

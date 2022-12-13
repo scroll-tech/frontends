@@ -136,6 +136,7 @@ const Blog = () => {
   const categories = ["All", "Announcement", "General", "Technical"];
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
+  const isUnderLarge = useMediaQuery(theme.breakpoints.up("lg"));
   const [filterOpen, setFilterOpen] = useState(false);
   const handleFilterOpen = () => setFilterOpen(true);
   const handleFilterClose = () => setFilterOpen(false);
@@ -171,7 +172,7 @@ const Blog = () => {
       <BlogList>
         {blogs.map((blog) => (
           <Box sx={{ marginBottom: "9rem" }} key={blog.title}>
-            <ArticleCard small={!isDesktop} blog={blog} />
+            <ArticleCard small={!isUnderLarge} blog={blog} />
           </Box>
         ))}
       </BlogList>

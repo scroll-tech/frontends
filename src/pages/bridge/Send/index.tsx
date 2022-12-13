@@ -127,9 +127,14 @@ const Send: FC = () => {
       return (
         <>
           The transaction failed. Your {walletName} wallet might not be up to
-          date.
+          date.{" "}
           <b>
-            <u style={{ textUnderlineOffset: "0.4rem" }}>
+            <u
+              onClick={() =>
+                window.open("https://guide.scroll.io/user-guide/common-errors")
+              }
+              style={{ textUnderlineOffset: "0.4rem", cursor: "pointer" }}
+            >
               Reset your {walletName} account
             </u>
           </b>

@@ -101,8 +101,9 @@ const ArticlePoster = styled(Box)(
         margin-right: 0;
         border-radius: 0;
         ${theme.breakpoints.down("md")} {
-          width: 36rem;
-          height: 22rem;
+          max-width: 38rem;
+          width: 100%;
+          height: 23.3rem;
           margin-bottom: 3rem;
         };
       }

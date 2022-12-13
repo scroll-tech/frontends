@@ -19,7 +19,7 @@ import "./index.less";
 const CAN_CLAIM_FROM = "canClaimFrom",
   TX_HASH_DATA = "TxHashData";
 
-const L1_SCAN_URL = requireEnv("REACT_APP_L1_SCAN_URL");
+const L1_SCAN_URL = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1")
 const curEnv = requireEnv("REACT_APP_SCROLL_ENVIRONMENT");
 const isProduction = curEnv === "MAIN";
 

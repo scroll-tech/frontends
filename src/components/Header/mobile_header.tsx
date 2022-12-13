@@ -1,25 +1,16 @@
-import { NavLink } from "react-router-dom";
-import * as React from "react";
 import {
-  CloseRounded,
-  OpenInNew,
-  Menu as MenuIcon,
-  ExpandLess,
-  ExpandMore,
-} from "@mui/icons-material";
+  CloseRounded, ExpandLess,
+  ExpandMore, Menu as MenuIcon, OpenInNew
+} from "@mui/icons-material"
 import {
-  Collapse,
-  Box,
-  SwipeableDrawer,
-  List,
-  ListItemButton,
-  Link,
-  Button,
-  Stack,
-} from "@mui/material";
-import { styled } from "@mui/system";
-import Logo from "../Logo";
-import { navigations, homeNavigations } from "./constants";
+  Box, Button, Collapse, Link, List,
+  ListItemButton, Stack, SwipeableDrawer
+} from "@mui/material"
+import { styled } from "@mui/system"
+import * as React from "react"
+import { NavLink } from "react-router-dom"
+import Logo from "../Logo"
+import { homeNavigations, navigations } from "./constants"
 
 const NavStack = styled(Stack)(
   ({ theme }) => `
@@ -33,9 +24,14 @@ const NavStack = styled(Stack)(
 
 const LinkStyledButton = styled(NavLink)(
   ({ theme }) => `
+  width: 100%;
   &.active {
     color: ${theme.palette.action.active}
   } 
+  &:hover {
+    color: ${theme.palette.action.active}
+  } 
+  padding: 2rem 1.6rem;
 `
 );
 
@@ -48,8 +44,7 @@ const ExternalLink = styled(Link)(
 const ListButton = styled(ListItemButton)(
   ({ theme }) => `
   font-weight: 600;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding: 0;
 `
 );
 
@@ -182,7 +177,7 @@ const App = (props) => {
               <Button
                 color="primary"
                 variant="contained"
-                href="https://prealpha.scroll.io/"
+                href="/prealpha/"
                 sx={{ position: "relative", left: "2rem" }}
               >
                 Join Pre-Alpha Testnet

@@ -10,12 +10,12 @@ const medias = [
     href: "https://discord.gg/s84eJSdFhn",
   },
   {
-    name: "github",
+    name: "gitHub",
     imgSrc: "/imgs/media/github.png",
     href: "https://github.com/scroll-tech",
   },
   {
-    name: "Youtube",
+    name: "YouTube",
     imgSrc: "/imgs/media/youtube.png",
     href: "https://www.youtube.com/@Scroll_ZKP",
   },

@@ -6,17 +6,21 @@ import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
+import MarkdownNavbar from "markdown-navbar";
+import "markdown-navbar/dist/navbar.css";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { Link as RouterLink } from "react-router-dom";
 import { styled } from "@mui/system";
 import { shuffle } from "lodash";
 import blogSource from "./data.json";
 import Articles from "./articles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 
 const Link = styled(RouterLink)({
   display: "flex",
   alignItems: "center",
-  marginBottom: "4rem",
+  marginBottom: "2rem",
   "& *": {
     fontWeight: 500,
     color: "#202020",
@@ -25,13 +29,28 @@ const Link = styled(RouterLink)({
 
 const BlogContainer = styled(Box)(
   ({ theme }) => `
-    max-width: 80rem;
-    margin: 8rem auto;
+    max-width: 100rem;
+    padding: 8rem 0;
+    overflow: hidden;
+    display: flex;
   ${theme.breakpoints.down("md")} {
-    margin: 4rem auto;
+    padding: 4rem 1.6rem;
+    display: block;
   };
   `
 );
+
+const BlogNavbar = styled(Box)(({ theme }) => ({
+  position: "fixed",
+  width: "30rem",
+  marginLeft: "6rem",
+  paddingLeft: "2rem",
+  borderLeft: "1px solid #C9CBCE",
+  [theme.breakpoints.down("md")]: {
+    display: "none",
+  },
+}));
+
 const BlogDetail = () => {
   const [blog, setBlog] = useState<null | string>(null);
   const [moreBlog, setMoreBlog] = useState<any>([]);
@@ -65,36 +84,53 @@ const BlogDetail = () => {
     setMoreBlog(blogs);
   };
 
-  return (
-    <Box>
-      <BlogContainer className="wrapper">
-        <Link to="/blog">
-          <ArrowBackIosIcon />
-          <Typography>All Articles</Typography>
-        </Link>
-        <ReactMarkdown
-          children={blog as string}
-          remarkPlugins={[remarkMath, remarkGfm]}
-          rehypePlugins={[rehypeKatex, rehypeRaw]}
-          className="markdown-body"
-        />
-      </BlogContainer>
-      <Box sx={{ marginBottom: "8rem" }}>
-        <Typography
-          variant="h2"
-          sx={{
-            textAlign: "center",
-            marginBottom: {
-              md: "4rem",
-            },
-          }}
-        >
-          More articles from Scroll
-        </Typography>
-        <Articles blogs={moreBlog} />
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
+  if (blog) {
+    return (
+      <Box>
+        <BlogContainer className="wrapper">
+          <ReactMarkdown
+            children={blog as string}
+            remarkPlugins={[remarkMath, remarkGfm]}
+            rehypePlugins={[rehypeKatex, rehypeRaw]}
+            className="markdown-body"
+          />
+          <Box sx={{ width: "32rem", flexShrink: 0, position: "relative" }}>
+            <BlogNavbar>
+              <Link to="/blog">
+                <ArrowBackIosIcon />
+                <Typography>All Articles</Typography>
+              </Link>
+              <MarkdownNavbar
+                className="markdown-navbar"
+                source={blog}
+                headingTopOffset={100}
+              />
+            </BlogNavbar>
+          </Box>
+        </BlogContainer>
+        {isMobile ? (
+          <Box sx={{ paddingBottom: "6rem" }}>
+            <Typography
+              variant="h2"
+              sx={{
+                textAlign: "center",
+                marginBottom: {
+                  md: "4rem",
+                },
+              }}
+            >
+              More articles from Scroll
+            </Typography>
+            <Articles blogs={moreBlog} />
+          </Box>
+        ) : null}
       </Box>
-    </Box>
-  );
+    );
+  }
+  return null;
 };
 
 export default BlogDetail;

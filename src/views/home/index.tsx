@@ -1,19 +1,19 @@
-import { Button, Box, Typography, useMediaQuery } from "@mui/material";
-import { styled } from "@mui/system";
-import { useTheme } from "@mui/material/styles";
-import { useNavigate } from "react-router-dom";
+import { Box, Button, Typography, useMediaQuery } from "@mui/material"
+import { useTheme } from "@mui/material/styles"
+import { styled } from "@mui/system"
+import { useNavigate } from "react-router-dom"
 
-import BridgeScreenshot from "@/assets/images/homepage/home/bridge-screenshot.png";
-import BridgeScreenshotMobile from "@/assets/images/homepage/home/bridge-screenshot-m.png";
-import RocketIcon from "@/assets/images/homepage/home/rocket.png";
-import WrapperBox from "@/components/WrapperBox";
-import { medias } from "@/constants/medias";
-import FeatureSwiper from "./featureSwiper";
-import Roadmap from "./roadmap";
-import Article from "./articles";
+import BridgeScreenshotMobile from "@/assets/images/homepage/home/bridge-screenshot-m.png"
+import BridgeScreenshot from "@/assets/images/homepage/home/bridge-screenshot.png"
+import RocketIcon from "@/assets/images/homepage/home/rocket.png"
+import WrapperBox from "@/components/WrapperBox"
+import { medias } from "@/constants/medias"
+import Article from "./articles"
+import FeatureSwiper from "./featureSwiper"
+import Roadmap from "./roadmap"
 
-import "swiper/css";
-import "swiper/css/pagination";
+import "swiper/css"
+import "swiper/css/pagination"
 
 const ContainerBox = styled(Box)({
   textAlign: "center",
@@ -166,7 +166,7 @@ const JoinTestnetButton = (props) => (
   <Button
     color="primary"
     variant="contained"
-    href="https://prealpha.scroll.io/"
+    href="/prealpha/"
     {...props}
   >
     Join Pre-Alpha Testnet

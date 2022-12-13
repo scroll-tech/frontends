@@ -101,6 +101,11 @@ const theme = createTheme({
     ].join(","),
   },
   components: {
+    MuiButtonBase: {
+      defaultProps: {
+        disableRipple: true,
+      },
+    },
     MuiContainer: {
       styleOverrides: {
         root: {

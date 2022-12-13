@@ -95,12 +95,12 @@ const roadmaps = [
     completed: true,
   },
   {
-    name: "zkEVM Testnet",
+    name: "Pre-Alpha Testnet",
     active: true,
     completed: true,
   },
   {
-    name: "Proof outsourcing",
+    name: "Alpha Testnet",
     completed: false,
   },
   {
@@ -108,7 +108,11 @@ const roadmaps = [
     completed: false,
   },
   {
-    name: "Decentralized sequencer",
+    name: "Decentralized Prover Network",
+    completed: false,
+  },
+  {
+    name: "Decentralized Sequencers",
     completed: false,
   },
 ];

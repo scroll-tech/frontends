@@ -1,11 +1,11 @@
-import { NavLink } from "react-router-dom";
-import * as React from "react";
-import { ExpandMore } from "@mui/icons-material";
-import { Box, Link, Button, Stack, Fade, Container } from "@mui/material";
-import Logo from "@/components/Logo";
-import { styled } from "@mui/system";
-import { navigations, homeNavigations } from "./constants";
-import { medias } from "@/constants/medias";
+import Logo from "@/components/Logo"
+import { medias } from "@/constants/medias"
+import { ExpandMore } from "@mui/icons-material"
+import { Box, Button, Container, Fade, Link, Stack } from "@mui/material"
+import { styled } from "@mui/system"
+import * as React from "react"
+import { NavLink } from "react-router-dom"
+import { homeNavigations, navigations } from "./constants"
 
 const StyledBox = styled(Stack)(
   ({ theme }) => `
@@ -222,7 +222,7 @@ const App = (props) => {
                 {item.label}{" "}
               </MenuLinkButton>
             ) : (
-              <LinkStyledButton to={item.key} key={item.key}>
+              <LinkStyledButton to={item.href} key={item.key}>
                 {item.label}{" "}
               </LinkStyledButton>
             )}
@@ -244,6 +244,7 @@ const App = (props) => {
             {medias.map((media) => (
               <MediaLink
                 href={media.href}
+                target="_blank"
                 key={media.name}
                 sx={{
                   background: `url(${media.imgSrc}) center / contain no-repeat `,
@@ -254,7 +255,12 @@ const App = (props) => {
             <Button
               color="primary"
               variant="contained"
-              href="https://prealpha.scroll.io/"
+              href="/prealpha/"
+              sx={{
+                "@media(max-width: 1000px)": {
+                  display: "none",
+                },
+              }}
             >
               Join Pre-Alpha Testnet
             </Button>

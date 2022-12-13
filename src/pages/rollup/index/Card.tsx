@@ -1,9 +1,8 @@
-import React from "react";
-import { Box, Tooltip, Typography } from "@mui/material";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { styled } from "@mui/material/styles";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "../constants";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined"
+import { Box, Tooltip, Typography } from "@mui/material"
+import { styled } from "@mui/material/styles"
+import { useNavigate, useSearchParams } from "react-router-dom"
+import { DEFAULT_PAGE_SIZE } from "../constants"
 
 interface DataType {
   title: string;
@@ -63,11 +62,11 @@ const InfoCard = ({ title, value, total, description }: any) => {
 
     const page = Math.floor((total - 3) / pageSize);
 
-    window.location.href = `/rollupscan/?page=${page}&per_page=${pageSize}`;
+    window.location.href = `./?page=${page}&per_page=${pageSize}`;
   };
   const moveToBatchDetail = (e) => {
     e.stopPropagation();
-    navigate(`/rollupscan/batch/${value}`);
+    navigate(`./batch/${value}`);
   };
 
   return (

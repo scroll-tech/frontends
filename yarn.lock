@@ -6369,6 +6369,11 @@ core-js-pure@^3.25.1:
   resolved "https://registry.npmjs.org/core-js-pure/-/core-js-pure-3.25.5.tgz"
   integrity sha512-oml3M22pHM+igfWHDfdLVq2ShWmjM2V4L+dQEBs0DWVIqEm9WHCwGAlZ6BmyBQGy5sFrJmcx+856D9lVKyGWYg==
 
+core-js@3:
+  version "3.26.1"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.26.1.tgz#7a9816dabd9ee846c1c0fe0e8fcad68f3709134e"
+  integrity sha512-21491RRQVzUn0GGM9Z1Jrpr6PNPxPi+Za8OM9q4tksTSnlbXXGKK1nXNg/QvwFYettXvSX6zWKCtHHfjN4puyA==
+
 core-js@^3.19.2:
   version "3.23.4"
   resolved "https://registry.npmjs.org/core-js/-/core-js-3.23.4.tgz"
@@ -11454,6 +11459,15 @@ map-stream@~0.1.0:
   resolved "https://registry.yarnpkg.com/map-stream/-/map-stream-0.1.0.tgz#e56aa94c4c8055a16404a0674b78f215f7c8e194"
   integrity sha512-CkYQrPYZfWnu/DAmVCpTSX/xHpKZ80eKh2lAkyA6AJTef6bW+6JpbQZN5rofum7da+SyN1bi5ctTm+lTfcCW3g==
 
+markdown-navbar@^1.4.3:
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/markdown-navbar/-/markdown-navbar-1.4.3.tgz#f92e7ec5cf58b994e90188794497a1b597621b7d"
+  integrity sha512-esZQ9fHbjnOq/YnmKRrHTRhIO5+UmU3g5BS2tly7RwWrWCjOWv0Nq2A8r1GF9IBZKvrwM/rzaMgjjsQlkbh0tA==
+  dependencies:
+    core-js "3"
+    prop-types "^15.7.2"
+    react "^16.12.0"
+
 markdown-table@^3.0.0:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/markdown-table/-/markdown-table-3.0.2.tgz#9b59eb2c1b22fe71954a65ff512887065a7bb57c"
@@ -14543,6 +14557,15 @@ react-window@^1.8.5:
     "@babel/runtime" "^7.0.0"
     memoize-one ">=3.1.1 <6"
 
+react@^16.12.0:
+  version "16.14.0"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.14.0.tgz#94d776ddd0aaa37da3eda8fc5b6b18a4c9a3114d"
+  integrity sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g==
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.2"
+
 react@^18.2.0:
   version "18.2.0"
   resolved "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
@@ -16676,9 +16699,9 @@ unist-util-visit@^4.0.0:
     unist-util-is "^5.0.0"
     unist-util-visit-parents "^5.1.1"
 
-"uniswap-v2-sdk-scroll@https://github.com/scroll-tech/uniswap-v2-sdk-scroll.git#90531d29ab4dec833d0bd14ee87f4bde24c89dbe":
+"uniswap-v2-sdk-scroll@https://github.com/scroll-tech/uniswap-v2-sdk-scroll.git#cdf919034db8a59d8435ae15d1b7e5446d117e1f":
   version "3.10.5"
-  resolved "https://github.com/scroll-tech/uniswap-v2-sdk-scroll.git#90531d29ab4dec833d0bd14ee87f4bde24c89dbe"
+  resolved "https://github.com/scroll-tech/uniswap-v2-sdk-scroll.git#cdf919034db8a59d8435ae15d1b7e5446d117e1f"
   dependencies:
     "@uniswap/v2-core" "^1.0.0"
     big.js "^5.2.2"

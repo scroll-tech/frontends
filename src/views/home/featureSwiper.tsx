@@ -3,11 +3,13 @@ import { Box, Typography, Divider } from "@mui/material";
 import { styled } from "@mui/system";
 import SecurityIcon from "@/assets/images/homepage/home/security.png";
 import ScalabilityIcon from "@/assets/images/homepage/home/scalability.png";
-import EVMEquivalenceIcon from "@/assets/images/homepage/home/EVM-equivalence.svg";
+import EVMEquivalenceIcon from "@/assets/images/homepage/home/EVM-equivalence.png";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
+
+const FeatureWrapper = styled(Box)(({ theme }) => ({}));
 
 const FeatureBox = styled(Box)(
   ({ theme }) => `
@@ -15,6 +17,10 @@ const FeatureBox = styled(Box)(
         height: 54rem;
         background: #ffffff;
         border-radius: 5px;
+        ${theme.breakpoints.down("lg")} {
+          width: 30vw;
+          height: 50rem;
+        };
         ${theme.breakpoints.down("md")} {
             width: 91.8vw;
             max-width: 35.8rem;
@@ -49,6 +55,9 @@ const FeatureTitle = styled(Typography)(
 const FeatureDescription = styled(Typography)(
   ({ theme }) => `
           margin: 0 3.5rem;
+          ${theme.breakpoints.down("lg")} {
+            margin: 0 1.6rem;
+          };
           ${theme.breakpoints.down("md")} {
             margin: 0 2.4rem;
         };
@@ -56,12 +65,6 @@ const FeatureDescription = styled(Typography)(
 );
 
 const features = [
-  {
-    icon: SecurityIcon,
-    title: "Security",
-    description:
-      "Scroll's protocol is currently undergoing multiple third-party audits to ensure security. Scroll also values transparency and is working to build its platform openly and in collaboration with the community.",
-  },
   {
     icon: ScalabilityIcon,
     title: "Scalability",
@@ -74,6 +77,12 @@ const features = [
     description:
       "Developing on Scroll feels the same as developing on Ethereum. Any EVM-compatible smart contract can be effortlessly deployed to Scroll's network.",
   },
+  {
+    icon: SecurityIcon,
+    title: "Security",
+    description:
+      "Scroll's protocol is currently undergoing multiple third-party audits to ensure security. Scroll also values transparency and is working to build its platform openly and in collaboration with the community.",
+  },
 ];
 
 const FeatureSwiper = () => {
@@ -81,7 +90,7 @@ const FeatureSwiper = () => {
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
 
   return (
-    <Box className={isDesktop ? "wrapper" : ""}>
+    <FeatureWrapper className={isDesktop ? "wrapper" : ""}>
       <Swiper
         slidesPerView={isDesktop ? 3 : 1.08}
         spaceBetween={isDesktop ? 0 : 8}
@@ -91,10 +100,13 @@ const FeatureSwiper = () => {
         }}
         modules={[Pagination]}
       >
-        {features.map((feature) => (
+        {features.map((feature, idx) => (
           <SwiperSlide key={feature.icon}>
             <FeatureBox>
-              <FeatureIcon src={feature.icon} />
+              <FeatureIcon
+                src={feature.icon}
+                className={idx === 1 ? "small" : ""}
+              />
               <Divider />
               <FeatureTitle variant="subtitle1">{feature.title}</FeatureTitle>
               <FeatureDescription>{feature.description}</FeatureDescription>
@@ -102,7 +114,7 @@ const FeatureSwiper = () => {
           </SwiperSlide>
         ))}
       </Swiper>
-    </Box>
+    </FeatureWrapper>
   );
 };
 

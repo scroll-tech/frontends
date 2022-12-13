@@ -143,7 +143,7 @@ For example, you can use zkEVM as a full node. The proof can be used for proving
 
 zkEVM can provide the same experience for developers and users. It's order of magnitudes cheaper without sacrificing security. There has been proposed architecture to build it in a modular way. It leverages recent breakthrough in zero-knowledge proof to reduce the overhead (including customized constraint, lookup argument, proof recursion and hardware acceleration). We look forward to seeing more people joining the zkEVM community effort and brainstorming with us!
 
-## <img width="28" alt="logo image" src="/logo.png"> A little about us
+## A little about us
 
 _Scroll Tech is a newly built tech-driven company. We aim to build an EVM-compatible zk-Rollup with a strong proving network ([See an overview here](/blog/Scroll-Overview)). The whole team is now focusing on the development. We are actively hiring more passionate developers, reach out to us at [hire@scroll.io](mailto:hire@scroll.io). If you have any question about the technical content, reach out to me at [ye@scroll.io](mailto:ye@scroll.io). [DM](https://twitter.com/yezhang1998) is also open._
 

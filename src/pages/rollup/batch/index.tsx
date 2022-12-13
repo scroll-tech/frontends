@@ -1,18 +1,15 @@
-import { useBatchDetail } from "@/hooks/useRollupInfo";
-import "antd/dist/antd.min.css";
-import { Typography, Link, Box, Breadcrumbs, Tooltip } from "@mui/material";
-import Header from "../components/Header";
-import { useParams } from "react-router-dom";
-import { NavigateNext, OpenInNew, InfoOutlined } from "@mui/icons-material";
-import { Divider } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import { useEffect, useState } from "react";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme } from "@mui/material/styles";
-import { l1ExplorerUrl } from "@/constants/index";
-import { Link as RouterLink } from "react-router-dom";
+import { l1ExplorerUrl } from "@/constants/index"
+import { useBatchDetail } from "@/hooks/useRollupInfo"
+import { InfoOutlined, NavigateNext, OpenInNew } from "@mui/icons-material"
+import { Box, Breadcrumbs, Divider, Link, Tooltip, Typography } from "@mui/material"
+import { styled, useTheme } from "@mui/material/styles"
+import useMediaQuery from "@mui/material/useMediaQuery"
+import "antd/dist/antd.min.css"
+import { useEffect } from "react"
+import { Link as RouterLink, useParams } from "react-router-dom"
+import Header from "../components/Header"
 
-import dayjs from "dayjs";
+import dayjs from "dayjs"
 const relativeTime = require("dayjs/plugin/relativeTime");
 const utc = require("dayjs/plugin/utc");
 
@@ -73,7 +70,7 @@ const Blocks = () => {
   const renderLink = (hash: string | null) => {
     if (hash) {
       return (
-        <Link href={`${l1ExplorerUrl}tx/${hash}`} underline="none">
+        <Link href={`${l1ExplorerUrl}/tx/${hash}`} underline="none">
           <Box display="flex" alignItems="center">
             <Typography sx={{ color: "#00A6F2", fontWeight: 600 }}>
               {truncatedHash(hash)}
@@ -128,7 +125,8 @@ const Blocks = () => {
             <Divider />
             <BoxItem>
               <LabelTypography>Blocks</LabelTypography>
-              <RouterLink to={`/rollupscan/block/${batch.index}`}>
+              {/* TODO: Make link dynamic, probably by using a variable for the rollupscan root */}
+              <RouterLink to={`/prealpha/rollupscan/block/${batch.index}`}> 
                 <Typography sx={{ fontWeight: 600, color: "#00A6F2" }}>
                   {batch.end_block_number - batch.start_block_number + 1}
                 </Typography>

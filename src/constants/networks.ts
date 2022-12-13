@@ -1,6 +1,6 @@
 // TODO: Refactor network info into a scroll-testnet-wide spot
-import { requireEnv } from "@/utils";
-import { ChainId, RPCUrl, ETH_SYMBOL, USDC_SYMBOL } from "./common";
+import { requireEnv } from "@/utils"
+import { ChainId, ETH_SYMBOL, RPCUrl, USDC_SYMBOL } from "./common"
 
 const curEnv = requireEnv("REACT_APP_SCROLL_ENVIRONMENT");
 const l1Explorer = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1");
@@ -60,6 +60,7 @@ export const tokens = {
 };
 
 export const SiteMap = {
+  // TODO: Deduplicate these, e.g. https://app.asana.com/0/1202293017617135/1203532864257615/f
   Home: "/",
   Faucet: "/faucet/",
   Bridge: "/bridge/",

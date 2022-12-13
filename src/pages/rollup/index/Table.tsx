@@ -1,24 +1,23 @@
-import type {  TablePaginationConfig } from "antd/lib/table";
-import type { SorterResult } from "antd/lib/table/interface";
-import React, { useEffect, useState } from "react";
-import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
-import { l1ExplorerUrl, l2ExplorerUrl } from "@/constants/index";
-import { styled } from "@mui/material/styles";
-import TableBody from "@mui/material/TableBody";
-import Table from "../components/Table";
-import TableCell from "../components/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import { Link, Chip } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
-import { isNil } from "lodash";
+import { l1ExplorerUrl } from "@/constants/index"
+import { Chip, Link } from "@mui/material"
+import { styled } from "@mui/material/styles"
+import TableBody from "@mui/material/TableBody"
+import TableContainer from "@mui/material/TableContainer"
+import TableHead from "@mui/material/TableHead"
+import TableRow from "@mui/material/TableRow"
+import type { TablePaginationConfig } from "antd/lib/table"
+import type { SorterResult } from "antd/lib/table/interface"
+import { isNil } from "lodash"
+import React, { useEffect, useState } from "react"
+import { Link as RouterLink, useLocation, useNavigate, useSearchParams } from "react-router-dom"
+import Table from "../components/Table"
+import TableCell from "../components/TableCell"
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "../constants"
 
-import { TablePagination, Typography, Box } from "@mui/material";
+import { TablePagination, Typography } from "@mui/material"
 import Tooltip from "../components/Tooltip"
 
-import dayjs from "dayjs";
+import dayjs from "dayjs"
 const relativeTime = require("dayjs/plugin/relativeTime");
 dayjs.extend(relativeTime);
 
@@ -145,7 +144,7 @@ const App: React.FC = () => {
     };
     if (!isNil(page) && !isNil(rowsPerPage)) {
       fetchData(params);
-      navigate(`/rollupscan/?page=${page}&per_page=${rowsPerPage}`);
+      navigate(`./?page=${page}&per_page=${rowsPerPage}`);
     }
   }, [rowsPerPage,page ]);
 
@@ -203,7 +202,7 @@ const App: React.FC = () => {
                   <TableCell>{row.total_tx_num}</TableCell>
                   <TableCell>
                     {
-                      row.commit_tx_hash ? <ExternalLink href={`${l1ExplorerUrl}tx/${row.commit_tx_hash}`} sx={{ color: "#00A6F2", fontWeight: 600 }} underline="none">
+                      row.commit_tx_hash ? <ExternalLink href={`${l1ExplorerUrl}/tx/${row.commit_tx_hash}`} sx={{ color: "#00A6F2", fontWeight: 600 }} underline="none">
                         {truncatedHash(row.commit_tx_hash)}
                       </ExternalLink> : "-"
                     }
@@ -211,7 +210,7 @@ const App: React.FC = () => {
                   <TableCell>
                     {
                       row.finalize_tx_hash
-                        ? <ExternalLink href={`${l1ExplorerUrl}tx/${row.finalize_tx_hash}`} sx={{ color: "#00A6F2", fontWeight: 600 }} underline="none">
+                        ? <ExternalLink href={`${l1ExplorerUrl}/tx/${row.finalize_tx_hash}`} sx={{ color: "#00A6F2", fontWeight: 600 }} underline="none">
                           {truncatedHash(row.finalize_tx_hash)}
                         </ExternalLink> : "-"
                     }
