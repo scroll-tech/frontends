@@ -1,13 +1,10 @@
-import { useEffect, useState } from "react";
-import { Paper, Button } from "@mui/material";
-import InputBase from "@mui/material/InputBase";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import SearchIcon from "@mui/icons-material/Search";
-import DirectionsIcon from "@mui/icons-material/Directions";
-import { styled } from "@mui/material/styles";
-import { useNavigate } from "react-router-dom";
+import SearchIcon from "@mui/icons-material/Search"
+import { Button, Paper } from "@mui/material"
+import IconButton from "@mui/material/IconButton"
+import InputBase from "@mui/material/InputBase"
+import { styled } from "@mui/material/styles"
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 const SearchbarContainer = styled(Paper)(({ theme }) => ({
   width: "100%",
@@ -62,7 +59,7 @@ export default function Searchbar(props) {
       .then((res) => res.json())
       .then(({ batch_index }) => {
         if (~batch_index) {
-          navigate(`/rollupscan/block/${batch_index}`);
+          navigate(`./block/${batch_index}`);
         } else {
           props.setNoData(true);
         }
