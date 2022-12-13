@@ -1,17 +1,17 @@
-import { Routes, Route } from "react-router-dom";
-import Web3Provider from "@/contexts/Web3ContextProvider";
-import AppWrapper from "./contexts";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import Home from "./pages/home";
-import Faucet from "./pages/faucet";
-import Bridge from "./pages/bridge";
-import AddNetwork from "./pages/faucet/add-network";
-import RollupScan from "./pages/rollup/index";
-import Swap from "./pages/swap";
-import RollupScanBatch from "./pages/rollup/batch";
-import RollupScanBlock from "./pages/rollup/block";
-import ScrollToTop from "@/hooks/useScrollToTop";
+import Footer from "@/components/Footer"
+import Header from "@/components/Header"
+import Web3Provider from "@/contexts/Web3ContextProvider"
+import ScrollToTop from "@/hooks/useScrollToTop"
+import { Route, Routes } from "react-router-dom"
+import AppWrapper from "./contexts"
+import Bridge from "./pages/bridge"
+import Faucet from "./pages/faucet"
+import AddNetwork from "./pages/faucet/add-network"
+import Home from "./pages/home"
+import RollupScanBatch from "./pages/rollup/batch"
+import RollupScanBlock from "./pages/rollup/block"
+import RollupScan from "./pages/rollup/index"
+import Swap from "./pages/swap"
 
 function App() {
   return (
@@ -21,23 +21,23 @@ function App() {
           <ScrollToTop>
             <Header />
             <Routes>
-              <Route path="/" element={<Home />}></Route>
-              <Route path="/faucet" element={<Faucet />}></Route>
-              <Route path="/bridge" element={<Bridge />}></Route>
+              <Route path="/" element={<Home />} />
+              <Route path="/faucet" element={<Faucet />} />
+              <Route path="/bridge" element={<Bridge />} />
               <Route
                 path="/faucet/add-network"
                 element={<AddNetwork />}
-              ></Route>
-              <Route path="/swap" element={<Swap />}></Route>
-              <Route path="/rollupscan" element={<RollupScan />}></Route>
+              />
+              <Route path="/swap" element={<Swap />} />
+              <Route path="/rollupscan" element={<RollupScan />} />
               <Route
                 path="/rollupscan/batch/:batchIndex"
                 element={<RollupScanBatch />}
-              ></Route>
+              />
               <Route
                 path="/rollupscan/block/:batchIndex"
                 element={<RollupScanBlock />}
-              ></Route>
+              />
             </Routes>
             <Footer />
           </ScrollToTop>

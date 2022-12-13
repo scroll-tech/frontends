@@ -55,9 +55,7 @@
   },
   "scripts": {
     "start": "BROWSER=none craco start",
-    "start:homepage": "REACT_APP_BUILD_TARGET=HOMEPAGE BROWSER=none craco start",
     "build": "CI=false && craco build",
-    "build:homepage": "REACT_APP_BUILD_TARGET=HOMEPAGE && CI=false && craco build",
     "test": "craco test",
     "lint": "eslint --fix \"**/*.{ts,tsx}\"",
     "eject": "craco eject"

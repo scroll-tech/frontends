@@ -2,22 +2,22 @@ const homeNavigations: any = [
   {
     label: "Home",
     key: "",
-    href: "/",
+    href: "",
   },
   {
     label: "Blog",
     key: "blog",
-    href: "/blog",
+    href: "blog",
   },
   {
     label: "Team",
     key: "team",
-    href: "/team",
+    href: "team",
   },
   {
     label: "Join Us",
     key: "Join Us",
-    href: "/join-us",
+    href: "join-us",
   },
 ];
 
@@ -25,22 +25,22 @@ const navigations = [
   {
     label: "Home",
     key: "",
-    href: "/",
+    href: "./",
   },
   {
     label: "Faucet",
     key: "faucet",
-    href: "/faucet",
+    href: "faucet",
   },
   {
     label: "Bridge",
     key: "bridge",
-    href: "/bridge",
+    href: "bridge",
   },
   {
     label: "Swap",
     key: "swap",
-    href: "/swap",
+    href: "swap",
     isExternal: false,
   },
   {
@@ -50,7 +50,7 @@ const navigations = [
       {
         label: "Rollup Explorer",
         key: "rollupscan",
-        href: "/rollupscan",
+        href: "rollupscan",
       },
       {
         label: "L1 Block Explorer",
@@ -68,4 +68,5 @@ const navigations = [
   },
 ];
 
-export { navigations, homeNavigations };
+export { navigations, homeNavigations }
+
