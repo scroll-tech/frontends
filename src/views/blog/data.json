@@ -2,7 +2,7 @@
   {
     "type": "Technical",
     "id": "proofGeneration",
-    "date": "2022-12-13",
+    "date": "2022-12-14",
     "title": "The Anatomy of Proof Generation",
     "posterTitle": "Proof Generation",
     "summary": "A technical deep dive into the computational costs of proof generation.",
