@@ -2,7 +2,7 @@
 
 _Thanks to Yi Sun and Kobi Gurkan for their feedback and reviews._
 
-### Introduction
+## Introduction
 
 Zero knowledge proofs have garnered an air of mystery around them, due to their mathematical complexity. They are affectionately referred to as “moon math,” as they are seen by most as otherworldly magic.
 
@@ -10,7 +10,7 @@ We at Scroll want to demystify the inner workings of zero knowledge proofs. This
 
 In this post, we give an introduction to a critical ingredient to many zero knowledge proof systems: polynomial commitment schemes. We then briefly explain KZG, which is one of the most widely used polynomial commitment schemes in practice. We continue by discussing how KZG is being used in Scroll's zk-rollups, as well as in Ethereum's Proto-Danksharding. Finally, we show how zk-rollups and Proto-Danksharding can be efficiently and elegantly integrated with one another - an integration which is enabled by their respective usage of polynomial commitment schemes.
 
-### Why are we talking about polynomials?
+## Why are we talking about polynomials?
 
 Polynomials are extremely powerful tools, and they have useful applications across many different domains. Polynomials can be used to represent large objects in an efficient way.
 
@@ -22,7 +22,7 @@ For example, we could take the $3$-dimensional vector $v = [2, 0, 6]$, and repre
 
 In general, it's possible to take $n$ arbitrary points and find a unique polynomial of degree $n-1$ which passes through all of them. This process is called “[polynomial interpolation](https://en.wikipedia.org/wiki/Polynomial_interpolation),” and there are established methods of achieving this task efficiently. (Check out this nifty [online tool](https://www.wolframalpha.com/input/?i=interpolating+polynomial+calculator) from Wolfram Alpha that can interpolate a polynomial given a vector of inputs!)
 
-### What are polynomial commitment schemes? Why are they useful?
+## What are polynomial commitment schemes? Why are they useful?
 
 A polynomial commitment scheme is a [commitment scheme](https://en.wikipedia.org/wiki/Commitment_scheme) with some nice additional properties. In a general commitment scheme, the committer commits to a message $m$ by outputting some commitment $c$. The committer can then later reveal the message $m$, and a verifier can validate that indeed the commitment $c$ corresponds to $m$. A commitment scheme should be “binding” (once publishing $c$, the committer should not be able to find some other message $m' \neq m$ which also corresponds to $c$) and “hiding” (publishing $c$ should not reveal any information about the underlying message $m$).
 
@@ -32,7 +32,7 @@ This is a really awesome property that is extremely useful for zero-knowledge ap
 
 Another reason why this property is useful is that the commitment $c$ is generally much smaller than the polynomial it represents. We'll see a commitment scheme where a polynomial of arbitrarily large degree can be represented by its commitment as a single group element. This is especially desirable when thinking about posting data on-chain, where block space is a valuable asset, and any sort of compression can be immediately translated into cost savings.
 
-### The KZG polynomial commitment scheme
+## The KZG polynomial commitment scheme
 
 Ok, now that we've motivated polynomial commitment schemes, let's see how to actually construct one. The one we'll be focusing on is the [Kate-Zaverucha-Goldberg](https://www.iacr.org/archive/asiacrypt2010/6477178/6477178.pdf) (KZG) polynomial commitment scheme. KZG is widely used for many tasks in the blockchain space - it is already being used by Scroll's proof systems, and it will soon be integrated into Ethereum's protocol with [Proto-Danksharding](https://notes.ethereum.org/@vbuterin/proto_danksharding_faq) (EIP-4844). We'll elaborate on each of these use cases later on.
 
@@ -77,7 +77,7 @@ This was a very quick whirlwind of the math behind KZG, with some details left o
 - [Dankrad Feist's notes on KZG](https://dankradfeist.de/ethereum/2020/06/16/kate-polynomial-commitments.html)
 - [Alin Tomescu's notes on KZG](https://alinush.github.io/2020/05/06/kzg-polynomial-commitments.html)
 
-### Use cases
+## Use cases
 
 **Scroll's zk-rollups**
 
@@ -125,7 +125,7 @@ The idea here is to pick a random(ish) point, and check equality between the two
 
 This proof of equivalence actually works for any combination of polynomial commitment schemes[^8] - it doesn't matter if one is a FRI commitment while the other is a KZG commitment, as long as both can be opened at a point.
 
-### Wrapping up
+## Wrapping up
 
 Let's do a bit of a recap.
 
