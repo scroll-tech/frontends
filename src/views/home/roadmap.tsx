@@ -112,7 +112,7 @@ const roadmaps = [
     completed: false,
   },
   {
-    name: "Decentralized sequencer",
+    name: "Decentralized Sequencers",
     completed: false,
   },
 ];
