@@ -3,7 +3,7 @@ import { Box, Typography, Divider } from "@mui/material";
 import { styled } from "@mui/system";
 import SecurityIcon from "@/assets/images/homepage/home/security.png";
 import ScalabilityIcon from "@/assets/images/homepage/home/scalability.png";
-import EVMEquivalenceIcon from "@/assets/images/homepage/home/EVM-equivalence.svg";
+import EVMEquivalenceIcon from "@/assets/images/homepage/home/EVM-equivalence.png";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -36,10 +36,6 @@ const FeatureIcon = styled("img")(
   ({ theme }) => `
            height: 9.6rem;
            margin: 4.4rem auto;
-           &.small {
-              height: 6rem;
-              margin: 6.2rem auto;
-           }
           `
 );
 
@@ -70,12 +66,6 @@ const FeatureDescription = styled(Typography)(
 
 const features = [
   {
-    icon: SecurityIcon,
-    title: "Security",
-    description:
-      "Scroll's protocol is currently undergoing multiple third-party audits to ensure security. Scroll also values transparency and is working to build its platform openly and in collaboration with the community.",
-  },
-  {
     icon: ScalabilityIcon,
     title: "Scalability",
     description:
@@ -86,6 +76,12 @@ const features = [
     title: "EVM Equivalence",
     description:
       "Developing on Scroll feels the same as developing on Ethereum. Any EVM-compatible smart contract can be effortlessly deployed to Scroll's network.",
+  },
+  {
+    icon: SecurityIcon,
+    title: "Security",
+    description:
+      "Scroll's protocol is currently undergoing multiple third-party audits to ensure security. Scroll also values transparency and is working to build its platform openly and in collaboration with the community.",
   },
 ];
 
@@ -109,7 +105,7 @@ const FeatureSwiper = () => {
             <FeatureBox>
               <FeatureIcon
                 src={feature.icon}
-                className={idx === 2 ? "small" : ""}
+                className={idx === 1 ? "small" : ""}
               />
               <Divider />
               <FeatureTitle variant="subtitle1">{feature.title}</FeatureTitle>
