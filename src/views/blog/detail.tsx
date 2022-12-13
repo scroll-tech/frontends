@@ -42,8 +42,8 @@ const BlogContainer = styled(Box)(
 
 const BlogNavbar = styled(Box)(({ theme }) => ({
   position: "fixed",
-  width: "30rem",
-  marginLeft: "6rem",
+  width: "40rem",
+  marginLeft: "10rem",
   paddingLeft: "2rem",
   borderLeft: "1px solid #C9CBCE",
   [theme.breakpoints.down("md")]: {
@@ -107,6 +107,7 @@ const BlogDetail = () => {
                 className="markdown-navbar"
                 source={blog}
                 headingTopOffset={100}
+                ordered={false}
               />
             </BlogNavbar>
           </Box>
