@@ -87,47 +87,50 @@ const BlogDetail = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
-  return (
-    <Box>
-      <BlogContainer className="wrapper">
-        <ReactMarkdown
-          children={blog as string}
-          remarkPlugins={[remarkMath, remarkGfm]}
-          rehypePlugins={[rehypeKatex, rehypeRaw]}
-          className="markdown-body"
-        />
-        <Box sx={{ width: "32rem", flexShrink: 0, position: "relative" }}>
-          <BlogNavbar>
-            <Link to="/blog">
-              <ArrowBackIosIcon />
-              <Typography>All Articles</Typography>
-            </Link>
-            <MarkdownNavbar
-              className="markdown-navbar"
-              source={blog || ""}
-              headingTopOffset={100}
-            />
-          </BlogNavbar>
-        </Box>
-      </BlogContainer>
-      {isMobile ? (
-        <Box sx={{ paddingBottom: "6rem" }}>
-          <Typography
-            variant="h2"
-            sx={{
-              textAlign: "center",
-              marginBottom: {
-                md: "4rem",
-              },
-            }}
-          >
-            More articles from Scroll
-          </Typography>
-          <Articles blogs={moreBlog} />
-        </Box>
-      ) : null}
-    </Box>
-  );
+  if (blog) {
+    return (
+      <Box>
+        <BlogContainer className="wrapper">
+          <ReactMarkdown
+            children={blog as string}
+            remarkPlugins={[remarkMath, remarkGfm]}
+            rehypePlugins={[rehypeKatex, rehypeRaw]}
+            className="markdown-body"
+          />
+          <Box sx={{ width: "32rem", flexShrink: 0, position: "relative" }}>
+            <BlogNavbar>
+              <Link to="/blog">
+                <ArrowBackIosIcon />
+                <Typography>All Articles</Typography>
+              </Link>
+              <MarkdownNavbar
+                className="markdown-navbar"
+                source={blog}
+                headingTopOffset={100}
+              />
+            </BlogNavbar>
+          </Box>
+        </BlogContainer>
+        {isMobile ? (
+          <Box sx={{ paddingBottom: "6rem" }}>
+            <Typography
+              variant="h2"
+              sx={{
+                textAlign: "center",
+                marginBottom: {
+                  md: "4rem",
+                },
+              }}
+            >
+              More articles from Scroll
+            </Typography>
+            <Articles blogs={moreBlog} />
+          </Box>
+        ) : null}
+      </Box>
+    );
+  }
+  return null;
 };
 
 export default BlogDetail;
