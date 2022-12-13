@@ -1,4 +1,4 @@
-import { ChainId, RPCUrl } from "./common";
+import { ChainId, RPCUrl } from "./common"
 
 const SCROLL_ENVIRONMENT_PRODUCTION = "MAIN"; // `MAIN` is production, `STAGING` is staging
 const SCROLL_ENVIRONMENT =
@@ -63,26 +63,26 @@ const navigation = [
   {
     name: "Faucet",
     description: "Receive test ETH and USDC tokens on L1 from Faucet.",
-    subdomainOrPath: "faucet",
+    subdomainOrPath: "./faucet",
   },
   {
     name: "Bridge",
     description:
       "Use Bridge (our Hop fork) to transfer tokens between L1 and L2.",
-    subdomainOrPath: "bridge",
+    subdomainOrPath: "./bridge",
   },
   {
     name: "Swap",
     description:
       "Use Swap (our Uniswap fork) to swap tokens and supply liquidity on L2.",
-    subdomainOrPath: "swap",
+    subdomainOrPath: "./swap",
   },
   {
     name: "Rollup Explorer",
     description:
       "See L2 blocks being committed to L1 and finalized with zkEVM proofs on our Rollup Explorer.",
     isActive: true,
-    subdomainOrPath: "rollupscan",
+    subdomainOrPath: "./rollupscan",
   },
   {
     name: "L1 Block Explorer",
@@ -156,6 +156,12 @@ const ModalStatus = {
   ERROR: "error",
 };
 
+export * from "./common"
+export * from "./config"
+export * from "./gateway"
+export * from "./medias"
+export * from "./networks"
+export * from "./transaction"
 export {
   addresses,
   navigation,
@@ -164,7 +170,7 @@ export {
   SCROLL_ENVIRONMENT,
   Addresses,
   ModalStatus,
-};
+}
 
 export let l1ExplorerUrl = process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L1;
 export let l2ExplorerUrl = process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L2;
@@ -174,9 +180,4 @@ export let pathL1Explorer = "l1Explorer";
 export let pathL2Explorer = "l2Explorer";
 export let pathRollupExplorer = "rollupExplorer";
 
-export * from "./gateway";
-export * from "./networks";
-export * from "./common";
-export * from "./transaction";
-export * from "./config";
-export * from "./medias";
+
