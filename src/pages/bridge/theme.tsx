@@ -88,6 +88,12 @@ const lightTheme = {
               backgroundColor: paletteOptions.background.default,
             },
           },
+          "&:disabled": {
+            color: "rgba(51, 51, 51, 0.3)",
+            backgroundColor: "rgba(224, 224, 224)",
+            cursor: "not-allowed",
+            pointerEvents: "all",
+          },
         },
       },
     },

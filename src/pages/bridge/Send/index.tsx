@@ -329,7 +329,10 @@ const Send: FC = () => {
             tokenList={fromTokenList}
             onChangeToken={handleChangeToken}
           />
-          <SendTranferButton onClick={handleSwitchDirection} />
+          <SendTranferButton
+            disabled={!toToken.chainId}
+            onClick={handleSwitchDirection}
+          />
           <SendAmountSelectorCard
             value="0.1"
             token={fromToken}

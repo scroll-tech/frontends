@@ -33,7 +33,7 @@ export const useSendStyles = makeStyles()((theme) => ({
   },
   sendTransferIcon: {
     fontSize: "2.5rem",
-    color: "#00A6F2",
+    cursor: "inherit",
     [theme.breakpoints.down("sm")]: {
       fontSize: "1.8rem",
     },
