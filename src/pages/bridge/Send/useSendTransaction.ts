@@ -38,8 +38,9 @@ export function useSendTransaction(props) {
     try {
       setError(null);
 
-      const networkId = Number(fromNetwork.networkId);
-      const isNetworkConnected = await checkConnectedChainId(networkId);
+      const isNetworkConnected = await checkConnectedChainId(
+        fromNetwork.chainId
+      );
       if (!isNetworkConnected) return;
       setSending(true);
       let tx;
@@ -88,7 +89,7 @@ export function useSendTransaction(props) {
   };
 
   const sendl1ToL2 = () => {
-    if (selectedToken.isNativeToken) {
+    if (selectedToken.native) {
       return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway[
         "depositETH(uint256)"
       ](0, {
@@ -97,12 +98,12 @@ export function useSendTransaction(props) {
     } else {
       return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway[
         "depositERC20(address,uint256,uint256)"
-      ](selectedToken.address[fromNetwork.chainId], parsedAmount, 0);
+      ](selectedToken.address, parsedAmount, 0);
     }
   };
 
   const sendl2ToL1 = () => {
-    if (selectedToken.isNativeToken) {
+    if (selectedToken.native) {
       return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway[
         "withdrawETH(uint256)"
       ](0, {
@@ -111,7 +112,7 @@ export function useSendTransaction(props) {
     } else {
       return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway[
         "withdrawERC20(address,uint256,uint256)"
-      ](selectedToken.address[fromNetwork.chainId], parsedAmount, 0);
+      ](selectedToken.address, parsedAmount, 0);
     }
   };
 

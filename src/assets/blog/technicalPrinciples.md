@@ -1,4 +1,4 @@
-# 📜Introducing Scroll – Technical principles
+# Scroll's Technical Principles
 
 To scale Ethereum with our zkEVM-based zkRollup, we have designed Scroll based on a set of technical principles which uphold Scroll's [core values](https://mirror.xyz/scroll.eth/EYn7ODhQAnNWABwWcu5xZLts_wEXTZAEWyTgExGS1DA). This post lays out these principles and how they relate to our broader design for Scroll.
 
@@ -58,7 +58,7 @@ As we approach the first production version of our zkEVM, we continue to focus o
 - How to co-optimize Scroll's zkEVM with new hardware-friendly ZK algorithms
 - How to expose new ZK primitives to Layer 2 application developers
 
-## 📜Tying it all together
+## Tying it all together
 
 The technical principles outlined in this article have led Scroll to a protocol design which aligns with the existing Ethereum community and provides a scaling path for the future billions of users who are not yet on-chain. In the next few weeks, we will release more posts with concrete details about Scroll's architecture and the corresponding user and developer experience. Stay tuned to learn more about those and sign up to try out our pre-alpha testnet at [signup.scroll.io](http://signup.scroll.io/)!
 

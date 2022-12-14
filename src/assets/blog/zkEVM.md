@@ -26,7 +26,7 @@ The basic idea of zk-Rollup is to aggregate a huge number of transactions into o
 Although zk-Rollup is secure and efficient, its applications are still limited to payments and swaps. It's hard to build general-purpose DApps due to the following two reasons.
 
 - First, if you want to develop DApps in a zk-Rollup, you need to write all your smart contract logic using a special language (i.e. [R1CS](https://tlu.tarilabs.com/cryptography/r1cs-bulletproofs/mainreport.html#rank-1-constraint-systems)). Not only is the syntax of required language complicated, but doing so also demands extremely strong expertise in zero-knowledge proof.
-- Second, current zk-Rollup doesn't support composability^[1]^. It means different zk-Rollup applications can't interact with each other within Layer 2. Such quality significantly undermines the composability of DeFi applications.
+- Second, current zk-Rollup doesn't support composability[^1]. It means different zk-Rollup applications can't interact with each other within Layer 2. Such quality significantly undermines the composability of DeFi applications.
 
 In a nutshell, zk-Rollup is developer-unfriendly and has limited functionality for now.
 That's the biggest problem we want to tackle. We want to provide the best developer experience and support composability within Layer 2 by supporting native EVM verification directly, so that existing Ethereum applications can simply migrate over onto the zk-Rollup as is.
@@ -43,11 +43,11 @@ There are two ways to build general DApps in zk-Rollup.
    -->
   > ["circuit"](https://tlu.tarilabs.com/cryptography/r1cs-bulletproofs/mainreport.html#arithmetic-circuits) refer to the program representation used in zero-knowledge proof. For example, if you want to prove hash(x) = y, you need to re-write the hash function using the circuit form. The circuit form only supports very limited expressions (i.e., R1CS only support addition and multiplication). So, it's very hard to write program using the circuit language --- you have to build all your program logic (including if else, loop and so on) using add and mul.
 
-The first approach requires developer to design specialized "ASIC" circuits for different DApps. It is the most traditional way to use zero-knowledge proof. Each DApp will have a smaller overhead through customized circuit design. However, it brings the problem of composability since the circuit is "static" and terrible developer experience since it needs strong expertise in circuit design^[2]^.
+The first approach requires developer to design specialized "ASIC" circuits for different DApps. It is the most traditional way to use zero-knowledge proof. Each DApp will have a smaller overhead through customized circuit design. However, it brings the problem of composability since the circuit is "static" and terrible developer experience since it needs strong expertise in circuit design[^2].
 
 <!-- The second approach can provide a much better developer experience since developer can still develop in high-level native language and doesn't need to know low-level circuit design.  -->
 
-The second approach doesn't require any special design or expertise for developer. The high-level idea of such machine-based proof is that any program will eventually run on CPU, so we only need to build a universal CPU circuit to verify the low-level CPU step. Then we can use this CPU circuit to verify any program execution. In our scenario, program is smart contract and CPU is EVM. However, this approach is not commonly adopted in the past years due to its large overhead. For example, even if you only want to prove the result of `add` is correct in one step, you still need to afford the overhead of an entire EVM circuit. If you have thousands of steps in your execution trace, it will be 1000x EVM circuit overhead on the prover side.^[3]^
+The second approach doesn't require any special design or expertise for developer. The high-level idea of such machine-based proof is that any program will eventually run on CPU, so we only need to build a universal CPU circuit to verify the low-level CPU step. Then we can use this CPU circuit to verify any program execution. In our scenario, program is smart contract and CPU is EVM. However, this approach is not commonly adopted in the past years due to its large overhead. For example, even if you only want to prove the result of `add` is correct in one step, you still need to afford the overhead of an entire EVM circuit. If you have thousands of steps in your execution trace, it will be 1000x EVM circuit overhead on the prover side.[^3]
 
 Recently, there has been a lot of research going on to optimize zk proofs following those two approaches, including (i) proposing new zk-friendly primitives i.e. [Poseidon hash](https://www.poseidon-hash.info/) can achieve 100x efficiency than SHA256 in circuit, (ii) ongoing work on improving efficiency of general-purpose verifiable VMs, as in [TinyRAM](https://eprint.iacr.org/2013/507), and (iii) a growing number of general-purpose optimization tricks like Plookup, and even more generally faster cryptographic libraries.
 
@@ -63,7 +63,7 @@ zkEVM is hard to build. Even though the intuition is clear for years, no one has
 - **Second, EVM word size is 256bit.** EVM operates over 256-bit integers (much like most regular VMs operate over 32-64 bit integers), whereas zk proofs most "naturally" work over prime fields. Doing "mismatched field arithmetic" inside a circuit requires range proofs, which will add ~100 constraints per EVM step. This will blow up EVM circuit size by two orders of magnitudes.
 - **Third, EVM has many special opcodes.** EVM is different from traditional VM, it has many special [opcodes](https://www.ethervm.io/) like `CALL` and it also has error types related to the execution context and gas. This will bring new challenges to circuit design.
 - **Fourth, EVM is a stack-based virtual machine.** The [SyncVM](https://zksync.io/dev/contracts/#sync-vm) (zksync) and [Cario](https://eprint.iacr.org/2021/1063) (starkware) architecture defines its own IR/AIR in the register-based model. They built a specialized compiler to compile smart contract code into a new zk-friendly IR. Their approach is language compatible instead of native EVM-compatible. It's harder to prove for stack-based model and support native tool chain directly.
-- **Fifth, Ethereum storage layout carries a huge overhead.** The Ethereum storage layout highly relies on [Keccak](https://keccak.team/files/Keccak-reference-3.0.pdf) and a huge [MPT](https://eth.wiki/en/fundamentals/patricia-tree)^[4]^, both of them are not zk-friendly and have a huge proving overhead. For example, Keccak hash is 1000x larger than Poseidon hash in circuit. However, if you replace Keccak with another hash, it will cause some compatibility problems for the existing Ethereum infrastructure.
+- **Fifth, Ethereum storage layout carries a huge overhead.** The Ethereum storage layout highly relies on [Keccak](https://keccak.team/files/Keccak-reference-3.0.pdf) and a huge [MPT](https://eth.wiki/en/fundamentals/patricia-tree)[^4], both of them are not zk-friendly and have a huge proving overhead. For example, Keccak hash is 1000x larger than Poseidon hash in circuit. However, if you replace Keccak with another hash, it will cause some compatibility problems for the existing Ethereum infrastructure.
 - **Sixth, machine-based proof has a gigantic overhead.** Even if you can handle all the aforementioned problems properly, you still need to find an efficient way to compose them together to get a complete EVM circuit. As I mentioned in previous section, even simple opcodes like `add` might result in the overhead of the entire EVM circuit.
 
 ## Why possible now?
@@ -98,7 +98,7 @@ In Layer 1, the bytecodes of the deployed smart contracts are stored in the Ethe
 
 In Layer 2, the bytecode is also stored in the storage and users will behave in the same way. Transactions will be sent off-chain to a centralized zkEVM node. Then, instead of just executing the bytecode, zkEVM will generate a succinct proof to prove the states are updated correctly after applying the transactions. Finally, Layer 1 contract will verify the proof and update the states without re-executing the transactions.
 
-Let's take a deeper look at the execution process and see what zkEVM needs to prove at the end of the day. In native execution, EVM will load the bytecode and execute the opcodes in the bytecode one by one from beginning. Each opcode can be thought as doing the following three sub-steps : (i) Read elements from stack, memory or storage (ii) Perform some computation on those elements (iii) Write back results to stack, memory or storage.^[5]^ For example, `add` opcode needs to read two elements from stack, add them up and write the result back to stack.
+Let's take a deeper look at the execution process and see what zkEVM needs to prove at the end of the day. In native execution, EVM will load the bytecode and execute the opcodes in the bytecode one by one from beginning. Each opcode can be thought as doing the following three sub-steps : (i) Read elements from stack, memory or storage (ii) Perform some computation on those elements (iii) Write back results to stack, memory or storage.[^5] For example, `add` opcode needs to read two elements from stack, add them up and write the result back to stack.
 
 So, it's clear that the proof of zkEVM needs to contain the following aspects corresponding to the execution process
 
@@ -115,7 +115,7 @@ When designing the architecture for zkEVM, we need to handle/address the aforeme
 
 1. We need to design a circuit for some cryptographic accumulator.
 
-   This part acts like a "verifiable storage", we need some technique to prove we are reading correctly. A cryptographic accumulator can be used to achieve this efficiently.^[6]^
+   This part acts like a "verifiable storage", we need some technique to prove we are reading correctly. A cryptographic accumulator can be used to achieve this efficiently.[^6]
    Let's take Merkle Tree as an example. The deployed bytecode will be stored as a leaf in the Merkle Tree. Then, verifier can verify the bytecode is loaded correctly from a given address using a succinct proof (i.e., verify Merkle Path in circuit). For Ethereum storage, we need the circuit to be compatible with Merkle Patricia Trie and Keccak hash function.
 
 2. We need to design a circuit to link the bytecode with the real execution trace.
@@ -137,7 +137,7 @@ This architecture is firstly specified by Ethereum Foundation. It's still at an 
 
 zkEVM is much more than just Layer 2 scaling. It can be thought as a direct way to scale Ethereum Layer 1 via Layer-1 validity proof. That means you can scale existing Layer 1 without any special Layer 2.
 
-For example, you can use zkEVM as a full node. The proof can be used for proving transitions between existing states directly --- No need to port anything to Layer 2, you can prove for all Layer 1 transactions directly! More broadly, you can use zkEVM to generate a succinct proof for the whole Ethereum like Mina. The only thing you need to add is proof recursion (i.e. embed the verification circuit of a block to the zkEVM)^[7]^.
+For example, you can use zkEVM as a full node. The proof can be used for proving transitions between existing states directly --- No need to port anything to Layer 2, you can prove for all Layer 1 transactions directly! More broadly, you can use zkEVM to generate a succinct proof for the whole Ethereum like Mina. The only thing you need to add is proof recursion (i.e. embed the verification circuit of a block to the zkEVM)[^7].
 
 ## Conclusion
 
@@ -147,21 +147,19 @@ zkEVM can provide the same experience for developers and users. It's order of ma
 
 _Scroll Tech is a newly built tech-driven company. We aim to build an EVM-compatible zk-Rollup with a strong proving network ([See an overview here](/blog/Scroll-Overview)). The whole team is now focusing on the development. We are actively hiring more passionate developers, reach out to us at [hire@scroll.io](mailto:hire@scroll.io). If you have any question about the technical content, reach out to me at [ye@scroll.io](mailto:ye@scroll.io). [DM](https://twitter.com/yezhang1998) is also open._
 
-## Footnotes
+[^1]: Starkware claims to achieve composability a few days ago ([reference here](https://medium.com/starkware/starknet-alpha-2-4aa116f0ecfc))
 
-[1]: Starkware claims to achieve composability a few days ago ([reference here](https://medium.com/starkware/starknet-alpha-2-4aa116f0ecfc))
+[^2]: Circuit is fixed and static. For example, you can't use variable upper bound loop when implementing a program as a circuit. The upper bound has to be fixed to its maximum value. It can't deal with dynamic logic.
 
-[2]: Circuit is fixed and static. For example, you can't use variable upper bound loop when implementing a program as a circuit. The upper bound has to be fixed to its maximum value. It can't deal with dynamic logic.
+[^3]: To make it more clear, We elaborate about the cost of EVM circuit here. As we described earlier, circuit is fixed and static. So, EVM circuit needs to contain all possible logic (10000x larger than pure `add`). That means even if you only want to prove for `add`, you still need to afford the overhead of all possible logics in the EVM circuit. It will 10000x amplify the cost. In the execution trace, you have a sequence of opcodes to prove and each opcode will have such a large overhead.
 
-[3]: To make it more clear, We elaborate about the cost of EVM circuit here. As we described earlier, circuit is fixed and static. So, EVM circuit needs to contain all possible logic (10000x larger than pure `add`). That means even if you only want to prove for `add`, you still need to afford the overhead of all possible logics in the EVM circuit. It will 10000x amplify the cost. In the execution trace, you have a sequence of opcodes to prove and each opcode will have such a large overhead.
+[^4]: EVM itself is not tightly bound to the Merkle Patricia tree. MPT is just how Ethereum states are stored for now. A different one can easily be plugged in (i.e., the current proposal to replace MPT with [Verkle trees](https://vitalik.ca/general/2021/06/18/verkle.html)).
 
-[4]: EVM itself is not tightly bound to the Merkle Patricia tree. MPT is just how Ethereum states are stored for now. A different one can easily be plugged in (i.e., the current proposal to replace MPT with [Verkle trees](https://vitalik.ca/general/2021/06/18/verkle.html)).
+[^5]: This is a highly simplified abstraction. Technically, the list of "EVM state" is longer including PC, gas remaining, call stack (all of the above plus address and staticness per call in the stack), a set of logs, and transaction-scoped variables (warm storage slots, refunds, self-destructs). Composability can be supported directly with additional identifier for different call context.
 
-[5]: This is a highly simplified abstraction. Technically, the list of "EVM state" is longer including PC, gas remaining, call stack (all of the above plus address and staticness per call in the stack), a set of logs, and transaction-scoped variables (warm storage slots, refunds, self-destructs). Composability can be supported directly with additional identifier for different call context.
+[^6]: We use accumulator for storage since the storage is huge. For memory and stack, one can use editable Plookup ("RAM" can be implemented efficiently in this way).
 
-[6]: We use accumulator for storage since the storage is huge. For memory and stack, one can use editable Plookup ("RAM" can be implemented efficiently in this way).
-
-[7]: It's non-trivial to add a complete recursive proof to the zkEVM circuit. The best way to do recursion is still using cyclic elliptic curves (i.e., Pasta curve). Need some ["wrapping"](https://hackmd.io/u_2Ygx8XS5Ss1aObgOFjkA) process to make it verifiable on Ethereum Layer 1.
+[^7]: It's non-trivial to add a complete recursive proof to the zkEVM circuit. The best way to do recursion is still using cyclic elliptic curves (i.e., Pasta curve). Need some ["wrapping"](https://hackmd.io/u_2Ygx8XS5Ss1aObgOFjkA) process to make it verifiable on Ethereum Layer 1.
 
 <!-- [2]: static means the logic has to be fixed before compilation (i.e. you can't do variable-upper bound loop in traditional "ASIC" circuit)
 [link text](https:// "title") -->

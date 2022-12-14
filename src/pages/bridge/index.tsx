@@ -7,7 +7,6 @@ import Header from "./Header";
 import Content from "./Content";
 import BridgeTitle from "./BridgeTitle";
 import FAQ from "./FAQ";
-import styles from "./index.module.css";
 
 export const muiCache = createCache({
   key: "mui",
@@ -36,11 +35,11 @@ const Bridge = () => {
       <ThemeProvider>
         <QueryClientProvider client={queryClient}>
           <AppProvider>
-            <div className={styles.bridge}>
+            <div>
               <Header />
               <BridgeTitle />
-              <Content></Content>
-              <FAQ></FAQ>
+              <Content />
+              <FAQ />
             </div>
           </AppProvider>
         </QueryClientProvider>

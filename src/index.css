@@ -106,8 +106,27 @@ body {
   list-style-type: disc;
 }
 
+.markdown-navbar {
+  max-height: calc(100vh - 21rem);
+  overflow: scroll;
+  padding-bottom: 2rem;
+}
+
+.markdown-navbar .title-anchor {
+  font-size: 14px;
+  line-height: 22px;
+  margin: 0.8rem auto;
+}
 .markdown-navbar .title-anchor.active,
 .markdown-navbar .title-anchor:hover {
   background: transparent;
   color: #eb7106;
+}
+
+.markdown-navigation .title-level3 {
+  padding-left: 2em;
+}
+
+.markdown-navbar.hidden-levels .title-level3 {
+  display: none;
 }

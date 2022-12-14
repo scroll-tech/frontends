@@ -1,3 +1,4 @@
+import { Link, Outlet } from "react-router-dom";
 import Logo from "@/components/Logo";
 import dayjs from "dayjs";
 import "./Footer.less";
@@ -10,15 +11,15 @@ const Footer = () => {
       items: [
         {
           name: "Scroll.io",
-          href: "https://scroll.io/",
+          to: "/",
         },
         {
           name: "Team",
-          href: "https://scroll.io/team",
+          to: "/team",
         },
         {
           name: "Join Us",
-          href: "https://scroll.io/join-us",
+          to: "/join-us",
         },
       ],
     },
@@ -27,7 +28,7 @@ const Footer = () => {
       items: [
         {
           name: "Blog",
-          href: "https://scroll.io/blog",
+          to: "/blog",
         },
         {
           name: "User Guide",
@@ -48,13 +49,23 @@ const Footer = () => {
         <li className="text-md mb-[8px] font-display">{link.category}</li>
         {link.items.map((item: any) => (
           <li key={item.name}>
-            <a
-              href={item.href}
-              // target="_blank"
-              className="font-medium leading-[34px] text-body-title"
-            >
-              {item.name}
-            </a>
+            {item.to ? (
+              <Link
+                className="font-medium leading-[34px] text-body-title"
+                to={item.to}
+              >
+                {" "}
+                {item.name}
+              </Link>
+            ) : (
+              <a
+                href={item.href}
+                // target="_blank"
+                className="font-medium leading-[34px] text-body-title"
+              >
+                {item.name}
+              </a>
+            )}
           </li>
         ))}
       </ul>

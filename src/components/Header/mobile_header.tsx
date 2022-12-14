@@ -1,16 +1,25 @@
 import {
-  CloseRounded, ExpandLess,
-  ExpandMore, Menu as MenuIcon, OpenInNew
-} from "@mui/icons-material"
+  CloseRounded,
+  ExpandLess,
+  ExpandMore,
+  Menu as MenuIcon,
+  OpenInNew,
+} from "@mui/icons-material";
 import {
-  Box, Button, Collapse, Link, List,
-  ListItemButton, Stack, SwipeableDrawer
-} from "@mui/material"
-import { styled } from "@mui/system"
-import * as React from "react"
-import { NavLink } from "react-router-dom"
-import Logo from "../Logo"
-import { homeNavigations, navigations } from "./constants"
+  Box,
+  Button,
+  Collapse,
+  Link,
+  List,
+  ListItemButton,
+  Stack,
+  SwipeableDrawer,
+} from "@mui/material";
+import { styled } from "@mui/system";
+import * as React from "react";
+import { NavLink } from "react-router-dom";
+import Logo from "../Logo";
+import { homeNavigations, navigations } from "./constants";
 
 const NavStack = styled(Stack)(
   ({ theme }) => `
@@ -25,26 +34,33 @@ const NavStack = styled(Stack)(
 const LinkStyledButton = styled(NavLink)(
   ({ theme }) => `
   width: 100%;
+  line-height: 6.4rem;  
   &.active {
     color: ${theme.palette.action.active}
   } 
   &:hover {
     color: ${theme.palette.action.active}
   } 
-  padding: 2rem 1.6rem;
 `
 );
 
 const ExternalLink = styled(Link)(
   ({ theme }) => `
-  color: ${theme.palette.text.primary}
+  color: ${theme.palette.text.primary};
+  &:hover {
+    color: ${theme.palette.action.active}
+  } 
   `
 );
 
 const ListButton = styled(ListItemButton)(
   ({ theme }) => `
   font-weight: 600;
-  padding: 0;
+  height: 6.4rem;
+  &:hover {
+    background: transparent;
+    color: ${theme.palette.action.active};
+  } 
 `
 );
 
@@ -114,6 +130,7 @@ const App = (props) => {
                       sx={{ pl: 4 }}
                       key={subItem.key}
                     >
+                      {/* TODO: https://github.com/MetaMask/metamask-mobile/issues/4890 */}
                       <ExternalLink underline="none" href={subItem.href}>
                         {subItem.label}
                       </ExternalLink>
@@ -147,11 +164,11 @@ const App = (props) => {
         alignItems="center"
       >
         <NavLink to="/" className="flex">
-          <Logo></Logo>
+          <Logo />
         </NavLink>
         <MenuIcon
           fontSize="large"
-          sx={{ color: "text.primary" }}
+          sx={{ color: "text.primary", cursor: "pointer" }}
           onClick={() => toggleDrawer(true)}
         />
       </NavStack>
@@ -169,6 +186,7 @@ const App = (props) => {
             <Stack sx={{ alignItems: "end" }}>
               <CloseRounded
                 fontSize="large"
+                sx={{ cursor: "pointer" }}
                 onClick={() => toggleDrawer(false)}
               />
             </Stack>

@@ -1,4 +1,4 @@
-# 📜Introducing Scroll - Vision and Values
+# Scroll's Vision and Values
 
 The promise of Ethereum is to build a decentralized computing platform widely accessible to all. Though it has come a long way towards achieving this vision, untenably high gas fees and frequent congestion on the current network present a significant challenge for true accessibility. Of course, the Ethereum community is aware of these issues and has adopted a [rollup-centric roadmap](https://ethereum-magicians.org/t/a-rollup-centric-ethereum-roadmap/4698) to increase throughput. This roadmap focuses Ethereum on being the most decentralized settlement layer and moves execution to rollups on Layer 2.
 
@@ -40,7 +40,7 @@ From the beginning, we view the safety of user assets as paramount and will pres
 
 Censorship resistance is more challenging to achieve for rollups, and we are approaching it step by step. First, we have designed a decentralized proving protocol which allows rollup proofs to be outsourced to a community of Rollers. We hope to foster a robust Roller ecosystem competing to improve prover performance with hardware acceleration, and more importantly, enable users to run prover themselves and force their transactions to a rollup batch in case of the censorship. As a second step, we aim to achieve full decentralization by decentralizing the sequencer. By then, anyone will be able to run a sequencer so that transactions cannot be censored. This final step is an area of active research, and we hope to build it in conjunction with the community.
 
-## 📜Join us and learn more
+## Join us and learn more
 
 If our vision of scaling Ethereum in an open and community-driven way resonates with you, we are looking for values-aligned individuals to help Scroll become the most developer- and user-friendly scaling solution for Ethereum.
 

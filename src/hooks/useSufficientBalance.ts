@@ -37,7 +37,7 @@ function useSufficientBalance(
         estimatedGasCost = BigNumber.from(200e3).mul(gasPrice || 1e9);
       }
 
-      if (selectedToken.isNativeToken) {
+      if (selectedToken.native) {
         totalCost = estimatedGasCost.add(amount);
         enoughFeeBalance = ntb.gte(totalCost);
         enoughTokenBalance = enoughFeeBalance;
@@ -60,7 +60,7 @@ function useSufficientBalance(
           diff
         )} ${selectedToken.symbol}`;
 
-        if (!selectedToken.isNativeToken) {
+        if (!selectedToken.native) {
           message =
             "Insufficient balance to cover the cost of tx. Please add ETH to pay for tx fees.";
         }

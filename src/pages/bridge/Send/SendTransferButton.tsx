@@ -5,7 +5,7 @@ import SvgIcon from "@mui/material/SvgIcon";
 import { StyleContext } from "./useSendStyles";
 import { ReactComponent as TransferIcon } from "src/assets/svgs/transfer.svg";
 
-const SendTranferButton = ({ onClick }) => {
+const SendTranferButton = ({ disabled, onClick }) => {
   const styles = useContext(StyleContext);
   return (
     <div
@@ -13,12 +13,15 @@ const SendTranferButton = ({ onClick }) => {
         "flex",
         "items-center",
         "justify-center",
-        "cursor-pointer",
         styles.sendTransfer
       )}
-      onClick={onClick}
     >
-      <IconButton className="bg-white" disableRipple>
+      <IconButton
+        className="bg-white text-[#00A6F2]"
+        disabled={disabled}
+        disableRipple
+        onClick={onClick}
+      >
         <SvgIcon className={styles.sendTransferIcon} component={TransferIcon} />
       </IconButton>
     </div>

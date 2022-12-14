@@ -1,6 +1,7 @@
 # KZG in Practice: Polynomial Commitment Schemes and Their Usage in Scaling Ethereum
+*Written by Andy Arditi ([@\_andyrdt](https://twitter.com/_andyrdt)).*
 
-_Thanks to Yi Sun and Kobi Gurkan for their feedback and reviews._
+*Thanks to Yi Sun and Kobi Gurkan for their feedback and review.*
 
 ## Introduction
 
