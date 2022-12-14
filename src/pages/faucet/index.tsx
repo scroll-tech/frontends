@@ -6,22 +6,24 @@ import useStorage from "squirrel-gill";
 import dayjs from "dayjs";
 import Faq from "./components/faq";
 import { Link, useSearchParams } from "react-router-dom";
-import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
-import Button from "@/components/Button/Button";
+import { Button, Snackbar, Alert as MuiAlert } from "@mui/material";
+import TextButton from "@/components/TextButton";
 import { getAddress } from "@ethersproject/address";
 import WithTwitter from "./components/WithTwitter";
 import { loginTwitter } from "./helper";
-import { requireEnv, truncateAddress, truncateHash } from "@/utils";
+import {
+  isProduction,
+  requireEnv,
+  truncateAddress,
+  truncateHash,
+} from "@/utils";
 import "./index.less";
 // import useSWR from 'swr'
 
 const CAN_CLAIM_FROM = "canClaimFrom",
   TX_HASH_DATA = "TxHashData";
 
-const L1_SCAN_URL = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1")
-const curEnv = requireEnv("REACT_APP_SCROLL_ENVIRONMENT");
-const isProduction = curEnv === "MAIN";
+const L1_SCAN_URL = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1");
 
 export default function Home() {
   const {
@@ -274,13 +276,11 @@ export default function Home() {
         <div className="w-full flex items-center flex-col mb-[120px] md:h-[630px]">
           <div className=" mt-[30px] mb-[80px] text-right max-w-[1268px] px-[8px] w-full">
             {walletCurrentAddress ? (
-              <button className="w-[178px] h-[50px] text-[#333] border border-[#333] text-base rounded-[4px] cursor-text font-semibold">
+              <Button className="w-[178px] p-[unset] pointer-events-none">
                 {truncateAddress(walletCurrentAddress as string)}
-              </button>
-            ) : (
-              <Button onClick={connectWallet} variant="outlined">
-                Connect Wallet
               </Button>
+            ) : (
+              <Button onClick={connectWallet}>Connect Wallet</Button>
             )}
           </div>
           <p className="text-[#333] text-center text-[26px]  leading-[32px] mb-[16px] font-display md:text-[34px]  md:leading-[40px] capitalize">
@@ -308,19 +308,16 @@ export default function Home() {
                 />
                 {networkStatus === 2 ? (
                   <p className="text-[14px]  max-w-[400px] leading-[26px] text-[#C14800] md:text-[16px]">
-                    Your wallet is connected to an unsupported network. Select{" "}
-                    <button className="font-bold" onClick={switchNetwork}>
-                      Scroll L1 {TESTNET_NAME}
-                    </button>{" "}
-                    on {walletName}.
+                    Your wallet is connected to an unsupported network.{" "}
+                    <TextButton onClick={switchNetwork}>
+                      Click here to switch to Scroll L1 {TESTNET_NAME}.
+                    </TextButton>
                   </p>
                 ) : (
                   <p className="text-[14px]  max-w-[400px] leading-[26px] text-[#C14800] md:text-[16px]">
-                    Please{" "}
-                    <button className="font-bold" onClick={connectWallet}>
-                      Connect Wallet
-                    </button>{" "}
-                    first.
+                    <TextButton onClick={connectWallet}>
+                      Click here to connect wallet.
+                    </TextButton>{" "}
                   </p>
                 )}
               </div>
