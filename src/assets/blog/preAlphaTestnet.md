@@ -1,4 +1,4 @@
-# 📜Announcing the Scroll pre-alpha testnet
+# Announcing the Scroll Pre-Alpha Testnet
 
 After over a year of building our zkEVM-based zkRollup in close collaboration with the PSE (Privacy and Scaling Explorations) group at the Ethereum Foundation, we are releasing the pre-alpha version of Scroll for external testers! In the spirit of building in the open with the community, we have prioritized getting community feedback quickly with this initial release.
 
@@ -32,7 +32,7 @@ Scroll’s plan for scaling Ethereum and serving billions of users and developer
 
 By giving users, developers and the broader community progressively more functionality to test instead of releasing all features at once, we aim to isolate any bugs and UX difficulties early and often, allowing us to build towards the most robust, scalable solution that will stand the test of time.
 
-## 📜Join us and learn more
+## Join us and learn more
 
 To become an early tester or contributor, sign up to try out our pre-alpha testnet at [signup.scroll.io](https://signup.scroll.io/). In the meantime, if our vision of scaling Ethereum in an open and community-driven way resonates with you, we are looking for values-aligned individuals to help Scroll become the most developer- and user-friendly scaling solution for Ethereum.
 
