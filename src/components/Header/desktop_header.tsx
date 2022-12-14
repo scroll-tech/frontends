@@ -1,11 +1,11 @@
-import Logo from "@/components/Logo"
-import { medias } from "@/constants/medias"
-import { ExpandMore } from "@mui/icons-material"
-import { Box, Button, Container, Fade, Link, Stack } from "@mui/material"
-import { styled } from "@mui/system"
-import * as React from "react"
-import { NavLink } from "react-router-dom"
-import { homeNavigations, navigations } from "./constants"
+import Logo from "@/components/Logo";
+import { medias } from "@/constants/medias";
+import { ExpandMore, OpenInNew } from "@mui/icons-material";
+import { Box, Button, Container, Fade, Link, Stack } from "@mui/material";
+import { styled } from "@mui/system";
+import * as React from "react";
+import { NavLink } from "react-router-dom";
+import { homeNavigations, navigations } from "./constants";
 
 const StyledBox = styled(Stack)(
   ({ theme }) => `
@@ -203,7 +203,14 @@ const App = (props) => {
                           key={subItem.label}
                           href={subItem.href}
                         >
-                          {subItem.label}
+                          <Stack
+                            direction="row"
+                            alignItems="center"
+                            spacing={1}
+                          >
+                            <span>{subItem.label}</span>
+                            <OpenInNew sx={{ fontSize: "16px" }} />
+                          </Stack>
                         </LinkButton>
                       ) : (
                         <LinkStyledSubButton
@@ -236,7 +243,7 @@ const App = (props) => {
     <StyledBox>
       <HeaderContainer>
         <NavLink to="/" className="flex">
-          <Logo></Logo>
+          <Logo />
         </NavLink>
         <Box>{list()}</Box>
         {props.isHomepage ? (
