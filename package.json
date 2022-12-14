@@ -99,6 +99,7 @@
     "@types/jest": "^25.2.1",
     "@types/lodash": "^4.14.186",
     "@types/lodash.flatmap": "^4.5.6",
+    "@types/markdown-navbar": "^1.4.0",
     "@types/multicodec": "^1.0.0",
     "@types/node": "^13.13.5",
     "@types/qs": "^6.9.2",

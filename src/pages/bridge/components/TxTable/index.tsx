@@ -231,10 +231,12 @@ const TxRow = (props) => {
             >
               {truncateHash(tx.hash)}
             </Link>
-            <Typography variant="body2" color="textSecondary">
-              {fromStatusConfirmations[1]}/
-              {networks[+!tx.isL1].waitConfirmations} confirmations
-            </Typography>
+            {!!networks[+!tx.isL1].waitConfirmations && (
+              <Typography variant="body2" color="textSecondary">
+                {fromStatusConfirmations[1]}/
+                {networks[+!tx.isL1].waitConfirmations} confirmations
+              </Typography>
+            )}
           </Stack>
         </Stack>
 
@@ -252,11 +254,12 @@ const TxRow = (props) => {
             ) : (
               <span className="leading-normal flex-1">-</span>
             )}
-
-            <Typography variant="body2" color="textSecondary">
-              {toStatusConfirmations[1]}/{networks[+tx.isL1].waitConfirmations}{" "}
-              confirmations
-            </Typography>
+            {!!networks[+tx.isL1].waitConfirmations && (
+              <Typography variant="body2" color="textSecondary">
+                {toStatusConfirmations[1]}/
+                {networks[+tx.isL1].waitConfirmations} confirmations
+              </Typography>
+            )}
           </Stack>
         </Stack>
       </TableCell>

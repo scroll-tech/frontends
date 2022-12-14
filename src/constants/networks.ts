@@ -1,6 +1,6 @@
 // TODO: Refactor network info into a scroll-testnet-wide spot
-import { requireEnv } from "@/utils"
-import { ChainId, ETH_SYMBOL, RPCUrl, USDC_SYMBOL } from "./common"
+import { requireEnv } from "@/utils";
+import { ChainId, ETH_SYMBOL, RPCUrl, USDC_SYMBOL } from "./common";
 
 const curEnv = requireEnv("REACT_APP_SCROLL_ENVIRONMENT");
 const l1Explorer = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1");
@@ -19,7 +19,7 @@ export const networks = [
     nativeTokenSymbol: ETH_SYMBOL,
     isLayer1: true,
     isL1: true,
-    waitConfirmations: 12,
+    waitConfirmations: 6,
   },
   {
     name: "Scroll L2 Testnet" + (curEnv === "MAIN" ? "" : " [" + curEnv + "]"),
@@ -32,7 +32,7 @@ export const networks = [
     nativeTokenSymbol: ETH_SYMBOL,
     isLayer1: false,
     isL1: false,
-    waitConfirmations: 1,
+    waitConfirmations: 0,
   },
 ];
 
