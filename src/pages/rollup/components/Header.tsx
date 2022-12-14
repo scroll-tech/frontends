@@ -27,16 +27,22 @@ const AccountButton = styled(Button)(({ theme }) => ({
 }));
 
 const Header = () => {
-  const { walletCurrentAddress, chainId, walletName } = useWeb3Context();
+  const { walletCurrentAddress, connectWallet } = useWeb3Context();
   const truncatedAccountHash = (hash: string) => {
     return hash ? `${hash.substring(0, 6)}…${hash.substring(38, 42)}` : "-";
   };
   return (
     <Box className=" mx-auto">
       <AccountBox>
-        <AccountButton>
-          {truncatedAccountHash(walletCurrentAddress as string)}
-        </AccountButton>
+        {walletCurrentAddress ? (
+          <AccountButton>
+            {truncatedAccountHash(walletCurrentAddress as string)}
+          </AccountButton>
+        ) : (
+          <Button onClick={connectWallet} variant="outlined">
+            Connect Wallet
+          </Button>
+        )}
       </AccountBox>
       <Typography variant="h3" align="center" sx={{ marginBottom: "1.2rem" }}>
         Rollup Explorer
