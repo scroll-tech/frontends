@@ -1,25 +1,28 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  Dispatch,
+  SetStateAction,
+  useMemo,
+} from "react";
 import { JsonRpcProvider } from "@ethersproject/providers";
 import { ethers, providers } from "ethers";
-import useSWR from "swr";
 import { ChainId, RPCUrl, GatewayRouterProxyAddr } from "@/constants";
-import { networks, nativeTokenList, Token } from "@/constants/networks";
+import { networks } from "@/constants/networks";
 import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import L1_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L1_GATEWAY_ROUTER_PROXY_ADDR.json";
 import L2_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L2_GATEWAY_ROUTER_PROXY_ADDR.json";
 import useTxHistory, { TxHistory } from "@/hooks/useTxHistory";
-import { isProduction } from "@/utils";
 
 type AppContextProps = {
   networks: any[];
   networksAndSigners: any;
   txHistory: TxHistory;
-  tokenList: Token[];
 };
 
 const AppContext = createContext<AppContextProps | undefined>(undefined);
-
-const branchName = isProduction ? "main" : "staging";
 
 const AppContextProvider = ({ children }: any) => {
   const { provider, walletCurrentAddress, chainId } = useWeb3Context();
@@ -76,18 +79,6 @@ const AppContextProvider = ({ children }: any) => {
     });
   };
 
-  const { data: tokenList, error } = useSWR(
-    `https://cdn.jsdelivr.net/gh/scroll-tech/token-list@${branchName}/scroll.tokenlist.json`,
-    async (url) => {
-      const res = await fetch(url);
-      if (res.ok) {
-        const data = await res.json();
-        return [...nativeTokenList, ...data.tokens];
-      }
-      return null;
-    }
-  );
-
   useEffect(() => {
     if (provider && walletCurrentAddress) {
       update(provider, walletCurrentAddress);
@@ -100,7 +91,6 @@ const AppContextProvider = ({ children }: any) => {
         networks,
         networksAndSigners,
         txHistory,
-        tokenList: tokenList ?? nativeTokenList,
       }}
     >
       {children}

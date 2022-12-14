@@ -1,5 +1,5 @@
-import find from "lodash/find";
-import { DependencyList } from "react";
+import find from "lodash/find"
+import { DependencyList } from "react"
 
 export const shallowEquals = (a?: DependencyList, b?: DependencyList) => {
   if (a?.length !== b?.length) return false;
@@ -28,6 +28,3 @@ export function requireEnv(entry) {
 export const generateExploreLink = (explorer, hash) => {
   return `${explorer}/tx/${hash}`;
 };
-
-export const isProduction =
-  requireEnv("REACT_APP_SCROLL_ENVIRONMENT") === "MAIN";

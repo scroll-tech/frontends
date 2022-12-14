@@ -102,11 +102,11 @@ const TxTable = (props: any) => {
             </TableHead>
             <TableBody>
               {loading ? (
-                <CircularProgress />
+                <CircularProgress></CircularProgress>
               ) : (
                 <>
                   {data?.map((tx: any) => (
-                    <TxRow key={tx.hash} tx={tx} />
+                    <TxRow key={tx.hash} tx={tx}></TxRow>
                   ))}
                 </>
               )}
@@ -145,11 +145,9 @@ const TxRow = (props) => {
       if (!blockNumbers) {
         return ["Synchronizing", 0];
       }
-
-      const confirmations =
-        blockNumber && blockNumbers[+!(isL1 ^ to)] - blockNumber > 0
-          ? blockNumbers[+!(isL1 ^ to)] - blockNumber
-          : 0;
+      const confirmations = blockNumber
+        ? blockNumbers[+!(isL1 ^ to)] - blockNumber
+        : 0;
       const waitConfirmations = networks[+!(isL1 ^ to)].waitConfirmations;
       if (confirmations >= waitConfirmations) {
         return ["Success", waitConfirmations];
@@ -183,7 +181,7 @@ const TxRow = (props) => {
                     ? classes.successChip
                     : classes.pendingChip
                 )}
-              />
+              ></Chip>
               <Chip
                 label={toStatusConfirmations[0]}
                 className={cx(
@@ -192,7 +190,7 @@ const TxRow = (props) => {
                     ? classes.successChip
                     : classes.pendingChip
                 )}
-              />
+              ></Chip>
             </>
           ) : (
             <>
@@ -215,7 +213,11 @@ const TxRow = (props) => {
       <TableCell className="w-full">
         <span>{tx.amount} </span>
         {symbolLoading ? (
-          <Skeleton variant="text" width="5rem" className="inline-block" />
+          <Skeleton
+            variant="text"
+            width="5rem"
+            className="inline-block"
+          ></Skeleton>
         ) : (
           <span>{symbol}</span>
         )}
@@ -231,12 +233,10 @@ const TxRow = (props) => {
             >
               {truncateHash(tx.hash)}
             </Link>
-            {!!networks[+!tx.isL1].waitConfirmations && (
-              <Typography variant="body2" color="textSecondary">
-                {fromStatusConfirmations[1]}/
-                {networks[+!tx.isL1].waitConfirmations} confirmations
-              </Typography>
-            )}
+            <Typography variant="body2" color="textSecondary">
+              {fromStatusConfirmations[1]}/
+              {networks[+!tx.isL1].waitConfirmations} confirmations
+            </Typography>
           </Stack>
         </Stack>
 
@@ -254,12 +254,11 @@ const TxRow = (props) => {
             ) : (
               <span className="leading-normal flex-1">-</span>
             )}
-            {!!networks[+tx.isL1].waitConfirmations && (
-              <Typography variant="body2" color="textSecondary">
-                {toStatusConfirmations[1]}/
-                {networks[+tx.isL1].waitConfirmations} confirmations
-              </Typography>
-            )}
+
+            <Typography variant="body2" color="textSecondary">
+              {toStatusConfirmations[1]}/{networks[+tx.isL1].waitConfirmations}{" "}
+              confirmations
+            </Typography>
           </Stack>
         </Stack>
       </TableCell>

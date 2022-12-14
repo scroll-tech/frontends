@@ -24,7 +24,12 @@ const SelectedToken = ({ icon, children }) => {
 
   return (
     <div className={classes.seletedLabel}>
-      <SelectOption label={children} icon={icon} disabled />
+      <SelectOption
+        label={children}
+        icon={icon}
+        value={children}
+        disabled
+      ></SelectOption>
     </div>
   );
 };

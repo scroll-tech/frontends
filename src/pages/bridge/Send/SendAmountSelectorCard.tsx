@@ -6,8 +6,8 @@ import { Card, Typography, Skeleton, MenuItem } from "@mui/material";
 import LargeTextField from "../components/LargeTextField";
 import RaisedSelect from "../components/RaisedSelect";
 import SelectOption from "../components/RaisedSelect/SelectOption";
-import { Token } from "@/constants";
 import { toTokenDisplay } from "@/utils";
+import { tokens } from "@/constants/networks";
 
 import NetworkLabel from "./NetworkLabel";
 import SelectedToken from "./SelectedToken";
@@ -15,10 +15,9 @@ import SelectedToken from "./SelectedToken";
 type Props = {
   value?: string;
   label: string;
-  token: Token;
+  token?: any;
   onChange?: (value: string) => void;
   fromNetwork?: any;
-  tokenList?: Token[];
   toNetwork?: any;
   selectedNetwork?: any;
   networkOptions: any[];
@@ -28,7 +27,7 @@ type Props = {
   disableInput?: boolean;
   deadline?: any;
   setWarning?: (message: string) => void;
-  onChangeToken?: (event: ChangeEvent<{ value: Token }>) => void;
+  onChangeToken?: (event: ChangeEvent<{ value: unknown }>) => void;
 };
 
 const useStyles = makeStyles()((theme) => {
@@ -116,7 +115,6 @@ const SendAmountSelectorCard: FC<Props> = (props) => {
     token,
     onChange,
     selectedNetwork,
-    tokenList,
     balance,
     loadingBalance = false,
     disableInput = false,
@@ -173,7 +171,7 @@ const SendAmountSelectorCard: FC<Props> = (props) => {
     <Card className={classes.container}>
       <div className="flex justify-between items-center w-full">
         {isToCard ? (
-          <div />
+          <div></div>
         ) : (
           <LargeTextField
             className="flex-1"
@@ -186,16 +184,20 @@ const SendAmountSelectorCard: FC<Props> = (props) => {
         )}
 
         {isToCard ? (
-          <SelectedToken icon={token.logoURI}>{token.symbol}</SelectedToken>
+          <SelectedToken icon={token.TokenImage}>{token.symbol}</SelectedToken>
         ) : (
-          <RaisedSelect value={token} onChange={onChangeToken}>
-            {tokenList?.map((token: any) => (
+          <RaisedSelect value={token.symbol} onChange={onChangeToken}>
+            {Object.keys(tokens).map((token) => (
               <MenuItem
                 value={token}
-                key={token.symbol}
+                key={token}
                 className={classes.selectItem}
               >
-                <SelectOption icon={token.logoURI} label={token.symbol} />
+                <SelectOption
+                  value={token}
+                  icon={tokens[token].TokenImage}
+                  label={token}
+                />
               </MenuItem>
             ))}
           </RaisedSelect>
@@ -204,7 +206,7 @@ const SendAmountSelectorCard: FC<Props> = (props) => {
       <div className="flex justify-between items-center w-full mt-4">
         <NetworkLabel network={selectedNetwork} />
         {loadingBalance ? (
-          <Skeleton variant="text" width="15rem" />
+          <Skeleton variant="text" width="15rem"></Skeleton>
         ) : balance ? (
           <div className="flex items-center justify-end flex-wrap">
             <Typography variant="subtitle2" color="textSecondary" align="right">

@@ -1,8 +1,7 @@
 import { ChangeEvent, FC, useEffect, useMemo, useState } from "react";
 import { ethers } from "ethers";
-import useStorage from "squirrel-gill";
 import Alert from "@mui/material/Alert";
-import TextButton from "@/components/TextButton";
+import Link from "@/components/Link";
 import Button from "../components/Button";
 import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import SendAmountSelectorCard from "./SendAmountSelectorCard";
@@ -10,11 +9,9 @@ import SendAmountSelectorCard from "./SendAmountSelectorCard";
 import {
   StandardERC20GatewayProxyAddr,
   networks,
-  ChainId,
-  Token,
-  NativeToken,
-  ERC20Token,
   ETH_SYMBOL,
+  tokens,
+  ChainId,
 } from "@/constants";
 import { useApp } from "@/contexts/AppContextProvider";
 import {
@@ -34,72 +31,44 @@ import L1_erc20ABI from "@/assets/abis/L1_erc20ABI.json";
 import classNames from "classnames";
 
 const Send: FC = () => {
-  const [tokenSymbol, setTokenSymbol] = useStorage(
-    localStorage,
-    "bridgeTokenSymbol",
-    ETH_SYMBOL
-  );
   const { classes: styles, cx } = useSendStyles();
-  const { networksAndSigners, tokenList } = useApp();
+  const { networksAndSigners } = useApp();
 
   const [fromNetwork, setFromNetwork] = useState({} as any);
   const [toNetwork, setToNetwork] = useState({} as any);
+  const [selectedToken, setSelectedToken] = useState(tokens[ETH_SYMBOL]);
   const {
     checkConnectedChainId,
     chainId,
     walletName,
+    walletCurrentAddress,
     connectWallet,
   } = useWeb3Context();
-
-  const fromToken = useMemo(
-    () =>
-      tokenList.find(
-        (item) =>
-          item.chainId === fromNetwork.chainId && item.symbol === tokenSymbol
-      ) ?? (({} as any) as Token),
-    [tokenList, tokenSymbol, fromNetwork]
-  );
-
-  const toToken = useMemo(
-    () =>
-      tokenList.find(
-        (item) =>
-          item.chainId === toNetwork.chainId && item.symbol === tokenSymbol
-      ) ?? (({} as any) as Token),
-    [tokenList, tokenSymbol, toNetwork]
-  );
 
   const [fromTokenAmount, setFromTokenAmount] = useState<string>();
   const [sendError, setSendError] = useState<any>();
   const [error, setError] = useState<string | null | undefined>(null);
   const [approving, setApproving] = useState<boolean>(false);
 
-  const fromTokenList = useMemo(() => {
-    return fromNetwork.chainId
-      ? tokenList.filter((item) => item.chainId === fromNetwork.chainId)
-      : [];
-  }, [tokenList, fromNetwork]);
-
   // Change the bridge if user selects different token to send
-  const handleChangeToken = (event: ChangeEvent<{ value: Token }>) => {
-    setTokenSymbol(event.target.value.symbol);
+  const handleChangeToken = (event: ChangeEvent<{ value: unknown }>) => {
+    const tokenSymbol = event.target.value as string;
+    const selectedToken = tokens[tokenSymbol];
+    setSelectedToken(selectedToken);
   };
   const { balance: fromBalance, loading: loadingFromBalance } = useBalance(
-    fromToken,
+    selectedToken,
     fromNetwork
   );
-
   const { balance: toBalance, loading: loadingToBalance } = useBalance(
-    toToken,
+    selectedToken,
     toNetwork
   );
+
   useEffect(() => {
     if (chainId && Object.values(ChainId).includes(chainId)) {
-      const fromNetworkIndex = networks.findIndex(
-        (item) => item.chainId === chainId
-      );
-      setFromNetwork(networks[fromNetworkIndex]);
-      setToNetwork(networks[+!fromNetworkIndex]);
+      setFromNetwork(networks.find((item) => item.chainId === chainId));
+      setToNetwork(networks.find((item) => item.chainId !== chainId));
     } else if (chainId) {
       setFromNetwork(networks[0]);
       setToNetwork(networks[1]);
@@ -108,18 +77,18 @@ const Send: FC = () => {
       setFromNetwork(networks[0]);
       setToNetwork(networks[1]);
     }
-  }, [chainId, tokenList, tokenSymbol]);
+  }, [chainId]);
 
   const isCorrectNetwork = useMemo(
-    () => !!chainId && fromNetwork.chainId === chainId,
+    () => !!chainId && fromNetwork.networkId === chainId,
     [chainId, fromNetwork]
   );
 
   const { sufficientBalance, warning } = useSufficientBalance(
-    fromToken,
-    networksAndSigners[fromNetwork.chainId],
+    selectedToken,
+    networksAndSigners[fromNetwork.networkId],
     fromTokenAmount
-      ? amountToBN(fromTokenAmount, fromToken.decimals)
+      ? amountToBN(fromTokenAmount, selectedToken.decimals)
       : undefined,
     undefined,
     fromBalance ?? undefined,
@@ -128,19 +97,28 @@ const Send: FC = () => {
 
   // network->sufficient->tx error
   const warningTip = useMemo(() => {
-    if (!walletName) {
+    if (!walletCurrentAddress) {
       return (
-        <TextButton onClick={connectWallet}>
-          Click here to connect wallet.
-        </TextButton>
+        <>
+          Please{" "}
+          <Link
+            component="button"
+            sx={{
+              color: "warning.main",
+            }}
+            underline="none"
+            onClick={connectWallet}
+          >
+            Connect Wallet
+          </Link>{" "}
+          first
+        </>
       );
     } else if (!isCorrectNetwork) {
       return (
         <>
-          Your wallet is connected to an unsupported network.{" "}
-          <TextButton onClick={() => handleSwitchNetwork(fromNetwork.chainId)}>
-            Click here to switch to {fromNetwork.name}.
-          </TextButton>
+          Your wallet is connected to an unsupported network. Select{" "}
+          <b>{fromNetwork.name}</b> network on {walletName}.
         </>
       );
     } else if (warning) {
@@ -165,14 +143,7 @@ const Send: FC = () => {
       );
     }
     return null;
-  }, [
-    walletName,
-    connectWallet,
-    isCorrectNetwork,
-    warning,
-    sendError,
-    fromNetwork,
-  ]);
+  }, [isCorrectNetwork, warning, sendError]);
 
   // Switch the fromNetwork <--> toNetwork
   const handleSwitchDirection = () => {
@@ -203,7 +174,7 @@ const Send: FC = () => {
     setSendError,
     setError,
     toNetwork,
-    selectedToken: fromToken,
+    selectedToken,
   });
 
   useEffect(() => {
@@ -212,12 +183,12 @@ const Send: FC = () => {
     }
   }, [sending]);
 
-  const txValue = useMemo(() => `${fromTokenAmount} ${tokenSymbol}`, [
+  const txValue = useMemo(() => `${fromTokenAmount} ${selectedToken.symbol}`, [
     fromTokenAmount,
-    tokenSymbol,
+    selectedToken,
   ]);
 
-  const { checkApproval } = useApprove(fromToken);
+  const { checkApproval } = useApprove(selectedToken);
 
   const needsApproval = useAsyncMemo(async () => {
     if (
@@ -227,15 +198,15 @@ const Send: FC = () => {
       ) ||
       !Number(fromTokenAmount) ||
       chainId !== fromNetwork.chainId ||
-      (fromToken as NativeToken).native
+      selectedToken.isNativeToken
     ) {
       return false;
     }
 
     try {
-      const parsedAmount = amountToBN(fromTokenAmount, fromToken.decimals);
+      const parsedAmount = amountToBN(fromTokenAmount, selectedToken.decimals);
       const Token = new ethers.Contract(
-        (fromToken as ERC20Token).address,
+        (selectedToken as any).address[fromNetwork.chainId],
         L1_erc20ABI,
         networksAndSigners[chainId as number].signer
       );
@@ -248,15 +219,16 @@ const Send: FC = () => {
       console.log("~~~err", err);
       return false;
     }
-  }, [fromNetwork, fromToken, fromTokenAmount, checkApproval]);
+  }, [fromNetwork, selectedToken, fromTokenAmount, checkApproval]);
 
   const approveFromToken = async () => {
+    const networkId = Number(fromNetwork.networkId);
     // eslint-disable-next-line
-    const parsedAmount = amountToBN(fromTokenAmount, fromToken.decimals);
-    const isNetworkConnected = await checkConnectedChainId(fromNetwork.chainId);
+    const parsedAmount = amountToBN(fromTokenAmount, selectedToken.decimals);
+    const isNetworkConnected = await checkConnectedChainId(networkId);
     if (!isNetworkConnected) return;
     const Token = new ethers.Contract(
-      (fromToken as ERC20Token).address,
+      (selectedToken as any).address[fromNetwork.chainId],
       L1_erc20ABI,
       networksAndSigners[chainId as number].signer
     );
@@ -286,13 +258,14 @@ const Send: FC = () => {
     setFromTokenAmount(amountIn);
   };
 
-  const handleSwitchNetwork = async (chainId) => {
+  const handleSwitchNetwork = async (networkId) => {
     try {
       // cancel switch network in MetaMask would not throw error and the result is null just like successfully switched
-      await switchNetwork(chainId);
+      await switchNetwork(networkId);
     } catch (error) {
-      // when there is a switch-network popover in MetaMask and refreshing page would throw an error
       console.log(error, "error");
+      setFromNetwork(networks.find((item) => item.chainId === chainId));
+      setToNetwork(networks.find((item) => item.chainId !== chainId));
     }
   };
 
@@ -318,24 +291,20 @@ const Send: FC = () => {
         >
           <SendAmountSelectorCard
             value={fromTokenAmount}
-            token={fromToken}
+            token={selectedToken}
             label={"From"}
             onChange={handleChangeFromAmount}
             selectedNetwork={fromNetwork}
             networkOptions={networks}
             balance={fromBalance}
             loadingBalance={loadingFromBalance}
-            // fromNetwork={fromNetwork}
-            tokenList={fromTokenList}
+            fromNetwork={fromNetwork}
             onChangeToken={handleChangeToken}
           />
-          <SendTranferButton
-            disabled={!toToken.chainId}
-            onClick={handleSwitchDirection}
-          />
+          <SendTranferButton onClick={handleSwitchDirection} />
           <SendAmountSelectorCard
             value="0.1"
-            token={fromToken}
+            token={selectedToken}
             label={"To"}
             selectedNetwork={toNetwork}
             networkOptions={networks}
@@ -376,7 +345,7 @@ const Send: FC = () => {
               large
               color="primary"
             >
-              Send {tokenSymbol} to {toNetwork.name}
+              Send {selectedToken.symbol} to {toNetwork.name}
             </Button>
           )}
           <ApproveLoading
