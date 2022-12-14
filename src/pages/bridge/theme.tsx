@@ -283,7 +283,6 @@ const lightTheme = {
           fontSize: "1.6rem",
           fontWeight: 600,
           cursor: "pointer",
-          textDecorationColor: "#00A6F2",
         },
       },
     },

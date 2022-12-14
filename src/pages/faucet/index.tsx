@@ -312,19 +312,16 @@ export default function Home() {
                 />
                 {networkStatus === 2 ? (
                   <p className="text-[14px]  max-w-[400px] leading-[26px] text-[#C14800] md:text-[16px]">
-                    Your wallet is connected to an unsupported network. Select{" "}
+                    Your wallet is connected to an unsupported network.{" "}
                     <TextButton onClick={switchNetwork}>
-                      Scroll L1 {TESTNET_NAME}
-                    </TextButton>{" "}
-                    on {walletName}.
+                      Click here to switch to Scroll L1 {TESTNET_NAME}.
+                    </TextButton>
                   </p>
                 ) : (
                   <p className="text-[14px]  max-w-[400px] leading-[26px] text-[#C14800] md:text-[16px]">
-                    Please{" "}
                     <TextButton onClick={connectWallet}>
-                      Connect Wallet
+                      Click here to connect wallet.
                     </TextButton>{" "}
-                    first.
                   </p>
                 )}
               </div>

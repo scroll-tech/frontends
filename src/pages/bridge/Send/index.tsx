@@ -130,19 +130,17 @@ const Send: FC = () => {
   const warningTip = useMemo(() => {
     if (!walletName) {
       return (
-        <>
-          Please <TextButton onClick={connectWallet}>Connect Wallet</TextButton>{" "}
-          first
-        </>
+        <TextButton onClick={connectWallet}>
+          Click here to connect wallet.
+        </TextButton>
       );
     } else if (!isCorrectNetwork) {
       return (
         <>
-          Your wallet is connected to an unsupported network. Select{" "}
+          Your wallet is connected to an unsupported network.{" "}
           <TextButton onClick={() => handleSwitchNetwork(fromNetwork.chainId)}>
-            {fromNetwork.name}
-          </TextButton>{" "}
-          network on {walletName}.
+            Click here to switch to {fromNetwork.name}.
+          </TextButton>
         </>
       );
     } else if (warning) {
