@@ -176,7 +176,7 @@
     "styled-components": "^4.2.0",
     "tailwindcss": "^3.1.8",
     "typescript": "^3.8.3",
-    "uniswap-v2-sdk-scroll": "https://github.com/scroll-tech/uniswap-v2-sdk-scroll.git#cdf919034db8a59d8435ae15d1b7e5446d117e1f",
+    "uniswap-v2-sdk-scroll": "https://github.com/scroll-tech/uniswap-v2-sdk-scroll.git#b60915213fb00508770ce348122ba268ee2a626f",
     "util": "^0.12.5"
   },
   "resolutions": {
