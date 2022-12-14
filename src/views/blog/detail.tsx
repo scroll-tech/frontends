@@ -133,7 +133,7 @@ const BlogDetail = () => {
               className={`${
                 hiddenHeadingsUnderLevel2 ? "hidden-levels" : ""
               } markdown-navbar`}
-              source={blog}
+              source={blog as string}
               headingTopOffset={100}
               ordered={false}
             />
