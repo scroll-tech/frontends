@@ -16706,9 +16706,9 @@ unist-util-visit@^4.0.0:
     unist-util-is "^5.0.0"
     unist-util-visit-parents "^5.1.1"
 
-"uniswap-v2-sdk-scroll@https://github.com/scroll-tech/uniswap-v2-sdk-scroll.git#cdf919034db8a59d8435ae15d1b7e5446d117e1f":
+"uniswap-v2-sdk-scroll@https://github.com/scroll-tech/uniswap-v2-sdk-scroll.git#b60915213fb00508770ce348122ba268ee2a626f":
   version "3.10.5"
-  resolved "https://github.com/scroll-tech/uniswap-v2-sdk-scroll.git#cdf919034db8a59d8435ae15d1b7e5446d117e1f"
+  resolved "https://github.com/scroll-tech/uniswap-v2-sdk-scroll.git#b60915213fb00508770ce348122ba268ee2a626f"
   dependencies:
     "@uniswap/v2-core" "^1.0.0"
     big.js "^5.2.2"
