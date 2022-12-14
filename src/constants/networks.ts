@@ -1,6 +1,6 @@
 // TODO: Refactor network info into a scroll-testnet-wide spot
 import { requireEnv } from "@/utils";
-import { ChainId, ETH_SYMBOL, RPCUrl, USDC_SYMBOL } from "./common";
+import { ChainId, ETH_SYMBOL, RPCUrl } from "./common";
 
 const curEnv = requireEnv("REACT_APP_SCROLL_ENVIRONMENT");
 const l1Explorer = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1");
@@ -10,8 +10,7 @@ export const networks = [
   {
     name: "Scroll L1 Testnet" + (curEnv === "MAIN" ? "" : " [" + curEnv + "]"),
     slug: "layer1",
-    imageUrl:
-      "https://prealpha.scroll.io/bridge/static/media/mainnet.0e3a60e3.svg",
+    imageUrl: "/imgs/bridge/mainnet.svg",
     provider: null,
     rpcUrl: RPCUrl.SCROLL_LAYER_1,
     explorer: process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L1,
@@ -24,7 +23,7 @@ export const networks = [
   {
     name: "Scroll L2 Testnet" + (curEnv === "MAIN" ? "" : " [" + curEnv + "]"),
     slug: "layer2",
-    imageUrl: "https://scroll.io/img/logo.png",
+    imageUrl: "/logo.png",
     provider: null,
     rpcUrl: RPCUrl.SCROLL_LAYER_2,
     explorer: process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L2,

@@ -6,10 +6,8 @@ import useStorage from "squirrel-gill";
 import dayjs from "dayjs";
 import Faq from "./components/faq";
 import { Link, useSearchParams } from "react-router-dom";
-import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
+import { Button, Snackbar, Alert as MuiAlert } from "@mui/material";
 import TextButton from "@/components/TextButton";
-import Button from "@/components/Button/Button";
 import { getAddress } from "@ethersproject/address";
 import WithTwitter from "./components/WithTwitter";
 import { loginTwitter } from "./helper";
@@ -278,13 +276,11 @@ export default function Home() {
         <div className="w-full flex items-center flex-col mb-[120px] md:h-[630px]">
           <div className=" mt-[30px] mb-[80px] text-right max-w-[1268px] px-[8px] w-full">
             {walletCurrentAddress ? (
-              <button className="w-[178px] h-[50px] text-[#333] border border-[#333] text-base rounded-[6px] cursor-text font-semibold">
+              <Button className="w-[178px] p-[unset] pointer-events-none">
                 {truncateAddress(walletCurrentAddress as string)}
-              </button>
-            ) : (
-              <Button onClick={connectWallet} variant="outlined">
-                Connect Wallet
               </Button>
+            ) : (
+              <Button onClick={connectWallet}>Connect Wallet</Button>
             )}
           </div>
           <p className="text-[#333] text-center text-[26px]  leading-[32px] mb-[16px] font-display md:text-[34px]  md:leading-[40px] capitalize">

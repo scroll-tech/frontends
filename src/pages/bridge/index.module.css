@@ -1,8 +1,0 @@
-/* TODO: 目前影响了tailwindcss（rem） 待修复  */
-:root {
-  font-size: 62.5%;
-}
-
-html {
-  overflow: unset !important;
-}

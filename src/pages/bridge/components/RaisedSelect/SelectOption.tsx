@@ -19,7 +19,7 @@ const useStyles = makeStyles()((theme) => {
       height: "100%",
       justifyContent: "center",
       alignItems: "center",
-      minWidth: 0,
+      minWidth: "unset !important",
     },
     icon: {
       display: "flex",
