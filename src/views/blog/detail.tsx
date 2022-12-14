@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, CircularProgress } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
@@ -56,6 +56,7 @@ const BlogNavbar = styled(Box)(({ theme }) => ({
 const BlogDetail = () => {
   const [blog, setBlog] = useState<null | string>(null);
   const [moreBlog, setMoreBlog] = useState<any>([]);
+  const [loading, setLoading] = useState(true);
   const [hiddenHeadingsUnderLevel2, setHiddenHeadingsUnderLevel2] = useState(
     false
   );
@@ -75,6 +76,7 @@ const BlogDetail = () => {
         .then((response) => response.text())
         .then((text) => {
           handleHeadingsUnderLevel2(text);
+          setLoading(false);
           setBlog(text);
         });
     } catch (error) {
@@ -100,53 +102,62 @@ const BlogDetail = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
-  if (blog) {
+  if (loading) {
     return (
-      <Box>
-        <BlogContainer className="wrapper">
-          <ReactMarkdown
-            children={blog as string}
-            remarkPlugins={[remarkMath, remarkGfm]}
-            rehypePlugins={[rehypeKatex, rehypeRaw]}
-            className="markdown-body"
-          />
-          <Box sx={{ width: "32rem", flexShrink: 0, position: "relative" }}>
-            <BlogNavbar>
-              <Link to="/blog">
-                <ArrowBackIosIcon />
-                <Typography>All Articles</Typography>
-              </Link>
-              <MarkdownNavbar
-                className={`${
-                  hiddenHeadingsUnderLevel2 ? "hidden-levels" : ""
-                } markdown-navbar`}
-                source={blog}
-                headingTopOffset={100}
-                ordered={false}
-              />
-            </BlogNavbar>
-          </Box>
-        </BlogContainer>
-        {isMobile ? (
-          <Box sx={{ paddingBottom: "6rem" }}>
-            <Typography
-              variant="h2"
-              sx={{
-                textAlign: "center",
-                marginBottom: {
-                  md: "4rem",
-                },
-              }}
-            >
-              More articles from Scroll
-            </Typography>
-            <Articles blogs={moreBlog} />
-          </Box>
-        ) : null}
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="80vh"
+      >
+        <CircularProgress sx={{ color: "#EB7106" }} />
       </Box>
     );
   }
-  return null;
+  return (
+    <Box>
+      <BlogContainer className="wrapper">
+        <ReactMarkdown
+          children={blog as string}
+          remarkPlugins={[remarkMath, remarkGfm]}
+          rehypePlugins={[rehypeKatex, rehypeRaw]}
+          className="markdown-body"
+        />
+        <Box sx={{ width: "32rem", flexShrink: 0, position: "relative" }}>
+          <BlogNavbar>
+            <Link to="/blog">
+              <ArrowBackIosIcon />
+              <Typography>All Articles</Typography>
+            </Link>
+            <MarkdownNavbar
+              className={`${
+                hiddenHeadingsUnderLevel2 ? "hidden-levels" : ""
+              } markdown-navbar`}
+              source={blog}
+              headingTopOffset={100}
+              ordered={false}
+            />
+          </BlogNavbar>
+        </Box>
+      </BlogContainer>
+      {isMobile ? (
+        <Box sx={{ paddingBottom: "6rem" }}>
+          <Typography
+            variant="h2"
+            sx={{
+              textAlign: "center",
+              marginBottom: {
+                md: "4rem",
+              },
+            }}
+          >
+            More articles from Scroll
+          </Typography>
+          <Articles blogs={moreBlog} />
+        </Box>
+      ) : null}
+    </Box>
+  );
 };
 
 export default BlogDetail;
