@@ -2,7 +2,7 @@ const homeNavigations: any = [
   {
     label: "Home",
     key: "",
-    href: "",
+    href: "/",
   },
   {
     label: "Blog",
@@ -68,5 +68,4 @@ const navigations = [
   },
 ];
 
-export { navigations, homeNavigations }
-
+export { navigations, homeNavigations };
