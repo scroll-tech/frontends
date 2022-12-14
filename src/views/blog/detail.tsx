@@ -17,6 +17,8 @@ import Articles from "./articles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 
+const MAX_H3_COUNT = 10;
+
 const Link = styled(RouterLink)({
   display: "flex",
   alignItems: "center",
@@ -54,6 +56,9 @@ const BlogNavbar = styled(Box)(({ theme }) => ({
 const BlogDetail = () => {
   const [blog, setBlog] = useState<null | string>(null);
   const [moreBlog, setMoreBlog] = useState<any>([]);
+  const [hiddenHeadingsUnderLevel2, setHiddenHeadingsUnderLevel2] = useState(
+    false
+  );
   const params = useParams();
 
   useEffect(() => {
@@ -69,6 +74,7 @@ const BlogDetail = () => {
       fetch(blogPath)
         .then((response) => response.text())
         .then((text) => {
+          handleHeadingsUnderLevel2(text);
           setBlog(text);
         });
     } catch (error) {
@@ -76,6 +82,13 @@ const BlogDetail = () => {
     }
     getMoreBlog();
   }, []);
+
+  const handleHeadingsUnderLevel2 = (text) => {
+    const regexp = /### /gi;
+    const matches = text.match(regexp);
+    const hiddenHeadingsUnderLevel2 = matches?.length > MAX_H3_COUNT;
+    setHiddenHeadingsUnderLevel2(hiddenHeadingsUnderLevel2);
+  };
 
   const getMoreBlog = () => {
     const blogs = shuffle(
@@ -104,7 +117,9 @@ const BlogDetail = () => {
                 <Typography>All Articles</Typography>
               </Link>
               <MarkdownNavbar
-                className="markdown-navbar"
+                className={`${
+                  hiddenHeadingsUnderLevel2 ? "hidden-levels" : ""
+                } markdown-navbar`}
                 source={blog}
                 headingTopOffset={100}
                 ordered={false}

@@ -183,17 +183,7 @@ const Blog = () => {
     if (isDesktop) {
       return (
         <Box sx={{ marginLeft: "4rem", width: "26rem" }}>
-          <FilterTypeName>Order by</FilterTypeName>
-          {listType.map((type) => (
-            <FilterItem
-              onClick={() => hanleFilter("sort", type)}
-              key={type}
-              className={type === queryForm.sort ? "active" : ""}
-            >
-              {type}
-            </FilterItem>
-          ))}
-          <FilterTypeName sx={{ marginTop: "6.8rem" }}>Category</FilterTypeName>
+          <FilterTypeName>Category</FilterTypeName>
           {categories.map((category) => (
             <FilterItem
               onClick={() => hanleFilter("category", category)}
@@ -201,6 +191,17 @@ const Blog = () => {
               className={category === queryForm.category ? "active" : ""}
             >
               {category}
+            </FilterItem>
+          ))}
+
+          <FilterTypeName sx={{ marginTop: "6.8rem" }}>Order by</FilterTypeName>
+          {listType.map((type) => (
+            <FilterItem
+              onClick={() => hanleFilter("sort", type)}
+              key={type}
+              className={type === queryForm.sort ? "active" : ""}
+            >
+              {type}
             </FilterItem>
           ))}
         </Box>
