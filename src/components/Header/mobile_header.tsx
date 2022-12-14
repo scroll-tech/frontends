@@ -130,7 +130,6 @@ const App = (props) => {
                       sx={{ pl: 4 }}
                       key={subItem.key}
                     >
-                      {/* TODO: https://github.com/MetaMask/metamask-mobile/issues/4890 */}
                       <ExternalLink underline="none" href={subItem.href}>
                         {subItem.label}
                       </ExternalLink>
@@ -164,7 +163,7 @@ const App = (props) => {
         alignItems="center"
       >
         <NavLink to="/" className="flex">
-          <Logo />
+          <Logo></Logo>
         </NavLink>
         <MenuIcon
           fontSize="large"

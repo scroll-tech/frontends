@@ -4,7 +4,7 @@ module.exports = function(app) {
   app.use(
     "/faucetapi",
     createProxyMiddleware({
-      target: process.env.REACT_APP_API_BASE_URI + "/faucet",
+      target: process.env.REACT_APP_BASE_URI + "/faucet",
       changeOrigin: true,
       pathRewrite: { "/faucetapi": "" },
     })
@@ -12,11 +12,18 @@ module.exports = function(app) {
   app.use(
     "/bridgeapi",
     createProxyMiddleware({
-      target: process.env.REACT_APP_API_BASE_URI + "/bridgehistory",
+      target: process.env.REACT_APP_BASE_URI + "/bridgehistoryapi",
       changeOrigin: true,
       secure: false,
       pathRewrite: { "/bridgeapi": "/api" },
       timeout: 50000,
+    })
+  );
+  app.use(
+    "/whitelist",
+    createProxyMiddleware({
+      target: process.env.REACT_APP_BASE_URI,
+      changeOrigin: true,
     })
   );
 };

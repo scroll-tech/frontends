@@ -31,7 +31,7 @@ type Props = {
   connectWallet: () => void;
   disconnectWallet: () => void;
   walletName: string | undefined;
-  checkConnectedChainId: (chainId: number) => boolean;
+  checkConnectedChainId: (networkId: number) => boolean;
 };
 
 const Web3Context = createContext<Props | undefined>(undefined);
@@ -44,8 +44,8 @@ const cacheKey = "connectedWallets";
 const web3Onboard = init({
   wallets: [injected],
   chains: networks.map(
-    ({ chainId, nativeTokenSymbol, name, rpcUrl, imageUrl }) => ({
-      id: toHexadecimal(chainId),
+    ({ networkId, nativeTokenSymbol, name, rpcUrl, imageUrl }) => ({
+      id: toHexadecimal(networkId),
       token: nativeTokenSymbol as string,
       label: name,
       rpcUrl: rpcUrl as string,
@@ -156,8 +156,11 @@ const Web3ContextProvider = ({ children }: any) => {
   };
 
   const checkConnectedChainId = useCallback(
-    (chainId: number): boolean => {
-      if (connectedChain && chainId === convertHexadecimal(connectedChain.id)) {
+    (networkId: number): boolean => {
+      if (
+        connectedChain &&
+        networkId === convertHexadecimal(connectedChain.id)
+      ) {
         return true;
       }
       return false;

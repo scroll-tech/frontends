@@ -19,7 +19,7 @@ const useStyles = makeStyles()((theme) => {
       height: "100%",
       justifyContent: "center",
       alignItems: "center",
-      minWidth: "unset !important",
+      minWidth: 0,
     },
     icon: {
       display: "flex",
@@ -45,6 +45,7 @@ const useStyles = makeStyles()((theme) => {
 });
 
 type Props = {
+  value?: string;
   label?: string;
   icon?: string;
   disabled?: boolean;

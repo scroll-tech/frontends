@@ -16,7 +16,7 @@ const useApprove = (token) => {
         throw new Error("Wallet not connected");
       }
 
-      if (token.native) {
+      if (token.isNativeToken) {
         return false;
       }
 
@@ -26,7 +26,7 @@ const useApprove = (token) => {
       }
 
       return true;
-    } catch (err) {
+    } catch (err: any) {
       console.log("err", err);
       return false;
     }
