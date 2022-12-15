@@ -2,12 +2,20 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { JsonRpcProvider } from "@ethersproject/providers";
 import { ethers, providers } from "ethers";
 import useSWR from "swr";
-import { ChainId, RPCUrl, GatewayRouterProxyAddr } from "@/constants";
+import useStorage from "squirrel-gill";
+import { Snackbar, Alert } from "@mui/material";
+import {
+  ChainId,
+  RPCUrl,
+  ETH_SYMBOL,
+  GatewayRouterProxyAddr,
+} from "@/constants";
 import { networks, nativeTokenList, Token } from "@/constants/networks";
 import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 import L1_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L1_GATEWAY_ROUTER_PROXY_ADDR.json";
 import L2_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L2_GATEWAY_ROUTER_PROXY_ADDR.json";
 import useTxHistory, { TxHistory } from "@/hooks/useTxHistory";
+import { tokenListUrl } from "@/apis/dynamic";
 import { isProduction } from "@/utils";
 
 type AppContextProps = {
@@ -23,11 +31,17 @@ const branchName = isProduction ? "main" : "staging";
 
 const AppContextProvider = ({ children }: any) => {
   const { provider, walletCurrentAddress, chainId } = useWeb3Context();
-
+  const [tokenSymbol, setTokenSymbol] = useStorage(
+    localStorage,
+    "bridgeTokenSymbol",
+    ETH_SYMBOL
+  );
   const [networksAndSigners, setNetworksAndSigners] = useState({
     [ChainId.SCROLL_LAYER_1]: {},
     [ChainId.SCROLL_LAYER_2]: {},
   });
+
+  const [fetchTokenListError, setFetchTokenListError] = useState("");
 
   const txHistory = useTxHistory(networksAndSigners);
 
@@ -76,23 +90,26 @@ const AppContextProvider = ({ children }: any) => {
     });
   };
 
-  const { data: tokenList, error } = useSWR(
-    `https://cdn.jsdelivr.net/gh/scroll-tech/token-list@${branchName}/scroll.tokenlist.json`,
-    async (url) => {
-      const res = await fetch(url);
-      if (res.ok) {
-        const data = await res.json();
-        return [...nativeTokenList, ...data.tokens];
-      }
-      return null;
+  const { data: tokenList } = useSWR(tokenListUrl(branchName), async (url) => {
+    const res = await fetch(url);
+    if (res.ok) {
+      const data = await res.json();
+      return [...nativeTokenList, ...data.tokens];
     }
-  );
-
+    // const errorMsg = await res.text();
+    setFetchTokenListError("Fail to fetch token list");
+    setTokenSymbol(ETH_SYMBOL);
+    return null;
+  });
   useEffect(() => {
     if (provider && walletCurrentAddress) {
       update(provider, walletCurrentAddress);
     }
   }, [provider, walletCurrentAddress, chainId]);
+
+  const handleClose = () => {
+    setFetchTokenListError("");
+  };
 
   return (
     <AppContext.Provider
@@ -104,6 +121,15 @@ const AppContextProvider = ({ children }: any) => {
       }}
     >
       {children}
+      <Snackbar
+        open={!!fetchTokenListError}
+        autoHideDuration={6000}
+        onClose={handleClose}
+      >
+        <Alert severity="error" onClose={handleClose}>
+          {fetchTokenListError}
+        </Alert>
+      </Snackbar>
     </AppContext.Provider>
   );
 };
