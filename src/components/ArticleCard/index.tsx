@@ -37,6 +37,7 @@ const Card = styled(Box)(
         max-width: 84rem;
         text-align: left;
         margin: 0 auto;
+      overflow: hidden;
         &.small {
           max-width: 38rem;
           flex-direction: column;
@@ -92,7 +93,6 @@ const ArticlePoster = styled(Box)(
   ({ theme }) => `
       width: 38rem;
       height: 23.3rem;
-      // background: #ffb1c3;
       padding: 2rem 3rem;
       border-radius: 5px;
       margin-right: 6rem;
@@ -125,7 +125,7 @@ const ArticleCard = ({ blog, small = false }) => {
     <Card className={small ? "small" : ""}>
       <ArticlePoster
         sx={{
-          background: `url(${blog.posterImg}) center / contain no-repeat`,
+          background: `url(${blog.posterImg}) top center / contain no-repeat`,
         }}
         className={small ? "small" : ""}
         onClick={handleClick}
