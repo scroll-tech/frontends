@@ -120,14 +120,14 @@ const BlogDetail = () => {
       <Helmet>
         <title>{currentBlog.title} - Scroll</title>
         <meta name="description" content={currentBlog.summary} />
-        <meta property="og:title" content={currentBlog.title + "- Scroll"} />
+        <meta property="og:title" content={currentBlog.title + " - Scroll"} />
         <meta property="og:description" content={currentBlog.summary} />
         <meta
           property="og:image"
           content="https://scroll-io.netlify.app/imgs/homepage/blog/poster_2.png"
         />
         <meta property="og:url" content="scroll.io" />
-        <meta name="twitter:title" content={currentBlog.title + "- Scroll"} />
+        <meta name="twitter:title" content={currentBlog.title + " - Scroll"} />
         <meta name="twitter:description" content={currentBlog.summary} />
         <meta
           name="twitter:image"
