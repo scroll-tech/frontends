@@ -53,7 +53,7 @@ const BlockTable: React.FC<BlockTableProps> = (props: { blocks: any }) => {
             <StyledTableRow key={row.hash}>
               <TableCell scope="row">
                 <Link
-                  href={`${l2ExplorerUrl}block/${row.hash}`}
+                  href={`${l2ExplorerUrl}/block/${row.hash}`}
                   underline="none"
                   sx={{ fontWeight: 600, color: "#00A6F2" }}
                 >
@@ -62,7 +62,7 @@ const BlockTable: React.FC<BlockTableProps> = (props: { blocks: any }) => {
               </TableCell>
               <TableCell>
                 <Link
-                  href={`${l2ExplorerUrl}block/${row.hash}`}
+                  href={`${l2ExplorerUrl}/block/${row.hash}`}
                   underline="none"
                   sx={{ fontWeight: 600, color: "#00A6F2" }}
                 >
