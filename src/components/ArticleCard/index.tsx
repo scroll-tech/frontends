@@ -117,7 +117,7 @@ const ArticleCard = ({ blog, small = false }) => {
     if (blog.externalLink) {
       window.location.href = blog.externalLink;
     } else {
-      navigate(blog.blogLink);
+      navigate("/blog/" + blog.id);
     }
   };
 
