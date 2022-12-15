@@ -115,6 +115,10 @@ const BlogDetail = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
+  const getPosterUri = () => {
+    return window.location.origin + currentBlog.posterImg;
+  };
+
   return (
     <Box>
       <Helmet>
@@ -122,17 +126,11 @@ const BlogDetail = () => {
         <meta name="description" content={currentBlog.summary} />
         <meta property="og:title" content={currentBlog.title + " - Scroll"} />
         <meta property="og:description" content={currentBlog.summary} />
-        <meta
-          property="og:image"
-          content="https://scroll-io.netlify.app/imgs/homepage/blog/poster_2.png"
-        />
+        <meta property="og:image" content={getPosterUri()} />
         <meta property="og:url" content="scroll.io" />
         <meta name="twitter:title" content={currentBlog.title + " - Scroll"} />
         <meta name="twitter:description" content={currentBlog.summary} />
-        <meta
-          name="twitter:image"
-          content="https://scroll-io.netlify.app/imgs/homepage/blog/poster_2.png"
-        />
+        <meta name="twitter:image" content={getPosterUri()} />
       </Helmet>
       {loading ? (
         <Box

@@ -89,24 +89,14 @@ const ArticleSummary = styled(Typography)(
             `
 );
 
-const ArticlePoster = styled(Box)(
+const ArticlePoster = styled("img")(
   ({ theme }) => `
       width: 38rem;
       height: 23.3rem;
-      padding: 2rem 3rem;
-      border-radius: 5px;
-      margin-right: 6rem;
       cursor: pointer;
-      &.small {
-        margin-right: 0;
-        border-radius: 0;
-        ${theme.breakpoints.down("md")} {
-          max-width: 38rem;
-          width: 100%;
-          height: 23.3rem;
-          margin-bottom: 3rem;
-        };
-      }
+      ${theme.breakpoints.up("lg")} {
+        border-radius: .5rem;
+      };
     `
 );
 
@@ -123,18 +113,7 @@ const ArticleCard = ({ blog, small = false }) => {
 
   return (
     <Card className={small ? "small" : ""}>
-      <ArticlePoster
-        sx={{
-          background: `url(${blog.posterImg}) top center / contain no-repeat`,
-        }}
-        className={small ? "small" : ""}
-        onClick={handleClick}
-      >
-        <Logo src={LogoIcon} />
-        <PosterTitle className={small ? "small" : ""}>
-          {blog.posterTitle}
-        </PosterTitle>
-      </ArticlePoster>
+      <ArticlePoster src={blog.posterImg} onClick={handleClick}></ArticlePoster>
       <ArticleInfo className={small ? "small" : ""}>
         <ArticleTitle
           className={small ? "small" : ""}
