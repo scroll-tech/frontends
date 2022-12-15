@@ -145,9 +145,11 @@ const TxRow = (props) => {
       if (!blockNumbers) {
         return ["Synchronizing", 0];
       }
-
+      if (!blockNumber) {
+        return ["Pending", 0];
+      }
       const confirmations =
-        blockNumber && blockNumbers[+!(isL1 ^ to)] - blockNumber > 0
+        blockNumbers[+!(isL1 ^ to)] - blockNumber > 0
           ? blockNumbers[+!(isL1 ^ to)] - blockNumber
           : 0;
       const waitConfirmations = networks[+!(isL1 ^ to)].waitConfirmations;
