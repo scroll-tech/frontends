@@ -1,15 +1,22 @@
-import { l1ExplorerUrl } from "@/constants/index"
-import { useBatchDetail } from "@/hooks/useRollupInfo"
-import { InfoOutlined, NavigateNext, OpenInNew } from "@mui/icons-material"
-import { Box, Breadcrumbs, Divider, Link, Tooltip, Typography } from "@mui/material"
-import { styled, useTheme } from "@mui/material/styles"
-import useMediaQuery from "@mui/material/useMediaQuery"
-import "antd/dist/antd.min.css"
-import { useEffect } from "react"
-import { Link as RouterLink, useParams } from "react-router-dom"
-import Header from "../components/Header"
+import { l1ExplorerUrl } from "@/constants/index";
+import { useBatchDetail } from "@/hooks/useRollupInfo";
+import { InfoOutlined, NavigateNext, OpenInNew } from "@mui/icons-material";
+import {
+  Box,
+  Breadcrumbs,
+  Divider,
+  Link,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import { styled, useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import "antd/dist/antd.min.css";
+import { useEffect } from "react";
+import { Link as RouterLink, useParams } from "react-router-dom";
+import Header from "../components/Header";
 
-import dayjs from "dayjs"
+import dayjs from "dayjs";
 const relativeTime = require("dayjs/plugin/relativeTime");
 const utc = require("dayjs/plugin/utc");
 
@@ -99,7 +106,7 @@ const Blocks = () => {
             sx={{ fontWeight: 600 }}
             separator={<NavigateNext fontSize="large" />}
           >
-            <RouterLink to="/rollupscan">All results</RouterLink>
+            <RouterLink to="/prealpha/rollupscan">All results</RouterLink>
             <Typography sx={{ fontWeight: 600 }} color="text.primary">
               Batch {batch.index}
             </Typography>
@@ -126,7 +133,7 @@ const Blocks = () => {
             <BoxItem>
               <LabelTypography>Blocks</LabelTypography>
               {/* TODO: Make link dynamic, probably by using a variable for the rollupscan root */}
-              <RouterLink to={`/prealpha/rollupscan/block/${batch.index}`}> 
+              <RouterLink to={`/prealpha/rollupscan/block/${batch.index}`}>
                 <Typography sx={{ fontWeight: 600, color: "#00A6F2" }}>
                   {batch.end_block_number - batch.start_block_number + 1}
                 </Typography>
