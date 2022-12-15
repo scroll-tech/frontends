@@ -199,6 +199,7 @@ const App = (props) => {
                     {item.children?.map((subItem: any) =>
                       subItem.isExternal ? (
                         <LinkButton
+                          target="_blank"
                           underline="none"
                           key={subItem.label}
                           href={subItem.href}
