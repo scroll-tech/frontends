@@ -1,23 +1,26 @@
-import { l1ExplorerUrl } from "@/constants/index"
-import { Chip, Link } from "@mui/material"
-import { styled } from "@mui/material/styles"
-import TableBody from "@mui/material/TableBody"
-import TableContainer from "@mui/material/TableContainer"
-import TableHead from "@mui/material/TableHead"
-import TableRow from "@mui/material/TableRow"
-import type { TablePaginationConfig } from "antd/lib/table"
-import type { SorterResult } from "antd/lib/table/interface"
-import { isNil } from "lodash"
-import React, { useEffect, useState } from "react"
-import { Link as RouterLink, useLocation, useNavigate, useSearchParams } from "react-router-dom"
-import Table from "../components/Table"
-import TableCell from "../components/TableCell"
-import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "../constants"
+import { l1ExplorerUrl } from "@/constants/index";
+import { Chip, Link } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import TableBody from "@mui/material/TableBody";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import { isNil } from "lodash";
+import React, { useEffect, useState } from "react";
+import {
+  Link as RouterLink,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
+import Table from "../components/Table";
+import TableCell from "../components/TableCell";
+import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "../constants";
 
-import { TablePagination, Typography } from "@mui/material"
-import Tooltip from "../components/Tooltip"
+import { TablePagination, Typography } from "@mui/material";
+import Tooltip from "../components/Tooltip";
 
-import dayjs from "dayjs"
+import dayjs from "dayjs";
 const relativeTime = require("dayjs/plugin/relativeTime");
 dayjs.extend(relativeTime);
 
@@ -26,15 +29,13 @@ const StyledTablePagination: any = styled(TablePagination)(({ theme }) => ({
   "*": {
     fontSize: "1.6rem !important",
     fontWeight: "500 !important",
-    color: `${theme.palette.text.primary} !important`
-  }
+    color: `${theme.palette.text.primary} !important`,
+  },
 }));
 
 const ExternalLink = styled(Link)(({ theme }) => ({
-  color: "#00A6F2"
+  color: "#00A6F2",
 }));
-
-
 
 const StatusChip = styled(Chip)(({ theme }) => ({
   color: "#ffffff",
@@ -61,7 +62,7 @@ const StatusChip = styled(Chip)(({ theme }) => ({
   },
   "& > .MuiChip-label": {
     fontWeight: 500,
-  }
+  },
 }));
 
 interface DataType {
@@ -75,20 +76,12 @@ interface DataType {
   rollup_tx_hash: string;
 }
 
-interface Params {
-  pagination?: TablePaginationConfig;
-  sorter?: SorterResult<any> | SorterResult<any>[];
-  total?: number;
-  sortField?: string;
-  sortOrder?: string;
-}
-
 const App: React.FC = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const location = useLocation()
+  const location = useLocation();
 
   const [page, setPage] = React.useState<number | null>(null);
   const [rowsPerPage, setRowsPerPage] = React.useState<number | null>(null);
@@ -111,16 +104,20 @@ const App: React.FC = () => {
       </>
     );
   };
-  const BatchIndexTooltip = "A batch is a collection of blocks that share an L1 validity proof"
-  const TxnTooltip = "Number of transactions in the batch"
-  const CommitTxHashTooltip = "Hash of the transaction that commits the batch's data to L1"
-  const FinalizedTxHashTooltip = "Hash of the transaction that posts the batch's proof to L1"
-
+  const BatchIndexTooltip =
+    "A batch is a collection of blocks that share an L1 validity proof";
+  const TxnTooltip = "Number of transactions in the batch";
+  const CommitTxHashTooltip =
+    "Hash of the transaction that commits the batch's data to L1";
+  const FinalizedTxHashTooltip =
+    "Hash of the transaction that posts the batch's proof to L1";
 
   const fetchData = (pagination: any) => {
     setLoading(true);
     fetch(
-      `${process.env.REACT_APP_ROLLUPSCAN_BASE_API_URL}/batches?page=${pagination.current + 1}&per_page=${pagination.pageSize}`
+      `${
+        process.env.REACT_APP_ROLLUPSCAN_BASE_API_URL
+      }/batches?page=${pagination.current + 1}&per_page=${pagination.pageSize}`
     )
       .then((res) => res.json())
       .then(({ batches, total }) => {
@@ -131,7 +128,9 @@ const App: React.FC = () => {
   };
 
   useEffect(() => {
-    const pageSize = +(searchParams.get("per_page") || DEFAULT_PAGE_SIZE) as number,
+    const pageSize = +(
+        searchParams.get("per_page") || DEFAULT_PAGE_SIZE
+      ) as number,
       current = +(searchParams.get("page") || DEFAULT_PAGE) as number;
     setRowsPerPage(pageSize);
     setPage(current);
@@ -146,7 +145,7 @@ const App: React.FC = () => {
       fetchData(params);
       navigate(`./?page=${page}&per_page=${rowsPerPage}`);
     }
-  }, [rowsPerPage,page ]);
+  }, [rowsPerPage, page]);
 
   const onPageChange = (
     event: React.MouseEvent<HTMLButtonElement> | null,
@@ -177,17 +176,30 @@ const App: React.FC = () => {
       <Typography variant="body1" align="left">
         {total.toLocaleString()} results shown
       </Typography>
-      {
-        total ? <>
+      {total ? (
+        <>
           <Table aria-label="Batch table">
             <TableHead>
               <TableRow>
-                <TableCell><Tooltip title={BatchIndexTooltip} name="Batch Index" /></TableCell>
+                <TableCell>
+                  <Tooltip title={BatchIndexTooltip} name="Batch Index" />
+                </TableCell>
                 <TableCell>Age</TableCell>
-                <TableCell><Tooltip title={TxnTooltip} name="Transactions" /></TableCell>
-                <TableCell><Tooltip title={CommitTxHashTooltip} name="Commit Tx Hash" /></TableCell>
-                <TableCell><Tooltip title={FinalizedTxHashTooltip} name="Finalized Tx Hash" /></TableCell>
-                <TableCell><Tooltip title={renderStatusHeaderText()} name="status" /></TableCell>
+                <TableCell>
+                  <Tooltip title={TxnTooltip} name="Transactions" />
+                </TableCell>
+                <TableCell>
+                  <Tooltip title={CommitTxHashTooltip} name="Commit Tx Hash" />
+                </TableCell>
+                <TableCell>
+                  <Tooltip
+                    title={FinalizedTxHashTooltip}
+                    name="Finalized Tx Hash"
+                  />
+                </TableCell>
+                <TableCell>
+                  <Tooltip title={renderStatusHeaderText()} name="status" />
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -195,25 +207,38 @@ const App: React.FC = () => {
                 <TableRow key={row.id}>
                   <TableCell>
                     <RouterLink to={`batch/${row.index}`}>
-                      <Typography sx={{ color: "#00A6F2", fontWeight: 600 }}>{row.index}</Typography>
+                      <Typography sx={{ color: "#00A6F2", fontWeight: 600 }}>
+                        {row.index}
+                      </Typography>
                     </RouterLink>{" "}
                   </TableCell>
                   <TableCell>{formatDate(row.created_at)}</TableCell>
                   <TableCell>{row.total_tx_num}</TableCell>
                   <TableCell>
-                    {
-                      row.commit_tx_hash ? <ExternalLink href={`${l1ExplorerUrl}/tx/${row.commit_tx_hash}`} sx={{ color: "#00A6F2", fontWeight: 600 }} underline="none">
+                    {row.commit_tx_hash ? (
+                      <ExternalLink
+                        href={`${l1ExplorerUrl}/tx/${row.commit_tx_hash}`}
+                        sx={{ color: "#00A6F2", fontWeight: 600 }}
+                        underline="none"
+                      >
                         {truncatedHash(row.commit_tx_hash)}
-                      </ExternalLink> : "-"
-                    }
+                      </ExternalLink>
+                    ) : (
+                      "-"
+                    )}
                   </TableCell>
                   <TableCell>
-                    {
-                      row.finalize_tx_hash
-                        ? <ExternalLink href={`${l1ExplorerUrl}/tx/${row.finalize_tx_hash}`} sx={{ color: "#00A6F2", fontWeight: 600 }} underline="none">
-                          {truncatedHash(row.finalize_tx_hash)}
-                        </ExternalLink> : "-"
-                    }
+                    {row.finalize_tx_hash ? (
+                      <ExternalLink
+                        href={`${l1ExplorerUrl}/tx/${row.finalize_tx_hash}`}
+                        sx={{ color: "#00A6F2", fontWeight: 600 }}
+                        underline="none"
+                      >
+                        {truncatedHash(row.finalize_tx_hash)}
+                      </ExternalLink>
+                    ) : (
+                      "-"
+                    )}
                   </TableCell>
                   <TableCell>
                     <StatusChip
@@ -234,9 +259,8 @@ const App: React.FC = () => {
             rowsPerPage={rowsPerPage}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
-        </> : null
-      }
-
+        </>
+      ) : null}
     </TableContainer>
   );
 };

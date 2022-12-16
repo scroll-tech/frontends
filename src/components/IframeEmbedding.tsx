@@ -1,4 +1,6 @@
 import { styled } from "@mui/system";
+import { Box, CircularProgress } from "@mui/material";
+import { useEffect, useRef, useState } from "react";
 
 const Iframe = styled("iframe")(({ theme }) => ({}));
 
@@ -7,23 +9,45 @@ function IframeEmbedding(props: {
   DesktopHeight: string;
   MobileHeight: string;
 }) {
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [isIFrameLoaded, setIsIFrameLoaded] = useState<boolean>(false);
+  useEffect(() => {
+    const iframeCurrent = iframeRef.current;
+    iframeCurrent?.addEventListener("load", () => {
+      setIsIFrameLoaded(true);
+    });
+    return () => {
+      iframeCurrent?.removeEventListener("load", () => setIsIFrameLoaded(true));
+    };
+  }, [iframeRef]);
+
   return (
-    <div className="w-full">
+    <Box>
+      {!isIFrameLoaded ? (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="80vh"
+        >
+          <CircularProgress sx={{ color: "#EB7106" }} />
+        </Box>
+      ) : null}
       <Iframe
         title="url"
         className="w-full"
-        id="Iframe"
         seamless
-        frameBorder="0"
         src={props.url}
+        ref={iframeRef}
         sx={{
+          display: isIFrameLoaded ? "block" : "none",
           height: {
             md: props.DesktopHeight,
             xs: props.MobileHeight,
           },
         }}
       ></Iframe>
-    </div>
+    </Box>
   );
 }
 

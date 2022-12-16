@@ -1,25 +1,31 @@
-import { ThemeProvider } from "@mui/material/styles"
-import React from "react"
-import ReactDOM from "react-dom/client"
-import { BrowserRouter, Route, Routes } from "react-router-dom"
-import App from "./App"
-import Homepage from "./Homepage"
-import "./index.css"
-import reportWebVitals from "./reportWebVitals"
-import "./styles/globals.less"
-import "./styles/index.less"
-import themeLight from "./theme/light"
+import { ThemeProvider } from "@mui/material/styles";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import "./index.css";
+import reportWebVitals from "./reportWebVitals";
+import "./styles/globals.less";
+import "./styles/index.less";
+import themeLight from "./theme/light";
+import LoadingPage from "@/components/LoadingPage";
+
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
+const App = React.lazy(() => import("./App"));
+const Homepage = React.lazy(() => import("./Homepage"));
+
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={themeLight}>
       <BrowserRouter>
-        <Routes>
-          <Route path="/prealpha/*" element={<App />} />
-          <Route path="/*" element={<Homepage />} />
-        </Routes>
+        <React.Suspense fallback={<LoadingPage />}>
+          <Routes>
+            <Route path="/prealpha/*" element={<App />} />
+            <Route path="/*" element={<Homepage />} />
+          </Routes>
+        </React.Suspense>
       </BrowserRouter>
     </ThemeProvider>
   </React.StrictMode>

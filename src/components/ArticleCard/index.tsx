@@ -2,6 +2,7 @@ import { Button, Box, Typography } from "@mui/material";
 import LogoIcon from "@/assets/images/logo_with_text.png";
 import { styled } from "@mui/system";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import WebpImage from "@/components/WebpImage";
 
 const ArticleInfo = styled(Box)(
   ({ theme }) => `
@@ -37,6 +38,7 @@ const Card = styled(Box)(
         max-width: 84rem;
         text-align: left;
         margin: 0 auto;
+      overflow: hidden;
         &.small {
           max-width: 38rem;
           flex-direction: column;
@@ -88,25 +90,14 @@ const ArticleSummary = styled(Typography)(
             `
 );
 
-const ArticlePoster = styled(Box)(
+const ArticlePoster = styled(WebpImage)(
   ({ theme }) => `
       width: 38rem;
       height: 23.3rem;
-      // background: #ffb1c3;
-      padding: 2rem 3rem;
-      border-radius: 5px;
-      margin-right: 6rem;
       cursor: pointer;
-      &.small {
-        margin-right: 0;
-        border-radius: 0;
-        ${theme.breakpoints.down("md")} {
-          max-width: 38rem;
-          width: 100%;
-          height: 23.3rem;
-          margin-bottom: 3rem;
-        };
-      }
+      ${theme.breakpoints.up("lg")} {
+        border-radius: .5rem;
+      };
     `
 );
 
@@ -117,24 +108,17 @@ const ArticleCard = ({ blog, small = false }) => {
     if (blog.externalLink) {
       window.location.href = blog.externalLink;
     } else {
-      navigate(blog.blogLink);
+      navigate("/blog/" + blog.id);
     }
   };
 
   return (
     <Card className={small ? "small" : ""}>
       <ArticlePoster
-        sx={{
-          background: `url(${blog.posterImg}) center / contain no-repeat`,
-        }}
-        className={small ? "small" : ""}
+        src={blog.posterImg}
+        webpsrc={blog.posterImg.replace(".jpg", ".webp")}
         onClick={handleClick}
-      >
-        <Logo src={LogoIcon} />
-        <PosterTitle className={small ? "small" : ""}>
-          {blog.posterTitle}
-        </PosterTitle>
-      </ArticlePoster>
+      ></ArticlePoster>
       <ArticleInfo className={small ? "small" : ""}>
         <ArticleTitle
           className={small ? "small" : ""}

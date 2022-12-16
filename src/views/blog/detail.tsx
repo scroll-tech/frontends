@@ -1,5 +1,6 @@
 import { Box, Typography, CircularProgress } from "@mui/material";
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import { useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkMath from "remark-math";
@@ -56,6 +57,12 @@ const BlogNavbar = styled(Box)(({ theme }) => ({
 const BlogDetail = () => {
   const [blog, setBlog] = useState<null | string>(null);
   const [moreBlog, setMoreBlog] = useState<any>([]);
+  const [currentBlog, setCurrentBlog] = useState<any>({
+    title: "",
+    content: "",
+    posterImg: "",
+  });
+
   const [loading, setLoading] = useState(true);
   const [hiddenHeadingsUnderLevel2, setHiddenHeadingsUnderLevel2] = useState(
     false
@@ -63,6 +70,7 @@ const BlogDetail = () => {
   const params = useParams();
 
   useEffect(() => {
+    getCurrentBlog();
     // @ts-ignore
     let anchors = [...document.querySelectorAll("a")];
     anchors.map((anchor) => {
@@ -99,63 +107,95 @@ const BlogDetail = () => {
     setMoreBlog(blogs);
   };
 
+  const getCurrentBlog = () => {
+    const blog = blogSource.find((blog) => blog.id === params.blogId);
+    setCurrentBlog(blog);
+  };
+
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
-  if (loading) {
-    return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        height="80vh"
-      >
-        <CircularProgress sx={{ color: "#EB7106" }} />
-      </Box>
-    );
-  }
+  const getPosterUri = () => {
+    return window.location.origin + currentBlog.posterImg;
+  };
+
   return (
     <Box>
-      <BlogContainer className="wrapper">
-        <ReactMarkdown
-          children={blog as string}
-          remarkPlugins={[remarkMath, remarkGfm]}
-          rehypePlugins={[rehypeKatex, rehypeRaw]}
-          className="markdown-body"
+      <Helmet>
+        <title>{currentBlog.title} - Scroll</title>
+        <meta name="description" content={currentBlog.summary} />
+        <meta property="og:title" content={currentBlog.title + " - Scroll"} />
+        <meta property="og:description" content={currentBlog.summary} />
+        <meta property="og:image" content={getPosterUri()} />
+        <meta property="og:url" content="scroll.io" />
+        <meta name="twitter:title" content={currentBlog.title + " - Scroll"} />
+        <meta name="twitter:description" content={currentBlog.summary} />
+        <meta name="twitter:image" content={getPosterUri()} />
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css"
+          integrity="sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn"
+          crossOrigin="anonymous"
         />
-        <Box sx={{ width: "32rem", flexShrink: 0, position: "relative" }}>
-          <BlogNavbar>
-            <Link to="/blog">
-              <ArrowBackIosIcon />
-              <Typography>All Articles</Typography>
-            </Link>
-            <MarkdownNavbar
-              className={`${
-                hiddenHeadingsUnderLevel2 ? "hidden-levels" : ""
-              } markdown-navbar`}
-              source={blog as string}
-              headingTopOffset={100}
-              ordered={false}
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.9.0/github-markdown.min.css"
+          crossOrigin="anonymous"
+        />
+      </Helmet>
+      {loading ? (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="80vh"
+        >
+          <CircularProgress sx={{ color: "#EB7106" }} />
+        </Box>
+      ) : (
+        <Box>
+          <BlogContainer className="wrapper">
+            <ReactMarkdown
+              children={blog as string}
+              remarkPlugins={[remarkMath, remarkGfm]}
+              rehypePlugins={[rehypeKatex, rehypeRaw]}
+              className="markdown-body"
             />
-          </BlogNavbar>
+            <Box sx={{ width: "32rem", flexShrink: 0, position: "relative" }}>
+              <BlogNavbar>
+                <Link to="/blog">
+                  <ArrowBackIosIcon />
+                  <Typography>All Articles</Typography>
+                </Link>
+                <MarkdownNavbar
+                  className={`${
+                    hiddenHeadingsUnderLevel2 ? "hidden-levels" : ""
+                  } markdown-navbar`}
+                  source={blog as string}
+                  headingTopOffset={100}
+                  ordered={false}
+                />
+              </BlogNavbar>
+            </Box>
+          </BlogContainer>
+          {isMobile ? (
+            <Box sx={{ paddingBottom: "6rem" }}>
+              <Typography
+                variant="h2"
+                sx={{
+                  textAlign: "center",
+                  marginBottom: {
+                    md: "4rem",
+                  },
+                }}
+              >
+                More articles from Scroll
+              </Typography>
+              <Articles blogs={moreBlog} />
+            </Box>
+          ) : null}
         </Box>
-      </BlogContainer>
-      {isMobile ? (
-        <Box sx={{ paddingBottom: "6rem" }}>
-          <Typography
-            variant="h2"
-            sx={{
-              textAlign: "center",
-              marginBottom: {
-                md: "4rem",
-              },
-            }}
-          >
-            More articles from Scroll
-          </Typography>
-          <Articles blogs={moreBlog} />
-        </Box>
-      ) : null}
+      )}
     </Box>
   );
 };

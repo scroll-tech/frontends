@@ -239,6 +239,7 @@ const lightTheme = {
           padding: "2rem",
           width: "100%",
           boxSizing: "border-box",
+          alignItems: "center",
           color:
             ownerState.severity && paletteOptions[ownerState.severity].main,
           backgroundColor:

@@ -1,12 +1,10 @@
 import { Stack } from "@mui/material";
-import LogoIcon from "@/assets/images/logo.png";
-import NameSvg from "@/assets/svgs/logo-name.svg";
+import LogoIcon from "@/assets/images/logo_with_text.png";
 
 const Logo = () => {
   return (
     <Stack direction="row" className="items-center" spacing="6px">
-      <img src={LogoIcon} alt="logo" className="w-[26px]" />
-      <img src={NameSvg} alt="scroll" className="h-[18px]"></img>
+      <img src={LogoIcon} className="h-[26px]" alt="logo" />
     </Stack>
   );
 };

@@ -1,19 +1,23 @@
-import { Box, Button, Typography, useMediaQuery } from "@mui/material"
-import { useTheme } from "@mui/material/styles"
-import { styled } from "@mui/system"
-import { useNavigate } from "react-router-dom"
+import { Box, Button, Typography, useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import { styled } from "@mui/system";
+import { useNavigate } from "react-router-dom";
 
-import BridgeScreenshotMobile from "@/assets/images/homepage/home/bridge-screenshot-m.png"
-import BridgeScreenshot from "@/assets/images/homepage/home/bridge-screenshot.png"
-import RocketIcon from "@/assets/images/homepage/home/rocket.png"
-import WrapperBox from "@/components/WrapperBox"
-import { medias } from "@/constants/medias"
-import Article from "./articles"
-import FeatureSwiper from "./featureSwiper"
-import Roadmap from "./roadmap"
+import BridgeScreenshotMobile from "@/assets/images/homepage/home/bridge-screenshot-m.jpg";
+import BridgeScreenshot from "@/assets/images/homepage/home/bridge-screenshot.jpg";
+import BridgeScreenshotMobileWebp from "@/assets/images/homepage/home/bridge-screenshot-m.webp";
+import BridgeScreenshotWebp from "@/assets/images/homepage/home/bridge-screenshot.webp";
+import RocketIcon from "@/assets/images/homepage/home/rocket.png";
+import RocketWebpIcon from "@/assets/images/homepage/home/rocket.webp";
+import WrapperBox from "@/components/WrapperBox";
+import { medias } from "@/constants/medias";
+import WebpImage from "@/components/WebpImage";
+import Article from "./articles";
+import FeatureSwiper from "./featureSwiper";
+import Roadmap from "./roadmap";
 
-import "swiper/css"
-import "swiper/css/pagination"
+import "swiper/css";
+import "swiper/css/pagination";
 
 const ContainerBox = styled(Box)({
   textAlign: "center",
@@ -26,7 +30,7 @@ const SectionBox = styled(Box)(
     background: #ffffff;
   };
   &:nth-of-type(even) {
-    background: #fffdf1;
+    background: rgb(253, 241, 228);
   };
   &.roadmap-section {
     display: flex;
@@ -126,7 +130,7 @@ const MediaContainer = styled(Box)(
       `
 );
 
-const BridgeScreenshotImg = styled("img")(
+const BridgeScreenshotImg = styled(WebpImage)(
   ({ theme }) => `
        height: auto;
        max-width: 93.4rem;
@@ -135,7 +139,7 @@ const BridgeScreenshotImg = styled("img")(
       `
 );
 
-const RocketImg = styled("img")(
+const RocketImg = styled(WebpImage)(
   ({ theme }) => `
        height: 6rem;
        ${theme.breakpoints.down("md")} {
@@ -163,12 +167,7 @@ const MediaLink = styled("a")(
 );
 
 const JoinTestnetButton = (props) => (
-  <Button
-    color="primary"
-    variant="contained"
-    href="/prealpha/"
-    {...props}
-  >
+  <Button color="primary" variant="contained" href="/prealpha/" {...props}>
     Join Pre-Alpha Testnet
   </Button>
 );
@@ -217,6 +216,9 @@ const Home = () => {
           </Box>
           <BridgeScreenshotImg
             src={isDesktop ? BridgeScreenshot : BridgeScreenshotMobile}
+            webpsrc={
+              isDesktop ? BridgeScreenshotWebp : BridgeScreenshotMobileWebp
+            }
           />
         </WrapperBox>
       </SectionBox>
@@ -275,7 +277,7 @@ const Home = () => {
               >
                 View Open Positions
               </Button>
-              <RocketImg src={RocketIcon} />
+              <RocketImg src={RocketIcon} webpsrc={RocketWebpIcon} />
             </Box>
           </MediaCard>
           <MediaCard>
