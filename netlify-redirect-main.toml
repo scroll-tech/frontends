@@ -1,0 +1,19 @@
+# redirects in main env
+
+[[redirects]]
+  from = "/l1/*"
+  to = "https://prealpha-rpc.scroll.io/l1/:splat"
+  status = 200
+[[redirects]]
+  from = "/l2/*"
+  to = "https://prealpha-rpc.scroll.io/l2/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/faucetapi/*"
+  to = "https://prealpha-api.scroll.io/faucet/:splat"
+  status = 200
+[[redirects]]
+  from = "/bridgeapi/*"
+  to = "https://prealpha-api.scroll.io/bridgehistory/api/:splat"
+  status = 200

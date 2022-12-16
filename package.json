@@ -56,16 +56,14 @@
   },
   "scripts": {
     "start": "BROWSER=none craco start",
-    "build": "CI=false && craco build",
+    "build": "CI=false craco build",
+    "ci": "node scripts/ci.js && yarn build",
     "test": "craco test",
     "lint": "eslint --fix \"**/*.{ts,tsx}\"",
     "eject": "craco eject"
   },
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ],
+    "extends": ["react-app", "react-app/jest"],
     "rules": {
       "quotes": [
         2,
@@ -74,17 +72,11 @@
           "avoidEscape": true
         }
       ],
-      "react/self-closing-comp": [
-        1
-      ]
+      "react/self-closing-comp": [1]
     }
   },
   "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
+    "production": [">0.2%", "not dead", "not op_mini all"],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
@@ -137,6 +129,7 @@
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^4.0.0",
     "ethers": "^5.0.7",
+    "fs-extra": "^11.1.0",
     "https-browserify": "^1.0.0",
     "i18next": "^15.0.9",
     "i18next-browser-languagedetector": "^3.0.1",

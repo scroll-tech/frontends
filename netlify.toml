@@ -1,33 +1,13 @@
+[build]
+  publish = "build/"
 
-# these two redirects are for MAIN only, as a transitional help
-[[redirects]]
-  from = "/l1/*"
-  to = "https://prealpha-rpc.scroll.io/l1/:splat"
-  status = 200
-[[redirects]]
-  from = "/l2/*"
-  to = "https://prealpha-rpc.scroll.io/l2/:splat"
-  status = 200
-
-[[redirects]]
-  from = "/faucetapi/*"
-  to = "https://staging-prealpha-api.scroll.io/faucet/:splat"
-  status = 200
-[[redirects]]
-  from = "/bridgeapi/*"
-  to = "https://staging-prealpha-api.scroll.io/bridgehistory/api/:splat"
-  status = 200
-
-[[redirects]]
-  from = "/early-dev"
-  to = "https://scrollzkp.typeform.com/early-dev"
-
-[[redirects]]
-  from = "/*"
-  to = "/"
-  status = 200
+  # build command (override the one in Netlify UI)
+  command = "yarn ci"
 
 [build.environment]
+  # Debug netlify build env
+  # NETLIFY_BUILD_DEBUG=true
+
   # Settings in the [build] context are global and are applied to
   # all contexts unless otherwise overridden by more specific contexts.
   REACT_APP_ETH_SYMBOL="TSETH"
@@ -111,3 +91,16 @@
   REACT_APP_ROUTER_ADDRESS="0xaDa15C4AD1a323c3e58b8198Ea41fCE261937001"
   REACT_APP_MULTICALL_ADDR="0x6e5754A5EE25c1D385cf1e305e27162C54cBA1a5"
   REACT_APP_L2_WETH_ADDRESS="0x6b29C65597Fa2aC80Ab181989969092971f1Fa4e"
+
+# redirects here affects ALL env
+# to add redirects to specific env, check
+# - netlify-redirect-main.toml
+# - netlify-redirect-not-main.toml
+[[redirects]]
+  from = "/early-dev"
+  to = "https://scrollzkp.typeform.com/early-dev"
+
+[[redirects]]
+  from = "/*"
+  to = "/"
+  status = 200
