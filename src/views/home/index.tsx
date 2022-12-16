@@ -216,7 +216,7 @@ const Home = () => {
           </Box>
           <BridgeScreenshotImg
             src={isDesktop ? BridgeScreenshot : BridgeScreenshotMobile}
-            webpSrc={
+            webpsrc={
               isDesktop ? BridgeScreenshotWebp : BridgeScreenshotMobileWebp
             }
           />
@@ -277,7 +277,7 @@ const Home = () => {
               >
                 View Open Positions
               </Button>
-              <RocketImg src={RocketIcon} webpSrc={RocketWebpIcon} />
+              <RocketImg src={RocketIcon} webpsrc={RocketWebpIcon} />
             </Box>
           </MediaCard>
           <MediaCard>

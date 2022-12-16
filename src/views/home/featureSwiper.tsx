@@ -110,7 +110,7 @@ const FeatureSwiper = () => {
         {features.map((feature, idx) => (
           <SwiperSlide key={feature.icon}>
             <FeatureBox>
-              <FeatureIcon src={feature.icon} webpSrc={feature.webpIcon} />
+              <FeatureIcon src={feature.icon} webpsrc={feature.webpIcon} />
               <Divider />
               <FeatureTitle variant="subtitle1">{feature.title}</FeatureTitle>
               <FeatureDescription>{feature.description}</FeatureDescription>

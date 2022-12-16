@@ -116,7 +116,7 @@ const ArticleCard = ({ blog, small = false }) => {
     <Card className={small ? "small" : ""}>
       <ArticlePoster
         src={blog.posterImg}
-        webpSrc={blog.posterImg.replace(".jpg", ".webp")}
+        webpsrc={blog.posterImg.replace(".jpg", ".webp")}
         onClick={handleClick}
       ></ArticlePoster>
       <ArticleInfo className={small ? "small" : ""}>
