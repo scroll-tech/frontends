@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import "antd/dist/antd.min.css";
 import { useEffect } from "react";
 import { Link as RouterLink, useParams } from "react-router-dom";
 import Header from "../components/Header";

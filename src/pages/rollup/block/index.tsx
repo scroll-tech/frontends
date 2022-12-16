@@ -1,7 +1,6 @@
 import { useBlockList } from "@/hooks/useRollupInfo";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Box, Breadcrumbs, Typography } from "@mui/material";
-import "antd/dist/antd.min.css";
 import { Link, useParams } from "react-router-dom";
 import Header from "../components/Header";
 import Table from "./Table";
