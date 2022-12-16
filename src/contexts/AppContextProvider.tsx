@@ -107,6 +107,15 @@ const AppContextProvider = ({ children }: any) => {
     }
   }, [provider, walletCurrentAddress, chainId]);
 
+  useEffect(() => {
+    const fromToken = tokenList?.find(
+      (item) => item.chainId === chainId && item.symbol === tokenSymbol
+    );
+    if (!fromToken) {
+      setTokenSymbol(ETH_SYMBOL);
+    }
+  }, [chainId, tokenList]);
+
   const handleClose = () => {
     setFetchTokenListError("");
   };
