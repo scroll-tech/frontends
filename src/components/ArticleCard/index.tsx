@@ -2,6 +2,7 @@ import { Button, Box, Typography } from "@mui/material";
 import LogoIcon from "@/assets/images/logo_with_text.png";
 import { styled } from "@mui/system";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import WebpImage from "@/components/WebpImage";
 
 const ArticleInfo = styled(Box)(
   ({ theme }) => `
@@ -89,7 +90,7 @@ const ArticleSummary = styled(Typography)(
             `
 );
 
-const ArticlePoster = styled("img")(
+const ArticlePoster = styled(WebpImage)(
   ({ theme }) => `
       width: 38rem;
       height: 23.3rem;
@@ -113,7 +114,11 @@ const ArticleCard = ({ blog, small = false }) => {
 
   return (
     <Card className={small ? "small" : ""}>
-      <ArticlePoster src={blog.posterImg} onClick={handleClick}></ArticlePoster>
+      <ArticlePoster
+        src={blog.posterImg}
+        webpSrc={blog.posterImg.replace(".jpg", ".webp")}
+        onClick={handleClick}
+      ></ArticlePoster>
       <ArticleInfo className={small ? "small" : ""}>
         <ArticleTitle
           className={small ? "small" : ""}

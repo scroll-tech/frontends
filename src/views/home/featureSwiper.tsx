@@ -4,8 +4,12 @@ import { styled } from "@mui/system";
 import SecurityIcon from "@/assets/images/homepage/home/security.png";
 import ScalabilityIcon from "@/assets/images/homepage/home/scalability.png";
 import EVMEquivalenceIcon from "@/assets/images/homepage/home/EVM-equivalence.png";
+import SecurityWebpIcon from "@/assets/images/homepage/home/security.webp";
+import ScalabilityWebpIcon from "@/assets/images/homepage/home/scalability.webp";
+import EVMEquivalenceWebpIcon from "@/assets/images/homepage/home/EVM-equivalence.webp";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper";
+import WebpImage from "@/components/WebpImage";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 
@@ -32,7 +36,7 @@ const FeatureBox = styled(Box)(
     `
 );
 
-const FeatureIcon = styled("img")(
+const FeatureIcon = styled(WebpImage)(
   ({ theme }) => `
            height: 9.6rem;
            margin: 4.4rem auto;
@@ -67,18 +71,21 @@ const FeatureDescription = styled(Typography)(
 const features = [
   {
     icon: ScalabilityIcon,
+    webpIcon: ScalabilityWebpIcon,
     title: "Scalability",
     description:
       "Scroll processes transactions off-chain, and posts succinct proofs of correctness on-chain. This results in higher throughput and lower costs in comparison to the Ethereum base layer.",
   },
   {
     icon: EVMEquivalenceIcon,
+    webpIcon: EVMEquivalenceWebpIcon,
     title: "EVM Equivalence",
     description:
       "Developing on Scroll feels the same as developing on Ethereum. Any EVM-compatible smart contract can be effortlessly deployed to Scroll's network.",
   },
   {
     icon: SecurityIcon,
+    webpIcon: SecurityWebpIcon,
     title: "Security",
     description:
       "Scroll's protocol is currently undergoing multiple third-party audits to ensure security. Scroll also values transparency and is working to build its platform openly and in collaboration with the community.",
@@ -103,10 +110,7 @@ const FeatureSwiper = () => {
         {features.map((feature, idx) => (
           <SwiperSlide key={feature.icon}>
             <FeatureBox>
-              <FeatureIcon
-                src={feature.icon}
-                className={idx === 1 ? "small" : ""}
-              />
+              <FeatureIcon src={feature.icon} webpSrc={feature.webpIcon} />
               <Divider />
               <FeatureTitle variant="subtitle1">{feature.title}</FeatureTitle>
               <FeatureDescription>{feature.description}</FeatureDescription>
