@@ -38,14 +38,14 @@ const Card = styled(Box)(
         max-width: 84rem;
         text-align: left;
         margin: 0 auto;
-      overflow: hidden;
+        overflow: hidden;
         &.small {
           max-width: 38rem;
           flex-direction: column;
-          box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+          box-shadow: rgb(0 0 0 / 15%) 5px 5px 3px;
           border-radius: 5px;
           &:hover {
-            box-shadow: 8px 16px 40px rgba(0, 0, 0, 0.1);
+            box-shadow: 8px 16px 8px rgb(0 0 0 / 15%);
           }
         }
     `

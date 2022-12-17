@@ -238,22 +238,6 @@ const Blog = () => {
               <Typography variant="h3" sx={{ paddingLeft: "3.3rem" }}>
                 Filters
               </Typography>
-              <FilterTypeName>Order by</FilterTypeName>
-              {listType.map((type) => (
-                <FilterItem
-                  onClick={() => hanleFilter("sort", type)}
-                  key={type}
-                  className={type === queryForm.sort ? "active" : ""}
-                >
-                  {type}{" "}
-                  {type === queryForm.sort ? (
-                    <CheckIcon sx={{ fontSize: "3rem" }} />
-                  ) : (
-                    ""
-                  )}
-                </FilterItem>
-              ))}
-              <Divider sx={{ margin: "1rem 1.6rem 1rem 3.3rem" }} />
               <FilterTypeName>Category</FilterTypeName>
               {categories.map((category) => (
                 <FilterItem
@@ -263,6 +247,22 @@ const Blog = () => {
                 >
                   {category}{" "}
                   {category === queryForm.category ? (
+                    <CheckIcon sx={{ fontSize: "3rem" }} />
+                  ) : (
+                    ""
+                  )}
+                </FilterItem>
+              ))}
+              <Divider sx={{ margin: "1rem 1.6rem 1rem 3.3rem" }} />
+              <FilterTypeName>Order by</FilterTypeName>
+              {listType.map((type) => (
+                <FilterItem
+                  onClick={() => hanleFilter("sort", type)}
+                  key={type}
+                  className={type === queryForm.sort ? "active" : ""}
+                >
+                  {type}{" "}
+                  {type === queryForm.sort ? (
                     <CheckIcon sx={{ fontSize: "3rem" }} />
                   ) : (
                     ""
