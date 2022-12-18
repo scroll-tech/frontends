@@ -16,10 +16,14 @@ function Homepage() {
 
   const route = useMatchedRoute();
 
+  const getUrl = () => {
+    return window.location.href;
+  };
   return (
     <ScrollToTop>
       <Helmet>
-        <title>Scroll {route?.name ? `- ${route.name}` : ""}</title>
+        {route ? <title>{route.name} - Scroll</title> : null}
+        <meta property="og:url" content={getUrl()} />
       </Helmet>
       <div className="App bg-white min-h-[100vh]">
         <Header />
