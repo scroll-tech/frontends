@@ -1,10 +1,10 @@
-# An overview of Scroll's architecture
+# An overview of Scroll’s architecture
 
 Scroll is an EVM-equivalent zkRollup to scale Ethereum. Technically speaking, Scroll is built upon two major pieces. The core piece is the [zkEVM](https://scroll.io/blog/zkEVM), which is used to prove the correctness of EVM execution in Layer 2. We have been building it in the open with the Privacy and Scaling Explorations group at the Ethereum Foundation for over a year. But to turn the zkEVM into a full zkRollup on the Ethereum, we also need to build a complete L2 architecture around it.
 
 In this post, we give an overview of Scroll’s overall architecture. More specifically, we will cover the initial version of Scroll which is composed of a centralized sequencing node and decentralized proving network. We are committed to decentralizing the set of sequencing nodes in the future and will share our design for this in future articles.
 
-## Scroll's architecture
+## Scroll’s architecture
 
 The current architecture consists of three infrastructure components (see Figure 1):
 
@@ -44,9 +44,9 @@ The **Rollup contract** receives L2 state roots and blocks from the Sequencer. I
 
 The **Bridge contracts** deployed on the Ethereum and Scroll allow users to pass arbitrary messages between L1 and L2. On top of this message passing protocol, we have also built a trustless bridging protocol to allow users to bridge ERC-20 assets in both directions. To send a message or funds from Ethereum to Scroll, users call a `sendMessage` transaction on the Bridge contract. The Relayer will index this transaction on L1 and send it to the Sequencer for inclusion in an L2 block. Sending messages from Scroll back to Ethereum uses a similar process on the L2 Bridge contract.
 
-## How does Scroll's zkRollup work?
+## How does Scroll’s zkRollup work?
 
-Putting these three architectural pieces together, we can now explain the workflow of Scroll's zkRollup, summarized in Figure 3 below.
+Putting these three architectural pieces together, we can now explain the workflow of Scroll’s zkRollup, summarized in Figure 3 below.
 
 ![Figure 3. Scroll workflow](https://i.imgur.com/QC6IWil.png)
 
@@ -67,7 +67,7 @@ Putting all of these together, Scroll is able to execute native EVM bytecode on 
 
 ## Learn more
 
-We have designed Scroll's architecture to align with our [vision and values](https://mirror.xyz/scroll.eth/EYn7ODhQAnNWABwWcu5xZLts_wEXTZAEWyTgExGS1DA) and our [technical principles](https://mirror.xyz/scroll.eth/N7cAie4ul0PdSxNdv2FTqgMV2JEkhOJocsxfeqe4SFE). In upcoming articles, we explain how Scroll will use this architecture to provide a more scalable user and developer experience on Ethereum. Stay tuned to learn more, and sign up to try out our pre-alpha testnet at [signup.scroll.io](http://signup.scroll.io/)!
+We have designed Scroll’s architecture to align with our [vision and values](https://mirror.xyz/scroll.eth/EYn7ODhQAnNWABwWcu5xZLts_wEXTZAEWyTgExGS1DA) and our [technical principles](https://mirror.xyz/scroll.eth/N7cAie4ul0PdSxNdv2FTqgMV2JEkhOJocsxfeqe4SFE). In upcoming articles, we explain how Scroll will use this architecture to provide a more scalable user and developer experience on Ethereum. Stay tuned to learn more, and sign up to try out our pre-alpha testnet at [signup.scroll.io](http://signup.scroll.io/)!
 
 If our vision of scaling Ethereum in an open and community-driven way resonates with you, we are looking for values-aligned individuals to help Scroll become the most developer- and user-friendly scaling solution for Ethereum.
 

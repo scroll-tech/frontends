@@ -44,9 +44,6 @@ const Card = styled(Box)(
           flex-direction: column;
           box-shadow: rgb(0 0 0 / 15%) 5px 5px 3px;
           border-radius: 5px;
-          &:hover {
-            box-shadow: 8px 16px 8px rgb(0 0 0 / 15%);
-          }
         }
     `
 );

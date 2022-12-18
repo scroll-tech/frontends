@@ -30,8 +30,8 @@
     "type": "Technical",
     "id": "architecture",
     "date": "2022-08-01",
-    "title": "Scroll's Architecture Overview",
-    "posterTitle": "Scroll's Architecture Overview",
+    "title": "Scroll’s Architecture Overview",
+    "posterTitle": "Scroll’s Architecture Overview",
     "summary": "Scroll is an EVM-equivalent zkRollup to scale Ethereum. Technically speaking, Scroll is built upon two major pieces…",
     "posterImg": "/imgs/homepage/blog/poster_5.jpg"
   },

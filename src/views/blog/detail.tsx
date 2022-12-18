@@ -119,6 +119,10 @@ const BlogDetail = () => {
     return window.location.origin + currentBlog.posterImg;
   };
 
+  const getUrl = () => {
+    return window.location.href;
+  };
+
   return (
     <Box>
       <Helmet>
@@ -127,7 +131,7 @@ const BlogDetail = () => {
         <meta property="og:title" content={currentBlog.title + " - Scroll"} />
         <meta property="og:description" content={currentBlog.summary} />
         <meta property="og:image" content={getPosterUri()} />
-        <meta property="og:url" content="scroll.io" />
+        <meta property="og:url" content={getUrl()} />
         <meta name="twitter:title" content={currentBlog.title + " - Scroll"} />
         <meta name="twitter:description" content={currentBlog.summary} />
         <meta name="twitter:image" content={getPosterUri()} />

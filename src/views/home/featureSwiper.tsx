@@ -83,14 +83,14 @@ const features = [
     webpIcon: EVMEquivalenceWebpIcon,
     title: "EVM Equivalence",
     description:
-      "Developing on Scroll feels the same as developing on Ethereum. Any EVM-compatible smart contract can be effortlessly deployed to Scroll's network.",
+      "Developing on Scroll feels the same as developing on Ethereum. Any EVM-compatible smart contract can be effortlessly deployed to Scroll’s network.",
   },
   {
     icon: SecurityIcon,
     webpIcon: SecurityWebpIcon,
     title: "Security",
     description:
-      "Scroll's protocol is currently undergoing multiple third-party audits to ensure security. Scroll also values transparency and is working to build its platform openly and in collaboration with the community.",
+      "Scroll’s protocol is currently undergoing multiple third-party audits to ensure security. Scroll also values transparency and is working to build its platform openly and in collaboration with the community.",
   },
 ];
 
