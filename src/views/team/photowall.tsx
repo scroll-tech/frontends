@@ -41,42 +41,42 @@ const Photowall = () => {
           <Box sx={{ width: "41.2%" }}>
             <Photo
               src={Pic1}
-              webpSrc={Pic1Webp}
+              webpsrc={Pic1Webp}
               sx={{ marginBottom: "3.86%" }}
             />
             <Photo
               src={Pic2}
-              webpSrc={Pic2Webp}
+              webpsrc={Pic2Webp}
               sx={{ marginBottom: "3.86%" }}
             />
-            <Photo src={Pic3} webpSrc={Pic3Webp} />
+            <Photo src={Pic3} webpsrc={Pic3Webp} />
           </Box>
           <Box sx={{ width: "56%" }}>
             <Photo
               src={Pic4}
-              webpSrc={Pic4Webp}
+              webpsrc={Pic4Webp}
               sx={{ marginBottom: "3.86%" }}
             />
-            <Photo src={Pic5} webpSrc={Pic5Webp} />
+            <Photo src={Pic5} webpsrc={Pic5Webp} />
           </Box>
         </>
       ) : (
         <Box display="flex" flexDirection="column">
-          <Photo src={Pic4} webpSrc={Pic4Webp} sx={{ marginBottom: "6%" }} />
+          <Photo src={Pic4} webpsrc={Pic4Webp} sx={{ marginBottom: "6%" }} />
           <Box
             display="flex"
             justifyContent="space-between"
             sx={{ marginBottom: "6%" }}
           >
             <Box sx={{ width: "60%" }}>
-              <Photo src={Pic1} webpSrc={Pic1Webp} sx={{ width: "100%" }} />
+              <Photo src={Pic1} webpsrc={Pic1Webp} sx={{ width: "100%" }} />
             </Box>
             <Box sx={{ width: "33.19%" }}>
-              <Photo src={Pic2} webpSrc={Pic2Webp} sx={{ width: "100%" }} />
+              <Photo src={Pic2} webpsrc={Pic2Webp} sx={{ width: "100%" }} />
             </Box>
           </Box>
-          <Photo src={Pic3} webpSrc={Pic3Webp} sx={{ marginBottom: "6%" }} />
-          <Photo src={Pic5} webpSrc={Pic5Webp} />
+          <Photo src={Pic3} webpsrc={Pic3Webp} sx={{ marginBottom: "6%" }} />
+          <Photo src={Pic5} webpsrc={Pic5Webp} />
         </Box>
       )}
     </PhotoContainer>

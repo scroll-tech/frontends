@@ -70,7 +70,7 @@ const users = [
 
 const UserCard = ({ user }) => (
   <AvatarCard>
-    <Avatar src={user.avatarImg} webpSrc={user.avatarWebpImg} />
+    <Avatar src={user.avatarImg} webpsrc={user.avatarWebpImg} />
     <UserName>{user.name}</UserName>
     <Typography>{user.position}</Typography>
     <Link href={user.twitterLink}>
