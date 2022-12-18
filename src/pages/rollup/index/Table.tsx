@@ -26,11 +26,32 @@ dayjs.extend(relativeTime);
 
 const StyledTablePagination: any = styled(TablePagination)(({ theme }) => ({
   marginTop: "2rem",
-  "*": {
-    fontSize: "1.6rem !important",
-    fontWeight: "500 !important",
-    color: `${theme.palette.text.primary} !important`,
+  fontSize: "1.6rem",
+  ".MuiTablePagination-root": {
+    fontSize: "1.6rem",
   },
+  ".MuiSelect-select": {
+    fontWeight: "500 ",
+  },
+  ".MuiTablePagination-selectLabel": {
+    color: `${theme.palette.text.primary}`,
+    fontSize: "1.6rem",
+    fontWeight: "500 ",
+  },
+  ".MuiTablePagination-selectIcon": {
+    fontSize: "1.6rem",
+    color: `${theme.palette.text.primary}`,
+  },
+  ".MuiTablePagination-displayedRows": {
+    fontSize: "1.6rem",
+    fontWeight: "500 ",
+    color: `${theme.palette.text.primary}`,
+  },
+  // "*": {
+  //   fontSize: "1.6rem !important",
+  //   fontWeight: "500 !important",
+  //   color: `${theme.palette.text.primary} !important`,
+  // },
 }));
 
 const ExternalLink = styled(Link)(({ theme }) => ({
