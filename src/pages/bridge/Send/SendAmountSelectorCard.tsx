@@ -1,37 +1,37 @@
 // /* eslint-disable */
-import { useMemo, FC, ChangeEvent } from "react";
-import { BigNumber } from "ethers";
-import { makeStyles } from "tss-react/mui";
-import { Card, Typography, Skeleton, MenuItem } from "@mui/material";
-import LargeTextField from "../components/LargeTextField";
-import RaisedSelect from "../components/RaisedSelect";
-import SelectOption from "../components/RaisedSelect/SelectOption";
-import { Token } from "@/constants";
-import { toTokenDisplay } from "@/utils";
+import { useMemo, FC, ChangeEvent } from "react"
+import { BigNumber } from "ethers"
+import { makeStyles } from "tss-react/mui"
+import { Card, Typography, Skeleton, MenuItem } from "@mui/material"
+import LargeTextField from "../components/LargeTextField"
+import RaisedSelect from "../components/RaisedSelect"
+import SelectOption from "../components/RaisedSelect/SelectOption"
+import { Token } from "@/constants"
+import { toTokenDisplay } from "@/utils"
 
-import NetworkLabel from "./NetworkLabel";
-import SelectedToken from "./SelectedToken";
+import NetworkLabel from "./NetworkLabel"
+import SelectedToken from "./SelectedToken"
 
 type Props = {
-  value?: string;
-  label: string;
-  token: Token;
-  onChange?: (value: string) => void;
-  fromNetwork?: any;
-  tokenList?: Token[];
-  toNetwork?: any;
-  selectedNetwork?: any;
-  networkOptions: any[];
-  onNetworkChange?: (network?: any) => void;
-  balance?: BigNumber;
-  loadingBalance?: boolean;
-  disableInput?: boolean;
-  deadline?: any;
-  setWarning?: (message: string) => void;
-  onChangeToken?: (event: ChangeEvent<{ value: Token }>) => void;
-};
+  value?: string
+  label: string
+  token: Token
+  onChange?: (value: string) => void
+  fromNetwork?: any
+  tokenList?: Token[]
+  toNetwork?: any
+  selectedNetwork?: any
+  networkOptions: any[]
+  onNetworkChange?: (network?: any) => void
+  balance?: BigNumber
+  loadingBalance?: boolean
+  disableInput?: boolean
+  deadline?: any
+  setWarning?: (message: string) => void
+  onChangeToken?: (event: ChangeEvent<{ value: Token }>) => void
+}
 
-const useStyles = makeStyles()((theme) => {
+const useStyles = makeStyles()(theme => {
   return {
     container: {
       width: "100%",
@@ -106,10 +106,10 @@ const useStyles = makeStyles()((theme) => {
         lineHeight: "2.2rem",
       },
     },
-  };
-});
+  }
+})
 
-const SendAmountSelectorCard: FC<Props> = (props) => {
+const SendAmountSelectorCard: FC<Props> = props => {
   const {
     value = "",
     label = "from",
@@ -121,19 +121,19 @@ const SendAmountSelectorCard: FC<Props> = (props) => {
     loadingBalance = false,
     disableInput = false,
     onChangeToken,
-  } = props;
-  const { classes } = useStyles();
+  } = props
+  const { classes } = useStyles()
 
   const balanceLabel = useMemo(() => {
-    return toTokenDisplay(balance, token?.decimals);
-  }, [balance, token]);
+    return toTokenDisplay(balance, token?.decimals)
+  }, [balance, token])
 
-  const isToCard = useMemo(() => label === "To", [label]);
+  const isToCard = useMemo(() => label === "To", [label])
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    onChange?.(value);
-  };
+    const { value } = event.target
+    onChange?.(value)
+  }
 
   // TODO: max
   const handleMaxClick = async () => {
@@ -167,7 +167,7 @@ const SendAmountSelectorCard: FC<Props> = (props) => {
     //   }
     //   const maxValue = formatUnits(totalAmount, token.decimals)
     //   onChange(maxValue)
-  };
+  }
 
   return (
     <Card className={classes.container}>
@@ -175,14 +175,7 @@ const SendAmountSelectorCard: FC<Props> = (props) => {
         {isToCard ? (
           <div />
         ) : (
-          <LargeTextField
-            className="flex-1"
-            value={value}
-            onChange={handleInputChange}
-            placeholder="0.00"
-            leftAlign
-            disabled={disableInput}
-          />
+          <LargeTextField className="flex-1" value={value} onChange={handleInputChange} placeholder="0.00" leftAlign disabled={disableInput} />
         )}
 
         {isToCard ? (
@@ -190,11 +183,7 @@ const SendAmountSelectorCard: FC<Props> = (props) => {
         ) : (
           <RaisedSelect value={token} onChange={onChangeToken}>
             {tokenList?.map((token: any) => (
-              <MenuItem
-                value={token}
-                key={token.symbol}
-                className={classes.selectItem}
-              >
+              <MenuItem value={token} key={token.symbol} className={classes.selectItem}>
                 <SelectOption icon={token.logoURI} label={token.symbol} />
               </MenuItem>
             ))}
@@ -223,7 +212,7 @@ const SendAmountSelectorCard: FC<Props> = (props) => {
         ) : null}
       </div>
     </Card>
-  );
-};
+  )
+}
 
-export default SendAmountSelectorCard;
+export default SendAmountSelectorCard

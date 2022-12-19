@@ -1,8 +1,8 @@
-import * as React from "react";
-import { styled } from "@mui/material/styles";
-import Button, { ButtonProps } from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
-import { purple } from "@mui/material/colors";
+import * as React from "react"
+import { styled } from "@mui/material/styles"
+import Button, { ButtonProps } from "@mui/material/Button"
+import Stack from "@mui/material/Stack"
+import { purple } from "@mui/material/colors"
 
 const CustomizedButton = styled(Button)<ButtonProps>(({ theme }) => ({
   // color: "text-red",
@@ -16,6 +16,6 @@ const CustomizedButton = styled(Button)<ButtonProps>(({ theme }) => ({
   // "&:hover": {
   //   boxShadow: "6px 9px 0px 0px #FEE7E0",
   // },
-}));
+}))
 
-export default CustomizedButton;
+export default CustomizedButton

@@ -4,7 +4,7 @@ function WebpImage(props) {
       <source srcSet={props.webpsrc} type="image/webp" />
       <img {...props} />
     </picture>
-  );
+  )
 }
 
-export default WebpImage;
+export default WebpImage

@@ -1,21 +1,21 @@
-import { Box, Typography, Button, Link } from "@mui/material";
-import { styled } from "@mui/system";
-import SandyAvatar from "@/assets/images/homepage/team/Sandy.jpg";
-import SandyAvatarWebp from "@/assets/images/homepage/team/Sandy.webp";
+import { Box, Typography, Button, Link } from "@mui/material"
+import { styled } from "@mui/system"
+import SandyAvatar from "@/assets/images/homepage/team/Sandy.jpg"
+import SandyAvatarWebp from "@/assets/images/homepage/team/Sandy.webp"
 
-import YeAvatar from "@/assets/images/homepage/team/Ye.jpg";
-import YeAvatarWebp from "@/assets/images/homepage/team/Ye.webp";
+import YeAvatar from "@/assets/images/homepage/team/Ye.jpg"
+import YeAvatarWebp from "@/assets/images/homepage/team/Ye.webp"
 
-import HaichenAvatar from "@/assets/images/homepage/team/Haichen.jpg";
-import HaichenAvatarWebp from "@/assets/images/homepage/team/Haichen.webp";
+import HaichenAvatar from "@/assets/images/homepage/team/Haichen.jpg"
+import HaichenAvatarWebp from "@/assets/images/homepage/team/Haichen.webp"
 
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper";
-import WebpImage from "@/components/WebpImage";
+import { Swiper, SwiperSlide } from "swiper/react"
+import { Pagination } from "swiper"
+import WebpImage from "@/components/WebpImage"
 
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme } from "@mui/material/styles";
-import { Twitter as TwitterIcon } from "@mui/icons-material";
+import useMediaQuery from "@mui/material/useMediaQuery"
+import { useTheme } from "@mui/material/styles"
+import { Twitter as TwitterIcon } from "@mui/icons-material"
 
 const UserName = styled(Typography)(
   ({ theme }) => `
@@ -24,16 +24,16 @@ const UserName = styled(Typography)(
     line-height: 4.6rem;
     letter-spacing: -0.25px;
     color: ${theme.palette.text.primary};
-    `
-);
+    `,
+)
 
 const Avatar = styled(WebpImage)(
   ({ theme }) => `
         width: 13.6rem;
         height: 20rem;
         object-fit: contain;
-          `
-);
+          `,
+)
 
 const AvatarCard = styled(Box)(
   ({ theme }) => `
@@ -41,8 +41,8 @@ const AvatarCard = styled(Box)(
        ${theme.breakpoints.down("md")} {
         margin-bottom: 4rem;
     };
-          `
-);
+          `,
+)
 
 const users = [
   {
@@ -66,7 +66,7 @@ const users = [
     avatarWebpImg: YeAvatarWebp,
     twitterLink: "https://twitter.com/yezhang1998",
   },
-];
+]
 
 const UserCard = ({ user }) => (
   <AvatarCard>
@@ -84,17 +84,13 @@ const UserCard = ({ user }) => (
       />
     </Link>
   </AvatarCard>
-);
+)
 
 const Avatars = () => {
-  const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
+  const theme = useTheme()
+  const isDesktop = useMediaQuery(theme.breakpoints.up("md"))
   return (
-    <Box
-      className={isDesktop ? "wrapper" : ""}
-      display="flex"
-      justifyContent="space-around"
-    >
+    <Box className={isDesktop ? "wrapper" : ""} display="flex" justifyContent="space-around">
       <Swiper
         slidesPerView={isDesktop ? 3 : 2}
         spaceBetween={isDesktop ? 0 : 8}
@@ -105,14 +101,14 @@ const Avatars = () => {
         modules={[Pagination]}
         style={{ width: "100%" }}
       >
-        {users.map((user) => (
+        {users.map(user => (
           <SwiperSlide key={user.name}>
             <UserCard user={user} />
           </SwiperSlide>
         ))}
       </Swiper>
     </Box>
-  );
-};
+  )
+}
 
-export default Avatars;
+export default Avatars

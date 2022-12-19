@@ -1,6 +1,6 @@
-import { styled } from "@mui/material/styles";
-import Table, { tableClasses } from "@mui/material/Table";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import { styled } from "@mui/material/styles"
+import Table, { tableClasses } from "@mui/material/Table"
+import TableCell, { tableCellClasses } from "@mui/material/TableCell"
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -17,5 +17,5 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   "&:nth-of-type(1)": {
     paddingLeft: "5rem",
   },
-}));
-export default StyledTableCell;
+}))
+export default StyledTableCell

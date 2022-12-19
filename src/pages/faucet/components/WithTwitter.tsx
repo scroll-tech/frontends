@@ -1,18 +1,18 @@
-import { Alert, Button, CircularProgress, Stack } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import useStorage from "squirrel-gill";
-import Link from "@/components/Link";
-import { redirectSignInTwitter } from "../helper";
+import { Alert, Button, CircularProgress, Stack } from "@mui/material"
+import { LoadingButton } from "@mui/lab"
+import TwitterIcon from "@mui/icons-material/Twitter"
+import useStorage from "squirrel-gill"
+import Link from "@/components/Link"
+import { redirectSignInTwitter } from "../helper"
 
-const WithTwitter = (props) => {
-  const { loginLoading, requestLoading, onRequest } = props;
+const WithTwitter = props => {
+  const { loginLoading, requestLoading, onRequest } = props
 
-  const [user, setUser] = useStorage(localStorage, "user");
+  const [user, setUser] = useStorage(localStorage, "user")
 
   const handleSignOut = () => {
-    setUser(null);
-  };
+    setUser(null)
+  }
 
   if (user?.token) {
     return (
@@ -40,11 +40,7 @@ const WithTwitter = (props) => {
           loadingIndicator={
             <Stack direction="row" spacing={2}>
               <span>Requesting Tokens</span>
-              <CircularProgress
-                color="inherit"
-                size={18}
-                thickness={4}
-              ></CircularProgress>
+              <CircularProgress color="inherit" size={18} thickness={4}></CircularProgress>
             </Stack>
           }
           variant="contained"
@@ -65,7 +61,7 @@ const WithTwitter = (props) => {
           Sign out @{user.name}
         </Link>
       </>
-    );
+    )
   }
 
   return (
@@ -85,8 +81,7 @@ const WithTwitter = (props) => {
           },
         }}
       >
-        Log in to Twitter to prevent faucet botting. Read-only access is
-        requested. Twitter account requirements: older than 1 month, 1 tweet, 30
+        Log in to Twitter to prevent faucet botting. Read-only access is requested. Twitter account requirements: older than 1 month, 1 tweet, 30
         followers.
       </Alert>
       <LoadingButton
@@ -102,7 +97,7 @@ const WithTwitter = (props) => {
         Log in to Twitter
       </LoadingButton>
     </>
-  );
-};
+  )
+}
 
-export default WithTwitter;
+export default WithTwitter

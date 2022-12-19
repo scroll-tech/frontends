@@ -1,8 +1,8 @@
 /* eslint-disable */
-import { FC, forwardRef } from "react";
-import { makeStyles, withStyles } from "tss-react/mui";
-import MuiButton, { ButtonProps as MuiButtonProps } from "@mui/material/Button";
-import CircularProgress from "@mui/material/CircularProgress";
+import { FC, forwardRef } from "react"
+import { makeStyles, withStyles } from "tss-react/mui"
+import MuiButton, { ButtonProps as MuiButtonProps } from "@mui/material/Button"
+import CircularProgress from "@mui/material/CircularProgress"
 
 const useStyles = makeStyles<any>()((theme, { large, fullWidth }) => ({
   root: {
@@ -21,20 +21,11 @@ const useStyles = makeStyles<any>()((theme, { large, fullWidth }) => ({
     display: "inline-flex",
     marginLeft: "1rem",
   },
-}));
+}))
 
 const LargeButton = (props, ref) => {
-  const {
-    className,
-    children,
-    large = false,
-    disabled = false,
-    loading = false,
-    size = 40,
-    fullWidth = false,
-    ...buttonProps
-  } = props;
-  const { classes, cx } = useStyles({ large, fullWidth });
+  const { className, children, large = false, disabled = false, loading = false, size = 40, fullWidth = false, ...buttonProps } = props
+  const { classes, cx } = useStyles({ large, fullWidth })
   return (
     <MuiButton
       {...buttonProps}
@@ -50,7 +41,7 @@ const LargeButton = (props, ref) => {
         </div>
       ) : null}
     </MuiButton>
-  );
-};
+  )
+}
 
-export default forwardRef(LargeButton);
+export default forwardRef(LargeButton)
