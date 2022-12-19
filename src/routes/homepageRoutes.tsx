@@ -28,8 +28,6 @@ const routes = [
     path: "/blog/:blogId",
     element: <BlogDetail />,
   },
-
-  // { name: '404', path: '*', element: NotFound },
 ];
 
 export default routes;

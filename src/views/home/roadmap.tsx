@@ -8,6 +8,7 @@ const RoadmapList = styled("ul")(
           width: 73rem;
           // background: #E1F4FE;
           border-radius: 0.5rem;
+          box-shadow: rgb(0 0 0 / 15%) 5px 5px 3px;
           ${theme.breakpoints.down("md")} {
             width: 100%;
             margin-top: 6rem;
@@ -22,6 +23,9 @@ const RoadmapListItem = styled("li")(
           border-bottom: 1px solid #ffcad5;
           position: relative;
           z-index: 1;
+          &.active {
+            z-index: 2;
+          }
           &:after {
             content: " ";
             background: #E1F4FE;
@@ -41,7 +45,7 @@ const RoadmapListItem = styled("li")(
             top: -1px;
             bottom: -1px;
             background: #ffffff;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
+            box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.25);
           }
         `
 );

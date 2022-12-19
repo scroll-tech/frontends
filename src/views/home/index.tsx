@@ -209,7 +209,7 @@ const Home = () => {
           </TitleTypography>
           <SubTitleTypography variant="subtitle1" sx={{ maxWidth: "53rem" }}>
             The future is here: interact with dApps, deploy smart contracts, and
-            explore L2 blocks on Scroll's Testnet.
+            explore L2 blocks on Scroll’s Testnet.
           </SubTitleTypography>
           <Box>
             <JoinTestnetButton />
@@ -226,7 +226,16 @@ const Home = () => {
       <SectionBox className="roadmap-section">
         <RoadmapBoxWrapper className="wrapper">
           <RoadmapInfo>
-            <TitleTypography variant="h2">Our journey so far</TitleTypography>
+            <TitleTypography
+              sx={{
+                textAlign: {
+                  md: "left",
+                },
+              }}
+              variant="h2"
+            >
+              Our journey so far
+            </TitleTypography>
             <SubTitleTypography
               variant="subtitle1"
               sx={{
@@ -250,7 +259,7 @@ const Home = () => {
       <SectionBox>
         <TitleTypography variant="h2">Scroll Blog</TitleTypography>
         <SubTitleTypography variant="subtitle1" sx={{ maxWidth: "70rem" }}>
-          Learn about Scroll's technology, research, and latest developments.
+          Learn about Scroll’s technology, research, and latest developments.
         </SubTitleTypography>
         <Article />
       </SectionBox>

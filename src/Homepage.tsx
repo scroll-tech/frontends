@@ -16,10 +16,34 @@ function Homepage() {
 
   const route = useMatchedRoute();
 
+  const getUrl = () => {
+    return window.location.href;
+  };
   return (
     <ScrollToTop>
       <Helmet>
-        <title>Scroll {route?.name ? `- ${route.name}` : ""}</title>
+        {route ? <title>{route.name} - Scroll</title> : null}
+        <meta
+          name="description"
+          content="A native zkEVM layer 2 solution for Ethereum"
+        />
+        <meta
+          property="og:title"
+          content={`Scroll ${route?.name ? "-" + route.name : ""}`}
+        />
+        <meta
+          property="og:description"
+          content="A native zkEVM layer 2 solution for Ethereum"
+        />
+        <meta
+          name="twitter:title"
+          content={`Scroll ${route?.name ? "-" + route.name : ""}`}
+        />
+        <meta
+          name="twitter:description"
+          content="A native zkEVM layer 2 solution for Ethereum"
+        />
+        <meta name="twitter:image" content="/logo_for_og.png" />
       </Helmet>
       <div className="App bg-white min-h-[100vh]">
         <Header />

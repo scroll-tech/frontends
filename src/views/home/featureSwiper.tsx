@@ -17,10 +17,12 @@ const FeatureWrapper = styled(Box)(({ theme }) => ({}));
 
 const FeatureBox = styled(Box)(
   ({ theme }) => `
-        width: 38rem;
+        width: 37.6rem;
         height: 54rem;
+        margin: 0 .8rem .8rem 0;
         background: #ffffff;
         border-radius: 5px;
+        box-shadow: rgb(0 0 0 / 15%) 5px 5px 3px;
         ${theme.breakpoints.down("lg")} {
           width: 30vw;
           height: 50rem;
@@ -29,7 +31,7 @@ const FeatureBox = styled(Box)(
             width: 91.8vw;
             max-width: 35.8rem;
             height: 44rem;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: rgb(0 0 0 / 15%) 5px 5px 3px;
             border-radius: 5px;
             margin: 1.4rem auto 6rem;
         };
@@ -81,14 +83,14 @@ const features = [
     webpIcon: EVMEquivalenceWebpIcon,
     title: "EVM Equivalence",
     description:
-      "Developing on Scroll feels the same as developing on Ethereum. Any EVM-compatible smart contract can be effortlessly deployed to Scroll's network.",
+      "Developing on Scroll feels the same as developing on Ethereum. Any EVM-compatible smart contract can be effortlessly deployed to Scroll’s network.",
   },
   {
     icon: SecurityIcon,
     webpIcon: SecurityWebpIcon,
     title: "Security",
     description:
-      "Scroll's protocol is currently undergoing multiple third-party audits to ensure security. Scroll also values transparency and is working to build its platform openly and in collaboration with the community.",
+      "Scroll’s protocol is currently undergoing multiple third-party audits to ensure security. Scroll also values transparency and is working to build its platform openly and in collaboration with the community.",
   },
 ];
 

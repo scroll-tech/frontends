@@ -1,43 +1,32 @@
-import Footer from "@/components/Footer"
-import Header from "@/components/Header"
-import Web3Provider from "@/contexts/Web3ContextProvider"
-import ScrollToTop from "@/hooks/useScrollToTop"
-import { Route, Routes } from "react-router-dom"
-import AppWrapper from "./contexts"
-import Bridge from "./pages/bridge"
-import Faucet from "./pages/faucet"
-import AddNetwork from "./pages/faucet/add-network"
-import Home from "./pages/home"
-import RollupScanBatch from "./pages/rollup/batch"
-import RollupScanBlock from "./pages/rollup/block"
-import RollupScan from "./pages/rollup/index"
-import Swap from "./pages/swap"
-
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
+import { Helmet } from "react-helmet";
+import Web3Provider from "@/contexts/Web3ContextProvider";
+import ScrollToTop from "@/hooks/useScrollToTop";
+import { Route, Routes } from "react-router-dom";
+import AppWrapper from "./contexts";
+import routes from "./routes/prealphaRoutes";
+import useMatchedRoute from "./hooks/useMatchedRoute";
 function App() {
+  const route = useMatchedRoute();
+  const getUrl = () => {
+    return window.location.href;
+  };
+
   return (
     <div className="App bg-white min-h-[100vh]">
+      <Helmet>
+        {route ? <title>{route.name} - Scroll</title> : null}
+        <meta property="og:url" content={getUrl()} />
+      </Helmet>
       <Web3Provider>
         <AppWrapper>
           <ScrollToTop>
             <Header />
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/faucet" element={<Faucet />} />
-              <Route path="/bridge" element={<Bridge />} />
-              <Route
-                path="/faucet/add-network"
-                element={<AddNetwork />}
-              />
-              <Route path="/swap" element={<Swap />} />
-              <Route path="/rollupscan" element={<RollupScan />} />
-              <Route
-                path="/rollupscan/batch/:batchIndex"
-                element={<RollupScanBatch />}
-              />
-              <Route
-                path="/rollupscan/block/:batchIndex"
-                element={<RollupScanBlock />}
-              />
+              {routes.map((route, key) => (
+                <Route key={key} path={route.path} element={route.element} />
+              ))}
             </Routes>
             <Footer />
           </ScrollToTop>

@@ -74,7 +74,7 @@ body {
 }
 
 :root {
-  --swiper-theme-color: #eb7106;
+  --swiper-theme-color: #eb7106 !important;
   /* --swiper-pagination-bullet-inactive-color: #595959; */
 }
 

@@ -1,10 +1,17 @@
 import { Box, Typography, Button, Link } from "@mui/material";
 import { styled } from "@mui/system";
 import SandyAvatar from "@/assets/images/homepage/team/Sandy.jpg";
+import SandyAvatarWebp from "@/assets/images/homepage/team/Sandy.webp";
+
 import YeAvatar from "@/assets/images/homepage/team/Ye.jpg";
+import YeAvatarWebp from "@/assets/images/homepage/team/Ye.webp";
+
 import HaichenAvatar from "@/assets/images/homepage/team/Haichen.jpg";
+import HaichenAvatarWebp from "@/assets/images/homepage/team/Haichen.webp";
+
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper";
+import WebpImage from "@/components/WebpImage";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
@@ -20,7 +27,7 @@ const UserName = styled(Typography)(
     `
 );
 
-const Avatar = styled("img")(
+const Avatar = styled(WebpImage)(
   ({ theme }) => `
         width: 13.6rem;
         height: 20rem;
@@ -42,25 +49,28 @@ const users = [
     name: "Sandy",
     position: "Co-founder",
     avatarImg: SandyAvatar,
+    avatarWebpImg: SandyAvatarWebp,
     twitterLink: "https://twitter.com/SandyPeng1",
   },
   {
     name: "Haichen",
     position: "Co-founder",
     avatarImg: HaichenAvatar,
+    avatarWebpImg: HaichenAvatarWebp,
     twitterLink: "https://twitter.com/shenhaichen",
   },
   {
     name: "Ye",
     position: "Co-founder",
     avatarImg: YeAvatar,
+    avatarWebpImg: YeAvatarWebp,
     twitterLink: "https://twitter.com/yezhang1998",
   },
 ];
 
 const UserCard = ({ user }) => (
   <AvatarCard>
-    <Avatar src={user.avatarImg} />
+    <Avatar src={user.avatarImg} webpsrc={user.avatarWebpImg} />
     <UserName>{user.name}</UserName>
     <Typography>{user.position}</Typography>
     <Link href={user.twitterLink}>

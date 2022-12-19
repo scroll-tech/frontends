@@ -1,6 +1,6 @@
-# Scroll's Technical Principles
+# Scroll’s Technical Principles
 
-To scale Ethereum with our zkEVM-based zkRollup, we have designed Scroll based on a set of technical principles which uphold Scroll's [core values](https://mirror.xyz/scroll.eth/EYn7ODhQAnNWABwWcu5xZLts_wEXTZAEWyTgExGS1DA). This post lays out these principles and how they relate to our broader design for Scroll.
+To scale Ethereum with our zkEVM-based zkRollup, we have designed Scroll based on a set of technical principles which uphold Scroll’s [core values](https://mirror.xyz/scroll.eth/EYn7ODhQAnNWABwWcu5xZLts_wEXTZAEWyTgExGS1DA). This post lays out these principles and how they relate to our broader design for Scroll.
 
 ## **Our technical principles**
 
@@ -27,7 +27,7 @@ Though these conditions are easy to satisfy with a centralized operator, in orde
 
 Decentralization is a core property of blockchains that is often overlooked or improperly traded for efficiency. We believe it is one of the most valuable aspects of blockchains and ensures that protocols and communities are vibrant and resilient against censorship or coordinated attacks. We consider decentralization across many aspects of Scroll, including node operators, provers, and the community of developers and users. By building in the open with the community and charting a credible path to decentralizing both proving and sequencing, Scroll is committed to ensuring decentralization across all dimensions.
 
-## **How our principles lead to Scroll's design**
+## **How our principles lead to Scroll’s design**
 
 The major design choices for Scroll are naturally motivated by these technical principles.
 
@@ -50,17 +50,17 @@ Finally and most importantly, beginning with this first step of decentralizing t
 
 **3\. Efficiency leads us to focus on open research-driven innovation**
 
-To make Scroll's zkEVM practical under the strong constraints imposed by security and decentralization, we leveraged innovative research-driven solutions from the entire community. Our [zkEVM design](https://scroll.io/blog/zkEVM) integrates recent breakthroughs in proof systems, proof aggregation, and ZK hardware acceleration, just to name a few. Our open development approach has allowed us to work with the PSE (Privacy and Scaling Explorations) group at the Ethereum Foundation and other collaborators to find the best ideas, and we believe this open-source research approach will produce the best and most efficient solution.
+To make Scroll’s zkEVM practical under the strong constraints imposed by security and decentralization, we leveraged innovative research-driven solutions from the entire community. Our [zkEVM design](https://scroll.io/blog/zkEVM) integrates recent breakthroughs in proof systems, proof aggregation, and ZK hardware acceleration, just to name a few. Our open development approach has allowed us to work with the PSE (Privacy and Scaling Explorations) group at the Ethereum Foundation and other collaborators to find the best ideas, and we believe this open-source research approach will produce the best and most efficient solution.
 
 As we approach the first production version of our zkEVM, we continue to focus on optimization and integrating the newest and best techniques. In this vein, we are currently exploring:
 
 - How data blobs post-danksharding can improve Scroll efficiency.
-- How to co-optimize Scroll's zkEVM with new hardware-friendly ZK algorithms
+- How to co-optimize Scroll’s zkEVM with new hardware-friendly ZK algorithms
 - How to expose new ZK primitives to Layer 2 application developers
 
 ## Tying it all together
 
-The technical principles outlined in this article have led Scroll to a protocol design which aligns with the existing Ethereum community and provides a scaling path for the future billions of users who are not yet on-chain. In the next few weeks, we will release more posts with concrete details about Scroll's architecture and the corresponding user and developer experience. Stay tuned to learn more about those and sign up to try out our pre-alpha testnet at [signup.scroll.io](http://signup.scroll.io/)!
+The technical principles outlined in this article have led Scroll to a protocol design which aligns with the existing Ethereum community and provides a scaling path for the future billions of users who are not yet on-chain. In the next few weeks, we will release more posts with concrete details about Scroll’s architecture and the corresponding user and developer experience. Stay tuned to learn more about those and sign up to try out our pre-alpha testnet at [signup.scroll.io](http://signup.scroll.io/)!
 
 If our vision of scaling Ethereum in an open and community-driven way resonates with you, we are looking for values-aligned individuals to help Scroll become the most developer- and user-friendly scaling solution for Ethereum.
 

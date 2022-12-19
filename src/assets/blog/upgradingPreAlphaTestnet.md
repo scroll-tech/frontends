@@ -1,10 +1,10 @@
 # Upgrading the Scroll Pre-Alpha Testnet
 
-After 3 months of building, we are excited to release an upgraded version of the Scroll Pre-Alpha Testnet. Our previous version onboarded over 10k users to test our bridge and demo forks of dapps like Uniswap. We'd like to thank the community for their helpful feedback on our UI/UX, and we are working hard to scale up our proving infrastructure to support the 100K+ users on our waitlist.
+After 3 months of building, we are excited to release an upgraded version of the Scroll Pre-Alpha Testnet. Our previous version onboarded over 10k users to test our bridge and demo forks of dapps like Uniswap. We’d like to thank the community for their helpful feedback on our UI/UX, and we are working hard to scale up our proving infrastructure to support the 100K+ users on our waitlist.
 
 Our new testnet upgrade enables **smart contract deployment on Scroll**. This allows developers to write and deploy their own contracts on Scroll using the same Ethereum developer tools we all know and love!
 
-## What's new in the upgrade?
+## What’s new in the upgrade?
 
 The new version supports the following features:
 
@@ -24,7 +24,7 @@ While testnet registration is open to anyone, we are permissioning access at thi
 
 - To learn more about Scroll, check out our [website](http://scroll.io/), [Twitter](https://twitter.com/Scroll_ZKP), or [Discord](http://discord.gg/GQxeCTA4dJ).
 
-## What's next for Scroll?
+## What’s next for Scroll?
 
 Soon after this upgrade, we will release our Alpha Testnet. Our community can expect the following features:
 

@@ -1,4 +1,4 @@
-# Scroll's Vision and Values
+# Scroll’s Vision and Values
 
 The promise of Ethereum is to build a decentralized computing platform widely accessible to all. Though it has come a long way towards achieving this vision, untenably high gas fees and frequent congestion on the current network present a significant challenge for true accessibility. Of course, the Ethereum community is aware of these issues and has adopted a [rollup-centric roadmap](https://ethereum-magicians.org/t/a-rollup-centric-ethereum-roadmap/4698) to increase throughput. This roadmap focuses Ethereum on being the most decentralized settlement layer and moves execution to rollups on Layer 2.
 
@@ -20,7 +20,7 @@ The current state of the Ethereum fee market means that high-stake applications 
 
 While achieving this, we believe Ethereum scaling solutions must meet developers and users where they are. That means giving them the benefits of scaling while minimizing any obstructions to their current workflows and interfaces. By starting with an EVM-equivalent solution, we allow existing applications and developer tooling to migrate from Ethereum to Scroll without deep modifications or rewrites.
 
-Of course, we won't stop there; after this first step, we plan to add experimental new features extending EVM's capabilities to allow developers to create richer user experiences on Scroll. By acting as a live proving ground for these VM-level changes, Scroll will provide users access to bleeding-edge applications and at the same time assessing demand for experimental features to later be upstreamed to the base layer EVM itself.
+Of course, we won’t stop there; after this first step, we plan to add experimental new features extending EVM’s capabilities to allow developers to create richer user experiences on Scroll. By acting as a live proving ground for these VM-level changes, Scroll will provide users access to bleeding-edge applications and at the same time assessing demand for experimental features to later be upstreamed to the base layer EVM itself.
 
 ### Build in the open with the community
 
@@ -28,7 +28,7 @@ Scroll is built to be community-centric and fully open-source from day one. We b
 
 When building a platform which can _define_ ownership of financial assets, the ability to openly audit and verify the code is essential. Otherwise, what if the platform is faking proofs or not actually following the protocol? By being open-source, we enable a fundamental level of community trust in Scroll. Even in the development phase, anyone can check on our progress simply by viewing our Github repos. This forces us to be transparent and responsible to our community.
 
-From a developer's perspective, building in the open leads to more secure and better designed systems. By virtue of being accessible, Scroll's code constantly receives both internal and external peer review. Moreover, by implementing designs and improvements from community contributors, such open systems are able to aggregate the best ideas from a growing community of values-aligned developers.
+From a developer’s perspective, building in the open leads to more secure and better designed systems. By virtue of being accessible, Scroll’s code constantly receives both internal and external peer review. Moreover, by implementing designs and improvements from community contributors, such open systems are able to aggregate the best ideas from a growing community of values-aligned developers.
 
 We believe the open-source DNA at the very heart of Scroll will make it the most secure and robust ZK-rollup, and we will continue collaborating with the community and contributing our solutions back to Ethereum. Our ultimate goal is to advance the end goal of Ethereum scaling -- "zk-SNARK everything".
 

@@ -74,7 +74,7 @@ const Footer = () => {
 
   return (
     <div className="footer w-full bg-[#EB71060D]">
-      <footer className="wrapper container box-border relative flex items-start justify-between !pt-[90px] !pb-[110px] mx-auto flex-col lg:flex-row">
+      <footer className="text-md wrapper container box-border relative flex items-start justify-between !pt-[90px] !pb-[110px] mx-auto flex-col lg:flex-row">
         <div className="flex-1 w-full flex h-full items-center mb-[30px] lg:flex-col lg:items-start lg:justify-between">
           <a href="/" className="flex flex-1 lg:mb-[80px]">
             <Logo></Logo>

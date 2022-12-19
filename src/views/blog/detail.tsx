@@ -119,6 +119,10 @@ const BlogDetail = () => {
     return window.location.origin + currentBlog.posterImg;
   };
 
+  const getUrl = () => {
+    return window.location.href;
+  };
+
   return (
     <Box>
       <Helmet>
@@ -127,10 +131,18 @@ const BlogDetail = () => {
         <meta property="og:title" content={currentBlog.title + " - Scroll"} />
         <meta property="og:description" content={currentBlog.summary} />
         <meta property="og:image" content={getPosterUri()} />
-        <meta property="og:url" content="scroll.io" />
+        <meta
+          property="og:url"
+          content={
+            currentBlog.canonical || `https://scroll.io/blog/${currentBlog.id}`
+          }
+        />
         <meta name="twitter:title" content={currentBlog.title + " - Scroll"} />
         <meta name="twitter:description" content={currentBlog.summary} />
         <meta name="twitter:image" content={getPosterUri()} />
+        {currentBlog.canonical && (
+          <link rel="canonical" href={currentBlog.canonical} />
+        )}
         <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css"
