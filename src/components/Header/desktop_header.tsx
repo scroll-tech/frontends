@@ -263,7 +263,7 @@ const App = (props) => {
             <Button
               color="primary"
               variant="contained"
-              href="https://prealpha.scroll.io" // TODO: Use a relative `/prealpha` once prealpha app released to MAIN too
+              href="/prealpha/"
               sx={{
                 "@media(max-width: 1000px)": {
                   display: "none",
