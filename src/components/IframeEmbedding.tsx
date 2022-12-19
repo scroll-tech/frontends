@@ -1,26 +1,35 @@
-import { styled } from "@mui/system"
-import { Box, CircularProgress } from "@mui/material"
-import { useEffect, useRef, useState } from "react"
+import { styled } from "@mui/system";
+import { Box, CircularProgress } from "@mui/material";
+import { useEffect, useRef, useState } from "react";
 
-const Iframe = styled("iframe")(({ theme }) => ({}))
+const Iframe = styled("iframe")(({ theme }) => ({}));
 
-function IframeEmbedding(props: { url: string; DesktopHeight: string; MobileHeight: string }) {
-  const iframeRef = useRef<HTMLIFrameElement>(null)
-  const [isIFrameLoaded, setIsIFrameLoaded] = useState<boolean>(false)
+function IframeEmbedding(props: {
+  url: string;
+  DesktopHeight: string;
+  MobileHeight: string;
+}) {
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [isIFrameLoaded, setIsIFrameLoaded] = useState<boolean>(false);
   useEffect(() => {
-    const iframeCurrent = iframeRef.current
+    const iframeCurrent = iframeRef.current;
     iframeCurrent?.addEventListener("load", () => {
-      setIsIFrameLoaded(true)
-    })
+      setIsIFrameLoaded(true);
+    });
     return () => {
-      iframeCurrent?.removeEventListener("load", () => setIsIFrameLoaded(true))
-    }
-  }, [iframeRef])
+      iframeCurrent?.removeEventListener("load", () => setIsIFrameLoaded(true));
+    };
+  }, [iframeRef]);
 
   return (
     <Box>
       {!isIFrameLoaded ? (
-        <Box display="flex" justifyContent="center" alignItems="center" height="80vh">
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="80vh"
+        >
           <CircularProgress sx={{ color: "#EB7106" }} />
         </Box>
       ) : null}
@@ -39,7 +48,7 @@ function IframeEmbedding(props: { url: string; DesktopHeight: string; MobileHeig
         }}
       ></Iframe>
     </Box>
-  )
+  );
 }
 
-export default IframeEmbedding
+export default IframeEmbedding;

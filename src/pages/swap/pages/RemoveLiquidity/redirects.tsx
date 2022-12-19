@@ -1,7 +1,7 @@
-import React from "react"
-import { RouteComponentProps, Redirect } from "react-router-dom-v5"
+import React from "react";
+import { RouteComponentProps, Redirect } from "react-router-dom-v5";
 
-const OLD_PATH_STRUCTURE = /^(0x[a-fA-F0-9]{40})-(0x[a-fA-F0-9]{40})$/
+const OLD_PATH_STRUCTURE = /^(0x[a-fA-F0-9]{40})-(0x[a-fA-F0-9]{40})$/;
 
 export function RedirectOldRemoveLiquidityPathStructure({
   match: {
@@ -9,9 +9,9 @@ export function RedirectOldRemoveLiquidityPathStructure({
   },
 }: RouteComponentProps<{ tokens: string }>) {
   if (!OLD_PATH_STRUCTURE.test(tokens)) {
-    return <Redirect to="/pool" />
+    return <Redirect to="/pool" />;
   }
-  const [currency0, currency1] = tokens.split("-")
+  const [currency0, currency1] = tokens.split("-");
 
-  return <Redirect to={`/remove/${currency0}/${currency1}`} />
+  return <Redirect to={`/remove/${currency0}/${currency1}`} />;
 }

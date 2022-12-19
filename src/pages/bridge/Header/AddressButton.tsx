@@ -1,16 +1,23 @@
-import { useRef } from "react"
-import { makeStyles } from "tss-react/mui"
-import { Popper, Typography, Card, Backdrop, Divider, ClickAwayListener } from "@mui/material"
-import CloseIcon from "@mui/icons-material/Close"
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
-import { useApp } from "@/contexts/AppContextProvider"
-import Button from "@/pages/bridge/components/Button"
-import ManageWallet from "@/pages/bridge/Header/ManageWallet"
-import TransactionHistory from "@/pages/bridge/Header/TransactionHistory"
-import { truncateAddress } from "@/utils"
-import useBridgeStore from "@/stores/bridgeStore"
+import { useRef } from "react";
+import { makeStyles } from "tss-react/mui";
+import {
+  Popper,
+  Typography,
+  Card,
+  Backdrop,
+  Divider,
+  ClickAwayListener,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
+import { useApp } from "@/contexts/AppContextProvider";
+import Button from "@/pages/bridge/components/Button";
+import ManageWallet from "@/pages/bridge/Header/ManageWallet";
+import TransactionHistory from "@/pages/bridge/Header/TransactionHistory";
+import { truncateAddress } from "@/utils";
+import useBridgeStore from "@/stores/bridgeStore";
 
-const useStyles = makeStyles()(theme => ({
+const useStyles = makeStyles()((theme) => ({
   container: {
     width: "max-content",
     boxSizing: "border-box",
@@ -77,35 +84,41 @@ const useStyles = makeStyles()(theme => ({
       zIndex: theme.zIndex.modal - 1,
     },
   },
-}))
+}));
 
 const AddressButton = () => {
-  const { walletCurrentAddress, disconnectWallet } = useWeb3Context()
+  const { walletCurrentAddress, disconnectWallet } = useWeb3Context();
   const {
     txHistory: { refreshPageTransactions },
-  } = useApp()
-  const { historyVisible, changeHistoryVisible } = useBridgeStore()
-  const buttonRef = useRef(null)
+  } = useApp();
+  const { historyVisible, changeHistoryVisible } = useBridgeStore();
+  const buttonRef = useRef(null);
 
-  const { classes, cx } = useStyles()
+  const { classes, cx } = useStyles();
 
   const handleOpen = () => {
-    changeHistoryVisible(true)
-    refreshPageTransactions(1)
-  }
+    changeHistoryVisible(true);
+    refreshPageTransactions(1);
+  };
 
   const handleClose = () => {
-    changeHistoryVisible(false)
-  }
+    changeHistoryVisible(false);
+  };
 
   const handleDisconnect = () => {
-    handleClose()
-    disconnectWallet()
-  }
+    handleClose();
+    disconnectWallet();
+  };
 
   return (
     <>
-      <Button className="w-[178px] p-[unset]" ref={buttonRef} variant="outlined" large onClick={handleOpen}>
+      <Button
+        className="w-[178px] p-[unset]"
+        ref={buttonRef}
+        variant="outlined"
+        large
+        onClick={handleOpen}
+      >
         {truncateAddress(walletCurrentAddress as string)}
       </Button>
       <Backdrop open={historyVisible} className={classes.backdrop}>
@@ -141,7 +154,10 @@ const AddressButton = () => {
                   <CloseIcon onClick={handleClose} />
                 </div>
                 <div>
-                  <ManageWallet classes={classes} onDisconnect={handleDisconnect} />
+                  <ManageWallet
+                    classes={classes}
+                    onDisconnect={handleDisconnect}
+                  />
                   <Divider />
                   <div className={cx("relative", classes.transactionsList)}>
                     <TransactionHistory />
@@ -153,7 +169,7 @@ const AddressButton = () => {
         </Popper>
       </Backdrop>
     </>
-  )
-}
+  );
+};
 
-export default AddressButton
+export default AddressButton;

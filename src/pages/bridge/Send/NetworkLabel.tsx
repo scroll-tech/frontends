@@ -1,11 +1,11 @@
-import { Box, Typography } from "@mui/material"
-import { makeStyles } from "tss-react/mui"
+import { Box, Typography } from "@mui/material";
+import { makeStyles } from "tss-react/mui";
 
 interface Props {
-  network?: any
+  network?: any;
 }
 
-const useStyles = makeStyles()(theme => {
+const useStyles = makeStyles()((theme) => {
   return {
     networkSelectionBox: {
       height: "4rem",
@@ -37,22 +37,30 @@ const useStyles = makeStyles()(theme => {
         margin: "0.7rem 0",
       },
     },
-  }
-})
+  };
+});
 
 function NetworkSelector({ network }: Props) {
-  const { classes, cx } = useStyles()
+  const { classes, cx } = useStyles();
 
   return (
     <div className={cx("flex", "items-center", classes.networkSelectionBox)}>
       <Box className={classes.networkIconContainer}>
-        <img src={network.imageUrl} className={classes.networkIcon} alt={network.name} />
+        <img
+          src={network.imageUrl}
+          className={classes.networkIcon}
+          alt={network.name}
+        />
       </Box>
-      <Typography variant="subtitle1" color="textSecondary" className={classes.networkLabel}>
+      <Typography
+        variant="subtitle1"
+        color="textSecondary"
+        className={classes.networkLabel}
+      >
         {network.name}
       </Typography>
     </div>
-  )
+  );
 }
 
-export default NetworkSelector
+export default NetworkSelector;

@@ -1,34 +1,44 @@
-import useSWR from "swr"
+import useSWR from "swr";
 
-const fetcher = (url: string) => fetch(url).then(r => r.json())
+const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
 export function useLastBlockNums() {
-  const { data, error } = useSWR(`${process.env.REACT_APP_ROLLUPSCAN_BASE_API_URL}/last_batch_indexes`, fetcher, {
-    refreshInterval: 3000,
-  })
+  const { data, error } = useSWR(
+    `${process.env.REACT_APP_ROLLUPSCAN_BASE_API_URL}/last_batch_indexes`,
+    fetcher,
+    {
+      refreshInterval: 3000,
+    }
+  );
   return {
     lastBlockNums: data,
     isLoading: !error && !data,
     isError: error,
-  }
+  };
 }
 
 export function useBatchDetail(batchIndex) {
-  const { data, error } = useSWR(`${process.env.REACT_APP_ROLLUPSCAN_BASE_API_URL}/batch?index=${batchIndex}`, fetcher)
+  const { data, error } = useSWR(
+    `${process.env.REACT_APP_ROLLUPSCAN_BASE_API_URL}/batch?index=${batchIndex}`,
+    fetcher
+  );
   return {
     batch: data?.batch,
     isLoading: !error && !data,
     isError: error,
-  }
+  };
 }
 
 export function useBlockList(batchIndex) {
-  const { data, error } = useSWR(`${process.env.REACT_APP_ROLLUPSCAN_BASE_API_URL}/blocks?batch_index=${batchIndex}`, fetcher)
+  const { data, error } = useSWR(
+    `${process.env.REACT_APP_ROLLUPSCAN_BASE_API_URL}/blocks?batch_index=${batchIndex}`,
+    fetcher
+  );
   return {
     blocks: data?.blocks,
     isLoading: !error && !data,
     isError: error,
-  }
+  };
 }
 
 // export function useGetBlatchId(blockHash) {

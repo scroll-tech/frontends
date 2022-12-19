@@ -1,18 +1,18 @@
-import React, { FC, useMemo, createContext, useContext } from "react"
-import useTheme, { Theme } from "./useTheme"
+import React, { FC, useMemo, createContext, useContext } from "react";
+import useTheme, { Theme } from "./useTheme";
 
 interface AppContextProps {
-  theme: Theme
+  theme: Theme;
 }
 
 interface Props {
-  children?: any
+  children?: any;
 }
 
-const AppContext = createContext<AppContextProps | undefined>(undefined)
+const AppContext = createContext<AppContextProps | undefined>(undefined);
 
 const AppContextProvider = ({ children }: React.PropsWithChildren<{}>) => {
-  const theme = useTheme()
+  const theme = useTheme();
 
   return (
     <AppContext.Provider
@@ -22,15 +22,15 @@ const AppContextProvider = ({ children }: React.PropsWithChildren<{}>) => {
     >
       {children}
     </AppContext.Provider>
-  )
-}
+  );
+};
 
 export function useApp() {
-  const ctx = useContext(AppContext)
+  const ctx = useContext(AppContext);
   if (ctx === undefined) {
-    throw new Error("useApp must be used within AppProvider")
+    throw new Error("useApp must be used within AppProvider");
   }
-  return ctx
+  return ctx;
 }
 
-export default AppContextProvider
+export default AppContextProvider;

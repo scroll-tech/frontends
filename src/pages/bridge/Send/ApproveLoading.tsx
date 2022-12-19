@@ -1,9 +1,16 @@
-import { Dialog, DialogTitle, DialogContent, IconButton, Typography, CircularProgress } from "@mui/material"
-import { makeStyles } from "tss-react/mui"
-import CloseIcon from "@mui/icons-material/Close"
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  IconButton,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
+import { makeStyles } from "tss-react/mui";
+import CloseIcon from "@mui/icons-material/Close";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 
-const useStyles = makeStyles()(theme => {
+const useStyles = makeStyles()((theme) => {
   return {
     title: {
       padding: "2.4rem 2.8rem",
@@ -27,13 +34,13 @@ const useStyles = makeStyles()(theme => {
     subTitle: {
       fontWeight: 600,
     },
-  }
-})
+  };
+});
 
-const ApproveLoading = props => {
-  const { open, onClose } = props
-  const { walletName } = useWeb3Context()
-  const { classes } = useStyles()
+const ApproveLoading = (props) => {
+  const { open, onClose } = props;
+  const { walletName } = useWeb3Context();
+  const { classes } = useStyles();
 
   return (
     <Dialog open={open} disableScrollLock>
@@ -47,7 +54,11 @@ const ApproveLoading = props => {
         </div>
       </DialogTitle>
       <DialogContent className={classes.content}>
-        <CircularProgress size={50} thickness={3} className={classes.loadingIcon}></CircularProgress>
+        <CircularProgress
+          size={50}
+          thickness={3}
+          className={classes.loadingIcon}
+        ></CircularProgress>
         <Typography variant="h4" gutterBottom>
           Pending Approve
         </Typography>
@@ -55,11 +66,13 @@ const ApproveLoading = props => {
           <Typography variant="body1" gutterBottom className={classes.subTitle}>
             Approve USDC
           </Typography>
-          <Typography variant="body1">Approve on your {walletName} wallet</Typography>
+          <Typography variant="body1">
+            Approve on your {walletName} wallet
+          </Typography>
         </div>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};
 
-export default ApproveLoading
+export default ApproveLoading;

@@ -1,16 +1,16 @@
-import React from "react"
-import styled from "styled-components"
-import { darken, lighten } from "polished"
+import React from "react";
+import styled from "styled-components";
+import { darken, lighten } from "polished";
 
-import { RowBetween } from "../Row"
-import { ChevronDown } from "react-feather"
-import { Button as RebassButton, ButtonProps } from "rebass/styled-components"
+import { RowBetween } from "../Row";
+import { ChevronDown } from "react-feather";
+import { Button as RebassButton, ButtonProps } from "rebass/styled-components";
 
 const Base = styled(RebassButton)<{
-  padding?: string
-  width?: string
-  borderRadius?: string
-  altDisabledStyle?: boolean
+  padding?: string;
+  width?: string;
+  borderRadius?: string;
+  altDisabledStyle?: boolean;
 }>`
   padding: ${({ padding }) => (padding ? padding : "18px")};
   width: ${({ width }) => (width ? width : "100%")};
@@ -36,7 +36,7 @@ const Base = styled(RebassButton)<{
   > * {
     user-select: none;
   }
-`
+`;
 
 export const ButtonPrimary = styled(Base)`
   background-color: ${({ theme }) => theme.primary1};
@@ -53,15 +53,17 @@ export const ButtonPrimary = styled(Base)`
     background-color: ${({ theme }) => darken(0.1, theme.primary1)};
   }
   &:disabled {
-    background-color: ${({ theme, altDisabledStyle }) => (altDisabledStyle ? theme.primary1 : theme.bg3)};
-    color: ${({ theme, altDisabledStyle }) => (altDisabledStyle ? "white" : theme.text3)};
+    background-color: ${({ theme, altDisabledStyle }) =>
+      altDisabledStyle ? theme.primary1 : theme.bg3};
+    color: ${({ theme, altDisabledStyle }) =>
+      altDisabledStyle ? "white" : theme.text3};
     cursor: auto;
     box-shadow: none;
     border: 1px solid transparent;
     outline: none;
     opacity: ${({ altDisabledStyle }) => (altDisabledStyle ? "0.7" : "1")};
   }
-`
+`;
 
 export const ButtonLight = styled(Base)`
   background-color: ${({ theme }) => theme.primary5};
@@ -69,15 +71,20 @@ export const ButtonLight = styled(Base)`
   font-size: 16px;
   font-weight: 500;
   &:focus {
-    box-shadow: 0 0 0 1pt ${({ theme, disabled }) => !disabled && darken(0.03, theme.primary5)};
-    background-color: ${({ theme, disabled }) => !disabled && darken(0.03, theme.primary5)};
+    box-shadow: 0 0 0 1pt
+      ${({ theme, disabled }) => !disabled && darken(0.03, theme.primary5)};
+    background-color: ${({ theme, disabled }) =>
+      !disabled && darken(0.03, theme.primary5)};
   }
   &:hover {
-    background-color: ${({ theme, disabled }) => !disabled && darken(0.03, theme.primary5)};
+    background-color: ${({ theme, disabled }) =>
+      !disabled && darken(0.03, theme.primary5)};
   }
   &:active {
-    box-shadow: 0 0 0 1pt ${({ theme, disabled }) => !disabled && darken(0.05, theme.primary5)};
-    background-color: ${({ theme, disabled }) => !disabled && darken(0.05, theme.primary5)};
+    box-shadow: 0 0 0 1pt
+      ${({ theme, disabled }) => !disabled && darken(0.05, theme.primary5)};
+    background-color: ${({ theme, disabled }) =>
+      !disabled && darken(0.05, theme.primary5)};
   }
   :disabled {
     opacity: 0.4;
@@ -89,7 +96,7 @@ export const ButtonLight = styled(Base)`
       outline: none;
     }
   }
-`
+`;
 
 export const ButtonGray = styled(Base)`
   background-color: ${({ theme }) => theme.bg3};
@@ -97,17 +104,22 @@ export const ButtonGray = styled(Base)`
   font-size: 16px;
   font-weight: 500;
   &:focus {
-    box-shadow: 0 0 0 1pt ${({ theme, disabled }) => !disabled && darken(0.05, theme.bg2)};
-    background-color: ${({ theme, disabled }) => !disabled && darken(0.05, theme.bg2)};
+    box-shadow: 0 0 0 1pt
+      ${({ theme, disabled }) => !disabled && darken(0.05, theme.bg2)};
+    background-color: ${({ theme, disabled }) =>
+      !disabled && darken(0.05, theme.bg2)};
   }
   &:hover {
-    background-color: ${({ theme, disabled }) => !disabled && darken(0.05, theme.bg2)};
+    background-color: ${({ theme, disabled }) =>
+      !disabled && darken(0.05, theme.bg2)};
   }
   &:active {
-    box-shadow: 0 0 0 1pt ${({ theme, disabled }) => !disabled && darken(0.1, theme.bg2)};
-    background-color: ${({ theme, disabled }) => !disabled && darken(0.1, theme.bg2)};
+    box-shadow: 0 0 0 1pt
+      ${({ theme, disabled }) => !disabled && darken(0.1, theme.bg2)};
+    background-color: ${({ theme, disabled }) =>
+      !disabled && darken(0.1, theme.bg2)};
   }
-`
+`;
 
 export const ButtonSecondary = styled(Base)`
   background-color: ${({ theme }) => theme.primary5};
@@ -132,7 +144,7 @@ export const ButtonSecondary = styled(Base)`
     opacity: 50%;
     cursor: auto;
   }
-`
+`;
 
 export const ButtonPink = styled(Base)`
   background-color: ${({ theme }) => theme.primary1};
@@ -154,7 +166,7 @@ export const ButtonPink = styled(Base)`
     opacity: 50%;
     cursor: auto;
   }
-`
+`;
 
 export const ButtonOutlined = styled(Base)`
   border: 1px solid ${({ theme }) => theme.bg2};
@@ -174,7 +186,7 @@ export const ButtonOutlined = styled(Base)`
     opacity: 50%;
     cursor: auto;
   }
-`
+`;
 
 export const ButtonEmpty = styled(Base)`
   background-color: transparent;
@@ -196,7 +208,7 @@ export const ButtonEmpty = styled(Base)`
     opacity: 50%;
     cursor: auto;
   }
-`
+`;
 
 export const ButtonWhite = styled(Base)`
   border: 1px solid #edeef2;
@@ -217,7 +229,7 @@ export const ButtonWhite = styled(Base)`
     opacity: 50%;
     cursor: auto;
   }
-`
+`;
 
 const ButtonConfirmedStyle = styled(Base)`
   background-color: ${({ theme }) => lighten(0.5, theme.green1)};
@@ -228,7 +240,7 @@ const ButtonConfirmedStyle = styled(Base)`
     opacity: 50%;
     cursor: auto;
   }
-`
+`;
 
 const ButtonErrorStyle = styled(Base)`
   background-color: ${({ theme }) => theme.red1};
@@ -252,25 +264,36 @@ const ButtonErrorStyle = styled(Base)`
     background-color: ${({ theme }) => theme.red1};
     border: 1px solid ${({ theme }) => theme.red1};
   }
-`
+`;
 
-export function ButtonConfirmed({ confirmed, altDisabledStyle, ...rest }: { confirmed?: boolean; altDisabledStyle?: boolean } & ButtonProps) {
+export function ButtonConfirmed({
+  confirmed,
+  altDisabledStyle,
+  ...rest
+}: { confirmed?: boolean; altDisabledStyle?: boolean } & ButtonProps) {
   if (confirmed) {
-    return <ButtonConfirmedStyle {...rest} />
+    return <ButtonConfirmedStyle {...rest} />;
   } else {
-    return <ButtonPrimary {...rest} altDisabledStyle={altDisabledStyle} />
+    return <ButtonPrimary {...rest} altDisabledStyle={altDisabledStyle} />;
   }
 }
 
-export function ButtonError({ error, ...rest }: { error?: boolean } & ButtonProps) {
+export function ButtonError({
+  error,
+  ...rest
+}: { error?: boolean } & ButtonProps) {
   if (error) {
-    return <ButtonErrorStyle {...rest} />
+    return <ButtonErrorStyle {...rest} />;
   } else {
-    return <ButtonPrimary {...rest} />
+    return <ButtonPrimary {...rest} />;
   }
 }
 
-export function ButtonDropdown({ disabled = false, children, ...rest }: { disabled?: boolean } & ButtonProps) {
+export function ButtonDropdown({
+  disabled = false,
+  children,
+  ...rest
+}: { disabled?: boolean } & ButtonProps) {
   return (
     <ButtonPrimary {...rest} disabled={disabled}>
       <RowBetween>
@@ -278,10 +301,14 @@ export function ButtonDropdown({ disabled = false, children, ...rest }: { disabl
         <ChevronDown size={24} />
       </RowBetween>
     </ButtonPrimary>
-  )
+  );
 }
 
-export function ButtonDropdownLight({ disabled = false, children, ...rest }: { disabled?: boolean } & ButtonProps) {
+export function ButtonDropdownLight({
+  disabled = false,
+  children,
+  ...rest
+}: { disabled?: boolean } & ButtonProps) {
   return (
     <ButtonOutlined {...rest} disabled={disabled}>
       <RowBetween>
@@ -289,13 +316,16 @@ export function ButtonDropdownLight({ disabled = false, children, ...rest }: { d
         <ChevronDown size={24} />
       </RowBetween>
     </ButtonOutlined>
-  )
+  );
 }
 
-export function ButtonRadio({ active, ...rest }: { active?: boolean } & ButtonProps) {
+export function ButtonRadio({
+  active,
+  ...rest
+}: { active?: boolean } & ButtonProps) {
   if (!active) {
-    return <ButtonWhite {...rest} />
+    return <ButtonWhite {...rest} />;
   } else {
-    return <ButtonPrimary {...rest} />
+    return <ButtonPrimary {...rest} />;
   }
 }

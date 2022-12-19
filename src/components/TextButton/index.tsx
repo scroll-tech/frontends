@@ -1,7 +1,7 @@
-import { Link } from "@mui/material"
+import { Link } from "@mui/material";
 
-const TextButton = props => {
-  const { onClick, children } = props
+const TextButton = (props) => {
+  const { onClick, children } = props;
   return (
     <Link
       component="button"
@@ -16,7 +16,7 @@ const TextButton = props => {
     >
       {children}
     </Link>
-  )
-}
+  );
+};
 
-export default TextButton
+export default TextButton;

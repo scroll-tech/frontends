@@ -1,6 +1,6 @@
-import createBreakpoints from "@mui/system/createTheme/createBreakpoints"
+import createBreakpoints from "@mui/system/createTheme/createBreakpoints";
 
-const breakpoints = createBreakpoints({})
+const breakpoints = createBreakpoints({});
 
 export const paletteOptions = {
   mode: "light",
@@ -40,7 +40,7 @@ export const paletteOptions = {
     placeholder: "#33333380",
     disabled: "#3333334D",
   },
-}
+};
 
 export const typographyOptions = {
   fontFamily: "SF UI Text",
@@ -110,4 +110,4 @@ export const typographyOptions = {
     fontWeight: 700,
     textTransform: "capitalize",
   },
-}
+};

@@ -1,10 +1,10 @@
-import useTxStore from "@/stores/txStore"
-import useBridgeStore from "@/stores/bridgeStore"
-import { makeStyles } from "tss-react/mui"
-import Button from "../components/Button"
-import TxTable from "../components/TxTable"
+import useTxStore from "@/stores/txStore";
+import useBridgeStore from "@/stores/bridgeStore";
+import { makeStyles } from "tss-react/mui";
+import Button from "../components/Button";
+import TxTable from "../components/TxTable";
 
-const useStyles = makeStyles()(theme => ({
+const useStyles = makeStyles()((theme) => ({
   wrapper: {
     width: "max-content",
     margin: "6.4rem auto 0",
@@ -21,25 +21,30 @@ const useStyles = makeStyles()(theme => ({
       width: "100%",
     },
   },
-}))
+}));
 
 const RencentTx = (props: any) => {
-  const { transactions } = useTxStore()
-  const { changeRecentTxVisible } = useBridgeStore()
+  const { transactions } = useTxStore();
+  const { changeRecentTxVisible } = useBridgeStore();
 
-  const { classes } = useStyles()
+  const { classes } = useStyles();
 
   const handleGoBridge = () => {
-    changeRecentTxVisible(false)
-  }
+    changeRecentTxVisible(false);
+  };
   return (
     <div className={classes.wrapper}>
       <TxTable data={transactions.slice(0, 2)}></TxTable>
-      <Button className={classes.button} variant="outlined" large onClick={handleGoBridge}>
+      <Button
+        className={classes.button}
+        variant="outlined"
+        large
+        onClick={handleGoBridge}
+      >
         Move More Funds
       </Button>
     </div>
-  )
-}
+  );
+};
 
-export default RencentTx
+export default RencentTx;

@@ -1,12 +1,12 @@
-import { CircularProgress, Typography, Stack } from "@mui/material"
-import { makeStyles } from "tss-react/mui"
-import { useApp } from "@/contexts/AppContextProvider"
-import Link from "@/components/Link"
-import useTxStore from "@/stores/txStore"
-import { BRIDGE_PAGE_SIZE } from "@/constants"
-import TxTable from "../components/TxTable"
+import { CircularProgress, Typography, Stack } from "@mui/material";
+import { makeStyles } from "tss-react/mui";
+import { useApp } from "@/contexts/AppContextProvider";
+import Link from "@/components/Link";
+import useTxStore from "@/stores/txStore";
+import { BRIDGE_PAGE_SIZE } from "@/constants";
+import TxTable from "../components/TxTable";
 
-const useStyles = makeStyles()(theme => {
+const useStyles = makeStyles()((theme) => {
   return {
     tableWrapper: {
       boxShadow: "unset",
@@ -30,33 +30,47 @@ const useStyles = makeStyles()(theme => {
     tableHeader: {
       backgroundColor: "rgba(201, 203, 206, 0.2)",
     },
-  }
-})
+  };
+});
 
 const TransactionsList = (props: any) => {
-  const { classes, cx } = useStyles()
+  const { classes, cx } = useStyles();
 
   const {
     txHistory: { refreshPageTransactions },
-  } = useApp()
+  } = useApp();
 
-  const { page, total, loading, frontTransactions, pageTransactions, clearTransactions } = useTxStore()
+  const {
+    page,
+    total,
+    loading,
+    frontTransactions,
+    pageTransactions,
+    clearTransactions,
+  } = useTxStore();
 
   if (!pageTransactions?.length) {
     return (
       <Typography variant="body1" color="textSecondary">
         Your transactions will appear here...
       </Typography>
-    )
+    );
   }
 
-  const handleChangePage = currentPage => {
-    refreshPageTransactions(currentPage)
-  }
+  const handleChangePage = (currentPage) => {
+    refreshPageTransactions(currentPage);
+  };
 
   return (
     <>
-      <div className={cx("flex", "items-center", "justify-between", classes.tableTitle)}>
+      <div
+        className={cx(
+          "flex",
+          "items-center",
+          "justify-between",
+          classes.tableTitle
+        )}
+      >
         <Stack direction="row" spacing="2rem">
           <Typography variant="h6" color="textSecondary">
             Recent Bridge Transactions
@@ -71,13 +85,15 @@ const TransactionsList = (props: any) => {
       <TxTable
         data={pageTransactions}
         pagination={{
-          count: Math.ceil((total + frontTransactions.length) / BRIDGE_PAGE_SIZE),
+          count: Math.ceil(
+            (total + frontTransactions.length) / BRIDGE_PAGE_SIZE
+          ),
           page,
           onChange: handleChangePage,
         }}
       />
     </>
-  )
-}
+  );
+};
 
-export default TransactionsList
+export default TransactionsList;

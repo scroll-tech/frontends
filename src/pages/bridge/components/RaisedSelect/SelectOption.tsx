@@ -1,11 +1,11 @@
-import { FC } from "react"
-import classNames from "classnames"
-import { makeStyles } from "tss-react/mui"
-import ListItemIcon from "@mui/material/ListItemIcon"
-import Icon from "@mui/material/Icon"
-import Typography from "@mui/material/Typography"
+import { FC } from "react";
+import classNames from "classnames";
+import { makeStyles } from "tss-react/mui";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import Icon from "@mui/material/Icon";
+import Typography from "@mui/material/Typography";
 
-const useStyles = makeStyles()(theme => {
+const useStyles = makeStyles()((theme) => {
   return {
     root: {
       height: "100%",
@@ -41,21 +41,21 @@ const useStyles = makeStyles()(theme => {
         height: "1.6rem",
       },
     },
-  }
-})
+  };
+});
 
 type Props = {
-  label?: string
-  icon?: string
-  disabled?: boolean
-}
+  label?: string;
+  icon?: string;
+  disabled?: boolean;
+};
 
-const SelectOption: FC<Props> = props => {
-  const { classes } = useStyles()
-  const { label, icon, disabled } = props
+const SelectOption: FC<Props> = (props) => {
+  const { classes } = useStyles();
+  const { label, icon, disabled } = props;
 
   if (!(icon || label)) {
-    return null
+    return null;
   }
 
   return (
@@ -68,12 +68,19 @@ const SelectOption: FC<Props> = props => {
         </ListItemIcon>
       )}
       {label && (
-        <Typography component="span" variant="h5" className={classNames(classes.label, disabled && classes.disabledLabel)}>
+        <Typography
+          component="span"
+          variant="h5"
+          className={classNames(
+            classes.label,
+            disabled && classes.disabledLabel
+          )}
+        >
           {label}
         </Typography>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default SelectOption
+export default SelectOption;

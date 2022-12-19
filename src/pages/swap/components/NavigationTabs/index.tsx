@@ -1,21 +1,21 @@
-import React from "react"
-import styled from "styled-components"
-import { darken } from "polished"
-import { useTranslation } from "react-i18next"
-import { NavLink, Link as HistoryLink } from "react-router-dom-v5"
+import React from "react";
+import styled from "styled-components";
+import { darken } from "polished";
+import { useTranslation } from "react-i18next";
+import { NavLink, Link as HistoryLink } from "react-router-dom-v5";
 
-import { ArrowLeft } from "react-feather"
-import { RowBetween } from "../Row"
-import QuestionHelper from "../QuestionHelper"
+import { ArrowLeft } from "react-feather";
+import { RowBetween } from "../Row";
+import QuestionHelper from "../QuestionHelper";
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: center;
   border-radius: 4.8rem;
   justify-content: space-evenly;
-`
+`;
 
-const activeClassName = "ACTIVE"
+const activeClassName = "ACTIVE";
 
 const StyledNavLink = styled(NavLink).attrs({
   activeClassName,
@@ -41,29 +41,37 @@ const StyledNavLink = styled(NavLink).attrs({
   :focus {
     color: ${({ theme }) => darken(0.1, theme.text1)};
   }
-`
+`;
 
 const ActiveText = styled.div`
   font-weight: 500;
   font-size: 20px;
-`
+`;
 
 const StyledArrowLeft = styled(ArrowLeft)`
   color: ${({ theme }) => theme.text1};
-`
+`;
 
 export function SwapPoolTabs({ active }: { active: "swap" | "pool" }) {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   return (
     <Tabs style={{ marginBottom: "20px" }}>
-      <StyledNavLink id={"swap-nav-link"} to={"/swap"} isActive={() => active === "swap"}>
+      <StyledNavLink
+        id={"swap-nav-link"}
+        to={"/swap"}
+        isActive={() => active === "swap"}
+      >
         {t("swap")}
       </StyledNavLink>
-      <StyledNavLink id={"pool-nav-link"} to={"/pool"} isActive={() => active === "pool"}>
+      <StyledNavLink
+        id={"pool-nav-link"}
+        to={"/pool"}
+        isActive={() => active === "pool"}
+      >
         {t("pool")}
       </StyledNavLink>
     </Tabs>
-  )
+  );
 }
 
 export function FindPoolTabs() {
@@ -74,10 +82,14 @@ export function FindPoolTabs() {
           <StyledArrowLeft />
         </HistoryLink>
         <ActiveText>Import Pool</ActiveText>
-        <QuestionHelper text={"Use this tool to find pairs that don't automatically appear in the interface."} />
+        <QuestionHelper
+          text={
+            "Use this tool to find pairs that don't automatically appear in the interface."
+          }
+        />
       </RowBetween>
     </Tabs>
-  )
+  );
 }
 
 export function AddRemoveTabs({ adding }: { adding: boolean }) {
@@ -97,5 +109,5 @@ export function AddRemoveTabs({ adding }: { adding: boolean }) {
         />
       </RowBetween>
     </Tabs>
-  )
+  );
 }

@@ -1,21 +1,22 @@
-import React from "react"
-import styled from "styled-components"
-import { RowBetween } from "../Row"
-import { AutoColumn } from "../Column"
-import { transparentize } from "polished"
+import React from "react";
+import styled from "styled-components";
+import { RowBetween } from "../Row";
+import { AutoColumn } from "../Column";
+import { transparentize } from "polished";
 
 const Wrapper = styled(AutoColumn)`
   margin-top: 2rem;
-`
+`;
 
 const Grouping = styled(RowBetween)`
   width: 50%;
-`
+`;
 
 const Circle = styled.div<{ confirmed?: boolean; disabled?: boolean }>`
   min-width: 20px;
   min-height: 20px;
-  background-color: ${({ theme, confirmed, disabled }) => (disabled ? theme.bg4 : confirmed ? theme.green1 : theme.primary1)};
+  background-color: ${({ theme, confirmed, disabled }) =>
+    disabled ? theme.bg4 : confirmed ? theme.green1 : theme.primary1};
   border-radius: 50%;
   color: ${({ theme }) => theme.white};
   display: flex;
@@ -23,13 +24,13 @@ const Circle = styled.div<{ confirmed?: boolean; disabled?: boolean }>`
   justify-content: center;
   line-height: 8px;
   font-size: 12px;
-`
+`;
 
 const CircleRow = styled.div`
   width: calc(100% - 20px);
   display: flex;
   align-items: center;
-`
+`;
 
 const Connector = styled.div<{ prevConfirmed?: boolean }>`
   width: 100%;
@@ -37,14 +38,18 @@ const Connector = styled.div<{ prevConfirmed?: boolean }>`
   background-color: ;
   background: linear-gradient(
     90deg,
-    ${({ theme, prevConfirmed }) => transparentize(0.5, prevConfirmed ? theme.green1 : theme.primary1)} 0%,
-    ${({ theme, prevConfirmed }) => (prevConfirmed ? theme.primary1 : theme.bg4)} 80%
+    ${({ theme, prevConfirmed }) =>
+        transparentize(0.5, prevConfirmed ? theme.green1 : theme.primary1)}
+      0%,
+    ${({ theme, prevConfirmed }) =>
+        prevConfirmed ? theme.primary1 : theme.bg4}
+      80%
   );
   opacity: 0.6;
-`
+`;
 
 interface ProgressCirclesProps {
-  steps: boolean[]
+  steps: boolean[];
 }
 
 /**
@@ -69,10 +74,10 @@ export default function ProgressCircles({ steps }: ProgressCirclesProps) {
               </Circle>
               <Connector prevConfirmed={step} />
             </CircleRow>
-          )
+          );
         })}
         <Circle disabled={!steps[steps.length - 1]}>{steps.length + 1}</Circle>
       </Grouping>
     </Wrapper>
-  )
+  );
 }

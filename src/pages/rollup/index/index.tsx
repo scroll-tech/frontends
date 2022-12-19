@@ -1,22 +1,22 @@
-import { useState } from "react"
-import { Box } from "@mui/material"
-import { styled } from "@mui/material/styles"
-import { useLastBlockNums } from "@/hooks/useRollupInfo"
-import Table from "./Table"
-import Card from "./Card"
-import Searchbar from "./Searchbar"
-import NoData from "./NoData"
-import Header from "../components/Header"
+import { useState } from "react";
+import { Box } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { useLastBlockNums } from "@/hooks/useRollupInfo";
+import Table from "./Table";
+import Card from "./Card";
+import Searchbar from "./Searchbar";
+import NoData from "./NoData";
+import Header from "../components/Header";
 
 const InfoBox = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   marginBottom: "6.2rem",
-}))
+}));
 
 const Blocks = () => {
-  const { lastBlockNums } = useLastBlockNums()
-  const [noData, setNoData] = useState(false)
+  const { lastBlockNums } = useLastBlockNums();
+  const [noData, setNoData] = useState(false);
 
   return (
     <Box className="wrapper mx-auto">
@@ -38,7 +38,7 @@ const Blocks = () => {
       <Searchbar setNoData={setNoData} />
       {noData ? <NoData /> : <Table />}
     </Box>
-  )
-}
+  );
+};
 
-export default Blocks
+export default Blocks;

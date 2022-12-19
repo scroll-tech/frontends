@@ -1,10 +1,25 @@
-import { CloseRounded, ExpandLess, ExpandMore, Menu as MenuIcon, OpenInNew } from "@mui/icons-material"
-import { Box, Button, Collapse, Link, List, ListItemButton, Stack, SwipeableDrawer } from "@mui/material"
-import { styled } from "@mui/system"
-import * as React from "react"
-import { NavLink } from "react-router-dom"
-import Logo from "../Logo"
-import { homeNavigations, navigations } from "./constants"
+import {
+  CloseRounded,
+  ExpandLess,
+  ExpandMore,
+  Menu as MenuIcon,
+  OpenInNew,
+} from "@mui/icons-material";
+import {
+  Box,
+  Button,
+  Collapse,
+  Link,
+  List,
+  ListItemButton,
+  Stack,
+  SwipeableDrawer,
+} from "@mui/material";
+import { styled } from "@mui/system";
+import * as React from "react";
+import { NavLink } from "react-router-dom";
+import Logo from "../Logo";
+import { homeNavigations, navigations } from "./constants";
 
 const NavStack = styled(Stack)(
   ({ theme }) => `
@@ -13,8 +28,8 @@ const NavStack = styled(Stack)(
   border-bottom: 1px solid ${theme.palette.border.main};
   padding-left: 16px;
   padding-right: 16px;
-`,
-)
+`
+);
 
 const LinkStyledButton = styled(NavLink)(
   ({ theme }) => `
@@ -26,8 +41,8 @@ const LinkStyledButton = styled(NavLink)(
   &:hover {
     color: ${theme.palette.action.active}
   } 
-`,
-)
+`
+);
 
 const ExternalLink = styled(Link)(
   ({ theme }) => `
@@ -35,8 +50,8 @@ const ExternalLink = styled(Link)(
   &:hover {
     color: ${theme.palette.action.active}
   } 
-  `,
-)
+  `
+);
 
 const ListButton = styled(ListItemButton)(
   ({ theme }) => `
@@ -46,28 +61,28 @@ const ListButton = styled(ListItemButton)(
     background: transparent;
     color: ${theme.palette.action.active};
   } 
-`,
-)
+`
+);
 
 const MenuContent = styled(Box)(
   ({ theme }) => `
       width: 280px;
       padding-top: 10px;
       padding-right: 10px;
-`,
-)
+`
+);
 
-const App = props => {
-  const [open, setOpen] = React.useState(false)
-  const [activeCollapse, setActiveCollapse] = React.useState("")
+const App = (props) => {
+  const [open, setOpen] = React.useState(false);
+  const [activeCollapse, setActiveCollapse] = React.useState("");
 
   const toggleDrawer = (open: boolean) => {
-    setOpen(open)
-  }
+    setOpen(open);
+  };
 
   const toggleCollapse = (collapse: string) => {
-    setActiveCollapse(collapse === activeCollapse ? "" : collapse)
-  }
+    setActiveCollapse(collapse === activeCollapse ? "" : collapse);
+  };
 
   const list = () => (
     <List
@@ -78,7 +93,7 @@ const App = props => {
       }}
       component="nav"
     >
-      {(props.isHomepage ? homeNavigations : navigations).map(item => {
+      {(props.isHomepage ? homeNavigations : navigations).map((item) => {
         if (item.href) {
           return (
             <ListButton key={item.key} onClick={() => toggleDrawer(false)}>
@@ -90,7 +105,7 @@ const App = props => {
                 <LinkStyledButton to={item.href}>{item.label}</LinkStyledButton>
               )}
             </ListButton>
-          )
+          );
         }
         return (
           <React.Fragment key={item.key}>
@@ -102,11 +117,19 @@ const App = props => {
                 <ExpandMore fontSize="large" sx={{ marginLeft: "6px" }} />
               )}
             </ListButton>
-            <Collapse in={activeCollapse === item.key} timeout="auto" unmountOnExit>
+            <Collapse
+              in={activeCollapse === item.key}
+              timeout="auto"
+              unmountOnExit
+            >
               <List component="div" disablePadding>
-                {item.children?.map(subItem =>
+                {item.children?.map((subItem) =>
                   subItem.isExternal ? (
-                    <ListButton onClick={() => toggleDrawer(false)} sx={{ pl: 4 }} key={subItem.key}>
+                    <ListButton
+                      onClick={() => toggleDrawer(false)}
+                      sx={{ pl: 4 }}
+                      key={subItem.key}
+                    >
                       {/* TODO: https://github.com/MetaMask/metamask-mobile/issues/4890 */}
                       <ExternalLink underline="none" href={subItem.href}>
                         {subItem.label}
@@ -114,40 +137,74 @@ const App = props => {
                       <OpenInNew sx={{ fontSize: 14, marginLeft: "10px" }} />
                     </ListButton>
                   ) : (
-                    <ListButton onClick={() => toggleDrawer(false)} sx={{ pl: 4 }} key={subItem.key}>
-                      <LinkStyledButton to={subItem.href}>{subItem.label}</LinkStyledButton>
+                    <ListButton
+                      onClick={() => toggleDrawer(false)}
+                      sx={{ pl: 4 }}
+                      key={subItem.key}
+                    >
+                      <LinkStyledButton to={subItem.href}>
+                        {subItem.label}
+                      </LinkStyledButton>
                     </ListButton>
-                  ),
+                  )
                 )}
               </List>
             </Collapse>
           </React.Fragment>
-        )
+        );
       })}
     </List>
-  )
+  );
 
   return (
     <>
-      <NavStack direction="row" justifyContent="space-between" alignItems="center">
+      <NavStack
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+      >
         <NavLink to="/" className="flex">
           <Logo />
         </NavLink>
-        <MenuIcon fontSize="large" sx={{ color: "text.primary", cursor: "pointer" }} onClick={() => toggleDrawer(true)} />
+        <MenuIcon
+          fontSize="large"
+          sx={{ color: "text.primary", cursor: "pointer" }}
+          onClick={() => toggleDrawer(true)}
+        />
       </NavStack>
       <Box>
-        <SwipeableDrawer open={open} anchor="right" onClose={() => toggleDrawer(false)} onOpen={() => toggleDrawer(true)}>
-          <MenuContent role="presentation" onKeyDown={() => toggleDrawer(false)}>
+        <SwipeableDrawer
+          open={open}
+          anchor="right"
+          onClose={() => toggleDrawer(false)}
+          onOpen={() => toggleDrawer(true)}
+        >
+          <MenuContent
+            role="presentation"
+            onKeyDown={() => toggleDrawer(false)}
+          >
             <Stack sx={{ alignItems: "end" }}>
-              <CloseRounded fontSize="large" sx={{ cursor: "pointer" }} onClick={() => toggleDrawer(false)} />
+              <CloseRounded
+                fontSize="large"
+                sx={{ cursor: "pointer" }}
+                onClick={() => toggleDrawer(false)}
+              />
             </Stack>
             {list()}
             {props.isHomepage ? (
-              <Button color="primary" variant="contained" href="/prealpha/" sx={{ position: "relative", left: "2rem" }}>
+              <Button
+                color="primary"
+                variant="contained"
+                href="/prealpha/"
+                sx={{ position: "relative", left: "2rem" }}
+              >
                 Join Pre-Alpha Testnet
               </Button>
             ) : (
-              <Button sx={{ marginTop: "32px", marginLeft: "36px" }} href="https://guide.scroll.io/">
+              <Button
+                sx={{ marginTop: "32px", marginLeft: "36px" }}
+                href="https://guide.scroll.io/"
+              >
                 User Guide
               </Button>
             )}
@@ -155,7 +212,7 @@ const App = props => {
         </SwipeableDrawer>
       </Box>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;

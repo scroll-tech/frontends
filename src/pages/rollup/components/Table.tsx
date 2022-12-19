@@ -1,5 +1,5 @@
-import { styled } from "@mui/material/styles"
-import Table, { tableClasses } from "@mui/material/Table"
+import { styled } from "@mui/material/styles";
+import Table, { tableClasses } from "@mui/material/Table";
 
 const StyledTable = styled(Table)(({ theme }) => ({
   marginTop: "1.7rem",
@@ -8,6 +8,6 @@ const StyledTable = styled(Table)(({ theme }) => ({
   border: `1px solid ${theme.palette.divider}`,
   borderCollapse: "separate",
   overflow: "hidden",
-}))
+}));
 
-export default StyledTable
+export default StyledTable;

@@ -1,3 +1,3 @@
 export function filterByHash(txs, hash: string = "") {
-  return txs.filter(tx => tx.hash !== hash)
+  return txs.filter((tx) => tx.hash !== hash);
 }

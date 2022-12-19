@@ -1,10 +1,10 @@
-import { Container } from "@mui/material"
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
-import Button from "../components/Button"
-import AddressButton from "./AddressButton"
+import { Container } from "@mui/material";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
+import Button from "../components/Button";
+import AddressButton from "./AddressButton";
 
 const Header = () => {
-  const { walletCurrentAddress, connectWallet } = useWeb3Context()
+  const { walletCurrentAddress, connectWallet } = useWeb3Context();
 
   return (
     <Container className="flex items-center justify-end bg-white mt-12">
@@ -18,7 +18,7 @@ const Header = () => {
         </Button>
       )}
     </Container>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

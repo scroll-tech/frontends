@@ -1,10 +1,13 @@
 import { ChainId, RPCUrl } from "./common"
 
-const SCROLL_ENVIRONMENT_PRODUCTION = "MAIN" // `MAIN` is production, `STAGING` is staging
-const SCROLL_ENVIRONMENT = process.env.REACT_APP_SCROLL_ENVIRONMENT || SCROLL_ENVIRONMENT_PRODUCTION
-const RUNNING_IN_PRODUCTION = SCROLL_ENVIRONMENT === SCROLL_ENVIRONMENT_PRODUCTION
+const SCROLL_ENVIRONMENT_PRODUCTION = "MAIN"; // `MAIN` is production, `STAGING` is staging
+const SCROLL_ENVIRONMENT =
+  process.env.REACT_APP_SCROLL_ENVIRONMENT || SCROLL_ENVIRONMENT_PRODUCTION;
+const RUNNING_IN_PRODUCTION =
+  SCROLL_ENVIRONMENT === SCROLL_ENVIRONMENT_PRODUCTION;
 
-const TESTNET_NAME = "Testnet" + (!RUNNING_IN_PRODUCTION ? " [" + SCROLL_ENVIRONMENT + "]" : "")
+const TESTNET_NAME =
+  "Testnet" + (!RUNNING_IN_PRODUCTION ? " [" + SCROLL_ENVIRONMENT + "]" : "");
 
 const addresses = [
   {
@@ -43,7 +46,7 @@ const addresses = [
     usdcAddress: process.env.REACT_APP_L2_USDC_ADDRESS,
     uniV2TokenAddress: process.env.REACT_APP_L2_UNIV2_ADDRESS,
   },
-]
+];
 
 const navigation = [
   {
@@ -64,17 +67,20 @@ const navigation = [
   },
   {
     name: "Bridge",
-    description: "Use Bridge (our Hop fork) to transfer tokens between L1 and L2.",
+    description:
+      "Use Bridge (our Hop fork) to transfer tokens between L1 and L2.",
     subdomainOrPath: "./bridge",
   },
   {
     name: "Swap",
-    description: "Use Swap (our Uniswap fork) to swap tokens and supply liquidity on L2.",
+    description:
+      "Use Swap (our Uniswap fork) to swap tokens and supply liquidity on L2.",
     subdomainOrPath: "./swap",
   },
   {
     name: "Rollup Explorer",
-    description: "See L2 blocks being committed to L1 and finalized with zkEVM proofs on our Rollup Explorer.",
+    description:
+      "See L2 blocks being committed to L1 and finalized with zkEVM proofs on our Rollup Explorer.",
     isActive: true,
     subdomainOrPath: "./rollupscan",
   },
@@ -90,20 +96,21 @@ const navigation = [
     isExternal: true,
     subdomainOrPath: process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L2,
   },
-]
+];
 
 const documentation = [
   {
     name: "Architecture Overview",
     description: "",
-    link: "https://scroll.mirror.xyz/nDAbJbSIJdQIWqp9kn8J0MVS4s6pYBwHmK7keidQs-k",
+    link:
+      "https://scroll.mirror.xyz/nDAbJbSIJdQIWqp9kn8J0MVS4s6pYBwHmK7keidQs-k",
   },
   {
     name: "User Guide",
     description: "",
     link: "https://guide.scroll.io",
   },
-]
+];
 
 const Addresses = {
   [ChainId.SCROLL_LAYER_1]: {
@@ -141,13 +148,13 @@ const Addresses = {
     usdcAddress: process.env.REACT_APP_L2_USDC_ADDRESS,
     uniV2TokenAddress: process.env.REACT_APP_L2_UNIV2_ADDRESS,
   },
-}
+};
 
 const ModalStatus = {
   HIDDEN: "hidden",
   LOADING: "loading",
   ERROR: "error",
-}
+};
 
 export * from "./common"
 export * from "./config"
@@ -155,12 +162,22 @@ export * from "./gateway"
 export * from "./medias"
 export * from "./networks"
 export * from "./transaction"
-export { addresses, navigation, documentation, TESTNET_NAME, SCROLL_ENVIRONMENT, Addresses, ModalStatus }
+export {
+  addresses,
+  navigation,
+  documentation,
+  TESTNET_NAME,
+  SCROLL_ENVIRONMENT,
+  Addresses,
+  ModalStatus,
+}
 
-export let l1ExplorerUrl = process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L1
-export let l2ExplorerUrl = process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L2
-export let rollupExplorerUrl = "https://prealpha.scroll.io/rollupscan"
+export let l1ExplorerUrl = process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L1;
+export let l2ExplorerUrl = process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L2;
+export let rollupExplorerUrl = "https://prealpha.scroll.io/rollupscan";
 
-export let pathL1Explorer = "l1Explorer"
-export let pathL2Explorer = "l2Explorer"
-export let pathRollupExplorer = "rollupExplorer"
+export let pathL1Explorer = "l1Explorer";
+export let pathL2Explorer = "l2Explorer";
+export let pathRollupExplorer = "rollupExplorer";
+
+

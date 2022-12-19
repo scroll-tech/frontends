@@ -1,50 +1,55 @@
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
-import { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { useAddPopup, useBlockNumber } from "../application/hooks"
-import { AppDispatch, AppState } from "../index"
-import { checkedTransaction, finalizeTransaction } from "./actions"
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useAddPopup, useBlockNumber } from "../application/hooks";
+import { AppDispatch, AppState } from "../index";
+import { checkedTransaction, finalizeTransaction } from "./actions";
 
-export function shouldCheck(lastBlockNumber: number, tx: { addedTime: number; receipt?: {}; lastCheckedBlockNumber?: number }): boolean {
-  if (tx.receipt) return false
-  if (!tx.lastCheckedBlockNumber) return true
-  const blocksSinceCheck = lastBlockNumber - tx.lastCheckedBlockNumber
-  if (blocksSinceCheck < 1) return false
-  const minutesPending = (new Date().getTime() - tx.addedTime) / 1000 / 60
+export function shouldCheck(
+  lastBlockNumber: number,
+  tx: { addedTime: number; receipt?: {}; lastCheckedBlockNumber?: number }
+): boolean {
+  if (tx.receipt) return false;
+  if (!tx.lastCheckedBlockNumber) return true;
+  const blocksSinceCheck = lastBlockNumber - tx.lastCheckedBlockNumber;
+  if (blocksSinceCheck < 1) return false;
+  const minutesPending = (new Date().getTime() - tx.addedTime) / 1000 / 60;
   if (minutesPending > 60) {
     // every 10 blocks if pending for longer than an hour
-    return blocksSinceCheck > 9
+    return blocksSinceCheck > 9;
   } else if (minutesPending > 5) {
     // every 3 blocks if pending more than 5 minutes
-    return blocksSinceCheck > 2
+    return blocksSinceCheck > 2;
   } else {
     // otherwise every block
-    return true
+    return true;
   }
 }
 
 export default function Updater(): null {
-  const { chainId, provider } = useWeb3Context()
+  const { chainId, provider } = useWeb3Context();
 
-  const lastBlockNumber = useBlockNumber()
+  const lastBlockNumber = useBlockNumber();
 
-  const dispatch = useDispatch<AppDispatch>()
-  const state = useSelector<AppState, AppState["transactions"]>(state => state.transactions)
+  const dispatch = useDispatch<AppDispatch>();
+  const state = useSelector<AppState, AppState["transactions"]>(
+    (state) => state.transactions
+  );
 
-  const transactions = chainId ? state[chainId] ?? {} : {}
+  const transactions = chainId ? state[chainId] ?? {} : {};
 
   // show popup on confirm
-  const addPopup = useAddPopup()
+  const addPopup = useAddPopup();
 
   useEffect(() => {
-    if (!chainId || !provider || !lastBlockNumber) return
+    if (!chainId || !provider || !lastBlockNumber) return;
 
     Object.keys(transactions)
-      .filter(hash => shouldCheck(lastBlockNumber, transactions[hash]))
-      .forEach(hash => {
+      .filter((hash) => shouldCheck(lastBlockNumber, transactions[hash]))
+      .forEach((hash) => {
         provider
           .getTransactionReceipt(hash)
-          .then(receipt => {
+          .then((receipt) => {
             if (receipt) {
               dispatch(
                 finalizeTransaction({
@@ -60,8 +65,8 @@ export default function Updater(): null {
                     transactionHash: receipt.transactionHash,
                     transactionIndex: receipt.transactionIndex,
                   },
-                }),
-              )
+                })
+              );
 
               addPopup(
                 {
@@ -71,23 +76,23 @@ export default function Updater(): null {
                     summary: transactions[hash]?.summary,
                   },
                 },
-                hash,
-              )
+                hash
+              );
             } else {
               dispatch(
                 checkedTransaction({
                   chainId,
                   hash,
                   blockNumber: lastBlockNumber,
-                }),
-              )
+                })
+              );
             }
           })
-          .catch(error => {
-            console.error(`failed to check transaction hash: ${hash}`, error)
-          })
-      })
-  }, [chainId, provider, transactions, lastBlockNumber, dispatch, addPopup])
+          .catch((error) => {
+            console.error(`failed to check transaction hash: ${hash}`, error);
+          });
+      });
+  }, [chainId, provider, transactions, lastBlockNumber, dispatch, addPopup]);
 
-  return null
+  return null;
 }

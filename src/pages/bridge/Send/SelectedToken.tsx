@@ -1,7 +1,7 @@
-import SelectOption from "../components/RaisedSelect/SelectOption"
-import { makeStyles } from "tss-react/mui"
+import SelectOption from "../components/RaisedSelect/SelectOption";
+import { makeStyles } from "tss-react/mui";
 
-const useStyles = makeStyles()(theme => {
+const useStyles = makeStyles()((theme) => {
   return {
     seletedLabel: {
       boxSizing: "border-box",
@@ -16,17 +16,17 @@ const useStyles = makeStyles()(theme => {
         padding: "0 calc(12px + 1.2rem) 0 1rem",
       },
     },
-  }
-})
+  };
+});
 
 const SelectedToken = ({ icon, children }) => {
-  const { classes } = useStyles()
+  const { classes } = useStyles();
 
   return (
     <div className={classes.seletedLabel}>
       <SelectOption label={children} icon={icon} disabled />
     </div>
-  )
-}
+  );
+};
 
-export default SelectedToken
+export default SelectedToken;

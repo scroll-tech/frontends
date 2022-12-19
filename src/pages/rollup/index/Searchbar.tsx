@@ -19,7 +19,7 @@ const SearchbarContainer = styled(Paper)(({ theme }) => ({
     padding: "0",
     overflow: "hidden",
   },
-}))
+}));
 
 const SearchbarButton = styled(Button)(({ theme }) => ({
   width: "22rem",
@@ -32,41 +32,47 @@ const SearchbarButton = styled(Button)(({ theme }) => ({
     margin: "0",
     borderRadius: 0,
   },
-}))
+}));
 
 export default function Searchbar(props) {
-  const [value, setValue] = useState("")
-  const navigate = useNavigate()
+  const [value, setValue] = useState("");
+  const navigate = useNavigate();
 
-  const handleKeyDown = e => {
+  const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      handleSearch()
+      handleSearch();
     }
-  }
+  };
 
-  const handleKeyUp = e => {
-    setValue(e.target.value)
+  const handleKeyUp = (e) => {
+    setValue(e.target.value);
     if (e.target.value === "") {
-      props.setNoData(false)
+      props.setNoData(false);
     }
-  }
+  };
 
   const handleSearch = () => {
-    if (value === "") return
-    fetch(`${process.env.REACT_APP_ROLLUPSCAN_BASE_API_URL}/search?keyword=${value}`)
-      .then(res => res.json())
+    if (value === "") return;
+    fetch(
+      `${process.env.REACT_APP_ROLLUPSCAN_BASE_API_URL}/search?keyword=${value}`
+    )
+      .then((res) => res.json())
       .then(({ batch_index }) => {
         if (~batch_index) {
-          navigate(`./block/${batch_index}`)
+          navigate(`./block/${batch_index}`);
         } else {
-          props.setNoData(true)
+          props.setNoData(true);
         }
-      })
-  }
+      });
+  };
 
   return (
     <SearchbarContainer>
-      <IconButton sx={{ paddingLeft: "3rem", color: "#595959", pointerEvents: "none" }} component="label" aria-label="search">
+      <IconButton
+        sx={{ paddingLeft: "3rem", color: "#595959", pointerEvents: "none" }}
+        component="label"
+        aria-label="search"
+      >
         <SearchIcon sx={{ fontSize: "2rem" }} />
       </IconButton>
       <InputBase
@@ -77,9 +83,13 @@ export default function Searchbar(props) {
         onKeyDown={handleKeyDown}
         onKeyUp={handleKeyUp}
       />
-      <SearchbarButton color="primary" variant="contained" onClick={handleSearch}>
+      <SearchbarButton
+        color="primary"
+        variant="contained"
+        onClick={handleSearch}
+      >
         Search
       </SearchbarButton>
     </SearchbarContainer>
-  )
+  );
 }

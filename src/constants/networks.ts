@@ -1,11 +1,11 @@
 // TODO: Refactor network info into a scroll-testnet-wide spot
-import { requireEnv } from "@/utils"
-import ETHSvg from "@/assets/svgs/eth.svg"
-import { ChainId, ETH_SYMBOL, RPCUrl } from "./common"
+import { requireEnv } from "@/utils";
+import ETHSvg from "@/assets/svgs/eth.svg";
+import { ChainId, ETH_SYMBOL, RPCUrl } from "./common";
 
-const curEnv = requireEnv("REACT_APP_SCROLL_ENVIRONMENT")
-const l1Explorer = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1")
-const l2Explorer = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2")
+const curEnv = requireEnv("REACT_APP_SCROLL_ENVIRONMENT");
+const l1Explorer = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1");
+const l2Explorer = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2");
 
 export const networks = [
   {
@@ -34,25 +34,25 @@ export const networks = [
     isL1: false,
     waitConfirmations: 0,
   },
-]
+];
 
 type BaseToken = {
-  chainId: number
-  name: string
-  symbol: string
-  decimals: number
-  logoURI: string
-}
+  chainId: number;
+  name: string;
+  symbol: string;
+  decimals: number;
+  logoURI: string;
+};
 
 export type NativeToken = BaseToken & {
-  native: boolean
-}
+  native: boolean;
+};
 
 export type ERC20Token = BaseToken & {
-  address: string
-}
+  address: string;
+};
 
-export type Token = NativeToken | ERC20Token
+export type Token = NativeToken | ERC20Token;
 export const nativeTokenList: Token[] = [
   {
     chainId: ChainId.SCROLL_LAYER_1,
@@ -70,7 +70,7 @@ export const nativeTokenList: Token[] = [
     native: true,
     logoURI: ETHSvg,
   },
-]
+];
 
 export const SiteMap = {
   // TODO: Deduplicate these, e.g. https://app.asana.com/0/1202293017617135/1203532864257615/f
@@ -81,4 +81,4 @@ export const SiteMap = {
   L1Explorer: l1Explorer,
   L2Explorer: l2Explorer,
   RollupExplorer: "/rollupscan/",
-}
+};

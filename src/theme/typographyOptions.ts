@@ -1,5 +1,5 @@
-import { createTheme } from "@mui/material/styles"
-const theme = createTheme()
+import { createTheme } from "@mui/material/styles";
+const theme = createTheme();
 
 export const typographyOptions = {
   fontFamily: [
@@ -80,4 +80,4 @@ export const typographyOptions = {
     fontWeight: 700,
     textTransform: "capitalize",
   },
-}
+};

@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react"
-import { BigNumber } from "ethers"
-import { useIsSmartContractWallet } from "@/hooks"
-import { toTokenDisplay } from "@/utils"
+import { useEffect, useState } from "react";
+import { BigNumber } from "ethers";
+import { useIsSmartContractWallet } from "@/hooks";
+import { toTokenDisplay } from "@/utils";
 
 function useSufficientBalance(
   selectedToken: any,
@@ -9,64 +9,67 @@ function useSufficientBalance(
   amount?: BigNumber,
   estimatedGasCost?: BigNumber,
   tokenBalance: BigNumber = BigNumber.from(0),
-  isCorrectNetwork?: boolean,
+  isCorrectNetwork?: boolean
 ) {
-  const [sufficientBalance, setSufficientBalance] = useState(false)
-  const [warning, setWarning] = useState("")
-  const { isSmartContractWallet } = useIsSmartContractWallet()
+  const [sufficientBalance, setSufficientBalance] = useState(false);
+  const [warning, setWarning] = useState("");
+  const { isSmartContractWallet } = useIsSmartContractWallet();
 
   useEffect(() => {
     async function checkEnoughBalance() {
       if (!isCorrectNetwork) {
-        return
+        return;
       }
       if (!(amount && token && token.signer)) {
-        setWarning("")
-        return setSufficientBalance(false)
+        setWarning("");
+        return setSufficientBalance(false);
       }
 
-      let totalCost: BigNumber
-      let enoughFeeBalance: boolean
-      let enoughTokenBalance: boolean
-      let message: string = ""
+      let totalCost: BigNumber;
+      let enoughFeeBalance: boolean;
+      let enoughTokenBalance: boolean;
+      let message: string = "";
 
-      const ntb = await token.signer.getBalance()
+      const ntb = await token.signer.getBalance();
 
       if (!estimatedGasCost) {
-        const gasPrice = await token.signer.getGasPrice()
-        estimatedGasCost = BigNumber.from(200e3).mul(gasPrice || 1e9)
+        const gasPrice = await token.signer.getGasPrice();
+        estimatedGasCost = BigNumber.from(200e3).mul(gasPrice || 1e9);
       }
 
       if (selectedToken.native) {
-        totalCost = estimatedGasCost.add(amount)
-        enoughFeeBalance = ntb.gte(totalCost)
-        enoughTokenBalance = enoughFeeBalance
+        totalCost = estimatedGasCost.add(amount);
+        enoughFeeBalance = ntb.gte(totalCost);
+        enoughTokenBalance = enoughFeeBalance;
       } else {
-        totalCost = estimatedGasCost
-        enoughFeeBalance = ntb.gte(totalCost)
-        enoughTokenBalance = tokenBalance.gte(amount)
+        totalCost = estimatedGasCost;
+        enoughFeeBalance = ntb.gte(totalCost);
+        enoughTokenBalance = tokenBalance.gte(amount);
       }
 
       if (enoughFeeBalance && enoughTokenBalance) {
-        setWarning("")
-        return setSufficientBalance(true)
+        setWarning("");
+        return setSufficientBalance(true);
       }
 
       if (!enoughFeeBalance) {
-        const diff = totalCost.sub(ntb)
+        const diff = totalCost.sub(ntb);
         message = `Insufficient balance to cover the cost of tx. Please add ${
           selectedToken.symbol
-        } to pay for tx fees or reduce the amount by approximately ${toTokenDisplay(diff)} ${selectedToken.symbol}`
+        } to pay for tx fees or reduce the amount by approximately ${toTokenDisplay(
+          diff
+        )} ${selectedToken.symbol}`;
 
         if (!selectedToken.native) {
-          message = "Insufficient balance to cover the cost of tx. Please add ETH to pay for tx fees."
+          message =
+            "Insufficient balance to cover the cost of tx. Please add ETH to pay for tx fees.";
         }
       } else if (!enoughTokenBalance) {
-        message = `Insufficient ${selectedToken.symbol} balance.`
+        message = `Insufficient ${selectedToken.symbol} balance.`;
       }
 
-      setWarning(message)
-      setSufficientBalance(false)
+      setWarning(message);
+      setSufficientBalance(false);
     }
 
     // NOTE: For now, no accommodations are made for the tx sender
@@ -75,15 +78,20 @@ function useSufficientBalance(
     // is not possible to know who of them will be the one who executes the TX.
     // We will trust on the wallet UI to handle this issue for now.
     if (isSmartContractWallet) {
-      setSufficientBalance(true)
+      setSufficientBalance(true);
     } else {
-      checkEnoughBalance()
+      checkEnoughBalance();
     }
-  }, [token, amount?.toString(), estimatedGasCost?.toString(), tokenBalance.toString()])
+  }, [
+    token,
+    amount?.toString(),
+    estimatedGasCost?.toString(),
+    tokenBalance.toString(),
+  ]);
 
   return {
     sufficientBalance,
     warning,
-  }
+  };
 }
-export default useSufficientBalance
+export default useSufficientBalance;

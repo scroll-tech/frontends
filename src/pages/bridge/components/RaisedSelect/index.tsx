@@ -1,6 +1,6 @@
-import { makeStyles } from "tss-react/mui"
-import { Select } from "@mui/material"
-import { ReactComponent as ArrowDownIcon } from "@/assets/svgs/arrow-down.svg"
+import { makeStyles } from "tss-react/mui";
+import { Select } from "@mui/material";
+import { ReactComponent as ArrowDownIcon } from "@/assets/svgs/arrow-down.svg";
 
 const useStyles = makeStyles<any>()((theme, { value }) => ({
   raisedSelect: {
@@ -45,15 +45,23 @@ const useStyles = makeStyles<any>()((theme, { value }) => ({
       cursor: "pointer",
     },
   },
-}))
+}));
 
-const RaisedSelect = props => {
-  const { classes } = useStyles(props)
-  const isSingle = props?.children?.filter((x: any) => x).length <= 1
-  const icon = isSingle ? () => null : ArrowDownIcon
+const RaisedSelect = (props) => {
+  const { classes } = useStyles(props);
+  const isSingle = props?.children?.filter((x: any) => x).length <= 1;
+  const icon = isSingle ? () => null : ArrowDownIcon;
 
   // TODO: Popover lack of getContentAnchorEl caused by the official team
-  return <Select IconComponent={icon} className={classes.raisedSelect} variant="standard" {...props} disableUnderline />
-}
+  return (
+    <Select
+      IconComponent={icon}
+      className={classes.raisedSelect}
+      variant="standard"
+      {...props}
+      disableUnderline
+    />
+  );
+};
 
-export default RaisedSelect
+export default RaisedSelect;

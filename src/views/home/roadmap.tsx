@@ -1,7 +1,7 @@
-import { Box, Typography } from "@mui/material"
+import { Box, Typography } from "@mui/material";
 
-import { styled } from "@mui/system"
-import SuccessIcon from "@/assets/images/homepage/home/success.png"
+import { styled } from "@mui/system";
+import SuccessIcon from "@/assets/images/homepage/home/success.png";
 
 const RoadmapList = styled("ul")(
   ({ theme }) => `
@@ -13,8 +13,8 @@ const RoadmapList = styled("ul")(
             width: 100%;
             margin-top: 6rem;
         };
-        `,
-)
+        `
+);
 const RoadmapListItem = styled("li")(
   ({ theme }) => `
           display: flex;
@@ -47,8 +47,8 @@ const RoadmapListItem = styled("li")(
             background: #ffffff;
             box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.25);
           }
-        `,
-)
+        `
+);
 
 const RoadmapSuccessIcon = styled("img")(
   ({ theme }) => `
@@ -58,8 +58,8 @@ const RoadmapSuccessIcon = styled("img")(
           ${theme.breakpoints.down("md")} {
             // margin-left: 2rem;
           };
-        `,
-)
+        `
+);
 
 const RoadmapIndex = styled(Typography)(
   ({ theme }) => `
@@ -68,8 +68,8 @@ const RoadmapIndex = styled(Typography)(
         ${theme.breakpoints.down("md")} {
             font-size: 1.4rem;
           };
-        `,
-)
+        `
+);
 
 const RoadmapName = styled(Typography)(
   ({ theme }) => `
@@ -79,8 +79,8 @@ const RoadmapName = styled(Typography)(
             padding-right: 3rem;
             line-height: 2.4rem;
           };
-        `,
-)
+        `
+);
 
 const IconBox = styled(Box)(
   ({ theme }) => `
@@ -90,8 +90,8 @@ const IconBox = styled(Box)(
       ${theme.breakpoints.down("md")} {
         width: 20vw;
       };
-    `,
-)
+    `
+);
 
 const roadmaps = [
   {
@@ -119,14 +119,21 @@ const roadmaps = [
     name: "Decentralized Sequencers",
     completed: false,
   },
-]
+];
 
 const Roadmap = () => {
   return (
     <RoadmapList>
       {roadmaps.map((roadmap, idx) => (
         <RoadmapListItem key={idx} className={roadmap.active ? "active" : ""}>
-          <IconBox>{roadmap.completed ? <RoadmapSuccessIcon src={SuccessIcon} className={roadmap.active ? "active" : ""} /> : null}</IconBox>
+          <IconBox>
+            {roadmap.completed ? (
+              <RoadmapSuccessIcon
+                src={SuccessIcon}
+                className={roadmap.active ? "active" : ""}
+              />
+            ) : null}
+          </IconBox>
           <Box>
             <RoadmapIndex variant="body1">Phase {++idx}</RoadmapIndex>
             <RoadmapName variant="subtitle1">{roadmap.name}</RoadmapName>
@@ -134,7 +141,7 @@ const Roadmap = () => {
         </RoadmapListItem>
       ))}
     </RoadmapList>
-  )
-}
+  );
+};
 
-export default Roadmap
+export default Roadmap;

@@ -5,9 +5,9 @@ import { useNavigate, useSearchParams } from "react-router-dom"
 import { DEFAULT_PAGE_SIZE } from "../constants"
 
 interface DataType {
-  title: string
-  value: string
-  description: string
+  title: string;
+  value: string;
+  description: string;
 }
 
 const Card = styled(Box)(({ theme }) => ({
@@ -30,7 +30,7 @@ const Card = styled(Box)(({ theme }) => ({
       marginRight: "2.4rem",
     },
   },
-}))
+}));
 
 const CardTitle = styled(Typography)(({ theme }) => ({
   fontWeight: 500,
@@ -40,7 +40,7 @@ const CardTitle = styled(Typography)(({ theme }) => ({
     lineHeight: "2rem",
     marginRight: "0.2rem",
   },
-}))
+}));
 
 const BatchIndex = styled(Typography)(({ theme }) => ({
   fontWeight: 500,
@@ -49,23 +49,25 @@ const BatchIndex = styled(Typography)(({ theme }) => ({
   "&:hover": {
     opacity: 0.8,
   },
-}))
+}));
 
 const InfoCard = ({ title, value, total, description }: any) => {
-  const navigate = useNavigate()
-  const [searchParams] = useSearchParams()
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const moveToTargetPage = () => {
-    const pageSize = +(searchParams.get("per_page") || DEFAULT_PAGE_SIZE) as number
+    const pageSize = +(
+      searchParams.get("per_page") || DEFAULT_PAGE_SIZE
+    ) as number;
 
-    const page = Math.floor((total - 3) / pageSize)
+    const page = Math.floor((total - 3) / pageSize);
 
-    window.location.href = `./?page=${page}&per_page=${pageSize}`
-  }
-  const moveToBatchDetail = e => {
-    e.stopPropagation()
-    navigate(`./batch/${value}`)
-  }
+    window.location.href = `./?page=${page}&per_page=${pageSize}`;
+  };
+  const moveToBatchDetail = (e) => {
+    e.stopPropagation();
+    navigate(`./batch/${value}`);
+  };
 
   return (
     <Card onClick={moveToTargetPage}>
@@ -79,7 +81,7 @@ const InfoCard = ({ title, value, total, description }: any) => {
         {value}
       </BatchIndex>
     </Card>
-  )
-}
+  );
+};
 
-export default InfoCard
+export default InfoCard;

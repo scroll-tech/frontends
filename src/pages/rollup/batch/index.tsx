@@ -1,19 +1,26 @@
-import { l1ExplorerUrl } from "@/constants/index"
-import { useBatchDetail } from "@/hooks/useRollupInfo"
-import { InfoOutlined, NavigateNext, OpenInNew } from "@mui/icons-material"
-import { Box, Breadcrumbs, Divider, Link, Tooltip, Typography } from "@mui/material"
-import { styled, useTheme } from "@mui/material/styles"
-import useMediaQuery from "@mui/material/useMediaQuery"
-import { useEffect } from "react"
-import { Link as RouterLink, useParams } from "react-router-dom"
-import Header from "../components/Header"
+import { l1ExplorerUrl } from "@/constants/index";
+import { useBatchDetail } from "@/hooks/useRollupInfo";
+import { InfoOutlined, NavigateNext, OpenInNew } from "@mui/icons-material";
+import {
+  Box,
+  Breadcrumbs,
+  Divider,
+  Link,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import { styled, useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useEffect } from "react";
+import { Link as RouterLink, useParams } from "react-router-dom";
+import Header from "../components/Header";
 
-import dayjs from "dayjs"
-const relativeTime = require("dayjs/plugin/relativeTime")
-const utc = require("dayjs/plugin/utc")
+import dayjs from "dayjs";
+const relativeTime = require("dayjs/plugin/relativeTime");
+const utc = require("dayjs/plugin/utc");
 
-dayjs.extend(relativeTime)
-dayjs.extend(utc)
+dayjs.extend(relativeTime);
+dayjs.extend(utc);
 
 const LabelTypography = styled(Typography)(({ theme }) => ({
   paddingLeft: "5rem",
@@ -22,7 +29,7 @@ const LabelTypography = styled(Typography)(({ theme }) => ({
     paddingLeft: "1.6rem",
     width: "25rem",
   },
-}))
+}));
 
 const BoxItem = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -37,41 +44,43 @@ const BoxItem = styled(Box)(({ theme }) => ({
       marginRight: "1.6rem",
     },
   },
-}))
+}));
 
 const Blocks = () => {
-  const params = useParams()
-  const { batch } = useBatchDetail(params.batchIndex)
-  const theme = useTheme()
-  const isDesktop = useMediaQuery(theme.breakpoints.up("md"))
+  const params = useParams();
+  const { batch } = useBatchDetail(params.batchIndex);
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
 
-  useEffect(() => {}, [])
+  useEffect(() => {}, []);
 
-  const renderTimestamp = timestamp => {
-    if (!timestamp) return "-"
-    const date = new Date(timestamp * 1000)
+  const renderTimestamp = (timestamp) => {
+    if (!timestamp) return "-";
+    const date = new Date(timestamp * 1000);
     return `${dayjs(date)
       .fromNow()
       .toString()} (${dayjs(date)
       .utc()
       .local()
-      .format("MMM-DD-YYYY hh:mm:ss A Z UTC")})`
-  }
+      .format("MMM-DD-YYYY hh:mm:ss A Z UTC")})`;
+  };
 
   const truncatedHash = (hash: string) => {
     if (isDesktop) {
-      return hash
+      return hash;
     } else {
-      return `${hash.substring(0, 6)}…${hash.substring(62, 66)}`
+      return `${hash.substring(0, 6)}…${hash.substring(62, 66)}`;
     }
-  }
+  };
 
   const renderLink = (hash: string | null) => {
     if (hash) {
       return (
         <Link href={`${l1ExplorerUrl}/tx/${hash}`} underline="none">
           <Box display="flex" alignItems="center">
-            <Typography sx={{ color: "#00A6F2", fontWeight: 600 }}>{truncatedHash(hash)}</Typography>
+            <Typography sx={{ color: "#00A6F2", fontWeight: 600 }}>
+              {truncatedHash(hash)}
+            </Typography>
             <OpenInNew
               sx={{
                 marginLeft: "0.4rem",
@@ -81,17 +90,21 @@ const Blocks = () => {
             />
           </Box>
         </Link>
-      )
+      );
     }
-    return "-"
-  }
+    return "-";
+  };
 
   return (
     <Box className="wrapper mx-auto" sx={{ marginBottom: "16rem" }}>
       <Header />
       {batch && (
         <>
-          <Breadcrumbs aria-label="breadcrumb" sx={{ fontWeight: 600 }} separator={<NavigateNext fontSize="large" />}>
+          <Breadcrumbs
+            aria-label="breadcrumb"
+            sx={{ fontWeight: 600 }}
+            separator={<NavigateNext fontSize="large" />}
+          >
             <RouterLink to="/prealpha/rollupscan">All results</RouterLink>
             <Typography sx={{ fontWeight: 600 }} color="text.primary">
               Batch {batch.index}
@@ -120,7 +133,9 @@ const Blocks = () => {
               <LabelTypography>Blocks</LabelTypography>
               {/* TODO: Make link dynamic, probably by using a variable for the rollupscan root */}
               <RouterLink to={`/prealpha/rollupscan/block/${batch.index}`}>
-                <Typography sx={{ fontWeight: 600, color: "#00A6F2" }}>{batch.end_block_number - batch.start_block_number + 1}</Typography>
+                <Typography sx={{ fontWeight: 600, color: "#00A6F2" }}>
+                  {batch.end_block_number - batch.start_block_number + 1}
+                </Typography>
               </RouterLink>
             </BoxItem>
             <Divider />
@@ -137,7 +152,9 @@ const Blocks = () => {
               <LabelTypography>
                 Commit Timestamp{" "}
                 <Tooltip title="Timestamp of the transaction that commits the batch's data to L1">
-                  <InfoOutlined sx={{ fontSize: "2rem", verticalAlign: "text-bottom" }} />
+                  <InfoOutlined
+                    sx={{ fontSize: "2rem", verticalAlign: "text-bottom" }}
+                  />
                 </Tooltip>{" "}
               </LabelTypography>
               <Typography>{renderTimestamp(batch.committed_at)}</Typography>
@@ -156,7 +173,9 @@ const Blocks = () => {
               <LabelTypography>
                 Finalized Timestamp{" "}
                 <Tooltip title="Timestamp of the transaction that posts the batch's proof to L1">
-                  <InfoOutlined sx={{ fontSize: "2rem", verticalAlign: "text-bottom" }} />
+                  <InfoOutlined
+                    sx={{ fontSize: "2rem", verticalAlign: "text-bottom" }}
+                  />
                 </Tooltip>{" "}
               </LabelTypography>
               <Typography>{renderTimestamp(batch.finalized_at)}</Typography>
@@ -165,7 +184,7 @@ const Blocks = () => {
         </>
       )}
     </Box>
-  )
-}
+  );
+};
 
-export default Blocks
+export default Blocks;

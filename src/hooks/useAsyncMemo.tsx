@@ -1,25 +1,28 @@
-import { useEffect, useRef, useState, DependencyList } from "react"
-import { shallowEquals } from "@/utils"
+import { useEffect, useRef, useState, DependencyList } from "react";
+import { shallowEquals } from "@/utils";
 
-function useAsyncMemo<T>(factory: () => Promise<T>, deps: DependencyList | undefined): T | undefined {
-  const [res, setRes] = useState<T>()
-  const prevDependencies = useRef<DependencyList>()
+function useAsyncMemo<T>(
+  factory: () => Promise<T>,
+  deps: DependencyList | undefined
+): T | undefined {
+  const [res, setRes] = useState<T>();
+  const prevDependencies = useRef<DependencyList>();
 
   useEffect(() => {
     if (shallowEquals(deps, prevDependencies.current)) {
-      return
+      return;
     }
-    prevDependencies.current = deps
+    prevDependencies.current = deps;
 
     const fetchRes = async () => {
-      const _res = await factory()
-      setRes(_res)
-    }
+      const _res = await factory();
+      setRes(_res);
+    };
 
-    fetchRes()
-  }, [deps])
+    fetchRes();
+  }, [deps]);
 
-  return res
+  return res;
 }
 
-export default useAsyncMemo
+export default useAsyncMemo;

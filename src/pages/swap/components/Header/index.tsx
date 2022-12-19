@@ -1,18 +1,18 @@
-import { isMobile } from "react-device-detect"
-import { Text } from "rebass"
-import { ChainId } from "uniswap-v2-sdk-scroll"
+import { isMobile } from "react-device-detect";
+import { Text } from "rebass";
+import { ChainId } from "uniswap-v2-sdk-scroll";
 
-import styled from "styled-components"
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
-import Logo from "../../assets/images/logo.png"
-import { useDarkModeManager } from "../../state/user/hooks"
-import { useETHBalances } from "../../state/wallet/hooks"
-import { YellowCard } from "../Card"
-import Settings from "../Settings"
+import styled from "styled-components";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
+import Logo from "../../assets/images/logo.png";
+import { useDarkModeManager } from "../../state/user/hooks";
+import { useETHBalances } from "../../state/wallet/hooks";
+import { YellowCard } from "../Card";
+import Settings from "../Settings";
 
-import React from "react"
-import { RowBetween } from "../Row"
-import Web3Status from "../Web3Status"
+import React from "react";
+import { RowBetween } from "../Row";
+import Web3Status from "../Web3Status";
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -28,12 +28,12 @@ const HeaderFrame = styled.div`
     width: calc(100%);
     position: relative;
   `};
-`
+`;
 
 const HeaderElement = styled.div`
   display: flex;
   align-items: center;
-`
+`;
 
 const HeaderElementWrap = styled.div`
   display: flex;
@@ -42,7 +42,7 @@ const HeaderElementWrap = styled.div`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     margin-top: 0.8rem;
 `};
-`
+`;
 
 const Title = styled.a`
   display: flex;
@@ -52,7 +52,7 @@ const Title = styled.a`
   :hover {
     cursor: pointer;
   }
-`
+`;
 
 const AccountElement = styled.div<{ active: boolean }>`
   display: flex;
@@ -66,21 +66,21 @@ const AccountElement = styled.div<{ active: boolean }>`
   :focus {
     border: 1px solid blue;
   }
-`
+`;
 
 const TestnetWrapper = styled.div`
   white-space: nowrap;
   width: fit-content;
   margin-left: 10px;
   pointer-events: auto;
-`
+`;
 
 const NetworkCard = styled(YellowCard)`
   width: fit-content;
   margin-right: 10px;
   border-radius: 12px;
   padding: 8px 12px;
-`
+`;
 
 const UniIcon = styled.div`
   ${({ theme }) => theme.mediaWidth.upToSmall`
@@ -88,7 +88,7 @@ const UniIcon = styled.div`
       width: 7.2rem;
     }
   `};
-`
+`;
 
 const HeaderControls = styled.div`
   display: flex;
@@ -99,13 +99,13 @@ const HeaderControls = styled.div`
     flex-direction: column;
     align-items: flex-end;
   `};
-`
+`;
 
 const BalanceText = styled(Text)`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     display: none;
   `};
-`
+`;
 const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
   [ChainId.MAINNET]: null,
   [ChainId.RINKEBY]: "Rinkeby",
@@ -113,14 +113,16 @@ const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
   [ChainId.GÖRLI]: "Görli",
   [ChainId.KOVAN]: "Kovan",
   [ChainId.TEST]: "Scroll L2",
-}
+};
 
 export default function Header() {
-  const { walletCurrentAddress, chainId } = useWeb3Context()
+  const { walletCurrentAddress, chainId } = useWeb3Context();
 
-  const [darkMode] = useDarkModeManager()
+  const [darkMode] = useDarkModeManager();
 
-  const userEthBalance = useETHBalances(walletCurrentAddress ? [walletCurrentAddress] : [])?.[walletCurrentAddress ?? ""]
+  const userEthBalance = useETHBalances(
+    walletCurrentAddress ? [walletCurrentAddress] : []
+  )?.[walletCurrentAddress ?? ""];
 
   return (
     <div style={{ display: "block", width: "100%" }}>
@@ -136,7 +138,10 @@ export default function Header() {
         >
           <HeaderElement style={{ display: "none" }}>
             {/* TODO: ENV */}
-            <Title href={process.env.REACT_APP_HOME_URI} style={{ textDecoration: "none" }}>
+            <Title
+              href={process.env.REACT_APP_HOME_URI}
+              style={{ textDecoration: "none" }}
+            >
               <UniIcon>
                 <img src={Logo} style={{ width: "50px" }} alt="logo" />
               </UniIcon>
@@ -157,11 +162,21 @@ export default function Header() {
           <HeaderControls>
             <HeaderElement>
               <TestnetWrapper>
-                {!isMobile && chainId && NETWORK_LABELS[chainId] && <NetworkCard>{NETWORK_LABELS[chainId]}</NetworkCard>}
+                {!isMobile && chainId && NETWORK_LABELS[chainId] && (
+                  <NetworkCard>{NETWORK_LABELS[chainId]}</NetworkCard>
+                )}
               </TestnetWrapper>
-              <AccountElement active={!!walletCurrentAddress} style={{ pointerEvents: "auto" }}>
+              <AccountElement
+                active={!!walletCurrentAddress}
+                style={{ pointerEvents: "auto" }}
+              >
                 {walletCurrentAddress && userEthBalance ? (
-                  <BalanceText style={{ flexShrink: 0 }} pl="1.2rem" pr="0.8rem" fontWeight={500}>
+                  <BalanceText
+                    style={{ flexShrink: 0 }}
+                    pl="1.2rem"
+                    pr="0.8rem"
+                    fontWeight={500}
+                  >
                     {userEthBalance?.toSignificant(4)} ETH
                   </BalanceText>
                 ) : null}
@@ -175,5 +190,5 @@ export default function Header() {
         </RowBetween>
       </HeaderFrame>
     </div>
-  )
+  );
 }

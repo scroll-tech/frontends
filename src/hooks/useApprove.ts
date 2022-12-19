@@ -1,34 +1,38 @@
-import { BigNumber } from "ethers"
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import { BigNumber } from "ethers";
+import { useWeb3Context } from "@/contexts/Web3ContextProvider";
 
-const useApprove = token => {
-  const { provider } = useWeb3Context()
+const useApprove = (token) => {
+  const { provider } = useWeb3Context();
 
-  const checkApproval = async (amount: BigNumber, token: any, spender: string) => {
+  const checkApproval = async (
+    amount: BigNumber,
+    token: any,
+    spender: string
+  ) => {
     try {
-      const signer = provider?.getSigner()
-      const address = (await signer?.getAddress())?.toString()
+      const signer = provider?.getSigner();
+      const address = (await signer?.getAddress())?.toString();
       if (!signer) {
-        throw new Error("Wallet not connected")
+        throw new Error("Wallet not connected");
       }
 
       if (token.native) {
-        return false
+        return false;
       }
 
-      const approved = await token.allowance(address, spender)
+      const approved = await token.allowance(address, spender);
       if (approved.gte(amount)) {
-        return false
+        return false;
       }
 
-      return true
+      return true;
     } catch (err) {
-      console.log("err", err)
-      return false
+      console.log("err", err);
+      return false;
     }
-  }
+  };
 
-  return { checkApproval }
-}
+  return { checkApproval };
+};
 
-export default useApprove
+export default useApprove;

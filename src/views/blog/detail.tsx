@@ -1,24 +1,24 @@
-import { Box, Typography, CircularProgress } from "@mui/material"
-import { useEffect, useState } from "react"
-import { Helmet } from "react-helmet"
-import { useParams } from "react-router-dom"
-import ReactMarkdown from "react-markdown"
-import remarkMath from "remark-math"
-import rehypeKatex from "rehype-katex"
-import rehypeRaw from "rehype-raw"
-import remarkGfm from "remark-gfm"
-import MarkdownNavbar from "markdown-navbar"
-import "markdown-navbar/dist/navbar.css"
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos"
-import { Link as RouterLink } from "react-router-dom"
-import { styled } from "@mui/system"
-import { shuffle } from "lodash"
-import blogSource from "./data.json"
-import Articles from "./articles"
-import useMediaQuery from "@mui/material/useMediaQuery"
-import { useTheme } from "@mui/material/styles"
+import { Box, Typography, CircularProgress } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
+import { useParams } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+import rehypeRaw from "rehype-raw";
+import remarkGfm from "remark-gfm";
+import MarkdownNavbar from "markdown-navbar";
+import "markdown-navbar/dist/navbar.css";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import { Link as RouterLink } from "react-router-dom";
+import { styled } from "@mui/system";
+import { shuffle } from "lodash";
+import blogSource from "./data.json";
+import Articles from "./articles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 
-const MAX_H3_COUNT = 10
+const MAX_H3_COUNT = 10;
 
 const Link = styled(RouterLink)({
   display: "flex",
@@ -28,7 +28,7 @@ const Link = styled(RouterLink)({
     fontWeight: 500,
     color: "#202020",
   },
-})
+});
 
 const BlogContainer = styled(Box)(
   ({ theme }) => `
@@ -40,8 +40,8 @@ const BlogContainer = styled(Box)(
     padding: 4rem 1.6rem;
     display: block;
   };
-  `,
-)
+  `
+);
 
 const BlogNavbar = styled(Box)(({ theme }) => ({
   position: "fixed",
@@ -52,72 +52,76 @@ const BlogNavbar = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
     display: "none",
   },
-}))
+}));
 
 const BlogDetail = () => {
-  const [blog, setBlog] = useState<null | string>(null)
-  const [moreBlog, setMoreBlog] = useState<any>([])
+  const [blog, setBlog] = useState<null | string>(null);
+  const [moreBlog, setMoreBlog] = useState<any>([]);
   const [currentBlog, setCurrentBlog] = useState<any>({
     title: "",
     content: "",
     posterImg: "",
-  })
+  });
 
-  const [loading, setLoading] = useState(true)
-  const [hiddenHeadingsUnderLevel2, setHiddenHeadingsUnderLevel2] = useState(false)
-  const params = useParams()
+  const [loading, setLoading] = useState(true);
+  const [hiddenHeadingsUnderLevel2, setHiddenHeadingsUnderLevel2] = useState(
+    false
+  );
+  const params = useParams();
 
   useEffect(() => {
-    getCurrentBlog()
+    getCurrentBlog();
     // @ts-ignore
-    let anchors = [...document.querySelectorAll("a")]
-    anchors.map(anchor => {
+    let anchors = [...document.querySelectorAll("a")];
+    anchors.map((anchor) => {
       if (anchor.href.includes("/blog/")) {
-        anchor.setAttribute("target", "")
+        anchor.setAttribute("target", "");
       }
-    })
+    });
     try {
-      const blogPath = require(`../../assets/blog/${params.blogId}.md`)
+      const blogPath = require(`../../assets/blog/${params.blogId}.md`);
       fetch(blogPath)
-        .then(response => response.text())
-        .then(text => {
-          handleHeadingsUnderLevel2(text)
-          setLoading(false)
-          setBlog(text)
-        })
+        .then((response) => response.text())
+        .then((text) => {
+          handleHeadingsUnderLevel2(text);
+          setLoading(false);
+          setBlog(text);
+        });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-    getMoreBlog()
-  }, [])
+    getMoreBlog();
+  }, []);
 
-  const handleHeadingsUnderLevel2 = text => {
-    const regexp = /### /gi
-    const matches = text.match(regexp)
-    const hiddenHeadingsUnderLevel2 = matches?.length > MAX_H3_COUNT
-    setHiddenHeadingsUnderLevel2(hiddenHeadingsUnderLevel2)
-  }
+  const handleHeadingsUnderLevel2 = (text) => {
+    const regexp = /### /gi;
+    const matches = text.match(regexp);
+    const hiddenHeadingsUnderLevel2 = matches?.length > MAX_H3_COUNT;
+    setHiddenHeadingsUnderLevel2(hiddenHeadingsUnderLevel2);
+  };
 
   const getMoreBlog = () => {
-    const blogs = shuffle(blogSource.filter(blog => blog.id !== params.blogId)).slice(0, 3)
-    setMoreBlog(blogs)
-  }
+    const blogs = shuffle(
+      blogSource.filter((blog) => blog.id !== params.blogId)
+    ).slice(0, 3);
+    setMoreBlog(blogs);
+  };
 
   const getCurrentBlog = () => {
-    const blog = blogSource.find(blog => blog.id === params.blogId)
-    setCurrentBlog(blog)
-  }
+    const blog = blogSource.find((blog) => blog.id === params.blogId);
+    setCurrentBlog(blog);
+  };
 
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"))
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const getPosterUri = () => {
-    return window.location.origin + currentBlog.posterImg
-  }
+    return window.location.origin + currentBlog.posterImg;
+  };
 
   const getUrl = () => {
-    return window.location.href
-  }
+    return window.location.href;
+  };
 
   return (
     <Box>
@@ -127,11 +131,18 @@ const BlogDetail = () => {
         <meta property="og:title" content={currentBlog.title + " - Scroll"} />
         <meta property="og:description" content={currentBlog.summary} />
         <meta property="og:image" content={getPosterUri()} />
-        <meta property="og:url" content={currentBlog.canonical || `https://scroll.io/blog/${currentBlog.id}`} />
+        <meta
+          property="og:url"
+          content={
+            currentBlog.canonical || `https://scroll.io/blog/${currentBlog.id}`
+          }
+        />
         <meta name="twitter:title" content={currentBlog.title + " - Scroll"} />
         <meta name="twitter:description" content={currentBlog.summary} />
         <meta name="twitter:image" content={getPosterUri()} />
-        {currentBlog.canonical && <link rel="canonical" href={currentBlog.canonical} />}
+        {currentBlog.canonical && (
+          <link rel="canonical" href={currentBlog.canonical} />
+        )}
         <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css"
@@ -145,7 +156,12 @@ const BlogDetail = () => {
         />
       </Helmet>
       {loading ? (
-        <Box display="flex" justifyContent="center" alignItems="center" height="80vh">
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="80vh"
+        >
           <CircularProgress sx={{ color: "#EB7106" }} />
         </Box>
       ) : (
@@ -164,7 +180,9 @@ const BlogDetail = () => {
                   <Typography>All Articles</Typography>
                 </Link>
                 <MarkdownNavbar
-                  className={`${hiddenHeadingsUnderLevel2 ? "hidden-levels" : ""} markdown-navbar`}
+                  className={`${
+                    hiddenHeadingsUnderLevel2 ? "hidden-levels" : ""
+                  } markdown-navbar`}
                   source={blog as string}
                   headingTopOffset={100}
                   ordered={false}
@@ -191,7 +209,7 @@ const BlogDetail = () => {
         </Box>
       )}
     </Box>
-  )
-}
+  );
+};
 
-export default BlogDetail
+export default BlogDetail;
