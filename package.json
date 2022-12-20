@@ -11,6 +11,7 @@
     "@emotion/styled": "^11.3.0",
     "@ethersproject/address": "^5.7.0",
     "@ethersproject/providers": "^5.7.1",
+    "@hcaptcha/react-hcaptcha": "^1.4.4",
     "@mui/icons-material": "^5.8.4",
     "@mui/lab": "^5.0.0-alpha.108",
     "@mui/material": "^5.10.14",

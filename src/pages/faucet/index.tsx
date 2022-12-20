@@ -94,12 +94,13 @@ export default function Home() {
     })
   }
 
-  const handleRequest = async () => {
+  const handleRequest = async captchaToken => {
     if (loading) return
 
     let formData = new FormData()
     formData.append("address", getAddress(walletCurrentAddress as string))
     formData.append("token", user?.token)
+    captchaToken && formData.append("h-captcha-response", captchaToken)
     setLoading(true)
     const res = await fetch(process.env.REACT_APP_FAUCET_BASE_API_URL + "/api/claim", {
       method: "POST",

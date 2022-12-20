@@ -4,11 +4,14 @@ import TwitterIcon from "@mui/icons-material/Twitter"
 import useStorage from "squirrel-gill"
 import Link from "@/components/Link"
 import { redirectSignInTwitter } from "../helper"
+import HCaptcha from "@hcaptcha/react-hcaptcha"
+import { useState } from "react"
 
 const WithTwitter = props => {
   const { loginLoading, requestLoading, onRequest } = props
 
   const [user, setUser] = useStorage(localStorage, "user")
+  const [captchaToken, setCaptchaToken] = useState("")
 
   const handleSignOut = () => {
     setUser(null)
@@ -44,10 +47,17 @@ const WithTwitter = props => {
             </Stack>
           }
           variant="contained"
-          onClick={onRequest}
+          onClick={() => onRequest(captchaToken)}
         >
           Request Testnet Scroll Tokens
         </LoadingButton>
+        <HCaptcha
+          sitekey={process.env.REACT_APP_HCAPTCHA_SITE_KEY as string}
+          onVerify={(token, ekey) => (
+            /* TODO: remove this console.debug */
+            console.debug("iiiiiiiiiiiiiiii", token, ekey), setCaptchaToken(token)
+          )}
+        />
         <Link
           underline="always"
           sx={{
