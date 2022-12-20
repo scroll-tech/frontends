@@ -189,7 +189,10 @@ const App = props => {
           <React.Fragment key={item.key}>
             {item.children ? (
               <SubMenuButton onMouseEnter={() => setChecked(true)} onMouseLeave={() => setChecked(false)} key={item.key}>
-                {item.label} <ExpandMore sx={{ marginLeft: "6px" }} />
+                <Stack direction="row" alignItems="center" spacing="6px">
+                  <span>{item.label}</span>
+                  <ExpandMore />
+                </Stack>
                 <Fade in={checked}>
                   <SubMenuList onClick={() => setChecked(false)}>
                     {item.children?.map((subItem: any) =>

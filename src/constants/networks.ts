@@ -1,5 +1,5 @@
 // TODO: Refactor network info into a scroll-testnet-wide spot
-import { requireEnv } from "@/utils"
+import { requireEnv, isProduction } from "@/utils"
 import ETHSvg from "@/assets/svgs/eth.svg"
 import { ChainId, ETH_SYMBOL, RPCUrl } from "./common"
 
@@ -9,7 +9,7 @@ const l2Explorer = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2")
 
 export const networks = [
   {
-    name: "Scroll L1 Testnet" + (curEnv === "MAIN" ? "" : " [" + curEnv + "]"),
+    name: "Scroll L1 Testnet" + (isProduction ? "" : " [" + curEnv + "]"),
     slug: "layer1",
     imageUrl: "/imgs/bridge/mainnet.svg",
     provider: null,
@@ -22,7 +22,7 @@ export const networks = [
     waitConfirmations: 6,
   },
   {
-    name: "Scroll L2 Testnet" + (curEnv === "MAIN" ? "" : " [" + curEnv + "]"),
+    name: "Scroll L2 Testnet" + (isProduction ? "" : " [" + curEnv + "]"),
     slug: "layer2",
     imageUrl: "/logo.png",
     provider: null,
@@ -73,12 +73,11 @@ export const nativeTokenList: Token[] = [
 ]
 
 export const SiteMap = {
-  // TODO: Deduplicate these, e.g. https://app.asana.com/0/1202293017617135/1203532864257615/f
-  Home: "/",
-  Faucet: "/faucet/",
-  Bridge: "/bridge/",
-  Swap: "/swap/",
+  Home: "/prealpha/",
+  Faucet: "/prealpha/faucet",
+  Bridge: "/prealpha/bridge",
+  Swap: "/prealpha/swap",
   L1Explorer: l1Explorer,
   L2Explorer: l2Explorer,
-  RollupExplorer: "/rollupscan/",
+  RollupExplorer: "/prealpha/rollupscan",
 }
