@@ -11,7 +11,7 @@ const Login = () => {
         Welcome to Scroll’s Pre-Apha Testnet
       </p>
       <p className="max-w-[380px] text-center text-[16px] text-[#595959] leading-[26px] ">
-        Scroll is a zkEVM-based zkRollup on Ethereum which enables native compatibility for existing Ethereum applications and tools.
+        Scroll is a zkEVM-based zkRollup on Ethereum that enables native compatibility for existing Ethereum applications and tools.
       </p>
       {walletCurrentAddress ? (
         <div className="bg-[#FFF8CB] rounded-[10px] py-[18px] px-[28px] max-w-[390px] text-center mt-[24px] md:py-[24px] md:px-[32px]">
