@@ -95,8 +95,8 @@
   REACT_APP_EXTERNAL_RPC_URI_L1="https://prealpha-rpc.scroll.io/l1"
   REACT_APP_EXTERNAL_RPC_URI_L2="https://prealpha-rpc.scroll.io/l2"
   REACT_APP_ROLLUPSCAN_BASE_API_URL="https://prealpha-api.scroll.io/rollupscan/api"
-  REACT_APP_EXTERNAL_EXPLORER_URI_L1="https://l1scan.scroll.io"
-  REACT_APP_EXTERNAL_EXPLORER_URI_L2="https://l2scan.scroll.io"
+  REACT_APP_EXTERNAL_EXPLORER_URI_L1="https://multivm-l1scan.scroll.io"
+  REACT_APP_EXTERNAL_EXPLORER_URI_L2="https://multivm-l2scan.scroll.io"
   REACT_APP_CODE_CHALLENGE="1W2y6F72ulLxiFoEaVKgVDukwEsiOOyH7wSXw0quEbM"
   REACT_APP_STATE="KCVfk8zv-r4t4fef"
 
