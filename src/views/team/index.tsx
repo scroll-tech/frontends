@@ -53,7 +53,7 @@ const Team = () => {
 
       <Photowall />
 
-      <TitleTypography variant="h2">Sounds like a good fit?</TitleTypography>
+      <TitleTypography variant="h2">Sound like a good fit?</TitleTypography>
       <Button color="primary" variant="contained" onClick={() => navigate("/join-us")} sx={{ display: "table", margin: "0 auto" }}>
         View Open Positions
       </Button>
