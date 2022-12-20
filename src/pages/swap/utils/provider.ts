@@ -1,58 +1,55 @@
-import { Web3Provider } from "@ethersproject/providers";
+import { Web3Provider } from "@ethersproject/providers"
 
 type AsyncSendable = {
-  isMetaMask?: boolean;
-  host?: string;
-  path?: string;
-  sendAsync?: (
-    request: any,
-    callback: (error: any, response: any) => void
-  ) => void;
-  send?: (request: any, callback: (error: any, response: any) => void) => void;
-};
+  isMetaMask?: boolean
+  host?: string
+  path?: string
+  sendAsync?: (request: any, callback: (error: any, response: any) => void) => void
+  send?: (request: any, callback: (error: any, response: any) => void) => void
+}
 
 class RequestError extends Error {
   constructor(message: string, public code: number, public data?: unknown) {
-    super(message);
+    super(message)
   }
 }
 
 interface BatchItem {
-  request: { jsonrpc: "2.0"; id: number; method: string; params: unknown };
-  resolve: (result: any) => void;
-  reject: (error: Error) => void;
+  request: { jsonrpc: "2.0"; id: number; method: string; params: unknown }
+  resolve: (result: any) => void
+  reject: (error: Error) => void
 }
 
 class MiniRpcProvider implements AsyncSendable {
-  public readonly isMetaMask: false = false;
-  public readonly chainId: number;
-  public readonly url: string;
-  public readonly host: string;
-  public readonly path: string;
-  public readonly batchWaitTimeMs: number;
+  public readonly isMetaMask: false = false
+  public readonly chainId: number
+  public readonly url: string
+  public readonly host: string
+  public readonly path: string
+  public readonly batchWaitTimeMs: number
 
-  private nextId = 1;
-  private batchTimeoutId: ReturnType<typeof setTimeout> | null = null;
-  private batch: BatchItem[] = [];
+  private nextId = 1
+  private batchTimeoutId: ReturnType<typeof setTimeout> | null = null
+  private batch: BatchItem[] = []
 
   constructor(chainId: number, url: string, batchWaitTimeMs?: number) {
-    this.chainId = chainId;
-    this.url = url;
-    const parsed = new URL(url);
-    this.host = parsed.host;
-    this.path = parsed.pathname;
+    this.chainId = chainId
+    this.url = url
+    const parsed = new URL(url)
+    this.host = parsed.host
+    this.path = parsed.pathname
     // how long to wait to batch calls
-    this.batchWaitTimeMs = batchWaitTimeMs ?? 50;
+    this.batchWaitTimeMs = batchWaitTimeMs ?? 50
   }
 
   public readonly clearBatch = async () => {
-    console.debug("Clearing batch", this.batch);
-    const batch = this.batch;
-    this.batch = [];
-    this.batchTimeoutId = null;
-    let response: Response;
-    const shouldReturn = this.url.indexOf("mainnet.infura.io/v3") > -1;
-    if (shouldReturn) return;
+    console.debug("Clearing batch", this.batch)
+    const batch = this.batch
+    this.batch = []
+    this.batchTimeoutId = null
+    let response: Response
+    const shouldReturn = this.url.indexOf("mainnet.infura.io/v3") > -1
+    if (shouldReturn) return
     try {
       response = await fetch(this.url, {
         method: "POST",
@@ -60,92 +57,67 @@ class MiniRpcProvider implements AsyncSendable {
           "content-type": "application/json",
           accept: "application/json",
         },
-        body: JSON.stringify(batch.map((item) => item.request)),
-      });
+        body: JSON.stringify(batch.map(item => item.request)),
+      })
     } catch (error) {
-      batch.forEach(({ reject }) =>
-        reject(new Error("Failed to send batch call"))
-      );
-      return;
+      batch.forEach(({ reject }) => reject(new Error("Failed to send batch call")))
+      return
     }
 
     if (!response.ok) {
-      batch.forEach(({ reject }) =>
-        reject(
-          new RequestError(`${response.status}: ${response.statusText}`, -32000)
-        )
-      );
-      return;
+      batch.forEach(({ reject }) => reject(new RequestError(`${response.status}: ${response.statusText}`, -32000)))
+      return
     }
 
-    let json;
+    let json
     try {
-      json = await response.json();
+      json = await response.json()
     } catch (error) {
-      batch.forEach(({ reject }) =>
-        reject(new Error("Failed to parse JSON response"))
-      );
-      return;
+      batch.forEach(({ reject }) => reject(new Error("Failed to parse JSON response")))
+      return
     }
     const byKey = batch.reduce<{ [id: number]: BatchItem }>((memo, current) => {
-      memo[current.request.id] = current;
-      return memo;
-    }, {});
+      memo[current.request.id] = current
+      return memo
+    }, {})
     for (const result of json) {
       const {
         resolve,
         reject,
         request: { method },
-      } = byKey[result.id];
+      } = byKey[result.id]
       if (resolve && reject) {
         if ("error" in result) {
-          reject(
-            new RequestError(
-              result?.error?.message,
-              result?.error?.code,
-              result?.error?.data
-            )
-          );
+          reject(new RequestError(result?.error?.message, result?.error?.code, result?.error?.data))
         } else if ("result" in result) {
-          resolve(result.result);
+          resolve(result.result)
         } else {
-          reject(
-            new RequestError(
-              `Received unexpected JSON-RPC response to ${method} request.`,
-              -32000,
-              result
-            )
-          );
+          reject(new RequestError(`Received unexpected JSON-RPC response to ${method} request.`, -32000, result))
         }
       }
     }
-  };
+  }
 
   public readonly sendAsync = (
     request: {
-      jsonrpc: "2.0";
-      id: number | string | null;
-      method: string;
-      params?: unknown[] | object;
+      jsonrpc: "2.0"
+      id: number | string | null
+      method: string
+      params?: unknown[] | object
     },
-    callback: (error: any, response: any) => void
+    callback: (error: any, response: any) => void,
   ): void => {
     this.request(request.method, request.params)
-      .then((result) =>
-        callback(null, { jsonrpc: "2.0", id: request.id, result })
-      )
-      .catch((error) => callback(error, null));
-  };
+      .then(result => callback(null, { jsonrpc: "2.0", id: request.id, result }))
+      .catch(error => callback(error, null))
+  }
 
-  public readonly request = async (
-    method: string | { method: string; params: unknown[] },
-    params?: unknown[] | object
-  ): Promise<unknown> => {
+  public readonly request = async (method: string | { method: string; params: unknown[] }, params?: unknown[] | object): Promise<unknown> => {
     if (typeof method !== "string") {
-      return this.request(method.method, method.params);
+      return this.request(method.method, method.params)
     }
     if (method === "eth_chainId") {
-      return `0x${this.chainId.toString(16)}`;
+      return `0x${this.chainId.toString(16)}`
     }
     const promise = new Promise((resolve, reject) => {
       this.batch.push({
@@ -157,15 +129,14 @@ class MiniRpcProvider implements AsyncSendable {
         },
         resolve,
         reject,
-      });
-    });
-    this.batchTimeoutId =
-      this.batchTimeoutId ?? setTimeout(this.clearBatch, this.batchWaitTimeMs);
-    return promise;
-  };
+      })
+    })
+    this.batchTimeoutId = this.batchTimeoutId ?? setTimeout(this.clearBatch, this.batchWaitTimeMs)
+    return promise
+  }
 }
 
 export const getProvider = (chainId, url) => {
-  const rpcProvider = new MiniRpcProvider(chainId, url);
-  return new Web3Provider(rpcProvider as any);
-};
+  const rpcProvider = new MiniRpcProvider(chainId, url)
+  return new Web3Provider(rpcProvider as any)
+}

@@ -19,7 +19,7 @@ const homeNavigations: any = [
     key: "Join Us",
     href: "join-us",
   },
-];
+]
 
 const navigations = [
   {
@@ -66,6 +66,6 @@ const navigations = [
       },
     ],
   },
-];
+]
 
-export { navigations, homeNavigations };
+export { navigations, homeNavigations }

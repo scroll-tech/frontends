@@ -1,7 +1,8 @@
-const CracoLessPlugin = require("craco-less");
-const webpack = require("webpack");
-const path = require("path");
-const { loaderByName, addBeforeLoader } = require("@craco/craco");
+const CracoLessPlugin = require("craco-less")
+const webpack = require("webpack")
+const path = require("path")
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+const { loaderByName, addBeforeLoader } = require("@craco/craco")
 
 module.exports = {
   plugins: [
@@ -40,7 +41,14 @@ module.exports = {
         Buffer: ["buffer", "Buffer"],
       }),
     ],
-    configure: function(webpackConfig) {
+    configure: function(webpackConfig, { env }) {
+      webpackConfig.ignoreWarnings = [
+        function ignoreSourcemapsloaderWarnings(warning) {
+          return (
+            warning.module && warning.module.resource.includes("node_modules") && warning.details && warning.details.includes("source-map-loader")
+          )
+        },
+      ]
       webpackConfig.module.rules.push({
         test: /\.mjs$/,
         include: /node_modules/,
@@ -48,8 +56,13 @@ module.exports = {
         resolve: {
           fullySpecified: false,
         },
-      });
-      return webpackConfig;
+      })
+      if (env === "production") {
+        const instanceOfMiniCssExtractPlugin = webpackConfig.plugins.find(plugin => plugin instanceof MiniCssExtractPlugin)
+
+        instanceOfMiniCssExtractPlugin.options.ignoreOrder = true
+      }
+      return webpackConfig
     },
   },
-};
+}

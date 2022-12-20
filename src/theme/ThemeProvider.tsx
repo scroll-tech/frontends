@@ -1,7 +1,4 @@
-import * as React from "react";
-import type {} from "@mui/lab/themeAugmentation";
-import { red } from "@mui/material/colors";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { ThemeProvider, createTheme } from "@mui/material/styles"
 
 const theme = createTheme({
   palette: {
@@ -22,10 +19,10 @@ const theme = createTheme({
       '"Segoe UI Symbol"',
     ].join(","),
   },
-});
+})
 
 function App() {
-  return <ThemeProvider theme={theme}>...</ThemeProvider>;
+  return <ThemeProvider theme={theme}>...</ThemeProvider>
 }
 
-export default App;
+export default App

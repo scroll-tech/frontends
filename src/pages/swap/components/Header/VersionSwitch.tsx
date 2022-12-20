@@ -1,10 +1,10 @@
-import { stringify } from "qs";
-import React, { useCallback, useMemo } from "react";
-import { Link, useLocation } from "react-router-dom-v5";
-import styled from "styled-components";
-import useParsedQueryString from "../../hooks/useParsedQueryString";
-import useToggledVersion, { Version } from "../../hooks/useToggledVersion";
-import { MouseoverTooltip } from "../Tooltip";
+import { stringify } from "qs"
+import React, { useCallback, useMemo } from "react"
+import { Link, useLocation } from "react-router-dom-v5"
+import styled from "styled-components"
+import useParsedQueryString from "../../hooks/useParsedQueryString"
+import useToggledVersion, { Version } from "../../hooks/useToggledVersion"
+import { MouseoverTooltip } from "../Tooltip"
 
 const VersionLabel = styled.span<{ enabled: boolean }>`
   padding: 0.896rem 1.6rem;
@@ -18,16 +18,14 @@ const VersionLabel = styled.span<{ enabled: boolean }>`
     background: ${({ theme, enabled }) => (enabled ? theme.primary1 : "none")};
     color: ${({ theme, enabled }) => (enabled ? theme.white : theme.text1)};
   }
-`;
+`
 
 interface VersionToggleProps extends React.ComponentProps<typeof Link> {
-  enabled: boolean;
+  enabled: boolean
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const VersionToggle = styled(({ enabled, ...rest }: VersionToggleProps) => (
-  <Link {...rest} />
-))<VersionToggleProps>`
+const VersionToggle = styled(({ enabled, ...rest }: VersionToggleProps) => <Link {...rest} />)<VersionToggleProps>`
   border-radius: 12px;
   opacity: ${({ enabled }) => (enabled ? 1 : 0.5)};
   cursor: ${({ enabled }) => (enabled ? "pointer" : "default")};
@@ -40,14 +38,13 @@ const VersionToggle = styled(({ enabled, ...rest }: VersionToggleProps) => (
   :hover {
     text-decoration: none;
   }
-`;
+`
 
 export default function VersionSwitch() {
-  const version = useToggledVersion();
-  const location = useLocation();
-  const query = useParsedQueryString();
-  const versionSwitchAvailable =
-    location.pathname === "/swap" || location.pathname === "/send";
+  const version = useToggledVersion()
+  const location = useLocation()
+  const query = useParsedQueryString()
+  const versionSwitchAvailable = location.pathname === "/swap" || location.pathname === "/send"
 
   const toggleDest = useMemo(() => {
     return versionSwitchAvailable
@@ -58,35 +55,21 @@ export default function VersionSwitch() {
             use: version === Version.v1 ? undefined : Version.v1,
           })}`,
         }
-      : location;
-  }, [location, query, version, versionSwitchAvailable]);
+      : location
+  }, [location, query, version, versionSwitchAvailable])
 
   const handleClick = useCallback(
-    (e) => {
-      if (!versionSwitchAvailable) e.preventDefault();
+    e => {
+      if (!versionSwitchAvailable) e.preventDefault()
     },
-    [versionSwitchAvailable]
-  );
+    [versionSwitchAvailable],
+  )
 
   const toggle = (
-    <VersionToggle
-      enabled={versionSwitchAvailable}
-      to={toggleDest}
-      onClick={handleClick}
-    >
-      <VersionLabel enabled={version === Version.v2 || !versionSwitchAvailable}>
-        V2
-      </VersionLabel>
-      <VersionLabel enabled={version === Version.v1 && versionSwitchAvailable}>
-        V1
-      </VersionLabel>
+    <VersionToggle enabled={versionSwitchAvailable} to={toggleDest} onClick={handleClick}>
+      <VersionLabel enabled={version === Version.v2 || !versionSwitchAvailable}>V2</VersionLabel>
+      <VersionLabel enabled={version === Version.v1 && versionSwitchAvailable}>V1</VersionLabel>
     </VersionToggle>
-  );
-  return versionSwitchAvailable ? (
-    toggle
-  ) : (
-    <MouseoverTooltip text="This page is only compatible with Uniswap V2.">
-      {toggle}
-    </MouseoverTooltip>
-  );
+  )
+  return versionSwitchAvailable ? toggle : <MouseoverTooltip text="This page is only compatible with Uniswap V2.">{toggle}</MouseoverTooltip>
 }

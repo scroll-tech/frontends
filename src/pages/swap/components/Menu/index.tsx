@@ -1,17 +1,17 @@
-import React, { useRef } from "react";
-import { Info, BookOpen, Code, PieChart, MessageCircle } from "react-feather";
-import styled from "styled-components";
-import { ReactComponent as MenuIcon } from "../../assets/images/menu.svg";
-import { useOnClickOutside } from "../../hooks/useOnClickOutside";
-import useToggle from "../../hooks/useToggle";
+import React, { useRef } from "react"
+import { Info, BookOpen, Code, PieChart, MessageCircle } from "react-feather"
+import styled from "styled-components"
+import { ReactComponent as MenuIcon } from "../../assets/images/menu.svg"
+import { useOnClickOutside } from "../../hooks/useOnClickOutside"
+import useToggle from "../../hooks/useToggle"
 
-import { ExternalLink } from "../../theme";
+import { ExternalLink } from "../../theme"
 
 const StyledMenuIcon = styled(MenuIcon)`
   path {
     stroke: ${({ theme }) => theme.text1};
   }
-`;
+`
 
 const StyledMenuButton = styled.button`
   width: 100%;
@@ -36,7 +36,7 @@ const StyledMenuButton = styled.button`
   svg {
     margin-top: 2px;
   }
-`;
+`
 
 const StyledMenu = styled.div`
   margin-left: 0.8rem;
@@ -46,13 +46,12 @@ const StyledMenu = styled.div`
   position: relative;
   border: none;
   text-align: left;
-`;
+`
 
 const MenuFlyout = styled.span`
   min-width: 13rem;
   background-color: ${({ theme }) => theme.bg3};
-  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04),
-    0px 16px 24px rgba(0, 0, 0, 0.04), 0px 24px 32px rgba(0, 0, 0, 0.01);
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04), 0px 24px 32px rgba(0, 0, 0, 0.01);
   border-radius: 0.8rem;
   padding: 0.8rem;
   display: flex;
@@ -62,7 +61,7 @@ const MenuFlyout = styled.span`
   top: 4.8rem;
   right: 0rem;
   z-index: 100;
-`;
+`
 
 const MenuItem = styled(ExternalLink)`
   flex: 1;
@@ -76,15 +75,15 @@ const MenuItem = styled(ExternalLink)`
   > svg {
     margin-right: 8px;
   }
-`;
+`
 
-const CODE_LINK = "https://github.com/Uniswap/uniswap-interface";
+const CODE_LINK = "https://github.com/Uniswap/uniswap-interface"
 
 export default function Menu() {
-  const node = useRef<HTMLDivElement>();
-  const [open, toggle] = useToggle(false);
+  const node = useRef<HTMLDivElement>()
+  const [open, toggle] = useToggle(false)
 
-  useOnClickOutside(node, open ? toggle : undefined);
+  useOnClickOutside(node, open ? toggle : undefined)
 
   return (
     // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/30451
@@ -117,5 +116,5 @@ export default function Menu() {
         </MenuFlyout>
       )}
     </StyledMenu>
-  );
+  )
 }
