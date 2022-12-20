@@ -1,3 +1,4 @@
+import NotFound from "@/pages/404"
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
 import { Helmet } from "react-helmet"
@@ -7,6 +8,7 @@ import { Route, Routes } from "react-router-dom"
 import AppWrapper from "./contexts"
 import routes from "./routes/prealphaRoutes"
 import useMatchedRoute from "./hooks/useMatchedRoute"
+
 function App() {
   const route = useMatchedRoute()
   const getUrl = () => {
@@ -27,6 +29,7 @@ function App() {
               {routes.map((route, key) => (
                 <Route key={key} path={route.path} element={route.element} />
               ))}
+              <Route path="*" element={<NotFound />} />
             </Routes>
             <Footer />
           </ScrollToTop>
