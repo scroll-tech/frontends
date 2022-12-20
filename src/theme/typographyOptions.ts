@@ -39,7 +39,7 @@ export const palette = {
     light: "#FFD7E2",
     main: "#DC3347",
   },
-}
+};
 
 export const typographyOptions = {
   fontFamily: [
@@ -76,6 +76,23 @@ export const typographyOptions = {
     [theme.breakpoints.down("md")]: {
       fontSize: "2.4rem",
       lineHeight: "3.2rem",
+    },
+  },
+  h4: {
+    fontSize: "3.4rem",
+    fontWeight: 400,
+    fontFamily: "Pulp Display",
+    letterSpacing: "0.25px",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "2.4rem",
+    },
+  },
+  // 用到了
+  h6: {
+    fontSize: "2.0rem",
+    fontWeight: 500,
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "1.6rem",
     },
   },
 
