@@ -1,13 +1,12 @@
-import { useMemo } from "react";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import createBreakpoints from "@mui/system/createTheme/createBreakpoints";
+import { useMemo } from "react"
+import { ThemeProvider, createTheme } from "@mui/material/styles"
+import createBreakpoints from "@mui/system/createTheme/createBreakpoints"
 
-import { typographyOptions, paletteOptions } from "./addition";
+import { typographyOptions, paletteOptions } from "./addition"
 
-const breakpoints = createBreakpoints({});
+const breakpoints = createBreakpoints({})
 
-const defaultTransition = "all 0.15s ease-out";
+const defaultTransition = "all 0.15s ease-out"
 
 const lightTheme = {
   palette: paletteOptions,
@@ -240,10 +239,8 @@ const lightTheme = {
           width: "100%",
           boxSizing: "border-box",
           alignItems: "center",
-          color:
-            ownerState.severity && paletteOptions[ownerState.severity].main,
-          backgroundColor:
-            ownerState.severity && paletteOptions[ownerState.severity].light,
+          color: ownerState.severity && paletteOptions[ownerState.severity].main,
+          backgroundColor: ownerState.severity && paletteOptions[ownerState.severity].light,
           [breakpoints.down("sm")]: {
             flexDirection: "column",
             textAlign: "center",
@@ -256,8 +253,7 @@ const lightTheme = {
           fontSize: "3rem",
           marginRight: "1.6rem",
           padding: 0,
-          color: `${ownerState.severity &&
-            paletteOptions[ownerState.severity].main} !important`,
+          color: `${ownerState.severity && paletteOptions[ownerState.severity].main} !important`,
           [breakpoints.down("sm")]: {
             justifyContent: "center",
             marginRight: 0,
@@ -377,20 +373,17 @@ const lightTheme = {
       },
     },
   },
-};
+}
 
-const darkTheme = {};
-const prefersDarkMode = true;
+const darkTheme = {}
+const prefersDarkMode = true
 const Theme = ({ children }) => {
   // const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   // console.log(prefersDarkMode, "prefersDarkMode");
 
-  const theme = useMemo(
-    () => createTheme(prefersDarkMode ? lightTheme : darkTheme),
-    []
-  );
+  const theme = useMemo(() => createTheme(prefersDarkMode ? lightTheme : darkTheme), [])
 
-  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
-};
+  return <ThemeProvider theme={theme}>{children}</ThemeProvider>
+}
 
-export default Theme;
+export default Theme

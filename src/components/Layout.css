@@ -1,4 +1,3 @@
-
 .Layout {
   text-align: center;
   background-color: #635e60;
@@ -11,7 +10,7 @@
 }
 
 .RouterLinks {
-  display: flex; 
+  display: flex;
   flex-wrap: wrap;
   border-bottom: 1px solid white;
 }
@@ -53,7 +52,7 @@
 
 .Iframe {
   flex: 1 1 auto;
-  border: 0
+  border: 0;
 }
 
 .FullScreen {

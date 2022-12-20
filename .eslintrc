@@ -1,0 +1,12 @@
+{
+  "extends": ["react-app", "prettier"],
+  "rules": {
+    "no-template-curly-in-string": "off",
+    "no-useless-escape": "off",
+    "jsx-a11y/anchor-is-valid": "off",
+    "no-extend-native": "off",
+    "no-sequences": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "react/jsx-pascal-case": "off"
+  }
+}

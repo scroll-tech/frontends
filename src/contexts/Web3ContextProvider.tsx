@@ -1,56 +1,42 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useCallback,
-  useState,
-  useMemo,
-} from "react";
-import {
-  init,
-  useConnectWallet,
-  useSetChain,
-  useWallets,
-} from "@web3-onboard/react";
-import injectedModule from "@web3-onboard/injected-wallets";
-import { getAddress } from "@ethersproject/address";
-import { ethers, BigNumber, providers } from "ethers";
-import useTxStore from "@/stores/txStore";
+import { createContext, useContext, useEffect, useCallback, useState, useMemo } from "react"
+import { init, useConnectWallet, useSetChain, useWallets } from "@web3-onboard/react"
+import injectedModule from "@web3-onboard/injected-wallets"
+import { getAddress } from "@ethersproject/address"
+import { ethers, BigNumber, providers } from "ethers"
+import useTxStore from "@/stores/txStore"
 
-import logger from "@/utils/logger";
-import { convertHexadecimal, toHexadecimal } from "@/utils";
-import { loadState, saveState } from "@/utils/localStorage";
-import { networks } from "@/constants";
+import logger from "@/utils/logger"
+import { convertHexadecimal, toHexadecimal } from "@/utils"
+import { loadState, saveState } from "@/utils/localStorage"
+import { networks } from "@/constants"
 
 type Props = {
-  onboard: any;
-  provider: providers.Web3Provider | undefined;
-  walletCurrentAddress?: string;
-  balance?: BigNumber;
-  chainId?: number;
-  connectWallet: () => void;
-  disconnectWallet: () => void;
-  walletName: string | undefined;
-  checkConnectedChainId: (chainId: number) => boolean;
-};
+  onboard: any
+  provider: providers.Web3Provider | undefined
+  walletCurrentAddress?: string
+  balance?: BigNumber
+  chainId?: number
+  connectWallet: () => void
+  disconnectWallet: () => void
+  walletName: string | undefined
+  checkConnectedChainId: (chainId: number) => boolean
+}
 
-const Web3Context = createContext<Props | undefined>(undefined);
+const Web3Context = createContext<Props | undefined>(undefined)
 
-const injected = injectedModule();
+const injected = injectedModule()
 
 // const INFURA_ID = "84842078b09946638c03157f83405213";
-const cacheKey = "connectedWallets";
+const cacheKey = "connectedWallets"
 
 const web3Onboard = init({
   wallets: [injected],
-  chains: networks.map(
-    ({ chainId, nativeTokenSymbol, name, rpcUrl, imageUrl }) => ({
-      id: toHexadecimal(chainId),
-      token: nativeTokenSymbol as string,
-      label: name,
-      rpcUrl: rpcUrl as string,
-    })
-  ),
+  chains: networks.map(({ chainId, nativeTokenSymbol, name, rpcUrl, imageUrl }) => ({
+    id: toHexadecimal(chainId),
+    token: nativeTokenSymbol as string,
+    label: name,
+    rpcUrl: rpcUrl as string,
+  })),
   appMetadata: {
     name: "Scroll",
     icon: "https://scroll.io/img/logo.png",
@@ -80,48 +66,41 @@ const web3Onboard = init({
       enabled: false,
     },
   },
-});
+})
 
 const Web3ContextProvider = ({ children }: any) => {
-  const [provider, setProvider] = useState<
-    providers.Web3Provider | undefined
-  >();
+  const [provider, setProvider] = useState<providers.Web3Provider | undefined>()
 
-  const [onboard, setOnboard] = useState<any>(null);
+  const [onboard, setOnboard] = useState<any>(null)
 
-  const [{ wallet }, connect, disconnect] = useConnectWallet();
-  const [{ chains, connectedChain, settingChain }, setChain] = useSetChain();
-  const connectedWallets = useWallets();
+  const [{ wallet }, connect, disconnect] = useConnectWallet()
+  const [{ connectedChain }] = useSetChain()
+  const connectedWallets = useWallets()
 
-  const { clearTransactions } = useTxStore();
+  const { clearTransactions } = useTxStore()
 
   useEffect(() => {
-    setOnboard(web3Onboard);
-  }, []);
+    setOnboard(web3Onboard)
+  }, [])
 
   useEffect(() => {
-    if (!connectedWallets.length) return;
+    if (!connectedWallets.length) return
 
-    const connectedWalletsLabelArray = connectedWallets.map(
-      ({ label }) => label
-    );
-    saveState(cacheKey, connectedWalletsLabelArray);
-  }, [connectedWallets]);
+    const connectedWalletsLabelArray = connectedWallets.map(({ label }) => label)
+    saveState(cacheKey, connectedWalletsLabelArray)
+  }, [connectedWallets])
 
   useEffect(() => {
     if (!wallet?.provider) {
-      setProvider(undefined);
+      setProvider(undefined)
     } else {
-      const ethersProvider = new ethers.providers.Web3Provider(
-        wallet.provider,
-        "any"
-      );
-      setProvider(ethersProvider);
+      const ethersProvider = new ethers.providers.Web3Provider(wallet.provider, "any")
+      setProvider(ethersProvider)
     }
-  }, [wallet]);
+  }, [wallet])
 
   useEffect(() => {
-    const previouslyConnectedWallets = loadState(cacheKey);
+    const previouslyConnectedWallets = loadState(cacheKey)
     if (previouslyConnectedWallets?.length) {
       const setWalletFromLocalStorage = async () => {
         await connect({
@@ -129,49 +108,43 @@ const Web3ContextProvider = ({ children }: any) => {
             label: previouslyConnectedWallets[0],
             disableModals: true,
           },
-        });
-      };
-      setWalletFromLocalStorage();
+        })
+      }
+      setWalletFromLocalStorage()
     } else {
-      clearTransactions();
+      clearTransactions()
     }
-  }, [onboard, connect]);
+  }, [onboard, connect])
 
   const connectWallet = () => {
     try {
-      clearTransactions();
-      connect();
+      clearTransactions()
+      connect()
     } catch (err) {
-      logger.error(err);
+      logger.error(err)
     }
-  };
+  }
 
   const disconnectWallet = () => {
     try {
-      clearTransactions();
-      wallet && disconnect(wallet);
+      clearTransactions()
+      wallet && disconnect(wallet)
     } catch (error) {
-      logger.error(error);
+      logger.error(error)
     }
-  };
+  }
 
   const checkConnectedChainId = useCallback(
     (chainId: number): boolean => {
       if (connectedChain && chainId === convertHexadecimal(connectedChain.id)) {
-        return true;
+        return true
       }
-      return false;
+      return false
     },
-    [connectedChain]
-  );
+    [connectedChain],
+  )
 
-  const walletCurrentAddress = useMemo(
-    () =>
-      wallet?.accounts[0]?.address
-        ? getAddress(wallet.accounts[0].address)
-        : undefined,
-    [wallet]
-  );
+  const walletCurrentAddress = useMemo(() => (wallet?.accounts[0]?.address ? getAddress(wallet.accounts[0].address) : undefined), [wallet])
 
   return (
     <Web3Context.Provider
@@ -179,9 +152,7 @@ const Web3ContextProvider = ({ children }: any) => {
         onboard,
         provider,
         walletCurrentAddress,
-        chainId: connectedChain
-          ? convertHexadecimal(connectedChain.id)
-          : undefined,
+        chainId: connectedChain ? convertHexadecimal(connectedChain.id) : undefined,
         connectWallet,
         disconnectWallet,
         walletName: wallet?.label,
@@ -190,15 +161,15 @@ const Web3ContextProvider = ({ children }: any) => {
     >
       {children}
     </Web3Context.Provider>
-  );
-};
-
-export function useWeb3Context() {
-  const ctx = useContext(Web3Context);
-  if (ctx === undefined) {
-    throw new Error("useApp must be used within Web3Provider");
-  }
-  return ctx;
+  )
 }
 
-export default Web3ContextProvider;
+export function useWeb3Context() {
+  const ctx = useContext(Web3Context)
+  if (ctx === undefined) {
+    throw new Error("useApp must be used within Web3Provider")
+  }
+  return ctx
+}
+
+export default Web3ContextProvider

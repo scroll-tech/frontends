@@ -1,5 +1,4 @@
-import { createTheme } from "@mui/material/styles";
-import { ThemeOptions } from "@mui/material";
+import { createTheme } from "@mui/material/styles"
 
 export const boxShadows = {
   button: {
@@ -7,7 +6,7 @@ export const boxShadows = {
     disabled: "none",
     highlighted: "6px 9px 0px 0px #fee7e0",
   },
-};
+}
 
 const palette = {
   // primary: {
@@ -44,7 +43,7 @@ const palette = {
     light: "#FFD7E2",
     main: "#DC3347",
   },
-};
+}
 
 const colors = {
   charcoal: {
@@ -72,7 +71,7 @@ const colors = {
     dark: "#eb7106",
     light: "#eb7106",
   },
-};
+}
 
 const theme = createTheme({
   shape: {
@@ -115,6 +114,7 @@ const theme = createTheme({
         },
       },
     },
+    // @ts-ignore
     MuiLoadingButton: {
       styleOverrides: {
         root: {
@@ -216,8 +216,7 @@ const theme = createTheme({
           width: "100%",
           boxSizing: "border-box",
           color: ownerState.severity && palette[ownerState.severity].main,
-          backgroundColor:
-            ownerState.severity && palette[ownerState.severity].light,
+          backgroundColor: ownerState.severity && palette[ownerState.severity].light,
           [theme.breakpoints.down("sm")]: {
             flexDirection: "column",
             textAlign: "center",
@@ -230,8 +229,7 @@ const theme = createTheme({
           fontSize: "2.4rem",
           marginRight: "1.8rem",
           padding: 0,
-          color: `${ownerState.severity &&
-            palette[ownerState.severity].main} !important`,
+          color: `${ownerState.severity && palette[ownerState.severity].main} !important`,
           [theme.breakpoints.down("sm")]: {
             justifyContent: "center",
             marginRight: 0,
@@ -243,18 +241,10 @@ const theme = createTheme({
       },
     },
   },
-});
+})
 
 theme.typography.h2 = {
-  fontFamily: [
-    "Pulp Display",
-    "ui-sans-serif",
-    "system-ui",
-    "-apple-system",
-    "BlinkMacSystemFont",
-    "Roboto",
-    "Helvetica Neue",
-  ].join(","),
+  fontFamily: ["Pulp Display", "ui-sans-serif", "system-ui", "-apple-system", "BlinkMacSystemFont", "Roboto", "Helvetica Neue"].join(","),
   fontWeight: 400,
   fontSize: "4.8rem",
   lineHeight: "5.6rem",
@@ -264,18 +254,10 @@ theme.typography.h2 = {
     fontSize: "2.4rem",
     lineHeight: "3.2rem",
   },
-};
+}
 
 theme.typography.h3 = {
-  fontFamily: [
-    "Pulp Display",
-    "ui-sans-serif",
-    "system-ui",
-    "-apple-system",
-    "BlinkMacSystemFont",
-    "Roboto",
-    "Helvetica Neue",
-  ].join(","),
+  fontFamily: ["Pulp Display", "ui-sans-serif", "system-ui", "-apple-system", "BlinkMacSystemFont", "Roboto", "Helvetica Neue"].join(","),
   fontWeight: 400,
   fontSize: "3.4rem",
   lineHeight: "4rem",
@@ -283,7 +265,7 @@ theme.typography.h3 = {
     fontSize: "2.4rem",
     lineHeight: "3.2rem",
   },
-};
+}
 
 theme.typography.subtitle1 = {
   fontSize: "2rem",
@@ -294,7 +276,7 @@ theme.typography.subtitle1 = {
     fontSize: "1.6rem",
     lineHeight: "2.6rem",
   },
-};
+}
 
 theme.typography.body1 = {
   fontWeight: 400,
@@ -306,7 +288,7 @@ theme.typography.body1 = {
     fontSize: "1.6rem",
     lineHeight: "2.6rem",
   },
-};
+}
 
 theme.typography.body2 = {
   fontWeight: 400,
@@ -318,6 +300,6 @@ theme.typography.body2 = {
     fontSize: "1.4rem",
     lineHeight: "2.6rem",
   },
-};
+}
 
-export default theme;
+export default theme

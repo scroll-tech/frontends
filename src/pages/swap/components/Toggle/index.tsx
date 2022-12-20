@@ -1,36 +1,33 @@
-import React from "react";
-import styled from "styled-components";
+import React from "react"
+import styled from "styled-components"
 
 const ToggleElement = styled.span<{ isActive?: boolean; isOnSwitch?: boolean }>`
   padding: 0.4rem 0.8rem;
   border-radius: 14px;
-  background: ${({ theme, isActive, isOnSwitch }) =>
-    isActive ? (isOnSwitch ? theme.primary1 : theme.text4) : "none"};
-  color: ${({ theme, isActive, isOnSwitch }) =>
-    isActive ? (isOnSwitch ? theme.white : theme.text2) : theme.text3};
+  background: ${({ theme, isActive, isOnSwitch }) => (isActive ? (isOnSwitch ? theme.primary1 : theme.text4) : "none")};
+  color: ${({ theme, isActive, isOnSwitch }) => (isActive ? (isOnSwitch ? theme.white : theme.text2) : theme.text3)};
   font-size: 1.32rem;
   font-weight: 400;
-`;
+`
 
 const StyledToggle = styled.button<{
-  isActive?: boolean;
-  activeElement?: boolean;
+  isActive?: boolean
+  activeElement?: boolean
 }>`
   border-radius: 16px;
-  border: 1px solid
-    ${({ theme, isActive }) => (isActive ? theme.primary5 : theme.text4)};
+  border: 1px solid ${({ theme, isActive }) => (isActive ? theme.primary5 : theme.text4)};
   display: flex;
   width: fit-content;
   cursor: pointer;
   outline: none;
   padding: 0;
   background-color: transparent;
-`;
+`
 
 export interface ToggleProps {
-  id?: string;
-  isActive: boolean;
-  toggle: () => void;
+  id?: string
+  isActive: boolean
+  toggle: () => void
 }
 
 export default function Toggle({ id, isActive, toggle }: ToggleProps) {
@@ -43,5 +40,5 @@ export default function Toggle({ id, isActive, toggle }: ToggleProps) {
         Off
       </ToggleElement>
     </StyledToggle>
-  );
+  )
 }

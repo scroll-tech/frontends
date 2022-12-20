@@ -1,0 +1,6 @@
+dist/*.js
+src/assets
+tests/unit/**
+public/**/*.js
+tsconfig.json
+node_modules/**/*
