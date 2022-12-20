@@ -7,6 +7,7 @@ import { Route, Routes } from "react-router-dom"
 import AppWrapper from "./contexts"
 import routes from "./routes/prealphaRoutes"
 import useMatchedRoute from "./hooks/useMatchedRoute"
+
 function App() {
   const route = useMatchedRoute()
   const getUrl = () => {

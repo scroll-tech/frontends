@@ -6,6 +6,7 @@ import RollupScanBatch from "@/pages/rollup/batch"
 import RollupScanBlock from "@/pages/rollup/block"
 import RollupScan from "@/pages/rollup/index"
 import Swap from "@/pages/swap"
+import NotFound from "@/pages/404"
 
 const routes = [
   {
@@ -55,6 +56,11 @@ const routes = [
     path: "/faucet/add-network",
     fullPath: "/prealpha/faucet/add-network",
     element: <AddNetwork />,
+  },
+  {
+    name: "NotFound",
+    path: "*",
+    element: <NotFound />,
   },
 ]
 

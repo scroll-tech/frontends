@@ -1,4 +1,4 @@
-import { Addresses, ChainId, TESTNET_NAME } from "@/constants"
+import { Addresses, ChainId, SiteMap, TESTNET_NAME } from "@/constants"
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import "./index.less"
@@ -89,8 +89,8 @@ function AddNetwork() {
         {step === ChainId.SCROLL_LAYER_2 ? (
           <>
             <button className="flex justify-center items-center">
-              <Link to="/faucet">
-                <span className="text-[#00A6F2] text-base font-semibold text-[#00A6F2]">Done. Request Tokens</span>
+              <Link to={SiteMap.Faucet}>
+                <span className="text-base font-semibold text-[#00A6F2]">Done. Request Tokens</span>
               </Link>
               <img className="w-[15px]  ml-[10px]" alt="right arrow" src="/imgs/faucet/right-arrow.png" />
             </button>
