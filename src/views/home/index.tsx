@@ -183,7 +183,7 @@ const Home = () => {
         <WrapperBox>
           <TitleTypography variant="h2">The Native zkEVM Scaling Solution for Ethereum</TitleTypography>
           <SubTitleTypography variant="subtitle1" sx={{ maxWidth: "60rem" }}>
-            Scroll is a zkEVM-based zkRollup on Ethereum which enables native compatibility for existing Ethereum applications and tools.
+            Scroll is a zkEVM-based zkRollup on Ethereum that enables native compatibility for existing ethereum applications and tools.
           </SubTitleTypography>
           <JoinTestnetButton />
         </WrapperBox>
