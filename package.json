@@ -64,7 +64,6 @@
   },
   "eslintConfig": {
     "extends": [
-      "prettier",
       "react-app",
       "react-app/jest"
     ],
