@@ -1,72 +1,41 @@
-import { TransactionResponse } from "@ethersproject/abstract-provider";
-import { AddressZero } from "@ethersproject/constants";
-import React, { useCallback, useMemo, useState } from "react";
-import ReactGA from "react-ga";
-import { Redirect, RouteComponentProps } from "react-router";
-import { Text } from "rebass";
-import {
-  Currency,
-  CurrencyAmount,
-  Fraction,
-  JSBI,
-  Percent,
-  Token,
-  TokenAmount,
-  WETH,
-} from "uniswap-v2-sdk-scroll";
-import { useWeb3Context } from "@/contexts/Web3ContextProvider";
-import { ButtonConfirmed } from "../../components/Button";
-import { LightCard, PinkCard, YellowCard } from "../../components/Card";
-import { AutoColumn } from "../../components/Column";
-import CurrencyLogo from "../../components/CurrencyLogo";
-import QuestionHelper from "../../components/QuestionHelper";
-import { AutoRow, RowBetween, RowFixed } from "../../components/Row";
-import { Dots } from "../../components/swap/styleds";
-import {
-  DEFAULT_DEADLINE_FROM_NOW,
-  INITIAL_ALLOWED_SLIPPAGE,
-} from "../../constants";
-import { MIGRATOR_ADDRESS } from "../../constants/abis/migrator";
-import { PairState, usePair } from "../../data/Reserves";
-import { useTotalSupply } from "../../data/TotalSupply";
-import { useToken } from "../../hooks/Tokens";
-import {
-  ApprovalState,
-  useApproveCallback,
-} from "../../hooks/useApproveCallback";
-import {
-  useV1ExchangeContract,
-  useV2MigratorContract,
-} from "../../hooks/useContract";
-import { NEVER_RELOAD, useSingleCallResult } from "../../state/multicall/hooks";
-import {
-  useIsTransactionPending,
-  useTransactionAdder,
-} from "../../state/transactions/hooks";
-import { useETHBalances, useTokenBalance } from "../../state/wallet/hooks";
-import { BackArrow, ExternalLink, TYPE } from "../../theme";
-import { getEtherscanLink, isAddress } from "../../utils";
-import { BodyWrapper } from "../AppBody";
-import { EmptyState } from "./EmptyState";
+import { TransactionResponse } from "@ethersproject/abstract-provider"
+import { AddressZero } from "@ethersproject/constants"
+import React, { useCallback, useMemo, useState } from "react"
+import ReactGA from "react-ga"
+import { Redirect, RouteComponentProps } from "react-router"
+import { Text } from "rebass"
+import { Currency, CurrencyAmount, Fraction, JSBI, Percent, Token, TokenAmount, WETH } from "uniswap-v2-sdk-scroll"
+import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import { ButtonConfirmed } from "../../components/Button"
+import { LightCard, PinkCard, YellowCard } from "../../components/Card"
+import { AutoColumn } from "../../components/Column"
+import CurrencyLogo from "../../components/CurrencyLogo"
+import QuestionHelper from "../../components/QuestionHelper"
+import { AutoRow, RowBetween, RowFixed } from "../../components/Row"
+import { Dots } from "../../components/swap/styleds"
+import { DEFAULT_DEADLINE_FROM_NOW, INITIAL_ALLOWED_SLIPPAGE } from "../../constants"
+import { MIGRATOR_ADDRESS } from "../../constants/abis/migrator"
+import { PairState, usePair } from "../../data/Reserves"
+import { useTotalSupply } from "../../data/TotalSupply"
+import { useToken } from "../../hooks/Tokens"
+import { ApprovalState, useApproveCallback } from "../../hooks/useApproveCallback"
+import { useV1ExchangeContract, useV2MigratorContract } from "../../hooks/useContract"
+import { NEVER_RELOAD, useSingleCallResult } from "../../state/multicall/hooks"
+import { useIsTransactionPending, useTransactionAdder } from "../../state/transactions/hooks"
+import { useETHBalances, useTokenBalance } from "../../state/wallet/hooks"
+import { BackArrow, ExternalLink, TYPE } from "../../theme"
+import { getEtherscanLink, isAddress } from "../../utils"
+import { BodyWrapper } from "../AppBody"
+import { EmptyState } from "./EmptyState"
 
-const POOL_CURRENCY_AMOUNT_MIN = new Fraction(
-  JSBI.BigInt(1),
-  JSBI.BigInt(1000000)
-);
-const WEI_DENOM = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18));
-const ZERO = JSBI.BigInt(0);
-const ONE = JSBI.BigInt(1);
-const ZERO_FRACTION = new Fraction(ZERO, ONE);
-const ALLOWED_OUTPUT_MIN_PERCENT = new Percent(
-  JSBI.BigInt(10000 - INITIAL_ALLOWED_SLIPPAGE),
-  JSBI.BigInt(10000)
-);
+const POOL_CURRENCY_AMOUNT_MIN = new Fraction(JSBI.BigInt(1), JSBI.BigInt(1000000))
+const WEI_DENOM = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))
+const ZERO = JSBI.BigInt(0)
+const ONE = JSBI.BigInt(1)
+const ZERO_FRACTION = new Fraction(ZERO, ONE)
+const ALLOWED_OUTPUT_MIN_PERCENT = new Percent(JSBI.BigInt(10000 - INITIAL_ALLOWED_SLIPPAGE), JSBI.BigInt(10000))
 
-function FormattedPoolCurrencyAmount({
-  currencyAmount,
-}: {
-  currencyAmount: CurrencyAmount;
-}) {
+function FormattedPoolCurrencyAmount({ currencyAmount }: { currencyAmount: CurrencyAmount }) {
   return (
     <>
       {currencyAmount.equalTo(JSBI.BigInt(0))
@@ -75,7 +44,7 @@ function FormattedPoolCurrencyAmount({
         ? currencyAmount.toSignificant(4)
         : `<${POOL_CURRENCY_AMOUNT_MIN.toSignificant(1)}`}
     </>
-  );
+  )
 }
 
 export function V1LiquidityInfo({
@@ -84,12 +53,12 @@ export function V1LiquidityInfo({
   tokenWorth,
   ethWorth,
 }: {
-  token: Token;
-  liquidityTokenAmount: TokenAmount;
-  tokenWorth: TokenAmount;
-  ethWorth: CurrencyAmount;
+  token: Token
+  liquidityTokenAmount: TokenAmount
+  tokenWorth: TokenAmount
+  ethWorth: CurrencyAmount
 }) {
-  const { chainId } = useWeb3Context();
+  const { chainId } = useWeb3Context()
 
   return (
     <>
@@ -97,30 +66,21 @@ export function V1LiquidityInfo({
         <CurrencyLogo size="24px" currency={token} />
         <div style={{ marginLeft: "1.2rem" }}>
           <TYPE.mediumHeader>
-            {
-              <FormattedPoolCurrencyAmount
-                currencyAmount={liquidityTokenAmount}
-              />
-            }{" "}
-            {chainId && token.equals(WETH[chainId]) ? "WETH" : token.symbol}/ETH
+            {<FormattedPoolCurrencyAmount currencyAmount={liquidityTokenAmount} />} {chainId && token.equals(WETH[chainId]) ? "WETH" : token.symbol}
+            /ETH
           </TYPE.mediumHeader>
         </div>
       </AutoRow>
 
       <RowBetween my="1.6rem">
         <Text fontSize={16} fontWeight={500}>
-          Pooled{" "}
-          {chainId && token.equals(WETH[chainId]) ? "WETH" : token.symbol}:
+          Pooled {chainId && token.equals(WETH[chainId]) ? "WETH" : token.symbol}:
         </Text>
         <RowFixed>
           <Text fontSize={16} fontWeight={500} marginLeft={"6px"}>
             {tokenWorth.toSignificant(4)}
           </Text>
-          <CurrencyLogo
-            size="20px"
-            style={{ marginLeft: "8px" }}
-            currency={token}
-          />
+          <CurrencyLogo size="20px" style={{ marginLeft: "8px" }} currency={token} />
         </RowFixed>
       </RowBetween>
       <RowBetween mb="1.6rem">
@@ -131,81 +91,40 @@ export function V1LiquidityInfo({
           <Text fontSize={16} fontWeight={500} marginLeft={"6px"}>
             <FormattedPoolCurrencyAmount currencyAmount={ethWorth} />
           </Text>
-          <CurrencyLogo
-            size="20px"
-            style={{ marginLeft: "8px" }}
-            currency={Currency.ETHER}
-          />
+          <CurrencyLogo size="20px" style={{ marginLeft: "8px" }} currency={Currency.ETHER} />
         </RowFixed>
       </RowBetween>
     </>
-  );
+  )
 }
 
-function V1PairMigration({
-  liquidityTokenAmount,
-  token,
-}: {
-  liquidityTokenAmount: TokenAmount;
-  token: Token;
-}) {
-  const { walletCurrentAddress, chainId } = useWeb3Context();
-  const totalSupply = useTotalSupply(liquidityTokenAmount.token);
-  const exchangeETHBalance = useETHBalances([
-    liquidityTokenAmount.token.address,
-  ])?.[liquidityTokenAmount.token.address];
-  const exchangeTokenBalance = useTokenBalance(
-    liquidityTokenAmount.token.address,
-    token
-  );
+function V1PairMigration({ liquidityTokenAmount, token }: { liquidityTokenAmount: TokenAmount; token: Token }) {
+  const { walletCurrentAddress, chainId } = useWeb3Context()
+  const totalSupply = useTotalSupply(liquidityTokenAmount.token)
+  const exchangeETHBalance = useETHBalances([liquidityTokenAmount.token.address])?.[liquidityTokenAmount.token.address]
+  const exchangeTokenBalance = useTokenBalance(liquidityTokenAmount.token.address, token)
 
-  const [v2PairState, v2Pair] = usePair(
-    chainId ? WETH[chainId] : undefined,
-    token
-  );
-  const isFirstLiquidityProvider: boolean =
-    v2PairState === PairState.NOT_EXISTS;
+  const [v2PairState, v2Pair] = usePair(chainId ? WETH[chainId] : undefined, token)
+  const isFirstLiquidityProvider: boolean = v2PairState === PairState.NOT_EXISTS
 
-  const v2SpotPrice =
-    chainId && v2Pair
-      ? v2Pair.reserveOf(token).divide(v2Pair.reserveOf(WETH[chainId]))
-      : undefined;
+  const v2SpotPrice = chainId && v2Pair ? v2Pair.reserveOf(token).divide(v2Pair.reserveOf(WETH[chainId])) : undefined
 
-  const [confirmingMigration, setConfirmingMigration] = useState<boolean>(
-    false
-  );
-  const [pendingMigrationHash, setPendingMigrationHash] = useState<
-    string | null
-  >(null);
+  const [confirmingMigration, setConfirmingMigration] = useState<boolean>(false)
+  const [pendingMigrationHash, setPendingMigrationHash] = useState<string | null>(null)
 
-  const shareFraction: Fraction = totalSupply
-    ? new Percent(liquidityTokenAmount.raw, totalSupply.raw)
-    : ZERO_FRACTION;
+  const shareFraction: Fraction = totalSupply ? new Percent(liquidityTokenAmount.raw, totalSupply.raw) : ZERO_FRACTION
 
   const ethWorth: CurrencyAmount = exchangeETHBalance
-    ? CurrencyAmount.ether(
-        exchangeETHBalance.multiply(shareFraction).multiply(WEI_DENOM).quotient
-      )
-    : CurrencyAmount.ether(ZERO);
+    ? CurrencyAmount.ether(exchangeETHBalance.multiply(shareFraction).multiply(WEI_DENOM).quotient)
+    : CurrencyAmount.ether(ZERO)
 
   const tokenWorth: TokenAmount = exchangeTokenBalance
-    ? new TokenAmount(
-        token,
-        shareFraction.multiply(exchangeTokenBalance.raw).quotient
-      )
-    : new TokenAmount(token, ZERO);
+    ? new TokenAmount(token, shareFraction.multiply(exchangeTokenBalance.raw).quotient)
+    : new TokenAmount(token, ZERO)
 
-  const [approval, approve] = useApproveCallback(
-    liquidityTokenAmount,
-    MIGRATOR_ADDRESS
-  );
+  const [approval, approve] = useApproveCallback(liquidityTokenAmount, MIGRATOR_ADDRESS)
 
-  const v1SpotPrice =
-    exchangeTokenBalance && exchangeETHBalance
-      ? exchangeTokenBalance.divide(
-          new Fraction(exchangeETHBalance.raw, WEI_DENOM)
-        )
-      : null;
+  const v1SpotPrice = exchangeTokenBalance && exchangeETHBalance ? exchangeTokenBalance.divide(new Fraction(exchangeETHBalance.raw, WEI_DENOM)) : null
 
   const priceDifferenceFraction: Fraction | undefined =
     v1SpotPrice && v2SpotPrice
@@ -213,13 +132,11 @@ function V1PairMigration({
           .divide(v2SpotPrice)
           .multiply("100")
           .subtract("100")
-      : undefined;
+      : undefined
 
-  const priceDifferenceAbs:
-    | Fraction
-    | undefined = priceDifferenceFraction?.lessThan(ZERO)
+  const priceDifferenceAbs: Fraction | undefined = priceDifferenceFraction?.lessThan(ZERO)
     ? priceDifferenceFraction?.multiply("-1")
-    : priceDifferenceFraction;
+    : priceDifferenceFraction
 
   const minAmountETH: JSBI | undefined =
     v2SpotPrice && tokenWorth
@@ -227,77 +144,61 @@ function V1PairMigration({
           .divide(v2SpotPrice)
           .multiply(WEI_DENOM)
           .multiply(ALLOWED_OUTPUT_MIN_PERCENT).quotient
-      : ethWorth?.numerator;
+      : ethWorth?.numerator
 
   const minAmountToken: JSBI | undefined =
     v2SpotPrice && ethWorth
       ? ethWorth
           .multiply(v2SpotPrice)
-          .multiply(
-            JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(token.decimals))
-          )
+          .multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(token.decimals)))
           .multiply(ALLOWED_OUTPUT_MIN_PERCENT).quotient
-      : tokenWorth?.numerator;
+      : tokenWorth?.numerator
 
-  const addTransaction = useTransactionAdder();
-  const isMigrationPending = useIsTransactionPending(
-    pendingMigrationHash ?? undefined
-  );
+  const addTransaction = useTransactionAdder()
+  const isMigrationPending = useIsTransactionPending(pendingMigrationHash ?? undefined)
 
-  const migrator = useV2MigratorContract();
+  const migrator = useV2MigratorContract()
   const migrate = useCallback(() => {
-    if (!minAmountToken || !minAmountETH || !migrator) return;
+    if (!minAmountToken || !minAmountETH || !migrator) return
 
-    setConfirmingMigration(true);
+    setConfirmingMigration(true)
     migrator
       .migrate(
         token.address,
         minAmountToken.toString(),
         minAmountETH.toString(),
         walletCurrentAddress,
-        Math.floor(new Date().getTime() / 1000) + DEFAULT_DEADLINE_FROM_NOW
+        Math.floor(new Date().getTime() / 1000) + DEFAULT_DEADLINE_FROM_NOW,
       )
       .then((response: TransactionResponse) => {
         ReactGA.event({
           category: "Migrate",
           action: "V1->V2",
           label: token?.symbol,
-        });
+        })
 
         addTransaction(response, {
           summary: `Migrate ${token.symbol} liquidity to V2`,
-        });
-        setPendingMigrationHash(response.hash);
+        })
+        setPendingMigrationHash(response.hash)
       })
       .catch(() => {
-        setConfirmingMigration(false);
-      });
-  }, [
-    minAmountToken,
-    minAmountETH,
-    migrator,
-    token,
-    walletCurrentAddress,
-    addTransaction,
-  ]);
+        setConfirmingMigration(false)
+      })
+  }, [minAmountToken, minAmountETH, migrator, token, walletCurrentAddress, addTransaction])
 
-  const noLiquidityTokens =
-    !!liquidityTokenAmount && liquidityTokenAmount.equalTo(ZERO);
+  const noLiquidityTokens = !!liquidityTokenAmount && liquidityTokenAmount.equalTo(ZERO)
 
-  const largePriceDifference =
-    !!priceDifferenceAbs && !priceDifferenceAbs.lessThan(JSBI.BigInt(5));
+  const largePriceDifference = !!priceDifferenceAbs && !priceDifferenceAbs.lessThan(JSBI.BigInt(5))
 
-  const isSuccessfullyMigrated = !!pendingMigrationHash && noLiquidityTokens;
+  const isSuccessfullyMigrated = !!pendingMigrationHash && noLiquidityTokens
 
   return (
     <AutoColumn gap="20px">
       <TYPE.body my={9} style={{ fontWeight: 400 }}>
-        This tool will safely migrate your V1 liquidity to V2 with minimal price
-        risk. The process is completely trustless thanks to the{" "}
+        This tool will safely migrate your V1 liquidity to V2 with minimal price risk. The process is completely trustless thanks to the{" "}
         {chainId && (
-          <ExternalLink
-            href={getEtherscanLink(chainId, MIGRATOR_ADDRESS, "address")}
-          >
+          <ExternalLink href={getEtherscanLink(chainId, MIGRATOR_ADDRESS, "address")}>
             <TYPE.blue display="inline">Uniswap migration contract↗</TYPE.blue>
           </ExternalLink>
         )}
@@ -307,9 +208,8 @@ function V1PairMigration({
       {!isFirstLiquidityProvider && largePriceDifference ? (
         <YellowCard>
           <TYPE.body style={{ marginBottom: 8, fontWeight: 400 }}>
-            It{"'"}s best to deposit liquidity into Uniswap V2 at a price you
-            believe is correct. If the V2 price seems incorrect, you can either
-            make a swap to move the price or wait for someone else to do so.
+            It{"'"}s best to deposit liquidity into Uniswap V2 at a price you believe is correct. If the V2 price seems incorrect, you can either make
+            a swap to move the price or wait for someone else to do so.
           </TYPE.body>
           <AutoColumn gap="8px">
             <RowBetween>
@@ -340,9 +240,7 @@ function V1PairMigration({
 
             <RowBetween>
               <TYPE.body color="inherit">Price Difference:</TYPE.body>
-              <TYPE.black color="inherit">
-                {priceDifferenceAbs?.toSignificant(4)}%
-              </TYPE.black>
+              <TYPE.black color="inherit">{priceDifferenceAbs?.toSignificant(4)}%</TYPE.black>
             </RowBetween>
           </AutoColumn>
         </YellowCard>
@@ -351,8 +249,7 @@ function V1PairMigration({
       {isFirstLiquidityProvider && (
         <PinkCard>
           <TYPE.body style={{ marginBottom: 8, fontWeight: 400 }}>
-            You are the first liquidity provider for this pair on Uniswap V2.
-            Your liquidity will be migrated at the current V1 price. Your
+            You are the first liquidity provider for this pair on Uniswap V2. Your liquidity will be migrated at the current V1 price. Your
             transaction cost also includes the gas to create the pool.
           </TYPE.body>
 
@@ -374,48 +271,23 @@ function V1PairMigration({
       )}
 
       <LightCard>
-        <V1LiquidityInfo
-          token={token}
-          liquidityTokenAmount={liquidityTokenAmount}
-          tokenWorth={tokenWorth}
-          ethWorth={ethWorth}
-        />
+        <V1LiquidityInfo token={token} liquidityTokenAmount={liquidityTokenAmount} tokenWorth={tokenWorth} ethWorth={ethWorth} />
 
         <div style={{ display: "flex", marginTop: "1.6rem" }}>
           <AutoColumn gap="12px" style={{ flex: "1", marginRight: 12 }}>
-            <ButtonConfirmed
-              confirmed={approval === ApprovalState.APPROVED}
-              disabled={approval !== ApprovalState.NOT_APPROVED}
-              onClick={approve}
-            >
-              {approval === ApprovalState.PENDING ? (
-                <Dots>Approving</Dots>
-              ) : approval === ApprovalState.APPROVED ? (
-                "Approved"
-              ) : (
-                "Approve"
-              )}
+            <ButtonConfirmed confirmed={approval === ApprovalState.APPROVED} disabled={approval !== ApprovalState.NOT_APPROVED} onClick={approve}>
+              {approval === ApprovalState.PENDING ? <Dots>Approving</Dots> : approval === ApprovalState.APPROVED ? "Approved" : "Approve"}
             </ButtonConfirmed>
           </AutoColumn>
           <AutoColumn gap="12px" style={{ flex: "1" }}>
             <ButtonConfirmed
               confirmed={isSuccessfullyMigrated}
               disabled={
-                isSuccessfullyMigrated ||
-                noLiquidityTokens ||
-                isMigrationPending ||
-                approval !== ApprovalState.APPROVED ||
-                confirmingMigration
+                isSuccessfullyMigrated || noLiquidityTokens || isMigrationPending || approval !== ApprovalState.APPROVED || confirmingMigration
               }
               onClick={migrate}
             >
-              {isSuccessfullyMigrated ? (
-                "Success"
-              ) : isMigrationPending ? (
-                <Dots>Migrating</Dots>
-              ) : (
-                "Migrate"
-              )}
+              {isSuccessfullyMigrated ? "Success" : isMigrationPending ? <Dots>Migrating</Dots> : "Migrate"}
             </ButtonConfirmed>
           </AutoColumn>
         </div>
@@ -424,7 +296,7 @@ function V1PairMigration({
         {`Your Uniswap V1 ${token.symbol}/ETH liquidity will become Uniswap V2 ${token.symbol}/ETH liquidity.`}
       </TYPE.darkGray>
     </AutoColumn>
-  );
+  )
 }
 
 export default function MigrateV1Exchange({
@@ -433,52 +305,30 @@ export default function MigrateV1Exchange({
     params: { address },
   },
 }: RouteComponentProps<{ address: string }>) {
-  const validatedAddress = isAddress(address);
-  const { chainId, walletCurrentAddress } = useWeb3Context();
+  const validatedAddress = isAddress(address)
+  const { chainId, walletCurrentAddress } = useWeb3Context()
 
-  const exchangeContract = useV1ExchangeContract(
-    validatedAddress ? validatedAddress : undefined
-  );
-  const tokenAddress = useSingleCallResult(
-    exchangeContract,
-    "tokenAddress",
-    undefined,
-    NEVER_RELOAD
-  )?.result?.[0];
+  const exchangeContract = useV1ExchangeContract(validatedAddress ? validatedAddress : undefined)
+  const tokenAddress = useSingleCallResult(exchangeContract, "tokenAddress", undefined, NEVER_RELOAD)?.result?.[0]
 
-  const token = useToken(tokenAddress);
+  const token = useToken(tokenAddress)
 
   const liquidityToken: Token | undefined = useMemo(
-    () =>
-      validatedAddress && chainId && token
-        ? new Token(
-            chainId,
-            validatedAddress,
-            18,
-            `UNI-V1-${token.symbol}`,
-            "Uniswap V1"
-          )
-        : undefined,
-    [chainId, validatedAddress, token]
-  );
-  const userLiquidityBalance = useTokenBalance(
-    walletCurrentAddress ?? undefined,
-    liquidityToken
-  );
+    () => (validatedAddress && chainId && token ? new Token(chainId, validatedAddress, 18, `UNI-V1-${token.symbol}`, "Uniswap V1") : undefined),
+    [chainId, validatedAddress, token],
+  )
+  const userLiquidityBalance = useTokenBalance(walletCurrentAddress ?? undefined, liquidityToken)
 
   // redirect for invalid url params
   if (!validatedAddress || tokenAddress === AddressZero) {
-    console.error("Invalid address in path", address);
-    return <Redirect to="/migrate/v1" />;
+    console.error("Invalid address in path", address)
+    return <Redirect to="/migrate/v1" />
   }
 
   return (
     <BodyWrapper style={{ padding: 24 }}>
       <AutoColumn gap="16px">
-        <AutoRow
-          style={{ alignItems: "center", justifyContent: "space-between" }}
-          gap="8px"
-        >
+        <AutoRow style={{ alignItems: "center", justifyContent: "space-between" }} gap="8px">
           <BackArrow to="/migrate/v1" />
           <TYPE.mediumHeader>Migrate V1 Liquidity</TYPE.mediumHeader>
           <div>
@@ -491,28 +341,24 @@ export default function MigrateV1Exchange({
         ) : validatedAddress && chainId && token?.equals(WETH[chainId]) ? (
           <>
             <TYPE.body my={9} style={{ fontWeight: 400 }}>
-              Because Uniswap V2 uses WETH under the hood, your Uniswap V1
-              WETH/ETH liquidity cannot be migrated. You may want to remove your
+              Because Uniswap V2 uses WETH under the hood, your Uniswap V1 WETH/ETH liquidity cannot be migrated. You may want to remove your
               liquidity instead.
             </TYPE.body>
 
             <ButtonConfirmed
               onClick={() => {
-                history.push(`/remove/v1/${validatedAddress}`);
+                history.push(`/remove/v1/${validatedAddress}`)
               }}
             >
               Remove
             </ButtonConfirmed>
           </>
         ) : userLiquidityBalance && token ? (
-          <V1PairMigration
-            liquidityTokenAmount={userLiquidityBalance}
-            token={token}
-          />
+          <V1PairMigration liquidityTokenAmount={userLiquidityBalance} token={token} />
         ) : (
           <EmptyState message="Loading..." />
         )}
       </AutoColumn>
     </BodyWrapper>
-  );
+  )
 }

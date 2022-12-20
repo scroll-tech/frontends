@@ -1,17 +1,16 @@
-import { useEffect, useState } from "react";
-import MailchimpSubscribe from "react-mailchimp-subscribe";
-import Button from "@/components/Button/Button";
-import { useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
+import { useState } from "react"
+import MailchimpSubscribe from "react-mailchimp-subscribe"
+import Button from "@/components/Button/Button"
+import { useTheme } from "@mui/material/styles"
+import useMediaQuery from "@mui/material/useMediaQuery"
 // import { IntrinsicAttributes } from '@types/react-mailchimp-subscribe'
 
-const url =
-  "https://gmail.us14.list-manage.com/subscribe/post?u=3b1d822eb27b2fa64d82d430b&id=0b4603244e";
+const url = "https://gmail.us14.list-manage.com/subscribe/post?u=3b1d822eb27b2fa64d82d430b&id=0b4603244e"
 
 const Subscribe = () => {
-  const [email, setEmail] = useState("");
-  const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up("md"));
+  const [email, setEmail] = useState("")
+  const theme = useTheme()
+  const matches = useMediaQuery(theme.breakpoints.up("md"))
 
   const medias = [
     {
@@ -34,20 +33,15 @@ const Subscribe = () => {
       imgSrc: "/imgs/footer/youtube.svg",
       href: "https://www.youtube.com/@Scroll_ZKP",
     },
-  ];
+  ]
 
   const renderMedias = () =>
-    medias.map((media) => (
-      <a
-        className="flex mr-[36px] items-center text-body-title"
-        href={media.href}
-        key={media.name}
-        target="_blank"
-      >
-        <img src={media.imgSrc} className="w-[20px] mr-[8px]" />
+    medias.map(media => (
+      <a className="flex mr-[36px] items-center text-body-title" href={media.href} key={media.name} target="_blank" rel="noreferrer">
+        <img alt={media.name} src={media.imgSrc} className="w-[20px] mr-[8px]" />
         {media.name}
       </a>
-    ));
+    ))
   return (
     <>
       <div className="relative">
@@ -80,22 +74,16 @@ const Subscribe = () => {
                 </Button>
               </div>
 
-              {status === "error" && (
-                <div className="text-[18px] leading-21px text-red   font-medium absolute">
-                  {message}
-                </div>
-              )}
+              {status === "error" && <div className="text-[18px] leading-21px text-red   font-medium absolute">{message}</div>}
               {status === "success" && (
-                <div className="text-base text-body-title  leading-[21px]  font-medium absolute">
-                  Thank you for subscribing!
-                </div>
+                <div className="text-base text-body-title  leading-[21px]  font-medium absolute">Thank you for subscribing!</div>
               )}
             </div>
           )}
         />
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Subscribe;
+export default Subscribe

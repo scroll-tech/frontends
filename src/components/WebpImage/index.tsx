@@ -2,9 +2,9 @@ function WebpImage(props) {
   return (
     <picture>
       <source srcSet={props.webpsrc} type="image/webp" />
-      <img {...props} />
+      <img alt="img" {...props} />
     </picture>
-  );
+  )
 }
 
-export default WebpImage;
+export default WebpImage

@@ -1,19 +1,19 @@
-import { Box, Typography, Divider } from "@mui/material";
+import { Box, Typography, Divider } from "@mui/material"
 
-import { styled } from "@mui/system";
-import SecurityIcon from "@/assets/images/homepage/home/security.png";
-import ScalabilityIcon from "@/assets/images/homepage/home/scalability.png";
-import EVMEquivalenceIcon from "@/assets/images/homepage/home/EVM-equivalence.png";
-import SecurityWebpIcon from "@/assets/images/homepage/home/security.webp";
-import ScalabilityWebpIcon from "@/assets/images/homepage/home/scalability.webp";
-import EVMEquivalenceWebpIcon from "@/assets/images/homepage/home/EVM-equivalence.webp";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper";
-import WebpImage from "@/components/WebpImage";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme } from "@mui/material/styles";
+import { styled } from "@mui/system"
+import SecurityIcon from "@/assets/images/homepage/home/security.png"
+import ScalabilityIcon from "@/assets/images/homepage/home/scalability.png"
+import EVMEquivalenceIcon from "@/assets/images/homepage/home/EVM-equivalence.png"
+import SecurityWebpIcon from "@/assets/images/homepage/home/security.webp"
+import ScalabilityWebpIcon from "@/assets/images/homepage/home/scalability.webp"
+import EVMEquivalenceWebpIcon from "@/assets/images/homepage/home/EVM-equivalence.webp"
+import { Swiper, SwiperSlide } from "swiper/react"
+import { Pagination } from "swiper"
+import WebpImage from "@/components/WebpImage"
+import useMediaQuery from "@mui/material/useMediaQuery"
+import { useTheme } from "@mui/material/styles"
 
-const FeatureWrapper = styled(Box)(({ theme }) => ({}));
+const FeatureWrapper = styled(Box)(({ theme }) => ({}))
 
 const FeatureBox = styled(Box)(
   ({ theme }) => `
@@ -35,15 +35,15 @@ const FeatureBox = styled(Box)(
             border-radius: 5px;
             margin: 1.4rem auto 6rem;
         };
-    `
-);
+    `,
+)
 
 const FeatureIcon = styled(WebpImage)(
   ({ theme }) => `
            height: 9.6rem;
            margin: 4.4rem auto;
-          `
-);
+          `,
+)
 
 const FeatureTitle = styled(Typography)(
   ({ theme }) => `
@@ -55,8 +55,8 @@ const FeatureTitle = styled(Typography)(
         ${theme.breakpoints.down("md")} {
             margin-top: 3.6rem;
         };
-        `
-);
+        `,
+)
 
 const FeatureDescription = styled(Typography)(
   ({ theme }) => `
@@ -67,8 +67,8 @@ const FeatureDescription = styled(Typography)(
           ${theme.breakpoints.down("md")} {
             margin: 0 2.4rem;
         };
-        `
-);
+        `,
+)
 
 const features = [
   {
@@ -92,11 +92,11 @@ const features = [
     description:
       "Scroll’s protocol is currently undergoing multiple third-party audits to ensure security. Scroll also values transparency and is working to build its platform openly and in collaboration with the community.",
   },
-];
+]
 
 const FeatureSwiper = () => {
-  const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
+  const theme = useTheme()
+  const isDesktop = useMediaQuery(theme.breakpoints.up("md"))
 
   return (
     <FeatureWrapper className={isDesktop ? "wrapper" : ""}>
@@ -121,7 +121,7 @@ const FeatureSwiper = () => {
         ))}
       </Swiper>
     </FeatureWrapper>
-  );
-};
+  )
+}
 
-export default FeatureSwiper;
+export default FeatureSwiper

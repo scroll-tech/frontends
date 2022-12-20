@@ -1,20 +1,20 @@
-import React, { useCallback, useEffect, useState } from "react";
-import ReactGA from "react-ga";
-import { Currency } from "uniswap-v2-sdk-scroll";
-import useLast from "../../hooks/useLast";
-import { useSelectedListUrl } from "../../state/lists/hooks";
-import Modal from "../Modal";
-import { CurrencySearch } from "./CurrencySearch";
-import ListIntroduction from "./ListIntroduction";
-import { ListSelect } from "./ListSelect";
+import React, { useCallback, useEffect, useState } from "react"
+import ReactGA from "react-ga"
+import { Currency } from "uniswap-v2-sdk-scroll"
+import useLast from "../../hooks/useLast"
+import { useSelectedListUrl } from "../../state/lists/hooks"
+import Modal from "../Modal"
+import { CurrencySearch } from "./CurrencySearch"
+import ListIntroduction from "./ListIntroduction"
+import { ListSelect } from "./ListSelect"
 
 interface CurrencySearchModalProps {
-  isOpen: boolean;
-  onDismiss: () => void;
-  selectedCurrency?: Currency | null;
-  onCurrencySelect: (currency: Currency) => void;
-  otherSelectedCurrency?: Currency | null;
-  showCommonBases?: boolean;
+  isOpen: boolean
+  onDismiss: () => void
+  selectedCurrency?: Currency | null
+  onCurrencySelect: (currency: Currency) => void
+  otherSelectedCurrency?: Currency | null
+  showCommonBases?: boolean
 }
 
 export default function CurrencySearchModal({
@@ -25,51 +25,46 @@ export default function CurrencySearchModal({
   otherSelectedCurrency,
   showCommonBases = false,
 }: CurrencySearchModalProps) {
-  const [listView, setListView] = useState<boolean>(false);
-  const lastOpen = useLast(isOpen);
+  const [listView, setListView] = useState<boolean>(false)
+  const lastOpen = useLast(isOpen)
 
   useEffect(() => {
     if (isOpen && !lastOpen) {
-      setListView(false);
+      setListView(false)
     }
-  }, [isOpen, lastOpen]);
+  }, [isOpen, lastOpen])
 
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {
-      onCurrencySelect(currency);
-      onDismiss();
+      onCurrencySelect(currency)
+      onDismiss()
     },
-    [onDismiss, onCurrencySelect]
-  );
+    [onDismiss, onCurrencySelect],
+  )
 
   const handleClickChangeList = useCallback(() => {
     ReactGA.event({
       category: "Lists",
       action: "Change Lists",
-    });
-    setListView(true);
-  }, []);
+    })
+    setListView(true)
+  }, [])
   const handleClickBack = useCallback(() => {
     ReactGA.event({
       category: "Lists",
       action: "Back",
-    });
-    setListView(false);
-  }, []);
+    })
+    setListView(false)
+  }, [])
   const handleSelectListIntroduction = useCallback(() => {
-    setListView(true);
-  }, []);
+    setListView(true)
+  }, [])
 
-  const selectedListUrl = useSelectedListUrl();
-  const noListSelected = !selectedListUrl;
+  const selectedListUrl = useSelectedListUrl()
+  const noListSelected = !selectedListUrl
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onDismiss={onDismiss}
-      maxHeight={90}
-      minHeight={listView ? 40 : noListSelected ? 0 : 80}
-    >
+    <Modal isOpen={isOpen} onDismiss={onDismiss} maxHeight={90} minHeight={listView ? 40 : noListSelected ? 0 : 80}>
       {listView ? (
         <ListSelect onDismiss={onDismiss} onBack={handleClickBack} />
       ) : noListSelected ? (
@@ -86,5 +81,5 @@ export default function CurrencySearchModal({
         />
       )}
     </Modal>
-  );
+  )
 }

@@ -1,6 +1,6 @@
-import createBreakpoints from "@mui/system/createTheme/createBreakpoints";
+import createBreakpoints from "@mui/system/createTheme/createBreakpoints"
 
-const breakpoints = createBreakpoints({});
+const breakpoints = createBreakpoints({})
 
 export const paletteOptions = {
   mode: "light",
@@ -40,10 +40,23 @@ export const paletteOptions = {
     placeholder: "#33333380",
     disabled: "#3333334D",
   },
-};
+}
 
 export const typographyOptions = {
-  fontFamily: "SF UI Text",
+  fontFamily: [
+    "SF UI Text",
+    "system-ui",
+    "BlinkMacSystemFont",
+    "Roboto",
+    "Helvetica Neue",
+    "Segoe UI",
+    "Arial",
+    "sans-serif",
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "Noto Color Emoji",
+  ].join(","),
   h1: {
     fontSize: "8.2rem",
     fontWeight: 300,
@@ -110,4 +123,4 @@ export const typographyOptions = {
     fontWeight: 700,
     textTransform: "capitalize",
   },
-};
+}

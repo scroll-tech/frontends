@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo } from "react"
 import {
   Typography,
   Table,
@@ -13,15 +13,15 @@ import {
   Pagination,
   Skeleton,
   CircularProgress,
-} from "@mui/material";
-import { makeStyles } from "tss-react/mui";
-import Link from "@/components/Link";
-import { networks } from "@/constants";
-import useSymbol from "@/hooks/useSymbol";
-import { truncateHash, generateExploreLink } from "@/utils";
-import { useApp } from "@/contexts/AppContextProvider";
+} from "@mui/material"
+import { makeStyles } from "tss-react/mui"
+import Link from "@/components/Link"
+import { networks } from "@/constants"
+import useSymbol from "@/hooks/useSymbol"
+import { truncateHash, generateExploreLink } from "@/utils"
+import { useApp } from "@/contexts/AppContextProvider"
 
-const useStyles = makeStyles()((theme) => {
+const useStyles = makeStyles()(theme => {
   return {
     tableContainer: {
       whiteSpace: "nowrap",
@@ -76,17 +76,17 @@ const useStyles = makeStyles()((theme) => {
         fontSize: "2.4rem",
       },
     },
-  };
-});
+  }
+})
 
 const TxTable = (props: any) => {
-  const { data, pagination, loading } = props;
+  const { data, pagination, loading } = props
 
-  const { classes } = useStyles();
+  const { classes } = useStyles()
 
   const handleChangePage = (e, newPage) => {
-    pagination?.onChange?.(newPage);
-  };
+    pagination?.onChange?.(newPage)
+  }
 
   return (
     <>
@@ -128,48 +128,45 @@ const TxTable = (props: any) => {
         </div>
       )}
     </>
-  );
-};
+  )
+}
 
-const TxRow = (props) => {
-  const { tx } = props;
+const TxRow = props => {
+  const { tx } = props
 
   const {
     txHistory: { blockNumbers },
-  } = useApp();
+  } = useApp()
 
-  const { classes, cx } = useStyles();
+  const { classes, cx } = useStyles()
 
   const statusWithConfirmations = useCallback(
     (blockNumber, isL1, to) => {
       if (!blockNumbers) {
-        return ["Synchronizing", 0];
+        return ["Synchronizing", 0]
       }
       if (!blockNumber) {
-        return ["Pending", 0];
+        return ["Pending", 0]
       }
-      const confirmations =
-        blockNumbers[+!(isL1 ^ to)] - blockNumber > 0
-          ? blockNumbers[+!(isL1 ^ to)] - blockNumber
-          : 0;
-      const waitConfirmations = networks[+!(isL1 ^ to)].waitConfirmations;
+      const confirmations = blockNumbers[+!(isL1 ^ to)] - blockNumber > 0 ? blockNumbers[+!(isL1 ^ to)] - blockNumber : 0
+      const waitConfirmations = networks[+!(isL1 ^ to)].waitConfirmations
       if (confirmations >= waitConfirmations) {
-        return ["Success", waitConfirmations];
+        return ["Success", waitConfirmations]
       }
-      return ["Pending", confirmations];
+      return ["Pending", confirmations]
     },
-    [blockNumbers]
-  );
+    [blockNumbers],
+  )
 
   const fromStatusConfirmations = useMemo(() => {
-    return statusWithConfirmations(tx.fromBlockNumber, tx.isL1, false);
-  }, [tx, statusWithConfirmations]);
+    return statusWithConfirmations(tx.fromBlockNumber, tx.isL1, false)
+  }, [tx, statusWithConfirmations])
 
   const toStatusConfirmations = useMemo(() => {
-    return statusWithConfirmations(tx.toBlockNumber, tx.isL1, true);
-  }, [tx, statusWithConfirmations]);
+    return statusWithConfirmations(tx.toBlockNumber, tx.isL1, true)
+  }, [tx, statusWithConfirmations])
 
-  const { loading: symbolLoading, symbol } = useSymbol(tx.symbolToken, tx.isL1);
+  const { loading: symbolLoading, symbol } = useSymbol(tx.symbolToken, tx.isL1)
 
   return (
     <TableRow key={tx.hash}>
@@ -179,64 +176,35 @@ const TxRow = (props) => {
             <>
               <Chip
                 label={fromStatusConfirmations[0]}
-                className={cx(
-                  classes.chip,
-                  fromStatusConfirmations[0] === "Success"
-                    ? classes.successChip
-                    : classes.pendingChip
-                )}
+                className={cx(classes.chip, fromStatusConfirmations[0] === "Success" ? classes.successChip : classes.pendingChip)}
               />
               <Chip
                 label={toStatusConfirmations[0]}
-                className={cx(
-                  classes.chip,
-                  toStatusConfirmations[0] === "Success"
-                    ? classes.successChip
-                    : classes.pendingChip
-                )}
+                className={cx(classes.chip, toStatusConfirmations[0] === "Success" ? classes.successChip : classes.pendingChip)}
               />
             </>
           ) : (
             <>
-              <Skeleton
-                variant="rectangular"
-                width="12.6rem"
-                height="3.8rem"
-                className="rounded-[1.6rem]"
-              />
-              <Skeleton
-                variant="rectangular"
-                width="12.6rem"
-                height="3.8rem"
-                className="rounded-[1.6rem]"
-              />
+              <Skeleton variant="rectangular" width="12.6rem" height="3.8rem" className="rounded-[1.6rem]" />
+              <Skeleton variant="rectangular" width="12.6rem" height="3.8rem" className="rounded-[1.6rem]" />
             </>
           )}
         </Stack>
       </TableCell>
       <TableCell className="w-full">
         <span>{tx.amount} </span>
-        {symbolLoading ? (
-          <Skeleton variant="text" width="5rem" className="inline-block" />
-        ) : (
-          <span>{symbol}</span>
-        )}
+        {symbolLoading ? <Skeleton variant="text" width="5rem" className="inline-block" /> : <span>{symbol}</span>}
       </TableCell>
       <TableCell>
         <Stack direction="column">
           <Typography variant="body1">From {tx.fromName}: </Typography>
           <Stack direction="row" spacing="0.8rem" className="align-center">
-            <Link
-              external
-              href={generateExploreLink(tx.fromExplore, tx.hash)}
-              className="leading-normal flex-1"
-            >
+            <Link external href={generateExploreLink(tx.fromExplore, tx.hash)} className="leading-normal flex-1">
               {truncateHash(tx.hash)}
             </Link>
             {!!networks[+!tx.isL1].waitConfirmations && (
               <Typography variant="body2" color="textSecondary">
-                {fromStatusConfirmations[1]}/
-                {networks[+!tx.isL1].waitConfirmations} confirmations
+                {fromStatusConfirmations[1]}/{networks[+!tx.isL1].waitConfirmations} confirmations
               </Typography>
             )}
           </Stack>
@@ -246,11 +214,7 @@ const TxRow = (props) => {
           <Typography variant="body1">To {tx.toName}: </Typography>
           <Stack direction="row" spacing="0.8rem" className="align-center">
             {tx.toHash ? (
-              <Link
-                external
-                href={generateExploreLink(tx.toExplore, tx.toHash)}
-                className="leading-normal flex-1"
-              >
+              <Link external href={generateExploreLink(tx.toExplore, tx.toHash)} className="leading-normal flex-1">
                 {truncateHash(tx.toHash)}
               </Link>
             ) : (
@@ -258,15 +222,14 @@ const TxRow = (props) => {
             )}
             {!!networks[+tx.isL1].waitConfirmations && (
               <Typography variant="body2" color="textSecondary">
-                {toStatusConfirmations[1]}/
-                {networks[+tx.isL1].waitConfirmations} confirmations
+                {toStatusConfirmations[1]}/{networks[+tx.isL1].waitConfirmations} confirmations
               </Typography>
             )}
           </Stack>
         </Stack>
       </TableCell>
     </TableRow>
-  );
-};
+  )
+}
 
-export default TxTable;
+export default TxTable

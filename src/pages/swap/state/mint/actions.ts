@@ -1,4 +1,4 @@
-import { createAction } from "@reduxjs/toolkit";
+import { createAction } from "@reduxjs/toolkit"
 
 export enum Field {
   CURRENCY_A = "CURRENCY_A",
@@ -6,8 +6,8 @@ export enum Field {
 }
 
 export const typeInput = createAction<{
-  field: Field;
-  typedValue: string;
-  noLiquidity: boolean;
-}>("mint/typeInputMint");
-export const resetMintState = createAction<void>("mint/resetMintState");
+  field: Field
+  typedValue: string
+  noLiquidity: boolean
+}>("mint/typeInputMint")
+export const resetMintState = createAction<void>("mint/resetMintState")

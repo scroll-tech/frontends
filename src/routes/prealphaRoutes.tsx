@@ -1,11 +1,12 @@
-import Bridge from "@/pages/bridge";
-import Faucet from "@/pages/faucet";
-import AddNetwork from "@/pages/faucet/add-network";
-import Home from "@/pages/home";
-import RollupScanBatch from "@/pages/rollup/batch";
-import RollupScanBlock from "@/pages/rollup/block";
-import RollupScan from "@/pages/rollup/index";
-import Swap from "@/pages/swap";
+import Bridge from "@/pages/bridge"
+import Faucet from "@/pages/faucet"
+import AddNetwork from "@/pages/faucet/add-network"
+import Home from "@/pages/home"
+import RollupScanBatch from "@/pages/rollup/batch"
+import RollupScanBlock from "@/pages/rollup/block"
+import RollupScan from "@/pages/rollup/index"
+import Swap from "@/pages/swap"
+import NotFound from "@/pages/404"
 
 const routes = [
   {
@@ -56,6 +57,11 @@ const routes = [
     fullPath: "/prealpha/faucet/add-network",
     element: <AddNetwork />,
   },
-];
+  {
+    name: "NotFound",
+    path: "*",
+    element: <NotFound />,
+  },
+]
 
-export default routes;
+export default routes
