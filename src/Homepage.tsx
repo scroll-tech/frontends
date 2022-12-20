@@ -1,6 +1,5 @@
 import { Routes, Route, useLocation } from "react-router-dom"
 import { Helmet } from "react-helmet"
-import NotFound from "@/pages/404"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
 import ScrollToTop from "@/hooks/useScrollToTop"
@@ -32,7 +31,6 @@ function Homepage() {
           {routes.map((route, key) => (
             <Route key={key} path={route.path} element={route.element} />
           ))}
-          <Route path="*" element={<NotFound />} />
         </Routes>
         {HiddenFooter ? null : <Footer />}
       </div>

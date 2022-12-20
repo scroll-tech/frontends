@@ -1,4 +1,3 @@
-import NotFound from "@/pages/404"
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
 import { Helmet } from "react-helmet"
@@ -29,7 +28,6 @@ function App() {
               {routes.map((route, key) => (
                 <Route key={key} path={route.path} element={route.element} />
               ))}
-              <Route path="*" element={<NotFound />} />
             </Routes>
             <Footer />
           </ScrollToTop>
