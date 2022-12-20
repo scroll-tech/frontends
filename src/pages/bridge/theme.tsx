@@ -4,6 +4,7 @@ import createBreakpoints from "@mui/system/createTheme/createBreakpoints"
 
 import { typographyOptions, paletteOptions } from "./addition"
 
+// TODO: need to merge with outer theme
 const breakpoints = createBreakpoints({})
 
 const defaultTransition = "all 0.15s ease-out"
@@ -275,7 +276,7 @@ const lightTheme = {
       styleOverrides: {
         root: {
           cursor: "pointer",
-          fontSize: "2.4rem",
+          fontSize: "2.2rem",
         },
       },
     },
@@ -342,14 +343,14 @@ const lightTheme = {
           padding: 0,
         },
         content: {
-          margin: "3.6rem 0",
+          margin: "3.4rem 0",
           "&.Mui-expanded": {
-            margin: "3.6rem 0",
+            margin: "3.4rem 0",
           },
           [breakpoints.down("sm")]: {
-            margin: "3.2rem 0",
+            margin: "2.8rem 0",
             "&.Mui-expanded": {
-              margin: "3.2rem 0 1.6rem",
+              margin: "2.8rem 0",
             },
           },
         },

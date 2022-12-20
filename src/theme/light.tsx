@@ -1,47 +1,11 @@
 import { createTheme } from "@mui/material/styles"
+import { palette, typographyOptions } from "./typographyOptions"
 
 export const boxShadows = {
   button: {
     default: "none",
     disabled: "none",
     highlighted: "6px 9px 0px 0px #fee7e0",
-  },
-}
-
-const palette = {
-  // primary: {
-  //   main: "#eb7106",
-  //   dark: "#F18740",
-  // },
-  action: {
-    active: "#EB7106",
-    selected: "#B32EFF",
-    disabled: "white",
-  },
-  text: {
-    primary: "#333333",
-    secondary: "#595959",
-    placeholder: "#33333380",
-    disabled: "#3333334D",
-  },
-  border: {
-    main: "#C9CBCE",
-  },
-  info: {
-    light: "#E5F6FE",
-    main: "#0095DA",
-  },
-  success: {
-    light: "#E0FEE7",
-    main: "#00A82A",
-  },
-  warning: {
-    light: "#FFF8CB",
-    main: "#C14800",
-  },
-  error: {
-    light: "#FFD7E2",
-    main: "#DC3347",
   },
 }
 
@@ -80,25 +44,7 @@ const theme = createTheme({
   palette: {
     ...palette,
   },
-  typography: {
-    fontFamily: [
-      "SF UI Text",
-      "ui-sans-serif",
-      "system-ui",
-      "-apple-system",
-      "BlinkMacSystemFont",
-      "Segoe UI",
-      "Roboto",
-      "Helvetica Neue",
-      "Arial",
-      "Noto Sans",
-      "sans-serif",
-      "Apple Color Emoji",
-      "Segoe UI Emoji",
-      "Segoe UI Symbol",
-      "Noto Color Emoji",
-    ].join(","),
-  },
+  typography: typographyOptions,
   components: {
     MuiButtonBase: {
       defaultProps: {
@@ -240,66 +186,68 @@ const theme = createTheme({
         },
       },
     },
+    MuiAccordion: {
+      styleOverrides: {
+        root: {
+          borderBottom: "1px solid #C9CBCE",
+          "&:before": {
+            backgroundColor: "unset",
+          },
+          "&.MuiPaper-root": {
+            boxShadow: "unset",
+          },
+          "&.Mui-expanded": {
+            margin: 0,
+          },
+        },
+      },
+    },
+    MuiAccordionSummary: {
+      styleOverrides: {
+        root: {
+          padding: 0,
+        },
+        content: ({ theme }) => ({
+          margin: "3.4rem 0",
+          "&.Mui-expanded": {
+            margin: "3.4rem 0",
+          },
+          [theme.breakpoints.down("sm")]: {
+            margin: "2.8rem 0",
+            "&.Mui-expanded": {
+              margin: "2.8rem 0",
+            },
+          },
+        }),
+      },
+    },
+    MuiAccordionDetails: {
+      styleOverrides: {
+        root: {
+          display: "block",
+          padding: "0 0 3.2rem",
+        },
+      },
+    },
+    MuiSvgIcon: {
+      styleOverrides: {
+        root: {
+          cursor: "pointer",
+          fontSize: "2.2rem",
+        },
+      },
+    },
+    MuiLink: {
+      styleOverrides: {
+        root: {
+          color: "#00A6F2",
+          fontSize: "1.6rem",
+          fontWeight: 600,
+          cursor: "pointer",
+        },
+      },
+    },
   },
 })
-
-theme.typography.h2 = {
-  fontFamily: ["Pulp Display", "ui-sans-serif", "system-ui", "-apple-system", "BlinkMacSystemFont", "Roboto", "Helvetica Neue"].join(","),
-  fontWeight: 400,
-  fontSize: "4.8rem",
-  lineHeight: "5.6rem",
-  letterSpacing: "-0.26px",
-  color: theme.palette.text.primary,
-  [theme.breakpoints.down("md")]: {
-    fontSize: "2.4rem",
-    lineHeight: "3.2rem",
-  },
-}
-
-theme.typography.h3 = {
-  fontFamily: ["Pulp Display", "ui-sans-serif", "system-ui", "-apple-system", "BlinkMacSystemFont", "Roboto", "Helvetica Neue"].join(","),
-  fontWeight: 400,
-  fontSize: "3.4rem",
-  lineHeight: "4rem",
-  [theme.breakpoints.down("md")]: {
-    fontSize: "2.4rem",
-    lineHeight: "3.2rem",
-  },
-}
-
-theme.typography.subtitle1 = {
-  fontSize: "2rem",
-  lineHeight: "3.2rem",
-  letterSpacing: "-0.3px",
-  color: palette.text.secondary,
-  [theme.breakpoints.down("md")]: {
-    fontSize: "1.6rem",
-    lineHeight: "2.6rem",
-  },
-}
-
-theme.typography.body1 = {
-  fontWeight: 400,
-  fontSize: "1.6rem",
-  lineHeight: "2.6rem",
-  letterSpacing: "-0.3px",
-  color: palette.text.secondary,
-  [theme.breakpoints.down("md")]: {
-    fontSize: "1.6rem",
-    lineHeight: "2.6rem",
-  },
-}
-
-theme.typography.body2 = {
-  fontWeight: 400,
-  fontSize: "1.4rem",
-  lineHeight: "2.6rem",
-  letterSpacing: "-0.3px",
-  color: palette.text.secondary,
-  [theme.breakpoints.down("md")]: {
-    fontSize: "1.4rem",
-    lineHeight: "2.6rem",
-  },
-}
 
 export default theme

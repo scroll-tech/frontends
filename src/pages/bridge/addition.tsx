@@ -43,7 +43,20 @@ export const paletteOptions = {
 }
 
 export const typographyOptions = {
-  fontFamily: "SF UI Text",
+  fontFamily: [
+    "SF UI Text",
+    "system-ui",
+    "BlinkMacSystemFont",
+    "Roboto",
+    "Helvetica Neue",
+    "Segoe UI",
+    "Arial",
+    "sans-serif",
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "Noto Color Emoji",
+  ].join(","),
   h1: {
     fontSize: "8.2rem",
     fontWeight: 300,
