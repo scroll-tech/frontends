@@ -1,31 +1,25 @@
-import React, { useContext } from "react";
-import { Repeat } from "react-feather";
-import { Text } from "rebass";
-import { ThemeContext } from "styled-components";
-import { Price } from "uniswap-v2-sdk-scroll";
-import { StyledBalanceMaxMini } from "./styleds";
+import React, { useContext } from "react"
+import { Repeat } from "react-feather"
+import { Text } from "rebass"
+import { ThemeContext } from "styled-components"
+import { Price } from "uniswap-v2-sdk-scroll"
+import { StyledBalanceMaxMini } from "./styleds"
 
 interface TradePriceProps {
-  price?: Price;
-  showInverted: boolean;
-  setShowInverted: (showInverted: boolean) => void;
+  price?: Price
+  showInverted: boolean
+  setShowInverted: (showInverted: boolean) => void
 }
 
-export default function TradePrice({
-  price,
-  showInverted,
-  setShowInverted,
-}: TradePriceProps) {
-  const theme = useContext(ThemeContext);
+export default function TradePrice({ price, showInverted, setShowInverted }: TradePriceProps) {
+  const theme = useContext(ThemeContext)
 
-  const formattedPrice = showInverted
-    ? price?.toSignificant(6)
-    : price?.invert()?.toSignificant(6);
+  const formattedPrice = showInverted ? price?.toSignificant(6) : price?.invert()?.toSignificant(6)
 
-  const show = Boolean(price?.baseCurrency && price?.quoteCurrency);
+  const show = Boolean(price?.baseCurrency && price?.quoteCurrency)
   const label = showInverted
     ? `${price?.quoteCurrency?.symbol} per ${price?.baseCurrency?.symbol}`
-    : `${price?.baseCurrency?.symbol} per ${price?.quoteCurrency?.symbol}`;
+    : `${price?.baseCurrency?.symbol} per ${price?.quoteCurrency?.symbol}`
 
   return (
     <Text
@@ -49,5 +43,5 @@ export default function TradePrice({
         "-"
       )}
     </Text>
-  );
+  )
 }

@@ -1,37 +1,37 @@
-import React, { useState, useEffect } from "react";
-import { styled } from "@mui/material/styles";
-import TableBody from "@mui/material/TableBody";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import { Link } from "@mui/material";
-import { l1ExplorerUrl, l2ExplorerUrl } from "@/constants/index";
-import Tooltip from "../components/Tooltip";
+import React from "react"
+import { styled } from "@mui/material/styles"
+import TableBody from "@mui/material/TableBody"
+import TableContainer from "@mui/material/TableContainer"
+import TableHead from "@mui/material/TableHead"
+import TableRow from "@mui/material/TableRow"
+import { Link } from "@mui/material"
+import { l2ExplorerUrl } from "@/constants/index"
+import Tooltip from "../components/Tooltip"
 
-import Table from "../components/Table";
-import TableCell from "../components/TableCell";
-import dayjs from "dayjs";
-const relativeTime = require("dayjs/plugin/relativeTime");
-dayjs.extend(relativeTime);
+import Table from "../components/Table"
+import TableCell from "../components/TableCell"
+import dayjs from "dayjs"
+const relativeTime = require("dayjs/plugin/relativeTime")
+dayjs.extend(relativeTime)
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({}));
-const TxnTooltip = "Number of transactions in the block";
-const HashTooltip = "Hash of the block's header";
+const StyledTableRow = styled(TableRow)(({ theme }) => ({}))
+const TxnTooltip = "Number of transactions in the block"
+const HashTooltip = "Hash of the block's header"
 
 interface BlockTableProps {
-  blocks: any;
+  blocks: any
 }
 
 const BlockTable: React.FC<BlockTableProps> = (props: { blocks: any }) => {
   const truncatedHash = (hash: string) => {
-    return `${hash.substring(0, 6)}…${hash.substring(62, 66)}`;
-  };
+    return `${hash.substring(0, 6)}…${hash.substring(62, 66)}`
+  }
 
   const formatDate = (hash: string) => {
     return dayjs(new Date(+hash * 1000))
       .fromNow()
-      .toString();
-  };
+      .toString()
+  }
 
   return (
     <TableContainer sx={{ marginTop: "0.7rem" }}>
@@ -52,20 +52,12 @@ const BlockTable: React.FC<BlockTableProps> = (props: { blocks: any }) => {
           {props.blocks.map((row: any) => (
             <StyledTableRow key={row.hash}>
               <TableCell scope="row">
-                <Link
-                  href={`${l2ExplorerUrl}/block/${row.hash}`}
-                  underline="none"
-                  sx={{ fontWeight: 600, color: "#00A6F2" }}
-                >
+                <Link href={`${l2ExplorerUrl}/block/${row.hash}`} underline="none" sx={{ fontWeight: 600, color: "#00A6F2" }}>
                   {row.number}
                 </Link>
               </TableCell>
               <TableCell>
-                <Link
-                  href={`${l2ExplorerUrl}/block/${row.hash}`}
-                  underline="none"
-                  sx={{ fontWeight: 600, color: "#00A6F2" }}
-                >
+                <Link href={`${l2ExplorerUrl}/block/${row.hash}`} underline="none" sx={{ fontWeight: 600, color: "#00A6F2" }}>
                   {truncatedHash(row.hash)}
                 </Link>
               </TableCell>
@@ -76,7 +68,7 @@ const BlockTable: React.FC<BlockTableProps> = (props: { blocks: any }) => {
         </TableBody>
       </Table>
     </TableContainer>
-  );
-};
+  )
+}
 
-export default BlockTable;
+export default BlockTable

@@ -19,6 +19,6 @@ const medias = [
     imgSrc: "/imgs/media/youtube.png",
     href: "https://www.youtube.com/@Scroll_ZKP",
   },
-];
+]
 
-export { medias };
+export { medias }

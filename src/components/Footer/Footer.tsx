@@ -1,8 +1,7 @@
-import { Link, Outlet } from "react-router-dom";
-import Logo from "@/components/Logo";
-import dayjs from "dayjs";
-import "./Footer.less";
-import Subscribe from "./Subscribe";
+import { Link } from "react-router-dom"
+import Logo from "@/components/Logo"
+import dayjs from "dayjs"
+import Subscribe from "./Subscribe"
 
 const Footer = () => {
   const links = [
@@ -36,12 +35,11 @@ const Footer = () => {
         },
         {
           name: "Press Kit",
-          href:
-            "https://scrollzkp.notion.site/Scroll-Brand-Assets-PUBLIC-8522d7dbe4c745579d3e3b14f3bbecc0",
+          href: "https://scrollzkp.notion.site/Scroll-Brand-Assets-PUBLIC-8522d7dbe4c745579d3e3b14f3bbecc0",
         },
       ],
     },
-  ];
+  ]
 
   const renderLinks = () => {
     return links.map((link: any) => (
@@ -50,10 +48,7 @@ const Footer = () => {
         {link.items.map((item: any) => (
           <li key={item.name}>
             {item.to ? (
-              <Link
-                className="font-medium leading-[34px] text-body-title"
-                to={item.to}
-              >
+              <Link className="font-medium leading-[34px] text-body-title" to={item.to}>
                 {" "}
                 {item.name}
               </Link>
@@ -69,8 +64,8 @@ const Footer = () => {
           </li>
         ))}
       </ul>
-    ));
-  };
+    ))
+  }
 
   return (
     <div className="footer w-full bg-[#EB71060D]">
@@ -79,19 +74,15 @@ const Footer = () => {
           <a href="/" className="flex flex-1 lg:mb-[80px]">
             <Logo></Logo>
           </a>
-          <p className="font-display text-md flex-1">
-            © Scroll Ltd {dayjs().year()}
-          </p>
+          <p className="font-display text-md flex-1">© Scroll Ltd {dayjs().year()}</p>
         </div>
-        <div className="flex flex-[2] justify-between w-full mb-[30px]">
-          {renderLinks()}
-        </div>
+        <div className="flex flex-[2] justify-between w-full mb-[30px]">{renderLinks()}</div>
         <div className="flex-1 w-full ">
           <Subscribe />
         </div>
       </footer>
     </div>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

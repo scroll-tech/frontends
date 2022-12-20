@@ -1,13 +1,13 @@
-import { transparentize } from "polished";
-import React from "react";
-import { AlertTriangle } from "react-feather";
-import styled, { css } from "styled-components";
-import { Text } from "rebass";
-import { AutoColumn } from "../Column";
+import { transparentize } from "polished"
+import React from "react"
+import { AlertTriangle } from "react-feather"
+import styled, { css } from "styled-components"
+import { Text } from "rebass"
+import { AutoColumn } from "../Column"
 
 export const Wrapper = styled.div`
   position: relative;
-`;
+`
 
 export const ArrowWrapper = styled.div<{ clickable: boolean }>`
   padding: 2px;
@@ -21,28 +21,22 @@ export const ArrowWrapper = styled.div<{ clickable: boolean }>`
           }
         `
       : null}
-`;
+`
 
 export const SectionBreak = styled.div`
   height: 1px;
   width: 100%;
   background-color: ${({ theme }) => theme.bg3};
-`;
+`
 
 export const BottomGrouping = styled.div`
   margin-top: 1.6rem;
-`;
+`
 
 export const ErrorText = styled(Text)<{ severity?: 0 | 1 | 2 | 3 | 4 }>`
   color: ${({ theme, severity }) =>
-    severity === 3 || severity === 4
-      ? theme.red1
-      : severity === 2
-      ? theme.yellow2
-      : severity === 1
-      ? theme.text1
-      : theme.green1};
-`;
+    severity === 3 || severity === 4 ? theme.red1 : severity === 2 ? theme.yellow2 : severity === 1 ? theme.text1 : theme.green1};
+`
 
 export const StyledBalanceMaxMini = styled.button`
   height: 22px;
@@ -68,13 +62,13 @@ export const StyledBalanceMaxMini = styled.button`
     background-color: ${({ theme }) => theme.bg3};
     outline: none;
   }
-`;
+`
 
 export const TruncatedText = styled(Text)`
   text-overflow: ellipsis;
   width: 220px;
   overflow: hidden;
-`;
+`
 
 // styles
 export const Dots = styled.span`
@@ -96,7 +90,7 @@ export const Dots = styled.span`
       content: "...";
     }
   }
-`;
+`
 
 const SwapCallbackErrorInner = styled.div`
   background-color: ${({ theme }) => transparentize(0.9, theme.red1)};
@@ -114,7 +108,7 @@ const SwapCallbackErrorInner = styled.div`
     margin: 0;
     font-weight: 500;
   }
-`;
+`
 
 const SwapCallbackErrorInnerAlertTriangle = styled.div`
   background-color: ${({ theme }) => transparentize(0.9, theme.red1)};
@@ -125,7 +119,7 @@ const SwapCallbackErrorInnerAlertTriangle = styled.div`
   border-radius: 12px;
   min-width: 48px;
   height: 48px;
-`;
+`
 
 export function SwapCallbackError({ error }: { error: string }) {
   return (
@@ -135,7 +129,7 @@ export function SwapCallbackError({ error }: { error: string }) {
       </SwapCallbackErrorInnerAlertTriangle>
       <p>{error}</p>
     </SwapCallbackErrorInner>
-  );
+  )
 }
 
 export const SwapShowAcceptChanges = styled(AutoColumn)`
@@ -144,4 +138,4 @@ export const SwapShowAcceptChanges = styled(AutoColumn)`
   padding: 0.8rem;
   border-radius: 12px;
   margin-top: 8px;
-`;
+`

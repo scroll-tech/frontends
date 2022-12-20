@@ -1,27 +1,27 @@
-import create from "zustand";
+import create from "zustand"
 
 interface VisibleStore {
-  historyVisible: boolean;
-  recentTxVisible: boolean;
-  changeHistoryVisible: (value) => void;
-  changeRecentTxVisible: (value) => void;
+  historyVisible: boolean
+  recentTxVisible: boolean
+  changeHistoryVisible: (value) => void
+  changeRecentTxVisible: (value) => void
 }
 
 const useBridgeStore = create<VisibleStore>()((set, get) => ({
   historyVisible: false,
   recentTxVisible: false,
 
-  changeHistoryVisible: (value) => {
+  changeHistoryVisible: value => {
     set({
       historyVisible: value,
-    });
+    })
   },
 
-  changeRecentTxVisible: (value) => {
+  changeRecentTxVisible: value => {
     set({
       recentTxVisible: value,
-    });
+    })
   },
-}));
+}))
 
-export default useBridgeStore;
+export default useBridgeStore

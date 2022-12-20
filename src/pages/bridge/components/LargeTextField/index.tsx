@@ -1,16 +1,16 @@
-import { FC, ReactNode } from "react";
-import { makeStyles } from "tss-react/mui";
-import MuiTextField, { TextFieldProps } from "@mui/material/TextField";
+import { FC, ReactNode } from "react"
+import { makeStyles } from "tss-react/mui"
+import MuiTextField, { TextFieldProps } from "@mui/material/TextField"
 
 type LargeTextFieldProps = {
-  units?: string | ReactNode;
-  centerAlign?: boolean | undefined;
-  leftAlign?: boolean | undefined;
-  defaultShadow?: boolean | undefined;
-  smallFontSize?: boolean;
-} & TextFieldProps;
+  units?: string | ReactNode
+  centerAlign?: boolean | undefined
+  leftAlign?: boolean | undefined
+  defaultShadow?: boolean | undefined
+  smallFontSize?: boolean
+} & TextFieldProps
 
-const useStyles = makeStyles()((theme) => {
+const useStyles = makeStyles()(theme => {
   return {
     root: {
       display: "flex",
@@ -25,42 +25,34 @@ const useStyles = makeStyles()((theme) => {
         fontSize: theme.typography.subtitle1.fontSize,
       },
     },
-  };
-});
+  }
+})
 
-const useInputStyles = makeStyles<any>()(
-  (theme, { leftAlign, centerAlign }) => ({
-    root: {
-      transition: "all 0.15s ease-out",
-      width: "100%",
+const useInputStyles = makeStyles<any>()((theme, { leftAlign, centerAlign }) => ({
+  root: {
+    transition: "all 0.15s ease-out",
+    width: "100%",
+  },
+  input: {
+    textAlign: leftAlign ? "left" : centerAlign ? "center" : "right",
+    fontSize: theme.typography.h4.fontSize,
+    fontWeight: theme.typography.h4.fontWeight,
+    color: theme.palette.text.primary,
+    textOverflow: "clip",
+    padding: "6px 4px",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "2.4rem",
     },
-    input: {
-      textAlign: leftAlign ? "left" : centerAlign ? "center" : "right",
-      fontSize: theme.typography.h4.fontSize,
-      fontWeight: theme.typography.h4.fontWeight,
-      color: theme.palette.text.primary,
-      textOverflow: "clip",
-      padding: "6px 4px",
-      [theme.breakpoints.down("sm")]: {
-        fontSize: "2.4rem",
-      },
-    },
-  })
-);
+  },
+}))
 
-const LargeTextField: FC<LargeTextFieldProps> = (props) => {
-  const {
-    className,
-    units,
-    leftAlign = false,
-    centerAlign,
-    ...textFieldProps
-  } = props;
-  const { classes, cx } = useStyles();
+const LargeTextField: FC<LargeTextFieldProps> = props => {
+  const { className, units, leftAlign = false, centerAlign, ...textFieldProps } = props
+  const { classes, cx } = useStyles()
   const { classes: inputStyles } = useInputStyles({
     leftAlign,
     centerAlign,
-  });
+  })
 
   return (
     <MuiTextField
@@ -73,7 +65,7 @@ const LargeTextField: FC<LargeTextFieldProps> = (props) => {
       }}
       {...textFieldProps}
     />
-  );
-};
+  )
+}
 
-export default LargeTextField;
+export default LargeTextField

@@ -1,11 +1,11 @@
-import Logo from "@/components/Logo";
-import { medias } from "@/constants/medias";
-import { ExpandMore, OpenInNew } from "@mui/icons-material";
-import { Box, Button, Container, Fade, Link, Stack } from "@mui/material";
-import { styled } from "@mui/system";
-import * as React from "react";
-import { NavLink } from "react-router-dom";
-import { homeNavigations, navigations } from "./constants";
+import Logo from "@/components/Logo"
+import { medias } from "@/constants/medias"
+import { ExpandMore, OpenInNew } from "@mui/icons-material"
+import { Box, Button, Container, Fade, Link, Stack } from "@mui/material"
+import { styled } from "@mui/system"
+import * as React from "react"
+import { NavLink } from "react-router-dom"
+import { homeNavigations, navigations } from "./constants"
 
 const StyledBox = styled(Stack)(
   ({ theme }) => `
@@ -15,16 +15,16 @@ const StyledBox = styled(Stack)(
   z-index: 999;
   background-color: #fff;
   border-bottom: 1px solid ${theme.palette.border.main};
-  `
-);
+  `,
+)
 const HeaderContainer = styled(Container)(
   ({ theme }) => `
    display: flex;
    justify-content: space-between;
    align-items: center;
    
-  `
-);
+  `,
+)
 
 const MenuLinkButton = styled(Link)(
   ({ theme }) => `
@@ -57,8 +57,8 @@ const MenuLinkButton = styled(Link)(
         border-bottom-width: 2px;
     }
   } 
-`
-);
+`,
+)
 
 const LinkStyledButton = styled(NavLink)(
   ({ theme }) => `
@@ -90,8 +90,8 @@ const LinkStyledButton = styled(NavLink)(
         border-bottom-width: 2px;
     }
   } 
-`
-);
+`,
+)
 
 const LinkStyledSubButton = styled(NavLink)(
   ({ theme }) => `
@@ -107,8 +107,8 @@ const LinkStyledSubButton = styled(NavLink)(
     &.active {
         color: ${theme.palette.action.active};
     } 
-  `
-);
+  `,
+)
 
 const SubMenuButton = styled(Box)(
   ({ theme }) => `
@@ -138,8 +138,8 @@ const SubMenuButton = styled(Box)(
           border-bottom-width: 2px;
       }
     } 
-  `
-);
+  `,
+)
 
 const SubMenuList = styled(Box)(
   ({ theme }) => `
@@ -152,8 +152,8 @@ const SubMenuList = styled(Box)(
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    `
-);
+    `,
+)
 
 const LinkButton = styled(Link)(
   ({ theme }) => `
@@ -166,8 +166,8 @@ const LinkButton = styled(Link)(
     color: ${theme.palette.action.active};
     background: rgba(51, 51, 51, 0.1);
   }
-`
-);
+`,
+)
 
 const MediaLink = styled("a")(
   ({ theme }) => `
@@ -177,50 +177,37 @@ const MediaLink = styled("a")(
         &:hover {
           opacity: 0.8;
         }
-      `
-);
+      `,
+)
 
-const App = (props) => {
-  const [checked, setChecked] = React.useState(false);
+const App = props => {
+  const [checked, setChecked] = React.useState(false)
   const list = () => (
     <Stack direction="row" justifyContent="space-between" alignItems="center">
       {(props.isHomepage ? homeNavigations : navigations).map((item: any) => {
         return (
           <React.Fragment key={item.key}>
             {item.children ? (
-              <SubMenuButton
-                onMouseEnter={() => setChecked(true)}
-                onMouseLeave={() => setChecked(false)}
-                key={item.key}
-              >
-                {item.label} <ExpandMore sx={{ marginLeft: "6px" }} />
+              <SubMenuButton onMouseEnter={() => setChecked(true)} onMouseLeave={() => setChecked(false)} key={item.key}>
+                <Stack direction="row" alignItems="center" spacing="6px">
+                  <span>{item.label}</span>
+                  <ExpandMore />
+                </Stack>
                 <Fade in={checked}>
                   <SubMenuList onClick={() => setChecked(false)}>
                     {item.children?.map((subItem: any) =>
                       subItem.isExternal ? (
-                        <LinkButton
-                          target="_blank"
-                          underline="none"
-                          key={subItem.label}
-                          href={subItem.href}
-                        >
-                          <Stack
-                            direction="row"
-                            alignItems="center"
-                            spacing={1}
-                          >
+                        <LinkButton target="_blank" underline="none" key={subItem.label} href={subItem.href}>
+                          <Stack direction="row" alignItems="center" spacing={1}>
                             <span>{subItem.label}</span>
                             <OpenInNew sx={{ fontSize: "16px" }} />
                           </Stack>
                         </LinkButton>
                       ) : (
-                        <LinkStyledSubButton
-                          key={subItem.label}
-                          to={subItem.href}
-                        >
+                        <LinkStyledSubButton key={subItem.label} to={subItem.href}>
                           {subItem.label}
                         </LinkStyledSubButton>
-                      )
+                      ),
                     )}
                   </SubMenuList>
                 </Fade>
@@ -235,10 +222,10 @@ const App = (props) => {
               </LinkStyledButton>
             )}
           </React.Fragment>
-        );
+        )
       })}
     </Stack>
-  );
+  )
 
   return (
     <StyledBox>
@@ -249,7 +236,7 @@ const App = (props) => {
         <Box>{list()}</Box>
         {props.isHomepage ? (
           <Box display="flex" alignItems="center">
-            {medias.map((media) => (
+            {medias.map(media => (
               <MediaLink
                 href={media.href}
                 target="_blank"
@@ -278,7 +265,7 @@ const App = (props) => {
         )}
       </HeaderContainer>
     </StyledBox>
-  );
-};
+  )
+}
 
-export default App;
+export default App

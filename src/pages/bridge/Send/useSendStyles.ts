@@ -1,9 +1,9 @@
-import { createContext } from "react";
-import { makeStyles } from "tss-react/mui";
+import { createContext } from "react"
+import { makeStyles } from "tss-react/mui"
 
-export const StyleContext = createContext({} as any);
+export const StyleContext = createContext({} as any)
 
-export const useSendStyles = makeStyles()((theme) => ({
+export const useSendStyles = makeStyles()(theme => ({
   sendWrapper: {
     [theme.breakpoints.down("sm")]: {
       padding: "0 1.6rem",
@@ -42,4 +42,4 @@ export const useSendStyles = makeStyles()((theme) => ({
   button: {
     marginTop: "2rem",
   },
-}));
+}))

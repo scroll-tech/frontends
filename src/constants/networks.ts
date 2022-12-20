@@ -1,15 +1,15 @@
 // TODO: Refactor network info into a scroll-testnet-wide spot
-import { requireEnv } from "@/utils";
-import ETHSvg from "@/assets/svgs/eth.svg";
-import { ChainId, ETH_SYMBOL, RPCUrl } from "./common";
+import { requireEnv, isProduction } from "@/utils"
+import ETHSvg from "@/assets/svgs/eth.svg"
+import { ChainId, ETH_SYMBOL, RPCUrl } from "./common"
 
-const curEnv = requireEnv("REACT_APP_SCROLL_ENVIRONMENT");
-const l1Explorer = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1");
-const l2Explorer = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2");
+const curEnv = requireEnv("REACT_APP_SCROLL_ENVIRONMENT")
+const l1Explorer = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1")
+const l2Explorer = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2")
 
 export const networks = [
   {
-    name: "Scroll L1 Testnet" + (curEnv === "MAIN" ? "" : " [" + curEnv + "]"),
+    name: "Scroll L1 Testnet" + (isProduction ? "" : " [" + curEnv + "]"),
     slug: "layer1",
     imageUrl: "/imgs/bridge/mainnet.svg",
     provider: null,
@@ -22,7 +22,7 @@ export const networks = [
     waitConfirmations: 6,
   },
   {
-    name: "Scroll L2 Testnet" + (curEnv === "MAIN" ? "" : " [" + curEnv + "]"),
+    name: "Scroll L2 Testnet" + (isProduction ? "" : " [" + curEnv + "]"),
     slug: "layer2",
     imageUrl: "/logo.png",
     provider: null,
@@ -34,25 +34,25 @@ export const networks = [
     isL1: false,
     waitConfirmations: 0,
   },
-];
+]
 
 type BaseToken = {
-  chainId: number;
-  name: string;
-  symbol: string;
-  decimals: number;
-  logoURI: string;
-};
+  chainId: number
+  name: string
+  symbol: string
+  decimals: number
+  logoURI: string
+}
 
 export type NativeToken = BaseToken & {
-  native: boolean;
-};
+  native: boolean
+}
 
 export type ERC20Token = BaseToken & {
-  address: string;
-};
+  address: string
+}
 
-export type Token = NativeToken | ERC20Token;
+export type Token = NativeToken | ERC20Token
 export const nativeTokenList: Token[] = [
   {
     chainId: ChainId.SCROLL_LAYER_1,
@@ -70,15 +70,14 @@ export const nativeTokenList: Token[] = [
     native: true,
     logoURI: ETHSvg,
   },
-];
+]
 
 export const SiteMap = {
-  // TODO: Deduplicate these, e.g. https://app.asana.com/0/1202293017617135/1203532864257615/f
-  Home: "/",
-  Faucet: "/faucet/",
-  Bridge: "/bridge/",
-  Swap: "/swap/",
+  Home: "/prealpha/",
+  Faucet: "/prealpha/faucet",
+  Bridge: "/prealpha/bridge",
+  Swap: "/prealpha/swap",
   L1Explorer: l1Explorer,
   L2Explorer: l2Explorer,
-  RollupExplorer: "/rollupscan/",
-};
+  RollupExplorer: "/prealpha/rollupscan",
+}
