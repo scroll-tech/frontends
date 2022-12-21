@@ -12,7 +12,7 @@ export const redirectSignInTwitter = async () => {
     scope: "users.read tweet.read offline.access",
     code_challenge: codeChallenge,
     code_challenge_method: codeChallengeMethod,
-    redirect_uri: window.location.href,
+    redirect_uri: process.env.REACT_APP_TWITTER_REDIRECT_URI || window.location.href,
     client_id: clientId,
     state: randomState,
   })
@@ -23,7 +23,7 @@ export const redirectSignInTwitter = async () => {
 export const loginTwitter = async code => {
   const formData = new FormData()
   formData.append("code", code)
-  formData.append("redirect_uri", window.location.origin + window.location.pathname)
+  formData.append("redirect_uri", process.env.REACT_APP_TWITTER_REDIRECT_URI || window.location.origin + window.location.pathname)
   const res = await fetch(process.env.REACT_APP_FAUCET_BASE_API_URL + loginTwitterUrl, {
     method: "POST",
     body: formData,
