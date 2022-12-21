@@ -1,9 +1,10 @@
 import useSWR from "swr"
+import { fetchLastBatchIndexesUrl, fetchBatchDetailUrl, fetchBlockListUrl } from "@/apis/rollupscan"
 
 const fetcher = (url: string) => fetch(url).then(r => r.json())
 
 export function useLastBlockNums() {
-  const { data, error } = useSWR(`${process.env.REACT_APP_ROLLUPSCAN_BASE_API_URL}/last_batch_indexes`, fetcher, {
+  const { data, error } = useSWR(fetchLastBatchIndexesUrl, fetcher, {
     refreshInterval: 3000,
   })
   return {
@@ -14,7 +15,7 @@ export function useLastBlockNums() {
 }
 
 export function useBatchDetail(batchIndex) {
-  const { data, error } = useSWR(`${process.env.REACT_APP_ROLLUPSCAN_BASE_API_URL}/batch?index=${batchIndex}`, fetcher)
+  const { data, error } = useSWR(`${fetchBatchDetailUrl}?index=${batchIndex}`, fetcher)
   return {
     batch: data?.batch,
     isLoading: !error && !data,
@@ -23,7 +24,7 @@ export function useBatchDetail(batchIndex) {
 }
 
 export function useBlockList(batchIndex) {
-  const { data, error } = useSWR(`${process.env.REACT_APP_ROLLUPSCAN_BASE_API_URL}/blocks?batch_index=${batchIndex}`, fetcher)
+  const { data, error } = useSWR(`${fetchBlockListUrl}?batch_index=${batchIndex}`, fetcher)
   return {
     blocks: data?.blocks,
     isLoading: !error && !data,

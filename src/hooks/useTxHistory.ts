@@ -2,8 +2,8 @@ import { useCallback, useEffect, useState } from "react"
 import useSWR from "swr"
 import { ChainId, BRIDGE_PAGE_SIZE } from "@/constants"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
-// import useBridgeStore from "@/stores/bridgeStore";
 import useTxStore from "@/stores/txStore"
+import { fetchTxByHashUrl } from "@/apis/bridge"
 export interface TxHistory {
   blockNumbers: number[]
   errorMessage: string
@@ -18,7 +18,7 @@ const useTxHistory = networksAndSigners => {
   const [errorMessage, setErrorMessage] = useState("")
 
   const fetchTxList = useCallback(({ txs }) => {
-    return fetch("/bridgeapi/txsbyhashes", {
+    return fetch(fetchTxByHashUrl, {
       method: "post",
       headers: {
         "Content-Type": "application/json",

@@ -9,14 +9,6 @@
   to = "https://prealpha-rpc.scroll.io/l2/:splat"
   status = 200
 
-[[redirects]]
-  from = "/faucetapi/*"
-  to = "https://staging-prealpha-api.scroll.io/faucet/:splat"
-  status = 200
-[[redirects]]
-  from = "/bridgeapi/*"
-  to = "https://staging-prealpha-api.scroll.io/bridgehistory/api/:splat"
-  status = 200
 
 [[redirects]]
   from = "/early-dev"
@@ -34,7 +26,9 @@
   REACT_APP_USDC_SYMBOL="TSUSDC"
   REACT_APP_UNI_V2_TOKEN_SYMBOL="TSUNI2"
 
-  REACT_APP_FAUCET_BASE_API_URL="/faucetapi"
+  REACT_APP_FAUCET_API_PREFIX="/faucet/api"
+  REACT_APP_BRIDGE_API_PREFIX="/bridgehistory/api"
+  REACT_APP_ROLLUPSCAN_API_PREFIX="/rollupscan/api"
   REACT_APP_PREFIX_CLS="scroll"
   REACT_APP_TWITTER_CILENT_ID="aGhZakRUNU1jbWg1MlgtWlpPaXI6MTpjaQ"
   REACT_APP_CODE_CHALLENGE_METHOD="S256"
@@ -46,7 +40,7 @@
   REACT_APP_CHAIN_ID_L2="5343541"
   REACT_APP_EXTERNAL_RPC_URI_L1="https://staging-prealpha-rpc.scroll.io/l1"
   REACT_APP_EXTERNAL_RPC_URI_L2="https://staging-prealpha-rpc.scroll.io/l2"
-  REACT_APP_ROLLUPSCAN_BASE_API_URL="https://staging-prealpha-api.scroll.io/rollupscan/api"
+  REACT_APP_API_BASE_URI="https://staging-prealpha-api.scroll.io"
   REACT_APP_EXTERNAL_EXPLORER_URI_L1="https://staging-l1scan.scroll.io"
   REACT_APP_EXTERNAL_EXPLORER_URI_L2="https://staging-l2scan.scroll.io"
   REACT_APP_CODE_CHALLENGE="IW8if8HhOkWNxAbbuOPCVV-xmzgTvrR4a8wPt6ezoBg"
@@ -71,7 +65,7 @@
   REACT_APP_CHAIN_ID_L2="5343541"
   REACT_APP_EXTERNAL_RPC_URI_L1="https://staging-prealpha-rpc.scroll.io/l1"
   REACT_APP_EXTERNAL_RPC_URI_L2="https://staging-prealpha-rpc.scroll.io/l2"
-  REACT_APP_ROLLUPSCAN_BASE_API_URL="https://staging-prealpha-api.scroll.io/rollupscan/api"
+  REACT_APP_API_BASE_URI="https://staging-prealpha-api.scroll.io"
   REACT_APP_EXTERNAL_EXPLORER_URI_L1="https://staging-l1scan.scroll.io"
   REACT_APP_EXTERNAL_EXPLORER_URI_L2="https://staging-l2scan.scroll.io"
   REACT_APP_CODE_CHALLENGE="IW8if8HhOkWNxAbbuOPCVV-xmzgTvrR4a8wPt6ezoBg"
@@ -96,7 +90,7 @@
   REACT_APP_CHAIN_ID_L2="534354"
   REACT_APP_EXTERNAL_RPC_URI_L1="https://prealpha-rpc.scroll.io/l1"
   REACT_APP_EXTERNAL_RPC_URI_L2="https://prealpha-rpc.scroll.io/l2"
-  REACT_APP_ROLLUPSCAN_BASE_API_URL="https://prealpha-api.scroll.io/rollupscan/api"
+  REACT_APP_API_BASE_URI="https://prealpha-api.scroll.io"
   REACT_APP_EXTERNAL_EXPLORER_URI_L1="https://l1scan.scroll.io"
   REACT_APP_EXTERNAL_EXPLORER_URI_L2="https://l2scan.scroll.io"
   REACT_APP_CODE_CHALLENGE="1W2y6F72ulLxiFoEaVKgVDukwEsiOOyH7wSXw0quEbM"

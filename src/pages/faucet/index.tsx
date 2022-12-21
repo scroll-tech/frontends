@@ -10,6 +10,7 @@ import TextButton from "@/components/TextButton"
 import { getAddress } from "@ethersproject/address"
 import WithReCaptcha from "./components/WithReCaptcha"
 import { isProduction, requireEnv, truncateAddress, truncateHash } from "@/utils"
+import { fetchInfoUrl, claimUrl } from "@/apis/faucet"
 import "./index.less"
 // import useSWR from 'swr'
 
@@ -48,7 +49,7 @@ export default function Home() {
 
   useEffect(() => {
     async function fetchInfo() {
-      const res = await fetch(process.env.REACT_APP_FAUCET_BASE_API_URL + "/api/info")
+      const res = await fetch(fetchInfoUrl)
       const info = await res.json()
       setFaucetInfo(info)
       document.title = `Scroll ${faucetInfo.network} Faucet`
@@ -70,7 +71,7 @@ export default function Home() {
     formData.append("address", getAddress(walletCurrentAddress as string))
     formData.append("h-captcha-response", captchaToken)
     setLoading(true)
-    const res = await fetch(process.env.REACT_APP_FAUCET_BASE_API_URL + "/api/claim", {
+    const res = await fetch(claimUrl, {
       method: "POST",
       body: formData,
     })
