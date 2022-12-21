@@ -163,6 +163,7 @@ const theme = createTheme({
           boxSizing: "border-box",
           color: ownerState.severity && palette[ownerState.severity].main,
           backgroundColor: ownerState.severity && palette[ownerState.severity].light,
+          alignItems: "center",
           [theme.breakpoints.down("sm")]: {
             flexDirection: "column",
             textAlign: "center",
