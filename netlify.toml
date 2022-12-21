@@ -19,10 +19,6 @@
   status = 200
 
 [[redirects]]
-  from = "/early-dev"
-  to = "https://scrollzkp.typeform.com/early-dev"
-
-[[redirects]]
   from = "/*"
   to = "/"
   status = 200
