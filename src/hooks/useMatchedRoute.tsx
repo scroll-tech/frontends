@@ -10,6 +10,6 @@ export default function useMatchedRoute() {
     if (matchPath((route as any).fullPath || route.path, pathname)) {
       return route
     }
-    return PrealphaRoutes[PrealphaRoutes.length - 1]
   }
+  return PrealphaRoutes[PrealphaRoutes.length - 1]
 }
