@@ -280,7 +280,7 @@ export default function Home() {
                 <p className="mb-[6px] md:mr-[6px]">Scroll L1 and L2 not added yet?</p>
                 <Link to="add-network">
                   <span className="text-[#00A6F2] cursor-pointer font-semibold">
-                    Add Scroll L1{TESTNET_NAME} and L2{TESTNET_NAME}
+                    Add Scroll L1 {TESTNET_NAME} and L2 {TESTNET_NAME}
                   </span>
                 </Link>
               </div>
