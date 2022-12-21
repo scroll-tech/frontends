@@ -1,0 +1,12 @@
+https://scroll.io
+https://scroll.io/team
+https://scroll.io/join-us
+https://scroll.io/blog
+https://scroll.io/blog/proofGeneration
+https://scroll.io/blog/kzg
+https://scroll.io/blog/upgradingPreAlphaTestnet
+https://scroll.io/blog/architecture
+https://scroll.io/blog/technicalPrinciples
+https://scroll.io/blog/preAlphaTestnet
+https://scroll.io/blog/visionAndValues
+https://scroll.io/blog/zkEVM
