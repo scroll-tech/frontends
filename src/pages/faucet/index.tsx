@@ -2,15 +2,13 @@ import { Addresses, ChainId, TESTNET_NAME } from "@/constants"
 import React, { useEffect, useMemo, useState } from "react"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import Countdown from "react-countdown"
-import useStorage from "squirrel-gill"
 import dayjs from "dayjs"
 import Faq from "./components/faq"
-import { Link, useSearchParams } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { Button, Snackbar, Alert as MuiAlert } from "@mui/material"
 import TextButton from "@/components/TextButton"
 import { getAddress } from "@ethersproject/address"
-import WithTwitter from "./components/WithTwitter"
-import { loginTwitter } from "./helper"
+import WithReCaptcha from "./components/WithReCaptcha"
 import { isProduction, requireEnv, truncateAddress, truncateHash } from "@/utils"
 import "./index.less"
 // import useSWR from 'swr'
@@ -22,12 +20,7 @@ const L1_SCAN_URL = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1")
 
 export default function Home() {
   const { walletCurrentAddress, chainId, connectWallet } = useWeb3Context()
-  const [user, setUser] = useStorage(localStorage, "user")
 
-  const [searchParams, setSearchParams] = useSearchParams()
-  const [authorizationCode, setAuthorizationCode] = useState("")
-
-  const [loginLoading, setLoginLoading] = useState(false)
   const [loading, setLoading] = useState(false)
   const [open, setOpen] = React.useState(false)
   const [errorMessage, setErrorMessage] = React.useState("")
@@ -54,30 +47,6 @@ export default function Home() {
   }, [chainId])
 
   useEffect(() => {
-    const queryCode = searchParams.get("code")
-    if (queryCode) {
-      setAuthorizationCode(queryCode)
-      setSearchParams({})
-      return
-    }
-    if (authorizationCode) {
-      setLoginLoading(true)
-      loginTwitter(authorizationCode)
-        .then(({ username, token }) => {
-          setUser({ name: username, token })
-          setAuthorizationCode("")
-        })
-        .catch(err => {
-          setOpen(true)
-          setErrorMessage(err.message)
-        })
-        .finally(() => {
-          setLoginLoading(false)
-        })
-    }
-  }, [searchParams, authorizationCode])
-
-  useEffect(() => {
     async function fetchInfo() {
       const res = await fetch(process.env.REACT_APP_FAUCET_BASE_API_URL + "/api/info")
       const info = await res.json()
@@ -99,8 +68,7 @@ export default function Home() {
 
     let formData = new FormData()
     formData.append("address", getAddress(walletCurrentAddress as string))
-    formData.append("token", user?.token)
-    captchaToken && formData.append("h-captcha-response", captchaToken)
+    formData.append("h-captcha-response", captchaToken)
     setLoading(true)
     const res = await fetch(process.env.REACT_APP_FAUCET_BASE_API_URL + "/api/claim", {
       method: "POST",
@@ -117,19 +85,12 @@ export default function Home() {
             .format("YYYY-MM-DD H:m:s")
       setCanClaimFrom(canClaimFrom)
       setTxHashData(TxHashData)
-      const token = res.headers.get("x-token")
-      setUser({ ...user, token })
       localStorage.setItem(CAN_CLAIM_FROM, canClaimFrom)
       localStorage.setItem(TX_HASH_DATA, JSON.stringify(TxHashData))
-    } else if (res.status === 401) {
-      setUser(null)
-      setErrorMessage("Login status is invalid, please sign in again")
+    } else if (res.status === 429) {
+      setErrorMessage("hCaptcha verification failed!")
       setOpen(true)
     } else {
-      const token = res.headers.get("x-token")
-      if (token) {
-        setUser({ ...user, token })
-      }
       const message = await res.text()
       //get hms
       const re = /((\d+)h)?((\d+)m)?((\d+)s)/i
@@ -157,7 +118,7 @@ export default function Home() {
   const renderer = ({ hours, minutes, seconds, completed }: any) => {
     if (completed) {
       // Render a completed state
-      return <WithTwitter loginLoading={loginLoading} requestLoading={loading} onRequest={handleRequest} />
+      return <WithReCaptcha requestLoading={loading} onRequest={handleRequest} />
     } else {
       // Render a countdown
       return (
