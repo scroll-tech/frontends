@@ -3,6 +3,7 @@ const webpack = require("webpack")
 const path = require("path")
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const { loaderByName, addBeforeLoader } = require("@craco/craco")
+const SentryWebpackPlugin = require("@sentry/webpack-plugin")
 
 module.exports = {
   plugins: [
@@ -58,8 +59,15 @@ module.exports = {
         },
       })
       if (env === "production") {
-        const instanceOfMiniCssExtractPlugin = webpackConfig.plugins.find(plugin => plugin instanceof MiniCssExtractPlugin)
+        const sentryPlugin = new SentryWebpackPlugin({
+          org: "scroll-tech",
+          project: "scroll",
+          include: "./build",
+          authToken: process.env.REACT_APP_SENTRY_AUTH_TOKEN,
+        })
+        webpackConfig.plugins.push(sentryPlugin)
 
+        const instanceOfMiniCssExtractPlugin = webpackConfig.plugins.find(plugin => plugin instanceof MiniCssExtractPlugin)
         instanceOfMiniCssExtractPlugin.options.ignoreOrder = true
       }
       return webpackConfig
