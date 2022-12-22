@@ -9,7 +9,6 @@
   to = "https://prealpha-rpc.scroll.io/l2/:splat"
   status = 200
 
-
 [[redirects]]
   from = "/early-dev"
   to = "https://scrollzkp.typeform.com/early-dev"
@@ -29,6 +28,7 @@
   REACT_APP_FAUCET_API_PREFIX="/faucet/api"
   REACT_APP_BRIDGE_API_PREFIX="/bridgehistory/api"
   REACT_APP_ROLLUPSCAN_API_PREFIX="/rollupscan/api"
+  
   REACT_APP_PREFIX_CLS="scroll"
   REACT_APP_TWITTER_CILENT_ID="aGhZakRUNU1jbWg1MlgtWlpPaXI6MTpjaQ"
   REACT_APP_CODE_CHALLENGE_METHOD="S256"
@@ -95,7 +95,6 @@
   REACT_APP_EXTERNAL_EXPLORER_URI_L2="https://l2scan.scroll.io"
   REACT_APP_CODE_CHALLENGE="1W2y6F72ulLxiFoEaVKgVDukwEsiOOyH7wSXw0quEbM"
   REACT_APP_STATE="KCVfk8zv-r4t4fef"
-  # will be replaced
   REACT_APP_HCAPTCHA_SITE_KEY="541838f2-e585-4726-b398-24102b1d4df8"
 
   REACT_APP_L1_STANDARD_ERC20_GATEWAY_PROXY_ADDR="0xf8F8B383285CD23eD2Cb9FDF9599B968DdafC3C0"
