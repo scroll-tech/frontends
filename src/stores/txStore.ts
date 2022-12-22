@@ -3,6 +3,7 @@ import { persist } from "zustand/middleware"
 import produce from "immer"
 import { networks } from "@/constants"
 import { toTokenDisplay } from "@/utils"
+import { fetchTxListUrl } from "@/apis/bridge"
 
 interface TxStore {
   page: number
@@ -142,7 +143,7 @@ const useTxStore = create<TxStore>()(
         const relativeOffset = gap > 0 ? gap : 0
         const limit = rowsPerPage - currentPageFrontTransactions.length
 
-        const result = await fetch(`/bridgeapi/txs?address=${address}&offset=${relativeOffset}&limit=${limit}`)
+        const result = await fetch(`${fetchTxListUrl}?address=${address}&offset=${relativeOffset}&limit=${limit}`)
         if (!result.ok) {
           throw new Error("Fail to fetch transactions, something wrong...")
         }

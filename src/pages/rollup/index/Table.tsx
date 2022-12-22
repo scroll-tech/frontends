@@ -16,6 +16,8 @@ import { TablePagination, Typography } from "@mui/material"
 import Tooltip from "../components/Tooltip"
 
 import dayjs from "dayjs"
+import { fetchBatchListUrl } from "@/apis/rollupscan"
+
 const relativeTime = require("dayjs/plugin/relativeTime")
 dayjs.extend(relativeTime)
 
@@ -108,7 +110,7 @@ const App: React.FC = () => {
 
   const fetchData = (pagination: any) => {
     setLoading(true)
-    fetch(`${process.env.REACT_APP_ROLLUPSCAN_BASE_API_URL}/batches?page=${pagination.current + 1}&per_page=${pagination.pageSize}`)
+    fetch(`${fetchBatchListUrl}?page=${pagination.current + 1}&per_page=${pagination.pageSize}`)
       .then(res => res.json())
       .then(({ batches, total }) => {
         setData(batches)
