@@ -5,6 +5,7 @@ import InputBase from "@mui/material/InputBase"
 import { styled } from "@mui/material/styles"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { searchUrl } from "@/apis/rollupscan"
 
 const SearchbarContainer = styled(Paper)(({ theme }) => ({
   width: "100%",
@@ -53,7 +54,7 @@ export default function Searchbar(props) {
 
   const handleSearch = () => {
     if (value === "") return
-    fetch(`${process.env.REACT_APP_ROLLUPSCAN_BASE_API_URL}/search?keyword=${value}`)
+    fetch(`${searchUrl}?keyword=${value}`)
       .then(res => res.json())
       .then(({ batch_index }) => {
         if (~batch_index) {
