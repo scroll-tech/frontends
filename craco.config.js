@@ -61,7 +61,7 @@ module.exports = {
       if (env === "production") {
         const sentryPlugin = new SentryWebpackPlugin({
           org: "scroll-tech",
-          project: "scroll",
+          project: "scroll-frontends",
           include: "./build",
           authToken: process.env.REACT_APP_SENTRY_AUTH_TOKEN,
         })
