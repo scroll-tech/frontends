@@ -1,5 +1,5 @@
 import React, { KeyboardEvent, RefObject, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react"
-import ReactGA from "react-ga"
+import ReactGA from "react-ga4"
 import { useTranslation } from "react-i18next"
 import AutoSizer from "react-virtualized-auto-sizer"
 import { FixedSizeList } from "react-window"

@@ -1,20 +1,19 @@
 import { ThemeProvider } from "@mui/material/styles"
 import React from "react"
 import ReactDOM from "react-dom/client"
-import { BrowserRouter, Route, Routes } from "react-router-dom"
 import * as Sentry from "@sentry/react"
+import ReactGA from "react-ga4"
+import { BrowserRouter } from "react-router-dom"
+import { isMobile } from "react-device-detect"
 import { BrowserTracing } from "@sentry/tracing"
 import "./index.css"
 import reportWebVitals from "./reportWebVitals"
 import "./styles/globals.less"
 import "./styles/index.less"
 import themeLight from "./theme/light"
-import LoadingPage from "@/components/LoadingPage"
+import App from "./App"
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
-
-const App = React.lazy(() => import("./App"))
-const Homepage = React.lazy(() => import("./Homepage"))
 
 if (process.env.NODE_ENV === "production") {
   Sentry.init({
@@ -23,18 +22,21 @@ if (process.env.NODE_ENV === "production") {
     integrations: [new BrowserTracing()],
     tracesSampleRate: 1.0,
   })
+
+  const GOOGLE_ANALYTICS_ID: string | undefined = process.env.REACT_APP_GOOGLE_ANALYTICS_ID
+  if (typeof GOOGLE_ANALYTICS_ID === "string") {
+    ReactGA.initialize(GOOGLE_ANALYTICS_ID)
+    ReactGA.set({
+      customBrowserType: !isMobile ? "desktop" : "web3" in window || "ethereum" in window ? "mobileWeb3" : "mobileRegular",
+    })
+  }
 }
 
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={themeLight}>
       <BrowserRouter>
-        <React.Suspense fallback={<LoadingPage />}>
-          <Routes>
-            <Route path="/prealpha/*" element={<App />} />
-            <Route path="/*" element={<Homepage />} />
-          </Routes>
-        </React.Suspense>
+        <App />
       </BrowserRouter>
     </ThemeProvider>
   </React.StrictMode>,
