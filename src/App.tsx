@@ -1,39 +1,27 @@
-import Footer from "@/components/Footer"
-import Header from "@/components/Header"
-import { Helmet } from "react-helmet"
-import Web3Provider from "@/contexts/Web3ContextProvider"
-import ScrollToTop from "@/hooks/useScrollToTop"
-import { Route, Routes } from "react-router-dom"
-import AppWrapper from "./contexts"
-import routes from "./routes/prealphaRoutes"
-import useMatchedRoute from "./hooks/useMatchedRoute"
+import React from "react"
+import { Route, Routes, useLocation } from "react-router-dom"
+import LoadingPage from "@/components/LoadingPage"
+import ReactGA from "react-ga4"
+
+const Prealpha = React.lazy(() => import("./Prealpha"))
+const Homepage = React.lazy(() => import("./Homepage"))
 
 function App() {
-  const route = useMatchedRoute()
-  const getUrl = () => {
-    return window.location.href
-  }
+  let location = useLocation()
+
+  React.useEffect(() => {
+    console.log(location)
+    // Google Analytics
+    ReactGA.send(`${location.pathname}${location.search}`)
+  }, [location])
 
   return (
-    <div className="App bg-white min-h-[100vh]">
-      <Helmet>
-        {route ? <title>{route.name} - Scroll</title> : null}
-        <meta property="og:url" content={getUrl()} />
-      </Helmet>
-      <Web3Provider>
-        <AppWrapper>
-          <ScrollToTop>
-            <Header />
-            <Routes>
-              {routes.map((route, key) => (
-                <Route key={key} path={route.path} element={route.element} />
-              ))}
-            </Routes>
-            <Footer />
-          </ScrollToTop>
-        </AppWrapper>
-      </Web3Provider>
-    </div>
+    <React.Suspense fallback={<LoadingPage />}>
+      <Routes>
+        <Route path="/prealpha/*" element={<Prealpha />} />
+        <Route path="/*" element={<Homepage />} />
+      </Routes>
+    </React.Suspense>
   )
 }
 

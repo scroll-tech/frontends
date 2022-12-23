@@ -1,7 +1,6 @@
 import React, { Suspense } from "react"
 import { HashRouter, Route, Switch } from "react-router-dom-v5"
 import styled from "styled-components"
-import GoogleAnalyticsReporter from "../components/analytics/GoogleAnalyticsReporter"
 import Header from "../components/Header"
 // import Popups from '../components/Popups'
 import DarkModeQueryParamReader from "../theme/DarkModeQueryParamReader"
@@ -56,7 +55,6 @@ export default function App() {
   return (
     <Suspense fallback={null}>
       <HashRouter>
-        <Route component={GoogleAnalyticsReporter} />
         <Route component={DarkModeQueryParamReader} />
         <AppWrapper>
           <HeaderWrapper>
