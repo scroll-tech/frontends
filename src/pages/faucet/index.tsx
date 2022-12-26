@@ -156,8 +156,7 @@ export default function Home() {
                     </td>
                     <td>
                       <span className="text-[14px] md:text-[16px]">
-                        {faucetInfo.payoutEth}
-                        {ETH_SYMBOL}
+                        {faucetInfo.payoutEth} {ETH_SYMBOL}
                       </span>
                     </td>
                     <td>
@@ -179,8 +178,7 @@ export default function Home() {
                     </td>
                     <td>
                       <span className="text-[14px] md:text-[16px]">
-                        {faucetInfo.payoutUsdc}
-                        {USDC_SYMBOL}
+                        {faucetInfo.payoutUsdc} {USDC_SYMBOL}
                       </span>
                     </td>
                     <td>
