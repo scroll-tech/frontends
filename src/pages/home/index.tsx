@@ -1,17 +1,23 @@
+import { ReactNode, useState } from "react"
+import { Snackbar, Alert } from "@mui/material"
 import SectionTitle from "./components/sectionTitle"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
-import { addresses, navigation, documentation, TESTNET_NAME } from "@/constants/index"
+import { addresses, navigation, documentation, TESTNET_NAME, Addresses } from "@/constants/index"
 
 /**
  * Returns button to add network to MetaMask
  * @param {temp: any} autoconnect details
  * @returns {ReactElement}
  */
-function AddNetworkButton({ autoconnect, walletName }: any) {
+function AddNetworkButton({ autoconnect, walletName, chainId, onReadd }: any) {
   /**
    * Adds network to MetaMask
    */
   const addToMetaMask = async () => {
+    if (chainId === parseInt(autoconnect.chainId)) {
+      onReadd()
+      return
+    }
     await window.ethereum.request({
       method: "wallet_addEthereumChain",
       params: [autoconnect],
@@ -60,7 +66,21 @@ function ConnectWalletButton() {
 }
 
 export default function Home() {
-  const { walletName } = useWeb3Context()
+  const { walletName, chainId } = useWeb3Context()
+  const [tip, setTip] = useState<ReactNode | null>(null)
+
+  const handleReadd = () => {
+    setTip(
+      <>
+        You are already on <b>{Addresses[chainId as number].network}</b>.
+      </>,
+    )
+  }
+
+  const handleClose = () => {
+    setTip(null)
+  }
+
   return (
     <>
       <div className="p-4 mx-[8px] mb-[40px] lg:p-8">
@@ -87,7 +107,11 @@ export default function Home() {
                       <span className="ml-2 flex-1 w-0 truncate">{addresses[0].network}</span>
                     </div>
                     <div className="ml-4 flex-shrink-0">
-                      {walletName ? <AddNetworkButton autoconnect={addresses[0].autoconnect} walletName={walletName} /> : <ConnectWalletButton />}
+                      {walletName ? (
+                        <AddNetworkButton autoconnect={addresses[0].autoconnect} walletName={walletName} chainId={chainId} onReadd={handleReadd} />
+                      ) : (
+                        <ConnectWalletButton />
+                      )}
                     </div>
                   </li>
                   <li className="pl-3 pr-4 py-3 flex items-center justify-between text-base">
@@ -121,7 +145,11 @@ export default function Home() {
                       <span className="ml-2 flex-1 w-0 truncate">{addresses[1].network}</span>
                     </div>
                     <div className="ml-4 flex-shrink-0">
-                      {walletName ? <AddNetworkButton autoconnect={addresses[1].autoconnect} walletName={walletName} /> : <ConnectWalletButton />}
+                      {walletName ? (
+                        <AddNetworkButton autoconnect={addresses[1].autoconnect} walletName={walletName} chainId={chainId} onReadd={handleReadd} />
+                      ) : (
+                        <ConnectWalletButton />
+                      )}
                     </div>
                   </li>
 
@@ -237,6 +265,11 @@ export default function Home() {
           </div>
         </SectionTitle>
       </div>
+      <Snackbar open={!!tip} autoHideDuration={6000} onClose={handleClose}>
+        <Alert severity="info" onClose={handleClose}>
+          {tip}
+        </Alert>
+      </Snackbar>
     </>
   )
 }
