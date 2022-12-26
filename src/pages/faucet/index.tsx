@@ -8,7 +8,7 @@ import { Link } from "react-router-dom"
 import { Button, Snackbar, Alert as MuiAlert } from "@mui/material"
 import TextButton from "@/components/TextButton"
 import { getAddress } from "@ethersproject/address"
-import WithReCaptcha from "./components/WithReCaptcha"
+import WithHCaptcha from "./components/WithHCaptcha"
 import { isProduction, requireEnv, truncateAddress, truncateHash } from "@/utils"
 import { fetchInfoUrl, claimUrl } from "@/apis/faucet"
 import "./index.less"
@@ -119,7 +119,7 @@ export default function Home() {
   const renderer = ({ hours, minutes, seconds, completed }: any) => {
     if (completed) {
       // Render a completed state
-      return <WithReCaptcha requestLoading={loading} onRequest={handleRequest} />
+      return <WithHCaptcha requestLoading={loading} onRequest={handleRequest} />
     } else {
       // Render a countdown
       return (

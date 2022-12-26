@@ -3,13 +3,22 @@ import { CircularProgress, Stack } from "@mui/material"
 import { LoadingButton } from "@mui/lab"
 import { default as HCaptcha } from "@hcaptcha/react-hcaptcha"
 
-const WithReCaptcha = props => {
+const WithHCaptcha = props => {
   const { requestLoading, onRequest } = props
 
   const [verifyLoading, setVerifyLoading] = useState(false)
   const [captchaToken, setCaptchaToken] = useState("")
 
   const captchaRef = useRef<HCaptcha>(null)
+
+  useEffect(() => {
+    if (window.location.hostname === "localhost") {
+      console.info(
+        `\n %c Notice: we use hCaptcha to verify humanity in faucet, to make hCaptcha work on localhost please check https://docs.hcaptcha.com/#local-development \n\n`,
+        "color: #DC3347; background: #FFD7E2; padding:5px 0; border-radius: 5px 5px 5px 5px;",
+      )
+    }
+  }, [])
 
   useEffect(() => {
     if (captchaToken) {
@@ -56,4 +65,4 @@ const WithReCaptcha = props => {
   )
 }
 
-export default WithReCaptcha
+export default WithHCaptcha
