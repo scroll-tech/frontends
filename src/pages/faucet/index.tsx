@@ -219,8 +219,7 @@ export default function Home() {
           </p>
           <p className="max-w-[560px] text-center mx-[24px] text-[#595959] text-[16px] leading-[26px]">
             Funds you receive through the Scroll faucet are not real funds. Request tokens every 24h and receive {faucetInfo.payoutEth}{" "}
-            {faucetInfo.ethSymbol} & {faucetInfo.payoutUsdc}
-            {faucetInfo.usdcSymbol} per request.
+            {faucetInfo.ethSymbol} & {faucetInfo.payoutUsdc} {faucetInfo.usdcSymbol} per request.
           </p>
           {networkStatus === 1 ? (
             <Countdown key={canClaimFrom} date={canClaimFrom} renderer={renderer} />
