@@ -1,6 +1,6 @@
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
-import { Helmet } from "react-helmet"
+import { Helmet } from "react-helmet-async"
 import Web3Provider from "@/contexts/Web3ContextProvider"
 import ScrollToTop from "@/hooks/useScrollToTop"
 import { Route, Routes } from "react-router-dom"
