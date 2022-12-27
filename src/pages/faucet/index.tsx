@@ -8,16 +8,18 @@ import { Link } from "react-router-dom"
 import { Button, Snackbar, Alert as MuiAlert } from "@mui/material"
 import TextButton from "@/components/TextButton"
 import { getAddress } from "@ethersproject/address"
-import WithReCaptcha from "./components/WithReCaptcha"
+import WithHCaptcha from "./components/WithHCaptcha"
 import { isProduction, requireEnv, truncateAddress, truncateHash } from "@/utils"
 import { fetchInfoUrl, claimUrl } from "@/apis/faucet"
 import "./index.less"
-// import useSWR from 'swr'
 
 const CAN_CLAIM_FROM = "canClaimFrom",
   TX_HASH_DATA = "TxHashData"
 
 const L1_SCAN_URL = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1")
+
+const ETH_SYMBOL = requireEnv("REACT_APP_ETH_SYMBOL")
+const USDC_SYMBOL = requireEnv("REACT_APP_USDC_SYMBOL")
 
 export default function Home() {
   const { walletCurrentAddress, chainId, connectWallet } = useWeb3Context()
@@ -32,8 +34,6 @@ export default function Home() {
     network: "Testnet",
     payoutEth: 1,
     payoutUsdc: 100,
-    ethSymbol: "TSETH",
-    usdcSymbol: "TSUSDC",
   })
 
   const [TxHashData, setTxHashData] = useState(localStorage.getItem(TX_HASH_DATA) && JSON.parse(localStorage.getItem(TX_HASH_DATA) as string))
@@ -119,7 +119,7 @@ export default function Home() {
   const renderer = ({ hours, minutes, seconds, completed }: any) => {
     if (completed) {
       // Render a completed state
-      return <WithReCaptcha requestLoading={loading} onRequest={handleRequest} />
+      return <WithHCaptcha requestLoading={loading} onRequest={handleRequest} />
     } else {
       // Render a countdown
       return (
@@ -156,8 +156,7 @@ export default function Home() {
                     </td>
                     <td>
                       <span className="text-[14px] md:text-[16px]">
-                        {faucetInfo.payoutEth}
-                        {faucetInfo.ethSymbol}
+                        {faucetInfo.payoutEth} {ETH_SYMBOL}
                       </span>
                     </td>
                     <td>
@@ -179,8 +178,7 @@ export default function Home() {
                     </td>
                     <td>
                       <span className="text-[14px] md:text-[16px]">
-                        {faucetInfo.payoutUsdc}
-                        {faucetInfo.usdcSymbol}
+                        {faucetInfo.payoutUsdc} {USDC_SYMBOL}
                       </span>
                     </td>
                     <td>
@@ -218,9 +216,8 @@ export default function Home() {
             Request testnet Scroll tokens
           </p>
           <p className="max-w-[560px] text-center mx-[24px] text-[#595959] text-[16px] leading-[26px]">
-            Funds you receive through the Scroll faucet are not real funds. Request tokens every 24h and receive {faucetInfo.payoutEth}{" "}
-            {faucetInfo.ethSymbol} & {faucetInfo.payoutUsdc}
-            {faucetInfo.usdcSymbol} per request.
+            Funds you receive through the Scroll faucet are not real funds. Request tokens every 24h and receive {faucetInfo.payoutEth} {ETH_SYMBOL} &{" "}
+            {faucetInfo.payoutUsdc} {USDC_SYMBOL} per request.
           </p>
           {networkStatus === 1 ? (
             <Countdown key={canClaimFrom} date={canClaimFrom} renderer={renderer} />
