@@ -52,6 +52,10 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 
 Generate the sitemap.xml from a list of urls
 
+### `yarn run convert:webp output_imagepath imgpath`
+
+Generate webp format image
+
 ## Deployment
 
 Using Netlify: https://app.netlify.com/teams/scroll/overview

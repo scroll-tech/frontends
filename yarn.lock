@@ -6801,6 +6801,15 @@ csstype@^3.0.6, csstype@^3.1.1:
   resolved "https://registry.npmjs.org/csstype/-/csstype-3.1.1.tgz"
   integrity sha512-DJR/VvkAvSZW9bTouZue2sSxDwdTN92uHjqeKVm+0dAqdfNykRzQ95tay8aXMBAAPpUiq4Qcug2L7neoRh2Egw==
 
+cwebp@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/cwebp/-/cwebp-2.0.5.tgz#97416aa63596c6aa7958a3ed782b618986bbd8da"
+  integrity sha512-On5WiyO8zJK/MnyyylgrIwJFiGBayZnuKcqMSqNe/4Zz29tQv6zGqe+1Ibbe5y/jFf3wqdYEH9Pond9BgvEPxA==
+  dependencies:
+    raw-body "2"
+    through "~2.3"
+    when "3"
+
 cypress@*:
   version "11.0.1"
   resolved "https://registry.yarnpkg.com/cypress/-/cypress-11.0.1.tgz#5332a1825b37ab3f4f81d74389930c55cc7cf31d"
@@ -13842,7 +13851,7 @@ raphael@^2.2.0:
   dependencies:
     eve-raphael "0.5.0"
 
-raw-body@2.5.1:
+raw-body@2, raw-body@2.5.1:
   version "2.5.1"
   resolved "https://registry.npmjs.org/raw-body/-/raw-body-2.5.1.tgz"
   integrity sha512-qqJBtEyVgS0ZmPGdCFPWJ3FreoqvG4MVQln/kCgF7Olq95IbOp0/BWyMwbdtn4VTvkM8Y7khCQ2Xgk/tcrCXig==
@@ -16922,6 +16931,11 @@ whatwg-url@^8.0.0, whatwg-url@^8.5.0:
     lodash "^4.7.0"
     tr46 "^2.1.0"
     webidl-conversions "^6.1.0"
+
+when@3:
+  version "3.7.8"
+  resolved "https://registry.yarnpkg.com/when/-/when-3.7.8.tgz#c7130b6a7ea04693e842cdc9e7a1f2aa39a39f82"
+  integrity sha512-5cZ7mecD3eYcMiCH4wtRPA5iFJZ50BJYDfckI5RRpQiktMiYTcn0ccLTZOvcbBume+1304fQztxeNzNS9Gvrnw==
 
 which-boxed-primitive@^1.0.2:
   version "1.0.2"
