@@ -7,8 +7,8 @@ import remarkMath from "remark-math"
 import rehypeKatex from "rehype-katex"
 import rehypeRaw from "rehype-raw"
 import remarkGfm from "remark-gfm"
-import MarkdownNavbar from "markdown-navbar"
-import "markdown-navbar/dist/navbar.css"
+import MarkdownNavbar from "./markdown-navbar"
+import "./navbar.css"
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos"
 import { Link as RouterLink } from "react-router-dom"
 import { styled } from "@mui/system"
@@ -17,8 +17,6 @@ import blogSource from "./data.json"
 import Articles from "./articles"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import { useTheme } from "@mui/material/styles"
-
-const MAX_H3_COUNT = 10
 
 const Link = styled(RouterLink)({
   display: "flex",
@@ -45,7 +43,7 @@ const BlogContainer = styled(Box)(
 
 const BlogNavbar = styled(Box)(({ theme }) => ({
   position: "fixed",
-  width: "40rem",
+  width: "35rem",
   marginLeft: "10rem",
   paddingLeft: "2rem",
   borderLeft: "1px solid #C9CBCE",
@@ -64,7 +62,6 @@ const BlogDetail = () => {
   })
 
   const [loading, setLoading] = useState(true)
-  const [hiddenHeadingsUnderLevel2, setHiddenHeadingsUnderLevel2] = useState(false)
   const params = useParams()
 
   useEffect(() => {
@@ -82,7 +79,6 @@ const BlogDetail = () => {
       fetch(blogPath)
         .then(response => response.text())
         .then(text => {
-          handleHeadingsUnderLevel2(text)
           setLoading(false)
           setBlog(text)
         })
@@ -91,13 +87,6 @@ const BlogDetail = () => {
     }
     getMoreBlog()
   }, [])
-
-  const handleHeadingsUnderLevel2 = text => {
-    const regexp = /### /gi
-    const matches = text.match(regexp)
-    const hiddenHeadingsUnderLevel2 = matches?.length > MAX_H3_COUNT
-    setHiddenHeadingsUnderLevel2(hiddenHeadingsUnderLevel2)
-  }
 
   const getMoreBlog = () => {
     const blogs = shuffle(blogSource.filter(blog => blog.id !== params.blogId)).slice(0, 3)
@@ -154,18 +143,13 @@ const BlogDetail = () => {
               rehypePlugins={[rehypeKatex, rehypeRaw]}
               className="markdown-body"
             />
-            <Box sx={{ width: "32rem", flexShrink: 0, position: "relative" }}>
+            <Box sx={{ width: "32rem", flexShrink: 0, position: "relative", display: { xs: "none", lg: "block" } }}>
               <BlogNavbar>
                 <Link to="/blog">
                   <ArrowBackIosIcon />
                   <Typography>All Articles</Typography>
                 </Link>
-                <MarkdownNavbar
-                  className={`${hiddenHeadingsUnderLevel2 ? "hidden-levels" : ""} markdown-navbar`}
-                  source={blog as string}
-                  headingTopOffset={100}
-                  ordered={false}
-                />
+                <MarkdownNavbar className="markdown-navbar" source={blog as string} headingTopOffset={100} ordered={false} updateHashAuto={false} />
               </BlogNavbar>
             </Box>
           </BlogContainer>
