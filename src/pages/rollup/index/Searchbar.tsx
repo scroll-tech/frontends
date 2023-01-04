@@ -1,11 +1,10 @@
 import SearchIcon from "@mui/icons-material/Search"
-import { Button, Paper } from "@mui/material"
-import IconButton from "@mui/material/IconButton"
-import InputBase from "@mui/material/InputBase"
+import { Button, Paper, CircularProgress, IconButton, InputBase, Stack } from "@mui/material"
 import { styled } from "@mui/material/styles"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { searchUrl } from "@/apis/rollupscan"
+import useRollupStore from "@/stores/rollupStore"
 
 const SearchbarContainer = styled(Paper)(({ theme }) => ({
   width: "100%",
@@ -36,6 +35,7 @@ const SearchbarButton = styled(Button)(({ theme }) => ({
 }))
 
 export default function Searchbar(props) {
+  const { changeEmptyBatch, changeSearchLoading, changeErrorMessage, searchLoading } = useRollupStore()
   const [value, setValue] = useState("")
   const navigate = useNavigate()
 
@@ -48,20 +48,27 @@ export default function Searchbar(props) {
   const handleKeyUp = e => {
     setValue(e.target.value)
     if (e.target.value === "") {
-      props.setNoData(false)
+      changeEmptyBatch(false)
     }
   }
 
   const handleSearch = () => {
     if (value === "") return
-    fetch(`${searchUrl}?keyword=${value}`)
-      .then(res => res.json())
+    changeSearchLoading(true)
+    scrollRequest(`${searchUrl}?keyword=${value}`)
       .then(({ batch_index }) => {
         if (~batch_index) {
           navigate(`./block/${batch_index}`)
         } else {
-          props.setNoData(true)
+          changeEmptyBatch(true)
         }
+      })
+      .catch(() => {
+        changeEmptyBatch(true)
+        changeErrorMessage("Fail to search block, something wrong...")
+      })
+      .finally(() => {
+        changeSearchLoading(false)
       })
   }
 
@@ -78,8 +85,11 @@ export default function Searchbar(props) {
         onKeyDown={handleKeyDown}
         onKeyUp={handleKeyUp}
       />
-      <SearchbarButton color="primary" variant="contained" onClick={handleSearch}>
-        Search
+      <SearchbarButton color="primary" variant="contained" disabled={searchLoading} onClick={handleSearch}>
+        <Stack direction="row" spacing="10px">
+          <span>Search</span>
+          {searchLoading && <CircularProgress size="1em" sx={{ color: "inherit" }} thickness={4} />}
+        </Stack>
       </SearchbarButton>
     </SearchbarContainer>
   )

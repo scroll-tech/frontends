@@ -39,7 +39,7 @@ export const palette = {
     light: "#FFD7E2",
     main: "#DC3347",
   },
-};
+}
 
 export const typographyOptions = {
   fontFamily: [

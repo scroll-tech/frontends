@@ -12,6 +12,7 @@ import "./styles/globals.less"
 import "./styles/index.less"
 import themeLight from "./theme/light"
 import App from "./App"
+import "./appGlobals"
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 

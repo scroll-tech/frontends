@@ -18,18 +18,17 @@ const useTxHistory = networksAndSigners => {
   const [errorMessage, setErrorMessage] = useState("")
 
   const fetchTxList = useCallback(({ txs }) => {
-    return fetch(fetchTxByHashUrl, {
+    return scrollRequest(fetchTxByHashUrl, {
       method: "post",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ txs }),
-    }).then(res => {
-      if (!res.ok) {
-        throw new Error("Fail to refresh transactions, something wrong...")
-      }
-      return res.json()
     })
+      .then(data => data)
+      .catch(e => {
+        throw new Error("Fail to refresh transactions, something wrong...")
+      })
   }, [])
 
   // fetch to hash/blockNumber from backend
@@ -74,11 +73,9 @@ const useTxHistory = networksAndSigners => {
   const refreshPageTransactions = useCallback(
     page => {
       if (walletCurrentAddress) {
-        try {
-          comboPageTransactions(walletCurrentAddress, page, BRIDGE_PAGE_SIZE)
-        } catch (e) {
-          setErrorMessage((e as any).toString())
-        }
+        comboPageTransactions(walletCurrentAddress, page, BRIDGE_PAGE_SIZE).catch(e => {
+          setErrorMessage(e)
+        })
       }
     },
     [walletCurrentAddress],
