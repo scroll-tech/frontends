@@ -1,22 +1,19 @@
 import { l1ExplorerUrl } from "@/constants/index"
-import { Chip, Link } from "@mui/material"
 import { styled } from "@mui/material/styles"
-import TableBody from "@mui/material/TableBody"
-import TableContainer from "@mui/material/TableContainer"
-import TableHead from "@mui/material/TableHead"
-import TableRow from "@mui/material/TableRow"
-import { isNil } from "lodash"
-import React, { useEffect, useState } from "react"
-import { Link as RouterLink, useNavigate, useSearchParams } from "react-router-dom"
+import { TableHead, TableBody, TableContainer, TableRow, TablePagination, Typography, Chip, Link, Pagination } from "@mui/material"
+import React, { useEffect, useState, useMemo } from "react"
+import { Link as RouterLink, useSearchParams } from "react-router-dom"
+import NoData from "./NoData"
 import Table from "../components/Table"
 import TableCell from "../components/TableCell"
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "../constants"
 
-import { TablePagination, Typography } from "@mui/material"
 import Tooltip from "../components/Tooltip"
+import Spinning from "../components/Spinning"
 
 import dayjs from "dayjs"
 import { fetchBatchListUrl } from "@/apis/rollupscan"
+import useRollupStore from "@/stores/rollupStore"
 
 const relativeTime = require("dayjs/plugin/relativeTime")
 dayjs.extend(relativeTime)
@@ -83,15 +80,30 @@ const StatusChip = styled(Chip)(({ theme }) => ({
   },
 }))
 
-const App: React.FC = () => {
-  const [data, setData] = useState([])
-  const [, setLoading] = useState(false)
-  const navigate = useNavigate()
-  const [searchParams] = useSearchParams()
+const CustomPagination = styled(Pagination)(({ theme }) => ({
+  ".MuiPaginationItem-text": {
+    fontSize: "1.6rem",
+  },
+  ".MuiPaginationItem-root": {
+    color: theme.palette.text.primary,
+  },
+  ".MuiPaginationItem-root.Mui-selected": {
+    fontWeight: 700,
+    backgroundColor: "unset",
+  },
+  ".MuiSvgIcon-root": {
+    fontSize: "2.4rem",
+  },
+}))
 
-  const [page, setPage] = React.useState<number | null>(null)
-  const [rowsPerPage, setRowsPerPage] = React.useState<number | null>(null)
-  const [total, setTotal] = React.useState(0)
+const App = () => {
+  const { changeEmptyBatch, changeBatchLoading, changeErrorMessage, emptyBatch, searchLoading, batchLoading } = useRollupStore()
+
+  const [data, setData] = useState([])
+
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  const [total, setTotal] = useState(0)
 
   const renderStatusHeaderText = () => {
     return (
@@ -108,42 +120,45 @@ const App: React.FC = () => {
   const CommitTxHashTooltip = "Hash of the transaction that commits the batch's data to L1"
   const FinalizedTxHashTooltip = "Hash of the transaction that posts the batch's proof to L1"
 
-  const fetchData = (pagination: any) => {
-    setLoading(true)
-    fetch(`${fetchBatchListUrl}?page=${pagination.current + 1}&per_page=${pagination.pageSize}`)
-      .then(res => res.json())
-      .then(({ batches, total }) => {
-        setData(batches)
-        setTotal(total)
-        setLoading(false)
-      })
-  }
+  const page = useMemo(() => +searchParams.get("page"), [searchParams])
+  const pageSize = useMemo(() => +searchParams.get("per_page"), [searchParams])
 
   useEffect(() => {
-    const pageSize = +(searchParams.get("per_page") || DEFAULT_PAGE_SIZE) as number,
-      current = +(searchParams.get("page") || DEFAULT_PAGE) as number
-    setRowsPerPage(pageSize)
-    setPage(current)
+    if (!page || !pageSize) {
+      setSearchParams({ page: +page || DEFAULT_PAGE, per_page: +pageSize || DEFAULT_PAGE_SIZE })
+    }
   }, [])
 
   useEffect(() => {
-    const params = {
-      current: page,
-      pageSize: rowsPerPage,
+    if (page && pageSize) {
+      fetchData({ page: +page, pageSize: +pageSize })
     }
-    if (!isNil(page) && !isNil(rowsPerPage)) {
-      fetchData(params)
-      navigate(`./?page=${page}&per_page=${rowsPerPage}`)
-    }
-  }, [rowsPerPage, page])
+  }, [page, pageSize])
+
+  const fetchData = (pagination: any) => {
+    changeBatchLoading(true)
+    scrollRequest(`${fetchBatchListUrl}?page=${pagination.page}&per_page=${pagination.pageSize}`)
+      .then(({ batches, total }) => {
+        setData(batches)
+        setTotal(total)
+        changeEmptyBatch(!total)
+      })
+      .catch(() => {
+        changeEmptyBatch(true)
+        changeErrorMessage("Fail to fetch batch list, something wrong...")
+      })
+      .finally(() => {
+        changeBatchLoading(false)
+      })
+  }
 
   const onPageChange = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
-    setPage(newPage)
+    searchParams.set("page", newPage + 1)
+    setSearchParams(searchParams)
   }
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setRowsPerPage(parseInt(event.target.value, 10))
-    setPage(0)
+    setSearchParams({ page: 1, per_page: parseInt(event.target.value, 10) })
   }
 
   const truncatedHash = (hash: string) => {
@@ -156,13 +171,24 @@ const App: React.FC = () => {
       .toString()
   }
 
+  const handleChangePage = (e, newPage) => {
+    searchParams.set("page", newPage)
+    setSearchParams(searchParams)
+  }
+
+  if (emptyBatch) {
+    return <NoData />
+  }
+  /* eslint-disable */
   return (
-    <TableContainer sx={{ marginBottom: "4rem" }}>
-      <Typography variant="body1" align="left">
-        {total.toLocaleString()} results shown
-      </Typography>
-      {total ? (
+    <TableContainer sx={{ marginBottom: "4rem", minHeight: 300 }}>
+      {searchLoading || batchLoading ? (
+        <Spinning />
+      ) : (
         <>
+          <Typography variant="body1" align="left">
+            {total.toLocaleString()} results shown
+          </Typography>
           <Table aria-label="Batch table">
             <TableHead>
               <TableRow>
@@ -219,17 +245,22 @@ const App: React.FC = () => {
               ))}
             </TableBody>
           </Table>
-          <StyledTablePagination
-            rowsPerPageOptions={[10, 25, 100]}
-            component="div"
-            count={total}
-            page={page}
-            onPageChange={onPageChange}
-            rowsPerPage={rowsPerPage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
         </>
-      ) : null}
+      )}
+
+      <StyledTablePagination
+        rowsPerPageOptions={[10, 25, 100]}
+        component="div"
+        count={total}
+        page={(+page || DEFAULT_PAGE) - 1}
+        onPageChange={onPageChange}
+        rowsPerPage={+pageSize || DEFAULT_PAGE_SIZE}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+        labelDisplayedRows={({ count, page }) => {
+          return <CustomPagination page={page + 1} count={Math.ceil(count / pageSize)} onChange={handleChangePage} />
+        }}
+        ActionsComponent={() => null}
+      />
     </TableContainer>
   )
 }

@@ -72,18 +72,19 @@ const AppContextProvider = ({ children }: any) => {
     })
   }
 
-  const { data: tokenList } = useSWR(tokenListUrl(branchName), async url => {
-    const res = await fetch(url)
-    if (res.ok) {
-      const data = await res.json()
-      const filteredList = data.tokens.filter(item => supportedTokenSymbol.includes(item.symbol))
-      return [...nativeTokenList, ...filteredList]
-    }
-    // const errorMsg = await res.text();
-    setFetchTokenListError("Fail to fetch token list")
-    setTokenSymbol(ETH_SYMBOL)
-    return null
+  const { data: tokenList } = useSWR(tokenListUrl(branchName), url => {
+    return scrollRequest(url)
+      .then((data: any) => {
+        const filteredList = data.tokens.filter(item => supportedTokenSymbol.includes(item.symbol))
+        return [...nativeTokenList, ...filteredList]
+      })
+      .catch(() => {
+        setFetchTokenListError("Fail to fetch token list")
+        setTokenSymbol(ETH_SYMBOL)
+        return null
+      })
   })
+
   useEffect(() => {
     if (provider && walletCurrentAddress) {
       update(provider, walletCurrentAddress)
