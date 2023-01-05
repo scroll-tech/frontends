@@ -15,7 +15,7 @@ interface TxStore {
   addTransaction: (tx) => void
   updateTransaction: (hash, tx) => void
   generateTransactions: (transactions) => void
-  comboPageTransactions: (address, page, rowsPerPage) => void
+  comboPageTransactions: (address, page, rowsPerPage) => Promise<any>
   clearTransactions: () => void
 }
 interface Transaction {
@@ -143,23 +143,25 @@ const useTxStore = create<TxStore>()(
         const relativeOffset = gap > 0 ? gap : 0
         const limit = rowsPerPage - currentPageFrontTransactions.length
 
-        const result = await fetch(`${fetchTxListUrl}?address=${address}&offset=${relativeOffset}&limit=${limit}`)
-        if (!result.ok) {
-          throw new Error("Fail to fetch transactions, something wrong...")
-        }
-        const data = await result.json()
-        set({
-          pageTransactions: [...frontTransactions, ...formatBackTxList(data.data.result)],
-          total: data.data.total,
-          page,
-          loading: false,
-        })
-        if (page === 1) {
-          // keep transactions always frontList + the latest two history list
-          set({
-            transactions: [...frontTransactions, ...formatBackTxList(data.data.result).slice(0, 2)],
+        return scrollRequest(`${fetchTxListUrl}?address=${address}&offset=${relativeOffset}&limit=${limit}`)
+          .then(data => {
+            set({
+              pageTransactions: [...frontTransactions, ...formatBackTxList(data.data.result)],
+              total: data.data.total,
+              page,
+              loading: false,
+            })
+            if (page === 1) {
+              // keep transactions always frontList + the latest two history list
+              set({
+                transactions: [...frontTransactions, ...formatBackTxList(data.data.result).slice(0, 2)],
+              })
+            }
           })
-        }
+          .catch(() => {
+            set({ loading: false })
+            return Promise.reject("Fail to fetch transactions, something wrong...")
+          })
       },
     }),
     {

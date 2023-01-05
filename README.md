@@ -20,6 +20,9 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
+> **Notice**
+> we use hCaptcha to verify humanity in faucet, to make it work on localhost please check [ local-development](https://docs.hcaptcha.com/#local-development).
+
 ### `yarn test`
 
 Launches the test runner in the interactive watch mode.\
@@ -48,6 +51,10 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 ### `yarn run generate:sitemap`
 
 Generate the sitemap.xml from a list of urls
+
+### `yarn run convert:webp output_imagepath imgpath`
+
+Generate webp format image
 
 ## Deployment
 
