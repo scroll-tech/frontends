@@ -1,3 +1,9 @@
+# TEMPORARY redirect in MAIN from new prealpha app to old one
+[[redirects]]
+from = "/prealpha/*"
+to = "https://prealpha.scroll.io"
+force = true
+
 # these two redirects are for MAIN only, as a transitional help
 [[redirects]]
   from = "/l1/*"
