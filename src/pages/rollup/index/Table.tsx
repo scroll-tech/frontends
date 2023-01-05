@@ -127,7 +127,7 @@ const App = () => {
     if (!page || !pageSize) {
       setSearchParams({ page: +page || DEFAULT_PAGE, per_page: +pageSize || DEFAULT_PAGE_SIZE })
     }
-  }, [])
+  }, [searchParams])
 
   useEffect(() => {
     if (page && pageSize) {
@@ -179,7 +179,7 @@ const App = () => {
   if (emptyBatch) {
     return <NoData />
   }
-  /* eslint-disable */
+
   return (
     <TableContainer sx={{ marginBottom: "4rem", minHeight: 300 }}>
       {searchLoading || batchLoading ? (
