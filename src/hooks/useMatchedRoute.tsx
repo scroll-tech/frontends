@@ -1,7 +1,7 @@
-import { matchPath } from "react-router"
+import { useLocation, matchPath } from "react-router-dom"
+
 import HomepageRoutes from "@/routes/homepageRoutes"
 import PrealphaRoutes from "@/routes/prealphaRoutes"
-import { useLocation } from "react-router-dom"
 
 export default function useMatchedRoute() {
   const { pathname } = useLocation()
@@ -11,5 +11,7 @@ export default function useMatchedRoute() {
       return route
     }
   }
-  return PrealphaRoutes[PrealphaRoutes.length - 1]
+  return {
+    name: "NotFound",
+  }
 }
