@@ -7,6 +7,8 @@ import { Route, Routes } from "react-router-dom"
 import AppWrapper from "./contexts"
 import routes from "./routes/prealphaRoutes"
 import useMatchedRoute from "./hooks/useMatchedRoute"
+import { requireEnv } from "@/utils"
+const baseUrl = requireEnv("REACT_APP_API_BASE_URI")
 
 function Prealpha() {
   const route = useMatchedRoute()
@@ -19,6 +21,8 @@ function Prealpha() {
       <Helmet>
         {route ? <title>{route.name} - Scroll</title> : null}
         <meta property="og:url" content={getUrl()} />
+        <link rel="preconnect" href={baseUrl} crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href={baseUrl} crossOrigin="anonymous" />
       </Helmet>
       <Web3Provider>
         <AppWrapper>
