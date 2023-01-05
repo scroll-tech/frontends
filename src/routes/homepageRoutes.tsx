@@ -3,7 +3,6 @@ import Team from "@/views/team"
 import Blog from "@/views/blog"
 import IframeEmbedding from "@/components/IframeEmbedding"
 import BlogDetail from "@/views/blog/detail"
-import NotFound from "@/pages/404"
 
 const routes = [
   {
@@ -22,11 +21,6 @@ const routes = [
     name: "Blog Detail",
     path: "/blog/:blogId",
     element: <BlogDetail />,
-  },
-  {
-    name: "NotFound",
-    path: "*",
-    element: <NotFound />,
   },
 ]
 

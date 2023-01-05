@@ -1,5 +1,6 @@
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
+import NotFound from "@/pages/404"
 import { Helmet } from "react-helmet-async"
 import Web3Provider from "@/contexts/Web3ContextProvider"
 import ScrollToTop from "@/hooks/useScrollToTop"
@@ -32,6 +33,7 @@ function Prealpha() {
               {routes.map((route, key) => (
                 <Route key={key} path={route.path} element={route.element} />
               ))}
+              <Route path="*" element={<NotFound />} />
             </Routes>
             <Footer />
           </ScrollToTop>
