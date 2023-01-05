@@ -1,7 +1,7 @@
 import useSWR from "swr"
 import { fetchLastBatchIndexesUrl, fetchBatchDetailUrl, fetchBlockListUrl } from "@/apis/rollupscan"
 
-const fetcher = (url: string) => fetch(url).then(r => r.json())
+const fetcher = (url: string) => scrollRequest(url)
 
 export function useLastBlockNums() {
   const { data, error } = useSWR(fetchLastBatchIndexesUrl, fetcher, {

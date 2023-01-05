@@ -1,12 +1,11 @@
-import { useState } from "react"
-import { Box } from "@mui/material"
+import { Box, Snackbar, Alert } from "@mui/material"
 import { styled } from "@mui/material/styles"
 import { useLastBlockNums } from "@/hooks/useRollupInfo"
 import Table from "./Table"
 import Card from "./Card"
 import Searchbar from "./Searchbar"
-import NoData from "./NoData"
 import Header from "../components/Header"
+import useRollupStore from "@/stores/rollupStore"
 
 const InfoBox = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -16,7 +15,11 @@ const InfoBox = styled(Box)(({ theme }) => ({
 
 const Blocks = () => {
   const { lastBlockNums } = useLastBlockNums()
-  const [noData, setNoData] = useState(false)
+  const { errorMessage, changeErrorMessage } = useRollupStore()
+
+  const handleChangeErrorMessage = () => {
+    changeErrorMessage("")
+  }
 
   return (
     <Box className="wrapper mx-auto">
@@ -35,8 +38,13 @@ const Blocks = () => {
           description="Indicates the validity proof of this batch has been posted and verified on L1."
         />
       </InfoBox>
-      <Searchbar setNoData={setNoData} />
-      {noData ? <NoData /> : <Table />}
+      <Searchbar />
+      <Table />
+      <Snackbar open={!!errorMessage} autoHideDuration={6000} onClose={handleChangeErrorMessage}>
+        <Alert severity="error" onClose={handleChangeErrorMessage}>
+          {errorMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   )
 }

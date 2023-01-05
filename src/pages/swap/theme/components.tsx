@@ -1,5 +1,5 @@
 import React, { HTMLProps, useCallback } from "react"
-import ReactGA from "react-ga"
+import ReactGA from "react-ga4"
 import { Link } from "react-router-dom-v5"
 import styled, { keyframes } from "styled-components"
 import { darken } from "polished"
