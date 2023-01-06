@@ -1,14 +1,17 @@
+import { Helmet } from "react-helmet-async"
+import { Route, Routes } from "react-router-dom"
+
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
-import NotFound from "@/pages/404"
-import { Helmet } from "react-helmet-async"
 import Web3Provider from "@/contexts/Web3ContextProvider"
 import ScrollToTop from "@/hooks/useScrollToTop"
-import { Route, Routes } from "react-router-dom"
-import AppWrapper from "./contexts"
-import routes from "./routes/prealphaRoutes"
-import useMatchedRoute from "./hooks/useMatchedRoute"
+import NotFound from "@/pages/404"
 import { requireEnv } from "@/utils"
+
+import AppWrapper from "./contexts"
+import useMatchedRoute from "./hooks/useMatchedRoute"
+import routes from "./routes/prealphaRoutes"
+
 const baseUrl = requireEnv("REACT_APP_API_BASE_URI")
 
 function Prealpha() {

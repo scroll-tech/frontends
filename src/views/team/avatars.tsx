@@ -1,21 +1,19 @@
-import { Box, Typography, Link } from "@mui/material"
-import { styled } from "@mui/system"
-import SandyAvatar from "@/assets/images/homepage/team/Sandy.jpg"
-import SandyAvatarWebp from "@/assets/images/homepage/team/Sandy.webp"
+import { Pagination } from "swiper"
+import { Swiper, SwiperSlide } from "swiper/react"
 
-import YeAvatar from "@/assets/images/homepage/team/Ye.jpg"
-import YeAvatarWebp from "@/assets/images/homepage/team/Ye.webp"
+import { Twitter as TwitterIcon } from "@mui/icons-material"
+import { Box, Link, Typography } from "@mui/material"
+import { useTheme } from "@mui/material/styles"
+import useMediaQuery from "@mui/material/useMediaQuery"
+import { styled } from "@mui/system"
 
 import HaichenAvatar from "@/assets/images/homepage/team/Haichen.jpg"
 import HaichenAvatarWebp from "@/assets/images/homepage/team/Haichen.webp"
-
-import { Swiper, SwiperSlide } from "swiper/react"
-import { Pagination } from "swiper"
+import SandyAvatar from "@/assets/images/homepage/team/Sandy.jpg"
+import SandyAvatarWebp from "@/assets/images/homepage/team/Sandy.webp"
+import YeAvatar from "@/assets/images/homepage/team/Ye.jpg"
+import YeAvatarWebp from "@/assets/images/homepage/team/Ye.webp"
 import WebpImage from "@/components/WebpImage"
-
-import useMediaQuery from "@mui/material/useMediaQuery"
-import { useTheme } from "@mui/material/styles"
-import { Twitter as TwitterIcon } from "@mui/icons-material"
 
 const UserName = styled(Typography)(
   ({ theme }) => `

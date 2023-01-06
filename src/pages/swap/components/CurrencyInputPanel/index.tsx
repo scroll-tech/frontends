@@ -1,8 +1,11 @@
 import { darken } from "polished"
 import { useCallback, useContext, useState } from "react"
+import { useTranslation } from "react-i18next"
 import styled, { ThemeContext } from "styled-components"
 import { Currency, Pair } from "uniswap-v2-sdk-scroll"
+
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+
 import { ReactComponent as DropDown } from "../../assets/images/dropdown.svg"
 import { useCurrencyBalance } from "../../state/wallet/hooks"
 import { TYPE } from "../../theme"
@@ -11,8 +14,6 @@ import DoubleCurrencyLogo from "../DoubleLogo"
 import { Input as NumericalInput } from "../NumericalInput"
 import { RowBetween } from "../Row"
 import CurrencySearchModal from "../SearchModal/CurrencySearchModal"
-
-import { useTranslation } from "react-i18next"
 
 const InputRow = styled.div<{ selected: boolean }>`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -87,7 +88,6 @@ const Container = styled.div<{ hideInput: boolean }>`
 const StyledTokenName = styled.span<{ active?: boolean }>`
   ${({ active }) => (active ? "  margin: 0 0.4rem 0 1.2rem;" : "  margin: 0 0.4rem 0 0.4rem;")}
   font-size:  ${({ active }) => (active ? "20px" : "16px")};
-
 `
 
 const StyledBalanceMax = styled.button`

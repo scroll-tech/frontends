@@ -2,6 +2,7 @@ import { Tags, TokenInfo, TokenList } from "@uniswap/token-lists"
 import { useMemo } from "react"
 import { useSelector } from "react-redux"
 import { ChainId, Token } from "uniswap-v2-sdk-scroll"
+
 import { AppState } from "../index"
 
 type TagDetails = Tags[keyof Tags]
@@ -25,13 +26,11 @@ export class WrappedTokenInfo extends Token {
   }
 }
 
-export type TokenAddressMap = Readonly<
-  {
-    [chainId in ChainId]: Readonly<{
-      [tokenAddress: string]: WrappedTokenInfo
-    }>
-  }
->
+export type TokenAddressMap = Readonly<{
+  [chainId in ChainId]: Readonly<{
+    [tokenAddress: string]: WrappedTokenInfo
+  }>
+}>
 
 /**
  * An empty result, useful as a default.

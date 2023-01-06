@@ -1,9 +1,10 @@
-import { createStore, Store } from "redux"
+import UNISWAP_DEFAULT_TOKEN_LIST from "@uniswap/default-token-list"
+import { Store, createStore } from "redux"
+
 import { DEFAULT_LIST_OF_LISTS, DEFAULT_TOKEN_LIST_URL } from "../../constants/lists"
 import { updateVersion } from "../global/actions"
-import { fetchTokenList, acceptListUpdate, addList, removeList, selectList } from "./actions"
+import { acceptListUpdate, addList, fetchTokenList, removeList, selectList } from "./actions"
 import reducer, { ListsState } from "./reducer"
-import UNISWAP_DEFAULT_TOKEN_LIST from "@uniswap/default-token-list"
 
 const STUB_TOKEN_LIST = {
   name: "",

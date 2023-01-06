@@ -1,8 +1,9 @@
-import { diffTokenLists, TokenList } from "@uniswap/token-lists"
+import { TokenList, diffTokenLists } from "@uniswap/token-lists"
 import React, { useCallback, useMemo } from "react"
 import ReactGA from "react-ga4"
 import { useDispatch } from "react-redux"
 import { Text } from "rebass"
+
 import { AppDispatch } from "../../state"
 import { useRemovePopup } from "../../state/application/hooks"
 import { acceptListUpdate } from "../../state/lists/actions"
@@ -40,7 +41,11 @@ export default function ListUpdatePopup({
     removeThisPopup()
   }, [auto, dispatch, listUrl, removeThisPopup])
 
-  const { added: tokensAdded, changed: tokensChanged, removed: tokensRemoved } = useMemo(() => {
+  const {
+    added: tokensAdded,
+    changed: tokensChanged,
+    removed: tokensRemoved,
+  } = useMemo(() => {
     return diffTokenLists(oldList.tokens, newList.tokens)
   }, [newList.tokens, oldList.tokens])
   const numTokensChanged = useMemo(

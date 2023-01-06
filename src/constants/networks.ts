@@ -1,6 +1,7 @@
 // TODO: Refactor network info into a scroll-testnet-wide spot
-import { requireEnv, isProduction } from "@/utils"
 import ETHSvg from "@/assets/svgs/eth.svg"
+import { isProduction, requireEnv } from "@/utils"
+
 import { ChainId, ETH_SYMBOL, RPCUrl } from "./common"
 
 const curEnv = requireEnv("REACT_APP_SCROLL_ENVIRONMENT")

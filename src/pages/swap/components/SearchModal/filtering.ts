@@ -1,4 +1,5 @@
 import { Token } from "uniswap-v2-sdk-scroll"
+
 import { isAddress } from "../../utils"
 
 export function filterTokens(tokens: Token[], search: string): Token[] {

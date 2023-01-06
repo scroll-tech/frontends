@@ -1,9 +1,11 @@
-import { useContext } from "react"
 import classNames from "classnames"
+import { useContext } from "react"
+import { ReactComponent as TransferIcon } from "src/assets/svgs/transfer.svg"
+
 import IconButton from "@mui/material/IconButton"
 import SvgIcon from "@mui/material/SvgIcon"
+
 import { StyleContext } from "./useSendStyles"
-import { ReactComponent as TransferIcon } from "src/assets/svgs/transfer.svg"
 
 const SendTranferButton = ({ disabled, onClick }) => {
   const styles = useContext(StyleContext)

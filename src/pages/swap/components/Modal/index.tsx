@@ -1,11 +1,11 @@
-import React from "react"
-import styled, { css } from "styled-components"
-import { animated, useTransition, useSpring } from "react-spring"
-import { DialogOverlay, DialogContent } from "@reach/dialog"
-import { isMobile } from "react-device-detect"
+import { DialogContent, DialogOverlay } from "@reach/dialog"
 import "@reach/dialog/styles.css"
 import { transparentize } from "polished"
+import React from "react"
+import { isMobile } from "react-device-detect"
+import { animated, useSpring, useTransition } from "react-spring"
 import { useGesture } from "react-use-gesture"
+import styled, { css } from "styled-components"
 
 const AnimatedDialogOverlay = animated(DialogOverlay)
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -59,13 +59,15 @@ const StyledDialogContent = styled(({ minHeight, maxHeight, mobile, isOpen, ...r
     `}
     ${({ theme, mobile }) => theme.mediaWidth.upToSmall`
       width:  85vw;
-      ${mobile &&
+      ${
+        mobile &&
         css`
           width: 100vw;
           border-radius: 20px;
           border-bottom-left-radius: 0;
           border-bottom-right-radius: 0;
-        `}
+        `
+      }
     `}
   }
 `

@@ -1,4 +1,5 @@
 import { Stack } from "@mui/material"
+
 import LogoIcon from "@/assets/images/logo_with_text.png"
 
 const Logo = () => {

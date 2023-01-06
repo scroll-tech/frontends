@@ -1,12 +1,12 @@
-import React from "react"
-import styled from "styled-components"
 import { darken } from "polished"
-import { useTranslation } from "react-i18next"
-import { NavLink, Link as HistoryLink } from "react-router-dom-v5"
-
+import React from "react"
 import { ArrowLeft } from "react-feather"
-import { RowBetween } from "../Row"
+import { useTranslation } from "react-i18next"
+import { Link as HistoryLink, NavLink } from "react-router-dom-v5"
+import styled from "styled-components"
+
 import QuestionHelper from "../QuestionHelper"
+import { RowBetween } from "../Row"
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}

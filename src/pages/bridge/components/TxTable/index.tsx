@@ -1,25 +1,27 @@
 import { useCallback, useMemo } from "react"
-import {
-  Typography,
-  Table,
-  TableContainer,
-  Paper,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-  Stack,
-  Chip,
-  Pagination,
-  Skeleton,
-  CircularProgress,
-} from "@mui/material"
 import { makeStyles } from "tss-react/mui"
+
+import {
+  Chip,
+  CircularProgress,
+  Pagination,
+  Paper,
+  Skeleton,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from "@mui/material"
+
 import Link from "@/components/Link"
 import { networks } from "@/constants"
-import useSymbol from "@/hooks/useSymbol"
-import { truncateHash, generateExploreLink } from "@/utils"
 import { useApp } from "@/contexts/AppContextProvider"
+import useSymbol from "@/hooks/useSymbol"
+import { generateExploreLink, truncateHash } from "@/utils"
 
 const useStyles = makeStyles()(theme => {
   return {

@@ -1,7 +1,10 @@
-import { useState, SyntheticEvent } from "react"
-import { Tooltip, Zoom } from "@mui/material"
 import copy from "copy-to-clipboard"
+import { SyntheticEvent, useState } from "react"
+
+import { Tooltip, Zoom } from "@mui/material"
+
 import { ReactComponent as CopyIcon } from "@/assets/svgs/copy.svg"
+
 import MiniButton from "../components/Button/MiniButton"
 
 const CopyButton = (props: any) => {

@@ -1,17 +1,17 @@
+import React from "react"
 import { isMobile } from "react-device-detect"
 import { Text } from "rebass"
+import styled from "styled-components"
 import { ChainId } from "uniswap-v2-sdk-scroll"
 
-import styled from "styled-components"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+
 import Logo from "../../assets/images/logo.png"
 import { useDarkModeManager } from "../../state/user/hooks"
 import { useETHBalances } from "../../state/wallet/hooks"
 import { YellowCard } from "../Card"
-import Settings from "../Settings"
-
-import React from "react"
 import { RowBetween } from "../Row"
+import Settings from "../Settings"
 import Web3Status from "../Web3Status"
 
 const HeaderFrame = styled.div`

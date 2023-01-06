@@ -1,14 +1,16 @@
 // /* eslint-disable */
-import { useMemo, FC, ChangeEvent } from "react"
 import { BigNumber } from "ethers"
+import { ChangeEvent, FC, useMemo } from "react"
 import { makeStyles } from "tss-react/mui"
-import { Card, Typography, Skeleton, MenuItem } from "@mui/material"
-import LargeTextField from "../components/LargeTextField"
-import RaisedSelect from "../components/RaisedSelect"
-import SelectOption from "../components/RaisedSelect/SelectOption"
+
+import { Card, MenuItem, Skeleton, Typography } from "@mui/material"
+
 import { Token } from "@/constants"
 import { toTokenDisplay } from "@/utils"
 
+import LargeTextField from "../components/LargeTextField"
+import RaisedSelect from "../components/RaisedSelect"
+import SelectOption from "../components/RaisedSelect/SelectOption"
 import NetworkLabel from "./NetworkLabel"
 import SelectedToken from "./SelectedToken"
 

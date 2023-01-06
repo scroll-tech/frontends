@@ -1,8 +1,9 @@
 import React from "react"
-import { Route, Routes, useLocation } from "react-router-dom"
-import LoadingPage from "@/components/LoadingPage"
 import ReactGA from "react-ga4"
 import { HelmetProvider } from "react-helmet-async"
+import { Route, Routes, useLocation } from "react-router-dom"
+
+import LoadingPage from "@/components/LoadingPage"
 
 const Prealpha = React.lazy(() => import("./Prealpha"))
 const Homepage = React.lazy(() => import("./Homepage"))

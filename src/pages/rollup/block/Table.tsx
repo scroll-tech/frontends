@@ -1,16 +1,19 @@
+import dayjs from "dayjs"
 import React from "react"
-import { styled } from "@mui/material/styles"
+
+import { Link } from "@mui/material"
 import TableBody from "@mui/material/TableBody"
 import TableContainer from "@mui/material/TableContainer"
 import TableHead from "@mui/material/TableHead"
 import TableRow from "@mui/material/TableRow"
-import { Link } from "@mui/material"
+import { styled } from "@mui/material/styles"
+
 import { l2ExplorerUrl } from "@/constants/index"
-import Tooltip from "../components/Tooltip"
 
 import Table from "../components/Table"
 import TableCell from "../components/TableCell"
-import dayjs from "dayjs"
+import Tooltip from "../components/Tooltip"
+
 const relativeTime = require("dayjs/plugin/relativeTime")
 dayjs.extend(relativeTime)
 

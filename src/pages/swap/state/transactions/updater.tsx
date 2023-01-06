@@ -1,6 +1,8 @@
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
+
+import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+
 import { useAddPopup, useBlockNumber } from "../application/hooks"
 import { AppDispatch, AppState } from "../index"
 import { checkedTransaction, finalizeTransaction } from "./actions"

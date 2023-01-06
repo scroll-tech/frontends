@@ -4,7 +4,6 @@ import {
   BigintIsh,
   Currency,
   CurrencyAmount,
-  currencyEquals,
   ETHER,
   JSBI,
   Pair,
@@ -15,8 +14,11 @@ import {
   Trade,
   TradeType,
   WETH,
+  currencyEquals,
 } from "uniswap-v2-sdk-scroll"
+
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+
 import { useAllTokens } from "../hooks/Tokens"
 import { useV1FactoryContract } from "../hooks/useContract"
 import { Version } from "../hooks/useToggledVersion"
@@ -45,12 +47,10 @@ function useMockV1Pair(inputCurrency?: Currency): MockV1Pair | undefined {
   const tokenBalance = useTokenBalance(v1PairAddress, token)
   const ETHBalance = useETHBalances([v1PairAddress])[v1PairAddress ?? ""]
 
-  return useMemo(() => (token && tokenBalance && ETHBalance && inputCurrency ? new MockV1Pair(ETHBalance.raw, tokenBalance) : undefined), [
-    ETHBalance,
-    inputCurrency,
-    token,
-    tokenBalance,
-  ])
+  return useMemo(
+    () => (token && tokenBalance && ETHBalance && inputCurrency ? new MockV1Pair(ETHBalance.raw, tokenBalance) : undefined),
+    [ETHBalance, inputCurrency, token, tokenBalance],
+  )
 }
 
 // returns all v1 exchange addresses in the user's token list
