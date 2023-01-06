@@ -1,7 +1,9 @@
 import React, { useContext } from "react"
 import { AlertCircle, CheckCircle } from "react-feather"
 import styled, { ThemeContext } from "styled-components"
+
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+
 import { TYPE } from "../../theme"
 import { ExternalLink } from "../../theme/components"
 import { getEtherscanLink } from "../../utils"

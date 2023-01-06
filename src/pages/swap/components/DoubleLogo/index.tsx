@@ -1,6 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 import { Currency } from "uniswap-v2-sdk-scroll"
+
 import CurrencyLogo from "../CurrencyLogo"
 
 const Wrapper = styled.div<{ margin: boolean; sizeraw: number }>`

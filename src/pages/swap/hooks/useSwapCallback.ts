@@ -2,7 +2,9 @@ import { BigNumber } from "@ethersproject/bignumber"
 import { Contract } from "@ethersproject/contracts"
 import { useMemo } from "react"
 import { JSBI, Percent, Router, SwapParameters, Trade, TradeType } from "uniswap-v2-sdk-scroll"
+
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+
 import { BIPS_BASE, DEFAULT_DEADLINE_FROM_NOW, INITIAL_ALLOWED_SLIPPAGE } from "../constants"
 import { getTradeVersion, useV1TradeExchangeAddress } from "../data/V1"
 import { useTransactionAdder } from "../state/transactions/hooks"

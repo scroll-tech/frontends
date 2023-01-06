@@ -1,6 +1,8 @@
-import { Link } from "react-router-dom"
-import Logo from "@/components/Logo"
 import dayjs from "dayjs"
+import { Link } from "react-router-dom"
+
+import Logo from "@/components/Logo"
+
 import Subscribe from "./Subscribe"
 
 const Footer = () => {

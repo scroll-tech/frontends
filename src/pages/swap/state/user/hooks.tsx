@@ -2,17 +2,18 @@ import flatMap from "lodash.flatmap"
 import { useCallback, useMemo } from "react"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { ChainId, Pair, Token } from "uniswap-v2-sdk-scroll"
-import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from "../../constants"
 
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+
+import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from "../../constants"
 import { useAllTokens } from "../../hooks/Tokens"
 import { AppDispatch, AppState } from "../index"
 import {
+  SerializedPair,
+  SerializedToken,
   addSerializedPair,
   addSerializedToken,
   removeSerializedToken,
-  SerializedPair,
-  SerializedToken,
   updateUserDarkMode,
   updateUserDeadline,
   updateUserExpertMode,

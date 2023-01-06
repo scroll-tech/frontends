@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material"
-
 import { styled } from "@mui/system"
+
 import SuccessIcon from "@/assets/images/homepage/home/success.png"
 
 const RoadmapList = styled("ul")(

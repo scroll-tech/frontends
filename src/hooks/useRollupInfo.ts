@@ -1,5 +1,6 @@
 import useSWR from "swr"
-import { fetchLastBatchIndexesUrl, fetchBatchDetailUrl, fetchBlockListUrl } from "@/apis/rollupscan"
+
+import { fetchBatchDetailUrl, fetchBlockListUrl, fetchLastBatchIndexesUrl } from "@/apis/rollupscan"
 
 const fetcher = (url: string) => scrollRequest(url)
 

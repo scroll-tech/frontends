@@ -1,5 +1,7 @@
-import Typography from "@mui/material/Typography"
 import { makeStyles } from "tss-react/mui"
+
+import Typography from "@mui/material/Typography"
+
 import { networks } from "@/constants"
 
 const useStyles = makeStyles()(theme => ({

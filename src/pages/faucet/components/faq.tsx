@@ -1,8 +1,9 @@
 import * as React from "react"
+
 import Faq, { FaqItem } from "@/components/Faq"
 import Link from "@/components/Link"
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import { Addresses, ChainId, SiteMap } from "@/constants"
+import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 
 const addToMetaMask = async (autoconnect: any) => {
   await window.ethereum.request({

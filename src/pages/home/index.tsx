@@ -1,8 +1,11 @@
 import { ReactNode, useState } from "react"
-import { Snackbar, Alert } from "@mui/material"
-import SectionTitle from "./components/sectionTitle"
+
+import { Alert, Snackbar } from "@mui/material"
+
+import { Addresses, TESTNET_NAME, addresses, documentation, navigation } from "@/constants/index"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
-import { addresses, navigation, documentation, TESTNET_NAME, Addresses } from "@/constants/index"
+
+import SectionTitle from "./components/sectionTitle"
 
 /**
  * Returns button to add network to MetaMask

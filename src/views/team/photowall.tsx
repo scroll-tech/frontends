@@ -1,5 +1,8 @@
 import { Box } from "@mui/material"
+import { useTheme } from "@mui/material/styles"
+import useMediaQuery from "@mui/material/useMediaQuery"
 import { styled } from "@mui/system"
+
 import Pic1 from "@/assets/images/homepage/team/pic_1.jpg"
 import Pic1Webp from "@/assets/images/homepage/team/pic_1.webp"
 import Pic2 from "@/assets/images/homepage/team/pic_2.jpg"
@@ -10,8 +13,6 @@ import Pic4 from "@/assets/images/homepage/team/pic_4.jpg"
 import Pic4Webp from "@/assets/images/homepage/team/pic_4.webp"
 import Pic5 from "@/assets/images/homepage/team/pic_5.jpg"
 import Pic5Webp from "@/assets/images/homepage/team/pic_5.webp"
-import useMediaQuery from "@mui/material/useMediaQuery"
-import { useTheme } from "@mui/material/styles"
 import WebpImage from "@/components/WebpImage"
 
 const Photo = styled(WebpImage)(

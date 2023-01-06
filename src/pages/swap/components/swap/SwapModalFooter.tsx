@@ -3,6 +3,7 @@ import { Repeat } from "react-feather"
 import { Text } from "rebass"
 import { ThemeContext } from "styled-components"
 import { Trade, TradeType } from "uniswap-v2-sdk-scroll"
+
 import { Field } from "../../state/swap/actions"
 import { TYPE } from "../../theme"
 import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown, formatExecutionPrice, warningSeverity } from "../../utils/prices"

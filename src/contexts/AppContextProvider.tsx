@@ -1,16 +1,18 @@
-import { createContext, useContext, useEffect, useState } from "react"
 import { JsonRpcProvider } from "@ethersproject/providers"
 import { ethers, providers } from "ethers"
-import useSWR from "swr"
+import { createContext, useContext, useEffect, useState } from "react"
 import useStorage from "squirrel-gill"
-import { Snackbar, Alert } from "@mui/material"
-import { ChainId, RPCUrl, ETH_SYMBOL, GatewayRouterProxyAddr } from "@/constants"
-import { networks, nativeTokenList, Token } from "@/constants/networks"
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import useSWR from "swr"
+
+import { Alert, Snackbar } from "@mui/material"
+
+import { tokenListUrl } from "@/apis/dynamic"
 import L1_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L1_GATEWAY_ROUTER_PROXY_ADDR.json"
 import L2_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L2_GATEWAY_ROUTER_PROXY_ADDR.json"
+import { ChainId, ETH_SYMBOL, GatewayRouterProxyAddr, RPCUrl } from "@/constants"
+import { Token, nativeTokenList, networks } from "@/constants/networks"
+import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import useTxHistory, { TxHistory } from "@/hooks/useTxHistory"
-import { tokenListUrl } from "@/apis/dynamic"
 import { isProduction } from "@/utils"
 
 type AppContextProps = {

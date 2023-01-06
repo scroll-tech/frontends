@@ -1,23 +1,23 @@
 import React, { useContext, useMemo } from "react"
 import { Link } from "react-router-dom-v5"
+import { Text } from "rebass"
 import { ThemeContext } from "styled-components"
 import { Pair } from "uniswap-v2-sdk-scroll"
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
-import { SwapPoolTabs } from "../../components/NavigationTabs"
 
-import { Text } from "rebass"
+import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+
 import { ButtonPrimary } from "../../components/Button"
 import { LightCard } from "../../components/Card"
 import { AutoColumn } from "../../components/Column"
+import { SwapPoolTabs } from "../../components/NavigationTabs"
 import FullPositionCard from "../../components/PositionCard"
 import Question from "../../components/QuestionHelper"
 import { RowBetween } from "../../components/Row"
-import { useTokenBalancesWithLoadingIndicator } from "../../state/wallet/hooks"
-import { TYPE } from "../../theme"
-
 import { Dots } from "../../components/swap/styleds"
 import { usePairs } from "../../data/Reserves"
 import { toV2LiquidityToken, useTrackedTokenPairs } from "../../state/user/hooks"
+import { useTokenBalancesWithLoadingIndicator } from "../../state/wallet/hooks"
+import { TYPE } from "../../theme"
 import AppBody from "../AppBody"
 
 export default function Pool() {

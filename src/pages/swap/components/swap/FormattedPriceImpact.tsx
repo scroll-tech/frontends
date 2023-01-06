@@ -1,5 +1,6 @@
 import React from "react"
 import { Percent } from "uniswap-v2-sdk-scroll"
+
 import { ONE_BIPS } from "../../constants"
 import { warningSeverity } from "../../utils/prices"
 import { ErrorText } from "./styleds"

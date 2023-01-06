@@ -1,14 +1,16 @@
 import { useRef } from "react"
 import { makeStyles } from "tss-react/mui"
-import { Popper, Typography, Card, Backdrop, Divider, ClickAwayListener } from "@mui/material"
+
 import CloseIcon from "@mui/icons-material/Close"
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import { Backdrop, Card, ClickAwayListener, Divider, Popper, Typography } from "@mui/material"
+
 import { useApp } from "@/contexts/AppContextProvider"
-import Button from "@/pages/bridge/components/Button"
+import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import ManageWallet from "@/pages/bridge/Header/ManageWallet"
 import TransactionHistory from "@/pages/bridge/Header/TransactionHistory"
-import { truncateAddress } from "@/utils"
+import Button from "@/pages/bridge/components/Button"
 import useBridgeStore from "@/stores/bridgeStore"
+import { truncateAddress } from "@/utils"
 
 const useStyles = makeStyles()(theme => ({
   container: {

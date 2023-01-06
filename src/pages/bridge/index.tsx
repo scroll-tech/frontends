@@ -1,12 +1,14 @@
-import { CacheProvider } from "@emotion/react"
 import createCache from "@emotion/cache"
+import { CacheProvider } from "@emotion/react"
 import { QueryClient, QueryClientProvider } from "react-query"
+
 import AppProvider from "@/contexts/AppContextProvider"
-import ThemeProvider from "./theme"
-import Header from "./Header"
-import Content from "./Content"
+
 import BridgeTitle from "./BridgeTitle"
+import Content from "./Content"
 import FAQ from "./FAQ"
+import Header from "./Header"
+import ThemeProvider from "./theme"
 
 export const muiCache = createCache({
   key: "mui",

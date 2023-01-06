@@ -1,6 +1,7 @@
 import React, { useContext } from "react"
 import { ThemeContext } from "styled-components"
 import { Trade, TradeType } from "uniswap-v2-sdk-scroll"
+
 import { Field } from "../../state/swap/actions"
 import { useUserSlippageTolerance } from "../../state/user/hooks"
 import { TYPE } from "../../theme"
@@ -9,8 +10,8 @@ import { AutoColumn } from "../Column"
 import QuestionHelper from "../QuestionHelper"
 import { RowBetween, RowFixed } from "../Row"
 import FormattedPriceImpact from "./FormattedPriceImpact"
-import { SectionBreak } from "./styleds"
 import SwapRoute from "./SwapRoute"
+import { SectionBreak } from "./styleds"
 
 function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippage: number }) {
   const theme = useContext(ThemeContext)

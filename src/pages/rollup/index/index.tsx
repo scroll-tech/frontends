@@ -1,11 +1,13 @@
-import { Box, Snackbar, Alert } from "@mui/material"
+import { Alert, Box, Snackbar } from "@mui/material"
 import { styled } from "@mui/material/styles"
+
 import { useLastBlockNums } from "@/hooks/useRollupInfo"
-import Table from "./Table"
+import useRollupStore from "@/stores/rollupStore"
+
+import Header from "../components/Header"
 import Card from "./Card"
 import Searchbar from "./Searchbar"
-import Header from "../components/Header"
-import useRollupStore from "@/stores/rollupStore"
+import Table from "./Table"
 
 const InfoBox = styled(Box)(({ theme }) => ({
   display: "flex",
