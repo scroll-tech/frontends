@@ -1,6 +1,8 @@
-import { Button, Box, Typography } from "@mui/material"
-import { styled } from "@mui/system"
 import { useNavigate } from "react-router-dom"
+
+import { Box, Button, Typography } from "@mui/material"
+import { styled } from "@mui/system"
+
 import WebpImage from "@/components/WebpImage"
 
 const ArticleInfo = styled(Box)(

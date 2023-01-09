@@ -1,5 +1,5 @@
-import { styled } from "@mui/material/styles"
 import Table from "@mui/material/Table"
+import { styled } from "@mui/material/styles"
 
 const StyledTable = styled(Table)(({ theme }) => ({
   marginTop: "1.7rem",

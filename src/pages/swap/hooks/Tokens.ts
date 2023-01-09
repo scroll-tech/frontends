@@ -1,12 +1,13 @@
 import { parseBytes32String } from "@ethersproject/strings"
 import { useMemo } from "react"
-import { Currency, currencyEquals, ETHER, Token } from "uniswap-v2-sdk-scroll"
+import { Currency, ETHER, Token, currencyEquals } from "uniswap-v2-sdk-scroll"
+
+import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+
 import { useSelectedTokenList } from "../state/lists/hooks"
 import { NEVER_RELOAD, useSingleCallResult } from "../state/multicall/hooks"
 import { useUserAddedTokens } from "../state/user/hooks"
 import { isAddress } from "../utils"
-
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import { useBytes32TokenContract, useTokenContract } from "./useContract"
 
 export function useAllTokens(): { [address: string]: Token } {

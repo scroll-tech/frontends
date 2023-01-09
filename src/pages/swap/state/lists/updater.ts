@@ -1,7 +1,9 @@
-import { getVersionUpgrade, minVersionBump, VersionUpgrade } from "@uniswap/token-lists"
+import { VersionUpgrade, getVersionUpgrade, minVersionBump } from "@uniswap/token-lists"
 import { useCallback, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
+
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+
 import { useFetchListCallback } from "../../hooks/useFetchListCallback"
 import useInterval from "../../hooks/useInterval"
 import useIsWindowVisible from "../../hooks/useIsWindowVisible"

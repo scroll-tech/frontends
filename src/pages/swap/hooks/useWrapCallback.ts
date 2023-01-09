@@ -1,6 +1,8 @@
 import { useMemo } from "react"
-import { Currency, currencyEquals, ETHER, WETH } from "uniswap-v2-sdk-scroll"
+import { Currency, ETHER, WETH, currencyEquals } from "uniswap-v2-sdk-scroll"
+
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+
 import { tryParseAmount } from "../state/swap/hooks"
 import { useTransactionAdder } from "../state/transactions/hooks"
 import { useCurrencyBalance } from "../state/wallet/hooks"

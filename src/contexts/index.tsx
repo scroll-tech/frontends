@@ -1,4 +1,5 @@
 import React, { createContext, useContext } from "react"
+
 import useTheme, { Theme } from "./useTheme"
 
 interface AppContextProps {

@@ -1,9 +1,11 @@
-import { Typography } from "@mui/material"
 import { makeStyles } from "tss-react/mui"
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+
+import { Typography } from "@mui/material"
+
 import Faq, { FaqItem } from "@/components/Faq"
 import Link from "@/components/Link"
 import { SiteMap } from "@/constants"
+import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 
 const useStyles = makeStyles()(() => {
   return {

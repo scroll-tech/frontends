@@ -2,7 +2,10 @@ import { darken, lighten } from "polished"
 import { useMemo } from "react"
 import { Activity } from "react-feather"
 import styled, { css } from "styled-components"
+
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import { switchNetwork } from "@/utils"
+
 import { SUPPORTED_CHAINID } from "../../constants"
 import useENSName from "../../hooks/useENSName"
 import { useHasSocks } from "../../hooks/useSocksBalance"
@@ -11,13 +14,10 @@ import { isTransactionRecent, useAllTransactions } from "../../state/transaction
 import { TransactionDetails } from "../../state/transactions/reducer"
 import { shortenAddress } from "../../utils"
 import { ButtonSecondary } from "../Button"
-
 import Identicon from "../Identicon"
 import Loader from "../Loader"
-
 import { RowBetween } from "../Row"
 import WalletModal from "../WalletModal"
-import { switchNetwork } from "@/utils"
 
 const Web3StatusGeneric = styled(ButtonSecondary)`
   ${({ theme }) => theme.flexRowNoWrap}

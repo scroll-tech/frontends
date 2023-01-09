@@ -1,18 +1,20 @@
-import { ThemeProvider } from "@mui/material/styles"
-import React from "react"
-import ReactDOM from "react-dom/client"
 import * as Sentry from "@sentry/react"
+import { BrowserTracing } from "@sentry/tracing"
+import React from "react"
+import { isMobile } from "react-device-detect"
+import ReactDOM from "react-dom/client"
 import ReactGA from "react-ga4"
 import { BrowserRouter } from "react-router-dom"
-import { isMobile } from "react-device-detect"
-import { BrowserTracing } from "@sentry/tracing"
+
+import { ThemeProvider } from "@mui/material/styles"
+
+import App from "./App"
+import "./appGlobals"
 import "./index.css"
 import reportWebVitals from "./reportWebVitals"
 import "./styles/globals.less"
 import "./styles/index.less"
 import themeLight from "./theme/light"
-import App from "./App"
-import "./appGlobals"
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 

@@ -3,7 +3,9 @@ import React, { useCallback, useMemo, useState } from "react"
 import { AlertTriangle } from "react-feather"
 import styled from "styled-components"
 import { Token } from "uniswap-v2-sdk-scroll"
+
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+
 import { useAllTokens } from "../../hooks/Tokens"
 import { ExternalLink, TYPE } from "../../theme"
 import { getEtherscanLink, shortenAddress } from "../../utils"

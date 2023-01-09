@@ -1,7 +1,9 @@
 import { useMemo } from "react"
 import { Currency, CurrencyAmount, ETHER, JSBI, Token, TokenAmount } from "uniswap-v2-sdk-scroll"
-import ERC20_INTERFACE from "../../constants/abis/erc20"
+
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+
+import ERC20_INTERFACE from "../../constants/abis/erc20"
 import { useAllTokens } from "../../hooks/Tokens"
 import { useMulticallContract } from "../../hooks/useContract"
 import { isAddress } from "../../utils"

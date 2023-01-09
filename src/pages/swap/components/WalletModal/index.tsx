@@ -1,9 +1,11 @@
 import { useEffect } from "react"
 import styled from "styled-components"
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
-import { useWalletModalOpen, useWalletModalToggle } from "../../state/application/hooks"
+
 import { Addresses } from "@/constants"
+import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+
 import { SUPPORTED_CHAINID } from "../../constants"
+import { useWalletModalOpen, useWalletModalToggle } from "../../state/application/hooks"
 import AccountDetails from "../AccountDetails"
 import Modal from "../Modal"
 

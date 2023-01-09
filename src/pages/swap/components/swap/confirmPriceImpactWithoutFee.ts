@@ -1,4 +1,5 @@
 import { Percent } from "uniswap-v2-sdk-scroll"
+
 import { ALLOWED_PRICE_IMPACT_HIGH, PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN } from "../../constants"
 
 /**

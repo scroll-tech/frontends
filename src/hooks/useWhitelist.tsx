@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useContext, createContext } from "react"
+import React, { createContext, useContext, useEffect, useState } from "react"
+
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 
 export const WalletConnectedStatus = {

@@ -1,8 +1,9 @@
 import { useMemo } from "react"
+
 import { ThemeProvider, createTheme } from "@mui/material/styles"
 import createBreakpoints from "@mui/system/createTheme/createBreakpoints"
 
-import { typographyOptions, paletteOptions } from "./addition"
+import { paletteOptions, typographyOptions } from "./addition"
 
 // TODO: need to merge with outer theme
 const breakpoints = createBreakpoints({})

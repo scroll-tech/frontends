@@ -1,14 +1,14 @@
-import { createContext, useContext, useEffect, useCallback, useState, useMemo } from "react"
-import { init, useConnectWallet, useSetChain, useWallets } from "@web3-onboard/react"
-import injectedModule from "@web3-onboard/injected-wallets"
 import { getAddress } from "@ethersproject/address"
-import { ethers, BigNumber, providers } from "ethers"
-import useTxStore from "@/stores/txStore"
+import injectedModule from "@web3-onboard/injected-wallets"
+import { init, useConnectWallet, useSetChain, useWallets } from "@web3-onboard/react"
+import { BigNumber, ethers, providers } from "ethers"
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react"
 
-import logger from "@/utils/logger"
+import { networks } from "@/constants"
+import useTxStore from "@/stores/txStore"
 import { convertHexadecimal, toHexadecimal } from "@/utils"
 import { loadState, saveState } from "@/utils/localStorage"
-import { networks } from "@/constants"
+import logger from "@/utils/logger"
 
 type Props = {
   onboard: any

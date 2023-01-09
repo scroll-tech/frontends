@@ -1,6 +1,8 @@
-import useTxStore from "@/stores/txStore"
-import useBridgeStore from "@/stores/bridgeStore"
 import { makeStyles } from "tss-react/mui"
+
+import useBridgeStore from "@/stores/bridgeStore"
+import useTxStore from "@/stores/txStore"
+
 import Button from "../components/Button"
 import TxTable from "../components/TxTable"
 

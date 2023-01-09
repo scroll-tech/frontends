@@ -1,7 +1,9 @@
 import { useMemo } from "react"
 import { JSBI } from "uniswap-v2-sdk-scroll"
-import { NEVER_RELOAD, useSingleCallResult } from "../state/multicall/hooks"
+
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+
+import { NEVER_RELOAD, useSingleCallResult } from "../state/multicall/hooks"
 import { useSocksController } from "./useContract"
 
 export default function useSocksBalance(): JSBI | undefined {
