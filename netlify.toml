@@ -14,6 +14,9 @@ from = "/*"
 to = "/"
 status = 200
 
+[[plugins]]
+package = "/plugins/netlify/env"
+
 [build.environment]
 # Settings in the [build] context are global and are applied to
 # all contexts unless otherwise overridden by more specific contexts.
