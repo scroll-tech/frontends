@@ -1,5 +1,6 @@
-import { Link as MuiLink } from "@mui/material"
 import { Link as RouterLink } from "react-router-dom"
+
+import { Link as MuiLink } from "@mui/material"
 
 const Link = props => {
   const { external, underline = "none", ...restProps } = props

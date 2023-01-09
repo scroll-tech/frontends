@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useState } from "react"
 import useSWR from "swr"
-import { ChainId, BRIDGE_PAGE_SIZE } from "@/constants"
+
+import { fetchTxByHashUrl } from "@/apis/bridge"
+import { BRIDGE_PAGE_SIZE, ChainId } from "@/constants"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import useTxStore from "@/stores/txStore"
-import { fetchTxByHashUrl } from "@/apis/bridge"
+
 export interface TxHistory {
   blockNumbers: number[]
   errorMessage: string

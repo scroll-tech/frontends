@@ -3,6 +3,7 @@ import { ParsedQs } from "qs"
 import { useCallback, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Currency, CurrencyAmount, ETHER, JSBI, Token, TokenAmount, Trade } from "uniswap-v2-sdk-scroll"
+
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 
 import { useV1Trade } from "../../data/V1"

@@ -1,4 +1,5 @@
 import { createTheme } from "@mui/material/styles"
+
 import { palette, typographyOptions } from "./typographyOptions"
 
 export const boxShadows = {

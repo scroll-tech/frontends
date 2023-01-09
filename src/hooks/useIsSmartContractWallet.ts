@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 
 export default function useIsSmartContractWallet() {

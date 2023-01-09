@@ -5,14 +5,14 @@ import { Link } from "react-router-dom-v5"
 import { Text } from "rebass"
 import styled from "styled-components"
 import { JSBI, Pair, Percent } from "uniswap-v2-sdk-scroll"
-import { useTotalSupply } from "../../data/TotalSupply"
 
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+
+import { useTotalSupply } from "../../data/TotalSupply"
 import { useTokenBalance } from "../../state/wallet/hooks"
 import { currencyId } from "../../utils/currencyId"
 import { unwrappedToken } from "../../utils/wrappedCurrency"
 import { ButtonSecondary } from "../Button"
-
 import Card, { GreyCard } from "../Card"
 import { AutoColumn } from "../Column"
 import CurrencyLogo from "../CurrencyLogo"

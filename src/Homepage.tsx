@@ -1,11 +1,13 @@
-import { Routes, Route, useLocation } from "react-router-dom"
 import { Helmet } from "react-helmet-async"
-import NotFound from "@/pages/404"
-import Header from "@/components/Header"
+import { Route, Routes, useLocation } from "react-router-dom"
+
 import Footer from "@/components/Footer"
+import Header from "@/components/Header"
 import ScrollToTop from "@/hooks/useScrollToTop"
-import routes from "./routes/homepageRoutes"
+import NotFound from "@/pages/404"
+
 import useMatchedRoute from "./hooks/useMatchedRoute"
+import routes from "./routes/homepageRoutes"
 
 const hiddenFooterRoutesKeywords = ["blog"]
 

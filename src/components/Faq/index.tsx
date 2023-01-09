@@ -1,6 +1,8 @@
-import { Accordion, AccordionSummary, AccordionDetails, Typography, Theme } from "@mui/material"
 import { makeStyles } from "tss-react/mui"
+
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
+import { Accordion, AccordionDetails, AccordionSummary, Theme, Typography } from "@mui/material"
+
 import Link from "@/components/Link"
 import { SiteMap, TESTNET_NAME } from "@/constants"
 

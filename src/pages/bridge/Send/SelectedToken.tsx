@@ -1,5 +1,6 @@
-import SelectOption from "../components/RaisedSelect/SelectOption"
 import { makeStyles } from "tss-react/mui"
+
+import SelectOption from "../components/RaisedSelect/SelectOption"
 
 const useStyles = makeStyles()(theme => {
   return {

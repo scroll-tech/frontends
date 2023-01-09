@@ -1,8 +1,11 @@
 import { useState } from "react"
 import MailchimpSubscribe from "react-mailchimp-subscribe"
-import Button from "@/components/Button/Button"
+
 import { useTheme } from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
+
+import Button from "@/components/Button/Button"
+
 // import { IntrinsicAttributes } from '@types/react-mailchimp-subscribe'
 
 const url = "https://gmail.us14.list-manage.com/subscribe/post?u=3b1d822eb27b2fa64d82d430b&id=0b4603244e"

@@ -1,5 +1,6 @@
 import { BigNumber } from "@ethersproject/bignumber"
 import { Token, TokenAmount } from "uniswap-v2-sdk-scroll"
+
 import { useTokenContract } from "../hooks/useContract"
 import { useSingleCallResult } from "../state/multicall/hooks"
 

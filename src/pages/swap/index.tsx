@@ -1,6 +1,7 @@
 import "inter-ui"
 import { StrictMode } from "react"
 import { Provider } from "react-redux"
+
 import "./i18n"
 import App from "./pages/App"
 import store from "./state"

@@ -1,15 +1,18 @@
-import { l1ExplorerUrl } from "@/constants/index"
-import { useBatchDetail } from "@/hooks/useRollupInfo"
+import dayjs from "dayjs"
+import { useEffect } from "react"
+import { Link as RouterLink, useParams } from "react-router-dom"
+
 import { InfoOutlined, NavigateNext, OpenInNew } from "@mui/icons-material"
 import { Box, Breadcrumbs, Divider, Link, Tooltip, Typography } from "@mui/material"
 import { styled, useTheme } from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
-import { useEffect } from "react"
-import { Link as RouterLink, useParams } from "react-router-dom"
-import Header from "../components/Header"
 
-import dayjs from "dayjs"
+import { l1ExplorerUrl } from "@/constants/index"
+import { useBatchDetail } from "@/hooks/useRollupInfo"
+
+import Header from "../components/Header"
 import Spinning from "../components/Spinning"
+
 const relativeTime = require("dayjs/plugin/relativeTime")
 const utc = require("dayjs/plugin/utc")
 
@@ -51,12 +54,7 @@ const Blocks = () => {
   const renderTimestamp = timestamp => {
     if (!timestamp) return "-"
     const date = new Date(timestamp * 1000)
-    return `${dayjs(date)
-      .fromNow()
-      .toString()} (${dayjs(date)
-      .utc()
-      .local()
-      .format("MMM-DD-YYYY hh:mm:ss A Z UTC")})`
+    return `${dayjs(date).fromNow().toString()} (${dayjs(date).utc().local().format("MMM-DD-YYYY hh:mm:ss A Z UTC")})`
   }
 
   const truncatedHash = (hash: string) => {

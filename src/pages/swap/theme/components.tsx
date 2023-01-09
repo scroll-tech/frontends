@@ -1,9 +1,9 @@
+import { darken } from "polished"
 import React, { HTMLProps, useCallback } from "react"
+import { ArrowLeft, X } from "react-feather"
 import ReactGA from "react-ga4"
 import { Link } from "react-router-dom-v5"
 import styled, { keyframes } from "styled-components"
-import { darken } from "polished"
-import { ArrowLeft, X } from "react-feather"
 
 export const Button = styled.button.attrs<{ warning: boolean }, { backgroundColor: string }>(({ warning, theme }) => ({
   backgroundColor: warning ? theme.red1 : theme.primary1,

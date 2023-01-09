@@ -1,5 +1,6 @@
-import { requireEnv } from "@/utils"
 import { ChainId, JSBI, Percent, Token, WETH } from "uniswap-v2-sdk-scroll"
+
+import { requireEnv } from "@/utils"
 
 export const ROUTER_ADDRESS = process.env.REACT_APP_ROUTER_ADDRESS as string
 

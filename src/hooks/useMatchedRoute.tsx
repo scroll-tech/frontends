@@ -1,4 +1,4 @@
-import { useLocation, matchPath } from "react-router-dom"
+import { matchPath, useLocation } from "react-router-dom"
 
 import HomepageRoutes from "@/routes/homepageRoutes"
 import PrealphaRoutes from "@/routes/prealphaRoutes"

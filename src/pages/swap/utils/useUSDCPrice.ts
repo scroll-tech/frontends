@@ -1,8 +1,10 @@
 import { useMemo } from "react"
-import { ChainId, Currency, currencyEquals, JSBI, Price, WETH } from "uniswap-v2-sdk-scroll"
+import { ChainId, Currency, JSBI, Price, WETH, currencyEquals } from "uniswap-v2-sdk-scroll"
+
+import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+
 import { USDC } from "../constants"
 import { PairState, usePairs } from "../data/Reserves"
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import { wrappedCurrency } from "./wrappedCurrency"
 
 /**

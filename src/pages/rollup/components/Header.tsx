@@ -1,5 +1,6 @@
-import { Typography, Box, Button } from "@mui/material"
+import { Box, Button, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
+
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import { truncateAddress } from "@/utils"
 

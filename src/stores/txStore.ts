@@ -1,9 +1,10 @@
+import produce from "immer"
 import create from "zustand"
 import { persist } from "zustand/middleware"
-import produce from "immer"
+
+import { fetchTxListUrl } from "@/apis/bridge"
 import { networks } from "@/constants"
 import { toTokenDisplay } from "@/utils"
-import { fetchTxListUrl } from "@/apis/bridge"
 
 interface TxStore {
   page: number

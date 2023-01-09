@@ -1,4 +1,3 @@
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import { TransactionResponse } from "@ethersproject/abstract-provider"
 import { AddressZero } from "@ethersproject/constants"
 import { Contract } from "@ethersproject/contracts"
@@ -6,6 +5,9 @@ import React, { useCallback, useMemo, useState } from "react"
 import ReactGA from "react-ga4"
 import { Redirect, RouteComponentProps } from "react-router"
 import { CurrencyAmount, Fraction, JSBI, Percent, Token, TokenAmount, WETH } from "uniswap-v2-sdk-scroll"
+
+import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+
 import { ButtonConfirmed } from "../../components/Button"
 import { LightCard } from "../../components/Card"
 import { AutoColumn } from "../../components/Column"

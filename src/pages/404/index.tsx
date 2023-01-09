@@ -1,8 +1,9 @@
-import { Button } from "@mui/material";
-import { useLocation, useNavigate } from "react-router-dom";
-import { makeStyles } from "tss-react/mui";
+import { useLocation, useNavigate } from "react-router-dom"
+import { makeStyles } from "tss-react/mui"
 
-const useStyles = makeStyles()((theme) => {
+import { Button } from "@mui/material"
+
+const useStyles = makeStyles()(theme => {
   return {
     wrapper: {
       width: "100%",
@@ -58,38 +59,32 @@ const useStyles = makeStyles()((theme) => {
         marginTop: "3.2rem",
       },
     },
-  };
-});
+  }
+})
 
 const NotFound = () => {
-  const { classes } = useStyles();
-  const { pathname } = useLocation();
-  const navigate = useNavigate();
+  const { classes } = useStyles()
+  const { pathname } = useLocation()
+  const navigate = useNavigate()
 
   const handleReturnHome = () => {
     if (pathname.startsWith("/prealpha")) {
-      navigate("/prealpha/");
-      return;
+      navigate("/prealpha/")
+      return
     }
-    navigate("/");
-  };
+    navigate("/")
+  }
   return (
     <div className={classes.wrapper}>
       <div className={classes.content}>
         <span className={classes.status}>404</span>
-        <span className={classes.message}>
-          Sorry, the page you are looking for is not found
-        </span>
-        <Button
-          className={classes.action}
-          variant="contained"
-          onClick={handleReturnHome}
-        >
+        <span className={classes.message}>Sorry, the page you are looking for is not found</span>
+        <Button className={classes.action} variant="contained" onClick={handleReturnHome}>
           Return home
         </Button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default NotFound;
+export default NotFound

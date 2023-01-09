@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react"
 import { BigNumber } from "ethers"
+import { useEffect, useState } from "react"
+
 import { useIsSmartContractWallet } from "@/hooks"
 import { toTokenDisplay } from "@/utils"
 

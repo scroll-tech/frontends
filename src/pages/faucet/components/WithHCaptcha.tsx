@@ -1,7 +1,8 @@
-import { useState, useRef, useEffect } from "react"
-import { CircularProgress, Stack } from "@mui/material"
-import { LoadingButton } from "@mui/lab"
 import { default as HCaptcha } from "@hcaptcha/react-hcaptcha"
+import { useEffect, useRef, useState } from "react"
+
+import { LoadingButton } from "@mui/lab"
+import { CircularProgress, Stack } from "@mui/material"
 
 const WithHCaptcha = props => {
   const { requestLoading, onRequest } = props

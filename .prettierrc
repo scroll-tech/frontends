@@ -7,6 +7,10 @@
   "bracketSpacing": true,
   "arrowParens": "avoid",
   "endOfLine": "auto",
+  "plugins": ["@trivago/prettier-plugin-sort-imports"],
+  "importOrder": ["^@mui/(.*)$", "^@/(.*)$", "^[./]"],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
   "overrides": [
     {
       "files": ".prettierrc",

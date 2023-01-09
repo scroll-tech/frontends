@@ -2,10 +2,12 @@ import React, { CSSProperties, MutableRefObject, useCallback, useMemo } from "re
 import { FixedSizeList } from "react-window"
 import { Text } from "rebass"
 import styled from "styled-components"
-import { Currency, CurrencyAmount, currencyEquals, ETHER, Token } from "uniswap-v2-sdk-scroll"
+import { Currency, CurrencyAmount, ETHER, Token, currencyEquals } from "uniswap-v2-sdk-scroll"
+
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+
 import { useIsUserAddedToken } from "../../hooks/Tokens"
-import { useSelectedTokenList, WrappedTokenInfo } from "../../state/lists/hooks"
+import { WrappedTokenInfo, useSelectedTokenList } from "../../state/lists/hooks"
 import { useAddUserToken, useRemoveUserAddedToken } from "../../state/user/hooks"
 import { useCurrencyBalance } from "../../state/wallet/hooks"
 import { LinkStyledButton, TYPE } from "../../theme"

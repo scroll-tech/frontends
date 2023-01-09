@@ -1,4 +1,5 @@
 import { CurrencyAmount, Fraction, JSBI, Percent, TokenAmount, Trade } from "uniswap-v2-sdk-scroll"
+
 import { ALLOWED_PRICE_IMPACT_HIGH, ALLOWED_PRICE_IMPACT_LOW, ALLOWED_PRICE_IMPACT_MEDIUM, BLOCKED_PRICE_IMPACT_NON_EXPERT } from "../constants"
 import { Field } from "../state/swap/actions"
 import { basisPointsToPercent } from "./index"

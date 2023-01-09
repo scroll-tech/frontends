@@ -1,8 +1,10 @@
-import { Snackbar, Alert } from "@mui/material"
+import { Alert, Snackbar } from "@mui/material"
+
 import { useApp } from "@/contexts/AppContextProvider"
-import Send from "./Send"
-import RencentTx from "./RencentTx"
 import useBridgeStore from "@/stores/bridgeStore"
+
+import RencentTx from "./RencentTx"
+import Send from "./Send"
 
 const Content = () => {
   const {

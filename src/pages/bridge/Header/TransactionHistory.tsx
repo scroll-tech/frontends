@@ -1,9 +1,12 @@
-import { CircularProgress, Typography, Stack } from "@mui/material"
 import { makeStyles } from "tss-react/mui"
-import { useApp } from "@/contexts/AppContextProvider"
+
+import { CircularProgress, Stack, Typography } from "@mui/material"
+
 import Link from "@/components/Link"
-import useTxStore from "@/stores/txStore"
 import { BRIDGE_PAGE_SIZE } from "@/constants"
+import { useApp } from "@/contexts/AppContextProvider"
+import useTxStore from "@/stores/txStore"
+
 import TxTable from "../components/TxTable"
 
 const useStyles = makeStyles()(theme => {
