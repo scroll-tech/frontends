@@ -1,6 +1,7 @@
 import React from "react"
 import { Text } from "rebass"
 import { Currency, CurrencyAmount, Fraction, Percent } from "uniswap-v2-sdk-scroll"
+
 import { ButtonPrimary } from "../../components/Button"
 import CurrencyLogo from "../../components/CurrencyLogo"
 import { RowBetween, RowFixed } from "../../components/Row"

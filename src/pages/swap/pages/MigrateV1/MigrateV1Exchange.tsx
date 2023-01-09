@@ -5,7 +5,9 @@ import ReactGA from "react-ga4"
 import { Redirect, RouteComponentProps } from "react-router"
 import { Text } from "rebass"
 import { Currency, CurrencyAmount, Fraction, JSBI, Percent, Token, TokenAmount, WETH } from "uniswap-v2-sdk-scroll"
+
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+
 import { ButtonConfirmed } from "../../components/Button"
 import { LightCard, PinkCard, YellowCard } from "../../components/Card"
 import { AutoColumn } from "../../components/Column"
@@ -127,24 +129,14 @@ function V1PairMigration({ liquidityTokenAmount, token }: { liquidityTokenAmount
   const v1SpotPrice = exchangeTokenBalance && exchangeETHBalance ? exchangeTokenBalance.divide(new Fraction(exchangeETHBalance.raw, WEI_DENOM)) : null
 
   const priceDifferenceFraction: Fraction | undefined =
-    v1SpotPrice && v2SpotPrice
-      ? v1SpotPrice
-          .divide(v2SpotPrice)
-          .multiply("100")
-          .subtract("100")
-      : undefined
+    v1SpotPrice && v2SpotPrice ? v1SpotPrice.divide(v2SpotPrice).multiply("100").subtract("100") : undefined
 
   const priceDifferenceAbs: Fraction | undefined = priceDifferenceFraction?.lessThan(ZERO)
     ? priceDifferenceFraction?.multiply("-1")
     : priceDifferenceFraction
 
   const minAmountETH: JSBI | undefined =
-    v2SpotPrice && tokenWorth
-      ? tokenWorth
-          .divide(v2SpotPrice)
-          .multiply(WEI_DENOM)
-          .multiply(ALLOWED_OUTPUT_MIN_PERCENT).quotient
-      : ethWorth?.numerator
+    v2SpotPrice && tokenWorth ? tokenWorth.divide(v2SpotPrice).multiply(WEI_DENOM).multiply(ALLOWED_OUTPUT_MIN_PERCENT).quotient : ethWorth?.numerator
 
   const minAmountToken: JSBI | undefined =
     v2SpotPrice && ethWorth

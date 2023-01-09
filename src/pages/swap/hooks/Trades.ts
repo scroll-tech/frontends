@@ -2,11 +2,11 @@ import flatMap from "lodash.flatmap"
 import { useMemo } from "react"
 import { Currency, CurrencyAmount, Pair, Token, Trade } from "uniswap-v2-sdk-scroll"
 
+import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+
 import { BASES_TO_CHECK_TRADES_AGAINST, CUSTOM_BASES } from "../constants"
 import { PairState, usePairs } from "../data/Reserves"
 import { wrappedCurrency } from "../utils/wrappedCurrency"
-
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 
 function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
   const { chainId } = useWeb3Context()

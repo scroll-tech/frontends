@@ -3,6 +3,7 @@ import { ChevronRight } from "react-feather"
 import { Flex } from "rebass"
 import { ThemeContext } from "styled-components"
 import { Trade } from "uniswap-v2-sdk-scroll"
+
 import { TYPE } from "../../theme"
 import CurrencyLogo from "../CurrencyLogo"
 

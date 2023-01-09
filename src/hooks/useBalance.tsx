@@ -1,8 +1,9 @@
 import { ethers } from "ethers"
 import useSWR from "swr"
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
-import { useApp } from "@/contexts/AppContextProvider"
+
 import L1_erc20ABI from "@/assets/abis/L1_erc20ABI.json"
+import { useApp } from "@/contexts/AppContextProvider"
+import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 
 const useBalance = (token: any, network?: any) => {
   const { walletCurrentAddress } = useWeb3Context()

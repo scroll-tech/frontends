@@ -1,6 +1,8 @@
-import { Addresses, ChainId, SiteMap, TESTNET_NAME } from "@/constants"
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
+
+import { Addresses, ChainId, SiteMap, TESTNET_NAME } from "@/constants"
+
 import "./index.less"
 
 function AddNetwork() {

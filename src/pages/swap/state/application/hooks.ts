@@ -1,8 +1,10 @@
 import { useCallback, useMemo } from "react"
+import { useDispatch, useSelector } from "react-redux"
+
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
-import { addPopup, PopupContent, removePopup, toggleWalletModal, toggleSettingsMenu } from "./actions"
-import { useSelector, useDispatch } from "react-redux"
+
 import { AppState } from "../index"
+import { PopupContent, addPopup, removePopup, toggleSettingsMenu, toggleWalletModal } from "./actions"
 
 export function useBlockNumber(): number | undefined {
   const { chainId } = useWeb3Context()

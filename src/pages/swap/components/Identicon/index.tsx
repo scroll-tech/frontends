@@ -1,8 +1,8 @@
-import React, { useEffect, useRef } from "react"
-
-import styled from "styled-components"
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import Jazzicon from "jazzicon"
+import React, { useEffect, useRef } from "react"
+import styled from "styled-components"
+
+import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 
 const StyledIdenticonContainer = styled.div`
   height: 1.6rem;

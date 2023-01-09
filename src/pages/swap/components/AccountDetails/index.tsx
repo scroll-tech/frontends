@@ -1,20 +1,21 @@
 import React, { useCallback, useContext } from "react"
+import { ExternalLink as LinkIcon } from "react-feather"
 import { useDispatch } from "react-redux"
 import styled, { ThemeContext } from "styled-components"
+
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+
+import { ReactComponent as Close } from "../../assets/images/x.svg"
 import { AppDispatch } from "../../state"
 import { clearAllTransactions } from "../../state/transactions/actions"
+import { ExternalLink, LinkStyledButton, TYPE } from "../../theme"
 import { shortenAddress } from "../../utils"
+import { getEtherscanLink } from "../../utils"
+import { ButtonSecondary } from "../Button"
+import Identicon from "../Identicon"
 import { AutoRow } from "../Row"
 import Copy from "./Copy"
 import Transaction from "./Transaction"
-
-import { ReactComponent as Close } from "../../assets/images/x.svg"
-import { getEtherscanLink } from "../../utils"
-import Identicon from "../Identicon"
-import { ButtonSecondary } from "../Button"
-import { ExternalLink as LinkIcon } from "react-feather"
-import { ExternalLink, LinkStyledButton, TYPE } from "../../theme"
 
 const HeaderRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};

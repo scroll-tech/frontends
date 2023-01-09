@@ -1,7 +1,9 @@
+import { useNavigate, useSearchParams } from "react-router-dom"
+
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined"
 import { Box, Tooltip, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
-import { useNavigate, useSearchParams } from "react-router-dom"
+
 import { DEFAULT_PAGE_SIZE } from "../constants"
 
 const Card = styled(Box)(({ theme }) => ({

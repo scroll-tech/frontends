@@ -1,8 +1,9 @@
-import { FC } from "react"
 import classNames from "classnames"
+import { FC } from "react"
 import { makeStyles } from "tss-react/mui"
-import ListItemIcon from "@mui/material/ListItemIcon"
+
 import Icon from "@mui/material/Icon"
+import ListItemIcon from "@mui/material/ListItemIcon"
 import Typography from "@mui/material/Typography"
 
 const useStyles = makeStyles()(theme => {

@@ -6,8 +6,10 @@ import ReactGA from "react-ga4"
 import { RouteComponentProps } from "react-router-dom-v5"
 import { Text } from "rebass"
 import { ThemeContext } from "styled-components"
-import { Currency, currencyEquals, ETHER, TokenAmount, WETH } from "uniswap-v2-sdk-scroll"
+import { Currency, ETHER, TokenAmount, WETH, currencyEquals } from "uniswap-v2-sdk-scroll"
+
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+
 import { ButtonError, ButtonLight, ButtonPrimary } from "../../components/Button"
 import { BlueCard, GreyCard, LightCard } from "../../components/Card"
 import { AutoColumn, ColumnCenter } from "../../components/Column"
@@ -17,7 +19,6 @@ import { AddRemoveTabs } from "../../components/NavigationTabs"
 import { MinimalPositionCard } from "../../components/PositionCard"
 import Row, { RowBetween, RowFlat } from "../../components/Row"
 import TransactionConfirmationModal, { ConfirmationModalContent } from "../../components/TransactionConfirmationModal"
-
 import { ROUTER_ADDRESS } from "../../constants"
 import { PairState } from "../../data/Reserves"
 import { useCurrency } from "../../hooks/Tokens"
@@ -25,7 +26,6 @@ import { ApprovalState, useApproveCallback } from "../../hooks/useApproveCallbac
 import { useWalletModalToggle } from "../../state/application/hooks"
 import { Field } from "../../state/mint/actions"
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from "../../state/mint/hooks"
-
 import { useTransactionAdder } from "../../state/transactions/hooks"
 import { useIsExpertMode, useUserDeadline, useUserSlippageTolerance } from "../../state/user/hooks"
 import { TYPE } from "../../theme"

@@ -1,5 +1,5 @@
-import { Tooltip as MuiTooltip, Typography, Box } from "@mui/material"
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined"
+import { Box, Tooltip as MuiTooltip, Typography } from "@mui/material"
 
 const Tooltip = props => {
   return (

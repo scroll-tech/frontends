@@ -1,10 +1,13 @@
-import Logo from "@/components/Logo"
-import { medias } from "@/constants/medias"
+import * as React from "react"
+import { NavLink } from "react-router-dom"
+
 import { ExpandMore, OpenInNew } from "@mui/icons-material"
 import { Box, Button, Container, Fade, Link, Stack } from "@mui/material"
 import { styled } from "@mui/system"
-import * as React from "react"
-import { NavLink } from "react-router-dom"
+
+import Logo from "@/components/Logo"
+import { medias } from "@/constants/medias"
+
 import { homeNavigations, navigations } from "./constants"
 
 const StyledBox = styled(Stack)(

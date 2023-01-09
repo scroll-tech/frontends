@@ -1,10 +1,11 @@
 import { useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Currency, CurrencyAmount, JSBI, Pair, Percent, TokenAmount } from "uniswap-v2-sdk-scroll"
+
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+
 import { usePair } from "../../data/Reserves"
 import { useTotalSupply } from "../../data/TotalSupply"
-
 import { wrappedCurrency } from "../../utils/wrappedCurrency"
 import { AppDispatch, AppState } from "../index"
 import { tryParseAmount } from "../swap/hooks"

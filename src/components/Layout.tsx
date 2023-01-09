@@ -1,4 +1,5 @@
 import { Link, Outlet } from "react-router-dom"
+
 import { pathL1Explorer, pathL2Explorer, pathRollupExplorer } from "@/constants"
 
 import "./Layout.css"

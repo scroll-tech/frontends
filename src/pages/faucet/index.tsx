@@ -1,16 +1,19 @@
-import { Addresses, ChainId, TESTNET_NAME } from "@/constants"
-import React, { useEffect, useMemo, useState } from "react"
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
-import Countdown from "react-countdown"
-import dayjs from "dayjs"
-import Faq from "./components/faq"
-import { Link } from "react-router-dom"
-import { Button, Snackbar, Alert as MuiAlert } from "@mui/material"
-import TextButton from "@/components/TextButton"
 import { getAddress } from "@ethersproject/address"
-import WithHCaptcha from "./components/WithHCaptcha"
+import dayjs from "dayjs"
+import React, { useEffect, useMemo, useState } from "react"
+import Countdown from "react-countdown"
+import { Link } from "react-router-dom"
+
+import { Button, Alert as MuiAlert, Snackbar } from "@mui/material"
+
+import { claimUrl, fetchInfoUrl } from "@/apis/faucet"
+import TextButton from "@/components/TextButton"
+import { Addresses, ChainId, TESTNET_NAME } from "@/constants"
+import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import { isProduction, requireEnv, truncateAddress, truncateHash } from "@/utils"
-import { fetchInfoUrl, claimUrl } from "@/apis/faucet"
+
+import WithHCaptcha from "./components/WithHCaptcha"
+import Faq from "./components/faq"
 import "./index.less"
 
 const CAN_CLAIM_FROM = "canClaimFrom",
@@ -77,13 +80,7 @@ export default function Home() {
     })
     if (res.ok) {
       const TxHashData = await res.json()
-      const canClaimFrom = isProduction
-        ? dayjs()
-            .add(1, "day")
-            .format("YYYY-MM-DD H:m:s")
-        : dayjs()
-            .add(3, "minute")
-            .format("YYYY-MM-DD H:m:s")
+      const canClaimFrom = isProduction ? dayjs().add(1, "day").format("YYYY-MM-DD H:m:s") : dayjs().add(3, "minute").format("YYYY-MM-DD H:m:s")
       setCanClaimFrom(canClaimFrom)
       setTxHashData(TxHashData)
       localStorage.setItem(CAN_CLAIM_FROM, canClaimFrom)

@@ -1,24 +1,25 @@
-import { ChangeEvent, FC, useEffect, useMemo, useState } from "react"
+import classNames from "classnames"
 import { ethers } from "ethers"
+import { ChangeEvent, FC, useEffect, useMemo, useState } from "react"
 import useStorage from "squirrel-gill"
-import Alert from "@mui/material/Alert"
-import TextButton from "@/components/TextButton"
-import Button from "../components/Button"
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
-import SendAmountSelectorCard from "./SendAmountSelectorCard"
 
-import { StandardERC20GatewayProxyAddr, networks, ChainId, Token, NativeToken, ERC20Token, ETH_SYMBOL } from "@/constants"
-import { useApp } from "@/contexts/AppContextProvider"
-import { useApprove, useAsyncMemo, useBalance, useSufficientBalance } from "@/hooks"
-import { sanitizeNumericalString, amountToBN, switchNetwork } from "@/utils"
-import SendTranferButton from "./SendTransferButton"
-import { useSendStyles, StyleContext } from "./useSendStyles"
-import { useSendTransaction } from "./useSendTransaction"
-import SendLoading from "./SendLoading"
-import ApproveLoading from "./ApproveLoading"
+import Alert from "@mui/material/Alert"
 
 import L1_erc20ABI from "@/assets/abis/L1_erc20ABI.json"
-import classNames from "classnames"
+import TextButton from "@/components/TextButton"
+import { ChainId, ERC20Token, ETH_SYMBOL, NativeToken, StandardERC20GatewayProxyAddr, Token, networks } from "@/constants"
+import { useApp } from "@/contexts/AppContextProvider"
+import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import { useApprove, useAsyncMemo, useBalance, useSufficientBalance } from "@/hooks"
+import { amountToBN, sanitizeNumericalString, switchNetwork } from "@/utils"
+
+import Button from "../components/Button"
+import ApproveLoading from "./ApproveLoading"
+import SendAmountSelectorCard from "./SendAmountSelectorCard"
+import SendLoading from "./SendLoading"
+import SendTranferButton from "./SendTransferButton"
+import { StyleContext, useSendStyles } from "./useSendStyles"
+import { useSendTransaction } from "./useSendTransaction"
 
 const Send: FC = () => {
   const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, "bridgeTokenSymbol", ETH_SYMBOL)
@@ -30,15 +31,14 @@ const Send: FC = () => {
   const { checkConnectedChainId, chainId, walletName, connectWallet } = useWeb3Context()
 
   const fromToken = useMemo(
-    () => tokenList.find(item => item.chainId === fromNetwork.chainId && item.symbol === tokenSymbol) ?? (({} as any) as Token),
+    () => tokenList.find(item => item.chainId === fromNetwork.chainId && item.symbol === tokenSymbol) ?? ({} as any as Token),
     [tokenList, tokenSymbol, fromNetwork],
   )
 
-  const toToken = useMemo(() => tokenList.find(item => item.chainId === toNetwork.chainId && item.symbol === tokenSymbol) ?? (({} as any) as Token), [
-    tokenList,
-    tokenSymbol,
-    toNetwork,
-  ])
+  const toToken = useMemo(
+    () => tokenList.find(item => item.chainId === toNetwork.chainId && item.symbol === tokenSymbol) ?? ({} as any as Token),
+    [tokenList, tokenSymbol, toNetwork],
+  )
 
   const [fromTokenAmount, setFromTokenAmount] = useState<string>()
   const [sendError, setSendError] = useState<any>()
@@ -133,7 +133,11 @@ const Send: FC = () => {
   // Send tokens
   // ==============================================================================================
 
-  const { send: handleSendTransaction, sending, setSending } = useSendTransaction({
+  const {
+    send: handleSendTransaction,
+    sending,
+    setSending,
+  } = useSendTransaction({
     fromNetwork,
     fromTokenAmount,
     setSendError,

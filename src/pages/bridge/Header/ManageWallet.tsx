@@ -1,10 +1,12 @@
 import classNames from "classnames"
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+
+import { ReactComponent as ExitIcon } from "@/assets/svgs/exit.svg"
 import Link from "@/components/Link"
+import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import { truncateAddress } from "@/utils"
+
 import MiniButton from "../components/Button/MiniButton"
 import CopyButton from "./CopyButton"
-import { ReactComponent as ExitIcon } from "@/assets/svgs/exit.svg"
-import { truncateAddress } from "@/utils"
 
 const ManageWallet = (props: any) => {
   const { classes, onDisconnect } = props

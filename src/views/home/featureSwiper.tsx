@@ -1,17 +1,18 @@
-import { Box, Typography, Divider } from "@mui/material"
-
-import { styled } from "@mui/system"
-import SecurityIcon from "@/assets/images/homepage/home/security.png"
-import ScalabilityIcon from "@/assets/images/homepage/home/scalability.png"
-import EVMEquivalenceIcon from "@/assets/images/homepage/home/EVM-equivalence.png"
-import SecurityWebpIcon from "@/assets/images/homepage/home/security.webp"
-import ScalabilityWebpIcon from "@/assets/images/homepage/home/scalability.webp"
-import EVMEquivalenceWebpIcon from "@/assets/images/homepage/home/EVM-equivalence.webp"
-import { Swiper, SwiperSlide } from "swiper/react"
 import { Pagination } from "swiper"
-import WebpImage from "@/components/WebpImage"
-import useMediaQuery from "@mui/material/useMediaQuery"
+import { Swiper, SwiperSlide } from "swiper/react"
+
+import { Box, Divider, Typography } from "@mui/material"
 import { useTheme } from "@mui/material/styles"
+import useMediaQuery from "@mui/material/useMediaQuery"
+import { styled } from "@mui/system"
+
+import EVMEquivalenceIcon from "@/assets/images/homepage/home/EVM-equivalence.png"
+import EVMEquivalenceWebpIcon from "@/assets/images/homepage/home/EVM-equivalence.webp"
+import ScalabilityIcon from "@/assets/images/homepage/home/scalability.png"
+import ScalabilityWebpIcon from "@/assets/images/homepage/home/scalability.webp"
+import SecurityIcon from "@/assets/images/homepage/home/security.png"
+import SecurityWebpIcon from "@/assets/images/homepage/home/security.webp"
+import WebpImage from "@/components/WebpImage"
 
 const FeatureWrapper = styled(Box)(({ theme }) => ({}))
 

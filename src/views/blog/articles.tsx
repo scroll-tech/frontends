@@ -1,11 +1,12 @@
-import { Box } from "@mui/material"
-
-import { styled } from "@mui/system"
-import { Swiper, SwiperSlide } from "swiper/react"
 import { Pagination } from "swiper"
-import ArticleCard from "@/components/ArticleCard"
-import useMediaQuery from "@mui/material/useMediaQuery"
+import { Swiper, SwiperSlide } from "swiper/react"
+
+import { Box } from "@mui/material"
 import { useTheme } from "@mui/material/styles"
+import useMediaQuery from "@mui/material/useMediaQuery"
+import { styled } from "@mui/system"
+
+import ArticleCard from "@/components/ArticleCard"
 
 const ArticleBox = styled(Box)(
   ({ theme }) => `

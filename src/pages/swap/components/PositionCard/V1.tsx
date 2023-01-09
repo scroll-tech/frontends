@@ -1,10 +1,11 @@
 import React, { useContext } from "react"
 import { Link, RouteComponentProps, withRouter } from "react-router-dom-v5"
-import { Token, TokenAmount, WETH } from "uniswap-v2-sdk-scroll"
-
 import { Text } from "rebass"
 import { ThemeContext } from "styled-components"
+import { Token, TokenAmount, WETH } from "uniswap-v2-sdk-scroll"
+
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+
 import { ButtonSecondary } from "../Button"
 import { AutoColumn } from "../Column"
 import DoubleCurrencyLogo from "../DoubleLogo"

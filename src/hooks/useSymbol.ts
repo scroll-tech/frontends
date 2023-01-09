@@ -1,9 +1,10 @@
 import { ethers } from "ethers"
 import useSWR from "swr"
+
 import L1_erc20ABI from "@/assets/abis/L1_erc20ABI.json"
-import { loadState, saveState } from "@/utils/localStorage"
-import { useApp } from "@/contexts/AppContextProvider"
 import { ChainId } from "@/constants"
+import { useApp } from "@/contexts/AppContextProvider"
+import { loadState, saveState } from "@/utils/localStorage"
 
 const TokenSymbolMapKey = "tokenSymbolMap"
 

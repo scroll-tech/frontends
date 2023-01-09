@@ -1,6 +1,8 @@
-import { Dialog, DialogTitle, DialogContent, IconButton, Typography, CircularProgress } from "@mui/material"
 import { makeStyles } from "tss-react/mui"
+
 import CloseIcon from "@mui/icons-material/Close"
+import { CircularProgress, Dialog, DialogContent, DialogTitle, IconButton, Typography } from "@mui/material"
+
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 
 const useStyles = makeStyles()(theme => {
