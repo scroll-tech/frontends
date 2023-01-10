@@ -207,7 +207,7 @@ const App = () => {
                   <Tooltip title={FinalizedTxHashTooltip} name="Finalized Tx Hash" />
                 </TableCell>
                 <TableCell>
-                  <Tooltip title={renderStatusHeaderText()} name="status" />
+                  <Tooltip title={renderStatusHeaderText()} name="Status" />
                 </TableCell>
               </TableRow>
             </TableHead>

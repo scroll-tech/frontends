@@ -20,7 +20,7 @@ const Blocks = () => {
         <Link to="/prealpha/rollupscan">All results</Link>
         <Link to={`/prealpha/rollupscan/batch/${params.batchIndex}`}>Batch {params.batchIndex}</Link>
         <Typography color="text.primary" sx={{ fontWeight: 600 }}>
-          Block {params.blockId}
+          Blocks
         </Typography>
       </Breadcrumbs>
       {isLoading ? (
