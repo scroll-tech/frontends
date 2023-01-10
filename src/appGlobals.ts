@@ -6,10 +6,11 @@ const scrollRequest = (url: string, options?: object) => {
       }
       // server response but not 200
       const message = await res.text()
-      return Promise.reject({ stauts: res.status, message })
+      const error = new Error(message)
+      error.status = res.status
+      throw error
     })
     .then(data => data)
-    .catch(Promise.reject)
 }
 
 window.scrollRequest = scrollRequest

@@ -3,6 +3,7 @@ import dayjs from "dayjs"
 import React, { useEffect, useMemo, useState } from "react"
 import Countdown from "react-countdown"
 import { Link } from "react-router-dom"
+import useStorage from "squirrel-gill"
 
 import { Button, Alert as MuiAlert, Snackbar } from "@mui/material"
 
@@ -16,9 +17,6 @@ import WithHCaptcha from "./components/WithHCaptcha"
 import Faq from "./components/faq"
 import "./index.less"
 
-const CAN_CLAIM_FROM = "canClaimFrom",
-  TX_HASH_DATA = "TxHashData"
-
 const L1_SCAN_URL = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1")
 
 const ETH_SYMBOL = requireEnv("REACT_APP_ETH_SYMBOL")
@@ -26,11 +24,12 @@ const USDC_SYMBOL = requireEnv("REACT_APP_USDC_SYMBOL")
 
 export default function Home() {
   const { walletCurrentAddress, chainId, connectWallet } = useWeb3Context()
+  const [canClaimFrom, setCanClaimFrom] = useStorage(localStorage, "canClaimFrom")
+  const [TxHashData, setTxHashData] = useStorage(localStorage, "TxHashData")
 
   const [loading, setLoading] = useState(false)
   const [open, setOpen] = React.useState(false)
   const [errorMessage, setErrorMessage] = React.useState("")
-  const [canClaimFrom, setCanClaimFrom] = useState(localStorage.getItem(CAN_CLAIM_FROM) || Date.now())
 
   const [faucetInfo, setFaucetInfo] = useState({
     account: "0x0000000000000000000000000000000000000000",
@@ -38,8 +37,6 @@ export default function Home() {
     payoutEth: 1,
     payoutUsdc: 100,
   })
-
-  const [TxHashData, setTxHashData] = useState(localStorage.getItem(TX_HASH_DATA) && JSON.parse(localStorage.getItem(TX_HASH_DATA) as string))
 
   const networkStatus = useMemo(() => {
     if (chainId === ChainId.SCROLL_LAYER_1) {
@@ -74,38 +71,38 @@ export default function Home() {
     formData.append("address", getAddress(walletCurrentAddress as string))
     formData.append("h-captcha-response", captchaToken)
     setLoading(true)
-    const res = await fetch(claimUrl, {
+    scrollRequest(claimUrl, {
       method: "POST",
       body: formData,
     })
-    if (res.ok) {
-      const TxHashData = await res.json()
-      const canClaimFrom = isProduction ? dayjs().add(1, "day").format("YYYY-MM-DD H:m:s") : dayjs().add(3, "minute").format("YYYY-MM-DD H:m:s")
-      setCanClaimFrom(canClaimFrom)
-      setTxHashData(TxHashData)
-      localStorage.setItem(CAN_CLAIM_FROM, canClaimFrom)
-      localStorage.setItem(TX_HASH_DATA, JSON.stringify(TxHashData))
-    } else if (res.status === 429) {
-      setErrorMessage("hCaptcha verification failed!")
-      setOpen(true)
-    } else {
-      const message = await res.text()
-      //get hms
-      const re = /((\d+)h)?((\d+)m)?((\d+)s)/i
-      const rateLimitDuration: any = message.match(re)
-      if (rateLimitDuration) {
-        const canClaimFrom = dayjs()
-          .add(rateLimitDuration[2] ?? 0, "h")
-          .add(rateLimitDuration[4], "m")
-          .add(rateLimitDuration[6], "s")
-          .format("YYYY-MM-DD H:m:s")
+      .then(data => {
+        const canClaimFrom = isProduction ? dayjs().add(1, "day").format("YYYY-MM-DD H:m:s") : dayjs().add(3, "minute").format("YYYY-MM-DD H:m:s")
         setCanClaimFrom(canClaimFrom)
-        localStorage.setItem(CAN_CLAIM_FROM, canClaimFrom)
-      }
-      setErrorMessage(message)
-      setOpen(true)
-    }
-    setLoading(false)
+        setTxHashData(data)
+      })
+      .catch(err => {
+        const { message, status } = err
+        if (!message && status === 429) {
+          setErrorMessage("hCaptcha: too many requests!")
+          return
+        }
+        //get hms
+        const re = /((\d+)h)?((\d+)m)?((\d+)s)/i
+        const rateLimitDuration: any = message.match(re)
+        if (rateLimitDuration) {
+          const canClaimFrom = dayjs()
+            .add(rateLimitDuration[2] ?? 0, "h")
+            .add(rateLimitDuration[4], "m")
+            .add(rateLimitDuration[6], "s")
+            .format("YYYY-MM-DD H:m:s")
+          setCanClaimFrom(canClaimFrom)
+        }
+        setErrorMessage(message)
+        setOpen(true)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
   }
 
   const handleClose = () => {
@@ -217,7 +214,7 @@ export default function Home() {
             {faucetInfo.payoutUsdc} {USDC_SYMBOL} per request.
           </p>
           {networkStatus === 1 ? (
-            <Countdown key={canClaimFrom} date={canClaimFrom} renderer={renderer} />
+            <Countdown key={canClaimFrom} date={canClaimFrom || dayjs().format("YYYY-MM-DD H:m:s")} renderer={renderer} />
           ) : (
             <>
               <div className="bg-[#FFF8CB] py-[18px] px-[34px] mx-[24px] rounded-[10px] max-w-[480px] text-center my-[28px] md:py-[24px] md:px-[32px]">
