@@ -22,7 +22,7 @@ const ReadMoreLink = styled("a")(
 const Announcement = () => {
   return (
     <AnnouncementStack>
-      Scroll 2.2.0 upgrade is live. All users need to reset their wallet account for both Scroll networks.{" "}
+      Scroll's latest upgrade is now live. All users need to reset their wallet account for both Scroll networks.{" "}
       <ReadMoreLink
         href="https://guide.scroll.io/user-guide/common-errors#incorrect-nonce-error-when-sending-a-transaction-in-metamask"
         target="_blank"
