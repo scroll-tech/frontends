@@ -88,7 +88,7 @@ export default function Home() {
     <>
       <div className="p-4 mx-[8px] mb-[40px] lg:p-8">
         <SectionTitle title={`Configure ${walletName || "wallet"} for our testnet`}>
-          <div className="px-4 py-5 sm:grid sm:grid-cols-1 sm:gap-4 sm:px-6">
+          <div className="text-base px-4 py-5 sm:grid sm:grid-cols-1 sm:gap-4 sm:px-6">
             Note: Please completely remove any previous Scroll L1 and L2 networks from your {walletName || "wallet"} before proceeding. After
             re-adding each of them:
             <a
