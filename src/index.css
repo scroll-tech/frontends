@@ -76,6 +76,25 @@ body {
 :root {
   --swiper-theme-color: #eb7106 !important;
   /* --swiper-pagination-bullet-inactive-color: #595959; */
+
+  /* semibold/light never been used  */
+  --onboard-font-family-normal: "SF UI Text", "system-ui", "BlinkMacSystemFont", "Roboto", "Helvetica Neue", "Segoe UI", "Arial", "sans-serif",
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+  --onboard-wallet-button-border-color: #f8c5a2;
+  --onboard-wallet-app-icon-border-color: #f2a364;
+  --onboard-wallet-button-background-hover: #fee7e030;
+
+  --onboard-primary-500: #eb7106;
+  --onboard-font-size-7: 1.4rem;
+  --onboard-font-size-5: 1.6rem;
+  --onboard-spacing-4: 1.6rem;
+  --onboard-spacing-5: 0.8rem;
+}
+
+onboard-v2 .outer-container icon {
+  width: 1.6rem;
+  height: 1.6rem;
 }
 
 @media screen and (min-width: 900px) {
