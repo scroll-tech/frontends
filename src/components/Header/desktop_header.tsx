@@ -8,6 +8,7 @@ import { styled } from "@mui/system"
 import Logo from "@/components/Logo"
 import { medias } from "@/constants/medias"
 
+import Announcement from "./announcement"
 import { homeNavigations, navigations } from "./constants"
 
 const StyledBox = styled(Stack)(
@@ -232,6 +233,7 @@ const App = props => {
 
   return (
     <StyledBox>
+      <Announcement />
       <HeaderContainer>
         <NavLink to="/" className="flex">
           <Logo />
