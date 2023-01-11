@@ -60,7 +60,7 @@ export default function Searchbar(props) {
     scrollRequest(`${searchUrl}?keyword=${value}`)
       .then(({ batch_index }) => {
         if (~batch_index) {
-          navigate(`./block/${batch_index}`)
+          navigate(`./batch/${batch_index}/blocks`)
         } else {
           changeEmptyBatch(true)
         }

@@ -54,9 +54,9 @@ const InfoCard = ({ title, value, total, description }: any) => {
   const moveToTargetPage = () => {
     const pageSize = +(searchParams.get("per_page") || DEFAULT_PAGE_SIZE) as number
 
-    const page = Math.floor((total - 3) / pageSize)
+    const page = Math.floor((total - value) / pageSize) + 1
 
-    window.location.href = `./?page=${page}&per_page=${pageSize}`
+    navigate({ pathname: ".", search: `?page=${page}&per_page=${pageSize}` })
   }
   const moveToBatchDetail = e => {
     e.stopPropagation()
