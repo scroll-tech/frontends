@@ -92,7 +92,7 @@ export default function Home() {
             Note: Please completely remove any previous Scroll L1 and L2 networks from your {walletName || "wallet"} before proceeding. After
             re-adding each of them:
             <a
-              className="text-indigo-600 hover:text-indigo-500 cursor-pointer"
+              className="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer"
               target="_blank"
               href="https://guide.scroll.io/user-guide/common-errors#incorrect-nonce-error-when-sending-a-transaction-in-metamask"
               rel="noreferrer"
