@@ -40,7 +40,7 @@ const MenuLinkButton = styled(Link)(
   margin-right: 4px;
   line-height: 82px;
   position: relative;
-  color: #000;
+  color: ${theme.palette.text.primary};
   &:after {
     content: '';
     left: 0;
@@ -74,6 +74,7 @@ const LinkStyledButton = styled(NavLink)(
   margin-right: 4px;
   line-height: 82px;
   position: relative;
+  color: ${theme.palette.text.primary};
   &:after {
     content: '';
     left: 0;
@@ -124,6 +125,7 @@ const SubMenuButton = styled(Box)(
     margin-right: 4px;
     line-height: 82px;
     position: relative;
+    color: ${theme.palette.text.primary};
     cursor: pointer;
     &:after {
       content: '';
