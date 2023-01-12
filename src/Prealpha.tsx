@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async"
-import { Navigate, Route, Routes, useLocation } from "react-router-dom"
+import { Route, Routes } from "react-router-dom"
 
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
@@ -14,24 +14,6 @@ import useMatchedRoute from "./hooks/useMatchedRoute"
 import routes from "./routes/prealphaRoutes"
 
 const baseUrl = requireEnv("REACT_APP_API_BASE_URI")
-
-const RemoveTrailingSlash = ({ ...rest }) => {
-  const location = useLocation()
-
-  // If the last character of the url is '/'
-  if (location.pathname.match("/.*/$")) {
-    return (
-      <Navigate
-        replace
-        {...rest}
-        to={{
-          pathname: location.pathname.replace(/\/+$/, ""),
-          search: location.search,
-        }}
-      />
-    )
-  } else return null
-}
 
 function Prealpha() {
   const route = useMatchedRoute()
@@ -52,7 +34,6 @@ function Prealpha() {
           <VersionChecker>
             <ScrollToTop>
               <Header />
-              <RemoveTrailingSlash />
               <Routes>
                 {routes.map((route, key) => (
                   <Route key={key} path={route.path} element={route.element} />

@@ -1,12 +1,30 @@
 import React from "react"
 import ReactGA from "react-ga4"
 import { HelmetProvider } from "react-helmet-async"
-import { Route, Routes, useLocation } from "react-router-dom"
+import { Navigate, Route, Routes, useLocation } from "react-router-dom"
 
 import LoadingPage from "@/components/LoadingPage"
 
 const Prealpha = React.lazy(() => import("./Prealpha"))
 const Homepage = React.lazy(() => import("./Homepage"))
+
+const RemoveTrailingSlash = ({ ...rest }) => {
+  const location = useLocation()
+
+  // If the last character of the url is '/'
+  if (location.pathname.match("/.*/$")) {
+    return (
+      <Navigate
+        replace
+        {...rest}
+        to={{
+          pathname: location.pathname.replace(/\/+$/, ""),
+          search: location.search,
+        }}
+      />
+    )
+  } else return null
+}
 
 function App() {
   let location = useLocation()
@@ -18,6 +36,7 @@ function App() {
 
   return (
     <HelmetProvider>
+      <RemoveTrailingSlash />
       <React.Suspense fallback={<LoadingPage />}>
         <Routes>
           <Route path="/prealpha/*" element={<Prealpha />} />
