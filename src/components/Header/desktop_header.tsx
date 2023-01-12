@@ -16,7 +16,7 @@ const StyledBox = styled(Stack)(
   position: sticky;
   top: 0;
   width: 100%;
-  z-index: 999;
+  z-index: 10;
   background-color: #fff;
   border-bottom: 1px solid ${theme.palette.border.main};
   `,
