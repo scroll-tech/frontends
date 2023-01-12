@@ -47,8 +47,8 @@ const routes = [
   },
   {
     name: "RollupScanBlock",
-    path: "/rollupscan/block/:batchIndex",
-    fullPath: "/prealpha/rollupscan/block/:batchIndex",
+    path: "/rollupscan/batch/:batchIndex/blocks",
+    fullPath: "/prealpha/rollupscan/batch/:batchIndex/blocks",
     element: <RollupScanBlock />,
   },
 

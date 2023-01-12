@@ -121,7 +121,7 @@ const Blocks = () => {
               <BoxItem>
                 <LabelTypography>Blocks</LabelTypography>
                 {/* TODO: Make link dynamic, probably by using a variable for the rollupscan root */}
-                <RouterLink to={`/prealpha/rollupscan/block/${batch.index}`}>
+                <RouterLink to={`/prealpha/rollupscan/batch/${batch.index}/blocks`}>
                   <Typography sx={{ fontWeight: 600, color: "#00A6F2" }}>{batch.end_block_number - batch.start_block_number + 1}</Typography>
                 </RouterLink>
               </BoxItem>

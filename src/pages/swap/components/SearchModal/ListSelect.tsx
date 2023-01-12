@@ -321,7 +321,7 @@ export function ListSelect({ onDismiss, onBack }: { onDismiss: () => void; onBac
           <div>
             <ArrowLeft style={{ cursor: "pointer" }} onClick={onBack} />
           </div>
-          <Text fontWeight={500} fontSize={20}>
+          <Text fontWeight={500} fontSize={[18, 20]}>
             Manage Lists
           </Text>
           <CloseIcon onClick={onDismiss} />
@@ -331,7 +331,7 @@ export function ListSelect({ onDismiss, onBack }: { onDismiss: () => void; onBac
       <Separator />
 
       <PaddedColumn gap="14px">
-        <Text fontWeight={600}>
+        <Text fontWeight={500} fontSize={[16, 18]}>
           Add a list{" "}
           <QuestionHelper text="Token lists are an open specification for lists of ERC20 tokens. You can use any token list by entering its URL below. Beware that third party token lists can contain fake or malicious ERC20 tokens." />
         </Text>
