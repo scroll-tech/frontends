@@ -1,5 +1,14 @@
 [
   {
+    "type": "Announcement",
+    "id": "releaseNote0109",
+    "date": "2023-1-13",
+    "title": "Release Note for 0109 Upgrade",
+    "posterTitle": "Release Note 0109",
+    "summary": "This release note describes the changes introduced in the testnet upgrade on Jan 9.",
+    "posterImg": "/imgs/homepage/blog/poster_9.jpg"
+  },
+  {
     "type": "Technical",
     "id": "proofGeneration",
     "date": "2022-12-14",
