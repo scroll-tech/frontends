@@ -128,6 +128,17 @@ const Blocks = () => {
               <Divider />
 
               <BoxItem>
+                <LabelTypography>
+                  Batch Created Timestamp{" "}
+                  <Tooltip title="Timestamp when the batch was created">
+                    <InfoOutlined sx={{ fontSize: "2rem", verticalAlign: "text-bottom" }} />
+                  </Tooltip>{" "}
+                </LabelTypography>
+                <Typography>{renderTimestamp(batch.created_at)}</Typography>
+              </BoxItem>
+              <Divider />
+
+              <BoxItem>
                 <>
                   <LabelTypography>Commit Tx Hash</LabelTypography>
                   {renderLink(batch.commit_tx_hash)}
