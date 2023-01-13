@@ -60,23 +60,23 @@ const navigation = [
   {
     name: "Faucet",
     description: "Receive test ETH and USDC tokens on L1 from Faucet.",
-    subdomainOrPath: "./faucet",
+    subdomainOrPath: "/prealpha/faucet",
   },
   {
     name: "Bridge",
     description: "Use Bridge (our Hop fork) to transfer tokens between L1 and L2.",
-    subdomainOrPath: "./bridge",
+    subdomainOrPath: "/prealpha/bridge",
   },
   {
     name: "Swap",
     description: "Use Swap (our Uniswap fork) to swap tokens and supply liquidity on L2.",
-    subdomainOrPath: "./swap",
+    subdomainOrPath: "/prealpha/swap",
   },
   {
     name: "Rollup Explorer",
     description: "See L2 blocks being committed to L1 and finalized with zkEVM proofs on our Rollup Explorer.",
     isActive: true,
-    subdomainOrPath: "./rollupscan",
+    subdomainOrPath: "/prealpha/rollupscan",
   },
   {
     name: "L1 Block Explorer",
