@@ -73,10 +73,13 @@ const Footer = () => {
     <div className="footer w-full bg-[#EB71060D]">
       <footer className="text-md wrapper container box-border relative flex items-start justify-between !pt-[90px] !pb-[110px] mx-auto flex-col lg:flex-row">
         <div className="flex-1 w-full flex h-full items-center mb-[30px] lg:flex-col lg:items-start lg:justify-between">
-          <a href="/" className="flex flex-1 lg:mb-[80px]">
+          <a href="/" className="flex flex-1 lg:mb-[50px]">
             <Logo></Logo>
           </a>
-          <p className="font-display text-md flex-1">© Scroll Ltd {dayjs().year()}</p>
+          <div className="flex-1">
+            <p className="font-display text-md">Version {process.env.REACT_APP_VERSION}</p>
+            <p className="font-display text-md">© Scroll Ltd {dayjs().year()}</p>
+          </div>
         </div>
         <div className="flex flex-[2] justify-between w-full mb-[30px]">{renderLinks()}</div>
         <div className="flex-1 w-full ">
