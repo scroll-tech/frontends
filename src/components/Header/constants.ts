@@ -25,7 +25,8 @@ const navigations = [
   {
     label: "Prealpha",
     key: "",
-    href: "./",
+    href: "",
+    end: true,
   },
   {
     label: "Faucet",

@@ -82,7 +82,7 @@ const App = props => {
       component="nav"
     >
       {(props.isHomepage ? homeNavigations : navigations).map(item => {
-        if (item.href) {
+        if (!item.children) {
           return (
             <ListButton key={item.key} onClick={() => toggleDrawer(false)}>
               {item.isExternal ? (
@@ -90,7 +90,9 @@ const App = props => {
                   {item.label}
                 </ExternalLink>
               ) : (
-                <LinkStyledButton to={item.href}>{item.label}</LinkStyledButton>
+                <LinkStyledButton end={item.end} to={item.href}>
+                  {item.label}
+                </LinkStyledButton>
               )}
             </ListButton>
           )

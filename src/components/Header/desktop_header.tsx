@@ -223,7 +223,7 @@ const App = props => {
                 {item.label}{" "}
               </MenuLinkButton>
             ) : (
-              <LinkStyledButton to={item.href} key={item.key}>
+              <LinkStyledButton to={item.href} end={item.end} key={item.key}>
                 {item.label}{" "}
               </LinkStyledButton>
             )}
