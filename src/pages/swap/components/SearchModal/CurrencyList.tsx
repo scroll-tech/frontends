@@ -116,7 +116,7 @@ function CurrencyRow({
     >
       <CurrencyLogo currency={currency} size={"24px"} />
       <Column>
-        <Text title={currency.name} fontWeight={500}>
+        <Text title={currency.name} fontSize={[14, 16]} fontWeight={500}>
           {currency.symbol}
         </Text>
         <FadedSpan>

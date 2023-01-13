@@ -88,11 +88,11 @@ export default function Home() {
     <>
       <div className="p-4 mx-[8px] mb-[40px] lg:p-8">
         <SectionTitle title={`Configure ${walletName || "wallet"} for our testnet`}>
-          <div className="px-4 py-5 sm:grid sm:grid-cols-1 sm:gap-4 sm:px-6">
+          <div className="text-base px-4 py-5 sm:grid sm:grid-cols-1 sm:gap-4 sm:px-6">
             Note: Please completely remove any previous Scroll L1 and L2 networks from your {walletName || "wallet"} before proceeding. After
             re-adding each of them:
             <a
-              className="text-indigo-600 hover:text-indigo-500 cursor-pointer"
+              className="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer"
               target="_blank"
               href="https://guide.scroll.io/user-guide/common-errors#incorrect-nonce-error-when-sending-a-transaction-in-metamask"
               rel="noreferrer"
@@ -229,9 +229,9 @@ export default function Home() {
 
         <SectionTitle title="Send us feedback">
           <div className=" bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-            <dt className="text-base font-medium text-black flex">
-              <div className="mr-[4px]">
-                <img alt="note" className="w-[20px]" src="/imgs/home/note.png" />
+            <dt className="text-base font-medium text-black flex items-center">
+              <div className="mr-[4px] leading-none">
+                <img alt="note" className="w-[20px] align-middle" src="/imgs/home/note.png" />
               </div>
               First, check our
               <a href="https://status.scroll.io" className="ml-[4px] font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer">
@@ -242,9 +242,9 @@ export default function Home() {
           </div>
 
           <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-            <dt className="text-base font-medium text-black flex">
-              <div className="mr-[4px]">
-                <img alt="discord logo" className="w-[20px]" src="/imgs/home/discord.png" />
+            <dt className="text-base font-medium text-black flex items-center">
+              <div className="mr-[4px] leading-none">
+                <img alt="discord logo" className="w-[20px] align-middle" src="/imgs/home/discord.png" />
               </div>
               Chat with us on
               <a href="https://discord.gg/s84eJSdFhn" className="ml-[4px] font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer">
@@ -255,9 +255,9 @@ export default function Home() {
           </div>
 
           <div className=" bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-            <dt className="text-base font-medium text-black flex">
-              <div className="mr-[4px]">
-                <img alt="github logo" className="w-[20px]" src="/imgs/home/github.png" />
+            <dt className="text-base font-medium text-black flex items-center">
+              <div className="mr-[4px] leading-none">
+                <img alt="github logo" className="w-[20px] align-middle" src="/imgs/home/github.png" />
               </div>
               Open an issue/PR
               <a href="https://github.com/scroll-tech" className="ml-[4px] font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer">

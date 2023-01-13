@@ -140,7 +140,7 @@ export function CurrencySearch({
     <Column style={{ width: "100%", flex: "1 1" }}>
       <PaddedColumn gap="14px">
         <RowBetween>
-          <Text fontWeight={500} fontSize={16}>
+          <Text fontWeight={500} fontSize={[18, 20]}>
             Select a token
             <QuestionHelper text="Find a token by searching for its name or symbol or by pasting its address below." />
           </Text>
@@ -157,7 +157,7 @@ export function CurrencySearch({
         />
         {showCommonBases && <CommonBases chainId={chainId} onSelect={handleCurrencySelect} selectedCurrency={selectedCurrency} />}
         <RowBetween>
-          <Text fontSize={14} fontWeight={500}>
+          <Text fontSize={[16, 18]} fontWeight={500}>
             Token Name
           </Text>
           <SortButton ascending={invertSearchOrder} toggleSortOrder={() => setInvertSearchOrder(iso => !iso)} />
@@ -188,9 +188,11 @@ export function CurrencySearch({
           {selectedListInfo.current ? (
             <Row>
               {selectedListInfo.current.logoURI ? (
-                <ListLogo style={{ marginRight: 12 }} logoURI={selectedListInfo.current.logoURI} alt={`${selectedListInfo.current.name} list logo`} />
+                <ListLogo style={{ marginRight: 4 }} logoURI={selectedListInfo.current.logoURI} alt={`${selectedListInfo.current.name} list logo`} />
               ) : null}
-              <TYPE.main id="currency-search-selected-list-name">{selectedListInfo.current.name}</TYPE.main>
+              <TYPE.main id="currency-search-selected-list-name" fontSize={16} style={{ cursor: "default" }}>
+                {selectedListInfo.current.name}
+              </TYPE.main>
             </Row>
           ) : null}
           <LinkStyledButton

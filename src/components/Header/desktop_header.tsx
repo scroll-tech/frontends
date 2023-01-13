@@ -16,7 +16,7 @@ const StyledBox = styled(Stack)(
   position: sticky;
   top: 0;
   width: 100%;
-  z-index: 999;
+  z-index: 10;
   background-color: #fff;
   border-bottom: 1px solid ${theme.palette.border.main};
   `,
@@ -40,7 +40,7 @@ const MenuLinkButton = styled(Link)(
   margin-right: 4px;
   line-height: 82px;
   position: relative;
-  color: #000;
+  color: ${theme.palette.text.primary};
   &:after {
     content: '';
     left: 0;
@@ -74,6 +74,7 @@ const LinkStyledButton = styled(NavLink)(
   margin-right: 4px;
   line-height: 82px;
   position: relative;
+  color: ${theme.palette.text.primary};
   &:after {
     content: '';
     left: 0;
@@ -124,6 +125,7 @@ const SubMenuButton = styled(Box)(
     margin-right: 4px;
     line-height: 82px;
     position: relative;
+    color: ${theme.palette.text.primary};
     cursor: pointer;
     &:after {
       content: '';
@@ -221,7 +223,7 @@ const App = props => {
                 {item.label}{" "}
               </MenuLinkButton>
             ) : (
-              <LinkStyledButton to={item.href} key={item.key}>
+              <LinkStyledButton to={item.href} end={item.end} key={item.key}>
                 {item.label}{" "}
               </LinkStyledButton>
             )}
