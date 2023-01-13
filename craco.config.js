@@ -42,7 +42,7 @@ module.exports = {
         Buffer: ["buffer", "Buffer"],
       }),
     ],
-    configure: function(webpackConfig, { env }) {
+    configure: function (webpackConfig, { env }) {
       webpackConfig.ignoreWarnings = [
         function ignoreSourcemapsloaderWarnings(warning) {
           return (
@@ -63,6 +63,7 @@ module.exports = {
           org: "scroll-zkp",
           project: "scroll-frontends",
           include: "./build",
+          release: "v" + process.env.REACT_APP_VERSION,
           authToken: process.env.REACT_APP_SENTRY_AUTH_TOKEN,
         })
         webpackConfig.plugins.push(sentryPlugin)
