@@ -2,10 +2,11 @@ import dayjs from "dayjs"
 import React, { useEffect, useMemo, useState } from "react"
 import { Link as RouterLink, useSearchParams } from "react-router-dom"
 
-import { Chip, Link, Pagination, TableBody, TableContainer, TableHead, TablePagination, TableRow, Typography } from "@mui/material"
+import { Chip, Pagination, TableBody, TableContainer, TableHead, TablePagination, TableRow, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
 import { fetchBatchListUrl } from "@/apis/rollupscan"
+import Link from "@/components/Link"
 import { l1ExplorerUrl } from "@/constants/index"
 import useRollupStore from "@/stores/rollupStore"
 
@@ -47,10 +48,6 @@ const StyledTablePagination: any = styled(TablePagination)(({ theme }) => ({
   //   fontWeight: "500 !important",
   //   color: `${theme.palette.text.primary} !important`,
   // },
-}))
-
-const ExternalLink = styled(Link)(({ theme }) => ({
-  color: "#00A6F2",
 }))
 
 const StatusChip = styled(Chip)(({ theme }) => ({
@@ -215,34 +212,26 @@ const App = () => {
               {data.map((row: any) => (
                 <TableRow key={row.id}>
                   <TableCell>
-                    <RouterLink to={`batch/${row.index}`}>
-                      <Typography sx={{ color: theme => theme.palette.link.main, fontWeight: 600 }}>{row.index}</Typography>
-                    </RouterLink>{" "}
+                    <Link component={RouterLink} to={`batch/${row.index}`}>
+                      {row.index}
+                    </Link>
                   </TableCell>
                   <TableCell>{formatDate(row.created_at)}</TableCell>
                   <TableCell>{row.total_tx_num}</TableCell>
                   <TableCell>
                     {row.commit_tx_hash ? (
-                      <ExternalLink
-                        href={`${l1ExplorerUrl}/tx/${row.commit_tx_hash}`}
-                        sx={{ color: theme => theme.palette.link.main, fontWeight: 600 }}
-                        underline="none"
-                      >
+                      <Link href={`${l1ExplorerUrl}/tx/${row.commit_tx_hash}`} external>
                         {truncatedHash(row.commit_tx_hash)}
-                      </ExternalLink>
+                      </Link>
                     ) : (
                       "-"
                     )}
                   </TableCell>
                   <TableCell>
                     {row.finalize_tx_hash ? (
-                      <ExternalLink
-                        href={`${l1ExplorerUrl}/tx/${row.finalize_tx_hash}`}
-                        sx={{ color: theme => theme.palette.link.main, fontWeight: 600 }}
-                        underline="none"
-                      >
+                      <Link href={`${l1ExplorerUrl}/tx/${row.finalize_tx_hash}`} external>
                         {truncatedHash(row.finalize_tx_hash)}
-                      </ExternalLink>
+                      </Link>
                     ) : (
                       "-"
                     )}

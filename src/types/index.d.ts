@@ -38,9 +38,10 @@ declare module "@mui/material/styles" {
     }
     scaleBackground: {
       primary: string
-      second: string
+      secondary: string
       disabled: string
       select: string
+      disabledSecondary: string
     }
     tagSuccess: {
       light: string
@@ -83,36 +84,37 @@ declare module "@mui/material/styles" {
     }
     scaleBackground?: {
       primary?: string
-      second?: string
+      secondary?: string
       disabled?: string
       select?: string
+      disabledSecondary?: string
     }
-    tagSuccess: {
+    tagSuccess?: {
       light?: string
       main?: string
       dark?: string
       contrastText?: string
     }
-    tagWarning: {
+    tagWarning?: {
       light?: string
       main?: string
       dark?: string
       contrastText?: string
     }
-    tagCommitted: {
+    tagCommitted?: {
       light?: string
       main?: string
       dark?: string
       contrastText?: string
     }
 
-    tagSkipped: {
+    tagSkipped?: {
       light?: string
       main?: string
       dark?: string
       contrastText?: string
     }
-    tagUnknown: {
+    tagUnknown?: {
       light?: string
       main?: string
       dark?: string

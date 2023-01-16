@@ -3,7 +3,7 @@ import { styled } from "@mui/material/styles"
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.scaleBackground.second,
+    backgroundColor: theme.palette.scaleBackground.secondary,
     color: theme.palette.text.secondary,
     fontWeight: "500",
     fontSize: 14,

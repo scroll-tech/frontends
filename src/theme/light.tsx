@@ -58,6 +58,7 @@ const lightTheme = createTheme({
           lineHeight: "1",
           padding: "16px 28px",
           textTransform: "inherit",
+          width: "max-content",
           // whiteSpace: "nowrap",
           "&:hover": {
             boxShadow: boxShadowOptions.buttonHover,
@@ -80,10 +81,10 @@ const lightTheme = createTheme({
           style: {
             borderColor: paletteOptions.text.primary,
             color: paletteOptions.text.primary,
-            backgroundColor: "background",
+            backgroundColor: paletteOptions.background.default,
             "&:hover": {
               color: paletteOptions.primary.main,
-              backgroundColor: "background",
+              backgroundColor: paletteOptions.background.default,
             },
           },
         },
@@ -92,10 +93,10 @@ const lightTheme = createTheme({
           style: {
             borderColor: paletteOptions.primary.main,
             color: paletteOptions.primary.main,
-            backgroundColor: "background",
+            backgroundColor: paletteOptions.background.default,
             width: "21.5rem",
             "&:hover": {
-              backgroundColor: "background",
+              backgroundColor: paletteOptions.background.default,
               borderColor: paletteOptions.primary.main,
             },
           },

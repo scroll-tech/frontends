@@ -1,8 +1,7 @@
 import { default as HCaptcha } from "@hcaptcha/react-hcaptcha"
 import { useEffect, useRef, useState } from "react"
 
-import { LoadingButton } from "@mui/lab"
-import { CircularProgress, Stack } from "@mui/material"
+import LoadingButton from "@/components/LoadingButton"
 
 const WithHCaptcha = props => {
   const { requestLoading, onRequest } = props
@@ -43,12 +42,7 @@ const WithHCaptcha = props => {
         sx={{
           mt: "2rem",
         }}
-        loadingIndicator={
-          <Stack direction="row" spacing={2}>
-            <span>Requesting Tokens</span>
-            <CircularProgress color="inherit" size={18} thickness={4}></CircularProgress>
-          </Stack>
-        }
+        loadingText="Requesting Tokens"
         variant="contained"
         onClick={handleRequest}
       >

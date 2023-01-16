@@ -70,7 +70,7 @@ const InfoCard = ({ title, value, total, description }: any) => {
           {title}
         </CardTitle>
         <Tooltip title={description}>
-          <InfoOutlinedIcon sx={{ fontSize: "2rem" }} />
+          <InfoOutlinedIcon sx={{ fontSize: "2rem", color: "text.secondary" }} />
         </Tooltip>
       </Box>
       <BatchIndex onClick={moveToBatchDetail} variant="h3">

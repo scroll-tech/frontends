@@ -32,7 +32,7 @@ const useStyles = makeStyles()(theme => {
       padding: "0 0.8rem",
     },
     disabledLabel: {
-      color: "#B4B4B4",
+      color: theme.palette.scaleBackground.disabledSecondary,
     },
     image: {
       width: "auto",

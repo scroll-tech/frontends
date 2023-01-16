@@ -17,7 +17,7 @@ const StyledBox = styled(Stack)(
   top: 0;
   width: 100%;
   z-index: 10;
-  background-color: #fff;
+  background-color: ${theme.palette.background.default};
   border-bottom: 1px solid ${theme.palette.border.main};
   `,
 )
@@ -152,7 +152,7 @@ const SubMenuList = styled(Box)(
     position: absolute;
     border: 1px solid ${theme.palette.border.main};
     left: 0;
-    background: #ffffff;
+    background: ${theme.palette.background.default};
     z-index: 1;
     border-radius: 10px;
     display: flex;

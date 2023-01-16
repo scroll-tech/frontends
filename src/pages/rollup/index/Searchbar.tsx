@@ -10,7 +10,7 @@ import useRollupStore from "@/stores/rollupStore"
 
 const SearchbarContainer = styled(Paper)(({ theme }) => ({
   width: "100%",
-  background: "rgba(201, 203, 206, 0.2)",
+  background: theme.palette.scaleBackground.primary,
   borderRadius: "6px",
   paddingRight: "0.5rem",
   display: "flex",

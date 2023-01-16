@@ -38,14 +38,18 @@ export const paletteOptions = {
     disabled: "rgba(51, 51, 51, 0.3)",
     disabledBackground: "rgba(51, 51, 51, 0.1)",
   },
-  // need
   divider: "#C9CBCE",
+  background: {
+    default: "#FFF",
+    paper: "#FFF",
+  },
   // custom
   scaleBackground: {
     primary: "rgba(201, 203, 206, 0.2)",
     second: "#C9CBCE33",
     disabled: "#EBEBEB",
     select: "#C9CBCE33",
+    disabledSecondary: "#B4B4B4",
   },
   border: {
     main: "#C9CBCE",
@@ -75,8 +79,8 @@ export const paletteOptions = {
     contrastText: "#FFFFFF",
   },
   tagUnknown: {
-    light: "#F13B761A",
-    main: "#F13B76",
+    light: "#FF4F641A",
+    main: "#FF4F64",
     contrastText: "#FFFFFF",
   },
 }

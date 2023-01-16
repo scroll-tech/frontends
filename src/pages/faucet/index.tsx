@@ -2,12 +2,13 @@ import { getAddress } from "@ethersproject/address"
 import dayjs from "dayjs"
 import React, { useEffect, useMemo, useState } from "react"
 import Countdown from "react-countdown"
-import { Link } from "react-router-dom"
+import { Link as RouteLink } from "react-router-dom"
 import useStorage from "squirrel-gill"
 
 import { Button, Alert as MuiAlert, Snackbar, Typography } from "@mui/material"
 
 import { claimUrl, fetchInfoUrl } from "@/apis/faucet"
+import Link from "@/components/Link"
 import TextButton from "@/components/TextButton"
 import { Addresses, ChainId, TESTNET_NAME } from "@/constants"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
@@ -144,9 +145,20 @@ export default function Home() {
                 <tbody>
                   <tr>
                     <td>
-                      <span className="font-medium py-[4px] px-[16px] bg-[#07C7761A] text-[14px] text-[#07C776] rounded-[64px] md:py-[9px] md:px-[30px] md:text-[16px]">
+                      <Typography
+                        component="span"
+                        sx={{
+                          fontWeight: 500,
+                          color: "tagSuccess.main",
+                          bgcolor: "tagSuccess.light",
+                          fontSize: ["1.4rem", "1.6rem"],
+                          py: ["4px", "9px"],
+                          px: ["1.6rem", "3rem"],
+                          borderRadius: "6.4rem",
+                        }}
+                      >
                         Success
-                      </span>
+                      </Typography>
                     </td>
                     <td>
                       <span className="text-[14px] md:text-[16px]">
@@ -154,21 +166,27 @@ export default function Home() {
                       </span>
                     </td>
                     <td>
-                      <a
-                        className="text-[14px] font-semibold md:text-[16px]  text-[#00A6F2]"
-                        href={`${L1_SCAN_URL}/tx/${TxHashData.eth_tx_hash}`}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
+                      <Link href={`${L1_SCAN_URL}/tx/${TxHashData.eth_tx_hash}`} external sx={{ fontSize: ["1.4rem", "1.6rem"] }}>
                         {truncateHash(TxHashData.eth_tx_hash)}
-                      </a>
+                      </Link>
                     </td>
                   </tr>
                   <tr>
                     <td>
-                      <span className="font-medium py-[4px] px-[16px] bg-[#07C7761A] text-[14px] text-[#07C776] rounded-[64px] md:py-[9px] md:px-[30px] md:text-[16px]">
+                      <Typography
+                        component="span"
+                        sx={{
+                          fontWeight: 500,
+                          color: "tagSuccess.main",
+                          bgcolor: "tagSuccess.light",
+                          fontSize: ["1.4rem", "1.6rem"],
+                          py: ["4px", "9px"],
+                          px: ["1.6rem", "3rem"],
+                          borderRadius: "6.4rem",
+                        }}
+                      >
                         Success
-                      </span>
+                      </Typography>
                     </td>
                     <td>
                       <span className="text-[14px] md:text-[16px]">
@@ -176,14 +194,9 @@ export default function Home() {
                       </span>
                     </td>
                     <td>
-                      <a
-                        className="text-[14px] font-semibold md:text-[16px] text-[#00A6F2]"
-                        href={`${L1_SCAN_URL}/tx/${TxHashData.erc20_tx_hash}`}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
+                      <Link href={`${L1_SCAN_URL}/tx/${TxHashData.erc20_tx_hash}`} external sx={{ fontSize: ["1.4rem", "1.6rem"] }}>
                         {truncateHash(TxHashData.erc20_tx_hash)}
-                      </a>
+                      </Link>
                     </td>
                   </tr>
                 </tbody>
@@ -237,12 +250,12 @@ export default function Home() {
                   </p>
                 )}
               </div>
-              <div className="flex flex-col text-[#595959] text-center text-[14px] md:flex-row md:text-[16px]">
-                <p className="mb-[6px] md:mr-[6px]">Scroll L1 and L2 not added yet?</p>
-                <Link to="add-network">
-                  <span className="text-[#00A6F2] cursor-pointer font-semibold">
-                    Add Scroll L1 {TESTNET_NAME} and L2 {TESTNET_NAME}
-                  </span>
+              <div className="flex flex-col items-center text-center md:flex-row">
+                <Typography color="textSecondary" sx={{ fontSize: ["1.4rem", "1.6rem"], mb: ["0.6rem", 0], mr: [0, "0.6rem"] }}>
+                  Scroll L1 and L2 not added yet?
+                </Typography>
+                <Link component={RouteLink} to="add-network" sx={{ fontSize: ["1.4rem", "1.6rem"] }}>
+                  Add Scroll L1 {TESTNET_NAME} and L2 {TESTNET_NAME}
                 </Link>
               </div>
             </>
