@@ -1,54 +1,42 @@
 import { shuffle } from "lodash"
-import MarkdownNavbar from "markdown-navbar"
-import "markdown-navbar/dist/navbar.css"
 import { useEffect, useState } from "react"
 import { Helmet } from "react-helmet-async"
 import ReactMarkdown from "react-markdown"
 import { useParams } from "react-router-dom"
-import { Link as RouterLink } from "react-router-dom"
 import rehypeKatex from "rehype-katex"
 import rehypeRaw from "rehype-raw"
 import remarkGfm from "remark-gfm"
 import remarkMath from "remark-math"
 
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos"
 import { Box, CircularProgress, Typography } from "@mui/material"
 import { useTheme } from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import { styled } from "@mui/system"
 
 import Articles from "./articles"
+import TOC from "./components/tableOfContents"
 import blogSource from "./data.json"
-
-const MAX_H3_COUNT = 10
-
-const Link = styled(RouterLink)({
-  display: "flex",
-  alignItems: "center",
-  marginBottom: "2rem",
-  "& *": {
-    fontWeight: 500,
-    color: "#202020",
-  },
-})
 
 const BlogContainer = styled(Box)(
   ({ theme }) => `
     max-width: 100rem;
     padding: 8rem 0;
-    overflow: hidden;
+    overflow: visible;
     display: flex;
   ${theme.breakpoints.down("md")} {
     padding: 4rem 1.6rem;
     display: block;
+    overflow: hidden;
   };
   `,
 )
 
 const BlogNavbar = styled(Box)(({ theme }) => ({
-  position: "fixed",
+  position: "sticky",
+  top: "14rem",
   width: "40rem",
-  marginLeft: "10rem",
+  marginLeft: "4rem",
+  maxWidth: "30vw",
   paddingLeft: "2rem",
   borderLeft: `1px solid ${theme.palette.border.main}`,
   [theme.breakpoints.down("md")]: {
@@ -66,7 +54,6 @@ const BlogDetail = () => {
   })
 
   const [loading, setLoading] = useState(true)
-  const [hiddenHeadingsUnderLevel2, setHiddenHeadingsUnderLevel2] = useState(false)
   const params = useParams()
 
   useEffect(() => {
@@ -84,7 +71,6 @@ const BlogDetail = () => {
       fetch(blogPath)
         .then(response => response.text())
         .then(text => {
-          handleHeadingsUnderLevel2(text)
           setLoading(false)
           setBlog(text)
         })
@@ -93,13 +79,6 @@ const BlogDetail = () => {
     }
     getMoreBlog()
   }, [])
-
-  const handleHeadingsUnderLevel2 = text => {
-    const regexp = /### /gi
-    const matches = text.match(regexp)
-    const hiddenHeadingsUnderLevel2 = matches?.length > MAX_H3_COUNT
-    setHiddenHeadingsUnderLevel2(hiddenHeadingsUnderLevel2)
-  }
 
   const getMoreBlog = () => {
     const blogs = shuffle(blogSource.filter(blog => blog.id !== params.blogId)).slice(0, 3)
@@ -158,16 +137,7 @@ const BlogDetail = () => {
             />
             <Box sx={{ width: "32rem", flexShrink: 0, position: "relative" }}>
               <BlogNavbar>
-                <Link to="/blog">
-                  <ArrowBackIosIcon />
-                  <Typography>All Articles</Typography>
-                </Link>
-                <MarkdownNavbar
-                  className={`${hiddenHeadingsUnderLevel2 ? "hidden-levels" : ""} markdown-navbar`}
-                  source={blog as string}
-                  headingTopOffset={100}
-                  ordered={false}
-                />
+                <TOC />
               </BlogNavbar>
             </Box>
           </BlogContainer>
