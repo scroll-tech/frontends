@@ -34,7 +34,7 @@ const useStyles = makeStyles()(theme => {
     },
     tableWrapper: {
       boxShadow: "unset",
-      border: "1px solid #C9CBCE",
+      border: `1px solid ${theme.palette.border.main}`,
       borderRadius: "1rem",
       width: "70rem",
     },
@@ -47,7 +47,10 @@ const useStyles = makeStyles()(theme => {
       },
     },
     tableHeader: {
-      backgroundColor: "rgba(201, 203, 206, 0.2)",
+      backgroundColor: theme.palette.scaleBackground.primary,
+      ".MuiTableCell-head": {
+        borderBottom: "unset",
+      },
     },
     chip: {
       width: "12.6rem",
@@ -56,12 +59,12 @@ const useStyles = makeStyles()(theme => {
       fontWeight: 500,
     },
     pendingChip: {
-      color: "#FFB21C",
-      backgroundColor: "rgba(255, 178, 28, 0.1)",
+      color: theme.palette.tagWarning.main,
+      backgroundColor: theme.palette.tagWarning.light,
     },
     successChip: {
-      color: "#2FCE74",
-      backgroundColor: "rgba(47, 206, 116, 0.1)",
+      color: theme.palette.tagSuccess.main,
+      backgroundColor: theme.palette.tagSuccess.light,
     },
     pagination: {
       ".MuiPaginationItem-text": {
@@ -194,12 +197,14 @@ const TxRow = props => {
         </Stack>
       </TableCell>
       <TableCell className="w-full">
-        <span>{tx.amount} </span>
-        {symbolLoading ? <Skeleton variant="text" width="5rem" className="inline-block" /> : <span>{symbol}</span>}
+        <Typography>
+          <span>{tx.amount} </span>
+          {symbolLoading ? <Skeleton variant="text" width="5rem" className="inline-block" /> : <span>{symbol}</span>}
+        </Typography>
       </TableCell>
       <TableCell>
         <Stack direction="column">
-          <Typography variant="body1">From {tx.fromName}: </Typography>
+          <Typography>From {tx.fromName}: </Typography>
           <Stack direction="row" spacing="0.8rem" className="align-center">
             <Link external href={generateExploreLink(tx.fromExplore, tx.hash)} className="leading-normal flex-1">
               {truncateHash(tx.hash)}
@@ -213,7 +218,7 @@ const TxRow = props => {
         </Stack>
 
         <Stack direction="column" className="mt-[1.2rem]">
-          <Typography variant="body1">To {tx.toName}: </Typography>
+          <Typography>To {tx.toName}: </Typography>
           <Stack direction="row" spacing="0.8rem" className="align-center">
             {tx.toHash ? (
               <Link external href={generateExploreLink(tx.toExplore, tx.toHash)} className="leading-normal flex-1">

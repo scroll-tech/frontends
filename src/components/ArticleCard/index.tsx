@@ -95,10 +95,10 @@ const ArticleCard = ({ blog, small = false }) => {
         <ArticleTitle className={small ? "small" : ""} onClick={handleClick} variant="subtitle1">
           {blog.title}
         </ArticleTitle>
-        <ArticleDate className={small ? "small" : ""} variant="body2">
+        <ArticleDate className={small ? "small" : ""} variant="body2" color="textSecondary">
           {blog.date} ・ {blog.type}
         </ArticleDate>
-        <ArticleSummary className={small ? "small" : ""} variant="body1">
+        <ArticleSummary className={small ? "small" : ""} variant="body1" color="textSecondary">
           {blog.summary}
         </ArticleSummary>
         <Button className={small ? "small" : ""} onClick={handleClick} color="secondary">

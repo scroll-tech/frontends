@@ -47,16 +47,16 @@ const MenuLinkButton = styled(Link)(
     right: 0;
     bottom: -2px;
     position: absolute;
-    border-bottom: 0 solid ${theme.palette.action.active};
+    border-bottom: 0 solid ${theme.palette.primary.main};
   }
   &:hover{
-    color: ${theme.palette.action.active};
+    color: ${theme.palette.primary.main};
     &:after{
         border-bottom-width: 2px;
     }
   }
   &.active {
-    color: ${theme.palette.action.active};
+    color: ${theme.palette.primary.main};
     &:after{
         border-bottom-width: 2px;
     }
@@ -81,16 +81,16 @@ const LinkStyledButton = styled(NavLink)(
     right: 0;
     bottom: -2px;
     position: absolute;
-    border-bottom: 0 solid ${theme.palette.action.active};
+    border-bottom: 0 solid ${theme.palette.primary.main};
   }
   &:hover{
-    color: ${theme.palette.action.active};
+    color: ${theme.palette.primary.main};
     &:after{
         border-bottom-width: 2px;
     }
   }
   &.active {
-    color: ${theme.palette.action.active};
+    color: ${theme.palette.primary.main};
     &:after{
         border-bottom-width: 2px;
     }
@@ -106,11 +106,11 @@ const LinkStyledSubButton = styled(NavLink)(
     padding-right: 26px;
     white-space: nowrap;
     &:hover {
-        color: ${theme.palette.action.active};
+        color: ${theme.palette.primary.main};
         background: rgba(51, 51, 51, 0.1);
     }
     &.active {
-        color: ${theme.palette.action.active};
+        color: ${theme.palette.primary.main};
     } 
   `,
 )
@@ -133,13 +133,13 @@ const SubMenuButton = styled(Box)(
       right: 0;
       bottom: -2px;
       position: absolute;
-      border-bottom: 0 solid ${theme.palette.action.active};
+      border-bottom: 0 solid ${theme.palette.primary.main};
     }
     &:hover{
-      color: ${theme.palette.action.active};
+      color: ${theme.palette.primary.main};
     }
     &.active {
-      color: ${theme.palette.action.active};
+      color: ${theme.palette.primary.main};
       &:after{
           border-bottom-width: 2px;
       }
@@ -169,7 +169,7 @@ const LinkButton = styled(Link)(
   padding-right: 26px;
   white-space: nowrap;
   &:hover {
-    color: ${theme.palette.action.active};
+    color: ${theme.palette.primary.main};
     background: rgba(51, 51, 51, 0.1);
   }
 `,

@@ -13,10 +13,6 @@ const useStyles = makeStyles()(theme => {
     closeButton: {
       padding: 0,
     },
-    loadingIcon: {
-      color: "#2FCE74",
-      marginBottom: "2.4rem",
-    },
     content: {
       textAlign: "center",
     },
@@ -25,9 +21,6 @@ const useStyles = makeStyles()(theme => {
       [theme.breakpoints.up("sm")]: {
         padding: "0.8rem 4.2rem 4rem",
       },
-    },
-    subTitle: {
-      fontWeight: 600,
     },
   }
 })
@@ -42,19 +35,36 @@ const ApproveLoading = props => {
       <DialogTitle className={classes.title}>
         <div className="flex justify-end">
           {onClose ? (
-            <IconButton className={classes.closeButton} onClick={onClose}>
+            <IconButton
+              sx={[
+                theme => ({
+                  color: "text.primary",
+                  "&:hover": {
+                    backgroundColor: theme.palette.background.default,
+                  },
+                }),
+              ]}
+              onClick={onClose}
+            >
               <CloseIcon />
             </IconButton>
           ) : null}
         </div>
       </DialogTitle>
       <DialogContent className={classes.content}>
-        <CircularProgress size={50} thickness={3} className={classes.loadingIcon}></CircularProgress>
+        <CircularProgress
+          size={50}
+          thickness={3}
+          sx={{
+            color: "tagSuccess.main",
+            mb: "2.4rem",
+          }}
+        ></CircularProgress>
         <Typography variant="h4" gutterBottom>
           Pending Approve
         </Typography>
         <div className={classes.section}>
-          <Typography variant="body1" gutterBottom className={classes.subTitle}>
+          <Typography variant="body1" gutterBottom sx={{ fontWeight: 600 }}>
             Approve USDC
           </Typography>
           <Typography variant="body1">Approve on your {walletName} wallet</Typography>

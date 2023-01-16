@@ -174,7 +174,7 @@ const BlogDetail = () => {
           {isMobile ? (
             <Box sx={{ paddingBottom: "6rem" }}>
               <Typography
-                variant="h2"
+                variant="h1"
                 sx={{
                   textAlign: "center",
                   marginBottom: {

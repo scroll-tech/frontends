@@ -66,7 +66,9 @@ const InfoCard = ({ title, value, total, description }: any) => {
   return (
     <Card onClick={moveToTargetPage}>
       <Box display="flex" alignItems="center" sx={{ marginBottom: "0.8rem" }}>
-        <CardTitle variant="body1">{title}</CardTitle>
+        <CardTitle variant="body1" color="textSecondary">
+          {title}
+        </CardTitle>
         <Tooltip title={description}>
           <InfoOutlinedIcon sx={{ fontSize: "2rem" }} />
         </Tooltip>

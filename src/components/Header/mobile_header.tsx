@@ -24,10 +24,10 @@ const LinkStyledButton = styled(NavLink)(
   width: 100%;
   line-height: 6.4rem;  
   &.active {
-    color: ${theme.palette.action.active}
+    color: ${theme.palette.primary.main}
   } 
   &:hover {
-    color: ${theme.palette.action.active}
+    color: ${theme.palette.primary.main}
   } 
 `,
 )
@@ -36,7 +36,7 @@ const ExternalLink = styled(Link)(
   ({ theme }) => `
   color: ${theme.palette.text.primary};
   &:hover {
-    color: ${theme.palette.action.active}
+    color: ${theme.palette.primary.main}
   } 
   `,
 )
@@ -47,7 +47,7 @@ const ListButton = styled(ListItemButton)(
   height: 6.4rem;
   &:hover {
     background: transparent;
-    color: ${theme.palette.action.active};
+    color: ${theme.palette.primary.main};
   } 
 `,
 )

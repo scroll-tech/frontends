@@ -5,7 +5,7 @@ import Countdown from "react-countdown"
 import { Link } from "react-router-dom"
 import useStorage from "squirrel-gill"
 
-import { Button, Alert as MuiAlert, Snackbar } from "@mui/material"
+import { Button, Alert as MuiAlert, Snackbar, Typography } from "@mui/material"
 
 import { claimUrl, fetchInfoUrl } from "@/apis/faucet"
 import TextButton from "@/components/TextButton"
@@ -206,13 +206,20 @@ export default function Home() {
               <Button onClick={connectWallet}>Connect Wallet</Button>
             )}
           </div>
-          <p className="text-[#333] text-center text-[26px]  leading-[32px] mb-[16px] font-display md:text-[34px]  md:leading-[40px] capitalize">
-            Request testnet Scroll tokens
-          </p>
-          <p className="max-w-[560px] text-center mx-[24px] text-[#595959] text-[16px] leading-[26px]">
+          <Typography variant="h3" align="center" sx={{ marginBottom: "1.6rem" }}>
+            Request Testnet Scroll Tokens
+          </Typography>
+          <Typography
+            color="textSecondary"
+            align="center"
+            sx={{
+              maxWidth: "56rem",
+              mx: "2.4rem",
+            }}
+          >
             Funds you receive through the Scroll faucet are not real funds. Request tokens every 24h and receive {faucetInfo.payoutEth} {ETH_SYMBOL} &{" "}
             {faucetInfo.payoutUsdc} {USDC_SYMBOL} per request.
-          </p>
+          </Typography>
           {networkStatus === 1 ? (
             <Countdown key={canClaimFrom} date={canClaimFrom || dayjs().format("YYYY-MM-DD H:m:s")} renderer={renderer} />
           ) : (

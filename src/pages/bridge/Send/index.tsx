@@ -6,6 +6,7 @@ import useStorage from "squirrel-gill"
 import Alert from "@mui/material/Alert"
 
 import L1_erc20ABI from "@/assets/abis/L1_erc20ABI.json"
+import LoadingButton from "@/components/LoadingButton"
 import TextButton from "@/components/TextButton"
 import { ChainId, ERC20Token, ETH_SYMBOL, NativeToken, StandardERC20GatewayProxyAddr, Token, networks } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
@@ -13,7 +14,6 @@ import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import { useApprove, useAsyncMemo, useBalance, useSufficientBalance } from "@/hooks"
 import { amountToBN, sanitizeNumericalString, switchNetwork } from "@/utils"
 
-import Button from "../components/Button"
 import ApproveLoading from "./ApproveLoading"
 import SendAmountSelectorCard from "./SendAmountSelectorCard"
 import SendLoading from "./SendLoading"
@@ -255,29 +255,25 @@ const Send: FC = () => {
           )}
 
           {needsApproval ? (
-            <Button
-              className={styles.button}
-              disabled={!approveButtonActive}
+            <LoadingButton
+              sx={{ mt: "2rem", width: "100%" }}
               onClick={handleApprove}
+              disabled={!approveButtonActive}
               loading={approving}
-              fullWidth
-              large
-              color="primary"
+              variant="contained"
             >
               Approve USDC
-            </Button>
+            </LoadingButton>
           ) : (
-            <Button
-              className={styles.button}
+            <LoadingButton
+              sx={{ mt: "2rem", width: "100%" }}
               onClick={handleSendTransaction}
               disabled={!sendButtonActive}
               loading={sending}
-              fullWidth
-              large
-              color="primary"
+              variant="contained"
             >
               Send {tokenSymbol} to {toNetwork.name}
-            </Button>
+            </LoadingButton>
           )}
           <ApproveLoading open={approving} onClose={handleCloseApproveLoading} />
           <SendLoading value={txValue} from={fromNetwork.name} to={toNetwork.name} open={sending} onClose={handleCloseSendLoading} />

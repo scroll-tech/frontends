@@ -7,14 +7,14 @@ import { ReactComponent as ArrowDownIcon } from "@/assets/svgs/arrow-down.svg"
 const useStyles = makeStyles<any>()((theme, { value }) => ({
   raisedSelect: {
     border: "none",
-    backgroundColor: "#C9CBCE33",
+    backgroundColor: theme.palette.scaleBackground.select,
     borderRadius: "2rem",
     height: "4.4rem",
     fontSize: "1.8rem",
     fontWeight: 600,
     lineHeight: "4.4rem",
     cursor: "pointer",
-    boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.1)",
+    boxShadow: theme.boxShadows.select,
     [theme.breakpoints.down("sm")]: {
       paddingRight: "calc(12px + 1.2rem)",
       paddingLeft: "1rem",
@@ -32,13 +32,13 @@ const useStyles = makeStyles<any>()((theme, { value }) => ({
     },
     ".MuiList-root": {
       padding: 0,
-      backgroundColor: "#fff",
+      backgroundColor: theme.palette.background.default,
     },
     ".MuiSelect-icon": {
       top: "50%",
       transform: "translateY(-50%)",
       right: "1.6rem",
-      color: value === "default" ? "white" : theme.palette.text.primary,
+      color: value === "default" ? theme.palette.common.white : theme.palette.text.primary,
       [theme.breakpoints.down("sm")]: {
         right: "1.2rem",
       },

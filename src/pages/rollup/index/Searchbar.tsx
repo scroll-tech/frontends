@@ -76,7 +76,7 @@ export default function Searchbar(props) {
 
   return (
     <SearchbarContainer>
-      <IconButton sx={{ paddingLeft: "3rem", color: "#595959", pointerEvents: "none" }} component="label" aria-label="search">
+      <IconButton sx={{ paddingLeft: "3rem", color: "text.secondary", pointerEvents: "none" }} component="label" aria-label="search">
         <SearchIcon sx={{ fontSize: "2rem" }} />
       </IconButton>
       <InputBase
