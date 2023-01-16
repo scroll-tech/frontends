@@ -42,6 +42,7 @@ const BatchIndex = styled(Typography)(({ theme }) => ({
   fontWeight: 500,
   marginRight: "0.6rem",
   display: "inline-block",
+  cursor: "pointer",
   "&:hover": {
     opacity: 0.8,
   },
