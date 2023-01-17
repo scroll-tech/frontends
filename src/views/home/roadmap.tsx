@@ -128,7 +128,9 @@ const Roadmap = () => {
         <RoadmapListItem key={idx} className={roadmap.active ? "active" : ""}>
           <IconBox>{roadmap.completed ? <RoadmapSuccessIcon src={SuccessIcon} className={roadmap.active ? "active" : ""} /> : null}</IconBox>
           <Box>
-            <RoadmapIndex variant="body1">Phase {++idx}</RoadmapIndex>
+            <RoadmapIndex variant="body1" color="textSecondary">
+              Phase {++idx}
+            </RoadmapIndex>
             <RoadmapName variant="subtitle1">{roadmap.name}</RoadmapName>
           </Box>
         </RoadmapListItem>

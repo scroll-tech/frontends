@@ -21,10 +21,7 @@ const useStyles = makeStyles()(() => {
     },
     label: {
       marginLeft: "0.5em",
-      fontSize: "1.6rem",
       fontWeight: 600,
-      color: "#333",
-      cursor: "pointer",
     },
   }
 })

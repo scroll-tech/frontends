@@ -5,7 +5,7 @@ import { Tooltip, Zoom } from "@mui/material"
 
 import { ReactComponent as CopyIcon } from "@/assets/svgs/copy.svg"
 
-import MiniButton from "../components/Button/MiniButton"
+import MiniButton from "../components/MiniButton"
 
 const CopyButton = (props: any) => {
   const { value, ...restProps } = props

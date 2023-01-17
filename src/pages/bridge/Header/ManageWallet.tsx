@@ -5,7 +5,7 @@ import Link from "@/components/Link"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import { truncateAddress } from "@/utils"
 
-import MiniButton from "../components/Button/MiniButton"
+import MiniButton from "../components/MiniButton"
 import CopyButton from "./CopyButton"
 
 const ManageWallet = (props: any) => {

@@ -1,5 +1,4 @@
 import createCache from "@emotion/cache"
-import { CacheProvider } from "@emotion/react"
 import { QueryClient, QueryClientProvider } from "react-query"
 
 import AppProvider from "@/contexts/AppContextProvider"
@@ -8,7 +7,6 @@ import BridgeTitle from "./BridgeTitle"
 import Content from "./Content"
 import FAQ from "./FAQ"
 import Header from "./Header"
-import ThemeProvider from "./theme"
 
 export const muiCache = createCache({
   key: "mui",
@@ -33,20 +31,16 @@ const queryClient = new QueryClient({
 
 const Bridge = () => {
   return (
-    <CacheProvider value={muiCache}>
-      <ThemeProvider>
-        <QueryClientProvider client={queryClient}>
-          <AppProvider>
-            <div>
-              <Header />
-              <BridgeTitle />
-              <Content />
-              <FAQ />
-            </div>
-          </AppProvider>
-        </QueryClientProvider>
-      </ThemeProvider>
-    </CacheProvider>
+    <QueryClientProvider client={queryClient}>
+      <AppProvider>
+        <div>
+          <Header />
+          <BridgeTitle />
+          <Content />
+          <FAQ />
+        </div>
+      </AppProvider>
+    </QueryClientProvider>
   )
 }
 

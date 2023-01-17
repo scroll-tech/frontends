@@ -11,7 +11,32 @@ const SendTranferButton = ({ disabled, onClick }) => {
   const styles = useContext(StyleContext)
   return (
     <div className={classNames("flex", "items-center", "justify-center", styles.sendTransfer)}>
-      <IconButton className="bg-white text-[#00A6F2]" disabled={disabled} disableRipple onClick={onClick}>
+      <IconButton
+        sx={[
+          theme => ({
+            color: "link.main",
+            padding: "1.2rem",
+            backgroundColor: theme.palette.background.default,
+
+            "&:hover": {
+              backgroundColor: theme.palette.background.default,
+              // mobile
+              "@media (hover: none)": {
+                backgroundColor: theme.palette.background.default,
+              },
+            },
+            "&:disabled": {
+              color: theme.palette.text.disabled,
+              backgroundColor: theme.palette.scaleBackground.disabled,
+              cursor: "not-allowed",
+              pointerEvents: "all",
+            },
+          }),
+        ]}
+        disabled={disabled}
+        disableRipple
+        onClick={onClick}
+      >
         <SvgIcon className={styles.sendTransferIcon} component={TransferIcon} />
       </IconButton>
     </div>

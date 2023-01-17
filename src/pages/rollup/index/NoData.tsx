@@ -21,7 +21,9 @@ const NoData = () => {
     <Container>
       <img alt="nodata" className="w-[100px]" src="/imgs/rollup/nodata.png" />
       <NoResultsTypography>No results found</NoResultsTypography>
-      <Typography variant="body1">We couldn’t find any result matching your search.</Typography>
+      <Typography variant="body1" color="textSecondary">
+        We couldn’t find any result matching your search.
+      </Typography>
       {/* <TryAgain> Try Again</TryAgain> */}
     </Container>
   )

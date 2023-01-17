@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link as RouteLink } from "react-router-dom"
 
+import Link from "@/components/Link"
 import { Addresses, ChainId, SiteMap, TESTNET_NAME } from "@/constants"
 
 import "./index.less"
@@ -90,28 +91,20 @@ function AddNetwork() {
       <div className="max-w-[746px] mb-[40px] flex justify-between items-center flex-row-reverse  w-full mt-[80px]">
         {step === ChainId.SCROLL_LAYER_2 ? (
           <>
-            <button className="flex justify-center items-center">
-              <Link to={SiteMap.Faucet}>
-                <span className="text-base font-semibold text-[#00A6F2]">Done. Request Tokens</span>
-              </Link>
-              <img className="w-[15px]  ml-[10px]" alt="right arrow" src="/imgs/faucet/right-arrow.png" />
-            </button>
-            <button
-              onClick={() => setStep(ChainId.SCROLL_LAYER_1)}
-              className="flex justify-center text-base font-semibold items-center text-[#00A6F2]"
-            >
+            <Link component={RouteLink} to={SiteMap.Faucet}>
+              Done. Request Tokens
+              <img className="w-[15px] ml-[10px]" alt="right arrow" src="/imgs/faucet/right-arrow.png" />
+            </Link>
+            <Link component="button" onClick={() => setStep(ChainId.SCROLL_LAYER_1)}>
               <img className="w-[15px] mr-[10px]" alt="left arrow" src="/imgs/faucet/left-arrow.png" />
               Add Scroll L1 {TESTNET_NAME}
-            </button>
+            </Link>
           </>
         ) : (
-          <button
-            onClick={() => setStep(ChainId.SCROLL_LAYER_2)}
-            className="text-[#00A6F2] text-base flex font-semibold  justify-center items-center"
-          >
+          <Link component="button" onClick={() => setStep(ChainId.SCROLL_LAYER_2)}>
             Done. Add Scroll L2 {TESTNET_NAME}
             <img className="w-[15px]  ml-[10px]" alt="right arrow" src="/imgs/faucet/right-arrow.png" />
-          </button>
+          </Link>
         )}
       </div>
     </main>

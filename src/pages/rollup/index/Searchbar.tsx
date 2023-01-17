@@ -10,7 +10,7 @@ import useRollupStore from "@/stores/rollupStore"
 
 const SearchbarContainer = styled(Paper)(({ theme }) => ({
   width: "100%",
-  background: "rgba(201, 203, 206, 0.2)",
+  background: theme.palette.scaleBackground.primary,
   borderRadius: "6px",
   paddingRight: "0.5rem",
   display: "flex",
@@ -76,7 +76,7 @@ export default function Searchbar(props) {
 
   return (
     <SearchbarContainer>
-      <IconButton sx={{ paddingLeft: "3rem", color: "#595959", pointerEvents: "none" }} component="label" aria-label="search">
+      <IconButton sx={{ paddingLeft: "3rem", color: "text.secondary", pointerEvents: "none" }} component="label" aria-label="search">
         <SearchIcon sx={{ fontSize: "2rem" }} />
       </IconButton>
       <InputBase
