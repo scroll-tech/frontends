@@ -22,6 +22,10 @@ const Footer = () => {
           name: "Join Us",
           to: "/join-us",
         },
+        {
+          name: "Status Page",
+          href: "http://status.scroll.io/",
+        },
       ],
     },
     {
