@@ -7,7 +7,7 @@ const medias = [
   {
     name: "discord",
     imgSrc: "/imgs/media/discord.png",
-    href: "https://discord.gg/s84eJSdFhn",
+    href: "https://discord.gg/scroll",
   },
   {
     name: "gitHub",

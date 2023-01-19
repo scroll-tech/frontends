@@ -247,7 +247,7 @@ export default function Home() {
                 <img alt="discord logo" className="w-[20px] align-middle" src="/imgs/home/discord.png" />
               </div>
               Chat with us on
-              <a href="https://discord.gg/s84eJSdFhn" className="ml-[4px] font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer">
+              <a href="https://discord.gg/scroll" className="ml-[4px] font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer">
                 Discord
               </a>
             </dt>
