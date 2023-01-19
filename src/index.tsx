@@ -6,15 +6,13 @@ import ReactDOM from "react-dom/client"
 import ReactGA from "react-ga4"
 import { BrowserRouter } from "react-router-dom"
 
-import { ThemeProvider } from "@mui/material/styles"
-
 import App from "./App"
 import "./appGlobals"
 import "./index.css"
 import reportWebVitals from "./reportWebVitals"
 import "./styles/globals.less"
 import "./styles/index.less"
-import themeLight from "./theme/light"
+import ScrollThemeProvider from "./theme"
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 
@@ -37,11 +35,11 @@ if (process.env.NODE_ENV === "production") {
 
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={themeLight}>
+    <ScrollThemeProvider>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </ThemeProvider>
+    </ScrollThemeProvider>
   </React.StrictMode>,
 )
 

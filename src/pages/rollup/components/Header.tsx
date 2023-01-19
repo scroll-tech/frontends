@@ -32,7 +32,7 @@ const Header = () => {
       <Typography variant="h3" align="center" sx={{ marginBottom: "1.2rem" }}>
         Rollup Explorer
       </Typography>
-      <Description variant="body1" align="center">
+      <Description variant="body1" color="textSecondary" align="center">
         Track the status of blocks and transactions as they are committed and finalized.
       </Description>
     </Box>

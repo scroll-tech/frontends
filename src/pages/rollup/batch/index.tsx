@@ -3,10 +3,11 @@ import { useEffect } from "react"
 import { Link as RouterLink, useParams } from "react-router-dom"
 
 import { InfoOutlined, NavigateNext, OpenInNew } from "@mui/icons-material"
-import { Box, Breadcrumbs, Divider, Link, Tooltip, Typography } from "@mui/material"
+import { Box, Breadcrumbs, Divider, Stack, Tooltip, Typography } from "@mui/material"
 import { styled, useTheme } from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
+import Link from "@/components/Link"
 import { l1ExplorerUrl } from "@/constants/index"
 import { useBatchDetail } from "@/hooks/useRollupInfo"
 
@@ -68,17 +69,11 @@ const Blocks = () => {
   const renderLink = (hash: string | null) => {
     if (hash) {
       return (
-        <Link href={`${l1ExplorerUrl}/tx/${hash}`} underline="none">
-          <Box display="flex" alignItems="center">
-            <Typography sx={{ color: "#00A6F2", fontWeight: 600 }}>{truncatedHash(hash)}</Typography>
-            <OpenInNew
-              sx={{
-                marginLeft: "0.4rem",
-                color: "#00A6F2",
-                verticalAlign: "text-top",
-              }}
-            />
-          </Box>
+        <Link href={`${l1ExplorerUrl}/tx/${hash}`}>
+          <Stack direction="row" alignItems="center" spacing="0.4rem">
+            {truncatedHash(hash)}
+            <OpenInNew />
+          </Stack>
         </Link>
       )
     }
@@ -102,7 +97,7 @@ const Blocks = () => {
             <Box
               sx={{
                 width: "100%",
-                border: "1px solid #C9CBCE",
+                border: theme => `1px solid ${theme.palette.border.main}`,
                 borderRadius: "10px",
                 marginTop: "2.2rem",
               }}
@@ -121,9 +116,9 @@ const Blocks = () => {
               <BoxItem>
                 <LabelTypography>Blocks</LabelTypography>
                 {/* TODO: Make link dynamic, probably by using a variable for the rollupscan root */}
-                <RouterLink to={`/prealpha/rollupscan/batch/${batch.index}/blocks`}>
-                  <Typography sx={{ fontWeight: 600, color: "#00A6F2" }}>{batch.end_block_number - batch.start_block_number + 1}</Typography>
-                </RouterLink>
+                <Link component={RouterLink} to={`/prealpha/rollupscan/batch/${batch.index}/blocks`}>
+                  {batch.end_block_number - batch.start_block_number + 1}
+                </Link>
               </BoxItem>
               <Divider />
 

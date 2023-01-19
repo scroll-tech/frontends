@@ -20,6 +20,7 @@ const useStyles = makeStyles()(theme => {
       },
     },
     networkLabel: {
+      fontWeight: 600,
       marginLeft: "0.4rem",
       overflow: "hidden",
       textOverflow: "ellipsis",
@@ -49,7 +50,7 @@ function NetworkSelector({ network }: Props) {
       <Box className={classes.networkIconContainer}>
         <img src={network.imageUrl} className={classes.networkIcon} alt={network.name} />
       </Box>
-      <Typography variant="subtitle1" color="textSecondary" className={classes.networkLabel}>
+      <Typography color="textSecondary" className={classes.networkLabel}>
         {network.name}
       </Typography>
     </div>

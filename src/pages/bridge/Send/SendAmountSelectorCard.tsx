@@ -38,19 +38,22 @@ const useStyles = makeStyles()(theme => {
     container: {
       width: "100%",
       boxSizing: "border-box",
+
       [theme.breakpoints.down("sm")]: {
         width: "100%",
         padding: "1.6rem",
       },
+      padding: "2.8rem",
+      borderRadius: "1rem",
       backgroundColor: theme.palette.background.default,
-      boxShadow: "0px 2px 4px rgba(0,0,0,.1)",
+      boxShadow: theme.boxShadows.sharp,
       transition: "all 0.15s ease-out",
     },
     selectItem: {
       "&.Mui-selected": {
-        backgroundColor: "rgba(201, 203, 206, 0.2)",
+        backgroundColor: theme.palette.scaleBackground.primary,
         "&:hover, &:focus": {
-          backgroundColor: "rgba(201, 203, 206, 0.2)",
+          backgroundColor: theme.palette.scaleBackground.primary,
         },
       },
       ".MuiTypography-root": {
@@ -177,7 +180,18 @@ const SendAmountSelectorCard: FC<Props> = props => {
         {isToCard ? (
           <div />
         ) : (
-          <LargeTextField className="flex-1" value={value} onChange={handleInputChange} placeholder="0.00" leftAlign disabled={disableInput} />
+          <LargeTextField
+            className="flex-1"
+            value={value}
+            onChange={handleInputChange}
+            placeholder="0.00"
+            leftAlign
+            disabled={disableInput}
+            sx={{
+              fontFamily: "Pulp Display",
+              letterSpacing: "0.25px",
+            }}
+          />
         )}
 
         {isToCard ? (

@@ -1,9 +1,10 @@
 import { makeStyles } from "tss-react/mui"
 
+import { Button } from "@mui/material"
+
 import useBridgeStore from "@/stores/bridgeStore"
 import useTxStore from "@/stores/txStore"
 
-import Button from "../components/Button"
 import TxTable from "../components/TxTable"
 
 const useStyles = makeStyles()(theme => ({
@@ -37,7 +38,7 @@ const RencentTx = (props: any) => {
   return (
     <div className={classes.wrapper}>
       <TxTable data={transactions.slice(0, 2)}></TxTable>
-      <Button className={classes.button} variant="outlined" large onClick={handleGoBridge}>
+      <Button className={classes.button} variant="outlined" color="primary" onClick={handleGoBridge}>
         Move More Funds
       </Button>
     </div>

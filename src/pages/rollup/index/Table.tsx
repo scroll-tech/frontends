@@ -2,10 +2,11 @@ import dayjs from "dayjs"
 import React, { useEffect, useMemo, useState } from "react"
 import { Link as RouterLink, useSearchParams } from "react-router-dom"
 
-import { Chip, Link, Pagination, TableBody, TableContainer, TableHead, TablePagination, TableRow, Typography } from "@mui/material"
+import { Chip, Pagination, TableBody, TableContainer, TableHead, TablePagination, TableRow, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
 import { fetchBatchListUrl } from "@/apis/rollupscan"
+import Link from "@/components/Link"
 import { l1ExplorerUrl } from "@/constants/index"
 import useRollupStore from "@/stores/rollupStore"
 
@@ -49,32 +50,28 @@ const StyledTablePagination: any = styled(TablePagination)(({ theme }) => ({
   // },
 }))
 
-const ExternalLink = styled(Link)(({ theme }) => ({
-  color: "#00A6F2",
-}))
-
 const StatusChip = styled(Chip)(({ theme }) => ({
-  color: "#ffffff",
+  color: theme.palette.primary.contrastText,
   textTransform: "capitalize",
   "&.precommitted": {
-    backgroundColor: "#ffb21c1A",
-    color: "#ffb21c",
+    backgroundColor: theme.palette.tagWarning.light,
+    color: theme.palette.tagWarning.main,
   },
   "&.committed": {
-    backgroundColor: "#29c2ce1A",
-    color: "#29c2ce",
+    backgroundColor: theme.palette.tagCommitted.light,
+    color: theme.palette.tagCommitted.main,
   },
   "&.finalized": {
-    backgroundColor: "#07C7761A",
-    color: "#07c776",
+    backgroundColor: theme.palette.tagSuccess.light,
+    color: theme.palette.tagSuccess.main,
   },
   "&.skipped": {
-    backgroundColor: "#BD63E21A",
-    color: "#BD63E2",
+    backgroundColor: theme.palette.tagSkipped.light,
+    color: theme.palette.tagSkipped.main,
   },
   "&.unknown": {
-    backgroundColor: "#f13b761A",
-    color: "#f13b76",
+    backgroundColor: theme.palette.tagUnknown.light,
+    color: theme.palette.tagUnknown.main,
   },
   "& > .MuiChip-label": {
     fontWeight: 500,
@@ -187,7 +184,7 @@ const App = () => {
         <Spinning />
       ) : (
         <>
-          <Typography variant="body1" align="left">
+          <Typography variant="body1" color="textSecondary" align="left">
             {total.toLocaleString()} results shown
           </Typography>
           <Table aria-label="Batch table">
@@ -215,26 +212,26 @@ const App = () => {
               {data.map((row: any) => (
                 <TableRow key={row.id}>
                   <TableCell>
-                    <RouterLink to={`batch/${row.index}`}>
-                      <Typography sx={{ color: "#00A6F2", fontWeight: 600 }}>{row.index}</Typography>
-                    </RouterLink>{" "}
+                    <Link component={RouterLink} to={`batch/${row.index}`}>
+                      {row.index}
+                    </Link>
                   </TableCell>
                   <TableCell>{formatDate(row.created_at)}</TableCell>
                   <TableCell>{row.total_tx_num}</TableCell>
                   <TableCell>
                     {row.commit_tx_hash ? (
-                      <ExternalLink href={`${l1ExplorerUrl}/tx/${row.commit_tx_hash}`} sx={{ color: "#00A6F2", fontWeight: 600 }} underline="none">
+                      <Link href={`${l1ExplorerUrl}/tx/${row.commit_tx_hash}`} external>
                         {truncatedHash(row.commit_tx_hash)}
-                      </ExternalLink>
+                      </Link>
                     ) : (
                       "-"
                     )}
                   </TableCell>
                   <TableCell>
                     {row.finalize_tx_hash ? (
-                      <ExternalLink href={`${l1ExplorerUrl}/tx/${row.finalize_tx_hash}`} sx={{ color: "#00A6F2", fontWeight: 600 }} underline="none">
+                      <Link href={`${l1ExplorerUrl}/tx/${row.finalize_tx_hash}`} external>
                         {truncatedHash(row.finalize_tx_hash)}
-                      </ExternalLink>
+                      </Link>
                     ) : (
                       "-"
                     )}

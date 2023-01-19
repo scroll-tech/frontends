@@ -1,57 +1,19 @@
 import { createTheme } from "@mui/material/styles"
 
-import { palette, typographyOptions } from "./typographyOptions"
+import { boxShadowOptions, paletteOptions, typographyOptions } from "./options"
 
-export const boxShadows = {
-  button: {
-    default: "none",
-    disabled: "none",
-    highlighted: "6px 9px 0px 0px #fee7e0",
-  },
-}
+const defaultTransition = "all 0.15s ease-out"
 
-const colors = {
-  charcoal: {
-    DEFAULT: "#333333",
-    dark: "#333333",
-    light: "#333333",
-  },
-  "charcoal-50": {
-    DEFAULT: "#33333380",
-    dark: "#33333380",
-    light: "#33333380",
-  },
-  "charcoal-30": {
-    DEFAULT: "#3333334d",
-    dark: "#3333334d",
-    light: "#3333334d",
-  },
-  "charcoal-10": {
-    DEFAULT: "#3333331a",
-    dark: "#3333331a",
-    light: "#3333331a",
-  },
-  orange: {
-    DEFAULT: "#eb7106",
-    dark: "#eb7106",
-    light: "#eb7106",
-  },
-}
-
-const theme = createTheme({
+const lightTheme = createTheme({
+  // check in bridge
   shape: {
     borderRadius: 6,
   },
-  palette: {
-    ...palette,
-  },
+  palette: paletteOptions,
   typography: typographyOptions,
+  // diferrent from raw shadows
+  boxShadows: boxShadowOptions,
   components: {
-    MuiButtonBase: {
-      defaultProps: {
-        disableRipple: true,
-      },
-    },
     MuiContainer: {
       styleOverrides: {
         root: {
@@ -61,19 +23,7 @@ const theme = createTheme({
         },
       },
     },
-    // @ts-ignore
-    MuiLoadingButton: {
-      styleOverrides: {
-        root: {
-          "&.Mui-disabled": {
-            backgroundColor: "rgba(51, 51, 51, 0.1)",
-          },
-        },
-        loadingIndicator: {
-          color: "rgba(51, 51, 51, 0.3)",
-        },
-      },
-    },
+
     MuiTooltip: {
       styleOverrides: {
         tooltip: {
@@ -91,6 +41,11 @@ const theme = createTheme({
         },
       },
     },
+    MuiButtonBase: {
+      defaultProps: {
+        disableRipple: true,
+      },
+    },
     MuiButton: {
       defaultProps: {
         variant: "outlined",
@@ -103,9 +58,10 @@ const theme = createTheme({
           lineHeight: "1",
           padding: "16px 28px",
           textTransform: "inherit",
-          whiteSpace: "nowrap",
+          width: "max-content",
+          // whiteSpace: "nowrap",
           "&:hover": {
-            boxShadow: "#FEE7E0 0.4rem 0.4rem",
+            boxShadow: boxShadowOptions.buttonHover,
           },
         },
       },
@@ -113,46 +69,108 @@ const theme = createTheme({
         {
           props: { variant: "contained", color: "primary" },
           style: {
-            boxShadow: boxShadows.button.default,
+            boxShadow: boxShadowOptions.none,
             lineHeight: "18px",
-            background: "#EB7106",
             "&:hover": {
-              background: "#F18740",
-              color: "#ffffff",
+              backgroundColor: paletteOptions.primary.light,
             },
           },
         },
         {
           props: { variant: "outlined", color: "primary" },
           style: {
-            background: "#ffffff",
-            borderColor: colors.charcoal.DEFAULT,
-            color: colors.charcoal.DEFAULT,
-            border: `1px solid ${colors.charcoal.DEFAULT}`,
+            borderColor: paletteOptions.text.primary,
+            color: paletteOptions.text.primary,
+            backgroundColor: paletteOptions.background.default,
             "&:hover": {
-              background: "#ffffff",
-              color: colors.orange.DEFAULT,
-              border: `1px solid ${colors.orange.DEFAULT}`,
+              color: paletteOptions.primary.main,
+              backgroundColor: paletteOptions.background.default,
             },
           },
         },
         {
           props: { variant: "outlined", color: "secondary" },
           style: {
-            background: "#ffffff",
-            borderColor: colors.orange.DEFAULT,
-            color: colors.orange.DEFAULT,
-            border: `1px solid ${colors.orange.DEFAULT}`,
+            borderColor: paletteOptions.primary.main,
+            color: paletteOptions.primary.main,
+            backgroundColor: paletteOptions.background.default,
             width: "21.5rem",
             "&:hover": {
-              background: "#ffffff",
-              color: colors.orange.DEFAULT,
-              border: `1px solid ${colors.orange.DEFAULT}`,
+              backgroundColor: paletteOptions.background.default,
+              borderColor: paletteOptions.primary.main,
             },
           },
         },
       ],
     },
+
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          fontWeight: 700,
+          fontSize: "1.8rem",
+          transition: defaultTransition,
+        },
+      },
+    },
+    // select dropdown
+    MuiPopover: {
+      styleOverrides: {
+        paper: {
+          transition: defaultTransition,
+          borderRadius: "2rem",
+          boxShadow: boxShadowOptions.select,
+        },
+      },
+    },
+
+    // default body1
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          cursor: "default",
+          transition: defaultTransition,
+          color: paletteOptions.text.primary,
+        },
+        gutterBottom: {
+          marginBottom: "0.7rem",
+        },
+      },
+    },
+    MuiTableRow: {
+      styleOverrides: {
+        root: {
+          "&:nth-last-of-type(1) .MuiTableCell-body": {
+            borderBottom: "unset",
+          },
+        },
+      },
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          borderColor: paletteOptions.divider,
+          [theme.breakpoints.down("sm")]: {
+            padding: "1.6rem 2.4rem",
+          },
+        }),
+        head: {
+          color: paletteOptions.text.secondary,
+          fontSize: "1.4rem",
+          fontWeight: 500,
+        },
+      },
+    },
+    MuiDialog: {
+      styleOverrides: {
+        paper: ({ theme }) => ({
+          [theme.breakpoints.down("sm")]: {
+            margin: "0 1.6rem",
+          },
+        }),
+      },
+    },
+    // end
     MuiAlert: {
       styleOverrides: {
         root: ({ theme, ownerState }) => ({
@@ -162,8 +180,8 @@ const theme = createTheme({
           padding: "2rem",
           width: "100%",
           boxSizing: "border-box",
-          color: ownerState.severity && palette[ownerState.severity].main,
-          backgroundColor: ownerState.severity && palette[ownerState.severity].light,
+          color: ownerState.severity && paletteOptions[ownerState.severity].main,
+          backgroundColor: ownerState.severity && paletteOptions[ownerState.severity].light,
           alignItems: "center",
           [theme.breakpoints.down("sm")]: {
             flexDirection: "column",
@@ -177,7 +195,7 @@ const theme = createTheme({
           fontSize: "2.4rem",
           marginRight: "1.8rem",
           padding: 0,
-          color: `${ownerState.severity && palette[ownerState.severity].main} !important`,
+          color: `${ownerState.severity && paletteOptions[ownerState.severity].main} !important`,
           [theme.breakpoints.down("sm")]: {
             justifyContent: "center",
             marginRight: 0,
@@ -190,8 +208,8 @@ const theme = createTheme({
     },
     MuiAccordion: {
       styleOverrides: {
-        root: {
-          borderBottom: "1px solid #C9CBCE",
+        root: ({ theme }) => ({
+          borderBottom: `1px solid ${theme.palette.border.main}`,
           "&:before": {
             backgroundColor: "unset",
           },
@@ -201,7 +219,7 @@ const theme = createTheme({
           "&.Mui-expanded": {
             margin: 0,
           },
-        },
+        }),
       },
     },
     MuiAccordionSummary: {
@@ -241,15 +259,15 @@ const theme = createTheme({
     },
     MuiLink: {
       styleOverrides: {
-        root: {
-          color: "#00A6F2",
+        root: ({ theme }) => ({
+          color: theme.palette.link.main,
           fontSize: "1.6rem",
           fontWeight: 600,
           cursor: "pointer",
-        },
+        }),
       },
     },
   },
 })
 
-export default theme
+export default lightTheme

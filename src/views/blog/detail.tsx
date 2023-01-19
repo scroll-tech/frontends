@@ -50,7 +50,7 @@ const BlogNavbar = styled(Box)(({ theme }) => ({
   width: "40rem",
   marginLeft: "10rem",
   paddingLeft: "2rem",
-  borderLeft: "1px solid #C9CBCE",
+  borderLeft: `1px solid ${theme.palette.border.main}`,
   [theme.breakpoints.down("md")]: {
     display: "none",
   },
@@ -145,7 +145,7 @@ const BlogDetail = () => {
       </Helmet>
       {loading ? (
         <Box display="flex" justifyContent="center" alignItems="center" height="80vh">
-          <CircularProgress sx={{ color: "#EB7106" }} />
+          <CircularProgress color="primary" />
         </Box>
       ) : (
         <Box>
@@ -174,7 +174,7 @@ const BlogDetail = () => {
           {isMobile ? (
             <Box sx={{ paddingBottom: "6rem" }}>
               <Typography
-                variant="h2"
+                variant="h1"
                 sx={{
                   textAlign: "center",
                   marginBottom: {

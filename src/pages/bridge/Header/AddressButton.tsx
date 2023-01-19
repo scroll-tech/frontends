@@ -2,19 +2,20 @@ import { useRef } from "react"
 import { makeStyles } from "tss-react/mui"
 
 import CloseIcon from "@mui/icons-material/Close"
-import { Backdrop, Card, ClickAwayListener, Divider, Popper, Typography } from "@mui/material"
+import { Backdrop, Button, Card, ClickAwayListener, Divider, Popper, Typography } from "@mui/material"
 
 import { useApp } from "@/contexts/AppContextProvider"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import ManageWallet from "@/pages/bridge/Header/ManageWallet"
 import TransactionHistory from "@/pages/bridge/Header/TransactionHistory"
-import Button from "@/pages/bridge/components/Button"
 import useBridgeStore from "@/stores/bridgeStore"
 import { truncateAddress } from "@/utils"
 
 const useStyles = makeStyles()(theme => ({
   container: {
     width: "max-content",
+    padding: "2.8rem",
+    borderRadius: "1rem",
     boxSizing: "border-box",
     boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.2)",
     [theme.breakpoints.down("sm")]: {
@@ -107,7 +108,7 @@ const AddressButton = () => {
 
   return (
     <>
-      <Button className="w-[178px] p-[unset]" ref={buttonRef} variant="outlined" large onClick={handleOpen}>
+      <Button className="w-[178px]" ref={buttonRef} variant="outlined" onClick={handleOpen}>
         {truncateAddress(walletCurrentAddress as string)}
       </Button>
       <Backdrop open={historyVisible} className={classes.backdrop}>

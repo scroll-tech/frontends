@@ -42,6 +42,7 @@ const BatchIndex = styled(Typography)(({ theme }) => ({
   fontWeight: 500,
   marginRight: "0.6rem",
   display: "inline-block",
+  cursor: "pointer",
   "&:hover": {
     opacity: 0.8,
   },
@@ -66,9 +67,11 @@ const InfoCard = ({ title, value, total, description }: any) => {
   return (
     <Card onClick={moveToTargetPage}>
       <Box display="flex" alignItems="center" sx={{ marginBottom: "0.8rem" }}>
-        <CardTitle variant="body1">{title}</CardTitle>
+        <CardTitle variant="body1" color="textSecondary">
+          {title}
+        </CardTitle>
         <Tooltip title={description}>
-          <InfoOutlinedIcon sx={{ fontSize: "2rem" }} />
+          <InfoOutlinedIcon sx={{ fontSize: "2rem", color: "text.secondary" }} />
         </Tooltip>
       </Box>
       <BatchIndex onClick={moveToBatchDetail} variant="h3">

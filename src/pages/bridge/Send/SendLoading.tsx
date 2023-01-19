@@ -7,27 +7,11 @@ import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 
 const useStyles = makeStyles()(theme => {
   return {
-    title: {
-      padding: "2.4rem 2.8rem",
-    },
-    closeButton: {
-      padding: 0,
-    },
-    loadingIcon: {
-      color: "#2FCE74",
-      marginBottom: "2.4rem",
-    },
-    content: {
-      textAlign: "center",
-    },
     section: {
       padding: "0.8rem 6.2rem 5rem",
       [theme.breakpoints.up("sm")]: {
         padding: "0.8rem 4.2rem 4rem",
       },
-    },
-    subTitle: {
-      fontWeight: 600,
     },
   }
 })
@@ -39,22 +23,39 @@ const SendLoading = props => {
 
   return (
     <Dialog open={open} disableScrollLock>
-      <DialogTitle className={classes.title}>
+      <DialogTitle sx={{ p: "2.4rem 2.8rem" }}>
         <div className="flex justify-end">
           {onClose ? (
-            <IconButton className={classes.closeButton} onClick={onClose}>
+            <IconButton
+              sx={[
+                theme => ({
+                  color: "text.primary",
+                  "&:hover": {
+                    backgroundColor: theme.palette.background.default,
+                  },
+                }),
+              ]}
+              onClick={onClose}
+            >
               <CloseIcon />
             </IconButton>
           ) : null}
         </div>
       </DialogTitle>
-      <DialogContent className={classes.content}>
-        <CircularProgress size={50} thickness={3} className={classes.loadingIcon}></CircularProgress>
+      <DialogContent sx={{ textAlign: "center" }}>
+        <CircularProgress
+          size={50}
+          thickness={3}
+          sx={{
+            color: "tagSuccess.main",
+            mb: "2.4rem",
+          }}
+        ></CircularProgress>
         <Typography variant="h4" gutterBottom>
           Pending Confirmation
         </Typography>
         <div className={classes.section}>
-          <Typography variant="body1" gutterBottom className={classes.subTitle}>
+          <Typography variant="body1" gutterBottom sx={{ fontWeight: 600 }}>
             Sending {value} from {from} to {to}
           </Typography>
           <Typography variant="body1">Confirm this transaction on your {walletName} wallet</Typography>

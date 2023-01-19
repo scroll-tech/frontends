@@ -182,7 +182,7 @@ const Home = () => {
     <ContainerBox>
       <SectionBox>
         <WrapperBox>
-          <TitleTypography variant="h2">The Native zkEVM Scaling Solution for Ethereum</TitleTypography>
+          <TitleTypography variant="h1">The Native zkEVM Scaling Solution for Ethereum</TitleTypography>
           <SubTitleTypography variant="subtitle1" sx={{ maxWidth: "60rem" }}>
             Scroll is a zkEVM-based zkRollup on Ethereum that enables native compatibility for existing Ethereum applications and tools.
           </SubTitleTypography>
@@ -192,7 +192,7 @@ const Home = () => {
 
       <SectionBox>
         <WrapperBox>
-          <TitleTypography variant="h2">Technical Principles</TitleTypography>
+          <TitleTypography variant="h1">Technical Principles</TitleTypography>
           <SubTitleTypography variant="subtitle1" sx={{ maxWidth: "63rem" }}>
             Scroll aims to provide the best experience for developers and users.
           </SubTitleTypography>
@@ -202,7 +202,7 @@ const Home = () => {
 
       <SectionBox>
         <WrapperBox>
-          <TitleTypography variant="h2">Join the Scroll Testnet</TitleTypography>
+          <TitleTypography variant="h1">Join the Scroll Testnet</TitleTypography>
           <SubTitleTypography variant="subtitle1" sx={{ maxWidth: "53rem" }}>
             The future is here: interact with dApps, deploy smart contracts, and explore L2 blocks on Scroll’s Testnet.
           </SubTitleTypography>
@@ -225,7 +225,7 @@ const Home = () => {
                   md: "left",
                 },
               }}
-              variant="h2"
+              variant="h1"
             >
               Our journey so far
             </TitleTypography>
@@ -249,7 +249,7 @@ const Home = () => {
       </SectionBox>
 
       <SectionBox>
-        <TitleTypography variant="h2">Scroll Blog</TitleTypography>
+        <TitleTypography variant="h1">Scroll Blog</TitleTypography>
         <SubTitleTypography variant="subtitle1" sx={{ maxWidth: "70rem" }}>
           Learn about Scroll’s technology, research, and latest developments.
         </SubTitleTypography>

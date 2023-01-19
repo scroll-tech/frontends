@@ -38,7 +38,7 @@ const Team = () => {
   return (
     <TeamContainer sx={{ margin: "14rem auto" }}>
       <WrapperBox>
-        <TitleTypography variant="h2">Join Scroll and work with the best</TitleTypography>
+        <TitleTypography variant="h1">Join Scroll and work with the best</TitleTypography>
         <SubTitleTypography variant="subtitle1">
           Scroll is a globally distributed team. We are united in our goal to improve Ethereum while maintaining decentralization and transparency.
           Join our team to work with experts in zero-knowledge cryptography and distributed systems on cutting edge technology.
@@ -56,7 +56,7 @@ const Team = () => {
 
       <Photowall />
 
-      <TitleTypography variant="h2">Sound like a good fit?</TitleTypography>
+      <TitleTypography variant="h1">Sound like a good fit?</TitleTypography>
       <Button color="primary" variant="contained" onClick={() => navigate("/join-us")} sx={{ display: "table", margin: "0 auto" }}>
         View Open Positions
       </Button>

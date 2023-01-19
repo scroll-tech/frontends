@@ -23,7 +23,7 @@ const useStyles = makeStyles()(theme => {
       width: "auto",
       textAlign: "right",
       [theme.breakpoints.down("sm")]: {
-        fontSize: theme.typography.subtitle1.fontSize,
+        fontSize: theme.typography.subtitle2.fontSize,
       },
     },
   }
@@ -48,7 +48,7 @@ const useInputStyles = makeStyles<any>()((theme, { leftAlign, centerAlign }) => 
 }))
 
 const LargeTextField: FC<LargeTextFieldProps> = props => {
-  const { className, units, leftAlign = false, centerAlign, ...textFieldProps } = props
+  const { className, units, leftAlign = false, centerAlign, sx, ...textFieldProps } = props
   const { classes, cx } = useStyles()
   const { classes: inputStyles } = useInputStyles({
     leftAlign,
@@ -63,6 +63,7 @@ const LargeTextField: FC<LargeTextFieldProps> = props => {
       InputProps={{
         classes: inputStyles,
         disableUnderline: true,
+        sx,
       }}
       {...textFieldProps}
     />
