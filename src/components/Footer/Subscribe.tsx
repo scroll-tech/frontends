@@ -24,7 +24,7 @@ const Subscribe = () => {
     {
       name: "Discord",
       imgSrc: "/imgs/footer/discord.svg",
-      href: "https://discord.gg/s84eJSdFhn",
+      href: "https://discord.gg/scroll",
     },
     {
       name: "GitHub",
