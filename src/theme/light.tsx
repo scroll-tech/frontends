@@ -101,6 +101,14 @@ const lightTheme = createTheme({
             },
           },
         },
+        {
+          props: { disabled: true },
+          style: {
+            border: "none !important",
+            color: paletteOptions.action.disabled,
+            backgroundColor: paletteOptions.action.disabledBackground,
+          },
+        },
       ],
     },
 
