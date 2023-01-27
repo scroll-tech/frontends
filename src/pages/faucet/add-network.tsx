@@ -1,12 +1,16 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Link as RouteLink } from "react-router-dom"
+
+import { Button } from "@mui/material"
 
 import Link from "@/components/Link"
 import { Addresses, ChainId, SiteMap, TESTNET_NAME } from "@/constants"
+import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 
 import "./index.less"
 
 function AddNetwork() {
+  const { chainId } = useWeb3Context()
   const [step, setStep] = useState(ChainId.SCROLL_LAYER_1)
   const [faucetInfo, setFaucetInfo] = useState({
     account: "0x0000000000000000000000000000000000000000",
@@ -41,12 +45,15 @@ function AddNetwork() {
     })
   }
 
+  const onCurrentChain = useMemo(() => chainId === +Addresses[step].autoconnect.chainId, [chainId, Addresses[step].autoconnect.chainId])
+
   const addToMetaMask = async (autoconnect: any) => {
     await window.ethereum.request({
       method: "wallet_addEthereumChain",
       params: [autoconnect],
     })
   }
+
   return (
     <main className="faucet-app h-[90vh] flex justify-center items-center flex-col px-[16px]">
       <p className="text-[#333] text-center text-[28px]  leading-[32px] mb-[16px] font-display md:text-[34px]  md:leading-[40px]">
@@ -70,23 +77,34 @@ function AddNetwork() {
 
       <div className="flex mt-[65px] w-full max-w-[500px] justify-between">
         <div className="max-w-[180px] text-left text-[#333333]">Add {Addresses[step].autoconnect.chainName} to your Metamask networks</div>
-        <button
+        <Button
+          disabled={onCurrentChain}
           onClick={() => addToMetaMask(Addresses[step].autoconnect)}
-          className="w-[260px] font-semibold h-[50px] border border-[#333333] rounded-[6px] text-[#333333] add-button"
+          sx={{
+            width: "26rem",
+            height: "5rem",
+            lineHeight: 1.5,
+            fontSize: "1.2rem",
+          }}
         >
-          Add {Addresses[step].autoconnect.chainName}
-        </button>
+          {onCurrentChain ? `Already on ${Addresses[step].autoconnect.chainName}` : `Add ${Addresses[step].autoconnect.chainName}`}
+        </Button>
       </div>
       <div className="flex mt-[40px] w-full max-w-[500px] justify-between">
         <div className="max-w-[180px] text-left text-[#333333]">
           Add the {faucetInfo.usdcSymbol} token to {Addresses[step].autoconnect.chainName}
         </div>
-        <button
+        <Button
           onClick={() => addTokenToMetaMask(Addresses[step].usdcAddress as string)}
-          className="w-[260px] font-semibold  h-[50px] border border-[#333333] rounded-[6px] text-[#333333] add-button"
+          sx={{
+            width: "26rem",
+            height: "5rem",
+            lineHeight: 1.5,
+            fontSize: "1.2rem",
+          }}
         >
           Add {faucetInfo.usdcSymbol} to {Addresses[step].autoconnect.chainName}
-        </button>
+        </Button>
       </div>
       <div className="max-w-[746px] mb-[40px] flex justify-between items-center flex-row-reverse  w-full mt-[80px]">
         {step === ChainId.SCROLL_LAYER_2 ? (
