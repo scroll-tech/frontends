@@ -1,6 +1,6 @@
 import type { FC } from "react"
 import { useEffect, useRef, useState } from "react"
-import { Link as RouterLink } from "react-router-dom"
+import { Link as RouterLink, useLocation } from "react-router-dom"
 
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos"
 import { Typography } from "@mui/material"
@@ -25,6 +25,29 @@ const TableOfContents: FC = () => {
   const [headings, setHeadings] = useState<Heading[]>([])
   const tableOfContents = useRef<HTMLUListElement>(null)
   const [currentID, setCurrentID] = useState("")
+  const scrolledRef = useRef(false)
+  const { hash } = useLocation()
+  const hashRef = useRef(hash)
+
+  useEffect(() => {
+    if (hash) {
+      // We want to reset if the hash has changed
+      if (hashRef.current !== hash) {
+        hashRef.current = hash
+        scrolledRef.current = false
+      }
+
+      // only attempt to scroll if we haven't yet (this could have just reset above if hash changed)
+      if (!scrolledRef.current) {
+        const id = hash.replace("#", "")
+        const element = document.getElementById(id)
+        if (element) {
+          element.scrollIntoView()
+          scrolledRef.current = true
+        }
+      }
+    }
+  }, [tableOfContents.current])
 
   useEffect(() => {
     if (!tableOfContents.current) return
