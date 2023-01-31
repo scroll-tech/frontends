@@ -14,6 +14,10 @@ object {
   vertical-align: initial;
 }
 
+html {
+  scroll-padding-top: 140px;
+}
+
 body {
   margin: 0;
   /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -126,27 +130,42 @@ onboard-v2 .outer-container icon {
   list-style-type: disc;
 }
 
-.markdown-navbar {
-  max-height: calc(100vh - 21rem);
-  overflow: scroll;
-  padding-bottom: 2rem;
+.header-link {
+  font-size: 1.4rem;
+  font-weight: 400;
+  padding-left: 1em;
+  cursor: pointer;
+  display: block;
+  font-weight: lighter;
+  line-height: 2.8rem;
+  margin: 0.8rem 0;
+  padding-right: 1.8em;
+  transition: all 0.2s;
 }
 
-.markdown-navbar .title-anchor {
-  font-size: 14px;
-  line-height: 22px;
-  margin: 0.8rem auto;
-}
-.markdown-navbar .title-anchor.active,
-.markdown-navbar .title-anchor:hover {
-  background: transparent;
+.header-link.active,
+.header-link:hover,
+.header-link:focus {
   color: #eb7106;
+  background-color: #f8f8f8;
 }
 
-.markdown-navigation .title-level3 {
-  padding-left: 2em;
+.header-link a {
+  display: inline-flex;
+  gap: 0.5em;
+  width: 100%;
+  padding: 0.15em 0 0.15em 0;
 }
 
-.markdown-navbar.hidden-levels .title-level3 {
-  display: none;
+.header-link.depth-3 {
+  padding-left: 2rem;
+}
+.header-link.depth-4 {
+  padding-left: 3rem;
+}
+
+.header-link a {
+  font: inherit;
+  color: inherit;
+  text-decoration: none;
 }
