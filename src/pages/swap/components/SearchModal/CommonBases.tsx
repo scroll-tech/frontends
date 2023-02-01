@@ -3,7 +3,7 @@ import { Text } from "rebass"
 import styled from "styled-components"
 import { ChainId, Currency, ETHER, Token, currencyEquals } from "uniswap-v2-sdk-scroll"
 
-import { SUGGESTED_BASES } from "../../constants"
+import { SUGGESTED_BASES, SUPPORTED_CHAINID } from "../../constants"
 import { AutoColumn } from "../Column"
 import CurrencyLogo from "../CurrencyLogo"
 import QuestionHelper from "../QuestionHelper"
@@ -56,7 +56,7 @@ export default function CommonBases({
             ETH
           </Text>
         </BaseWrapper>
-        {(chainId ? SUGGESTED_BASES[chainId] : []).map((token: Token) => {
+        {(chainId === SUPPORTED_CHAINID ? SUGGESTED_BASES[chainId] : []).map((token: Token) => {
           const selected = selectedCurrency instanceof Token && selectedCurrency.address === token.address
           return (
             <BaseWrapper onClick={() => !selected && onSelect(token)} disable={selected} key={token.address}>
