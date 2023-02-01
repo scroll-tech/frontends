@@ -69,6 +69,10 @@ export function useSwapActionHandlers(): {
   }
 }
 
+function checkIsEmpty(value?: string, currency?: Currency): boolean {
+  return !value || !currency
+}
+
 // try to parse a user entered amount for a given token
 export function tryParseAmount(value?: string, currency?: Currency): CurrencyAmount | undefined {
   if (!value || !currency) {
@@ -136,6 +140,8 @@ export function useDerivedSwapInfo(): {
   const relevantTokenBalances = useCurrencyBalances(walletCurrentAddress ?? undefined, [inputCurrency ?? undefined, outputCurrency ?? undefined])
 
   const isExactIn: boolean = independentField === Field.INPUT
+
+  const emptyAmount = checkIsEmpty(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
   const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
 
   const bestTradeExactIn = useTradeExactIn(isExactIn ? parsedAmount : undefined, outputCurrency ?? undefined)
@@ -161,8 +167,12 @@ export function useDerivedSwapInfo(): {
     inputError = "Connect Wallet"
   }
 
-  if (!parsedAmount) {
+  if (emptyAmount) {
     inputError = inputError ?? "Enter an amount"
+  }
+
+  if (!parsedAmount) {
+    inputError = inputError ?? "Invalid amount"
   }
 
   if (!currencies[Field.INPUT] || !currencies[Field.OUTPUT]) {
