@@ -2,7 +2,6 @@ import { makeStyles } from "tss-react/mui"
 
 import { CircularProgress, Stack, Typography } from "@mui/material"
 
-import Link from "@/components/Link"
 import { BRIDGE_PAGE_SIZE } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
 import useTxStore from "@/stores/txStore"
@@ -13,7 +12,7 @@ const useStyles = makeStyles()(theme => {
   return {
     tableWrapper: {
       boxShadow: "unset",
-      border: "1px solid #C9CBCE",
+      border: `1px solid ${theme.palette.border.main}`,
       borderRadius: "1rem",
       [theme.breakpoints.down("sm")]: {
         border: "unset",
@@ -31,7 +30,7 @@ const useStyles = makeStyles()(theme => {
       },
     },
     tableHeader: {
-      backgroundColor: "rgba(201, 203, 206, 0.2)",
+      backgroundColor: theme.palette.scaleBackground.primary,
     },
   }
 })
@@ -43,7 +42,7 @@ const TransactionsList = (props: any) => {
     txHistory: { refreshPageTransactions },
   } = useApp()
 
-  const { page, total, loading, frontTransactions, pageTransactions, clearTransactions } = useTxStore()
+  const { page, total, loading, frontTransactions, pageTransactions } = useTxStore()
 
   if (!pageTransactions?.length) {
     return (
@@ -66,10 +65,6 @@ const TransactionsList = (props: any) => {
           </Typography>
           {loading && <CircularProgress size={24} />}
         </Stack>
-
-        <Link component="button" underline="none" onClick={clearTransactions}>
-          Clear All
-        </Link>
       </div>
       <TxTable
         data={pageTransactions}
