@@ -85,6 +85,7 @@ export default function Home() {
         const { message, status } = err
         if (!message && status === 429) {
           setErrorMessage("hCaptcha: too many requests!")
+          setOpen(true)
           return
         }
         //get hms
@@ -93,7 +94,7 @@ export default function Home() {
         if (rateLimitDuration) {
           const canClaimFrom = dayjs()
             .add(rateLimitDuration[2] ?? 0, "h")
-            .add(rateLimitDuration[4], "m")
+            .add(rateLimitDuration[4] ?? 0, "m")
             .add(rateLimitDuration[6], "s")
             .format("YYYY-MM-DD H:m:s")
           setCanClaimFrom(canClaimFrom)
