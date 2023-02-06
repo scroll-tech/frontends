@@ -85,6 +85,7 @@ export default function Home() {
         const { message, status } = err
         if (!message && status === 429) {
           setErrorMessage("hCaptcha: too many requests!")
+          setOpen(true)
           return
         }
         //get hms
@@ -93,7 +94,7 @@ export default function Home() {
         if (rateLimitDuration) {
           const canClaimFrom = dayjs()
             .add(rateLimitDuration[2] ?? 0, "h")
-            .add(rateLimitDuration[4], "m")
+            .add(rateLimitDuration[4] ?? 0, "m")
             .add(rateLimitDuration[6], "s")
             .format("YYYY-MM-DD H:m:s")
           setCanClaimFrom(canClaimFrom)
@@ -118,7 +119,7 @@ export default function Home() {
     } else {
       // Render a countdown
       return (
-        <div className="w-full max-w-[473px] mx-auto ">
+        <div className="w-full">
           <button className="mx-auto text-[14px] cursor-not-allowed py-[14px] px-[10px] flex justify-center items-center bg-[#3333331a] rounded-[6px]  text-[#333] mt-[30px] md:mt-[50px] md:text-base md:py-[18px] md:px-[28px] md:text-[16px] ">
             <img alt="warning logo" className="w-[23px] mr-[12px] md:mr-[15px]" src="/imgs/faucet/info.png" />
             <strong className="mr-[4px]">
@@ -127,8 +128,8 @@ export default function Home() {
             before requesting tokens.
           </button>
           {TxHashData ? (
-            <div className="border rounded-[10px] border-[#C9CBCE] mt-[37px]">
-              <table className="w-full max-w-[473px]">
+            <div className="w-max mx-auto border rounded-[10px] border-[#C9CBCE] mt-[37px]">
+              <table>
                 <thead className="bg-[#C9CBCE33]">
                   <tr>
                     <td>
@@ -166,7 +167,7 @@ export default function Home() {
                       </span>
                     </td>
                     <td>
-                      <Link href={`${L1_SCAN_URL}/tx/${TxHashData.eth_tx_hash}`} external sx={{ fontSize: ["1.4rem", "1.6rem"] }}>
+                      <Link href={`${L1_SCAN_URL}/tx/${TxHashData.eth_tx_hash}`} external sx={{ fontSize: ["1.4rem", "1.6rem"], mr: "3rem" }}>
                         {truncateHash(TxHashData.eth_tx_hash)}
                       </Link>
                     </td>
@@ -194,7 +195,7 @@ export default function Home() {
                       </span>
                     </td>
                     <td>
-                      <Link href={`${L1_SCAN_URL}/tx/${TxHashData.erc20_tx_hash}`} external sx={{ fontSize: ["1.4rem", "1.6rem"] }}>
+                      <Link href={`${L1_SCAN_URL}/tx/${TxHashData.erc20_tx_hash}`} external sx={{ fontSize: ["1.4rem", "1.6rem"], mr: "3rem" }}>
                         {truncateHash(TxHashData.erc20_tx_hash)}
                       </Link>
                     </td>
