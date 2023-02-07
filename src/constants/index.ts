@@ -47,7 +47,7 @@ const addresses = [
 
 const navigation = [
   {
-    name: "Prealpha",
+    name: "Portal",
     description: "Main Portal",
     subdomainOrPath: "",
   },

@@ -15,7 +15,7 @@ import routes from "./routes/prealphaRoutes"
 
 const baseUrl = requireEnv("REACT_APP_API_BASE_URI")
 
-function Prealpha() {
+function Portal() {
   const route = useMatchedRoute()
   const getUrl = () => {
     return window.location.href
@@ -49,4 +49,4 @@ function Prealpha() {
   )
 }
 
-export default Prealpha
+export default Portal

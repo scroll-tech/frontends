@@ -5,7 +5,7 @@ import { Navigate, Route, Routes, useLocation } from "react-router-dom"
 
 import LoadingPage from "@/components/LoadingPage"
 
-const Prealpha = React.lazy(() => import("./Prealpha"))
+const Portal = React.lazy(() => import("./Portal"))
 const Homepage = React.lazy(() => import("./Homepage"))
 
 const RemoveTrailingSlash = ({ ...rest }) => {
@@ -39,7 +39,7 @@ function App() {
       <RemoveTrailingSlash />
       <React.Suspense fallback={<LoadingPage />}>
         <Routes>
-          <Route path="/prealpha/*" element={<Prealpha />} />
+          <Route path="/prealpha/*" element={<Portal />} />
           <Route path="/*" element={<Homepage />} />
         </Routes>
       </React.Suspense>
