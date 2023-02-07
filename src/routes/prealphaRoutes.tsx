@@ -9,7 +9,7 @@ import Swap from "@/pages/swap"
 
 const routes = [
   {
-    name: "A native zkEVM layer 2 solution for Ethereum",
+    name: "Portal",
     path: "/",
     fullPath: "/prealpha/",
     element: <Home />,
@@ -34,7 +34,7 @@ const routes = [
   },
 
   {
-    name: "Rollupscan",
+    name: "Rollup Explorer",
     path: "/rollupscan",
     fullPath: "/prealpha/rollupscan",
     element: <RollupScan />,

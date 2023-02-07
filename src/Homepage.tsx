@@ -20,12 +20,12 @@ function Homepage() {
   return (
     <ScrollToTop>
       <Helmet>
-        {route ? <title>{route.name} - Scroll</title> : null}
-        <meta name="description" content="A native zkEVM layer 2 solution for Ethereum" />
+        <title>Scroll{route ? " – " + route.name : null}</title>
+        <meta name="description" content="Native zkEVM Layer 2 for Ethereum" />
         <meta property="og:title" content={`Scroll ${route?.name ? "-" + route.name : ""}`} />
-        <meta property="og:description" content="A native zkEVM layer 2 solution for Ethereum" />
+        <meta property="og:description" content="Native zkEVM Layer 2 for Ethereum" />
         <meta name="twitter:title" content={`Scroll ${route?.name ? "-" + route.name : ""}`} />
-        <meta name="twitter:description" content="A native zkEVM layer 2 solution for Ethereum" />
+        <meta name="twitter:description" content="Native zkEVM Layer 2 for Ethereum" />
         <meta name="twitter:image" content="/logo_for_og.png" />
       </Helmet>
       <div className="App bg-white min-h-[100vh]">
