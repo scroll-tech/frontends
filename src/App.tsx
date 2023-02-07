@@ -39,7 +39,7 @@ function App() {
       <RemoveTrailingSlash />
       <React.Suspense fallback={<LoadingPage />}>
         <Routes>
-          <Route path="/prealpha/*" element={<Portal />} />
+          <Route path="/alpha/*" element={<Portal />} />
           <Route path="/*" element={<Homepage />} />
         </Routes>
       </React.Suspense>
