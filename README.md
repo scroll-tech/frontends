@@ -60,5 +60,5 @@ Generate webp format image
 
 Using Netlify: https://app.netlify.com/teams/scroll/overview
 
-- https://staging--prealpha.netlify.app/
-- https://main--prealpha.netlify.app/
+- https://staging--scroll-io.netlify.app
+- https://scroll.io
