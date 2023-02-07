@@ -6,7 +6,6 @@ import { Box, Button, Collapse, Link, List, ListItemButton, Stack, SwipeableDraw
 import { styled } from "@mui/system"
 
 import Logo from "../Logo"
-import Announcement from "./announcement"
 import { homeNavigations, navigations } from "./constants"
 
 const NavStack = styled(Stack)(
@@ -134,7 +133,6 @@ const App = props => {
 
   return (
     <>
-      <Announcement />
       <NavStack direction="row" justifyContent="space-between" alignItems="center">
         <NavLink to="/" className="flex">
           <Logo />

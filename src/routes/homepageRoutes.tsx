@@ -6,7 +6,7 @@ import Team from "@/views/team"
 
 const routes = [
   {
-    name: "A native zkEVM layer 2 solution for Ethereum",
+    name: "Native zkEVM Layer 2 for Ethereum",
     path: "/",
     element: <Home />,
   },
