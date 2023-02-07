@@ -11,7 +11,7 @@ import { requireEnv } from "@/utils"
 
 import AppWrapper from "./contexts"
 import useMatchedRoute from "./hooks/useMatchedRoute"
-import routes from "./routes/prealphaRoutes"
+import routes from "./routes/portalRoutes"
 
 const baseUrl = requireEnv("REACT_APP_API_BASE_URI")
 
