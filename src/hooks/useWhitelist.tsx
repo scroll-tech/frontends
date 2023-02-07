@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react"
+import React, { createContext, useEffect, useState } from "react"
 
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 
@@ -51,5 +51,3 @@ export const WhitelistContextProvider = (props: Props) => {
 
   return <WhitelistContext.Provider value={{ hasPermission, loading }}>{props.children}</WhitelistContext.Provider>
 }
-
-export const useFaucet = () => useContext(WhitelistContext)

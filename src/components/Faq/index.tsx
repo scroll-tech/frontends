@@ -4,7 +4,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import { Accordion, AccordionDetails, AccordionSummary, Theme, Typography } from "@mui/material"
 
 import Link from "@/components/Link"
-import { SiteMap, TESTNET_NAME } from "@/constants"
+import { SiteMap } from "@/constants"
 
 const useStyles = makeStyles()((theme: Theme) => {
   return {
@@ -55,22 +55,19 @@ const Faq = props => {
       </div>
       <FaqItem title="How do I get started?" id="start">
         <Typography variant="body1" color="textSecondary">
-          Welcome to Scroll's Pre-Alpha Testnet.
+          Welcome to Scroll's Alpha Testnet.
         </Typography>
         <Typography variant="body1" color="textSecondary">
           Here is how to explore the platform:
         </Typography>
         <Typography variant="body1" color="textSecondary" className={classes.orderedParagraph}>
-          1. Receive test tokens from the <Link href={SiteMap.Faucet}>Faucet</Link>, to the Scroll L1 {TESTNET_NAME} network.
+          1. Transfer and withdraw test tokens in <Link href={SiteMap.Bridge}>Bridge</Link>.
         </Typography>
         <Typography variant="body1" color="textSecondary" className={classes.orderedParagraph}>
-          2. Transfer and withdraw test tokens in <Link href={SiteMap.Bridge}>Bridge</Link>.
+          2. Swap test tokens or provide liquidity in <Link href={SiteMap.Ecosystem}>one of the swaps</Link>.
         </Typography>
         <Typography variant="body1" color="textSecondary" className={classes.orderedParagraph}>
-          3. Swap test tokens or provide liquidity in <Link href={SiteMap.Swap}>Swap</Link>.
-        </Typography>
-        <Typography variant="body1" color="textSecondary" className={classes.orderedParagraph}>
-          4. View transactions’ and blocks’ statuses in the{" "}
+          3. View transactions’ and blocks’ statuses in the{" "}
           <Link href={SiteMap.L1Explorer} external>
             Scroll L1
           </Link>

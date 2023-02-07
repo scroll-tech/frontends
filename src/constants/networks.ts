@@ -74,11 +74,10 @@ export const nativeTokenList: Token[] = [
 ]
 
 export const SiteMap = {
-  Home: "/prealpha/",
-  Faucet: "/prealpha/faucet",
-  Bridge: "/prealpha/bridge",
-  Swap: "/prealpha/swap",
+  Home: "/alpha/",
+  Ecosystem: "/ecosystem/",
+  Bridge: "/alpha/bridge",
   L1Explorer: l1Explorer,
   L2Explorer: l2Explorer,
-  RollupExplorer: "/prealpha/rollupscan",
+  RollupExplorer: "/alpha/rollupscan",
 }

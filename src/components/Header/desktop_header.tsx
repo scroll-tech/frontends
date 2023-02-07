@@ -255,14 +255,14 @@ const App = props => {
             <Button
               color="primary"
               variant="contained"
-              href="/prealpha/"
+              href="/alpha/"
               sx={{
                 "@media(max-width: 1000px)": {
                   display: "none",
                 },
               }}
             >
-              Join Pre-Alpha Testnet
+              Join Alpha Testnet
             </Button>
           </Box>
         ) : (

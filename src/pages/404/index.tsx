@@ -68,8 +68,8 @@ const NotFound = () => {
   const navigate = useNavigate()
 
   const handleReturnHome = () => {
-    if (pathname.startsWith("/prealpha")) {
-      navigate("/prealpha/")
+    if (pathname.startsWith("/alpha")) {
+      navigate("/alpha/")
       return
     }
     navigate("/")

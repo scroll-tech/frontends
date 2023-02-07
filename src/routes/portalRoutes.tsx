@@ -1,62 +1,39 @@
 import Bridge from "@/pages/bridge"
-import Faucet from "@/pages/faucet"
-import AddNetwork from "@/pages/faucet/add-network"
 import Home from "@/pages/home"
 import RollupScanBatch from "@/pages/rollup/batch"
 import RollupScanBlock from "@/pages/rollup/block"
 import RollupScan from "@/pages/rollup/index"
-import Swap from "@/pages/swap"
 
 const routes = [
   {
     name: "Portal",
     path: "/",
-    fullPath: "/prealpha/",
+    fullPath: "/alpha/",
     element: <Home />,
-  },
-  {
-    name: "Faucet",
-    path: "/faucet",
-    fullPath: "/prealpha/faucet",
-    element: <Faucet />,
   },
   {
     name: "Bridge",
     path: "/bridge",
-    fullPath: "/prealpha/bridge",
+    fullPath: "/alpha/bridge",
     element: <Bridge />,
   },
   {
-    name: "Swap",
-    path: "/swap",
-    fullPath: "/prealpha/swap",
-    element: <Swap />,
-  },
-
-  {
     name: "Rollup Explorer",
     path: "/rollupscan",
-    fullPath: "/prealpha/rollupscan",
+    fullPath: "/alpha/rollupscan",
     element: <RollupScan />,
   },
   {
     name: "RollupScanBatch",
     path: "/rollupscan/batch/:batchIndex",
-    fullPath: "/prealpha/rollupscan/batch/:batchIndex",
+    fullPath: "/alpha/rollupscan/batch/:batchIndex",
     element: <RollupScanBatch />,
   },
   {
     name: "RollupScanBlock",
     path: "/rollupscan/batch/:batchIndex/blocks",
-    fullPath: "/prealpha/rollupscan/batch/:batchIndex/blocks",
+    fullPath: "/alpha/rollupscan/batch/:batchIndex/blocks",
     element: <RollupScanBlock />,
-  },
-
-  {
-    name: "AddNetwork",
-    path: "/faucet/add-network",
-    fullPath: "/prealpha/faucet/add-network",
-    element: <AddNetwork />,
   },
 ]
 

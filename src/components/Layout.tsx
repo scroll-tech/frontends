@@ -9,19 +9,10 @@ const Layout = () => {
     <div className="Layout">
       <nav className="RouterLinks">
         <Link to="/">Home</Link>
-        {/* <Link to="/documentation">Documentation</Link> */}
-        {/* <a
-          className="ExternalLink"
-          href={swapUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Swap ↗
-        </a> */}
 
-        <Link to={pathL1Explorer}>L1 Block Explorer</Link>
+        <Link to={pathL1Explorer}>L1 Explorer</Link>
 
-        <Link to={pathL2Explorer}>L2 Block Explorer</Link>
+        <Link to={pathL2Explorer}>L2 Explorer</Link>
 
         <Link to={pathRollupExplorer}>Rollup Explorer</Link>
       </nav>

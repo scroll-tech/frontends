@@ -147,8 +147,8 @@ const App = props => {
             </Stack>
             {list()}
             {props.isHomepage ? (
-              <Button color="primary" variant="contained" href="/prealpha/" sx={{ position: "relative", left: "2rem" }}>
-                Join Pre-Alpha Testnet
+              <Button color="primary" variant="contained" href="/alpha/" sx={{ position: "relative", left: "2rem" }}>
+                Join Alpha Testnet
               </Button>
             ) : (
               <Button sx={{ marginTop: "32px", marginLeft: "36px" }} href="https://guide.scroll.io/">

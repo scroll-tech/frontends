@@ -40,7 +40,7 @@ const web3Onboard = init({
   appMetadata: {
     name: "Scroll",
     icon: "/logo.png",
-    description: "Scroll Prealpha",
+    description: "Scroll Portal",
     recommendedInjectedWallets: [
       { name: "MetaMask", url: "https://metamask.io" },
       { name: "BlockWallet", url: "https://blockwallet.io" },

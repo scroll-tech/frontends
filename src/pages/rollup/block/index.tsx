@@ -17,8 +17,8 @@ const Blocks = () => {
     <Box className="wrapper mx-auto" sx={{ marginBottom: "16rem" }}>
       <Header />
       <Breadcrumbs aria-label="breadcrumb" sx={{ fontWeight: 600 }} separator={<NavigateNextIcon fontSize="large" />}>
-        <Link to="/prealpha/rollupscan">All results</Link>
-        <Link to={`/prealpha/rollupscan/batch/${params.batchIndex}`}>Batch {params.batchIndex}</Link>
+        <Link to="/alpha/rollupscan">All results</Link>
+        <Link to={`/alpha/rollupscan/batch/${params.batchIndex}`}>Batch {params.batchIndex}</Link>
         <Typography color="text.primary" sx={{ fontWeight: 600 }}>
           Blocks
         </Typography>

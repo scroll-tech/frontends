@@ -34,7 +34,7 @@ function HideOnScroll(props: Props) {
 export default function Header() {
   const theme = useTheme()
   const matches = useMediaQuery(theme.breakpoints.up("md"))
-  const isHomepage = !window.location.pathname.startsWith("/prealpha")
+  const isHomepage = !window.location.pathname.startsWith("/alpha")
 
   return (
     <HideOnScroll>

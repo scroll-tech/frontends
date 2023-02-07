@@ -58,25 +58,15 @@ const navigation = [
     subdomainOrPath: "guide",
   },
   {
-    name: "Faucet",
-    description: "Receive test ETH and USDC tokens on L1 from Faucet.",
-    subdomainOrPath: "/prealpha/faucet",
-  },
-  {
     name: "Bridge",
     description: "Use Bridge (our Hop fork) to transfer tokens between L1 and L2.",
-    subdomainOrPath: "/prealpha/bridge",
-  },
-  {
-    name: "Swap",
-    description: "Use Swap (our Uniswap fork) to swap tokens and supply liquidity on L2.",
-    subdomainOrPath: "/prealpha/swap",
+    subdomainOrPath: "/alpha/bridge",
   },
   {
     name: "Rollup Explorer",
     description: "See L2 blocks being committed to L1 and finalized with zkEVM proofs on our Rollup Explorer.",
     isActive: true,
-    subdomainOrPath: "/prealpha/rollupscan",
+    subdomainOrPath: "/alpha/rollupscan",
   },
   {
     name: "L1 Block Explorer",
@@ -159,7 +149,6 @@ export { addresses, navigation, documentation, TESTNET_NAME, SCROLL_ENVIRONMENT,
 
 export let l1ExplorerUrl = process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L1
 export let l2ExplorerUrl = process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L2
-export let rollupExplorerUrl = "https://prealpha.scroll.io/rollupscan"
 
 export let pathL1Explorer = "l1Explorer"
 export let pathL2Explorer = "l2Explorer"
