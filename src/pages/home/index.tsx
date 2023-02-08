@@ -89,15 +89,14 @@ export default function Home() {
       <div className="p-4 mx-[8px] mb-[40px] lg:p-8">
         <SectionTitle title={`Configure ${walletName || "wallet"} for our testnet`}>
           <div className="text-base px-4 py-5 sm:grid sm:grid-cols-1 sm:gap-4 sm:px-6">
-            Note: Please completely remove any previous Scroll L1 and L2 networks from your {walletName || "wallet"} before proceeding. After
-            re-adding each of them:
+            Note: Please completely remove previous Scroll networks from your {walletName || "wallet"} before proceeding, then:
             <a
               className="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer"
               target="_blank"
               href="https://guide.scroll.io/user-guide/common-errors#incorrect-nonce-error-when-sending-a-transaction-in-metamask"
               rel="noreferrer"
             >
-              Reset {walletName || "wallet"} for both networks
+              Reset {walletName || "wallet"} for Scroll's L2
             </a>
           </div>
           <div className="text-left">
@@ -119,9 +118,7 @@ export default function Home() {
                   </li>
                   <li className="pl-3 pr-4 py-3 flex items-center justify-between text-base">
                     <div className="w-0 flex-1 flex items-center">
-                      <span className="ml-2 flex-1 w-0 truncate">
-                        {process.env.REACT_APP_USDC_SYMBOL} token on L1 {TESTNET_NAME}
-                      </span>
+                      <span className="ml-2 flex-1 w-0 truncate">{process.env.REACT_APP_USDC_SYMBOL} token on Goerli Testnet</span>
                     </div>
                     <div className="ml-4 flex-shrink-0">
                       {walletName ? (
@@ -159,7 +156,7 @@ export default function Home() {
                   <li className="pl-3 pr-4 py-3 flex items-center justify-between text-base">
                     <div className="w-0 flex-1 flex items-center">
                       <span className="ml-2 flex-1 w-0 truncate">
-                        {process.env.REACT_APP_USDC_SYMBOL} token on L2 {TESTNET_NAME}
+                        {process.env.REACT_APP_USDC_SYMBOL} token on {TESTNET_NAME}
                       </span>
                     </div>
                     <div className="ml-4 flex-shrink-0">
@@ -179,7 +176,7 @@ export default function Home() {
                   <li className="pl-3 pr-4 py-3 flex items-center justify-between text-base">
                     <div className="w-0 flex-1 flex items-center">
                       <span className="ml-2 flex-1 w-0 truncate">
-                        {process.env.REACT_APP_UNI_V2_TOKEN_SYMBOL} token on L2 {TESTNET_NAME}
+                        {process.env.REACT_APP_UNI_V2_TOKEN_SYMBOL} token on {TESTNET_NAME}
                       </span>
                     </div>
                     <div className="ml-4 flex-shrink-0">

@@ -29,4 +29,4 @@ export const generateExploreLink = (explorer, hash) => {
   return `${explorer}/tx/${hash}`
 }
 
-export const isProduction = requireEnv("REACT_APP_SCROLL_ENVIRONMENT") === "MAIN"
+export const isProduction = requireEnv("REACT_APP_SCROLL_ENVIRONMENT") === requireEnv("REACT_APP_MAIN_ENVIRONMENT")

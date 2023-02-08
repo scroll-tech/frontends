@@ -9,6 +9,7 @@ package = "/plugins/netlify/env"
 [build.environment]
 # Settings in the [build] context are global and are applied to
 # all contexts unless otherwise overridden by more specific contexts.
+REACT_APP_MAIN_ENVIRONMENT = "ALPHA" # used to determine which SCROLL_ENVIRONMENT is to be treated as the main/production one
 REACT_APP_ETH_SYMBOL = "ETH"
 REACT_APP_USDC_SYMBOL = "TESTCO"
 REACT_APP_UNI_V2_TOKEN_SYMBOL = "UNI2"

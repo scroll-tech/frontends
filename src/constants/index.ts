@@ -1,21 +1,19 @@
+import { isProduction, requireEnv } from "@/utils/common"
+
 import { ChainId, RPCUrl } from "./common"
 
-const SCROLL_ENVIRONMENT_PRODUCTION = "MAIN" // `MAIN` is production, `STAGING` is staging
-const SCROLL_ENVIRONMENT = process.env.REACT_APP_SCROLL_ENVIRONMENT || SCROLL_ENVIRONMENT_PRODUCTION
-const RUNNING_IN_PRODUCTION = SCROLL_ENVIRONMENT === SCROLL_ENVIRONMENT_PRODUCTION
-
-const TESTNET_NAME = "Testnet" + (!RUNNING_IN_PRODUCTION ? " [" + SCROLL_ENVIRONMENT + "]" : "")
+const TESTNET_NAME = "Scroll " + (isProduction ? "Alpha" : requireEnv("REACT_APP_SCROLL_ENVIRONMENT")) + " Testnet"
 
 const addresses = [
   {
-    network: "Scroll L1 " + TESTNET_NAME,
+    network: "Goerli Testnet",
     etherscanPrefix: process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L1,
-    formattedName: "Scroll L1 " + TESTNET_NAME,
+    formattedName: "Goerli Testnet",
     autoconnect: {
       chainId: "0x" + ChainId.SCROLL_LAYER_1.toString(16),
-      chainName: "Scroll L1 " + TESTNET_NAME,
+      chainName: "Goerli Testnet",
       nativeCurrency: {
-        name: TESTNET_NAME + " Ethereum",
+        name: "Ethereum",
         symbol: process.env.REACT_APP_ETH_SYMBOL,
         decimals: 18,
       },
@@ -26,14 +24,14 @@ const addresses = [
   },
 
   {
-    network: "Scroll L2 " + TESTNET_NAME,
+    network: TESTNET_NAME,
     etherscanPrefix: process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L2,
-    formattedName: "Scroll L2 " + TESTNET_NAME,
+    formattedName: TESTNET_NAME,
     autoconnect: {
       chainId: "0x" + ChainId.SCROLL_LAYER_2.toString(16),
-      chainName: "Scroll L2 " + TESTNET_NAME,
+      chainName: TESTNET_NAME,
       nativeCurrency: {
-        name: TESTNET_NAME + " Ethereum",
+        name: "Ethereum",
         symbol: process.env.REACT_APP_ETH_SYMBOL,
         decimals: 18,
       },
@@ -70,7 +68,7 @@ const navigation = [
   },
   {
     name: "L1 Block Explorer",
-    description: "See your L1 transactions on our fork of Blockscout.",
+    description: "See your L1 transactions on Goerli's block explorer.",
     isExternal: true,
     subdomainOrPath: process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L1,
   },
@@ -145,7 +143,7 @@ export * from "./gateway"
 export * from "./medias"
 export * from "./networks"
 export * from "./transaction"
-export { addresses, navigation, documentation, TESTNET_NAME, SCROLL_ENVIRONMENT, Addresses, ModalStatus }
+export { addresses, navigation, documentation, TESTNET_NAME, Addresses, ModalStatus }
 
 export let l1ExplorerUrl = process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L1
 export let l2ExplorerUrl = process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L2
