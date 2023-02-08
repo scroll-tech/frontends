@@ -24,7 +24,7 @@ function Portal() {
   return (
     <div className="App bg-white min-h-[100vh]">
       <Helmet>
-        <title>Scroll {route ? " – " + route.name : null} </title>
+        <title>Scroll Alpha {route ? " – " + route.name : null} </title>
         <meta property="og:url" content={getUrl()} />
         <link rel="preconnect" href={baseUrl} crossOrigin="anonymous" />
         <link rel="dns-prefetch" href={baseUrl} crossOrigin="anonymous" />

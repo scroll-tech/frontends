@@ -11,7 +11,7 @@ const addresses = [
     formattedName: "Goerli Testnet",
     autoconnect: {
       chainId: "0x" + ChainId.SCROLL_LAYER_1.toString(16),
-      chainName: "Goerli Testnet",
+      chainName: "Goerli test network",
       nativeCurrency: {
         name: "Ethereum",
         symbol: process.env.REACT_APP_ETH_SYMBOL,
