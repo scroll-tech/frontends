@@ -80,7 +80,7 @@ const NotFound = () => {
         <span className={classes.status}>404</span>
         <span className={classes.message}>Sorry, the page you are looking for is not found</span>
         <Button className={classes.action} variant="contained" onClick={handleReturnHome}>
-          Return home
+          Home
         </Button>
       </div>
     </div>
