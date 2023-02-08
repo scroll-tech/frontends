@@ -100,12 +100,12 @@ const roadmaps = [
   },
   {
     name: "Pre-Alpha Testnet",
-    active: true,
     completed: true,
   },
   {
     name: "Alpha Testnet",
-    completed: false,
+    active: true,
+    completed: true,
   },
   {
     name: "zkEVM Mainnet",

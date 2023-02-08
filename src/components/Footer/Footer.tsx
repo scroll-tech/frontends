@@ -11,10 +11,6 @@ const Footer = () => {
       category: "About Scroll",
       items: [
         {
-          name: "Scroll.io",
-          to: "/",
-        },
-        {
           name: "Team",
           to: "/team",
         },
@@ -23,13 +19,13 @@ const Footer = () => {
           to: "/join-us",
         },
         {
-          name: "Status Page",
+          name: "Health Status",
           href: "http://status.scroll.io/",
         },
       ],
     },
     {
-      category: "Community/Help",
+      category: "Resources",
       items: [
         {
           name: "Blog",

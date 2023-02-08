@@ -239,8 +239,8 @@ const Home = () => {
                 },
               }}
             >
-              After successfully building a zkEVM POC, we are now working on our <span style={{ fontWeight: 600 }}>zkEVM Testnet</span>. The Testnet
-              is currently live and open to the public.
+              After successfully building a zkEVM POC, we are now working on our <span style={{ fontWeight: 600 }}>zkEVM Testnet</span>. It is
+              currently live and open to the public.
             </SubTitleTypography>
             <JoinTestnetButton />
           </RoadmapInfo>
