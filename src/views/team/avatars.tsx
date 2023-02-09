@@ -18,7 +18,7 @@ import WebpImage from "@/components/WebpImage"
 const UserName = styled(Typography)(
   ({ theme }) => `
     font-size: 2.4rem;
-    font-family: 'Pulp Display';
+    font-family: 'Inter';
     line-height: 4.6rem;
     letter-spacing: -0.25px;
     color: ${theme.palette.text.primary};
