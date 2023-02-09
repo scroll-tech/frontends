@@ -25,4 +25,4 @@ jobs:
         with:
           tag-prefix: "v"
         env:
-          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.WRITE_TOKEN }}
