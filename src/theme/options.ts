@@ -87,7 +87,7 @@ export const paletteOptions = {
 
 export const typographyOptions = {
   fontFamily: [
-    "Inter",
+    "SF UI Text",
     "system-ui",
     "BlinkMacSystemFont",
     "Roboto",
@@ -101,7 +101,7 @@ export const typographyOptions = {
     "Noto Color Emoji",
   ].join(","),
   h1: {
-    fontFamily: "Inter",
+    fontFamily: "Pulp Display",
     fontWeight: 400,
     fontSize: "4.8rem",
     lineHeight: "5.6rem",
@@ -112,7 +112,7 @@ export const typographyOptions = {
     },
   },
   h3: {
-    fontFamily: "Inter",
+    fontFamily: "Pulp Display",
     fontWeight: 400,
     fontSize: "3.4rem",
     lineHeight: "4rem",
@@ -124,7 +124,7 @@ export const typographyOptions = {
   h4: {
     fontSize: "3.4rem",
     fontWeight: 400,
-    fontFamily: "Inter",
+    fontFamily: "Pulp Display",
     // letterSpacing: "0.25px",
     [theme.breakpoints.down("sm")]: {
       fontSize: "2.4rem",
