@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-const defaultTheme = require("tailwindcss/defaultTheme")
+const defaultTheme = require("tailwindcss/defaultTheme");
 
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
@@ -116,8 +116,8 @@ module.exports = {
       },
     },
     fontFamily: {
-      sans: ['"Inter"', ...defaultTheme.fontFamily.sans],
-      display: ['"Inter"', ...defaultTheme.fontFamily.sans],
+      sans: ['"SF UI Text"', ...defaultTheme.fontFamily.sans],
+      display: ['"Pulp Display"', ...defaultTheme.fontFamily.sans],
     },
     screens: {
       sm: "600px",
@@ -127,4 +127,4 @@ module.exports = {
     },
   },
   plugins: [],
-}
+};

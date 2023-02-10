@@ -77,34 +77,6 @@ body {
   font-weight: 700;
 }
 
-@font-face {
-  font-family: "Inter";
-  src: url("./assets/fonts/Inter-Regular.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 400;
-}
-
-@font-face {
-  font-family: "Inter";
-  src: url("./assets/fonts/Inter-Medium.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 500;
-}
-
-@font-face {
-  font-family: "Inter";
-  src: url("./assets/fonts/Inter-SemiBold.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 600;
-}
-
-@font-face {
-  font-family: "Inter";
-  src: url("./assets/fonts/Inter-Bold.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 700;
-}
-
 :root {
   --swiper-theme-color: #eb7106 !important;
   /* --swiper-pagination-bullet-inactive-color: #595959; */

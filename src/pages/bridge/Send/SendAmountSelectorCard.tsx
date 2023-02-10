@@ -188,7 +188,7 @@ const SendAmountSelectorCard: FC<Props> = props => {
             leftAlign
             disabled={disableInput}
             sx={{
-              fontFamily: "Inter",
+              fontFamily: "Pulp Display",
               letterSpacing: "0.25px",
             }}
           />
