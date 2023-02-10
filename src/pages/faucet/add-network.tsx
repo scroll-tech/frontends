@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react"
 import { Link as RouteLink } from "react-router-dom"
 
-import { Button } from "@mui/material"
+import { Alert, Button, Snackbar } from "@mui/material"
 
 import Link from "@/components/Link"
 import { Addresses, ChainId, SiteMap, TESTNET_NAME } from "@/constants"
@@ -20,6 +20,7 @@ function AddNetwork() {
     ethSymbol: "TSETH",
     usdcSymbol: "TSUSDC",
   })
+  const [errorMessage, setErrorMessage] = useState("")
 
   useEffect(() => {
     async function fetchInfo() {
@@ -32,26 +33,38 @@ function AddNetwork() {
   }, [])
 
   const addTokenToMetaMask = async (address: string) => {
-    await window.ethereum.request({
-      method: "wallet_watchAsset",
-      params: {
-        type: "ERC20",
-        options: {
-          address: address,
-          symbol: faucetInfo.usdcSymbol,
-          decimals: 18,
+    try {
+      await window.ethereum.request({
+        method: "wallet_watchAsset",
+        params: {
+          type: "ERC20",
+          options: {
+            address: address,
+            symbol: faucetInfo.usdcSymbol,
+            decimals: 18,
+          },
         },
-      },
-    })
+      })
+    } catch (e) {
+      setErrorMessage("please go to faucet page and connect wallet")
+    }
   }
 
   const onCurrentChain = useMemo(() => chainId === +Addresses[step].autoconnect.chainId, [chainId, Addresses[step].autoconnect.chainId])
 
   const addToMetaMask = async (autoconnect: any) => {
-    await window.ethereum.request({
-      method: "wallet_addEthereumChain",
-      params: [autoconnect],
-    })
+    try {
+      await window.ethereum.request({
+        method: "wallet_addEthereumChain",
+        params: [autoconnect],
+      })
+    } catch (e) {
+      setErrorMessage("please go to faucet page and connect wallet")
+    }
+  }
+
+  const handleClose = () => {
+    setErrorMessage("")
   }
 
   return (
@@ -125,6 +138,9 @@ function AddNetwork() {
           </Link>
         )}
       </div>
+      <Snackbar open={!!errorMessage} autoHideDuration={6000} onClose={handleClose}>
+        <Alert severity="error">{errorMessage}</Alert>
+      </Snackbar>
     </main>
   )
 }
