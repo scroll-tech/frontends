@@ -251,14 +251,16 @@ export default function Home() {
                   </p>
                 )}
               </div>
-              <div className="flex flex-col items-center text-center md:flex-row">
-                <Typography color="textSecondary" sx={{ fontSize: ["1.4rem", "1.6rem"], mb: ["0.6rem", 0], mr: [0, "0.6rem"] }}>
-                  Scroll L1 and L2 not added yet?
-                </Typography>
-                <Link component={RouteLink} to="add-network" sx={{ fontSize: ["1.4rem", "1.6rem"] }}>
-                  Add Scroll L1 {TESTNET_NAME} and L2 {TESTNET_NAME}
-                </Link>
-              </div>
+              {networkStatus === 2 && (
+                <div className="flex flex-col items-center text-center md:flex-row">
+                  <Typography color="textSecondary" sx={{ fontSize: ["1.4rem", "1.6rem"], mb: ["0.6rem", 0], mr: [0, "0.6rem"] }}>
+                    Scroll L1 and L2 not added yet?
+                  </Typography>
+                  <Link component={RouteLink} to="add-network" sx={{ fontSize: ["1.4rem", "1.6rem"] }}>
+                    Add Scroll L1 {TESTNET_NAME} and L2 {TESTNET_NAME}
+                  </Link>
+                </div>
+              )}
             </>
           )}
         </div>
