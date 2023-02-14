@@ -264,7 +264,7 @@ const Home = () => {
               Scroll is a team of passionate contributors around the globe. We value ideas and execution above all else. Join us today!
             </MediaSummary>
             <Box display="flex" justifyContent="space-between" alignItems="center">
-              <Button color="secondary" sx={{ height: "5rem" }} onClick={() => navigate("/join-us")}>
+              <Button color="secondary" sx={{ height: "5rem", width: "21.5rem" }} onClick={() => navigate("/join-us")}>
                 View Open Positions
               </Button>
               <RocketImg src={RocketIcon} webpsrc={RocketWebpIcon} />

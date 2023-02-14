@@ -101,7 +101,7 @@ const ArticleCard = ({ blog, small = false }) => {
         <ArticleSummary className={small ? "small" : ""} variant="body1" color="textSecondary">
           {blog.summary}
         </ArticleSummary>
-        <Button className={small ? "small" : ""} onClick={handleClick} color="secondary">
+        <Button className={small ? "small" : ""} sx={{ width: "21.5rem" }} onClick={handleClick} color="secondary">
           Read More
         </Button>
       </ArticleInfo>

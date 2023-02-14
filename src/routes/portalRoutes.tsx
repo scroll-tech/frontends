@@ -2,10 +2,12 @@ import Bridge from "@/pages/bridge"
 import Faucet from "@/pages/faucet"
 import AddNetwork from "@/pages/faucet/add-network"
 import Home from "@/pages/home"
+import NFTFaucet from "@/pages/nftFaucet"
 import RollupScanBatch from "@/pages/rollup/batch"
 import RollupScanBlock from "@/pages/rollup/block"
 import RollupScan from "@/pages/rollup/index"
 import Swap from "@/pages/swap"
+import { isProduction } from "@/utils"
 
 const routes = [
   {
@@ -20,6 +22,17 @@ const routes = [
     fullPath: "/prealpha/faucet",
     element: <Faucet />,
   },
+  ...(isProduction
+    ? []
+    : [
+        {
+          name: "Faucet",
+          path: "/faucet/nft",
+          fullPath: "/prealpha/faucet/nft",
+          element: <NFTFaucet />,
+        },
+      ]),
+
   {
     name: "Bridge",
     path: "/bridge",
