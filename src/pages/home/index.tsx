@@ -2,7 +2,7 @@ import { ReactNode, useState } from "react"
 
 import { Alert, Snackbar } from "@mui/material"
 
-import { Addresses, TESTNET_NAME, addresses, documentation, navigation } from "@/constants/index"
+import { Addresses, addresses, documentation, navigation } from "@/constants/index"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 
 import SectionTitle from "./components/sectionTitle"
@@ -24,31 +24,6 @@ function AddNetworkButton({ autoconnect, walletName, chainId, onReadd }: any) {
     await window.ethereum.request({
       method: "wallet_addEthereumChain",
       params: [autoconnect],
-    })
-  }
-
-  return (
-    <a onClick={addToMetaMask} className="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer">
-      Add to {walletName}
-    </a>
-  )
-}
-
-function TokenAddress({ etherscanPrefix, symbol, address, ERC20, walletName }: any) {
-  /**
-   * Adds token to MetaMask
-   */
-  const addToMetaMask = async () => {
-    await window.ethereum.request({
-      method: "wallet_watchAsset",
-      params: {
-        type: "ERC20",
-        options: {
-          address: address,
-          symbol: symbol,
-          decimals: 18,
-        },
-      },
     })
   }
 
@@ -116,23 +91,6 @@ export default function Home() {
                       )}
                     </div>
                   </li>
-                  <li className="pl-3 pr-4 py-3 flex items-center justify-between text-base">
-                    <div className="w-0 flex-1 flex items-center">
-                      <span className="ml-2 flex-1 w-0 truncate">{process.env.REACT_APP_USDC_SYMBOL} token on Goerli Testnet</span>
-                    </div>
-                    <div className="ml-4 flex-shrink-0">
-                      {walletName ? (
-                        <TokenAddress
-                          etherscanPrefix={addresses[0].etherscanPrefix}
-                          symbol={process.env.REACT_APP_USDC_SYMBOL}
-                          address={addresses[0].usdcAddress}
-                          walletName={walletName}
-                        />
-                      ) : (
-                        <ConnectWalletButton />
-                      )}
-                    </div>
-                  </li>
                 </ul>
               </dd>
             </div>
@@ -147,46 +105,6 @@ export default function Home() {
                     <div className="ml-4 flex-shrink-0">
                       {walletName ? (
                         <AddNetworkButton autoconnect={addresses[1].autoconnect} walletName={walletName} chainId={chainId} onReadd={handleReadd} />
-                      ) : (
-                        <ConnectWalletButton />
-                      )}
-                    </div>
-                  </li>
-
-                  <li className="pl-3 pr-4 py-3 flex items-center justify-between text-base">
-                    <div className="w-0 flex-1 flex items-center">
-                      <span className="ml-2 flex-1 w-0 truncate">
-                        {process.env.REACT_APP_USDC_SYMBOL} token on {TESTNET_NAME}
-                      </span>
-                    </div>
-                    <div className="ml-4 flex-shrink-0">
-                      {walletName ? (
-                        <TokenAddress
-                          etherscanPrefix={addresses[1].etherscanPrefix}
-                          symbol={process.env.REACT_APP_USDC_SYMBOL}
-                          address={addresses[1].usdcAddress}
-                          walletName={walletName}
-                        />
-                      ) : (
-                        <ConnectWalletButton />
-                      )}
-                    </div>
-                  </li>
-
-                  <li className="pl-3 pr-4 py-3 flex items-center justify-between text-base">
-                    <div className="w-0 flex-1 flex items-center">
-                      <span className="ml-2 flex-1 w-0 truncate">
-                        {process.env.REACT_APP_UNI_V2_TOKEN_SYMBOL} token on {TESTNET_NAME}
-                      </span>
-                    </div>
-                    <div className="ml-4 flex-shrink-0">
-                      {walletName ? (
-                        <TokenAddress
-                          etherscanPrefix={addresses[1].etherscanPrefix}
-                          symbol={process.env.REACT_APP_UNI_V2_TOKEN_SYMBOL}
-                          address={addresses[1].uniV2TokenAddress}
-                          walletName={walletName}
-                        />
                       ) : (
                         <ConnectWalletButton />
                       )}

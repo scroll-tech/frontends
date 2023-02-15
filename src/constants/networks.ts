@@ -4,26 +4,28 @@ import { isProduction, requireEnv } from "@/utils"
 
 import { ChainId, ETH_SYMBOL, RPCUrl } from "./common"
 
-const curEnv = requireEnv("REACT_APP_SCROLL_ENVIRONMENT")
 const l1Explorer = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1")
 const l2Explorer = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2")
 
+const TESTNET_NAME = "Scroll " + (isProduction ? "Alpha" : requireEnv("REACT_APP_SCROLL_ENVIRONMENT")) + " Testnet"
+
 export const networks = [
+  // TODO: Merge with constants/index.addresses
   {
-    name: "Scroll L1 Testnet" + (isProduction ? "" : " [" + curEnv + "]"),
-    slug: "layer1",
+    name: "Goerli Testnet",
+    slug: "goerli",
     imageUrl: "/imgs/bridge/mainnet.svg",
     provider: null,
     rpcUrl: RPCUrl.SCROLL_LAYER_1,
     explorer: process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L1,
     chainId: ChainId.SCROLL_LAYER_1,
     nativeTokenSymbol: ETH_SYMBOL,
-    isLayer1: true,
-    isL1: true,
+    isLayer1: true, // TODO: Merge these two
+    isL1: true, // TODO: Merge these two
     waitConfirmations: 6,
   },
   {
-    name: "Scroll L2 Testnet" + (isProduction ? "" : " [" + curEnv + "]"),
+    name: TESTNET_NAME,
     slug: "layer2",
     imageUrl: "/logo.png",
     provider: null,

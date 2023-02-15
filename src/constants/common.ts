@@ -11,4 +11,3 @@ export const RPCUrl = {
 }
 
 export const ETH_SYMBOL = requireEnv("REACT_APP_ETH_SYMBOL")
-export const USDC_SYMBOL = requireEnv("REACT_APP_USDC_SYMBOL")

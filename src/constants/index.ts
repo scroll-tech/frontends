@@ -5,6 +5,7 @@ import { ChainId, RPCUrl } from "./common"
 const TESTNET_NAME = "Scroll " + (isProduction ? "Alpha" : requireEnv("REACT_APP_SCROLL_ENVIRONMENT")) + " Testnet"
 
 const addresses = [
+  // TODO: Merge with constants/networks
   {
     network: "Goerli Testnet",
     etherscanPrefix: process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L1,
@@ -13,14 +14,13 @@ const addresses = [
       chainId: "0x" + ChainId.SCROLL_LAYER_1.toString(16),
       chainName: "Goerli",
       nativeCurrency: {
-        name: "Ethereum",
+        name: "Goerli",
         symbol: process.env.REACT_APP_ETH_SYMBOL,
         decimals: 18,
       },
       rpcUrls: [RPCUrl.SCROLL_LAYER_1],
       blockExplorerUrls: [process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L1],
     },
-    usdcAddress: process.env.REACT_APP_L1_USDC_ADDRESS,
   },
 
   {
@@ -38,8 +38,6 @@ const addresses = [
       rpcUrls: [RPCUrl.SCROLL_LAYER_2],
       blockExplorerUrls: [process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L2],
     },
-    usdcAddress: process.env.REACT_APP_L2_USDC_ADDRESS,
-    uniV2TokenAddress: process.env.REACT_APP_L2_UNIV2_ADDRESS,
   },
 ]
 
@@ -109,7 +107,6 @@ const Addresses = {
       rpcUrls: [RPCUrl.SCROLL_LAYER_1],
       blockExplorerUrls: [process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L1],
     },
-    usdcAddress: process.env.REACT_APP_L1_USDC_ADDRESS,
   },
   [ChainId.SCROLL_LAYER_2]: {
     network: "Scroll L2 " + TESTNET_NAME,
