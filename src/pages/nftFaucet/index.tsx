@@ -1,18 +1,18 @@
 import { ethers } from "ethers"
-import { nanoid } from "nanoid"
+// import { nanoid } from "nanoid"
 import { useMemo, useState } from "react"
 
 import { Alert, Button, Snackbar, Typography } from "@mui/material"
 
 import ERC721ABI from "@/assets/abis/ERC721ABI.json"
-import ERC1155ABI from "@/assets/abis/ERC1155ABI.json"
+// import ERC1155ABI from "@/assets/abis/ERC1155ABI.json"
 import LoadingButton from "@/components/LoadingButton"
 import { Addresses, ChainId, TESTNET_NAME } from "@/constants"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import { requireEnv, truncateAddress } from "@/utils"
 
 const L1_SCROLL721_ADDR = requireEnv("REACT_APP_L1_SCROLL721_ADDRESS")
-const L1_SCROLL1155_ADDR = requireEnv("REACT_APP_L1_SCROLL1155_ADDRESS")
+// const L1_SCROLL1155_ADDR = requireEnv("REACT_APP_L1_SCROLL1155_ADDRESS")
 
 const NFTFaucet = () => {
   const { walletCurrentAddress, connectWallet, provider, chainId } = useWeb3Context()
@@ -42,17 +42,14 @@ const NFTFaucet = () => {
       const signer = await provider?.getSigner(0)
       // for 721
       const instance721 = new ethers.Contract(L1_SCROLL721_ADDR, ERC721ABI, signer)
-      const tx721 = instance721["mintBatch(address,string[])"](walletCurrentAddress, [
-        `https://picsum.photos/seed/${nanoid()}/600/800`,
-        `https://picsum.photos/seed/${nanoid()}/600/800`,
-      ])
+      const tx721 = instance721["mintBatch(address,uint256[])"](walletCurrentAddress, [0, 1])
 
       // for 1155
-      const instance1155 = new ethers.Contract(L1_SCROLL1155_ADDR, ERC1155ABI, signer)
-      // token type id auto increase in contract according to amount array
-      const tx1155 = instance1155["mintBatch(address,uint256[],bytes)"](walletCurrentAddress, [1, 1], "0x")
+      // const instance1155 = new ethers.Contract(L1_SCROLL1155_ADDR, ERC1155ABI, signer)
+      // // token type id auto increase in contract according to amount array
+      // const tx1155 = instance1155["mintBatch(address,uint256[],bytes)"](walletCurrentAddress, [1, 1], "0x")
 
-      const txAll = await Promise.allSettled([tx721, tx1155])
+      const txAll = await Promise.allSettled([tx721])
       const txResultAll = await Promise.allSettled(
         txAll.filter((item): item is PromiseFulfilledResult<any> => item.status === "fulfilled").map(item => item.value.wait()),
       )
