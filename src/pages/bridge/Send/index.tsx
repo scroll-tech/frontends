@@ -107,7 +107,7 @@ const Send: FC = () => {
               Reset your {walletName} account
             </u>
           </b>
-          {" before using Scroll Bridge."}
+          {" before using Scroll Bridge. 😀😀😀😀"}
         </>
       )
     }
