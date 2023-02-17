@@ -8,6 +8,7 @@ const useStyles = makeStyles()(theme => {
     wrapper: {
       width: "100%",
       height: "calc(100vh - 44.6rem)",
+      minHeight: "30rem",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",

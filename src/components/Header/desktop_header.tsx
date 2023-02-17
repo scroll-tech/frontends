@@ -35,6 +35,10 @@ const MenuLinkButton = styled(Link)(
   font-weight: 600;
   padding-left: 25px;
   padding-right: 25px;
+  @media (max-width: 1160px) {
+    padding-left: calc(calc(100vw - 350px) * 0.0072);
+    padding-right: calc(calc(100vw - 350px) * 0.0072);
+  }
   margin-left: 4px;
   margin-right: 4px;
   line-height: 82px;
@@ -69,6 +73,10 @@ const LinkStyledButton = styled(NavLink)(
   font-weight: 600;
   padding-left: 25px;
   padding-right: 25px;
+  @media (max-width: 1160px) {
+    padding-left: calc(calc(100vw - 350px) * 0.0072);
+    padding-right: calc(calc(100vw - 350px) * 0.0072);
+  }
   margin-left: 4px;
   margin-right: 4px;
   line-height: 82px;
@@ -120,6 +128,10 @@ const SubMenuButton = styled(Box)(
     font-weight: 600;
     padding-left: 25px;
     padding-right: 25px;
+    @media (max-width: 1160px) {
+      padding-left: calc(calc(100vw - 350px) * 0.0072);
+      padding-right: calc(calc(100vw - 350px) * 0.0072);
+    }
     margin-left: 4px;
     margin-right: 4px;
     line-height: 82px;
