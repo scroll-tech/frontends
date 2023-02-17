@@ -15,6 +15,11 @@ export type TransactionHandled = {
   txModel: any
 }
 
+export enum ChainIdEnum {
+  GOERLI = 5,
+  SCROLL_ALPHA = 534353,
+}
+
 export function useSendTransaction(props) {
   const { fromNetwork, fromTokenAmount, setError, setSendError, toNetwork, selectedToken } = props
 
@@ -80,11 +85,29 @@ export function useSendTransaction(props) {
     })
   }
 
+  const depositETH = () => {
+    const gasLimit = 0
+    if (ChainId.SCROLL_LAYER_1 === ChainIdEnum.GOERLI) {
+      return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositETH(uint256,uint256)"](parsedAmount, gasLimit)
+    }
+    return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositETH(uint256)"](gasLimit, {
+      value: parsedAmount,
+    })
+  }
+
+  const withdrawETH = () => {
+    const gasLimit = 0
+    if (ChainId.SCROLL_LAYER_2 === ChainIdEnum.SCROLL_ALPHA) {
+      return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawETH(uint256,uint256)"](parsedAmount, gasLimit)
+    }
+    return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawETH(uint256)"](gasLimit, {
+      value: parsedAmount,
+    })
+  }
+
   const sendl1ToL2 = () => {
     if (selectedToken.native) {
-      return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositETH(uint256)"](0, {
-        value: parsedAmount,
-      })
+      depositETH()
     } else {
       return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositERC20(address,uint256,uint256)"](selectedToken.address, parsedAmount, 0)
     }
@@ -92,9 +115,7 @@ export function useSendTransaction(props) {
 
   const sendl2ToL1 = () => {
     if (selectedToken.native) {
-      return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawETH(uint256)"](0, {
-        value: parsedAmount,
-      })
+      withdrawETH()
     } else {
       return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawERC20(address,uint256,uint256)"](selectedToken.address, parsedAmount, 0)
     }
