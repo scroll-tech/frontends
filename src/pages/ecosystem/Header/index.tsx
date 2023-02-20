@@ -11,6 +11,7 @@ const Header = () => {
           fontSize: "6.4rem",
           lineHeight: 1.2,
           fontWeight: 500,
+          fontFamily: "Pulp Display",
         }}
       >
         Scroll Ecosystem

@@ -9,7 +9,7 @@ const Ecosystem = () => {
       sx={{
         position: "relative",
         maxWidth: "1020px",
-        mt: ["7.6rem", "18rem"],
+        mt: ["7.6rem", "10rem", "18rem"],
         mx: "auto",
         px: "3rem",
       }}

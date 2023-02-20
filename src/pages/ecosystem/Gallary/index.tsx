@@ -17,7 +17,6 @@ const Container = styled("div")(
   };
   ${theme.breakpoints.down("sm")} {
     grid-template-columns: 1fr;
-    // padding: 1rem 0;
     width: 100%;
   };
 `,
