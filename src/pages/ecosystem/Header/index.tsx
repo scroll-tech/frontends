@@ -4,7 +4,7 @@ import Link from "@/components/Link"
 
 const Header = () => {
   return (
-    <Box>
+    <Box sx={{ position: "relative" }}>
       <Typography
         variant="h1"
         sx={{
@@ -17,7 +17,7 @@ const Header = () => {
       </Typography>
       <Typography variant="h5">
         a curation of apps on our testnet,{" "}
-        <Link href="/" external underline="always" sx={{ color: "primary.main", fontSize: "inherit" }}>
+        <Link href="https://scrollzkp.typeform.com/scroll-add-app" external underline="always" sx={{ color: "primary.main", fontSize: "inherit" }}>
           add your app
         </Link>{" "}
         today!

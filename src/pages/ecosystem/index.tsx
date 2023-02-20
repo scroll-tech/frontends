@@ -7,12 +7,23 @@ const Ecosystem = () => {
   return (
     <Box
       sx={{
-        maxWidth: "1300px",
-        mt: "18rem",
+        position: "relative",
+        maxWidth: "1020px",
+        mt: ["7.6rem", "18rem"],
         mx: "auto",
-        px: "12rem",
+        px: "3rem",
       }}
     >
+      <Box
+        sx={{
+          width: "56rem",
+          height: "40rem",
+          background: "radial-gradient(closest-side, #FF852D40, transparent)",
+          position: "absolute",
+          top: "-16rem",
+          left: "-24rem",
+        }}
+      ></Box>
       <Header></Header>
       <Gallary></Gallary>
     </Box>

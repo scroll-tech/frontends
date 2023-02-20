@@ -7,13 +7,17 @@ import { styled } from "@mui/material/styles"
 
 import { socialLinks } from "../helper"
 
-const Wrapper = styled("div")(
+const Wrapper = styled(motion.div)(
   ({ theme }) => `
   position: relative;
   perspective: 1000px;
   margin: 2rem;
   width: 300px;
   height: 300px;
+  ${theme.breakpoints.down("sm")} {
+    width: 100%;
+    margin: 1rem 0;
+  };
 `,
 )
 
@@ -26,7 +30,7 @@ const FlipCard = styled(motion.div)(
   `,
 )
 
-const FaceSide = styled("div")(
+const FaceSide = styled(motion.div)(
   ({ theme, className }) => `
   position: absolute;
   top: 0;
@@ -62,24 +66,32 @@ const variants = {
 
 const GallaryItem = props => {
   const {
-    item: {
-      Name,
-      Logo,
-      Tag: tag,
-      ShortDescription,
-      // Website, TwitterHandle
-    },
+    item: { Name, Logo, Tag: tag, ShortDescription, Website, TwitterHandle },
   } = props
 
   const [isBack, setIsBack] = useState(false)
 
-  const handleFlipCard = () => {
+  const handleFlipCard = e => {
     setIsBack(preValue => !preValue)
+  }
+
+  const handleOpenTab = (e, item, { Website, TwitterHandle }) => {
+    e.stopPropagation()
+    const { name, prefixLink } = item
+    if (name === "Twitter") {
+      window.open(prefixLink + TwitterHandle)
+      return
+    }
+    window.open(Website)
   }
   return (
     <Wrapper onClick={handleFlipCard}>
       <FlipCard animate={isBack ? "back" : "front"} variants={variants} transition={{ duration: 0.3, ease: "easeInOut" }}>
-        <FaceSide className="front">
+        <FaceSide
+          className="front"
+          whileHover={{ translateY: "-2px", scale: 1.005, boxShadow: "0 24px 36px rgba(0,0,0,0.11), 0 24px 46px #B4B4B4" }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+        >
           <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
             <InfoOutlined sx={{ color: "#686868" }}></InfoOutlined>
           </Box>
@@ -93,7 +105,11 @@ const GallaryItem = props => {
             </Stack>
           </Stack>
         </FaceSide>
-        <FaceSide className="back" style={{ transform: "rotateY(180deg)" }}>
+        <FaceSide
+          className="back"
+          whileHover={{ boxShadow: "0 12px 18px rgba(0,0,0,0.11), 0 12px 22px #B4B4B4" }}
+          style={{ transform: "rotateY(180deg)" }}
+        >
           <Stack direction="column" justifyContent="space-between" sx={{ height: "100%" }}>
             <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
               <ReplayOutlined sx={{ color: "#686868" }}></ReplayOutlined>
@@ -101,12 +117,15 @@ const GallaryItem = props => {
             <Typography variant="body2" sx={{ mt: "2rem", px: "1rem" }}>
               {ShortDescription}
             </Typography>
-            {/* <Box sx={{ textAlign: "center" }}> */}
             <Stack direction="row" spacing={0.5} justifyContent="center" sx={{ width: "100%" }}>
-              {socialLinks.map(item => (
-                <motion.div whileHover={{ scale: 1.1, color: "#686868" }} style={{ color: "#404040" }}>
-                  <SvgIcon component={item.icon} viewBox={item.viewBox}></SvgIcon>
-                </motion.div>
+              {socialLinks.map(social => (
+                <motion.span whileHover={{ scale: 1.1, color: "#686868" }} style={{ color: "#404040" }}>
+                  <SvgIcon
+                    onClick={e => handleOpenTab(e, social, { Website, TwitterHandle })}
+                    component={social.icon}
+                    viewBox={social.viewBox}
+                  ></SvgIcon>
+                </motion.span>
               ))}
             </Stack>
           </Stack>

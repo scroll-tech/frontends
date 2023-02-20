@@ -9,6 +9,17 @@ const Container = styled("div")(
   grid-template-columns: repeat(3, 1fr);
   width: max-content;
   margin: 8rem auto;
+  grid-auto-columns: 1fr;
+  ${theme.breakpoints.down("lg")} {
+    grid-template-columns: repeat(2, 1fr);
+    width: max-content;
+    margin: 4rem auto;
+  };
+  ${theme.breakpoints.down("sm")} {
+    grid-template-columns: 1fr;
+    // padding: 1rem 0;
+    width: 100%;
+  };
 `,
 )
 
