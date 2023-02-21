@@ -12,11 +12,12 @@ const Wrapper = styled(motion.div)(
   position: relative;
   perspective: 1000px;
   margin: 2rem;
-  width: 300px;
-  height: 300px;
+  width: 30rem;
+  height: 30rem;
   ${theme.breakpoints.down("sm")} {
     width: 100%;
     margin: 1rem 0;
+    // height: 15rem;
   };
 `,
 )
@@ -39,10 +40,10 @@ const FaceSide = styled(motion.div)(
   height: 100%;
   backface-visibility: hidden;
   box-shadow: 2px 2px 10px 2px rgba(174, 174, 174, 0.25);
-  background-color: ${className?.includes("back") ? "#deeafd" : "rgba(249, 249, 249, 0.3)"};
+  background-color: rgba(249, 249, 249, 0.3);
   padding: 1rem;
   border-radius: 2rem;
-
+  background-color: #fff;
   .MuiAvatar-img{
     height: auto;
   }
@@ -51,9 +52,13 @@ const FaceSide = styled(motion.div)(
 
 const Tag = styled("span")(
   ({ theme }) => `
-  color: #686868;
-  font-weight: 700;
-  font-size: 12px
+  display: inline-block;
+  color: #eee;
+  background-color: #404040;
+  border-radius: 6px;
+  padding: 4px 6px;
+  font-weight: 900;
+  font-size: 12px;
 `,
 )
 
@@ -95,13 +100,15 @@ const GallaryItem = props => {
           <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
             <InfoOutlined sx={{ color: "#686868" }}></InfoOutlined>
           </Box>
-          <Stack direction="column" spacing={2} alignItems="center" sx={{ mt: "2rem" }}>
-            <Avatar alt={Name} src={Logo} variant="square" sx={{ width: 120, height: 120 }}></Avatar>
-            <Typography variant="h5">{Name}</Typography>
+          <Stack direction="column" spacing={2} alignItems="center" sx={{ mt: "7rem" }}>
+            <Stack direction="row" spacing={1.25} alignItems="center">
+              <Avatar alt={Name} src={Logo} variant="square" sx={{ width: 84, height: 84 }}></Avatar>
+              <Typography variant="h4" sx={{ fontWeight: 600 }}>
+                {Name}
+              </Typography>
+            </Stack>
             <Stack direction="row" spacing={1}>
-              {tag?.split(",").map(value => (
-                <Tag>{value}</Tag>
-              ))}
+              {tag ? tag.split(",").map(value => <Tag>{value}</Tag>) : null}
             </Stack>
           </Stack>
         </FaceSide>
@@ -111,10 +118,14 @@ const GallaryItem = props => {
           style={{ transform: "rotateY(180deg)" }}
         >
           <Stack direction="column" justifyContent="space-between" sx={{ height: "100%" }}>
-            <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+              <Stack direction="row" spacing={0.5}>
+                <Avatar alt={Name} src={Logo} variant="square" sx={{ width: 22, height: 22 }}></Avatar>
+                <Typography sx={{ fontWeight: 600, fontSize: 12 }}>{Name}</Typography>
+              </Stack>
               <ReplayOutlined sx={{ color: "#686868" }}></ReplayOutlined>
             </Box>
-            <Typography variant="body2" sx={{ mt: "2rem", px: "1rem" }}>
+            <Typography variant="body2" sx={{ mt: "2rem", px: "1rem", lineHeight: "1.6rem" }}>
               {ShortDescription}
             </Typography>
             <Stack direction="row" spacing={0.5} justifyContent="center" sx={{ width: "100%" }}>
@@ -123,6 +134,7 @@ const GallaryItem = props => {
                   <SvgIcon
                     onClick={e => handleOpenTab(e, social, { Website, TwitterHandle })}
                     component={social.icon}
+                    sx={{ width: "2rem", height: "2rem" }}
                     viewBox={social.viewBox}
                   ></SvgIcon>
                 </motion.span>

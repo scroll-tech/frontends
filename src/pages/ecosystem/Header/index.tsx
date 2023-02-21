@@ -16,7 +16,7 @@ const Header = () => {
       >
         Scroll Ecosystem
       </Typography>
-      <Typography variant="h5">
+      <Typography sx={{ fontSize: ["1.2rem", "2.4rem"], fontWeight: 500 }}>
         a curation of apps on our testnet,{" "}
         <Link href="https://scrollzkp.typeform.com/scroll-add-app" external underline="always" sx={{ color: "primary.main", fontSize: "inherit" }}>
           add your app

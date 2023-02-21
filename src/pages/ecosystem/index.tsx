@@ -16,12 +16,12 @@ const Ecosystem = () => {
     >
       <Box
         sx={{
-          width: "56rem",
-          height: "40rem",
-          background: "radial-gradient(closest-side, #FF852D40, transparent)",
+          width: ["20rem", "66rem"],
+          height: ["14rem", "50rem"],
+          background: ["radial-gradient(closest-side, #FF852D2D, transparent)", "radial-gradient(closest-side, #FF852D40, transparent)"],
           position: "absolute",
-          top: "-16rem",
-          left: "-24rem",
+          top: ["-6rem", "-20rem"],
+          left: ["-5rem", "-32rem"],
         }}
       ></Box>
       <Header></Header>

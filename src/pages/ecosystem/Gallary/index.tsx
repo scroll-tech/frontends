@@ -18,6 +18,7 @@ const Container = styled("div")(
   ${theme.breakpoints.down("sm")} {
     grid-template-columns: 1fr;
     width: 100%;
+    margin: 2.4rem auto;
   };
 `,
 )
