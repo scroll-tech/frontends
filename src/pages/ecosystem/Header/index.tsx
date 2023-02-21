@@ -11,12 +11,12 @@ const Header = () => {
           fontSize: "6.4rem",
           lineHeight: 1.2,
           fontWeight: 500,
-          fontFamily: "Pulp Display",
+          fontFamily: "Inter",
         }}
       >
         Scroll Ecosystem
       </Typography>
-      <Typography sx={{ fontSize: ["1.2rem", "2.4rem"], fontWeight: 500 }}>
+      <Typography sx={{ fontSize: ["1.2rem", "2.4rem"], fontWeight: 500, fontFamily: "Inter" }}>
         a curation of apps on our testnet,{" "}
         <Link href="https://scrollzkp.typeform.com/scroll-add-app" external underline="always" sx={{ color: "primary.main", fontSize: "inherit" }}>
           add your app

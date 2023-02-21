@@ -17,7 +17,6 @@ const Wrapper = styled(motion.div)(
   ${theme.breakpoints.down("sm")} {
     width: 100%;
     margin: 1rem 0;
-    // height: 15rem;
   };
 `,
 )
@@ -39,7 +38,7 @@ const FaceSide = styled(motion.div)(
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
-  box-shadow: 2px 2px 10px 2px rgba(174, 174, 174, 0.25);
+  box-shadow: 2px 2px 10px 2px rgba(221, 221, 221, 0.25);
   background-color: rgba(249, 249, 249, 0.3);
   padding: 1rem;
   border-radius: 2rem;
@@ -90,11 +89,11 @@ const GallaryItem = props => {
     window.open(Website)
   }
   return (
-    <Wrapper onClick={handleFlipCard}>
+    <Wrapper onClick={handleFlipCard} whileHover={{ translateY: "-2px", scale: 1.005 }}>
       <FlipCard animate={isBack ? "back" : "front"} variants={variants} transition={{ duration: 0.3, ease: "easeInOut" }}>
         <FaceSide
           className="front"
-          whileHover={{ translateY: "-2px", scale: 1.005, boxShadow: "0 24px 36px rgba(0,0,0,0.11), 0 24px 46px #B4B4B4" }}
+          whileHover={{ boxShadow: "0 12px 18px rgba(0,0,0,0.11), 0 12px 22px #B4B4B4" }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
         >
           <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
@@ -103,7 +102,7 @@ const GallaryItem = props => {
           <Stack direction="column" spacing={2} alignItems="center" sx={{ mt: "7rem" }}>
             <Stack direction="row" spacing={1.25} alignItems="center">
               <Avatar alt={Name} src={Logo} variant="square" sx={{ width: 84, height: 84 }}></Avatar>
-              <Typography variant="h4" sx={{ fontWeight: 600 }}>
+              <Typography variant="h4" sx={{ fontFamily: "Inter", fontWeight: 600, width: "min-content" }}>
                 {Name}
               </Typography>
             </Stack>
@@ -115,17 +114,18 @@ const GallaryItem = props => {
         <FaceSide
           className="back"
           whileHover={{ boxShadow: "0 12px 18px rgba(0,0,0,0.11), 0 12px 22px #B4B4B4" }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
           style={{ transform: "rotateY(180deg)" }}
         >
           <Stack direction="column" justifyContent="space-between" sx={{ height: "100%" }}>
-            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-              <Stack direction="row" spacing={0.5}>
+            <Stack direction="row" justifyContent="space-between">
+              <Stack direction="row" alignItems="center" spacing={0.5}>
                 <Avatar alt={Name} src={Logo} variant="square" sx={{ width: 22, height: 22 }}></Avatar>
                 <Typography sx={{ fontWeight: 600, fontSize: 12 }}>{Name}</Typography>
               </Stack>
               <ReplayOutlined sx={{ color: "#686868" }}></ReplayOutlined>
-            </Box>
-            <Typography variant="body2" sx={{ mt: "2rem", px: "1rem", lineHeight: "1.6rem" }}>
+            </Stack>
+            <Typography variant="body2" sx={{ mt: "2rem", px: "1rem", lineHeight: "1.6rem", fontFamily: "Inter", fontWeight: 500 }}>
               {ShortDescription}
             </Typography>
             <Stack direction="row" spacing={0.5} justifyContent="center" sx={{ width: "100%" }}>
