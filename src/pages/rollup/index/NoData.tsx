@@ -8,7 +8,8 @@ const Container = styled(Box)(({ theme }) => ({
 }))
 
 const NoResultsTypography = styled(Typography)(({ theme }) => ({
-  fontFamily: "Pulp Display",
+  fontFamily: "Inter",
+  fontWeight: "500",
   fontSize: "2rem",
   lineHeight: "2.4rem",
   marginTop: "1rem",

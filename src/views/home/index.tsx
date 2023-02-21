@@ -56,7 +56,7 @@ const RoadmapBoxWrapper = styled(Box)(
 const RoadmapInfo = styled(Box)(
   ({ theme }) => `
         text-align: left;
-        max-width: 40rem;
+        max-width: 40.6rem;
         margin-right: 4rem;
         "& .MuiTypography-root" {
           text-align: left !important;
@@ -70,7 +70,7 @@ const RoadmapInfo = styled(Box)(
 
 const TitleTypography = styled(Typography)(
   ({ theme }) => `
-    max-width: 56rem;
+    max-width: 60rem;
     text-align: center;
     margin: 2rem auto 0; 
     ${theme.breakpoints.down("md")} {

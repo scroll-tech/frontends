@@ -48,7 +48,7 @@ const Subscribe = () => {
   return (
     <>
       <div className="relative">
-        <p className="text-md mb-[14px] font-display">Follow Us</p>
+        <p className="text-md mb-[14px] font-display font-medium">Follow Us</p>
         <div className="flex  my-[20px]">{renderMedias()}</div>
         <MailchimpSubscribe
           url={url}

@@ -46,7 +46,7 @@ const Footer = () => {
   const renderLinks = () => {
     return links.map((link: any) => (
       <ul key={link.category} className="mr-100px mt-20px flex-1 lg:(mt-0)">
-        <li className="text-md mb-[8px] font-display">{link.category}</li>
+        <li className="text-md mb-[8px] font-display font-medium">{link.category}</li>
         {link.items.map((item: any) => (
           <li key={item.name}>
             {item.to ? (
@@ -77,8 +77,8 @@ const Footer = () => {
             <Logo></Logo>
           </a>
           <div className="flex-1">
-            <p className="font-display text-md">Version {process.env.REACT_APP_VERSION}</p>
-            <p className="font-display text-md">© Scroll Ltd {dayjs().year()}</p>
+            <p className="font-display font-medium text-md">Version {process.env.REACT_APP_VERSION}</p>
+            <p className="font-display font-medium text-md">© Scroll Ltd {dayjs().year()}</p>
           </div>
         </div>
         <div className="flex flex-[2] justify-between w-full mb-[30px]">{renderLinks()}</div>

@@ -8,7 +8,7 @@ const Login = () => {
   return (
     <main className="h-[100vh] flex justify-center items-center flex-col px-[16px]">
       <img alt="logo" className="w-[160px] mb-[26px]" src="/imgs/login/logo_with_text.png" />
-      <p className="text-charcoal text-center text-[28px]  leading-[32px] mb-[16px] font-display md:text-[34px]  md:leading-[40px]">
+      <p className="text-charcoal text-center text-[28px]  leading-[32px] mb-[16px] font-display font-medium md:text-[34px]  md:leading-[40px]">
         Welcome to Scroll’s Pre-Apha Testnet
       </p>
       <p className="max-w-[380px] text-center text-[16px] text-[#595959] leading-[26px] ">
