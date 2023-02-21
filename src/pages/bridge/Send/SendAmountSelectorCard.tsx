@@ -188,12 +188,11 @@ const SendAmountSelectorCard: FC<Props> = props => {
             leftAlign
             disabled={disableInput}
             sx={{
-              fontFamily: "Pulp Display",
+              fontFamily: "Inter",
               letterSpacing: "0.25px",
             }}
           />
         )}
-
         {isToCard ? (
           <SelectedToken icon={token.logoURI}>{token.symbol}</SelectedToken>
         ) : (
