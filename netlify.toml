@@ -1,4 +1,7 @@
-# Maybe also redirect /prealpha to https://prealpha--scroll-io.netlify.app/prealpha
+[[redirects]]
+from = "/prealpha"
+to = "/alpha?source=prealpha"
+
 [[redirects]]
 from = "/*"
 to = "/"
