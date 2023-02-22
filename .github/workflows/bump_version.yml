@@ -10,6 +10,7 @@ jobs:
     name: "Bump Version on main"
     permissions:
       contents: write
+      pull-requests: write
     runs-on: ubuntu-latest
 
     steps:
@@ -17,12 +18,40 @@ jobs:
         uses: "actions/checkout@v3"
         with:
           ref: ${{ github.ref }}
+
       - name: "cat package.json"
         run: cat ./package.json
+
       - name: "Automated Version Bump"
         id: version-bump
         uses: "phips28/gh-action-bump-version@25cd8ffb8ec95f16f83a8dac9557a845e4fa9e21"
         with:
-          tag-prefix: "v"
+          tag-prefix: ""
+          skip-push: "true"
         env:
-          GITHUB_TOKEN: ${{ secrets.WRITE_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get Version Bump Commit Message
+        run: echo "::set-output name=title::$(git log --pretty=format:"%s" -1)"
+        id: get-version-bump-commit-message
+
+      - name: Create Pull Request for Main
+        uses: peter-evans/create-pull-request@2b011faafdcbc9ceb11414d64d0573f37c774b04
+        with:
+          token: ${{ secrets.WRITE_TOKEN }}
+          delete-branch: false
+          branch: ci/_bump-version
+          title: ${{ steps.get-version-bump-commit-message.outputs.title }}
+          labels: "bot/bump-version, automerge"
+          body: ""
+
+      - name: Create Pull Request for Staging
+        uses: peter-evans/create-pull-request@2b011faafdcbc9ceb11414d64d0573f37c774b04
+        with:
+          token: ${{ secrets.WRITE_TOKEN }}
+          delete-branch: false
+          branch: ci/_bump-version-staging
+          base: staging
+          title: ${{ steps.get-version-bump-commit-message.outputs.title }}
+          labels: "bot/bump-version, automerge"
+          body: ""

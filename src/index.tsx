@@ -22,6 +22,18 @@ if (process.env.NODE_ENV === "production") {
     dsn: process.env.REACT_APP_SENTRY_DSN,
     integrations: [new BrowserTracing()],
     tracesSampleRate: 1.0,
+    beforeSend(event) {
+      const exception = event?.exception?.values?.[0]
+      if (!exception) return event
+      // Unexpected token '<'
+      if (exception.type === "SyntaxError" && exception.value?.includes("'<'")) return null
+      // error when user reject a transaction in wallet
+      if (exception.type === "Error" && exception.value?.includes("user rejected transaction")) return null
+      // error from browser extension wallets that want to redefine window.ethereum
+      if (exception.type === "TypeError" && exception.stacktrace?.frames?.[0]?.filename?.startsWith("chrome-extension")) return null
+
+      return event
+    },
   })
 
   const GOOGLE_ANALYTICS_ID: string | undefined = process.env.REACT_APP_GOOGLE_ANALYTICS_ID
