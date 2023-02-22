@@ -24,8 +24,7 @@ jobs:
         id: version-bump
         uses: "phips28/gh-action-bump-version@25cd8ffb8ec95f16f83a8dac9557a845e4fa9e21"
         with:
-          tag-prefix: "v"
-          skip-push: "true"
+          tag-prefix: ""
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get Version Bump Commit Message
