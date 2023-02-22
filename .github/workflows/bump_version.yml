@@ -50,7 +50,7 @@ jobs:
         with:
           token: ${{ secrets.WRITE_TOKEN }}
           delete-branch: false
-          branch: ci/_bump-version
+          branch: ci/_bump-version-staging
           base: staging
           title: ${{ steps.get-version-bump-commit-message.outputs.title }}
           labels: "bot/bump-version, automerge"
