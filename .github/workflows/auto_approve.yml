@@ -1,0 +1,15 @@
+name: Auto Approve
+on:
+  pull_request_target:
+    branches:
+      - "test-version-bump"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: hmarr/auto-approve-action@de8ae18c173c131e182d4adf2c874d8d2308a85b
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
