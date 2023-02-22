@@ -1,0 +1,26 @@
+name: automerge
+on:
+  pull_request:
+    branches:
+      - "test-version-bump"
+    types:
+      - labeled
+      - synchronize
+      - opened
+      - edited
+      - ready_for_review
+      - reopened
+      - unlocked
+  pull_request_review:
+    types:
+      - submitted
+  status: {}
+jobs:
+  automerge:
+    runs-on: ubuntu-latest
+    steps:
+      - id: automerge
+        name: automerge
+        uses: "pascalgn/automerge-action@22948e0bc22f0aa673800da838595a3e7347e584"
+        env:
+          GITHUB_TOKEN: "${{ secrets.WRITE_TOKEN }}"
