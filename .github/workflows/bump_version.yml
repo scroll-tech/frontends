@@ -3,13 +3,14 @@ name: "Bump Version"
 on:
   push:
     branches:
-      - "main"
+      - "test-version-bump"
 
 jobs:
   bump-version:
     name: "Bump Version on main"
     permissions:
       contents: write
+      pull-requests: write
     runs-on: ubuntu-latest
 
     steps:
@@ -24,5 +25,18 @@ jobs:
         uses: "phips28/gh-action-bump-version@25cd8ffb8ec95f16f83a8dac9557a845e4fa9e21"
         with:
           tag-prefix: "v"
+          skip-push: "true"
         env:
-          GITHUB_TOKEN: ${{ secrets.WRITE_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get Version Bump Commit Message
+        run: echo "::set-output name=title::$(git log --pretty=format:"%s" -1)"
+        id: get-version-bump-commit-message
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@2b011faafdcbc9ceb11414d64d0573f37c774b04
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          delete-branch: false
+          branch: ci/_bump-version
+          title: ${{ steps.get-version-bump-commit-message.outputs.title }}
+          labels: "bot/bump-version, automerge"
+          body: ""
