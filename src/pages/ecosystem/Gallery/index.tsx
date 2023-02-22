@@ -1,7 +1,7 @@
 import { styled } from "@mui/material/styles"
 
 import data from "../projects.json"
-import GallaryItem from "./GallaryItem"
+import GalleryItem from "./GalleryItem"
 
 const Container = styled("div")(
   ({ theme }) => `
@@ -23,16 +23,16 @@ const Container = styled("div")(
 `,
 )
 
-const Gallary = () => {
+const Gallery = () => {
   return (
     <Container>
       {data
         .filter(item => item.Status === "Done")
         .map(item => (
-          <GallaryItem key={item.Name} item={item}></GallaryItem>
+          <GalleryItem key={item.Name} item={item}></GalleryItem>
         ))}
     </Container>
   )
 }
 
-export default Gallary
+export default Gallery

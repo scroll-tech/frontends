@@ -1,6 +1,6 @@
 import { Box } from "@mui/material"
 
-import Gallary from "./Gallary"
+import Gallery from "./Gallery"
 import Header from "./Header"
 
 const Ecosystem = () => {
@@ -25,7 +25,7 @@ const Ecosystem = () => {
         }}
       ></Box>
       <Header></Header>
-      <Gallary></Gallary>
+      <Gallery></Gallery>
     </Box>
   )
 }

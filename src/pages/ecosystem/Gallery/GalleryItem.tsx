@@ -68,7 +68,7 @@ const variants = {
   },
 }
 
-const GallaryItem = props => {
+const GalleryItem = props => {
   const {
     item: { Name, Logo, Tag: tag, ShortDescription, Website, TwitterHandle },
   } = props
@@ -147,4 +147,4 @@ const GallaryItem = props => {
   )
 }
 
-export default GallaryItem
+export default GalleryItem
