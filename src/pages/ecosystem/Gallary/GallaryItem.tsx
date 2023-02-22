@@ -102,12 +102,10 @@ const GallaryItem = props => {
           <Stack direction="column" spacing={2} alignItems="center" sx={{ mt: "7rem" }}>
             <Stack direction="row" spacing={1.25} alignItems="center">
               <Avatar alt={Name} src={Logo} variant="square" sx={{ width: 84, height: 84 }}></Avatar>
-              <Typography variant="h4" sx={{ fontFamily: "Inter", fontWeight: 600, width: "min-content" }}>
-                {Name}
-              </Typography>
+              <Typography sx={{ fontFamily: "Inter", fontWeight: 600, fontSize: ["2rem", "2.4rem"] }}>{Name}</Typography>
             </Stack>
             <Stack direction="row" spacing={1}>
-              {tag ? tag.split(",").map(value => <Tag>{value}</Tag>) : null}
+              {tag ? tag.split(",").map(value => <Tag key={value}>{value}</Tag>) : null}
             </Stack>
           </Stack>
         </FaceSide>
@@ -125,12 +123,14 @@ const GallaryItem = props => {
               </Stack>
               <ReplayOutlined sx={{ color: "#686868" }}></ReplayOutlined>
             </Stack>
-            <Typography variant="body2" sx={{ mt: "2rem", px: "1rem", lineHeight: "1.6rem", fontFamily: "Inter", fontWeight: 500 }}>
+            <Typography
+              sx={{ mt: "2rem", px: "1rem", lineHeight: ["1.8rem", "1.6rem"], fontFamily: "Inter", fontWeight: 500, fontSize: ["1.6rem", "1.4rem"] }}
+            >
               {ShortDescription}
             </Typography>
             <Stack direction="row" spacing={0.5} justifyContent="center" sx={{ width: "100%" }}>
               {socialLinks.map(social => (
-                <motion.span whileHover={{ scale: 1.1, color: "#686868" }} style={{ color: "#404040" }}>
+                <motion.span key={social.name} whileHover={{ scale: 1.1, color: "#686868" }} style={{ color: "#404040" }}>
                   <SvgIcon
                     onClick={e => handleOpenTab(e, social, { Website, TwitterHandle })}
                     component={social.icon}

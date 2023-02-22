@@ -29,7 +29,7 @@ const Gallary = () => {
       {data
         .filter(item => item.Status === "Done")
         .map(item => (
-          <GallaryItem item={item}></GallaryItem>
+          <GallaryItem key={item.Name} item={item}></GallaryItem>
         ))}
     </Container>
   )

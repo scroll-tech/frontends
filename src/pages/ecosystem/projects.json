@@ -51,7 +51,7 @@
     "TwitterFans": 85000,
     "Owner": "Young",
     "ShortDescription": "EthSign is building the interface between Web2 and Web3 by connecting legal agreement and smart contract.",
-    "Logo": "/imgs/ecosystem/EthSign.svg",
+    "Logo": "/imgs/ecosystem/EthSign.png",
     "Website": "https://www.ethsign.xyz/"
   },
   {
@@ -150,7 +150,7 @@
     "TwitterFans": 42000,
     "Owner": "Young",
     "ShortDescription": "Trade crypto with zero price impact, up to 100x leverage and aggregated liquidity. MUX protocol takes care of all the hassles so that you can experience optimized DEX trading on our platform.",
-    "Logo": "/imgs/ecosystem/MUX.svg",
+    "Logo": "/imgs/ecosystem/MUX.png",
     "Website": "https://mux.network/"
   },
   {
@@ -172,7 +172,7 @@
     "TwitterFans": 24000,
     "Owner": "Yicheng",
     "ShortDescription": "DoraHacks is the hacker movement and one of the largest Web3 developer incentive platforms. DoraHacks provides key infrastructures connecting developers with grants and other crucial resources from leading Web3 ecosystems. In 2021, DoraHacks helped 3000+ starups raised $30M in grants.",
-    "Logo": "/imgs/ecosystem/DoraHacks.jpeg",
+    "Logo": "/imgs/ecosystem/DoraHacks.jpg",
     "Website": "https://dorahacks.io/home"
   },
   {
@@ -227,7 +227,7 @@
     "TwitterFans": 7112,
     "Owner": "Robert Chang",
     "ShortDescription": "Soul Wallet uses the ERC-4337 standard to enable users to create, use, and perform social recovery for smart contract wallets through plug-in extensions and mobile applications.",
-    "Logo": "",
+    "Logo": "/imgs/ecosystem/Soul Wallet.png",
     "Website": "https://www.soulwallets.me/"
   },
   {
@@ -249,7 +249,7 @@
     "TwitterFans": 5905,
     "Owner": "Young",
     "ShortDescription": "OpenBlock provides a 2C wallet solution by utilizing MPC protocol and a super-app design principle that is more secure, accessible, and powerful.",
-    "Logo": "/imgs/ecosystem/OpenBlock.jpeg",
+    "Logo": "/imgs/ecosystem/OpenBlock.png",
     "Website": "https://openblock.com/"
   },
   {
@@ -260,7 +260,7 @@
     "TwitterFans": 3960,
     "Owner": "Robert Chang",
     "ShortDescription": "Explore and integrate real time blockchain data into any application at scale",
-    "Logo": "",
+    "Logo": "/imgs/ecosystem/Transpose.jpg",
     "Website": "https://www.transpose.io/"
   },
   {
@@ -282,7 +282,7 @@
     "TwitterFans": 305,
     "Owner": "Robert Chang",
     "ShortDescription": "Unifra provides open, reliable infrastructure service for all web3 developers",
-    "Logo": "",
+    "Logo": "/imgs/ecosystem/Unifra.png",
     "Website": "https://unifra.io/"
   }
 ]
