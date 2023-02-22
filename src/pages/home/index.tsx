@@ -2,7 +2,7 @@ import { ReactNode, useState } from "react"
 
 import { Alert, Snackbar } from "@mui/material"
 
-import { Addresses, addresses, documentation, navigation } from "@/constants/index"
+import { addresses, documentation, navigation } from "@/constants/index"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 
 import SectionTitle from "./components/sectionTitle"
@@ -48,11 +48,12 @@ export default function Home() {
   const [tip, setTip] = useState<ReactNode | null>(null)
 
   const handleReadd = () => {
-    setTip(
-      <>
-        You are already on <b>{Addresses[chainId as number].network}</b>.
-      </>,
-    )
+    chainId &&
+      setTip(
+        <>
+          You are already on <b>{addresses.find(address => address.chainIdDec === chainId)!.network}</b>.
+        </>,
+      )
   }
 
   const handleClose = () => {

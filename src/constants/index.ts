@@ -10,6 +10,7 @@ const addresses = [
     network: "Goerli Testnet",
     etherscanPrefix: process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L1,
     formattedName: "Goerli Testnet",
+    chainIdDec: ChainId.SCROLL_LAYER_1,
     autoconnect: {
       chainId: "0x" + ChainId.SCROLL_LAYER_1.toString(16),
       chainName: "Goerli",
@@ -27,6 +28,7 @@ const addresses = [
     network: TESTNET_NAME,
     etherscanPrefix: process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L2,
     formattedName: TESTNET_NAME,
+    chainIdDec: ChainId.SCROLL_LAYER_2,
     autoconnect: {
       chainId: "0x" + ChainId.SCROLL_LAYER_2.toString(16),
       chainName: TESTNET_NAME,
@@ -91,43 +93,6 @@ const documentation = [
   },
 ]
 
-const Addresses = {
-  [ChainId.SCROLL_LAYER_1]: {
-    network: "Scroll L1 " + TESTNET_NAME,
-    etherscanPrefix: process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L1,
-    formattedName: "Scroll L1 " + TESTNET_NAME,
-    autoconnect: {
-      chainId: "0x" + ChainId.SCROLL_LAYER_1.toString(16),
-      chainName: "Scroll L1 " + TESTNET_NAME,
-      nativeCurrency: {
-        name: TESTNET_NAME + " Ethereum",
-        symbol: process.env.REACT_APP_ETH_SYMBOL,
-        decimals: 18,
-      },
-      rpcUrls: [RPCUrl.SCROLL_LAYER_1],
-      blockExplorerUrls: [process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L1],
-    },
-  },
-  [ChainId.SCROLL_LAYER_2]: {
-    network: "Scroll L2 " + TESTNET_NAME,
-    etherscanPrefix: process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L2,
-    formattedName: "Scroll L2 " + TESTNET_NAME,
-    autoconnect: {
-      chainId: "0x" + ChainId.SCROLL_LAYER_2.toString(16),
-      chainName: "Scroll L2 " + TESTNET_NAME,
-      nativeCurrency: {
-        name: TESTNET_NAME + " Ethereum",
-        symbol: process.env.REACT_APP_ETH_SYMBOL,
-        decimals: 18,
-      },
-      rpcUrls: [RPCUrl.SCROLL_LAYER_2],
-      blockExplorerUrls: [process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L2],
-    },
-    usdcAddress: process.env.REACT_APP_L2_USDC_ADDRESS,
-    uniV2TokenAddress: process.env.REACT_APP_L2_UNIV2_ADDRESS,
-  },
-}
-
 const ModalStatus = {
   HIDDEN: "hidden",
   LOADING: "loading",
@@ -140,7 +105,7 @@ export * from "./gateway"
 export * from "./medias"
 export * from "./networks"
 export * from "./transaction"
-export { addresses, navigation, documentation, TESTNET_NAME, Addresses, ModalStatus }
+export { addresses, navigation, documentation, TESTNET_NAME, ModalStatus }
 
 export let l1ExplorerUrl = process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L1
 export let l2ExplorerUrl = process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L2

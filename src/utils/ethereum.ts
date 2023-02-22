@@ -1,8 +1,8 @@
-import { Addresses } from "@/constants"
+import { addresses } from "@/constants"
 
-export const switchNetwork = chainId => {
+export const switchNetwork = (chainId: number) => {
   return window.ethereum.request({
     method: "wallet_addEthereumChain",
-    params: [Addresses[chainId].autoconnect],
+    params: [addresses.find(address => address.chainIdDec === chainId)!.autoconnect],
   })
 }
