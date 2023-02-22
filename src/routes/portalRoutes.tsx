@@ -1,4 +1,5 @@
 import Bridge from "@/pages/bridge"
+import Ecosystem from "@/pages/ecosystem"
 import Home from "@/pages/home"
 import RollupScanBatch from "@/pages/rollup/batch"
 import RollupScanBlock from "@/pages/rollup/block"
@@ -16,6 +17,12 @@ const routes = [
     path: "/bridge",
     fullPath: "/alpha/bridge",
     element: <Bridge />,
+  },
+  {
+    name: "Ecosystem",
+    path: "/ecosystem",
+    fullPath: "/alpha/ecosystem",
+    element: <Ecosystem />,
   },
   {
     name: "Rollup Explorer",
