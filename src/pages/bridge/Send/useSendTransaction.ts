@@ -89,7 +89,7 @@ export function useSendTransaction(props) {
     const gasLimit = 0
     if (ChainId.SCROLL_LAYER_1 === ChainIdEnum.GOERLI) {
       return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositETH(uint256,uint256)"](parsedAmount, gasLimit, {
-        value: amountToBN(fromTokenAmount, selectedToken.decimals),
+        value: parsedAmount,
       })
     }
     return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositETH(uint256)"](gasLimit, {
