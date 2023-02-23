@@ -4,6 +4,8 @@ on:
     branches:
       - "main"
       - "staging"
+      - "test-version-bump"
+      - "test-version-bump-staging"
     types:
       - labeled
       - synchronize
@@ -17,15 +19,46 @@ on:
       - submitted
   status: {}
 jobs:
-  automerge:
+  # merge with WRITE_TOKEN so that subsequent actions can be triggered
+  # merge with merge when main->staging or staging->main
+  automerge-merge:
     if: |
-      startsWith(github.event.head_commit.message , 'ci:') &&
-      endsWith(github.event.head_commit.message , '[bot]')
+      endsWith(github.event.pull_request.title, ' [bot]') &&
+      (
+        (github.ref_name == 'main' && github.base_ref == 'staging') ||
+        (github.ref_name == 'staging' && github.base_ref == 'main')
+      )
+    runs-on: ubuntu-latest
+    steps:
+      - id: get-merge-method
+        name: get-merge-method
+        run: |
+          if [ ${{ github.ref_name }} = 'main' ] && [ ${{github.base_ref}} = 'staging' ]; then
+      - id: automerge
+        name: automerge
+        uses: "pascalgn/automerge-action@22948e0bc22f0aa673800da838595a3e7347e584"
+        env:
+          GITHUB_TOKEN: "${{ secrets.WRITE_TOKEN }}"
+          MERGE_METHOD: "merge"
+          MERGE_LABELS: "automerge"
+          MERGE_REMOVE_LABELS: "automerge"
+          MERGE_COMMIT_MESSAGE: "pull-request-title"
+  # merge with squash when not main->staging or staging->main
+  automerge-squash:
+    if: |
+      endsWith(github.event.pull_request.title, ' [bot]') &&
+      !(
+        (github.ref_name == 'main' && github.base_ref == 'staging') ||
+        (github.ref_name == 'staging' && github.base_ref == 'main')
+      )
     runs-on: ubuntu-latest
     steps:
       - id: automerge
         name: automerge
         uses: "pascalgn/automerge-action@22948e0bc22f0aa673800da838595a3e7347e584"
         env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          GITHUB_TOKEN: "${{ secrets.WRITE_TOKEN }}"
           MERGE_METHOD: "squash"
+          MERGE_LABELS: "automerge"
+          MERGE_REMOVE_LABELS: "automerge"
+          MERGE_COMMIT_MESSAGE: "pull-request-title"

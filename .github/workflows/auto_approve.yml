@@ -4,11 +4,12 @@ on:
     branches:
       - "main"
       - "staging"
+      - "test-version-bump"
+      - "test-version-bump-staging"
 jobs:
   build:
     if: |
-      startsWith(github.event.head_commit.message , 'ci:') &&
-      endsWith(github.event.head_commit.message , '[bot]')
+      endsWith(github.event.pull_request.title, ' [bot]')
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
