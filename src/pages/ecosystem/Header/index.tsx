@@ -17,9 +17,9 @@ const Header = () => {
         Scroll Ecosystem
       </Typography>
       <Typography sx={{ fontSize: ["1.2rem", "2.4rem"], fontWeight: 500, fontFamily: "Inter", mt: [0, "1rem"] }}>
-        Join our ecosystem today by{" "}
+        Want to join the Scroll ecosystem?{" "}
         <Link href="https://scrollzkp.typeform.com/scroll-add-app" external underline="always" sx={{ color: "primary.main", fontSize: "inherit" }}>
-          Adding Your App
+          Reach out here
         </Link>
         !
       </Typography>
