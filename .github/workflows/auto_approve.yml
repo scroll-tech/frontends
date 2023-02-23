@@ -4,15 +4,17 @@ on:
     branches:
       - "main"
       - "staging"
+      - "test-version-bump"
 jobs:
   build:
-    if: |
-      startsWith(github.event.head_commit.message , 'ci:') &&
-      endsWith(github.event.head_commit.message , '[bot]')
+    # if: |
+    #   startsWith(github.event.head_commit.message , 'ci:') &&
+    #   endsWith(github.event.head_commit.message , '[bot]')
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
     steps:
-      - uses: hmarr/auto-approve-action@de8ae18c173c131e182d4adf2c874d8d2308a85b
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+      # - uses: hmarr/auto-approve-action@de8ae18c173c131e182d4adf2c874d8d2308a85b
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      - run: echo "${{ github.event.head_commit.message }}"

@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - "main"
+      - "test-version-bump"
 
 jobs:
   create-merge-back-pr:
@@ -27,8 +28,8 @@ jobs:
         with:
           token: ${{ secrets.WRITE_TOKEN }}
           delete-branch: false
-          branch: ci/_bump-version
+          branch: ci/_main->staging
           title: "ci: merge main branch back to staging [bot]"
           labels: "bot/main->staging, automerge"
           body: ""
-          base: staging
+          base: test-version-bump-staging
