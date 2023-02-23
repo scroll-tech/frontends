@@ -4,12 +4,12 @@ on:
   push:
     branches:
       - "main"
+      - "test-version-bump"
 
 jobs:
   create-merge-back-pr:
     if: |
-      startsWith(github.event.head_commit.message , 'ci: version bump to') &&
-      endsWith(github.event.head_commit.message , '[bot]')
+      contains(github.event.head_commit.message , ' [bot]')
     name: "Create PR to merge main back to staging"
     permissions:
       contents: write
@@ -20,15 +20,15 @@ jobs:
       - name: "Checkout source code"
         uses: "actions/checkout@v3"
         with:
-          ref: ${{ github.ref }}
+          ref: test-version-bump-staging
 
+      - run: git merge origin/test-version-bump
       - name: Create Pull Request for Main
         uses: peter-evans/create-pull-request@2b011faafdcbc9ceb11414d64d0573f37c774b04
         with:
           token: ${{ secrets.WRITE_TOKEN }}
           delete-branch: false
-          branch: ci/_bump-version
-          title: "ci: merge main branch back to staging [bot]"
+          branch: ci/_main->staging
+          title: "ci: merge main branch back to staging [bot]"
           labels: "bot/main->staging, automerge"
           body: ""
-          base: staging
