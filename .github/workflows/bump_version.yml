@@ -4,11 +4,12 @@ on:
   push:
     branches:
       - "main"
+      - "test-version-bump"
 
 jobs:
   bump-version:
     if: |
-      !startsWith(github.event.head_commit.message , 'ci: version bump to')
+      !contains(github.event.head_commit.message , '[bot]')
     name: "Bump Version on main"
     permissions:
       contents: write
