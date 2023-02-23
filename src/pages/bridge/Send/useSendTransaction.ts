@@ -60,6 +60,7 @@ export function useSendTransaction(props) {
           fromBlockNumber: txResult.blockNumber,
         })
       } catch (error) {
+        console.log(error)
         setSendError(error)
         setSending(false)
       }
@@ -94,7 +95,7 @@ export function useSendTransaction(props) {
     const fee = await getL1Fee()
     if (ChainId.SCROLL_LAYER_1 === ChainIdEnum.GOERLI) {
       return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositETH(uint256,uint256)"](parsedAmount, gasLimit, {
-        value: BigNumber.from(parsedAmount).add(BigNumber.from(fee)),
+        value: BigNumber.from(parsedAmount.toString()).add(BigNumber.from(fee.toString())),
       })
     }
     return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositETH(uint256)"](gasLimit, {
@@ -106,7 +107,7 @@ export function useSendTransaction(props) {
     const fee = await getL2Fee()
     if (ChainId.SCROLL_LAYER_2 === ChainIdEnum.SCROLL_ALPHA) {
       return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawETH(uint256,uint256)"](parsedAmount, gasLimit, {
-        value: BigNumber.from(parsedAmount).add(BigNumber.from(fee)),
+        value: BigNumber.from(parsedAmount.toString()).add(BigNumber.from(fee.toString())),
         // gasPrice,
       })
     }
