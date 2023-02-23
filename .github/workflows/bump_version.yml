@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - "main"
+      - "test-version-bump"
 
 jobs:
   bump-version:
