@@ -4,6 +4,7 @@ on:
     branches:
       - "main"
       - "staging"
+      - "test-version-bump"
     types:
       - labeled
       - synchronize
@@ -19,8 +20,8 @@ on:
 jobs:
   automerge:
     if: |
-      startsWith(github.event.head_commit.message , 'ci:') &&
-      endsWith(github.event.head_commit.message , '[bot]')
+      startsWith(github.event.pull_request.title , 'ci:') &&
+      endsWith(github.event.pull_request.title, '[bot]')
     runs-on: ubuntu-latest
     steps:
       - id: automerge
