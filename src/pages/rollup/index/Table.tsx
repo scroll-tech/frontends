@@ -66,8 +66,8 @@ const StatusChip = styled(Chip)(({ theme }) => ({
     color: theme.palette.tagSuccess.main,
   },
   "&.skipped": {
-    backgroundColor: theme.palette.tagSkipped.light,
-    color: theme.palette.tagSkipped.main,
+    backgroundColor: theme.palette.tagCommitted.light,
+    color: theme.palette.tagCommitted.main,
   },
   "&.unknown": {
     backgroundColor: theme.palette.tagUnknown.light,
@@ -106,10 +106,10 @@ const App = () => {
   const renderStatusHeaderText = () => {
     return (
       <>
-        <p>Pre-committed: Block included in Scroll L2 blockchain</p>
-        <p>Committed: Block transaction data submitted to Scroll L1 blockchain</p>
-        <p>Finalized: Validity proof submitted and verified on Scroll L1 blockchain</p>
-        <p>Skipped: Validity proof was skipped due to the lack of proving power</p>
+        <p className="mb-1">Pre-committed: Block included in Scroll L2 blockchain</p>
+        <p className="mb-1">Committed: Block transaction data submitted to Scroll L1 blockchain</p>
+        <p className="mb-1">Finalized: Validity proof submitted and verified on Scroll L1 blockchain</p>
+        {/* <p>Skipped: Validity proof was skipped due to the lack of proving power</p> */}
       </>
     )
   }
@@ -237,7 +237,7 @@ const App = () => {
                     )}
                   </TableCell>
                   <TableCell>
-                    <StatusChip label={row.rollup_status} className={row.rollup_status}></StatusChip>
+                    <StatusChip label={row.rollup_status === "skipped" ? "committed" : row.rollup_status} className={row.rollup_status}></StatusChip>
                   </TableCell>
                 </TableRow>
               ))}
