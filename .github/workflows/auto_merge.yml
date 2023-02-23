@@ -3,6 +3,9 @@ on:
   pull_request:
     branches:
       - "main"
+      - "staging"
+      - "test-version-bump"
+      - "test-version-bump-staging"
     types:
       - labeled
       - synchronize
@@ -16,12 +19,44 @@ on:
       - submitted
   status: {}
 jobs:
-  automerge:
+  # merge with WRITE_TOKEN so that subsequent actions can be triggered
+  # merge with merge when main->staging
+  automerge-merge:
+    if: |
+      endsWith(github.event.pull_request.title, ' [bot]') &&
+      (github.head_ref == 'ci/main->staging' && github.base_ref == 'test-version-bump-staging')
     runs-on: ubuntu-latest
     steps:
+      - id: get-merge-method
+        name: get-merge-method
+        run: |
+          if [ ${{ github.ref_name }} = 'main' ] && [ ${{github.base_ref}} = 'staging' ]; then
       - id: automerge
         name: automerge
         uses: "pascalgn/automerge-action@22948e0bc22f0aa673800da838595a3e7347e584"
         env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          GITHUB_TOKEN: "${{ secrets.WRITE_TOKEN }}"
+          MERGE_METHOD: "merge"
+          MERGE_LABELS: "automerge"
+          MERGE_REMOVE_LABELS: "automerge"
+          MERGE_COMMIT_MESSAGE: "pull-request-title"
+  # merge with squash when not main->staging
+  automerge-squash:
+    if: |
+      endsWith(github.event.pull_request.title, ' [bot]') &&
+      !(github.head_ref == 'ci/main->staging' && github.base_ref == 'test-version-bump-staging')
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ${{ github.ref_name }}
+      - run: echo ${{ github.ref }}
+      - run: echo ${{ github.base_ref }}
+      - run: echo ${{ github.head_ref }}
+      - id: automerge
+        name: automerge
+        uses: "pascalgn/automerge-action@22948e0bc22f0aa673800da838595a3e7347e584"
+        env:
+          GITHUB_TOKEN: "${{ secrets.WRITE_TOKEN }}"
           MERGE_METHOD: "squash"
+          MERGE_LABELS: "automerge"
+          MERGE_REMOVE_LABELS: "automerge"
+          MERGE_COMMIT_MESSAGE: "pull-request-title"
