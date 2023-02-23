@@ -86,7 +86,7 @@ export function useSendTransaction(props) {
   }
 
   const depositETH = () => {
-    const gasLimit = 0
+    const gasLimit = 21000
     if (ChainId.SCROLL_LAYER_1 === ChainIdEnum.GOERLI) {
       return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositETH(uint256,uint256)"](parsedAmount, gasLimit, {
         value: parsedAmount,
@@ -98,10 +98,12 @@ export function useSendTransaction(props) {
   }
 
   const withdrawETH = () => {
-    const gasLimit = 0
+    const gasLimit = 21000
+    const gasPrice = 1e9
     if (ChainId.SCROLL_LAYER_2 === ChainIdEnum.SCROLL_ALPHA) {
       return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawETH(uint256,uint256)"](parsedAmount, gasLimit, {
         value: parsedAmount,
+        gasPrice,
       })
     }
     return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawETH(uint256)"](gasLimit, {
