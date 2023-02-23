@@ -93,13 +93,9 @@ export function useSendTransaction(props) {
   const depositETH = async () => {
     const fee = await getL1Fee()
     if (ChainId.SCROLL_LAYER_1 === ChainIdEnum.GOERLI) {
-      return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositETH(uint256,uint256)"](
-        BigNumber.from(parsedAmount).sub(BigNumber.from(fee)),
-        gasLimit,
-        {
-          value: parsedAmount,
-        },
-      )
+      return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositETH(uint256,uint256)"](parsedAmount, gasLimit, {
+        value: BigNumber.from(parsedAmount).add(BigNumber.from(fee)),
+      })
     }
     return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositETH(uint256)"](gasLimit, {
       value: parsedAmount,
@@ -109,14 +105,10 @@ export function useSendTransaction(props) {
   const withdrawETH = async () => {
     const fee = await getL2Fee()
     if (ChainId.SCROLL_LAYER_2 === ChainIdEnum.SCROLL_ALPHA) {
-      return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawETH(uint256,uint256)"](
-        BigNumber.from(parsedAmount).sub(BigNumber.from(fee)),
-        gasLimit,
-        {
-          value: parsedAmount,
-          // gasPrice,
-        },
-      )
+      return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawETH(uint256,uint256)"](parsedAmount, gasLimit, {
+        value: BigNumber.from(parsedAmount).add(BigNumber.from(fee)),
+        // gasPrice,
+      })
     }
     return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawETH(uint256)"](gasLimit, {
       value: parsedAmount,
