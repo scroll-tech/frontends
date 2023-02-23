@@ -1,13 +1,16 @@
 // import { HopBridge } from '@hop-protocol/sdk'
-import { BigNumber } from "ethers"
+import { BigNumber, ethers } from "ethers"
 import { useMemo, useState } from "react"
 
+import L1GasPriceOracle from "@/assets/abis/L1GasPriceOracle.json"
+import L2GasPriceOracle from "@/assets/abis/L2GasPriceOracle.json"
 import { ChainId, networks } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import useBridgeStore from "@/stores/bridgeStore"
 import useTxStore from "@/stores/txStore"
 import { amountToBN } from "@/utils"
+import { requireEnv } from "@/utils"
 import logger from "@/utils/logger"
 
 export type TransactionHandled = {
@@ -19,6 +22,8 @@ export enum ChainIdEnum {
   GOERLI = 5,
   SCROLL_ALPHA = 534353,
 }
+
+const gasLimit = 21000
 
 export function useSendTransaction(props) {
   const { fromNetwork, fromTokenAmount, setError, setSendError, toNetwork, selectedToken } = props
@@ -85,26 +90,33 @@ export function useSendTransaction(props) {
     })
   }
 
-  const depositETH = () => {
-    const gasLimit = 21000
+  const depositETH = async () => {
+    const l1Fee = await getL1Fee()
     if (ChainId.SCROLL_LAYER_1 === ChainIdEnum.GOERLI) {
-      return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositETH(uint256,uint256)"](parsedAmount, gasLimit, {
-        value: parsedAmount,
-      })
+      return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositETH(uint256,uint256)"](
+        BigNumber.from(parsedAmount).sub(BigNumber.from(l1Fee)),
+        gasLimit,
+        {
+          value: parsedAmount,
+        },
+      )
     }
     return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositETH(uint256)"](gasLimit, {
       value: parsedAmount,
     })
   }
 
-  const withdrawETH = () => {
-    const gasLimit = 21000
-    const gasPrice = 1e9
+  const withdrawETH = async () => {
+    const l2Fee = await getL2Fee()
     if (ChainId.SCROLL_LAYER_2 === ChainIdEnum.SCROLL_ALPHA) {
-      return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawETH(uint256,uint256)"](parsedAmount, gasLimit, {
-        value: parsedAmount,
-        gasPrice,
-      })
+      return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawETH(uint256,uint256)"](
+        BigNumber.from(parsedAmount).sub(BigNumber.from(l2Fee)),
+        gasLimit,
+        {
+          value: parsedAmount,
+          // gasPrice,
+        },
+      )
     }
     return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawETH(uint256)"](gasLimit, {
       value: parsedAmount,
@@ -125,6 +137,26 @@ export function useSendTransaction(props) {
     } else {
       return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawERC20(address,uint256,uint256)"](selectedToken.address, parsedAmount, 0)
     }
+  }
+
+  const getL1Fee = async () => {
+    const L1GasPriceOracleContract = new ethers.Contract(
+      requireEnv("REACT_APP_L1_GAS_PRICE_ORACLE"),
+      L1GasPriceOracle,
+      networksAndSigners[ChainId.SCROLL_LAYER_1].signer,
+    )
+    const l1BaseFee = await L1GasPriceOracleContract.l1BaseFee()
+    return l1BaseFee.toNumber() * gasLimit
+  }
+
+  const getL2Fee = async () => {
+    const L2GasPriceOracleContract = new ethers.Contract(
+      requireEnv("REACT_APP_L2_GAS_PRICE_ORACLE"),
+      L2GasPriceOracle,
+      networksAndSigners[ChainId.SCROLL_LAYER_2].signer,
+    )
+    const l2BaseFee = await L2GasPriceOracleContract.l1BaseFee()
+    return l2BaseFee.toNumber() * gasLimit
   }
 
   return {
