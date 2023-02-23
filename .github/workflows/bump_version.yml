@@ -7,6 +7,8 @@ on:
 
 jobs:
   bump-version:
+    if: |
+      !startsWith(github.event.head_commit.message , 'ci: version bump to')
     name: "Bump Version on main"
     permissions:
       contents: write
