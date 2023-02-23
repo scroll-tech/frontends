@@ -23,7 +23,7 @@ export enum ChainIdEnum {
   SCROLL_ALPHA = 534353,
 }
 
-const gasLimit = 21000
+const gasLimit = 40000
 
 export function useSendTransaction(props) {
   const { fromNetwork, fromTokenAmount, setError, setSendError, toNetwork, selectedToken } = props
@@ -91,10 +91,10 @@ export function useSendTransaction(props) {
   }
 
   const depositETH = async () => {
-    const l1Fee = await getL1Fee()
+    const fee = await getL1Fee()
     if (ChainId.SCROLL_LAYER_1 === ChainIdEnum.GOERLI) {
       return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositETH(uint256,uint256)"](
-        BigNumber.from(parsedAmount).sub(BigNumber.from(l1Fee)),
+        BigNumber.from(parsedAmount).sub(BigNumber.from(fee)),
         gasLimit,
         {
           value: parsedAmount,
@@ -107,10 +107,10 @@ export function useSendTransaction(props) {
   }
 
   const withdrawETH = async () => {
-    const l2Fee = await getL2Fee()
+    const fee = await getL2Fee()
     if (ChainId.SCROLL_LAYER_2 === ChainIdEnum.SCROLL_ALPHA) {
       return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawETH(uint256,uint256)"](
-        BigNumber.from(parsedAmount).sub(BigNumber.from(l2Fee)),
+        BigNumber.from(parsedAmount).sub(BigNumber.from(fee)),
         gasLimit,
         {
           value: parsedAmount,
@@ -140,23 +140,23 @@ export function useSendTransaction(props) {
   }
 
   const getL1Fee = async () => {
-    const L1GasPriceOracleContract = new ethers.Contract(
-      requireEnv("REACT_APP_L1_GAS_PRICE_ORACLE"),
-      L1GasPriceOracle,
-      networksAndSigners[ChainId.SCROLL_LAYER_1].signer,
-    )
-    const l1BaseFee = await L1GasPriceOracleContract.l1BaseFee()
-    return l1BaseFee.toNumber() * gasLimit
-  }
-
-  const getL2Fee = async () => {
     const L2GasPriceOracleContract = new ethers.Contract(
       requireEnv("REACT_APP_L2_GAS_PRICE_ORACLE"),
       L2GasPriceOracle,
+      networksAndSigners[ChainId.SCROLL_LAYER_1].signer,
+    )
+    const fee = await L2GasPriceOracleContract.l2BaseFee()
+    return fee.toNumber() * gasLimit
+  }
+
+  const getL2Fee = async () => {
+    const L1GasPriceOracleContract = new ethers.Contract(
+      requireEnv("REACT_APP_L1_GAS_PRICE_ORACLE"),
+      L1GasPriceOracle,
       networksAndSigners[ChainId.SCROLL_LAYER_2].signer,
     )
-    const l2BaseFee = await L2GasPriceOracleContract.l1BaseFee()
-    return l2BaseFee.toNumber() * gasLimit
+    const fee = await L1GasPriceOracleContract.l1BaseFee()
+    return fee.toNumber() * gasLimit
   }
 
   return {
