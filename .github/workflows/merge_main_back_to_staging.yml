@@ -4,12 +4,12 @@ on:
   push:
     branches:
       - "main"
+      - "test-version-bump"
 
 jobs:
   create-merge-back-pr:
     if: |
-      startsWith(github.event.head_commit.message , 'ci: version bump to') &&
-      endsWith(github.event.head_commit.message , '[bot]')
+      contains(github.event.head_commit.message , '[bot]')
     name: "Create PR to merge main back to staging"
     permissions:
       contents: write
@@ -27,8 +27,8 @@ jobs:
         with:
           token: ${{ secrets.WRITE_TOKEN }}
           delete-branch: false
-          branch: ci/_bump-version
+          branch: ci/_main->staging
           title: "ci: merge main branch back to staging [bot]"
           labels: "bot/main->staging, automerge"
           body: ""
-          base: staging
+          base: test-version-bump-staging
