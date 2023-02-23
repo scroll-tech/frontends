@@ -2,7 +2,7 @@ name: Auto Merge
 on:
   pull_request:
     branches:
-      - "main"
+      - "test-version-bump"
     types:
       - labeled
       - synchronize

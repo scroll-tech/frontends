@@ -2,7 +2,7 @@ name: Auto Approve
 on:
   pull_request_target:
     branches:
-      - "main"
+      - "test-version-bump"
 
 jobs:
   build:
