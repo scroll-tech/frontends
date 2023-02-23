@@ -7,6 +7,8 @@ on:
 
 jobs:
   bump-version:
+    if: |
+      !contains(github.event.head_commit.message , ' [bot]')
     name: "Bump Version on main"
     permissions:
       contents: write
@@ -28,6 +30,7 @@ jobs:
         with:
           tag-prefix: ""
           skip-push: "true"
+          commit-message: "ci: version bump to {{version}} [bot]"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -39,19 +42,8 @@ jobs:
         uses: peter-evans/create-pull-request@2b011faafdcbc9ceb11414d64d0573f37c774b04
         with:
           token: ${{ secrets.WRITE_TOKEN }}
-          delete-branch: false
+          delete-branch: true
           branch: ci/_bump-version
-          title: ${{ steps.get-version-bump-commit-message.outputs.title }}
-          labels: "bot/bump-version, automerge"
-          body: ""
-
-      - name: Create Pull Request for Staging
-        uses: peter-evans/create-pull-request@2b011faafdcbc9ceb11414d64d0573f37c774b04
-        with:
-          token: ${{ secrets.WRITE_TOKEN }}
-          delete-branch: false
-          branch: ci/_bump-version-staging
-          base: staging
           title: ${{ steps.get-version-bump-commit-message.outputs.title }}
           labels: "bot/bump-version, automerge"
           body: ""
