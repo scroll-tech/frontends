@@ -3,9 +3,12 @@ on:
   pull_request_target:
     branches:
       - "main"
-
+      - "staging"
 jobs:
   build:
+    if: |
+      startsWith(github.event.head_commit.message , 'ci:') &&
+      endsWith(github.event.head_commit.message , '[bot]')
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write

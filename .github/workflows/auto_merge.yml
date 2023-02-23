@@ -3,6 +3,7 @@ on:
   pull_request:
     branches:
       - "main"
+      - "staging"
     types:
       - labeled
       - synchronize
@@ -17,6 +18,9 @@ on:
   status: {}
 jobs:
   automerge:
+    if: |
+      startsWith(github.event.head_commit.message , 'ci:') &&
+      endsWith(github.event.head_commit.message , '[bot]')
     runs-on: ubuntu-latest
     steps:
       - id: automerge
