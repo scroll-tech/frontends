@@ -3,9 +3,13 @@ on:
   pull_request_target:
     branches:
       - "main"
-
+      - "staging"
+      - "test-version-bump"
+      - "test-version-bump-staging"
 jobs:
   build:
+    if: |
+      endsWith(github.event.pull_request.title, ' [bot]')
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
