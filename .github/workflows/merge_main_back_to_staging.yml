@@ -1,0 +1,43 @@
+name: "Merge main back to staging"
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
+
+jobs:
+  create-merge-back-pr:
+    if: |
+      success() && contains(github.event.pull_request.title , ' [bot]')
+    name: "Create PR to merge main back to staging"
+    permissions:
+      contents: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Checkout source code"
+        uses: "actions/checkout@v3"
+        with:
+          fetch-depth: 0
+          repository: ${{ github.repository }}
+          ref: ${{ github.ref }}
+      - name: Create PR
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git checkout staging
+          git fetch origin main:main
+          git reset --hard main
+      - name: Create Pull Request for Staging
+        uses: peter-evans/create-pull-request@2b011faafdcbc9ceb11414d64d0573f37c774b04
+        with:
+          token: ${{ secrets.WRITE_TOKEN }}
+          delete-branch: true
+          branch: ci/main->staging
+          base: "staging"
+          title: "ci: merge main branch back to staging [bot]"
+          labels: "bot/main->staging, automerge"
+          body: ""
