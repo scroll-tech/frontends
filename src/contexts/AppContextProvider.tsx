@@ -24,7 +24,7 @@ type AppContextProps = {
 
 const AppContext = createContext<AppContextProps | undefined>(undefined)
 
-const supportedTokenSymbol = ["TSUSDC", "TSUNI2"]
+const supportedTokenSymbol: string[] = [] // TODO: Make dynamic and set
 
 const branchName = isProduction ? "main" : "staging"
 
