@@ -2,7 +2,7 @@ import { ethers } from "ethers"
 import useSWR from "swr"
 
 import L1_erc20ABI from "@/assets/abis/L1_erc20ABI.json"
-import { ChainId } from "@/constants"
+import { ChainId, ETH_SYMBOL } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
 import { loadState, saveState } from "@/utils/localStorage"
 
@@ -23,7 +23,7 @@ const useSymbol = (address: string, isL1: boolean) => {
     },
     async ({ address, provider }) => {
       if (!address) {
-        return "TSETH"
+        return ETH_SYMBOL
       }
       const symbolMap = loadState(TokenSymbolMapKey)
       if (symbolMap?.[address]) {
