@@ -106,17 +106,16 @@ const App = () => {
   const renderStatusHeaderText = () => {
     return (
       <>
-        <p className="mb-1">Pre-committed: Block included in Scroll L2 blockchain</p>
-        <p className="mb-1">Committed: Block transaction data submitted to Scroll L1 blockchain</p>
-        <p className="mb-1">Finalized: Validity proof submitted and verified on Scroll L1 blockchain</p>
-        {/* <p>Skipped: Validity proof was skipped due to the lack of proving power</p> */}
+        <p className="mb-1">Precommitted: Batch included in Scroll L2</p>
+        <p className="mb-1">Committed: Batch transaction data submitted to Ethereum (L1)</p>
+        <p className="mb-1">Finalized: Batch validity proof submitted to and verified on Ethereum</p>
       </>
     )
   }
   const BatchIndexTooltip = "A batch is a collection of blocks that share an L1 validity proof"
   const TxnTooltip = "Number of transactions in the batch"
-  const CommitTxHashTooltip = "Hash of the transaction that commits the batch's data to L1"
-  const FinalizedTxHashTooltip = "Hash of the transaction that posts the batch's proof to L1"
+  const CommitTxHashTooltip = "Hash of the transaction that commits the batch data to L1"
+  const FinalizedTxHashTooltip = "Hash of the transaction that posts the batch proof to L1"
 
   const page = useMemo(() => +searchParams.get("page"), [searchParams])
   const pageSize = useMemo(() => +searchParams.get("per_page"), [searchParams])
@@ -143,7 +142,7 @@ const App = () => {
       })
       .catch(() => {
         changeEmptyBatch(true)
-        changeErrorMessage("Fail to fetch batch list, something wrong...")
+        changeErrorMessage("Failed to fetch batch list")
       })
       .finally(() => {
         changeBatchLoading(false)
