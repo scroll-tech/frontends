@@ -8,9 +8,11 @@ export const switchNetwork = async (chainId: number) => {
     })
     return true
   } catch (error) {
-    return window.ethereum.request({
-      method: "wallet_addEthereumChain",
-      params: [addresses.find(address => address.chainIdDec === chainId)!.autoconnect],
-    })
+    if (~error.message.indexOf("wallet_addEthereumChain")) {
+      return window.ethereum.request({
+        method: "wallet_addEthereumChain",
+        params: [addresses.find(address => address.chainIdDec === chainId)!.autoconnect],
+      })
+    }
   }
 }
