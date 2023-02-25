@@ -22,7 +22,6 @@ export const networks = [
     nativeTokenSymbol: ETH_SYMBOL,
     isLayer1: true, // TODO: Merge these two
     isL1: true, // TODO: Merge these two
-    waitConfirmations: 6,
   },
   {
     name: TESTNET_NAME,
@@ -35,7 +34,6 @@ export const networks = [
     nativeTokenSymbol: ETH_SYMBOL,
     isLayer1: false,
     isL1: false,
-    waitConfirmations: 0,
   },
 ]
 
