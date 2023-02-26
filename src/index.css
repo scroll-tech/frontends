@@ -26,6 +26,7 @@ body {
   font-family: "SF UI Text";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-variant-ligatures: no-contextual;
 }
 
 @font-face {
