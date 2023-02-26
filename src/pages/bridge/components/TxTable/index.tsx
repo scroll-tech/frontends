@@ -18,7 +18,6 @@ import {
 } from "@mui/material"
 
 import Link from "@/components/Link"
-import { networks } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
 import useSymbol from "@/hooks/useSymbol"
 import { generateExploreLink, truncateHash } from "@/utils"
@@ -145,31 +144,26 @@ const TxRow = props => {
 
   const { classes, cx } = useStyles()
 
-  const statusWithConfirmations = useCallback(
+  const txStatus = useCallback(
     (blockNumber, isL1, to) => {
-      if (!blockNumbers) {
-        return ["Synchronizing", 0]
+      if (!blockNumber || !blockNumbers) {
+        return "Pending"
       }
-      if (!blockNumber) {
-        return ["Pending", 0]
+      if (blockNumbers[+!(isL1 ^ to)] >= blockNumber) {
+        return "Success"
       }
-      const confirmations = blockNumbers[+!(isL1 ^ to)] - blockNumber > 0 ? blockNumbers[+!(isL1 ^ to)] - blockNumber : 0
-      const waitConfirmations = networks[+!(isL1 ^ to)].waitConfirmations
-      if (confirmations >= waitConfirmations) {
-        return ["Success", waitConfirmations]
-      }
-      return ["Pending", confirmations]
+      return "Pending"
     },
     [blockNumbers],
   )
 
-  const fromStatusConfirmations = useMemo(() => {
-    return statusWithConfirmations(tx.fromBlockNumber, tx.isL1, false)
-  }, [tx, statusWithConfirmations])
+  const fromStatus = useMemo(() => {
+    return txStatus(tx.fromBlockNumber, tx.isL1, false)
+  }, [tx, txStatus])
 
-  const toStatusConfirmations = useMemo(() => {
-    return statusWithConfirmations(tx.toBlockNumber, tx.isL1, true)
-  }, [tx, statusWithConfirmations])
+  const toStatus = useMemo(() => {
+    return txStatus(tx.toBlockNumber, tx.isL1, true)
+  }, [tx, txStatus])
 
   const { loading: symbolLoading, symbol } = useSymbol(tx.symbolToken, tx.isL1)
 
@@ -179,14 +173,8 @@ const TxRow = props => {
         <Stack direction="column" spacing="1.4rem">
           {blockNumbers ? (
             <>
-              <Chip
-                label={fromStatusConfirmations[0]}
-                className={cx(classes.chip, fromStatusConfirmations[0] === "Success" ? classes.successChip : classes.pendingChip)}
-              />
-              <Chip
-                label={toStatusConfirmations[0]}
-                className={cx(classes.chip, toStatusConfirmations[0] === "Success" ? classes.successChip : classes.pendingChip)}
-              />
+              <Chip label={fromStatus} className={cx(classes.chip, fromStatus === "Success" ? classes.successChip : classes.pendingChip)} />
+              <Chip label={toStatus} className={cx(classes.chip, toStatus === "Success" ? classes.successChip : classes.pendingChip)} />
             </>
           ) : (
             <>
@@ -209,11 +197,6 @@ const TxRow = props => {
             <Link external href={generateExploreLink(tx.fromExplore, tx.hash)} className="leading-normal flex-1">
               {truncateHash(tx.hash)}
             </Link>
-            {!!networks[+!tx.isL1].waitConfirmations && (
-              <Typography variant="body2" color="textSecondary">
-                {fromStatusConfirmations[1]}/{networks[+!tx.isL1].waitConfirmations} confirmations
-              </Typography>
-            )}
           </Stack>
         </Stack>
 
@@ -226,11 +209,6 @@ const TxRow = props => {
               </Link>
             ) : (
               <span className="leading-normal flex-1">-</span>
-            )}
-            {!!networks[+tx.isL1].waitConfirmations && (
-              <Typography variant="body2" color="textSecondary">
-                {toStatusConfirmations[1]}/{networks[+tx.isL1].waitConfirmations} confirmations
-              </Typography>
             )}
           </Stack>
         </Stack>

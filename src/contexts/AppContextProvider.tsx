@@ -43,7 +43,7 @@ const AppContextProvider = ({ children }: any) => {
   const update = async (web3Provider: providers.Web3Provider, address: string) => {
     const { chainId } = await web3Provider.getNetwork()
 
-    let l1signer, l2signer, l1Gateway, l2Gateway, l1Provider, l2Provider
+    let l1signer, l2signer, l1Gateway, l2Gateway, l1Provider, l2Provider, l1ProviderForSafeBlock
 
     if (chainId === ChainId.SCROLL_LAYER_1) {
       l1Provider = web3Provider
@@ -66,6 +66,8 @@ const AppContextProvider = ({ children }: any) => {
         l2signer,
       )
     }
+    // TODO: probable cause: getBlock("safe") in ethers 5.7.0 but web3-onboard use 5.3.2
+    l1ProviderForSafeBlock = await new JsonRpcProvider(RPCUrl.SCROLL_LAYER_1)
 
     setNetworksAndSigners({
       [ChainId.SCROLL_LAYER_1]: {
@@ -73,6 +75,9 @@ const AppContextProvider = ({ children }: any) => {
         provider: l1Provider,
         signer: l1signer,
         gateway: l1Gateway,
+      },
+      [`${ChainId.SCROLL_LAYER_1}ForSafeBlock`]: {
+        provider: l1ProviderForSafeBlock,
       },
       [ChainId.SCROLL_LAYER_2]: {
         network: networks[1],

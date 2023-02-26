@@ -14,7 +14,7 @@ export interface TxHistory {
 }
 
 const useTxHistory = networksAndSigners => {
-  const { chainId, walletCurrentAddress } = useWeb3Context()
+  const { walletCurrentAddress } = useWeb3Context()
   const { transactions, pageTransactions, generateTransactions, comboPageTransactions } = useTxStore()
 
   const [errorMessage, setErrorMessage] = useState("")
@@ -55,20 +55,22 @@ const useTxHistory = networksAndSigners => {
   )
 
   const fetchBlockNumber = useCallback(async () => {
-    if (chainId) {
-      const fetchL1blockNumber = networksAndSigners[ChainId.SCROLL_LAYER_1].provider.getBlockNumber()
-      const fetchL2BlockNumber = networksAndSigners[ChainId.SCROLL_LAYER_2].provider.getBlockNumber()
+    if (networksAndSigners[`${ChainId.SCROLL_LAYER_1}ForSafeBlock`].provider && networksAndSigners[ChainId.SCROLL_LAYER_2].provider) {
+      const fetchL1BlockNumber = networksAndSigners[`${ChainId.SCROLL_LAYER_1}ForSafeBlock`].provider.getBlock("safe")
+      const fetchL2BlockNumber = networksAndSigners[ChainId.SCROLL_LAYER_2].provider.getBlock("latest")
 
-      const blockNumbers = await Promise.allSettled([fetchL1blockNumber, fetchL2BlockNumber])
+      const blockNumbers = await Promise.allSettled([fetchL1BlockNumber, fetchL2BlockNumber])
 
-      return blockNumbers.map(item => (item.status === "fulfilled" ? item.value : -1))
+      return blockNumbers.map(item => (item.status === "fulfilled" ? item.value.number : -1))
     }
     return null
-  }, [networksAndSigners, chainId])
+  }, [networksAndSigners])
 
   const { data: blockNumbers } = useSWR<any>("eth_blockNumber", fetchBlockNumber, {
     refreshInterval: 2000,
   })
+
+  console.log(blockNumbers, "blockNumbers")
 
   const refreshPageTransactions = useCallback(
     page => {

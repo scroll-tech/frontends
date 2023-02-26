@@ -80,10 +80,24 @@ const useTxStore = create<TxStore>()(
       updateTransaction: (oldTx, updateOpts) =>
         set(
           produce(state => {
-            const current = state.frontTransactions.find(item => item.hash === oldTx.hash)
-            if (current) {
+            const frontTx = state.frontTransactions.find(item => item.hash === oldTx.hash)
+            if (frontTx) {
               for (const key in updateOpts) {
-                current[key] = updateOpts[key]
+                frontTx[key] = updateOpts[key]
+              }
+            }
+            // for stay on "recent tx" page
+            const recentTx = state.transactions.find(item => item.hash === oldTx.hash)
+            if (recentTx) {
+              for (const key in updateOpts) {
+                recentTx[key] = updateOpts[key]
+              }
+            }
+            // for keep "bridge history" open
+            const pageTx = state.pageTransactions.find(item => item.hash === oldTx.hash)
+            if (pageTx) {
+              for (const key in updateOpts) {
+                pageTx[key] = updateOpts[key]
               }
             }
           }),
