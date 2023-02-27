@@ -58,6 +58,7 @@ const Tag = styled("span")(
   padding: 4px 6px;
   font-weight: 900;
   font-size: 12px;
+  margin: 4px;
 `,
 )
 
@@ -101,11 +102,11 @@ const GalleryItem = props => {
           </Box>
           <Stack direction="column" spacing={2} alignItems="center" sx={{ mt: "7rem" }}>
             <Stack direction="row" spacing={1.25} alignItems="center">
-              <Avatar alt={Name} src={Logo} variant="square" sx={{ width: 84, height: 84 }}></Avatar>
-              <Typography sx={{ fontFamily: "Inter", fontWeight: 600, fontSize: ["2rem", "2.4rem"] }}>{Name}</Typography>
+              <Avatar alt={Name} src={Logo} variant="rounded" sx={{ width: 84, height: 84 }}></Avatar>
+              <Typography sx={{ fontFamily: "Inter", fontWeight: 600, fontSize: ["2rem", "2.4rem"], width: "min-content" }}>{Name}</Typography>
             </Stack>
-            <Stack direction="row" spacing={1}>
-              {tag ? tag.split(",").map(value => <Tag key={value}>{value}</Tag>) : null}
+            <Stack direction="row" sx={{ flexWrap: "wrap", justifyContent: "center" }}>
+              {tag ? tag.split(",").map(value => <Tag key={value}>{value.trim()}</Tag>) : null}
             </Stack>
           </Stack>
         </FaceSide>
@@ -118,7 +119,7 @@ const GalleryItem = props => {
           <Stack direction="column" justifyContent="space-between" sx={{ height: "100%" }}>
             <Stack direction="row" justifyContent="space-between">
               <Stack direction="row" alignItems="center" spacing={0.5}>
-                <Avatar alt={Name} src={Logo} variant="square" sx={{ width: 22, height: 22 }}></Avatar>
+                <Avatar alt={Name} src={Logo} variant="rounded" sx={{ width: 22, height: 22 }}></Avatar>
                 <Typography sx={{ fontWeight: 600, fontSize: 12 }}>{Name}</Typography>
               </Stack>
               <ReplayOutlined sx={{ color: "#686868" }}></ReplayOutlined>

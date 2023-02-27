@@ -27,7 +27,8 @@ const Gallery = () => {
   return (
     <Container>
       {data
-        .filter(item => item.Status === "Done")
+        // .filter(item => item.Status === "Done")
+        .sort((a, b) => b.TwitterFans - a.TwitterFans)
         .map(item => (
           <GalleryItem key={item.Name} item={item}></GalleryItem>
         ))}
