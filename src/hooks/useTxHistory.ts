@@ -70,8 +70,6 @@ const useTxHistory = networksAndSigners => {
     refreshInterval: 2000,
   })
 
-  console.log(blockNumbers, "blockNumbers")
-
   const refreshPageTransactions = useCallback(
     page => {
       if (walletCurrentAddress) {
