@@ -31,13 +31,13 @@ const routes = [
     element: <RollupScan />,
   },
   {
-    name: "RollupScanBatch",
+    name: "Rollup Explorer: Batch Details",
     path: "/rollupscan/batch/:batchIndex",
     fullPath: "/alpha/rollupscan/batch/:batchIndex",
     element: <RollupScanBatch />,
   },
   {
-    name: "RollupScanBlock",
+    name: "Rollup Explorer: Block Details",
     path: "/rollupscan/batch/:batchIndex/blocks",
     fullPath: "/alpha/rollupscan/batch/:batchIndex/blocks",
     element: <RollupScanBlock />,
