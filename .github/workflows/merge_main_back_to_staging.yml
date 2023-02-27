@@ -24,4 +24,14 @@ jobs:
           fetch-depth: 0
           repository: ${{ github.repository }}
           ref: ${{ github.ref }}
-      - run: gh pr create --base mock-staging
+      # - name: Create main->staging PR
+      #   env:
+      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   run: |
+      #     gh pr create --base mock-staging \
+      #                  --title 'ci: merge main branch back to staging [bot]' \
+      #                  --body ''
+      - name: GitHub Pull Request Action
+        uses: repo-sync/pull-request@7e79a9f5dc3ad0ce53138f01df2fad14a04831c5
+        with:
+          destination_branch: "mock-staging"
