@@ -1,6 +1,15 @@
 [
   {
     "type": "Announcement",
+    "id": "alphaTestnet",
+    "date": "2023-02-27",
+    "title": "Announcing the Scroll Alpha Testnet on Goerli",
+    "posterTitle": "Alpha Testnet on Goerli",
+    "summary": "We are excited to announce that our Alpha testnet is now live on Goerli.",
+    "posterImg": "/imgs/homepage/blog/poster_10.jpg"  
+  },
+  {
+    "type": "Announcement",
     "id": "releaseNote0109",
     "date": "2023-01-13",
     "title": "Release Note for 0109 Upgrade",
