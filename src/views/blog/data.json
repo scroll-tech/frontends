@@ -1,7 +1,7 @@
 [
   {
     "type": "Announcement",
-    "id": "alphaTestnetOnGoerli",
+    "id": "alphaTestnet",
     "date": "2023-02-27",
     "title": "Announcing the Scroll Alpha Testnet on Goerli",
     "posterTitle": "Alpha Testnet on Goerli",
