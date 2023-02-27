@@ -3,7 +3,8 @@ name: "Bump Version"
 on:
   push:
     branches:
-      - "main"
+      - main
+      - mock-main
 
 jobs:
   bump-version:

@@ -2,8 +2,8 @@ name: Auto Merge
 on:
   pull_request:
     branches:
-      - "main"
-      - "staging"
+      - mock-main
+      - mock-staging
     types:
       - labeled
       - synchronize
@@ -24,7 +24,7 @@ jobs:
       endsWith(github.event.pull_request.title, ' [bot]') &&
       (
         github.head_ref == 'ci/main->staging' &&
-        github.base_ref == 'staging'
+        github.base_ref == 'mock-staging'
       )
     runs-on: ubuntu-latest
     steps:
@@ -43,7 +43,7 @@ jobs:
       endsWith(github.event.pull_request.title, ' [bot]') &&
       !(
         github.head_ref == 'ci/main->staging' &&
-        github.base_ref == 'staging'
+        github.base_ref == 'mock-staging'
       )
     runs-on: ubuntu-latest
     steps:
