@@ -55,7 +55,7 @@ const AppContextProvider = ({ children }: any) => {
         L1_GATEWAY_ROUTER_PROXY_ABI[ChainId.SCROLL_LAYER_1] || L1_GATEWAY_ROUTER_PROXY_ABI.default,
         l1signer,
       )
-    } else {
+    } else if (chainId === ChainId.SCROLL_LAYER_2) {
       l1Provider = await new JsonRpcProvider(RPCUrl.SCROLL_LAYER_1)
       l2Provider = web3Provider
       l1signer = await l1Provider.getSigner(address)
@@ -65,6 +65,9 @@ const AppContextProvider = ({ children }: any) => {
         L2_GATEWAY_ROUTER_PROXY_ABI[ChainId.SCROLL_LAYER_2] || L2_GATEWAY_ROUTER_PROXY_ABI.default,
         l2signer,
       )
+    } else {
+      l1Provider = await new JsonRpcProvider(RPCUrl.SCROLL_LAYER_1)
+      l2Provider = await new JsonRpcProvider(RPCUrl.SCROLL_LAYER_2)
     }
     // TODO: probable cause: getBlock("safe") in ethers 5.7.0 but web3-onboard use 5.3.2
     l1ProviderForSafeBlock = await new JsonRpcProvider(RPCUrl.SCROLL_LAYER_1)
