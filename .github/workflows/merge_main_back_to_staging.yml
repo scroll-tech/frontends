@@ -24,4 +24,10 @@ jobs:
           fetch-depth: 0
           repository: ${{ github.repository }}
           ref: ${{ github.ref }}
-      - run: gh pr create --base mock-staging
+      - name: Create main->staging PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create --base mock-staging \
+                       --title 'ci: merge main branch back to staging [bot]' \
+                       --body ''
