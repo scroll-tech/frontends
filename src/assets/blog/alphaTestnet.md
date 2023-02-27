@@ -12,6 +12,6 @@ In August 2022, we launched our Pre-Alpha testnet, supported by our community of
 
 Today, we are thrilled to announce that our Alpha testnet is now live on Goerli, marking a pivotal moment in the development of Scroll. Our deployment is completely permissionless, allowing anyone to experiment with our technology and push it to its limits. 
 
-Our feature set is transparent, and we’re committed to iterating and improving the performance of our zkEVM over the coming months. We’re excited to continue working alongside our strong community of open-source contributors to build a future where blockchains will power the applications of tomorrow.
+Our feature set is [transparent](https://hackmd.io/@haichen/ryukZaYAs), and we’re committed to iterating and improving the performance of our zkEVM over the coming months. We’re excited to continue working alongside our strong community of open-source contributors to build a future where blockchains will power the applications of tomorrow.
 
 Try it for yourself at [scroll.io/alpha](http://scroll.io/alpha)!
