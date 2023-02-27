@@ -1,9 +1,12 @@
+# when there's new push to main branch
+# create a pr from ci/_bump-version to main branch
+# with a commit that bump the version in package.json
 name: "Bump Version"
 
 on:
   push:
     branches:
-      - "main"
+      - main
 
 jobs:
   bump-version:
@@ -17,7 +20,7 @@ jobs:
 
     steps:
       - name: "Checkout source code"
-        uses: "actions/checkout@v3"
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.ref }}
 

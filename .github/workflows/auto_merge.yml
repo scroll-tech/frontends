@@ -1,9 +1,13 @@
+# auto merge any pr to main/staging that
+# 1. has ` [bot]` at the end of the pr title
+# 2. has `automerge` label
+# note the first character in ` [bot]` is a thin space https://www.wikiwand.com/en/Thin_space
 name: Auto Merge
 on:
   pull_request:
     branches:
-      - "main"
-      - "staging"
+      - main
+      - staging
     types:
       - labeled
       - synchronize
@@ -30,7 +34,7 @@ jobs:
     steps:
       - id: automerge
         name: automerge
-        uses: "pascalgn/automerge-action@22948e0bc22f0aa673800da838595a3e7347e584"
+        uses: pascalgn/automerge-action@22948e0bc22f0aa673800da838595a3e7347e584
         env:
           GITHUB_TOKEN: "${{ secrets.WRITE_TOKEN }}"
           MERGE_METHOD: "merge"
@@ -42,14 +46,14 @@ jobs:
     if: |
       endsWith(github.event.pull_request.title, ' [bot]') &&
       !(
-        github.head_ref == 'ci/main->staging' &&
+        github.head_ref == 'main' &&
         github.base_ref == 'staging'
       )
     runs-on: ubuntu-latest
     steps:
       - id: automerge
         name: automerge
-        uses: "pascalgn/automerge-action@22948e0bc22f0aa673800da838595a3e7347e584"
+        uses: pascalgn/automerge-action@22948e0bc22f0aa673800da838595a3e7347e584
         env:
           GITHUB_TOKEN: "${{ secrets.WRITE_TOKEN }}"
           MERGE_METHOD: "squash"

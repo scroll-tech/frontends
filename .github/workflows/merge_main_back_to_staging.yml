@@ -24,20 +24,11 @@ jobs:
           fetch-depth: 0
           repository: ${{ github.repository }}
           ref: ${{ github.ref }}
-      - name: Create PR
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git checkout staging
-          git fetch origin main:main
-          git reset --hard main
-      - name: Create Pull Request for Staging
-        uses: peter-evans/create-pull-request@2b011faafdcbc9ceb11414d64d0573f37c774b04
+      - name: GitHub Pull Request Action
+        uses: repo-sync/pull-request@7e79a9f5dc3ad0ce53138f01df2fad14a04831c5
         with:
-          token: ${{ secrets.WRITE_TOKEN }}
-          delete-branch: true
-          branch: ci/main->staging
-          base: "staging"
-          title: "ci: merge main branch back to staging [bot]"
-          labels: "bot/main->staging, automerge"
-          body: ""
+          pr_title: "ci: merge main branch back to staging [bot]"
+          pr_allow_empty: true
+          destination_branch: "staging"
+          pr_label: "bot/main->staging,automerge"
+          github_token: ${{ secrets.WRITE_TOKEN }}
