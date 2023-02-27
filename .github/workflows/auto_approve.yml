@@ -2,8 +2,10 @@ name: Auto Approve
 on:
   pull_request_target:
     branches:
-      - "main"
-      - "staging"
+      - main
+      - staging
+      - mock-main
+      - mock-staging
 jobs:
   build:
     if: |
