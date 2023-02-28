@@ -112,6 +112,16 @@ const Blocks = () => {
     return status === "skipped" ? "committed" : status
   }
 
+  const renderStatusTooltip = () => {
+    return (
+      <>
+        <p className="mb-1">Precommitted: Batch included in Scroll L2</p>
+        <p className="mb-1">Committed: Batch transaction data submitted to Ethereum (L1)</p>
+        <p className="mb-1">Finalized: Batch validity proof submitted to and verified on Ethereum</p>
+      </>
+    )
+  }
+
   return (
     <Box className="wrapper mx-auto" sx={{ marginBottom: "16rem" }}>
       <Header />
@@ -141,7 +151,12 @@ const Blocks = () => {
               </BoxItem>
               <Divider />
               <BoxItem>
-                <LabelTypography>Status</LabelTypography>
+                <LabelTypography>
+                  Status{" "}
+                  <Tooltip title={renderStatusTooltip()}>
+                    <InfoOutlined sx={{ fontSize: "2rem", verticalAlign: "text-bottom" }} />
+                  </Tooltip>{" "}
+                </LabelTypography>
                 <StatusChip label={renderStatus(batch.rollup_status)} className={batch.rollup_status}></StatusChip>
               </BoxItem>
               <Divider />
