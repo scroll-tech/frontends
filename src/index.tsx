@@ -26,7 +26,7 @@ if (process.env.NODE_ENV === "production") {
       const exception = event?.exception?.values?.[0]
       if (!exception) return event
       // Unexpected token '<'
-      if (exception.type === "SyntaxError" && exception.value?.includes("'<'")) return null
+      // if (exception.type === "SyntaxError" && exception.value?.includes("'<'")) return null
       // error when user reject a transaction in wallet
       if (exception.type === "Error" && exception.value?.includes("user rejected transaction")) return null
       // error from browser extension wallets that want to redefine window.ethereum
