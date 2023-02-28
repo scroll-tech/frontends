@@ -3,7 +3,7 @@ import { useEffect } from "react"
 import { Link as RouterLink, useParams } from "react-router-dom"
 
 import { InfoOutlined, NavigateNext, OpenInNew } from "@mui/icons-material"
-import { Box, Breadcrumbs, Divider, Stack, Tooltip, Typography } from "@mui/material"
+import { Box, Breadcrumbs, Chip, Divider, Stack, Tooltip, Typography } from "@mui/material"
 import { styled, useTheme } from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
@@ -19,6 +19,34 @@ const utc = require("dayjs/plugin/utc")
 
 dayjs.extend(relativeTime)
 dayjs.extend(utc)
+
+const StatusChip = styled(Chip)(({ theme }) => ({
+  color: theme.palette.primary.contrastText,
+  textTransform: "capitalize",
+  "&.precommitted": {
+    backgroundColor: theme.palette.tagWarning.light,
+    color: theme.palette.tagWarning.main,
+  },
+  "&.committed": {
+    backgroundColor: theme.palette.tagCommitted.light,
+    color: theme.palette.tagCommitted.main,
+  },
+  "&.finalized": {
+    backgroundColor: theme.palette.tagSuccess.light,
+    color: theme.palette.tagSuccess.main,
+  },
+  "&.skipped": {
+    backgroundColor: theme.palette.tagCommitted.light,
+    color: theme.palette.tagCommitted.main,
+  },
+  "&.unknown": {
+    backgroundColor: theme.palette.tagUnknown.light,
+    color: theme.palette.tagUnknown.main,
+  },
+  "& > .MuiChip-label": {
+    fontWeight: 500,
+  },
+}))
 
 const LabelTypography = styled(Typography)(({ theme }) => ({
   paddingLeft: "5rem",
@@ -80,6 +108,10 @@ const Blocks = () => {
     return "-"
   }
 
+  const renderStatus = (status: string) => {
+    return status === "skipped" ? "committed" : status
+  }
+
   return (
     <Box className="wrapper mx-auto" sx={{ marginBottom: "16rem" }}>
       <Header />
@@ -106,6 +138,11 @@ const Blocks = () => {
               <BoxItem>
                 <LabelTypography>Batch Index</LabelTypography>
                 <Typography>{batch.index}</Typography>
+              </BoxItem>
+              <Divider />
+              <BoxItem>
+                <LabelTypography>Status</LabelTypography>
+                <StatusChip label={renderStatus(batch.rollup_status)} className={batch.rollup_status}></StatusChip>
               </BoxItem>
               <Divider />
               <BoxItem>
