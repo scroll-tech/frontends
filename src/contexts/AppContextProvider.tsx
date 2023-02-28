@@ -13,7 +13,7 @@ import { ChainId, ETH_SYMBOL, GatewayRouterProxyAddr, RPCUrl } from "@/constants
 import { Token, nativeTokenList, networks } from "@/constants/networks"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import useTxHistory, { TxHistory } from "@/hooks/useTxHistory"
-import { isProduction } from "@/utils"
+import { requireEnv } from "@/utils"
 
 type AppContextProps = {
   networks: any[]
@@ -24,9 +24,7 @@ type AppContextProps = {
 
 const AppContext = createContext<AppContextProps | undefined>(undefined)
 
-const supportedTokenSymbol: string[] = [] // TODO: Make dynamic and set
-
-const branchName = isProduction ? "main" : "staging"
+const branchName = requireEnv("REACT_APP_SCROLL_ENVIRONMENT").toLocaleLowerCase()
 
 const AppContextProvider = ({ children }: any) => {
   const { provider, walletCurrentAddress, chainId } = useWeb3Context()
@@ -94,7 +92,7 @@ const AppContextProvider = ({ children }: any) => {
   const { data: tokenList } = useSWR(tokenListUrl(branchName), url => {
     return scrollRequest(url)
       .then((data: any) => {
-        const filteredList = data.tokens.filter(item => supportedTokenSymbol.includes(item.symbol))
+        const filteredList = data.tokens
         return [...nativeTokenList, ...filteredList]
       })
       .catch(() => {
