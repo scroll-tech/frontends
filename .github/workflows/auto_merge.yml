@@ -27,7 +27,7 @@ jobs:
     if: |
       endsWith(github.event.pull_request.title, ' [bot]') &&
       (
-        github.head_ref == 'ci/main->staging' &&
+        github.head_ref == 'main' &&
         github.base_ref == 'staging'
       )
     runs-on: ubuntu-latest
