@@ -9,7 +9,7 @@ const routes = [
   {
     name: "Portal",
     path: "/",
-    fullPath: "/alpha/",
+    fullPath: "/alpha",
     element: <Home />,
   },
   {
