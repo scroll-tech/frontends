@@ -115,7 +115,8 @@ const CustomTableRow = styled(TableRow)(({ theme }) => ({
   },
 }))
 
-const RollupTable = forwardRef<HTMLTableSectionElement | null>((props, ref) => {
+const RollupTable = forwardRef<any, any>((props, ref) => {
+  const { onPaginationChange } = props
   const { data, total, emptyBatch, searchLoading, batchLoading, currentClickedBatch } = useRollupStore()
   const [searchParams, setSearchParams] = useSearchParams()
 
@@ -136,13 +137,9 @@ const RollupTable = forwardRef<HTMLTableSectionElement | null>((props, ref) => {
   const CommitTxHashTooltip = "Hash of the transaction that commits the batch data to L1"
   const FinalizedTxHashTooltip = "Hash of the transaction that posts the batch proof to L1"
 
-  const onPageChange = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
-    searchParams.set("page", newPage + 1)
-    setSearchParams(searchParams)
-  }
-
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setSearchParams({ page: 1, per_page: parseInt(event.target.value, 10) })
+    onPaginationChange({ page: 1, pageSize: +event.target.value })
   }
 
   const truncatedHash = (hash: string) => {
@@ -158,6 +155,7 @@ const RollupTable = forwardRef<HTMLTableSectionElement | null>((props, ref) => {
   const handleChangePage = (e, newPage) => {
     searchParams.set("page", newPage)
     setSearchParams(searchParams)
+    onPaginationChange({ page: +searchParams.get("page"), pageSize: +searchParams.get("per_page") })
   }
 
   if (emptyBatch) {
@@ -237,7 +235,6 @@ const RollupTable = forwardRef<HTMLTableSectionElement | null>((props, ref) => {
         component="div"
         count={total}
         page={(+page || DEFAULT_PAGE) - 1}
-        onPageChange={onPageChange}
         rowsPerPage={+pageSize || DEFAULT_PAGE_SIZE}
         onRowsPerPageChange={handleChangeRowsPerPage}
         labelDisplayedRows={({ count, page }) => {

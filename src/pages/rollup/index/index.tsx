@@ -33,17 +33,15 @@ const Rollup = () => {
 
   const tableRowsRef = useRef<HTMLTableSectionElement | null>(null)
 
+  const timerRef = useRef<any>()
+
   useEffect(() => {
     if (!page || !pageSize) {
       setSearchParams({ page: +page || DEFAULT_PAGE, per_page: +pageSize || DEFAULT_PAGE_SIZE })
-    }
-  }, [searchParams])
-
-  useEffect(() => {
-    if (page && pageSize) {
+    } else {
       fetchData({ page: +page, pageSize: +pageSize })
     }
-  }, [page, pageSize])
+  }, [searchParams])
 
   const fetchData = (pagination: any) => {
     changeBatchLoading(true)
@@ -67,6 +65,7 @@ const Rollup = () => {
   }
 
   const handleGoBatchRow = (value, total) => {
+    changeBatchLoading(false)
     const pageSize = +(searchParams.get("per_page") || DEFAULT_PAGE_SIZE) as number
     const page = Math.floor((total - value) / pageSize) + 1
     scrollRequest(`${fetchBatchListUrl}?page=${page}&per_page=${pageSize}`)
@@ -79,7 +78,8 @@ const Rollup = () => {
           ? Array.from(tableRowsRef.current?.children).find(item => Array.from(item.classList)?.includes(`rollup-batch-${value}`))
           : null
         changeCurrentClickedBatch(value)
-        setTimeout(() => {
+        clearTimeout(timerRef.current)
+        timerRef.current = setTimeout(() => {
           changeCurrentClickedBatch(-1)
         }, 5000)
         currentRow?.scrollIntoView({ behavior: "smooth", block: "center" })
@@ -114,7 +114,7 @@ const Rollup = () => {
         />
       </InfoBox>
       <Searchbar />
-      <Table ref={tableRowsRef} />
+      <Table ref={tableRowsRef} onPaginationChange={fetchData} />
       <Snackbar open={!!errorMessage} autoHideDuration={6000} onClose={handleChangeErrorMessage}>
         <Alert severity="error" onClose={handleChangeErrorMessage}>
           {errorMessage}
