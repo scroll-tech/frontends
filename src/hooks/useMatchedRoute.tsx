@@ -7,7 +7,7 @@ export default function useMatchedRoute() {
   const { pathname } = useLocation()
 
   // trim trailing slash
-  const normalizedPathname = pathname.replace(/\/$/, "")
+  const normalizedPathname = pathname === "/" ? pathname : pathname.replace(/\/$/, "")
 
   for (const route of HomepageRoutes.concat(PortalRoutes)) {
     if (matchPath((route as any).fullPath || route.path, normalizedPathname)) {

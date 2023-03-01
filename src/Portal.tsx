@@ -26,11 +26,11 @@ function Portal() {
       <Helmet>
         <title>Scroll Alpha {route?.name ? " – " + route.name : null} </title>
         <meta property="og:url" content={getUrl()} />
-        <meta property="og:title" content={`Scroll Alpha ${route?.name ? "-" + route.name : ""}`} />
+        <meta property="og:title" content={`Scroll Alpha ${route?.name ? "- " + route.name : ""}`} />
         <meta property="og:description" content="Native zkEVM Layer 2 for Ethereum" />
         <link rel="preconnect" href={baseUrl} crossOrigin="anonymous" />
         <link rel="dns-prefetch" href={baseUrl} crossOrigin="anonymous" />
-        <meta name="twitter:title" content={`Scroll Alpha ${route?.name ? "-" + route.name : ""}`} />
+        <meta name="twitter:title" content={`Scroll Alpha ${route?.name ? "- " + route.name : ""}`} />
         <meta name="twitter:description" content="Native zkEVM Layer 2 for Ethereum" />
         <meta name="twitter:image" content="/logo_for_og.png" />
       </Helmet>
