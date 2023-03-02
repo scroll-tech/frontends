@@ -1,11 +1,11 @@
+import classnames from "classnames"
 import dayjs from "dayjs"
-import React, { useEffect, useMemo, useState } from "react"
+import React, { forwardRef, useMemo } from "react"
 import { Link as RouterLink, useSearchParams } from "react-router-dom"
 
 import { Chip, Pagination, TableBody, TableContainer, TableHead, TablePagination, TableRow, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
-import { fetchBatchListUrl } from "@/apis/rollupscan"
 import Link from "@/components/Link"
 import { l1ExplorerUrl } from "@/constants/index"
 import useRollupStore from "@/stores/rollupStore"
@@ -94,14 +94,34 @@ const CustomPagination = styled(Pagination)(({ theme }) => ({
   },
 }))
 
-const App = () => {
-  const { changeEmptyBatch, changeBatchLoading, changeErrorMessage, emptyBatch, searchLoading, batchLoading } = useRollupStore()
+const CustomTableRow = styled(TableRow)(({ theme }) => ({
+  position: "relative",
+  transition: "all 0.5s ease",
+  "&:after": {
+    content: "''",
+    position: "absolute",
+    left: 0,
+    right: 0,
+    width: "0.8rem",
+    height: "calc(100% - 1px)",
+    backgroundColor: theme.palette.background.default,
+    transition: "all 0.5s ease",
+  },
+  "&.rowActive": {
+    backgroundColor: `${theme.palette.primary.main}10`,
+    "&:after": {
+      backgroundColor: theme.palette.primary.main,
+    },
+  },
+}))
 
-  const [data, setData] = useState([])
-
+const RollupTable = forwardRef<any, any>((props, ref) => {
+  const { onPaginationChange } = props
+  const { data, total, emptyBatch, searchLoading, batchLoading, currentClickedBatch } = useRollupStore()
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const [total, setTotal] = useState(0)
+  const page = useMemo(() => +searchParams.get("page"), [searchParams])
+  const pageSize = useMemo(() => +searchParams.get("per_page"), [searchParams])
 
   const renderStatusHeaderText = () => {
     return (
@@ -117,45 +137,9 @@ const App = () => {
   const CommitTxHashTooltip = "Hash of the transaction that commits the batch data to L1"
   const FinalizedTxHashTooltip = "Hash of the transaction that posts the batch proof to L1"
 
-  const page = useMemo(() => +searchParams.get("page"), [searchParams])
-  const pageSize = useMemo(() => +searchParams.get("per_page"), [searchParams])
-
-  useEffect(() => {
-    if (!page || !pageSize) {
-      setSearchParams({ page: +page || DEFAULT_PAGE, per_page: +pageSize || DEFAULT_PAGE_SIZE })
-    }
-  }, [searchParams])
-
-  useEffect(() => {
-    if (page && pageSize) {
-      fetchData({ page: +page, pageSize: +pageSize })
-    }
-  }, [page, pageSize])
-
-  const fetchData = (pagination: any) => {
-    changeBatchLoading(true)
-    scrollRequest(`${fetchBatchListUrl}?page=${pagination.page}&per_page=${pagination.pageSize}`)
-      .then(({ batches, total }) => {
-        setData(batches)
-        setTotal(total)
-        changeEmptyBatch(!total)
-      })
-      .catch(() => {
-        changeEmptyBatch(true)
-        changeErrorMessage("Failed to fetch batch list")
-      })
-      .finally(() => {
-        changeBatchLoading(false)
-      })
-  }
-
-  const onPageChange = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
-    searchParams.set("page", newPage + 1)
-    setSearchParams(searchParams)
-  }
-
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setSearchParams({ page: 1, per_page: parseInt(event.target.value, 10) })
+    onPaginationChange({ page: 1, pageSize: +event.target.value })
   }
 
   const truncatedHash = (hash: string) => {
@@ -171,6 +155,7 @@ const App = () => {
   const handleChangePage = (e, newPage) => {
     searchParams.set("page", newPage)
     setSearchParams(searchParams)
+    onPaginationChange({ page: +searchParams.get("page"), pageSize: +searchParams.get("per_page") })
   }
 
   if (emptyBatch) {
@@ -207,9 +192,9 @@ const App = () => {
                 </TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
+            <TableBody ref={ref}>
               {data.map((row: any) => (
-                <TableRow key={row.id}>
+                <CustomTableRow key={row.id} className={classnames(`rollup-batch-${row.index}`, currentClickedBatch === row.index && "rowActive")}>
                   <TableCell>
                     <Link component={RouterLink} to={`batch/${row.index}`}>
                       {row.index}
@@ -238,7 +223,7 @@ const App = () => {
                   <TableCell>
                     <StatusChip label={row.rollup_status === "skipped" ? "committed" : row.rollup_status} className={row.rollup_status}></StatusChip>
                   </TableCell>
-                </TableRow>
+                </CustomTableRow>
               ))}
             </TableBody>
           </Table>
@@ -250,7 +235,6 @@ const App = () => {
         component="div"
         count={total}
         page={(+page || DEFAULT_PAGE) - 1}
-        onPageChange={onPageChange}
         rowsPerPage={+pageSize || DEFAULT_PAGE_SIZE}
         onRowsPerPageChange={handleChangeRowsPerPage}
         labelDisplayedRows={({ count, page }) => {
@@ -260,6 +244,6 @@ const App = () => {
       />
     </TableContainer>
   )
-}
+})
 
-export default App
+export default RollupTable
