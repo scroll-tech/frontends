@@ -7,7 +7,7 @@ import { Alert, Button, Snackbar, Typography } from "@mui/material"
 import ERC721ABI from "@/assets/abis/ERC721ABI.json"
 // import ERC1155ABI from "@/assets/abis/ERC1155ABI.json"
 import LoadingButton from "@/components/LoadingButton"
-import { Addresses, ChainId, TESTNET_NAME } from "@/constants"
+import { ChainId, TESTNET_NAME, addresses } from "@/constants"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import { requireEnv, truncateAddress } from "@/utils"
 
@@ -32,7 +32,7 @@ const NFTFaucet = () => {
   const switchNetwork = async () => {
     await window.ethereum.request({
       method: "wallet_addEthereumChain",
-      params: [Addresses[ChainId.SCROLL_LAYER_1].autoconnect],
+      params: [addresses[ChainId.SCROLL_LAYER_1].autoconnect],
     })
   }
 
