@@ -1,10 +1,8 @@
-import { useNavigate, useSearchParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined"
 import { Box, Tooltip, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
-
-import { DEFAULT_PAGE_SIZE } from "../constants"
 
 const Card = styled(Box)(({ theme }) => ({
   flex: "1",
@@ -48,24 +46,16 @@ const BatchIndex = styled(Typography)(({ theme }) => ({
   },
 }))
 
-const InfoCard = ({ title, value, total, description }: any) => {
+const InfoCard = ({ title, value, total, description, onClickCard }: any) => {
   const navigate = useNavigate()
-  const [searchParams] = useSearchParams()
 
-  const moveToTargetPage = () => {
-    const pageSize = +(searchParams.get("per_page") || DEFAULT_PAGE_SIZE) as number
-
-    const page = Math.floor((total - value) / pageSize) + 1
-
-    navigate({ pathname: ".", search: `?page=${page}&per_page=${pageSize}` })
-  }
   const moveToBatchDetail = e => {
     e.stopPropagation()
     navigate(`./batch/${value}`)
   }
 
   return (
-    <Card onClick={moveToTargetPage}>
+    <Card onClick={onClickCard}>
       <Box display="flex" alignItems="center" sx={{ marginBottom: "0.8rem" }}>
         <CardTitle variant="body1" color="textSecondary">
           {title}
