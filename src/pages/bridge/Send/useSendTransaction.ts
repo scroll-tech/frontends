@@ -2,7 +2,7 @@
 import { BigNumber } from "ethers"
 import { useMemo, useState } from "react"
 
-import { ChainId, networks } from "@/constants"
+import { ChainId, GasLimit, networks } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import { usePriceFee } from "@/hooks"
@@ -20,8 +20,6 @@ export enum ChainIdEnum {
   GOERLI = 5,
   SCROLL_ALPHA = 534353,
 }
-
-const gasLimit = 40000
 
 export function useSendTransaction(props) {
   const { fromNetwork, fromTokenAmount, setError, setSendError, toNetwork, selectedToken } = props
@@ -91,34 +89,72 @@ export function useSendTransaction(props) {
   }
 
   const depositETH = async () => {
-    const fee = await getPriceFee(fromNetwork.isLayer1)
+    const fee = await getPriceFee(GasLimit.DEPOSIT_ETH, fromNetwork.isLayer1)
     if (ChainId.SCROLL_LAYER_1 === ChainIdEnum.GOERLI) {
-      return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositETH(uint256,uint256)"](parsedAmount, gasLimit, {
+      return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositETH(uint256,uint256)"](parsedAmount, GasLimit.DEPOSIT_ETH, {
         value: parsedAmount.add(fee),
       })
     }
-    return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositETH(uint256)"](gasLimit, {
+    return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositETH(uint256)"](GasLimit.DEPOSIT_ETH, {
       value: parsedAmount,
     })
   }
 
+  const depositERC20 = async () => {
+    const fee = await getPriceFee(GasLimit.DEPOSIT_ERC20, fromNetwork.isLayer1)
+    if (ChainId.SCROLL_LAYER_1 === ChainIdEnum.GOERLI) {
+      return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositERC20(address,uint256,uint256)"](
+        selectedToken.address,
+        parsedAmount,
+        GasLimit.DEPOSIT_ERC20,
+        {
+          value: parsedAmount.add(fee),
+        },
+      )
+    }
+    return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositERC20(address,uint256,uint256)"](
+      selectedToken.address,
+      parsedAmount,
+      GasLimit.DEPOSIT_ERC20,
+    )
+  }
+
   const withdrawETH = async () => {
-    const fee = await getPriceFee()
+    const fee = await getPriceFee(GasLimit.WITHDRAW_ETH)
     if (ChainId.SCROLL_LAYER_2 === ChainIdEnum.SCROLL_ALPHA) {
-      return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawETH(uint256,uint256)"](parsedAmount, gasLimit, {
+      return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawETH(uint256,uint256)"](parsedAmount, GasLimit.WITHDRAW_ETH, {
         value: parsedAmount.add(fee),
       })
     }
-    return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawETH(uint256)"](gasLimit, {
+    return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawETH(uint256)"](GasLimit.WITHDRAW_ETH, {
       value: parsedAmount,
     })
+  }
+
+  const withdrawERC20 = async () => {
+    const fee = await getPriceFee(GasLimit.WITHDRAW_ERC20)
+    if (ChainId.SCROLL_LAYER_2 === ChainIdEnum.SCROLL_ALPHA) {
+      return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawERC20(address,uint256,uint256)"](
+        selectedToken.address,
+        parsedAmount,
+        GasLimit.WITHDRAW_ERC20,
+        {
+          value: parsedAmount.add(fee),
+        },
+      )
+    }
+    return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawERC20(address,uint256,uint256)"](
+      selectedToken.address,
+      parsedAmount,
+      GasLimit.WITHDRAW_ERC20,
+    )
   }
 
   const sendl1ToL2 = () => {
     if (selectedToken.native) {
       return depositETH()
     } else {
-      return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositERC20(address,uint256,uint256)"](selectedToken.address, parsedAmount, 0)
+      return depositERC20()
     }
   }
 
@@ -126,7 +162,7 @@ export function useSendTransaction(props) {
     if (selectedToken.native) {
       return withdrawETH()
     } else {
-      return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawERC20(address,uint256,uint256)"](selectedToken.address, parsedAmount, 0)
+      return withdrawERC20()
     }
   }
 
