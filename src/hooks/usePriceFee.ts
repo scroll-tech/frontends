@@ -8,9 +8,8 @@ import { requireEnv } from "@/utils"
 
 const usePriceFee = () => {
   const { networksAndSigners } = useApp()
-  const gasLimit = 40000
 
-  const getPriceFee = async (isLayer1: boolean = false) => {
+  const getPriceFee = async (gasLimit: number = 0, isLayer1: boolean = false) => {
     try {
       if (isLayer1) {
         const L2GasPriceOracleContract = new ethers.Contract(

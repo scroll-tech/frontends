@@ -239,7 +239,7 @@ const Send: FC = () => {
           <SendTranferButton disabled={!toToken.chainId} onClick={handleSwitchDirection} />
           <SendAmountSelectorCard
             value="0.1"
-            token={fromToken}
+            token={toToken}
             label={"To"}
             selectedNetwork={toNetwork}
             networkOptions={networks}
