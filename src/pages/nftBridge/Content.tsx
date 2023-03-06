@@ -4,7 +4,7 @@ import { useApp } from "@/contexts/AppContextProvider"
 import useBridgeStore from "@/stores/bridgeStore"
 
 import RencentTx from "./RencentTx"
-import SelectPanel from "./SelectPanel"
+import SelectPanel from "./SelectPanel-goerli"
 
 const Content = () => {
   const {
