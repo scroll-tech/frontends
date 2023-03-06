@@ -4,7 +4,6 @@ import { persist } from "zustand/middleware"
 
 import { fetchTxListUrl } from "@/apis/bridge"
 import { networks } from "@/constants"
-import { toTokenDisplay } from "@/utils"
 
 interface TxStore {
   page: number
@@ -38,7 +37,7 @@ const formatBackTxList = backList => {
     return []
   }
   return backList.map(tx => {
-    const amount = toTokenDisplay(tx.amount)
+    const amount = tx.amount
     const fromName = networks[+!tx.isL1].name
     const fromExplore = networks[+!tx.isL1].explorer
     const toName = networks[+tx.isL1].name
