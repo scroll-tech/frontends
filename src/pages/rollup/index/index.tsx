@@ -37,13 +37,14 @@ const Rollup = () => {
 
   useEffect(() => {
     if (!page || !pageSize) {
-      setSearchParams({ page: +page || DEFAULT_PAGE, per_page: +pageSize || DEFAULT_PAGE_SIZE })
-    } else {
-      fetchData({ page: +page, pageSize: +pageSize })
+      const curPage = +page || DEFAULT_PAGE
+      const curPageSize = +pageSize || DEFAULT_PAGE_SIZE
+      setSearchParams({ page: curPage, per_page: curPageSize })
+      fetchData({ page: curPage, pageSize: curPageSize })
     }
-  }, [searchParams])
+  }, [])
 
-  const fetchData = (pagination: any) => {
+  const fetchData = pagination => {
     changeBatchLoading(true)
     scrollRequest(`${fetchBatchListUrl}?page=${pagination.page}&per_page=${pagination.pageSize}`)
       .then(({ batches, total }) => {
@@ -66,9 +67,9 @@ const Rollup = () => {
 
   const handleGoBatchRow = (value, total) => {
     changeBatchLoading(false)
-    const pageSize = +(searchParams.get("per_page") || DEFAULT_PAGE_SIZE) as number
-    const page = Math.floor((total - value) / pageSize) + 1
-    scrollRequest(`${fetchBatchListUrl}?page=${page}&per_page=${pageSize}`)
+    const curPage = Math.floor((total - value) / pageSize) + 1
+    setSearchParams({ page: curPage, per_page: pageSize })
+    scrollRequest(`${fetchBatchListUrl}?page=${curPage}&per_page=${pageSize}`)
       .then(({ batches, total }) => {
         flushSync(() => {
           changeData(batches)
