@@ -19,7 +19,8 @@ import {
 
 import Link from "@/components/Link"
 import { useApp } from "@/contexts/AppContextProvider"
-import useSymbol from "@/hooks/useSymbol"
+import useTokenInfo from "@/hooks/useTokenInfo"
+import { toTokenDisplay } from "@/utils"
 import { generateExploreLink, truncateHash } from "@/utils"
 
 const useStyles = makeStyles()(theme => {
@@ -165,8 +166,11 @@ const TxRow = props => {
     return txStatus(tx.toBlockNumber, tx.isL1, true)
   }, [tx, txStatus])
 
-  const { loading: symbolLoading, symbol } = useSymbol(tx.symbolToken, tx.isL1)
+  const { loading: tokenInfoLoading, tokenInfo } = useTokenInfo(tx.symbolToken, tx.isL1)
 
+  const txAmount = amount => {
+    return toTokenDisplay(amount, tokenInfo?.decimals)
+  }
   return (
     <TableRow key={tx.hash}>
       <TableCell>
@@ -186,8 +190,8 @@ const TxRow = props => {
       </TableCell>
       <TableCell className="w-full">
         <Typography>
-          <span>{tx.amount} </span>
-          {symbolLoading ? <Skeleton variant="text" width="5rem" className="inline-block" /> : <span>{symbol}</span>}
+          <span>{txAmount(tx.amount)} </span>
+          {tokenInfoLoading ? <Skeleton variant="text" width="5rem" className="inline-block" /> : <span>{tokenInfo.symbol}</span>}
         </Typography>
       </TableCell>
       <TableCell>

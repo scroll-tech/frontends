@@ -82,7 +82,7 @@ export function useSendTransaction(props) {
       toName: toNetwork.name,
       fromExplore: fromNetwork.explorer,
       toExplore: toNetwork.explorer,
-      amount: fromTokenAmount,
+      amount: parsedAmount.toString(),
       isL1: fromNetwork.name === networks[0].name,
       symbolToken: selectedToken.address,
     })
