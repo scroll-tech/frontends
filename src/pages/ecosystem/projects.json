@@ -1,5 +1,14 @@
 [
   {
+    "Name": "Ankr",
+    "Website": "https://www.ankr.com/",
+    "TwitterHandle": "ankr",
+    "TwitterFans": 219800,
+    "Logo": "/imgs/ecosystem/Ankr.png",
+    "ShortDescription": "Powering the Web3 ecosystem Ankr’s globally distributed node infrastructure allows us to build the best possible multi-chain tools as a foundational layer for Web3, DeFi, and the crypto economy.",
+    "Tag": "infrastructure"
+  },
+  {
     "Name": "Multichain",
     "Website": "https://multichain.org/",
     "TwitterHandle": "MultichainOrg",
@@ -118,6 +127,16 @@
     "Tag": "DeFi"
   },
   {
+    "Name": "POKT Network",
+    "Website": "https://www.pokt.network/",
+    "TwitterHandle": "POKTnetwork",
+    "TwitterFans": 39400,
+    "Logo": "/imgs/ecosystem/POKTNetwork.png",
+    "ShortDescription": "Pocket Network provides RPC access to Ethereum, Polygon, and dozens of multichains. Everything from testnets to mainnets to any open-source interface.",
+    "Tag": "infrastructure"
+  },
+
+  {
     "Name": "Atem",
     "Website": "https://www.atem.io/",
     "TwitterHandle": "atem_network",
@@ -125,6 +144,15 @@
     "Logo": "/imgs/ecosystem/Atem.jpg",
     "ShortDescription": "Atem Network is building a decentralized content creation protocol, we aim at helping creators tokenize their content and build web3 native communities. On top of the protocol, Atem has built two products, a web3 content sharing platform AtemReview and web3 community social platform AtemChat, and reached over 50,000+ users. The team is formed across global top tier universities and companies, including Tsinghua University, CUHK, CMU, JP Morgan, HSBC, Meta, TikTok, Bybit and etc. Atem Network just got $3M funded by GSR Ventures, Mirana Ventures, Mask Network, Foresight Ventures,A&T Capital, INCE Capital, Zonff Partners, Atlas Capital, Co-founder of Zhihu and etc.",
     "Tag": "Social"
+  },
+  {
+    "Name": "Bware Labs",
+    "Website": "https://bwarelabs.com/",
+    "TwitterHandle": "BwareLabs",
+    "TwitterFans": 24900,
+    "Logo": "/imgs/ecosystem/BwareLabs.png",
+    "ShortDescription": "Decentralized Web3 Infrastructure for Everyone Solving Web3 reliability and performance issues by efficiently employing the resources of hundreds of third party node providers combined with a state-of-the-art decentralized blockchain API platform and an improved user experience.",
+    "Tag": "infrastructure"
   },
 
   {
@@ -137,9 +165,19 @@
     "Tag": "Community"
   },
   {
+    "Name": "Gnosis Safe",
+    "Website": "https://gnosis-safe.io/",
+    "TwitterHandle": "safe",
+    "TwitterFans": 21900,
+    "Logo": "/imgs/ecosystem/GnosisSafe.png",
+    "ShortDescription": "Gnosis Safe is the safety standard of Web3 and the most trusted platform to manage digital assets for individuals and communities.",
+    "Tag": "Wallet"
+  },
+
+  {
     "Name": "Espresso Systems",
     "Website": "https://espressosys.com",
-    "TwitterHandle": "@EspressoSys",
+    "TwitterHandle": "EspressoSys",
     "Logo": "https://api.typeform.com/responses/files/7ff7da453a78ef3f5151c5c73fcd3ae88d31e2ff264f6f036aa459395b55c721/Group_1.png",
     "TwitterFans": 19600,
     "ShortDescription": "Espresso Systems builds tools and infrastructure that create more safe, open, and performant options for interacting and transacting on-chain.",
@@ -237,6 +275,16 @@
     "ShortDescription": "Next-gen interconnected blockchain gaming hub which sets new standard of gaming via our cross-game DID, launchpad and game player discovery system",
     "Tag": "Gaming"
   },
+  {
+    "Name": "Price Oracle",
+    "Website": "https://dev.oracles.rip/",
+    "TwitterHandle": "price_oracle",
+    "TwitterFans": 761,
+    "Logo": "/imgs/ecosystem/PriceOracle.jpg",
+    "ShortDescription": "Price is a permissionless and reliable oracle solution that leverages Uniswap V3 and automation to provide safe price quotes on any existing token.",
+    "Tag": "Oracle"
+  },
+
   {
     "Name": "Unifra",
     "Website": "https://unifra.io/",
