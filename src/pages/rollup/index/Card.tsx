@@ -57,7 +57,7 @@ const InfoCard = ({ title, value, total, description, onClickCard }: any) => {
   return (
     <Card onClick={onClickCard}>
       <Box display="flex" alignItems="center" sx={{ marginBottom: "0.8rem" }}>
-        <CardTitle variant="body1" color="textSecondary">
+        <CardTitle variant="body1" color="textSecondary" sx={{ cursor: "pointer" }}>
           {title}
         </CardTitle>
         <Tooltip title={description}>
