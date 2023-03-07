@@ -36,15 +36,19 @@ const Rollup = () => {
   const timerRef = useRef<any>()
 
   useEffect(() => {
+    if (page && pageSize) {
+      handlePaginationChange({ page, pageSize })
+    }
+  }, [])
+
+  useEffect(() => {
     if (!page || !pageSize) {
       const curPage = page || DEFAULT_PAGE
       const curPageSize = pageSize || DEFAULT_PAGE_SIZE
       setSearchParams({ page: curPage, per_page: curPageSize })
       handlePaginationChange({ page: curPage, pageSize: curPageSize })
-    } else {
-      handlePaginationChange({ page, pageSize })
     }
-  }, [])
+  }, [page, pageSize])
 
   const fetchData = pagination => {
     changeBatchLoading(true)
