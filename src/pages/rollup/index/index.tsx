@@ -37,21 +37,19 @@ const Rollup = () => {
 
   useEffect(() => {
     if (!page || !pageSize) {
-      const curPage = +page || DEFAULT_PAGE
-      const curPageSize = +pageSize || DEFAULT_PAGE_SIZE
+      const curPage = page || DEFAULT_PAGE
+      const curPageSize = pageSize || DEFAULT_PAGE_SIZE
       setSearchParams({ page: curPage, per_page: curPageSize })
-      fetchData({ page: curPage, pageSize: curPageSize })
+      handlePaginationChange({ page: curPage, pageSize: curPageSize })
+    } else {
+      handlePaginationChange({ page, pageSize })
     }
   }, [])
 
   const fetchData = pagination => {
     changeBatchLoading(true)
-    scrollRequest(`${fetchBatchListUrl}?page=${pagination.page}&per_page=${pagination.pageSize}`)
-      .then(({ batches, total }) => {
-        changeData(batches)
-        changeTotal(total)
-        changeEmptyBatch(!total)
-      })
+    return scrollRequest(`${fetchBatchListUrl}?page=${pagination.page}&per_page=${pagination.pageSize}`)
+      .then(data => data)
       .catch(() => {
         changeEmptyBatch(true)
         changeErrorMessage("Failed to fetch batch list")
@@ -65,34 +63,33 @@ const Rollup = () => {
     changeErrorMessage("")
   }
 
+  const handlePaginationChange = pagination => {
+    fetchData(pagination).then(({ batches, total }) => {
+      changeData(batches)
+      changeTotal(total)
+      changeEmptyBatch(!total)
+    })
+  }
+
   const handleGoBatchRow = (value, total) => {
-    changeBatchLoading(false)
     const curPage = Math.floor((total - value) / pageSize) + 1
     setSearchParams({ page: curPage, per_page: pageSize })
-    scrollRequest(`${fetchBatchListUrl}?page=${curPage}&per_page=${pageSize}`)
-      .then(({ batches, total }) => {
-        flushSync(() => {
-          changeData(batches)
-          changeTotal(total)
-        })
-        const currentRow = tableRowsRef.current?.children
-          ? Array.from(tableRowsRef.current?.children).find(item => Array.from(item.classList)?.includes(`rollup-batch-${value}`))
-          : null
-        changeCurrentClickedBatch(value)
-        clearTimeout(timerRef.current)
-        timerRef.current = setTimeout(() => {
-          changeCurrentClickedBatch(-1)
-        }, 5000)
-        currentRow?.scrollIntoView({ behavior: "smooth", block: "center" })
-        changeEmptyBatch(!total)
+    fetchData({ page: curPage, pageSize }).then(({ batches, total }) => {
+      flushSync(() => {
+        changeData(batches)
+        changeTotal(total)
       })
-      .catch(() => {
-        changeEmptyBatch(true)
-        changeErrorMessage("Failed to fetch batch list")
-      })
-      .finally(() => {
-        changeBatchLoading(false)
-      })
+      const currentRow = tableRowsRef.current?.children
+        ? Array.from(tableRowsRef.current?.children).find(item => Array.from(item.classList)?.includes(`rollup-batch-${value}`))
+        : null
+      changeCurrentClickedBatch(value)
+      clearTimeout(timerRef.current)
+      timerRef.current = setTimeout(() => {
+        changeCurrentClickedBatch(-1)
+      }, 5000)
+      currentRow?.scrollIntoView({ behavior: "smooth", block: "center" })
+      changeEmptyBatch(!total)
+    })
   }
 
   return (
@@ -115,7 +112,7 @@ const Rollup = () => {
         />
       </InfoBox>
       <Searchbar />
-      <Table ref={tableRowsRef} onPaginationChange={fetchData} />
+      <Table ref={tableRowsRef} onPaginationChange={handlePaginationChange} />
       <Snackbar open={!!errorMessage} autoHideDuration={6000} onClose={handleChangeErrorMessage}>
         <Alert severity="error" onClose={handleChangeErrorMessage}>
           {errorMessage}

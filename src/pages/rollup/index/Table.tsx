@@ -236,6 +236,7 @@ const RollupTable = forwardRef<any, any>((props, ref) => {
         count={total}
         page={(+page || DEFAULT_PAGE) - 1}
         rowsPerPage={+pageSize || DEFAULT_PAGE_SIZE}
+        onPageChange={() => void 0}
         onRowsPerPageChange={handleChangeRowsPerPage}
         labelDisplayedRows={({ count, page }) => {
           return <CustomPagination page={page + 1} count={Math.ceil(count / pageSize)} onChange={handleChangePage} />
