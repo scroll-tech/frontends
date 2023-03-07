@@ -13,7 +13,7 @@ import { requireEnv } from "@/utils"
 const L1_721 = requireEnv("REACT_APP_L1_SCROLL721_ADDRESS")
 const L2_721 = requireEnv("REACT_APP_L2_SCROLL721_ADDRESS")
 
-const L1_1155 = "0x1Ac9A1C44b751509569C60Edf98287C36F4590D2"
+const L1_1155 = requireEnv("REACT_APP_L1_SCROLL1155_ADDRESS")
 // const L2_1155 = "0x8FF3695Aca0978a1DcCD0Bf4E7f09EAE63bfeb43"
 
 const GATEWAY_721_L1 = requireEnv("REACT_APP_L1_ERC721_GATEWAY_PROXY_ADDR")
@@ -48,7 +48,7 @@ const SelectPanel = () => {
   }, [provider])
 
   const getOwnedL1_721Nfts = async () => {
-    console.log("getOwnedNfts")
+    console.log("getOwnedNfts", walletCurrentAddress)
     const count = await instanceL1_721["balanceOf(address)"](walletCurrentAddress)
     console.log(count.toNumber(), "count")
     for (let i = 0; i < count.toNumber(); i++) {
@@ -84,7 +84,7 @@ const SelectPanel = () => {
   // }
   const getOwned1155Nfts = async () => {
     console.log("getOwnedNfts")
-    const count = await instance1155["balanceOf(address,uint256)"](walletCurrentAddress, 4)
+    const count = await instance1155["balanceOf(address,uint256)"](walletCurrentAddress, 5)
     console.log(count.toNumber(), "tokenId=0->count")
   }
 

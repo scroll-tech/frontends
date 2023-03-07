@@ -1,18 +1,17 @@
 import { ethers } from "ethers"
-// import { nanoid } from "nanoid"
 import { useMemo, useState } from "react"
 
 import { Alert, Button, Snackbar, Typography } from "@mui/material"
 
 import ERC721ABI from "@/assets/abis/ERC721ABI.json"
-// import ERC1155ABI from "@/assets/abis/ERC1155ABI.json"
+import ERC1155ABI from "@/assets/abis/ERC1155ABI.json"
 import LoadingButton from "@/components/LoadingButton"
 import { ChainId, TESTNET_NAME, addresses } from "@/constants"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import { requireEnv, truncateAddress } from "@/utils"
 
 const L1_SCROLL721_ADDR = requireEnv("REACT_APP_L1_SCROLL721_ADDRESS")
-// const L1_SCROLL1155_ADDR = requireEnv("REACT_APP_L1_SCROLL1155_ADDRESS")
+const L1_SCROLL1155_ADDR = requireEnv("REACT_APP_L1_SCROLL1155_ADDRESS")
 
 const NFTFaucet = () => {
   const { walletCurrentAddress, connectWallet, provider, chainId } = useWeb3Context()
@@ -42,14 +41,22 @@ const NFTFaucet = () => {
       const signer = await provider?.getSigner(0)
       // for 721
       const instance721 = new ethers.Contract(L1_SCROLL721_ADDR, ERC721ABI, signer)
-      const tx721 = instance721["mintBatch(address,uint256[])"](walletCurrentAddress, [0, 1])
+      const totalCount721 = await instance721["totalSupply()"]()
+      const tx721 = instance721["mint(address,uint256)"](walletCurrentAddress, totalCount721.toNumber())
 
       // for 1155
-      // const instance1155 = new ethers.Contract(L1_SCROLL1155_ADDR, ERC1155ABI, signer)
-      // // token type id auto increase in contract according to amount array
-      // const tx1155 = instance1155["mintBatch(address,uint256[],bytes)"](walletCurrentAddress, [1, 1], "0x")
+      // TODO: will check after Peter give staging-goerli
+      const instance1155 = new ethers.Contract(L1_SCROLL1155_ADDR, ERC1155ABI, signer)
+      const totalCount1155 = await instance1155["totalSupply()"]()
+      const totalCountNumber = totalCount1155.toNumber()
+      const tx1155 = instance1155["mintBatch(address,uint256[],uint256[],bytes)"](
+        walletCurrentAddress,
+        [totalCountNumber, totalCountNumber + 1],
+        [1, 1],
+        "0x",
+      )
 
-      const txAll = await Promise.allSettled([tx721])
+      const txAll = await Promise.allSettled([tx721, tx1155])
       const txResultAll = await Promise.allSettled(
         txAll.filter((item): item is PromiseFulfilledResult<any> => item.status === "fulfilled").map(item => item.value.wait()),
       )
@@ -111,7 +118,7 @@ const NFTFaucet = () => {
               mb: "2rem",
             }}
           >
-            Receive 2 ERC721 NFTs & 2 ERC1155 NFTs per request.
+            Receive 1 ERC721 NFT & 2 ERC1155 NFTs per request.
           </Typography>
           {renderOperation()}
         </div>
