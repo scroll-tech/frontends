@@ -1,5 +1,5 @@
 import classNames from "classnames"
-import { ethers } from "ethers"
+import { BigNumber, ethers } from "ethers"
 import { ChangeEvent, FC, useEffect, useMemo, useState } from "react"
 import useStorage from "squirrel-gill"
 
@@ -22,6 +22,7 @@ import ApproveLoading from "./ApproveLoading"
 import SendAmountSelectorCard from "./SendAmountSelectorCard"
 import SendLoading from "./SendLoading"
 import SendTranferButton from "./SendTransferButton"
+import { useEstimateSendTransaction } from "./useEstimateSendTransaction"
 import { StyleContext, useSendStyles } from "./useSendStyles"
 import { useSendTransaction } from "./useSendTransaction"
 
@@ -33,6 +34,7 @@ const Send: FC = () => {
   const [fromNetwork, setFromNetwork] = useState({} as any)
   const [toNetwork, setToNetwork] = useState({} as any)
   const [totalBonderFeeDisplay, setTotalBonderFeeDisplay] = useState("-")
+  const [estimatedGasCost, setEstimatedGasCost] = useState<undefined | BigNumber>(undefined)
 
   const { checkConnectedChainId, chainId, walletName, connectWallet } = useWeb3Context()
 
@@ -77,6 +79,32 @@ const Send: FC = () => {
     }
   }, [chainId, tokenList, tokenSymbol])
 
+  const { estimateSend } = useEstimateSendTransaction({
+    fromNetwork,
+    toNetwork,
+    selectedToken: fromToken,
+  })
+
+  const handleEstimateSend = async () => {
+    if (networksAndSigners[fromNetwork.chainId]?.signer) {
+      const gasPrice = await networksAndSigners[fromNetwork.chainId].signer.getGasPrice()
+      try {
+        const gasLimit = await estimateSend()
+        const estimatedGasCost = BigNumber.from(gasLimit)
+          .mul(gasPrice || 1e9)
+          .mul(140)
+          .div(100)
+        setEstimatedGasCost(estimatedGasCost)
+      } catch (error) {
+        setEstimatedGasCost(undefined)
+      }
+    }
+  }
+
+  useEffect(() => {
+    handleEstimateSend()
+  }, [chainId, fromToken, fromTokenAmount])
+
   const isCorrectNetwork = useMemo(() => !!chainId && fromNetwork.chainId === chainId, [chainId, fromNetwork])
   const { getPriceFee } = usePriceFee()
 
@@ -96,7 +124,7 @@ const Send: FC = () => {
     fromToken,
     networksAndSigners[fromNetwork.chainId],
     fromTokenAmount ? amountToBN(fromTokenAmount, fromToken.decimals) : undefined,
-    undefined,
+    estimatedGasCost,
     fromBalance ?? undefined,
     isCorrectNetwork,
   )
