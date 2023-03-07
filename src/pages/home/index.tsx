@@ -144,7 +144,7 @@ export default function Home() {
         </SectionTitle>
 
         <SectionTitle title="Send us feedback">
-          <div className=" bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <div className=" bg-white px-4 py-5 sm:grid sm:px-6">
             <dt className="text-base font-medium text-black flex items-center">
               <div className="mr-[4px] leading-none">
                 <img alt="note" className="w-[20px] align-middle" src="/imgs/home/note.png" />
@@ -157,7 +157,7 @@ export default function Home() {
             <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:col-span-2" />
           </div>
 
-          <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <div className="bg-gray-50 px-4 py-5 sm:grid sm:px-6">
             <dt className="text-base font-medium text-black flex items-center">
               <div className="mr-[4px] leading-none">
                 <img alt="discord logo" className="w-[20px] align-middle" src="/imgs/home/discord.png" />
@@ -170,7 +170,7 @@ export default function Home() {
             <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:col-span-2" />
           </div>
 
-          <div className=" bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <div className=" bg-white px-4 py-5 sm:grid sm:px-6">
             <dt className="text-base font-medium text-black flex items-center">
               <div className="mr-[4px] leading-none">
                 <img alt="github logo" className="w-[20px] align-middle" src="/imgs/home/github.png" />

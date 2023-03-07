@@ -30,6 +30,10 @@ const lightTheme = createTheme({
           fontSize: "1.4rem",
         },
       },
+      defaultProps: {
+        enterTouchDelay: 0,
+        leaveTouchDelay: 10000,
+      },
     },
     MuiChip: {
       styleOverrides: {

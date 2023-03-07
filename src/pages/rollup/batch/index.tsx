@@ -63,10 +63,9 @@ const BoxItem = styled(Box)(({ theme }) => ({
   alignItems: "center",
   [theme.breakpoints.down("md")]: {
     height: "7.4rem",
-    "& > :nth-of-type(2)": {
+    justifyContent: "space-between",
+    "& > *:nth-last-child(1)": {
       textAlign: "right",
-      display: "block",
-      width: "100%",
       marginRight: "1.6rem",
     },
   },
@@ -98,7 +97,7 @@ const Blocks = () => {
     if (hash) {
       return (
         <Link href={`${l1ExplorerUrl}/tx/${hash}`}>
-          <Stack direction="row" alignItems="center" spacing="0.4rem">
+          <Stack direction="row" alignItems="center" spacing="0.4rem" sx={{ whiteSpace: "nowrap" }}>
             {truncatedHash(hash)}
             <OpenInNew />
           </Stack>
@@ -153,7 +152,7 @@ const Blocks = () => {
               <BoxItem>
                 <LabelTypography>
                   Status{" "}
-                  <Tooltip title={renderStatusTooltip()}>
+                  <Tooltip title={renderStatusTooltip()} leaveTouchDelay={15000}>
                     <InfoOutlined sx={{ fontSize: "2rem", verticalAlign: "text-bottom" }} />
                   </Tooltip>{" "}
                 </LabelTypography>
