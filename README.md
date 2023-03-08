@@ -4,7 +4,7 @@ Scroll's Monorepo for Frontends
 
 ## Purpose
 
-The final goal for this repo is to contain a single React app written in TypeScript to accommodate for all frontend functionality, optimising for a smooth frontend user exprience.
+The goal for this repo is to contain a single React app written in TypeScript to accommodate for all official Scroll frontend functionality.
 
 ## Available Scripts
 
@@ -55,7 +55,7 @@ Generate webp format image
 
 ## Deployment
 
-Using Netlify: https://app.netlify.com/teams/scroll/overview
+Using Scroll's team Netlify: https://app.netlify.com/teams/scroll/overview
 
-- https://staging--scroll-io.netlify.app
-- https://scroll.io
+- Production (SCROLL_ENVIRONMENT=ALPHA): https://scroll.io
+- Development (SCROLL_ENVIRONMENT=STAGING): https://develop--scroll-io.netlify.app
