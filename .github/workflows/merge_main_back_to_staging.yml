@@ -1,9 +1,9 @@
-name: "Merge main back to staging"
+name: "Merge production branch back to develop"
 
 on:
   pull_request:
     branches:
-      - main
+      - alpha
     types:
       - closed
 
@@ -11,7 +11,7 @@ jobs:
   create-merge-back-pr:
     if: |
       success() && contains(github.event.pull_request.title , ' [bot]')
-    name: "Create PR to merge main back to staging"
+    name: "Create PR to merge production branch back to develop"
     permissions:
       contents: write
       pull-requests: write
@@ -27,8 +27,8 @@ jobs:
       - name: GitHub Pull Request Action
         uses: repo-sync/pull-request@7e79a9f5dc3ad0ce53138f01df2fad14a04831c5
         with:
-          pr_title: "ci: merge main branch back to staging [bot]"
+          pr_title: "ci: merge production branch back to develop [bot]"
           pr_allow_empty: true
-          destination_branch: "staging"
-          pr_label: "bot/main->staging,automerge"
+          destination_branch: "develop"
+          pr_label: "bot/alpha->develop,automerge"
           github_token: ${{ secrets.WRITE_TOKEN }}

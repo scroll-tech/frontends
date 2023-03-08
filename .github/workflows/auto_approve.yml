@@ -1,11 +1,11 @@
-# auto approve any pr to main/staging that has ` [bot]` at the end of the pr title
+# auto approve any pr that has ` [bot]` at the end of the pr title
 # note the first character in ` [bot]` is a thin space https://www.wikiwand.com/en/Thin_space
 name: Auto Approve
 on:
   pull_request:
     branches:
-      - main
-      - staging
+      - alpha
+      - develop
 jobs:
   build:
     if: |

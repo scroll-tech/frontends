@@ -1,4 +1,4 @@
-# auto merge any pr to main/staging that
+# auto merge any pr that
 # 1. has ` [bot]` at the end of the pr title
 # 2. has `automerge` label
 # note the first character in ` [bot]` is a thin space https://www.wikiwand.com/en/Thin_space
@@ -6,8 +6,8 @@ name: Auto Merge
 on:
   pull_request:
     branches:
-      - main
-      - staging
+      - alpha
+      - develop
     types:
       - labeled
       - synchronize
@@ -22,13 +22,14 @@ on:
   status: {}
 jobs:
   # merge with WRITE_TOKEN so that subsequent actions can be triggered
-  # merge with merge when main->staging
+
+  # merge with merge when backmerging to develop
   automerge-merge:
     if: |
       endsWith(github.event.pull_request.title, ' [bot]') &&
       (
-        github.head_ref == 'main' &&
-        github.base_ref == 'staging'
+        github.head_ref == 'alpha' &&
+        github.base_ref == 'develop'
       )
     runs-on: ubuntu-latest
     steps:
@@ -41,13 +42,13 @@ jobs:
           MERGE_LABELS: "automerge"
           MERGE_REMOVE_LABELS: "automerge"
           MERGE_COMMIT_MESSAGE: "pull-request-title"
-  # merge with squash when not main->staging
+  # merge with squash otherwise
   automerge-squash:
     if: |
       endsWith(github.event.pull_request.title, ' [bot]') &&
       !(
-        github.head_ref == 'main' &&
-        github.base_ref == 'staging'
+        github.head_ref == 'alpha' &&
+        github.base_ref == 'develop'
       )
     runs-on: ubuntu-latest
     steps:

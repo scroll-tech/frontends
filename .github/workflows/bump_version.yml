@@ -1,18 +1,18 @@
-# when there's new push to main branch
-# create a pr from ci/_bump-version to main branch
-# with a commit that bump the version in package.json
+# when there's new push to the production branch
+# create a pr from ci/_bump-version to production branch
+# with a commit that bumps the version in package.json
 name: "Bump Version"
 
 on:
   push:
     branches:
-      - main
+      - alpha
 
 jobs:
   bump-version:
     if: |
       !contains(github.event.head_commit.message , ' [bot]')
-    name: "Bump Version on main"
+    name: "Bump version on production"
     permissions:
       contents: write
       pull-requests: write
@@ -41,7 +41,7 @@ jobs:
         run: echo "::set-output name=title::$(git log --pretty=format:"%s" -1)"
         id: get-version-bump-commit-message
 
-      - name: Create Pull Request for Main
+      - name: Create Pull Request for production
         uses: peter-evans/create-pull-request@2b011faafdcbc9ceb11414d64d0573f37c774b04
         with:
           token: ${{ secrets.WRITE_TOKEN }}
