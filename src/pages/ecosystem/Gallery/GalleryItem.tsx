@@ -71,7 +71,7 @@ const variants = {
 
 const GalleryItem = props => {
   const {
-    item: { Name, Logo, Tag: tag, ShortDescription, Website, TwitterHandle },
+    item: { name, logo, tags, desc, website, twitterHandle },
   } = props
 
   const [isBack, setIsBack] = useState(false)
@@ -80,14 +80,14 @@ const GalleryItem = props => {
     setIsBack(preValue => !preValue)
   }
 
-  const handleOpenTab = (e, item, { Website, TwitterHandle }) => {
+  const handleOpenTab = (e, item, { website, twitterHandle }) => {
     e.stopPropagation()
     const { name, prefixLink } = item
     if (name === "Twitter") {
-      window.open(prefixLink + TwitterHandle)
+      window.open(prefixLink + twitterHandle)
       return
     }
-    window.open(Website)
+    window.open(website)
   }
   return (
     <Wrapper onClick={handleFlipCard} whileHover={{ translateY: "-2px", scale: 1.005 }}>
@@ -102,11 +102,11 @@ const GalleryItem = props => {
           </Box>
           <Stack direction="column" spacing={2} alignItems="center" sx={{ mt: "7rem" }}>
             <Stack direction="row" spacing={1.25} alignItems="center">
-              <Avatar alt={Name} src={Logo} variant="rounded" sx={{ width: 84, height: 84 }}></Avatar>
-              <Typography sx={{ fontFamily: "Inter", fontWeight: 600, fontSize: ["2rem", "2.4rem"], width: "min-content" }}>{Name}</Typography>
+              <Avatar alt={name} src={logo} variant="rounded" sx={{ width: 84, height: 84 }}></Avatar>
+              <Typography sx={{ fontFamily: "Inter", fontWeight: 600, fontSize: ["2rem", "2.4rem"], width: "min-content" }}>{name}</Typography>
             </Stack>
             <Stack direction="row" sx={{ flexWrap: "wrap", justifyContent: "center" }}>
-              {tag ? tag.split(",").map(value => <Tag key={value}>{value.trim()}</Tag>) : null}
+              {tags ? tags.map(value => <Tag key={value}>{value.trim()}</Tag>) : null}
             </Stack>
           </Stack>
         </FaceSide>
@@ -119,21 +119,21 @@ const GalleryItem = props => {
           <Stack direction="column" justifyContent="space-between" sx={{ height: "100%" }}>
             <Stack direction="row" justifyContent="space-between">
               <Stack direction="row" alignItems="center" spacing={0.5}>
-                <Avatar alt={Name} src={Logo} variant="rounded" sx={{ width: 22, height: 22 }}></Avatar>
-                <Typography sx={{ fontWeight: 600, fontSize: 12 }}>{Name}</Typography>
+                <Avatar alt={name} src={logo} variant="rounded" sx={{ width: 22, height: 22 }}></Avatar>
+                <Typography sx={{ fontWeight: 600, fontSize: 12 }}>{name}</Typography>
               </Stack>
               <ReplayOutlined sx={{ color: "#686868" }}></ReplayOutlined>
             </Stack>
             <Typography
               sx={{ mt: "2rem", px: "1rem", lineHeight: ["1.8rem", "1.6rem"], fontFamily: "Inter", fontWeight: 500, fontSize: ["1.6rem", "1.4rem"] }}
             >
-              {ShortDescription}
+              {desc}
             </Typography>
             <Stack direction="row" spacing={0.5} justifyContent="center" sx={{ width: "100%" }}>
               {socialLinks.map(social => (
                 <motion.span key={social.name} whileHover={{ scale: 1.1, color: "#686868" }} style={{ color: "#404040" }}>
                   <SvgIcon
-                    onClick={e => handleOpenTab(e, social, { Website, TwitterHandle })}
+                    onClick={e => handleOpenTab(e, social, { website, twitterHandle })}
                     component={social.icon}
                     sx={{ width: "2rem", height: "2rem" }}
                     viewBox={social.viewBox}
