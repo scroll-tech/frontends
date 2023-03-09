@@ -19,7 +19,7 @@ const useStyles = makeStyles()(theme => ({
     marginBottom: "1.2rem",
   },
   sendDesc: {
-    width: "calc(56.8rem - 8rem)",
+    width: "calc(58.8rem - 8rem)",
     textAlign: "center",
     [theme.breakpoints.down("sm")]: {
       width: "calc(100% - 12rem)",
