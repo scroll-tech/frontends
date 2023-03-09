@@ -1,7 +1,7 @@
 {
   "name": "scroll.io",
   "version": "3.0.13",
-  "private": true,
+  "private": false,
   "dependencies": {
     "@babel/runtime": "^7.20.6",
     "@craco/craco": "^6.4.5",
