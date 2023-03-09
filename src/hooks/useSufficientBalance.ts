@@ -1,10 +1,8 @@
 import { BigNumber } from "ethers"
 import { useEffect, useState } from "react"
 
-import { useIsSmartContractWallet } from "@/hooks"
-import { usePriceFee } from "@/hooks"
-import { toTokenDisplay } from "@/utils"
-import { requireEnv } from "@/utils"
+import { useIsSmartContractWallet, usePriceFee } from "@/hooks"
+import { isProduction, toTokenDisplay } from "@/utils"
 
 function useSufficientBalance(
   selectedToken: any,
@@ -43,7 +41,7 @@ function useSufficientBalance(
 
       if (selectedToken.native) {
         totalCost = estimatedGasCost.add(amount)
-        if (requireEnv("REACT_APP_SCROLL_ENVIRONMENT") === "ALPHA") {
+        if (isProduction) {
           const isLayer1 = token.network.isLayer1
           const fee = await getPriceFee(selectedToken, isLayer1)
           totalCost = totalCost.add(fee)
@@ -52,7 +50,7 @@ function useSufficientBalance(
         enoughTokenBalance = enoughFeeBalance
       } else {
         totalCost = estimatedGasCost
-        if (requireEnv("REACT_APP_SCROLL_ENVIRONMENT") === "ALPHA") {
+        if (isProduction) {
           const isLayer1 = token.network.isLayer1
           const fee = await getPriceFee(selectedToken, isLayer1)
           totalCost = totalCost.add(fee)
