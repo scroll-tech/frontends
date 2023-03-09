@@ -48,7 +48,7 @@ const FeatureIcon = styled(WebpImage)(
 
 const FeatureTitle = styled(Typography)(
   ({ theme }) => `
-        margin-top: 6.5rem;
+        margin-top: 7rem;
         margin-bottom: 0.9rem;
         text-align: center;
         font-weight: 600;
@@ -61,7 +61,7 @@ const FeatureTitle = styled(Typography)(
 
 const FeatureDescription = styled(Typography)(
   ({ theme }) => `
-          margin: 0 3.5rem;
+          margin: 0 3rem;
           ${theme.breakpoints.down("lg")} {
             margin: 0 1.6rem;
           };

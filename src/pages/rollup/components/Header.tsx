@@ -5,7 +5,7 @@ import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import { truncateAddress } from "@/utils"
 
 const Description = styled(Typography)(({ theme }) => ({
-  maxWidth: "58.6rem",
+  maxWidth: "61rem",
   margin: "0 auto 7.5rem",
   [theme.breakpoints.down("md")]: {
     backgroundColor: "transparent",
