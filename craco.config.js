@@ -63,7 +63,7 @@ module.exports = {
           org: "scroll-zkp",
           project: "scroll-io",
           include: "./build",
-          release: "v" + process.env.REACT_APP_VERSION,
+          release: process.env.REACT_APP_VERSION,
           authToken: process.env.REACT_APP_SENTRY_AUTH_TOKEN,
         })
         webpackConfig.plugins.push(sentryPlugin)
