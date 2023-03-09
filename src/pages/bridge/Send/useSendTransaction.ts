@@ -89,7 +89,7 @@ export function useSendTransaction(props) {
   }
 
   const depositETH = async () => {
-    const fee = await getPriceFee(GasLimit.DEPOSIT_ETH, fromNetwork.isLayer1)
+    const fee = await getPriceFee(selectedToken, fromNetwork.isLayer1)
     if (ChainId.SCROLL_LAYER_1 === ChainIdEnum.GOERLI) {
       return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositETH(uint256,uint256)"](parsedAmount, GasLimit.DEPOSIT_ETH, {
         value: parsedAmount.add(fee),
@@ -101,14 +101,14 @@ export function useSendTransaction(props) {
   }
 
   const depositERC20 = async () => {
-    const fee = await getPriceFee(GasLimit.DEPOSIT_ERC20, fromNetwork.isLayer1)
+    const fee = await getPriceFee(selectedToken, fromNetwork.isLayer1)
     if (ChainId.SCROLL_LAYER_1 === ChainIdEnum.GOERLI) {
       return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositERC20(address,uint256,uint256)"](
         selectedToken.address,
         parsedAmount,
         GasLimit.DEPOSIT_ERC20,
         {
-          value: parsedAmount.add(fee),
+          value: fee,
         },
       )
     }
@@ -120,7 +120,7 @@ export function useSendTransaction(props) {
   }
 
   const withdrawETH = async () => {
-    const fee = await getPriceFee(GasLimit.WITHDRAW_ETH)
+    const fee = await getPriceFee(selectedToken)
     if (ChainId.SCROLL_LAYER_2 === ChainIdEnum.SCROLL_ALPHA) {
       return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawETH(uint256,uint256)"](parsedAmount, GasLimit.WITHDRAW_ETH, {
         value: parsedAmount.add(fee),
@@ -132,14 +132,14 @@ export function useSendTransaction(props) {
   }
 
   const withdrawERC20 = async () => {
-    const fee = await getPriceFee(GasLimit.WITHDRAW_ERC20)
+    const fee = await getPriceFee(selectedToken)
     if (ChainId.SCROLL_LAYER_2 === ChainIdEnum.SCROLL_ALPHA) {
       return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawERC20(address,uint256,uint256)"](
         selectedToken.address,
         parsedAmount,
         GasLimit.WITHDRAW_ERC20,
         {
-          value: parsedAmount.add(fee),
+          value: fee,
         },
       )
     }

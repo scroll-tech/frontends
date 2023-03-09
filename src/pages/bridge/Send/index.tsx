@@ -1,9 +1,9 @@
 import classNames from "classnames"
-import { ethers } from "ethers"
+import { BigNumber, ethers } from "ethers"
 import { ChangeEvent, FC, useEffect, useMemo, useState } from "react"
 import useStorage from "squirrel-gill"
 
-import Alert from "@mui/material/Alert"
+import { Alert, Typography } from "@mui/material"
 
 import L1_erc20ABI from "@/assets/abis/L1_erc20ABI.json"
 import LoadingButton from "@/components/LoadingButton"
@@ -12,12 +12,17 @@ import { ChainId, ERC20Token, ETH_SYMBOL, NativeToken, StandardERC20GatewayProxy
 import { useApp } from "@/contexts/AppContextProvider"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import { useApprove, useAsyncMemo, useBalance, useSufficientBalance } from "@/hooks"
+import { usePriceFee } from "@/hooks"
 import { amountToBN, sanitizeNumericalString, switchNetwork } from "@/utils"
+import { toTokenDisplay } from "@/utils"
 
+import DetailRow from "../components/InfoTooltip/DetailRow"
+import FeeDetails from "../components/InfoTooltip/FeeDetails"
 import ApproveLoading from "./ApproveLoading"
 import SendAmountSelectorCard from "./SendAmountSelectorCard"
 import SendLoading from "./SendLoading"
 import SendTranferButton from "./SendTransferButton"
+import { useEstimateSendTransaction } from "./useEstimateSendTransaction"
 import { StyleContext, useSendStyles } from "./useSendStyles"
 import { useSendTransaction } from "./useSendTransaction"
 
@@ -28,6 +33,9 @@ const Send: FC = () => {
 
   const [fromNetwork, setFromNetwork] = useState({} as any)
   const [toNetwork, setToNetwork] = useState({} as any)
+  const [totalBonderFeeDisplay, setTotalBonderFeeDisplay] = useState("-")
+  const [estimatedGasCost, setEstimatedGasCost] = useState<undefined | BigNumber>(undefined)
+
   const { checkConnectedChainId, chainId, walletName, connectWallet } = useWeb3Context()
 
   const fromToken = useMemo(
@@ -71,13 +79,52 @@ const Send: FC = () => {
     }
   }, [chainId, tokenList, tokenSymbol])
 
+  const { estimateSend } = useEstimateSendTransaction({
+    fromNetwork,
+    toNetwork,
+    selectedToken: fromToken,
+  })
+
+  const handleEstimateSend = async () => {
+    if (networksAndSigners[fromNetwork.chainId]?.signer) {
+      const gasPrice = await networksAndSigners[fromNetwork.chainId].signer.getGasPrice()
+      try {
+        const gasLimit = await estimateSend()
+        const estimatedGasCost = BigNumber.from(gasLimit)
+          .mul(gasPrice || 1e9)
+          .mul(140)
+          .div(100)
+        setEstimatedGasCost(estimatedGasCost)
+      } catch (error) {
+        setEstimatedGasCost(undefined)
+      }
+    }
+  }
+
+  useEffect(() => {
+    handleEstimateSend()
+  }, [chainId, fromToken, fromTokenAmount])
+
   const isCorrectNetwork = useMemo(() => !!chainId && fromNetwork.chainId === chainId, [chainId, fromNetwork])
+  const { getPriceFee } = usePriceFee()
+
+  useEffect(() => {
+    handleTotalBonderFeeDisplay()
+  }, [chainId, fromTokenAmount, fromToken])
+
+  const handleTotalBonderFeeDisplay = async () => {
+    if (networksAndSigners[fromNetwork.chainId]?.signer) {
+      const fee = await getPriceFee(fromToken, fromNetwork.isLayer1)
+      const display = fromTokenAmount ? toTokenDisplay(fee) + " " + ETH_SYMBOL : "-"
+      setTotalBonderFeeDisplay(display)
+    }
+  }
 
   const { warning } = useSufficientBalance(
     fromToken,
     networksAndSigners[fromNetwork.chainId],
     fromTokenAmount ? amountToBN(fromTokenAmount, fromToken.decimals) : undefined,
-    undefined,
+    estimatedGasCost,
     fromBalance ?? undefined,
     isCorrectNetwork,
   )
@@ -247,6 +294,21 @@ const Send: FC = () => {
             loadingBalance={loadingToBalance}
             disableInput
           />
+
+          <div className={styles.details}>
+            <div className={styles.destinationTxFeeAndAmount}>
+              <DetailRow
+                title={"Fees"}
+                tooltip={<FeeDetails />}
+                value={
+                  <>
+                    <Typography>{totalBonderFeeDisplay}</Typography>
+                  </>
+                }
+                large
+              />
+            </div>
+          </div>
 
           {warningTip && (
             <Alert variant="standard" severity={sendError ? "error" : "warning"} style={{ marginTop: "2.4rem" }}>

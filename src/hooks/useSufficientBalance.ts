@@ -1,7 +1,6 @@
 import { BigNumber } from "ethers"
 import { useEffect, useState } from "react"
 
-import { GasLimit } from "@/constants"
 import { useIsSmartContractWallet, usePriceFee } from "@/hooks"
 import { isProduction, toTokenDisplay } from "@/utils"
 
@@ -44,7 +43,7 @@ function useSufficientBalance(
         totalCost = estimatedGasCost.add(amount)
         if (isProduction) {
           const isLayer1 = token.network.isLayer1
-          const fee = await getPriceFee(GasLimit[isLayer1 ? "DEPOSIT_ETH" : "WITHDRAW_ETH"], isLayer1)
+          const fee = await getPriceFee(selectedToken, isLayer1)
           totalCost = totalCost.add(fee)
         }
         enoughFeeBalance = ntb.gte(totalCost)
@@ -53,7 +52,7 @@ function useSufficientBalance(
         totalCost = estimatedGasCost
         if (isProduction) {
           const isLayer1 = token.network.isLayer1
-          const fee = await getPriceFee(GasLimit[isLayer1 ? "DEPOSIT_ERC20" : "WITHDRAW_ERC20"], isLayer1)
+          const fee = await getPriceFee(selectedToken, isLayer1)
           totalCost = totalCost.add(fee)
         }
         enoughFeeBalance = ntb.gte(totalCost)

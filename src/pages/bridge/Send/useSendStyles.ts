@@ -42,4 +42,23 @@ export const useSendStyles = makeStyles()(theme => ({
   button: {
     marginTop: "2rem",
   },
+  details: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    minHeight: "6rem",
+    width: "46.0rem",
+    [theme.breakpoints.down("xs")]: {
+      width: "90%",
+    },
+  },
+  detailRow: {},
+  detailLabel: {
+    display: "flex",
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
+  destinationTxFeeAndAmount: {
+    marginTop: "2.4rem",
+  },
 }))
