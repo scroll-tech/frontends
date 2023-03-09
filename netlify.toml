@@ -28,7 +28,7 @@ REACT_APP_L1_GAS_PRICE_ORACLE = "0x5300000000000000000000000000000000000002"
 
 [context.deploy-preview.environment]
 # same as develop
-REACT_APP_SCROLL_ENVIRONMENT = "STAGING"
+REACT_APP_SCROLL_ENVIRONMENT = "DEVELOP"
 REACT_APP_CHAIN_ID_L2 = "5343531"
 REACT_APP_EXTERNAL_RPC_URI_L2 = "https://staging-alpha-rpc.scroll.io/l2"
 REACT_APP_API_BASE_URI = "https://staging-alpha-api.scroll.io"
@@ -45,7 +45,7 @@ REACT_APP_L2_WETH_ADDRESS = "0x4d5d1747a404e7AC4Cf5e173Ef192c2A0c8d1B12"
 
 [context.develop.environment]
 # same as deploy-preview
-REACT_APP_SCROLL_ENVIRONMENT = "STAGING"
+REACT_APP_SCROLL_ENVIRONMENT = "DEVELOP"
 REACT_APP_CHAIN_ID_L2 = "5343531"
 REACT_APP_EXTERNAL_RPC_URI_L2 = "https://staging-alpha-rpc.scroll.io/l2"
 REACT_APP_API_BASE_URI = "https://staging-alpha-api.scroll.io"
