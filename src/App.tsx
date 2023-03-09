@@ -31,7 +31,7 @@ function App() {
 
   React.useEffect(() => {
     // Google Analytics
-    ReactGA.send(`${location.pathname}${location.search}`)
+    ReactGA.send({ hitType: "pageview", page: `${location.pathname}${location.search}` })
   }, [location])
 
   return (
