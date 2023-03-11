@@ -1,5 +1,4 @@
-import { BigNumber, BigNumberish, FixedNumber, utils } from "ethers"
-import { formatUnits } from "ethers/lib/utils"
+import { FixedNumber, formatUnits, parseUnits } from "ethers"
 import numbro from "numbro"
 
 export const commafy = (value: string | number | undefined, decimals: number = 2) => {
@@ -40,7 +39,7 @@ export const toHexadecimal = (value: number): string => {
   return `0x${value.toString(16)}`
 }
 
-export const toTokenDisplay = (num?: BigNumberish, decimals: number = 18, symbol?: string) => {
+export const toTokenDisplay = (num, decimals: bigint = BigInt(18), symbol?: string) => {
   if (!num || !decimals) {
     return "-"
   }
@@ -65,7 +64,7 @@ export function sanitizeNumericalString(numStr: string) {
   return numStr.replace(/[^0-9.]|\.(?=.*\.)/g, "")
 }
 
-export function maxDecimals(amount: string, decimals: number) {
+export function maxDecimals(amount: string, decimals: bigint = BigInt(18)) {
   const sanitizedAmount = sanitizeNumericalString(amount)
   const indexOfDecimal = sanitizedAmount.indexOf(".")
   if (indexOfDecimal === -1) {
@@ -73,24 +72,24 @@ export function maxDecimals(amount: string, decimals: number) {
   }
 
   const wholeAmountStr = sanitizedAmount.slice(0, indexOfDecimal) || "0"
-  const wholeAmount = BigNumber.from(wholeAmountStr).toString()
+  const wholeAmount = BigInt(wholeAmountStr).toString()
 
   const fractionalAmount = sanitizedAmount.slice(indexOfDecimal + 1)
-  const decimalAmount = decimals !== 0 ? `.${fractionalAmount.slice(0, decimals)}` : ""
+  const decimalAmount = decimals !== BigInt(0) ? `.${fractionalAmount.slice(0, Number(decimals))}` : ""
 
   return `${wholeAmount}${decimalAmount}`
 }
 
-export function fixedDecimals(amount: string, decimals: number = 18) {
+export function fixedDecimals(amount: string, decimals: bigint = BigInt(18)) {
   if (amount === "") {
     return amount
   }
   const mdAmount = maxDecimals(amount, decimals)
-  return FixedNumber.from(mdAmount).toString()
+  return FixedNumber.fromString(mdAmount).toString()
 }
 
-export function amountToBN(amount: string | number | undefined, decimals: number = 18) {
+export function amountToBN(amount: string | number | undefined, decimals: bigint = BigInt(18)): bigint {
   // @ts-ignore
   const fixedAmount = fixedDecimals(amount.toString(), decimals)
-  return utils.parseUnits(fixedAmount || "0", decimals)
+  return parseUnits(fixedAmount || "0", decimals)
 }

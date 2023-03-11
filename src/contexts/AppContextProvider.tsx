@@ -1,5 +1,4 @@
-import { JsonRpcProvider } from "@ethersproject/providers"
-import { ethers, providers } from "ethers"
+import { BrowserProvider, JsonRpcProvider, JsonRpcSigner, ethers } from "ethers"
 import { createContext, useContext, useEffect, useState } from "react"
 import useStorage from "squirrel-gill"
 import useSWR from "swr"
@@ -39,21 +38,18 @@ const AppContextProvider = ({ children }: any) => {
 
   const txHistory = useTxHistory(networksAndSigners)
 
-  const update = async (web3Provider: providers.Web3Provider, address: string) => {
-    const { chainId } = await web3Provider.getNetwork()
-
+  const update = async (web3Provider: BrowserProvider, address: string) => {
     let l1signer, l2signer, l1Gateway, l2Gateway, l1Provider, l2Provider, l1ProviderForSafeBlock
-
     if (chainId === ChainId.SCROLL_LAYER_1) {
       l1Provider = web3Provider
       l2Provider = await new JsonRpcProvider(RPCUrl.SCROLL_LAYER_2)
       l1signer = await web3Provider.getSigner(0)
-      l2signer = await l2Provider.getSigner(address)
+      l2signer = new JsonRpcSigner(l2Provider, address)
       l1Gateway = new ethers.Contract(GatewayRouterProxyAddr[ChainId.SCROLL_LAYER_1], L1_GATEWAY_ROUTER_PROXY_ABI, l1signer)
     } else if (chainId === ChainId.SCROLL_LAYER_2) {
       l1Provider = await new JsonRpcProvider(RPCUrl.SCROLL_LAYER_1)
       l2Provider = web3Provider
-      l1signer = await l1Provider.getSigner(address)
+      l1signer = new JsonRpcSigner(l1Provider, address)
       l2signer = await web3Provider.getSigner(0)
       l2Gateway = new ethers.Contract(GatewayRouterProxyAddr[ChainId.SCROLL_LAYER_2], L2_GATEWAY_ROUTER_PROXY_ABI, l2signer)
     } else {

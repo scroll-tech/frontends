@@ -1,7 +1,6 @@
-import { getAddress } from "@ethersproject/address"
 import injectedModule from "@web3-onboard/injected-wallets"
 import { init, useConnectWallet, useSetChain, useWallets } from "@web3-onboard/react"
-import { BigNumber, ethers, providers } from "ethers"
+import { ethers, getAddress } from "ethers"
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react"
 
 import { networks } from "@/constants"
@@ -13,9 +12,9 @@ import { CONNECTED_WALLETS as cacheKey } from "@/utils/storageKey"
 
 type Props = {
   onboard: any
-  provider: providers.Web3Provider | undefined
+  provider: ethers.BrowserProvider | undefined
   walletCurrentAddress?: string
-  balance?: BigNumber
+  balance?: bigint
   chainId?: number
   connectWallet: () => void
   disconnectWallet: () => void
@@ -69,7 +68,7 @@ const web3Onboard = init({
 })
 
 const Web3ContextProvider = ({ children }: any) => {
-  const [provider, setProvider] = useState<providers.Web3Provider | undefined>()
+  const [provider, setProvider] = useState<ethers.BrowserProvider | undefined>()
 
   const [onboard, setOnboard] = useState<any>(null)
 
@@ -94,7 +93,7 @@ const Web3ContextProvider = ({ children }: any) => {
     if (!wallet?.provider) {
       setProvider(undefined)
     } else {
-      const ethersProvider = new ethers.providers.Web3Provider(wallet.provider, "any")
+      const ethersProvider = new ethers.BrowserProvider(wallet.provider, "any")
       setProvider(ethersProvider)
     }
   }, [wallet])

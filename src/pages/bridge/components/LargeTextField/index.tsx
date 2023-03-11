@@ -1,7 +1,7 @@
 import { FC, ReactNode } from "react"
 import { makeStyles } from "tss-react/mui"
 
-import MuiTextField, { TextFieldProps } from "@mui/material/TextField"
+import MuiTextField, { StandardTextFieldProps } from "@mui/material/TextField"
 
 type LargeTextFieldProps = {
   units?: string | ReactNode
@@ -9,7 +9,7 @@ type LargeTextFieldProps = {
   leftAlign?: boolean | undefined
   defaultShadow?: boolean | undefined
   smallFontSize?: boolean
-} & TextFieldProps
+} & StandardTextFieldProps
 
 const useStyles = makeStyles()(theme => {
   return {
@@ -60,6 +60,7 @@ const LargeTextField: FC<LargeTextFieldProps> = props => {
       className={cx(classes.root, className)}
       variant="standard"
       autoComplete="off"
+      // disableUnderline
       InputProps={{
         classes: inputStyles,
         disableUnderline: true,

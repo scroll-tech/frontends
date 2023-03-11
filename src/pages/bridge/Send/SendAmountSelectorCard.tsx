@@ -1,5 +1,4 @@
 // /* eslint-disable */
-import { BigNumber } from "ethers"
 import { ChangeEvent, FC, useMemo } from "react"
 import { makeStyles } from "tss-react/mui"
 
@@ -25,7 +24,7 @@ type Props = {
   selectedNetwork?: any
   networkOptions: any[]
   onNetworkChange?: (network?: any) => void
-  balance?: BigNumber
+  balance?: bigint
   loadingBalance?: boolean
   disableInput?: boolean
   deadline?: any
@@ -145,7 +144,7 @@ const SendAmountSelectorCard: FC<Props> = props => {
   //   if (!(onChange && balance && token &&   deadline)) {
   //     return
   //   }
-  //   let nativeTokenMaxGasCost = BigNumber.from(0)
+  //   let nativeTokenMaxGasCost = BigInt(0)
   //   if (token.isNativeToken) {
   //     if (!toNetwork && setWarning) {
   //       return setWarning('Please set a destination network to determine max value')
@@ -168,7 +167,7 @@ const SendAmountSelectorCard: FC<Props> = props => {
   //   }
   //   let totalAmount = balance.sub(nativeTokenMaxGasCost)
   //   if (totalAmount.lt(0)) {
-  //     totalAmount = BigNumber.from(0)
+  //     totalAmount = BigInt(0)
   //   }
   //   const maxValue = formatUnits(totalAmount, token.decimals)
   //   onChange(maxValue)

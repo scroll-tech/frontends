@@ -1,5 +1,5 @@
 import classNames from "classnames"
-import { BigNumber, ethers } from "ethers"
+import { ethers } from "ethers"
 import { ChangeEvent, FC, useEffect, useMemo, useState } from "react"
 import useStorage from "squirrel-gill"
 
@@ -35,7 +35,7 @@ const Send: FC = () => {
   const [fromNetwork, setFromNetwork] = useState({} as any)
   const [toNetwork, setToNetwork] = useState({} as any)
   const [totalBonderFeeDisplay, setTotalBonderFeeDisplay] = useState("-")
-  const [estimatedGasCost, setEstimatedGasCost] = useState<undefined | BigNumber>(undefined)
+  const [estimatedGasCost, setEstimatedGasCost] = useState<undefined | bigint>(undefined)
 
   const { checkConnectedChainId, chainId, walletName, connectWallet } = useWeb3Context()
 
@@ -88,13 +88,10 @@ const Send: FC = () => {
 
   const handleEstimateSend = async () => {
     if (networksAndSigners[fromNetwork.chainId]?.signer) {
-      const gasPrice = await networksAndSigners[fromNetwork.chainId].signer.getGasPrice()
+      const { maxFeePerGas: gasPrice } = await networksAndSigners[fromNetwork.chainId].provider.getFeeData()
       try {
         const gasLimit = await estimateSend()
-        const estimatedGasCost = BigNumber.from(gasLimit)
-          .mul(gasPrice || 1e9)
-          .mul(140)
-          .div(100)
+        const estimatedGasCost = (BigInt(gasLimit) * BigInt(gasPrice || 1e9) * BigInt(140)) / BigInt(100)
         setEstimatedGasCost(estimatedGasCost)
       } catch (error) {
         setEstimatedGasCost(undefined)
@@ -232,7 +229,7 @@ const Send: FC = () => {
     const Token = new ethers.Contract((fromToken as ERC20Token).address, L1_erc20ABI, networksAndSigners[chainId as number].signer)
     const tx = await Token.approve(
       StandardERC20GatewayProxyAddr[chainId as number],
-      ethers.constants.MaxUint256,
+      ethers.MaxUint256,
       // parsedAmount
     )
     await tx?.wait()

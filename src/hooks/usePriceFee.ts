@@ -18,7 +18,7 @@ const usePriceFee = () => {
           networksAndSigners[ChainId.SCROLL_LAYER_1].signer,
         )
         const fee = await L2GasPriceOracleContract.l2BaseFee()
-        return fee.mul(token.native ? GasLimit.DEPOSIT_ETH : GasLimit.DEPOSIT_ERC20)
+        return fee * BigInt(token.native ? GasLimit.DEPOSIT_ETH : GasLimit.DEPOSIT_ERC20)
       } else {
         const L1GasPriceOracleContract = new ethers.Contract(
           requireEnv("REACT_APP_L1_GAS_PRICE_ORACLE"),
@@ -26,10 +26,10 @@ const usePriceFee = () => {
           networksAndSigners[ChainId.SCROLL_LAYER_2].signer,
         )
         const fee = await L1GasPriceOracleContract.l1BaseFee()
-        return fee.mul(token.native ? GasLimit.WITHDRAW_ETH : GasLimit.WITHDRAW_ERC20)
+        return fee * BigInt(token.native ? GasLimit.WITHDRAW_ETH : GasLimit.WITHDRAW_ERC20)
       }
     } catch (err) {
-      return 0
+      return BigInt(0)
     }
   }
 
