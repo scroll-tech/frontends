@@ -16,7 +16,7 @@ export interface TxHistory {
 const useTxHistory = networksAndSigners => {
   const { walletCurrentAddress } = useWeb3Context()
   const { transactions, pageTransactions, generateTransactions, comboPageTransactions } = useTxStore()
-
+  const [blockNumbers, setBlockNumbers] = useState([-1, -1])
   const [errorMessage, setErrorMessage] = useState("")
 
   const fetchTxList = useCallback(({ txs }) => {
@@ -66,14 +66,25 @@ const useTxHistory = networksAndSigners => {
     return null
   }, [networksAndSigners])
 
-  const { data: blockNumbers } = useSWR<any>("eth_blockNumber", fetchBlockNumber, {
+  const { data: blockNumbersRes } = useSWR<any>("eth_blockNumber", fetchBlockNumber, {
     refreshInterval: 2000,
   })
+
+  // handle unstable rpc
+  useEffect(() => {
+    if (blockNumbersRes) {
+      setBlockNumbers(preValue => {
+        return [blockNumbersRes[0] > -1 ? blockNumbersRes[0] : preValue[0], blockNumbersRes[1] > -1 ? blockNumbersRes[1] : preValue[1]]
+      })
+    }
+  }, [blockNumbersRes])
+
+  console.log(blockNumbers)
 
   const refreshPageTransactions = useCallback(
     page => {
       if (walletCurrentAddress) {
-        comboPageTransactions(walletCurrentAddress, page, BRIDGE_PAGE_SIZE).catch(e => {
+        comboPageTransactions(walletCurrentAddress, page, BRIDGE_PAGE_SIZE, blockNumbers[0]).catch(e => {
           setErrorMessage(e)
         })
       }
@@ -87,7 +98,7 @@ const useTxHistory = networksAndSigners => {
 
   useEffect(() => {
     if (data?.data?.result.length) {
-      generateTransactions(data.data.result)
+      generateTransactions(data.data.result, blockNumbers[0])
     }
   }, [data])
 
