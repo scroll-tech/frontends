@@ -8,7 +8,7 @@ The goal for this repo is to contain a single React app written in TypeScript to
 
 ## Contributing
 
-If you encounter bugs or have feature ideas, feel free to create an issue at https://github.com/scroll-tech/frontends/issues or write a PR at https://github.com/scroll-tech/frontends/pulls.
+If you encounter bugs or have feature ideas, feel free to [create an issue](/../../issues) or [write a PR](/../../pulls).
 
 ## Available Scripts
 
