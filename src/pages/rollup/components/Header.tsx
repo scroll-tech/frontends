@@ -2,6 +2,7 @@ import { Box, Button, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import useConnectWallet from "@/hooks/useConnectWallet"
 import { truncateAddress } from "@/utils"
 
 const Description = styled(Typography)(({ theme }) => ({
@@ -19,7 +20,8 @@ const AccountBox = styled(Box)(({ theme }) => ({
 }))
 
 const Header = () => {
-  const { walletCurrentAddress, connectWallet } = useWeb3Context()
+  const { walletCurrentAddress } = useWeb3Context()
+  const connectWallet = useConnectWallet()
   return (
     <Box className="mx-auto">
       <AccountBox>

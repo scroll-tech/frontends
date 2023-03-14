@@ -1,11 +1,13 @@
 import { Button, Container } from "@mui/material"
 
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import useConnectWallet from "@/hooks/useConnectWallet"
 
 import AddressButton from "./AddressButton"
 
 const Header = () => {
-  const { walletCurrentAddress, connectWallet } = useWeb3Context()
+  const { walletCurrentAddress } = useWeb3Context()
+  const connectWallet = useConnectWallet()
 
   return (
     <Container
