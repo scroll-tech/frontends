@@ -30,13 +30,3 @@ export const generateExploreLink = (explorer, hash) => {
 }
 
 export const isProduction = requireEnv("REACT_APP_SCROLL_ENVIRONMENT") === requireEnv("REACT_APP_MAIN_ENVIRONMENT")
-
-export const goMetaMaskApp = () => {
-  const dappUrl = window.location.href
-  if (dappUrl.startsWith("https://")) {
-    const url = `https://metamask.app.link/dapp/` + dappUrl.replace("https://", "")
-    window.open(url)
-  } else {
-    console.log("The url needs to start with https://")
-  }
-}

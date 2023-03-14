@@ -4,7 +4,7 @@ import { Alert, Snackbar } from "@mui/material"
 
 import { addresses, documentation, navigation } from "@/constants/index"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
-import { goMetaMaskApp } from "@/utils"
+import useConnectWallet from "@/hooks/useConnectWallet"
 
 import SectionTitle from "./components/sectionTitle"
 
@@ -36,16 +36,10 @@ function AddNetworkButton({ autoconnect, walletName, chainId, onReadd }: any) {
 }
 
 function ConnectWalletButton() {
-  const { connectWallet } = useWeb3Context()
-  const handleConnectWallet = () => {
-    if (typeof window.ethereum !== "undefined") {
-      connectWallet()
-    } else {
-      goMetaMaskApp()
-    }
-  }
+  const connectWallet = useConnectWallet()
+
   return (
-    <a onClick={handleConnectWallet} className="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer">
+    <a onClick={connectWallet} className="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer">
       Connect Wallet
     </a>
   )
