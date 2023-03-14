@@ -23,8 +23,10 @@ export enum ChainIdEnum {
 
 export function useSendTransaction(props) {
   const { fromNetwork, fromTokenAmount, setError, setSendError, toNetwork, selectedToken } = props
-
-  const { networksAndSigners } = useApp()
+  const {
+    networksAndSigners,
+    txHistory: { blockNumbers },
+  } = useApp()
   const { addTransaction, updateTransaction } = useTxStore()
   const { changeRecentTxVisible } = useBridgeStore()
   const [sending, setSending] = useState<boolean>(false)
@@ -55,6 +57,7 @@ export function useSendTransaction(props) {
         const txResult = await tx.wait()
         handleTransaction(tx, {
           fromBlockNumber: txResult.blockNumber,
+          fromEstimatedEndTime: Date.now() + (txResult.blockNumber - blockNumbers[0]) * 12 * 1000,
         })
       } catch (error) {
         console.log(error)
