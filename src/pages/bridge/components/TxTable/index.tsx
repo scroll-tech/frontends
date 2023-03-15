@@ -203,13 +203,13 @@ const TxRow = props => {
           )}
         </Stack>
       </TableCell>
-      <TableCell className="w-full">
+      <TableCell>
         <Typography>
           <span>{txAmount(tx.amount)} </span>
           {tokenInfoLoading ? <Skeleton variant="text" width="5rem" className="inline-block" /> : <span>{tokenInfo.symbol}</span>}
         </Typography>
       </TableCell>
-      <TableCell>
+      <TableCell sx={{ width: "30rem" }}>
         <Stack direction="column">
           <Typography>From {tx.fromName}: </Typography>
           <Link external href={generateExploreLink(tx.fromExplore, tx.hash)} className="leading-normal flex-1">
