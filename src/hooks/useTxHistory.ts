@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react"
+import useStorage from "squirrel-gill"
 import useSWR from "swr"
 
 import { fetchTxByHashUrl } from "@/apis/bridge"
@@ -16,7 +17,8 @@ export interface TxHistory {
 const useTxHistory = networksAndSigners => {
   const { walletCurrentAddress } = useWeb3Context()
   const { transactions, pageTransactions, generateTransactions, comboPageTransactions } = useTxStore()
-  const [blockNumbers, setBlockNumbers] = useState([-1, -1])
+  const [blockNumbers, setBlockNumbers] = useStorage(localStorage, "blockNumbers", [-1, -1])
+
   const [errorMessage, setErrorMessage] = useState("")
 
   const fetchTxList = useCallback(({ txs }) => {
@@ -69,17 +71,17 @@ const useTxHistory = networksAndSigners => {
   const { data: blockNumbersRes } = useSWR<any>("eth_blockNumber", fetchBlockNumber, {
     refreshInterval: 2000,
   })
+  console.log(blockNumbersRes, new Date().toLocaleTimeString())
 
-  // handle unstable rpc
+  // in order to be compatible with unstable rpc
   useEffect(() => {
     if (blockNumbersRes) {
-      setBlockNumbers(preValue => {
-        return [blockNumbersRes[0] > -1 ? blockNumbersRes[0] : preValue[0], blockNumbersRes[1] > -1 ? blockNumbersRes[1] : preValue[1]]
-      })
+      setBlockNumbers([
+        blockNumbersRes[0] > -1 ? blockNumbersRes[0] : blockNumbers[0],
+        blockNumbersRes[1] > -1 ? blockNumbersRes[1] : blockNumbers[1],
+      ])
     }
   }, [blockNumbersRes])
-
-  console.log(blockNumbers)
 
   const refreshPageTransactions = useCallback(
     page => {

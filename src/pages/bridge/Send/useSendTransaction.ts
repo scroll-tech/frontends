@@ -57,7 +57,7 @@ export function useSendTransaction(props) {
         const txResult = await tx.wait()
         handleTransaction(tx, {
           fromBlockNumber: txResult.blockNumber,
-          fromEstimatedEndTime: Date.now() + (txResult.blockNumber - blockNumbers[0]) * 12 * 1000,
+          fromEstimatedEndTime: fromNetwork.isLayer1 ? Date.now() + (txResult.blockNumber - blockNumbers[0]) * 12 * 1000 : undefined,
         })
       } catch (error) {
         console.log(error)
