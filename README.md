@@ -6,6 +6,10 @@ Scroll's Monorepo for Frontends
 
 The goal for this repo is to contain a single React app written in TypeScript to accommodate for all official Scroll frontend functionality.
 
+## License
+
+MIT.
+
 ## Contributing
 
 If you encounter bugs or have feature ideas, feel free to [create an issue](/../../issues) or [write a PR](/../../pulls).
