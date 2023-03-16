@@ -11,7 +11,6 @@ const Link = styled(RouterLink)({
   alignItems: "center",
   "& *": {
     fontWeight: 500,
-    color: "#202020",
   },
 })
 
@@ -104,7 +103,7 @@ const TableOfContents: FC = () => {
         <li className="header-link hover:bg-transparent">
           <Link to="/blog">
             <ArrowBackIosIcon />
-            <Typography>All Articles</Typography>
+            <Typography sx={{ color: "inherit", cursor: "inherit" }}>All Articles</Typography>
           </Link>
         </li>
         {headings.map(header => (
