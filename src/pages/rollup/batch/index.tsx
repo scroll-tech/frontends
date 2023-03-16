@@ -66,6 +66,7 @@ const BoxItem = styled(Box)(({ theme }) => ({
     justifyContent: "space-between",
     "& > *:nth-last-child(1)": {
       textAlign: "right",
+      marginLeft: "0.4rem",
       marginRight: "1.6rem",
     },
   },
@@ -154,7 +155,7 @@ const Blocks = () => {
                   Status{" "}
                   <Tooltip title={renderStatusTooltip()} leaveTouchDelay={15000}>
                     <InfoOutlined sx={{ fontSize: "2rem", verticalAlign: "text-bottom" }} />
-                  </Tooltip>{" "}
+                  </Tooltip>
                 </LabelTypography>
                 <StatusChip label={renderStatus(batch.rollup_status)} className={batch.rollup_status}></StatusChip>
               </BoxItem>
@@ -178,17 +179,15 @@ const Blocks = () => {
                   Batch Created Timestamp{" "}
                   <Tooltip title="Timestamp when the batch was created">
                     <InfoOutlined sx={{ fontSize: "2rem", verticalAlign: "text-bottom" }} />
-                  </Tooltip>{" "}
+                  </Tooltip>
                 </LabelTypography>
                 <Typography>{renderTimestamp(batch.created_at)}</Typography>
               </BoxItem>
               <Divider />
 
               <BoxItem>
-                <>
-                  <LabelTypography>Commit Tx Hash</LabelTypography>
-                  {renderLink(batch.commit_tx_hash)}
-                </>
+                <LabelTypography>Commit Tx Hash</LabelTypography>
+                <Typography>{renderLink(batch.commit_tx_hash)}</Typography>
               </BoxItem>
               <Divider />
 
@@ -197,17 +196,15 @@ const Blocks = () => {
                   Commit Timestamp{" "}
                   <Tooltip title="Timestamp of the transaction that commits the batch's data to L1">
                     <InfoOutlined sx={{ fontSize: "2rem", verticalAlign: "text-bottom" }} />
-                  </Tooltip>{" "}
+                  </Tooltip>
                 </LabelTypography>
                 <Typography>{renderTimestamp(batch.committed_at)}</Typography>
               </BoxItem>
               <Divider />
 
               <BoxItem>
-                <>
-                  <LabelTypography>Finalized Tx Hash</LabelTypography>
-                  {renderLink(batch.finalize_tx_hash)}
-                </>
+                <LabelTypography>Finalized Tx Hash</LabelTypography>
+                <Typography>{renderLink(batch.finalize_tx_hash)}</Typography>
               </BoxItem>
               <Divider />
 
@@ -216,7 +213,7 @@ const Blocks = () => {
                   Finalized Timestamp{" "}
                   <Tooltip title="Timestamp of the transaction that posts the batch's proof to L1">
                     <InfoOutlined sx={{ fontSize: "2rem", verticalAlign: "text-bottom" }} />
-                  </Tooltip>{" "}
+                  </Tooltip>
                 </LabelTypography>
                 <Typography>{renderTimestamp(batch.finalized_at)}</Typography>
               </BoxItem>
