@@ -16,11 +16,6 @@ export type TransactionHandled = {
   txModel: any
 }
 
-export enum ChainIdEnum {
-  GOERLI = 5,
-  SCROLL_ALPHA = 534353,
-}
-
 export function useSendTransaction(props) {
   const { fromNetwork, fromTokenAmount, setError, setSendError, toNetwork, selectedToken } = props
 
@@ -90,63 +85,39 @@ export function useSendTransaction(props) {
 
   const depositETH = async () => {
     const fee = await getPriceFee(selectedToken, fromNetwork.isLayer1)
-    if (ChainId.SCROLL_LAYER_1 === ChainIdEnum.GOERLI) {
-      return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositETH(uint256,uint256)"](parsedAmount, GasLimit.DEPOSIT_ETH, {
-        value: parsedAmount.add(fee),
-      })
-    }
-    return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositETH(uint256)"](GasLimit.DEPOSIT_ETH, {
-      value: parsedAmount,
+    return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositETH(uint256,uint256)"](parsedAmount, GasLimit.DEPOSIT_ETH, {
+      value: parsedAmount.add(fee),
     })
   }
 
   const depositERC20 = async () => {
     const fee = await getPriceFee(selectedToken, fromNetwork.isLayer1)
-    if (ChainId.SCROLL_LAYER_1 === ChainIdEnum.GOERLI) {
-      return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositERC20(address,uint256,uint256)"](
-        selectedToken.address,
-        parsedAmount,
-        GasLimit.DEPOSIT_ERC20,
-        {
-          value: fee,
-        },
-      )
-    }
     return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositERC20(address,uint256,uint256)"](
       selectedToken.address,
       parsedAmount,
       GasLimit.DEPOSIT_ERC20,
+      {
+        value: fee,
+      },
     )
   }
 
   const withdrawETH = async () => {
     const fee = await getPriceFee(selectedToken)
-    if (ChainId.SCROLL_LAYER_2 === ChainIdEnum.SCROLL_ALPHA) {
-      return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawETH(uint256,uint256)"](parsedAmount, GasLimit.WITHDRAW_ETH, {
-        value: parsedAmount.add(fee),
-      })
-    }
-    return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawETH(uint256)"](GasLimit.WITHDRAW_ETH, {
-      value: parsedAmount,
+    return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawETH(uint256,uint256)"](parsedAmount, GasLimit.WITHDRAW_ETH, {
+      value: parsedAmount.add(fee),
     })
   }
 
   const withdrawERC20 = async () => {
     const fee = await getPriceFee(selectedToken)
-    if (ChainId.SCROLL_LAYER_2 === ChainIdEnum.SCROLL_ALPHA) {
-      return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawERC20(address,uint256,uint256)"](
-        selectedToken.address,
-        parsedAmount,
-        GasLimit.WITHDRAW_ERC20,
-        {
-          value: fee,
-        },
-      )
-    }
     return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawERC20(address,uint256,uint256)"](
       selectedToken.address,
       parsedAmount,
       GasLimit.WITHDRAW_ERC20,
+      {
+        value: fee,
+      },
     )
   }
 
