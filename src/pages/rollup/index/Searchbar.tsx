@@ -67,7 +67,7 @@ export default function Searchbar(props) {
       })
       .catch(() => {
         changeEmptyBatch(true)
-        changeErrorMessage("Fail to search block, something wrong...")
+        changeErrorMessage("Failure when searching block")
       })
       .finally(() => {
         changeSearchLoading(false)

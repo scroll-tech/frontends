@@ -29,7 +29,7 @@ const useTxHistory = networksAndSigners => {
     })
       .then(data => data)
       .catch(e => {
-        throw new Error("Fail to refresh transactions, something wrong...")
+        throw new Error("Failed to refresh transaction history")
       })
   }, [])
 
