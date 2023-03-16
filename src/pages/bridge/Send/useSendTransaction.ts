@@ -42,6 +42,7 @@ export function useSendTransaction(props) {
 
       const isNetworkConnected = await checkConnectedChainId(fromNetwork.chainId)
       if (!isNetworkConnected) return
+      setSending(true)
       let tx
       try {
         if (fromNetwork.isLayer1) {
