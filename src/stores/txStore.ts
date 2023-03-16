@@ -43,13 +43,18 @@ const formatBackTxList = (backList, safeBlockNumber) => {
     const toName = networks[+tx.isL1].name
     const toExplore = networks[+tx.isL1].explorer
     const toHash = tx.finalizeTx?.hash
-    const toEstimatedEndTime = !tx.isL1 ? Date.now() + (tx.finalizeTx?.blockNumber - safeBlockNumber) * 12 * 1000 : undefined
+    const fromEstimatedEndTime = tx.isL1 && tx.blockNumber > safeBlockNumber ? Date.now() + (tx.blockNumber - safeBlockNumber) * 12 * 1000 : undefined
+    const toEstimatedEndTime =
+      !tx.isL1 && tx.finalizeTx?.blockNumber && tx.finalizeTx.blockNumber > safeBlockNumber
+        ? Date.now() + (tx.finalizeTx.blockNumber - safeBlockNumber) * 12 * 1000
+        : undefined
     return {
       hash: tx.hash,
       amount,
       fromName,
       fromExplore,
       fromBlockNumber: tx.blockNumber,
+      fromEstimatedEndTime,
       toHash,
       toName,
       toExplore,

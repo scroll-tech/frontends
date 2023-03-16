@@ -215,7 +215,7 @@ const TxRow = props => {
           <Link external href={generateExploreLink(tx.fromExplore, tx.hash)} className="leading-normal flex-1">
             {truncateHash(tx.hash)}
           </Link>
-          {!tx.fromBlockNumber && tx.isL1 && <LinearProgress />}
+          {!tx.fromBlockNumber && <LinearProgress />}
           {tx.fromEstimatedEndTime && (
             <Typography variant="body2" color="textSecondary">
               <Countdown date={tx.fromEstimatedEndTime} renderer={renderCountDown}></Countdown>
