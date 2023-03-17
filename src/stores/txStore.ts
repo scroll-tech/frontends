@@ -14,8 +14,8 @@ interface TxStore {
   pageTransactions: Transaction[]
   addTransaction: (tx) => void
   updateTransaction: (hash, tx) => void
-  generateTransactions: (transactions) => void
-  comboPageTransactions: (address, page, rowsPerPage) => Promise<any>
+  generateTransactions: (transactions, safeBlockNumber) => void
+  comboPageTransactions: (address, page, rowsPerPage, safeBlockNumber) => Promise<any>
   clearTransactions: () => void
 }
 interface Transaction {
@@ -32,7 +32,7 @@ interface Transaction {
   symbolToken?: string
 }
 
-const formatBackTxList = backList => {
+const formatBackTxList = (backList, safeBlockNumber) => {
   if (!backList.length) {
     return []
   }
@@ -43,18 +43,25 @@ const formatBackTxList = backList => {
     const toName = networks[+tx.isL1].name
     const toExplore = networks[+tx.isL1].explorer
     const toHash = tx.finalizeTx?.hash
+    const fromEstimatedEndTime = tx.isL1 && tx.blockNumber > safeBlockNumber ? Date.now() + (tx.blockNumber - safeBlockNumber) * 12 * 1000 : undefined
+    const toEstimatedEndTime =
+      !tx.isL1 && tx.finalizeTx?.blockNumber && tx.finalizeTx.blockNumber > safeBlockNumber
+        ? Date.now() + (tx.finalizeTx.blockNumber - safeBlockNumber) * 12 * 1000
+        : undefined
     return {
       hash: tx.hash,
       amount,
       fromName,
       fromExplore,
       fromBlockNumber: tx.blockNumber,
+      fromEstimatedEndTime,
       toHash,
       toName,
       toExplore,
       toBlockNumber: tx.finalizeTx?.blockNumber,
       isL1: tx.isL1,
       symbolToken: tx.isL1 ? tx.l1Token : tx.l2Token,
+      toEstimatedEndTime,
     }
   })
 }
@@ -103,10 +110,10 @@ const useTxStore = create<TxStore>()(
         ),
       // polling transactions
       // slim frontTransactions and keep the latest 3 backTransactions
-      generateTransactions: historyList => {
+      generateTransactions: (historyList, safeBlockNumber) => {
         const realHistoryList = historyList.filter(item => item)
         if (realHistoryList.length) {
-          const formattedHistoryList = formatBackTxList(realHistoryList)
+          const formattedHistoryList = formatBackTxList(realHistoryList, safeBlockNumber)
           const formattedHistoryListHash = formattedHistoryList.map(item => item.hash)
           const formattedHistoryListMap = Object.fromEntries(formattedHistoryList.map(item => [item.hash, item]))
           const pendingFrontList = get().frontTransactions.filter(item => !formattedHistoryListHash.includes(item.hash))
@@ -138,7 +145,7 @@ const useTxStore = create<TxStore>()(
       },
 
       // page transactions
-      comboPageTransactions: async (address, page, rowsPerPage) => {
+      comboPageTransactions: async (address, page, rowsPerPage, safeBlockNumber) => {
         const frontTransactions = get().frontTransactions
         set({ loading: true })
         const offset = (page - 1) * rowsPerPage
@@ -160,7 +167,7 @@ const useTxStore = create<TxStore>()(
         return scrollRequest(`${fetchTxListUrl}?address=${address}&offset=${relativeOffset}&limit=${limit}`)
           .then(data => {
             set({
-              pageTransactions: [...frontTransactions, ...formatBackTxList(data.data.result)],
+              pageTransactions: [...frontTransactions, ...formatBackTxList(data.data.result, safeBlockNumber)],
               total: data.data.total,
               page,
               loading: false,
@@ -168,7 +175,7 @@ const useTxStore = create<TxStore>()(
             if (page === 1) {
               // keep transactions always frontList + the latest two history list
               set({
-                transactions: [...frontTransactions, ...formatBackTxList(data.data.result).slice(0, 2)],
+                transactions: [...frontTransactions, ...formatBackTxList(data.data.result, safeBlockNumber).slice(0, 2)],
               })
             }
           })

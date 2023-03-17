@@ -1,9 +1,11 @@
 import { useCallback, useMemo } from "react"
+import Countdown from "react-countdown"
 import { makeStyles } from "tss-react/mui"
 
 import {
   Chip,
   CircularProgress,
+  LinearProgress,
   Pagination,
   Paper,
   Skeleton,
@@ -171,6 +173,19 @@ const TxRow = props => {
   const txAmount = amount => {
     return toTokenDisplay(amount, tokenInfo?.decimals)
   }
+
+  const renderCountDown = ({ hours, minutes, seconds, completed }) => {
+    if (fromStatus === "Success") {
+      return null
+    } else if (completed) {
+      return <LinearProgress />
+    }
+    return (
+      <span>
+        estimated waiting time: {hours}h {minutes}m {seconds}s
+      </span>
+    )
+  }
   return (
     <TableRow key={tx.hash}>
       <TableCell>
@@ -188,33 +203,40 @@ const TxRow = props => {
           )}
         </Stack>
       </TableCell>
-      <TableCell className="w-full">
+      <TableCell>
         <Typography>
           <span>{txAmount(tx.amount)} </span>
           {tokenInfoLoading ? <Skeleton variant="text" width="5rem" className="inline-block" /> : <span>{tokenInfo.symbol}</span>}
         </Typography>
       </TableCell>
-      <TableCell>
+      <TableCell sx={{ width: "30rem" }}>
         <Stack direction="column">
           <Typography>From {tx.fromName}: </Typography>
-          <Stack direction="row" spacing="0.8rem" className="align-center">
-            <Link external href={generateExploreLink(tx.fromExplore, tx.hash)} className="leading-normal flex-1">
-              {truncateHash(tx.hash)}
-            </Link>
-          </Stack>
+          <Link external href={generateExploreLink(tx.fromExplore, tx.hash)} className="leading-normal flex-1">
+            {truncateHash(tx.hash)}
+          </Link>
+          {!tx.fromBlockNumber && <LinearProgress />}
+          {tx.fromEstimatedEndTime && (
+            <Typography variant="body2" color="textSecondary">
+              <Countdown date={tx.fromEstimatedEndTime} renderer={renderCountDown}></Countdown>
+            </Typography>
+          )}
         </Stack>
 
         <Stack direction="column" className="mt-[1.2rem]">
           <Typography>To {tx.toName}: </Typography>
-          <Stack direction="row" spacing="0.8rem" className="align-center">
-            {tx.toHash ? (
-              <Link external href={generateExploreLink(tx.toExplore, tx.toHash)} className="leading-normal flex-1">
-                {truncateHash(tx.toHash)}
-              </Link>
-            ) : (
-              <span className="leading-normal flex-1">-</span>
-            )}
-          </Stack>
+          {tx.toHash ? (
+            <Link external href={generateExploreLink(tx.toExplore, tx.toHash)} className="leading-normal flex-1">
+              {truncateHash(tx.toHash)}
+            </Link>
+          ) : (
+            <span className="leading-normal flex-1">-</span>
+          )}
+          {tx.toEstimatedEndTime && (
+            <Typography variant="body2" color="textSecondary">
+              <Countdown date={tx.toEstimatedEndTime} renderer={renderCountDown}></Countdown>
+            </Typography>
+          )}
         </Stack>
       </TableCell>
     </TableRow>
