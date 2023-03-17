@@ -71,7 +71,6 @@ const useTxHistory = networksAndSigners => {
   const { data: blockNumbersRes } = useSWR<any>("eth_blockNumber", fetchBlockNumber, {
     refreshInterval: 2000,
   })
-  console.log(blockNumbersRes, new Date().toLocaleTimeString())
 
   // in order to be compatible with unstable rpc
   useEffect(() => {
