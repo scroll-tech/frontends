@@ -9,6 +9,7 @@ import useTxStore from "@/stores/txStore"
 import { convertHexadecimal, toHexadecimal } from "@/utils"
 import { loadState, saveState } from "@/utils/localStorage"
 import logger from "@/utils/logger"
+import { CONNECTED_WALLETS as cacheKey } from "@/utils/storageKey"
 
 type Props = {
   onboard: any
@@ -27,7 +28,6 @@ const Web3Context = createContext<Props | undefined>(undefined)
 const injected = injectedModule()
 
 // const INFURA_ID = "84842078b09946638c03157f83405213";
-const cacheKey = "connectedWallets"
 
 const web3Onboard = init({
   wallets: [injected],

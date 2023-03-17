@@ -5,8 +5,7 @@ import L1_erc20ABI from "@/assets/abis/L1_erc20ABI.json"
 import { ChainId, ETH_SYMBOL } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
 import { loadState, saveState } from "@/utils/localStorage"
-
-const TokenInfoMapKey = "tokenInfoMap"
+import { TOKEN_INFO_MAP } from "@/utils/storageKey"
 
 const useTokenInfo = (address: string, isL1: boolean) => {
   const { networksAndSigners } = useApp()
@@ -28,7 +27,7 @@ const useTokenInfo = (address: string, isL1: boolean) => {
           decimals: 18,
         }
       }
-      const symbolMap = loadState(TokenInfoMapKey)
+      const symbolMap = loadState(TOKEN_INFO_MAP)
       if (symbolMap?.[address]) {
         return symbolMap[address]
       }
@@ -39,7 +38,7 @@ const useTokenInfo = (address: string, isL1: boolean) => {
         symbol: tokenSymbol,
         decimals: decimals,
       }
-      saveState(TokenInfoMapKey, {
+      saveState(TOKEN_INFO_MAP, {
         ...symbolMap,
         [address]: tokenInfo,
       })

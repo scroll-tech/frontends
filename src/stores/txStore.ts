@@ -4,6 +4,7 @@ import { persist } from "zustand/middleware"
 
 import { fetchTxListUrl } from "@/apis/bridge"
 import { networks } from "@/constants"
+import { BRIDGE_TRANSACTIONS } from "@/utils/storageKey"
 
 interface TxStore {
   page: number
@@ -179,7 +180,7 @@ const useTxStore = create<TxStore>()(
       },
     }),
     {
-      name: "bridgeTransactions",
+      name: BRIDGE_TRANSACTIONS,
     },
   ),
 )
