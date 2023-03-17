@@ -14,6 +14,7 @@ import { Token, nativeTokenList, networks } from "@/constants/networks"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import useTxHistory, { TxHistory } from "@/hooks/useTxHistory"
 import { requireEnv } from "@/utils"
+import { BRIDGE_TOKEN_SYMBOL } from "@/utils/storageKey"
 
 type AppContextProps = {
   networks: any[]
@@ -28,7 +29,7 @@ const branchName = requireEnv("REACT_APP_SCROLL_ENVIRONMENT").toLocaleLowerCase(
 
 const AppContextProvider = ({ children }: any) => {
   const { provider, walletCurrentAddress, chainId } = useWeb3Context()
-  const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, "bridgeTokenSymbol", ETH_SYMBOL)
+  const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
   const [networksAndSigners, setNetworksAndSigners] = useState({
     [ChainId.SCROLL_LAYER_1]: {},
     [ChainId.SCROLL_LAYER_2]: {},

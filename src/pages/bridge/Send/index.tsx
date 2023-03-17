@@ -15,6 +15,7 @@ import { useApprove, useAsyncMemo, useBalance, useSufficientBalance } from "@/ho
 import { usePriceFee } from "@/hooks"
 import { amountToBN, sanitizeNumericalString, switchNetwork } from "@/utils"
 import { toTokenDisplay } from "@/utils"
+import { BRIDGE_TOKEN_SYMBOL } from "@/utils/storageKey"
 
 import DetailRow from "../components/InfoTooltip/DetailRow"
 import FeeDetails from "../components/InfoTooltip/FeeDetails"
@@ -27,7 +28,7 @@ import { StyleContext, useSendStyles } from "./useSendStyles"
 import { useSendTransaction } from "./useSendTransaction"
 
 const Send: FC = () => {
-  const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, "bridgeTokenSymbol", ETH_SYMBOL)
+  const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
   const { classes: styles, cx } = useSendStyles()
   const { networksAndSigners, tokenList } = useApp()
 

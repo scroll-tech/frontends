@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useLocalStorage } from "react-use"
 
-const APP_VERSION = "appVersion"
+import { APP_VERSION } from "@/utils/storageKey"
 
 export const VersionChecker = ({ children }: any) => {
   const [versionMatched, setVersionMatched] = useState(false)
