@@ -182,7 +182,7 @@ const TxRow = props => {
     }
     return (
       <span>
-        estimated waiting time: {hours}h{minutes}m{seconds}s
+        estimated waiting time: {hours}h {minutes}m {seconds}s
       </span>
     )
   }
