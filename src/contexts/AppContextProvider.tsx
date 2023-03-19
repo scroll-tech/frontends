@@ -49,21 +49,13 @@ const AppContextProvider = ({ children }: any) => {
       l2Provider = await new JsonRpcProvider(RPCUrl.SCROLL_LAYER_2)
       l1signer = await web3Provider.getSigner(0)
       l2signer = await l2Provider.getSigner(address)
-      l1Gateway = new ethers.Contract(
-        GatewayRouterProxyAddr[ChainId.SCROLL_LAYER_1],
-        L1_GATEWAY_ROUTER_PROXY_ABI[ChainId.SCROLL_LAYER_1] || L1_GATEWAY_ROUTER_PROXY_ABI.default,
-        l1signer,
-      )
+      l1Gateway = new ethers.Contract(GatewayRouterProxyAddr[ChainId.SCROLL_LAYER_1], L1_GATEWAY_ROUTER_PROXY_ABI, l1signer)
     } else if (chainId === ChainId.SCROLL_LAYER_2) {
       l1Provider = await new JsonRpcProvider(RPCUrl.SCROLL_LAYER_1)
       l2Provider = web3Provider
       l1signer = await l1Provider.getSigner(address)
       l2signer = await web3Provider.getSigner(0)
-      l2Gateway = new ethers.Contract(
-        GatewayRouterProxyAddr[ChainId.SCROLL_LAYER_2],
-        L2_GATEWAY_ROUTER_PROXY_ABI[ChainId.SCROLL_LAYER_2] || L2_GATEWAY_ROUTER_PROXY_ABI.default,
-        l2signer,
-      )
+      l2Gateway = new ethers.Contract(GatewayRouterProxyAddr[ChainId.SCROLL_LAYER_2], L2_GATEWAY_ROUTER_PROXY_ABI, l2signer)
     } else {
       l1Provider = await new JsonRpcProvider(RPCUrl.SCROLL_LAYER_1)
       l2Provider = await new JsonRpcProvider(RPCUrl.SCROLL_LAYER_2)
