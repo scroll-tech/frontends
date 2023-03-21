@@ -17,6 +17,10 @@ function Homepage() {
 
   const route = useMatchedRoute()
 
+  const getImageUrl = () => {
+    return window.location.origin + "/logo_for_og.png"
+  }
+
   return (
     <ScrollToTop>
       <Helmet>
@@ -24,9 +28,10 @@ function Homepage() {
         <meta name="description" content="Native zkEVM Layer 2 for Ethereum" />
         <meta property="og:title" content={`Scroll ${route?.name ? "- " + route.name : ""}`} />
         <meta property="og:description" content="Native zkEVM Layer 2 for Ethereum" />
+        <meta property="og:image" content={getImageUrl()} />
         <meta name="twitter:title" content={`Scroll ${route?.name ? "- " + route.name : ""}`} />
         <meta name="twitter:description" content="Native zkEVM Layer 2 for Ethereum" />
-        <meta name="twitter:image" content="/logo_for_og.png" />
+        <meta name="twitter:image" content={getImageUrl()} />
       </Helmet>
       <div className="App bg-white min-h-[100vh]">
         <Header />

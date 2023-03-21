@@ -14,11 +14,14 @@ import useMatchedRoute from "./hooks/useMatchedRoute"
 import routes from "./routes/portalRoutes"
 
 const baseUrl = requireEnv("REACT_APP_API_BASE_URI")
-
 function Portal() {
   const route = useMatchedRoute()
   const getUrl = () => {
     return window.location.href
+  }
+
+  const getImageUrl = () => {
+    return window.location.origin + "/logo_for_og.png"
   }
 
   return (
@@ -28,11 +31,12 @@ function Portal() {
         <meta property="og:url" content={getUrl()} />
         <meta property="og:title" content={`Scroll Alpha ${route?.name ? "- " + route.name : ""}`} />
         <meta property="og:description" content="Native zkEVM Layer 2 for Ethereum" />
+        <meta property="og:image" content={getImageUrl()} />
         <link rel="preconnect" href={baseUrl} crossOrigin="anonymous" />
         <link rel="dns-prefetch" href={baseUrl} crossOrigin="anonymous" />
         <meta name="twitter:title" content={`Scroll Alpha ${route?.name ? "- " + route.name : ""}`} />
         <meta name="twitter:description" content="Native zkEVM Layer 2 for Ethereum" />
-        <meta name="twitter:image" content="/logo_for_og.png" />
+        <meta name="twitter:image" content={getImageUrl()} />
       </Helmet>
       <Web3Provider>
         <AppWrapper>
