@@ -2,6 +2,7 @@ import { makeStyles } from "tss-react/mui"
 
 import Typography from "@mui/material/Typography"
 
+import Link from "@/components/Link"
 import { networks } from "@/constants"
 
 const useStyles = makeStyles()(theme => ({
@@ -37,7 +38,11 @@ function BridgeTitle(props) {
           Scroll Bridge
         </Typography>
         <Typography variant="body1" color="textSecondary" className={classes.sendDesc}>
-          Send tokens from and to {networks[0].name} and {networks[1].name}.
+          Send tokens from and to {networks[0].name} and {networks[1].name}. (Takes minutes. Please be patient.{" "}
+          <Link external={true} href="https://guide.scroll.io/user-guide/bridge">
+            User Guide here
+          </Link>
+          )
         </Typography>
       </div>
     </div>
