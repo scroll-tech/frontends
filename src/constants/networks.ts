@@ -17,7 +17,7 @@ export const networks = [
     imageUrl: "/imgs/bridge/mainnet.svg",
     provider: null,
     rpcUrl: RPCUrl.SCROLL_LAYER_1,
-    explorer: process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L1,
+    explorer: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1"),
     chainId: ChainId.SCROLL_LAYER_1,
     nativeTokenSymbol: ETH_SYMBOL,
     isLayer1: true, // TODO: Merge these two
@@ -29,7 +29,7 @@ export const networks = [
     imageUrl: "/logo.png",
     provider: null,
     rpcUrl: RPCUrl.SCROLL_LAYER_2,
-    explorer: process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L2,
+    explorer: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2"),
     chainId: ChainId.SCROLL_LAYER_2,
     nativeTokenSymbol: ETH_SYMBOL,
     isLayer1: false,

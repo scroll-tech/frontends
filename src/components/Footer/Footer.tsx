@@ -2,6 +2,7 @@ import dayjs from "dayjs"
 import { Link } from "react-router-dom"
 
 import Logo from "@/components/Logo"
+import { requireEnv } from "@/utils"
 
 import Subscribe from "./Subscribe"
 
@@ -77,7 +78,7 @@ const Footer = () => {
             <Logo></Logo>
           </a>
           <div className="flex-1">
-            <p className="font-display font-medium text-md">Version {process.env.REACT_APP_VERSION}</p>
+            <p className="font-display font-medium text-md">Version {requireEnv("REACT_APP_VERSION")}</p>
             <p className="font-display font-medium text-md">© Scroll Ltd {dayjs().year()}</p>
           </div>
         </div>

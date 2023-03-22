@@ -32,15 +32,3 @@ export function useBlockList(batchIndex) {
     isError: error,
   }
 }
-
-// export function useGetBlatchId(blockHash) {
-//   const { data, error } = useSWR(
-//     `${process.env.REACT_APP_ROLLUPSCAN_BASE_API_URL}/search?block_hash=${blockHash}`,
-//     fetcher
-//   );
-//   return {
-//     blocks: data?.blocks,
-//     isLoading: !error && !data,
-//     isError: error,
-//   };
-// }

@@ -1,3 +1,5 @@
+import { requireEnv } from "@/utils"
+
 const homeNavigations: any = [
   {
     label: "Home",
@@ -46,13 +48,13 @@ const navigations = [
   {
     label: "L1 Explorer 🔗",
     key: "l1BlockExplorer",
-    href: process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L1,
+    href: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1"),
     isExternal: true,
   },
   {
     label: "L2 Explorer 🔗",
     key: "l2BlockExplorer",
-    href: process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L2,
+    href: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2"),
     isExternal: true,
   },
 ]

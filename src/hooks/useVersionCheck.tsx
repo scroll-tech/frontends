@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { useLocalStorage } from "react-use"
 
+import { requireEnv } from "@/utils"
 import { APP_VERSION } from "@/utils/storageKey"
 
 export const VersionChecker = ({ children }: any) => {
@@ -8,7 +9,7 @@ export const VersionChecker = ({ children }: any) => {
   const [version, setVersion] = useLocalStorage(APP_VERSION)
 
   useEffect(() => {
-    const currentVersion = process.env.REACT_APP_VERSION
+    const currentVersion = requireEnv("REACT_APP_VERSION")
     if (version !== currentVersion) {
       localStorage.clear()
       setVersion(currentVersion)

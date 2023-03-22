@@ -6,6 +6,8 @@ import ReactDOM from "react-dom/client"
 import ReactGA from "react-ga4"
 import { BrowserRouter } from "react-router-dom"
 
+import { requireEnv } from "@/utils"
+
 import App from "./App"
 import "./appGlobals"
 import "./index.css"
@@ -16,10 +18,10 @@ import ScrollThemeProvider from "./theme"
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 
-if (process.env.NODE_ENV === "production") {
+if (requireEnv("NODE_ENV") === "production") {
   Sentry.init({
-    environment: process.env.REACT_APP_SCROLL_ENVIRONMENT,
-    dsn: process.env.REACT_APP_SENTRY_DSN,
+    environment: requireEnv("REACT_APP_SCROLL_ENVIRONMENT"),
+    dsn: requireEnv("REACT_APP_SENTRY_DSN"),
     integrations: [new BrowserTracing()],
     tracesSampleRate: 1.0,
     beforeSend(event) {
@@ -36,14 +38,14 @@ if (process.env.NODE_ENV === "production") {
     },
   })
 
-  const GOOGLE_ANALYTICS_ID: string | undefined = process.env.REACT_APP_GOOGLE_ANALYTICS_ID
+  const GOOGLE_ANALYTICS_ID: string | undefined = requireEnv("REACT_APP_GOOGLE_ANALYTICS_ID")
   if (typeof GOOGLE_ANALYTICS_ID === "string") {
     ReactGA.initialize(GOOGLE_ANALYTICS_ID)
     ReactGA.set({
       customBrowserType: !isMobile ? "desktop" : "web3" in window || "ethereum" in window ? "mobileWeb3" : "mobileRegular",
     })
     ReactGA.event("web_version", {
-      version: process.env.REACT_APP_VERSION,
+      version: requireEnv("REACT_APP_VERSION"),
     })
   }
 }

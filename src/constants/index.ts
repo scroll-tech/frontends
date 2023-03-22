@@ -8,7 +8,7 @@ const addresses = [
   // TODO: Merge with constants/networks
   {
     network: "Goerli Testnet",
-    etherscanPrefix: process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L1,
+    etherscanPrefix: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1"),
     formattedName: "Goerli Testnet",
     chainIdDec: ChainId.SCROLL_LAYER_1,
     autoconnect: {
@@ -16,17 +16,17 @@ const addresses = [
       chainName: "Goerli",
       nativeCurrency: {
         name: "Goerli",
-        symbol: process.env.REACT_APP_ETH_SYMBOL,
+        symbol: requireEnv("REACT_APP_ETH_SYMBOL"),
         decimals: 18,
       },
       rpcUrls: [RPCUrl.SCROLL_LAYER_1],
-      blockExplorerUrls: [process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L1],
+      blockExplorerUrls: [requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1")],
     },
   },
 
   {
     network: TESTNET_NAME,
-    etherscanPrefix: process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L2,
+    etherscanPrefix: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2"),
     formattedName: TESTNET_NAME,
     chainIdDec: ChainId.SCROLL_LAYER_2,
     autoconnect: {
@@ -34,11 +34,11 @@ const addresses = [
       chainName: TESTNET_NAME,
       nativeCurrency: {
         name: "Ethereum",
-        symbol: process.env.REACT_APP_ETH_SYMBOL,
+        symbol: requireEnv("REACT_APP_ETH_SYMBOL"),
         decimals: 18,
       },
       rpcUrls: [RPCUrl.SCROLL_LAYER_2],
-      blockExplorerUrls: [process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L2],
+      blockExplorerUrls: [requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2")],
     },
   },
 ]
@@ -70,13 +70,13 @@ const navigation = [
     name: "L1 Block Explorer",
     description: "See your L1 transactions on Goerli's block explorer.",
     isExternal: true,
-    subdomainOrPath: process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L1,
+    subdomainOrPath: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1"),
   },
   {
     name: "L2 Block Explorer",
     description: "See your L2 transactions on our fork of Blockscout.",
     isExternal: true,
-    subdomainOrPath: process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L2,
+    subdomainOrPath: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2"),
   },
 ]
 
@@ -107,8 +107,8 @@ export * from "./networks"
 export * from "./transaction"
 export { addresses, navigation, documentation, TESTNET_NAME, ModalStatus }
 
-export let l1ExplorerUrl = process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L1
-export let l2ExplorerUrl = process.env.REACT_APP_EXTERNAL_EXPLORER_URI_L2
+export let l1ExplorerUrl = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1")
+export let l2ExplorerUrl = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2")
 
 export let pathL1Explorer = "l1Explorer"
 export let pathL2Explorer = "l2Explorer"

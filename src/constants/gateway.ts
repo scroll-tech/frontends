@@ -2,8 +2,8 @@
 import { requireEnv } from "@/utils"
 
 const ChainId = {
-  SCROLL_LAYER_1: parseInt(process.env.REACT_APP_CHAIN_ID_L1 as string),
-  SCROLL_LAYER_2: parseInt(process.env.REACT_APP_CHAIN_ID_L2 as string),
+  SCROLL_LAYER_1: parseInt(requireEnv("REACT_APP_CHAIN_ID_L1") as string),
+  SCROLL_LAYER_2: parseInt(requireEnv("REACT_APP_CHAIN_ID_L2") as string),
 }
 const StandardERC20GatewayProxyAddr = {
   [ChainId.SCROLL_LAYER_1]: requireEnv("REACT_APP_L1_STANDARD_ERC20_GATEWAY_PROXY_ADDR"),
