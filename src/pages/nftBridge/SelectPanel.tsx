@@ -3,10 +3,11 @@ import { useMemo } from "react"
 
 import { Button } from "@mui/material"
 
-import ERC721ABI from "@/assets/abis/ERC721ABI.json"
 import ERC1155ABI from "@/assets/abis/ERC1155ABI.json"
 import L1_ERC721GatewayABI from "@/assets/abis/L1ERC721Gateway.json"
+import L1_ERC721ABI from "@/assets/abis/L1_ERC721ABI.json"
 import L2_ERC721GatewayABI from "@/assets/abis/L2ERC721Gateway.json"
+import L2_ERC721ABI from "@/assets/abis/L2_ERC721ABI.json"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import { requireEnv } from "@/utils"
 
@@ -19,17 +20,19 @@ const L1_1155 = requireEnv("REACT_APP_L1_SCROLL1155_ADDRESS")
 const GATEWAY_721_L1 = requireEnv("REACT_APP_L1_ERC721_GATEWAY_PROXY_ADDR")
 const GATEWAY_721_L2 = requireEnv("REACT_APP_L2_ERC721_GATEWAY_PROXY_ADDR")
 
+const currentTokenId = 1364061
+
 const SelectPanel = () => {
   const { provider, walletCurrentAddress } = useWeb3Context()
 
   const instanceL1_721 = useMemo(() => {
     const signer = provider?.getSigner(0)
-    return new ethers.Contract(L1_721, ERC721ABI, signer)
+    return new ethers.Contract(L1_721, L1_ERC721ABI, signer)
   }, [provider])
 
   const instanceL2_721 = useMemo(() => {
     const signer = provider?.getSigner(0)
-    return new ethers.Contract(L2_721, ERC721ABI, signer)
+    return new ethers.Contract(L2_721, L2_ERC721ABI, signer)
   }, [provider])
 
   const instance1155 = useMemo(() => {
@@ -65,17 +68,20 @@ const SelectPanel = () => {
     for (let i = 0; i < count.toNumber(); i++) {
       const tokenId = await instanceL2_721["tokenOfOwnerByIndex(address,uint256)"](walletCurrentAddress, i)
       const tokenURI = await instanceL2_721["tokenURI(uint256)"](tokenId)
-      console.log(tokenId, tokenURI)
+      console.log(tokenId.toNumber(), tokenURI)
     }
   }
 
   const getTokenURI = async () => {
-    const uri = await instanceL1_721["tokenURI(uint256)"](0)
+    const uri = await instanceL2_721["tokenURI(uint256)"](currentTokenId)
     console.log(uri, "uri")
   }
 
-  const setURI = async () => {
-    await instance1155["setURI(string)"]("https://token-cdn-domain/{id}.json")
+  const setTokenURI = async () => {
+    await instanceL2_721["setTokenURI(uint256,string)"](
+      currentTokenId,
+      "https://ipfs.io/ipfs/bafybeiezeds576kygarlq672cnjtimbsrspx5b3tr3gct2lhqud6abjgiu",
+    )
   }
 
   // const getTokenURI = async () => {
@@ -96,7 +102,8 @@ const SelectPanel = () => {
   }
 
   const send721 = async () => {
-    const tx = await instanceBridge721_L1["depositERC721(address,address,uint256,uint256)"](L1_721, walletCurrentAddress, 0, 0)
+    // const tokenURIList = Promise.all
+    const tx = await instanceBridge721_L1["batchDepositERC721(address,address,uint256[],uint256)"](L1_721, walletCurrentAddress, [currentTokenId], 0)
     const txResult = await tx.wait()
     console.log(txResult)
   }
@@ -125,8 +132,8 @@ const SelectPanel = () => {
       <Button onClick={getOwnedL1_721Nfts}>Get Owned L1 721 NFTs</Button>
       <Button onClick={getOwnedL2_721Nfts}>Get Owned L2 721 NFTs</Button>
 
-      <Button onClick={setURI}>Set 1155 URI</Button>
-      <Button onClick={getTokenURI}>Get tokenId=0 uri</Button>
+      <Button onClick={setTokenURI}>Set 721 tokenId = {currentTokenId} URI</Button>
+      <Button onClick={getTokenURI}>Get tokenId={currentTokenId} uri</Button>
       {/* <Button onClick={getOwned721Nfts}>Get Owned NFTs</Button> */}
       <Button onClick={getOwned1155Nfts}>Get Owned 1155 NFTs</Button>
 

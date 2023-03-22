@@ -9,6 +9,7 @@ export enum GasLimit {
   DEPOSIT_ERC20 = 8e4,
   WITHDRAW_ETH = 16e4,
   WITHDRAW_ERC20 = 32e4,
+  WITHDRAW_ERC721 = 4e6,
 }
 
 export enum TxStatus {

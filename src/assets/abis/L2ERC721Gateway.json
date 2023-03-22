@@ -5,31 +5,31 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "_l1Token",
+        "name": "l1Token",
         "type": "address"
       },
       {
         "indexed": true,
         "internalType": "address",
-        "name": "_l2Token",
+        "name": "l2Token",
         "type": "address"
       },
       {
         "indexed": true,
         "internalType": "address",
-        "name": "_from",
+        "name": "from",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "address",
-        "name": "_to",
+        "name": "to",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "uint256[]",
-        "name": "_tokenIds",
+        "name": "tokenIds",
         "type": "uint256[]"
       }
     ],
@@ -42,31 +42,31 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "_l1Token",
+        "name": "l1Token",
         "type": "address"
       },
       {
         "indexed": true,
         "internalType": "address",
-        "name": "_l2Token",
+        "name": "l2Token",
         "type": "address"
       },
       {
         "indexed": true,
         "internalType": "address",
-        "name": "_from",
+        "name": "from",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "address",
-        "name": "_to",
+        "name": "to",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "uint256[]",
-        "name": "_tokenIds",
+        "name": "tokenIds",
         "type": "uint256[]"
       }
     ],
@@ -79,31 +79,31 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "_l1Token",
+        "name": "l1Token",
         "type": "address"
       },
       {
         "indexed": true,
         "internalType": "address",
-        "name": "_l2Token",
+        "name": "l2Token",
         "type": "address"
       },
       {
         "indexed": true,
         "internalType": "address",
-        "name": "_from",
+        "name": "from",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "address",
-        "name": "_to",
+        "name": "to",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "_tokenId",
+        "name": "tokenId",
         "type": "uint256"
       }
     ],
@@ -154,31 +154,31 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "_l1Token",
+        "name": "l1Token",
         "type": "address"
       },
       {
         "indexed": true,
         "internalType": "address",
-        "name": "_l2Token",
+        "name": "l2Token",
         "type": "address"
       },
       {
         "indexed": true,
         "internalType": "address",
-        "name": "_from",
+        "name": "from",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "address",
-        "name": "_to",
+        "name": "to",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "_tokenId",
+        "name": "tokenId",
         "type": "uint256"
       }
     ],
@@ -313,13 +313,6 @@
     "name": "finalizeDepositERC721",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "finalizeDropMessage",
-    "outputs": [],
-    "stateMutability": "payable",
     "type": "function"
   },
   {

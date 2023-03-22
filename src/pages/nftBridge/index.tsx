@@ -3,8 +3,8 @@ import { QueryClient, QueryClientProvider } from "react-query"
 
 import AppProvider from "@/contexts/AppContextProvider"
 
-import Content from "./Content"
 import Header from "./Header"
+import NFTPanel from "./NFTPanel"
 
 export const muiCache = createCache({
   key: "mui",
@@ -33,7 +33,7 @@ const Bridge = () => {
       <AppProvider>
         <div>
           <Header />
-          <Content />
+          <NFTPanel />
         </div>
       </AppProvider>
     </QueryClientProvider>

@@ -3,8 +3,8 @@ import { Alert, Snackbar } from "@mui/material"
 import { useApp } from "@/contexts/AppContextProvider"
 import useBridgeStore from "@/stores/bridgeStore"
 
-import RencentTx from "./RencentTx"
-import SelectPanel from "./SelectPanel"
+import RencentTx from "../RencentTx"
+import Send from "./Send"
 
 const Content = () => {
   const {
@@ -17,7 +17,7 @@ const Content = () => {
   }
   return (
     <>
-      {recentTxVisible ? <RencentTx></RencentTx> : <SelectPanel></SelectPanel>}
+      {recentTxVisible ? <RencentTx></RencentTx> : <Send></Send>}
 
       <Snackbar open={!!errorMessage} autoHideDuration={6000} onClose={handleClose}>
         <Alert severity="error">{errorMessage}</Alert>
