@@ -42,6 +42,9 @@ if (process.env.NODE_ENV === "production") {
     ReactGA.set({
       customBrowserType: !isMobile ? "desktop" : "web3" in window || "ethereum" in window ? "mobileWeb3" : "mobileRegular",
     })
+    ReactGA.event("web_version", {
+      version: process.env.REACT_APP_VERSION,
+    })
   }
 }
 
