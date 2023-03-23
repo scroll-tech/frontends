@@ -22,7 +22,7 @@ jobs:
       - name: "Checkout source code"
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.ref }}
+          ref: develop
 
       - name: "cat package.json"
         run: cat ./package.json
