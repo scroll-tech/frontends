@@ -1,18 +1,20 @@
-# when there's new push to the production branch
-# create a pr from ci/_bump-version to production branch
+# when there's new PR merge production back to develop branch get merged
+# create a pr from ci/_bump-version to develop branch
 # with a commit that bumps the version in package.json
 name: "Bump Version"
 
 on:
-  push:
+  pull_request:
     branches:
-      - alpha
+      - develop
+    types:
+      - closed
 
 jobs:
   bump-version:
     if: |
-      !contains(github.event.head_commit.message , ' [bot]')
-    name: "Bump version on production"
+      success() && contains(github.event.pull_request.title, 'ci: merge production branch back to develop [bot]')
+    name: "Bump version on develop"
     permissions:
       contents: write
       pull-requests: write
@@ -22,6 +24,7 @@ jobs:
       - name: "Checkout source code"
         uses: actions/checkout@v3
         with:
+          repository: ${{ github.repository }}
           ref: ${{ github.ref }}
 
       - name: "cat package.json"
@@ -41,7 +44,7 @@ jobs:
         run: echo "::set-output name=title::$(git log --pretty=format:"%s" -1)"
         id: get-version-bump-commit-message
 
-      - name: Create Pull Request for production
+      - name: Create Pull Request for develop
         uses: peter-evans/create-pull-request@2b011faafdcbc9ceb11414d64d0573f37c774b04
         with:
           token: ${{ secrets.WRITE_TOKEN }}
