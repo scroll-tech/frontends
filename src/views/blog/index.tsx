@@ -119,7 +119,6 @@ const BlogList = styled("ul")(
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin-bottom: 14rem;
   border-right: 1px solid #C9CBCE;
   width: 100%;
   ${theme.breakpoints.down("md")} {
