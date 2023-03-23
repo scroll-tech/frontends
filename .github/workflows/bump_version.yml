@@ -34,6 +34,7 @@ jobs:
           tag-prefix: ""
           skip-push: "true"
           commit-message: "ci: version bump to {{version}} [bot]"
+          target-branch: "develop"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
