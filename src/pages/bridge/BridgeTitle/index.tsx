@@ -37,7 +37,7 @@ function BridgeTitle(props) {
           Scroll Bridge
         </Typography>
         <Typography variant="body1" color="textSecondary" className={classes.sendDesc}>
-          Send tokens from and to {networks[0].name} and {networks[1].name}.
+          Send tokens between {networks[0].name} and {networks[1].name}.
         </Typography>
       </div>
     </div>
