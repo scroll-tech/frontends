@@ -22,26 +22,6 @@ on:
   status: {}
 jobs:
   # merge with WRITE_TOKEN so that subsequent actions can be triggered
-
-  # merge with merge when backmerging to develop
-  automerge-merge:
-    if: |
-      endsWith(github.event.pull_request.title, ' [bot]') &&
-      (
-        github.head_ref == 'alpha' &&
-        github.base_ref == 'develop'
-      )
-    runs-on: ubuntu-latest
-    steps:
-      - id: automerge
-        name: automerge
-        uses: pascalgn/automerge-action@22948e0bc22f0aa673800da838595a3e7347e584
-        env:
-          GITHUB_TOKEN: "${{ secrets.WRITE_TOKEN }}"
-          MERGE_METHOD: "merge"
-          MERGE_LABELS: "automerge"
-          MERGE_REMOVE_LABELS: "automerge"
-          MERGE_COMMIT_MESSAGE: "pull-request-title"
   # merge with squash otherwise
   automerge-squash:
     if: |

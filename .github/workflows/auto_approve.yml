@@ -4,7 +4,6 @@ name: Auto Approve
 on:
   pull_request:
     branches:
-      - alpha
       - develop
 jobs:
   build:
