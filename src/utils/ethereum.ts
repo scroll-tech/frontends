@@ -8,7 +8,8 @@ export const switchNetwork = async (chainId: number) => {
     })
     return true
   } catch (error) {
-    if (~error.message.indexOf("wallet_addEthereumChain")) {
+    // 4902 or -32603 mean chain doesn't exist
+    if (~error.message.indexOf("wallet_addEthereumChain") || error.code === 4902 || error.code === -32603) {
       return window.ethereum.request({
         method: "wallet_addEthereumChain",
         params: [addresses.find(address => address.chainIdDec === chainId)!.autoconnect],
