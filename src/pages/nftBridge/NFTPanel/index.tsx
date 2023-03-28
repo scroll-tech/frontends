@@ -1,29 +1,16 @@
-import { Alert, Snackbar } from "@mui/material"
+// import { Alert, Snackbar } from "@mui/material"
+import { Container } from "@mui/system"
 
-import { useApp } from "@/contexts/AppContextProvider"
-import useBridgeStore from "@/stores/bridgeStore"
+import NFTSelect from "./NFTSelect"
+import Transfer from "./Transfer"
 
-import RencentTx from "../RencentTx"
-import Send from "./Send"
-
-const Content = () => {
-  const {
-    txHistory: { errorMessage, changeErrorMessage },
-  } = useApp()
-  const { recentTxVisible } = useBridgeStore()
-
-  const handleClose = () => {
-    changeErrorMessage("")
-  }
+const NFTPanel = () => {
   return (
-    <>
-      {recentTxVisible ? <RencentTx></RencentTx> : <Send></Send>}
-
-      <Snackbar open={!!errorMessage} autoHideDuration={6000} onClose={handleClose}>
-        <Alert severity="error">{errorMessage}</Alert>
-      </Snackbar>
-    </>
+    <Container sx={{ display: "flex", gap: "1rem", mt: "3rem" }}>
+      <NFTSelect></NFTSelect>
+      <Transfer></Transfer>
+    </Container>
   )
 }
 
-export default Content
+export default NFTPanel

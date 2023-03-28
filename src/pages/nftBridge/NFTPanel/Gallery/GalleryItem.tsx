@@ -4,10 +4,17 @@ const GalleryItem = props => {
   const { id, image, name } = props
 
   return (
-    <Card sx={{ width: "30rem" }}>
+    <Card sx={{ width: "17.5rem" }}>
       <CardMedia sx={{ aspectRatio: "1" }} image={image} title={id} />
-      <CardContent>
-        <Typography>{name || `#${id}`}</Typography>
+      <CardContent
+        sx={{
+          p: "0.5rem 0.6rem 0.9rem",
+          "&:last-child": {
+            pb: "0.9rem",
+          },
+        }}
+      >
+        <Typography>{`#${id}` || name}</Typography>
       </CardContent>
     </Card>
   )

@@ -31,9 +31,15 @@
         "internalType": "uint256[]",
         "name": "tokenIds",
         "type": "uint256[]"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256[]",
+        "name": "amounts",
+        "type": "uint256[]"
       }
     ],
-    "name": "BatchWithdrawERC721",
+    "name": "BatchWithdrawERC1155",
     "type": "event"
   },
   {
@@ -68,9 +74,15 @@
         "internalType": "uint256[]",
         "name": "tokenIds",
         "type": "uint256[]"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256[]",
+        "name": "amounts",
+        "type": "uint256[]"
       }
     ],
-    "name": "FinalizeBatchDepositERC721",
+    "name": "FinalizeBatchDepositERC1155",
     "type": "event"
   },
   {
@@ -105,9 +117,15 @@
         "internalType": "uint256",
         "name": "tokenId",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
       }
     ],
-    "name": "FinalizeDepositERC721",
+    "name": "FinalizeDepositERC1155",
     "type": "event"
   },
   {
@@ -180,9 +198,15 @@
         "internalType": "uint256",
         "name": "tokenId",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
       }
     ],
-    "name": "WithdrawERC721",
+    "name": "WithdrawERC1155",
     "type": "event"
   },
   {
@@ -198,14 +222,19 @@
         "type": "uint256[]"
       },
       {
+        "internalType": "uint256[]",
+        "name": "_amounts",
+        "type": "uint256[]"
+      },
+      {
         "internalType": "uint256",
         "name": "_gasLimit",
         "type": "uint256"
       }
     ],
-    "name": "batchWithdrawERC721",
+    "name": "batchWithdrawERC1155",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -226,14 +255,19 @@
         "type": "uint256[]"
       },
       {
+        "internalType": "uint256[]",
+        "name": "_amounts",
+        "type": "uint256[]"
+      },
+      {
         "internalType": "uint256",
         "name": "_gasLimit",
         "type": "uint256"
       }
     ],
-    "name": "batchWithdrawERC721",
+    "name": "batchWithdrawERC1155",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -275,9 +309,14 @@
         "internalType": "uint256[]",
         "name": "_tokenIds",
         "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "_amounts",
+        "type": "uint256[]"
       }
     ],
-    "name": "finalizeBatchDepositERC721",
+    "name": "finalizeBatchDepositERC1155",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -308,9 +347,14 @@
         "internalType": "uint256",
         "name": "_tokenId",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
       }
     ],
-    "name": "finalizeDepositERC721",
+    "name": "finalizeDepositERC1155",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -359,6 +403,50 @@
         "type": "address"
       },
       {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "name": "onERC1155BatchReceived",
+    "outputs": [
+      {
+        "internalType": "bytes4",
+        "name": "",
+        "type": "bytes4"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
@@ -369,7 +457,7 @@
         "type": "bytes"
       }
     ],
-    "name": "onERC721Received",
+    "name": "onERC1155Received",
     "outputs": [
       {
         "internalType": "bytes4",
@@ -408,6 +496,25 @@
         "internalType": "address",
         "name": "",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes4",
+        "name": "interfaceId",
+        "type": "bytes4"
+      }
+    ],
+    "name": "supportsInterface",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -477,13 +584,18 @@
       },
       {
         "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
         "name": "_gasLimit",
         "type": "uint256"
       }
     ],
-    "name": "withdrawERC721",
+    "name": "withdrawERC1155",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -505,13 +617,18 @@
       },
       {
         "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
         "name": "_gasLimit",
         "type": "uint256"
       }
     ],
-    "name": "withdrawERC721",
+    "name": "withdrawERC1155",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   }
 ]

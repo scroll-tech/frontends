@@ -1,9 +1,10 @@
 import create from "zustand"
 
 interface NFTToken {
-  name?: string
   id: number
-  image: string
+  amount: number
+  name?: string
+  image?: string
   description?: string
 }
 

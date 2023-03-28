@@ -1,19 +1,25 @@
-import { Autocomplete, TextField } from "@mui/material"
-
-const contractList = ["0xf5de760f2e916647fd766B4AD9E85ff943cE3A2b"]
+import { Autocomplete, Chip, TextField, Typography } from "@mui/material"
+import { Stack } from "@mui/system"
 
 const ContractSelect = props => {
-  const { value, onChange } = props
+  const { value, data, onChange } = props
 
   return (
     <Autocomplete
       disablePortal
-      options={contractList}
       sx={{ width: "80rem" }}
-      renderInput={params => <TextField {...params} />}
       value={value}
-      onChange={(event: any, newValue: string | null) => {
-        onChange(newValue ?? "")
+      options={data}
+      getOptionLabel={option => option?.l1 ?? ""}
+      renderInput={params => <TextField {...params} />}
+      renderOption={(innerProps: any, option, state) => (
+        <Stack direction="row" spacing={2} sx={{ alignItems: "center" }} {...innerProps}>
+          <Chip label={option.type} variant="outlined" />
+          <Typography>{option.l1}</Typography>
+        </Stack>
+      )}
+      onChange={(event, newValue) => {
+        onChange(newValue)
       }}
     />
   )

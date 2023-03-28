@@ -7,12 +7,12 @@ import GalleryItem from "./GalleryItem"
 const Container = styled("div")(
   ({ theme }) => `
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(8, 1fr);
   width: max-content;
   margin: 8rem auto;
   grid-auto-columns: 1fr;
   ${theme.breakpoints.down("lg")} {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     width: max-content;
     margin: 4rem auto;
   };

@@ -39,7 +39,7 @@ const MiniButton = (props: Props) => {
   return (
     <button className={cx(classes.button, className)} {...restProps}>
       <SvgIcon style={{ fontSize: "1.8rem" }} viewBox={viewBox} component={icon}></SvgIcon>
-      <Typography className={classes.label}>{label}</Typography>
+      <Typography sx={{ ml: "0.5rem", fontWeight: 600, cursor: "inherit" }}>{label}</Typography>
     </button>
   )
 }

@@ -113,6 +113,7 @@ export * from "./gateway"
 export * from "./medias"
 export * from "./networks"
 export * from "./transaction"
+export * from "./token"
 export { addresses, navigation, documentation, TESTNET_NAME, ModalStatus }
 
 export let l1ExplorerUrl = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1")

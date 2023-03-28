@@ -3,8 +3,8 @@ import { useMemo, useState } from "react"
 
 import { Alert, Button, Snackbar, Typography } from "@mui/material"
 
-import ERC1155ABI from "@/assets/abis/ERC1155ABI.json"
-import L1_ERC721ABI from "@/assets/abis/L1_ERC721ABI.json"
+import L1_ERC721 from "@/assets/abis/L1_ERC721.json"
+import ERC1155ABI from "@/assets/abis/L1_ERC1155.json"
 import LoadingButton from "@/components/LoadingButton"
 import { ChainId, TESTNET_NAME, addresses } from "@/constants"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
@@ -40,7 +40,7 @@ const NFTFaucet = () => {
     try {
       const signer = await provider?.getSigner(0)
       // for 721
-      const instance721 = new ethers.Contract(L1_SCROLL721_ADDR, L1_ERC721ABI, signer)
+      const instance721 = new ethers.Contract(L1_SCROLL721_ADDR, L1_ERC721, signer)
       const totalCount721 = await instance721["totalSupply()"]()
       const tx721 = instance721["mint(address,uint256)"](walletCurrentAddress, totalCount721.toNumber())
 
