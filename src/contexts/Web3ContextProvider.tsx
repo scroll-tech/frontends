@@ -129,6 +129,7 @@ const Web3ContextProvider = ({ children }: any) => {
     try {
       clearTransactions()
       wallet && disconnect(wallet)
+      localStorage.removeItem("connectedWallets")
     } catch (error) {
       logger.error(error)
     }
