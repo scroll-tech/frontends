@@ -64,7 +64,7 @@ const Faq = props => {
           1. Transfer and withdraw test tokens in <Link href={SiteMap.Bridge}>Bridge</Link>.
         </Typography>
         <Typography variant="body1" color="textSecondary" className={classes.orderedParagraph}>
-          2. Swap test tokens or provide liquidity in <Link href={SiteMap.Ecosystem}>one of the swaps</Link>.
+          2. Swap test tokens or provide liquidity in <Link href={SiteMap.Swap}>Swap</Link>.
         </Typography>
         <Typography variant="body1" color="textSecondary" className={classes.orderedParagraph}>
           3. View transactions’ and blocks’ statuses in the{" "}
