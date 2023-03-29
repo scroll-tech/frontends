@@ -7,19 +7,19 @@ import GalleryItem from "./GalleryItem"
 const Container = styled("div")(
   ({ theme }) => `
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   width: 100%;
-  grid-column-gap: 1.6rem;
-  grid-row-gap: 1.6rem;
+  grid-column-gap: 1rem;
+  grid-row-gap: 1rem;
 `,
 )
 
 const Gallery = props => {
-  const { viewingList } = useNFTBridgeStore()
+  const selectedList = useNFTBridgeStore(state => state.selectedList())
 
   return (
     <Container {...props}>
-      {viewingList.map(item => (
+      {selectedList.map(item => (
         <GalleryItem key={item.id} {...item}></GalleryItem>
       ))}
     </Container>

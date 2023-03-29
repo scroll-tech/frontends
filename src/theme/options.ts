@@ -172,11 +172,6 @@ export const typographyOptions = {
     fontSize: "1.4rem",
     lineHeight: "2.6rem",
   },
-  // button: {
-  //   fontSize: "1.8rem",
-  //   fontWeight: 700,
-  //   textTransform: "capitalize",
-  // },
 }
 
 export const boxShadowOptions = {
