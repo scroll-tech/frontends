@@ -80,4 +80,5 @@ export const SiteMap = {
   L1Explorer: l1Explorer,
   L2Explorer: l2Explorer,
   RollupExplorer: "/alpha/rollupscan",
+  Swap: "https://uniswap-v3.scroll.io/",
 }

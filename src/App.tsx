@@ -4,6 +4,8 @@ import { HelmetProvider } from "react-helmet-async"
 import { Navigate, Route, Routes, useLocation } from "react-router-dom"
 
 import LoadingPage from "@/components/LoadingPage"
+import ScrollToTop from "@/components/ScrollToTop"
+import useSentryPageTag from "@/hooks/useSentryPageTag"
 
 const Portal = React.lazy(() => import("./Portal"))
 const Homepage = React.lazy(() => import("./Homepage"))
@@ -28,6 +30,8 @@ const RemoveTrailingSlash = ({ ...rest }) => {
 
 function App() {
   let location = useLocation()
+  // Sentry Tag
+  useSentryPageTag(location.pathname)
 
   React.useEffect(() => {
     // Google Analytics
@@ -42,6 +46,7 @@ function App() {
           <Route path="/alpha/*" element={<Portal />} />
           <Route path="/*" element={<Homepage />} />
         </Routes>
+        <ScrollToTop />
       </React.Suspense>
     </HelmetProvider>
   )
