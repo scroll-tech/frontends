@@ -122,8 +122,9 @@ const AppContextProvider = ({ children }: any) => {
       }}
     >
       {children}
-      <Snackbar open={!!fetchTokenListError} autoHideDuration={6000} onClose={handleClose}>
-        <Alert severity="error" onClose={handleClose}>
+      {/* TODO: unify error reporting */}
+      <Snackbar open={!!fetchTokenListError} autoHideDuration={null} onClose={handleClose}>
+        <Alert severity="error" onClose={handleClose} sx={{ ".MuiAlert-action": { padding: "0 0.8rem" } }}>
           {fetchTokenListError}
         </Alert>
       </Snackbar>

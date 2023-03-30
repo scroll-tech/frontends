@@ -28,11 +28,7 @@ const useTxHistory = networksAndSigners => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ txs }),
-    })
-      .then(data => data)
-      .catch(e => {
-        throw new Error("Failed to refresh transaction history")
-      })
+    }).then(data => data)
   }, [])
 
   // fetch to hash/blockNumber from backend
@@ -50,7 +46,7 @@ const useTxHistory = networksAndSigners => {
     fetchTxList,
     {
       onError: (error, key) => {
-        setErrorMessage(error.message)
+        setErrorMessage(`${error.status}:${error.message}`)
       },
       refreshInterval: 2000,
     },
