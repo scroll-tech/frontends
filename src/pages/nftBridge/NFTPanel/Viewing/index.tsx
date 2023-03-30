@@ -5,23 +5,23 @@ import { Box, InputBase, Stack, Typography } from "@mui/material"
 
 import { nftTokenListUrl } from "@/apis/dynamic"
 import { TOEKN_TYPE, networks } from "@/constants"
+import { useNFTBridgeContext } from "@/contexts/NFTBridgeProvider"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import useNFTBridgeStore from "@/stores/nftBridgeStore"
 import { requireEnv, switchNetwork } from "@/utils"
 
 import Button from "../../components/Button"
 import ContractSelect from "../../components/ContractSelect"
+import Gallery from "../../components/Gallery"
+import ViewingItem from "../../components/Gallery/ViewingItem"
 import NetworkSelect from "../../components/NetworkSelect"
-import Gallery from "../Gallery"
-import useTokenInstance from "../useTokenInstance"
 
 const branchName = requireEnv("REACT_APP_SCROLL_ENVIRONMENT").toLocaleLowerCase()
 
 const NFTSelect = props => {
-  const { network } = props
   const { walletCurrentAddress } = useWeb3Context()
-  const { viewingList, addViewingList, clearViewingList, clearSelectedList, contract, changeContract } = useNFTBridgeStore()
-  const tokenInstance = useTokenInstance(contract)
+  const { tokenInstance } = useNFTBridgeContext()
+  const { fromNetwork, viewingList, addViewingList, clearViewingList, clearSelectedList, contract, changeContract } = useNFTBridgeStore()
 
   const [currentTokenId, setCurrentTokenId] = useState<number>()
 
@@ -102,7 +102,7 @@ const NFTSelect = props => {
   }
 
   const handleChangeFromNetwork = value => {
-    console.log(value, "handleChangeFromNetwork")
+    // console.log(value, "handleChangeFromNetwork")
     switchNetwork(value)
   }
 
@@ -115,20 +115,15 @@ const NFTSelect = props => {
     }
   }
 
-  // const get1155Balance = async () => {
-  //   const amount = await tokenInstance["balanceOf(address,uint256)"](walletCurrentAddress, currentTokenId)
-  //   console.log(amount.toNumber(), "amount")
-  // }
-
   return (
-    <Box sx={{ backgroundColor: "#f5f5f5", borderRadius: "6px", flex: 3, padding: "5rem 4rem" }}>
+    <Box sx={{ backgroundColor: "#f5f5f5", borderRadius: "6px", flex: 3, padding: "5rem 4rem", display: "flex", flexDirection: "column" }}>
       <Stack direction="row" spacing={1}>
         <Typography variant="h6" color="secondary" sx={{ fontWeight: 400 }}>
           Select your NFTs on
         </Typography>
         <NetworkSelect
           placeholder="Select NFT'contract address"
-          value={network.chainId}
+          value={fromNetwork.chainId}
           options={networks}
           onChange={handleChangeFromNetwork}
         ></NetworkSelect>
@@ -151,13 +146,15 @@ const NFTSelect = props => {
           value={currentTokenId}
           onChange={handleChangeTokenId}
         />
-        <Button sx={{ width: "7rem" }} onClick={handleSearchToken}>
+        <Button sx={{ width: "7rem" }} disabled={!walletCurrentAddress} onClick={handleSearchToken}>
           Search
         </Button>
       </Stack>
-      <Gallery sx={{ mt: "2.5rem" }}></Gallery>
-
-      {/* <Button onClick={get1155Balance}>Get 1155 balance of {currentTokenId}</Button> */}
+      <Gallery sx={{ mt: "2.5rem", flex: 1 }} column={4} emptyTip="Please fill in TOEKN ID input box and click SEARCH to view your nft.">
+        {viewingList.map(item => (
+          <ViewingItem key={item.id} {...item}></ViewingItem>
+        ))}
+      </Gallery>
     </Box>
   )
 }

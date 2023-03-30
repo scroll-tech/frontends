@@ -8,11 +8,11 @@ import useNFTBridgeStore from "@/stores/nftBridgeStore"
 const GalleryItem = props => {
   const { id, image, name, amount } = props
 
-  const { contract, toggleSelectedTokens } = useNFTBridgeStore()
+  const { contract, toggleSelectedList } = useNFTBridgeStore()
   const selectedTokenIds = useNFTBridgeStore(state => state.selectedTokenIds())
 
   const handleToggleSelect = () => {
-    toggleSelectedTokens(id)
+    toggleSelectedList(id)
   }
 
   return (
@@ -20,6 +20,7 @@ const GalleryItem = props => {
       sx={{
         position: "relative",
         cursor: "pointer",
+        height: "min-content",
         "*": {
           cursor: "inherit",
         },

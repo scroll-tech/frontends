@@ -17,34 +17,44 @@ interface Contract {
   l2?: string
 }
 
-interface TransfetToken {
-  id: number
-  amount?: number
-}
 interface NFTBridgeStore {
+  fromNetwork: any
+  toNetwork: any
   contract: Contract
   viewingList: NFTToken[]
-  selectedTokens: TransfetToken[]
+  selectedList: NFTToken[]
   selectedTokenIds: () => number[]
-  selectedList: () => NFTToken[]
   changeContract: (value) => void
+  changeFromNetwork: (value) => void
+  changeToNetwork: (value) => void
   addViewingList: (token) => void
   removeViewingList: (id) => void
   clearViewingList: () => void
   clearSelectedList: () => void
-  toggleSelectedTokens: (id) => void
-  updateTransferAmount: (id, amount) => void
+  toggleSelectedList: (id) => void
+  updateSelectedList: (id, params) => void
 }
 
 const useNFTBridgeStore = create<NFTBridgeStore>()(
   persist(
     (set, get) => ({
       contract: {},
+      fromNetwork: { chainId: 0 },
+      toNetwork: { chainId: 0 },
       viewingList: [],
-      selectedTokens: [],
-      selectedTokenIds: () => get().selectedTokens.map(item => item.id),
-      selectedList: () => get().viewingList.filter(item => get().selectedTokenIds().includes(item.id)),
+      selectedList: [],
+      selectedTokenIds: () => get().selectedList.map(item => item.id),
 
+      changeFromNetwork: value => {
+        set({
+          fromNetwork: value,
+        })
+      },
+      changeToNetwork: value => {
+        set({
+          toNetwork: value,
+        })
+      },
       changeContract: contract => {
         set({
           contract: contract || {},
@@ -73,30 +83,33 @@ const useNFTBridgeStore = create<NFTBridgeStore>()(
 
       clearSelectedList: () => {
         set({
-          selectedTokens: [],
+          selectedList: [],
         })
       },
 
-      toggleSelectedTokens: id => {
-        const curSelectedList = get().selectedTokens
-
-        if (curSelectedList.find(item => item.id === id)) {
-          const nextSelectedList = curSelectedList.filter(item => item.id !== id)
+      toggleSelectedList: id => {
+        const curSelectedList = get().selectedList
+        const tokenIndex = curSelectedList.findIndex(item => item.id === id)
+        if (tokenIndex > -1) {
+          const nextSelectedList = [...curSelectedList]
+          nextSelectedList.splice(tokenIndex, 1)
           set({
-            selectedTokens: nextSelectedList,
+            selectedList: nextSelectedList,
           })
         } else {
           const token = get().viewingList.find(item => item.id === id)
           set({
-            selectedTokens: get().selectedTokens.concat({ id, amount: token?.amount }),
+            selectedList: get().selectedList.concat(token as NFTToken),
           })
         }
       },
-      updateTransferAmount: (id, amount) => {
+      updateSelectedList: (id, params) => {
         set(
           produce(state => {
-            const curToken = state.viewingList.find(item => item.id === id)
-            curToken.transferAmount = amount
+            const curToken = state.selectedList.find(item => item.id === id)
+            for (let key of Object.keys(params)) {
+              curToken[key] = params[key]
+            }
           }),
         )
       },

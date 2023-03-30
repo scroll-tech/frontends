@@ -5,17 +5,25 @@ import EmptyImg from "@/assets/svgs/empty-img.svg"
 import { TOEKN_TYPE } from "@/constants"
 import useNFTBridgeStore from "@/stores/nftBridgeStore"
 
-const GalleryItem = props => {
+const SelectedItem = props => {
   const { id, image, name, amount, transferAmount } = props
 
-  const { contract, toggleSelectedTokens, updateTransferAmount } = useNFTBridgeStore()
+  const { contract, toggleSelectedList, updateSelectedList } = useNFTBridgeStore()
 
   const handleRemoveSelectedId = () => {
-    toggleSelectedTokens(id)
+    toggleSelectedList(id)
   }
 
   const handleChangeTransferAmount = e => {
-    updateTransferAmount(id, e.target.value)
+    const { value } = e.target
+    // console.log(value, "transferAmount")
+    let transferAmount
+    if (value) {
+      transferAmount = isNaN(+value) ? undefined : +value
+    } else {
+      transferAmount = undefined
+    }
+    updateSelectedList(id, { transferAmount })
   }
 
   return (
@@ -44,7 +52,18 @@ const GalleryItem = props => {
             <Stack direction="row" spacing={0.5} sx={{ alignItems: "center" }}>
               <Typography sx={{ fontSize: "1rem" }}>Amount:</Typography>
               <InputBase
-                sx={{ bgcolor: "#e0e0e0", fontSize: "1rem", borderRadius: "0.6rem", width: "3rem", height: "2rem", px: "8px" }}
+                error={isNaN(transferAmount) || transferAmount === 0}
+                sx={{
+                  bgcolor: "#e0e0e0",
+                  fontSize: "1rem",
+                  borderRadius: "0.6rem",
+                  width: "3rem",
+                  height: "2rem",
+                  px: "8px",
+                  "&.Mui-error": {
+                    border: theme => `1px solid ${theme.palette.error.main}`,
+                  },
+                }}
                 value={transferAmount}
                 onChange={handleChangeTransferAmount}
               ></InputBase>
@@ -60,4 +79,4 @@ const GalleryItem = props => {
   )
 }
 
-export default GalleryItem
+export default SelectedItem

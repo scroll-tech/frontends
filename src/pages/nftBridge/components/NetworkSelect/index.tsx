@@ -21,6 +21,9 @@ const useStyles = makeStyles()(theme => ({
       "&:focus": {
         backgroundColor: "unset",
       },
+      "&.Mui-disabled": {
+        "-webkit-text-fill-color": theme.palette.text.primary,
+      },
     },
     ".MuiTypography-root": {
       fontSize: "1.3rem",

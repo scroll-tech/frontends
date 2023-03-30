@@ -20,7 +20,6 @@ import { requireEnv } from "@/utils"
 
 import ContractSelect from "../components/ContractSelect"
 import TokenIdInput from "../components/TokenIdInput"
-import Gallery from "./Gallery"
 
 // lost tokenId: 1364061
 
@@ -254,7 +253,6 @@ const SelectPanel = () => {
     <div>
       <ContractSelect value={contract} data={contractList || []} onChange={handleChangeContract}></ContractSelect>
       <TokenIdInput value={currentTokenId} onChange={setCurrentTokenId} onEnsure={handleEnsureToken}></TokenIdInput>
-      <Gallery></Gallery>
       {checkConnectedChainId(ChainId.SCROLL_LAYER_1) ? (
         <Stack direction="column">
           <Button onClick={getOwnedL1_721Nfts}>Get Owned L1 721 NFTs</Button>

@@ -10,8 +10,9 @@ import TextIconButton from "@/components/TextIconButton"
 import WalletIndicator from "@/components/WalletIndicator"
 import { useApp } from "@/contexts/AppContextProvider"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
-import TransactionHistory from "@/pages/bridge/Header/TransactionHistory"
+// import TransactionHistory from "@/pages/bridge/Header/TransactionHistory"
 import useBridgeStore from "@/stores/bridgeStore"
+import useNFTBridgeStore from "@/stores/nftBridgeStore"
 import { truncateAddress } from "@/utils"
 
 import CopyButton from "./CopyButton"
@@ -75,6 +76,8 @@ const Header = () => {
   const { classes } = useStyles()
   const { walletCurrentAddress, disconnectWallet } = useWeb3Context()
 
+  const { clearViewingList, clearSelectedList } = useNFTBridgeStore()
+
   const {
     txHistory: { refreshPageTransactions },
   } = useApp()
@@ -91,6 +94,8 @@ const Header = () => {
 
   const handleDisconnect = () => {
     handleClose()
+    clearViewingList()
+    clearSelectedList()
     disconnectWallet()
   }
 
@@ -123,9 +128,7 @@ const Header = () => {
             </Stack>
           </Stack>
           <Divider />
-          <Box sx={{ position: "relative", margin: ["2.4rem 0", "3rem 0"] }}>
-            <TransactionHistory />
-          </Box>
+          <Box sx={{ position: "relative", margin: ["2.4rem 0", "3rem 0"] }}>{/* <TransactionHistory /> */}</Box>
         </Card>
       </WalletIndicator>
     </Container>
