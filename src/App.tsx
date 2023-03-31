@@ -6,6 +6,7 @@ import { Navigate, Route, Routes, useLocation } from "react-router-dom"
 import LoadingPage from "@/components/LoadingPage"
 import ScrollToTop from "@/components/ScrollToTop"
 import useSentryPageTag from "@/hooks/useSentryPageTag"
+import { VersionChecker } from "@/hooks/useVersionCheck"
 
 const Portal = React.lazy(() => import("./Portal"))
 const Homepage = React.lazy(() => import("./Homepage"))
@@ -42,10 +43,12 @@ function App() {
     <HelmetProvider>
       <RemoveTrailingSlash />
       <React.Suspense fallback={<LoadingPage />}>
-        <Routes>
-          <Route path="/alpha/*" element={<Portal />} />
-          <Route path="/*" element={<Homepage />} />
-        </Routes>
+        <VersionChecker>
+          <Routes>
+            <Route path="/alpha/*" element={<Portal />} />
+            <Route path="/*" element={<Homepage />} />
+          </Routes>
+        </VersionChecker>
         <ScrollToTop />
       </React.Suspense>
     </HelmetProvider>

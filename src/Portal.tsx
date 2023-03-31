@@ -5,7 +5,6 @@ import Footer from "@/components/Footer"
 import Header from "@/components/Header"
 import Web3Provider from "@/contexts/Web3ContextProvider"
 import ScrollToTop from "@/hooks/useScrollToTop"
-import { VersionChecker } from "@/hooks/useVersionCheck"
 import NotFound from "@/pages/404"
 import { requireEnv } from "@/utils"
 
@@ -40,18 +39,16 @@ function Portal() {
       </Helmet>
       <Web3Provider>
         <AppWrapper>
-          <VersionChecker>
-            <ScrollToTop>
-              <Header />
-              <Routes>
-                {routes.map((route, key) => (
-                  <Route key={key} path={route.path} element={route.element} />
-                ))}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-              <Footer />
-            </ScrollToTop>
-          </VersionChecker>
+          <ScrollToTop>
+            <Header />
+            <Routes>
+              {routes.map((route, key) => (
+                <Route key={key} path={route.path} element={route.element} />
+              ))}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            <Footer />
+          </ScrollToTop>
         </AppWrapper>
       </Web3Provider>
     </div>
