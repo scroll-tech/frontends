@@ -10,11 +10,13 @@ interface TxStore {
   page: number
   total: number
   loading: boolean
+  estimatedTimeMap: object
   frontTransactions: Transaction[]
   transactions: Transaction[]
   pageTransactions: Transaction[]
   addTransaction: (tx) => void
   updateTransaction: (hash, tx) => void
+  addEstimatedTimeMap: (key, value) => void
   generateTransactions: (transactions, safeBlockNumber) => void
   comboPageTransactions: (address, page, rowsPerPage, safeBlockNumber) => Promise<any>
   clearTransactions: () => void
@@ -33,38 +35,55 @@ interface Transaction {
   symbolToken?: string
 }
 
-const formatBackTxList = (backList, safeBlockNumber) => {
+const formatBackTxList = (backList, estimatedTimeMap, safeBlockNumber) => {
+  const nextEstimatedTimeMap = { ...estimatedTimeMap }
   if (!backList.length) {
-    return []
+    return { txList: [], estimatedTimeMap: nextEstimatedTimeMap }
   }
-  return backList.map(tx => {
+  const txList = backList.map(tx => {
     const amount = tx.amount
     const fromName = networks[+!tx.isL1].name
     const fromExplore = networks[+!tx.isL1].explorer
     const toName = networks[+tx.isL1].name
     const toExplore = networks[+tx.isL1].explorer
     const toHash = tx.finalizeTx?.hash
-    const fromEstimatedEndTime = tx.isL1 && tx.blockNumber > safeBlockNumber ? Date.now() + (tx.blockNumber - safeBlockNumber) * 12 * 1000 : undefined
-    const toEstimatedEndTime =
-      !tx.isL1 && tx.finalizeTx?.blockNumber && tx.finalizeTx.blockNumber > safeBlockNumber
-        ? Date.now() + (tx.finalizeTx.blockNumber - safeBlockNumber) * 12 * 1000
-        : undefined
+
+    // 1. have no time to compute fromEstimatedEndTime
+    // 2. compute toEstimatedEndTime from backend data
+    // 3. when tx is marked success then remove estimatedEndTime to slim storage data
+    if (tx.isL1) {
+      if (tx.blockNumber > safeBlockNumber && !nextEstimatedTimeMap[`from_${tx.hash}`]) {
+        nextEstimatedTimeMap[`from_${tx.hash}`] = Date.now() + (tx.blockNumber - safeBlockNumber) * 12 * 1000
+      } else if (tx.blockNumber <= safeBlockNumber && nextEstimatedTimeMap[`from_${tx.hash}`]) {
+        delete nextEstimatedTimeMap[`from_${tx.hash}`]
+      }
+    } else {
+      if (tx.finalizeTx?.blockNumber && tx.finalizeTx.blockNumber > safeBlockNumber && !nextEstimatedTimeMap[`to_${toHash}`]) {
+        nextEstimatedTimeMap[`to_${toHash}`] = Date.now() + (tx.finalizeTx.blockNumber - safeBlockNumber) * 12 * 1000
+      } else if (tx.finalizeTx?.blockNumber && tx.finalizeTx.blockNumber <= safeBlockNumber && nextEstimatedTimeMap[`to_${toHash}`]) {
+        delete nextEstimatedTimeMap[`to_${toHash}`]
+      }
+    }
+
     return {
       hash: tx.hash,
       amount,
       fromName,
       fromExplore,
       fromBlockNumber: tx.blockNumber,
-      fromEstimatedEndTime,
       toHash,
       toName,
       toExplore,
       toBlockNumber: tx.finalizeTx?.blockNumber,
       isL1: tx.isL1,
       symbolToken: tx.isL1 ? tx.l1Token : tx.l2Token,
-      toEstimatedEndTime,
     }
   })
+
+  return {
+    txList,
+    estimatedTimeMap: nextEstimatedTimeMap,
+  }
 }
 
 const useTxStore = create<TxStore>()(
@@ -72,6 +91,8 @@ const useTxStore = create<TxStore>()(
     (set, get) => ({
       page: 1,
       total: 0,
+      // { hash: estimatedEndTime }
+      estimatedTimeMap: {},
       frontTransactions: [],
       loading: false,
       // frontTransactions + backendTransactions.slice(0, 2)
@@ -109,18 +130,34 @@ const useTxStore = create<TxStore>()(
             }
           }),
         ),
+
+      addEstimatedTimeMap: (key, value) => {
+        const nextEstimatedTimeMap = { ...get().estimatedTimeMap, [key]: value }
+        set({
+          estimatedTimeMap: nextEstimatedTimeMap,
+        })
+      },
+
       // polling transactions
       // slim frontTransactions and keep the latest 3 backTransactions
       generateTransactions: (historyList, safeBlockNumber) => {
         const realHistoryList = historyList.filter(item => item)
         if (realHistoryList.length) {
-          const formattedHistoryList = formatBackTxList(realHistoryList, safeBlockNumber)
+          const { txList: formattedHistoryList, estimatedTimeMap } = formatBackTxList(realHistoryList, get().estimatedTimeMap, safeBlockNumber)
           const formattedHistoryListHash = formattedHistoryList.map(item => item.hash)
           const formattedHistoryListMap = Object.fromEntries(formattedHistoryList.map(item => [item.hash, item]))
           const pendingFrontList = get().frontTransactions.filter(item => !formattedHistoryListHash.includes(item.hash))
           const pendingFrontListHash = pendingFrontList.map(item => item.hash)
-          const syncList = formattedHistoryList.filter(item => !pendingFrontListHash.includes(item.hash))
-          const restList = get().transactions.filter(item => item.toHash)
+          const nextTransactions = get()
+            .frontTransactions.map(item => {
+              const current = formattedHistoryList.find(backItem => backItem.hash === item.hash)
+              if (current) {
+                return current
+              }
+              return item
+            })
+            .concat(formattedHistoryList.filter(item => !pendingFrontListHash.includes(item.hash)))
+            .concat(get().transactions.filter(item => item.toHash))
 
           const refreshPageTransaction = get().pageTransactions.map(item => {
             if (formattedHistoryListMap[item.hash]) {
@@ -129,9 +166,10 @@ const useTxStore = create<TxStore>()(
             return item
           })
           set({
-            transactions: pendingFrontList.concat([...syncList, ...restList].slice(0, 2)),
+            transactions: nextTransactions.slice(0, 2),
             frontTransactions: pendingFrontList,
             pageTransactions: refreshPageTransaction,
+            estimatedTimeMap,
           })
         }
       },
@@ -167,16 +205,18 @@ const useTxStore = create<TxStore>()(
 
         return scrollRequest(`${fetchTxListUrl}?address=${address}&offset=${relativeOffset}&limit=${limit}`)
           .then(data => {
+            const { txList: backendTransactions, estimatedTimeMap } = formatBackTxList(data.data.result, get().estimatedTimeMap, safeBlockNumber)
             set({
-              pageTransactions: [...frontTransactions, ...formatBackTxList(data.data.result, safeBlockNumber)],
+              pageTransactions: [...frontTransactions, ...backendTransactions],
               total: data.data.total,
               page,
               loading: false,
+              estimatedTimeMap,
             })
             if (page === 1) {
               // keep transactions always frontList + the latest two history list
               set({
-                transactions: [...frontTransactions, ...formatBackTxList(data.data.result, safeBlockNumber).slice(0, 2)],
+                transactions: [...frontTransactions, ...backendTransactions.slice(0, 2)],
               })
             }
           })

@@ -22,6 +22,7 @@ import {
 import Link from "@/components/Link"
 import { useApp } from "@/contexts/AppContextProvider"
 import useTokenInfo from "@/hooks/useTokenInfo"
+import useTxStore from "@/stores/txStore"
 import { toTokenDisplay } from "@/utils"
 import { generateExploreLink, truncateHash } from "@/utils"
 
@@ -140,6 +141,7 @@ const TxTable = (props: any) => {
 
 const TxRow = props => {
   const { tx } = props
+  const { estimatedTimeMap } = useTxStore()
 
   const {
     txHistory: { blockNumbers },
@@ -216,9 +218,9 @@ const TxRow = props => {
             {truncateHash(tx.hash)}
           </Link>
           {!tx.fromBlockNumber && <LinearProgress />}
-          {tx.fromEstimatedEndTime && (
+          {estimatedTimeMap[`from_${tx.hash}`] && (
             <Typography variant="body2" color="textSecondary">
-              <Countdown date={tx.fromEstimatedEndTime} renderer={renderCountDown}></Countdown>
+              <Countdown date={estimatedTimeMap[`from_${tx.hash}`]} renderer={renderCountDown}></Countdown>
             </Typography>
           )}
         </Stack>
@@ -232,9 +234,9 @@ const TxRow = props => {
           ) : (
             <span className="leading-normal flex-1">-</span>
           )}
-          {tx.toEstimatedEndTime && (
+          {estimatedTimeMap[`to_${tx.toHash}`] && (
             <Typography variant="body2" color="textSecondary">
-              <Countdown date={tx.toEstimatedEndTime} renderer={renderCountDown}></Countdown>
+              <Countdown date={estimatedTimeMap[`to_${tx.toHash}`]} renderer={renderCountDown}></Countdown>
             </Typography>
           )}
         </Stack>
