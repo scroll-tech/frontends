@@ -1,7 +1,7 @@
 # when there's new push to the production branch
 # create a pr from ci/_bump-version to develop branch
 # with a commit that bumps the version in package.json
-name: "Bump Version"
+name: "Bump Version on Develop"
 
 on:
   push:
