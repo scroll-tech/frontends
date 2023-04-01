@@ -19,8 +19,10 @@ const Content = () => {
     <>
       {recentTxVisible ? <RencentTx></RencentTx> : <Send></Send>}
 
-      <Snackbar open={!!errorMessage} autoHideDuration={6000} onClose={handleClose}>
-        <Alert severity="error">{errorMessage}</Alert>
+      <Snackbar open={!!errorMessage} autoHideDuration={null} sx={{ ".MuiAlert-action": { padding: "0 0.8rem" } }} onClose={handleClose}>
+        <Alert severity="error" onClose={handleClose}>
+          {errorMessage}
+        </Alert>
       </Snackbar>
     </>
   )

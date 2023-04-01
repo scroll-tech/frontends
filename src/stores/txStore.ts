@@ -180,9 +180,9 @@ const useTxStore = create<TxStore>()(
               })
             }
           })
-          .catch(() => {
+          .catch(error => {
             set({ loading: false })
-            return Promise.reject("Failed to fetch transaction history")
+            return Promise.reject(`${error.status}:${error.message}`)
           })
       },
     }),
