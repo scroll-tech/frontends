@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async"
-import { Route, Routes, useLocation } from "react-router-dom"
+import { Route, Routes } from "react-router-dom"
 
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
@@ -9,12 +9,7 @@ import NotFound from "@/pages/404"
 import useMatchedRoute from "./hooks/useMatchedRoute"
 import routes from "./routes/homepageRoutes"
 
-const hiddenFooterRoutesKeywords = ["blog"]
-
 function Homepage() {
-  const location = useLocation()
-  const HiddenFooter = hiddenFooterRoutesKeywords.some(keyword => ~location.pathname.indexOf(keyword))
-
   const route = useMatchedRoute()
 
   const getImageUrl = () => {
@@ -41,7 +36,7 @@ function Homepage() {
           ))}
           <Route path="*" element={<NotFound />} />
         </Routes>
-        {HiddenFooter ? null : <Footer />}
+        <Footer />
       </div>
     </ScrollToTop>
   )
