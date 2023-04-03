@@ -21,7 +21,8 @@ const branchName = requireEnv("REACT_APP_SCROLL_ENVIRONMENT").toLocaleLowerCase(
 const Viewing = props => {
   const { walletCurrentAddress } = useWeb3Context()
   const { tokenInstance } = useNFTBridgeContext()
-  const { fromNetwork, viewingList, addViewingList, clearViewingList, clearSelectedList, contract, changeContract } = useNFTBridgeStore()
+  const { fromNetwork, viewingList, addViewingList, clearViewingList, clearSelectedList, contract, changeContract, updatePromptMessage } =
+    useNFTBridgeStore()
 
   const [currentTokenId, setCurrentTokenId] = useState<number>()
   const [searchLoading, setSearchLoading] = useState(false)
@@ -89,7 +90,7 @@ const Viewing = props => {
         addViewingList({ id: currentTokenId, amount, name: uri, transferAmount: amount })
       }
     } catch (e) {
-      console.log(e.message, "error")
+      updatePromptMessage(e.message)
     } finally {
       setSearchLoading(false)
     }

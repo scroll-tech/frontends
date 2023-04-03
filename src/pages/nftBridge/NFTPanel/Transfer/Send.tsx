@@ -17,7 +17,7 @@ const Send = () => {
   const { networksAndSigners } = useApp()
 
   const { tokenInstance, gatewayAddress, isLayer1 } = useNFTBridgeContext()
-  const { contract, selectedList, exciseSelected } = useNFTBridgeStore()
+  const { contract, selectedList, exciseSelected, updatePromptMessage } = useNFTBridgeStore()
   const selectedTokenIds = useNFTBridgeStore(state => state.selectedTokenIds())
   const { setApproval, checkApproval } = useApprove()
   const { getGasFee } = useGasFee()
@@ -32,17 +32,6 @@ const Send = () => {
     }
     return false
   }, [tokenInstance, contract])
-
-  // empty selectedList not show this tip
-  // const warningTip = useMemo(() => {
-  //   if (contract.type === TOEKN_TYPE[1155]) {
-  //     const isValid = selectedList.every(item => item.transferAmount && item.transferAmount > 0)
-  //     if (!isValid) {
-  //       return <>The amount of ERC1155 token must be equal or greater than 1.</>
-  //     }
-  //   }
-  //   return ""
-  // }, [selectedList, contract.type])
 
   const sendActive = useMemo(() => {
     if (!walletCurrentAddress) {
@@ -69,12 +58,12 @@ const Send = () => {
   const handleSend = () => {
     setSendLoading(true)
     const tx = isLayer1 ? deposite() : withdraw()
-    // const txResult = await tx.wait()
     tx.then(result => {
       console.log(result, "tx result")
       exciseSelected()
     })
       .catch(error => {
+        updatePromptMessage(error.message)
         console.log(error, "tx error")
       })
       .finally(() => {
@@ -157,24 +146,17 @@ const Send = () => {
   }
 
   return (
-    <>
-      {/* {warningTip && (
-        <Alert variant="standard" severity={"warning"} style={{ marginTop: "2rem" }}>
-          {warningTip}
-        </Alert>
-      )} */}
-      <Stack direction="row" sx={{ width: "100%", justifyContent: "center", mt: "2rem" }}>
-        {needApproval ? (
-          <LoadingButton variant="contained" sx={{ width: "calc(100% - 4rem)" }} loading={approveLoading} onClick={handleApprove}>
-            APPROVE
-          </LoadingButton>
-        ) : (
-          <LoadingButton variant="contained" sx={{ width: "calc(100% - 4rem)" }} loading={sendLoading} disabled={!sendActive} onClick={handleSend}>
-            SEND
-          </LoadingButton>
-        )}
-      </Stack>
-    </>
+    <Stack direction="row" sx={{ width: "100%", justifyContent: "center", mt: "2rem" }}>
+      {needApproval ? (
+        <LoadingButton variant="contained" sx={{ width: "calc(100% - 4rem)" }} loading={approveLoading} onClick={handleApprove}>
+          APPROVE
+        </LoadingButton>
+      ) : (
+        <LoadingButton variant="contained" sx={{ width: "calc(100% - 4rem)" }} loading={sendLoading} disabled={!sendActive} onClick={handleSend}>
+          SEND
+        </LoadingButton>
+      )}
+    </Stack>
   )
 }
 

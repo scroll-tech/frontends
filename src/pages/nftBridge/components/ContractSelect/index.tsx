@@ -3,6 +3,7 @@ import { makeStyles } from "tss-react/mui"
 import { Autocomplete, Chip, Icon, Stack, TextField, Typography } from "@mui/material"
 
 import { ReactComponent as ArrowDownIcon } from "@/assets/svgs/arrow-down.svg"
+import Link from "@/components/Link"
 import { ChainId } from "@/constants"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 
@@ -27,14 +28,20 @@ const useStyles = makeStyles()(theme => {
         backgroundColor: theme.palette.background.default,
       },
     },
-    inputFocused: {},
     option: {
       paddingLeft: "0.6rem !important",
       paddingRight: "0.6rem !important",
-    },
+      justifyContent: "space-between !important",
 
-    StackRoot: {
-      alignItems: "center",
+      ".faucetLink": {
+        visibility: "hidden",
+      },
+
+      "&:hover": {
+        ".faucetLink": {
+          visibility: "visible",
+        },
+      },
     },
 
     ChipRoot: {
@@ -84,9 +91,16 @@ const ContractSelect = props => {
         ></TextField>
       )}
       renderOption={(innerProps: any, option, state) => (
-        <Stack direction="row" spacing={0.75} classes={{ root: classes.StackRoot }} {...innerProps}>
-          <Chip label={option.type} classes={{ root: classes.ChipRoot, label: classes.label }} />
-          <Typography variant="body2">{checkConnectedChainId(ChainId.SCROLL_LAYER_1) ? option.l1 : option.l2}</Typography>
+        <Stack direction="row" {...innerProps}>
+          <Stack direction="row" spacing={0.75}>
+            <Chip label={option.type} classes={{ root: classes.ChipRoot, label: classes.label }} />
+            <Typography variant="body2">{checkConnectedChainId(ChainId.SCROLL_LAYER_1) ? option.l1 : option.l2}</Typography>
+          </Stack>
+          {checkConnectedChainId(ChainId.SCROLL_LAYER_1) && (
+            <Link href={option.faucet} className="faucetLink" sx={{ fontSize: "1.2rem" }} underline="hover" external>
+              faucet
+            </Link>
+          )}
         </Stack>
       )}
       onChange={(event, newValue) => {

@@ -15,6 +15,7 @@ interface Contract {
   type?: string
   l1?: string
   l2?: string
+  faucet?: string
 }
 
 interface NFTBridgeStore {
@@ -23,6 +24,7 @@ interface NFTBridgeStore {
   contract: Contract
   viewingList: NFTToken[]
   selectedList: NFTToken[]
+  promptMessage: string
   selectedTokenIds: () => number[]
   changeContract: (value) => void
   changeFromNetwork: (value) => void
@@ -34,6 +36,7 @@ interface NFTBridgeStore {
   toggleSelectedList: (id) => void
   updateSelectedList: (id, params) => void
   exciseSelected: () => void
+  updatePromptMessage: (value) => void
 }
 
 const useNFTBridgeStore = create<NFTBridgeStore>()(
@@ -42,6 +45,7 @@ const useNFTBridgeStore = create<NFTBridgeStore>()(
       contract: {},
       fromNetwork: { chainId: 0 },
       toNetwork: { chainId: 0 },
+      promptMessage: "",
       viewingList: [],
       selectedList: [],
       selectedTokenIds: () => get().selectedList.map(item => item.id),
@@ -121,6 +125,9 @@ const useNFTBridgeStore = create<NFTBridgeStore>()(
             }
           }),
         )
+      },
+      updatePromptMessage: promptMessage => {
+        set({ promptMessage })
       },
     }),
     {

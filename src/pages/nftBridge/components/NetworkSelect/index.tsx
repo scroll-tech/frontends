@@ -36,11 +36,11 @@ const useStyles = makeStyles()(theme => ({
       top: "unset",
       right: "1.2rem",
       color: theme.palette.text.primary,
-      transform: "scale(0.6)",
+      transform: "scale(0.7)",
     },
-    // ".MuiList-root": {
-    //   padding: 0,
-    // },
+    ".MuiSelect-iconOpen": {
+      transform: "rotate(180deg) scale(0.7)",
+    },
   },
   networkIcon: {
     display: "flex",
@@ -63,6 +63,9 @@ const useStyles = makeStyles()(theme => ({
   optionList: {
     padding: 0,
   },
+  optionListText: {
+    cursor: "pointer",
+  },
 }))
 
 const NetworkSelect = props => {
@@ -72,6 +75,7 @@ const NetworkSelect = props => {
   return (
     <Select
       IconComponent={icon}
+      id="networkselect"
       MenuProps={{
         classes: {
           paper: classes.optionModal,
@@ -90,7 +94,7 @@ const NetworkSelect = props => {
           <ListItemIcon>
             <img src={item.imageUrl} className={classes.networkIcon} alt={"name"} />
           </ListItemIcon>
-          <ListItemText>{item.name}</ListItemText>
+          <ListItemText classes={{ primary: classes.optionListText }}>{item.name}</ListItemText>
         </MenuItem>
       ))}
     </Select>

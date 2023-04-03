@@ -23,8 +23,9 @@ const useStyles = makeStyles()(theme => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    bgcolor: theme.palette.background.default,
-    mt: "3rem",
+    backgroundColor: theme.palette.background.default,
+    marginTop: "4rem",
+    marginBottom: "4rem",
   },
 
   modalContent: {
