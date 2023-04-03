@@ -17,7 +17,8 @@ const Send = () => {
   const { networksAndSigners } = useApp()
 
   const { tokenInstance, gatewayAddress, isLayer1 } = useNFTBridgeContext()
-  const { contract, selectedTokenIds, selectedList } = useNFTBridgeStore()
+  const { contract, selectedList, exciseSelected } = useNFTBridgeStore()
+  const selectedTokenIds = useNFTBridgeStore(state => state.selectedTokenIds())
   const { setApproval, checkApproval } = useApprove()
   const { getGasFee } = useGasFee()
 
@@ -52,8 +53,9 @@ const Send = () => {
       const isValid = selectedList.every(item => item.transferAmount && item.transferAmount > 0)
       return isValid
     }
+
     return true
-  }, [selectedList, contract.type])
+  }, [walletCurrentAddress, selectedList, contract.type])
 
   const handleApprove = async () => {
     try {
@@ -64,63 +66,73 @@ const Send = () => {
     }
   }
 
-  const handleSend = async () => {
-    console.log(selectedList, "selectedList")
+  const handleSend = () => {
     setSendLoading(true)
-    try {
-      if (isLayer1) {
-        await deposite()
-      } else {
-        await withdraw()
-      }
-    } finally {
-      setSendLoading(false)
-    }
+    const tx = isLayer1 ? deposite() : withdraw()
+    // const txResult = await tx.wait()
+    tx.then(result => {
+      console.log(result, "tx result")
+      exciseSelected()
+    })
+      .catch(error => {
+        console.log(error, "tx error")
+      })
+      .finally(() => {
+        setSendLoading(false)
+      })
   }
 
   const deposite = async () => {
     if (contract.type === TOEKN_TYPE[721]) {
-      await deposite721()
+      return await deposite721()
     } else {
-      await deposite1155()
+      return await deposite1155()
     }
   }
 
   const deposite721 = async () => {
+    const gasFee = await getGasFee(GasLimit.DEPOSIT_ERC721)
     const tx = await networksAndSigners[ChainId.SCROLL_LAYER_1].gateway_721["batchDepositERC721(address,address,uint256[],uint256)"](
-      gatewayAddress,
+      contract.l1,
       walletCurrentAddress,
       selectedTokenIds,
-      0,
+      GasLimit.DEPOSIT_ERC721,
+      {
+        value: gasFee,
+      },
     )
     const txResult = await tx.wait()
     return txResult
   }
 
   const deposite1155 = async () => {
+    const gasFee = await getGasFee(GasLimit.DEPOSIT_ERC1155)
     const tx = await networksAndSigners[ChainId.SCROLL_LAYER_1].gateway_1155["batchDepositERC1155(address,address,uint256[],uint256[],uint256)"](
-      gatewayAddress,
+      contract.l1,
       walletCurrentAddress,
-      selectedList.map(item => item.id),
+      selectedTokenIds,
       selectedList.map(item => item.transferAmount),
-      0,
+      GasLimit.DEPOSIT_ERC1155,
+      {
+        value: gasFee,
+      },
     )
     const txResult = await tx.wait()
     return txResult
   }
 
-  const withdraw = () => {
+  const withdraw = async () => {
     if (contract.type === "ERC721") {
-      withdraw721()
+      return await withdraw721()
     } else if (contract.type === "ERC1155") {
-      withdraw1155()
+      return await withdraw1155()
     }
   }
 
   const withdraw721 = async () => {
     const gasFee = await getGasFee(GasLimit.WITHDRAW_ERC721)
     const tx = await networksAndSigners[ChainId.SCROLL_LAYER_2].gateway_721["batchWithdrawERC721(address,address,uint256[],uint256)"](
-      gatewayAddress,
+      contract.l2,
       walletCurrentAddress,
       selectedTokenIds,
       GasLimit.WITHDRAW_ERC721,
@@ -133,9 +145,9 @@ const Send = () => {
   const withdraw1155 = async () => {
     const gasFee = await getGasFee(GasLimit.WITHDRAW_ERC1155)
     const tx = await networksAndSigners[ChainId.SCROLL_LAYER_2].gateway_1155["batchWithdrawERC1155(address,address,uint256[],uint256[],uint256)"](
-      gatewayAddress,
+      contract.l2,
       walletCurrentAddress,
-      selectedList.map(item => item.id),
+      selectedTokenIds,
       selectedList.map(item => item.transferAmount),
       GasLimit.WITHDRAW_ERC1155,
       { value: gasFee },

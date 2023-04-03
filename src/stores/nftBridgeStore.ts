@@ -33,6 +33,7 @@ interface NFTBridgeStore {
   clearSelectedList: () => void
   toggleSelectedList: (id) => void
   updateSelectedList: (id, params) => void
+  exciseSelected: () => void
 }
 
 const useNFTBridgeStore = create<NFTBridgeStore>()(
@@ -102,6 +103,14 @@ const useNFTBridgeStore = create<NFTBridgeStore>()(
             selectedList: get().selectedList.concat(token as NFTToken),
           })
         }
+      },
+      exciseSelected: () => {
+        const selectedTokenIds = get().selectedTokenIds()
+        const nextViewingList = get().viewingList.filter(item => !selectedTokenIds.includes(item.id))
+        set({
+          viewingList: nextViewingList,
+          selectedList: [],
+        })
       },
       updateSelectedList: (id, params) => {
         set(

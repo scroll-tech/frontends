@@ -10,20 +10,21 @@ import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import useNFTBridgeStore from "@/stores/nftBridgeStore"
 import { requireEnv, switchNetwork } from "@/utils"
 
-import Button from "../../components/Button"
 import ContractSelect from "../../components/ContractSelect"
 import Gallery from "../../components/Gallery"
 import ViewingItem from "../../components/Gallery/ViewingItem"
 import NetworkSelect from "../../components/NetworkSelect"
+import LoadingButton from "../../components/SearchButton"
 
 const branchName = requireEnv("REACT_APP_SCROLL_ENVIRONMENT").toLocaleLowerCase()
 
-const NFTSelect = props => {
+const Viewing = props => {
   const { walletCurrentAddress } = useWeb3Context()
   const { tokenInstance } = useNFTBridgeContext()
   const { fromNetwork, viewingList, addViewingList, clearViewingList, clearSelectedList, contract, changeContract } = useNFTBridgeStore()
 
   const [currentTokenId, setCurrentTokenId] = useState<number>()
+  const [searchLoading, setSearchLoading] = useState(false)
 
   const { data: contractList } = useSWR(
     nftTokenListUrl(branchName),
@@ -54,33 +55,43 @@ const NFTSelect = props => {
 
   // TODO: tip for not owned/exists token
   const handleSearchToken = async () => {
-    if (viewingList.find(item => item.id === currentTokenId)) {
-      console.log("Duplicate TokenId!")
-      return
-    }
-    let uri
-    let amount = 1
-    if (contract?.type === TOEKN_TYPE[721]) {
-      const owned = await isOwned(currentTokenId)
-      if (owned) {
-        uri = await tokenInstance["tokenURI(uint256)"](currentTokenId)
+    try {
+      setSearchLoading(true)
+      if (viewingList.find(item => item.id === currentTokenId)) {
+        throw new Error("Duplicate TokenId!")
       }
-    } else {
-      const exists = await isExists(currentTokenId)
-      if (exists) {
-        uri = await tokenInstance["uri(uint256)"](currentTokenId)
-        amount = await tokenInstance["balanceOf(address,uint256)"](walletCurrentAddress, currentTokenId)
-        amount = (amount as any).toNumber()
-      }
-    }
-    // console.log(uri, "uri")
+      let uri
+      let amount = 1
+      if (contract?.type === TOEKN_TYPE[721]) {
+        const owned = await isOwned(currentTokenId)
 
-    if (uri && uri.startsWith("http")) {
-      scrollRequest(uri).then(data => {
-        addViewingList({ id: currentTokenId, amount, ...data, transferAmount: amount })
-      })
-    } else if (uri) {
-      addViewingList({ id: currentTokenId, amount, name: uri, transferAmount: amount })
+        if (owned) {
+          uri = await tokenInstance["tokenURI(uint256)"](currentTokenId)
+        } else {
+          throw new Error("Not your token!")
+        }
+      } else {
+        const exists = await isExists(currentTokenId)
+        if (exists) {
+          uri = await tokenInstance["uri(uint256)"](currentTokenId)
+          amount = await tokenInstance["balanceOf(address,uint256)"](walletCurrentAddress, currentTokenId)
+          amount = (amount as any).toNumber()
+        } else {
+          throw new Error("Token does not exist!")
+        }
+      }
+
+      if (uri && uri.startsWith("http")) {
+        scrollRequest(uri).then(data => {
+          addViewingList({ id: currentTokenId, amount, ...data, transferAmount: amount })
+        })
+      } else {
+        addViewingList({ id: currentTokenId, amount, name: uri, transferAmount: amount })
+      }
+    } catch (e) {
+      console.log(e.message, "error")
+    } finally {
+      setSearchLoading(false)
     }
   }
 
@@ -146,9 +157,9 @@ const NFTSelect = props => {
           value={currentTokenId}
           onChange={handleChangeTokenId}
         />
-        <Button sx={{ width: "7rem" }} disabled={!walletCurrentAddress} onClick={handleSearchToken}>
+        <LoadingButton sx={{ width: "7rem" }} loading={searchLoading} loadingText={null} disabled={!walletCurrentAddress} onClick={handleSearchToken}>
           Search
-        </Button>
+        </LoadingButton>
       </Stack>
       <Gallery sx={{ mt: "2.5rem", flex: 1 }} column={4} emptyTip="Please fill in TOEKN ID input box and click SEARCH to view your nft.">
         {viewingList.map(item => (
@@ -159,4 +170,4 @@ const NFTSelect = props => {
   )
 }
 
-export default NFTSelect
+export default Viewing

@@ -86,7 +86,7 @@ const ContractSelect = props => {
       renderOption={(innerProps: any, option, state) => (
         <Stack direction="row" spacing={0.75} classes={{ root: classes.StackRoot }} {...innerProps}>
           <Chip label={option.type} classes={{ root: classes.ChipRoot, label: classes.label }} />
-          <Typography variant="body2">{option.l1}</Typography>
+          <Typography variant="body2">{checkConnectedChainId(ChainId.SCROLL_LAYER_1) ? option.l1 : option.l2}</Typography>
         </Stack>
       )}
       onChange={(event, newValue) => {

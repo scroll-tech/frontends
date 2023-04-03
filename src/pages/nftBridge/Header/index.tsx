@@ -20,6 +20,14 @@ import PageTitle from "./PageTitle"
 
 const useStyles = makeStyles()(theme => ({
   container: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    bgcolor: theme.palette.background.default,
+    mt: "3rem",
+  },
+
+  modalContent: {
     width: "max-content",
     padding: "2.8rem",
     borderRadius: "1rem",
@@ -72,6 +80,8 @@ const useStyles = makeStyles()(theme => ({
   },
 }))
 
+// TODO: after token minted on L2, need to call setTokenURI for the token (blocked by history)
+
 const Header = () => {
   const { classes } = useStyles()
   const { walletCurrentAddress, disconnectWallet } = useWeb3Context()
@@ -100,18 +110,10 @@ const Header = () => {
   }
 
   return (
-    <Container
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        bgcolor: "background.default",
-        mt: "3rem",
-      }}
-    >
+    <Container className={classes.container}>
       <PageTitle></PageTitle>
       <WalletIndicator popup open={historyVisible} onOpen={handleOpen} onClose={handleClose}>
-        <Card className={classes.container}>
+        <Card className={classes.modalContent}>
           <Stack direction="row" sx={{ alignItems: "center", justifyContent: "space-between" }}>
             <Typography variant="h6" className={classes.title}>
               Connected Wallet

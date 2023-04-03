@@ -18,17 +18,17 @@ const ScrollLoadingButton = props => {
       return null
     }
     if (loadingText) {
-      return loadingText
+      return <span>{loadingText}</span>
     }
-    return children
+    return <span>{children}</span>
   }
 
   return (
     <LoadingButton
       classes={{ loadingIndicator: classes.loadingIndicator }}
       loadingIndicator={
-        <Stack direction="row" spacing={2}>
-          <span>{renderLoadingText()}</span>
+        <Stack direction="row" spacing={1}>
+          {renderLoadingText()}
           <CircularProgress color="inherit" size={18} thickness={4}></CircularProgress>
         </Stack>
       }

@@ -22,7 +22,7 @@ const useStyles = makeStyles()(theme => ({
         backgroundColor: "unset",
       },
       "&.Mui-disabled": {
-        "-webkit-text-fill-color": theme.palette.text.primary,
+        WebkitTextFillColor: theme.palette.text.primary,
       },
     },
     ".MuiTypography-root": {
