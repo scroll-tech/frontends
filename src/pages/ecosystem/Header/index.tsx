@@ -14,7 +14,7 @@ const Header = () => {
           fontFamily: "Inter",
         }}
       >
-        Scroll Ecosystem
+        Build with Scroll
       </Typography>
       <Typography sx={{ fontSize: ["1.2rem", "2.4rem"], fontWeight: 500, fontFamily: "Inter", mt: [0, "1rem"] }}>
         Want to join the Scroll ecosystem?{" "}
