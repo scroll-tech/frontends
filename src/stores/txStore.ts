@@ -57,7 +57,7 @@ const formatBackTxList = (backList, estimatedTimeMap, safeBlockNumber) => {
     // 4. estimatedTime is greater than 30 mins then warn but save
     const maxOffsetTime = 30 * 60 * 1000
     if (tx.isL1) {
-      if (tx.blockNumber > safeBlockNumber && !nextEstimatedTimeMap[`from_${tx.hash}`]) {
+      if (tx.blockNumber > safeBlockNumber && safeBlockNumber !== -1 && !nextEstimatedTimeMap[`from_${tx.hash}`]) {
         const estimatedOffsetTime = (tx.blockNumber - safeBlockNumber) * 12 * 1000
         if (estimatedOffsetTime > maxOffsetTime) {
           warningTip = `The estimated waiting time for the current transaction is greater than 30 minutes, and the current latest safe block number is ${safeBlockNumber}`
@@ -67,7 +67,12 @@ const formatBackTxList = (backList, estimatedTimeMap, safeBlockNumber) => {
         delete nextEstimatedTimeMap[`from_${tx.hash}`]
       }
     } else {
-      if (tx.finalizeTx?.blockNumber && tx.finalizeTx.blockNumber > safeBlockNumber && !nextEstimatedTimeMap[`to_${toHash}`]) {
+      if (
+        tx.finalizeTx?.blockNumber &&
+        safeBlockNumber !== -1 &&
+        tx.finalizeTx.blockNumber > safeBlockNumber &&
+        !nextEstimatedTimeMap[`to_${toHash}`]
+      ) {
         const estimatedOffsetTime = (tx.finalizeTx.blockNumber - safeBlockNumber) * 12 * 1000
         if (estimatedOffsetTime > maxOffsetTime) {
           warningTip = `The estimated waiting time for the current transaction is greater than 30 minutes, and the current latest safe block number is ${safeBlockNumber}`
@@ -165,18 +170,17 @@ const useTxStore = create<TxStore>()(
           } = formatBackTxList(realHistoryList, get().estimatedTimeMap, safeBlockNumber)
           const formattedHistoryListHash = formattedHistoryList.map(item => item.hash)
           const formattedHistoryListMap = Object.fromEntries(formattedHistoryList.map(item => [item.hash, item]))
+          const frontListHash = get().frontTransactions.map(item => item.hash)
           const pendingFrontList = get().frontTransactions.filter(item => !formattedHistoryListHash.includes(item.hash))
           const pendingFrontListHash = pendingFrontList.map(item => item.hash)
           const nextTransactions = get()
             .frontTransactions.map(item => {
-              const current = formattedHistoryList.find(backItem => backItem.hash === item.hash)
-              if (current) {
-                return current
+              if (pendingFrontListHash.includes(item.hash)) {
+                return item
               }
-              return item
+              return formattedHistoryListMap[item.hash]
             })
-            .concat(formattedHistoryList.filter(item => !pendingFrontListHash.includes(item.hash)))
-            .concat(get().transactions.filter(item => item.toHash))
+            .concat(formattedHistoryList.filter(item => !frontListHash.includes(item.hash)))
 
           const refreshPageTransaction = get().pageTransactions.map(item => {
             if (formattedHistoryListMap[item.hash]) {
