@@ -12,6 +12,10 @@ import useGasFee from "@/hooks/useGasFee"
 import useApprove from "@/hooks/useNFTApprove"
 import useNFTBridgeStore from "@/stores/nftBridgeStore"
 
+import ApproveLoadingModal from "./ApproveLoadingModal"
+import SendLoadingModal from "./SendLoadingModal"
+import TransactionResultModal from "./TransactionResultModal"
+
 const Send = () => {
   const { walletCurrentAddress } = useWeb3Context()
   const { networksAndSigners } = useApp()
@@ -24,6 +28,7 @@ const Send = () => {
 
   const [sendLoading, setSendLoading] = useState(false)
   const [approveLoading, setApproveLoading] = useState(false)
+  const [txHash, setTxHash] = useState("")
 
   const needApproval = useAsyncMemo(async () => {
     if (tokenInstance) {
@@ -59,7 +64,7 @@ const Send = () => {
     setSendLoading(true)
     const tx = isLayer1 ? deposite() : withdraw()
     tx.then(result => {
-      console.log(result, "tx result")
+      setTxHash(result.hash)
       exciseSelected()
     })
       .catch(error => {
@@ -145,6 +150,18 @@ const Send = () => {
     return txResult
   }
 
+  const handleCloseSendModal = () => {
+    setSendLoading(false)
+  }
+
+  const handleCloseApproveModal = () => {
+    setApproveLoading(false)
+  }
+
+  const handleCloseResultModal = () => {
+    setTxHash("")
+  }
+
   return (
     <Stack direction="row" sx={{ width: "100%", justifyContent: "center", mt: "2rem" }}>
       {needApproval ? (
@@ -156,6 +173,9 @@ const Send = () => {
           SEND
         </LoadingButton>
       )}
+      <SendLoadingModal open={sendLoading} onClose={handleCloseSendModal}></SendLoadingModal>
+      <ApproveLoadingModal open={approveLoading} onClose={handleCloseApproveModal}></ApproveLoadingModal>
+      <TransactionResultModal hash={txHash} open={!!txHash} onClose={handleCloseResultModal}></TransactionResultModal>
     </Stack>
   )
 }
