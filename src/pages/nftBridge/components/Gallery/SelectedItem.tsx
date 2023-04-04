@@ -16,7 +16,6 @@ const SelectedItem = props => {
 
   const handleChangeTransferAmount = e => {
     const { value } = e.target
-    // console.log(value, "transferAmount")
     let transferAmount
     if (value) {
       transferAmount = isNaN(+value) ? undefined : +value

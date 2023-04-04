@@ -3,7 +3,7 @@ import { useMemo, useState } from "react"
 import { Stack } from "@mui/material"
 
 import LoadingButton from "@/components/LoadingButton"
-import { ChainId, GasLimit, TOEKN_TYPE } from "@/constants"
+import { ChainId, TOEKN_TYPE } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
 import { useNFTBridgeContext } from "@/contexts/NFTBridgeProvider"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
@@ -23,11 +23,18 @@ const Send = () => {
   const { tokenInstance, gatewayAddress, isLayer1 } = useNFTBridgeContext()
   const { contract, selectedList, exciseSelected, updatePromptMessage } = useNFTBridgeStore()
   const selectedTokenIds = useNFTBridgeStore(state => state.selectedTokenIds())
-  const { setApproval, checkApproval } = useApprove()
-  const { getGasFee } = useGasFee()
 
+  const { setApproval, checkApproval } = useApprove()
+  const { gasLimit, gasFee } = useGasFee()
+
+  // button loading
   const [sendLoading, setSendLoading] = useState(false)
   const [approveLoading, setApproveLoading] = useState(false)
+
+  // modal loading
+  const [sendModalLoading, setSendModalLoading] = useState(false)
+  const [approveModalLoading, setApproveModalLoading] = useState(false)
+
   const [txHash, setTxHash] = useState("")
 
   const needApproval = useAsyncMemo(async () => {
@@ -54,43 +61,45 @@ const Send = () => {
   const handleApprove = async () => {
     try {
       setApproveLoading(true)
+      setApproveModalLoading(true)
       await setApproval(tokenInstance, gatewayAddress)
     } finally {
       setApproveLoading(false)
+      setApproveModalLoading(false)
     }
   }
 
   const handleSend = () => {
     setSendLoading(true)
+    setSendModalLoading(true)
     const tx = isLayer1 ? deposite() : withdraw()
     tx.then(result => {
-      setTxHash(result.hash)
+      console.log(result, "send result")
+      setTxHash(result.transactionHash)
       exciseSelected()
     })
       .catch(error => {
         updatePromptMessage(error.message)
-        console.log(error, "tx error")
       })
       .finally(() => {
         setSendLoading(false)
+        setSendModalLoading(false)
       })
   }
 
-  const deposite = async () => {
+  const deposite = () => {
     if (contract.type === TOEKN_TYPE[721]) {
-      return await deposite721()
-    } else {
-      return await deposite1155()
+      return deposite721()
     }
+    return deposite1155()
   }
 
   const deposite721 = async () => {
-    const gasFee = await getGasFee(GasLimit.DEPOSIT_ERC721)
     const tx = await networksAndSigners[ChainId.SCROLL_LAYER_1].gateway_721["batchDepositERC721(address,address,uint256[],uint256)"](
       contract.l1,
       walletCurrentAddress,
       selectedTokenIds,
-      GasLimit.DEPOSIT_ERC721,
+      gasLimit,
       {
         value: gasFee,
       },
@@ -100,13 +109,12 @@ const Send = () => {
   }
 
   const deposite1155 = async () => {
-    const gasFee = await getGasFee(GasLimit.DEPOSIT_ERC1155)
     const tx = await networksAndSigners[ChainId.SCROLL_LAYER_1].gateway_1155["batchDepositERC1155(address,address,uint256[],uint256[],uint256)"](
       contract.l1,
       walletCurrentAddress,
       selectedTokenIds,
       selectedList.map(item => item.transferAmount),
-      GasLimit.DEPOSIT_ERC1155,
+      gasLimit,
       {
         value: gasFee,
       },
@@ -115,21 +123,19 @@ const Send = () => {
     return txResult
   }
 
-  const withdraw = async () => {
+  const withdraw = () => {
     if (contract.type === "ERC721") {
-      return await withdraw721()
-    } else if (contract.type === "ERC1155") {
-      return await withdraw1155()
+      return withdraw721()
     }
+    return withdraw1155()
   }
 
   const withdraw721 = async () => {
-    const gasFee = await getGasFee(GasLimit.WITHDRAW_ERC721)
     const tx = await networksAndSigners[ChainId.SCROLL_LAYER_2].gateway_721["batchWithdrawERC721(address,address,uint256[],uint256)"](
       contract.l2,
       walletCurrentAddress,
       selectedTokenIds,
-      GasLimit.WITHDRAW_ERC721,
+      gasLimit,
       { value: gasFee },
     )
     const txResult = await tx.wait()
@@ -137,13 +143,12 @@ const Send = () => {
   }
 
   const withdraw1155 = async () => {
-    const gasFee = await getGasFee(GasLimit.WITHDRAW_ERC1155)
     const tx = await networksAndSigners[ChainId.SCROLL_LAYER_2].gateway_1155["batchWithdrawERC1155(address,address,uint256[],uint256[],uint256)"](
       contract.l2,
       walletCurrentAddress,
       selectedTokenIds,
       selectedList.map(item => item.transferAmount),
-      GasLimit.WITHDRAW_ERC1155,
+      gasLimit,
       { value: gasFee },
     )
     const txResult = await tx.wait()
@@ -151,11 +156,11 @@ const Send = () => {
   }
 
   const handleCloseSendModal = () => {
-    setSendLoading(false)
+    setSendModalLoading(false)
   }
 
   const handleCloseApproveModal = () => {
-    setApproveLoading(false)
+    setApproveModalLoading(false)
   }
 
   const handleCloseResultModal = () => {
@@ -173,8 +178,8 @@ const Send = () => {
           SEND
         </LoadingButton>
       )}
-      <SendLoadingModal open={sendLoading} onClose={handleCloseSendModal}></SendLoadingModal>
-      <ApproveLoadingModal open={approveLoading} onClose={handleCloseApproveModal}></ApproveLoadingModal>
+      <SendLoadingModal open={sendModalLoading} onClose={handleCloseSendModal}></SendLoadingModal>
+      <ApproveLoadingModal open={approveModalLoading} onClose={handleCloseApproveModal}></ApproveLoadingModal>
       <TransactionResultModal hash={txHash} open={!!txHash} onClose={handleCloseResultModal}></TransactionResultModal>
     </Stack>
   )

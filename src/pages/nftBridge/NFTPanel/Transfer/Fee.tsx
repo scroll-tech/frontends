@@ -1,24 +1,28 @@
+import { useMemo } from "react"
+
 import { Stack, Typography } from "@mui/material"
 
-import { useNFTBridgeContext } from "@/contexts/NFTBridgeProvider"
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import { ETH_SYMBOL } from "@/constants"
+import useGasFee from "@/hooks/useGasFee"
+import useNFTBridgeStore from "@/stores/nftBridgeStore"
+import { toTokenDisplay } from "@/utils"
 
 const Fee = () => {
-  const { walletCurrentAddress, provider } = useWeb3Context()
-  const { tokenInstance } = useNFTBridgeContext()
-  const getGasLimit = async () => {
-    const transactionObject = await tokenInstance.populateTransaction.transferFrom(walletCurrentAddress, walletCurrentAddress, 1364061)
-    const signer = provider?.getSigner(0)
-    const gasLimit = await signer?.estimateGas(transactionObject)
-    console.log(gasLimit?.toNumber(), "gasLimit")
-  }
+  const { gasFee } = useGasFee()
+  const { selectedList } = useNFTBridgeStore()
+  const formattedGasFee = useMemo(() => {
+    if (!selectedList.length) {
+      return "-"
+    }
+    return toTokenDisplay(gasFee, undefined, ETH_SYMBOL)
+  }, [gasFee, selectedList])
   return (
     <Stack direction="row" sx={{ justifyContent: "space-between" }}>
-      <Typography variant="body2" color="secondary" onClick={getGasLimit}>
+      <Typography variant="body2" color="secondary">
         Fees
       </Typography>
       <Typography variant="body2" color="secondary">
-        0.003ETH
+        {formattedGasFee}
       </Typography>
     </Stack>
   )

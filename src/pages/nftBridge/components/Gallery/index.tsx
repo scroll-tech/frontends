@@ -12,6 +12,7 @@ const Container = styled("div")(
   width: 100%;
   grid-column-gap: 1rem;
   grid-row-gap: 1rem;
+  grid-auto-rows: min-content;
 `,
 )
 

@@ -24,7 +24,7 @@ const Viewing = props => {
   const { fromNetwork, viewingList, addViewingList, clearViewingList, clearSelectedList, contract, changeContract, updatePromptMessage } =
     useNFTBridgeStore()
 
-  const [currentTokenId, setCurrentTokenId] = useState<number>()
+  const [currentTokenId, setCurrentTokenId] = useState<number | string>("")
   const [searchLoading, setSearchLoading] = useState(false)
 
   const { data: contractList } = useSWR(
@@ -47,11 +47,25 @@ const Viewing = props => {
       revalidateOnFocus: false,
     },
   )
+  const handleChangeFromNetwork = value => {
+    switchNetwork(value)
+    clearViewingList()
+    clearSelectedList()
+  }
 
   const handleChangeContract = value => {
     changeContract(value)
     clearViewingList()
     clearSelectedList()
+  }
+
+  const handleChangeTokenId = e => {
+    const { value } = e.target
+    if (value) {
+      setCurrentTokenId(isNaN(+value) ? "" : +value)
+    } else {
+      setCurrentTokenId("")
+    }
   }
 
   // TODO: tip for not owned/exists token
@@ -89,6 +103,7 @@ const Viewing = props => {
       } else {
         addViewingList({ id: currentTokenId, amount, name: uri, transferAmount: amount })
       }
+      setCurrentTokenId("")
     } catch (e) {
       updatePromptMessage(e.message)
     } finally {
@@ -110,20 +125,6 @@ const Viewing = props => {
       return exists
     } catch (e) {
       return true
-    }
-  }
-
-  const handleChangeFromNetwork = value => {
-    // console.log(value, "handleChangeFromNetwork")
-    switchNetwork(value)
-  }
-
-  const handleChangeTokenId = e => {
-    const { value } = e.target
-    if (value) {
-      setCurrentTokenId(isNaN(+value) ? undefined : +value)
-    } else {
-      setCurrentTokenId(undefined)
     }
   }
 
@@ -152,6 +153,9 @@ const Viewing = props => {
             padding: "0 1.2rem",
             ".MuiInputBase-input": {
               paddingBottom: 0,
+            },
+            "&.Mui-focused": {
+              backgroundColor: theme => theme.palette.background.default,
             },
           }}
           placeholder="TOKEN ID"

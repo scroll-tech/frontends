@@ -1,35 +1,48 @@
 import { ethers } from "ethers"
+import { useMemo } from "react"
 
 import L1GasPriceOracle from "@/assets/abis/L1GasPriceOracle.json"
 import L2GasPriceOracle from "@/assets/abis/L2GasPriceOracle.json"
-import { ChainId } from "@/constants"
+import { ChainId, GasLimit } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
+import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import useNFTBridgeStore from "@/stores/nftBridgeStore"
 import { requireEnv } from "@/utils"
+
+import useAsyncMemo from "./useAsyncMemo"
 
 const L1_PRICE_ORACLE = requireEnv("REACT_APP_L2_GAS_PRICE_ORACLE")
 const L2_PRICE_ORACLE = requireEnv("REACT_APP_L1_GAS_PRICE_ORACLE")
 
 const useNFTGasFee = () => {
+  const { checkConnectedChainId } = useWeb3Context()
   const { networksAndSigners } = useApp()
+  const selectedTokenAmount = useNFTBridgeStore(state => state.selectedTokenAmount())
 
-  const getGasFee = async (gasLimit, isLayer1: boolean = false) => {
-    try {
-      if (isLayer1) {
-        const L2GasPriceOracleContract = new ethers.Contract(L1_PRICE_ORACLE, L2GasPriceOracle, networksAndSigners[ChainId.SCROLL_LAYER_1].signer)
-        const fee = await L2GasPriceOracleContract.l2BaseFee()
-        return fee.mul(gasLimit)
-      } else {
-        const L1GasPriceOracleContract = new ethers.Contract(L2_PRICE_ORACLE, L1GasPriceOracle, networksAndSigners[ChainId.SCROLL_LAYER_2].signer)
-        const fee = await L1GasPriceOracleContract.l1BaseFee()
-        return fee.mul(gasLimit)
-      }
-    } catch (err) {
-      console.log(err, "err fee")
-      return 0
+  const gasPrice = useAsyncMemo(async () => {
+    let instance
+    if (checkConnectedChainId(ChainId.SCROLL_LAYER_1) && networksAndSigners[ChainId.SCROLL_LAYER_1].signer) {
+      instance = new ethers.Contract(L1_PRICE_ORACLE, L2GasPriceOracle, networksAndSigners[ChainId.SCROLL_LAYER_1].signer)
+      return await instance.l2BaseFee()
+    } else if (checkConnectedChainId(ChainId.SCROLL_LAYER_2) && networksAndSigners[ChainId.SCROLL_LAYER_2].signer) {
+      instance = new ethers.Contract(L2_PRICE_ORACLE, L1GasPriceOracle, networksAndSigners[ChainId.SCROLL_LAYER_2].signer)
+      return await instance.l1BaseFee()
     }
-  }
+    return null
+  }, [networksAndSigners, checkConnectedChainId])
 
-  return { getGasFee }
+  const gasLimit = useMemo(() => {
+    return selectedTokenAmount * GasLimit.BASE_NFT
+  }, [selectedTokenAmount])
+
+  const gasFee = useMemo(() => {
+    if (gasPrice) {
+      return gasPrice.mul(gasLimit)
+    }
+    return null
+  }, [gasLimit, gasPrice])
+
+  return { gasLimit, gasFee }
 }
 
 export default useNFTGasFee

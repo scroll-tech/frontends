@@ -10,7 +10,7 @@ import L1_ERC721 from "@/assets/abis/L1_ERC721.json"
 import L1_ERC1155 from "@/assets/abis/L1_ERC1155.json"
 import L2_ERC721 from "@/assets/abis/L2_ERC721.json"
 import L2_ERC1155 from "@/assets/abis/L2_ERC1155.json"
-import { ChainId, GasLimit } from "@/constants"
+import { ChainId } from "@/constants"
 import { TOEKN_TYPE } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
@@ -54,7 +54,7 @@ const SelectPanel = () => {
   const [contract, setContract] = useState<any>({})
   const [currentTokenId, setCurrentTokenId] = useState(123)
 
-  const { getGasFee } = useGasFee()
+  const { gasLimit, gasFee } = useGasFee()
 
   const { data: contractList } = useSWR(nftTokenListUrl(branchName), url => {
     return scrollRequest(url)
@@ -183,12 +183,11 @@ const SelectPanel = () => {
   }
 
   const withdraw721 = async () => {
-    const gasFee = await getGasFee(GasLimit.WITHDRAW_ERC721)
     const tx = await networksAndSigners[ChainId.SCROLL_LAYER_2].gateway_721["batchWithdrawERC721(address,address,uint256[],uint256)"](
       L2_721,
       walletCurrentAddress,
       [currentTokenId],
-      GasLimit.WITHDRAW_ERC721,
+      gasLimit,
       { value: gasFee },
     )
     const txResult = await tx.wait()
@@ -196,13 +195,12 @@ const SelectPanel = () => {
   }
 
   const withdraw1155 = async () => {
-    const gasFee = await getGasFee(GasLimit.WITHDRAW_ERC1155)
     const tx = await networksAndSigners[ChainId.SCROLL_LAYER_2].gateway_1155["batchWithdrawERC1155(address,address,uint256[],uint256[],uint256)"](
       L2_1155,
       walletCurrentAddress,
       [currentTokenId],
       [1],
-      GasLimit.WITHDRAW_ERC1155,
+      gasLimit,
       { value: gasFee },
     )
     const txResult = await tx.wait()

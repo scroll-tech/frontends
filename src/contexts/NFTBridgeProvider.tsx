@@ -25,7 +25,6 @@ const NFTBridgeProvider = props => {
   const { contract } = useNFTBridgeStore()
 
   const isLayer1 = useMemo(() => checkConnectedChainId(ChainId.SCROLL_LAYER_1), [checkConnectedChainId])
-  const isLayer2 = useMemo(() => checkConnectedChainId(ChainId.SCROLL_LAYER_2), [checkConnectedChainId])
 
   const tokenInstance = useMemo(() => {
     const signer = provider?.getSigner(0)
@@ -54,7 +53,7 @@ const NFTBridgeProvider = props => {
     return ""
   }, [checkConnectedChainId, contract?.type])
 
-  return <NFTBridgeContext.Provider value={{ tokenInstance, gatewayAddress, isLayer1, isLayer2 }}>{children}</NFTBridgeContext.Provider>
+  return <NFTBridgeContext.Provider value={{ tokenInstance, gatewayAddress, isLayer1 }}>{children}</NFTBridgeContext.Provider>
 }
 
 export function useNFTBridgeContext() {
