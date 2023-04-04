@@ -2,7 +2,6 @@ import Bridge from "@/pages/bridge"
 import Ecosystem from "@/pages/ecosystem"
 import Home from "@/pages/home"
 import NFTBridge from "@/pages/nftBridge"
-import NFTFaucet from "@/pages/nftFaucet"
 import RollupScanBatch from "@/pages/rollup/batch"
 import RollupScanBlock from "@/pages/rollup/block"
 import RollupScan from "@/pages/rollup/index"
@@ -15,17 +14,6 @@ const routes = [
     fullPath: "/alpha",
     element: <Home />,
   },
-  ...(isProduction
-    ? []
-    : [
-        {
-          name: "Faucet",
-          path: "/faucet/nft",
-          fullPath: "/alpha/faucet/nft",
-          element: <NFTFaucet />,
-        },
-      ]),
-
   {
     name: "Bridge",
     path: "/bridge",
@@ -37,8 +25,8 @@ const routes = [
     : [
         {
           name: "NFTBridge",
-          path: "/bridge/nft",
-          fullPath: "/alpha/bridge/nft",
+          path: "/nft-bridge",
+          fullPath: "/alpha/nft-bridge",
           element: <NFTBridge />,
         },
       ]),

@@ -131,7 +131,10 @@ const Header = () => {
             </Stack>
           </Stack>
           <Divider />
-          <Box sx={{ position: "relative", margin: ["2.4rem 0", "3rem 0"] }}>{/* <TransactionHistory /> */}</Box>
+          <Box sx={{ position: "relative", margin: ["2.4rem 0", "3rem 0"] }}>
+            coming soon!
+            {/* <TransactionHistory /> */}
+          </Box>
         </Card>
       </WalletIndicator>
     </Container>
