@@ -38,7 +38,7 @@ const Footer = () => {
         },
         {
           name: "Press Kit",
-          href: "https://scrollzkp.notion.site/Scroll-Brand-Assets-PUBLIC-8522d7dbe4c745579d3e3b14f3bbecc0",
+          href: "https://scrollzkp.notion.site/Scroll-Brand-Assets-PUBLIC-AREA-c4e2cca84be342aa8b00e8bda92ee4f7",
         },
       ],
     },
