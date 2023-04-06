@@ -22,7 +22,7 @@ export function useSendTransaction(props) {
     networksAndSigners,
     txHistory: { blockNumbers },
   } = useApp()
-  const { addTransaction, updateTransaction } = useTxStore()
+  const { addTransaction, updateTransaction, addEstimatedTimeMap } = useTxStore()
   const { changeRecentTxVisible } = useBridgeStore()
   const [sending, setSending] = useState<boolean>(false)
   const { checkConnectedChainId } = useWeb3Context()
@@ -53,8 +53,8 @@ export function useSendTransaction(props) {
         const txResult = await tx.wait()
         handleTransaction(tx, {
           fromBlockNumber: txResult.blockNumber,
-          fromEstimatedEndTime: fromNetwork.isLayer1 ? Date.now() + (txResult.blockNumber - blockNumbers[0]) * 12 * 1000 : undefined,
         })
+        addEstimatedTimeMap(`from_${tx.hash}`, fromNetwork.isLayer1 ? Date.now() + (txResult.blockNumber - blockNumbers[0]) * 12 * 1000 : undefined)
       } catch (error) {
         console.log(error)
         setSendError(error)
