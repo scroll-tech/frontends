@@ -35,11 +35,11 @@ const navigations = [
     key: "bridge",
     href: "bridge",
   },
-  // {
-  //   label: "Ecosystem",
-  //   key: "ecosystem",
-  //   href: "ecosystem",
-  // },
+  {
+    label: "Ecosystem",
+    key: "ecosystem",
+    href: "ecosystem",
+  },
   {
     label: "Rollup Explorer",
     key: "rollupscan",
