@@ -19,8 +19,7 @@ import {
 
 import Link from "@/components/Link"
 import { useApp } from "@/contexts/AppContextProvider"
-import useSymbol from "@/hooks/useSymbol"
-import { generateExploreLink, truncateHash } from "@/utils"
+import { generateContractLink, generateTxLink, truncateAddress, truncateHash } from "@/utils"
 
 const useStyles = makeStyles()(theme => {
   return {
@@ -35,7 +34,7 @@ const useStyles = makeStyles()(theme => {
       boxShadow: "unset",
       border: `1px solid ${theme.palette.border.main}`,
       borderRadius: "1rem",
-      width: "70rem",
+      width: "82rem",
     },
     tableTitle: {
       marginTop: "2.8rem",
@@ -52,10 +51,15 @@ const useStyles = makeStyles()(theme => {
       },
     },
     chip: {
-      width: "12.6rem",
-      height: "3.8rem",
-      fontSize: "1.6rem",
+      width: "9rem",
+      height: "2.8rem",
+      fontSize: "1.2rem",
+      padding: 0,
       fontWeight: 500,
+      ".MuiChip-label": {
+        paddingLeft: 0,
+        paddingRight: 0,
+      },
     },
     pendingChip: {
       color: theme.palette.tagWarning.main,
@@ -100,6 +104,9 @@ const TxTable = (props: any) => {
             <TableHead className={classes.tableHeader}>
               <TableRow>
                 <TableCell>Status</TableCell>
+                <TableCell>Contract Address</TableCell>
+                <TableCell>Type</TableCell>
+                <TableCell>Token IDs</TableCell>
                 <TableCell>Amount</TableCell>
                 <TableCell>Txn Hash</TableCell>
               </TableRow>
@@ -165,8 +172,6 @@ const TxRow = props => {
     return txStatus(tx.toBlockNumber, tx.isL1, true)
   }, [tx, txStatus])
 
-  const { loading: symbolLoading, symbol } = useSymbol(tx.symbolToken, tx.isL1)
-
   return (
     <TableRow key={tx.hash}>
       <TableCell>
@@ -184,17 +189,37 @@ const TxRow = props => {
           )}
         </Stack>
       </TableCell>
-      <TableCell className="w-full">
+      <TableCell>
         <Typography>
-          <span>{tx.amount} </span>
-          {symbolLoading ? <Skeleton variant="text" width="5rem" className="inline-block" /> : <span>{symbol}</span>}
+          <Link external href={generateContractLink(tx.fromExplore, tx.tokenAddress)} className="leading-normal flex-1">
+            {truncateAddress(tx.tokenAddress)}
+          </Link>
         </Typography>
+      </TableCell>
+      <TableCell>
+        <Typography>
+          <Chip className={classes.chip} label={tx.tokenType}></Chip>
+        </Typography>
+      </TableCell>
+      <TableCell>
+        <Stack direction="column">
+          {tx.tokenIds.map(item => (
+            <Typography sx={{ fontSize: "1.2rem" }}>{item}</Typography>
+          ))}
+        </Stack>
+      </TableCell>
+      <TableCell>
+        <Stack direction="column">
+          {tx.amounts.map(item => (
+            <Typography sx={{ fontSize: "1.2rem" }}>{item}</Typography>
+          ))}
+        </Stack>
       </TableCell>
       <TableCell>
         <Stack direction="column">
           <Typography>From {tx.fromName}: </Typography>
           <Stack direction="row" spacing="0.8rem" className="align-center">
-            <Link external href={generateExploreLink(tx.fromExplore, tx.hash)} className="leading-normal flex-1">
+            <Link external href={generateTxLink(tx.fromExplore, tx.hash)} className="leading-normal flex-1">
               {truncateHash(tx.hash)}
             </Link>
           </Stack>
@@ -204,7 +229,7 @@ const TxRow = props => {
           <Typography>To {tx.toName}: </Typography>
           <Stack direction="row" spacing="0.8rem" className="align-center">
             {tx.toHash ? (
-              <Link external href={generateExploreLink(tx.toExplore, tx.toHash)} className="leading-normal flex-1">
+              <Link external href={generateTxLink(tx.toExplore, tx.toHash)} className="leading-normal flex-1">
                 {truncateHash(tx.toHash)}
               </Link>
             ) : (

@@ -26,7 +26,7 @@ import { TxStatus } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
 import useTokenInfo from "@/hooks/useTokenInfo"
 import useTxStore from "@/stores/txStore"
-import { generateExploreLink, toTokenDisplay, truncateHash } from "@/utils"
+import { generateTxLink, toTokenDisplay, truncateHash } from "@/utils"
 
 import StatusChip from "./StatusChip"
 
@@ -230,7 +230,7 @@ const TxRow = props => {
       <TableCell sx={{ width: "30rem" }}>
         <Stack direction="column">
           <Typography>From {tx.fromName}: </Typography>
-          <Link external href={generateExploreLink(tx.fromExplore, tx.hash)} className="leading-normal flex-1">
+          <Link external href={generateTxLink(tx.fromExplore, tx.hash)} className="leading-normal flex-1">
             {truncateHash(tx.hash)}
           </Link>
 
@@ -241,7 +241,7 @@ const TxRow = props => {
         <Stack direction="column" className="mt-[1.2rem]">
           <Typography>To {tx.toName}: </Typography>
           {tx.toHash ? (
-            <Link external href={generateExploreLink(tx.toExplore, tx.toHash)} className="leading-normal flex-1">
+            <Link external href={generateTxLink(tx.toExplore, tx.toHash)} className="leading-normal flex-1">
               {truncateHash(tx.toHash)}
             </Link>
           ) : (

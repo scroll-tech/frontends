@@ -11,6 +11,7 @@ import { useAsyncMemo } from "@/hooks"
 import useGasFee from "@/hooks/useGasFee"
 import useApprove from "@/hooks/useNFTApprove"
 import useNFTBridgeStore from "@/stores/nftBridgeStore"
+import useNFTTxStore from "@/stores/nftTxStore"
 
 import ApproveLoadingModal from "./ApproveLoadingModal"
 import SendLoadingModal from "./SendLoadingModal"
@@ -20,8 +21,9 @@ const Send = () => {
   const { walletCurrentAddress } = useWeb3Context()
   const { networksAndSigners } = useApp()
 
+  const { addNFTTransaction, updateNFTTransaction } = useNFTTxStore()
   const { tokenInstance, gatewayAddress, isLayer1 } = useNFTBridgeContext()
-  const { contract, selectedList, exciseSelected, updatePromptMessage } = useNFTBridgeStore()
+  const { contract, selectedList, exciseSelected, updatePromptMessage, fromNetwork, toNetwork } = useNFTBridgeStore()
   const selectedTokenIds = useNFTBridgeStore(state => state.selectedTokenIds())
 
   const { setApproval, checkApproval } = useApprove()
@@ -69,15 +71,31 @@ const Send = () => {
     }
   }
 
-  const handleSend = () => {
+  const handleSend = async () => {
     setSendLoading(true)
     setSendModalLoading(true)
-    const tx = isLayer1 ? deposite() : withdraw()
-    tx.then(result => {
-      console.log(result, "send result")
-      setTxHash(result.transactionHash)
-      exciseSelected()
+    const tx = isLayer1 ? await deposite() : await withdraw()
+    addNFTTransaction({
+      hash: tx.hash,
+      fromName: fromNetwork.name,
+      toName: toNetwork.name,
+      fromExplore: fromNetwork.explorer,
+      toExplore: toNetwork.explorer,
+      tokenType: contract.type,
+      tokenAddress: isLayer1 ? contract.l1 : contract.l2,
+      amounts: selectedList.map(item => item.transferAmount),
+      tokenIds: selectedTokenIds,
+      isL1: isLayer1,
     })
+    tx.wait()
+      .then(receipt => {
+        console.log(receipt, "send receipt")
+        updateNFTTransaction(tx.hash, {
+          fromBlockNumber: receipt.blockNumber,
+        })
+        setTxHash(receipt.transactionHash)
+        exciseSelected()
+      })
       .catch(error => {
         updatePromptMessage(error.message)
       })
@@ -104,8 +122,7 @@ const Send = () => {
         value: gasFee,
       },
     )
-    const txResult = await tx.wait()
-    return txResult
+    return tx
   }
 
   const deposite1155 = async () => {
@@ -119,8 +136,7 @@ const Send = () => {
         value: gasFee,
       },
     )
-    const txResult = await tx.wait()
-    return txResult
+    return tx
   }
 
   const withdraw = () => {
@@ -138,8 +154,7 @@ const Send = () => {
       gasLimit,
       { value: gasFee },
     )
-    const txResult = await tx.wait()
-    return txResult
+    return tx
   }
 
   const withdraw1155 = async () => {
@@ -151,8 +166,7 @@ const Send = () => {
       gasLimit,
       { value: gasFee },
     )
-    const txResult = await tx.wait()
-    return txResult
+    return tx
   }
 
   const handleCloseSendModal = () => {

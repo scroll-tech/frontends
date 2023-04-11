@@ -5,7 +5,7 @@ import { Button } from "@mui/material"
 import Link from "@/components/Link"
 import { BLOCK_EXPLORER } from "@/constants"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
-import { generateExploreLink } from "@/utils"
+import { generateTxLink } from "@/utils"
 
 import Modal from "../../components/Modal"
 
@@ -17,7 +17,7 @@ const TransactionResultModal = props => {
   const txUrl = useMemo(() => {
     if (hash && chainId) {
       const explorer = BLOCK_EXPLORER[chainId]
-      return generateExploreLink(explorer, hash)
+      return generateTxLink(explorer, hash)
     }
     return ""
   }, [chainId, hash])

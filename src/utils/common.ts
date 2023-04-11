@@ -27,8 +27,12 @@ export function requireEnv(entry) {
   }
 }
 
-export const generateExploreLink = (explorer, hash) => {
+export const generateTxLink = (explorer, hash) => {
   return `${explorer}/tx/${hash}`
+}
+
+export const generateContractLink = (explorer, address) => {
+  return `${explorer}/address/${address}`
 }
 
 export const isProduction = requireEnv("REACT_APP_SCROLL_ENVIRONMENT") === requireEnv("REACT_APP_MAIN_ENVIRONMENT")

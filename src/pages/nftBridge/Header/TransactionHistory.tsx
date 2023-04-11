@@ -4,7 +4,7 @@ import { CircularProgress, Stack, Typography } from "@mui/material"
 
 import { BRIDGE_PAGE_SIZE } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
-import useTxStore from "@/stores/txStore"
+import useNFTTxStore from "@/stores/nftTxStore"
 
 import TxTable from "../components/TxTable"
 
@@ -42,9 +42,10 @@ const TransactionsList = (props: any) => {
     txHistory: { refreshPageTransactions },
   } = useApp()
 
-  const { page, total, loading, frontTransactions, pageTransactions } = useTxStore()
+  const { page, total, loading, frontTransactions } = useNFTTxStore()
 
-  if (!pageTransactions?.length) {
+  // TODO: waiting for api
+  if (!frontTransactions?.length) {
     return (
       <Typography variant="body1" color="textSecondary">
         Your transactions will appear here...
@@ -67,7 +68,7 @@ const TransactionsList = (props: any) => {
         </Stack>
       </div>
       <TxTable
-        data={pageTransactions}
+        data={frontTransactions.slice(0, 3)}
         pagination={{
           count: Math.ceil((total + frontTransactions.length) / BRIDGE_PAGE_SIZE),
           page,

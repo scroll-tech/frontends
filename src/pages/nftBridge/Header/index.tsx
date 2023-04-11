@@ -8,15 +8,15 @@ import { ReactComponent as ExitIcon } from "@/assets/svgs/exit.svg"
 import Link from "@/components/Link"
 import TextIconButton from "@/components/TextIconButton"
 import WalletIndicator from "@/components/WalletIndicator"
-import { useApp } from "@/contexts/AppContextProvider"
+// import { useApp } from "@/contexts/AppContextProvider"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
-// import TransactionHistory from "@/pages/bridge/Header/TransactionHistory"
 import useBridgeStore from "@/stores/bridgeStore"
 import useNFTBridgeStore from "@/stores/nftBridgeStore"
 import { truncateAddress } from "@/utils"
 
 import CopyButton from "./CopyButton"
 import PageTitle from "./PageTitle"
+import TransactionHistory from "./TransactionHistory"
 
 const useStyles = makeStyles()(theme => ({
   container: {
@@ -89,14 +89,14 @@ const Header = () => {
 
   const { clearViewingList, clearSelectedList } = useNFTBridgeStore()
 
-  const {
-    txHistory: { refreshPageTransactions },
-  } = useApp()
+  // const {
+  //   txHistory: { refreshPageTransactions },
+  // } = useApp()
   const { historyVisible, changeHistoryVisible } = useBridgeStore()
 
   const handleOpen = () => {
     changeHistoryVisible(true)
-    refreshPageTransactions(1)
+    // refreshPageTransactions(1)
   }
 
   const handleClose = () => {
@@ -132,8 +132,7 @@ const Header = () => {
           </Stack>
           <Divider />
           <Box sx={{ position: "relative", margin: ["2.4rem 0", "3rem 0"] }}>
-            coming soon!
-            {/* <TransactionHistory /> */}
+            <TransactionHistory />
           </Box>
         </Card>
       </WalletIndicator>

@@ -9,6 +9,8 @@ export const BRIDGE_TOKEN_SYMBOL = "bridgeTokenSymbol"
 
 export const BRIDGE_TRANSACTIONS = "bridgeTransactions"
 
+export const NFT_BRIDGE_TRANSACTIONS = "nftBridgeTransactions"
+
 export const APP_VERSION = "appVersion"
 
 export const BLOCK_NUMBERS = "blockNumbers"
