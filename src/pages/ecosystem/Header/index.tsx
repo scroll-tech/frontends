@@ -14,11 +14,11 @@ const Header = () => {
           fontFamily: "Inter",
         }}
       >
-        Scroll Ecosystem
+        Build with Scroll
       </Typography>
       <Typography sx={{ fontSize: ["1.2rem", "2.4rem"], fontWeight: 500, fontFamily: "Inter", mt: [0, "1rem"] }}>
         Want to join the Scroll ecosystem?{" "}
-        <Link href="https://scrollzkp.typeform.com/scroll-add-app" external underline="always" sx={{ color: "primary.main", fontSize: "inherit" }}>
+        <Link href="https://scrollzkp.typeform.com/buildwithscroll" external underline="always" sx={{ color: "primary.main", fontSize: "inherit" }}>
           Reach out here
         </Link>
         !
