@@ -188,6 +188,7 @@ const Send: FC = () => {
   })
 
   useEffect(() => {
+    //TODO: outermost error
     if (!sending && error !== "cancel") {
       setFromTokenAmount("")
     }

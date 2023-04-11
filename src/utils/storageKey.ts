@@ -12,3 +12,5 @@ export const BRIDGE_TRANSACTIONS = "bridgeTransactions"
 export const APP_VERSION = "appVersion"
 
 export const BLOCK_NUMBERS = "blockNumbers"
+
+export const STORAGE_AVAILABLE = "__storage_test__"

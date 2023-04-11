@@ -29,7 +29,7 @@ const TransactionsList = (props: any) => {
           }}
         />
       ) : (
-        <Typography variant="body1" color="textSecondary">
+        <Typography variant="body1" color="textSecondary" sx={{ width: "40rem" }}>
           Your transactions will appear here...
         </Typography>
       )}
