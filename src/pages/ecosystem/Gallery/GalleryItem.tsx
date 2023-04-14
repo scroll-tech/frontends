@@ -40,9 +40,12 @@ const FaceSide = styled(motion.div)(
   backface-visibility: hidden;
   box-shadow: 2px 2px 10px 2px rgba(221, 221, 221, 0.5);
   background-color: rgba(249, 249, 249, 0.3);
-  padding: 1.6rem;
+  padding: 1rem;
   border-radius: 2rem;
   background-color: #fff;
+  ${theme.breakpoints.down("sm")} {
+    padding: 1.6rem;
+  };
   .MuiAvatar-img{
     height: auto;
   }
@@ -129,13 +132,13 @@ const GalleryItem = props => {
             >
               {desc}
             </Typography>
-            <Stack direction="row" spacing={1} justifyContent="flex-end" sx={{ width: "100%" }}>
+            <Stack direction="row" spacing={[1, 0.5]} justifyContent="flex-end" sx={{ width: "100%" }}>
               {socialLinks.map(social => (
                 <motion.span key={social.name} whileHover={{ scale: 1.1, color: "#686868" }} style={{ color: "#404040" }}>
                   <SvgIcon
                     onClick={e => handleOpenTab(e, social, { website, twitterHandle })}
                     component={social.icon}
-                    sx={{ width: "2.2rem", height: "2.2rem", verticalAlign: "middle" }}
+                    sx={{ width: ["2.2rem", "2rem"], height: ["2.2rem", "2rem"], verticalAlign: "middle" }}
                     viewBox={social.viewBox}
                   ></SvgIcon>
                 </motion.span>
