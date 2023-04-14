@@ -38,7 +38,7 @@ const FaceSide = styled(motion.div)(
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
-  box-shadow: 2px 2px 10px 2px rgba(221, 221, 221, 0.5);
+  box-shadow: 2px 2px 10px 2px rgba(131, 131, 131, 0.4);
   background-color: rgba(249, 249, 249, 0.3);
   padding: 1rem;
   border-radius: 2rem;
@@ -97,7 +97,7 @@ const GalleryItem = props => {
       <FlipCard animate={isBack ? "back" : "front"} variants={variants} transition={{ duration: 0.3, ease: "easeInOut" }}>
         <FaceSide
           className="front"
-          whileHover={{ boxShadow: "2px 2px 10px 2px rgba(131, 131, 131, 0.4)" }}
+          whileHover={{ boxShadow: "2px 2px 10px 2px rgba(131, 131, 131, 0.5)" }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
         >
           <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
@@ -115,7 +115,7 @@ const GalleryItem = props => {
         </FaceSide>
         <FaceSide
           className="back"
-          whileHover={{ boxShadow: "2px 2px 10px 2px rgba(131, 131, 131, 0.4)" }}
+          whileHover={{ boxShadow: "2px 2px 10px 2px rgba(131, 131, 131, 0.5)" }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
           style={{ transform: "rotateY(180deg)" }}
         >
