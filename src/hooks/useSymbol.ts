@@ -9,7 +9,7 @@ import { TOKEN_SYMBOL_MAP_KEY } from "@/utils/storageKey"
 
 const useSymbol = (address: string, isL1: boolean) => {
   const { networksAndSigners } = useApp()
-  const { data, error } = useSWR(
+  const { data, isLoading } = useSWR(
     () => {
       const provider = networksAndSigners[isL1 ? ChainId.SCROLL_LAYER_1 : ChainId.SCROLL_LAYER_2].provider
       if (provider) {
@@ -35,7 +35,7 @@ const useSymbol = (address: string, isL1: boolean) => {
     },
   )
 
-  return { loading: !data && !error, symbol: data }
+  return { loading: isLoading, symbol: data }
 }
 
 export default useSymbol

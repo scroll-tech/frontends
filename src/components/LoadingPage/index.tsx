@@ -1,9 +1,12 @@
 import { Box, CircularProgress } from "@mui/material"
 
-const LoadingPage = () => (
-  <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
-    <CircularProgress sx={{ color: "#EB7106" }} />
-  </Box>
-)
+const LoadingPage = props => {
+  const { height = "100vh" } = props
+  return (
+    <Box display="flex" justifyContent="center" alignItems="center" height={height}>
+      <CircularProgress color="primary" />
+    </Box>
+  )
+}
 
 export default LoadingPage
