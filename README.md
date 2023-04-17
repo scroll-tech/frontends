@@ -63,7 +63,7 @@ Generate webp format image
 
 ## Deployment
 
-Using Scroll's team Netlify: https://app.netlify.com/teams/scroll/overview
+Using Scroll's team Netlify: https://app.netlify.com/sites/scroll-io/overview
 
 - Production (SCROLL_ENVIRONMENT=ALPHA): https://scroll.io
 - Development (SCROLL_ENVIRONMENT=DEVELOP): https://develop--scroll-io.netlify.app
