@@ -7,7 +7,7 @@ import { useApp } from "@/contexts/AppContextProvider"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import { usePriceFee } from "@/hooks"
 import useBridgeStore from "@/stores/bridgeStore"
-import useTxStore from "@/stores/txStore"
+import useTxStore, { isValidOffsetTime } from "@/stores/txStore"
 import { amountToBN } from "@/utils"
 import logger from "@/utils/logger"
 
@@ -22,7 +22,7 @@ export function useSendTransaction(props) {
     networksAndSigners,
     txHistory: { blockNumbers },
   } = useApp()
-  const { addTransaction, updateTransaction, addEstimatedTimeMap } = useTxStore()
+  const { addTransaction, updateTransaction, addEstimatedTimeMap, updateWarningTip } = useTxStore()
   const { changeRecentTxVisible } = useBridgeStore()
   const [sending, setSending] = useState<boolean>(false)
   const { checkConnectedChainId } = useWeb3Context()
@@ -54,7 +54,17 @@ export function useSendTransaction(props) {
         handleTransaction(tx, {
           fromBlockNumber: txResult.blockNumber,
         })
-        addEstimatedTimeMap(`from_${tx.hash}`, fromNetwork.isLayer1 ? Date.now() + (txResult.blockNumber - blockNumbers[0]) * 12 * 1000 : undefined)
+        if (fromNetwork.isLayer1) {
+          const estimatedOffsetTime = (txResult.blockNumber - blockNumbers[0]) * 12 * 1000
+          if (isValidOffsetTime(estimatedOffsetTime)) {
+            addEstimatedTimeMap(
+              `from_${tx.hash}`,
+              fromNetwork.isLayer1 ? Date.now() + (txResult.blockNumber - blockNumbers[0]) * 12 * 1000 : undefined,
+            )
+          } else {
+            updateWarningTip(blockNumbers[0])
+          }
+        }
       } catch (error) {
         console.log(error)
         setSendError(error)

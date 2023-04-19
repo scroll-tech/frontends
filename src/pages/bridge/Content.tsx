@@ -12,14 +12,14 @@ const Content = () => {
     txHistory: { errorMessage, changeErrorMessage },
   } = useApp()
   const { recentTxVisible } = useBridgeStore()
-  const { warningTip, clearWarningTip } = useTxStore()
+  const { warningTip, updateWarningTip } = useTxStore()
 
   const handleClose = () => {
     changeErrorMessage("")
   }
 
   const handleCloseWarning = () => {
-    clearWarningTip()
+    updateWarningTip("")
   }
   return (
     <>

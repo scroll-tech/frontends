@@ -21,7 +21,7 @@ interface TxStore {
   generateTransactions: (transactions, safeBlockNumber) => void
   comboPageTransactions: (address, page, rowsPerPage, safeBlockNumber) => Promise<any>
   clearTransactions: () => void
-  clearWarningTip: () => void
+  updateWarningTip: (value) => void
 }
 interface Transaction {
   hash: string
@@ -36,6 +36,13 @@ interface Transaction {
   isL1: boolean
   symbolToken?: string
 }
+
+const MAX_OFFSET_TIME = 30 * 60 * 1000
+
+const isValidOffsetTime = offsetTime => offsetTime < MAX_OFFSET_TIME
+
+const generateWarningTip = safeBlockNumber =>
+  `The estimated waiting time for the current transaction is greater than 30 minutes, and the current latest safe block number is ${safeBlockNumber}`
 
 const formatBackTxList = (backList, estimatedTimeMap, safeBlockNumber) => {
   const nextEstimatedTimeMap = { ...estimatedTimeMap }
@@ -55,14 +62,14 @@ const formatBackTxList = (backList, estimatedTimeMap, safeBlockNumber) => {
     // 2. compute toEstimatedEndTime from backend data
     // 3. when tx is marked success then remove estimatedEndTime to slim storage data
     // 4. estimatedTime is greater than 30 mins then warn but save
-    const maxOffsetTime = 30 * 60 * 1000
     if (tx.isL1) {
       if (tx.blockNumber > safeBlockNumber && safeBlockNumber !== -1 && !nextEstimatedTimeMap[`from_${tx.hash}`]) {
         const estimatedOffsetTime = (tx.blockNumber - safeBlockNumber) * 12 * 1000
-        if (estimatedOffsetTime > maxOffsetTime) {
-          warningTip = `The estimated waiting time for the current transaction is greater than 30 minutes, and the current latest safe block number is ${safeBlockNumber}`
+        if (isValidOffsetTime(estimatedOffsetTime)) {
+          nextEstimatedTimeMap[`from_${tx.hash}`] = Date.now() + estimatedOffsetTime
+        } else {
+          warningTip = generateWarningTip(safeBlockNumber)
         }
-        nextEstimatedTimeMap[`from_${tx.hash}`] = Date.now() + estimatedOffsetTime
       } else if (tx.blockNumber <= safeBlockNumber && nextEstimatedTimeMap[`from_${tx.hash}`]) {
         delete nextEstimatedTimeMap[`from_${tx.hash}`]
       }
@@ -74,10 +81,11 @@ const formatBackTxList = (backList, estimatedTimeMap, safeBlockNumber) => {
         !nextEstimatedTimeMap[`to_${toHash}`]
       ) {
         const estimatedOffsetTime = (tx.finalizeTx.blockNumber - safeBlockNumber) * 12 * 1000
-        if (estimatedOffsetTime > maxOffsetTime) {
-          warningTip = `The estimated waiting time for the current transaction is greater than 30 minutes, and the current latest safe block number is ${safeBlockNumber}`
+        if (isValidOffsetTime(estimatedOffsetTime)) {
+          nextEstimatedTimeMap[`to_${toHash}`] = Date.now() + estimatedOffsetTime
+        } else {
+          warningTip = generateWarningTip(safeBlockNumber)
         }
-        nextEstimatedTimeMap[`to_${toHash}`] = Date.now() + estimatedOffsetTime
       } else if (tx.finalizeTx?.blockNumber && tx.finalizeTx.blockNumber <= safeBlockNumber && nextEstimatedTimeMap[`to_${toHash}`]) {
         delete nextEstimatedTimeMap[`to_${toHash}`]
       }
@@ -208,9 +216,9 @@ const useTxStore = create<TxStore>()(
         })
       },
 
-      clearWarningTip: () => {
+      updateWarningTip: safeBlockNumber => {
         set({
-          warningTip: "",
+          warningTip: generateWarningTip(safeBlockNumber),
         })
       },
       // page transactions
@@ -266,5 +274,7 @@ const useTxStore = create<TxStore>()(
     },
   ),
 )
+
+export { isValidOffsetTime }
 
 export default useTxStore
