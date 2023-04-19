@@ -4,6 +4,7 @@ import { persist } from "zustand/middleware"
 
 import { fetchTxListUrl } from "@/apis/bridge"
 import { networks } from "@/constants"
+import { sentryDebug } from "@/utils"
 import { BRIDGE_TRANSACTIONS } from "@/utils/storageKey"
 
 interface TxStore {
@@ -11,7 +12,6 @@ interface TxStore {
   total: number
   loading: boolean
   estimatedTimeMap: object
-  warningTip: string
   frontTransactions: Transaction[]
   transactions: Transaction[]
   pageTransactions: Transaction[]
@@ -21,7 +21,6 @@ interface TxStore {
   generateTransactions: (transactions, safeBlockNumber) => void
   comboPageTransactions: (address, page, rowsPerPage, safeBlockNumber) => Promise<any>
   clearTransactions: () => void
-  updateWarningTip: (value) => void
 }
 interface Transaction {
   hash: string
@@ -41,14 +40,10 @@ const MAX_OFFSET_TIME = 30 * 60 * 1000
 
 const isValidOffsetTime = offsetTime => offsetTime < MAX_OFFSET_TIME
 
-const generateWarningTip = safeBlockNumber =>
-  `The estimated waiting time for the current transaction is greater than 30 minutes, and the current latest safe block number is ${safeBlockNumber}`
-
 const formatBackTxList = (backList, estimatedTimeMap, safeBlockNumber) => {
   const nextEstimatedTimeMap = { ...estimatedTimeMap }
-  let warningTip = ""
   if (!backList.length) {
-    return { txList: [], estimatedTimeMap: nextEstimatedTimeMap, warningTip }
+    return { txList: [], estimatedTimeMap: nextEstimatedTimeMap }
   }
   const txList = backList.map(tx => {
     const amount = tx.amount
@@ -68,7 +63,8 @@ const formatBackTxList = (backList, estimatedTimeMap, safeBlockNumber) => {
         if (isValidOffsetTime(estimatedOffsetTime)) {
           nextEstimatedTimeMap[`from_${tx.hash}`] = Date.now() + estimatedOffsetTime
         } else {
-          warningTip = generateWarningTip(safeBlockNumber)
+          nextEstimatedTimeMap[`from_${tx.hash}`] = 0
+          sentryDebug(`safe block number: ${safeBlockNumber}`)
         }
       } else if (tx.blockNumber <= safeBlockNumber && nextEstimatedTimeMap[`from_${tx.hash}`]) {
         delete nextEstimatedTimeMap[`from_${tx.hash}`]
@@ -84,7 +80,8 @@ const formatBackTxList = (backList, estimatedTimeMap, safeBlockNumber) => {
         if (isValidOffsetTime(estimatedOffsetTime)) {
           nextEstimatedTimeMap[`to_${toHash}`] = Date.now() + estimatedOffsetTime
         } else {
-          warningTip = generateWarningTip(safeBlockNumber)
+          nextEstimatedTimeMap[`to_${toHash}`] = 0
+          sentryDebug(`safe block number: ${safeBlockNumber}`)
         }
       } else if (tx.finalizeTx?.blockNumber && tx.finalizeTx.blockNumber <= safeBlockNumber && nextEstimatedTimeMap[`to_${toHash}`]) {
         delete nextEstimatedTimeMap[`to_${toHash}`]
@@ -109,7 +106,6 @@ const formatBackTxList = (backList, estimatedTimeMap, safeBlockNumber) => {
   return {
     txList,
     estimatedTimeMap: nextEstimatedTimeMap,
-    warningTip,
   }
 }
 
@@ -120,7 +116,6 @@ const useTxStore = create<TxStore>()(
       total: 0,
       // { hash: estimatedEndTime }
       estimatedTimeMap: {},
-      warningTip: "",
       frontTransactions: [],
       loading: false,
       // frontTransactions + backendTransactions.slice(0, 2)
@@ -171,11 +166,7 @@ const useTxStore = create<TxStore>()(
       generateTransactions: (historyList, safeBlockNumber) => {
         const realHistoryList = historyList.filter(item => item)
         if (realHistoryList.length) {
-          const {
-            txList: formattedHistoryList,
-            estimatedTimeMap,
-            warningTip,
-          } = formatBackTxList(realHistoryList, get().estimatedTimeMap, safeBlockNumber)
+          const { txList: formattedHistoryList, estimatedTimeMap } = formatBackTxList(realHistoryList, get().estimatedTimeMap, safeBlockNumber)
           const formattedHistoryListHash = formattedHistoryList.map(item => item.hash)
           const formattedHistoryListMap = Object.fromEntries(formattedHistoryList.map(item => [item.hash, item]))
           const frontListHash = get().frontTransactions.map(item => item.hash)
@@ -201,7 +192,6 @@ const useTxStore = create<TxStore>()(
             frontTransactions: pendingFrontList,
             pageTransactions: refreshPageTransaction,
             estimatedTimeMap,
-            warningTip,
           })
         }
       },
@@ -216,11 +206,6 @@ const useTxStore = create<TxStore>()(
         })
       },
 
-      updateWarningTip: safeBlockNumber => {
-        set({
-          warningTip: generateWarningTip(safeBlockNumber),
-        })
-      },
       // page transactions
       comboPageTransactions: async (address, page, rowsPerPage, safeBlockNumber) => {
         const frontTransactions = get().frontTransactions
@@ -243,18 +228,13 @@ const useTxStore = create<TxStore>()(
 
         return scrollRequest(`${fetchTxListUrl}?address=${address}&offset=${relativeOffset}&limit=${limit}`)
           .then(data => {
-            const {
-              txList: backendTransactions,
-              estimatedTimeMap,
-              warningTip,
-            } = formatBackTxList(data.data.result, get().estimatedTimeMap, safeBlockNumber)
+            const { txList: backendTransactions, estimatedTimeMap } = formatBackTxList(data.data.result, get().estimatedTimeMap, safeBlockNumber)
             set({
               pageTransactions: [...frontTransactions, ...backendTransactions],
               total: data.data.total,
               page,
               loading: false,
               estimatedTimeMap,
-              warningTip,
             })
             if (page === 1) {
               // keep transactions always frontList + the latest two history list

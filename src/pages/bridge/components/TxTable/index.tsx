@@ -176,10 +176,27 @@ const TxRow = props => {
     return toTokenDisplay(amount, tokenInfo?.decimals)
   }
 
-  const renderCountDown = ({ hours, minutes, seconds, completed }) => {
+  const renderEstimatedWaitingTime = (timestamp, isL1, to) => {
     if (fromStatus === "Success") {
       return null
-    } else if (completed) {
+    } else if (timestamp === 0) {
+      return (
+        <Typography variant="body2" color="error">
+          Estimation failure with {blockNumbers[+!(isL1 ^ to)]}, Retrying...
+        </Typography>
+      )
+    } else if (timestamp) {
+      return (
+        <Typography variant="body2" color="textSecondary">
+          <Countdown date={timestamp} renderer={renderCountDown}></Countdown>
+        </Typography>
+      )
+    }
+    return null
+  }
+
+  const renderCountDown = ({ total, hours, minutes, seconds, completed }) => {
+    if (completed) {
       return <LinearProgress />
     }
     return (
@@ -218,11 +235,7 @@ const TxRow = props => {
             {truncateHash(tx.hash)}
           </Link>
           {!tx.fromBlockNumber && <LinearProgress />}
-          {estimatedTimeMap[`from_${tx.hash}`] && (
-            <Typography variant="body2" color="textSecondary">
-              <Countdown date={estimatedTimeMap[`from_${tx.hash}`]} renderer={renderCountDown}></Countdown>
-            </Typography>
-          )}
+          {renderEstimatedWaitingTime(estimatedTimeMap[`from_${tx.hash}`], tx.isL1, false)}
         </Stack>
 
         <Stack direction="column" className="mt-[1.2rem]">
@@ -234,11 +247,7 @@ const TxRow = props => {
           ) : (
             <span className="leading-normal flex-1">-</span>
           )}
-          {estimatedTimeMap[`to_${tx.toHash}`] && (
-            <Typography variant="body2" color="textSecondary">
-              <Countdown date={estimatedTimeMap[`to_${tx.toHash}`]} renderer={renderCountDown}></Countdown>
-            </Typography>
-          )}
+          {renderEstimatedWaitingTime(estimatedTimeMap[`to_${tx.toHash}`], tx.isL1, true)}
         </Stack>
       </TableCell>
     </TableRow>

@@ -8,7 +8,7 @@ import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import { usePriceFee } from "@/hooks"
 import useBridgeStore from "@/stores/bridgeStore"
 import useTxStore, { isValidOffsetTime } from "@/stores/txStore"
-import { amountToBN } from "@/utils"
+import { amountToBN, sentryDebug } from "@/utils"
 import logger from "@/utils/logger"
 
 export type TransactionHandled = {
@@ -22,7 +22,7 @@ export function useSendTransaction(props) {
     networksAndSigners,
     txHistory: { blockNumbers },
   } = useApp()
-  const { addTransaction, updateTransaction, addEstimatedTimeMap, updateWarningTip } = useTxStore()
+  const { addTransaction, updateTransaction, addEstimatedTimeMap } = useTxStore()
   const { changeRecentTxVisible } = useBridgeStore()
   const [sending, setSending] = useState<boolean>(false)
   const { checkConnectedChainId } = useWeb3Context()
@@ -57,12 +57,10 @@ export function useSendTransaction(props) {
         if (fromNetwork.isLayer1) {
           const estimatedOffsetTime = (txResult.blockNumber - blockNumbers[0]) * 12 * 1000
           if (isValidOffsetTime(estimatedOffsetTime)) {
-            addEstimatedTimeMap(
-              `from_${tx.hash}`,
-              fromNetwork.isLayer1 ? Date.now() + (txResult.blockNumber - blockNumbers[0]) * 12 * 1000 : undefined,
-            )
+            addEstimatedTimeMap(`from_${tx.hash}`, Date.now() + estimatedOffsetTime)
           } else {
-            updateWarningTip(blockNumbers[0])
+            addEstimatedTimeMap(`from_${tx.hash}`, 0)
+            sentryDebug(`safe block number: ${blockNumbers[0]}`)
           }
         }
       } catch (error) {
