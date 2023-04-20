@@ -6,6 +6,7 @@ import { fetchTxByHashUrl } from "@/apis/bridge"
 import { BRIDGE_PAGE_SIZE, ChainId } from "@/constants"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import useTxStore from "@/stores/txStore"
+import { BLOCK_NUMBERS } from "@/utils/storageKey"
 
 export interface TxHistory {
   blockNumbers: number[]
@@ -17,7 +18,7 @@ export interface TxHistory {
 const useTxHistory = networksAndSigners => {
   const { walletCurrentAddress } = useWeb3Context()
   const { transactions, pageTransactions, generateTransactions, comboPageTransactions } = useTxStore()
-  const [blockNumbers, setBlockNumbers] = useStorage(localStorage, "blockNumbers", [-1, -1])
+  const [blockNumbers, setBlockNumbers] = useStorage(localStorage, BLOCK_NUMBERS, [-1, -1])
 
   const [errorMessage, setErrorMessage] = useState("")
 
@@ -81,7 +82,7 @@ const useTxHistory = networksAndSigners => {
   const refreshPageTransactions = useCallback(
     page => {
       if (walletCurrentAddress) {
-        comboPageTransactions(walletCurrentAddress, page, BRIDGE_PAGE_SIZE, blockNumbers[0]).catch(e => {
+        comboPageTransactions(walletCurrentAddress, page, BRIDGE_PAGE_SIZE).catch(e => {
           setErrorMessage(e)
         })
       }
@@ -95,7 +96,7 @@ const useTxHistory = networksAndSigners => {
 
   useEffect(() => {
     if (data?.data?.result.length) {
-      generateTransactions(data.data.result, blockNumbers[0])
+      generateTransactions(data.data.result)
     }
   }, [data])
 

@@ -150,11 +150,16 @@ const TxRow = props => {
   const { classes, cx } = useStyles()
 
   const txStatus = useCallback(
-    (blockNumber, isL1, to) => {
+    (blockNumber, isL1, to, toBlockNumber = undefined) => {
       if (!blockNumber || !blockNumbers) {
         return "Pending"
       }
       if (blockNumbers[+!(isL1 ^ to)] >= blockNumber) {
+        return "Success"
+      }
+      // for compatibility with old safe block number
+      // if to tx succeeded, then from tx should succeed too.
+      if (isL1 && !to && toBlockNumber && toBlockNumber <= blockNumbers[1]) {
         return "Success"
       }
       return "Pending"
@@ -163,7 +168,7 @@ const TxRow = props => {
   )
 
   const fromStatus = useMemo(() => {
-    return txStatus(tx.fromBlockNumber, tx.isL1, false)
+    return txStatus(tx.fromBlockNumber, tx.isL1, false, tx.toBlockNumber)
   }, [tx, txStatus])
 
   const toStatus = useMemo(() => {
@@ -176,10 +181,23 @@ const TxRow = props => {
     return toTokenDisplay(amount, tokenInfo?.decimals)
   }
 
-  const renderCountDown = ({ hours, minutes, seconds, completed }) => {
+  const renderEstimatedWaitingTime = (timestamp, isL1, to) => {
     if (fromStatus === "Success") {
       return null
-    } else if (completed) {
+    } else if (timestamp === 0) {
+      return <Typography variant="body2">Estimating...</Typography>
+    } else if (timestamp) {
+      return (
+        <Typography variant="body2" color="textSecondary">
+          <Countdown date={timestamp} renderer={renderCountDown}></Countdown>
+        </Typography>
+      )
+    }
+    return null
+  }
+
+  const renderCountDown = ({ total, hours, minutes, seconds, completed }) => {
+    if (completed) {
       return <LinearProgress />
     }
     return (
@@ -218,11 +236,7 @@ const TxRow = props => {
             {truncateHash(tx.hash)}
           </Link>
           {!tx.fromBlockNumber && <LinearProgress />}
-          {estimatedTimeMap[`from_${tx.hash}`] && (
-            <Typography variant="body2" color="textSecondary">
-              <Countdown date={estimatedTimeMap[`from_${tx.hash}`]} renderer={renderCountDown}></Countdown>
-            </Typography>
-          )}
+          {renderEstimatedWaitingTime(estimatedTimeMap[`from_${tx.hash}`], tx.isL1, false)}
         </Stack>
 
         <Stack direction="column" className="mt-[1.2rem]">
@@ -234,11 +248,7 @@ const TxRow = props => {
           ) : (
             <span className="leading-normal flex-1">-</span>
           )}
-          {estimatedTimeMap[`to_${tx.toHash}`] && (
-            <Typography variant="body2" color="textSecondary">
-              <Countdown date={estimatedTimeMap[`to_${tx.toHash}`]} renderer={renderCountDown}></Countdown>
-            </Typography>
-          )}
+          {renderEstimatedWaitingTime(estimatedTimeMap[`to_${tx.toHash}`], tx.isL1, true)}
         </Stack>
       </TableCell>
     </TableRow>
