@@ -150,11 +150,16 @@ const TxRow = props => {
   const { classes, cx } = useStyles()
 
   const txStatus = useCallback(
-    (blockNumber, isL1, to) => {
+    (blockNumber, isL1, to, toBlockNumber = undefined) => {
       if (!blockNumber || !blockNumbers) {
         return "Pending"
       }
       if (blockNumbers[+!(isL1 ^ to)] >= blockNumber) {
+        return "Success"
+      }
+      // for compatibility with old safe block number
+      // if to tx succeeded, then from tx should succeed too.
+      if (isL1 && !to && toBlockNumber && toBlockNumber <= blockNumbers[1]) {
         return "Success"
       }
       return "Pending"
@@ -163,7 +168,7 @@ const TxRow = props => {
   )
 
   const fromStatus = useMemo(() => {
-    return txStatus(tx.fromBlockNumber, tx.isL1, false)
+    return txStatus(tx.fromBlockNumber, tx.isL1, false, tx.toBlockNumber)
   }, [tx, txStatus])
 
   const toStatus = useMemo(() => {
@@ -180,11 +185,7 @@ const TxRow = props => {
     if (fromStatus === "Success") {
       return null
     } else if (timestamp === 0) {
-      return (
-        <Typography variant="body2" color="error">
-          Estimation failure with {blockNumbers[+!(isL1 ^ to)]}, Retrying...
-        </Typography>
-      )
+      return <Typography variant="body2">Estimating...</Typography>
     } else if (timestamp) {
       return (
         <Typography variant="body2" color="textSecondary">
