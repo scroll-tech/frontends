@@ -4,7 +4,7 @@ export const switchNetwork = async (chainId: number) => {
   try {
     await window.ethereum.request({
       method: "wallet_switchEthereumChain",
-      params: [{ chainId: "0x" + chainId.toString() }],
+      params: [{ chainId: "0x" + chainId.toString(16) }],
     })
     return true
   } catch (error) {
