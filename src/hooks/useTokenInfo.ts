@@ -9,7 +9,7 @@ import { TOKEN_INFO_MAP } from "@/utils/storageKey"
 
 const useTokenInfo = (address: string, isL1: boolean) => {
   const { networksAndSigners } = useApp()
-  const { data, error } = useSWR(
+  const { data, isLoading } = useSWR(
     () => {
       const provider = networksAndSigners[isL1 ? ChainId.SCROLL_LAYER_1 : ChainId.SCROLL_LAYER_2].provider
       if (provider) {
@@ -45,7 +45,7 @@ const useTokenInfo = (address: string, isL1: boolean) => {
       return tokenInfo
     },
   )
-  return { loading: !data && !error, tokenInfo: data }
+  return { loading: isLoading, tokenInfo: data }
 }
 
 export default useTokenInfo

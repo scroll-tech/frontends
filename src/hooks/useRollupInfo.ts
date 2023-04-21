@@ -5,30 +5,30 @@ import { fetchBatchDetailUrl, fetchBlockListUrl, fetchLastBatchIndexesUrl } from
 const fetcher = (url: string) => scrollRequest(url)
 
 export function useLastBlockNums() {
-  const { data, error } = useSWR(fetchLastBatchIndexesUrl, fetcher, {
+  const { data, error, isLoading } = useSWR(fetchLastBatchIndexesUrl, fetcher, {
     refreshInterval: 3000,
   })
   return {
     lastBlockNums: data,
-    isLoading: !error && !data,
+    isLoading,
     isError: error,
   }
 }
 
 export function useBatchDetail(batchIndex) {
-  const { data, error } = useSWR(`${fetchBatchDetailUrl}?index=${batchIndex}`, fetcher)
+  const { data, error, isLoading } = useSWR(`${fetchBatchDetailUrl}?index=${batchIndex}`, fetcher)
   return {
     batch: data?.batch,
-    isLoading: !error && !data,
+    isLoading,
     isError: error,
   }
 }
 
 export function useBlockList(batchIndex) {
-  const { data, error } = useSWR(`${fetchBlockListUrl}?batch_index=${batchIndex}`, fetcher)
+  const { data, error, isLoading } = useSWR(`${fetchBlockListUrl}?batch_index=${batchIndex}`, fetcher)
   return {
     blocks: data?.blocks,
-    isLoading: !error && !data,
+    isLoading,
     isError: error,
   }
 }

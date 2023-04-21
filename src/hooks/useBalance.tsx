@@ -24,7 +24,7 @@ const useBalance = (token: any, network?: any) => {
     }
   }
 
-  const { data, error } = useSWR(
+  const { data, error, isLoading } = useSWR(
     () => {
       const provider = networksAndSigners[network.chainId].provider
       if (network && token) {
@@ -43,7 +43,7 @@ const useBalance = (token: any, network?: any) => {
     },
   )
   return {
-    loading: data === undefined && !error,
+    loading: isLoading,
     balance: data,
     error,
   }

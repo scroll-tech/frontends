@@ -8,10 +8,12 @@ import rehypeRaw from "rehype-raw"
 import remarkGfm from "remark-gfm"
 import remarkMath from "remark-math"
 
-import { Box, CircularProgress, Typography } from "@mui/material"
+import { Box, Typography } from "@mui/material"
 import { useTheme } from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import { styled } from "@mui/system"
+
+import LoadingPage from "@/components/LoadingPage"
 
 import Articles from "./articles"
 import TOC from "./components/tableOfContents"
@@ -123,9 +125,7 @@ const BlogDetail = () => {
         />
       </Helmet>
       {loading ? (
-        <Box display="flex" justifyContent="center" alignItems="center" height="80vh">
-          <CircularProgress color="primary" />
-        </Box>
+        <LoadingPage height="80vh"></LoadingPage>
       ) : (
         <Box>
           <BlogContainer className="wrapper">
