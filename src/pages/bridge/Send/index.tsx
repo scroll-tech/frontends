@@ -143,7 +143,7 @@ const Send: FC = () => {
       )
     } else if (warning) {
       return warning
-    } else if (sendError && sendError.code !== "ACTION_REJECTED") {
+    } else if (sendError && sendError.code !== "ACTION_REJECTED" && sendError.code !== 4001) {
       return (
         <>
           The transaction failed. Your {walletName} wallet might not be up to date.{" "}
