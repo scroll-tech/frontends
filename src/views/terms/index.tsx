@@ -3,17 +3,30 @@ import { styled } from "@mui/system"
 
 const Container = styled(Box)(({ theme }) => ({
   padding: "12rem 0",
+  [theme.breakpoints.down("md")]: {
+    padding: "8rem 1.6rem",
+  },
   "& *": {
     fontSize: "2rem",
     textAlign: "justify",
+    [theme.breakpoints.down("md")]: {
+      fontSize: "1.6rem",
+    },
   },
   "& h2": {
     fontSize: "2.4rem",
     fontWeight: "bold",
     margin: "4rem 0 1.6rem 0",
+    [theme.breakpoints.down("md")]: {
+      fontSize: "2rem",
+      margin: "2.8rem 0 1.2rem 0",
+    },
   },
   "& p": {
     marginBottom: "1.6rem",
+    [theme.breakpoints.down("md")]: {
+      marginBottom: "1rem",
+    },
   },
   "& ul": {
     listStyle: "inside",
@@ -28,7 +41,7 @@ const Container = styled(Box)(({ theme }) => ({
 
 const TitleTypography = styled(Typography)(({ theme }) => ({
   textAlign: "center",
-  margin: "2rem auto",
+  marginBottom: "2rem",
   lineHeight: 1.5,
 }))
 
@@ -38,14 +51,23 @@ const TableofContents = styled("ul")(({ theme }) => ({
   "& p": {
     textAlign: "center",
     lineHeight: "6rem",
+    [theme.breakpoints.down("md")]: {
+      lineHeight: "4rem",
+    },
   },
   "& li": {
     margin: "0.4rem 0 !important",
     fontSize: "1.6rem !important",
+    [theme.breakpoints.down("md")]: {
+      fontSize: "1.4rem !important",
+    },
   },
   "& a": {
     textTransform: "uppercase",
     fontSize: "1.6rem",
+    [theme.breakpoints.down("md")]: {
+      fontSize: "1.4rem",
+    },
   },
 }))
 

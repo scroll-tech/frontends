@@ -3,30 +3,48 @@ import { styled } from "@mui/system"
 
 const Container = styled(Box)(({ theme }) => ({
   padding: "12rem 0",
+  [theme.breakpoints.down("md")]: {
+    padding: "8rem 1.6rem",
+  },
   "& *": {
     fontSize: "2rem",
     textAlign: "justify",
+    [theme.breakpoints.down("md")]: {
+      fontSize: "1.6rem",
+    },
   },
   "& h1, & h2, & h3": {
     fontWeight: "bold",
     marginBottom: "2.8rem",
+    [theme.breakpoints.down("md")]: {
+      marginBottom: "2rem",
+    },
   },
   "& p": {
     marginBottom: "1.6rem",
     "+ h1, + h2, + h3": {
       marginTop: "2.8rem",
+      [theme.breakpoints.down("md")]: {
+        marginTop: "2rem",
+      },
     },
   },
   "& ul": {
     listStyle: "inside",
     "& li": {
       margin: "1.6rem 0",
+      [theme.breakpoints.down("md")]: {
+        margin: "1rem 0",
+      },
     },
     [`& ${TitleTypography}`]: {
       textAlign: "center",
     },
     "+ h1, + h2, + h3": {
       marginTop: "2.8rem",
+      [theme.breakpoints.down("md")]: {
+        marginTop: "2rem",
+      },
     },
   },
 }))
@@ -40,8 +58,11 @@ const TitleTypography = styled(Typography)(({ theme }) => ({
 const DashTypography = styled("h3")(({ theme }) => ({
   "&::before": {
     content: '"-"',
-    margin: "0 30px",
+    margin: "0 3rem",
     fontWeight: "normal",
+    [theme.breakpoints.down("md")]: {
+      margin: "0 2rem",
+    },
   },
 }))
 
