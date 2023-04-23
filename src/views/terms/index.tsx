@@ -48,6 +48,9 @@ const TitleTypography = styled(Typography)(({ theme }) => ({
 const TableofContents = styled("ul")(({ theme }) => ({
   listStyle: "decimal !important",
   paddingLeft: "4rem",
+  [theme.breakpoints.down("md")]: {
+    paddingLeft: "2.8rem",
+  },
   "& p": {
     textAlign: "center",
     lineHeight: "6rem",
