@@ -23,6 +23,14 @@ const Footer = () => {
           name: "Health Status",
           href: "http://status.scroll.io/",
         },
+        {
+          name: "Privacy Policy",
+          href: "/privacy-policy",
+        },
+        {
+          name: "Terms and Conditions",
+          href: "/terms-and-conditions",
+        },
       ],
     },
     {
