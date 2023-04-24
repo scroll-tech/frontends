@@ -1,10 +1,11 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import MailchimpSubscribe from "react-mailchimp-subscribe"
 
 import { useTheme } from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
 import Button from "@/components/Button/Button"
+import { isValidEmail } from "@/utils"
 
 // import { IntrinsicAttributes } from '@types/react-mailchimp-subscribe'
 
@@ -12,8 +13,15 @@ const url = "https://gmail.us14.list-manage.com/subscribe/post?u=3b1d822eb27b2fa
 
 const Subscribe = () => {
   const [email, setEmail] = useState("")
+  const [customMessage, setCustomMessage] = useState("")
+  const [emailValid, setEmailValid] = useState(false)
   const theme = useTheme()
   const matches = useMediaQuery(theme.breakpoints.up("md"))
+
+  useEffect(() => {
+    setCustomMessage("")
+    setEmailValid(isValidEmail(email))
+  }, [email])
 
   const medias = [
     {
@@ -45,6 +53,17 @@ const Subscribe = () => {
         {media.name}
       </a>
     ))
+
+  const handleSubmit = subscribe => {
+    if (!email) {
+      setCustomMessage("please input your email")
+    } else if (!emailValid) {
+      setCustomMessage("please enter your vaild email")
+    } else {
+      subscribe({ EMAIL: email })
+    }
+  }
+
   return (
     <>
       <div className="relative">
@@ -56,27 +75,30 @@ const Subscribe = () => {
             <div>
               <div className="flex flex-col mb-[20px] items-center rounded overflow-hidden lg:flex-row">
                 <input
-                  className="w-full flex-shrink-0 rounded border h-[50px] text-base outline-none mb-[12px] pl-[24px] placeholder:text-charcoal-50  lg:w-[254px] lg:rounded-none lg:border-transparent lg:mb-0"
+                  className="w-full bg-[#c9cbce33] flex-shrink-0 rounded border h-[50px] text-base outline-none mb-[12px] pl-[24px] placeholder:text-charcoal-50  lg:w-[254px] lg:rounded-none lg:border-transparent lg:mb-0"
                   type="email"
                   placeholder="Enter email address"
                   onChange={(event: any) => setEmail(event.target.value)}
                 />
                 <Button
-                  fullWidth={!matches}
                   sx={{
                     borderRadius: {
                       sm: "6px",
-                      md: 0,
+                      md: "0 6px 6px 0",
+                      height: "5rem",
                     },
+                    width: "max-content",
                   }}
-                  color="primary"
-                  variant="contained"
-                  onClick={() => subscribe({ EMAIL: email })}
+                  variant={emailValid ? "contained" : "outlined"}
+                  fullWidth={!matches}
+                  color={emailValid ? "primary" : "secondary"}
+                  onClick={() => handleSubmit(subscribe)}
                 >
                   Subscribe to Newsletter
                 </Button>
               </div>
 
+              {customMessage && <div className="text-[18px] leading-21px text-red   font-medium absolute">{customMessage}</div>}
               {status === "error" && <div className="text-[18px] leading-21px text-red   font-medium absolute">{message}</div>}
               {status === "success" && (
                 <div className="text-base text-body-title  leading-[21px]  font-medium absolute">Thank you for subscribing!</div>

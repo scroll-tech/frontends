@@ -30,3 +30,8 @@ export const generateExploreLink = (explorer, hash) => {
 }
 
 export const isProduction = requireEnv("REACT_APP_SCROLL_ENVIRONMENT") === requireEnv("REACT_APP_MAIN_ENVIRONMENT")
+
+export const isValidEmail = (email: string): boolean => {
+  const emailRegex: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+  return emailRegex.test(email)
+}
