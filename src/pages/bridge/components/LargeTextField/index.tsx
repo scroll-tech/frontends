@@ -60,7 +60,6 @@ const LargeTextField: FC<LargeTextFieldProps> = props => {
       className={cx(classes.root, className)}
       variant="standard"
       autoComplete="off"
-      // disableUnderline
       InputProps={{
         classes: inputStyles,
         disableUnderline: true,
