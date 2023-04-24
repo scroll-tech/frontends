@@ -19,6 +19,15 @@ module.exports = {
       },
     },
   ],
+  // local proxy
+  // devServer: {
+  //   proxy: {
+  //     "/bridgehistory/api": {
+  //       target: "http://localhost:4000",
+  //       pathRewrite: { "^/bridgehistory/api": "/api" },
+  //     },
+  //   },
+  // },
 
   webpack: {
     alias: {
