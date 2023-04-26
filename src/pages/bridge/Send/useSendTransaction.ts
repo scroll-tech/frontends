@@ -1,5 +1,4 @@
 // import { HopBridge } from '@hop-protocol/sdk'
-import { BigNumber } from "ethers"
 import { useMemo, useState } from "react"
 
 import { ChainId, GasLimit, networks } from "@/constants"
@@ -29,7 +28,7 @@ export function useSendTransaction(props) {
   const { getPriceFee } = usePriceFee()
 
   const parsedAmount = useMemo(() => {
-    if (!fromTokenAmount || !selectedToken) return BigNumber.from(0)
+    if (!fromTokenAmount || !selectedToken) return BigInt(0)
     return amountToBN(fromTokenAmount, selectedToken.decimals)
   }, [fromTokenAmount, selectedToken?.decimals])
 
@@ -98,7 +97,7 @@ export function useSendTransaction(props) {
   const depositETH = async () => {
     const fee = await getPriceFee(selectedToken, fromNetwork.isLayer1)
     return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositETH(uint256,uint256)"](parsedAmount, GasLimit.DEPOSIT_ETH, {
-      value: parsedAmount.add(fee),
+      value: parsedAmount + fee,
     })
   }
 
@@ -117,7 +116,7 @@ export function useSendTransaction(props) {
   const withdrawETH = async () => {
     const fee = await getPriceFee(selectedToken)
     return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawETH(uint256,uint256)"](parsedAmount, GasLimit.WITHDRAW_ETH, {
-      value: parsedAmount.add(fee),
+      value: parsedAmount + fee,
     })
   }
 

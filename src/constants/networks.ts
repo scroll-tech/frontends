@@ -41,7 +41,7 @@ type BaseToken = {
   chainId: number
   name: string
   symbol: string
-  decimals: number
+  decimals: bigint
   logoURI: string
 }
 
@@ -59,7 +59,7 @@ export const nativeTokenList: Token[] = [
     chainId: ChainId.SCROLL_LAYER_1,
     name: ETH_SYMBOL,
     symbol: ETH_SYMBOL,
-    decimals: 18,
+    decimals: BigInt(18),
     native: true,
     logoURI: ETHSvg,
   },
@@ -67,7 +67,7 @@ export const nativeTokenList: Token[] = [
     chainId: ChainId.SCROLL_LAYER_2,
     name: ETH_SYMBOL,
     symbol: ETH_SYMBOL,
-    decimals: 18,
+    decimals: BigInt(18),
     native: true,
     logoURI: ETHSvg,
   },
