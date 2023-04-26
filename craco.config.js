@@ -6,6 +6,9 @@ const { loaderByName, addBeforeLoader } = require("@craco/craco")
 const SentryWebpackPlugin = require("@sentry/webpack-plugin")
 
 module.exports = {
+  babel: {
+    plugins: ["@emotion/babel-plugin"],
+  },
   plugins: [
     {
       plugin: CracoLessPlugin,
