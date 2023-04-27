@@ -2,6 +2,13 @@ import React, { useEffect, useState } from "react"
 
 import { ArrowUpward } from "@mui/icons-material"
 import { Box, Fab } from "@mui/material"
+import { styled } from "@mui/material/styles"
+
+const StyledFab = styled(Fab)(({ theme }) => ({
+  "&:hover": {
+    background: theme.palette.primary.light,
+  },
+}))
 
 const ScrollToTop: React.FC = () => {
   const [visible, setVisible] = useState<boolean>(false)
@@ -39,9 +46,9 @@ const ScrollToTop: React.FC = () => {
             zIndex: 100,
           }}
         >
-          <Fab color="primary" onClick={scrollToTop}>
+          <StyledFab color="primary" onClick={scrollToTop}>
             <ArrowUpward />
-          </Fab>
+          </StyledFab>
         </Box>
       )}
     </>
