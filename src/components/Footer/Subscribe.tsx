@@ -56,9 +56,9 @@ const Subscribe = () => {
 
   const handleSubmit = subscribe => {
     if (!email) {
-      setCustomMessage("please input your email")
+      setCustomMessage("Please insert your email")
     } else if (!emailValid) {
-      setCustomMessage("please enter your vaild email")
+      setCustomMessage("Please use a correct email")
     } else {
       subscribe({ EMAIL: email })
     }
