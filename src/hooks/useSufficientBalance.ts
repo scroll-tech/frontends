@@ -1,17 +1,18 @@
-import { BigNumber } from "ethers"
 import { useEffect, useState } from "react"
 
+import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import { useIsSmartContractWallet, usePriceFee } from "@/hooks"
 import { toTokenDisplay } from "@/utils"
 
 function useSufficientBalance(
   selectedToken: any,
   token?: any,
-  amount?: BigNumber,
-  estimatedGasCost?: BigNumber,
-  tokenBalance: BigNumber = BigNumber.from(0),
+  amount?: bigint,
+  estimatedGasCost?: bigint,
+  tokenBalance: bigint = BigInt(0),
   isCorrectNetwork?: boolean,
 ) {
+  const { walletCurrentAddress } = useWeb3Context()
   const [sufficientBalance, setSufficientBalance] = useState(false)
   const [warning, setWarning] = useState("")
   const { isSmartContractWallet } = useIsSmartContractWallet()
@@ -27,32 +28,32 @@ function useSufficientBalance(
         return setSufficientBalance(false)
       }
 
-      let totalCost: BigNumber
+      let totalCost: bigint
       let enoughFeeBalance: boolean
       let enoughTokenBalance: boolean
       let message: string = ""
 
-      const ntb = await token.signer.getBalance()
+      const ntb = await token.provider.getBalance(walletCurrentAddress)
 
       if (!estimatedGasCost) {
-        const gasPrice = await token.signer.getGasPrice()
-        estimatedGasCost = BigNumber.from(200e3).mul(gasPrice || 1e9)
+        const { maxFeePerGas: gasPrice } = await token.provider.getFeeData()
+        estimatedGasCost = BigInt(200e3) * (gasPrice || BigInt(1e9))
       }
 
       if (selectedToken.native) {
-        totalCost = estimatedGasCost.add(amount)
+        totalCost = estimatedGasCost + amount
         const isLayer1 = token.network.isLayer1
         const fee = await getPriceFee(selectedToken, isLayer1)
-        totalCost = totalCost.add(fee)
-        enoughFeeBalance = ntb.gte(totalCost)
+        totalCost = totalCost + fee
+        enoughFeeBalance = ntb >= totalCost
         enoughTokenBalance = enoughFeeBalance
       } else {
         totalCost = estimatedGasCost
         const isLayer1 = token.network.isLayer1
         const fee = await getPriceFee(selectedToken, isLayer1)
-        totalCost = totalCost.add(fee)
-        enoughFeeBalance = ntb.gte(totalCost)
-        enoughTokenBalance = tokenBalance.gte(amount)
+        totalCost = totalCost + fee
+        enoughFeeBalance = ntb >= totalCost
+        enoughTokenBalance = tokenBalance >= amount
       }
 
       if (enoughFeeBalance && enoughTokenBalance) {
@@ -61,7 +62,7 @@ function useSufficientBalance(
       }
 
       if (!enoughFeeBalance) {
-        const diff = totalCost.sub(ntb)
+        const diff = totalCost - ntb
         message = `Insufficient balance to cover the cost of tx. Please add ${
           selectedToken.symbol
         } to pay for tx fees or reduce the amount by approximately ${toTokenDisplay(diff)} ${selectedToken.symbol}`

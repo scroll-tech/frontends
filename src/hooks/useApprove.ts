@@ -1,14 +1,12 @@
-import { BigNumber } from "ethers"
-
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 
 const useApprove = token => {
   const { provider } = useWeb3Context()
 
-  const checkApproval = async (amount: BigNumber, token: any, spender: string) => {
+  const checkApproval = async (amount: bigint, token: any, spender: string) => {
     try {
-      const signer = provider?.getSigner()
-      const address = (await signer?.getAddress())?.toString()
+      const signer = await provider?.getSigner()
+      const address = signer?.getAddress()?.toString()
       if (!signer) {
         throw new Error("Wallet not connected")
       }
@@ -18,7 +16,7 @@ const useApprove = token => {
       }
 
       const approved = await token.allowance(address, spender)
-      if (approved.gte(amount)) {
+      if (approved >= amount) {
         return false
       }
 

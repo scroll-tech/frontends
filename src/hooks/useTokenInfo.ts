@@ -36,7 +36,7 @@ const useTokenInfo = (address: string, isL1: boolean) => {
       const decimals = await erc20.decimals()
       const tokenInfo = {
         symbol: tokenSymbol,
-        decimals: decimals,
+        decimals: Number(decimals),
       }
       saveState(TOKEN_INFO_MAP, {
         ...symbolMap,

@@ -19,9 +19,8 @@ const Header = () => {
       <Typography sx={{ fontSize: ["1.2rem", "2.4rem"], fontWeight: 500, fontFamily: "Inter", mt: [0, "1rem"] }}>
         Want to join the Scroll ecosystem?{" "}
         <Link href="https://scrollzkp.typeform.com/buildwithscroll" external underline="always" sx={{ color: "primary.main", fontSize: "inherit" }}>
-          Reach out here
+          Contact us
         </Link>
-        !
       </Typography>
     </Box>
   )

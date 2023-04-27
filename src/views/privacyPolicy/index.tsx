@@ -2,7 +2,7 @@ import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 const Container = styled(Box)(({ theme }) => ({
-  padding: "12rem 0",
+  padding: "14rem 2.4rem",
   [theme.breakpoints.down("md")]: {
     padding: "8rem 1.6rem",
   },
@@ -37,9 +37,6 @@ const Container = styled(Box)(({ theme }) => ({
         margin: "1rem 0",
       },
     },
-    [`& ${TitleTypography}`]: {
-      textAlign: "center",
-    },
     "+ h1, + h2, + h3": {
       marginTop: "2.8rem",
       [theme.breakpoints.down("md")]: {
@@ -47,12 +44,13 @@ const Container = styled(Box)(({ theme }) => ({
       },
     },
   },
+  [`${TitleTypography}`]: {
+    fontWeight: "500",
+  },
 }))
 
 const TitleTypography = styled(Typography)(({ theme }) => ({
   textAlign: "center",
-  margin: "2rem auto",
-  lineHeight: 1.5,
 }))
 
 const DashTypography = styled("h3")(({ theme }) => ({

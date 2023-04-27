@@ -6,6 +6,9 @@ const { loaderByName, addBeforeLoader } = require("@craco/craco")
 const SentryWebpackPlugin = require("@sentry/webpack-plugin")
 
 module.exports = {
+  babel: {
+    plugins: ["@emotion/babel-plugin"],
+  },
   plugins: [
     {
       plugin: CracoLessPlugin,
@@ -19,6 +22,15 @@ module.exports = {
       },
     },
   ],
+  // local proxy
+  // devServer: {
+  //   proxy: {
+  //     "/bridgehistory/api": {
+  //       target: "http://localhost:4000",
+  //       pathRewrite: { "^/bridgehistory/api": "/api" },
+  //     },
+  //   },
+  // },
 
   webpack: {
     alias: {

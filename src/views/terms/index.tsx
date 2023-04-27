@@ -2,7 +2,7 @@ import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 const Container = styled(Box)(({ theme }) => ({
-  padding: "12rem 0",
+  padding: "14rem 2.4rem",
   [theme.breakpoints.down("md")]: {
     padding: "8rem 1.6rem",
   },
@@ -33,16 +33,12 @@ const Container = styled(Box)(({ theme }) => ({
     "& li": {
       margin: "0.8rem 0",
     },
-    [`& ${TitleTypography}`]: {
-      textAlign: "center",
-    },
   },
 }))
 
 const TitleTypography = styled(Typography)(({ theme }) => ({
   textAlign: "center",
   marginBottom: "2rem",
-  lineHeight: 1.5,
 }))
 
 const TableofContents = styled("ul")(({ theme }) => ({

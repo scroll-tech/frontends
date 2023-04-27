@@ -178,7 +178,7 @@ const TxRow = props => {
   const { loading: tokenInfoLoading, tokenInfo } = useTokenInfo(tx.symbolToken, tx.isL1)
 
   const txAmount = amount => {
-    return toTokenDisplay(amount, tokenInfo?.decimals)
+    return toTokenDisplay(amount, tokenInfo?.decimals ? BigInt(tokenInfo.decimals) : undefined)
   }
 
   const renderEstimatedWaitingTime = (timestamp, isL1, to) => {

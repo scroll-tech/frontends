@@ -17,7 +17,7 @@ const addresses = [
       nativeCurrency: {
         name: "Goerli",
         symbol: requireEnv("REACT_APP_ETH_SYMBOL"),
-        decimals: 18,
+        decimals: BigInt(18),
       },
       rpcUrls: [RPCUrl.SCROLL_LAYER_1],
       blockExplorerUrls: [requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1")],
@@ -35,7 +35,7 @@ const addresses = [
       nativeCurrency: {
         name: "Ethereum",
         symbol: requireEnv("REACT_APP_ETH_SYMBOL"),
-        decimals: 18,
+        decimals: BigInt(18),
       },
       rpcUrls: [RPCUrl.SCROLL_LAYER_2],
       blockExplorerUrls: [requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2")],
