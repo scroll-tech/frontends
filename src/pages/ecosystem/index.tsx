@@ -1,14 +1,23 @@
+import { useState } from "react"
+
 import { Box } from "@mui/material"
 
+import Filter from "./Filter"
 import Gallery from "./Gallery"
 import Header from "./Header"
 
 const Ecosystem = () => {
+  const [category, setCategory] = useState("all")
+
+  const handleChangeCategory = value => {
+    setCategory(value)
+  }
+
   return (
     <Box
       sx={{
         position: "relative",
-        maxWidth: "1020px",
+        maxWidth: "1102px",
         mt: ["7.6rem", "10rem", "18rem"],
         mx: "auto",
         px: "3rem",
@@ -25,7 +34,8 @@ const Ecosystem = () => {
         }}
       ></Box>
       <Header></Header>
-      <Gallery></Gallery>
+      <Filter value={category} onChange={handleChangeCategory}></Filter>
+      <Gallery selectedCategory={category}></Gallery>
     </Box>
   )
 }
