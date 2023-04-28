@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom"
+import { useMatch } from "react-router-dom"
 
 import { Stack } from "@mui/material"
 import { styled } from "@mui/system"
@@ -22,8 +22,8 @@ const ReadMoreLink = styled("a")(
 )
 
 const Announcement = () => {
-  const { pathname } = useLocation()
-  if (pathname.includes("/alpha")) {
+  const match = useMatch("/alpha*")
+  if (match) {
     return null
   }
   return (
