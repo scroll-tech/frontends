@@ -100,7 +100,7 @@ const GalleryItem = props => {
           whileHover={{ boxShadow: "2px 2px 10px 2px rgba(131, 131, 131, 0.5)" }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
         >
-          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+          <Box sx={{ display: "flex", justifyContent: "flex-end", position: "absolute", width: "100%", marginLeft: "-1rem", paddingX: "1rem" }}>
             <InfoOutlined sx={{ color: "#686868" }}></InfoOutlined>
           </Box>
           <Stack direction="column" spacing={2} alignItems="center" sx={{ mt: "7rem" }}>
@@ -128,7 +128,7 @@ const GalleryItem = props => {
               <ReplayOutlined sx={{ color: "#686868" }}></ReplayOutlined>
             </Stack>
             <Typography
-              sx={{ mt: "2rem", px: "1rem", lineHeight: ["1.8rem", "1.6rem"], fontFamily: "Inter", fontWeight: 500, fontSize: ["1.6rem", "1.4rem"] }}
+              sx={{ mb: "1rem", px: "1rem", lineHeight: ["1.8rem", "1.6rem"], fontFamily: "Inter", fontWeight: 500, fontSize: ["1.6rem", "1.4rem"] }}
             >
               {desc}
             </Typography>
