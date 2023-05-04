@@ -52,6 +52,19 @@ const FaceSide = styled(motion.div)(
 `,
 )
 
+const IconBox = styled(Box)(
+  ({ theme }) => `
+  position: absolute;
+  width: 100%;
+  margin-left: -1rem;
+  padding: 0 1rem;
+  ${theme.breakpoints.down("sm")} {
+    padding: 0 1.6rem;
+    margin-left: -1.6rem;
+  };
+  `,
+)
+
 const Tag = styled("span")(
   ({ theme }) => `
   display: inline-block;
@@ -100,9 +113,9 @@ const GalleryItem = props => {
           whileHover={{ boxShadow: "2px 2px 10px 2px rgba(131, 131, 131, 0.5)" }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
         >
-          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+          <IconBox sx={{ display: "flex", justifyContent: "flex-end" }}>
             <InfoOutlined sx={{ color: "#686868" }}></InfoOutlined>
-          </Box>
+          </IconBox>
           <Stack direction="column" spacing={2} alignItems="center" sx={{ mt: "7rem" }}>
             <Stack direction="row" spacing={1.25} alignItems="center">
               <Avatar alt={name} src={logo} variant="rounded" sx={{ width: 84, height: 84 }}></Avatar>
@@ -128,7 +141,7 @@ const GalleryItem = props => {
               <ReplayOutlined sx={{ color: "#686868" }}></ReplayOutlined>
             </Stack>
             <Typography
-              sx={{ mt: "2rem", px: "1rem", lineHeight: ["1.8rem", "1.6rem"], fontFamily: "Inter", fontWeight: 500, fontSize: ["1.6rem", "1.4rem"] }}
+              sx={{ mb: "1rem", px: "1rem", lineHeight: ["1.8rem", "1.6rem"], fontFamily: "Inter", fontWeight: 500, fontSize: ["1.6rem", "1.4rem"] }}
             >
               {desc}
             </Typography>
