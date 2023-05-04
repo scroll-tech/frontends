@@ -7,7 +7,7 @@ import Gallery from "./Gallery"
 import Header from "./Header"
 
 const Ecosystem = () => {
-  const [category, setCategory] = useState("all")
+  const [category, setCategory] = useState("All")
 
   const handleChangeCategory = value => {
     setCategory(value)
@@ -17,7 +17,7 @@ const Ecosystem = () => {
     <Box
       sx={{
         position: "relative",
-        maxWidth: "1102px",
+        maxWidth: "1155px",
         mt: ["7.6rem", "10rem", "18rem"],
         mx: "auto",
         px: "3rem",

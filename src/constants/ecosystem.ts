@@ -1,6 +1,6 @@
 export const DIVERGENT_CATEGORY_MAP = {
   Community: ["Community", "DAO", "Governance"],
-  DeFI: ["DEX", "DeFI", "Launchpad", "Lending", "Marketplace", "Payment"],
+  DeFi: ["DEX", "DeFi", "Launchpad", "Lending", "Marketplace", "Payment"],
   Gaming: ["Gaming"],
   Infra: ["Bridge", "Gateway", "Indexer", "Infrastructure", "Node Provider", "Oracle"],
   NFT: ["NFT"],
