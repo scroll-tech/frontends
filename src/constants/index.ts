@@ -80,7 +80,7 @@ const navigation = [
   },
   {
     name: "Unifra Explorer",
-    description: "Unifra is a block explorer that combines your L2 transactions with L1 transactions.",
+    description: "See L2 and L1 transactions alongside the rollup status in one interface.",
     isExternal: true,
     subdomainOrPath: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_UNIFRA"),
   },
