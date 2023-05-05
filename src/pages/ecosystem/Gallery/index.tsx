@@ -15,17 +15,17 @@ const Container = styled("div")(
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   width: max-content;
-  margin: 5rem auto 8rem;
+  margin: 3rem auto 8rem;
   grid-auto-columns: 1fr;
   ${theme.breakpoints.down("lg")} {
     grid-template-columns: repeat(2, 1fr);
     width: max-content;
-    margin: 3rem auto 4rem;
+    margin: 2rem auto 4rem;
   };
   ${theme.breakpoints.down("sm")} {
     grid-template-columns: 1fr;
     width: 100%;
-    margin: 3rem auto 2.4rem;
+    margin: 2rem auto 2.4rem;
   };
 `,
 )

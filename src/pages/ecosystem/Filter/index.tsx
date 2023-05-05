@@ -7,11 +7,19 @@ import { DIVERGENT_CATEGORY_MAP } from "@/constants"
 
 const useStyles = makeStyles()(theme => ({
   wrapper: {
+    justifyContent: "center",
+    marginTop: "3rem",
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "1rem",
     [theme.breakpoints.down("sm")]: {
       width: "calc(100% + 6rem)",
+      marginTop: "2rem",
       marginLeft: "-3rem",
       padding: "0 1.6rem",
       overflow: "auto",
+      flexWrap: "nowrap",
+      justifyContent: "flex-start",
       "&::-webkit-scrollbar": {
         display: "none",
       },
@@ -23,10 +31,10 @@ const useStyles = makeStyles()(theme => ({
     color: theme.palette.text.secondary,
     backgroundColor: "rgba(217, 217, 217, 0.26)",
     fontWeight: 400,
+    cursor: "pointer",
     "&:hover": {
       borderColor: "#FA8100",
       color: "#FA8100",
-      fontWeight: 500,
       backgroundColor: "rgba(250, 129, 0, 0.1) !important",
     },
   },
@@ -39,8 +47,8 @@ const useStyles = makeStyles()(theme => ({
     borderColor: "#FA8100",
     color: "#FA8100",
     fontWeight: 500,
-
     backgroundColor: "rgba(250, 129, 0, 0.1)",
+    pointerEvents: "none",
   },
 }))
 
@@ -55,7 +63,7 @@ const Filter = props => {
     onChange(value)
   }
   return (
-    <Box className={classes.wrapper} sx={{ marginTop: ["2.8rem", "5rem"], display: "flex", flexWrap: ["nowrap", "wrap"], gap: "1rem" }}>
+    <Box className={classes.wrapper}>
       {allCategories.current.map(item => (
         <Chip
           classes={classes}
