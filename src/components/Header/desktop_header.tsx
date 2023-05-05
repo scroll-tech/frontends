@@ -1,7 +1,7 @@
 import * as React from "react"
 import { NavLink } from "react-router-dom"
 
-import { ExpandMore, OpenInNew } from "@mui/icons-material"
+import { ExpandMore } from "@mui/icons-material"
 import { Box, Button, Container, Fade, Link, Stack } from "@mui/material"
 import { styled } from "@mui/system"
 
@@ -218,7 +218,6 @@ const App = props => {
                         <LinkButton target="_blank" underline="none" key={subItem.label} href={subItem.href}>
                           <Stack direction="row" alignItems="center" spacing={1}>
                             <span>{subItem.label}</span>
-                            <OpenInNew sx={{ fontSize: "16px" }} />
                           </Stack>
                         </LinkButton>
                       ) : (
