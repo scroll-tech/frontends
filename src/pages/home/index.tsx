@@ -65,7 +65,7 @@ export default function Home() {
   return (
     <>
       <div className="p-4 mx-[8px] mb-[40px] lg:p-8">
-        <SectionTitle title={`Configure ${walletName || "wallet"} for our testnet`}>
+        <SectionTitle title={`Configure ${walletName || "wallet"} for our zkEVM testnet`}>
           <div className="text-base px-4 py-5 grid grid-cols-1 gap-2 sm:gap-4 sm:px-6">
             Note: Please completely remove previous Scroll networks from your {walletName || "wallet"} before proceeding, then:
             <a

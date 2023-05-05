@@ -1,7 +1,7 @@
 import * as React from "react"
 import { NavLink } from "react-router-dom"
 
-import { CloseRounded, ExpandLess, ExpandMore, Menu as MenuIcon, OpenInNew } from "@mui/icons-material"
+import { CloseRounded, ExpandLess, ExpandMore, Menu as MenuIcon } from "@mui/icons-material"
 import { Box, Button, Collapse, Link, List, ListItemButton, Stack, SwipeableDrawer } from "@mui/material"
 import { styled } from "@mui/system"
 
@@ -116,7 +116,6 @@ const App = props => {
                       <ExternalLink underline="none" href={subItem.href}>
                         {subItem.label}
                       </ExternalLink>
-                      <OpenInNew sx={{ fontSize: 14, marginLeft: "10px" }} />
                     </ListButton>
                   ) : (
                     <ListButton onClick={() => toggleDrawer(false)} sx={{ pl: 4 }} key={subItem.key}>

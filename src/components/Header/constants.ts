@@ -41,21 +41,33 @@ const navigations = [
     href: "ecosystem",
   },
   {
-    label: "Rollup Explorer",
-    key: "rollupscan",
-    href: "rollupscan",
-  },
-  {
-    label: "L1 Explorer 🔗",
-    key: "l1BlockExplorer",
-    href: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1"),
-    isExternal: true,
-  },
-  {
-    label: "L2 Explorer 🔗",
-    key: "l2BlockExplorer",
-    href: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2"),
-    isExternal: true,
+    label: "Explorers",
+    key: "explorers",
+    children: [
+      {
+        label: "Rollup Explorer",
+        key: "rollupscan",
+        href: "rollupscan",
+      },
+      {
+        label: "L1 Explorer 🔗",
+        key: "l1BlockExplorer",
+        href: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1"),
+        isExternal: true,
+      },
+      {
+        label: "L2 Explorer 🔗",
+        key: "l2BlockExplorer",
+        href: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2"),
+        isExternal: true,
+      },
+      {
+        label: "Unifra Explorer 🔗",
+        key: "unifraBlockExplorer",
+        href: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_UNIFRA"),
+        isExternal: true,
+      },
+    ],
   },
 ]
 

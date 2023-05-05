@@ -26,7 +26,7 @@ function Portal() {
   return (
     <div className="App bg-white min-h-[100vh]">
       <Helmet>
-        <title>Scroll Alpha {route?.name ? " – " + route.name : null} </title>
+        <title>Scroll zkEVM Alpha {route?.name ? " – " + route.name : null} </title>
         <meta property="og:url" content={getUrl()} />
         <meta property="og:title" content={`Scroll Alpha ${route?.name ? "- " + route.name : ""}`} />
         <meta property="og:description" content="Native zkEVM Layer 2 for Ethereum" />
