@@ -78,6 +78,12 @@ const navigation = [
     isExternal: true,
     subdomainOrPath: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2"),
   },
+  {
+    name: "Unifra Explorer",
+    description: "Unifra is a block explorer that combines your L2 transactions with L1 transactions.",
+    isExternal: true,
+    subdomainOrPath: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_UNIFRA"),
+  },
 ]
 
 const documentation = [
