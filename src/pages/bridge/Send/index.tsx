@@ -70,10 +70,6 @@ const Send: FC = () => {
       const fromNetworkIndex = networks.findIndex(item => item.chainId === chainId)
       setFromNetwork(networks[fromNetworkIndex])
       setToNetwork(networks[+!fromNetworkIndex])
-    } else if (chainId) {
-      setFromNetwork(networks[0])
-      setToNetwork(networks[1])
-      handleSwitchNetwork(networks[0].chainId)
     } else {
       setFromNetwork(networks[0])
       setToNetwork(networks[1])
