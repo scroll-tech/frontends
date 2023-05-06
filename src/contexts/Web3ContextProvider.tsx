@@ -69,6 +69,7 @@ const web3Onboard = init({
 
 const Web3ContextProvider = ({ children }: any) => {
   const [provider, setProvider] = useState<ethers.BrowserProvider | undefined>()
+  const [walletConnected, setWalletConnected] = useState(false)
 
   const [onboard, setOnboard] = useState<any>(null)
 
@@ -78,7 +79,26 @@ const Web3ContextProvider = ({ children }: any) => {
 
   const { clearTransactions } = useTxStore()
 
+  const checkWalletConnected = async () => {
+    if (typeof window.ethereum !== "undefined") {
+      const provider = new ethers.BrowserProvider(window.ethereum, "any")
+      try {
+        const accounts = await provider.listAccounts()
+        if (accounts.length > 0) {
+          setWalletConnected(true)
+        } else {
+          setWalletConnected(false)
+        }
+      } catch (err) {
+        setWalletConnected(false)
+      }
+    } else {
+      setWalletConnected(false)
+    }
+  }
+
   useEffect(() => {
+    checkWalletConnected()
     setOnboard(web3Onboard)
   }, [])
 
@@ -100,7 +120,7 @@ const Web3ContextProvider = ({ children }: any) => {
 
   useEffect(() => {
     const previouslyConnectedWallets = loadState(cacheKey)
-    if (previouslyConnectedWallets?.length) {
+    if (walletConnected && previouslyConnectedWallets?.length) {
       const setWalletFromLocalStorage = async () => {
         await connect({
           autoSelect: {
@@ -113,7 +133,7 @@ const Web3ContextProvider = ({ children }: any) => {
     } else {
       clearTransactions()
     }
-  }, [onboard, connect])
+  }, [onboard, connect, walletConnected])
 
   const connectWallet = () => {
     try {

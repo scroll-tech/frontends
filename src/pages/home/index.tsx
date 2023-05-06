@@ -22,10 +22,22 @@ function AddNetworkButton({ autoconnect, walletName, chainId, onReadd }: any) {
       onReadd()
       return
     }
-    await window.ethereum.request({
-      method: "wallet_addEthereumChain",
-      params: [autoconnect],
-    })
+    try {
+      await window.ethereum.request({
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: autoconnect.chainId }],
+      })
+    } catch (switchError) {
+      // This error code indicates that the chain has not been added to MetaMask.
+      if (switchError.code === 4902) {
+        try {
+          await window.ethereum.request({
+            method: "wallet_addEthereumChain",
+            params: [autoconnect],
+          })
+        } catch (addError) {}
+      }
+    }
   }
 
   return (

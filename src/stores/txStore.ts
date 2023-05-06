@@ -1,6 +1,6 @@
 import produce from "immer"
 import { readItem } from "squirrel-gill/lib/storage"
-import create from "zustand"
+import { create } from "zustand"
 import { persist } from "zustand/middleware"
 
 import { fetchTxListUrl } from "@/apis/bridge"

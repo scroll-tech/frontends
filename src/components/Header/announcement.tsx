@@ -22,7 +22,7 @@ const ReadMoreLink = styled("a")(
 )
 
 const Announcement = () => {
-  const match = useMatch("/alpha*")
+  const match = useMatch("/alpha/*")
   if (match) {
     return null
   }
