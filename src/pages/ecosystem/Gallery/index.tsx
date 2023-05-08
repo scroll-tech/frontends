@@ -4,7 +4,7 @@ import useSWR from "swr"
 import { Alert, Snackbar } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
-import { fetchEcosystemListUrl } from "@/apis/ecosystem"
+import { ecosystemListHashUrl, ecosystemListLogoUrl } from "@/apis/ecosystem"
 import LoadingPage from "@/components/LoadingPage"
 
 import GalleryItem from "./GalleryItem"
@@ -31,7 +31,7 @@ const Container = styled("div")(
 
 const Gallery = () => {
   const [errorMsg, setErrorMsg] = useState("")
-  const { data: ecosystemList, isLoading } = useSWR(fetchEcosystemListUrl, url => {
+  const { data: ecosystemList, isLoading } = useSWR(ecosystemListHashUrl, url => {
     return scrollRequest(url).catch(() => {
       setErrorMsg("Fail to fetch ecosystem list")
       return null
@@ -48,7 +48,7 @@ const Gallery = () => {
       ) : (
         <Container>
           {ecosystemList?.map(item => (
-            <GalleryItem key={item.name} item={item}></GalleryItem>
+            <GalleryItem key={item.name} logoBaseUrl={ecosystemListLogoUrl} item={item}></GalleryItem>
           ))}
           <Snackbar open={!!errorMsg} autoHideDuration={6000} onClose={handleClose}>
             <Alert severity="error" onClose={handleClose}>
