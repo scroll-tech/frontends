@@ -1,8 +1,9 @@
 import { motion } from "framer-motion"
 import { useState } from "react"
+import Img from "react-cool-img"
 
 import { InfoOutlined, ReplayOutlined } from "@mui/icons-material"
-import { Avatar, Box, Stack, SvgIcon, Typography } from "@mui/material"
+import { Box, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
 import { socialLinks } from "../helper"
@@ -87,8 +88,11 @@ const variants = {
 
 const GalleryItem = props => {
   const {
-    item: { name, logo, tags, desc, website, twitterHandle },
+    logoBaseUrl,
+    item: { name, hash, ext, tags, desc, website, twitterHandle },
   } = props
+
+  const logo = logoBaseUrl + name + ext
 
   const [isBack, setIsBack] = useState(false)
 
@@ -118,7 +122,7 @@ const GalleryItem = props => {
           </IconBox>
           <Stack direction="column" spacing={2} alignItems="center" sx={{ mt: "7rem" }}>
             <Stack direction="row" spacing={1.25} alignItems="center">
-              <Avatar alt={name} src={logo} variant="rounded" sx={{ width: 84, height: 84 }}></Avatar>
+              <Img alt={name} src={logo} placeholder={hash} width={84} height={84}></Img>
               <Typography sx={{ fontFamily: "Inter", fontWeight: 600, fontSize: ["2rem", "2.4rem"], width: "min-content" }}>{name}</Typography>
             </Stack>
             <Stack direction="row" sx={{ flexWrap: "wrap", justifyContent: "center" }}>
@@ -135,7 +139,7 @@ const GalleryItem = props => {
           <Stack direction="column" justifyContent="space-between" sx={{ height: "100%" }}>
             <Stack direction="row" justifyContent="space-between">
               <Stack direction="row" alignItems="center" spacing={0.5}>
-                <Avatar alt={name} src={logo} variant="rounded" sx={{ width: 22, height: 22 }}></Avatar>
+                <Img alt={name} src={logo} placeholder={hash} width={22} height={22}></Img>
                 <Typography sx={{ fontWeight: 600, fontSize: 12 }}>{name}</Typography>
               </Stack>
               <ReplayOutlined sx={{ color: "#686868" }}></ReplayOutlined>
