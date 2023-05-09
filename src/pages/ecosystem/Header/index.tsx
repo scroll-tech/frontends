@@ -53,12 +53,12 @@ const Header = () => {
                 Add Your App Today
               </Link>
             </Typography>
-            <Typography color="textSecondary" sx={{ fontSize: "1.2rem", lineHeight: "1.4rem", fontFamily: "Inter", mt: "2rem" }}>
+            {/* <Typography color="textSecondary" sx={{ fontSize: "1.2rem", lineHeight: "1.4rem", fontFamily: "Inter", mt: "2rem" }}>
               Stay up to date with our{" "}
               <Link external href="" sx={{ color: "primary.main", fontSize: "inherit" }}>
                 Ecosystem Roadmap
               </Link>
-            </Typography>
+            </Typography> */}
           </>
         ) : (
           <>
@@ -69,7 +69,7 @@ const Header = () => {
               <Button variant="contained" href={typeformLinkRef.current} target="_blank">
                 Contact us
               </Button>
-              <Button
+              {/* <Button
                 color="secondary"
                 href=""
                 sx={{
@@ -80,7 +80,7 @@ const Header = () => {
                 }}
               >
                 Ecosystem Roadmap
-              </Button>
+              </Button> */}
             </Stack>
           </>
         )}
