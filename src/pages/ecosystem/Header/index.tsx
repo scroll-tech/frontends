@@ -50,7 +50,7 @@ const Header = () => {
             <Typography color="textSecondary" sx={{ fontSize: "1.2rem", lineHeight: "1.4rem", fontFamily: "Inter", mt: "2rem" }}>
               A curation of Apps on our testnet,{" "}
               <Link external href={typeformLinkRef.current} sx={{ color: "primary.main", fontSize: "inherit" }}>
-                Add Your App Today
+                Contact us
               </Link>
             </Typography>
             {/* <Typography color="textSecondary" sx={{ fontSize: "1.2rem", lineHeight: "1.4rem", fontFamily: "Inter", mt: "2rem" }}>
