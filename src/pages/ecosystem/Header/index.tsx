@@ -48,7 +48,7 @@ const Header = () => {
         {isMobile ? (
           <>
             <Typography color="textSecondary" sx={{ fontSize: "1.2rem", lineHeight: "1.4rem", fontFamily: "Inter", mt: "2rem" }}>
-              A curation of Apps on our testnet,{" "}
+                            Want to join the Scroll ecosystem? {" "}
               <Link external href={typeformLinkRef.current} sx={{ color: "primary.main", fontSize: "inherit" }}>
                 Contact us
               </Link>
