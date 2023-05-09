@@ -42,8 +42,8 @@ const FaceSide = styled(motion.div)(
   box-shadow: 2px 2px 10px 2px rgba(131, 131, 131, 0.4);
   background-color: rgba(249, 249, 249, 0.3);
   padding: 1rem;
-  border-radius: 2rem;
-  background-color: #fff;
+  border-radius: 0.6rem;
+  background-color: ${theme.palette.background.default},
   ${theme.breakpoints.down("sm")} {
     padding: 1.6rem;
   };
