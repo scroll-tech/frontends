@@ -119,6 +119,13 @@ const Web3ContextProvider = ({ children }: any) => {
     try {
       clearTransactions()
       connect()
+      setTimeout(() => {
+        let shadowRoot = (document as any).querySelector("onboard-v2").shadowRoot
+        let svgBox = shadowRoot.querySelector(".svg-box")
+        svgBox.style.display = "flex"
+        let noticeContainer = shadowRoot.querySelector(".notice-container")
+        noticeContainer.style.flex = "unset"
+      }, 0)
     } catch (err) {
       logger.error(err)
     }
