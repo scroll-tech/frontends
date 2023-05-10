@@ -1,4 +1,4 @@
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 import { makeStyles } from "tss-react/mui"
 
 import CloseIcon from "@mui/icons-material/Close"
@@ -92,9 +92,14 @@ const AddressButton = () => {
 
   const { classes, cx } = useStyles()
 
+  useEffect(() => {
+    if (historyVisible) {
+      refreshPageTransactions(1)
+    }
+  }, [historyVisible])
+
   const handleOpen = () => {
     changeHistoryVisible(true)
-    refreshPageTransactions(1)
   }
 
   const handleClose = () => {
