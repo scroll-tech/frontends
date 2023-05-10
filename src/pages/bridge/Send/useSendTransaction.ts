@@ -22,7 +22,7 @@ export function useSendTransaction(props) {
     txHistory: { blockNumbers },
   } = useApp()
   const { addTransaction, updateTransaction, addEstimatedTimeMap } = useTxStore()
-  const { changeRecentTxVisible } = useBridgeStore()
+  const { changeHistoryVisible } = useBridgeStore()
   const [sending, setSending] = useState<boolean>(false)
   const { checkConnectedChainId } = useWeb3Context()
   const { getPriceFee } = usePriceFee()
@@ -47,7 +47,7 @@ export function useSendTransaction(props) {
           tx = await sendl2ToL1()
         }
         setSending(false)
-        changeRecentTxVisible(true)
+        changeHistoryVisible(true)
         handleTransaction(tx)
         const txResult = await tx.wait()
         handleTransaction(tx, {
