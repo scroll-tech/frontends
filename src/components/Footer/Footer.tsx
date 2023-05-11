@@ -86,8 +86,8 @@ const Footer = () => {
             <Logo></Logo>
           </a>
           <div className="flex-1">
-            <p className="font-display font-medium text-md">Version {requireEnv("REACT_APP_VERSION")}</p>
-            <p className="font-display font-medium text-md">© Scroll Ltd {dayjs().year()}</p>
+            <p className="font-display font-medium text-md text-gray-500">Version {requireEnv("REACT_APP_VERSION")}</p>
+            <p className="font-display font-medium text-md text-gray-500">Scroll Ltd {dayjs().year()}</p>
           </div>
         </div>
         <div className="flex flex-[2] justify-between w-full mb-[30px]">{renderLinks()}</div>
