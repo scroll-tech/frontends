@@ -46,7 +46,6 @@ export const useSendStyles = makeStyles()(theme => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
-    minHeight: "6rem",
     width: "46rem",
     [theme.breakpoints.down("sm")]: {
       width: "90%",
