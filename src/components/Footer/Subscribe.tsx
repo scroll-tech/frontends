@@ -55,7 +55,13 @@ const Subscribe = () => {
 
   const renderMedias = () =>
     medias.map(media => (
-      <a className="flex mr-[36px] items-center text-body-title" href={media.href} key={media.name} target="_blank" rel="noreferrer">
+      <a
+        className="flex mr-[36px] hover:text-charcoal items-center text-body-title-80"
+        href={media.href}
+        key={media.name}
+        target="_blank"
+        rel="noreferrer"
+      >
         <img alt={media.name} src={media.imgSrc} className="w-[20px] mr-[8px]" />
         {media.name}
       </a>
@@ -74,7 +80,7 @@ const Subscribe = () => {
   return (
     <>
       <div className="relative">
-        <p className="text-md mb-[14px] font-display font-medium">Follow Us</p>
+        <p className="text-md mb-[14px] font-display font-semibold">Follow Us</p>
         <div className="flex  my-[20px]">{renderMedias()}</div>
         <MailchimpSubscribe
           url={url}

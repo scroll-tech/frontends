@@ -55,19 +55,18 @@ const Footer = () => {
   const renderLinks = () => {
     return links.map((link: any) => (
       <ul key={link.category} className="mr-100px mt-20px flex-1 lg:(mt-0)">
-        <li className="text-md mb-[8px] font-display font-medium">{link.category}</li>
+        <li className="text-md mb-[8px] font-display font-semibold">{link.category}</li>
         {link.items.map((item: any) => (
           <li key={item.name}>
             {item.to ? (
-              <Link className="font-medium leading-[34px] text-body-title" to={item.to}>
-                {" "}
+              <Link className="hover:text-charcoal leading-[34px] text-body-title-80" to={item.to}>
                 {item.name}
               </Link>
             ) : (
               <a
                 href={item.href}
                 // target="_blank"
-                className="font-medium leading-[34px] text-body-title"
+                className="hover:text-charcoal leading-[34px] text-body-title-80"
               >
                 {item.name}
               </a>
