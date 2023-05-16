@@ -1,15 +1,22 @@
 import { useEffect, useState } from "react"
 import MailchimpSubscribe from "react-mailchimp-subscribe"
 
-import { useTheme } from "@mui/material/styles"
+import { Box, Button } from "@mui/material"
+import { styled, useTheme } from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
-import Button from "@/components/Button/Button"
 import { isValidEmail } from "@/utils"
 
 // import { IntrinsicAttributes } from '@types/react-mailchimp-subscribe'
 
 const url = "https://gmail.us14.list-manage.com/subscribe/post?u=3b1d822eb27b2fa64d82d430b&id=0b4603244e"
+
+const Input = styled("input")(({ theme }) => ({
+  borderRadius: theme.shape.borderRadius,
+  [theme.breakpoints.up("md")]: {
+    borderRadius: 0,
+  },
+}))
 
 const Subscribe = () => {
   const [email, setEmail] = useState("")
@@ -73,20 +80,23 @@ const Subscribe = () => {
           url={url}
           render={({ subscribe, status, message }: any) => (
             <div>
-              <div className="flex flex-col mb-[20px] items-center rounded overflow-hidden lg:flex-row">
-                <input
-                  className="w-full bg-[#c9cbce33] flex-shrink-0 rounded border h-[50px] text-base outline-none mb-[12px] pl-[24px] placeholder:text-charcoal-50  lg:w-[254px] lg:rounded-none lg:border-transparent lg:mb-0"
+              <Box
+                className="flex flex-col mb-[20px] items-center overflow-hidden lg:flex-row"
+                sx={{
+                  borderRadius: `${theme.shape.borderRadius}px`,
+                }}
+              >
+                <Input
+                  className="w-full bg-[#c9cbce33] flex-shrink-0 border h-[50px] text-base outline-none mb-[12px] pl-[24px] placeholder:text-charcoal-50  lg:w-[254px] lg:border-transparent lg:mb-0"
                   type="email"
                   placeholder="Enter email address"
                   onChange={(event: any) => setEmail(event.target.value)}
                 />
                 <Button
                   sx={{
-                    borderRadius: {
-                      sm: "6px",
-                      md: "0 6px 6px 0",
-                      height: "5rem",
-                    },
+                    borderRadius: theme => ({
+                      md: `0 ${theme.shape.borderRadius}px ${theme.shape.borderRadius}px 0`,
+                    }),
                     width: "max-content",
                   }}
                   variant={emailValid ? "contained" : "outlined"}
@@ -96,7 +106,7 @@ const Subscribe = () => {
                 >
                   Subscribe to Newsletter
                 </Button>
-              </div>
+              </Box>
 
               {customMessage && <div className="text-[18px] leading-21px text-red   font-medium absolute">{customMessage}</div>}
               {status === "error" && <div className="text-[18px] leading-21px text-red   font-medium absolute">{message}</div>}

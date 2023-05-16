@@ -88,8 +88,8 @@ const SubTitleTypography = styled(Typography)(
 
 const MediaCard = styled(Box)(
   ({ theme }) => `
-    background: #FFFFFF;
-    border-radius: 2rem;
+    background: ${theme.palette.background.default};
+    border-radius: ${theme.shape.borderRadius}px;
     text-align: left;
     padding: 5rem 5rem 6rem 4rem;
     &:first-of-type {

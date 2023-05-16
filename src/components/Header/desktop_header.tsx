@@ -166,7 +166,7 @@ const SubMenuList = styled(Box)(
     left: 0;
     background: ${theme.palette.background.default};
     z-index: 1;
-    border-radius: 10px;
+    border-radius: ${theme.shape.borderRadius}px;
     display: flex;
     flex-direction: column;
     overflow: hidden;

@@ -21,8 +21,8 @@ const FeatureBox = styled(Box)(
         width: 37.6rem;
         height: 54rem;
         margin: 0 .8rem .8rem 0;
-        background: #ffffff;
-        border-radius: 5px;
+        background: ${theme.palette.background.default};
+        border-radius: ${theme.shape.borderRadius}px;
         box-shadow: rgb(0 0 0 / 15%) 5px 5px 3px;
         ${theme.breakpoints.down("lg")} {
           width: 30vw;
@@ -33,7 +33,6 @@ const FeatureBox = styled(Box)(
             max-width: 35.8rem;
             height: 44rem;
             box-shadow: rgb(0 0 0 / 15%) 5px 5px 3px;
-            border-radius: 5px;
             margin: 1.4rem auto 6rem;
         };
     `,

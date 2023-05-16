@@ -39,10 +39,9 @@ const FaceSide = styled(motion.div)(
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
-  box-shadow: 2px 2px 10px 2px rgba(131, 131, 131, 0.4);
-  background-color: rgba(249, 249, 249, 0.3);
+  box-shadow: ${theme.boxShadows.tile};
   padding: 1rem;
-  border-radius: 0.6rem;
+  border-radius: ${theme.shape.borderRadius}px;
   background-color: ${theme.palette.background.default},
   ${theme.breakpoints.down("sm")} {
     padding: 1.6rem;
