@@ -22,8 +22,7 @@ const Header = () => {
     <Box
       sx={{
         height: ["16.6rem", "36.8rem"],
-        background:
-          "linear-gradient(0deg, rgba(255, 246, 235, 0.2), rgba(255, 246, 235, 0.2)), linear-gradient(180deg, rgba(255, 232, 203, 0.74) 0%, rgba(255, 255, 255, 0) 100%);",
+        background: "linear-gradient(180deg, rgba(255, 232, 203, 0.74) 0%, rgba(255, 255, 255, 0) 100%)",
       }}
     >
       <Box
@@ -48,7 +47,7 @@ const Header = () => {
         {isMobile ? (
           <>
             <Typography color="textSecondary" sx={{ fontSize: "1.2rem", lineHeight: "1.4rem", fontFamily: "Inter", mt: "2rem" }}>
-                            Want to join the Scroll ecosystem? {" "}
+              Want to join the Scroll ecosystem?{" "}
               <Link external href={typeformLinkRef.current} sx={{ color: "primary.main", fontSize: "inherit" }}>
                 Contact us
               </Link>
