@@ -13,7 +13,14 @@ function loadAllStaticAssets() {
   FETCHING = true
   fetch("/asset-manifest.json")
     .then(res => res.json())
-    .then(manifest => Object.values(manifest.files as ManifestFiles).map(url => fetch(url)))
+    .then(manifest =>
+      Object.values(manifest.files as ManifestFiles).map(url => {
+        if (typeof url === "string" && !url.endsWith(".map")) {
+          return fetch(url)
+        }
+        return Promise.resolve()
+      }),
+    )
     .then(Promise.all)
     .then(() => {
       LOADED = true
