@@ -7,6 +7,7 @@ import L2_ERC721 from "@/assets/abis/L2_ERC721.json"
 import L2_ERC1155 from "@/assets/abis/L2_ERC1155.json"
 import { ChainId, TOEKN_TYPE } from "@/constants"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import { useAsyncMemo } from "@/hooks"
 import useNFTBridgeStore from "@/stores/nftBridgeStore"
 import { requireEnv } from "@/utils"
 
@@ -26,16 +27,19 @@ const NFTBridgeProvider = props => {
 
   const isLayer1 = useMemo(() => checkConnectedChainId(ChainId.SCROLL_LAYER_1), [checkConnectedChainId])
 
-  const tokenInstance = useMemo(() => {
-    const signer = provider?.getSigner(0)
-    if (contract?.type === TOEKN_TYPE[721] && checkConnectedChainId(ChainId.SCROLL_LAYER_1)) {
-      return new ethers.Contract(contract.l1 as string, L1_ERC721, signer)
-    } else if (contract?.type === TOEKN_TYPE[721] && checkConnectedChainId(ChainId.SCROLL_LAYER_2)) {
-      return new ethers.Contract(contract.l2 as string, L2_ERC721, signer)
-    } else if (contract?.type === TOEKN_TYPE[1155] && checkConnectedChainId(ChainId.SCROLL_LAYER_1)) {
-      return new ethers.Contract(contract.l1 as string, L1_ERC1155, signer)
-    } else if (contract?.type === TOEKN_TYPE[1155] && checkConnectedChainId(ChainId.SCROLL_LAYER_2)) {
-      return new ethers.Contract(contract.l2 as string, L2_ERC1155, signer)
+  const tokenInstance = useAsyncMemo(async () => {
+    if (provider) {
+      const signer = await provider.getSigner(0)
+      if (contract?.type === TOEKN_TYPE[721] && checkConnectedChainId(ChainId.SCROLL_LAYER_1)) {
+        return new ethers.Contract(contract.l1 as string, L1_ERC721, signer)
+      } else if (contract?.type === TOEKN_TYPE[721] && checkConnectedChainId(ChainId.SCROLL_LAYER_2)) {
+        return new ethers.Contract(contract.l2 as string, L2_ERC721, signer)
+      } else if (contract?.type === TOEKN_TYPE[1155] && checkConnectedChainId(ChainId.SCROLL_LAYER_1)) {
+        return new ethers.Contract(contract.l1 as string, L1_ERC1155, signer)
+      } else if (contract?.type === TOEKN_TYPE[1155] && checkConnectedChainId(ChainId.SCROLL_LAYER_2)) {
+        return new ethers.Contract(contract.l2 as string, L2_ERC1155, signer)
+      }
+      return null
     }
     return null
   }, [provider, checkConnectedChainId, contract?.type])

@@ -37,7 +37,7 @@ const useNFTGasFee = () => {
 
   const gasFee = useMemo(() => {
     if (gasPrice) {
-      return gasPrice.mul(gasLimit)
+      return gasPrice * BigInt(gasLimit)
     }
     return null
   }, [gasLimit, gasPrice])
