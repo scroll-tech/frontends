@@ -5,6 +5,7 @@ import { Navigate, Route, Routes, useLocation } from "react-router-dom"
 
 import LoadingPage from "@/components/LoadingPage"
 import ScrollToTop from "@/components/ScrollToTop"
+import useLoadAllStaticAssetsOnIdle from "@/hooks/useLoadAllOnIdle"
 import useSentryPageTag from "@/hooks/useSentryPageTag"
 import { VersionChecker } from "@/hooks/useVersionCheck"
 
@@ -33,6 +34,7 @@ function App() {
   let location = useLocation()
   // Sentry Tag
   useSentryPageTag(location.pathname)
+  useLoadAllStaticAssetsOnIdle()
 
   React.useEffect(() => {
     // Google Analytics
