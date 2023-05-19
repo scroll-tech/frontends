@@ -38,7 +38,6 @@ const useStyles = makeStyles()(theme => {
     tableWrapper: {
       boxShadow: "unset",
       border: `1px solid ${theme.palette.border.main}`,
-      borderRadius: "1rem",
       width: "70rem",
     },
     tableTitle: {

@@ -1,13 +1,12 @@
 import { useNavigate } from "react-router-dom"
 
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined"
-import { Box, Tooltip, Typography } from "@mui/material"
+import { Box, Paper, Tooltip, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
-const Card = styled(Box)(({ theme }) => ({
+const Card = styled(Paper)(({ theme }) => ({
   flex: "1",
-  border: `1px solid ${theme.palette.divider}`,
-  borderRadius: "1rem",
+  boxShadow: theme.boxShadows.tile,
   paddingLeft: "6rem",
   paddingTop: "2.7rem",
   paddingBottom: "2.2rem",

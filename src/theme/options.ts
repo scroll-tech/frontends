@@ -184,4 +184,5 @@ export const boxShadowOptions = {
   sharp: "0px 2px 4px rgba(0,0,0,.1)",
   buttonHover: "#FEE7E0 0.4rem 0.4rem",
   select: "0px 4px 4px rgba(0, 0, 0, 0.15)",
+  tile: "2px 2px 10px 2px rgba(131, 131, 131, 0.4)",
 }

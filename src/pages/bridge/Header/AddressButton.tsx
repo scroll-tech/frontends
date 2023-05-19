@@ -15,7 +15,6 @@ const useStyles = makeStyles()(theme => ({
   container: {
     width: "max-content",
     padding: "2.8rem",
-    borderRadius: "1rem",
     boxSizing: "border-box",
     boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.2)",
     [theme.breakpoints.down("sm")]: {
