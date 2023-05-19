@@ -4,7 +4,7 @@ import { styled } from "@mui/material/styles"
 const StyledTable = styled(Table)(({ theme }) => ({
   marginTop: "1.7rem",
   minWidth: 700,
-  borderRadius: "10px",
+  borderRadius: theme.shape.borderRadius,
   border: `1px solid ${theme.palette.divider}`,
   borderCollapse: "separate",
   overflow: "hidden",

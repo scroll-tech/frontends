@@ -10,17 +10,6 @@ import TxTable from "../components/TxTable"
 
 const useStyles = makeStyles()(theme => {
   return {
-    tableWrapper: {
-      boxShadow: "unset",
-      border: `1px solid ${theme.palette.border.main}`,
-      borderRadius: "1rem",
-      [theme.breakpoints.down("sm")]: {
-        border: "unset",
-        borderRadius: "unset",
-        margin: "0 -2rem",
-        width: "calc(100% + 4rem)",
-      },
-    },
     tableTitle: {
       marginTop: "2.8rem",
       marginBottom: "3rem",
@@ -28,9 +17,6 @@ const useStyles = makeStyles()(theme => {
         marginTop: "1.6rem",
         marginBottom: "1.6rem",
       },
-    },
-    tableHeader: {
-      backgroundColor: theme.palette.scaleBackground.primary,
     },
   }
 })

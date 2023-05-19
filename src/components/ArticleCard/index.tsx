@@ -44,7 +44,7 @@ const Card = styled(Box)(
           max-width: 38rem;
           flex-direction: column;
           box-shadow: rgb(0 0 0 / 15%) 5px 5px 3px;
-          border-radius: 5px;
+          border-radius: ${theme.shape.borderRadius}px;
         }
     `,
 )
@@ -72,7 +72,7 @@ const ArticlePoster = styled(WebpImage)(
       height: 23.3rem;
       cursor: pointer;
       ${theme.breakpoints.up("lg")} {
-        border-radius: .5rem;
+        border-radius: ${theme.shape.borderRadius}px;
       };
     `,
 )

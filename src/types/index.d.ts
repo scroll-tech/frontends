@@ -19,6 +19,7 @@ declare module "@mui/material/styles" {
       sharp: string
       buttonHover: string
       select: string
+      tile: string
     }
   }
   interface ThemeOptions {
@@ -27,6 +28,7 @@ declare module "@mui/material/styles" {
       sharp: string
       buttonHover: string
       select: string
+      tile: string
     }
   }
   interface Palette {
