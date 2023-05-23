@@ -15,8 +15,7 @@ const Header = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "flex-end",
-        bgcolor: "background.default",
-        mt: "3rem",
+        pt: "3rem",
       }}
     >
       {walletCurrentAddress ? (

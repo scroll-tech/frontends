@@ -50,6 +50,7 @@ export const paletteOptions = {
     disabled: "#EBEBEB",
     select: "#C9CBCE33",
     disabledSecondary: "#B4B4B4",
+    gradient: "linear-gradient(180deg, rgba(255, 232, 203, 0.74) 0%, rgba(255, 255, 255, 0) 100%)",
   },
   border: {
     main: "#C9CBCE",

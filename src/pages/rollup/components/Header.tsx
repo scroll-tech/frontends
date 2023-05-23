@@ -23,20 +23,22 @@ const Header = () => {
   const { walletCurrentAddress } = useWeb3Context()
   const connectWallet = useConnectWallet()
   return (
-    <Box className="mx-auto">
-      <AccountBox>
-        {walletCurrentAddress ? (
-          <Button className="w-[178px] pointer-events-none">{truncateAddress(walletCurrentAddress as string)}</Button>
-        ) : (
-          <Button onClick={connectWallet}>Connect Wallet</Button>
-        )}
-      </AccountBox>
-      <Typography variant="h3" align="center" sx={{ marginBottom: "1.2rem" }}>
-        Rollup Explorer
-      </Typography>
-      <Description variant="body1" color="textSecondary" align="center">
-        Track the status of blocks and transactions as they are committed and finalized.
-      </Description>
+    <Box sx={{ background: theme => theme.palette.scaleBackground.gradient }}>
+      <Box sx={{ maxWidth: "130rem", marginX: "auto", pt: ["1.6rem", "1.6rem", "3rem"], px: ["1.6rem", "1.6rem", "2.4rem"] }}>
+        <AccountBox>
+          {walletCurrentAddress ? (
+            <Button className="w-[178px] pointer-events-none">{truncateAddress(walletCurrentAddress as string)}</Button>
+          ) : (
+            <Button onClick={connectWallet}>Connect Wallet</Button>
+          )}
+        </AccountBox>
+        <Typography variant="h3" align="center" sx={{ marginBottom: "1.2rem" }}>
+          Rollup Explorer
+        </Typography>
+        <Description variant="body1" color="textSecondary" align="center">
+          Track the status of blocks and transactions as they are committed and finalized.
+        </Description>
+      </Box>
     </Box>
   )
 }

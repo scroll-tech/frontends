@@ -22,7 +22,7 @@ const Header = () => {
     <Box
       sx={{
         height: ["16.6rem", "36.8rem"],
-        background: "linear-gradient(180deg, rgba(255, 232, 203, 0.74) 0%, rgba(255, 255, 255, 0) 100%)",
+        background: theme => theme.palette.scaleBackground.gradient,
       }}
     >
       <Box
