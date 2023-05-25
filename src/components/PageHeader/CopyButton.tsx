@@ -5,7 +5,7 @@ import { Tooltip, Zoom } from "@mui/material"
 
 import { ReactComponent as CopyIcon } from "@/assets/svgs/copy.svg"
 
-import MiniButton from "../components/MiniButton"
+import IconButton from "./IconButton"
 
 const CopyButton = (props: any) => {
   const { value, ...restProps } = props
@@ -25,9 +25,7 @@ const CopyButton = (props: any) => {
 
   return (
     <Tooltip title={text} open={!!text} TransitionComponent={Zoom} placement="top" arrow>
-      <span>
-        <MiniButton icon={CopyIcon} viewBox="0 0 21 20" label="Copy Address" onClick={handleClick} {...restProps} />
-      </span>
+      <IconButton icon={CopyIcon} viewBox="0 0 21 20" label="Copy Address" onClick={handleClick} {...restProps} />
     </Tooltip>
   )
 }

@@ -14,7 +14,7 @@ const useStyles = makeStyles()(theme => ({
     gap: "1rem",
     [theme.breakpoints.down("sm")]: {
       width: "calc(100% + 6rem)",
-      marginTop: "2rem",
+      marginTop: 0,
       marginLeft: "-3rem",
       padding: "0 1.6rem",
       overflow: "auto",

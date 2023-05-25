@@ -99,7 +99,7 @@ const Rollup = () => {
   return (
     <Box>
       <Header />
-      <Box sx={{ maxWidth: "130rem", p: ["0 1.6rem 1.6rem", "0 1.6rem 1.6rem", "0 2.4rem 2.4rem"], mx: "auto" }}>
+      <Box sx={{ maxWidth: "130rem", p: ["0 1.6rem 1.6rem", "0 1.6rem 1.6rem", "0 2.4rem 2.4rem"], mx: "auto", mt: [0, "2.4rem"] }}>
         <InfoBox>
           <Card
             title="Last Committed Batch"

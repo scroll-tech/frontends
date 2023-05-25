@@ -1,33 +1,48 @@
-import { Button, Container } from "@mui/material"
+import { useRef, useState } from "react"
 
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
-import useConnectWallet from "@/hooks/useConnectWallet"
+import { Button, CircularProgress } from "@mui/material"
 
-import AddressButton from "./AddressButton"
+import { ReactComponent as HistoryIcon } from "@/assets/svgs/history.svg"
+import ButtonPopover from "@/components/ButtonPopover"
+import PageHeader from "@/components/PageHeader"
+import { networks } from "@/constants"
+import useTxStore from "@/stores/txStore"
+
+import TransactionsList from "./TransactionHistory"
 
 const Header = () => {
-  const { walletCurrentAddress } = useWeb3Context()
-  const connectWallet = useConnectWallet()
+  const { loading } = useTxStore()
 
+  const [historyVisible, setHistoryVisible] = useState(false)
+  const buttonRef = useRef(null)
+
+  const handleOpen = () => {
+    setHistoryVisible(true)
+  }
+
+  const handleClose = () => {
+    setHistoryVisible(false)
+  }
   return (
-    <Container
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "flex-end",
-        pt: "3rem",
-      }}
-    >
-      {walletCurrentAddress ? (
+    <PageHeader
+      title="Scroll Bridge"
+      subTitle={`Send tokens between ${networks[0].name} and ${networks[1].name}.`}
+      action={
         <>
-          <AddressButton />
+          <Button sx={{ p: 0, width: "5rem", minWidth: "5rem", ml: "1rem" }} ref={buttonRef} onClick={handleOpen}>
+            <HistoryIcon></HistoryIcon>
+          </Button>
+          <ButtonPopover
+            open={historyVisible}
+            anchorEl={buttonRef.current}
+            title={<>Recent Bridge Transactions {loading && <CircularProgress size={22} />}</>}
+            onClose={handleClose}
+          >
+            <TransactionsList></TransactionsList>
+          </ButtonPopover>
         </>
-      ) : (
-        <Button sx={{ width: "17.8rem" }} onClick={connectWallet} variant="outlined">
-          Connect Wallet
-        </Button>
-      )}
-    </Container>
+      }
+    ></PageHeader>
   )
 }
 

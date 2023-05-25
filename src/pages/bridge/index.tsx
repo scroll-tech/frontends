@@ -1,11 +1,8 @@
 import createCache from "@emotion/cache"
 import { QueryClient, QueryClientProvider } from "react-query"
 
-import { Box } from "@mui/material"
-
 import AppProvider from "@/contexts/AppContextProvider"
 
-import BridgeTitle from "./BridgeTitle"
 import Content from "./Content"
 import FAQ from "./FAQ"
 import Header from "./Header"
@@ -35,10 +32,7 @@ const Bridge = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <AppProvider>
-        <Box sx={{ background: theme => theme.palette.scaleBackground.gradient }}>
-          <Header />
-          <BridgeTitle />
-        </Box>
+        <Header />
         <Content />
         <FAQ />
       </AppProvider>

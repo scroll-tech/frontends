@@ -106,7 +106,6 @@ export const typographyOptions = {
     fontWeight: 500,
     fontSize: "4.8rem",
     lineHeight: "5.6rem",
-    letterSpacing: "-0.26px",
     [theme.breakpoints.down("sm")]: {
       fontSize: "2.4rem",
       lineHeight: "3.2rem",
