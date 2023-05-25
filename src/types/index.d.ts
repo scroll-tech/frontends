@@ -44,6 +44,7 @@ declare module "@mui/material/styles" {
       disabled: string
       select: string
       disabledSecondary: string
+      gradient: string
     }
     tagSuccess: {
       light: string
@@ -90,6 +91,7 @@ declare module "@mui/material/styles" {
       disabled?: string
       select?: string
       disabledSecondary?: string
+      gradient?: string
     }
     tagSuccess?: {
       light?: string

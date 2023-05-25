@@ -1,9 +1,10 @@
 import { useRef } from "react"
 
-import { Box, Button as MuiButton, Stack, Typography } from "@mui/material"
+import { Button as MuiButton, Stack, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import Link from "@/components/Link"
+import PageHeader from "@/components/PageHeader"
 import useIsMobile from "@/hooks/useIsMobile"
 
 const Button = styled(MuiButton)<any>(
@@ -18,57 +19,34 @@ const Header = () => {
   const isMobile = useIsMobile()
 
   const typeformLinkRef = useRef("https://scrollzkp.typeform.com/buildwithscroll")
+
   return (
-    <Box
-      sx={{
-        height: ["16.6rem", "36.8rem"],
-        background: "linear-gradient(180deg, rgba(255, 232, 203, 0.74) 0%, rgba(255, 255, 255, 0) 100%)",
-      }}
-    >
-      <Box
-        sx={{
-          maxWidth: "1160px",
-          mx: "auto",
-          px: [0, "3rem"],
-          pt: ["3.6rem", "9.3rem"],
-          textAlign: ["center", "left"],
-        }}
-      >
-        <Typography
-          sx={{
-            fontSize: ["3rem", "5rem", "6.2rem"],
-            lineHeight: 1.2,
-            fontWeight: 600,
-            fontFamily: "Inter",
-          }}
-        >
-          Scroll Ecosystem
-        </Typography>
-        {isMobile ? (
-          <>
-            <Typography color="textSecondary" sx={{ fontSize: "1.2rem", lineHeight: "1.4rem", fontFamily: "Inter", mt: "2rem" }}>
-              Want to join the Scroll ecosystem?{" "}
-              <Link external href={typeformLinkRef.current} sx={{ color: "primary.main", fontSize: "inherit" }}>
-                Contact us
-              </Link>
-            </Typography>
-            {/* <Typography color="textSecondary" sx={{ fontSize: "1.2rem", lineHeight: "1.4rem", fontFamily: "Inter", mt: "2rem" }}>
+    <PageHeader title="Scroll Ecosystem">
+      {isMobile ? (
+        <>
+          <Typography color="textSecondary" sx={{ fontSize: "1.2rem", lineHeight: "1.4rem", fontFamily: "Inter" }}>
+            Want to join the Scroll ecosystem?{" "}
+            <Link external href={typeformLinkRef.current} sx={{ color: "primary.main", fontSize: "inherit" }}>
+              Contact us
+            </Link>
+          </Typography>
+          {/* <Typography color="textSecondary" sx={{ fontSize: "1.2rem", lineHeight: "1.4rem", fontFamily: "Inter", mt: "2rem" }}>
               Stay up to date with our{" "}
               <Link external href="" sx={{ color: "primary.main", fontSize: "inherit" }}>
                 Ecosystem Roadmap
               </Link>
             </Typography> */}
-          </>
-        ) : (
-          <>
-            <Typography color="textSecondary" sx={{ fontSize: "2.2rem", fontFamily: "Inter", mt: "2rem" }}>
-              Want to join the Scroll ecosystem?
-            </Typography>
-            <Stack direction="row" spacing={4} sx={{ mt: "3rem" }}>
-              <Button variant="contained" href={typeformLinkRef.current} target="_blank">
-                Contact us
-              </Button>
-              {/* <Button
+        </>
+      ) : (
+        <>
+          <Typography color="textSecondary" sx={{ fontSize: "2.2rem" }}>
+            Want to join the Scroll ecosystem?
+          </Typography>
+          <Stack direction="row" spacing={4} sx={{ mt: "3rem" }} justifyContent="center">
+            <Button variant="contained" href={typeformLinkRef.current} target="_blank">
+              Contact us
+            </Button>
+            {/* <Button
                 color="secondary"
                 href=""
                 sx={{
@@ -80,11 +58,10 @@ const Header = () => {
               >
                 Ecosystem Roadmap
               </Button> */}
-            </Stack>
-          </>
-        )}
-      </Box>
-    </Box>
+          </Stack>
+        </>
+      )}
+    </PageHeader>
   )
 }
 

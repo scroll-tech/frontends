@@ -6,6 +6,7 @@ const SectionTitle = (props: any) => {
       className="overflow-hidden mt-[40px] sm:rounded-lg max-w-[880px] mx-auto"
       sx={{
         boxShadow: theme => theme.boxShadows.tile,
+        ...(props.sx || {}),
       }}
     >
       <div className="px-4 py-5 sm:px-6">

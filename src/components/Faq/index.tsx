@@ -11,7 +11,7 @@ const useStyles = makeStyles()((theme: Theme) => {
     wrapper: {
       width: "92rem",
       margin: "14rem auto",
-      [theme.breakpoints.down("sm")]: {
+      [theme.breakpoints.down("md")]: {
         width: "100%",
         marginTop: "6.4rem",
         padding: "0 1.6rem",
@@ -19,7 +19,7 @@ const useStyles = makeStyles()((theme: Theme) => {
     },
     title: {
       marginBottom: "3.6rem",
-      [theme.breakpoints.down("sm")]: {
+      [theme.breakpoints.down("md")]: {
         marginBottom: "1rem",
       },
     },

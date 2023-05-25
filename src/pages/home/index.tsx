@@ -2,6 +2,7 @@ import { ReactNode, useState } from "react"
 
 import { Alert, Snackbar } from "@mui/material"
 
+import PageHeader from "@/components/PageHeader"
 import { addresses, documentation, navigation } from "@/constants/index"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import useConnectWallet from "@/hooks/useConnectWallet"
@@ -76,8 +77,9 @@ export default function Home() {
 
   return (
     <>
+      <PageHeader title="Scroll Alpha Testnet" subTitle="Get started with our testnet now."></PageHeader>
       <div className="p-4 mx-[8px] mb-[40px] lg:p-8">
-        <SectionTitle title={`Configure ${walletName || "wallet"} for our zkEVM testnet`}>
+        <SectionTitle title={`Configure ${walletName || "wallet"} for our zkEVM testnet`} sx={{ mt: 0 }}>
           <div className="text-base px-4 py-5 grid grid-cols-1 gap-2 sm:gap-4 sm:px-6">
             Note: Please completely remove previous Scroll networks from your {walletName || "wallet"} before proceeding, then:
             <a
