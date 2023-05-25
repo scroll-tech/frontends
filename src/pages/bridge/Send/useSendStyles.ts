@@ -14,7 +14,6 @@ export const useSendStyles = makeStyles()(theme => ({
     padding: "3.6rem 2.8rem",
     backgroundColor: "rgba(201, 203, 206, 0.2)",
     borderRadius: "1rem",
-    marginTop: "6rem",
     [theme.breakpoints.down("sm")]: {
       width: "100%",
       padding: "2.8rem 1.6rem",

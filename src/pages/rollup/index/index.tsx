@@ -97,31 +97,33 @@ const Rollup = () => {
   }
 
   return (
-    <Box className="wrapper mx-auto">
+    <Box>
       <Header />
-      <InfoBox>
-        <Card
-          title="Last Committed Batch"
-          value={lastBlockNums?.committed_index ?? 0}
-          total={lastBlockNums?.all_index ?? 0}
-          description="Indicates the transaction data of this batch has been posted on the rollup contract on L1."
-          onClickCard={() => handleGoBatchRow(lastBlockNums?.committed_index ?? 0, lastBlockNums?.all_index ?? 0)}
-        ></Card>
-        <Card
-          title="Last Finalized Batch"
-          value={lastBlockNums?.finalized_index ?? 0}
-          total={lastBlockNums?.all_index ?? 0}
-          description="Indicates the validity proof of this batch has been posted and verified on L1."
-          onClickCard={() => handleGoBatchRow(lastBlockNums?.finalized_index ?? 0, lastBlockNums?.all_index ?? 0)}
-        />
-      </InfoBox>
-      <Searchbar />
-      <Table ref={tableRowsRef} onPaginationChange={handlePaginationChange} />
-      <Snackbar open={!!errorMessage} autoHideDuration={6000} onClose={handleChangeErrorMessage}>
-        <Alert severity="error" onClose={handleChangeErrorMessage}>
-          {errorMessage}
-        </Alert>
-      </Snackbar>
+      <Box sx={{ maxWidth: "130rem", p: ["0 1.6rem 1.6rem", "0 1.6rem 1.6rem", "0 2.4rem 2.4rem"], mx: "auto", mt: [0, "2.4rem"] }}>
+        <InfoBox>
+          <Card
+            title="Last Committed Batch"
+            value={lastBlockNums?.committed_index ?? 0}
+            total={lastBlockNums?.all_index ?? 0}
+            description="Indicates the transaction data of this batch has been posted on the rollup contract on L1."
+            onClickCard={() => handleGoBatchRow(lastBlockNums?.committed_index ?? 0, lastBlockNums?.all_index ?? 0)}
+          ></Card>
+          <Card
+            title="Last Finalized Batch"
+            value={lastBlockNums?.finalized_index ?? 0}
+            total={lastBlockNums?.all_index ?? 0}
+            description="Indicates the validity proof of this batch has been posted and verified on L1."
+            onClickCard={() => handleGoBatchRow(lastBlockNums?.finalized_index ?? 0, lastBlockNums?.all_index ?? 0)}
+          />
+        </InfoBox>
+        <Searchbar />
+        <Table ref={tableRowsRef} onPaginationChange={handlePaginationChange} />
+        <Snackbar open={!!errorMessage} autoHideDuration={6000} onClose={handleChangeErrorMessage}>
+          <Alert severity="error" onClose={handleChangeErrorMessage}>
+            {errorMessage}
+          </Alert>
+        </Snackbar>
+      </Box>
     </Box>
   )
 }

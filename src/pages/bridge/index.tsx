@@ -3,7 +3,6 @@ import { QueryClient, QueryClientProvider } from "react-query"
 
 import AppProvider from "@/contexts/AppContextProvider"
 
-import BridgeTitle from "./BridgeTitle"
 import Content from "./Content"
 import FAQ from "./FAQ"
 import Header from "./Header"
@@ -33,12 +32,9 @@ const Bridge = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <AppProvider>
-        <div>
-          <Header />
-          <BridgeTitle />
-          <Content />
-          <FAQ />
-        </div>
+        <Header />
+        <Content />
+        <FAQ />
       </AppProvider>
     </QueryClientProvider>
   )
