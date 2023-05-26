@@ -1,101 +1,125 @@
 import dayjs from "dayjs"
-import { Link } from "react-router-dom"
+import { makeStyles } from "tss-react/mui"
 
+import { Box, Divider, List, ListItem, Stack, SvgIcon, Typography } from "@mui/material"
+
+import Link from "@/components/Link"
 import Logo from "@/components/Logo"
 import { requireEnv } from "@/utils"
 
+import RelativeLink from "./RelativeLink"
 import Subscribe from "./Subscribe"
+import { aboutList, mediaList, resourceList } from "./helper"
+
+const useStyles = makeStyles()(theme => ({
+  footerLayout: {
+    display: "grid",
+    width: "100%",
+    gridTemplateColumns: "repeat(5, 1fr)",
+
+    [theme.breakpoints.down("md")]: {
+      gridTemplateColumns: "repeat(2, 1fr)",
+    },
+  },
+  logo: {
+    [theme.breakpoints.down("md")]: {
+      gridColumn: "1 / 3",
+      marginBottom: "3.8rem",
+    },
+  },
+  follow: {
+    [theme.breakpoints.down("md")]: {
+      gridColumn: "1 / 3",
+      marginTop: "1.2rem",
+    },
+  },
+  subscribe: {
+    [theme.breakpoints.down("md")]: {
+      gridColumn: "1 / 3",
+      marginTop: "3rem",
+    },
+  },
+}))
 
 const Footer = () => {
-  const links = [
-    {
-      category: "About Scroll",
-      items: [
-        {
-          name: "Team",
-          to: "/team",
-        },
-        {
-          name: "Join Us",
-          to: "/join-us",
-        },
-        {
-          name: "Health Status",
-          href: "https://status.scroll.io/",
-        },
-        {
-          name: "Privacy Policy",
-          href: "/privacy-policy",
-        },
-        {
-          name: "Terms and Conditions",
-          href: "/terms-and-conditions",
-        },
-      ],
-    },
-    {
-      category: "Resources",
-      items: [
-        {
-          name: "Blog",
-          to: "/blog",
-        },
-        {
-          name: "User Guide",
-          href: "https://guide.scroll.io/",
-        },
-        {
-          name: "Press Kit",
-          href: "https://scrollzkp.notion.site/Scroll-Brand-Assets-PUBLIC-AREA-c4e2cca84be342aa8b00e8bda92ee4f7",
-        },
-      ],
-    },
-  ]
-
-  const renderLinks = () => {
-    return links.map((link: any) => (
-      <ul key={link.category} className="mr-100px mt-20px flex-1 lg:(mt-0)">
-        <li className="text-md mb-[8px] font-display font-medium">{link.category}</li>
-        {link.items.map((item: any) => (
-          <li key={item.name}>
-            {item.to ? (
-              <Link className="font-medium leading-[34px] text-body-title" to={item.to}>
-                {" "}
-                {item.name}
-              </Link>
-            ) : (
-              <a
-                href={item.href}
-                // target="_blank"
-                className="font-medium leading-[34px] text-body-title"
-              >
-                {item.name}
-              </a>
-            )}
-          </li>
-        ))}
-      </ul>
-    ))
-  }
-
+  const { classes } = useStyles()
   return (
-    <div className="footer w-full bg-[#EB71060D]">
-      <footer className="text-md wrapper container box-border relative flex items-start justify-between !pt-[90px] !pb-[110px] mx-auto flex-col lg:flex-row">
-        <div className="flex-1 w-full flex h-full items-center mb-[30px] lg:flex-col lg:items-start lg:justify-between">
-          <a href="/" className="flex flex-1 lg:mb-[50px]">
+    <Box
+      sx={{
+        backgroundColor: "#EB71060D",
+        pt: ["3rem", "9rem"],
+        pb: ["4rem", "11rem"],
+      }}
+    >
+      <Box className="wrapper" sx={{ p: "0 2.4rem" }}>
+        <Box className={classes.footerLayout}>
+          <Link href="/" className={classes.logo}>
             <Logo></Logo>
-          </a>
-          <div className="flex-1">
-            <p className="font-display font-medium text-md text-gray-500">Version {requireEnv("REACT_APP_VERSION")}</p>
-            <p className="font-display font-medium text-md text-gray-500">Scroll Ltd {dayjs().year()}</p>
-          </div>
-        </div>
-        <div className="flex flex-[2] justify-between w-full mb-[30px]">{renderLinks()}</div>
-        <div className="flex-1 w-full ">
-          <Subscribe />
-        </div>
-      </footer>
-    </div>
+          </Link>
+          <Box>
+            <Typography variant="body2" sx={{ fontWeight: 700, lineHeight: "2rem" }}>
+              About Scroll
+            </Typography>
+            <List sx={{ py: "1.8rem" }}>
+              {aboutList.map(item => (
+                <ListItem disablePadding>
+                  <RelativeLink {...item}></RelativeLink>
+                </ListItem>
+              ))}
+            </List>
+          </Box>
+          <Box>
+            <Typography variant="body2" sx={{ fontWeight: 700, lineHeight: "2rem" }}>
+              Resources
+            </Typography>
+            <List sx={{ py: "1.8rem" }}>
+              {resourceList.map(item => (
+                <ListItem disablePadding>
+                  <RelativeLink {...item}></RelativeLink>
+                </ListItem>
+              ))}
+            </List>
+          </Box>
+          <Box className={classes.follow}>
+            <Typography variant="body2" sx={{ fontWeight: 700, lineHeight: "2rem" }}>
+              Follow Us
+            </Typography>
+            <Stack direction="row" spacing={"1.5rem"} sx={{ mt: "2.4rem", lineHeight: "2rem" }}>
+              {mediaList.map(item => (
+                <Link external href={item.href} key={item.name}>
+                  <SvgIcon
+                    component={item.icon}
+                    sx={{
+                      verticalAlign: "middle",
+                      color: theme => theme.palette.text.secondary,
+                      "&:hover": {
+                        color: theme => theme.palette.primary.main,
+                      },
+                    }}
+                    titleAccess={item.name}
+                    inheritViewBox
+                  ></SvgIcon>
+                </Link>
+              ))}
+            </Stack>
+          </Box>
+          <Box className={classes.subscribe}>
+            <Typography variant="body2" sx={{ fontWeight: 700, lineHeight: "2rem" }}>
+              Subscribe
+            </Typography>
+            <Subscribe />
+          </Box>
+        </Box>
+      </Box>
+      <Box sx={{ maxWidth: "130rem", mx: "auto", p: "0 2.4rem" }}>
+        <Divider sx={{ mt: "3rem", mb: ["3rem", "3rem", "4rem"] }}></Divider>
+        <Stack direction="row" spacing={1.5} alignItems="center" sx={{ height: "1.4rem" }}>
+          <Typography sx={{ color: "rgba(51, 51, 51, 0.5)", fontSize: "1.2rem" }}>© Version {requireEnv("REACT_APP_VERSION")}</Typography>
+          <Divider orientation="vertical" sx={{ height: "1rem" }}></Divider>
+          <Typography sx={{ color: "rgba(51, 51, 51, 0.5)", fontSize: "1.2rem" }}>Scroll Ltd {dayjs().year()}</Typography>
+        </Stack>
+      </Box>
+    </Box>
   )
 }
 
