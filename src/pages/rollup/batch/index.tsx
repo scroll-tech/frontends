@@ -123,104 +123,106 @@ const Blocks = () => {
   }
 
   return (
-    <Box className="wrapper mx-auto" sx={{ marginBottom: "16rem" }}>
+    <Box>
       <Header />
-      <Breadcrumbs aria-label="breadcrumb" sx={{ fontWeight: 600 }} separator={<NavigateNext fontSize="large" />}>
-        <RouterLink to="/alpha/rollupscan">All results</RouterLink>
-        <Typography sx={{ fontWeight: 600 }} color="text.primary">
-          Batch {params.batchIndex}
-        </Typography>
-      </Breadcrumbs>
-      {isLoading ? (
-        <Spinning></Spinning>
-      ) : (
-        <>
-          {batch && (
-            <Box
-              sx={{
-                width: "100%",
-                border: theme => `1px solid ${theme.palette.border.main}`,
-                borderRadius: "10px",
-                marginTop: "2.2rem",
-              }}
-              aria-label="batch"
-            >
-              <BoxItem>
-                <LabelTypography>Batch Index</LabelTypography>
-                <Typography>{batch.index}</Typography>
-              </BoxItem>
-              <Divider />
-              <BoxItem>
-                <LabelTypography>
-                  Status{" "}
-                  <Tooltip title={renderStatusTooltip()} leaveTouchDelay={15000}>
-                    <InfoOutlined sx={{ fontSize: "2rem", verticalAlign: "text-bottom" }} />
-                  </Tooltip>
-                </LabelTypography>
-                <StatusChip label={renderStatus(batch.rollup_status)} className={batch.rollup_status}></StatusChip>
-              </BoxItem>
-              <Divider />
-              <BoxItem>
-                <LabelTypography>Transactions</LabelTypography>
-                <Typography>{batch.total_tx_num}</Typography>
-              </BoxItem>
-              <Divider />
-              <BoxItem>
-                <LabelTypography>Blocks</LabelTypography>
-                {/* TODO: Make link dynamic, probably by using a variable for the rollupscan root */}
-                <Link component={RouterLink} to={`/alpha/rollupscan/batch/${batch.index}/blocks`}>
-                  {batch.end_block_number - batch.start_block_number + 1}
-                </Link>
-              </BoxItem>
-              <Divider />
+      <Box className="wrapper mx-auto" sx={{ marginBottom: "16rem" }}>
+        <Breadcrumbs aria-label="breadcrumb" sx={{ fontWeight: 600 }} separator={<NavigateNext fontSize="large" />}>
+          <RouterLink to="/alpha/rollupscan">All results</RouterLink>
+          <Typography sx={{ fontWeight: 600 }} color="text.primary">
+            Batch {params.batchIndex}
+          </Typography>
+        </Breadcrumbs>
+        {isLoading ? (
+          <Spinning></Spinning>
+        ) : (
+          <>
+            {batch && (
+              <Box
+                sx={{
+                  width: "100%",
+                  border: theme => `1px solid ${theme.palette.border.main}`,
+                  borderRadius: "10px",
+                  marginTop: "2.2rem",
+                }}
+                aria-label="batch"
+              >
+                <BoxItem>
+                  <LabelTypography>Batch Index</LabelTypography>
+                  <Typography>{batch.index}</Typography>
+                </BoxItem>
+                <Divider />
+                <BoxItem>
+                  <LabelTypography>
+                    Status{" "}
+                    <Tooltip title={renderStatusTooltip()} leaveTouchDelay={15000}>
+                      <InfoOutlined sx={{ fontSize: "2rem", verticalAlign: "text-bottom" }} />
+                    </Tooltip>
+                  </LabelTypography>
+                  <StatusChip label={renderStatus(batch.rollup_status)} className={batch.rollup_status}></StatusChip>
+                </BoxItem>
+                <Divider />
+                <BoxItem>
+                  <LabelTypography>Transactions</LabelTypography>
+                  <Typography>{batch.total_tx_num}</Typography>
+                </BoxItem>
+                <Divider />
+                <BoxItem>
+                  <LabelTypography>Blocks</LabelTypography>
+                  {/* TODO: Make link dynamic, probably by using a variable for the rollupscan root */}
+                  <Link component={RouterLink} to={`/alpha/rollupscan/batch/${batch.index}/blocks`}>
+                    {batch.end_block_number - batch.start_block_number + 1}
+                  </Link>
+                </BoxItem>
+                <Divider />
 
-              <BoxItem>
-                <LabelTypography>
-                  Batch Created Timestamp{" "}
-                  <Tooltip title="Timestamp when the batch was created">
-                    <InfoOutlined sx={{ fontSize: "2rem", verticalAlign: "text-bottom" }} />
-                  </Tooltip>
-                </LabelTypography>
-                <Typography>{renderTimestamp(batch.created_at)}</Typography>
-              </BoxItem>
-              <Divider />
+                <BoxItem>
+                  <LabelTypography>
+                    Batch Created Timestamp{" "}
+                    <Tooltip title="Timestamp when the batch was created">
+                      <InfoOutlined sx={{ fontSize: "2rem", verticalAlign: "text-bottom" }} />
+                    </Tooltip>
+                  </LabelTypography>
+                  <Typography>{renderTimestamp(batch.created_at)}</Typography>
+                </BoxItem>
+                <Divider />
 
-              <BoxItem>
-                <LabelTypography>Commit Tx Hash</LabelTypography>
-                <Typography>{renderLink(batch.commit_tx_hash)}</Typography>
-              </BoxItem>
-              <Divider />
+                <BoxItem>
+                  <LabelTypography>Commit Tx Hash</LabelTypography>
+                  <Typography>{renderLink(batch.commit_tx_hash)}</Typography>
+                </BoxItem>
+                <Divider />
 
-              <BoxItem>
-                <LabelTypography>
-                  Commit Timestamp{" "}
-                  <Tooltip title="Timestamp of the transaction that commits the batch's data to L1">
-                    <InfoOutlined sx={{ fontSize: "2rem", verticalAlign: "text-bottom" }} />
-                  </Tooltip>
-                </LabelTypography>
-                <Typography>{renderTimestamp(batch.committed_at)}</Typography>
-              </BoxItem>
-              <Divider />
+                <BoxItem>
+                  <LabelTypography>
+                    Commit Timestamp{" "}
+                    <Tooltip title="Timestamp of the transaction that commits the batch's data to L1">
+                      <InfoOutlined sx={{ fontSize: "2rem", verticalAlign: "text-bottom" }} />
+                    </Tooltip>
+                  </LabelTypography>
+                  <Typography>{renderTimestamp(batch.committed_at)}</Typography>
+                </BoxItem>
+                <Divider />
 
-              <BoxItem>
-                <LabelTypography>Finalized Tx Hash</LabelTypography>
-                <Typography>{renderLink(batch.finalize_tx_hash)}</Typography>
-              </BoxItem>
-              <Divider />
+                <BoxItem>
+                  <LabelTypography>Finalized Tx Hash</LabelTypography>
+                  <Typography>{renderLink(batch.finalize_tx_hash)}</Typography>
+                </BoxItem>
+                <Divider />
 
-              <BoxItem>
-                <LabelTypography>
-                  Finalized Timestamp{" "}
-                  <Tooltip title="Timestamp of the transaction that posts the batch's proof to L1">
-                    <InfoOutlined sx={{ fontSize: "2rem", verticalAlign: "text-bottom" }} />
-                  </Tooltip>
-                </LabelTypography>
-                <Typography>{renderTimestamp(batch.finalized_at)}</Typography>
-              </BoxItem>
-            </Box>
-          )}
-        </>
-      )}
+                <BoxItem>
+                  <LabelTypography>
+                    Finalized Timestamp{" "}
+                    <Tooltip title="Timestamp of the transaction that posts the batch's proof to L1">
+                      <InfoOutlined sx={{ fontSize: "2rem", verticalAlign: "text-bottom" }} />
+                    </Tooltip>
+                  </LabelTypography>
+                  <Typography>{renderTimestamp(batch.finalized_at)}</Typography>
+                </BoxItem>
+              </Box>
+            )}
+          </>
+        )}
+      </Box>
     </Box>
   )
 }

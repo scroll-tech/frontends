@@ -14,26 +14,28 @@ const Blocks = () => {
   const { blocks, isLoading } = useBlockList(params.batchIndex)
 
   return (
-    <Box className="wrapper mx-auto" sx={{ marginBottom: "16rem" }}>
+    <Box>
       <Header />
-      <Breadcrumbs aria-label="breadcrumb" sx={{ fontWeight: 600 }} separator={<NavigateNextIcon fontSize="large" />}>
-        <Link to="/alpha/rollupscan">All results</Link>
-        <Link to={`/alpha/rollupscan/batch/${params.batchIndex}`}>Batch {params.batchIndex}</Link>
-        <Typography color="text.primary" sx={{ fontWeight: 600 }}>
-          Blocks
-        </Typography>
-      </Breadcrumbs>
-      {isLoading ? (
-        <Spinning></Spinning>
-      ) : (
-        <>
-          {blocks ? (
-            <>
-              <Table blocks={blocks} />
-            </>
-          ) : null}
-        </>
-      )}
+      <Box className="wrapper mx-auto" sx={{ marginBottom: "16rem" }}>
+        <Breadcrumbs aria-label="breadcrumb" sx={{ fontWeight: 600 }} separator={<NavigateNextIcon fontSize="large" />}>
+          <Link to="/alpha/rollupscan">All results</Link>
+          <Link to={`/alpha/rollupscan/batch/${params.batchIndex}`}>Batch {params.batchIndex}</Link>
+          <Typography color="text.primary" sx={{ fontWeight: 600 }}>
+            Blocks
+          </Typography>
+        </Breadcrumbs>
+        {isLoading ? (
+          <Spinning></Spinning>
+        ) : (
+          <>
+            {blocks ? (
+              <>
+                <Table blocks={blocks} />
+              </>
+            ) : null}
+          </>
+        )}
+      </Box>
     </Box>
   )
 }
