@@ -155,7 +155,7 @@ const GalleryItem = props => {
                     onClick={e => handleOpenTab(e, social, { website, twitterHandle })}
                     component={social.icon}
                     sx={{ width: ["2.2rem", "2rem"], height: ["2.2rem", "2rem"], verticalAlign: "middle" }}
-                    viewBox={social.viewBox}
+                    inheritViewBox
                   ></SvgIcon>
                 </motion.span>
               ))}
