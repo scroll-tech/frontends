@@ -57,6 +57,10 @@ module.exports = {
           DEFAULT: "#595959",
           dark: "#595959",
         },
+        "body-title-80": {
+          DEFAULT: "#595959dc",
+          dark: "#595959dc",
+        },
         "body-bg": {
           DEFAULT: "#f3f4f6",
           dark: "#f3f4f6",
