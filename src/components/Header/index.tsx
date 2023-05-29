@@ -33,12 +33,21 @@ function HideOnScroll(props: Props) {
 
 export default function Header() {
   const theme = useTheme()
-  const matches = useMediaQuery(theme.breakpoints.up("md"))
-  const isHomepage = !window.location.pathname.startsWith("/alpha")
+  const isDesktop = useMediaQuery(theme.breakpoints.up("md"))
 
-  return (
-    <HideOnScroll>
-      <AppBarStyled>{matches ? <DesktopNav isHomepage={isHomepage} /> : <MobileNav isHomepage={isHomepage} />}</AppBarStyled>
-    </HideOnScroll>
-  )
+  if (isDesktop) {
+    return (
+      <HideOnScroll>
+        <AppBarStyled>
+          <DesktopNav />
+        </AppBarStyled>
+      </HideOnScroll>
+    )
+  } else {
+    return (
+      <AppBarStyled>
+        <MobileNav />
+      </AppBarStyled>
+    )
+  }
 }

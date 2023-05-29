@@ -52,6 +52,13 @@ body {
 
 @font-face {
   font-family: "SF UI Text";
+  src: url("./assets/fonts/SFUIText-Light.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: "SF UI Text";
   src: url("./assets/fonts/SFUIText-Regular.ttf") format("truetype");
   font-style: normal;
   font-weight: 400;

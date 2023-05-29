@@ -1,166 +1,195 @@
-import * as React from "react"
+import React, { useState } from "react"
 import { NavLink } from "react-router-dom"
 
-import { CloseRounded, ExpandLess, ExpandMore, Menu as MenuIcon } from "@mui/icons-material"
-import { Box, Button, Collapse, Link, List, ListItemButton, Stack, SwipeableDrawer } from "@mui/material"
+import { ExpandLess, OpenInNew } from "@mui/icons-material"
+import { Box, Collapse, Link, List, ListItemButton, Stack } from "@mui/material"
 import { styled } from "@mui/system"
 
 import Logo from "../Logo"
-// import Announcement from "./announcement"
-import { homeNavigations, navigations } from "./constants"
+import { navigations } from "./constants"
 
-const NavStack = styled(Stack)(
-  ({ theme }) => `
-  height: 69px;
-  line-height: 69px;
-  border-bottom: 1px solid ${theme.palette.border.main};
-  padding-left: 16px;
-  padding-right: 16px;
-`,
-)
+const NavStack = styled(Stack)(({ theme }) => ({
+  height: "3rem",
+  lineHeight: "3rem",
+  margin: "1.6rem",
+}))
 
-const LinkStyledButton = styled(NavLink)(
-  ({ theme }) => `
-  width: 100%;
-  line-height: 6.4rem;  
-  &.active {
-    color: ${theme.palette.primary.main}
-  } 
-  &:hover {
-    color: ${theme.palette.primary.main}
-  } 
-`,
-)
+const Menu = styled("div")(({ theme }) => ({
+  display: "inline-block",
+  cursor: "pointer",
+  [`&.active ${Bar}:nth-of-type(1)`]: {
+    transform: "rotate(45deg) translate(5px, 5px)",
+  },
+  [`&.active ${Bar}:nth-of-type(2)`]: {
+    opacity: 0,
+  },
+  [`&.active ${Bar}:nth-of-type(3)`]: {
+    transform: "rotate(-45deg) translate(5px, -5px)",
+  },
+}))
 
-const ExternalLink = styled(Link)(
-  ({ theme }) => `
-  color: ${theme.palette.text.primary};
-  &:hover {
-    color: ${theme.palette.primary.main}
-  } 
-  `,
-)
+const Bar = styled("div")(({ theme }) => ({
+  width: "2rem",
+  height: ".2rem",
+  backgroundColor: "#000",
+  margin: " 5px 0",
+  transition: "0.4s",
+}))
 
-const ListButton = styled(ListItemButton)(
-  ({ theme }) => `
-  font-weight: 600;
-  height: 6.4rem;
-  &:hover {
-    background: transparent;
-    color: ${theme.palette.primary.main};
-  } 
-`,
-)
+const MenuContent = styled(Box)(({ theme }) => ({
+  margin: "0.5rem 1.6rem 0",
+  borderRadius: "0.6rem",
+  background: "rgb(255,247,241)",
+  border: "2px solid #FFCC9F",
+}))
 
-const MenuContent = styled(Box)(
-  ({ theme }) => `
-      width: 280px;
-      padding-top: 10px;
-      padding-right: 10px;
-`,
-)
+const ListItem = styled(ListItemButton)(({ theme }) => ({
+  fontWeight: 500,
+  height: "4rem",
+  lineHeight: "4rem",
+  color: "#333",
+  margin: "0 1.2rem",
+  display: "flex",
+  justifyContent: "space-between",
+  padding: "0 !important",
+  "&:hover": {
+    background: "transparent",
+    color: theme.palette.primary.main,
+  },
+  "&:not(:first-of-type)": {
+    borderTop: "1px solid #FFCC9F",
+  },
+}))
+
+const SubListItem = styled(ListItemButton)(({ theme }) => ({
+  fontWeight: 300,
+  height: "2.4rem",
+  lineHeight: "2.4rem",
+  color: "#333",
+  margin: "0 !important",
+  display: "flex",
+  justifyContent: "space-between",
+  padding: "0 0 0 1.2rem !important",
+}))
+
+const LinkStyledButton = styled(NavLink)(({ theme }) => ({
+  fontWeight: 300,
+  fontSize: "1.4rem",
+  height: "2.1rem",
+  lineHeight: "2.1rem",
+  color: "#717171",
+  "&:active": {
+    color: "#333",
+    testDecoration: "underline",
+  },
+}))
+
+const ExternalLink = styled(Link)(({ theme }) => ({
+  fontWeight: 300,
+  fontSize: "1.4rem",
+  height: "2.1rem",
+  lineHeight: "2.1rem",
+  color: "#717171",
+  display: "flex",
+  alignItems: "center",
+  "&:active": {
+    color: "#333",
+    testDecoration: "underline",
+  },
+}))
+
+const SectionList = styled("div")(({ theme }) => ({
+  paddingBottom: "1rem",
+  margin: "0 2rem",
+  "&:not(:last-child)": {
+    borderBottom: `1px solid ${theme.palette.border.main}`,
+    paddingBottom: "1rem",
+    marginBottom: "1rem",
+  },
+}))
+
+const ExpandLessIcon = styled(ExpandLess)(({ theme }) => ({
+  transition: "transform 0.3s ease",
+  "&.active": {
+    transform: "rotate(180deg)",
+  },
+}))
 
 const App = props => {
-  const [open, setOpen] = React.useState(false)
-  const [activeCollapse, setActiveCollapse] = React.useState("")
+  const [open, setOpen] = useState(false)
+  const [activeCollapse, setActiveCollapse] = useState("")
 
-  const toggleDrawer = (open: boolean) => {
-    setOpen(open)
+  const toggleDrawer = isOpen => {
+    setOpen(isOpen)
+    if (!isOpen) setActiveCollapse("")
   }
 
-  const toggleCollapse = (collapse: string) => {
+  const toggleCollapse = collapse => {
     setActiveCollapse(collapse === activeCollapse ? "" : collapse)
   }
 
-  const list = () => (
+  const renderList = () => (
     <List
       sx={{
-        width: "100%",
-        paddingLeft: "20px",
+        padding: "0",
         fontSize: "16px",
       }}
       component="nav"
     >
-      {(props.isHomepage ? homeNavigations : navigations).map(item => {
-        if (!item.children) {
-          return (
-            <ListButton key={item.key} onClick={() => toggleDrawer(false)}>
-              {item.isExternal ? (
-                <ExternalLink underline="none" href={item.href}>
-                  {item.label}
-                </ExternalLink>
-              ) : (
-                <LinkStyledButton end={item.end} to={item.href}>
-                  {item.label}
-                </LinkStyledButton>
-              )}
-            </ListButton>
-          )
-        }
-        return (
-          <React.Fragment key={item.key}>
-            <ListButton onClick={() => toggleCollapse(item.key)}>
-              {item.label}{" "}
-              {activeCollapse === item.key ? (
-                <ExpandLess fontSize="large" sx={{ marginLeft: "6px" }} />
-              ) : (
-                <ExpandMore fontSize="large" sx={{ marginLeft: "6px" }} />
-              )}
-            </ListButton>
-            <Collapse in={activeCollapse === item.key} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding>
-                {item.children?.map(subItem =>
-                  subItem.isExternal ? (
-                    <ListButton onClick={() => toggleDrawer(false)} sx={{ pl: 4 }} key={subItem.key}>
-                      {/* TODO: https://github.com/MetaMask/metamask-mobile/issues/4890 */}
-                      <ExternalLink underline="none" href={subItem.href}>
-                        {subItem.label}
-                      </ExternalLink>
-                    </ListButton>
-                  ) : (
-                    <ListButton onClick={() => toggleDrawer(false)} sx={{ pl: 4 }} key={subItem.key}>
-                      <LinkStyledButton to={subItem.href}>{subItem.label}</LinkStyledButton>
-                    </ListButton>
-                  ),
-                )}
-              </List>
-            </Collapse>
-          </React.Fragment>
-        )
-      })}
+      {navigations.map(item => (
+        <React.Fragment key={item.key}>
+          <ListItem sx={{ py: "1rem" }} onClick={() => toggleCollapse(item.key)}>
+            {item.label} <ExpandLessIcon fontSize="large" className={activeCollapse === item.key ? "active" : ""} />
+          </ListItem>
+          <Collapse in={activeCollapse === item.key} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              {item.children?.map(section => (
+                <SectionList key={section.label}>
+                  {section.children.map(subItem =>
+                    subItem.isExternal ? (
+                      <SubListItem onClick={() => toggleDrawer(false)} sx={{ mx: 4 }} key={subItem.key}>
+                        <ExternalLink underline="none" href={subItem.href}>
+                          {subItem.label}
+                          <OpenInNew sx={{ fontSize: "1.4rem", ml: "0.4rem" }} />
+                        </ExternalLink>
+                      </SubListItem>
+                    ) : (
+                      <SubListItem onClick={() => toggleDrawer(false)} sx={{ mx: 4 }} key={subItem.key}>
+                        <LinkStyledButton to={subItem.href}>{subItem.label}</LinkStyledButton>
+                      </SubListItem>
+                    ),
+                  )}
+                </SectionList>
+              ))}
+            </List>
+          </Collapse>
+        </React.Fragment>
+      ))}
     </List>
   )
 
   return (
-    <>
-      {/* <Announcement /> */}
-
+    <Box className={open ? "active" : ""}>
       <NavStack direction="row" justifyContent="space-between" alignItems="center">
         <NavLink to="/" className="flex">
-          <Logo />
+          <Box onClick={() => toggleDrawer(false)}>
+            <Logo />
+          </Box>
         </NavLink>
-        <MenuIcon fontSize="large" sx={{ color: "text.primary", cursor: "pointer" }} onClick={() => toggleDrawer(true)} />
+        <Menu onClick={() => toggleDrawer(!open)} className={open ? "active" : ""}>
+          <Bar></Bar>
+          <Bar></Bar>
+          <Bar></Bar>
+        </Menu>
       </NavStack>
-      <Box>
-        <SwipeableDrawer open={open} anchor="right" onClose={() => toggleDrawer(false)} onOpen={() => toggleDrawer(true)}>
+      {open && (
+        <Box sx={{ background: "#ffffff", height: "calc(100vh - 3.2rem)" }}>
           <MenuContent role="presentation" onKeyDown={() => toggleDrawer(false)}>
-            <Stack sx={{ alignItems: "end" }}>
-              <CloseRounded fontSize="large" sx={{ cursor: "pointer" }} onClick={() => toggleDrawer(false)} />
-            </Stack>
-            {list()}
-            {props.isHomepage ? (
-              <Button color="primary" variant="contained" href="/alpha/" sx={{ position: "relative", left: "2rem" }}>
-                Join Alpha Testnet
-              </Button>
-            ) : (
-              <Button sx={{ marginTop: "32px", marginLeft: "36px" }} href="https://guide.scroll.io/">
-                User Guide
-              </Button>
-            )}
+            {renderList()}
           </MenuContent>
-        </SwipeableDrawer>
-      </Box>
-    </>
+        </Box>
+      )}
+    </Box>
   )
 }
 

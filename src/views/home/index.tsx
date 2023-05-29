@@ -73,6 +73,7 @@ const TitleTypography = styled(Typography)(
     max-width: 60rem;
     text-align: center;
     margin: 2rem auto 0; 
+    letter-spacing: -0.26px;
     ${theme.breakpoints.down("md")} {
       margin: 0 auto; 
     };

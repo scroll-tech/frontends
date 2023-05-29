@@ -1,7 +1,6 @@
 import { matchPath, useLocation } from "react-router-dom"
 
-import HomepageRoutes from "@/routes/homepageRoutes"
-import PortalRoutes from "@/routes/portalRoutes"
+import HomepageRoutes from "@/routes"
 
 export default function useMatchedRoute() {
   const { pathname } = useLocation()
@@ -9,7 +8,7 @@ export default function useMatchedRoute() {
   // trim trailing slash
   const normalizedPathname = pathname === "/" ? pathname : pathname.replace(/\/$/, "")
 
-  for (const route of HomepageRoutes.concat(PortalRoutes)) {
+  for (const route of HomepageRoutes) {
     if (matchPath((route as any).fullPath || route.path, normalizedPathname)) {
       return route
     }
