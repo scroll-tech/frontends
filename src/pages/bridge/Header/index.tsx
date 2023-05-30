@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 
 import { Button, CircularProgress } from "@mui/material"
 
@@ -6,22 +6,33 @@ import { ReactComponent as HistoryIcon } from "@/assets/svgs/history.svg"
 import ButtonPopover from "@/components/ButtonPopover"
 import PageHeader from "@/components/PageHeader"
 import { networks } from "@/constants"
+import { useApp } from "@/contexts/AppContextProvider"
+import useBridgeStore from "@/stores/bridgeStore"
 import useTxStore from "@/stores/txStore"
 
 import TransactionsList from "./TransactionHistory"
 
 const Header = () => {
+  const {
+    txHistory: { refreshPageTransactions },
+  } = useApp()
   const { loading } = useTxStore()
 
-  const [historyVisible, setHistoryVisible] = useState(false)
+  const { historyVisible, changeHistoryVisible } = useBridgeStore()
   const buttonRef = useRef(null)
 
+  useEffect(() => {
+    if (historyVisible) {
+      refreshPageTransactions(1)
+    }
+  }, [historyVisible])
+
   const handleOpen = () => {
-    setHistoryVisible(true)
+    changeHistoryVisible(true)
   }
 
   const handleClose = () => {
-    setHistoryVisible(false)
+    changeHistoryVisible(false)
   }
   return (
     <PageHeader
