@@ -4,6 +4,7 @@ import { create } from "zustand"
 import { persist } from "zustand/middleware"
 
 import { fetchTxListUrl } from "@/apis/bridge"
+import { fetchBatchDetailUrl, searchUrl } from "@/apis/rollupscan"
 import { networks } from "@/constants"
 import { sentryDebug } from "@/utils"
 import { BLOCK_NUMBERS, BRIDGE_TRANSACTIONS } from "@/utils/storageKey"
@@ -41,74 +42,90 @@ const MAX_OFFSET_TIME = 30 * 60 * 1000
 
 const isValidOffsetTime = offsetTime => offsetTime < MAX_OFFSET_TIME
 
-const formatBackTxList = (backList, estimatedTimeMap) => {
+const formatBackTxList = async (backList, estimatedTimeMap) => {
   const nextEstimatedTimeMap = { ...estimatedTimeMap }
   const blockNumbers = readItem(localStorage, BLOCK_NUMBERS)
   if (!backList.length) {
     return { txList: [], estimatedTimeMap: nextEstimatedTimeMap }
   }
-  const txList = backList.map(tx => {
-    const amount = tx.amount
-    const fromName = networks[+!tx.isL1].name
-    const fromExplore = networks[+!tx.isL1].explorer
-    const toName = networks[+tx.isL1].name
-    const toExplore = networks[+tx.isL1].explorer
-    const toHash = tx.finalizeTx?.hash
+  const txList = await Promise.all(
+    backList.map(async tx => {
+      const amount = tx.amount
+      const fromName = networks[+!tx.isL1].name
+      const fromExplore = networks[+!tx.isL1].explorer
+      const toName = networks[+tx.isL1].name
+      const toExplore = networks[+tx.isL1].explorer
+      const toHash = tx.finalizeTx?.hash
+      let isFinalized = false
 
-    // 1. have no time to compute fromEstimatedEndTime
-    // 2. compute toEstimatedEndTime from backend data
-    // 3. when tx is marked success then remove estimatedEndTime to slim storage data
-    // 4. estimatedTime is greater than 30 mins then warn but save
-    // 5. if the second deal succeeded, then the first should succeed too.
-    if (tx.isL1) {
-      if (tx.blockNumber > blockNumbers[0] && blockNumbers[0] !== -1 && !nextEstimatedTimeMap[`from_${tx.hash}`]) {
-        const estimatedOffsetTime = (tx.blockNumber - blockNumbers[0]) * 12 * 1000
-        if (isValidOffsetTime(estimatedOffsetTime)) {
-          nextEstimatedTimeMap[`from_${tx.hash}`] = Date.now() + estimatedOffsetTime
-        } else if (!tx.finalizeTx?.blockNumber || tx.finalizeTx.blockNumber > blockNumbers[1]) {
-          nextEstimatedTimeMap[`from_${tx.hash}`] = 0
-          sentryDebug(`safe block number: ${blockNumbers[0]}`)
-        }
-      } else if (tx.blockNumber <= blockNumbers[0] && Object.keys(nextEstimatedTimeMap).includes(`from_${tx.hash}`)) {
-        delete nextEstimatedTimeMap[`from_${tx.hash}`]
-      }
-    } else {
-      if (
-        tx.finalizeTx?.blockNumber &&
-        blockNumbers[0] !== -1 &&
-        tx.finalizeTx.blockNumber > blockNumbers[0] &&
-        !nextEstimatedTimeMap[`to_${toHash}`]
-      ) {
-        const estimatedOffsetTime = (tx.finalizeTx.blockNumber - blockNumbers[0]) * 12 * 1000
-        if (isValidOffsetTime(estimatedOffsetTime)) {
-          nextEstimatedTimeMap[`to_${toHash}`] = Date.now() + estimatedOffsetTime
-        } else {
-          nextEstimatedTimeMap[`to_${toHash}`] = 0
-          sentryDebug(`safe block number: ${blockNumbers[0]}`)
-        }
-      } else if (
-        tx.finalizeTx?.blockNumber &&
-        tx.finalizeTx.blockNumber <= blockNumbers[0] &&
-        Object.keys(nextEstimatedTimeMap).includes(`to_${toHash}`)
-      ) {
-        delete nextEstimatedTimeMap[`to_${toHash}`]
-      }
-    }
+      // await ;
 
-    return {
-      hash: tx.hash,
-      amount,
-      fromName,
-      fromExplore,
-      fromBlockNumber: tx.blockNumber,
-      toHash,
-      toName,
-      toExplore,
-      toBlockNumber: tx.finalizeTx?.blockNumber,
-      isL1: tx.isL1,
-      symbolToken: tx.isL1 ? tx.l1Token : tx.l2Token,
-    }
-  })
+      // 1. have no time to compute fromEstimatedEndTime
+      // 2. compute toEstimatedEndTime from backend data
+      // 3. when tx is marked success then remove estimatedEndTime to slim storage data
+      // 4. estimatedTime is greater than 30 mins then warn but save
+      // 5. if the second deal succeeded, then the first should succeed too.
+      if (tx.isL1) {
+        if (tx.blockNumber > blockNumbers[0] && blockNumbers[0] !== -1 && !nextEstimatedTimeMap[`from_${tx.hash}`]) {
+          const estimatedOffsetTime = (tx.blockNumber - blockNumbers[0]) * 12 * 1000
+          if (isValidOffsetTime(estimatedOffsetTime)) {
+            nextEstimatedTimeMap[`from_${tx.hash}`] = Date.now() + estimatedOffsetTime
+          } else if (!tx.finalizeTx?.blockNumber || tx.finalizeTx.blockNumber > blockNumbers[1]) {
+            nextEstimatedTimeMap[`from_${tx.hash}`] = 0
+            sentryDebug(`safe block number: ${blockNumbers[0]}`)
+          }
+        } else if (tx.blockNumber <= blockNumbers[0] && Object.keys(nextEstimatedTimeMap).includes(`from_${tx.hash}`)) {
+          delete nextEstimatedTimeMap[`from_${tx.hash}`]
+        }
+      } else {
+        if (!tx.isL1) {
+          const { batch_index } = await scrollRequest(`${searchUrl}?keyword=${tx.blockNumber}`)
+          const {
+            batch: { rollup_status },
+          } = await scrollRequest(`${fetchBatchDetailUrl}?index=${batch_index}`)
+          console.log("rollup_status", rollup_status)
+          isFinalized = rollup_status === "finalized" || rollup_status === "skipped"
+        }
+
+        if (
+          tx.finalizeTx?.blockNumber &&
+          blockNumbers[0] !== -1 &&
+          tx.finalizeTx.blockNumber > blockNumbers[0] &&
+          !nextEstimatedTimeMap[`to_${toHash}`]
+        ) {
+          const estimatedOffsetTime = (tx.finalizeTx.blockNumber - blockNumbers[0]) * 12 * 1000
+          if (isValidOffsetTime(estimatedOffsetTime)) {
+            nextEstimatedTimeMap[`to_${toHash}`] = Date.now() + estimatedOffsetTime
+          } else {
+            nextEstimatedTimeMap[`to_${toHash}`] = 0
+            sentryDebug(`safe block number: ${blockNumbers[0]}`)
+          }
+        } else if (
+          tx.finalizeTx?.blockNumber &&
+          tx.finalizeTx.blockNumber <= blockNumbers[0] &&
+          Object.keys(nextEstimatedTimeMap).includes(`to_${toHash}`)
+        ) {
+          delete nextEstimatedTimeMap[`to_${toHash}`]
+        }
+      }
+
+      return {
+        hash: tx.hash,
+        amount,
+        fromName,
+        fromExplore,
+        fromBlockNumber: tx.blockNumber,
+        toHash,
+        toName,
+        toExplore,
+        toBlockNumber: tx.finalizeTx?.blockNumber,
+        isL1: tx.isL1,
+        symbolToken: tx.isL1 ? tx.l1Token : tx.l2Token,
+        isFinalized: isFinalized,
+        claimInfo: tx.claimInfo,
+      }
+    }),
+  )
 
   return {
     txList,
@@ -170,10 +187,10 @@ const useTxStore = create<TxStore>()(
 
       // polling transactions
       // slim frontTransactions and keep the latest 3 backTransactions
-      generateTransactions: historyList => {
+      generateTransactions: async historyList => {
         const realHistoryList = historyList.filter(item => item)
         if (realHistoryList.length) {
-          const { txList: formattedHistoryList, estimatedTimeMap } = formatBackTxList(realHistoryList, get().estimatedTimeMap)
+          const { txList: formattedHistoryList, estimatedTimeMap } = await formatBackTxList(realHistoryList, get().estimatedTimeMap)
           const formattedHistoryListHash = formattedHistoryList.map(item => item.hash)
           const formattedHistoryListMap = Object.fromEntries(formattedHistoryList.map(item => [item.hash, item]))
           const frontListHash = get().frontTransactions.map(item => item.hash)
@@ -234,8 +251,8 @@ const useTxStore = create<TxStore>()(
         const limit = rowsPerPage - currentPageFrontTransactions.length
 
         return scrollRequest(`${fetchTxListUrl}?address=${address}&offset=${relativeOffset}&limit=${limit}`)
-          .then(data => {
-            const { txList: backendTransactions, estimatedTimeMap } = formatBackTxList(data.data.result, get().estimatedTimeMap)
+          .then(async data => {
+            const { txList: backendTransactions, estimatedTimeMap } = await formatBackTxList(data.data.result, get().estimatedTimeMap)
             set({
               pageTransactions: [...frontTransactions, ...backendTransactions],
               total: data.data.total,

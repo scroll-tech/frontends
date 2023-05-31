@@ -96,6 +96,8 @@ const useTxHistory = networksAndSigners => {
 
   useEffect(() => {
     if (data?.data?.result.length) {
+      console.log(data.data.result)
+
       generateTransactions(data.data.result)
     }
   }, [data])

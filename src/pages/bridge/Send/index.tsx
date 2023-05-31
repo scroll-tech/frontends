@@ -17,6 +17,7 @@ import { amountToBN, sanitizeNumericalString, switchNetwork } from "@/utils"
 import { toTokenDisplay } from "@/utils"
 import { BRIDGE_TOKEN_SYMBOL } from "@/utils/storageKey"
 
+import ConfirmDialog from "../ConfirmDialog"
 import DetailRow from "../components/InfoTooltip/DetailRow"
 import FeeDetails from "../components/InfoTooltip/FeeDetails"
 import ApproveLoading from "./ApproveLoading"
@@ -33,6 +34,7 @@ const Send: FC = () => {
   const { networksAndSigners, tokenList } = useApp()
 
   const [fromNetwork, setFromNetwork] = useState({} as any)
+  const [ConfirmDialogVisible, setConfirmDialogVisible] = useState(false)
   const [toNetwork, setToNetwork] = useState({} as any)
   const [totalBonderFeeDisplay, setTotalBonderFeeDisplay] = useState("-")
   const [estimatedGasCost, setEstimatedGasCost] = useState<undefined | bigint>(undefined)
@@ -259,6 +261,14 @@ const Send: FC = () => {
     }
   }
 
+  const handleSend = () => {
+    if (fromNetwork.chainId === ChainId.SCROLL_LAYER_1) {
+      handleSendTransaction()
+    } else {
+      setConfirmDialogVisible(true)
+    }
+  }
+
   const approveButtonActive = needsApproval
   return (
     <StyleContext.Provider value={styles}>
@@ -321,13 +331,7 @@ const Send: FC = () => {
               Approve USDC
             </LoadingButton>
           ) : (
-            <LoadingButton
-              sx={{ mt: "2rem", width: "100%" }}
-              onClick={handleSendTransaction}
-              disabled={!sendButtonActive}
-              loading={sending}
-              variant="contained"
-            >
+            <LoadingButton sx={{ mt: "2rem", width: "100%" }} onClick={handleSend} disabled={!sendButtonActive} loading={sending} variant="contained">
               Send {tokenSymbol} to {toNetwork.name}
             </LoadingButton>
           )}
@@ -335,6 +339,7 @@ const Send: FC = () => {
           <SendLoading value={txValue} from={fromNetwork.name} to={toNetwork.name} open={sending} onClose={handleCloseSendLoading} />
         </div>
       </div>
+      <ConfirmDialog open={ConfirmDialogVisible} setOpen={setConfirmDialogVisible} send={handleSendTransaction} />
     </StyleContext.Provider>
   )
 }
