@@ -208,7 +208,7 @@ const SendAmountSelectorCard: FC<Props> = props => {
         <NetworkLabel network={selectedNetwork} />
         {loadingBalance ? (
           <Skeleton variant="text" width="15rem" />
-        ) : balance ? (
+        ) : balance?.toString() ? (
           <div className="flex items-center justify-end flex-wrap">
             <Typography variant="subtitle2" color="textSecondary" align="right">
               Balance: {balanceLabel}
