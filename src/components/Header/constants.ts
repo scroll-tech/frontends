@@ -36,15 +36,15 @@ const navigations = [
         label: "Block Explorers",
         children: [
           {
+            label: "Rollup Explorer",
+            key: "rollupExplorer",
+            href: "rollupscan",
+          },
+          {
             label: "Scroll Blockscout",
             key: "l2BlockExplorer",
             href: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2"),
             isExternal: true,
-          },
-          {
-            label: "Rollup Explorer",
-            key: "rollupExplorer",
-            href: "rollupscan",
           },
           {
             label: "Unifra Explorer",
@@ -95,12 +95,6 @@ const navigations = [
             href: "/blog",
           },
           {
-            label: "Community",
-            key: "community",
-            href: "https://community.scroll.io/",
-            isExternal: true,
-          },
-          {
             label: "Join Us",
             key: "join us",
             href: "/join-us",
@@ -109,6 +103,12 @@ const navigations = [
             label: "Team",
             key: "team",
             href: "/team",
+          },
+          {
+            label: "Community",
+            key: "community",
+            href: "https://community.scroll.io/",
+            isExternal: true,
           },
         ],
       },

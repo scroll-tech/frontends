@@ -71,7 +71,10 @@ const SubMenuButton = styled(Box)(({ theme }) => ({
   color: theme.palette.text.primary,
   // color: "#A0A0A0",
   cursor: "pointer",
-  [`& .expand-more`]: {
+  "&.active": {
+    color: theme.palette.primary.main,
+  },
+  "& .expand-more": {
     willChange: "transform",
     transition: "transform .3s ease-in-out",
   },
@@ -134,6 +137,9 @@ const LinkStyledSubButton = styled(NavLink)({
     color: "#1B1B1B",
     textDecoration: "underline",
   },
+  "&.active": {
+    color: "#1B1B1B",
+  },
 })
 
 const MediaLink = styled("a")(({ theme }) => ({
@@ -145,7 +151,7 @@ const MediaLink = styled("a")(({ theme }) => ({
   },
 }))
 
-const App = () => {
+const App = ({ currentMenu }) => {
   const [checked, setChecked] = useState("")
 
   const handleMouseEnter = key => {
@@ -181,7 +187,12 @@ const App = () => {
   const renderNavigationItem = item => {
     if (item.children) {
       return (
-        <SubMenuButton onMouseEnter={() => handleMouseEnter(item.key)} onMouseLeave={handleMouseLeave} key={item.key}>
+        <SubMenuButton
+          className={currentMenu === item.key ? "active" : ""}
+          onMouseEnter={() => handleMouseEnter(item.key)}
+          onMouseLeave={handleMouseLeave}
+          key={item.key}
+        >
           <Stack direction="row" alignItems="center" spacing="6px">
             <span>{item.label}</span>
             <ExpandMore className="expand-more" />

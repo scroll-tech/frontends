@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { NavLink } from "react-router-dom"
 
 import { ExpandLess, OpenInNew } from "@mui/icons-material"
@@ -52,6 +52,9 @@ const ListItem = styled(ListItemButton)(({ theme }) => ({
   display: "flex",
   justifyContent: "space-between",
   padding: "0 !important",
+  "&.active": {
+    color: theme.palette.primary.main,
+  },
   "&:hover": {
     background: "transparent",
     color: theme.palette.primary.main,
@@ -63,8 +66,8 @@ const ListItem = styled(ListItemButton)(({ theme }) => ({
 
 const SubListItem = styled(ListItemButton)(({ theme }) => ({
   fontWeight: 300,
-  height: "2.4rem",
-  lineHeight: "2.4rem",
+  height: "3rem",
+  lineHeight: "3rem",
   color: "#333",
   margin: "0 !important",
   display: "flex",
@@ -74,11 +77,12 @@ const SubListItem = styled(ListItemButton)(({ theme }) => ({
 
 const LinkStyledButton = styled(NavLink)(({ theme }) => ({
   fontWeight: 300,
-  fontSize: "1.4rem",
-  height: "2.1rem",
-  lineHeight: "2.1rem",
+  fontSize: "1.5rem",
+  height: "3rem",
+  lineHeight: "3rem",
   color: "#717171",
-  "&:active": {
+  width: "100%",
+  "&.active": {
     color: "#333",
     testDecoration: "underline",
   },
@@ -86,12 +90,13 @@ const LinkStyledButton = styled(NavLink)(({ theme }) => ({
 
 const ExternalLink = styled(Link)(({ theme }) => ({
   fontWeight: 300,
-  fontSize: "1.4rem",
-  height: "2.1rem",
-  lineHeight: "2.1rem",
+  fontSize: "1.5rem",
+  height: "3rem",
+  lineHeight: "3rem",
   color: "#717171",
   display: "flex",
   alignItems: "center",
+  width: "100%",
   "&:active": {
     color: "#333",
     testDecoration: "underline",
@@ -115,13 +120,17 @@ const ExpandLessIcon = styled(ExpandLess)(({ theme }) => ({
   },
 }))
 
-const App = props => {
+const App = ({ currentMenu }) => {
   const [open, setOpen] = useState(false)
   const [activeCollapse, setActiveCollapse] = useState("")
 
+  useEffect(() => {
+    setActiveCollapse(currentMenu)
+  }, [currentMenu])
+
   const toggleDrawer = isOpen => {
     setOpen(isOpen)
-    if (!isOpen) setActiveCollapse("")
+    if (!isOpen) setActiveCollapse(currentMenu)
   }
 
   const toggleCollapse = collapse => {
@@ -138,7 +147,7 @@ const App = props => {
     >
       {navigations.map(item => (
         <React.Fragment key={item.key}>
-          <ListItem sx={{ py: "1rem" }} onClick={() => toggleCollapse(item.key)}>
+          <ListItem className={activeCollapse === item.key ? "active" : ""} sx={{ py: "1rem" }} onClick={() => toggleCollapse(item.key)}>
             {item.label} <ExpandLessIcon fontSize="large" className={activeCollapse === item.key ? "active" : ""} />
           </ListItem>
           <Collapse in={activeCollapse === item.key} timeout="auto" unmountOnExit>
@@ -150,7 +159,7 @@ const App = props => {
                       <SubListItem onClick={() => toggleDrawer(false)} sx={{ mx: 4 }} key={subItem.key}>
                         <ExternalLink underline="none" href={subItem.href}>
                           {subItem.label}
-                          <OpenInNew sx={{ fontSize: "1.4rem", ml: "0.4rem" }} />
+                          <OpenInNew sx={{ fontSize: "1.6rem", ml: "0.4rem" }} />
                         </ExternalLink>
                       </SubListItem>
                     ) : (
