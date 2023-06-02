@@ -1,4 +1,5 @@
 import { FixedNumber, formatUnits, parseUnits } from "ethers"
+import _ from "lodash"
 import numbro from "numbro"
 
 export const commafy = (value: string | number | undefined, decimals: number = 2) => {
@@ -40,7 +41,7 @@ export const toHexadecimal = (value: number): string => {
 }
 
 export const toTokenDisplay = (num, decimals: bigint = BigInt(18), symbol?: string) => {
-  if (!num || !decimals) {
+  if (_.isNil(num) || !decimals) {
     return "-"
   }
 
