@@ -8,22 +8,15 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 import { styled } from "@mui/system"
 
 import ArticleCard from "@/components/ArticleCard"
-import WrapperBox from "@/components/WrapperBox"
+import PageHeader from "@/components/PageHeader"
 
 import blogSource from "./data.json"
 
-const TitleTypography = styled(Typography)(
-  ({ theme }) => `
-      text-align: center;
-      margin-bottom: 1.4rem; 
-      `,
-)
-
 const BlogContainer = styled(Box)(
   ({ theme }) => `
-        margin: 14rem auto;
+        margin: 0 auto 14rem;
         ${theme.breakpoints.down("md")} {
-          margin: 8rem 0; 
+          margin: 0 0 8rem; 
         };
       `,
 )
@@ -39,11 +32,11 @@ const FilterModal = styled(Box)(
 
 const FilterModalContent = styled(Box)(
   ({ theme }) => `
-  background: #fff;
+  background: ${theme.palette.background.default};
   border-radius: 0.6rem;
   width: 35.8rem;
   height: 64rem;
-  background: #fff;
+  background: ${theme.palette.background.default};
   padding-top: 3rem;
       `,
 )
@@ -55,14 +48,6 @@ const BlogBody = styled(Box)(
     flex-direction: column-reverse;
   };
       `,
-)
-
-const SubTitleTypography = styled(Typography)(
-  ({ theme }) => `
-        text-align: center;
-        margin: 0 auto 3.6rem; 
-        max-width: 65.6rem;
-        `,
 )
 
 const FilterTypeName = styled(Typography)(
@@ -103,7 +88,7 @@ const FilterItem = styled(Typography)(
       font-size: 1.4rem;
       padding-left: 3.3rem;
       &.active {
-        color: #EB7106;
+        color: ${theme.palette.primary.main};
         background: rgba(51, 51, 51, 0.1);
         display: flex;
         justify-content: space-between;
@@ -119,7 +104,7 @@ const BlogList = styled("ul")(
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border-right: 1px solid #C9CBCE;
+  border-right: 1px solid ${theme.palette.divider};
   width: 100%;
   ${theme.breakpoints.down("md")} {
     border-right: none;
@@ -201,9 +186,9 @@ const Blog = () => {
           justifyContent="flex-end"
           alignItems="center"
           onClick={handleFilterOpen}
-          sx={{ marginBottom: "1.7rem", color: "#00A6F2" }}
+          sx={{ marginBottom: "1.7rem", color: theme => theme.palette.link.main }}
         >
-          <Typography sx={{ marginRight: "0.8rem", color: "#00A6F2" }}>Filters</Typography>
+          <Typography sx={{ marginRight: "0.8rem", color: theme => theme.palette.link.main }}>Filters</Typography>
           <TuneIcon />
         </Box>
         <Modal open={filterOpen} onClose={handleFilterClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
@@ -241,11 +226,7 @@ const Blog = () => {
 
   return (
     <BlogContainer>
-      <WrapperBox>
-        <TitleTypography variant="h1">Scroll Blog</TitleTypography>
-        <SubTitleTypography variant="subtitle1">Learn about Scroll’s technology, research, and latest developments.</SubTitleTypography>
-      </WrapperBox>
-
+      <PageHeader title="Scroll Blog" subTitle="Learn about Scroll’s technology, research, and latest developments."></PageHeader>
       <BlogBody className="wrapper">
         {renderBlogs()}
         {renderFilter()}
