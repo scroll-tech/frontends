@@ -169,7 +169,7 @@ const MediaLink = styled("a")(
 )
 
 const JoinTestnetButton = props => (
-  <Button color="primary" variant="contained" href="/alpha/" {...props}>
+  <Button color="primary" variant="contained" href="/portal" {...props}>
     Join Alpha Testnet
   </Button>
 )
