@@ -38,7 +38,7 @@ const MenuLinkButton = styled(Link)(({ theme }) => ({
 }))
 
 const ExternalLink = styled("p")(({ theme }) => ({
-  fontWeight: 300,
+  fontWeight: 400,
   fontSize: "1.4rem",
   height: "2.1rem",
   lineHeight: "2.1rem",
@@ -64,8 +64,8 @@ const SubMenuButton = styled(Box)(({ theme }) => ({
   fontWeight: 600,
   paddingLeft: "25px",
   paddingRight: "25px",
-  marginLeft: "4px",
-  marginRight: "4px",
+  marginLeft: "1rem",
+  marginRight: "1rem",
   lineHeight: "82px",
   position: "relative",
   color: theme.palette.text.primary,
@@ -81,7 +81,7 @@ const SubMenuButton = styled(Box)(({ theme }) => ({
   "&:hover": {
     color: theme.palette.primary.main,
     [`& .expand-more`]: {
-      transform: "translateY(2px)",
+      transform: "rotate(180deg)",
     },
   },
 }))
@@ -103,7 +103,8 @@ const SubMenuList = styled(Box)(({ theme }) => ({
 const SectionList = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  paddingLeft: "0.6rem",
+  marginLeft: "0.6rem",
+  marginRight: "0.6rem",
   "&:not(:last-child)": {
     borderBottom: `1px solid ${theme.palette.border.main}`,
     paddingBottom: "1rem",
@@ -117,30 +118,29 @@ const LinkButton = styled(Link)(({ theme }) => ({
     height: "2.4rem",
     fontSize: "1.6rem",
     color: "#717171",
-    fontWeight: 300,
+    fontWeight: 400,
     margin: "2px 0",
     "&:hover": {
-      color: "#1B1B1B",
-      textDecoration: "underline",
+      color: theme.palette.primary.main,
     },
   },
 }))
 
-const LinkStyledSubButton = styled(NavLink)({
+const LinkStyledSubButton = styled(NavLink)(({ theme }) => ({
   lineHeight: "2.2rem",
   height: "2.2rem",
   fontSize: "1.6rem",
   color: "#717171",
-  fontWeight: 300,
+  fontWeight: 400,
   margin: "2px 0",
   "&:hover": {
-    color: "#1B1B1B",
-    textDecoration: "underline",
+    color: theme.palette.primary.main,
   },
   "&.active": {
-    color: "#1B1B1B",
+    color: theme.palette.primary.main,
+    fontWeight: 500,
   },
-})
+}))
 
 const MediaLink = styled("a")(({ theme }) => ({
   height: "1.9rem",

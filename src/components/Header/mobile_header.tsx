@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { NavLink } from "react-router-dom"
 
-import { ExpandLess, OpenInNew } from "@mui/icons-material"
+import { ExpandMore, OpenInNew } from "@mui/icons-material"
 import { Box, Collapse, Link, List, ListItemButton, Stack } from "@mui/material"
 import { styled } from "@mui/system"
 
@@ -65,31 +65,31 @@ const ListItem = styled(ListItemButton)(({ theme }) => ({
 }))
 
 const SubListItem = styled(ListItemButton)(({ theme }) => ({
-  fontWeight: 300,
+  fontWeight: 400,
   height: "3rem",
   lineHeight: "3rem",
   color: "#333",
   margin: "0 !important",
   display: "flex",
   justifyContent: "space-between",
-  padding: "0 0 0 1.2rem !important",
+  padding: "0  !important",
 }))
 
 const LinkStyledButton = styled(NavLink)(({ theme }) => ({
-  fontWeight: 300,
+  fontWeight: 400,
   fontSize: "1.5rem",
   height: "3rem",
   lineHeight: "3rem",
   color: "#717171",
   width: "100%",
   "&.active": {
-    color: "#333",
-    testDecoration: "underline",
+    color: theme.palette.primary.main,
+    fontWeight: 500,
   },
 }))
 
 const ExternalLink = styled(Link)(({ theme }) => ({
-  fontWeight: 300,
+  fontWeight: 400,
   fontSize: "1.5rem",
   height: "3rem",
   lineHeight: "3rem",
@@ -97,10 +97,6 @@ const ExternalLink = styled(Link)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   width: "100%",
-  "&:active": {
-    color: "#333",
-    testDecoration: "underline",
-  },
 }))
 
 const SectionList = styled("div")(({ theme }) => ({
@@ -113,7 +109,7 @@ const SectionList = styled("div")(({ theme }) => ({
   },
 }))
 
-const ExpandLessIcon = styled(ExpandLess)(({ theme }) => ({
+const ExpandMoreIcon = styled(ExpandMore)(({ theme }) => ({
   transition: "transform 0.3s ease",
   "&.active": {
     transform: "rotate(180deg)",
@@ -148,7 +144,7 @@ const App = ({ currentMenu }) => {
       {navigations.map(item => (
         <React.Fragment key={item.key}>
           <ListItem className={activeCollapse === item.key ? "active" : ""} sx={{ py: "1rem" }} onClick={() => toggleCollapse(item.key)}>
-            {item.label} <ExpandLessIcon fontSize="large" className={activeCollapse === item.key ? "active" : ""} />
+            {item.label} <ExpandMoreIcon fontSize="large" className={activeCollapse === item.key ? "active" : ""} />
           </ListItem>
           <Collapse in={activeCollapse === item.key} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
