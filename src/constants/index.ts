@@ -46,8 +46,8 @@ const addresses = [
 
 const navigation = [
   {
-    name: "Portal",
-    description: "Main Portal",
+    name: "Testnet",
+    description: "Main Testnet Portal",
     subdomainOrPath: "",
   },
   {
