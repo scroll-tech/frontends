@@ -1,74 +1,119 @@
 import { requireEnv } from "@/utils"
 
-const homeNavigations: any = [
-  {
-    label: "Home",
-    key: "",
-    href: "/",
-  },
-  {
-    label: "Blog",
-    key: "blog",
-    href: "blog",
-  },
-  {
-    label: "Team",
-    key: "team",
-    href: "team",
-  },
-  {
-    label: "Join Us",
-    key: "Join Us",
-    href: "join-us",
-  },
-]
-
 const navigations = [
   {
-    label: "Portal",
-    key: "",
+    label: "Explore",
+    key: "explore",
     href: "",
-    end: true,
-  },
-  {
-    label: "Bridge",
-    key: "bridge",
-    href: "bridge",
-  },
-  {
-    label: "Ecosystem",
-    key: "ecosystem",
-    href: "ecosystem",
-  },
-  {
-    label: "Explorers",
-    key: "explorers",
     children: [
       {
-        label: "Rollup Explorer",
-        key: "rollupscan",
-        href: "rollupscan",
+        label: "Quickstart",
+        children: [
+          {
+            label: "Portal",
+            key: "portal",
+            href: "/portal",
+          },
+          {
+            label: "Bridge",
+            key: "bridge",
+            href: "/bridge",
+          },
+          {
+            label: "Ecosystem",
+            key: "ecosystem",
+            href: "/ecosystem",
+          },
+          {
+            label: "User Guide",
+            key: "user guide",
+            href: "https://guide.scroll.io/",
+            isExternal: true,
+          },
+        ],
       },
       {
-        label: "L1 Explorer 🔗",
-        key: "l1BlockExplorer",
-        href: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1"),
-        isExternal: true,
+        label: "Block Explorers",
+        children: [
+          {
+            label: "Rollup Explorer",
+            key: "rollupExplorer",
+            href: "rollupscan",
+          },
+          {
+            label: "Scroll Blockscout",
+            key: "l2BlockExplorer",
+            href: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2"),
+            isExternal: true,
+          },
+          {
+            label: "Unifra Explorer",
+            key: "unifraBlockExplorer",
+            href: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_UNIFRA"),
+            isExternal: true,
+          },
+        ],
       },
+    ],
+  },
+  {
+    label: "Build",
+    key: "build",
+    href: "",
+    children: [
       {
-        label: "L2 Explorer 🔗",
-        key: "l2BlockExplorer",
-        href: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2"),
-        isExternal: true,
+        label: "Build",
+        children: [
+          {
+            label: "Developer Guide",
+            key: "developer guide",
+            href: "https://guide.scroll.io/developers/building-on-scroll",
+            isExternal: true,
+          },
+          {
+            label: "Contribute",
+            key: "contribute",
+            href: "https://guide.scroll.io/contribute-to-scroll/contributing-to-scroll",
+            isExternal: true,
+          },
+        ],
       },
+    ],
+  },
+
+  {
+    label: "About",
+    key: "about",
+    href: "",
+    children: [
       {
-        label: "Unifra Explorer 🔗",
-        key: "unifraBlockExplorer",
-        href: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_UNIFRA"),
-        isExternal: true,
+        label: "About",
+        children: [
+          {
+            label: "Blog",
+            key: "blog",
+            href: "/blog",
+          },
+          {
+            label: "Join Us",
+            key: "join us",
+            href: "/join-us",
+          },
+          {
+            label: "Team",
+            key: "team",
+            href: "/team",
+          },
+          {
+            label: "Community",
+            key: "community",
+            href: "https://community.scroll.io/",
+            isExternal: true,
+          },
+        ],
       },
     ],
   },
 ]
 
-export { navigations, homeNavigations }
+export { navigations }

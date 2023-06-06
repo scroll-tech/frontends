@@ -58,13 +58,13 @@ const navigation = [
   {
     name: "Bridge",
     description: "Use our Hop fork to transfer tokens between L1 and L2.",
-    subdomainOrPath: "/alpha/bridge",
+    subdomainOrPath: "/bridge",
   },
   {
     name: "Rollup Explorer",
     description: "See L2 block data being committed to and finalized on L1.",
     isActive: true,
-    subdomainOrPath: "/alpha/rollupscan",
+    subdomainOrPath: "/rollupscan",
   },
   {
     name: "L1 Block Explorer",

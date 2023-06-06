@@ -9,7 +9,6 @@ import useLoadAllStaticAssetsOnIdle from "@/hooks/useLoadAllOnIdle"
 import useSentryPageTag from "@/hooks/useSentryPageTag"
 import { VersionChecker } from "@/hooks/useVersionCheck"
 
-const Portal = React.lazy(() => import("./Portal"))
 const Homepage = React.lazy(() => import("./Homepage"))
 
 const RemoveTrailingSlash = ({ ...rest }) => {
@@ -47,7 +46,6 @@ function App() {
       <React.Suspense fallback={<LoadingPage />}>
         <VersionChecker>
           <Routes>
-            <Route path="/alpha/*" element={<Portal />} />
             <Route path="/*" element={<Homepage />} />
           </Routes>
         </VersionChecker>

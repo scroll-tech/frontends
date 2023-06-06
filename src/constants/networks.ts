@@ -74,11 +74,11 @@ export const nativeTokenList: Token[] = [
 ]
 
 export const SiteMap = {
-  Home: "/alpha/",
-  Ecosystem: "/ecosystem/",
-  Bridge: "/alpha/bridge",
+  Home: "/portal",
+  Ecosystem: "/ecosystem",
+  Bridge: "/bridge",
   L1Explorer: l1Explorer,
   L2Explorer: l2Explorer,
-  RollupExplorer: "/alpha/rollupscan",
+  RollupExplorer: "/rollupscan",
   Swap: "https://uniswap-v3.scroll.io/",
 }
