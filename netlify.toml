@@ -1,4 +1,9 @@
 [[redirects]]
+from = "/alpha/*"
+to = "/:splat"
+status = 301
+
+[[redirects]]
 from = "/*"
 to = "/"
 status = 200
