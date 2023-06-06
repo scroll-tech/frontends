@@ -84,7 +84,7 @@ const Faq = props => {
       {children}
       <FaqItem title="Where can I find Scroll architecture overview?" id="end">
         <Typography variant="body1" color="textSecondary">
-          Click <Link href={SiteMap.Home}>here</Link> for Scroll architecture overview.
+          Check our <Link href={SiteMap.Architecture}>architecture blog article</Link>.
         </Typography>
       </FaqItem>
     </div>

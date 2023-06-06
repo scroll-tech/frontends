@@ -1,6 +1,7 @@
 import { isProduction, requireEnv } from "@/utils/common"
 
 import { ChainId, RPCUrl } from "./common"
+import { SiteMap } from "./networks"
 
 const TESTNET_NAME = "Scroll " + (isProduction ? "Alpha" : requireEnv("REACT_APP_SCROLL_ENVIRONMENT")) + " Testnet"
 
@@ -90,7 +91,7 @@ const documentation = [
   {
     name: "Architecture Overview",
     description: "",
-    link: "https://scroll.mirror.xyz/nDAbJbSIJdQIWqp9kn8J0MVS4s6pYBwHmK7keidQs-k",
+    link: SiteMap.Architecture,
   },
   {
     name: "User Guide",
@@ -107,11 +108,11 @@ const ModalStatus = {
 
 export * from "./common"
 export * from "./config"
+export * from "./ecosystem"
 export * from "./gateway"
 export * from "./medias"
 export * from "./networks"
 export * from "./transaction"
-export * from "./ecosystem"
 export { addresses, navigation, documentation, TESTNET_NAME, ModalStatus }
 
 export let l1ExplorerUrl = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1")
