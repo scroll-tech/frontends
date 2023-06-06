@@ -45,6 +45,8 @@ export default function Header() {
 
     if (rootMenu) {
       setCurrentMenu(rootMenu)
+    } else {
+      setCurrentMenu("")
     }
   }, [location.pathname])
 
