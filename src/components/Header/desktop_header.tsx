@@ -70,7 +70,6 @@ const SubMenuButton = styled(Box)(({ theme }) => ({
   position: "relative",
   color: theme.palette.text.primary,
   // color: "#A0A0A0",
-  cursor: "pointer",
   "&.active": {
     color: theme.palette.primary.main,
   },
@@ -96,30 +95,30 @@ const SubMenuList = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   overflow: "hidden",
-  padding: "1.6rem 1.2rem",
+  padding: "1.6rem 0",
   width: "20rem",
 }))
 
 const SectionList = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  marginLeft: "0.6rem",
-  marginRight: "0.6rem",
-  "&:not(:last-child)": {
+  "&:not(:last-child)::after": {
+    content: '""',
+    margin: "0 1.8rem 1rem",
     borderBottom: `1px solid ${theme.palette.border.main}`,
     paddingBottom: "1rem",
-    marginBottom: "1rem",
   },
 }))
 
 const LinkButton = styled(Link)(({ theme }) => ({
   "& p": {
-    lineHeight: "2.4rem",
-    height: "2.4rem",
+    lineHeight: "2.6rem",
+    height: "2.6rem",
     fontSize: "1.6rem",
     color: "#717171",
     fontWeight: 400,
-    margin: "2px 0",
+    padding: "2px 0 2px 1.8rem",
+    cursor: "pointer",
     "&:hover": {
       color: theme.palette.primary.main,
     },
@@ -127,12 +126,13 @@ const LinkButton = styled(Link)(({ theme }) => ({
 }))
 
 const LinkStyledSubButton = styled(NavLink)(({ theme }) => ({
-  lineHeight: "2.2rem",
-  height: "2.2rem",
+  lineHeight: "2.6rem",
+  height: "2.6rem",
   fontSize: "1.6rem",
   color: "#717171",
   fontWeight: 400,
-  margin: "2px 0",
+  padding: "2px 0 2px 1.8rem",
+  cursor: "pointer",
   "&:hover": {
     color: theme.palette.primary.main,
   },

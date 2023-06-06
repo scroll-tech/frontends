@@ -16,7 +16,6 @@ const NavStack = styled(Stack)(({ theme }) => ({
 
 const Menu = styled("div")(({ theme }) => ({
   display: "inline-block",
-  cursor: "pointer",
   [`&.active ${Bar}:nth-of-type(1)`]: {
     transform: "rotate(45deg) translate(5px, 5px)",
   },
@@ -82,6 +81,7 @@ const LinkStyledButton = styled(NavLink)(({ theme }) => ({
   lineHeight: "3rem",
   color: "#717171",
   width: "100%",
+  paddingLeft: "2rem",
   "&.active": {
     color: theme.palette.primary.main,
     fontWeight: 500,
@@ -97,15 +97,16 @@ const ExternalLink = styled(Link)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   width: "100%",
+  paddingLeft: "2rem",
 }))
 
 const SectionList = styled("div")(({ theme }) => ({
   paddingBottom: "1rem",
-  margin: "0 2rem",
-  "&:not(:last-child)": {
-    borderBottom: `1px solid ${theme.palette.border.main}`,
-    paddingBottom: "1rem",
-    marginBottom: "1rem",
+  "&:not(:last-child)::after": {
+    content: '""',
+    borderTop: `1px solid ${theme.palette.border.main}`,
+    margin: "1rem 2rem 0",
+    display: "block",
   },
 }))
 
