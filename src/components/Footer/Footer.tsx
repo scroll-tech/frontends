@@ -62,7 +62,7 @@ const Footer = () => {
             </Typography>
             <List sx={{ py: "1.8rem" }}>
               {aboutList.map(item => (
-                <ListItem disablePadding>
+                <ListItem key={item.name} disablePadding>
                   <RelativeLink {...item}></RelativeLink>
                 </ListItem>
               ))}
@@ -74,7 +74,7 @@ const Footer = () => {
             </Typography>
             <List sx={{ py: "1.8rem" }}>
               {resourceList.map(item => (
-                <ListItem disablePadding>
+                <ListItem key={item.name} disablePadding>
                   <RelativeLink {...item}></RelativeLink>
                 </ListItem>
               ))}

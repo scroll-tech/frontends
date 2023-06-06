@@ -127,7 +127,7 @@ const Blocks = () => {
       <Header />
       <Box className="wrapper mx-auto" sx={{ marginBottom: "16rem" }}>
         <Breadcrumbs aria-label="breadcrumb" sx={{ fontWeight: 600 }} separator={<NavigateNext fontSize="large" />}>
-          <RouterLink to="/alpha/rollupscan">All results</RouterLink>
+          <RouterLink to="/rollupscan">All results</RouterLink>
           <Typography sx={{ fontWeight: 600 }} color="text.primary">
             Batch {params.batchIndex}
           </Typography>
@@ -169,7 +169,7 @@ const Blocks = () => {
                 <BoxItem>
                   <LabelTypography>Blocks</LabelTypography>
                   {/* TODO: Make link dynamic, probably by using a variable for the rollupscan root */}
-                  <Link component={RouterLink} to={`/alpha/rollupscan/batch/${batch.index}/blocks`}>
+                  <Link component={RouterLink} to={`/rollupscan/batch/${batch.index}/blocks`}>
                     {batch.end_block_number - batch.start_block_number + 1}
                   </Link>
                 </BoxItem>

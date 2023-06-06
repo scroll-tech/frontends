@@ -100,12 +100,12 @@ const PageHeader = props => {
         )}
       </Container>
       <Box className={classes.titleSection}>
-        <Stack direction="column">
+        <Stack direction="column" alignItems="center">
           <Typography variant="h1" sx={{ mb: "1.4rem" }}>
             {title}
           </Typography>
           {subTitle && (
-            <Typography variant="subtitle1" color="textSecondary">
+            <Typography variant="subtitle1" sx={{ maxWidth: "66rem" }} color="textSecondary">
               {subTitle}
             </Typography>
           )}

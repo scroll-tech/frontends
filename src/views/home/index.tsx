@@ -73,6 +73,7 @@ const TitleTypography = styled(Typography)(
     max-width: 60rem;
     text-align: center;
     margin: 2rem auto 0; 
+    letter-spacing: -0.26px;
     ${theme.breakpoints.down("md")} {
       margin: 0 auto; 
     };
@@ -168,7 +169,7 @@ const MediaLink = styled("a")(
 )
 
 const JoinTestnetButton = props => (
-  <Button color="primary" variant="contained" href="/alpha/" {...props}>
+  <Button color="primary" variant="contained" href="/portal" {...props}>
     Join Alpha Testnet
   </Button>
 )
