@@ -10,7 +10,7 @@ const navigations = [
         label: "Quickstart",
         children: [
           {
-            label: "Portal",
+            label: "Testnet",
             key: "portal",
             href: "/portal",
           },

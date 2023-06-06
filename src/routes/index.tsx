@@ -41,7 +41,7 @@ const routes = [
     element: <PrivacyPolicy />,
   },
   {
-    name: "Portal",
+    name: "Testnet",
     path: "portal",
     fullPath: "/portal",
     element: <Portal />,
