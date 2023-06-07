@@ -40,13 +40,18 @@ export function useSendTransaction(props) {
       const isNetworkConnected = await checkConnectedChainId(fromNetwork.chainId)
       if (!isNetworkConnected) return
       setSending(true)
-      let tx
+      let tx, currentBlockNumber
       try {
         if (fromNetwork.isLayer1) {
+          currentBlockNumber = await networksAndSigners[ChainId.SCROLL_LAYER_1].provider.getBlockNumber()
           tx = await sendl1ToL2()
         } else if (!fromNetwork.isLayer1 && toNetwork.isLayer1) {
+          currentBlockNumber = await networksAndSigners[ChainId.SCROLL_LAYER_2].provider.getBlockNumber()
           tx = await sendl2ToL1()
         }
+        // start to check tx replacement from current block number
+        tx = tx.replaceableTransaction(currentBlockNumber)
+
         setSending(false)
         changeHistoryVisible(true)
         handleTransaction(tx)
