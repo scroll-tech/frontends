@@ -90,7 +90,7 @@ const Viewing = props => {
         if (exists) {
           uri = await tokenInstance["uri(uint256)"](currentTokenId)
           amount = await tokenInstance["balanceOf(address,uint256)"](walletCurrentAddress, currentTokenId)
-          amount = (amount as any).toNumber()
+          amount = Number(amount)
         } else {
           throw new Error("Token does not exist!")
         }

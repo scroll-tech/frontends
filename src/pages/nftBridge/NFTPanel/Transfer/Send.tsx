@@ -39,6 +39,7 @@ const Send = () => {
 
   const [txHash, setTxHash] = useState("")
 
+  // TODO: how to call this after approve
   const needApproval = useAsyncMemo(async () => {
     if (tokenInstance) {
       const isApproved = await checkApproval(tokenInstance, gatewayAddress)
@@ -74,35 +75,40 @@ const Send = () => {
   const handleSend = async () => {
     setSendLoading(true)
     setSendModalLoading(true)
-    const tx = isLayer1 ? await deposite() : await withdraw()
-    addNFTTransaction({
-      hash: tx.hash,
-      fromName: fromNetwork.name,
-      toName: toNetwork.name,
-      fromExplore: fromNetwork.explorer,
-      toExplore: toNetwork.explorer,
-      tokenType: contract.type,
-      tokenAddress: isLayer1 ? contract.l1 : contract.l2,
-      amounts: selectedList.map(item => item.transferAmount),
-      tokenIds: selectedTokenIds,
-      isL1: isLayer1,
-    })
-    tx.wait()
-      .then(receipt => {
-        console.log(receipt, "send receipt")
-        updateNFTTransaction(tx.hash, {
-          fromBlockNumber: receipt.blockNumber,
+    try {
+      const tx = isLayer1 ? await deposite() : await withdraw()
+      addNFTTransaction({
+        hash: tx.hash,
+        fromName: fromNetwork.name,
+        toName: toNetwork.name,
+        fromExplore: fromNetwork.explorer,
+        toExplore: toNetwork.explorer,
+        tokenType: contract.type,
+        tokenAddress: isLayer1 ? contract.l1 : contract.l2,
+        amounts: selectedList.map(item => item.transferAmount),
+        tokenIds: selectedTokenIds,
+        isL1: isLayer1,
+      })
+
+      tx.wait()
+        .then(receipt => {
+          updateNFTTransaction(tx.hash, {
+            fromBlockNumber: receipt.blockNumber,
+          })
+          setTxHash(receipt.transactionHash)
+          exciseSelected()
         })
-        setTxHash(receipt.transactionHash)
-        exciseSelected()
-      })
-      .catch(error => {
-        updatePromptMessage(error.message)
-      })
-      .finally(() => {
-        setSendLoading(false)
-        setSendModalLoading(false)
-      })
+        .catch(error => {
+          updatePromptMessage(error.message)
+        })
+        .finally(() => {
+          setSendLoading(false)
+          setSendModalLoading(false)
+        })
+    } catch (e) {
+      setSendLoading(false)
+      setSendModalLoading(false)
+    }
   }
 
   const deposite = () => {

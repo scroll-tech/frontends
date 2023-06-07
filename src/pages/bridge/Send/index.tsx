@@ -215,6 +215,8 @@ const Send: FC = () => {
     }
   }, [fromNetwork, fromToken, fromTokenAmount, checkApproval])
 
+  console.log(needsApproval, "needsApproval")
+
   const approveFromToken = async () => {
     // eslint-disable-next-line
     const parsedAmount = amountToBN(fromTokenAmount, fromToken.decimals)
