@@ -38,7 +38,7 @@ const navigations = [
           {
             label: "Rollup Explorer",
             key: "rollupExplorer",
-            href: "rollupscan",
+            href: "/rollupscan?page=1&per_page=10",
           },
           {
             label: "Scroll Blockscout",
