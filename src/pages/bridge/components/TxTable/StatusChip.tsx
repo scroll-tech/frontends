@@ -13,6 +13,9 @@ const useStyles = makeStyles()(theme => {
       fontSize: "1.6rem",
       fontWeight: 500,
       ".MuiChip-label": {
+        display: "inline-flex",
+        alignItems: "center",
+        gap: "0.4rem",
         paddingLeft: 0,
         paddingRight: 0,
       },
@@ -41,7 +44,7 @@ const useStyles = makeStyles()(theme => {
 })
 
 const StatusChip = props => {
-  const { status, children } = props
+  const { status, children, ...restProps } = props
   const { cx, classes } = useStyles()
 
   const chipStatusClass = useMemo(() => {
@@ -59,7 +62,7 @@ const StatusChip = props => {
     return null
   }, [status])
 
-  return <Chip label={children} className={cx(classes.chip, chipStatusClass)} />
+  return <Chip label={children} className={cx(classes.chip, chipStatusClass)} {...restProps} />
 }
 
 export default StatusChip

@@ -51,7 +51,6 @@ const Send: FC = () => {
 
   const [fromTokenAmount, setFromTokenAmount] = useState<string>()
   const [sendError, setSendError] = useState<any>()
-  const [error, setError] = useState<string | null | undefined>(null)
   const [approving, setApproving] = useState<boolean>(false)
 
   const fromTokenList = useMemo(() => {
@@ -136,7 +135,7 @@ const Send: FC = () => {
       )
     } else if (warning) {
       return warning
-    } else if (sendError && sendError.code !== "ACTION_REJECTED" && sendError.code !== 4001) {
+    } else if (sendError && sendError !== "cancel" && sendError.code !== 4001) {
       return (
         <>
           The transaction failed. Your {walletName} wallet might not be up to date.{" "}
@@ -182,14 +181,13 @@ const Send: FC = () => {
     fromNetwork,
     fromTokenAmount,
     setSendError,
-    setError,
     toNetwork,
     selectedToken: fromToken,
   })
 
   useEffect(() => {
     //TODO: outermost error
-    if (!sending && error !== "cancel") {
+    if (!sending && sendError !== "cancel") {
       setFromTokenAmount("")
     }
   }, [sending])

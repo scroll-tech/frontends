@@ -2,7 +2,9 @@ import { useCallback, useMemo } from "react"
 import Countdown from "react-countdown"
 import { makeStyles } from "tss-react/mui"
 
+import InfoIcon from "@mui/icons-material/Info"
 import {
+  Box,
   CircularProgress,
   LinearProgress,
   Pagination,
@@ -15,6 +17,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
 } from "@mui/material"
 
@@ -195,7 +198,19 @@ const TxRow = props => {
         <Stack direction="column" spacing="1.4rem">
           {blockNumbers ? (
             <>
-              <StatusChip status={fromStatus}>{fromStatus}</StatusChip>
+              {fromStatus === TxStatus.failed ? (
+                <Tooltip title={tx.errMsg}>
+                  <Box>
+                    <StatusChip sx={{ cursor: "pointer" }} status={fromStatus}>
+                      {fromStatus}
+                      <InfoIcon sx={{ fontSize: "inherit" }}></InfoIcon>
+                    </StatusChip>
+                  </Box>
+                </Tooltip>
+              ) : (
+                <StatusChip status={fromStatus}>{fromStatus}</StatusChip>
+              )}
+
               <StatusChip status={toStatus}>{toStatus}</StatusChip>
             </>
           ) : (
@@ -215,13 +230,9 @@ const TxRow = props => {
       <TableCell sx={{ width: "30rem" }}>
         <Stack direction="column">
           <Typography>From {tx.fromName}: </Typography>
-          {tx.assumedStatus === TxStatus.canceled ? (
-            <span className="leading-normal flex-1">-</span>
-          ) : (
-            <Link external href={generateExploreLink(tx.fromExplore, tx.hash)} className="leading-normal flex-1">
-              {truncateHash(tx.hash)}
-            </Link>
-          )}
+          <Link external href={generateExploreLink(tx.fromExplore, tx.hash)} className="leading-normal flex-1">
+            {truncateHash(tx.hash)}
+          </Link>
 
           {!tx.fromBlockNumber && !tx.assumedStatus && <LinearProgress />}
           {renderEstimatedWaitingTime(estimatedTimeMap[`from_${tx.hash}`], tx.isL1, false)}
