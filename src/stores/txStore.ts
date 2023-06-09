@@ -9,6 +9,10 @@ import { TxStatus, networks } from "@/constants"
 import { sentryDebug, storageAvailable } from "@/utils"
 import { BLOCK_NUMBERS, BRIDGE_TRANSACTIONS } from "@/utils/storageKey"
 
+interface OrderedTxDB {
+  [key: string]: TimestampTx[]
+}
+
 interface TxStore {
   page: number
   total: number
@@ -17,15 +21,15 @@ interface TxStore {
   frontTransactions: Transaction[]
   abnormalTransactions: Transaction[]
   pageTransactions: Transaction[]
-  orderedTxs: TimestampTx[]
+  orderedTxDB: OrderedTxDB
   addTransaction: (tx) => void
   updateTransaction: (hash, tx) => void
   removeFrontTransactions: (hash) => void
   addEstimatedTimeMap: (key, value) => void
-  generateTransactions: (transactions) => void
-  comboPageTransactions: (address, page, rowsPerPage) => Promise<any>
-  updateOrderedTxs: (hash, param) => void
-  addAbnormalTransactions: (tx) => void
+  generateTransactions: (walletAddress, transactions) => void
+  comboPageTransactions: (walletAddress, page, rowsPerPage) => Promise<any>
+  updateOrderedTxs: (walletAddress, hash, param) => void
+  addAbnormalTransactions: (walletAddress, tx) => void
   clearTransactions: () => void
 }
 
@@ -38,7 +42,6 @@ const enum ITxPosition {
   Abnormal = 2,
   // desc: backend data synchronized from the blockchain
   // status: successful
-  // TODO: reflect the error of tx on destination network
   Backend = 3,
 }
 
@@ -47,6 +50,8 @@ const TxPosition = {
   Abnormal: ITxPosition.Abnormal,
   Backend: ITxPosition.Backend,
 }
+
+const MAX_LIMIT = 1000
 
 interface TimestampTx {
   hash: string
@@ -71,8 +76,6 @@ interface Transaction {
   timestamp?: number
 
   assumedStatus?: string
-
-  // added
   errMsg?: string
 }
 
@@ -198,6 +201,19 @@ const detailOrderdTxs = async (pageOrderdTxs, frontTransactions, abnormalTransac
   return { pageTransactions, estimatedTimeMap: returnedEstimatedTimeMap }
 }
 
+const maxLengthAccount = (orderedTxDB: OrderedTxDB) => {
+  const briefList = Object.entries(orderedTxDB).map(([key, value]) => [key, value.length])
+  let maxLength = 0
+  let address
+  for (let i = 0; i < briefList.length; i++) {
+    if (briefList[i][1] > maxLength) {
+      maxLength = briefList[i][1] as number
+      address = briefList[i][0]
+    }
+  }
+  return address
+}
+
 const useTxStore = create<TxStore>()(
   persist(
     (set, get) => ({
@@ -208,7 +224,7 @@ const useTxStore = create<TxStore>()(
       frontTransactions: [],
       abnormalTransactions: [],
       loading: false,
-      orderedTxs: [],
+      orderedTxDB: {},
       pageTransactions: [],
       // when user send a transaction
       addTransaction: newTx =>
@@ -244,8 +260,8 @@ const useTxStore = create<TxStore>()(
 
       // polling transactions
       // slim frontTransactions and keep the latest 3 backTransactions
-      generateTransactions: historyList => {
-        const { frontTransactions, estimatedTimeMap: preEstimatedTimeMap, orderedTxs, pageTransactions } = get()
+      generateTransactions: (walletAddress, historyList) => {
+        const { frontTransactions, estimatedTimeMap: preEstimatedTimeMap, orderedTxDB, pageTransactions } = get()
         const realHistoryList = historyList.filter(item => item)
 
         const untimedFrontList = eliminateOvertimeTx(frontTransactions)
@@ -264,23 +280,21 @@ const useTxStore = create<TxStore>()(
           })
 
           const failedFrontTransactionListHash = untimedFrontList.map(item => item.assumedStatus === TxStatus.failed)
-          const refreshOrderedTxs = orderedTxs.map(item => {
-            if (formattedHistoryListHash.includes(item.hash)) {
-              return {
-                ...item,
-                position: TxPosition.Backend,
+          const refreshOrderedDB = produce(orderedTxDB, draft => {
+            draft[walletAddress].forEach(item => {
+              if (formattedHistoryListHash.includes(item.hash)) {
+                item.position = TxPosition.Backend
+              } else if (failedFrontTransactionListHash.includes(item.hash)) {
+                item.position = TxPosition.Abnormal
               }
-            } else if (failedFrontTransactionListHash.includes(item.hash)) {
-              return { ...item, position: TxPosition.Abnormal }
-            }
-            return item
+            })
           })
 
           set({
             frontTransactions: pendingFrontList,
             pageTransactions: refreshPageTransaction,
             estimatedTimeMap,
-            orderedTxs: refreshOrderedTxs,
+            orderedTxDB: refreshOrderedDB,
           })
         } else {
           set({
@@ -291,9 +305,11 @@ const useTxStore = create<TxStore>()(
 
       // page transactions
       comboPageTransactions: async (address, page, rowsPerPage) => {
-        const { orderedTxs, frontTransactions, abnormalTransactions, estimatedTimeMap } = get()
+        const { orderedTxDB, frontTransactions, abnormalTransactions, estimatedTimeMap } = get()
+        const orderedTxs = orderedTxDB[address] ?? []
         set({ loading: true })
         const pageOrderdTxs = orderedTxs.slice((page - 1) * rowsPerPage, page * rowsPerPage)
+        console.log(pageOrderdTxs, "pageOrderdTxs")
         const { pageTransactions, estimatedTimeMap: nextEstimatedTimeMap } = await detailOrderdTxs(
           pageOrderdTxs,
           frontTransactions,
@@ -309,7 +325,7 @@ const useTxStore = create<TxStore>()(
         })
       },
 
-      // TODO: take into consideration
+      // when connect and disconnect
       clearTransactions: () => {
         set({
           frontTransactions: [],
@@ -326,8 +342,9 @@ const useTxStore = create<TxStore>()(
             state.frontTransactions.splice(frontTxIndex, 1)
           }),
         ),
-      addAbnormalTransactions: tx => {
-        const { abnormalTransactions, orderedTxs } = get()
+      addAbnormalTransactions: (walletAddress, tx) => {
+        const { abnormalTransactions, orderedTxDB } = get()
+        const orderedTxs = orderedTxDB[walletAddress] ?? []
         if (storageAvailable("localStorage")) {
           set({
             abnormalTransactions: [tx, ...abnormalTransactions],
@@ -335,31 +352,48 @@ const useTxStore = create<TxStore>()(
         } else {
           const abandonedTxHashs = abnormalTransactions.slice(abnormalTransactions.length - 3).map(item => item.hash)
           set({
-            orderedTxs: orderedTxs.filter(item => !abandonedTxHashs.includes(item.hash)),
+            orderedTxDB: { ...orderedTxDB, [walletAddress]: orderedTxs.filter(item => !abandonedTxHashs.includes(item.hash)) },
             abnormalTransactions: [tx, ...abnormalTransactions.slice(0, abnormalTransactions.length - 3)],
           })
         }
       },
 
-      updateOrderedTxs: (hash, param) =>
+      updateOrderedTxs: (walletAddress, hash, param) =>
         set(
           produce(state => {
             // position: 1|2|3
             if (isNumber(param)) {
-              const current = state.orderedTxs.find(item => item.hash === hash)
+              const current = state.orderedTxDB[walletAddress]?.find(item => item.hash === hash)
               if (current) {
                 current.position = param
-              } else if (storageAvailable("localStorage")) {
-                state.orderedTxs.unshift({ hash, timestamp: Date.now(), position: param })
+              } else if (
+                storageAvailable("localStorage") &&
+                (!state.orderedTxDB[walletAddress] || state.orderedTxDB[walletAddress].length < MAX_LIMIT)
+              ) {
+                const newRecord = { hash, timestamp: Date.now(), position: param }
+                if (state.orderedTxDB[walletAddress]) {
+                  state.orderedTxDB[walletAddress].unshift(newRecord)
+                } else {
+                  state.orderedTxDB[walletAddress] = [newRecord]
+                }
               } else {
-                const abandonedTxHashs = state.orderedTxs.slice(state.orderedTxs.length - 3).map(item => item.hash)
+                // remove the oldest 3 records
+                const address = maxLengthAccount(state.orderedTxDB)
+                const abandonedTxHashs = state.orderedTxDB[address].slice(state.orderedTxDB[address].length - 3).map(item => item.hash)
                 state.abnormalTransactions = state.abnormalTransactions.filter(item => !abandonedTxHashs.includes(item.hash))
-                state.orderedTxs = state.orderedTxs.slice(0, state.orderedTxs.length - 3)
+                state.orderedTxDB[address] = state.orderedTxDB[address].slice(0, state.orderedTxDB[address].length - 3)
+
+                const newRecord = { hash, timestamp: Date.now(), position: param }
+                if (state.orderedTxDB[walletAddress]) {
+                  state.orderedTxDB[walletAddress].unshift(newRecord)
+                } else {
+                  state.orderedTxDB[walletAddress] = [newRecord]
+                }
               }
             }
             // repriced tx
             else {
-              state.orderedTxs.find(item => item.hash === hash).hash = param
+              state.orderedTxDB[walletAddress].find(item => item.hash === hash).hash = param
             }
           }),
         ),

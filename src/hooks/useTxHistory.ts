@@ -95,7 +95,7 @@ const useTxHistory = networksAndSigners => {
 
   useEffect(() => {
     if (data?.data?.result.length) {
-      generateTransactions(data.data.result)
+      generateTransactions(walletCurrentAddress, data.data.result)
     }
   }, [data])
 

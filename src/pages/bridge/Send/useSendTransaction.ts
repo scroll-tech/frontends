@@ -4,6 +4,7 @@ import { useMemo, useState } from "react"
 import { ChainId, GasLimit, networks } from "@/constants"
 import { TxStatus } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
+import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import { usePriceFee } from "@/hooks"
 import useBridgeStore from "@/stores/bridgeStore"
 import useTxStore, { TxPosition, isValidOffsetTime } from "@/stores/txStore"
@@ -16,6 +17,7 @@ export type TransactionHandled = {
 
 export function useSendTransaction(props) {
   const { fromNetwork, fromTokenAmount, setSendError, toNetwork, selectedToken } = props
+  const { walletCurrentAddress } = useWeb3Context()
   const {
     networksAndSigners,
     txHistory: { blockNumbers },
@@ -48,10 +50,9 @@ export function useSendTransaction(props) {
 
       changeHistoryVisible(true)
       handleTransaction(tx)
-      updateOrderedTxs(tx.hash, TxPosition.Frontend)
+      updateOrderedTxs(walletCurrentAddress, tx.hash, TxPosition.Frontend)
       tx.wait()
         .then(receipt => {
-          // console.log(receipt, "receipt")
           if (receipt?.status === 1) {
             handleTransaction(tx, {
               fromBlockNumber: receipt.blockNumber,
@@ -67,19 +68,18 @@ export function useSendTransaction(props) {
             }
           } else {
             // Something failed in the EVM
-            updateOrderedTxs(tx.hash, TxPosition.Abnormal)
+            updateOrderedTxs(walletCurrentAddress, tx.hash, TxPosition.Abnormal)
             // EIP-658
             markTransactionAbnormal(tx, TxStatus.failed, "due to any operation that can cause the transaction or top-level call to revert")
           }
         })
         .catch(error => {
           // TRANSACTION_REPLACED or TIMEOUT
-          console.log(error, "wait error")
           sentryDebug(error.message)
           if (isError(error, "TRANSACTION_REPLACED")) {
             if (error.cancelled) {
               markTransactionAbnormal(tx, TxStatus.canceled, "transaction was cancelled")
-              updateOrderedTxs(tx.hash, TxPosition.Abnormal)
+              updateOrderedTxs(walletCurrentAddress, tx.hash, TxPosition.Abnormal)
               setSendError("cancel")
             } else {
               const { blockNumber, hash: transactionHash } = error.receipt
@@ -87,7 +87,7 @@ export function useSendTransaction(props) {
                 fromBlockNumber: blockNumber,
                 hash: transactionHash,
               })
-              updateOrderedTxs(tx.hash, transactionHash)
+              updateOrderedTxs(walletCurrentAddress, tx.hash, transactionHash)
               if (fromNetwork.isLayer1) {
                 const estimatedOffsetTime = (blockNumber - blockNumbers[0]) * 12 * 1000
                 if (isValidOffsetTime(estimatedOffsetTime)) {
@@ -100,12 +100,11 @@ export function useSendTransaction(props) {
             }
           } else {
             // when the transaction execution failed (status is 0)
-            updateOrderedTxs(tx.hash, TxPosition.Abnormal)
+            updateOrderedTxs(walletCurrentAddress, tx.hash, TxPosition.Abnormal)
             markTransactionAbnormal(tx, TxStatus.failed, error.message)
           }
         })
     } catch (error) {
-      // console.log(error, "send error")
       // reject && insufficient funds(send error)
       if (!isError(error, "ACTION_REJECTED")) {
         setSendError(error)
@@ -134,7 +133,7 @@ export function useSendTransaction(props) {
   }
 
   const markTransactionAbnormal = (tx, assumedStatus, errMsg) => {
-    addAbnormalTransactions({
+    addAbnormalTransactions(walletCurrentAddress, {
       hash: tx.hash,
       fromName: fromNetwork.name,
       toName: toNetwork.name,
