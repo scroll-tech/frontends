@@ -79,12 +79,6 @@ const navigation = [
     isExternal: true,
     subdomainOrPath: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2"),
   },
-  {
-    name: "Unifra Explorer",
-    description: "See L2 and L1 transactions alongside the rollup status in one interface.",
-    isExternal: true,
-    subdomainOrPath: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_UNIFRA"),
-  },
 ]
 
 const documentation = [
@@ -113,7 +107,7 @@ export * from "./gateway"
 export * from "./medias"
 export * from "./networks"
 export * from "./transaction"
-export { addresses, navigation, documentation, TESTNET_NAME, ModalStatus }
+export { ModalStatus, TESTNET_NAME, addresses, documentation, navigation }
 
 export let l1ExplorerUrl = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1")
 export let l2ExplorerUrl = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2")

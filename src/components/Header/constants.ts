@@ -46,12 +46,6 @@ const navigations = [
             href: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2"),
             isExternal: true,
           },
-          {
-            label: "Unifra Explorer",
-            key: "unifraBlockExplorer",
-            href: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_UNIFRA"),
-            isExternal: true,
-          },
         ],
       },
     ],
