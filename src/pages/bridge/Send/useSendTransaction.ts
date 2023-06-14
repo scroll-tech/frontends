@@ -47,7 +47,6 @@ export function useSendTransaction(props) {
       // start to check tx replacement from current block number
       // TODO: shouldn't add it here(by @ricmoo)
       tx = tx.replaceableTransaction(currentBlockNumber)
-
       changeHistoryVisible(true)
       handleTransaction(tx)
       updateOrderedTxs(walletCurrentAddress, tx.hash, TxPosition.Frontend)
@@ -104,13 +103,15 @@ export function useSendTransaction(props) {
             markTransactionAbnormal(tx, TxStatus.failed, error.message)
           }
         })
+        .finally(() => {
+          setSending(false)
+        })
     } catch (error) {
+      setSending(false)
       // reject && insufficient funds(send error)
       if (!isError(error, "ACTION_REJECTED")) {
         setSendError(error)
       }
-    } finally {
-      setSending(false)
     }
   }
 
@@ -206,6 +207,5 @@ export function useSendTransaction(props) {
   return {
     send,
     sending,
-    setSending,
   }
 }

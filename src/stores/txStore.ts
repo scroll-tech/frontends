@@ -170,8 +170,8 @@ const eliminateOvertimeTx = frontList => {
   }) as any
 }
 
-const detailOrderdTxs = async (pageOrderdTxs, frontTransactions, abnormalTransactions, estimatedTimeMap) => {
-  const needFetchTxs = pageOrderdTxs.filter(item => item.position === TxPosition.Backend).map(item => item.hash)
+const detailOrderdTxs = async (pageOrderedTxs, frontTransactions, abnormalTransactions, estimatedTimeMap) => {
+  const needFetchTxs = pageOrderedTxs.filter(item => item.position === TxPosition.Backend).map(item => item.hash)
 
   let historyList = []
   let returnedEstimatedTimeMap = estimatedTimeMap
@@ -188,7 +188,7 @@ const detailOrderdTxs = async (pageOrderdTxs, frontTransactions, abnormalTransac
     returnedEstimatedTimeMap = nextEstimatedTimeMap
   }
 
-  const pageTransactions = pageOrderdTxs
+  const pageTransactions = pageOrderedTxs
     .map(({ hash, position }) => {
       if (position === TxPosition.Backend) {
         return historyList.find((item: any) => item.hash === hash)
@@ -279,7 +279,7 @@ const useTxStore = create<TxStore>()(
             return item
           })
 
-          const failedFrontTransactionListHash = untimedFrontList.map(item => item.assumedStatus === TxStatus.failed)
+          const failedFrontTransactionListHash = untimedFrontList.filter(item => item.assumedStatus === TxStatus.failed).map(item => item.hash)
           const refreshOrderedDB = produce(orderedTxDB, draft => {
             draft[walletAddress].forEach(item => {
               if (formattedHistoryListHash.includes(item.hash)) {
@@ -308,10 +308,9 @@ const useTxStore = create<TxStore>()(
         const { orderedTxDB, frontTransactions, abnormalTransactions, estimatedTimeMap } = get()
         const orderedTxs = orderedTxDB[address] ?? []
         set({ loading: true })
-        const pageOrderdTxs = orderedTxs.slice((page - 1) * rowsPerPage, page * rowsPerPage)
-        console.log(pageOrderdTxs, "pageOrderdTxs")
+        const pageOrderedTxs = orderedTxs.slice((page - 1) * rowsPerPage, page * rowsPerPage)
         const { pageTransactions, estimatedTimeMap: nextEstimatedTimeMap } = await detailOrderdTxs(
-          pageOrderdTxs,
+          pageOrderedTxs,
           frontTransactions,
           abnormalTransactions,
           estimatedTimeMap,
@@ -328,9 +327,7 @@ const useTxStore = create<TxStore>()(
       // when connect and disconnect
       clearTransactions: () => {
         set({
-          frontTransactions: [],
           pageTransactions: [],
-          estimatedTimeMap: {},
           page: 1,
           total: 0,
         })
