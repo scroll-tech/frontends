@@ -12,9 +12,10 @@ status = 200
 # 31536000 is 1 year, recommended by cra
 # cra doc https://create-react-app.dev/docs/production-build/
 [[headers]]
-  for = "/static/*"
-  [headers.values]
-    Cache-Control = "max-age=31536000"
+for = "/static/*"
+
+[headers.values]
+Cache-Control = "max-age=31536000"
 
 [[plugins]]
 package = "/plugins/netlify/env"
