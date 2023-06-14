@@ -17,7 +17,7 @@ export interface TxHistory {
 
 const useTxHistory = networksAndSigners => {
   const { walletCurrentAddress } = useWeb3Context()
-  const { transactions, pageTransactions, generateTransactions, comboPageTransactions } = useTxStore()
+  const { pageTransactions, generateTransactions, comboPageTransactions } = useTxStore()
   const [blockNumbers, setBlockNumbers] = useStorage(localStorage, BLOCK_NUMBERS, [-1, -1])
 
   const [errorMessage, setErrorMessage] = useState("")
@@ -35,8 +35,7 @@ const useTxHistory = networksAndSigners => {
   // fetch to hash/blockNumber from backend
   const { data } = useSWR<any>(
     () => {
-      const recentAndHistoryTransactions = [...transactions, ...pageTransactions]
-      const needToRefreshTransactions = recentAndHistoryTransactions.filter(item => !item.toHash)
+      const needToRefreshTransactions = pageTransactions.filter(item => !item.toHash && !item.assumedStatus)
 
       if (needToRefreshTransactions.length && walletCurrentAddress) {
         const txs = needToRefreshTransactions.map(item => item.hash).filter((item, index, arr) => index === arr.indexOf(item))
@@ -96,7 +95,7 @@ const useTxHistory = networksAndSigners => {
 
   useEffect(() => {
     if (data?.data?.result.length) {
-      generateTransactions(data.data.result)
+      generateTransactions(walletCurrentAddress, data.data.result)
     }
   }, [data])
 

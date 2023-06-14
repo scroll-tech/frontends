@@ -2,8 +2,9 @@ import { useCallback, useMemo } from "react"
 import Countdown from "react-countdown"
 import { makeStyles } from "tss-react/mui"
 
+import InfoIcon from "@mui/icons-material/Info"
 import {
-  Chip,
+  Box,
   CircularProgress,
   LinearProgress,
   Pagination,
@@ -16,15 +17,18 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
 } from "@mui/material"
 
 import Link from "@/components/Link"
+import { TxStatus } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
 import useTokenInfo from "@/hooks/useTokenInfo"
 import useTxStore from "@/stores/txStore"
-import { toTokenDisplay } from "@/utils"
-import { generateExploreLink, truncateHash } from "@/utils"
+import { generateExploreLink, toTokenDisplay, truncateHash } from "@/utils"
+
+import StatusChip from "./StatusChip"
 
 const useStyles = makeStyles()(theme => {
   return {
@@ -53,20 +57,6 @@ const useStyles = makeStyles()(theme => {
       ".MuiTableCell-head": {
         borderBottom: "unset",
       },
-    },
-    chip: {
-      width: "12.6rem",
-      height: "3.8rem",
-      fontSize: "1.6rem",
-      fontWeight: 500,
-    },
-    pendingChip: {
-      color: theme.palette.tagWarning.main,
-      backgroundColor: theme.palette.tagWarning.light,
-    },
-    successChip: {
-      color: theme.palette.tagSuccess.main,
-      backgroundColor: theme.palette.tagSuccess.light,
     },
     pagination: {
       ".MuiPaginationItem-text": {
@@ -146,32 +136,28 @@ const TxRow = props => {
     txHistory: { blockNumbers },
   } = useApp()
 
-  const { classes, cx } = useStyles()
-
   const txStatus = useCallback(
-    (blockNumber, isL1, to, toBlockNumber = undefined) => {
-      if (!blockNumber || !blockNumbers) {
-        return "Pending"
+    (blockNumber, assumedStatus, isL1, to) => {
+      if (assumedStatus && !to) {
+        return assumedStatus
       }
-      if (blockNumbers[+!(isL1 ^ to)] >= blockNumber) {
-        return "Success"
+      if (assumedStatus && to) {
+        return TxStatus.empty
       }
-      // for compatibility with old safe block number
-      // if to tx succeeded, then from tx should succeed too.
-      if (isL1 && !to && toBlockNumber && toBlockNumber <= blockNumbers[1]) {
-        return "Success"
+      if (blockNumber && blockNumbers && blockNumbers[+!(isL1 ^ to)] >= blockNumber) {
+        return TxStatus.success
       }
-      return "Pending"
+      return TxStatus.pending
     },
     [blockNumbers],
   )
 
   const fromStatus = useMemo(() => {
-    return txStatus(tx.fromBlockNumber, tx.isL1, false, tx.toBlockNumber)
+    return txStatus(tx.fromBlockNumber, tx.assumedStatus, tx.isL1, false)
   }, [tx, txStatus])
 
   const toStatus = useMemo(() => {
-    return txStatus(tx.toBlockNumber, tx.isL1, true)
+    return txStatus(tx.toBlockNumber, tx.assumedStatus, tx.isL1, true)
   }, [tx, txStatus])
 
   const { loading: tokenInfoLoading, tokenInfo } = useTokenInfo(tx.symbolToken, tx.isL1)
@@ -181,7 +167,7 @@ const TxRow = props => {
   }
 
   const renderEstimatedWaitingTime = (timestamp, isL1, to) => {
-    if (fromStatus === "Success") {
+    if (fromStatus === TxStatus.success) {
       return null
     } else if (timestamp === 0) {
       return <Typography variant="body2">Estimating...</Typography>
@@ -205,14 +191,27 @@ const TxRow = props => {
       </span>
     )
   }
+
   return (
     <TableRow key={tx.hash}>
       <TableCell>
         <Stack direction="column" spacing="1.4rem">
           {blockNumbers ? (
             <>
-              <Chip label={fromStatus} className={cx(classes.chip, fromStatus === "Success" ? classes.successChip : classes.pendingChip)} />
-              <Chip label={toStatus} className={cx(classes.chip, toStatus === "Success" ? classes.successChip : classes.pendingChip)} />
+              {fromStatus === TxStatus.failed ? (
+                <Tooltip title={tx.errMsg}>
+                  <Box>
+                    <StatusChip sx={{ cursor: "pointer" }} status={fromStatus}>
+                      {fromStatus}
+                      <InfoIcon sx={{ fontSize: "inherit" }}></InfoIcon>
+                    </StatusChip>
+                  </Box>
+                </Tooltip>
+              ) : (
+                <StatusChip status={fromStatus}>{fromStatus}</StatusChip>
+              )}
+
+              <StatusChip status={toStatus}>{toStatus}</StatusChip>
             </>
           ) : (
             <>
@@ -234,7 +233,8 @@ const TxRow = props => {
           <Link external href={generateExploreLink(tx.fromExplore, tx.hash)} className="leading-normal flex-1">
             {truncateHash(tx.hash)}
           </Link>
-          {!tx.fromBlockNumber && <LinearProgress />}
+
+          {!tx.fromBlockNumber && !tx.assumedStatus && <LinearProgress />}
           {renderEstimatedWaitingTime(estimatedTimeMap[`from_${tx.hash}`], tx.isL1, false)}
         </Stack>
 

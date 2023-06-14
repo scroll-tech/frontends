@@ -1,14 +1,14 @@
-// import { HopBridge } from '@hop-protocol/sdk'
+import { isError } from "ethers"
 import { useMemo, useState } from "react"
 
 import { ChainId, GasLimit, networks } from "@/constants"
+import { TxStatus } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import { usePriceFee } from "@/hooks"
 import useBridgeStore from "@/stores/bridgeStore"
-import useTxStore, { isValidOffsetTime } from "@/stores/txStore"
+import useTxStore, { TxPosition, isValidOffsetTime } from "@/stores/txStore"
 import { amountToBN, sentryDebug } from "@/utils"
-import logger from "@/utils/logger"
 
 export type TransactionHandled = {
   transaction: any
@@ -16,15 +16,15 @@ export type TransactionHandled = {
 }
 
 export function useSendTransaction(props) {
-  const { fromNetwork, fromTokenAmount, setError, setSendError, toNetwork, selectedToken } = props
+  const { fromNetwork, fromTokenAmount, setSendError, toNetwork, selectedToken } = props
+  const { walletCurrentAddress } = useWeb3Context()
   const {
     networksAndSigners,
     txHistory: { blockNumbers },
   } = useApp()
-  const { addTransaction, updateTransaction, addEstimatedTimeMap } = useTxStore()
+  const { addTransaction, updateTransaction, addEstimatedTimeMap, updateOrderedTxs, addAbnormalTransactions, removeFrontTransactions } = useTxStore()
   const { changeHistoryVisible } = useBridgeStore()
   const [sending, setSending] = useState<boolean>(false)
-  const { checkConnectedChainId } = useWeb3Context()
   const { getPriceFee } = usePriceFee()
 
   const parsedAmount = useMemo(() => {
@@ -33,53 +33,91 @@ export function useSendTransaction(props) {
   }, [fromTokenAmount, selectedToken?.decimals])
 
   const send = async () => {
+    setSending(true)
+    let tx
+    let currentBlockNumber
     try {
-      setError(null)
-
-      const isNetworkConnected = await checkConnectedChainId(fromNetwork.chainId)
-      if (!isNetworkConnected) return
-      setSending(true)
-      let tx
-      try {
-        if (fromNetwork.isLayer1) {
-          tx = await sendl1ToL2()
-        } else if (!fromNetwork.isLayer1 && toNetwork.isLayer1) {
-          tx = await sendl2ToL1()
-        }
-        setSending(false)
-        changeHistoryVisible(true)
-        handleTransaction(tx)
-        const txResult = await tx.wait()
-        handleTransaction(tx, {
-          fromBlockNumber: txResult.blockNumber,
-        })
-        if (fromNetwork.isLayer1) {
-          const estimatedOffsetTime = (txResult.blockNumber - blockNumbers[0]) * 12 * 1000
-          if (isValidOffsetTime(estimatedOffsetTime)) {
-            addEstimatedTimeMap(`from_${tx.hash}`, Date.now() + estimatedOffsetTime)
+      if (fromNetwork.isLayer1) {
+        currentBlockNumber = await networksAndSigners[ChainId.SCROLL_LAYER_1].provider.getBlockNumber()
+        tx = await sendl1ToL2()
+      } else if (!fromNetwork.isLayer1 && toNetwork.isLayer1) {
+        currentBlockNumber = await networksAndSigners[ChainId.SCROLL_LAYER_2].provider.getBlockNumber()
+        tx = await sendl2ToL1()
+      }
+      // start to check tx replacement from current block number
+      // TODO: shouldn't add it here(by @ricmoo)
+      tx = tx.replaceableTransaction(currentBlockNumber)
+      changeHistoryVisible(true)
+      handleTransaction(tx)
+      updateOrderedTxs(walletCurrentAddress, tx.hash, TxPosition.Frontend)
+      tx.wait()
+        .then(receipt => {
+          if (receipt?.status === 1) {
+            handleTransaction(tx, {
+              fromBlockNumber: receipt.blockNumber,
+            })
+            if (fromNetwork.isLayer1) {
+              const estimatedOffsetTime = (receipt.blockNumber - blockNumbers[0]) * 12 * 1000
+              if (isValidOffsetTime(estimatedOffsetTime)) {
+                addEstimatedTimeMap(`from_${tx.hash}`, Date.now() + estimatedOffsetTime)
+              } else {
+                addEstimatedTimeMap(`from_${tx.hash}`, 0)
+                sentryDebug(`safe block number: ${blockNumbers[0]}`)
+              }
+            }
           } else {
-            addEstimatedTimeMap(`from_${tx.hash}`, 0)
-            sentryDebug(`safe block number: ${blockNumbers[0]}`)
+            // Something failed in the EVM
+            updateOrderedTxs(walletCurrentAddress, tx.hash, TxPosition.Abnormal)
+            // EIP-658
+            markTransactionAbnormal(tx, TxStatus.failed, "due to any operation that can cause the transaction or top-level call to revert")
           }
-        }
-      } catch (error) {
-        console.log(error)
+        })
+        .catch(error => {
+          // TRANSACTION_REPLACED or TIMEOUT
+          sentryDebug(error.message)
+          if (isError(error, "TRANSACTION_REPLACED")) {
+            if (error.cancelled) {
+              markTransactionAbnormal(tx, TxStatus.canceled, "transaction was cancelled")
+              updateOrderedTxs(walletCurrentAddress, tx.hash, TxPosition.Abnormal)
+              setSendError("cancel")
+            } else {
+              const { blockNumber, hash: transactionHash } = error.receipt
+              handleTransaction(tx, {
+                fromBlockNumber: blockNumber,
+                hash: transactionHash,
+              })
+              updateOrderedTxs(walletCurrentAddress, tx.hash, transactionHash)
+              if (fromNetwork.isLayer1) {
+                const estimatedOffsetTime = (blockNumber - blockNumbers[0]) * 12 * 1000
+                if (isValidOffsetTime(estimatedOffsetTime)) {
+                  addEstimatedTimeMap(`from_${transactionHash}`, Date.now() + estimatedOffsetTime)
+                } else {
+                  addEstimatedTimeMap(`from_${transactionHash}`, 0)
+                  sentryDebug(`safe block number: ${blockNumbers[0]}`)
+                }
+              }
+            }
+          } else {
+            // when the transaction execution failed (status is 0)
+            updateOrderedTxs(walletCurrentAddress, tx.hash, TxPosition.Abnormal)
+            markTransactionAbnormal(tx, TxStatus.failed, error.message)
+          }
+        })
+        .finally(() => {
+          setSending(false)
+        })
+    } catch (error) {
+      setSending(false)
+      // reject && insufficient funds(send error)
+      if (!isError(error, "ACTION_REJECTED")) {
         setSendError(error)
-        setSending(false)
       }
-    } catch (err) {
-      if (!/cancelled/gi.test(err.message)) {
-        setError(err)
-      } else {
-        setError("cancel")
-      }
-      logger.error(err)
     }
   }
 
   const handleTransaction = (tx, updateOpts?) => {
     if (updateOpts) {
-      updateTransaction(tx, updateOpts)
+      updateTransaction(tx.hash, updateOpts)
       return
     }
     addTransaction({
@@ -91,7 +129,25 @@ export function useSendTransaction(props) {
       amount: parsedAmount.toString(),
       isL1: fromNetwork.name === networks[0].name,
       symbolToken: selectedToken.address,
+      timestamp: Date.now(),
     })
+  }
+
+  const markTransactionAbnormal = (tx, assumedStatus, errMsg) => {
+    addAbnormalTransactions(walletCurrentAddress, {
+      hash: tx.hash,
+      fromName: fromNetwork.name,
+      toName: toNetwork.name,
+      fromExplore: fromNetwork.explorer,
+      toExplore: toNetwork.explorer,
+      amount: parsedAmount.toString(),
+      isL1: fromNetwork.name === networks[0].name,
+      symbolToken: selectedToken.address,
+      assumedStatus,
+      errMsg,
+    })
+    removeFrontTransactions(tx.hash)
+    updateTransaction(tx.hash, { assumedStatus })
   }
 
   const depositETH = async () => {
@@ -151,6 +207,5 @@ export function useSendTransaction(props) {
   return {
     send,
     sending,
-    setSending,
   }
 }

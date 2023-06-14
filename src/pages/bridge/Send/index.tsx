@@ -36,6 +36,7 @@ const Send: FC = () => {
   const [toNetwork, setToNetwork] = useState({} as any)
   const [totalBonderFeeDisplay, setTotalBonderFeeDisplay] = useState("-")
   const [estimatedGasCost, setEstimatedGasCost] = useState<undefined | bigint>(undefined)
+  const [sendingModalOpen, setSendingModalOpen] = useState(false)
 
   const { checkConnectedChainId, chainId, walletName, connectWallet } = useWeb3Context()
 
@@ -51,7 +52,6 @@ const Send: FC = () => {
 
   const [fromTokenAmount, setFromTokenAmount] = useState<string>()
   const [sendError, setSendError] = useState<any>()
-  const [error, setError] = useState<string | null | undefined>(null)
   const [approving, setApproving] = useState<boolean>(false)
 
   const fromTokenList = useMemo(() => {
@@ -136,7 +136,7 @@ const Send: FC = () => {
       )
     } else if (warning) {
       return warning
-    } else if (sendError && sendError.code !== "ACTION_REJECTED" && sendError.code !== 4001) {
+    } else if (sendError && sendError !== "cancel" && sendError.code !== 4001) {
       return (
         <>
           The transaction failed. Your {walletName} wallet might not be up to date.{" "}
@@ -174,23 +174,20 @@ const Send: FC = () => {
   // Send tokens
   // ==============================================================================================
 
-  const {
-    send: handleSendTransaction,
-    sending,
-    setSending,
-  } = useSendTransaction({
+  const { send: handleSendTransaction, sending } = useSendTransaction({
     fromNetwork,
     fromTokenAmount,
     setSendError,
-    setError,
     toNetwork,
     selectedToken: fromToken,
   })
 
   useEffect(() => {
-    if (!sending && error !== "cancel") {
+    //TODO: outermost error
+    if (!sending && sendError !== "cancel") {
       setFromTokenAmount("")
     }
+    setSendingModalOpen(sending)
   }, [sending])
 
   const txValue = useMemo(() => `${fromTokenAmount} ${tokenSymbol}`, [fromTokenAmount, tokenSymbol])
@@ -236,7 +233,7 @@ const Send: FC = () => {
   }, [needsApproval, fromTokenAmount, warningTip])
 
   const handleCloseSendLoading = () => {
-    setSending(false)
+    setSendingModalOpen(false)
   }
 
   const handleCloseApproveLoading = () => {
@@ -277,7 +274,7 @@ const Send: FC = () => {
             tokenList={fromTokenList}
             onChangeToken={handleChangeToken}
           />
-          <SendTranferButton disabled={!toToken.chainId} onClick={handleSwitchDirection} />
+          <SendTranferButton disabled={!toToken.chainId || sending} onClick={handleSwitchDirection} />
           <SendAmountSelectorCard
             value="0.1"
             token={toToken}
@@ -332,7 +329,7 @@ const Send: FC = () => {
             </LoadingButton>
           )}
           <ApproveLoading open={approving} onClose={handleCloseApproveLoading} />
-          <SendLoading value={txValue} from={fromNetwork.name} to={toNetwork.name} open={sending} onClose={handleCloseSendLoading} />
+          <SendLoading value={txValue} from={fromNetwork.name} to={toNetwork.name} open={sendingModalOpen} onClose={handleCloseSendLoading} />
         </div>
       </div>
     </StyleContext.Provider>
