@@ -55,9 +55,6 @@ const Faq = props => {
       </div>
       <FaqItem title="How do I get started?" id="start">
         <Typography variant="body1" color="textSecondary">
-          Welcome to Scroll's Alpha Testnet.
-        </Typography>
-        <Typography variant="body1" color="textSecondary">
           Here is how to explore the platform:
         </Typography>
         <Typography variant="body1" color="textSecondary" className={classes.orderedParagraph}>

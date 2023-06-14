@@ -22,13 +22,13 @@ const ReadMoreLink = styled("a")(
 )
 
 const Announcement = () => {
-  const match = useMatch("/alpha/*")
-  if (match) {
+  const isHome = useMatch("/")
+  if (!isHome) {
     return null
   }
   return (
     <AnnouncementStack>
-      Scroll's Alpha Testnet is now live. <ReadMoreLink href="/alpha">Try it!</ReadMoreLink>
+      Scroll Sepolia is now live. <ReadMoreLink href="/portal">Try it!</ReadMoreLink>
     </AnnouncementStack>
   )
 }

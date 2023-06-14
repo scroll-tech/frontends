@@ -8,6 +8,7 @@ import { styled } from "@mui/system"
 import Logo from "@/components/Logo"
 import { medias } from "@/constants/medias"
 
+import Announcement from "./announcement"
 import { navigations } from "./constants"
 
 const StyledBox = styled(Stack)(({ theme }) => ({
@@ -229,7 +230,7 @@ const App = ({ currentMenu }) => {
 
   return (
     <StyledBox>
-      {/* <Announcement /> */}
+      <Announcement />
       <HeaderContainer>
         <NavLink to="/" className="flex">
           <Logo />
