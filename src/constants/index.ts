@@ -1,9 +1,7 @@
-import { isProduction, requireEnv } from "@/utils/common"
+import { getPrettyTestnetName, requireEnv } from "@/utils/common"
 
 import { ChainId, RPCUrl } from "./common"
 import { SiteMap } from "./networks"
-
-const TESTNET_NAME = "Scroll " + (isProduction ? "Alpha" : requireEnv("REACT_APP_SCROLL_ENVIRONMENT")) + " Testnet"
 
 const addresses = [
   // TODO: Merge with constants/networks
@@ -26,13 +24,13 @@ const addresses = [
   },
 
   {
-    network: TESTNET_NAME,
+    network: getPrettyTestnetName(),
     etherscanPrefix: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2"),
-    formattedName: TESTNET_NAME,
+    formattedName: getPrettyTestnetName(),
     chainIdDec: ChainId.SCROLL_LAYER_2,
     autoconnect: {
       chainId: "0x" + ChainId.SCROLL_LAYER_2.toString(16),
-      chainName: TESTNET_NAME,
+      chainName: getPrettyTestnetName(),
       nativeCurrency: {
         name: "Ethereum",
         symbol: requireEnv("REACT_APP_ETH_SYMBOL"),
@@ -107,7 +105,7 @@ export * from "./gateway"
 export * from "./medias"
 export * from "./networks"
 export * from "./transaction"
-export { ModalStatus, TESTNET_NAME, addresses, documentation, navigation }
+export { ModalStatus, addresses, documentation, navigation }
 
 export let l1ExplorerUrl = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1")
 export let l2ExplorerUrl = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2")

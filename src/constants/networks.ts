@@ -1,13 +1,11 @@
 // TODO: Refactor network info into a scroll-testnet-wide spot
 import ETHSvg from "@/assets/svgs/eth.svg"
-import { isProduction, requireEnv } from "@/utils"
+import { getPrettyTestnetName, requireEnv } from "@/utils"
 
 import { ChainId, ETH_SYMBOL, RPCUrl } from "./common"
 
 const l1Explorer = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1")
 const l2Explorer = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2")
-
-const TESTNET_NAME = "Scroll " + (isProduction ? "Alpha" : requireEnv("REACT_APP_SCROLL_ENVIRONMENT")) + " Testnet"
 
 export const networks = [
   // TODO: Merge with constants/index.addresses
@@ -24,7 +22,7 @@ export const networks = [
     isL1: true, // TODO: Merge these two
   },
   {
-    name: TESTNET_NAME,
+    name: getPrettyTestnetName(),
     slug: "layer2",
     imageUrl: "/logo.png",
     provider: null,
