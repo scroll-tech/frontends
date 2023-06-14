@@ -2,6 +2,7 @@ import IframeEmbedding from "@/components/IframeEmbedding"
 import Bridge from "@/pages/bridge"
 import Ecosystem from "@/pages/ecosystem"
 import Portal from "@/pages/home"
+import NFTBridge from "@/pages/nftBridge"
 import RollupScanBatch from "@/pages/rollup/batch"
 import RollupScanBlock from "@/pages/rollup/block"
 import RollupScan from "@/pages/rollup/index"
@@ -51,6 +52,13 @@ const routes = [
     path: "/bridge",
     fullPath: "/bridge",
     element: <Bridge />,
+  },
+
+  {
+    name: "NFTBridge",
+    path: "/nft-bridge",
+    fullPath: "/nft-bridge",
+    element: <NFTBridge />,
   },
   {
     name: "Ecosystem",
