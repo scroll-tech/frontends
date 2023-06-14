@@ -6,6 +6,7 @@ import { Box, Collapse, Link, List, ListItemButton, Stack } from "@mui/material"
 import { styled } from "@mui/system"
 
 import Logo from "../Logo"
+import Announcement from "./announcement"
 import { navigations } from "./constants"
 
 const NavStack = styled(Stack)(({ theme }) => ({
@@ -175,27 +176,30 @@ const App = ({ currentMenu }) => {
   )
 
   return (
-    <Box className={open ? "active" : ""}>
-      <NavStack direction="row" justifyContent="space-between" alignItems="center">
-        <NavLink to="/" className="flex">
-          <Box onClick={() => toggleDrawer(false)}>
-            <Logo />
+    <>
+      <Box className={open ? "active" : ""}>
+        <NavStack direction="row" justifyContent="space-between" alignItems="center">
+          <NavLink to="/" className="flex">
+            <Box onClick={() => toggleDrawer(false)}>
+              <Logo />
+            </Box>
+          </NavLink>
+          <Menu onClick={() => toggleDrawer(!open)} className={open ? "active" : ""}>
+            <Bar></Bar>
+            <Bar></Bar>
+            <Bar></Bar>
+          </Menu>
+        </NavStack>
+        {open && (
+          <Box sx={{ background: "#ffffff", height: "calc(100vh - 3.2rem)" }}>
+            <MenuContent role="presentation" onKeyDown={() => toggleDrawer(false)}>
+              {renderList()}
+            </MenuContent>
           </Box>
-        </NavLink>
-        <Menu onClick={() => toggleDrawer(!open)} className={open ? "active" : ""}>
-          <Bar></Bar>
-          <Bar></Bar>
-          <Bar></Bar>
-        </Menu>
-      </NavStack>
-      {open && (
-        <Box sx={{ background: "#ffffff", height: "calc(100vh - 3.2rem)" }}>
-          <MenuContent role="presentation" onKeyDown={() => toggleDrawer(false)}>
-            {renderList()}
-          </MenuContent>
-        </Box>
-      )}
-    </Box>
+        )}
+      </Box>
+      <Announcement />
+    </>
   )
 }
 

@@ -8,15 +8,15 @@ const TESTNET_NAME = "Scroll " + (isProduction ? "Alpha" : requireEnv("REACT_APP
 const addresses = [
   // TODO: Merge with constants/networks
   {
-    network: "Goerli Testnet",
+    network: "Ethereum Sepolia",
     etherscanPrefix: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1"),
-    formattedName: "Goerli Testnet",
+    formattedName: "Ethereum Sepolia",
     chainIdDec: ChainId.SCROLL_LAYER_1,
     autoconnect: {
       chainId: "0x" + ChainId.SCROLL_LAYER_1.toString(16),
-      chainName: "Goerli",
+      chainName: "Sepolia",
       nativeCurrency: {
-        name: "Goerli",
+        name: "Sepolia",
         symbol: requireEnv("REACT_APP_ETH_SYMBOL"),
         decimals: 18,
       },

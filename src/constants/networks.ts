@@ -12,8 +12,8 @@ const TESTNET_NAME = "Scroll " + (isProduction ? "Alpha" : requireEnv("REACT_APP
 export const networks = [
   // TODO: Merge with constants/index.addresses
   {
-    name: "Goerli Testnet",
-    slug: "goerli",
+    name: "Ethereum Sepolia",
+    slug: "sepolia",
     imageUrl: "/imgs/bridge/mainnet.svg",
     provider: null,
     rpcUrl: RPCUrl.SCROLL_LAYER_1,
