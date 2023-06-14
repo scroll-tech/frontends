@@ -11,7 +11,7 @@ const TransactionsList = (props: any) => {
     txHistory: { refreshPageTransactions },
   } = useApp()
 
-  const { page, total, frontTransactions, pageTransactions } = useTxStore()
+  const { page, total, pageTransactions } = useTxStore()
 
   const handleChangePage = currentPage => {
     refreshPageTransactions(currentPage)
@@ -23,13 +23,13 @@ const TransactionsList = (props: any) => {
         <TxTable
           data={pageTransactions}
           pagination={{
-            count: Math.ceil((total + frontTransactions.length) / BRIDGE_PAGE_SIZE),
+            count: Math.ceil(total / BRIDGE_PAGE_SIZE),
             page,
             onChange: handleChangePage,
           }}
         />
       ) : (
-        <Typography variant="body1" color="textSecondary">
+        <Typography variant="body1" color="textSecondary" sx={{ width: "40rem" }}>
           Your transactions will appear here...
         </Typography>
       )}

@@ -1,12 +1,17 @@
 import produce from "immer"
+import { isNumber } from "lodash"
 import { readItem } from "squirrel-gill/lib/storage"
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
 
-import { fetchTxListUrl } from "@/apis/bridge"
-import { networks } from "@/constants"
-import { sentryDebug } from "@/utils"
+import { fetchTxByHashUrl } from "@/apis/bridge"
+import { TxStatus, networks } from "@/constants"
+import { sentryDebug, storageAvailable } from "@/utils"
 import { BLOCK_NUMBERS, BRIDGE_TRANSACTIONS } from "@/utils/storageKey"
+
+interface OrderedTxDB {
+  [key: string]: TimestampTx[]
+}
 
 interface TxStore {
   page: number
@@ -14,14 +19,47 @@ interface TxStore {
   loading: boolean
   estimatedTimeMap: object
   frontTransactions: Transaction[]
-  transactions: Transaction[]
+  abnormalTransactions: Transaction[]
   pageTransactions: Transaction[]
+  orderedTxDB: OrderedTxDB
   addTransaction: (tx) => void
   updateTransaction: (hash, tx) => void
+  removeFrontTransactions: (hash) => void
   addEstimatedTimeMap: (key, value) => void
-  generateTransactions: (transactions) => void
-  comboPageTransactions: (address, page, rowsPerPage) => Promise<any>
+  generateTransactions: (walletAddress, transactions) => void
+  comboPageTransactions: (walletAddress, page, rowsPerPage) => Promise<any>
+  updateOrderedTxs: (walletAddress, hash, param) => void
+  addAbnormalTransactions: (walletAddress, tx) => void
   clearTransactions: () => void
+}
+
+const enum ITxPosition {
+  // desc: have not yet been synchronized to the backend,
+  // status: pending
+  Frontend = 1,
+  // desc: abnormal transactions caught by the frontend, usually receipt.status !==1
+  // status: failed | cancelled
+  Abnormal = 2,
+  // desc: backend data synchronized from the blockchain
+  // status: successful
+  Backend = 3,
+}
+
+const TxPosition = {
+  Frontend: ITxPosition.Frontend,
+  Abnormal: ITxPosition.Abnormal,
+  Backend: ITxPosition.Backend,
+}
+
+const MAX_LIMIT = 1000
+
+interface TimestampTx {
+  hash: string
+  timestamp: number
+  // 1: front tx
+  // 2: abnormal tx -> failed|canceled
+  // 3: successful tx
+  position: ITxPosition
 }
 interface Transaction {
   hash: string
@@ -35,6 +73,10 @@ interface Transaction {
   amount: string
   isL1: boolean
   symbolToken?: string
+  timestamp?: number
+
+  assumedStatus?: string
+  errMsg?: string
 }
 
 const MAX_OFFSET_TIME = 30 * 60 * 1000
@@ -116,6 +158,62 @@ const formatBackTxList = (backList, estimatedTimeMap) => {
   }
 }
 
+// assume > 1h tx occurred an uncatchable error
+const eliminateOvertimeTx = frontList => {
+  return produce(frontList, draft => {
+    draft.forEach(item => {
+      if (!item.assumedStatus && Date.now() - item.timestamp >= 3600000) {
+        item.assumedStatus = TxStatus.failed
+        sentryDebug(`The backend has not synchronized data for this transaction(hash: ${item.hash}) for more than an hour.`)
+      }
+    })
+  }) as any
+}
+
+const detailOrderdTxs = async (pageOrderedTxs, frontTransactions, abnormalTransactions, estimatedTimeMap) => {
+  const needFetchTxs = pageOrderedTxs.filter(item => item.position === TxPosition.Backend).map(item => item.hash)
+
+  let historyList = []
+  let returnedEstimatedTimeMap = estimatedTimeMap
+  if (needFetchTxs.length) {
+    const { data } = await scrollRequest(fetchTxByHashUrl, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ txs: needFetchTxs }),
+    })
+    const { txList, estimatedTimeMap: nextEstimatedTimeMap } = formatBackTxList(data.result, estimatedTimeMap)
+    historyList = txList
+    returnedEstimatedTimeMap = nextEstimatedTimeMap
+  }
+
+  const pageTransactions = pageOrderedTxs
+    .map(({ hash, position }) => {
+      if (position === TxPosition.Backend) {
+        return historyList.find((item: any) => item.hash === hash)
+      } else if (position === TxPosition.Abnormal) {
+        return abnormalTransactions.find(item => item.hash === hash)
+      }
+      return frontTransactions.find(item => item.hash === hash)
+    })
+    .filter(item => item) // TODO: fot test
+  return { pageTransactions, estimatedTimeMap: returnedEstimatedTimeMap }
+}
+
+const maxLengthAccount = (orderedTxDB: OrderedTxDB) => {
+  const briefList = Object.entries(orderedTxDB).map(([key, value]) => [key, value.length])
+  let maxLength = 0
+  let address
+  for (let i = 0; i < briefList.length; i++) {
+    if (briefList[i][1] > maxLength) {
+      maxLength = briefList[i][1] as number
+      address = briefList[i][0]
+    }
+  }
+  return address
+}
+
 const useTxStore = create<TxStore>()(
   persist(
     (set, get) => ({
@@ -124,35 +222,27 @@ const useTxStore = create<TxStore>()(
       // { hash: estimatedEndTime }
       estimatedTimeMap: {},
       frontTransactions: [],
+      abnormalTransactions: [],
       loading: false,
-      // frontTransactions + backendTransactions.slice(0, 2)
-      transactions: [],
+      orderedTxDB: {},
       pageTransactions: [],
       // when user send a transaction
       addTransaction: newTx =>
         set(state => ({
           frontTransactions: [newTx, ...state.frontTransactions],
-          transactions: [newTx, ...state.transactions],
         })),
       // wait transaction success in from network
-      updateTransaction: (oldTx, updateOpts) =>
+      updateTransaction: (txHash, updateOpts) =>
         set(
           produce(state => {
-            const frontTx = state.frontTransactions.find(item => item.hash === oldTx.hash)
+            const frontTx = state.frontTransactions.find(item => item.hash === txHash)
             if (frontTx) {
               for (const key in updateOpts) {
                 frontTx[key] = updateOpts[key]
               }
             }
-            // for stay on "recent tx" page
-            const recentTx = state.transactions.find(item => item.hash === oldTx.hash)
-            if (recentTx) {
-              for (const key in updateOpts) {
-                recentTx[key] = updateOpts[key]
-              }
-            }
             // for keep "bridge history" open
-            const pageTx = state.pageTransactions.find(item => item.hash === oldTx.hash)
+            const pageTx = state.pageTransactions.find(item => item.hash === txHash)
             if (pageTx) {
               for (const key in updateOpts) {
                 pageTx[key] = updateOpts[key]
@@ -170,91 +260,140 @@ const useTxStore = create<TxStore>()(
 
       // polling transactions
       // slim frontTransactions and keep the latest 3 backTransactions
-      generateTransactions: historyList => {
+      generateTransactions: (walletAddress, historyList) => {
+        const { frontTransactions, estimatedTimeMap: preEstimatedTimeMap, orderedTxDB, pageTransactions } = get()
         const realHistoryList = historyList.filter(item => item)
+
+        const untimedFrontList = eliminateOvertimeTx(frontTransactions)
+
         if (realHistoryList.length) {
-          const { txList: formattedHistoryList, estimatedTimeMap } = formatBackTxList(realHistoryList, get().estimatedTimeMap)
+          const { txList: formattedHistoryList, estimatedTimeMap } = formatBackTxList(realHistoryList, preEstimatedTimeMap)
           const formattedHistoryListHash = formattedHistoryList.map(item => item.hash)
           const formattedHistoryListMap = Object.fromEntries(formattedHistoryList.map(item => [item.hash, item]))
-          const frontListHash = get().frontTransactions.map(item => item.hash)
-          const pendingFrontList = get().frontTransactions.filter(item => !formattedHistoryListHash.includes(item.hash))
-          const pendingFrontListHash = pendingFrontList.map(item => item.hash)
-          const nextTransactions = get()
-            .frontTransactions.map(item => {
-              if (pendingFrontListHash.includes(item.hash)) {
-                return item
-              }
-              return formattedHistoryListMap[item.hash]
-            })
-            .concat(formattedHistoryList.filter(item => !frontListHash.includes(item.hash)))
+          const pendingFrontList = untimedFrontList.filter(item => !formattedHistoryListHash.includes(item.hash))
 
-          const refreshPageTransaction = get().pageTransactions.map(item => {
+          const refreshPageTransaction = pageTransactions.map(item => {
             if (formattedHistoryListMap[item.hash]) {
               return formattedHistoryListMap[item.hash]
             }
             return item
           })
+
+          const failedFrontTransactionListHash = untimedFrontList.filter(item => item.assumedStatus === TxStatus.failed).map(item => item.hash)
+          const refreshOrderedDB = produce(orderedTxDB, draft => {
+            draft[walletAddress].forEach(item => {
+              if (formattedHistoryListHash.includes(item.hash)) {
+                item.position = TxPosition.Backend
+              } else if (failedFrontTransactionListHash.includes(item.hash)) {
+                item.position = TxPosition.Abnormal
+              }
+            })
+          })
+
           set({
-            transactions: nextTransactions.slice(0, 2),
             frontTransactions: pendingFrontList,
             pageTransactions: refreshPageTransaction,
             estimatedTimeMap,
+            orderedTxDB: refreshOrderedDB,
+          })
+        } else {
+          set({
+            frontTransactions: untimedFrontList,
           })
         }
-      },
-      clearTransactions: () => {
-        set({
-          frontTransactions: [],
-          transactions: [],
-          pageTransactions: [],
-          estimatedTimeMap: {},
-          page: 1,
-          total: 0,
-        })
       },
 
       // page transactions
       comboPageTransactions: async (address, page, rowsPerPage) => {
-        const frontTransactions = get().frontTransactions
+        const { orderedTxDB, frontTransactions, abnormalTransactions, estimatedTimeMap } = get()
+        const orderedTxs = orderedTxDB[address] ?? []
         set({ loading: true })
-        const offset = (page - 1) * rowsPerPage
-        // const offset = gap > 0 ? gap : 0;
-        if (frontTransactions.length >= rowsPerPage + offset) {
-          set({
-            pageTransactions: frontTransactions.slice(offset, offset + rowsPerPage),
-            page,
-            loading: false,
-          })
-          return
-        }
-
-        const currentPageFrontTransactions = frontTransactions.slice((page - 1) * rowsPerPage)
-        const gap = (page - 1) * rowsPerPage - frontTransactions.length
-        const relativeOffset = gap > 0 ? gap : 0
-        const limit = rowsPerPage - currentPageFrontTransactions.length
-
-        return scrollRequest(`${fetchTxListUrl}?address=${address}&offset=${relativeOffset}&limit=${limit}`)
-          .then(data => {
-            const { txList: backendTransactions, estimatedTimeMap } = formatBackTxList(data.data.result, get().estimatedTimeMap)
-            set({
-              pageTransactions: [...frontTransactions, ...backendTransactions],
-              total: data.data.total,
-              page,
-              loading: false,
-              estimatedTimeMap,
-            })
-            if (page === 1) {
-              // keep transactions always frontList + the latest two history list
-              set({
-                transactions: [...frontTransactions, ...backendTransactions.slice(0, 2)],
-              })
-            }
-          })
-          .catch(error => {
-            set({ loading: false })
-            return Promise.reject(`${error.status}:${error.message}`)
-          })
+        const pageOrderedTxs = orderedTxs.slice((page - 1) * rowsPerPage, page * rowsPerPage)
+        const { pageTransactions, estimatedTimeMap: nextEstimatedTimeMap } = await detailOrderdTxs(
+          pageOrderedTxs,
+          frontTransactions,
+          abnormalTransactions,
+          estimatedTimeMap,
+        )
+        set({
+          pageTransactions,
+          page,
+          total: orderedTxs.length,
+          loading: false,
+          estimatedTimeMap: nextEstimatedTimeMap,
+        })
       },
+
+      // when connect and disconnect
+      clearTransactions: () => {
+        set({
+          pageTransactions: [],
+          page: 1,
+          total: 0,
+        })
+      },
+      removeFrontTransactions: hash =>
+        set(
+          produce(state => {
+            const frontTxIndex = state.frontTransactions.findIndex(item => item.hash === hash)
+            state.frontTransactions.splice(frontTxIndex, 1)
+          }),
+        ),
+      addAbnormalTransactions: (walletAddress, tx) => {
+        const { abnormalTransactions, orderedTxDB } = get()
+        const orderedTxs = orderedTxDB[walletAddress] ?? []
+        if (storageAvailable("localStorage")) {
+          set({
+            abnormalTransactions: [tx, ...abnormalTransactions],
+          })
+        } else {
+          const abandonedTxHashs = abnormalTransactions.slice(abnormalTransactions.length - 3).map(item => item.hash)
+          set({
+            orderedTxDB: { ...orderedTxDB, [walletAddress]: orderedTxs.filter(item => !abandonedTxHashs.includes(item.hash)) },
+            abnormalTransactions: [tx, ...abnormalTransactions.slice(0, abnormalTransactions.length - 3)],
+          })
+        }
+      },
+
+      updateOrderedTxs: (walletAddress, hash, param) =>
+        set(
+          produce(state => {
+            // position: 1|2|3
+            if (isNumber(param)) {
+              const current = state.orderedTxDB[walletAddress]?.find(item => item.hash === hash)
+              if (current) {
+                current.position = param
+              } else if (
+                storageAvailable("localStorage") &&
+                (!state.orderedTxDB[walletAddress] || state.orderedTxDB[walletAddress].length < MAX_LIMIT)
+              ) {
+                const newRecord = { hash, timestamp: Date.now(), position: param }
+                if (state.orderedTxDB[walletAddress]) {
+                  state.orderedTxDB[walletAddress].unshift(newRecord)
+                } else {
+                  state.orderedTxDB[walletAddress] = [newRecord]
+                }
+              } else {
+                // remove the oldest 3 records
+                const address = maxLengthAccount(state.orderedTxDB)
+                const abandonedTxHashs = state.orderedTxDB[address].slice(state.orderedTxDB[address].length - 3).map(item => item.hash)
+                state.abnormalTransactions = state.abnormalTransactions.filter(item => !abandonedTxHashs.includes(item.hash))
+                state.orderedTxDB[address] = state.orderedTxDB[address].slice(0, state.orderedTxDB[address].length - 3)
+
+                const newRecord = { hash, timestamp: Date.now(), position: param }
+                if (state.orderedTxDB[walletAddress]) {
+                  state.orderedTxDB[walletAddress].unshift(newRecord)
+                } else {
+                  state.orderedTxDB[walletAddress] = [newRecord]
+                }
+              }
+            }
+            // repriced tx
+            else {
+              state.orderedTxDB[walletAddress].find(item => item.hash === hash).hash = param
+            }
+          }),
+        ),
     }),
     {
       name: BRIDGE_TRANSACTIONS,
@@ -262,6 +401,6 @@ const useTxStore = create<TxStore>()(
   ),
 )
 
-export { isValidOffsetTime }
+export { isValidOffsetTime, TxPosition }
 
 export default useTxStore
