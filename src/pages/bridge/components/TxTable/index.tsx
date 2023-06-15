@@ -276,7 +276,7 @@ const TxRow = props => {
 
   const handleClaim = async claimInfo => {
     const contract = new ethers.Contract(
-      "0x5260e38080BFe97e6C4925d9209eCc5f964373b6",
+      "0x326517Eb8eB1Ce5eaB5b513C2e9A24839b402d90",
       L1ScrollMessenger,
       networksAndSigners[chainId as number].signer,
     )
