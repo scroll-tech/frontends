@@ -165,7 +165,6 @@ const TxRow = props => {
 
   const txStatus = useCallback(
     (blockNumber, isL1, to, toBlockNumber = undefined) => {
-      console.log(blockNumber, blockNumbers)
       if (!blockNumber || !blockNumbers) {
         return "Pending"
       }
@@ -233,7 +232,7 @@ const TxRow = props => {
   }
 
   const renderClaimButton = tx => {
-    if (tx.isL1 || tx.finalizeTx) return null
+    if (tx.isL1 || !tx.isClaimed) return null
 
     const isOnScrollLayer1 = chainId === ChainId.SCROLL_LAYER_1
     if (tx.isFinalized) {
@@ -281,13 +280,18 @@ const TxRow = props => {
       L1ScrollMessenger,
       networksAndSigners[chainId as number].signer,
     )
-    const { from, to, value, nonce, message, proof } = claimInfo
+    const { from, to, value, nonce, message, proof, batch_hash } = claimInfo
     try {
       setLoading(true)
-      const tx = await contract.relayMessageWithProof(from, to, value, nonce, message, proof)
+      const tx = await contract.relayMessageWithProof(from, to, value, nonce, message, {
+        batchHash: batch_hash,
+        merkleProof: "0x" + proof,
+      })
       await tx.wait()
       console.log("Transaction hash:", tx.hash)
     } catch (error) {
+      console.log(error)
+      alert(error)
       setLoading(false)
     }
   }

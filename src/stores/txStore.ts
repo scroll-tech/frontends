@@ -123,6 +123,7 @@ const formatBackTxList = async (backList, estimatedTimeMap) => {
         symbolToken: tx.isL1 ? tx.l1Token : tx.l2Token,
         isFinalized: isFinalized,
         claimInfo: tx.claimInfo,
+        isClaimed: tx.finalizeTx?.hash,
       }
     }),
   )
