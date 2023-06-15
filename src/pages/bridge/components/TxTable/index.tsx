@@ -232,7 +232,7 @@ const TxRow = props => {
   }
 
   const renderClaimButton = tx => {
-    if (tx.isL1 || !tx.isClaimed) return null
+    if (tx.isL1 || tx.isClaimed) return null
 
     const isOnScrollLayer1 = chainId === ChainId.SCROLL_LAYER_1
     if (tx.isFinalized) {
