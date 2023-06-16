@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react"
 import { Alert, Box, Snackbar } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
-import { ecosystemListHashUrl, ecosystemListLogoUrl } from "@/apis/ecosystem"
+import { ecosystemListHashUrl } from "@/apis/ecosystem"
 import LoadingButton from "@/components/LoadingButton"
 import LoadingPage from "@/components/LoadingPage"
 import { DIVERGENT_CATEGORY_MAP } from "@/constants"
@@ -53,6 +53,14 @@ const Gallery = props => {
       })
   }, [page])
 
+  // TODO: for test, remove later
+  // const hasMore = true
+  // useEffect(() => {
+  //   if ((ecosystemList.slice(-1)[0] as any)?.isLastOne) {
+  //     setPage(1)
+  //   }
+  // }, [ecosystemList])
+
   const hasMore = useMemo(() => {
     if (!ecosystemList.length) {
       return false
@@ -77,13 +85,13 @@ const Gallery = props => {
   }
   return (
     <>
-      {loading && page === 1 ? (
+      {loading && !ecosystemList.length ? (
         <LoadingPage height="60vh"></LoadingPage>
       ) : (
         <>
           <Container>
             {filteredEcosystemList?.map((item: any) => (
-              <GalleryItem key={item.name} logoBaseUrl={ecosystemListLogoUrl} item={item}></GalleryItem>
+              <GalleryItem key={item.name} item={item}></GalleryItem>
             ))}
             <Snackbar open={!!errorMsg} autoHideDuration={6000} onClose={handleClose}>
               <Alert severity="error" onClose={handleClose}>
