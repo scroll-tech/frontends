@@ -10,11 +10,3 @@ export enum GasLimit {
   WITHDRAW_ETH = 16e4,
   WITHDRAW_ERC20 = 32e4,
 }
-
-export enum TxStatus {
-  success = "Success",
-  pending = "Pending",
-  failed = "Failed",
-  canceled = "Canceled",
-  empty = "N/A",
-}

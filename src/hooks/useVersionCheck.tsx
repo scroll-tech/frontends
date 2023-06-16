@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useLocalStorage } from "react-use"
 
 import { requireEnv } from "@/utils"
-import { APP_VERSION, BRIDGE_TRANSACTIONS } from "@/utils/storageKey"
+import { APP_VERSION } from "@/utils/storageKey"
 
 type Semver = {
   major: number
@@ -29,11 +29,7 @@ export const VersionChecker = ({ children }: any) => {
   useEffect(() => {
     const currentVersion = requireEnv("REACT_APP_VERSION")
     if (isMajorOrMinorBumped(oldVersion as string, currentVersion)) {
-      const bridgeTxs = localStorage.getItem(BRIDGE_TRANSACTIONS)
       localStorage.clear()
-      if (bridgeTxs?.includes("orderedTxDB")) {
-        localStorage.setItem(BRIDGE_TRANSACTIONS, bridgeTxs)
-      }
     }
     setVersion(currentVersion)
     setVersionMatched(true)
