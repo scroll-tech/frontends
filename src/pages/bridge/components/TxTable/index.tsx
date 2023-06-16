@@ -46,7 +46,7 @@ const useStyles = makeStyles()(theme => {
     tableWrapper: {
       boxShadow: "unset",
       border: `1px solid ${theme.palette.border.main}`,
-      width: "70rem",
+      width: "74rem",
     },
     tableTitle: {
       marginTop: "2.8rem",
@@ -76,6 +76,10 @@ const useStyles = makeStyles()(theme => {
       backgroundColor: theme.palette.tagWarning.light,
     },
     successChip: {
+      color: theme.palette.tagSuccess.main,
+      backgroundColor: theme.palette.tagSuccess.light,
+    },
+    claimedChip: {
       color: theme.palette.tagSuccess.main,
       backgroundColor: theme.palette.tagSuccess.light,
     },
@@ -112,7 +116,7 @@ const TxTable = (props: any) => {
           <Table aria-label="Tx Table">
             <TableHead className={classes.tableHeader}>
               <TableRow>
-                <TableCell></TableCell>
+                <TableCell>Claimed</TableCell>
                 <TableCell>Amount</TableCell>
                 <TableCell>Status</TableCell>
                 <TableCell>Txn Hash</TableCell>
@@ -233,7 +237,10 @@ const TxRow = props => {
   }
 
   const renderClaimButton = tx => {
-    if (tx.isL1 || tx.isClaimed) return null
+    if (tx.isL1) return null
+    if (tx.isClaimed) {
+      return <Chip label="Claimed" className={cx(classes.chip, classes.claimedChip)} />
+    }
 
     const isOnScrollLayer1 = chainId === ChainId.SCROLL_LAYER_1
     if (tx.isFinalized) {
