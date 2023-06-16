@@ -30,6 +30,7 @@ import { useApp } from "@/contexts/AppContextProvider"
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import useTokenInfo from "@/hooks/useTokenInfo"
 import useTxStore from "@/stores/txStore"
+import { requireEnv } from "@/utils"
 import { toTokenDisplay } from "@/utils"
 import { generateExploreLink, switchNetwork, truncateHash } from "@/utils"
 
@@ -275,11 +276,7 @@ const TxRow = props => {
   }
 
   const handleClaim = async claimInfo => {
-    const contract = new ethers.Contract(
-      "0x326517Eb8eB1Ce5eaB5b513C2e9A24839b402d90",
-      L1ScrollMessenger,
-      networksAndSigners[chainId as number].signer,
-    )
+    const contract = new ethers.Contract(requireEnv("REACT_APP_L1_SCROLL_MESSENGER"), L1ScrollMessenger, networksAndSigners[chainId as number].signer)
     const { from, to, value, nonce, message, proof, batch_hash } = claimInfo
     try {
       setLoading(true)

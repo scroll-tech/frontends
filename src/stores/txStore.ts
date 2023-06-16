@@ -42,6 +42,24 @@ const MAX_OFFSET_TIME = 30 * 60 * 1000
 
 const isValidOffsetTime = offsetTime => offsetTime < MAX_OFFSET_TIME
 
+const isTransactionFinalized = async transaction => {
+  if (transaction.isL1) {
+    return false
+  }
+
+  try {
+    const { batch_index } = await scrollRequest(`${searchUrl}?keyword=${transaction.blockNumber}`)
+    if (batch_index !== -1) {
+      const rollupStatus = await scrollRequest(`${fetchBatchDetailUrl}?index=${batch_index}`)
+      return rollupStatus === "finalized" || rollupStatus === "skipped"
+    }
+  } catch (error) {
+    console.error("An error occurred while checking transaction status:", error)
+  }
+
+  return false
+}
+
 const formatBackTxList = async (backList, estimatedTimeMap) => {
   const nextEstimatedTimeMap = { ...estimatedTimeMap }
   const blockNumbers = readItem(localStorage, BLOCK_NUMBERS)
@@ -56,9 +74,7 @@ const formatBackTxList = async (backList, estimatedTimeMap) => {
       const toName = networks[+tx.isL1].name
       const toExplore = networks[+tx.isL1].explorer
       const toHash = tx.finalizeTx?.hash
-      let isFinalized = false
-
-      // await ;
+      let isFinalized
 
       // 1. have no time to compute fromEstimatedEndTime
       // 2. compute toEstimatedEndTime from backend data
@@ -79,12 +95,7 @@ const formatBackTxList = async (backList, estimatedTimeMap) => {
         }
       } else {
         if (!tx.isL1) {
-          const { batch_index } = await scrollRequest(`${searchUrl}?keyword=${tx.blockNumber}`)
-          const {
-            batch: { rollup_status },
-          } = await scrollRequest(`${fetchBatchDetailUrl}?index=${batch_index}`)
-          console.log("rollup_status", rollup_status)
-          isFinalized = rollup_status === "finalized" || rollup_status === "skipped"
+          isFinalized = await isTransactionFinalized(tx)
         }
 
         if (
