@@ -1,10 +1,13 @@
-import { useCallback, useMemo } from "react"
+import { ethers } from "ethers"
+import { useCallback, useMemo, useState } from "react"
 import Countdown from "react-countdown"
 import { makeStyles } from "tss-react/mui"
 
 import InfoIcon from "@mui/icons-material/Info"
 import {
   Box,
+  Button,
+  Chip,
   CircularProgress,
   LinearProgress,
   Pagination,
@@ -21,12 +24,16 @@ import {
   Typography,
 } from "@mui/material"
 
+import L1ScrollMessenger from "@/assets/abis/L1ScrollMessenger.json"
 import Link from "@/components/Link"
 import { TX_STATUS } from "@/constants"
+import { CHAIN_ID } from "@/constants/common"
 import { useApp } from "@/contexts/AppContextProvider"
+import { useWeb3Context } from "@/contexts/Web3ContextProvider"
 import useTokenInfo from "@/hooks/useTokenInfo"
 import useTxStore from "@/stores/txStore"
-import { generateExploreLink, toTokenDisplay, truncateHash } from "@/utils"
+import { generateExploreLink, switchNetwork, toTokenDisplay, truncateHash } from "@/utils"
+import { requireEnv } from "@/utils"
 
 import StatusChip from "./StatusChip"
 
@@ -42,7 +49,7 @@ const useStyles = makeStyles()(theme => {
     tableWrapper: {
       boxShadow: "unset",
       border: `1px solid ${theme.palette.border.main}`,
-      width: "70rem",
+      width: "74rem",
     },
     tableTitle: {
       marginTop: "2.8rem",
@@ -57,6 +64,27 @@ const useStyles = makeStyles()(theme => {
       ".MuiTableCell-head": {
         borderBottom: "unset",
       },
+    },
+    claimButton: {
+      width: "10.2rem",
+    },
+    chip: {
+      width: "12.6rem",
+      height: "3.8rem",
+      fontSize: "1.6rem",
+      fontWeight: 500,
+    },
+    pendingChip: {
+      color: theme.palette.tagWarning.main,
+      backgroundColor: theme.palette.tagWarning.light,
+    },
+    successChip: {
+      color: theme.palette.tagSuccess.main,
+      backgroundColor: theme.palette.tagSuccess.light,
+    },
+    claimedChip: {
+      color: theme.palette.tagSuccess.main,
+      backgroundColor: theme.palette.tagSuccess.light,
     },
     pagination: {
       ".MuiPaginationItem-text": {
@@ -78,7 +106,6 @@ const useStyles = makeStyles()(theme => {
 
 const TxTable = (props: any) => {
   const { data, pagination, loading } = props
-
   const { classes } = useStyles()
 
   const handleChangePage = (e, newPage) => {
@@ -92,8 +119,9 @@ const TxTable = (props: any) => {
           <Table aria-label="Tx Table">
             <TableHead className={classes.tableHeader}>
               <TableRow>
-                <TableCell>Status</TableCell>
+                <TableCell>Claimed</TableCell>
                 <TableCell>Amount</TableCell>
+                <TableCell>Status</TableCell>
                 <TableCell>Txn Hash</TableCell>
               </TableRow>
             </TableHead>
@@ -131,6 +159,12 @@ const TxTable = (props: any) => {
 const TxRow = props => {
   const { tx } = props
   const { estimatedTimeMap } = useTxStore()
+  const { networksAndSigners } = useApp()
+  const { chainId } = useWeb3Context()
+  const [claimButtonLabel, setClaimButtonLabel] = useState("Claim")
+  const { classes, cx } = useStyles()
+
+  const [loading, setLoading] = useState(false)
 
   const {
     txHistory: { blockNumbers },
@@ -192,8 +226,89 @@ const TxRow = props => {
     )
   }
 
+  const handleSwitchNetwork = async (chainId: number) => {
+    try {
+      // cancel switch network in MetaMask would not throw error and the result is null just like successfully switched
+      await switchNetwork(chainId)
+    } catch (error) {
+      // when there is a switch-network popover in MetaMask and refreshing page would throw an error
+      console.log(error, "error")
+    }
+  }
+
+  const renderClaimButton = tx => {
+    if (tx.isL1) return null
+    if (tx.isClaimed) {
+      return <Chip label="Claimed" className={cx(classes.chip, classes.claimedChip)} />
+    }
+
+    const isOnScrollLayer1 = chainId === CHAIN_ID.SCROLL_LAYER_1
+    if (tx.isFinalized) {
+      if (isOnScrollLayer1) {
+        return (
+          <Button className={classes.claimButton} onClick={() => handleClaim(tx.claimInfo)} disabled={loading} color="primary" variant="contained">
+            Claim {loading ? <CircularProgress size={16} sx={{ position: "absolute", right: "0.8rem" }} color="inherit" /> : null}
+          </Button>
+        )
+      } else {
+        return (
+          <Tooltip placement="top" title="Please connect to the L1 network to claim your withdrawal.">
+            <Box>
+              <Button
+                className={classes.claimButton}
+                onMouseEnter={() => setClaimButtonLabel("Switch")}
+                onMouseLeave={() => setClaimButtonLabel("Claim")}
+                onClick={() => handleSwitchNetwork(CHAIN_ID.SCROLL_LAYER_1)}
+              >
+                {claimButtonLabel}
+              </Button>
+            </Box>
+          </Tooltip>
+        )
+      }
+    } else {
+      return (
+        <Tooltip
+          placement="top"
+          title="Our provers are still finalizing your transaction on Scroll ALPHA Testnet, when it has finalized you can come back and claim your transaction. This usually takes 1-4 hours after your transaction has been submitted on the bridge."
+        >
+          <Box>
+            <Button className={classes.claimButton} disabled>
+              Claim
+            </Button>
+          </Box>
+        </Tooltip>
+      )
+    }
+  }
+
+  const handleClaim = async claimInfo => {
+    const contract = new ethers.Contract(requireEnv("REACT_APP_L1_SCROLL_MESSENGER"), L1ScrollMessenger, networksAndSigners[chainId as number].signer)
+    const { from, to, value, nonce, message, proof, batch_hash } = claimInfo
+    try {
+      setLoading(true)
+      const tx = await contract.relayMessageWithProof(from, to, value, nonce, message, {
+        batchHash: batch_hash,
+        merkleProof: "0x" + proof,
+      })
+      await tx.wait()
+      console.log("Transaction hash:", tx.hash)
+    } catch (error) {
+      console.log(error)
+      alert(error)
+      setLoading(false)
+    }
+  }
+
   return (
     <TableRow key={tx.hash}>
+      <TableCell>{renderClaimButton(tx)}</TableCell>
+      <TableCell>
+        <Typography>
+          <span>{txAmount(tx.amount)} </span>
+          {tokenInfoLoading ? <Skeleton variant="text" width="5rem" className="inline-block" /> : <span>{tokenInfo.symbol}</span>}
+        </Typography>
+      </TableCell>
       <TableCell>
         <Stack direction="column" spacing="1.4rem">
           {blockNumbers ? (
@@ -220,12 +335,6 @@ const TxRow = props => {
             </>
           )}
         </Stack>
-      </TableCell>
-      <TableCell>
-        <Typography>
-          <span>{txAmount(tx.amount)} </span>
-          {tokenInfoLoading ? <Skeleton variant="text" width="5rem" className="inline-block" /> : <span>{tokenInfo.symbol}</span>}
-        </Typography>
       </TableCell>
       <TableCell sx={{ width: "30rem" }}>
         <Stack direction="column">

@@ -1,9 +1,11 @@
 import { useEffect, useRef } from "react"
 
-import { Button, CircularProgress } from "@mui/material"
+import { Button, CircularProgress, Typography } from "@mui/material"
+import { styled } from "@mui/system"
 
 import { ReactComponent as HistoryIcon } from "@/assets/svgs/history.svg"
 import ButtonPopover from "@/components/ButtonPopover"
+import Link from "@/components/Link"
 import PageHeader from "@/components/PageHeader"
 import { NETWORKS } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
@@ -11,6 +13,19 @@ import useBridgeStore from "@/stores/bridgeStore"
 import useTxStore from "@/stores/txStore"
 
 import TransactionsList from "./TransactionHistory"
+
+const StyledLink = styled(Link)(({ theme }) => ({
+  color: "#595959",
+  textDecoration: "underline",
+  "&:hover": {
+    opacity: 0.85,
+  },
+}))
+
+const Title = styled(Typography)(({ theme }) => ({
+  fontSize: "2.4rem",
+  fontWeight: 600,
+}))
 
 const Header = () => {
   const {
@@ -46,7 +61,14 @@ const Header = () => {
           <ButtonPopover
             open={historyVisible}
             anchorEl={buttonRef.current}
-            title={<>Recent Bridge Transactions {loading && <CircularProgress size={22} />}</>}
+            title={
+              <>
+                <Title>Recent Bridge Transactions {loading && <CircularProgress size={22} />}</Title>
+                <StyledLink target="_blank" href="http://localhost:3000/bridge#end" rel="noopener noreferrer">
+                  What’s happening with my transaction?{" "}
+                </StyledLink>
+              </>
+            }
             onClose={handleClose}
           >
             <TransactionsList></TransactionsList>
