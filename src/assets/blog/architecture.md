@@ -67,7 +67,7 @@ Putting all of these together, Scroll is able to execute native EVM bytecode on 
 
 ## Learn more
 
-We have designed Scroll’s architecture to align with our [vision and values](https://mirror.xyz/scroll.eth/EYn7ODhQAnNWABwWcu5xZLts_wEXTZAEWyTgExGS1DA) and our [technical principles](https://mirror.xyz/scroll.eth/N7cAie4ul0PdSxNdv2FTqgMV2JEkhOJocsxfeqe4SFE). In upcoming articles, we explain how Scroll will use this architecture to provide a more scalable user and developer experience on Ethereum. Stay tuned to learn more, and sign up to try out our pre-alpha testnet at [signup.scroll.io](http://signup.scroll.io/)!
+We have designed Scroll’s architecture to align with our [vision and values](https://mirror.xyz/scroll.eth/EYn7ODhQAnNWABwWcu5xZLts_wEXTZAEWyTgExGS1DA) and our [technical principles](https://mirror.xyz/scroll.eth/N7cAie4ul0PdSxNdv2FTqgMV2JEkhOJocsxfeqe4SFE). In upcoming articles, we explain how Scroll will use this architecture to provide a more scalable user and developer experience on Ethereum. Stay tuned to learn more, and sign up to try out our pre-alpha testnet at [scroll.io](http://scroll.io/)!
 
 If our vision of scaling Ethereum in an open and community-driven way resonates with you, we are looking for values-aligned individuals to help Scroll become the most developer- and user-friendly scaling solution for Ethereum.
 
