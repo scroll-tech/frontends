@@ -109,6 +109,7 @@ const Send: FC = () => {
   const handleTotalBonderFeeDisplay = async () => {
     if (networksAndSigners[fromNetwork.chainId]?.signer) {
       const fee = await getPriceFee(fromToken, fromNetwork.isLayer1)
+
       const display = fromTokenAmount ? toTokenDisplay(fee) + " " + ETH_SYMBOL : "-"
       setTotalBonderFeeDisplay(display)
     }
@@ -213,6 +214,8 @@ const Send: FC = () => {
       return false
     }
   }, [fromNetwork, fromToken, fromTokenAmount, checkApproval])
+
+  console.log(needsApproval, "needsApproval")
 
   const approveFromToken = async () => {
     // eslint-disable-next-line

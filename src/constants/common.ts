@@ -10,4 +10,9 @@ export const RPCUrl = {
   SCROLL_LAYER_2: requireEnv("REACT_APP_EXTERNAL_RPC_URI_L2"),
 }
 
+export const BLOCK_EXPLORER = {
+  [ChainId.SCROLL_LAYER_1]: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1"),
+  [ChainId.SCROLL_LAYER_2]: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2"),
+}
+
 export const ETH_SYMBOL = requireEnv("REACT_APP_ETH_SYMBOL")

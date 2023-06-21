@@ -20,6 +20,11 @@ const navigations = [
             href: "/bridge",
           },
           {
+            label: "NFT Bridge",
+            key: "nft-bridge",
+            href: "/nft-bridge",
+          },
+          {
             label: "Ecosystem",
             key: "ecosystem",
             href: "/ecosystem",

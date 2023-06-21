@@ -12,6 +12,12 @@ const StandardERC20GatewayProxyAddr = {
 const GatewayRouterProxyAddr = {
   [ChainId.SCROLL_LAYER_1]: requireEnv("REACT_APP_L1_GATEWAY_ROUTER_PROXY_ADDR"),
   [ChainId.SCROLL_LAYER_2]: requireEnv("REACT_APP_L2_GATEWAY_ROUTER_PROXY_ADDR"),
+
+  [`${ChainId.SCROLL_LAYER_1}_721`]: requireEnv("REACT_APP_L1_ERC721_GATEWAY_PROXY_ADDR"),
+  [`${ChainId.SCROLL_LAYER_2}_721`]: requireEnv("REACT_APP_L2_ERC721_GATEWAY_PROXY_ADDR"),
+
+  [`${ChainId.SCROLL_LAYER_1}_1155`]: requireEnv("REACT_APP_L1_ERC1155_GATEWAY_PROXY_ADDR"),
+  [`${ChainId.SCROLL_LAYER_2}_1155`]: requireEnv("REACT_APP_L2_ERC1155_GATEWAY_PROXY_ADDR"),
 }
 
 export { StandardERC20GatewayProxyAddr, GatewayRouterProxyAddr }

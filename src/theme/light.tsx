@@ -98,7 +98,7 @@ const lightTheme = createTheme({
             borderColor: paletteOptions.primary.main,
             color: paletteOptions.primary.main,
             backgroundColor: paletteOptions.background.default,
-            width: "21.5rem",
+            // width: "21.5rem",
             "&:hover": {
               backgroundColor: paletteOptions.background.default,
               borderColor: paletteOptions.primary.main,
