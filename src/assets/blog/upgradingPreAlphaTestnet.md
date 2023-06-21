@@ -16,7 +16,7 @@ The upgraded Pre-Alpha Testnet will be the first chance for early developers to 
 
 ## How can I sign up and learn more?
 
-While testnet registration is open to anyone, we are permissioning access at this stage as we improve our proving algorithm and scale our proving cluster. Sign up at [signup.scroll.io](http://signup.scroll.io/) for testnet access as we actively work to scale this up and support more users. Meanwhile, we are excited to open the sign up for developers to get early support at [scroll.io/early-dev](http://scroll.io/early-dev)! Tell us a bit more about yourself and your projects to get prioritized.
+While testnet registration is open to anyone, we are permissioning access at this stage as we improve our proving algorithm and scale our proving cluster. Sign up at [scroll.io](http://scroll.io/) for testnet access as we actively work to scale this up and support more users. Meanwhile, we are excited to open the sign up for developers to get early support at [scroll.io/early-dev](http://scroll.io/early-dev)! Tell us a bit more about yourself and your projects to get prioritized.
 
 - If you already have access, check out our new contract deployment [doc](https://guide.scroll.io/developers/contract-deployment-tutorial) and sample deploy [repo](https://github.com/scroll-tech/scroll-contract-deploy-demo). We have one line deploy scripts using Hardhat and Foundry ready for you to try!
 
@@ -38,7 +38,7 @@ As we move step by step towards an eventual mainnet release, we will enable succ
 
 ## Join us
 
-To become an early tester or contributor, sign up to try out our Pre-Alpha Testnet at [signup.scroll.io](http://signup.scroll.io/). In the meantime, if our vision of scaling Ethereum in an open and community-driven way resonates with you, we are looking for values-aligned individuals to help Scroll become the most developer- and user-friendly scaling solution for Ethereum.
+To become an early tester or contributor, sign up to try out our Pre-Alpha Testnet at [scroll.io](http://scroll.io/). In the meantime, if our vision of scaling Ethereum in an open and community-driven way resonates with you, we are looking for values-aligned individuals to help Scroll become the most developer- and user-friendly scaling solution for Ethereum.
 
 - If you are a ZK researcher, ZKP, Go or Solidity developer, or GPU engineer, we are working on many interesting technical challenges at the edge of what’s possible. Come build cutting-edge solutions to these problems with us in the open!
 

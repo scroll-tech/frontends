@@ -60,7 +60,7 @@ As we approach the first production version of our zkEVM, we continue to focus o
 
 ## Tying it all together
 
-The technical principles outlined in this article have led Scroll to a protocol design which aligns with the existing Ethereum community and provides a scaling path for the future billions of users who are not yet on-chain. In the next few weeks, we will release more posts with concrete details about Scroll’s architecture and the corresponding user and developer experience. Stay tuned to learn more about those and sign up to try out our pre-alpha testnet at [signup.scroll.io](http://signup.scroll.io/)!
+The technical principles outlined in this article have led Scroll to a protocol design which aligns with the existing Ethereum community and provides a scaling path for the future billions of users who are not yet on-chain. In the next few weeks, we will release more posts with concrete details about Scroll’s architecture and the corresponding user and developer experience. Stay tuned to learn more about those and sign up to try out our pre-alpha testnet at [scroll.io](http://scroll.io/)!
 
 If our vision of scaling Ethereum in an open and community-driven way resonates with you, we are looking for values-aligned individuals to help Scroll become the most developer- and user-friendly scaling solution for Ethereum.
 
