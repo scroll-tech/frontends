@@ -1,5 +1,3 @@
-import { useRef } from "react"
-
 import { Button as MuiButton, Stack, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
@@ -15,18 +13,18 @@ const Button = styled(MuiButton)<any>(
   `,
 )
 
-const Header = () => {
-  const isMobile = useIsMobile()
+const typeformLink = "https://scrollzkp.typeform.com/buildwithscroll"
 
-  const typeformLinkRef = useRef("https://scrollzkp.typeform.com/buildwithscroll")
+const Header = () => {
+  const { isMobileView } = useIsMobile()
 
   return (
     <PageHeader title="Scroll Ecosystem">
-      {isMobile ? (
+      {isMobileView ? (
         <>
           <Typography color="textSecondary" sx={{ fontSize: "1.2rem", lineHeight: "1.4rem", fontFamily: "Inter" }}>
             Want to join the Scroll ecosystem?{" "}
-            <Link external href={typeformLinkRef.current} sx={{ color: "primary.main", fontSize: "inherit" }}>
+            <Link external href={typeformLink} sx={{ color: "primary.main", fontSize: "inherit" }}>
               Contact us
             </Link>
           </Typography>
@@ -43,7 +41,7 @@ const Header = () => {
             Want to join the Scroll ecosystem?
           </Typography>
           <Stack direction="row" spacing={4} sx={{ mt: "3rem" }} justifyContent="center">
-            <Button variant="contained" href={typeformLinkRef.current} target="_blank">
+            <Button variant="contained" href={typeformLink} target="_blank">
               Contact us
             </Button>
             {/* <Button

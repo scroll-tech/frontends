@@ -9,11 +9,10 @@ import remarkGfm from "remark-gfm"
 import remarkMath from "remark-math"
 
 import { Box, Typography } from "@mui/material"
-import { useTheme } from "@mui/material/styles"
-import useMediaQuery from "@mui/material/useMediaQuery"
 import { styled } from "@mui/system"
 
 import LoadingPage from "@/components/LoadingPage"
+import useIsMobile from "@/hooks/useIsMobile"
 
 import Articles from "./articles"
 import TOC from "./components/tableOfContents"
@@ -92,8 +91,7 @@ const BlogDetail = () => {
     setCurrentBlog(blog)
   }
 
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"))
+  const { isMobileView } = useIsMobile("md")
 
   const getPosterUri = () => {
     return window.location.origin + currentBlog.posterImg
@@ -141,7 +139,7 @@ const BlogDetail = () => {
               </BlogNavbar>
             </Box>
           </BlogContainer>
-          {isMobile ? (
+          {isMobileView ? (
             <Box sx={{ paddingBottom: "6rem" }}>
               <Typography
                 variant="h1"

@@ -1,11 +1,18 @@
+import { isMobile } from "react-device-detect"
+
 import { useTheme } from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
-const useIsMobile = () => {
+// sm, width < 600
+
+const useIsMobile = (breakpoint = "sm") => {
   const theme = useTheme()
-  // width < 600
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
-  return isMobile
+  const isMobileView = useMediaQuery(theme.breakpoints.down(breakpoint))
+
+  return {
+    isMobileView,
+    isMobileDevice: isMobile,
+  }
 }
 
 export default useIsMobile

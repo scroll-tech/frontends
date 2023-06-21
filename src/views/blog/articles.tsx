@@ -1,3 +1,4 @@
+import { useMemo } from "react"
 import { Pagination } from "swiper"
 import { Swiper, SwiperSlide } from "swiper/react"
 
@@ -7,6 +8,7 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 import { styled } from "@mui/system"
 
 import ArticleCard from "@/components/ArticleCard"
+import useIsMobile from "@/hooks/useIsMobile"
 
 const ArticleBox = styled(Box)(
   ({ theme }) => `
@@ -22,24 +24,28 @@ const ArticleBox = styled(Box)(
 
 const Articles = props => {
   const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"))
+  const { isMobileView } = useIsMobile("md")
   const isUnderLarge = useMediaQuery(theme.breakpoints.down("lg"))
-  let slidesPerView = 3
-  if (isMobile) {
-    slidesPerView = 1
-  } else if (isUnderLarge) {
-    slidesPerView = 2
-  }
+
+  const slidesPerView = useMemo(() => {
+    if (isMobileView) {
+      return 1
+    } else if (isUnderLarge) {
+      return 2
+    }
+    return 3
+  }, [isMobileView, isUnderLarge])
+
   return (
     <Swiper
       slidesPerView={slidesPerView}
       spaceBetween={0}
-      centeredSlides={isMobile}
+      centeredSlides={isMobileView}
       pagination={{
         clickable: true,
       }}
       modules={[Pagination]}
-      className={!isMobile ? "wrapper" : ""}
+      className={!isMobileView ? "wrapper" : ""}
     >
       {props.blogs.map(blog => (
         <SwiperSlide key={blog.title}>

@@ -1,12 +1,12 @@
-import { isMobile } from "react-device-detect"
-
 import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import useIsMobile from "@/hooks/useIsMobile"
 
 const useConnectWallet = () => {
   const { connectWallet } = useWeb3Context()
+  const { isMobileDevice } = useIsMobile()
 
   const handleConnectWallet = () => {
-    if (typeof window.ethereum === "undefined" && isMobile) {
+    if (typeof window.ethereum === "undefined" && isMobileDevice) {
       const dappUrl = window.location.href
       if (dappUrl.startsWith("https://")) {
         const url = `https://metamask.app.link/dapp/` + dappUrl.replace("https://", "")
