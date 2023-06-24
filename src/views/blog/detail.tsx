@@ -2,7 +2,7 @@ import { shuffle } from "lodash"
 import { useEffect, useState } from "react"
 import { Helmet } from "react-helmet-async"
 import ReactMarkdown from "react-markdown"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import rehypeKatex from "rehype-katex"
 import rehypeRaw from "rehype-raw"
 import remarkGfm from "remark-gfm"
@@ -47,6 +47,7 @@ const BlogNavbar = styled(Box)(({ theme }) => ({
 }))
 
 const BlogDetail = () => {
+  const navigate = useNavigate()
   const [blog, setBlog] = useState<null | string>(null)
   const [moreBlog, setMoreBlog] = useState<any>([])
   const [currentBlog, setCurrentBlog] = useState<any>({
@@ -77,7 +78,7 @@ const BlogDetail = () => {
           setBlog(text)
         })
     } catch (error) {
-      console.log(error)
+      navigate("/404")
     }
     getMoreBlog()
   }, [])
