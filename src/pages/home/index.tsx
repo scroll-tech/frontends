@@ -3,9 +3,10 @@ import { ReactNode, useState } from "react"
 import { Alert, Snackbar } from "@mui/material"
 
 import PageHeader from "@/components/PageHeader"
-import { addresses, documentation, navigation } from "@/constants/index"
+import { ChainId, documentation, navigation, networks } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useConnectWallet from "@/hooks/useConnectWallet"
+import { switchNetwork } from "@/utils"
 
 import SectionTitle from "./components/sectionTitle"
 
@@ -14,31 +15,17 @@ import SectionTitle from "./components/sectionTitle"
  * @param {temp: any} autoconnect details
  * @returns {ReactElement}
  */
-function AddNetworkButton({ autoconnect, walletName, chainId, onReadd }: any) {
-  /**
-   * Adds network to MetaMask
-   */
+function AddNetworkButton(props) {
+  const { chainId, onReadd } = props
+
+  const { walletName, chainId: currentChainId } = useRainbowContext()
+
   const addToMetaMask = async () => {
-    if (chainId === parseInt(autoconnect.chainId)) {
+    if (currentChainId === chainId) {
       onReadd()
       return
     }
-    try {
-      await window.ethereum.request({
-        method: "wallet_switchEthereumChain",
-        params: [{ chainId: autoconnect.chainId }],
-      })
-    } catch (switchError) {
-      // This error code indicates that the chain has not been added to MetaMask.
-      if (switchError.code === 4902) {
-        try {
-          await window.ethereum.request({
-            method: "wallet_addEthereumChain",
-            params: [autoconnect],
-          })
-        } catch (addError) {}
-      }
-    }
+    await switchNetwork(chainId)
   }
 
   return (
@@ -66,7 +53,7 @@ export default function Home() {
     chainId &&
       setTip(
         <>
-          You are already on <b>{addresses.find(address => address.chainIdDec === chainId)!.network}</b>.
+          You are already on <b>{networks.find(item => item.chainId === chainId)!.name}</b>.
         </>,
       )
   }
@@ -98,14 +85,10 @@ export default function Home() {
                 <ul className="border border-gray-200 rounded-md divide-y divide-gray-200">
                   <li className="pl-3 pr-4 py-3 flex items-center justify-between text-base">
                     <div className="w-0 flex-1 flex items-center">
-                      <span className="ml-2 flex-1 w-0 truncate">{addresses[0].network}</span>
+                      <span className="ml-2 flex-1 w-0 truncate">{networks[0].name}</span>
                     </div>
                     <div className="ml-4 flex-shrink-0">
-                      {walletName ? (
-                        <AddNetworkButton autoconnect={addresses[0].autoconnect} walletName={walletName} chainId={chainId} onReadd={handleReadd} />
-                      ) : (
-                        <ConnectWalletButton />
-                      )}
+                      {walletName ? <AddNetworkButton chainId={ChainId.SCROLL_LAYER_1} onReadd={handleReadd} /> : <ConnectWalletButton />}
                     </div>
                   </li>
                 </ul>
@@ -117,14 +100,10 @@ export default function Home() {
                 <ul className="border border-gray-200 rounded-md divide-y divide-gray-200">
                   <li className="pl-3 pr-4 py-3 flex items-center justify-between text-base">
                     <div className="w-0 flex-1 flex items-center">
-                      <span className="ml-2 flex-1 w-0 truncate">{addresses[1].network}</span>
+                      <span className="ml-2 flex-1 w-0 truncate">{networks[1].name}</span>
                     </div>
                     <div className="ml-4 flex-shrink-0">
-                      {walletName ? (
-                        <AddNetworkButton autoconnect={addresses[1].autoconnect} walletName={walletName} chainId={chainId} onReadd={handleReadd} />
-                      ) : (
-                        <ConnectWalletButton />
-                      )}
+                      {walletName ? <AddNetworkButton chainId={ChainId.SCROLL_LAYER_2} onReadd={handleReadd} /> : <ConnectWalletButton />}
                     </div>
                   </li>
                 </ul>

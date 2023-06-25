@@ -23,7 +23,7 @@ type RainbowContextProps = {
   checkConnectedChainId: (chainId: number) => boolean
 }
 
-const scrollChain: Chain = {
+export const scrollChain: Chain = {
   id: ChainId.SCROLL_LAYER_2,
   name: TESTNET_NAME,
   network: TESTNET_NAME,

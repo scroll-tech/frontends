@@ -6,6 +6,7 @@ import { SiteMap } from "./networks"
 const TESTNET_NAME = "Scroll " + (isProduction ? "Alpha" : requireEnv("REACT_APP_SCROLL_ENVIRONMENT")) + " Testnet"
 
 const addresses = [
+  // TODO: to be removed
   // TODO: Merge with constants/networks
   {
     network: "Goerli Testnet",

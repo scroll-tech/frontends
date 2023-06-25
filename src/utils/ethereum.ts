@@ -1,18 +1,17 @@
-import { addresses } from "@/constants"
+import { getNetwork, getWalletClient } from "@wagmi/core"
 
 export const switchNetwork = async (chainId: number) => {
+  const walletClient = await getWalletClient()
   try {
-    await window.ethereum.request({
-      method: "wallet_switchEthereumChain",
-      params: [{ chainId: "0x" + chainId.toString(16) }],
+    await walletClient?.switchChain({
+      id: chainId,
     })
-    return true
   } catch (error) {
     // 4902 or -32603 mean chain doesn't exist
     if (~error.message.indexOf("wallet_addEthereumChain") || error.code === 4902 || error.code === -32603) {
-      return window.ethereum.request({
-        method: "wallet_addEthereumChain",
-        params: [addresses.find(address => address.chainIdDec === chainId)!.autoconnect],
+      const { chains } = getNetwork()
+      await walletClient?.addChain({
+        chain: chains.find(item => item.id === chainId)!,
       })
     }
   }
