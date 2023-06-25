@@ -10,7 +10,7 @@ import LoadingButton from "@/components/LoadingButton"
 import TextButton from "@/components/TextButton"
 import { ChainId, ERC20Token, ETH_SYMBOL, NativeToken, StandardERC20GatewayProxyAddr, Token, networks } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useApprove, useAsyncMemo, useBalance, useSufficientBalance } from "@/hooks"
 import { usePriceFee } from "@/hooks"
 import { amountToBN, sanitizeNumericalString, switchNetwork } from "@/utils"
@@ -38,7 +38,7 @@ const Send: FC = () => {
   const [estimatedGasCost, setEstimatedGasCost] = useState<undefined | bigint>(undefined)
   const [sendingModalOpen, setSendingModalOpen] = useState(false)
 
-  const { checkConnectedChainId, chainId, walletName, connectWallet } = useWeb3Context()
+  const { checkConnectedChainId, chainId, walletName, connect } = useRainbowContext()
 
   const fromToken = useMemo(
     () => tokenList.find(item => item.chainId === fromNetwork.chainId && item.symbol === tokenSymbol) ?? ({} as any as Token),
@@ -126,7 +126,7 @@ const Send: FC = () => {
   // network->sufficient->tx error
   const warningTip = useMemo(() => {
     if (!walletName) {
-      return <TextButton onClick={connectWallet}>Click here to connect wallet.</TextButton>
+      return <TextButton onClick={connect}>Click here to connect wallet.</TextButton>
     } else if (!isCorrectNetwork) {
       return (
         <>
@@ -153,7 +153,7 @@ const Send: FC = () => {
       )
     }
     return null
-  }, [walletName, connectWallet, isCorrectNetwork, warning, sendError, fromNetwork])
+  }, [walletName, connect, isCorrectNetwork, warning, sendError, fromNetwork])
 
   // Switch the fromNetwork <--> toNetwork
   const handleSwitchDirection = () => {

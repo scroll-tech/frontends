@@ -7,7 +7,7 @@ import { ChainId, ETH_SYMBOL, RPCUrl } from "./common"
 const l1Explorer = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1")
 const l2Explorer = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2")
 
-const TESTNET_NAME = "Scroll " + (isProduction ? "Alpha" : requireEnv("REACT_APP_SCROLL_ENVIRONMENT")) + " Testnet"
+export const TESTNET_NAME = "Scroll " + (isProduction ? "Alpha" : requireEnv("REACT_APP_SCROLL_ENVIRONMENT")) + " Testnet"
 
 export const networks = [
   // TODO: Merge with constants/index.addresses

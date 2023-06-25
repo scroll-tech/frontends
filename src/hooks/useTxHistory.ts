@@ -4,7 +4,7 @@ import useSWR from "swr"
 
 import { fetchTxByHashUrl } from "@/apis/bridge"
 import { BRIDGE_PAGE_SIZE, ChainId } from "@/constants"
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useTxStore from "@/stores/txStore"
 import { BLOCK_NUMBERS } from "@/utils/storageKey"
 
@@ -16,7 +16,7 @@ export interface TxHistory {
 }
 
 const useTxHistory = networksAndSigners => {
-  const { walletCurrentAddress } = useWeb3Context()
+  const { walletCurrentAddress } = useRainbowContext()
   const { pageTransactions, generateTransactions, comboPageTransactions } = useTxStore()
   const [blockNumbers, setBlockNumbers] = useStorage(localStorage, BLOCK_NUMBERS, [-1, -1])
 

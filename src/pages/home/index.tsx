@@ -4,7 +4,7 @@ import { Alert, Snackbar } from "@mui/material"
 
 import PageHeader from "@/components/PageHeader"
 import { addresses, documentation, navigation } from "@/constants/index"
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useConnectWallet from "@/hooks/useConnectWallet"
 
 import SectionTitle from "./components/sectionTitle"
@@ -59,7 +59,7 @@ function ConnectWalletButton() {
 }
 
 export default function Home() {
-  const { walletName, chainId } = useWeb3Context()
+  const { walletName, chainId } = useRainbowContext()
   const [tip, setTip] = useState<ReactNode | null>(null)
 
   const handleReadd = () => {

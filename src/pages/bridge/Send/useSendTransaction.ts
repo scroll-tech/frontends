@@ -4,7 +4,7 @@ import { useMemo, useState } from "react"
 import { ChainId, GasLimit, networks } from "@/constants"
 import { TxStatus } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { usePriceFee } from "@/hooks"
 import useBridgeStore from "@/stores/bridgeStore"
 import useTxStore, { TxPosition, isValidOffsetTime } from "@/stores/txStore"
@@ -17,7 +17,7 @@ export type TransactionHandled = {
 
 export function useSendTransaction(props) {
   const { fromNetwork, fromTokenAmount, setSendError, toNetwork, selectedToken } = props
-  const { walletCurrentAddress } = useWeb3Context()
+  const { walletCurrentAddress } = useRainbowContext()
   const {
     networksAndSigners,
     txHistory: { blockNumbers },

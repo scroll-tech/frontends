@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 
 import { ChainId, GasLimit } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { usePriceFee } from "@/hooks"
 
 export function useEstimateSendTransaction(props) {
@@ -10,7 +10,7 @@ export function useEstimateSendTransaction(props) {
 
   const { networksAndSigners } = useApp()
 
-  const { checkConnectedChainId } = useWeb3Context()
+  const { checkConnectedChainId } = useRainbowContext()
   const { getPriceFee } = usePriceFee()
   const [instance, setInstance] = useState<any>(null)
   // const [instance, setEstimateGas] = useState<any>(null)

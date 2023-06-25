@@ -3,7 +3,7 @@ import { makeStyles } from "tss-react/mui"
 import CloseIcon from "@mui/icons-material/Close"
 import { CircularProgress, Dialog, DialogContent, DialogTitle, IconButton, Typography } from "@mui/material"
 
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
 
 const useStyles = makeStyles()(theme => {
   return {
@@ -18,7 +18,7 @@ const useStyles = makeStyles()(theme => {
 
 const SendLoading = props => {
   const { value, from, to, open, onClose } = props
-  const { walletName } = useWeb3Context()
+  const { walletName } = useRainbowContext()
   const { classes } = useStyles()
 
   return (

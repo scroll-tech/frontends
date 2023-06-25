@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useIsSmartContractWallet, usePriceFee } from "@/hooks"
 import { toTokenDisplay } from "@/utils"
 
@@ -12,7 +12,7 @@ function useSufficientBalance(
   tokenBalance: bigint = BigInt(0),
   isCorrectNetwork?: boolean,
 ) {
-  const { walletCurrentAddress } = useWeb3Context()
+  const { walletCurrentAddress } = useRainbowContext()
   const [sufficientBalance, setSufficientBalance] = useState(false)
   const [warning, setWarning] = useState("")
   const { isSmartContractWallet } = useIsSmartContractWallet()
