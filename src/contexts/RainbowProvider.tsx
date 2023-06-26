@@ -45,7 +45,6 @@ export const scrollChain: Chain = {
   blockExplorers: {
     default: { name: "Blockscout", url: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2") },
   },
-  // testnet: true,
 }
 
 const projectId = requireEnv("REACT_APP_CONNECT_WALLET_PROJECT_ID")
@@ -53,6 +52,7 @@ const projectId = requireEnv("REACT_APP_CONNECT_WALLET_PROJECT_ID")
 const RainbowContext = createContext<RainbowContextProps | undefined>(undefined)
 
 const { chains, publicClient } = configureChains(
+  // ankr
   [goerli, scrollChain],
   [
     publicProvider(),
@@ -66,11 +66,11 @@ const connectors = connectorsForWallets([
   {
     groupName: "Popular",
     wallets: [
+      // TODO: rainbowkit/injectedWallet.ts "Browser Wallet" and "injectedWallet.svg" -> need to detect automaticlly
       injectedWallet({ chains }),
       coinbaseWallet({ appName: "Scroll", chains }),
-      // metamask is belong to injected wallet
+      // TODO: metamask is belong to injected wallet
       metaMaskWallet({ chains, projectId }),
-      // braveWallet({ chains }),
       walletConnectWallet({
         projectId,
         chains,
@@ -101,7 +101,6 @@ function walletClientToSigner(walletClient: WalletClient) {
     ensAddress: chain.contracts?.ensRegistry?.address,
   }
   const provider = new BrowserProvider(transport, network)
-  // const signer = new JsonRpcSigner(provider, account.address)
   return provider
 }
 
@@ -134,11 +133,6 @@ const Web3ContextProvider = props => {
     },
     [isConnected, chain],
   )
-
-  // console.log(walletClient, "walletClient")
-  // console.log(activeConnector, "activeConnector")
-  // console.log(chain, "chain")
-  // console.log(provider, "provider")
 
   return (
     <RainbowContext.Provider
