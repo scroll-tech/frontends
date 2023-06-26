@@ -20,8 +20,7 @@ export const networks = [
     explorer: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1"),
     chainId: ChainId.SCROLL_LAYER_1,
     nativeTokenSymbol: ETH_SYMBOL,
-    isLayer1: true, // TODO: Merge these two
-    isL1: true, // TODO: Merge these two
+    isL1: true,
   },
   {
     name: TESTNET_NAME,
@@ -32,7 +31,6 @@ export const networks = [
     explorer: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2"),
     chainId: ChainId.SCROLL_LAYER_2,
     nativeTokenSymbol: ETH_SYMBOL,
-    isLayer1: false,
     isL1: false,
   },
 ]

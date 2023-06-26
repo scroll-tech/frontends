@@ -9,9 +9,9 @@ import { requireEnv } from "@/utils"
 const usePriceFee = () => {
   const { networksAndSigners } = useApp()
 
-  const getPriceFee = async (token: any, isLayer1: boolean = false) => {
+  const getPriceFee = async (token: any, isL1: boolean = false) => {
     try {
-      if (isLayer1) {
+      if (isL1) {
         const L2GasPriceOracleContract = new ethers.Contract(
           requireEnv("REACT_APP_L2_GAS_PRICE_ORACLE"),
           L2GasPriceOracle,
