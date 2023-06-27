@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react"
 
-import { ChainId } from "@/constants"
+import { CHAIN_ID } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useIsSmartContractWallet, usePriceFee } from "@/hooks"
 import { toTokenDisplay } from "@/utils"
@@ -19,7 +19,7 @@ function useSufficientBalance(
   const { isSmartContractWallet } = useIsSmartContractWallet()
   const { getPriceFee } = usePriceFee()
 
-  const isL1 = useMemo(() => selectedToken.chainId === ChainId.SCROLL_LAYER_1, [selectedToken])
+  const isL1 = useMemo(() => selectedToken.chainId === CHAIN_ID.L1, [selectedToken])
 
   useEffect(() => {
     async function checkEnoughBalance() {

@@ -1,13 +1,29 @@
 import { requireEnv } from "@/utils"
 
-export const ChainId = {
-  SCROLL_LAYER_1: parseInt(requireEnv("REACT_APP_CHAIN_ID_L1") as string),
-  SCROLL_LAYER_2: parseInt(requireEnv("REACT_APP_CHAIN_ID_L2") as string),
-}
-
-export const RPCUrl = {
-  SCROLL_LAYER_1: requireEnv("REACT_APP_EXTERNAL_RPC_URI_L1"),
-  SCROLL_LAYER_2: requireEnv("REACT_APP_EXTERNAL_RPC_URI_L2"),
-}
-
 export const ETH_SYMBOL = requireEnv("REACT_APP_ETH_SYMBOL")
+
+export const CHAIN_ID = {
+  L1: parseInt(requireEnv("REACT_APP_CHAIN_ID_L1") as string),
+  L2: parseInt(requireEnv("REACT_APP_CHAIN_ID_L2") as string),
+}
+
+export const RPC_URL = {
+  L1: requireEnv("REACT_APP_EXTERNAL_RPC_URI_L1"),
+  L2: requireEnv("REACT_APP_EXTERNAL_RPC_URI_L2"),
+}
+
+export const EXPLORER_URL = {
+  L1: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1"),
+  L2: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2"),
+  Unifra: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_UNIFRA"),
+}
+
+export const StandardERC20GatewayProxyAddr = {
+  [CHAIN_ID.L1]: requireEnv("REACT_APP_L1_STANDARD_ERC20_GATEWAY_PROXY_ADDR"),
+  [CHAIN_ID.L2]: requireEnv("REACT_APP_L2_STANDARD_ERC20_GATEWAY_PROXY_ADDR"),
+}
+
+export const GatewayRouterProxyAddr = {
+  [CHAIN_ID.L1]: requireEnv("REACT_APP_L1_GATEWAY_ROUTER_PROXY_ADDR"),
+  [CHAIN_ID.L2]: requireEnv("REACT_APP_L2_GATEWAY_ROUTER_PROXY_ADDR"),
+}

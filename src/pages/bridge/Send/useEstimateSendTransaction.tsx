@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-import { ChainId, GasLimit } from "@/constants"
+import { CHAIN_ID, GasLimit } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { usePriceFee } from "@/hooks"
@@ -18,7 +18,7 @@ export function useEstimateSendTransaction(props) {
   const minimumAmount = BigInt(1)
 
   useEffect(() => {
-    const gateway = networksAndSigners[fromNetwork.isL1 ? ChainId.SCROLL_LAYER_1 : ChainId.SCROLL_LAYER_2].gateway
+    const gateway = networksAndSigners[fromNetwork.isL1 ? CHAIN_ID.L1 : CHAIN_ID.L2].gateway
     if (gateway) {
       setInstance(gateway)
     }

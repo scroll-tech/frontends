@@ -1,24 +1,16 @@
-// TODO: Refactor network info into a scroll-testnet-wide spot
 import ETHSvg from "@/assets/svgs/eth.svg"
-import { isProduction, requireEnv } from "@/utils"
 
-import { ChainId, ETH_SYMBOL, RPCUrl } from "./common"
+import { CHAIN_ID, ETH_SYMBOL, EXPLORER_URL, RPC_URL } from "./common"
+import { TESTNET_NAME } from "./scroll"
 
-const l1Explorer = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1")
-const l2Explorer = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2")
-
-export const TESTNET_NAME = "Scroll " + (isProduction ? "Alpha" : requireEnv("REACT_APP_SCROLL_ENVIRONMENT")) + " Testnet"
-
-export const networks = [
-  // TODO: Merge with constants/index.addresses
+export const NETWORKS = [
   {
     name: "Goerli Testnet",
     slug: "goerli",
     imageUrl: "/imgs/bridge/mainnet.svg",
-    provider: null,
-    rpcUrl: RPCUrl.SCROLL_LAYER_1,
-    explorer: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1"),
-    chainId: ChainId.SCROLL_LAYER_1,
+    rpcUrl: RPC_URL.L1,
+    explorer: EXPLORER_URL.L1,
+    chainId: CHAIN_ID.L1,
     nativeTokenSymbol: ETH_SYMBOL,
     isL1: true,
   },
@@ -26,10 +18,9 @@ export const networks = [
     name: TESTNET_NAME,
     slug: "layer2",
     imageUrl: "/logo.png",
-    provider: null,
-    rpcUrl: RPCUrl.SCROLL_LAYER_2,
-    explorer: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2"),
-    chainId: ChainId.SCROLL_LAYER_2,
+    rpcUrl: RPC_URL.L2,
+    explorer: EXPLORER_URL.L2,
+    chainId: CHAIN_ID.L2,
     nativeTokenSymbol: ETH_SYMBOL,
     isL1: false,
   },
@@ -52,9 +43,10 @@ export type ERC20Token = BaseToken & {
 }
 
 export type Token = NativeToken | ERC20Token
-export const nativeTokenList: Token[] = [
+
+export const NATIVE_TOKEN_LIST: Token[] = [
   {
-    chainId: ChainId.SCROLL_LAYER_1,
+    chainId: CHAIN_ID.L1,
     name: ETH_SYMBOL,
     symbol: ETH_SYMBOL,
     decimals: BigInt(18),
@@ -62,7 +54,7 @@ export const nativeTokenList: Token[] = [
     logoURI: ETHSvg,
   },
   {
-    chainId: ChainId.SCROLL_LAYER_2,
+    chainId: CHAIN_ID.L2,
     name: ETH_SYMBOL,
     symbol: ETH_SYMBOL,
     decimals: BigInt(18),
@@ -70,14 +62,3 @@ export const nativeTokenList: Token[] = [
     logoURI: ETHSvg,
   },
 ]
-
-export const SiteMap = {
-  Home: "/portal",
-  Ecosystem: "/ecosystem",
-  Bridge: "/bridge",
-  L1Explorer: l1Explorer,
-  L2Explorer: l2Explorer,
-  RollupExplorer: "/rollupscan",
-  Swap: "https://uniswap-v3.scroll.io/",
-  Architecture: "/blog/architecture",
-}

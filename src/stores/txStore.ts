@@ -5,9 +5,9 @@ import { create } from "zustand"
 import { persist } from "zustand/middleware"
 
 import { fetchTxByHashUrl } from "@/apis/bridge"
-import { TxStatus, networks } from "@/constants"
+import { NETWORKS, TxStatus } from "@/constants"
+import { BLOCK_NUMBERS, BRIDGE_TRANSACTIONS } from "@/constants/storageKey"
 import { sentryDebug, storageAvailable } from "@/utils"
-import { BLOCK_NUMBERS, BRIDGE_TRANSACTIONS } from "@/utils/storageKey"
 
 interface OrderedTxDB {
   [key: string]: TimestampTx[]
@@ -91,10 +91,10 @@ const formatBackTxList = (backList, estimatedTimeMap) => {
   }
   const txList = backList.map(tx => {
     const amount = tx.amount
-    const fromName = networks[+!tx.isL1].name
-    const fromExplore = networks[+!tx.isL1].explorer
-    const toName = networks[+tx.isL1].name
-    const toExplore = networks[+tx.isL1].explorer
+    const fromName = NETWORKS[+!tx.isL1].name
+    const fromExplore = NETWORKS[+!tx.isL1].explorer
+    const toName = NETWORKS[+tx.isL1].name
+    const toExplore = NETWORKS[+tx.isL1].explorer
     const toHash = tx.finalizeTx?.hash
 
     // 1. have no time to compute fromEstimatedEndTime

@@ -3,7 +3,7 @@ import { ReactNode, useState } from "react"
 import { Alert, Snackbar } from "@mui/material"
 
 import PageHeader from "@/components/PageHeader"
-import { ChainId, documentation, navigation, networks } from "@/constants"
+import { CHAIN_ID, DOCUMENTATION, NAVIGATIONS, NETWORKS } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useConnectWallet from "@/hooks/useConnectWallet"
 import { switchNetwork } from "@/utils"
@@ -53,7 +53,7 @@ export default function Home() {
     chainId &&
       setTip(
         <>
-          You are already on <b>{networks.find(item => item.chainId === chainId)!.name}</b>.
+          You are already on <b>{NETWORKS.find(item => item.chainId === chainId)!.name}</b>.
         </>,
       )
   }
@@ -85,10 +85,10 @@ export default function Home() {
                 <ul className="border border-gray-200 rounded-md divide-y divide-gray-200">
                   <li className="pl-3 pr-4 py-3 flex items-center justify-between text-base">
                     <div className="w-0 flex-1 flex items-center">
-                      <span className="ml-2 flex-1 w-0 truncate">{networks[0].name}</span>
+                      <span className="ml-2 flex-1 w-0 truncate">{NETWORKS[0].name}</span>
                     </div>
                     <div className="ml-4 flex-shrink-0">
-                      {walletName ? <AddNetworkButton chainId={ChainId.SCROLL_LAYER_1} onReadd={handleReadd} /> : <ConnectWalletButton />}
+                      {walletName ? <AddNetworkButton chainId={CHAIN_ID.L1} onReadd={handleReadd} /> : <ConnectWalletButton />}
                     </div>
                   </li>
                 </ul>
@@ -100,10 +100,10 @@ export default function Home() {
                 <ul className="border border-gray-200 rounded-md divide-y divide-gray-200">
                   <li className="pl-3 pr-4 py-3 flex items-center justify-between text-base">
                     <div className="w-0 flex-1 flex items-center">
-                      <span className="ml-2 flex-1 w-0 truncate">{networks[1].name}</span>
+                      <span className="ml-2 flex-1 w-0 truncate">{NETWORKS[1].name}</span>
                     </div>
                     <div className="ml-4 flex-shrink-0">
-                      {walletName ? <AddNetworkButton chainId={ChainId.SCROLL_LAYER_2} onReadd={handleReadd} /> : <ConnectWalletButton />}
+                      {walletName ? <AddNetworkButton chainId={CHAIN_ID.L2} onReadd={handleReadd} /> : <ConnectWalletButton />}
                     </div>
                   </li>
                 </ul>
@@ -113,7 +113,7 @@ export default function Home() {
         </SectionTitle>
 
         <SectionTitle title="Test the following">
-          {navigation.slice(2).map((item, idx) => (
+          {NAVIGATIONS.slice(2).map((item, idx) => (
             <div key={item.name} className={`${idx % 2 ? "bg-white" : "bg-gray-50"} px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6`}>
               <dt className="text-base font-medium text-gray-500">
                 <a className="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer" href={item.subdomainOrPath}>
@@ -126,7 +126,7 @@ export default function Home() {
         </SectionTitle>
 
         <SectionTitle title="Read the documentation">
-          {documentation.map((item, idx) => (
+          {DOCUMENTATION.map((item, idx) => (
             <div key={item.name} className={`${idx % 2 ? "bg-white" : "bg-gray-50"} px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6`}>
               <dt className="text-base font-medium text-gray-500">
                 <a className="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer" href={item.link}>

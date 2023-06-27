@@ -7,7 +7,7 @@ import { Chip, Pagination, TableBody, TableContainer, TableHead, TablePagination
 import { styled } from "@mui/material/styles"
 
 import Link from "@/components/Link"
-import { l1ExplorerUrl } from "@/constants/index"
+import { EXPLORER_URL } from "@/constants"
 import useRollupStore from "@/stores/rollupStore"
 
 import Spinning from "../components/Spinning"
@@ -205,7 +205,7 @@ const RollupTable = forwardRef<any, any>((props, ref) => {
                   <TableCell>{row.total_tx_num}</TableCell>
                   <TableCell>
                     {row.commit_tx_hash ? (
-                      <Link href={`${l1ExplorerUrl}/tx/${row.commit_tx_hash}`} external>
+                      <Link href={`${EXPLORER_URL.L1}/tx/${row.commit_tx_hash}`} external>
                         {truncatedHash(row.commit_tx_hash)}
                       </Link>
                     ) : (
@@ -214,7 +214,7 @@ const RollupTable = forwardRef<any, any>((props, ref) => {
                   </TableCell>
                   <TableCell>
                     {row.finalize_tx_hash ? (
-                      <Link href={`${l1ExplorerUrl}/tx/${row.finalize_tx_hash}`} external>
+                      <Link href={`${EXPLORER_URL.L1}/tx/${row.finalize_tx_hash}`} external>
                         {truncatedHash(row.finalize_tx_hash)}
                       </Link>
                     ) : (

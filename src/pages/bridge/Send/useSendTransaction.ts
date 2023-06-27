@@ -1,7 +1,7 @@
 import { isError } from "ethers"
 import { useMemo, useState } from "react"
 
-import { ChainId, GasLimit, networks } from "@/constants"
+import { CHAIN_ID, GasLimit, NETWORKS } from "@/constants"
 import { TxStatus } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
@@ -38,10 +38,10 @@ export function useSendTransaction(props) {
     let currentBlockNumber
     try {
       if (fromNetwork.isL1) {
-        currentBlockNumber = await networksAndSigners[ChainId.SCROLL_LAYER_1].provider.getBlockNumber()
+        currentBlockNumber = await networksAndSigners[CHAIN_ID.L1].provider.getBlockNumber()
         tx = await sendl1ToL2()
       } else if (!fromNetwork.isL1 && toNetwork.isL1) {
-        currentBlockNumber = await networksAndSigners[ChainId.SCROLL_LAYER_2].provider.getBlockNumber()
+        currentBlockNumber = await networksAndSigners[CHAIN_ID.L2].provider.getBlockNumber()
         tx = await sendl2ToL1()
       }
       // start to check tx replacement from current block number
@@ -127,7 +127,7 @@ export function useSendTransaction(props) {
       fromExplore: fromNetwork.explorer,
       toExplore: toNetwork.explorer,
       amount: parsedAmount.toString(),
-      isL1: fromNetwork.name === networks[0].name,
+      isL1: fromNetwork.name === NETWORKS[0].name,
       symbolToken: selectedToken.address,
       timestamp: Date.now(),
     })
@@ -141,7 +141,7 @@ export function useSendTransaction(props) {
       fromExplore: fromNetwork.explorer,
       toExplore: toNetwork.explorer,
       amount: parsedAmount.toString(),
-      isL1: fromNetwork.name === networks[0].name,
+      isL1: fromNetwork.name === NETWORKS[0].name,
       symbolToken: selectedToken.address,
       assumedStatus,
       errMsg,
@@ -152,14 +152,14 @@ export function useSendTransaction(props) {
 
   const depositETH = async () => {
     const fee = await getPriceFee(selectedToken, fromNetwork.isL1)
-    return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositETH(uint256,uint256)"](parsedAmount, GasLimit.DEPOSIT_ETH, {
+    return networksAndSigners[CHAIN_ID.L1].gateway["depositETH(uint256,uint256)"](parsedAmount, GasLimit.DEPOSIT_ETH, {
       value: parsedAmount + fee,
     })
   }
 
   const depositERC20 = async () => {
     const fee = await getPriceFee(selectedToken, fromNetwork.isL1)
-    return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositERC20(address,uint256,uint256)"](
+    return networksAndSigners[CHAIN_ID.L1].gateway["depositERC20(address,uint256,uint256)"](
       selectedToken.address,
       parsedAmount,
       GasLimit.DEPOSIT_ERC20,
@@ -171,14 +171,14 @@ export function useSendTransaction(props) {
 
   const withdrawETH = async () => {
     const fee = await getPriceFee(selectedToken)
-    return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawETH(uint256,uint256)"](parsedAmount, GasLimit.WITHDRAW_ETH, {
+    return networksAndSigners[CHAIN_ID.L2].gateway["withdrawETH(uint256,uint256)"](parsedAmount, GasLimit.WITHDRAW_ETH, {
       value: parsedAmount + fee,
     })
   }
 
   const withdrawERC20 = async () => {
     const fee = await getPriceFee(selectedToken)
-    return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawERC20(address,uint256,uint256)"](
+    return networksAndSigners[CHAIN_ID.L2].gateway["withdrawERC20(address,uint256,uint256)"](
       selectedToken.address,
       parsedAmount,
       GasLimit.WITHDRAW_ERC20,

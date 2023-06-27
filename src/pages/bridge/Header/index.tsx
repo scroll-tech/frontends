@@ -5,7 +5,7 @@ import { Button, CircularProgress } from "@mui/material"
 import { ReactComponent as HistoryIcon } from "@/assets/svgs/history.svg"
 import ButtonPopover from "@/components/ButtonPopover"
 import PageHeader from "@/components/PageHeader"
-import { networks } from "@/constants"
+import { NETWORKS } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
 import useBridgeStore from "@/stores/bridgeStore"
 import useTxStore from "@/stores/txStore"
@@ -37,7 +37,7 @@ const Header = () => {
   return (
     <PageHeader
       title="Scroll Bridge"
-      subTitle={`Send tokens between ${networks[0].name} and ${networks[1].name}.`}
+      subTitle={`Send tokens between ${NETWORKS[0].name} and ${NETWORKS[1].name}.`}
       action={
         <>
           <Button sx={{ p: 0, width: "5rem", minWidth: "5rem", ml: "1rem" }} ref={buttonRef} onClick={handleOpen}>
