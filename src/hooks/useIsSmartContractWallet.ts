@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
 
 export default function useIsSmartContractWallet() {
-  const { provider, walletCurrentAddress } = useWeb3Context()
+  const { provider, walletCurrentAddress } = useRainbowContext()
   const [isSmartContractWallet, setIsSmartContractWallet] = useState(false)
 
   useEffect(() => {

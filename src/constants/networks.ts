@@ -7,7 +7,7 @@ import { ChainId, ETH_SYMBOL, RPCUrl } from "./common"
 const l1Explorer = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1")
 const l2Explorer = requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2")
 
-const TESTNET_NAME = "Scroll " + (isProduction ? "Alpha" : requireEnv("REACT_APP_SCROLL_ENVIRONMENT")) + " Testnet"
+export const TESTNET_NAME = "Scroll " + (isProduction ? "Alpha" : requireEnv("REACT_APP_SCROLL_ENVIRONMENT")) + " Testnet"
 
 export const networks = [
   // TODO: Merge with constants/index.addresses
@@ -20,8 +20,7 @@ export const networks = [
     explorer: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1"),
     chainId: ChainId.SCROLL_LAYER_1,
     nativeTokenSymbol: ETH_SYMBOL,
-    isLayer1: true, // TODO: Merge these two
-    isL1: true, // TODO: Merge these two
+    isL1: true,
   },
   {
     name: TESTNET_NAME,
@@ -32,7 +31,6 @@ export const networks = [
     explorer: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2"),
     chainId: ChainId.SCROLL_LAYER_2,
     nativeTokenSymbol: ETH_SYMBOL,
-    isLayer1: false,
     isL1: false,
   },
 ]

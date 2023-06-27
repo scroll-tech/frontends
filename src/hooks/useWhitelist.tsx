@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from "react"
 
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
 
 export const WalletConnectedStatus = {
   INITIALIZING: "initializing",
@@ -25,7 +25,7 @@ const WhitelistContext = createContext<WhitelistContextProps>({
 })
 
 export const WhitelistContextProvider = (props: Props) => {
-  const { walletCurrentAddress } = useWeb3Context()
+  const { walletCurrentAddress } = useRainbowContext()
   const [hasPermission, setHasPermission] = useState(false)
   const [loading] = useState(false)
 

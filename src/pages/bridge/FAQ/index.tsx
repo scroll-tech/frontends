@@ -5,7 +5,7 @@ import { Typography } from "@mui/material"
 import Faq, { FaqItem } from "@/components/Faq"
 import Link from "@/components/Link"
 import { SiteMap } from "@/constants"
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
 
 const useStyles = makeStyles()(() => {
   return {
@@ -20,7 +20,7 @@ const useStyles = makeStyles()(() => {
 })
 
 const FAQ = () => {
-  const { walletName } = useWeb3Context()
+  const { walletName } = useRainbowContext()
   const { classes } = useStyles()
   return (
     <Faq>

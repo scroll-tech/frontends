@@ -1,29 +1,32 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import { ChainId } from "@/constants"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useIsSmartContractWallet, usePriceFee } from "@/hooks"
 import { toTokenDisplay } from "@/utils"
 
 function useSufficientBalance(
   selectedToken: any,
-  token?: any,
+  networksAndSigner?: any,
   amount?: bigint,
   estimatedGasCost?: bigint,
   tokenBalance: bigint = BigInt(0),
   isCorrectNetwork?: boolean,
 ) {
-  const { walletCurrentAddress } = useWeb3Context()
+  const { walletCurrentAddress } = useRainbowContext()
   const [sufficientBalance, setSufficientBalance] = useState(false)
   const [warning, setWarning] = useState("")
   const { isSmartContractWallet } = useIsSmartContractWallet()
   const { getPriceFee } = usePriceFee()
+
+  const isL1 = useMemo(() => selectedToken.chainId === ChainId.SCROLL_LAYER_1, [selectedToken])
 
   useEffect(() => {
     async function checkEnoughBalance() {
       if (!isCorrectNetwork) {
         return
       }
-      if (!(amount && token && token.signer)) {
+      if (!(amount && networksAndSigner && networksAndSigner.signer)) {
         setWarning("")
         return setSufficientBalance(false)
       }
@@ -33,24 +36,22 @@ function useSufficientBalance(
       let enoughTokenBalance: boolean
       let message: string = ""
 
-      const ntb = await token.provider.getBalance(walletCurrentAddress)
+      const ntb = await networksAndSigner.provider.getBalance(walletCurrentAddress)
 
       if (!estimatedGasCost) {
-        const { maxFeePerGas: gasPrice } = await token.provider.getFeeData()
+        const { maxFeePerGas: gasPrice } = await networksAndSigner.provider.getFeeData()
         estimatedGasCost = BigInt(200e3) * (gasPrice || BigInt(1e9))
       }
 
       if (selectedToken.native) {
         totalCost = estimatedGasCost + amount
-        const isLayer1 = token.network.isLayer1
-        const fee = await getPriceFee(selectedToken, isLayer1)
+        const fee = await getPriceFee(selectedToken, isL1)
         totalCost = totalCost + fee
         enoughFeeBalance = ntb >= totalCost
         enoughTokenBalance = enoughFeeBalance
       } else {
         totalCost = estimatedGasCost
-        const isLayer1 = token.network.isLayer1
-        const fee = await getPriceFee(selectedToken, isLayer1)
+        const fee = await getPriceFee(selectedToken, isL1)
         totalCost = totalCost + fee
         enoughFeeBalance = ntb >= totalCost
         enoughTokenBalance = tokenBalance >= amount
@@ -88,7 +89,7 @@ function useSufficientBalance(
     } else {
       checkEnoughBalance()
     }
-  }, [token, amount?.toString(), estimatedGasCost?.toString(), tokenBalance.toString()])
+  }, [networksAndSigner, amount?.toString(), estimatedGasCost?.toString(), tokenBalance.toString()])
 
   return {
     sufficientBalance,

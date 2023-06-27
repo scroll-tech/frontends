@@ -4,7 +4,7 @@ import { useMemo, useState } from "react"
 import { ChainId, GasLimit, networks } from "@/constants"
 import { TxStatus } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { usePriceFee } from "@/hooks"
 import useBridgeStore from "@/stores/bridgeStore"
 import useTxStore, { TxPosition, isValidOffsetTime } from "@/stores/txStore"
@@ -17,7 +17,7 @@ export type TransactionHandled = {
 
 export function useSendTransaction(props) {
   const { fromNetwork, fromTokenAmount, setSendError, toNetwork, selectedToken } = props
-  const { walletCurrentAddress } = useWeb3Context()
+  const { walletCurrentAddress } = useRainbowContext()
   const {
     networksAndSigners,
     txHistory: { blockNumbers },
@@ -37,10 +37,10 @@ export function useSendTransaction(props) {
     let tx
     let currentBlockNumber
     try {
-      if (fromNetwork.isLayer1) {
+      if (fromNetwork.isL1) {
         currentBlockNumber = await networksAndSigners[ChainId.SCROLL_LAYER_1].provider.getBlockNumber()
         tx = await sendl1ToL2()
-      } else if (!fromNetwork.isLayer1 && toNetwork.isLayer1) {
+      } else if (!fromNetwork.isL1 && toNetwork.isL1) {
         currentBlockNumber = await networksAndSigners[ChainId.SCROLL_LAYER_2].provider.getBlockNumber()
         tx = await sendl2ToL1()
       }
@@ -56,7 +56,7 @@ export function useSendTransaction(props) {
             handleTransaction(tx, {
               fromBlockNumber: receipt.blockNumber,
             })
-            if (fromNetwork.isLayer1) {
+            if (fromNetwork.isL1) {
               const estimatedOffsetTime = (receipt.blockNumber - blockNumbers[0]) * 12 * 1000
               if (isValidOffsetTime(estimatedOffsetTime)) {
                 addEstimatedTimeMap(`from_${tx.hash}`, Date.now() + estimatedOffsetTime)
@@ -87,7 +87,7 @@ export function useSendTransaction(props) {
                 hash: transactionHash,
               })
               updateOrderedTxs(walletCurrentAddress, tx.hash, transactionHash)
-              if (fromNetwork.isLayer1) {
+              if (fromNetwork.isL1) {
                 const estimatedOffsetTime = (blockNumber - blockNumbers[0]) * 12 * 1000
                 if (isValidOffsetTime(estimatedOffsetTime)) {
                   addEstimatedTimeMap(`from_${transactionHash}`, Date.now() + estimatedOffsetTime)
@@ -151,14 +151,14 @@ export function useSendTransaction(props) {
   }
 
   const depositETH = async () => {
-    const fee = await getPriceFee(selectedToken, fromNetwork.isLayer1)
+    const fee = await getPriceFee(selectedToken, fromNetwork.isL1)
     return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositETH(uint256,uint256)"](parsedAmount, GasLimit.DEPOSIT_ETH, {
       value: parsedAmount + fee,
     })
   }
 
   const depositERC20 = async () => {
-    const fee = await getPriceFee(selectedToken, fromNetwork.isLayer1)
+    const fee = await getPriceFee(selectedToken, fromNetwork.isL1)
     return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositERC20(address,uint256,uint256)"](
       selectedToken.address,
       parsedAmount,

@@ -1,9 +1,9 @@
 import { isMobile } from "react-device-detect"
 
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
 
 const useConnectWallet = () => {
-  const { connectWallet } = useWeb3Context()
+  const { connect } = useRainbowContext()
 
   const handleConnectWallet = () => {
     if (typeof window.ethereum === "undefined" && isMobile) {
@@ -15,7 +15,7 @@ const useConnectWallet = () => {
         alert("The url needs to start with https://")
       }
     } else {
-      connectWallet()
+      connect()
     }
   }
   return handleConnectWallet

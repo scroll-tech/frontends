@@ -3,10 +3,10 @@ import useSWR from "swr"
 
 import L1_erc20ABI from "@/assets/abis/L1_erc20ABI.json"
 import { useApp } from "@/contexts/AppContextProvider"
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
 
 const useBalance = (token: any, network?: any) => {
-  const { walletCurrentAddress } = useWeb3Context()
+  const { walletCurrentAddress } = useRainbowContext()
   const { networksAndSigners } = useApp()
 
   async function fetchBalance({ provider, token, network, address }) {

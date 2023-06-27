@@ -191,7 +191,7 @@ const Web3ContextProvider = ({ children }: any) => {
   )
 }
 
-export function useWeb3Context() {
+export function useRainbowContext() {
   const ctx = useContext(Web3Context)
   if (ctx === undefined) {
     throw new Error("useApp must be used within Web3Provider")
