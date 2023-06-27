@@ -1,7 +1,7 @@
-import classnames from "classnames"
 import dayjs from "dayjs"
 import React, { forwardRef, useMemo } from "react"
 import { Link as RouterLink, useSearchParams } from "react-router-dom"
+import { useStyles } from "tss-react/mui"
 
 import { Chip, Pagination, TableBody, TableContainer, TableHead, TablePagination, TableRow, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
@@ -117,6 +117,7 @@ const CustomTableRow = styled(TableRow)(({ theme }) => ({
 
 const RollupTable = forwardRef<any, any>((props, ref) => {
   const { onPaginationChange } = props
+  const { cx } = useStyles()
   const { data, total, emptyBatch, searchLoading, batchLoading, currentClickedBatch } = useRollupStore()
   const [searchParams, setSearchParams] = useSearchParams()
 
@@ -194,7 +195,7 @@ const RollupTable = forwardRef<any, any>((props, ref) => {
             </TableHead>
             <TableBody ref={ref}>
               {data.map((row: any) => (
-                <CustomTableRow key={row.id} className={classnames(`rollup-batch-${row.index}`, currentClickedBatch === row.index && "rowActive")}>
+                <CustomTableRow key={row.id} className={cx(`rollup-batch-${row.index}`, currentClickedBatch === row.index && "rowActive")}>
                   <TableCell>
                     <Link component={RouterLink} to={`batch/${row.index}`}>
                       {row.index}

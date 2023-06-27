@@ -1,4 +1,3 @@
-import classNames from "classnames"
 import { ethers } from "ethers"
 import { ChangeEvent, FC, useEffect, useMemo, useState } from "react"
 import useStorage from "squirrel-gill"
@@ -259,7 +258,7 @@ const Send: FC = () => {
   return (
     <StyleContext.Provider value={styles}>
       <div className={cx("flex", "flex-col", "items-center", "bg-white", styles.sendWrapper)}>
-        <div className={classNames("flex", "flex-col", "items-center", styles.sendPanel)}>
+        <div className={cx("flex", "flex-col", "items-center", styles.sendPanel)}>
           <SendAmountSelectorCard
             value={fromTokenAmount}
             token={fromToken}
