@@ -1,5 +1,7 @@
 import { isError } from "ethers"
 import { useMemo, useState } from "react"
+import { useLatest } from "react-use"
+import { useSwitchNetwork } from "wagmi"
 
 import { CHAIN_ID, GAS_LIMIT, NETWORKS } from "@/constants"
 import { TX_STATUS } from "@/constants"
@@ -16,8 +18,11 @@ export type TransactionHandled = {
 }
 
 export function useSendTransaction(props) {
-  const { fromNetwork, fromTokenAmount, setSendError, toNetwork, selectedToken } = props
-  const { walletCurrentAddress } = useRainbowContext()
+  const { fromNetwork, fromTokenAmount, setSendError, toNetwork, selectedToken, isCorrectNetwork } = props
+  const { walletCurrentAddress, chainId } = useRainbowContext()
+  const { switchNetworkAsync } = useSwitchNetwork()
+  const latestChainId = useLatest(chainId)
+
   const {
     networksAndSigners,
     txHistory: { blockNumbers },
@@ -26,6 +31,7 @@ export function useSendTransaction(props) {
   const { changeHistoryVisible } = useBridgeStore()
   const [sending, setSending] = useState<boolean>(false)
   const { getPriceFee } = usePriceFee()
+  const latestNetworksAndSigners = useLatest(networksAndSigners)
 
   const parsedAmount = useMemo(() => {
     if (!fromTokenAmount || !selectedToken) return BigInt(0)
@@ -34,14 +40,26 @@ export function useSendTransaction(props) {
 
   const send = async () => {
     setSending(true)
+    if (!isCorrectNetwork) {
+      try {
+        await switchNetworkAsync?.(fromNetwork.chainId)
+      } catch (error) {
+        setSending(false)
+      }
+      while (latestChainId.current !== fromNetwork.chainId) {
+        await new Promise(r => setTimeout(r, 100))
+      }
+      await new Promise(r => setTimeout(r, 500))
+    }
+
     let tx
     let currentBlockNumber
     try {
       if (fromNetwork.isL1) {
-        currentBlockNumber = await networksAndSigners[CHAIN_ID.L1].provider.getBlockNumber()
+        currentBlockNumber = await latestNetworksAndSigners.current[CHAIN_ID.L1].provider.getBlockNumber()
         tx = await sendl1ToL2()
       } else if (!fromNetwork.isL1 && toNetwork.isL1) {
-        currentBlockNumber = await networksAndSigners[CHAIN_ID.L2].provider.getBlockNumber()
+        currentBlockNumber = await latestNetworksAndSigners.current[CHAIN_ID.L2].provider.getBlockNumber()
         tx = await sendl2ToL1()
       }
       // start to check tx replacement from current block number
@@ -152,14 +170,14 @@ export function useSendTransaction(props) {
 
   const depositETH = async () => {
     const fee = await getPriceFee(selectedToken, fromNetwork.isL1)
-    return networksAndSigners[CHAIN_ID.L1].gateway["depositETH(uint256,uint256)"](parsedAmount, GAS_LIMIT.DEPOSIT_ETH, {
+    return latestNetworksAndSigners.current[CHAIN_ID.L1].gateway["depositETH(uint256,uint256)"](parsedAmount, GAS_LIMIT.DEPOSIT_ETH, {
       value: parsedAmount + fee,
     })
   }
 
   const depositERC20 = async () => {
     const fee = await getPriceFee(selectedToken, fromNetwork.isL1)
-    return networksAndSigners[CHAIN_ID.L1].gateway["depositERC20(address,uint256,uint256)"](
+    return latestNetworksAndSigners.current[CHAIN_ID.L1].gateway["depositERC20(address,uint256,uint256)"](
       selectedToken.address,
       parsedAmount,
       GAS_LIMIT.DEPOSIT_ERC20,
@@ -171,14 +189,14 @@ export function useSendTransaction(props) {
 
   const withdrawETH = async () => {
     const fee = await getPriceFee(selectedToken)
-    return networksAndSigners[CHAIN_ID.L2].gateway["withdrawETH(uint256,uint256)"](parsedAmount, GAS_LIMIT.WITHDRAW_ETH, {
+    return latestNetworksAndSigners.current[CHAIN_ID.L2].gateway["withdrawETH(uint256,uint256)"](parsedAmount, GAS_LIMIT.WITHDRAW_ETH, {
       value: parsedAmount + fee,
     })
   }
 
   const withdrawERC20 = async () => {
     const fee = await getPriceFee(selectedToken)
-    return networksAndSigners[CHAIN_ID.L2].gateway["withdrawERC20(address,uint256,uint256)"](
+    return latestNetworksAndSigners.current[CHAIN_ID.L2].gateway["withdrawERC20(address,uint256,uint256)"](
       selectedToken.address,
       parsedAmount,
       GAS_LIMIT.WITHDRAW_ERC20,

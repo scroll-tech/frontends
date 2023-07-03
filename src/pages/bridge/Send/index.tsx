@@ -99,6 +99,8 @@ const Send: FC = () => {
   }, [chainId, fromToken, fromTokenAmount])
 
   const isCorrectNetwork = useMemo(() => !!chainId && fromNetwork.chainId === chainId, [chainId, fromNetwork])
+  const isSupportedNetwork = useMemo(() => fromNetwork.chainId === chainId || toNetwork.chainId === chainId, [chainId, fromNetwork])
+
   const { getPriceFee } = usePriceFee()
 
   useEffect(() => {
@@ -126,7 +128,7 @@ const Send: FC = () => {
   const warningTip = useMemo(() => {
     if (!walletName) {
       return <TextButton onClick={connect}>Click here to connect wallet.</TextButton>
-    } else if (!isCorrectNetwork) {
+    } else if (!isSupportedNetwork) {
       return (
         <>
           Your wallet is connected to an unsupported network.{" "}
@@ -158,7 +160,6 @@ const Send: FC = () => {
   const handleSwitchDirection = () => {
     setFromNetwork(toNetwork)
     setToNetwork(fromNetwork)
-    handleSwitchNetwork(toNetwork.chainId)
   }
 
   const handleApprove = async () => {
@@ -179,6 +180,7 @@ const Send: FC = () => {
     setSendError,
     toNetwork,
     selectedToken: fromToken,
+    isCorrectNetwork,
   })
 
   useEffect(() => {
