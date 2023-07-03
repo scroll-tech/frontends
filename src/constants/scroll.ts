@@ -4,7 +4,7 @@ import { EXPLORER_URL } from "./common"
 
 export const TESTNET_NAME = "Scroll " + (isProduction ? "Alpha" : requireEnv("REACT_APP_SCROLL_ENVIRONMENT")) + " Testnet"
 
-export const SiteMap = {
+export const SITE_MAP = {
   Home: "/portal",
   Ecosystem: "/ecosystem",
   Bridge: "/bridge",
@@ -62,7 +62,7 @@ export const DOCUMENTATION = [
   {
     name: "Architecture Overview",
     description: "",
-    link: SiteMap.Architecture,
+    link: SITE_MAP.Architecture,
   },
   {
     name: "User Guide",

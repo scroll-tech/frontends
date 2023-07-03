@@ -8,7 +8,7 @@ import { Alert, Snackbar } from "@mui/material"
 import { tokenListUrl } from "@/apis/dynamic"
 import L1_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L1_GATEWAY_ROUTER_PROXY_ADDR.json"
 import L2_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L2_GATEWAY_ROUTER_PROXY_ADDR.json"
-import { CHAIN_ID, ETH_SYMBOL, GatewayRouterProxyAddr, NATIVE_TOKEN_LIST, RPC_URL, Token } from "@/constants"
+import { CHAIN_ID, ETH_SYMBOL, GATEWAY_ROUTE_RPROXY_ADDR, NATIVE_TOKEN_LIST, RPC_URL } from "@/constants"
 import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useTxHistory, { TxHistory } from "@/hooks/useTxHistory"
@@ -44,13 +44,13 @@ const AppContextProvider = ({ children }: any) => {
       l2Provider = await new JsonRpcProvider(RPC_URL.L2)
       l1signer = await walletProvider.getSigner(0)
       l2signer = new JsonRpcSigner(l2Provider, address)
-      l1Gateway = new ethers.Contract(GatewayRouterProxyAddr[CHAIN_ID.L1], L1_GATEWAY_ROUTER_PROXY_ABI, l1signer)
+      l1Gateway = new ethers.Contract(GATEWAY_ROUTE_RPROXY_ADDR[CHAIN_ID.L1], L1_GATEWAY_ROUTER_PROXY_ABI, l1signer)
     } else if (chainId === CHAIN_ID.L2) {
       l1Provider = await new JsonRpcProvider(RPC_URL.L1)
       l2Provider = walletProvider
       l1signer = new JsonRpcSigner(l1Provider, address)
       l2signer = await walletProvider.getSigner(0)
-      l2Gateway = new ethers.Contract(GatewayRouterProxyAddr[CHAIN_ID.L2], L2_GATEWAY_ROUTER_PROXY_ABI, l2signer)
+      l2Gateway = new ethers.Contract(GATEWAY_ROUTE_RPROXY_ADDR[CHAIN_ID.L2], L2_GATEWAY_ROUTER_PROXY_ABI, l2signer)
     } else {
       l1Provider = await new JsonRpcProvider(RPC_URL.L1)
       l2Provider = await new JsonRpcProvider(RPC_URL.L2)

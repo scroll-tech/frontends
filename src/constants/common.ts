@@ -18,12 +18,12 @@ export const EXPLORER_URL = {
   Unifra: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_UNIFRA"),
 }
 
-export const StandardERC20GatewayProxyAddr = {
+export const STANDARD_ERC20_GATEWAY_PROXY_ADDR = {
   [CHAIN_ID.L1]: requireEnv("REACT_APP_L1_STANDARD_ERC20_GATEWAY_PROXY_ADDR"),
   [CHAIN_ID.L2]: requireEnv("REACT_APP_L2_STANDARD_ERC20_GATEWAY_PROXY_ADDR"),
 }
 
-export const GatewayRouterProxyAddr = {
+export const GATEWAY_ROUTE_RPROXY_ADDR = {
   [CHAIN_ID.L1]: requireEnv("REACT_APP_L1_GATEWAY_ROUTER_PROXY_ADDR"),
   [CHAIN_ID.L2]: requireEnv("REACT_APP_L2_GATEWAY_ROUTER_PROXY_ADDR"),
 }

@@ -26,24 +26,6 @@ export const NETWORKS = [
   },
 ]
 
-type BaseToken = {
-  chainId: number
-  name: string
-  symbol: string
-  decimals: bigint
-  logoURI: string
-}
-
-export type NativeToken = BaseToken & {
-  native: boolean
-}
-
-export type ERC20Token = BaseToken & {
-  address: string
-}
-
-export type Token = NativeToken | ERC20Token
-
 export const NATIVE_TOKEN_LIST: Token[] = [
   {
     chainId: CHAIN_ID.L1,

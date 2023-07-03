@@ -4,7 +4,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import { Accordion, AccordionDetails, AccordionSummary, Theme, Typography } from "@mui/material"
 
 import Link from "@/components/Link"
-import { SiteMap } from "@/constants"
+import { SITE_MAP } from "@/constants"
 
 const useStyles = makeStyles()((theme: Theme) => {
   return {
@@ -61,30 +61,30 @@ const Faq = props => {
           Here is how to explore the platform:
         </Typography>
         <Typography variant="body1" color="textSecondary" className={classes.orderedParagraph}>
-          1. Transfer and withdraw test tokens in <Link href={SiteMap.Bridge}>Bridge</Link>.
+          1. Transfer and withdraw test tokens in <Link href={SITE_MAP.Bridge}>Bridge</Link>.
         </Typography>
         <Typography variant="body1" color="textSecondary" className={classes.orderedParagraph}>
-          2. Swap test tokens or provide liquidity in <Link href={SiteMap.Swap}>Swap</Link>.
+          2. Swap test tokens or provide liquidity in <Link href={SITE_MAP.Swap}>Swap</Link>.
         </Typography>
         <Typography variant="body1" color="textSecondary" className={classes.orderedParagraph}>
           3. View transactions’ and blocks’ statuses in the{" "}
-          <Link href={SiteMap.L1Explorer} external>
+          <Link href={SITE_MAP.L1Explorer} external>
             Scroll L1
           </Link>
           ,{" "}
-          <Link href={SiteMap.L2Explorer} external>
+          <Link href={SITE_MAP.L2Explorer} external>
             Scroll L2
           </Link>{" "}
-          Block Explorers and the <Link href={SiteMap.RollupExplorer}>Rollup Explorer</Link>.
+          Block Explorers and the <Link href={SITE_MAP.RollupExplorer}>Rollup Explorer</Link>.
         </Typography>
         <Typography variant="body1" color="textSecondary">
-          More instructions <Link href={SiteMap.Home}>here</Link>.
+          More instructions <Link href={SITE_MAP.Home}>here</Link>.
         </Typography>
       </FaqItem>
       {children}
       <FaqItem title="Where can I find Scroll architecture overview?" id="end">
         <Typography variant="body1" color="textSecondary">
-          Check our <Link href={SiteMap.Architecture}>architecture blog article</Link>.
+          Check our <Link href={SITE_MAP.Architecture}>architecture blog article</Link>.
         </Typography>
       </FaqItem>
     </div>
