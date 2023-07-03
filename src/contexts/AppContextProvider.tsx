@@ -8,12 +8,11 @@ import { Alert, Snackbar } from "@mui/material"
 import { tokenListUrl } from "@/apis/dynamic"
 import L1_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L1_GATEWAY_ROUTER_PROXY_ADDR.json"
 import L2_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L2_GATEWAY_ROUTER_PROXY_ADDR.json"
-import { ChainId, ETH_SYMBOL, GatewayRouterProxyAddr, RPCUrl } from "@/constants"
-import { Token, nativeTokenList } from "@/constants/networks"
+import { CHAIN_ID, ETH_SYMBOL, GATEWAY_ROUTE_RPROXY_ADDR, NATIVE_TOKEN_LIST, RPC_URL } from "@/constants"
+import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useTxHistory, { TxHistory } from "@/hooks/useTxHistory"
 import { requireEnv } from "@/utils"
-import { BRIDGE_TOKEN_SYMBOL } from "@/utils/storageKey"
 
 type AppContextProps = {
   networksAndSigners: any
@@ -29,8 +28,8 @@ const AppContextProvider = ({ children }: any) => {
   const { provider, walletCurrentAddress, chainId } = useRainbowContext()
   const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
   const [networksAndSigners, setNetworksAndSigners] = useState({
-    [ChainId.SCROLL_LAYER_1]: {},
-    [ChainId.SCROLL_LAYER_2]: {},
+    [CHAIN_ID.L1]: {},
+    [CHAIN_ID.L2]: {},
   })
 
   const [fetchTokenListError, setFetchTokenListError] = useState("")
@@ -40,35 +39,35 @@ const AppContextProvider = ({ children }: any) => {
   // TODO: need refactoring inspired by publicClient and walletClient
   const update = async (walletProvider: BrowserProvider, address: string) => {
     let l1signer, l2signer, l1Gateway, l2Gateway, l1Provider, l2Provider, l1ProviderForSafeBlock
-    if (chainId === ChainId.SCROLL_LAYER_1) {
+    if (chainId === CHAIN_ID.L1) {
       l1Provider = walletProvider
-      l2Provider = await new JsonRpcProvider(RPCUrl.SCROLL_LAYER_2)
+      l2Provider = await new JsonRpcProvider(RPC_URL.L2)
       l1signer = await walletProvider.getSigner(0)
       l2signer = new JsonRpcSigner(l2Provider, address)
-      l1Gateway = new ethers.Contract(GatewayRouterProxyAddr[ChainId.SCROLL_LAYER_1], L1_GATEWAY_ROUTER_PROXY_ABI, l1signer)
-    } else if (chainId === ChainId.SCROLL_LAYER_2) {
-      l1Provider = await new JsonRpcProvider(RPCUrl.SCROLL_LAYER_1)
+      l1Gateway = new ethers.Contract(GATEWAY_ROUTE_RPROXY_ADDR[CHAIN_ID.L1], L1_GATEWAY_ROUTER_PROXY_ABI, l1signer)
+    } else if (chainId === CHAIN_ID.L2) {
+      l1Provider = await new JsonRpcProvider(RPC_URL.L1)
       l2Provider = walletProvider
       l1signer = new JsonRpcSigner(l1Provider, address)
       l2signer = await walletProvider.getSigner(0)
-      l2Gateway = new ethers.Contract(GatewayRouterProxyAddr[ChainId.SCROLL_LAYER_2], L2_GATEWAY_ROUTER_PROXY_ABI, l2signer)
+      l2Gateway = new ethers.Contract(GATEWAY_ROUTE_RPROXY_ADDR[CHAIN_ID.L2], L2_GATEWAY_ROUTER_PROXY_ABI, l2signer)
     } else {
-      l1Provider = await new JsonRpcProvider(RPCUrl.SCROLL_LAYER_1)
-      l2Provider = await new JsonRpcProvider(RPCUrl.SCROLL_LAYER_2)
+      l1Provider = await new JsonRpcProvider(RPC_URL.L1)
+      l2Provider = await new JsonRpcProvider(RPC_URL.L2)
     }
     // TODO: publicProvider
-    l1ProviderForSafeBlock = await new JsonRpcProvider(RPCUrl.SCROLL_LAYER_1)
+    l1ProviderForSafeBlock = await new JsonRpcProvider(RPC_URL.L1)
 
     setNetworksAndSigners({
-      [ChainId.SCROLL_LAYER_1]: {
+      [CHAIN_ID.L1]: {
         provider: l1Provider,
         signer: l1signer,
         gateway: l1Gateway,
       },
-      [`${ChainId.SCROLL_LAYER_1}ForSafeBlock`]: {
+      [`${CHAIN_ID.L1}ForSafeBlock`]: {
         provider: l1ProviderForSafeBlock,
       },
-      [ChainId.SCROLL_LAYER_2]: {
+      [CHAIN_ID.L2]: {
         provider: l2Provider,
         signer: l2signer,
         gateway: l2Gateway,
@@ -80,7 +79,7 @@ const AppContextProvider = ({ children }: any) => {
     return scrollRequest(url)
       .then((data: any) => {
         const filteredList = data.tokens
-        return [...nativeTokenList, ...filteredList]
+        return [...NATIVE_TOKEN_LIST, ...filteredList]
       })
       .catch(() => {
         setFetchTokenListError("Fail to fetch token list")
@@ -111,7 +110,7 @@ const AppContextProvider = ({ children }: any) => {
       value={{
         networksAndSigners,
         txHistory,
-        tokenList: tokenList ?? nativeTokenList,
+        tokenList: tokenList ?? NATIVE_TOKEN_LIST,
       }}
     >
       {children}

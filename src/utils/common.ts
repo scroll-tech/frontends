@@ -1,7 +1,7 @@
 import find from "lodash/find"
 import { DependencyList } from "react"
 
-import { STORAGE_AVAILABLE } from "./storageKey"
+import { STORAGE_AVAILABLE } from "../constants/storageKey"
 
 export const shallowEquals = (a?: DependencyList, b?: DependencyList) => {
   if (a?.length !== b?.length) return false

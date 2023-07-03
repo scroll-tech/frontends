@@ -1,14 +1,14 @@
 import dayjs from "dayjs"
 import React from "react"
 
-import { Link } from "@mui/material"
 import TableBody from "@mui/material/TableBody"
 import TableContainer from "@mui/material/TableContainer"
 import TableHead from "@mui/material/TableHead"
 import TableRow from "@mui/material/TableRow"
 import { styled } from "@mui/material/styles"
 
-import { l2ExplorerUrl } from "@/constants/index"
+import Link from "@/components/Link"
+import { EXPLORER_URL } from "@/constants"
 
 import Table from "../components/Table"
 import TableCell from "../components/TableCell"
@@ -55,12 +55,12 @@ const BlockTable: React.FC<BlockTableProps> = (props: { blocks: any }) => {
           {props.blocks.map((row: any) => (
             <StyledTableRow key={row.hash}>
               <TableCell scope="row">
-                <Link href={`${l2ExplorerUrl}/block/${row.hash}`} underline="none" sx={{ fontWeight: 600, color: "#00A6F2" }}>
+                <Link href={`${EXPLORER_URL.L2}/block/${row.hash}`} underline="none">
                   {row.number}
                 </Link>
               </TableCell>
               <TableCell>
-                <Link href={`${l2ExplorerUrl}/block/${row.hash}`} underline="none" sx={{ fontWeight: 600, color: "#00A6F2" }}>
+                <Link external href={`${EXPLORER_URL.L2}/block/${row.hash}`} underline="none">
                   {truncatedHash(row.hash)}
                 </Link>
               </TableCell>

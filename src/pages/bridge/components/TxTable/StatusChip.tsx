@@ -3,7 +3,7 @@ import { makeStyles } from "tss-react/mui"
 
 import { Chip } from "@mui/material"
 
-import { TxStatus } from "@/constants"
+import { TX_STATUS } from "@/constants"
 
 const useStyles = makeStyles()(theme => {
   return {
@@ -48,15 +48,15 @@ const StatusChip = props => {
   const { cx, classes } = useStyles()
 
   const chipStatusClass = useMemo(() => {
-    if (status === TxStatus.pending) {
+    if (status === TX_STATUS.pending) {
       return classes.pendingChip
-    } else if (status === TxStatus.success) {
+    } else if (status === TX_STATUS.success) {
       return classes.successChip
-    } else if (status === TxStatus.failed) {
+    } else if (status === TX_STATUS.failed) {
       return classes.failedChip
-    } else if (status === TxStatus.canceled) {
+    } else if (status === TX_STATUS.canceled) {
       return classes.canceledChip
-    } else if (status === TxStatus.empty) {
+    } else if (status === TX_STATUS.empty) {
       return classes.emptyChip
     }
     return null

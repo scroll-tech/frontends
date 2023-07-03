@@ -22,7 +22,7 @@ import {
 } from "@mui/material"
 
 import Link from "@/components/Link"
-import { TxStatus } from "@/constants"
+import { TX_STATUS } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
 import useTokenInfo from "@/hooks/useTokenInfo"
 import useTxStore from "@/stores/txStore"
@@ -142,12 +142,12 @@ const TxRow = props => {
         return assumedStatus
       }
       if (assumedStatus && to) {
-        return TxStatus.empty
+        return TX_STATUS.empty
       }
       if (blockNumber && blockNumbers && blockNumbers[+!(isL1 ^ to)] >= blockNumber) {
-        return TxStatus.success
+        return TX_STATUS.success
       }
-      return TxStatus.pending
+      return TX_STATUS.pending
     },
     [blockNumbers],
   )
@@ -167,7 +167,7 @@ const TxRow = props => {
   }
 
   const renderEstimatedWaitingTime = (timestamp, isL1, to) => {
-    if (fromStatus === TxStatus.success) {
+    if (fromStatus === TX_STATUS.success) {
       return null
     } else if (timestamp === 0) {
       return <Typography variant="body2">Estimating...</Typography>
@@ -198,7 +198,7 @@ const TxRow = props => {
         <Stack direction="column" spacing="1.4rem">
           {blockNumbers ? (
             <>
-              {fromStatus === TxStatus.failed ? (
+              {fromStatus === TX_STATUS.failed ? (
                 <Tooltip title={tx.errMsg}>
                   <Box>
                     <StatusChip sx={{ cursor: "pointer" }} status={fromStatus}>

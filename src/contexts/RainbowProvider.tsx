@@ -10,7 +10,7 @@ import { goerli } from "wagmi/chains"
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc"
 import { publicProvider } from "wagmi/providers/public"
 
-import { ChainId, ETH_SYMBOL, RPCUrl, TESTNET_NAME } from "@/constants"
+import { CHAIN_ID, ETH_SYMBOL, RPC_URL, TESTNET_NAME } from "@/constants"
 import { requireEnv } from "@/utils"
 
 type RainbowContextProps = {
@@ -24,7 +24,7 @@ type RainbowContextProps = {
 }
 
 export const scrollChain: Chain = {
-  id: ChainId.SCROLL_LAYER_2,
+  id: CHAIN_ID.L2,
   name: TESTNET_NAME,
   network: TESTNET_NAME,
   iconUrl: "https://scroll.io/logo.png",
@@ -36,10 +36,10 @@ export const scrollChain: Chain = {
   },
   rpcUrls: {
     default: {
-      http: [RPCUrl.SCROLL_LAYER_2],
+      http: [RPC_URL.L2],
     },
     public: {
-      http: [RPCUrl.SCROLL_LAYER_2],
+      http: [RPC_URL.L2],
     },
   },
   blockExplorers: {

@@ -4,7 +4,6 @@ import { makeStyles } from "tss-react/mui"
 
 import { Card, MenuItem, Skeleton, Typography } from "@mui/material"
 
-import { Token } from "@/constants"
 import { toTokenDisplay } from "@/utils"
 
 import LargeTextField from "../components/LargeTextField"

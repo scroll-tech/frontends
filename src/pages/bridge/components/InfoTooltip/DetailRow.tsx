@@ -1,4 +1,3 @@
-import classnames from "classnames"
 import { FC } from "react"
 import { makeStyles } from "tss-react/mui"
 
@@ -37,12 +36,12 @@ const useStyles = makeStyles()(theme => ({
 
 const DetailRow: FC<DetailRowProps> = props => {
   const { title, tooltip, value, large = false, xlarge = false } = props
-  const { classes: styles } = useStyles()
+  const { classes: styles, cx } = useStyles()
   const variant = xlarge || large ? "h6" : "subtitle2"
 
   return (
     <Box display="flex" justifyContent="space-between" alignItems={"center"}>
-      <Typography variant={variant} color="textPrimary" className={classnames(styles.detailLabel, styles.label)}>
+      <Typography variant={variant} color="textPrimary" className={cx(styles.detailLabel, styles.label)}>
         <Box>{title}&nbsp;</Box>
         {tooltip ? <InfoTooltip title={tooltip} /> : null}
       </Typography>
