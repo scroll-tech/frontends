@@ -8,7 +8,7 @@ import L1_erc20ABI from "@/assets/abis/L1_erc20ABI.json"
 import LoadingButton from "@/components/LoadingButton"
 import TextButton from "@/components/TextButton"
 import { CHAIN_ID, ETH_SYMBOL, NETWORKS, STANDARD_ERC20_GATEWAY_PROXY_ADDR } from "@/constants"
-import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
+import { AUTO_REQUESTING_SWITCH_NETWORK, BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
 import { useApp } from "@/contexts/AppContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useApprove, useAsyncMemo, useBalance, useSufficientBalance } from "@/hooks"
@@ -28,6 +28,7 @@ import { useSendTransaction } from "./useSendTransaction"
 
 const Send: FC = () => {
   const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
+  const [autoRequesting, setAutoRequesting] = useStorage(localStorage, AUTO_REQUESTING_SWITCH_NETWORK, true)
   const { classes: styles, cx } = useSendStyles()
   const { networksAndSigners, tokenList } = useApp()
 
@@ -158,7 +159,9 @@ const Send: FC = () => {
   const handleSwitchDirection = () => {
     setFromNetwork(toNetwork)
     setToNetwork(fromNetwork)
-    handleSwitchNetwork(toNetwork.chainId)
+    if (autoRequesting) {
+      handleSwitchNetwork(toNetwork.chainId)
+    }
   }
 
   const handleApprove = async () => {
@@ -249,8 +252,11 @@ const Send: FC = () => {
     try {
       await switchNetwork(chainId)
     } catch (error) {
+      // 4001 means user rejected the request
+      if (error.code === 4001) {
+        setAutoRequesting(false)
+      }
       // when there is a switch-network popover in MetaMask and refreshing page would throw an error
-      console.log(error, "error")
     }
   }
 

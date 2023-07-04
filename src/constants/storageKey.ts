@@ -13,4 +13,6 @@ export const APP_VERSION = "appVersion"
 
 export const BLOCK_NUMBERS = "blockNumbers"
 
+export const AUTO_REQUESTING_SWITCH_NETWORK = "autoRequestingSwitchNetwork"
+
 export const STORAGE_AVAILABLE = "__storage_test__"
