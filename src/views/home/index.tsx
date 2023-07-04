@@ -14,7 +14,7 @@ import RocketIcon from "@/assets/images/homepage/home/rocket.png"
 import RocketWebpIcon from "@/assets/images/homepage/home/rocket.webp"
 import WebpImage from "@/components/WebpImage"
 import WrapperBox from "@/components/WrapperBox"
-import { medias } from "@/constants/medias"
+import { MEDIAS } from "@/constants"
 
 import Article from "./articles"
 import FeatureSwiper from "./featureSwiper"
@@ -280,7 +280,7 @@ const Home = () => {
               Be part of our community and stay up to date with all things Scroll. Everyone who wants to build a decentralized future is welcome!
             </MediaSummary>
             <Box display="flex" paddingTop="1rem">
-              {medias.map(media => (
+              {MEDIAS.map(media => (
                 <MediaLink
                   href={media.href}
                   key={media.name}

@@ -1,13 +1,13 @@
-import classnames from "classnames"
 import dayjs from "dayjs"
 import React, { forwardRef, useMemo } from "react"
 import { Link as RouterLink, useSearchParams } from "react-router-dom"
+import { useStyles } from "tss-react/mui"
 
 import { Chip, Pagination, TableBody, TableContainer, TableHead, TablePagination, TableRow, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
 import Link from "@/components/Link"
-import { l1ExplorerUrl } from "@/constants/index"
+import { EXPLORER_URL } from "@/constants"
 import useRollupStore from "@/stores/rollupStore"
 
 import Spinning from "../components/Spinning"
@@ -117,6 +117,7 @@ const CustomTableRow = styled(TableRow)(({ theme }) => ({
 
 const RollupTable = forwardRef<any, any>((props, ref) => {
   const { onPaginationChange } = props
+  const { cx } = useStyles()
   const { data, total, emptyBatch, searchLoading, batchLoading, currentClickedBatch } = useRollupStore()
   const [searchParams, setSearchParams] = useSearchParams()
 
@@ -194,7 +195,7 @@ const RollupTable = forwardRef<any, any>((props, ref) => {
             </TableHead>
             <TableBody ref={ref}>
               {data.map((row: any) => (
-                <CustomTableRow key={row.id} className={classnames(`rollup-batch-${row.index}`, currentClickedBatch === row.index && "rowActive")}>
+                <CustomTableRow key={row.id} className={cx(`rollup-batch-${row.index}`, currentClickedBatch === row.index && "rowActive")}>
                   <TableCell>
                     <Link component={RouterLink} to={`batch/${row.index}`}>
                       {row.index}
@@ -204,7 +205,7 @@ const RollupTable = forwardRef<any, any>((props, ref) => {
                   <TableCell>{row.total_tx_num}</TableCell>
                   <TableCell>
                     {row.commit_tx_hash ? (
-                      <Link href={`${l1ExplorerUrl}/tx/${row.commit_tx_hash}`} external>
+                      <Link href={`${EXPLORER_URL.L1}/tx/${row.commit_tx_hash}`} external>
                         {truncatedHash(row.commit_tx_hash)}
                       </Link>
                     ) : (
@@ -213,7 +214,7 @@ const RollupTable = forwardRef<any, any>((props, ref) => {
                   </TableCell>
                   <TableCell>
                     {row.finalize_tx_hash ? (
-                      <Link href={`${l1ExplorerUrl}/tx/${row.finalize_tx_hash}`} external>
+                      <Link href={`${EXPLORER_URL.L1}/tx/${row.finalize_tx_hash}`} external>
                         {truncatedHash(row.finalize_tx_hash)}
                       </Link>
                     ) : (

@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom"
 
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
-import Web3Provider from "@/contexts/Web3ContextProvider"
+import RainbowProvider from "@/contexts/RainbowProvider"
 import ScrollToTop from "@/hooks/useScrollToTop"
 import NotFound from "@/pages/404"
 import { requireEnv } from "@/utils"
@@ -38,7 +38,7 @@ function Homepage() {
         <meta name="twitter:description" content="Native zkEVM Layer 2 for Ethereum" />
         <meta name="twitter:image" content={getImageUrl()} />
       </Helmet>
-      <Web3Provider>
+      <RainbowProvider>
         <AppWrapper>
           <ScrollToTop>
             <Header />
@@ -51,7 +51,7 @@ function Homepage() {
             <Footer />
           </ScrollToTop>
         </AppWrapper>
-      </Web3Provider>
+      </RainbowProvider>
     </div>
   )
 }

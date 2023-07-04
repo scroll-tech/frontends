@@ -2,7 +2,7 @@ import { makeStyles } from "tss-react/mui"
 
 import Typography from "@mui/material/Typography"
 
-import { networks } from "@/constants"
+import { NETWORKS } from "@/constants"
 
 const useStyles = makeStyles()(theme => ({
   header: {
@@ -37,7 +37,7 @@ function BridgeTitle(props) {
           Scroll Bridge
         </Typography>
         <Typography variant="body1" color="textSecondary" className={classes.sendDesc}>
-          Send tokens between {networks[0].name} and {networks[1].name}.
+          Send tokens between {NETWORKS[0].name} and {NETWORKS[1].name}.
         </Typography>
       </div>
     </div>

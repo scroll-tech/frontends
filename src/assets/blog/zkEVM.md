@@ -145,7 +145,7 @@ zkEVM can provide the same experience for developers and users. It’s order of 
 
 ## A little about us
 
-_Scroll Tech is a newly built tech-driven company. We aim to build an EVM-compatible zk-Rollup with a strong proving network ([See an overview here](/blog/Scroll-Overview)). The whole team is now focusing on the development. We are actively hiring more passionate developers, reach out to us at [hire@scroll.io](mailto:hire@scroll.io). If you have any question about the technical content, reach out to me at [ye@scroll.io](mailto:ye@scroll.io). [DM](https://twitter.com/yezhang1998) is also open._
+_Scroll Tech is a newly built tech-driven company. We aim to build an EVM-compatible zk-Rollup with a strong proving network ([See an overview here](/blog/architecture)). The whole team is now focusing on the development. We are actively hiring more passionate developers, reach out to us at [hire@scroll.io](mailto:hire@scroll.io). If you have any question about the technical content, reach out to me at [ye@scroll.io](mailto:ye@scroll.io). [DM](https://twitter.com/yezhang1998) is also open._
 
 [^1]: Starkware claims to achieve composability a few days ago ([reference here](https://medium.com/starkware/starknet-alpha-2-4aa116f0ecfc))
 [^2]: Circuit is fixed and static. For example, you can’t use variable upper bound loop when implementing a program as a circuit. The upper bound has to be fixed to its maximum value. It can’t deal with dynamic logic.

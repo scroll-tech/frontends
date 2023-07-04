@@ -3,10 +3,10 @@ import useStorage from "squirrel-gill"
 import useSWR from "swr"
 
 import { fetchTxByHashUrl } from "@/apis/bridge"
-import { BRIDGE_PAGE_SIZE, ChainId } from "@/constants"
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import { BRIDGE_PAGE_SIZE, CHAIN_ID } from "@/constants"
+import { BLOCK_NUMBERS } from "@/constants/storageKey"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useTxStore from "@/stores/txStore"
-import { BLOCK_NUMBERS } from "@/utils/storageKey"
 
 export interface TxHistory {
   blockNumbers: number[]
@@ -16,7 +16,7 @@ export interface TxHistory {
 }
 
 const useTxHistory = networksAndSigners => {
-  const { walletCurrentAddress } = useWeb3Context()
+  const { walletCurrentAddress } = useRainbowContext()
   const { pageTransactions, generateTransactions, comboPageTransactions } = useTxStore()
   const [blockNumbers, setBlockNumbers] = useStorage(localStorage, BLOCK_NUMBERS, [-1, -1])
 
@@ -53,9 +53,9 @@ const useTxHistory = networksAndSigners => {
   )
 
   const fetchBlockNumber = useCallback(async () => {
-    if (networksAndSigners[`${ChainId.SCROLL_LAYER_1}ForSafeBlock`].provider && networksAndSigners[ChainId.SCROLL_LAYER_2].provider) {
-      const fetchL1BlockNumber = networksAndSigners[`${ChainId.SCROLL_LAYER_1}ForSafeBlock`].provider.getBlock("safe")
-      const fetchL2BlockNumber = networksAndSigners[ChainId.SCROLL_LAYER_2].provider.getBlock("latest")
+    if (networksAndSigners[`${CHAIN_ID.L1}ForSafeBlock`].provider && networksAndSigners[CHAIN_ID.L2].provider) {
+      const fetchL1BlockNumber = networksAndSigners[`${CHAIN_ID.L1}ForSafeBlock`].provider.getBlock("safe")
+      const fetchL2BlockNumber = networksAndSigners[CHAIN_ID.L2].provider.getBlock("latest")
 
       const blockNumbers = await Promise.allSettled([fetchL1BlockNumber, fetchL2BlockNumber])
 

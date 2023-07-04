@@ -108,6 +108,10 @@ const roadmaps = [
     completed: true,
   },
   {
+    name: "Sepolia Testnet",
+    completed: false,
+  },
+  {
     name: "zkEVM Mainnet",
     completed: false,
   },

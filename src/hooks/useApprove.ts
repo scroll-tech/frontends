@@ -1,7 +1,7 @@
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
 
 const useApprove = token => {
-  const { provider } = useWeb3Context()
+  const { provider } = useRainbowContext()
 
   const checkApproval = async (amount: bigint, token: any, spender: string) => {
     try {

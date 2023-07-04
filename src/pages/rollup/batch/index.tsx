@@ -8,7 +8,7 @@ import { styled, useTheme } from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
 import Link from "@/components/Link"
-import { l1ExplorerUrl } from "@/constants/index"
+import { EXPLORER_URL } from "@/constants"
 import { useBatchDetail } from "@/hooks/useRollupInfo"
 
 import Header from "../components/Header"
@@ -97,7 +97,7 @@ const Blocks = () => {
   const renderLink = (hash: string | null) => {
     if (hash) {
       return (
-        <Link href={`${l1ExplorerUrl}/tx/${hash}`}>
+        <Link external href={`${EXPLORER_URL.L1}/tx/${hash}`}>
           <Stack direction="row" alignItems="center" spacing="0.4rem" sx={{ whiteSpace: "nowrap" }}>
             {truncatedHash(hash)}
             <OpenInNew />

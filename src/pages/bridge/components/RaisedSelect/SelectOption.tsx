@@ -1,4 +1,3 @@
-import classNames from "classnames"
 import { FC } from "react"
 import { makeStyles } from "tss-react/mui"
 
@@ -52,7 +51,7 @@ type Props = {
 }
 
 const SelectOption: FC<Props> = props => {
-  const { classes } = useStyles()
+  const { classes, cx } = useStyles()
   const { label, icon, disabled } = props
 
   if (!(icon || label)) {
@@ -69,7 +68,7 @@ const SelectOption: FC<Props> = props => {
         </ListItemIcon>
       )}
       {label && (
-        <Typography component="span" variant="h5" className={classNames(classes.label, disabled && classes.disabledLabel)}>
+        <Typography component="span" variant="h5" className={cx(classes.label, disabled && classes.disabledLabel)}>
           {label}
         </Typography>
       )}

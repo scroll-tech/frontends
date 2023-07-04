@@ -4,8 +4,8 @@ import { Typography } from "@mui/material"
 
 import Faq, { FaqItem } from "@/components/Faq"
 import Link from "@/components/Link"
-import { SiteMap } from "@/constants"
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import { SITE_MAP } from "@/constants"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
 
 const useStyles = makeStyles()(() => {
   return {
@@ -20,7 +20,7 @@ const useStyles = makeStyles()(() => {
 })
 
 const FAQ = () => {
-  const { walletName } = useWeb3Context()
+  const { walletName } = useRainbowContext()
   const { classes } = useStyles()
   return (
     <Faq>
@@ -50,7 +50,7 @@ const FAQ = () => {
           4. Once the transaction is confirmed, the token will be deducted from your Scroll L1 or Scroll L2 wallet.
         </Typography>
         <Typography variant="body1" color="textSecondary">
-          More instructions <Link href={SiteMap.Home}>here</Link>.
+          More instructions <Link href={SITE_MAP.Home}>here</Link>.
         </Typography>
       </FaqItem>
     </Faq>

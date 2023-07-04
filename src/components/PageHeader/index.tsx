@@ -6,7 +6,7 @@ import { Box, Button, Container, Stack, Typography } from "@mui/material"
 import { ReactComponent as ExitIcon } from "@/assets/svgs/exit.svg"
 import ButtonPopover from "@/components/ButtonPopover"
 import Link from "@/components/Link"
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useConnectWallet from "@/hooks/useConnectWallet"
 import { truncateAddress } from "@/utils"
 
@@ -47,8 +47,8 @@ const useStyles = makeStyles()(theme => ({
 const PageHeader = props => {
   const { action, title, subTitle, children } = props
   const { classes } = useStyles()
-  const { walletCurrentAddress, disconnectWallet } = useWeb3Context()
-  const connectWallet = useConnectWallet()
+  const { walletCurrentAddress, disconnect } = useRainbowContext()
+  const connect = useConnectWallet()
 
   const buttonRef = useRef(null)
 
@@ -64,7 +64,7 @@ const PageHeader = props => {
 
   const handleDisconnect = () => {
     handleClose()
-    disconnectWallet()
+    disconnect()
   }
   return (
     <Box sx={{ background: theme => theme.palette.scaleBackground.gradient, pt: "3rem", pb: "6rem" }}>
@@ -78,7 +78,7 @@ const PageHeader = props => {
         {walletCurrentAddress ? (
           <Stack direction="row">
             <Button sx={{ width: "17.8rem" }} ref={buttonRef} variant="outlined" onClick={handleOpen}>
-              {truncateAddress(walletCurrentAddress as string)}
+              {truncateAddress(walletCurrentAddress)}
             </Button>
             <ButtonPopover open={connectedWalletVisible} anchorEl={buttonRef.current} title="Connected Wallet" onClose={handleClose}>
               <Stack direction="row" flexWrap="wrap" sx={{ pt: ["2.4rem", "3rem"] }}>
@@ -94,7 +94,7 @@ const PageHeader = props => {
             {action}
           </Stack>
         ) : (
-          <Button sx={{ width: "17.8rem" }} onClick={connectWallet} variant="outlined">
+          <Button sx={{ width: "17.8rem" }} onClick={connect} variant="outlined">
             Connect Wallet
           </Button>
         )}

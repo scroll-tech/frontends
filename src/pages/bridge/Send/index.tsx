@@ -1,4 +1,3 @@
-import classNames from "classnames"
 import { ethers } from "ethers"
 import { ChangeEvent, FC, useEffect, useMemo, useState } from "react"
 import useStorage from "squirrel-gill"
@@ -8,14 +7,14 @@ import { Alert, Typography } from "@mui/material"
 import L1_erc20ABI from "@/assets/abis/L1_erc20ABI.json"
 import LoadingButton from "@/components/LoadingButton"
 import TextButton from "@/components/TextButton"
-import { ChainId, ERC20Token, ETH_SYMBOL, NativeToken, StandardERC20GatewayProxyAddr, Token, networks } from "@/constants"
+import { CHAIN_ID, ETH_SYMBOL, NETWORKS, STANDARD_ERC20_GATEWAY_PROXY_ADDR } from "@/constants"
+import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
 import { useApp } from "@/contexts/AppContextProvider"
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useApprove, useAsyncMemo, useBalance, useSufficientBalance } from "@/hooks"
 import { usePriceFee } from "@/hooks"
 import { amountToBN, sanitizeNumericalString, switchNetwork } from "@/utils"
 import { toTokenDisplay } from "@/utils"
-import { BRIDGE_TOKEN_SYMBOL } from "@/utils/storageKey"
 
 import DetailRow from "../components/InfoTooltip/DetailRow"
 import FeeDetails from "../components/InfoTooltip/FeeDetails"
@@ -38,7 +37,7 @@ const Send: FC = () => {
   const [estimatedGasCost, setEstimatedGasCost] = useState<undefined | bigint>(undefined)
   const [sendingModalOpen, setSendingModalOpen] = useState(false)
 
-  const { checkConnectedChainId, chainId, walletName, connectWallet } = useWeb3Context()
+  const { checkConnectedChainId, chainId, walletName, connect } = useRainbowContext()
 
   const fromToken = useMemo(
     () => tokenList.find(item => item.chainId === fromNetwork.chainId && item.symbol === tokenSymbol) ?? ({} as any as Token),
@@ -66,13 +65,13 @@ const Send: FC = () => {
 
   const { balance: toBalance, loading: loadingToBalance } = useBalance(toToken, toNetwork)
   useEffect(() => {
-    if (chainId && Object.values(ChainId).includes(chainId)) {
-      const fromNetworkIndex = networks.findIndex(item => item.chainId === chainId)
-      setFromNetwork(networks[fromNetworkIndex])
-      setToNetwork(networks[+!fromNetworkIndex])
+    if (chainId && Object.values(CHAIN_ID).includes(chainId)) {
+      const fromNetworkIndex = NETWORKS.findIndex(item => item.chainId === chainId)
+      setFromNetwork(NETWORKS[fromNetworkIndex])
+      setToNetwork(NETWORKS[+!fromNetworkIndex])
     } else {
-      setFromNetwork(networks[0])
-      setToNetwork(networks[1])
+      setFromNetwork(NETWORKS[0])
+      setToNetwork(NETWORKS[1])
     }
   }, [chainId, tokenList, tokenSymbol])
 
@@ -108,7 +107,7 @@ const Send: FC = () => {
 
   const handleTotalBonderFeeDisplay = async () => {
     if (networksAndSigners[fromNetwork.chainId]?.signer) {
-      const fee = await getPriceFee(fromToken, fromNetwork.isLayer1)
+      const fee = await getPriceFee(fromToken, fromNetwork.isL1)
       const display = fromTokenAmount ? toTokenDisplay(fee) + " " + ETH_SYMBOL : "-"
       setTotalBonderFeeDisplay(display)
     }
@@ -126,7 +125,7 @@ const Send: FC = () => {
   // network->sufficient->tx error
   const warningTip = useMemo(() => {
     if (!walletName) {
-      return <TextButton onClick={connectWallet}>Click here to connect wallet.</TextButton>
+      return <TextButton onClick={connect}>Click here to connect wallet.</TextButton>
     } else if (!isCorrectNetwork) {
       return (
         <>
@@ -153,7 +152,7 @@ const Send: FC = () => {
       )
     }
     return null
-  }, [walletName, connectWallet, isCorrectNetwork, warning, sendError, fromNetwork])
+  }, [walletName, connect, isCorrectNetwork, warning, sendError, fromNetwork])
 
   // Switch the fromNetwork <--> toNetwork
   const handleSwitchDirection = () => {
@@ -196,7 +195,7 @@ const Send: FC = () => {
 
   const needsApproval = useAsyncMemo(async () => {
     if (
-      !(networksAndSigners[ChainId.SCROLL_LAYER_1].gateway || networksAndSigners[ChainId.SCROLL_LAYER_2].gateway) ||
+      !(networksAndSigners[CHAIN_ID.L1].gateway || networksAndSigners[CHAIN_ID.L2].gateway) ||
       !Number(fromTokenAmount) ||
       chainId !== fromNetwork.chainId ||
       (fromToken as NativeToken).native
@@ -207,7 +206,7 @@ const Send: FC = () => {
     try {
       const parsedAmount = amountToBN(fromTokenAmount, fromToken.decimals)
       const Token = new ethers.Contract((fromToken as ERC20Token).address, L1_erc20ABI, networksAndSigners[chainId as number].signer)
-      return checkApproval(parsedAmount, Token, StandardERC20GatewayProxyAddr[chainId as number])
+      return checkApproval(parsedAmount, Token, STANDARD_ERC20_GATEWAY_PROXY_ADDR[chainId as number])
     } catch (err) {
       console.log("~~~err", err)
       return false
@@ -221,7 +220,7 @@ const Send: FC = () => {
     if (!isNetworkConnected) return
     const Token = new ethers.Contract((fromToken as ERC20Token).address, L1_erc20ABI, networksAndSigners[chainId as number].signer)
     const tx = await Token.approve(
-      StandardERC20GatewayProxyAddr[chainId as number],
+      STANDARD_ERC20_GATEWAY_PROXY_ADDR[chainId as number],
       ethers.MaxUint256,
       // parsedAmount
     )
@@ -248,7 +247,6 @@ const Send: FC = () => {
 
   const handleSwitchNetwork = async (chainId: number) => {
     try {
-      // cancel switch network in MetaMask would not throw error and the result is null just like successfully switched
       await switchNetwork(chainId)
     } catch (error) {
       // when there is a switch-network popover in MetaMask and refreshing page would throw an error
@@ -260,14 +258,14 @@ const Send: FC = () => {
   return (
     <StyleContext.Provider value={styles}>
       <div className={cx("flex", "flex-col", "items-center", "bg-white", styles.sendWrapper)}>
-        <div className={classNames("flex", "flex-col", "items-center", styles.sendPanel)}>
+        <div className={cx("flex", "flex-col", "items-center", styles.sendPanel)}>
           <SendAmountSelectorCard
             value={fromTokenAmount}
             token={fromToken}
             label={"From"}
             onChange={handleChangeFromAmount}
             selectedNetwork={fromNetwork}
-            networkOptions={networks}
+            networkOptions={NETWORKS}
             balance={fromBalance}
             loadingBalance={loadingFromBalance}
             // fromNetwork={fromNetwork}
@@ -280,7 +278,7 @@ const Send: FC = () => {
             token={toToken}
             label={"To"}
             selectedNetwork={toNetwork}
-            networkOptions={networks}
+            networkOptions={NETWORKS}
             balance={toBalance}
             loadingBalance={loadingToBalance}
             disableInput

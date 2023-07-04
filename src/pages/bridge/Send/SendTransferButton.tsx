@@ -1,6 +1,6 @@
-import classNames from "classnames"
 import { useContext } from "react"
 import { ReactComponent as TransferIcon } from "src/assets/svgs/transfer.svg"
+import { useStyles } from "tss-react/mui"
 
 import IconButton from "@mui/material/IconButton"
 import SvgIcon from "@mui/material/SvgIcon"
@@ -9,8 +9,9 @@ import { StyleContext } from "./useSendStyles"
 
 const SendTranferButton = ({ disabled, onClick }) => {
   const styles = useContext(StyleContext)
+  const { cx } = useStyles()
   return (
-    <div className={classNames("flex", "items-center", "justify-center", styles.sendTransfer)}>
+    <div className={cx("flex", "items-center", "justify-center", styles.sendTransfer)}>
       <IconButton
         sx={[
           theme => ({

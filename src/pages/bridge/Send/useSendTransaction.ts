@@ -1,10 +1,10 @@
 import { isError } from "ethers"
 import { useMemo, useState } from "react"
 
-import { ChainId, GasLimit, networks } from "@/constants"
-import { TxStatus } from "@/constants"
+import { CHAIN_ID, GAS_LIMIT, NETWORKS } from "@/constants"
+import { TX_STATUS } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { usePriceFee } from "@/hooks"
 import useBridgeStore from "@/stores/bridgeStore"
 import useTxStore, { TxPosition, isValidOffsetTime } from "@/stores/txStore"
@@ -17,7 +17,7 @@ export type TransactionHandled = {
 
 export function useSendTransaction(props) {
   const { fromNetwork, fromTokenAmount, setSendError, toNetwork, selectedToken } = props
-  const { walletCurrentAddress } = useWeb3Context()
+  const { walletCurrentAddress } = useRainbowContext()
   const {
     networksAndSigners,
     txHistory: { blockNumbers },
@@ -37,11 +37,11 @@ export function useSendTransaction(props) {
     let tx
     let currentBlockNumber
     try {
-      if (fromNetwork.isLayer1) {
-        currentBlockNumber = await networksAndSigners[ChainId.SCROLL_LAYER_1].provider.getBlockNumber()
+      if (fromNetwork.isL1) {
+        currentBlockNumber = await networksAndSigners[CHAIN_ID.L1].provider.getBlockNumber()
         tx = await sendl1ToL2()
-      } else if (!fromNetwork.isLayer1 && toNetwork.isLayer1) {
-        currentBlockNumber = await networksAndSigners[ChainId.SCROLL_LAYER_2].provider.getBlockNumber()
+      } else if (!fromNetwork.isL1 && toNetwork.isL1) {
+        currentBlockNumber = await networksAndSigners[CHAIN_ID.L2].provider.getBlockNumber()
         tx = await sendl2ToL1()
       }
       // start to check tx replacement from current block number
@@ -56,7 +56,7 @@ export function useSendTransaction(props) {
             handleTransaction(tx, {
               fromBlockNumber: receipt.blockNumber,
             })
-            if (fromNetwork.isLayer1) {
+            if (fromNetwork.isL1) {
               const estimatedOffsetTime = (receipt.blockNumber - blockNumbers[0]) * 12 * 1000
               if (isValidOffsetTime(estimatedOffsetTime)) {
                 addEstimatedTimeMap(`from_${tx.hash}`, Date.now() + estimatedOffsetTime)
@@ -69,7 +69,7 @@ export function useSendTransaction(props) {
             // Something failed in the EVM
             updateOrderedTxs(walletCurrentAddress, tx.hash, TxPosition.Abnormal)
             // EIP-658
-            markTransactionAbnormal(tx, TxStatus.failed, "due to any operation that can cause the transaction or top-level call to revert")
+            markTransactionAbnormal(tx, TX_STATUS.failed, "due to any operation that can cause the transaction or top-level call to revert")
           }
         })
         .catch(error => {
@@ -77,7 +77,7 @@ export function useSendTransaction(props) {
           sentryDebug(error.message)
           if (isError(error, "TRANSACTION_REPLACED")) {
             if (error.cancelled) {
-              markTransactionAbnormal(tx, TxStatus.canceled, "transaction was cancelled")
+              markTransactionAbnormal(tx, TX_STATUS.canceled, "transaction was cancelled")
               updateOrderedTxs(walletCurrentAddress, tx.hash, TxPosition.Abnormal)
               setSendError("cancel")
             } else {
@@ -87,7 +87,7 @@ export function useSendTransaction(props) {
                 hash: transactionHash,
               })
               updateOrderedTxs(walletCurrentAddress, tx.hash, transactionHash)
-              if (fromNetwork.isLayer1) {
+              if (fromNetwork.isL1) {
                 const estimatedOffsetTime = (blockNumber - blockNumbers[0]) * 12 * 1000
                 if (isValidOffsetTime(estimatedOffsetTime)) {
                   addEstimatedTimeMap(`from_${transactionHash}`, Date.now() + estimatedOffsetTime)
@@ -100,7 +100,7 @@ export function useSendTransaction(props) {
           } else {
             // when the transaction execution failed (status is 0)
             updateOrderedTxs(walletCurrentAddress, tx.hash, TxPosition.Abnormal)
-            markTransactionAbnormal(tx, TxStatus.failed, error.message)
+            markTransactionAbnormal(tx, TX_STATUS.failed, error.message)
           }
         })
         .finally(() => {
@@ -127,7 +127,7 @@ export function useSendTransaction(props) {
       fromExplore: fromNetwork.explorer,
       toExplore: toNetwork.explorer,
       amount: parsedAmount.toString(),
-      isL1: fromNetwork.name === networks[0].name,
+      isL1: fromNetwork.name === NETWORKS[0].name,
       symbolToken: selectedToken.address,
       timestamp: Date.now(),
     })
@@ -141,7 +141,7 @@ export function useSendTransaction(props) {
       fromExplore: fromNetwork.explorer,
       toExplore: toNetwork.explorer,
       amount: parsedAmount.toString(),
-      isL1: fromNetwork.name === networks[0].name,
+      isL1: fromNetwork.name === NETWORKS[0].name,
       symbolToken: selectedToken.address,
       assumedStatus,
       errMsg,
@@ -151,18 +151,18 @@ export function useSendTransaction(props) {
   }
 
   const depositETH = async () => {
-    const fee = await getPriceFee(selectedToken, fromNetwork.isLayer1)
-    return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositETH(uint256,uint256)"](parsedAmount, GasLimit.DEPOSIT_ETH, {
+    const fee = await getPriceFee(selectedToken, fromNetwork.isL1)
+    return networksAndSigners[CHAIN_ID.L1].gateway["depositETH(uint256,uint256)"](parsedAmount, GAS_LIMIT.DEPOSIT_ETH, {
       value: parsedAmount + fee,
     })
   }
 
   const depositERC20 = async () => {
-    const fee = await getPriceFee(selectedToken, fromNetwork.isLayer1)
-    return networksAndSigners[ChainId.SCROLL_LAYER_1].gateway["depositERC20(address,uint256,uint256)"](
+    const fee = await getPriceFee(selectedToken, fromNetwork.isL1)
+    return networksAndSigners[CHAIN_ID.L1].gateway["depositERC20(address,uint256,uint256)"](
       selectedToken.address,
       parsedAmount,
-      GasLimit.DEPOSIT_ERC20,
+      GAS_LIMIT.DEPOSIT_ERC20,
       {
         value: fee,
       },
@@ -171,17 +171,17 @@ export function useSendTransaction(props) {
 
   const withdrawETH = async () => {
     const fee = await getPriceFee(selectedToken)
-    return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawETH(uint256,uint256)"](parsedAmount, GasLimit.WITHDRAW_ETH, {
+    return networksAndSigners[CHAIN_ID.L2].gateway["withdrawETH(uint256,uint256)"](parsedAmount, GAS_LIMIT.WITHDRAW_ETH, {
       value: parsedAmount + fee,
     })
   }
 
   const withdrawERC20 = async () => {
     const fee = await getPriceFee(selectedToken)
-    return networksAndSigners[ChainId.SCROLL_LAYER_2].gateway["withdrawERC20(address,uint256,uint256)"](
+    return networksAndSigners[CHAIN_ID.L2].gateway["withdrawERC20(address,uint256,uint256)"](
       selectedToken.address,
       parsedAmount,
-      GasLimit.WITHDRAW_ERC20,
+      GAS_LIMIT.WITHDRAW_ERC20,
       {
         value: fee,
       },

@@ -1,6 +1,8 @@
 {
   "extends": ["react-app", "prettier"],
+  "plugins": ["prettier"],
   "rules": {
+    "prettier/prettier": "error",
     "no-template-curly-in-string": "off",
     "no-useless-escape": "off",
     "jsx-a11y/anchor-is-valid": "off",

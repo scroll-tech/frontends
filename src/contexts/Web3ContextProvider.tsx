@@ -1,14 +1,15 @@
+// TODO: remove later
 import injectedModule from "@web3-onboard/injected-wallets"
 import { init, useConnectWallet, useSetChain, useWallets } from "@web3-onboard/react"
 import { ethers, getAddress } from "ethers"
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react"
 
-import { networks } from "@/constants"
+import { NETWORKS } from "@/constants"
+import { CONNECTED_WALLETS as cacheKey } from "@/constants/storageKey"
 import useTxStore from "@/stores/txStore"
 import { convertHexadecimal, toHexadecimal } from "@/utils"
 import { loadState, saveState } from "@/utils/localStorage"
 import logger from "@/utils/logger"
-import { CONNECTED_WALLETS as cacheKey } from "@/utils/storageKey"
 
 type Props = {
   onboard: any
@@ -30,7 +31,7 @@ const injected = injectedModule()
 
 const web3Onboard = init({
   wallets: [injected],
-  chains: networks.map(({ chainId, nativeTokenSymbol, name, rpcUrl, imageUrl }) => ({
+  chains: NETWORKS.map(({ chainId, nativeTokenSymbol, name, rpcUrl, imageUrl }) => ({
     id: toHexadecimal(chainId),
     token: nativeTokenSymbol as string,
     label: name,
@@ -191,7 +192,7 @@ const Web3ContextProvider = ({ children }: any) => {
   )
 }
 
-export function useWeb3Context() {
+export function useRainbowContext() {
   const ctx = useContext(Web3Context)
   if (ctx === undefined) {
     throw new Error("useApp must be used within Web3Provider")

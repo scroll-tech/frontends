@@ -2,7 +2,6 @@ const CracoLessPlugin = require("craco-less")
 const webpack = require("webpack")
 const path = require("path")
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
-const { loaderByName, addBeforeLoader } = require("@craco/craco")
 const SentryWebpackPlugin = require("@sentry/webpack-plugin")
 
 module.exports = {

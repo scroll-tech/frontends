@@ -6,7 +6,7 @@ import { Box, Container, Fade, Link, Stack } from "@mui/material"
 import { styled } from "@mui/system"
 
 import Logo from "@/components/Logo"
-import { medias } from "@/constants/medias"
+import { MEDIAS } from "@/constants"
 
 import Announcement from "./announcement"
 import { navigations } from "./constants"
@@ -237,7 +237,7 @@ const App = ({ currentMenu }) => {
         </NavLink>
         <Box>{renderNavigationList()}</Box>
         <Box display="flex" alignItems="center">
-          {medias.map(media => (
+          {MEDIAS.map(media => (
             <MediaLink
               href={media.href}
               target="_blank"
