@@ -15,7 +15,6 @@ export const RPC_URL = {
 export const EXPLORER_URL = {
   L1: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L1"),
   L2: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2"),
-  Unifra: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_UNIFRA"),
 }
 
 export const STANDARD_ERC20_GATEWAY_PROXY_ADDR = {

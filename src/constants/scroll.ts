@@ -50,12 +50,6 @@ export const NAVIGATIONS = [
     isExternal: true,
     subdomainOrPath: EXPLORER_URL.L2,
   },
-  {
-    name: "Unifra Explorer",
-    description: "See L2 and L1 transactions alongside the rollup status in one interface.",
-    isExternal: true,
-    subdomainOrPath: EXPLORER_URL.Unifra,
-  },
 ]
 
 export const DOCUMENTATION = [
