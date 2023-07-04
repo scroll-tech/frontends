@@ -1,12 +1,10 @@
-import { RainbowKitProvider, useConnectModal } from "@rainbow-me/rainbowkit"
-import { Chain, connectorsForWallets } from "@rainbow-me/rainbowkit"
+import { Chain, RainbowKitProvider, connectorsForWallets, useConnectModal } from "@rainbow-me/rainbowkit"
 import "@rainbow-me/rainbowkit/styles.css"
 import { coinbaseWallet, injectedWallet, metaMaskWallet, walletConnectWallet } from "@rainbow-me/rainbowkit/wallets"
 import { type WalletClient } from "@wagmi/core"
 import { BrowserProvider, ethers } from "ethers"
 import { createContext, useCallback, useContext, useMemo } from "react"
-import { WagmiConfig, configureChains, createConfig, useAccount, useDisconnect, useNetwork, useWalletClient } from "wagmi"
-import { goerli } from "wagmi/chains"
+import { WagmiConfig, configureChains, createConfig, sepolia, useAccount, useDisconnect, useNetwork, useWalletClient } from "wagmi"
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc"
 import { publicProvider } from "wagmi/providers/public"
 
@@ -53,7 +51,7 @@ const RainbowContext = createContext<RainbowContextProps | undefined>(undefined)
 
 const { chains, publicClient } = configureChains(
   // ankr
-  [goerli, scrollChain],
+  [sepolia, scrollChain],
   [
     publicProvider(),
     jsonRpcProvider({

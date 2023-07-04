@@ -2,7 +2,7 @@ import { isProduction, requireEnv } from "@/utils"
 
 import { EXPLORER_URL } from "./common"
 
-export const TESTNET_NAME = "Scroll " + (isProduction ? "Alpha" : requireEnv("REACT_APP_SCROLL_ENVIRONMENT")) + " Testnet"
+export const TESTNET_NAME = "Scroll " + (isProduction ? "Sepolia" : requireEnv("REACT_APP_SCROLL_ENVIRONMENT")) + " Testnet"
 
 export const SITE_MAP = {
   Home: "/portal",
@@ -40,7 +40,7 @@ export const NAVIGATIONS = [
   },
   {
     name: "L1 Block Explorer",
-    description: "See your L1 transactions on Goerli's block explorer.",
+    description: "See your L1 transactions on Sepolia's block explorer.",
     isExternal: true,
     subdomainOrPath: EXPLORER_URL.L1,
   },
