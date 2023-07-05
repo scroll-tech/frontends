@@ -86,7 +86,7 @@ const Send: FC = () => {
       const { maxFeePerGas: gasPrice } = await networksAndSigners[fromNetwork.chainId].provider.getFeeData()
       try {
         const gasLimit = await estimateSend()
-        const estimatedGasCost = (BigInt(gasLimit) * BigInt(gasPrice || 1e9) * BigInt(140)) / BigInt(100)
+        const estimatedGasCost = BigInt(gasLimit) * BigInt(gasPrice || 1e9)
         setEstimatedGasCost(estimatedGasCost)
       } catch (error) {
         setEstimatedGasCost(undefined)
@@ -102,13 +102,15 @@ const Send: FC = () => {
   const { getPriceFee } = usePriceFee()
 
   useEffect(() => {
-    handleTotalBonderFeeDisplay()
-  }, [chainId, fromTokenAmount, fromToken])
+    if (estimatedGasCost !== undefined) {
+      handleTotalBonderFeeDisplay()
+    }
+  }, [chainId, fromTokenAmount, fromToken, estimatedGasCost])
 
   const handleTotalBonderFeeDisplay = async () => {
     if (networksAndSigners[fromNetwork.chainId]?.signer) {
       const fee = await getPriceFee(fromToken, fromNetwork.isL1)
-      const display = fromTokenAmount ? toTokenDisplay(fee) + " " + ETH_SYMBOL : "-"
+      const display = fromTokenAmount ? toTokenDisplay(fee + (estimatedGasCost as bigint)) + " " + ETH_SYMBOL : "-"
       setTotalBonderFeeDisplay(display)
     }
   }
