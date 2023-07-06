@@ -29,7 +29,7 @@ import Link from "@/components/Link"
 import { TX_STATUS } from "@/constants"
 import { CHAIN_ID } from "@/constants/common"
 import { useApp } from "@/contexts/AppContextProvider"
-import { useWeb3Context } from "@/contexts/Web3ContextProvider"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useTokenInfo from "@/hooks/useTokenInfo"
 import useTxStore from "@/stores/txStore"
 import { generateExploreLink, switchNetwork, toTokenDisplay, truncateHash } from "@/utils"
@@ -160,7 +160,7 @@ const TxRow = props => {
   const { tx } = props
   const { estimatedTimeMap } = useTxStore()
   const { networksAndSigners } = useApp()
-  const { chainId } = useWeb3Context()
+  const { chainId } = useRainbowContext()
   const [claimButtonLabel, setClaimButtonLabel] = useState("Claim")
   const { classes, cx } = useStyles()
 
@@ -242,7 +242,7 @@ const TxRow = props => {
       return <Chip label="Claimed" className={cx(classes.chip, classes.claimedChip)} />
     }
 
-    const isOnScrollLayer1 = chainId === CHAIN_ID.SCROLL_LAYER_1
+    const isOnScrollLayer1 = chainId === CHAIN_ID.L1
     if (tx.isFinalized) {
       if (isOnScrollLayer1) {
         return (
@@ -258,7 +258,7 @@ const TxRow = props => {
                 className={classes.claimButton}
                 onMouseEnter={() => setClaimButtonLabel("Switch")}
                 onMouseLeave={() => setClaimButtonLabel("Claim")}
-                onClick={() => handleSwitchNetwork(CHAIN_ID.SCROLL_LAYER_1)}
+                onClick={() => handleSwitchNetwork(CHAIN_ID.L1)}
               >
                 {claimButtonLabel}
               </Button>

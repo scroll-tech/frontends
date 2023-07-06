@@ -259,7 +259,7 @@ const Send: FC = () => {
   }
 
   const handleSend = () => {
-    if (fromNetwork.chainId === ChainId.SCROLL_LAYER_1) {
+    if (fromNetwork.chainId === CHAIN_ID.L1) {
       handleSendTransaction()
     } else {
       setConfirmDialogVisible(true)
