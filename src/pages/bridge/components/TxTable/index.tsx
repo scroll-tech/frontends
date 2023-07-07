@@ -237,7 +237,7 @@ const TxRow = props => {
   }
 
   const renderClaimButton = tx => {
-    if (tx.isL1) return null
+    if (tx.isL1 || fromStatus === TX_STATUS.failed) return null
     if (tx.isClaimed) {
       return <Chip label="Claimed" className={cx(classes.chip, classes.claimedChip)} />
     }
