@@ -140,3 +140,15 @@ declare module "@mui/material/styles" {
     }
   }
 }
+
+declare module "@mui/material/Typography" {
+  interface TypographyPropsVariantOverrides {
+    H1: true
+    H2: true
+    H3: true
+    H4: true
+    Body1: true
+    Body2: true
+    Body3: true
+  }
+}

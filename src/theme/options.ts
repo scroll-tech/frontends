@@ -166,21 +166,71 @@ export const typographyOptions = {
       fontWeight: 500,
     },
   },
-  body1: {
-    fontWeight: 400,
-    fontSize: "1.6rem",
-    lineHeight: "2.6rem",
-  },
-  body2: {
-    fontWeight: 400,
-    fontSize: "1.4rem",
-    lineHeight: "2.6rem",
-  },
+  // body1: {
+  //   fontWeight: 400,
+  //   fontSize: "1.6rem",
+  //   lineHeight: "2.6rem",
+  // },
+  // body2: {
+  //   fontWeight: 400,
+  //   fontSize: "1.4rem",
+  //   lineHeight: "2.6rem",
+  // },
   // button: {
   //   fontSize: "1.8rem",
   //   fontWeight: 700,
   //   textTransform: "capitalize",
   // },
+
+  H1: {
+    fontSize: "7.8rem",
+    lineHeight: "8.5rem",
+    fontWeight: 600,
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "4rem",
+      lineHeight: "4.4rem",
+    },
+  },
+
+  H2: {
+    fontSize: "4.8rem",
+    lineHeight: "5.5rem",
+    fontWeight: 600,
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "3.2rem",
+      lineHeight: "3.8rem",
+    },
+  },
+
+  H3: {
+    fontSize: "4.6rem",
+    lineHeight: "5.5rem",
+    fontWeight: 500,
+  },
+  H4: {
+    fontSize: "2.4rem",
+    lineHeight: "3.4rem",
+    fontWeight: 600,
+  },
+  Body1: {
+    fontSize: "2.6rem",
+    lineHeight: "3.6rem",
+    fontWeight: 400,
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "2rem",
+      lineHeight: "2.6rem",
+    },
+  },
+  Body2: {
+    fontSize: "2.4rem",
+    lineHeight: "3.4rem",
+    fontWeight: 400,
+  },
+  Body3: {
+    fontSize: "2.0rem",
+    lineHeight: "2.8rem",
+    fontWeight: 400,
+  },
 }
 
 export const boxShadowOptions = {

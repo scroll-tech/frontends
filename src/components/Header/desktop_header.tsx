@@ -1,12 +1,11 @@
 import React, { useState } from "react"
 import { NavLink } from "react-router-dom"
 
-import { ExpandMore, OpenInNew } from "@mui/icons-material"
-import { Box, Container, Fade, Link, Stack } from "@mui/material"
+import { OpenInNew } from "@mui/icons-material"
+import { Box, Fade, Link, Stack } from "@mui/material"
 import { styled } from "@mui/system"
 
 import Logo from "@/components/ScrollLogo"
-import { MEDIAS } from "@/constants"
 
 import Announcement from "./announcement"
 import { navigations } from "./constants"
@@ -16,24 +15,25 @@ const StyledBox = styled(Stack)(({ theme }) => ({
   top: 0,
   width: "100%",
   zIndex: 10,
-  backgroundColor: theme.palette.background.default,
+  background: "#fef8f4",
   // borderBottom: `1px solid ${theme.palette.border.main}`,
 }))
 
-const HeaderContainer = styled(Container)(({ theme }) => ({
+const HeaderContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
+  padding: "0 2rem",
 }))
 
 const MenuLinkButton = styled(Link)(({ theme }) => ({
   fontSize: "16px",
-  fontWeight: 600,
+  fontWeight: 400,
   paddingLeft: "25px",
   paddingRight: "25px",
   marginLeft: "4px",
   marginRight: "4px",
-  lineHeight: "82px",
+  lineHeight: "65px",
   position: "relative",
   color: theme.palette.text.primary,
 }))
@@ -50,24 +50,27 @@ const ExternalLink = styled("p")(({ theme }) => ({
 
 const LinkStyledButton = styled(NavLink)(({ theme }) => ({
   fontSize: "16px",
-  fontWeight: 600,
-  paddingLeft: "25px",
-  paddingRight: "25px",
-  marginLeft: "4px",
-  marginRight: "4px",
-  lineHeight: "82px",
+  fontWeight: 400,
+  paddingLeft: "10px",
+  paddingRight: "10px",
+  marginLeft: "0.5rem",
+  marginRight: "0.5rem",
+  lineHeight: "65px",
   position: "relative",
   color: theme.palette.text.primary,
+  "&.active": {
+    color: theme.palette.primary.main,
+  },
 }))
 
 const SubMenuButton = styled(Box)(({ theme }) => ({
   fontSize: "16px",
-  fontWeight: 600,
-  paddingLeft: "25px",
-  paddingRight: "25px",
-  marginLeft: "1rem",
-  marginRight: "1rem",
-  lineHeight: "82px",
+  fontWeight: 400,
+  paddingLeft: "10px",
+  paddingRight: "10px",
+  marginLeft: "0.5rem",
+  marginRight: "0.5rem",
+  lineHeight: "65px",
   position: "relative",
   color: theme.palette.text.primary,
   // color: "#A0A0A0",
@@ -143,15 +146,6 @@ const LinkStyledSubButton = styled(NavLink)(({ theme }) => ({
   },
 }))
 
-const MediaLink = styled("a")(({ theme }) => ({
-  height: "1.9rem",
-  width: "2.4rem",
-  marginRight: "2.2rem",
-  "&:hover": {
-    opacity: 0.8,
-  },
-}))
-
 const App = ({ currentMenu }) => {
   const [checked, setChecked] = useState("")
 
@@ -196,7 +190,12 @@ const App = ({ currentMenu }) => {
         >
           <Stack direction="row" alignItems="center" spacing="6px">
             <span>{item.label}</span>
-            <ExpandMore className="expand-more" />
+            <svg className="expand-more" xmlns="http://www.w3.org/2000/svg" width="9" height="5" viewBox="0 0 9 5" fill="none">
+              <path
+                d="M4.98393 4.5L3.48482 4.5L0.234375 0.5L1.73169 0.5L4.24869 3.60242C5.09663 2.56061 5.80325 1.54181 6.73527 0.500001L8.23438 0.500001C6.99108 1.83333 6.22722 3.16667 4.98393 4.5Z"
+                fill="currentColor"
+              />
+            </svg>
           </Stack>
           <Fade in={item.key === checked}>
             <SubMenuList onClick={handleMouseLeave}>{renderSubMenuList(item.children)}</SubMenuList>
@@ -211,7 +210,7 @@ const App = ({ currentMenu }) => {
       )
     } else {
       return (
-        <LinkStyledButton to={item.href} end={item.end} key={item.key}>
+        <LinkStyledButton className={currentMenu === item.key ? "active" : ""} to={item.href} end={item.end} key={item.key}>
           {item.label}
         </LinkStyledButton>
       )
@@ -236,19 +235,6 @@ const App = ({ currentMenu }) => {
           <Logo />
         </NavLink>
         <Box>{renderNavigationList()}</Box>
-        <Box display="flex" alignItems="center">
-          {MEDIAS.map(media => (
-            <MediaLink
-              href={media.href}
-              target="_blank"
-              key={media.name}
-              sx={{
-                background: `url(${media.imgSrc}) center / contain no-repeat `,
-              }}
-              className={media.name}
-            />
-          ))}
-        </Box>
       </HeaderContainer>
     </StyledBox>
   )

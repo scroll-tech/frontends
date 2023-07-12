@@ -2,6 +2,11 @@ import { EXPLORER_URL } from "../../constants/common"
 
 const navigations = [
   {
+    label: "Our Story",
+    key: "story",
+    href: "/story",
+  },
+  {
     label: "Explore",
     key: "explore",
     href: "",
