@@ -1,67 +1,21 @@
-import { useRef } from "react"
+import { Container, Stack, Typography } from "@mui/material"
 
-import { Button as MuiButton, Stack, Typography } from "@mui/material"
-import { styled } from "@mui/system"
-
-import Link from "@/components/Link"
-import PageHeader from "@/components/PageHeader"
-import useIsMobile from "@/hooks/useIsMobile"
-
-const Button = styled(MuiButton)<any>(
-  ({ theme }) => `
-    width: 20.8rem;
-    height: 5rem;
-    padding: 0;
-  `,
-)
+import Button from "@/components/Button"
+import { LIST_YOUR_DAPP_LINK } from "@/constants"
 
 const Header = () => {
-  const isMobile = useIsMobile()
-
-  const typeformLinkRef = useRef("https://scrollzkp.typeform.com/buildwithscroll")
-
   return (
-    <PageHeader title="Scroll Ecosystem">
-      {isMobile ? (
-        <>
-          <Typography color="textSecondary" sx={{ fontSize: "1.2rem", lineHeight: "1.4rem", fontFamily: "Inter" }}>
-            Want to join the Scroll ecosystem?{" "}
-            <Link external href={typeformLinkRef.current} sx={{ color: "primary.main", fontSize: "inherit" }}>
-              Contact us
-            </Link>
-          </Typography>
-          {/* <Typography color="textSecondary" sx={{ fontSize: "1.2rem", lineHeight: "1.4rem", fontFamily: "Inter", mt: "2rem" }}>
-              Stay up to date with our{" "}
-              <Link external href="" sx={{ color: "primary.main", fontSize: "inherit" }}>
-                Ecosystem Roadmap
-              </Link>
-            </Typography> */}
-        </>
-      ) : (
-        <>
-          <Typography color="textSecondary" sx={{ fontSize: "2.2rem" }}>
-            Want to join the Scroll ecosystem?
-          </Typography>
-          <Stack direction="row" spacing={4} sx={{ mt: "3rem" }} justifyContent="center">
-            <Button variant="contained" href={typeformLinkRef.current} target="_blank">
-              Contact us
-            </Button>
-            {/* <Button
-                color="secondary"
-                href=""
-                sx={{
-                  backgroundColor: "transparent",
-                  "&:hover": {
-                    backgroundColor: "transparent",
-                  },
-                }}
-              >
-                Ecosystem Roadmap
-              </Button> */}
-          </Stack>
-        </>
-      )}
-    </PageHeader>
+    <Container sx={{ py: "15.4rem", display: "flex", justifyContent: "space-between", maxWidth: "1438px !important" }}>
+      <Typography sx={{ fontSize: "7.8rem", lineHeight: "8.5rem", fontWeight: 600, width: "min-content" }}>Scroll Ecosystem</Typography>
+      <Stack direction="column" justifyContent="space-between" sx={{ pb: "1.5rem" }}>
+        <Typography sx={{ fontSize: "2.6rem", lineHeight: "normal" }}>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br></br>Proin ut iaculis quam mollis consequat.
+        </Typography>
+        <Button href={LIST_YOUR_DAPP_LINK} target="_blank">
+          List Your dapp
+        </Button>
+      </Stack>
+    </Container>
   )
 }
 

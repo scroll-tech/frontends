@@ -30,85 +30,36 @@ body {
 }
 
 @font-face {
-  font-family: "Pulp Display";
-  src: url("./assets/fonts/PulpDisplay-Regular.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 400;
-}
-
-@font-face {
-  font-family: "Pulp Display";
-  src: url("./assets/fonts/PulpDisplay-Medium.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 500;
-}
-
-@font-face {
-  font-family: "Pulp Display";
-  src: url("./assets/fonts/PulpDisplay-SemiBold.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 600;
-}
-
-@font-face {
   font-family: "SF UI Text";
-  src: url("./assets/fonts/SFUIText-Light.ttf") format("truetype");
+  src: url("./assets/fonts/TransSansPremium-Light.otf") format("truetype");
   font-style: normal;
   font-weight: 300;
 }
 
 @font-face {
   font-family: "SF UI Text";
-  src: url("./assets/fonts/SFUIText-Regular.ttf") format("truetype");
+  src: url("./assets/fonts/TransSansPremium-Regular.otf") format("truetype");
   font-style: normal;
   font-weight: 400;
 }
 
 @font-face {
   font-family: "SF UI Text";
-  src: url("./assets/fonts/SFUIText-Medium.ttf") format("truetype");
+  src: url("./assets/fonts/TransSansPremium-Medium.otf") format("truetype");
   font-style: normal;
   font-weight: 500;
 }
 
 @font-face {
   font-family: "SF UI Text";
-  src: url("./assets/fonts/SFUIText-Semibold.ttf") format("truetype");
+  src: url("./assets/fonts/TransSansPremium-SemiBold.otf") format("truetype");
   font-style: normal;
   font-weight: 600;
 }
 
 @font-face {
   font-family: "SF UI Text";
-  src: url("./assets/fonts/SFUIText-Bold.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 700;
-}
-
-@font-face {
-  font-family: "Inter";
-  src: url("./assets/fonts/Inter-Regular.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 400;
-}
-
-@font-face {
-  font-family: "Inter";
-  src: url("./assets/fonts/Inter-Medium.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 500;
-}
-
-@font-face {
-  font-family: "Inter";
-  src: url("./assets/fonts/Inter-SemiBold.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 600;
-}
-
-@font-face {
-  font-family: "Inter";
-  src: url("./assets/fonts/Inter-Bold.ttf") format("truetype");
+  src: url("./assets/fonts/TransSansPremium-Bold.otf") format("truetype");
   font-style: normal;
   font-weight: 700;
 }
