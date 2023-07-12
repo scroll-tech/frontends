@@ -1,14 +1,14 @@
 import dayjs from "dayjs"
 import { makeStyles } from "tss-react/mui"
 
-import { Box, Divider, List, ListItem, Stack, SvgIcon, Typography } from "@mui/material"
+import { Box, List, ListItem, Stack, SvgIcon, Typography } from "@mui/material"
 
 import Link from "@/components/Link"
-import Logo from "@/components/Logo"
+import Logo from "@/components/ScrollLogo"
 import { requireEnv } from "@/utils"
 
 import RelativeLink from "./RelativeLink"
-import Subscribe from "./Subscribe"
+// import Subscribe from "./Subscribe"
 import { aboutList, mediaList, resourceList } from "./helper"
 
 const useStyles = makeStyles()(theme => ({
@@ -46,21 +46,17 @@ const Footer = () => {
   return (
     <Box
       sx={{
-        backgroundColor: "#EB71060D",
-        pt: ["3rem", "9rem"],
-        pb: ["4rem", "11rem"],
+        backgroundColor: "#101010",
       }}
     >
-      <Box className="wrapper" sx={{ p: "0 2.4rem" }}>
+      <Box sx={{ p: "6rem 6rem 12rem" }}>
         <Box className={classes.footerLayout}>
           <Link href="/" className={classes.logo}>
-            <Logo></Logo>
+            <Logo light></Logo>
           </Link>
           <Box>
-            <Typography variant="body2" sx={{ fontWeight: 700, lineHeight: "2rem" }}>
-              About Scroll
-            </Typography>
-            <List sx={{ py: "1.8rem" }}>
+            <Typography sx={{ fontSize: "1.8rem", fontWeight: 600, lineHeight: "normal", color: "#FFF8F3" }}>About Scroll</Typography>
+            <List sx={{ pt: "1.8rem" }}>
               {aboutList.map(item => (
                 <ListItem key={item.name} disablePadding>
                   <RelativeLink {...item}></RelativeLink>
@@ -69,10 +65,8 @@ const Footer = () => {
             </List>
           </Box>
           <Box>
-            <Typography variant="body2" sx={{ fontWeight: 700, lineHeight: "2rem" }}>
-              Resources
-            </Typography>
-            <List sx={{ py: "1.8rem" }}>
+            <Typography sx={{ fontSize: "1.8rem", fontWeight: 600, lineHeight: "normal", color: "#FFF8F3" }}>Resources</Typography>
+            <List sx={{ pt: "1.8rem" }}>
               {resourceList.map(item => (
                 <ListItem key={item.name} disablePadding>
                   <RelativeLink {...item}></RelativeLink>
@@ -81,15 +75,15 @@ const Footer = () => {
             </List>
           </Box>
           <Box className={classes.follow}>
-            <Typography variant="body2" sx={{ fontWeight: 700, lineHeight: "2rem" }}>
-              Follow Us
-            </Typography>
-            <Stack direction="row" spacing={"1.5rem"} sx={{ mt: "2.4rem", lineHeight: "2rem" }}>
+            <Typography sx={{ fontSize: "1.8rem", fontWeight: 600, lineHeight: "normal", color: "#FFF8F3" }}>Follow Us</Typography>
+            <Stack direction="row" spacing={"2.6rem"} sx={{ mt: "3rem", lineHeight: 1 }}>
               {mediaList.map(item => (
                 <Link external href={item.href} key={item.name}>
                   <SvgIcon
                     component={item.icon}
                     sx={{
+                      width: "auto",
+                      height: "auto",
                       verticalAlign: "middle",
                       color: theme => theme.palette.text.secondary,
                       "&:hover": {
@@ -103,21 +97,16 @@ const Footer = () => {
               ))}
             </Stack>
           </Box>
-          <Box className={classes.subscribe}>
+          {/* <Box className={classes.subscribe}>
             <Typography variant="body2" sx={{ fontWeight: 700, lineHeight: "2rem" }}>
               Subscribe
             </Typography>
             <Subscribe />
-          </Box>
+          </Box> */}
+          <Typography sx={{ color: "#FFF8F3", fontSize: "1.5rem", lineHeight: "2.5rem", textAlign: "right" }}>
+            © Version {requireEnv("REACT_APP_VERSION")} Scroll Ltd {dayjs().year()}
+          </Typography>
         </Box>
-      </Box>
-      <Box sx={{ maxWidth: "130rem", mx: "auto", p: "0 2.4rem" }}>
-        <Divider sx={{ mt: "3rem", mb: ["3rem", "3rem", "4rem"] }}></Divider>
-        <Stack direction="row" spacing={1.5} alignItems="center" sx={{ height: "1.4rem" }}>
-          <Typography sx={{ color: "rgba(51, 51, 51, 0.5)", fontSize: "1.2rem" }}>© Version {requireEnv("REACT_APP_VERSION")}</Typography>
-          <Divider orientation="vertical" sx={{ height: "1rem" }}></Divider>
-          <Typography sx={{ color: "rgba(51, 51, 51, 0.5)", fontSize: "1.2rem" }}>Scroll Ltd {dayjs().year()}</Typography>
-        </Stack>
       </Box>
     </Box>
   )
