@@ -14,7 +14,7 @@ import MobileNav from "./mobile_header"
 const AppBarStyled = styled(AppBar)(({ theme }) => ({
   boxShadow: "none",
   position: "sticky",
-  background: "#ffffff",
+  backgroundColor: "transparent",
 }))
 
 interface Props {
@@ -56,6 +56,13 @@ export default function Header() {
     for (let i = 0; i < navigations.length; i++) {
       const nav = navigations[i]
       const { children } = nav
+      if (!children) {
+        if (nav.href === href) {
+          rootMenu = nav.key
+          break
+        }
+        break
+      }
 
       for (let j = 0; j < children.length; j++) {
         const child = children[j]
