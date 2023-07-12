@@ -5,7 +5,7 @@ import { ExpandMore, OpenInNew } from "@mui/icons-material"
 import { Box, Collapse, Link, List, ListItemButton, Stack } from "@mui/material"
 import { styled } from "@mui/system"
 
-import Logo from "../Logo"
+import Logo from "../ScrollLogo"
 import { navigations } from "./constants"
 
 const NavStack = styled(Stack)(({ theme }) => ({
