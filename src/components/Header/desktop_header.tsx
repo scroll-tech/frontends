@@ -5,7 +5,7 @@ import { ExpandMore, OpenInNew } from "@mui/icons-material"
 import { Box, Container, Fade, Link, Stack } from "@mui/material"
 import { styled } from "@mui/system"
 
-import Logo from "@/components/Logo"
+import Logo from "@/components/ScrollLogo"
 import { MEDIAS } from "@/constants"
 
 import Announcement from "./announcement"
