@@ -2,6 +2,11 @@ import { requireEnv } from "@/utils"
 
 const navigations = [
   {
+    label: "Our Story",
+    key: "story",
+    href: "/story",
+  },
+  {
     label: "Explore",
     key: "explore",
     href: "",
