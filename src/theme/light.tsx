@@ -129,8 +129,6 @@ const lightTheme = createTheme({
     MuiPopover: {
       styleOverrides: {
         paper: {
-          transition: defaultTransition,
-          borderRadius: "2rem",
           boxShadow: boxShadowOptions.select,
         },
       },
