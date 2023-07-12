@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 import Button from "@mui/material/Button"
 import Checkbox from "@mui/material/Checkbox"
@@ -34,6 +34,13 @@ const ConfirmDialog = ({ open, setOpen, send }) => {
   const selectedAll = useMemo(() => {
     return checkbox1Selected && checkbox2Selected
   }, [checkbox1Selected, checkbox2Selected])
+
+  useEffect(() => {
+    if (!open) {
+      setCheckbox1Selected(false)
+      setCheckbox2Selected(false)
+    }
+  }, [open])
 
   const handleClose = () => {
     setOpen(false)
