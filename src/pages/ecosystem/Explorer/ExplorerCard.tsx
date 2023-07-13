@@ -7,7 +7,7 @@ import Link from "@/components/Link"
 
 const useStyles = makeStyles()(theme => ({
   card: {
-    backgroundColor: "#FFF0DD",
+    backgroundColor: theme.palette.themeBackground.normal,
     padding: "3rem",
     borderRadius: "2.5rem",
     [theme.breakpoints.down("sm")]: {},

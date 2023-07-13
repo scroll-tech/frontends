@@ -62,7 +62,7 @@ const Gallery = props => {
   }, [ecosystemList])
 
   const filteredEcosystemList = useMemo(() => {
-    if (!selectedCategory) {
+    if (selectedCategory === "All categories") {
       return ecosystemList
     }
     return ecosystemList.filter((item: any) => item.tags.some(item => DIVERGENT_CATEGORY_MAP[selectedCategory]?.includes(item)))

@@ -5,11 +5,11 @@ import { ButtonBase, IconButton, SvgIcon } from "@mui/material"
 
 import { ReactComponent as ArrowRightIcon } from "@/assets/svgs/refactor/arrow-right.svg"
 
-const useStyles = makeStyles()(theme => ({
+const useStyles = makeStyles<any>()((theme, { width, color }) => ({
   wrapper: {
     position: "relative",
     height: "5.4rem",
-    width: "25rem",
+    width,
   },
   button: {
     fontSize: "2rem",
@@ -17,8 +17,8 @@ const useStyles = makeStyles()(theme => ({
     height: "100%",
     width: "100%",
     paddingLeft: "5.4rem",
-    border: "1px solid #FF684B",
-    color: "#FF684B",
+    border: `1px solid ${color === "primary" ? theme.palette.primary.main : theme.palette.text.primary}`,
+    color: color === "primary" ? theme.palette.primary.main : theme.palette.text.primary,
     borderRadius: "1rem",
   },
   active: {
@@ -28,7 +28,7 @@ const useStyles = makeStyles()(theme => ({
     width: "5.4rem",
     height: "100%",
     position: "absolute",
-    backgroundColor: "#FF684B",
+    backgroundColor: color === "primary" ? theme.palette.primary.main : theme.palette.text.primary,
     borderRadius: "1rem",
   },
   icon: {
@@ -47,10 +47,10 @@ const mask = {
     width: "100%",
   },
 }
-
+// color: "primary" | undefined
 const Button = props => {
-  const { color, children, ...restProps } = props
-  const { classes, cx } = useStyles()
+  const { width = "25rem", color, children, ...restProps } = props
+  const { classes, cx } = useStyles({ color, width })
 
   const [isHover, setIsHover] = useCycle(false, true)
 

@@ -5,9 +5,9 @@ const theme = createTheme()
 export const paletteOptions = {
   primary: {
     light: "#F18740",
-    main: "#EB7106",
+    main: "#FF684B",
     dark: "#FEE7E0",
-    contrastText: "#FFFFFF",
+    contrastText: "#FFF8F3",
   },
   secondary: {
     main: "#595959",
@@ -43,7 +43,7 @@ export const paletteOptions = {
     default: "#FFF",
     paper: "#FFF",
   },
-  // custom
+  // TODO: delete
   scaleBackground: {
     primary: "rgba(201, 203, 206, 0.2)",
     second: "#C9CBCE33",
@@ -51,6 +51,13 @@ export const paletteOptions = {
     select: "#C9CBCE33",
     disabledSecondary: "#B4B4B4",
     gradient: "linear-gradient(180deg, rgba(255, 232, 203, 0.74) 0%, rgba(255, 255, 255, 0) 100%)",
+  },
+  themeBackground: {
+    light: "#FFF8F3",
+    dark: "#101010",
+    normal: "#FFF0DD",
+    highlight: "#FFDEB5",
+    tag: "#262626",
   },
   border: {
     main: "#C9CBCE",
