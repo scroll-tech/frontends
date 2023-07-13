@@ -8,7 +8,6 @@ import Logo from "@/components/ScrollLogo"
 import { requireEnv } from "@/utils"
 
 import RelativeLink from "./RelativeLink"
-// import Subscribe from "./Subscribe"
 import { aboutList, mediaList, resourceList } from "./helper"
 
 const useStyles = makeStyles()(theme => ({
