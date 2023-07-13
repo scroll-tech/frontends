@@ -1,6 +1,6 @@
 [[redirects]]
 from = "/*"
-to = "https://staging--scroll-io.netlify.app"
+to = "https://staging--scroll-io.netlify.app/:splat"
 status = 301
 
 # we use content based hash for filenames
