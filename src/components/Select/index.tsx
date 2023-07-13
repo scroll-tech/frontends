@@ -13,12 +13,12 @@ const useStyles = makeStyles()(theme => ({
       backgroundColor: `${theme.palette.background.default} !important`,
       "&[aria-expanded='true']": {
         borderRadius: "2.6rem 2.6rem 0 0",
-        border: "1px solid #101010",
+        border: `1px solid ${theme.palette.text.primary}`,
         borderBottom: "none",
       },
       "&[aria-expanded='false']": {
         borderRadius: "2.6rem",
-        border: "1px solid #101010",
+        border: `1px solid ${theme.palette.text.primary}`,
       },
       "&:focus": {
         backgroundColor: "unset",
@@ -36,9 +36,9 @@ const useStyles = makeStyles()(theme => ({
   popover: {
     boxShadow: "none",
     borderRadius: "0 0 2.6rem 2.6rem",
-    border: "1px solid #101010",
+    border: `1px solid ${theme.palette.text.primary}`,
     borderTop: "none",
-    transform: "translateX(-0.5px) !important",
+    transform: "translateX(0) !important",
     transition: "transform 227ms cubic-bezier(0.4, 0, 0.2, 1) 0ms !important",
   },
 }))

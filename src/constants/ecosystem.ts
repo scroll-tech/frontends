@@ -1,5 +1,7 @@
 import { ReactComponent as DoubleEyesIcon } from "@/assets/svgs/refactor/double-eyes.svg"
 import { ReactComponent as SettingsIcon } from "@/assets/svgs/refactor/settings.svg"
+import { ReactComponent as TwitterIcon } from "@/assets/svgs/twitter.svg"
+import { ReactComponent as WebsiteIcon } from "@/assets/svgs/website.svg"
 
 export const DIVERGENT_CATEGORY_MAP = {
   Community: ["Community", "DAO", "Governance"],
@@ -33,5 +35,18 @@ export const ECOSYSTEM_EXPLORER_LIST = [
     title: "Looking for a Dapp?",
     content:
       "Lorem ipsum dolor sit amet, consectetur elit. Donec dictum auctor sem et malesuada. Sed facilisis, lorem libero fringilla dictum auctor mauris.",
+  },
+]
+
+export const ECOSYSTEM_SOCIAL_LIST = [
+  {
+    name: "Website",
+    icon: WebsiteIcon,
+    prefixLink: "",
+  },
+  {
+    name: "Twitter",
+    icon: TwitterIcon,
+    prefixLink: "https://twitter.com/",
   },
 ]

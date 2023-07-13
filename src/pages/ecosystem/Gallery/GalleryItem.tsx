@@ -7,8 +7,7 @@ import { styled } from "@mui/material/styles"
 
 import { ecosystemListLogoUrl } from "@/apis/ecosystem"
 import RenderIfVisible from "@/components/RenderIfVisible"
-
-import { socialLinks } from "../helper"
+import { ECOSYSTEM_SOCIAL_LIST } from "@/constants"
 
 const Wrapper = styled(motion.div)(
   ({ theme }) => `
@@ -42,7 +41,7 @@ const FaceSide = styled(motion.div)(
   backface-visibility: hidden;
   padding: 2.5rem 3rem 3rem;
   border-radius: 2.5rem;
-  background-color: #101010;
+  background-color: ${theme.palette.themeBackground.dark};
   ${theme.breakpoints.down("sm")} {
     padding: 1.6rem;
   };
@@ -55,8 +54,8 @@ const FaceSide = styled(motion.div)(
 const Tag = styled("span")(
   ({ theme }) => `
   display: inline-block;
-  color: #FFF8F3;
-  background-color: #262626;
+  color: ${theme.palette.primary.contrastText};
+  background-color: ${theme.palette.themeBackground.tag};
   border-radius: 2rem;
   padding: 6px 12px;
   font-weight: 500;
@@ -130,12 +129,17 @@ const GalleryItem = props => {
                 {desc}
               </Typography>
               <Stack direction="row" spacing="1.8rem" justifyContent="flex-end" alignItems="end" flex={1} sx={{ width: "100%" }}>
-                {socialLinks.map(social => (
-                  <motion.span key={social.name} whileHover={{ scale: 1.1 }} style={{ color: "#FFF8F3" }}>
+                {ECOSYSTEM_SOCIAL_LIST.map(social => (
+                  <motion.span key={social.name} whileHover={{ scale: 1.1 }}>
                     <SvgIcon
                       onClick={e => handleOpenTab(e, social, { website, twitterHandle })}
                       component={social.icon}
-                      sx={{ width: ["2.2rem", "2rem"], height: ["2.2rem", "2rem"], verticalAlign: "middle" }}
+                      sx={{
+                        width: ["2.2rem", "2rem"],
+                        height: ["2.2rem", "2rem"],
+                        verticalAlign: "middle",
+                        color: theme => theme.palette.primary.contrastText,
+                      }}
                       inheritViewBox
                     ></SvgIcon>
                   </motion.span>
