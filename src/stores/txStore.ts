@@ -142,7 +142,6 @@ const formatBackTxList = async (backList, estimatedTimeMap) => {
       } else {
         if (!tx.isL1) {
           isFinalized = await isTransactionFinalized(tx)
-          console.log("isFinalized", isFinalized)
         }
 
         if (

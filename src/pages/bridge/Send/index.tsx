@@ -212,7 +212,6 @@ const Send: FC = () => {
       const Token = new ethers.Contract((fromToken as ERC20Token).address, L1_erc20ABI, networksAndSigners[chainId as number].signer)
       return checkApproval(parsedAmount, Token, STANDARD_ERC20_GATEWAY_PROXY_ADDR[chainId as number])
     } catch (err) {
-      console.log("~~~err", err)
       return false
     }
   }, [fromNetwork, fromToken, fromTokenAmount, checkApproval])
@@ -254,7 +253,6 @@ const Send: FC = () => {
       await switchNetwork(chainId)
     } catch (error) {
       // when there is a switch-network popover in MetaMask and refreshing page would throw an error
-      console.log(error, "error")
     }
   }
 
