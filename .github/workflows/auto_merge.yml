@@ -7,7 +7,7 @@ on:
   pull_request:
     branches:
       - alpha
-      - develop
+      - staging
     types:
       - labeled
       - synchronize
@@ -28,7 +28,7 @@ jobs:
       endsWith(github.event.pull_request.title, ' [bot]') &&
       !(
         github.head_ref == 'alpha' &&
-        github.base_ref == 'develop'
+        github.base_ref == 'staging'
       )
     runs-on: ubuntu-latest
     steps:

@@ -4,7 +4,7 @@ name: Auto Approve
 on:
   pull_request:
     branches:
-      - develop
+      - staging
 jobs:
   build:
     if: |
