@@ -32,6 +32,13 @@ declare module "@mui/material/styles" {
     }
   }
   interface Palette {
+    themeBackground: {
+      light: string
+      dark: string
+      normal: string
+      highlight: string
+      tag: string
+    }
     link: {
       main: string
     }
@@ -79,6 +86,13 @@ declare module "@mui/material/styles" {
   }
 
   interface PaletteOptions {
+    themeBackground: {
+      light: string
+      dark: string
+      normal: string
+      highlight: string
+      tag: string
+    }
     link?: {
       main?: string
     }
