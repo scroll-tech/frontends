@@ -6,7 +6,7 @@
     "title": "Announcing the Scroll Alpha Testnet on Goerli",
     "posterTitle": "Alpha Testnet on Goerli",
     "summary": "We are excited to announce that our Alpha testnet is now live on Goerli.",
-    "posterImg": "/imgs/homepage/blog/poster_10.jpg"  
+    "posterImg": "/imgs/homepage/blog/poster_10.jpg"
   },
   {
     "type": "Announcement",
@@ -32,7 +32,7 @@
     "date": "2022-10-25",
     "title": "KZG in Practice: Polynomial Commitment Schemes and Their Usage in Scaling Ethereum",
     "posterTitle": "KZG in Practice",
-    "summary": "An introduction to polynomial commitment schemes, and how they are being used by Scroll and Ethereum.",
+    "summary": "An introduction to polynomial commitment schemes and their usage in Scroll and Ethereum.",
     "posterImg": "/imgs/homepage/blog/poster_7.jpg"
   },
   {
@@ -51,7 +51,7 @@
     "date": "2022-08-01",
     "title": "Scroll’s Architecture Overview",
     "posterTitle": "Scroll’s Architecture Overview",
-    "summary": "Scroll is an EVM-equivalent zkRollup to scale Ethereum. Technically speaking, Scroll is built upon two major pieces…",
+    "summary": "The architecture overview of our EVM-equivalent zkRollup aiming to scale Ethereum.",
     "posterImg": "/imgs/homepage/blog/poster_5.jpg",
     "canonical": "https://scroll.mirror.xyz/nDAbJbSIJdQIWqp9kn8J0MVS4s6pYBwHmK7keidQs-k"
   },
@@ -61,7 +61,7 @@
     "date": "2022-07-21",
     "title": "Technical Principles",
     "posterTitle": "Technical Principles",
-    "summary": "To scale Ethereum with our zkEVM-based zkRollup, we have designed Scroll based on a set of technical principles which… ",
+    "summary": "To scale Ethereum with our zkRollup, we have designed Scroll based on this set of principles.",
     "posterImg": "/imgs/homepage/blog/poster_4.jpg",
     "canonical": "https://scroll.mirror.xyz/N7cAie4ul0PdSxNdv2FTqgMV2JEkhOJocsxfeqe4SFE"
   },
@@ -71,7 +71,7 @@
     "date": "2022-07-19",
     "title": "Scroll Pre-Alpha Testnet",
     "posterTitle": "Scroll Pre-Alpha Testnet",
-    "summary": "After over a year of building our zkEVM-based zkRollup in close collaboration with the PSE (Privacy and Scaling… ",
+    "summary": "After over a year of building our zkEVM in close collaboration with the PSE - the Pre-Alpha!",
     "posterImg": "/imgs/homepage/blog/poster_3.jpg",
     "canonical": "https://scroll.mirror.xyz/XQyXDgyxoefag6hcBgGJFz8qrb10rmSU-zUBvY3Q9_A"
   },
@@ -81,7 +81,7 @@
     "date": "2022-06-13",
     "title": "Vision and Values",
     "posterTitle": "Vision and Values",
-    "summary": "The promise of Ethereum is to build a decentralized computing platform widely accessible to all. Though it has come… ",
+    "summary": "The promise of Ethereum is to build a decentralized computing platform widely accessible to all.",
     "posterImg": "/imgs/homepage/blog/poster_2.jpg",
     "canonical": "https://scroll.mirror.xyz/EYn7ODhQAnNWABwWcu5xZLts_wEXTZAEWyTgExGS1DA"
   },
@@ -91,7 +91,7 @@
     "date": "2021-09-28",
     "title": "zkEVM",
     "posterTitle": "zkEVM",
-    "summary": "We believe zk-Rollup to be the holy grail — a best-in-class Layer 2 scaling solution that is very cheap and secure… ",
+    "summary": "We believe zkRollups to be the holy grail: a best-in-class Layer 2 scaling solution for Ethereum.",
     "posterImg": "/imgs/homepage/blog/poster_1.jpg"
   }
 ]
