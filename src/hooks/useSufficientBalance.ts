@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react"
 
 import { CHAIN_ID } from "@/constants"
-import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useIsSmartContractWallet, usePriceFee } from "@/hooks"
 import { toTokenDisplay } from "@/utils"
 
@@ -13,7 +12,6 @@ function useSufficientBalance(
   tokenBalance: bigint = BigInt(0),
   isCorrectNetwork?: boolean,
 ) {
-  const { walletCurrentAddress } = useRainbowContext()
   const [sufficientBalance, setSufficientBalance] = useState(false)
   const [warning, setWarning] = useState("")
   const { isSmartContractWallet } = useIsSmartContractWallet()
@@ -32,28 +30,20 @@ function useSufficientBalance(
       }
 
       let totalCost: bigint
+      let fee: bigint
       let enoughFeeBalance: boolean
       let enoughTokenBalance: boolean
       let message: string = ""
 
-      const ntb = await networksAndSigner.provider.getBalance(walletCurrentAddress)
-
-      if (!estimatedGasCost) {
-        const { maxFeePerGas: gasPrice } = await networksAndSigner.provider.getFeeData()
-        estimatedGasCost = BigInt(200e3) * (gasPrice || BigInt(1e9))
-      }
-
       if (selectedToken.native) {
-        totalCost = estimatedGasCost + amount
-        const fee = await getPriceFee(selectedToken, isL1)
-        totalCost = totalCost + fee
-        enoughFeeBalance = ntb >= totalCost
+        fee = await getPriceFee(selectedToken, isL1)
+        totalCost = amount + (estimatedGasCost ?? BigInt(0)) + fee
+        enoughFeeBalance = tokenBalance >= totalCost
         enoughTokenBalance = enoughFeeBalance
       } else {
-        totalCost = estimatedGasCost
-        const fee = await getPriceFee(selectedToken, isL1)
-        totalCost = totalCost + fee
-        enoughFeeBalance = ntb >= totalCost
+        fee = await getPriceFee(selectedToken, isL1)
+        totalCost = (estimatedGasCost ?? BigInt(0)) + fee
+        enoughFeeBalance = tokenBalance >= totalCost
         enoughTokenBalance = tokenBalance >= amount
       }
 
@@ -63,10 +53,8 @@ function useSufficientBalance(
       }
 
       if (!enoughFeeBalance) {
-        const diff = totalCost - ntb
-        message = `Insufficient balance to cover the cost of tx. Please add ${
-          selectedToken.symbol
-        } to pay for tx fees or reduce the amount by approximately ${toTokenDisplay(diff)} ${selectedToken.symbol}`
+        const diff = tokenBalance - fee - (estimatedGasCost ?? BigInt(0))
+        message = `Insufficient balance to cover the cost of tx. The amount should be less than ${toTokenDisplay(diff)} ${selectedToken.symbol}`
 
         if (!selectedToken.native) {
           message = "Insufficient balance to cover the cost of tx. Please add ETH to pay for tx fees."

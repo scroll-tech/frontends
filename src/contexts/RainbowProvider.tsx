@@ -1,6 +1,6 @@
 import { Chain, RainbowKitProvider, connectorsForWallets, useConnectModal } from "@rainbow-me/rainbowkit"
 import "@rainbow-me/rainbowkit/styles.css"
-import { coinbaseWallet, injectedWallet, metaMaskWallet, walletConnectWallet } from "@rainbow-me/rainbowkit/wallets"
+import { braveWallet, coinbaseWallet, injectedWallet, metaMaskWallet, walletConnectWallet } from "@rainbow-me/rainbowkit/wallets"
 import { type WalletClient } from "@wagmi/core"
 import { BrowserProvider, ethers } from "ethers"
 import { createContext, useCallback, useContext, useMemo } from "react"
@@ -66,8 +66,8 @@ const connectors = connectorsForWallets([
     wallets: [
       // TODO: rainbowkit/injectedWallet.ts "Browser Wallet" and "injectedWallet.svg" -> need to detect automaticlly
       injectedWallet({ chains }),
+      braveWallet({ chains }),
       coinbaseWallet({ appName: "Scroll", chains }),
-      // TODO: metamask is belong to injected wallet
       metaMaskWallet({ chains, projectId }),
       walletConnectWallet({
         projectId,
