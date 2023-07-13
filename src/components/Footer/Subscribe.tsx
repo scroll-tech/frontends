@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react"
 import MailchimpSubscribe from "react-mailchimp-subscribe"
 
-import { Box, Button, InputBase, Stack } from "@mui/material"
-import { useTheme } from "@mui/material/styles"
-import useMediaQuery from "@mui/material/useMediaQuery"
+import { Box, Stack, SvgIcon, Typography } from "@mui/material"
 
+import { ReactComponent as SubscribeIcon } from "@/assets/svgs/footer/subscribe.svg"
 import { isValidEmail } from "@/utils"
+
+import EmailInput from "./EmailInput"
 
 const url = "https://gmail.us14.list-manage.com/subscribe/post?u=3b1d822eb27b2fa64d82d430b&id=0b4603244e"
 
@@ -13,8 +14,6 @@ const Subscribe = () => {
   const [email, setEmail] = useState("")
   const [customMessage, setCustomMessage] = useState("")
   const [emailValid, setEmailValid] = useState(false)
-  const theme = useTheme()
-  const matches = useMediaQuery(theme.breakpoints.up("md"))
 
   useEffect(() => {
     setCustomMessage("")
@@ -28,56 +27,45 @@ const Subscribe = () => {
       setCustomMessage("Please use a correct email")
     } else {
       subscribe({ EMAIL: email })
+      setEmail("")
     }
   }
 
-  return (
-    <Box className="relative" sx={{ mt: "2.2rem" }}>
-      <MailchimpSubscribe
-        url={url}
-        render={({ subscribe, status, message }: any) => (
-          <div>
-            <Stack direction="column" spacing={"1.5rem"}>
-              <InputBase
-                type="email"
-                autoComplete="off"
-                sx={{
-                  width: ["100%", "35.8rem"],
-                  height: "5rem",
-                  p: "1.6rem 2.4rem",
-                  backgroundColor: "#F3EFEC",
-                  borderRadius: theme => `${theme.shape.borderRadius}px`,
-                  border: theme => `1px solid ${theme.palette.divider}`,
-                  "&:hover": {
-                    border: theme => `1px solid ${theme.palette.primary.main}`,
-                  },
-                }}
-                placeholder="Enter email address"
-                onChange={(event: any) => setEmail(event.target.value)}
-              />
-              <Button
-                sx={{
-                  borderRadius: theme => `${theme.shape.borderRadius}px`,
-                  width: "23.5rem",
-                  px: 0,
-                }}
-                variant={emailValid ? "contained" : "outlined"}
-                fullWidth={!matches}
-                color={emailValid ? "primary" : "secondary"}
-                onClick={() => handleSubmit(subscribe)}
-              >
-                Subscribe to Newsletter
-              </Button>
-            </Stack>
+  const handleChangeEmail = e => {
+    setEmail(e.target.value)
+  }
 
-            {customMessage && <div className="text-[18px] leading-21px text-red   font-medium absolute">{customMessage}</div>}
-            {status === "error" && <div className="text-[18px] leading-21px text-red   font-medium absolute">{message}</div>}
-            {status === "success" && (
-              <div className="text-base text-body-title  leading-[21px]  font-medium absolute">Thank you for subscribing!</div>
-            )}
-          </div>
-        )}
-      />
+  return (
+    <Box
+      sx={{
+        backgroundColor: "#FFDEB5",
+        p: "3.2rem 6rem",
+      }}
+    >
+      <Stack direction="row" alignItems="center" spacing="2.2rem">
+        <SvgIcon sx={{ fontSize: "7rem" }} component={SubscribeIcon} inheritViewBox></SvgIcon>
+        <Stack direction="column" flex={1}>
+          <Typography sx={{ fontSize: "2.4rem", fontWeight: 600, lineHeight: "normal," }}>Contribute and join our survey</Typography>
+          <Typography sx={{ fontSize: "2rem", lineHeight: "normal," }}>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Typography>
+        </Stack>
+        <MailchimpSubscribe
+          url={url}
+          render={({ subscribe, status, message }: any) => (
+            <div>
+              <EmailInput
+                value={email}
+                end={status === "success"}
+                onChange={handleChangeEmail}
+                onClick={() => handleSubmit(subscribe)}
+                onEnter={() => handleSubmit(subscribe)}
+              ></EmailInput>
+
+              {customMessage && <div className="text-[18px] leading-21px text-red   font-medium absolute">{customMessage}</div>}
+              {status === "error" && <div className="text-[18px] leading-21px text-red   font-medium absolute">{message}</div>}
+            </div>
+          )}
+        />
+      </Stack>
     </Box>
   )
 }
