@@ -103,7 +103,19 @@ const GalleryItem = props => {
             // transition={{ duration: 0.3, ease: "easeInOut" }}
           >
             <Stack direction="column" spacing={2} alignItems="center" sx={{ pt: "4.5rem", height: "100%" }}>
-              <Img alt={name} src={logo} placeholder={hash} width={70} height={70}></Img>
+              <Stack
+                justifyContent="center"
+                alignItems="center"
+                sx={{
+                  width: "7rem",
+                  height: "7rem",
+                  backgroundColor: theme => theme.palette.background.paper,
+                  borderRadius: "3.5rem",
+                  overflow: "hidden",
+                }}
+              >
+                <Img alt={name} src={logo} placeholder={hash} width={70} height={70}></Img>
+              </Stack>
               <Typography sx={{ fontWeight: 600, fontSize: "2.4rem", lineHeight: "3rem", color: "#FFF8F3" }}>{name}</Typography>
               <Stack direction="row" justifyContent="center" flexWrap="wrap" flex={1} alignItems="end">
                 {tags ? tags.map(value => <Tag key={value}>{value.trim()}</Tag>) : null}
