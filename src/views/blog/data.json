@@ -1,6 +1,15 @@
 [
   {
     "type": "Announcement",
+    "id": "contributeToScroll",
+    "date": "2023-07-13",
+    "title": "Announcing the 'Contribute to Scroll' Initiative",
+    "posterTitle": "Contribute to Scroll",
+    "summary": "You can now start contributing to Scroll easily.",
+    "posterImg": "/imgs/homepage/blog/poster_11.jpg"  
+  },
+  {
+    "type": "Announcement",
     "id": "alphaTestnet",
     "date": "2023-02-27",
     "title": "Announcing the Scroll Alpha Testnet on Goerli",
