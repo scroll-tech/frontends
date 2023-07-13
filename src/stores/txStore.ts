@@ -94,7 +94,9 @@ const isTransactionFinalized = async transaction => {
   try {
     const { batch_index } = await scrollRequest(`${searchUrl}?keyword=${transaction.blockNumber}`)
     if (batch_index !== -1) {
-      const rollupStatus = await scrollRequest(`${fetchBatchDetailUrl}?index=${batch_index}`)
+      const {
+        batch: { rollup_status: rollupStatus },
+      } = await scrollRequest(`${fetchBatchDetailUrl}?index=${batch_index}`)
       return rollupStatus === "finalized" || rollupStatus === "skipped"
     }
   } catch (error) {
@@ -140,6 +142,7 @@ const formatBackTxList = async (backList, estimatedTimeMap) => {
       } else {
         if (!tx.isL1) {
           isFinalized = await isTransactionFinalized(tx)
+          console.log("isFinalized", isFinalized)
         }
 
         if (

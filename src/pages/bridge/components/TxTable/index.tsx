@@ -287,15 +287,27 @@ const TxRow = props => {
     const { from, to, value, nonce, message, proof, batch_hash } = claimInfo
     try {
       setLoading(true)
+      console.log("Transaction sent:", {
+        from,
+        to,
+        value,
+        nonce,
+        message,
+        data: {
+          batchHash: batch_hash,
+          merkleProof: proof,
+        },
+      })
       const tx = await contract.relayMessageWithProof(from, to, value, nonce, message, {
         batchHash: batch_hash,
-        merkleProof: "0x" + proof,
+        merkleProof: proof,
       })
+
       await tx.wait()
       console.log("Transaction hash:", tx.hash)
     } catch (error) {
-      console.log(error)
-      alert(error)
+      console.log(error.toString())
+      // alert(error)
       setLoading(false)
     }
   }
