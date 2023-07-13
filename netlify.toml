@@ -2,11 +2,7 @@
 from = "/*"
 to = "https://staging--scroll-io.netlify.app/:splat"
 status = 301
-
-[[redirects]]
-from = "/"
-to = "https://staging--scroll-io.netlify.app/"
-status = 301
+force = true
 
 # we use content based hash for filenames
 # 31536000 is 1 year, recommended by cra
