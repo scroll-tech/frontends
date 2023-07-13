@@ -1,7 +1,7 @@
 # when there's new push to the production branch
-# create a pr from ci/_bump-version to develop branch
+# create a pr from ci/_bump-version to staging branch
 # with a commit that bumps the version in package.json
-name: "Bump Version on Develop"
+name: "Bump Version on Staging"
 
 on:
   push:
@@ -22,7 +22,7 @@ jobs:
       - name: "Checkout source code"
         uses: actions/checkout@v3
         with:
-          ref: develop
+          ref: staging
 
       - name: "cat package.json"
         run: cat ./package.json
@@ -36,7 +36,7 @@ jobs:
           minor-wording: "THIS_STRING_SHOULD_NEVER_BE_MATCHED_AS_WE_ONLY_BUMP_MINOR_MANUALLY"
           skip-push: "true"
           commit-message: "ci: version bump to {{version}} [bot]"
-          target-branch: "develop"
+          target-branch: "staging"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
