@@ -25,7 +25,7 @@ const Header = () => {
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br></br>Proin ut iaculis quam mollis consequat.
           </Typography>
           <Stack direction="row" spacing="3rem">
-            <Button target="_blank" color="primary">
+            <Button href="/bridge" color="primary">
               Bridge into Scroll
             </Button>
             <Button href={LIST_YOUR_DAPP_LINK} target="_blank">
