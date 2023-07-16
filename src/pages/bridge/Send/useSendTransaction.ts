@@ -170,21 +170,16 @@ export function useSendTransaction(props) {
   }
 
   const withdrawETH = async () => {
-    const fee = await getPriceFee(selectedToken)
     return networksAndSigners[CHAIN_ID.L2].gateway["withdrawETH(uint256,uint256)"](parsedAmount, GAS_LIMIT.WITHDRAW_ETH, {
-      value: parsedAmount + fee,
+      value: parsedAmount,
     })
   }
 
   const withdrawERC20 = async () => {
-    const fee = await getPriceFee(selectedToken)
     return networksAndSigners[CHAIN_ID.L2].gateway["withdrawERC20(address,uint256,uint256)"](
       selectedToken.address,
       parsedAmount,
       GAS_LIMIT.WITHDRAW_ERC20,
-      {
-        value: fee,
-      },
     )
   }
 
