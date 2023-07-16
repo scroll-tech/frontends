@@ -16,7 +16,7 @@ export type TransactionHandled = {
 }
 
 export function useSendTransaction(props) {
-  const { fromNetwork, fromTokenAmount, setSendError, toNetwork, selectedToken } = props
+  const { fromNetwork, fromTokenAmount, setSendError, toNetwork, selectedToken, estimateSend } = props
   const { walletCurrentAddress } = useRainbowContext()
   const {
     networksAndSigners,
@@ -26,6 +26,7 @@ export function useSendTransaction(props) {
   const { changeHistoryVisible } = useBridgeStore()
   const [sending, setSending] = useState<boolean>(false)
   const { getPriceFee } = usePriceFee()
+  // const [gasLimit, setGaslimit] = useState(BigInt(0))
 
   const parsedAmount = useMemo(() => {
     if (!fromTokenAmount || !selectedToken) return BigInt(0)
@@ -34,6 +35,9 @@ export function useSendTransaction(props) {
 
   const send = async () => {
     setSending(true)
+    const gasLimit = await estimateSend()
+    // setGaslimit(gasLimit)
+    console.log("gasLimit", gasLimit)
     let tx
     let currentBlockNumber
     try {
@@ -170,21 +174,16 @@ export function useSendTransaction(props) {
   }
 
   const withdrawETH = async () => {
-    const fee = await getPriceFee(selectedToken)
     return networksAndSigners[CHAIN_ID.L2].gateway["withdrawETH(uint256,uint256)"](parsedAmount, GAS_LIMIT.WITHDRAW_ETH, {
-      value: parsedAmount + fee,
+      value: parsedAmount,
     })
   }
 
   const withdrawERC20 = async () => {
-    const fee = await getPriceFee(selectedToken)
     return networksAndSigners[CHAIN_ID.L2].gateway["withdrawERC20(address,uint256,uint256)"](
       selectedToken.address,
       parsedAmount,
       GAS_LIMIT.WITHDRAW_ERC20,
-      {
-        value: fee,
-      },
     )
   }
 
