@@ -7,7 +7,7 @@ import { Alert, Typography } from "@mui/material"
 import L1_erc20ABI from "@/assets/abis/L1_erc20ABI.json"
 import LoadingButton from "@/components/LoadingButton"
 import TextButton from "@/components/TextButton"
-import { CHAIN_ID, ETH_SYMBOL, NETWORKS, STANDARD_ERC20_GATEWAY_PROXY_ADDR } from "@/constants"
+import { CHAIN_ID, ETH_SYMBOL, GATEWAY_ROUTE_RPROXY_ADDR, NETWORKS } from "@/constants"
 import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
 import { useApp } from "@/contexts/AppContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
@@ -214,7 +214,7 @@ const Send: FC = () => {
     try {
       const parsedAmount = amountToBN(fromTokenAmount, fromToken.decimals)
       const Token = new ethers.Contract((fromToken as ERC20Token).address, L1_erc20ABI, networksAndSigners[chainId as number].signer)
-      return checkApproval(parsedAmount, Token, STANDARD_ERC20_GATEWAY_PROXY_ADDR[chainId as number])
+      return checkApproval(parsedAmount, Token, GATEWAY_ROUTE_RPROXY_ADDR[chainId as number])
     } catch (err) {
       return false
     }
@@ -227,7 +227,7 @@ const Send: FC = () => {
     if (!isNetworkConnected) return
     const Token = new ethers.Contract((fromToken as ERC20Token).address, L1_erc20ABI, networksAndSigners[chainId as number].signer)
     const tx = await Token.approve(
-      STANDARD_ERC20_GATEWAY_PROXY_ADDR[chainId as number],
+      GATEWAY_ROUTE_RPROXY_ADDR[chainId as number],
       ethers.MaxUint256,
       // parsedAmount
     )
