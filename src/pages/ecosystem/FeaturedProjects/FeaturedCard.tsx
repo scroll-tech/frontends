@@ -1,5 +1,6 @@
 import { motion } from "framer-motion"
 import Img from "react-cool-img"
+import { isMobileOnly } from "react-device-detect"
 import { makeStyles } from "tss-react/mui"
 
 import { Box, Card, Stack, SvgIcon, Typography } from "@mui/material"
@@ -15,15 +16,43 @@ const useStyles = makeStyles()(theme => ({
     aspectRatio: "4 / 5",
     padding: "1.5rem",
     borderRadius: "2.5rem",
-    [theme.breakpoints.down("sm")]: {},
+    [theme.breakpoints.down("sm")]: {
+      aspectRatio: "390 / 294",
+    },
   },
   imgWrapper: {
+    aspectRatio: "414 / 250",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: theme.palette.themeBackground.dark,
     borderRadius: "1.5rem",
-    aspectRatio: "414/ 250",
+    [theme.breakpoints.down("sm")]: {
+      aspectRatio: "360 / 132",
+    },
+  },
+  content: {
+    display: "grid",
+    gridTemplateAreas: ` 
+    "name"
+    "description"
+    "media"
+    `,
+    [theme.breakpoints.down("sm")]: {
+      gridTemplateAreas: ` 
+      "name media"
+      "description description"
+      `,
+    },
+  },
+  name: {
+    gridArea: "name",
+  },
+  description: {
+    gridArea: "description",
+  },
+  media: {
+    gridArea: "media",
   },
 }))
 const FeaturedCard = props => {
@@ -41,20 +70,29 @@ const FeaturedCard = props => {
   return (
     <Card {...restProps} elevation={0} classes={{ root: classes.card }}>
       <Box className={classes.imgWrapper}>
-        <Img alt={name} src={ecosystemListLogoUrl + name + ext} placeholder={hash} width={136} height={136}></Img>
+        <Img
+          alt={name}
+          src={ecosystemListLogoUrl + name + ext}
+          placeholder={hash}
+          width={isMobileOnly ? 80 : 136}
+          height={isMobileOnly ? 80 : 136}
+        ></Img>
       </Box>
-      <Stack direction="column" sx={{ px: "1.5rem", pb: "1.5rem", flex: 1 }}>
-        <Typography sx={{ fontSize: "2.2rem", lineHeight: "normal", fontWeight: 600, mt: "2.4rem" }}>{name}</Typography>
+      <Box className={classes.content} sx={{ px: ["0.4rem", "1.5rem"], pb: [0, "1.5rem"], pt: ["1.5rem", "2.4rem"] }}>
+        <Typography className={classes.name} sx={{ fontSize: ["1.6rem", "2.2rem"], lineHeight: "normal", fontWeight: 600 }}>
+          {name}
+        </Typography>
         <Typography
+          className={classes.description}
           sx={{
-            mt: "2.4rem",
+            mt: ["0.9rem", "2.4rem"],
             lineHeight: "normal",
-            fontSize: "2rem",
+            fontSize: ["1.6rem", "2rem"],
           }}
         >
           {desc}
         </Typography>
-        <Stack direction="row" spacing="1.8rem" justifyContent="flex-end" alignItems="end" flex={1} sx={{ width: "100%" }}>
+        <Stack className={classes.media} direction="row" spacing="1.8rem" justifyContent="flex-end" alignItems="end" flex={1} sx={{ width: "100%" }}>
           {ECOSYSTEM_SOCIAL_LIST.map(social => (
             <motion.span key={social.name} whileHover={{ scale: 1.1 }}>
               <SvgIcon
@@ -66,7 +104,7 @@ const FeaturedCard = props => {
             </motion.span>
           ))}
         </Stack>
-      </Stack>
+      </Box>
     </Card>
   )
 }

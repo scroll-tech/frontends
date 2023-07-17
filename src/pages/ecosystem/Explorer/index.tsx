@@ -5,7 +5,10 @@ import ExplorerCard from "./ExplorerCard"
 
 const Explorer = () => {
   return (
-    <SectionWrapper maxWidth="1438px" sx={{ display: "flex", gap: "3rem", pb: "16rem" }}>
+    <SectionWrapper
+      maxWidth="1438px"
+      sx={{ display: "flex", flexDirection: ["column", "row"], gap: ["2rem", "3rem"], pb: ["12rem", "16rem"], pt: ["11.8rem", "16.3rem"] }}
+    >
       {ECOSYSTEM_EXPLORER_LIST.map(item => (
         <ExplorerCard key={item.title} {...item}></ExplorerCard>
       ))}

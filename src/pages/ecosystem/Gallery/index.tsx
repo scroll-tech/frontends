@@ -19,13 +19,14 @@ const Grid = styled("div")(
   grid-gap: 3rem;
   ${theme.breakpoints.down("lg")} {
     grid-template-columns: repeat(3, 1fr);
-    width: max-content;
-    margin: 2rem auto;
+  };
+  ${theme.breakpoints.down("md")} {
+    grid-template-columns: repeat(2, 1fr);
   };
   ${theme.breakpoints.down("sm")} {
     grid-template-columns: 1fr;
     width: 100%;
-    margin: 2rem auto;
+    grid-gap: 2rem;
   };
 `,
 )
@@ -87,11 +88,11 @@ const Gallery = props => {
             ))}
           </Grid>
           {hasMore && (
-            <Box sx={{ textAlign: "center", mt: "9.5rem" }}>
+            <Box sx={{ textAlign: "center", mt: ["5.5rem", "12.5rem"] }}>
               <Link
                 component="button"
                 sx={{
-                  fontSize: "2rem",
+                  fontSize: ["1.6rem", "2rem"],
                   fontWeight: 500,
                   lineHeight: "normal",
                   color: "#727272",
