@@ -1,6 +1,6 @@
 import { makeStyles } from "tss-react/mui"
 
-import { Card, Stack, SvgIcon, Typography } from "@mui/material"
+import { Box, Card, Stack, SvgIcon, Typography } from "@mui/material"
 
 import { ReactComponent as ExternaLinkIcon } from "@/assets/svgs/refactor/external-link.svg"
 import Link from "@/components/Link"
@@ -10,15 +10,23 @@ const useStyles = makeStyles()(theme => ({
     backgroundColor: theme.palette.themeBackground.normal,
     padding: "3rem",
     borderRadius: "2.5rem",
-    [theme.breakpoints.down("sm")]: {},
+    cursor: "pointer",
+    [theme.breakpoints.down("sm")]: {
+      padding: "2rem",
+    },
+
+    "&:hover": {
+      backgroundColor: theme.palette.themeBackground.highlight,
+    },
   },
-  button: {
-    padding: 0,
-    backgroundColor: "unset",
-  },
-  logo: {
-    fontSize: "3.5rem",
-    marginTop: "6.2rem",
+  header: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "6.2rem",
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "row-reverse",
+      justifyContent: "space-between",
+    },
   },
 }))
 
@@ -28,19 +36,23 @@ const ExplorerCard = props => {
   const { classes } = useStyles()
 
   return (
-    <Card {...restProps} elevation={0} classes={{ root: classes.card }}>
-      <Stack direction="column">
-        <Stack direction="row" justifyContent="flex-end">
-          <Link href={href} external sx={{ display: "inline-flex" }}>
-            <SvgIcon component={ExternaLinkIcon} inheritViewBox></SvgIcon>
-          </Link>
-        </Stack>
-        <SvgIcon classes={{ root: classes.logo }} component={icon} inheritViewBox></SvgIcon>
+    <Link href={href} external>
+      <Card {...restProps} elevation={0} classes={{ root: classes.card }}>
+        <Stack direction="column">
+          <Box className={classes.header}>
+            <SvgIcon sx={{ fontSize: ["1.3rem", "2.3rem"], alignSelf: ["center", "flex-end"] }} component={ExternaLinkIcon} inheritViewBox></SvgIcon>
+            <SvgIcon sx={{ fontSize: ["2.6rem", "3.5rem"] }} component={icon} inheritViewBox></SvgIcon>
+          </Box>
 
-        <Typography sx={{ fontSize: "2.4rem", fontWeight: 600, lineHeight: "normal", mt: "2.6rem", mb: "0.6rem" }}>{title}</Typography>
-        <Typography sx={{ fontSize: "2rem", lineHeight: "normal" }}>{content}</Typography>
-      </Stack>
-    </Card>
+          <Typography
+            sx={{ fontSize: ["1.6rem", "2.4rem"], fontWeight: 600, lineHeight: "normal", mt: ["1.5rem", "2.6rem"], mb: ["0.9rem", "0.6rem"] }}
+          >
+            {title}
+          </Typography>
+          <Typography sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: "normal" }}>{content}</Typography>
+        </Stack>
+      </Card>
+    </Link>
   )
 }
 
