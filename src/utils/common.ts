@@ -64,3 +64,9 @@ export const storageAvailable = type => {
     )
   }
 }
+
+export const convertDateToTimestamp = (dateString: string): number => {
+  let date = new Date(dateString)
+  let timestamp = date.getTime() / 1000
+  return Math.floor(timestamp)
+}

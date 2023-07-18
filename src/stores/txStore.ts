@@ -8,7 +8,7 @@ import { fetchTxByHashUrl } from "@/apis/bridge"
 import { fetchBatchDetailUrl, searchUrl } from "@/apis/rollupscan"
 import { NETWORKS, TX_STATUS } from "@/constants"
 import { BLOCK_NUMBERS, BRIDGE_TRANSACTIONS } from "@/constants/storageKey"
-import { sentryDebug, storageAvailable } from "@/utils"
+import { convertDateToTimestamp, sentryDebug, storageAvailable } from "@/utils"
 
 interface OrderedTxDB {
   [key: string]: TimestampTx[]
@@ -28,6 +28,7 @@ interface TxStore {
   removeFrontTransactions: (hash) => void
   addEstimatedTimeMap: (key, value) => void
   generateTransactions: (walletAddress, transactions) => void
+  combineClaimableTransactions: (walletAddress, transactions) => void
   comboPageTransactions: (walletAddress, page, rowsPerPage) => Promise<any>
   updateOrderedTxs: (walletAddress, hash, param) => void
   addAbnormalTransactions: (walletAddress, tx) => void
@@ -356,7 +357,23 @@ const useTxStore = create<TxStore>()(
           estimatedTimeMap: nextEstimatedTimeMap,
         })
       },
-
+      // combine claimable transactions and sort
+      combineClaimableTransactions: (walletAddress, claimableList) => {
+        const { orderedTxDB } = get()
+        const orderedTxs = orderedTxDB[walletAddress] ?? []
+        const claimableTxs = claimableList.map(item => ({
+          hash: item.hash,
+          timestamp: convertDateToTimestamp(item.createdTime),
+          position: TxPosition.Backend,
+        }))
+        const txList = [...orderedTxs, ...claimableTxs].filter((v, i, a) => a.findIndex(t => t.hash === v.hash) === i)
+        txList.sort((a, b) => {
+          return b.timestamp - a.timestamp
+        })
+        set({
+          orderedTxDB: { ...orderedTxDB, [walletAddress]: txList },
+        })
+      },
       // when connect and disconnect
       clearTransactions: () => {
         set({
