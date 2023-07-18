@@ -20,7 +20,7 @@ const useStyles = makeStyles()(theme => ({
       "logo about resource follow version"
       `,
 
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("md")]: {
       gridTemplateColumns: "repeat(2, 1fr)",
       gridTemplateAreas: ` 
       "logo follow"
@@ -38,7 +38,7 @@ const useStyles = makeStyles()(theme => ({
   },
   follow: {
     gridArea: "follow",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("md")]: {
       alignSelf: "center",
     },
   },
@@ -111,7 +111,10 @@ const Footer = () => {
             ))}
           </Stack>
         </Box>
-        <Typography className={classes.version} sx={{ color: "#FFF8F3", fontSize: "1.5rem", lineHeight: "2.5rem", textAlign: ["left", "right"] }}>
+        <Typography
+          className={classes.version}
+          sx={{ color: "#FFF8F3", fontSize: "1.5rem", lineHeight: "2.5rem", textAlign: ["left", "left", "right"] }}
+        >
           © Version {requireEnv("REACT_APP_VERSION")} Scroll Ltd {dayjs().year()}
         </Typography>
       </Box>

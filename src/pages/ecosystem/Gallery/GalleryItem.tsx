@@ -194,11 +194,13 @@ const GalleryItem = props => {
                   lineHeight: "normal",
                   fontSize: ["1.6rem", "2rem"],
                   color: "#FFF8F3",
+                  flex: 1,
+                  overflow: "hidden",
                 }}
               >
                 {desc}
               </Typography>
-              <Stack direction="row" spacing="1.8rem" justifyContent="flex-end" alignItems="end" flex={1} sx={{ width: "100%" }}>
+              <Stack direction="row" spacing="1.8rem" justifyContent="flex-end" sx={{ width: "100%" }}>
                 {ECOSYSTEM_SOCIAL_LIST.map(social => (
                   <motion.span key={social.name} whileHover={{ scale: 1.1 }}>
                     <SvgIcon

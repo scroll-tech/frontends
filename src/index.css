@@ -16,6 +16,10 @@ object {
 
 html {
   scroll-padding-top: 140px;
+
+  @media (max-width: 600px) {
+    overflow: hidden;
+  }
 }
 
 body {
@@ -27,6 +31,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-variant-ligatures: no-contextual;
+  @media (max-width: 600px) {
+    overflow: auto !important;
+    max-height: 100vh;
+  }
 }
 
 @font-face {

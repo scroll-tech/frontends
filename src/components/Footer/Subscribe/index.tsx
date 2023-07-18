@@ -15,7 +15,7 @@ const SubscribeBox = styled(Box)(({ theme }) => ({
   display: "flex",
   gap: "2.2rem",
   alignItems: "center",
-  [theme.breakpoints.down("sm")]: {
+  [theme.breakpoints.down("md")]: {
     flexDirection: "column",
     gap: "1.8rem",
     alignItems: "flex-start",
@@ -51,7 +51,7 @@ const Subscribe = () => {
     <Box
       sx={{
         backgroundColor: theme => theme.palette.themeBackground.highlight,
-        p: ["6rem 2rem", "3.2rem 6rem"],
+        p: ["6rem 2rem", "6rem 2rem", "3.2rem 6rem"],
       }}
     >
       <SubscribeBox>
@@ -65,7 +65,7 @@ const Subscribe = () => {
         <MailchimpSubscribe
           url={url}
           render={({ subscribe, status, message }: any) => (
-            <Box sx={{ position: "relative", mt: ["3.2rem", 0], width: "100%" }}>
+            <Box sx={{ position: "relative", mt: ["3.2rem", "3.2rem", 0], flex: 1, width: ["100%", "auto"], textAlign: "right" }}>
               <EmailInput
                 value={email}
                 end={status === "success"}
