@@ -34,9 +34,9 @@ const Subscribe = () => {
 
   const handleSubmit = subscribe => {
     if (!email) {
-      setCustomMessage("Please insert your email")
+      setCustomMessage("Please insert your email.")
     } else if (!emailValid) {
-      setCustomMessage("Please use a correct email")
+      setCustomMessage("Please use a correct email address.")
     } else {
       subscribe({ EMAIL: email })
       setEmail("")
@@ -65,19 +65,26 @@ const Subscribe = () => {
         <MailchimpSubscribe
           url={url}
           render={({ subscribe, status, message }: any) => (
-            <>
+            <Box sx={{ position: "relative", mt: ["3.2rem", 0], width: "100%" }}>
               <EmailInput
                 value={email}
-                sx={{ mt: ["3.2rem", 0] }}
                 end={status === "success"}
                 onChange={handleChangeEmail}
                 onClick={() => handleSubmit(subscribe)}
                 onEnter={() => handleSubmit(subscribe)}
               ></EmailInput>
 
-              {customMessage && <div className="text-[18px] leading-21px text-red   font-medium absolute">{customMessage}</div>}
-              {status === "error" && <div className="text-[18px] leading-21px text-red   font-medium absolute">{message}</div>}
-            </>
+              {customMessage && (
+                <Typography sx={{ position: "absolute", fontSize: "1.6rem", textAlign: "center", mt: "1rem", width: "100%", lineHeight: "normal" }}>
+                  {customMessage}
+                </Typography>
+              )}
+              {status === "error" && (
+                <Typography sx={{ position: "absolute", fontSize: "1.6rem", textAlign: "center", mt: "1rem", width: "100%", lineHeight: "normal" }}>
+                  {message}
+                </Typography>
+              )}
+            </Box>
           )}
         />
       </SubscribeBox>
