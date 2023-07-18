@@ -17,7 +17,8 @@ const useStyles = makeStyles()(theme => ({
     padding: "1.5rem",
     borderRadius: "2.5rem",
     [theme.breakpoints.down("sm")]: {
-      aspectRatio: "390 / 294",
+      aspectRatio: "unset",
+      height: "29.4rem",
     },
   },
   imgWrapper: {
@@ -33,12 +34,15 @@ const useStyles = makeStyles()(theme => ({
   },
   content: {
     display: "grid",
+    flex: 1,
+    gridTemplateRows: "min-content 1fr min-content",
     gridTemplateAreas: ` 
     "name"
     "description"
     "media"
     `,
     [theme.breakpoints.down("sm")]: {
+      gridTemplateRows: "min-content 1fr",
       gridTemplateAreas: ` 
       "name media"
       "description description"
@@ -98,7 +102,7 @@ const FeaturedCard = props => {
               <SvgIcon
                 onClick={e => handleOpenTab(e, social, { website, twitterHandle })}
                 component={social.icon}
-                sx={{ width: ["2.2rem", "2rem"], height: ["2.2rem", "2rem"], verticalAlign: "middle" }}
+                sx={{ fontSize: "2rem", verticalAlign: "middle" }}
                 inheritViewBox
               ></SvgIcon>
             </motion.span>
