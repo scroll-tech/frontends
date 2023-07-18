@@ -7,6 +7,7 @@ import { ReactComponent as ArrowRightIcon } from "@/assets/svgs/refactor/arrow-r
 const useStyles = makeStyles()(theme => ({
   wrapper: {
     position: "relative",
+    display: "inline-block",
     height: "5.4rem",
     width: "44.8rem",
 
@@ -35,7 +36,7 @@ const useStyles = makeStyles()(theme => ({
   },
 
   mask: {
-    width: "4.8rem",
+    width: "5.4rem",
     height: "100%",
     position: "absolute",
     backgroundColor: theme.palette.themeBackground.dark,
@@ -52,13 +53,19 @@ const useStyles = makeStyles()(theme => ({
     width: "100%",
   },
   icon: {
-    width: "4.8rem",
+    width: "5.4rem",
     height: "100%",
     color: theme.palette.primary.contrastText,
+    [theme.breakpoints.down("sm")]: {
+      width: "4.8rem",
+    },
   },
 
   successTip: {
-    width: " calc(100% - 4.8rem)",
+    width: "calc(100% - 5.4rem)",
+    [theme.breakpoints.down("sm")]: {
+      width: "calc(100% - 4.8rem)",
+    },
   },
 }))
 

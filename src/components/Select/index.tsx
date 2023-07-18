@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { makeStyles } from "tss-react/mui"
 
 import { Select as MuiSelect, Stack, SvgIcon, Typography } from "@mui/material"
@@ -45,8 +46,17 @@ const useStyles = makeStyles()(theme => ({
     borderRadius: "0 0 2.6rem 2.6rem",
     border: `1px solid ${theme.palette.text.primary}`,
     borderTop: "none",
+    marginTop: "-1px",
     transform: "translateX(0) !important",
     transition: "transform 227ms cubic-bezier(0.4, 0, 0.2, 1) 0ms !important",
+    // TODO: why
+    "@media (min-width: 1500px)": {
+      marginLeft: "-0.5px",
+    },
+  },
+  suspend: {
+    borderRadius: "2.6rem",
+    borderTop: `1px solid ${theme.palette.text.primary}`,
   },
   menuList: {
     paddingTop: "1.2rem",
@@ -59,7 +69,19 @@ const useStyles = makeStyles()(theme => ({
 }))
 
 const Select = props => {
-  const { classes } = useStyles()
+  const { classes, cx } = useStyles()
+
+  const [isUnderneath, setIsUnderneath] = useState(true)
+
+  const onOpen = () => {
+    setTimeout(() => {
+      const popoverEl = document.querySelector(".select-popover-paper-under")
+      if (popoverEl) {
+        const isUnderneath = window.getComputedStyle(popoverEl)["transform-origin"].split(" ")[1] === "0px"
+        setIsUnderneath(isUnderneath)
+      }
+    })
+  }
   return (
     <MuiSelect
       variant="standard"
@@ -67,14 +89,16 @@ const Select = props => {
       displayEmpty
       IconComponent={TriangleDownIcon}
       className={classes.select}
-      MenuProps={{ PopoverClasses: { paper: classes.popover }, MenuListProps: { classes: { root: classes.menuList } } }}
+      onOpen={onOpen}
+      MenuProps={{
+        PopoverClasses: { paper: cx(classes.popover, "select-popover-paper-under", !isUnderneath && classes.suspend) },
+        MenuListProps: { classes: { root: classes.menuList } },
+      }}
       renderValue={selected => {
         return (
           <Stack direction="row" alignItems="center" spacing={1.5}>
             <SvgIcon sx={{ fontSize: "2rem" }} component={WidgetsIcon} inheritViewBox></SvgIcon>
-            <Typography sx={{ fontSize: ["1.6rem", "2rem"], fontWeight: [500, 600], lineHeight: "normal" }}>
-              {!selected ? "All categories" : (selected as string)}
-            </Typography>
+            <Typography sx={{ fontSize: ["1.6rem", "2rem"], fontWeight: [500, 600], lineHeight: "normal" }}>{selected as string}</Typography>
           </Stack>
         )
       }}

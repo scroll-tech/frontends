@@ -17,9 +17,11 @@ const lightTheme = createTheme({
     MuiContainer: {
       styleOverrides: {
         root: {
-          "&.MuiContainer-maxWidthLg": {
-            maxWidth: "1300px",
-          },
+          paddingLeft: "2rem",
+          paddingRight: "2rem",
+        },
+        maxWidthLg: {
+          maxWidth: "1300px",
         },
       },
     },
