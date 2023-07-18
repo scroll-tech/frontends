@@ -14,12 +14,17 @@ object {
   vertical-align: initial;
 }
 
-html {
-  scroll-padding-top: 140px;
-
-  @media (max-width: 600px) {
+@media screen and (max-width: 600px) {
+  html {
     overflow: hidden;
   }
+  body {
+    overflow: auto !important;
+    max-height: 100vh;
+  }
+}
+html {
+  scroll-padding-top: 140px;
 }
 
 body {
@@ -31,10 +36,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-variant-ligatures: no-contextual;
-  @media (max-width: 600px) {
-    overflow: auto !important;
-    max-height: 100vh;
-  }
 }
 
 @font-face {
