@@ -200,14 +200,12 @@ const Send: FC = () => {
 
   const { checkApproval } = useApprove(fromToken)
 
+  const necessaryCondition = useMemo(() => {
+    return fromTokenAmount && !warningTip
+  }, [fromTokenAmount, warningTip])
+
   const needsApproval = useAsyncMemo(async () => {
-    if (
-      !(networksAndSigners[CHAIN_ID.L1].gateway || networksAndSigners[CHAIN_ID.L2].gateway) ||
-      !Number(fromTokenAmount) ||
-      !isValid ||
-      chainId !== fromNetwork.chainId ||
-      (fromToken as NativeToken).native
-    ) {
+    if (!necessaryCondition || (fromToken as NativeToken).native) {
       return false
     }
 
@@ -219,7 +217,7 @@ const Send: FC = () => {
       console.log("~~~err", err)
       return false
     }
-  }, [fromNetwork, fromToken, fromTokenAmount, isValid, checkApproval])
+  }, [fromNetwork, fromToken, necessaryCondition, checkApproval])
 
   const approveFromToken = async () => {
     // eslint-disable-next-line
@@ -236,8 +234,8 @@ const Send: FC = () => {
   }
 
   const sendButtonActive = useMemo(() => {
-    return !!(!needsApproval && fromTokenAmount && !warningTip)
-  }, [needsApproval, fromTokenAmount, warningTip])
+    return !needsApproval && necessaryCondition
+  }, [needsApproval, necessaryCondition])
 
   const handleCloseSendLoading = () => {
     setSendingModalOpen(false)
