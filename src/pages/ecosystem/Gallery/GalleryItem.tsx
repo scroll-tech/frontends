@@ -45,7 +45,7 @@ const useStyles = makeStyles()(theme => ({
   },
   front: {
     [theme.breakpoints.down("sm")]: {
-      padding: "4.5rem 1rem 4.5rem 4.5rem",
+      padding: "0 2rem 0 4.5rem",
     },
   },
   back: {
@@ -69,11 +69,15 @@ const useStyles = makeStyles()(theme => ({
     gridRowGap: "2rem",
     [theme.breakpoints.down("sm")]: {
       gridTemplateColumns: "min-content 1fr",
-      gridTemplateRows: "min-content 1fr",
+      gridTemplateRows: "repeat(2, min-content)",
       paddingTop: 0,
       gridColumnGap: "2rem",
       gridRowGap: "1rem",
       justifyItems: "start",
+      height: "auto",
+      position: "relative",
+      top: "50%",
+      transform: "translateY(-50%)",
     },
   },
   tagWrapper: {
@@ -83,8 +87,7 @@ const useStyles = makeStyles()(theme => ({
     alignItems: "end",
     [theme.breakpoints.down("sm")]: {
       alignItems: "start",
-      marginLeft: "-4px",
-      marginRight: "-4px",
+      margin: "-4px",
       justifyContent: "flex-start",
     },
   },
@@ -101,7 +104,7 @@ const useStyles = makeStyles()(theme => ({
     [theme.breakpoints.down("sm")]: {
       fontSize: "1.2rem",
       padding: "2px 12px",
-      margin: "0 4px",
+      margin: "4px",
     },
   },
 }))
@@ -161,6 +164,7 @@ const GalleryItem = props => {
                   borderRadius: "3.5rem",
                   overflow: "hidden",
                   gridRow: ["span 2", "unset"],
+                  alignSelf: "center",
                 }}
               >
                 <Img alt={name} src={logo} placeholder={hash} width={isMobileOnly ? 60 : 70} height={isMobileOnly ? 60 : 70}></Img>
