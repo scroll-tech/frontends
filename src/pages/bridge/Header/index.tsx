@@ -64,7 +64,7 @@ const Header = () => {
             title={
               <>
                 <Title>Recent Bridge Transactions {loading && <CircularProgress size={22} />}</Title>
-                <StyledLink target="_blank" href="http://localhost:3000/bridge#end" rel="noopener noreferrer">
+                <StyledLink external href="/bridge#end" underline="always">
                   What’s happening with my transaction?{" "}
                 </StyledLink>
               </>

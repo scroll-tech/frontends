@@ -56,8 +56,8 @@ const ConfirmDialog = ({ open, setOpen, send }) => {
       <DialogTitle sx={{ fontSize: "2.4rem", mb: "2rem", fontWeight: 600 }}>Move funds to Goerli</DialogTitle>
       <DialogContent>
         <DialogContentText sx={{ mb: "2rem", fontWeight: 500 }}>
-          <StyledLink target="_blank" href="http://localhost:3000/bridge#end" rel="noopener noreferrer">
-            What’s happening with my transaction?{" "}
+          <StyledLink external href="/bridge#end" underline="always">
+            What’s happening with my transaction?
           </StyledLink>
         </DialogContentText>
         <FormControlLabel

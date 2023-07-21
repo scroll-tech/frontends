@@ -103,7 +103,7 @@ const Faq = props => {
           Check our <Link href={SITE_MAP.Architecture}>architecture blog article</Link>.
         </Typography>
       </FaqItem>
-      <FaqItem title="What’s happening with my transaction?[Placeholder]" id="end" expanded={hash === "#end"}>
+      <FaqItem title="What’s happening with my transaction?" id="end" expanded={hash === "#end"}>
         <Typography variant="body1" color="textSecondary">
           If you choose to use Scroll‘s traditional path instead of a fast exit bridge, you will have to wait ~1-4 hours before you can claim your
           funds.
