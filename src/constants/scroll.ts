@@ -56,6 +56,12 @@ export const NAVIGATIONS = [
     isExternal: true,
     subdomainOrPath: EXPLORER_URL.Unifra,
   },
+  {
+    name: "Dora Multi-chain Explorer",
+    description: "Find your Scroll transactions on a search-based, multi-chain explorer.",
+    isExternal: true,
+    subdomainOrPath: EXPLORER_URL.Dora,
+  },
 ]
 
 export const DOCUMENTATION = [

@@ -52,6 +52,12 @@ const navigations = [
             href: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_UNIFRA"),
             isExternal: true,
           },
+          {
+            label: "Dora Explorer",
+            key: "doraBlockExplorer",
+            href: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_DORA"),
+            isExternal: true,
+          },
         ],
       },
     ],
