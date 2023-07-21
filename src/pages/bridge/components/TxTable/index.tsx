@@ -269,7 +269,7 @@ const TxRow = props => {
       return (
         <Tooltip
           placement="top"
-          title="Our provers are still finalizing your transaction on Scroll ALPHA Testnet, when it has finalized you can come back and claim your transaction. This usually takes 1-4 hours after your transaction has been submitted on the bridge."
+          title="Scroll provers are still finalizing your transaction, this can take up to 4 hours. Once done, you'll be able to claim it here for use on the target network."
         >
           <Box>
             <Button className={classes.claimButton} disabled>
