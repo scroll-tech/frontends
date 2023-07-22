@@ -1,4 +1,4 @@
-import { requireEnv } from "@/utils"
+import { EXPLORER_URL } from "../../constants/common"
 
 const navigations = [
   {
@@ -43,13 +43,19 @@ const navigations = [
           {
             label: "Scroll Blockscout",
             key: "l2BlockExplorer",
-            href: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2"),
+            href: EXPLORER_URL.L2,
             isExternal: true,
           },
           {
             label: "Unifra Explorer",
             key: "unifraBlockExplorer",
-            href: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_UNIFRA"),
+            href: EXPLORER_URL.Unifra,
+            isExternal: true,
+          },
+          {
+            label: "Dora Explorer",
+            key: "doraBlockExplorer",
+            href: EXPLORER_URL.Dora,
             isExternal: true,
           },
         ],
