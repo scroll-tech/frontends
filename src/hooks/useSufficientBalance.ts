@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react"
 
 import { CHAIN_ID } from "@/constants"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useIsSmartContractWallet, usePriceFee } from "@/hooks"
 import { toTokenDisplay } from "@/utils"
 
@@ -12,6 +13,7 @@ function useSufficientBalance(
   tokenBalance: bigint = BigInt(0),
   isCorrectNetwork?: boolean,
 ) {
+  const { walletCurrentAddress } = useRainbowContext()
   const [sufficientBalance, setSufficientBalance] = useState(false)
   const [warning, setWarning] = useState("")
   const { isSmartContractWallet } = useIsSmartContractWallet()
@@ -41,9 +43,10 @@ function useSufficientBalance(
         enoughFeeBalance = tokenBalance >= totalCost
         enoughTokenBalance = enoughFeeBalance
       } else {
+        const nativeTokenBalance = await networksAndSigner.provider.getBalance(walletCurrentAddress)
         fee = await getPriceFee(selectedToken, isL1)
         totalCost = (estimatedGasCost ?? BigInt(0)) + fee
-        enoughFeeBalance = tokenBalance >= totalCost
+        enoughFeeBalance = nativeTokenBalance >= totalCost
         enoughTokenBalance = tokenBalance >= amount
       }
 
@@ -54,13 +57,17 @@ function useSufficientBalance(
 
       if (!enoughFeeBalance) {
         const diff = tokenBalance - fee - (estimatedGasCost ?? BigInt(0))
-        message = `Insufficient balance to cover the cost of tx. The amount should be less than ${toTokenDisplay(diff)} ${selectedToken.symbol}`
+        message = `Insufficient balance to cover the cost of tx. The amount should be less than ${toTokenDisplay(
+          diff,
+          selectedToken.decimals,
+          selectedToken.symbol,
+        )}`
 
         if (!selectedToken.native) {
-          message = "Insufficient balance to cover the cost of tx. Please add ETH to pay for tx fees."
+          message = "Insufficient balance to cover the tx fee. Please add ETH to pay for tx fees."
         }
       } else if (!enoughTokenBalance) {
-        message = `Insufficient ${selectedToken.symbol} balance.`
+        message = `Insufficient balance. The amount should be less than ${toTokenDisplay(tokenBalance, selectedToken.decimals, selectedToken.symbol)}`
       }
 
       setWarning(message)

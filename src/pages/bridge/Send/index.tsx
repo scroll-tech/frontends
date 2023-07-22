@@ -13,6 +13,7 @@ import { useApp } from "@/contexts/AppContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useApprove, useAsyncMemo, useBalance, useSufficientBalance } from "@/hooks"
 import { usePriceFee } from "@/hooks"
+import useCheckValidAmount from "@/hooks/useCheckValidAmount"
 import { amountToBN, sanitizeNumericalString, switchNetwork } from "@/utils"
 import { toTokenDisplay } from "@/utils"
 
@@ -27,6 +28,8 @@ import { StyleContext, useSendStyles } from "./useSendStyles"
 import { useSendTransaction } from "./useSendTransaction"
 
 const Send: FC = () => {
+  const { checkConnectedChainId, chainId, walletName, connect } = useRainbowContext()
+
   const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
   const { classes: styles, cx } = useSendStyles()
   const { networksAndSigners, tokenList } = useApp()
@@ -36,8 +39,6 @@ const Send: FC = () => {
   const [totalBonderFeeDisplay, setTotalBonderFeeDisplay] = useState("-")
   const [estimatedGasCost, setEstimatedGasCost] = useState<undefined | bigint>(undefined)
   const [sendingModalOpen, setSendingModalOpen] = useState(false)
-
-  const { checkConnectedChainId, chainId, walletName, connect } = useRainbowContext()
 
   const fromToken = useMemo(
     () => tokenList.find(item => item.chainId === fromNetwork.chainId && item.symbol === tokenSymbol) ?? ({} as any as Token),
@@ -52,6 +53,8 @@ const Send: FC = () => {
   const [fromTokenAmount, setFromTokenAmount] = useState<string>()
   const [sendError, setSendError] = useState<any>()
   const [approving, setApproving] = useState<boolean>(false)
+
+  const { isValid, message: invalidAmountMessage } = useCheckValidAmount(fromTokenAmount)
 
   const fromTokenList = useMemo(() => {
     return fromNetwork.chainId ? tokenList.filter(item => item.chainId === fromNetwork.chainId) : []
@@ -137,6 +140,8 @@ const Send: FC = () => {
       )
     } else if (warning) {
       return warning
+    } else if (!isValid) {
+      return invalidAmountMessage
     } else if (sendError && sendError !== "cancel" && sendError.code !== 4001) {
       return (
         <>
@@ -154,7 +159,7 @@ const Send: FC = () => {
       )
     }
     return null
-  }, [walletName, connect, isCorrectNetwork, warning, sendError, fromNetwork])
+  }, [walletName, connect, isCorrectNetwork, warning, sendError, fromNetwork, isValid])
 
   // Switch the fromNetwork <--> toNetwork
   const handleSwitchDirection = () => {
@@ -195,13 +200,12 @@ const Send: FC = () => {
 
   const { checkApproval } = useApprove(fromToken)
 
+  const necessaryCondition = useMemo(() => {
+    return fromTokenAmount && !warningTip
+  }, [fromTokenAmount, warningTip])
+
   const needsApproval = useAsyncMemo(async () => {
-    if (
-      !(networksAndSigners[CHAIN_ID.L1].gateway || networksAndSigners[CHAIN_ID.L2].gateway) ||
-      !Number(fromTokenAmount) ||
-      chainId !== fromNetwork.chainId ||
-      (fromToken as NativeToken).native
-    ) {
+    if (!necessaryCondition || (fromToken as NativeToken).native) {
       return false
     }
 
@@ -213,7 +217,7 @@ const Send: FC = () => {
       console.log("~~~err", err)
       return false
     }
-  }, [fromNetwork, fromToken, fromTokenAmount, checkApproval])
+  }, [fromNetwork, fromToken, necessaryCondition, checkApproval])
 
   const approveFromToken = async () => {
     // eslint-disable-next-line
@@ -230,8 +234,8 @@ const Send: FC = () => {
   }
 
   const sendButtonActive = useMemo(() => {
-    return !!(!needsApproval && fromTokenAmount && !warningTip)
-  }, [needsApproval, fromTokenAmount, warningTip])
+    return !needsApproval && necessaryCondition
+  }, [needsApproval, necessaryCondition])
 
   const handleCloseSendLoading = () => {
     setSendingModalOpen(false)
@@ -256,7 +260,6 @@ const Send: FC = () => {
     }
   }
 
-  const approveButtonActive = needsApproval
   return (
     <StyleContext.Provider value={styles}>
       <div className={cx("flex", "flex-col", "items-center", "bg-white", styles.sendWrapper)}>
@@ -311,7 +314,7 @@ const Send: FC = () => {
             <LoadingButton
               sx={{ mt: "2rem", width: "100%" }}
               onClick={handleApprove}
-              disabled={!approveButtonActive}
+              disabled={!needsApproval}
               loading={approving}
               variant="contained"
             >
