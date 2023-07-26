@@ -1,6 +1,7 @@
 import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
+import { FadeInUp } from "@/components/Animation"
 import Button from "@/components/Button"
 
 const Title = styled(Typography)(({ theme }) => ({
@@ -32,10 +33,12 @@ const Container = styled(Box)(({ theme }) => ({
 const StartBuilding = () => {
   return (
     <Container>
-      <Title>Scroll into the Future of Ethereum</Title>
-      <Button href="" target="_blank" color="primary">
-        Start building
-      </Button>
+      <FadeInUp>
+        <Title>Scroll into the Future of Ethereum</Title>
+        <Button href="" target="_blank" color="primary">
+          Start building
+        </Button>
+      </FadeInUp>
     </Container>
   )
 }

@@ -9,6 +9,7 @@ import Logo_5 from "@/assets/images/homepage/home/partner_logo_5.svg"
 import Logo_6 from "@/assets/images/homepage/home/partner_logo_6.svg"
 import Logo_7 from "@/assets/images/homepage/home/partner_logo_7.svg"
 import Logo_8 from "@/assets/images/homepage/home/partner_logo_8.svg"
+import { FadeInUp } from "@/components/Animation"
 import Button from "@/components/Button"
 import SectionHeader from "@/components/SectionHeader"
 import SectionWrapper from "@/components/SectionWrapper"
@@ -135,17 +136,18 @@ const Partners = () => {
   return (
     <PartnersContainer>
       <SectionWrapper>
-        <SectionHeader
-          className="animate__animated animate__fadeInUp"
-          sx={{ mb: "10rem" }}
-          title="Build with the Best in Web3"
-          content="We’re part of an ecosystem with a greater purpose – permissionless, flexible, and dedicated to improving the future of Ethereum."
-          action={
-            <Button href="" target="_blank" color="primary">
-              Explore ecosystem
-            </Button>
-          }
-        ></SectionHeader>
+        <FadeInUp>
+          <SectionHeader
+            sx={{ mb: "10rem" }}
+            title="Build with the Best in Web3"
+            content="We’re part of an ecosystem with a greater purpose – permissionless, flexible, and dedicated to improving the future of Ethereum."
+            action={
+              <Button href="" target="_blank" color="primary">
+                Explore ecosystem
+              </Button>
+            }
+          ></SectionHeader>
+        </FadeInUp>
       </SectionWrapper>
       <Carousel />
     </PartnersContainer>

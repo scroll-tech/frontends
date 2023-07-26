@@ -1,12 +1,14 @@
+import React, { useEffect, useRef, useState } from "react"
+
 import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import ScalabilityIcon from "@/assets/images/homepage/home/start_bridge.png"
 import SecurityIcon from "@/assets/images/homepage/home/start_link.png"
 import EVMEquivalenceIcon from "@/assets/images/homepage/home/start_setting.png"
+import { FadeInUp } from "@/components/Animation"
 import Button from "@/components/Button"
 import SectionHeader from "@/components/SectionHeader"
-import SectionWrapper from "@/components/SectionWrapper"
 
 const STEPS = [
   {
@@ -28,9 +30,36 @@ const STEPS = [
   },
 ]
 
-const Container = styled(SectionWrapper)(({ theme }) => ({
+const Container = styled(Box)(({ theme }) => ({
   borderRadius: "40px 40px 0px 0px",
-  background: "linear-gradient(to bottom, black, black calc(100% - 18.5rem), white calc(100% - 18.5rem))",
+  paddingTop: "15.4rem",
+  paddingBottom: "160px",
+  background: "transparent",
+  display: "flex !important",
+  justifyContent: "center",
+  position: "relative",
+  maxWidth: "144rem",
+  margin: "0 auto",
+  "& .MuiContainer-root": {
+    position: "relative",
+  },
+}))
+
+const InnerBox = styled(Box)(({ theme }) => ({
+  position: "relative",
+  width: "100%",
+  paddingLeft: "24px",
+  paddingRight: "24px",
+}))
+
+const Background = styled(Box)(({ theme }) => ({
+  position: "absolute",
+  top: "0",
+  bottom: "0",
+  width: "100%",
+  background: "#101010",
+  willChange: "width, height",
+  borderRadius: "40px 40px 0px 0px",
 }))
 
 const StepContainer = styled(Box)(({ theme }) => ({
@@ -95,37 +124,75 @@ const StepDescription = styled(Typography)(({ theme }) => ({
   maxWidth: "32.6rem",
 }))
 
-const Poster = styled(Box)(({ theme }) => ({
-  height: "37rem",
-  background: "url(/imgs/home/section_1_bg.png) center  / cover no-repeat ",
-  margin: "0 auto",
-  borderRadius: "4rem",
-}))
+// const Poster = styled(Box)(({ theme }) => ({
+//   height: "37rem",
+//   background: "url(/imgs/home/section_1_bg.png) center  / cover no-repeat ",
+//   margin: "0 auto",
+//   borderRadius: "4rem",
+// }))
 
 const GetStart = () => {
+  const [, setScrollPosition] = useState(0)
+  const sectionRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollPosition(window.scrollY)
+    }
+
+    window.addEventListener("scroll", handleScroll)
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+    }
+  }, [])
+
+  const calculateWidth = () => {
+    if (sectionRef.current) {
+      const rect = sectionRef.current.getBoundingClientRect()
+      const viewTop = window.innerHeight
+
+      if (rect.top <= viewTop) {
+        const scrolledDistance = viewTop - rect.top
+        const percentageScrolled = Math.min(scrolledDistance / viewTop, 1)
+
+        const widthIncrease = 0.5 * percentageScrolled
+        const targetWidthPercentage = 100 + widthIncrease * 100
+
+        return `${targetWidthPercentage}%`
+      }
+    }
+    return "100%" //default value
+  }
+
   return (
     <Container>
-      <SectionHeader
-        dark
-        sx={{ mb: "13rem" }}
-        title="Getting started with Scroll"
-        content="Scroll is compatible with Ethereum at the bytecode level, meaning everything works right out of the box."
-        action={
-          <Button href="" target="_blank" color="primary">
-            Start building
-          </Button>
-        }
-      ></SectionHeader>
-      <StepContainer>
-        {STEPS.map((feature, idx) => (
-          <StepBox className="step-box" key={idx}>
-            <StepIcon src={feature.icon} />
-            <StepTitle variant="H4">{feature.title}</StepTitle>
-            <StepDescription variant="Body3">{feature.description}</StepDescription>
-          </StepBox>
-        ))}
-      </StepContainer>
-      <Poster />
+      <Background sx={{ width: calculateWidth() }} />
+      <InnerBox ref={sectionRef}>
+        <FadeInUp>
+          <SectionHeader
+            dark
+            sx={{ mb: "13rem" }}
+            title="Getting started with Scroll"
+            content="Scroll is compatible with Ethereum at the bytecode level, meaning everything works right out of the box."
+            action={
+              <Button href="" target="_blank" color="primary">
+                Start building
+              </Button>
+            }
+          ></SectionHeader>
+
+          <StepContainer>
+            {STEPS.map((feature, idx) => (
+              <StepBox className="step-box" key={idx}>
+                <StepIcon src={feature.icon} />
+                <StepTitle variant="H4">{feature.title}</StepTitle>
+                <StepDescription variant="Body3">{feature.description}</StepDescription>
+              </StepBox>
+            ))}
+          </StepContainer>
+        </FadeInUp>
+      </InnerBox>
     </Container>
   )
 }
