@@ -97,7 +97,7 @@ REACT_APP_L2_GAS_PRICE_ORACLE = "0x5525755C10F2e9d8CC11e9092BD5ec073aE56b4B"
 # temporarily use sepolia directly; TODO: revert to using a separate staging env
 REACT_APP_SCROLL_ENVIRONMENT = "SEPOLIA"
 REACT_APP_CHAIN_ID_L2 = "534351"
-REACT_APP_EXTERNAL_RPC_URI_L2 = "https://sepolia-rpc.scroll.io"
+REACT_APP_EXTERNAL_RPC_URI_L2 = "https://sepolia-rpc.scroll.io/l2" # TODO: Remove /l2 suffix
 REACT_APP_API_BASE_URI = "https://sepolia-api.scroll.io"
 REACT_APP_EXTERNAL_EXPLORER_URI_L2 = "https://sepolia-blockscout.scroll.io"
 REACT_APP_CODE_CHALLENGE = "1W2y6F72ulLxiFoEaVKgVDukwEsiOOyH7wSXw0quEbM"
