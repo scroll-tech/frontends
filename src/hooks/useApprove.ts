@@ -1,12 +1,11 @@
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 
 const useApprove = token => {
-  const { provider } = useRainbowContext()
+  const { walletCurrentAddress, provider } = useRainbowContext()
 
-  const checkApproval = async (amount: bigint, token: any, spender: string) => {
+  const checkApproval = async (amount: bigint, tokenInstance: any, spender: string) => {
     try {
       const signer = await provider?.getSigner()
-      const address = signer?.getAddress()?.toString()
       if (!signer) {
         throw new Error("Wallet not connected")
       }
@@ -15,7 +14,7 @@ const useApprove = token => {
         return false
       }
 
-      const approved = await token.allowance(address, spender)
+      const approved = await tokenInstance.allowance(walletCurrentAddress, spender)
       if (approved >= amount) {
         return false
       }

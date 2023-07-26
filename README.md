@@ -14,6 +14,10 @@ MIT.
 
 If you encounter bugs or have feature ideas, feel free to [create an issue](/../../issues) or [write a PR](/../../pulls).
 
+## Node Version
+
+Tested with v16.20.1 (npm v8.19.4).
+
 ## Available Scripts
 
 Before running locally, make sure to duplicate `.env.template` to a new file called `.env`, and update its values if necessary.

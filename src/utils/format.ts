@@ -1,4 +1,4 @@
-import { FixedNumber, formatUnits, parseUnits } from "ethers"
+import { formatUnits, parseUnits } from "ethers"
 import _ from "lodash"
 import numbro from "numbro"
 
@@ -86,11 +86,27 @@ export function fixedDecimals(amount: string, decimals: bigint = BigInt(18)) {
     return amount
   }
   const mdAmount = maxDecimals(amount, decimals)
-  return FixedNumber.fromString(mdAmount).toString()
+  return mdAmount
 }
 
 export function amountToBN(amount: string | number | undefined, decimals: bigint = BigInt(18)): bigint {
-  // @ts-ignore
-  const fixedAmount = fixedDecimals(amount.toString(), decimals)
-  return parseUnits(fixedAmount || "0", decimals)
+  try {
+    const fixedAmount = fixedDecimals(amount ? amount.toString() : "", decimals)
+    return parseUnits(fixedAmount || "0", decimals)
+  } catch (e) {
+    return BigInt(0)
+  }
+}
+
+export const checkAmountOverflow = (inputAmount, decimals: bigint = BigInt(18)) => {
+  try {
+    if (!inputAmount) {
+      return true
+    }
+    const clipDecimals = maxDecimals(inputAmount, decimals)
+    parseUnits(clipDecimals, decimals)
+    return true
+  } catch (e) {
+    return false
+  }
 }

@@ -5,7 +5,6 @@ import { Alert, Snackbar } from "@mui/material"
 import PageHeader from "@/components/PageHeader"
 import { CHAIN_ID, DOCUMENTATION, NAVIGATIONS, NETWORKS } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import useConnectWallet from "@/hooks/useConnectWallet"
 import { switchNetwork } from "@/utils"
 
 import SectionTitle from "./components/sectionTitle"
@@ -36,10 +35,10 @@ function AddNetworkButton(props) {
 }
 
 function ConnectWalletButton() {
-  const connectWallet = useConnectWallet()
+  const { connect } = useRainbowContext()
 
   return (
-    <a onClick={connectWallet} className="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer">
+    <a onClick={connect} className="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer">
       Connect Wallet
     </a>
   )
