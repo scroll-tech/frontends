@@ -2,7 +2,7 @@
 import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
-import { CustomAnimation } from "@/components/Animation"
+import { FadeInUp } from "@/components/Animation"
 import Button from "@/components/Button"
 
 import TextMarquee from "./components/TextMarquee"
@@ -47,7 +47,7 @@ const ButtonContainer = styled(Box)(({ theme }) => ({
 const Header = () => {
   return (
     <Container>
-      <CustomAnimation triggerOnce cascade sx={{ display: "flex" }}>
+      <FadeInUp sx={{ display: "flex" }}>
         <Title variant="H1" data-aos="fade-up">
           Scroll is
         </Title>
@@ -62,7 +62,7 @@ const Header = () => {
           </Button>
           <Button target="_blank">Start building</Button>
         </ButtonContainer>
-      </CustomAnimation>
+      </FadeInUp>
     </Container>
   )
 }

@@ -1,11 +1,10 @@
-import { Fade } from "react-awesome-reveal"
-
 import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import ScalabilityIcon from "@/assets/images/homepage/home/feature_icon_1.png"
 import SecurityIcon from "@/assets/images/homepage/home/feature_icon_2.png"
 import EVMEquivalenceIcon from "@/assets/images/homepage/home/feature_icon_3.png"
+import { FadeInUp, SlideInLeft, SlideInRight } from "@/components/Animation"
 import Button from "@/components/Button"
 import SectionHeader from "@/components/SectionHeader"
 import SectionWrapper from "@/components/SectionWrapper"
@@ -89,10 +88,9 @@ const FeatureDescription = styled(Typography)(({ theme }) => ({ textAlign: "left
 const Feature = () => {
   return (
     <SectionWrapper>
-      <Fade>
+      <FadeInUp>
         <SectionHeader
           sx={{ mb: "10rem" }}
-          className="animate__animated animate__fadeInUp"
           title="Zero Knowledge Required"
           content="Our zero knowledge obsession is more than just secure off-chain proofs. We’re committed to making the Ethereum developer experience as easy as possible, with familiar developer tools, no new languages, 3rd-party integrations, product synergy and built-in incentives. Scroll is:"
           action={
@@ -101,14 +99,34 @@ const Feature = () => {
             </Button>
           }
         />
-      </Fade>
+      </FadeInUp>
       {FEATURES.map((feature, idx) => (
         <FeatureBox key={idx}>
-          <FeatureIcon src={feature.icon} />
-          <FeatureTextBox>
-            <FeatureTitle variant="H4">{feature.title}</FeatureTitle>
-            <FeatureDescription variant="Body3">{feature.description}</FeatureDescription>
-          </FeatureTextBox>
+          {idx % 2 === 0 ? (
+            <>
+              <SlideInLeft triggerOnce>
+                <FeatureIcon src={feature.icon} />
+              </SlideInLeft>
+              <SlideInRight triggerOnce>
+                <FeatureTextBox>
+                  <FeatureTitle variant="H4">{feature.title}</FeatureTitle>
+                  <FeatureDescription variant="Body3">{feature.description}</FeatureDescription>
+                </FeatureTextBox>
+              </SlideInRight>
+            </>
+          ) : (
+            <>
+              <SlideInRight triggerOnce>
+                <FeatureIcon src={feature.icon} />
+              </SlideInRight>
+              <SlideInLeft triggerOnce>
+                <FeatureTextBox>
+                  <FeatureTitle variant="H4">{feature.title}</FeatureTitle>
+                  <FeatureDescription variant="Body3">{feature.description}</FeatureDescription>
+                </FeatureTextBox>
+              </SlideInLeft>
+            </>
+          )}
         </FeatureBox>
       ))}
     </SectionWrapper>

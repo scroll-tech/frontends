@@ -1,6 +1,3 @@
-import AOS from "aos"
-import "aos/dist/aos.css"
-
 import { Box } from "@mui/material"
 import { styled } from "@mui/system"
 
@@ -10,8 +7,6 @@ import GetStart from "./GetStart"
 import Header from "./Header"
 import Partners from "./Partners"
 import StartBuilding from "./StartBuilding"
-
-AOS.init()
 
 const Container = styled(Box)(({ theme }) => ({
   background: "#fef8f4",

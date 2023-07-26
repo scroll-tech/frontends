@@ -1,3 +1,5 @@
-import CustomAnimation from "./CustomAnimation"
+import FadeInUp from "./FadeInUp"
+import SlideInLeft from "./SlideInLeft"
+import SlideInRight from "./SlideInRight"
 
-export { CustomAnimation }
+export { FadeInUp, SlideInLeft, SlideInRight }

@@ -4,6 +4,7 @@ import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { blogListUrl } from "@/apis/blog"
+import { FadeInUp } from "@/components/Animation"
 import SectionHeader from "@/components/SectionHeader"
 import SectionWrapper from "@/components/SectionWrapper"
 import { BRANCH_NAME } from "@/constants/common"
@@ -165,26 +166,29 @@ const Blog = () => {
 
   return (
     <Container>
-      <SectionHeader
-        sx={{ mb: "12rem" }}
-        title="Begin your Scroll journey"
-        content="Learn more about zero knowledge proofs, zkEVMs and the future of scaling Ethereum."
-      />
-
-      {blogList.map((item, index) => (
-        <BlogGrid key={index} className={index === 1 ? "secend-line" : "first-line"}>
-          {item.map((blog, idx) => {
-            const { title, summary, cover } = blog
-            return (
-              <BlogCard key={idx} className={idx === 0 ? "large blog-card" : "blog-card"}>
-                <BlogPost sx={{ backgroundImage: idx === 0 ? `url(${cover})` : "" }}></BlogPost>
-                <BlogTitle variant="H4">{title}</BlogTitle>
-                <BlogContent variant="Body3">{summary}</BlogContent>
-              </BlogCard>
-            )
-          })}
-        </BlogGrid>
-      ))}
+      <FadeInUp>
+        <SectionHeader
+          sx={{ mb: "12rem" }}
+          title="Begin your Scroll journey"
+          content="Learn more about zero knowledge proofs, zkEVMs and the future of scaling Ethereum."
+        />
+      </FadeInUp>
+      <FadeInUp>
+        {blogList.map((item, index) => (
+          <BlogGrid key={index} className={index === 1 ? "secend-line" : "first-line"}>
+            {item.map((blog, idx) => {
+              const { title, summary, cover } = blog
+              return (
+                <BlogCard key={idx} className={idx === 0 ? "large blog-card" : "blog-card"}>
+                  <BlogPost sx={{ backgroundImage: idx === 0 ? `url(${cover})` : "" }}></BlogPost>
+                  <BlogTitle variant="H4">{title}</BlogTitle>
+                  <BlogContent variant="Body3">{summary}</BlogContent>
+                </BlogCard>
+              )
+            })}
+          </BlogGrid>
+        ))}
+      </FadeInUp>
     </Container>
   )
 }
