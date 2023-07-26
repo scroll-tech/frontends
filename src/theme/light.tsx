@@ -138,6 +138,17 @@ const lightTheme = createTheme({
 
     // default body1
     MuiTypography: {
+      defaultProps: {
+        variantMapping: {
+          H1: "h1",
+          H2: "h2",
+          H3: "h3",
+          H4: "h4",
+          Body1: "p",
+          Body2: "p",
+          Body3: "p",
+        },
+      },
       styleOverrides: {
         root: {
           cursor: "default",
