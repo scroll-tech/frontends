@@ -7,7 +7,6 @@ import { ReactComponent as ExitIcon } from "@/assets/svgs/exit.svg"
 import ButtonPopover from "@/components/ButtonPopover"
 import Link from "@/components/Link"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import useConnectWallet from "@/hooks/useConnectWallet"
 import { truncateAddress } from "@/utils"
 
 import CopyButton from "./CopyButton"
@@ -47,8 +46,7 @@ const useStyles = makeStyles()(theme => ({
 const PageHeader = props => {
   const { action, title, subTitle, children } = props
   const { classes } = useStyles()
-  const { walletCurrentAddress, disconnect } = useRainbowContext()
-  const connect = useConnectWallet()
+  const { walletCurrentAddress, connect, disconnect } = useRainbowContext()
 
   const buttonRef = useRef(null)
 
