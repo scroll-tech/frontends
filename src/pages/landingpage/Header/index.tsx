@@ -1,6 +1,8 @@
+// import { Fade } from "react-awesome-reveal"
 import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
+import { CustomAnimation } from "@/components/Animation"
 import Button from "@/components/Button"
 
 import TextMarquee from "./components/TextMarquee"
@@ -45,17 +47,22 @@ const ButtonContainer = styled(Box)(({ theme }) => ({
 const Header = () => {
   return (
     <Container>
-      <Title variant="H1">Scroll is</Title>
-      <TextMarquee />
-      <SubTitle variant="Body1" textAlign="center">
-        The community-first, Ethereum-equivalent zkEVM  on an open path to proof at scale.
-      </SubTitle>
-      <ButtonContainer>
-        <Button target="_blank" color="primary">
-          Bridge into Scroll
-        </Button>
-        <Button target="_blank">Start building</Button>
-      </ButtonContainer>
+      <CustomAnimation triggerOnce cascade sx={{ display: "flex" }}>
+        <Title variant="H1" data-aos="fade-up">
+          Scroll is
+        </Title>
+
+        <TextMarquee />
+        <SubTitle variant="Body1" textAlign="center">
+          The community-first, Ethereum-equivalent zkEVM  on an open path to proof at scale.
+        </SubTitle>
+        <ButtonContainer>
+          <Button target="_blank" color="primary">
+            Bridge into Scroll
+          </Button>
+          <Button target="_blank">Start building</Button>
+        </ButtonContainer>
+      </CustomAnimation>
     </Container>
   )
 }

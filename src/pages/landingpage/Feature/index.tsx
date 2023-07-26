@@ -1,3 +1,5 @@
+import { Fade } from "react-awesome-reveal"
+
 import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
@@ -87,16 +89,19 @@ const FeatureDescription = styled(Typography)(({ theme }) => ({ textAlign: "left
 const Feature = () => {
   return (
     <SectionWrapper>
-      <SectionHeader
-        sx={{ mb: "10rem" }}
-        title="Zero Knowledge Required"
-        content="Our zero knowledge obsession is more than just secure off-chain proofs. We’re committed to making the Ethereum developer experience as easy as possible, with familiar developer tools, no new languages, 3rd-party integrations, product synergy and built-in incentives. Scroll is:"
-        action={
-          <Button href="" target="_blank" color="primary">
-            Read our story
-          </Button>
-        }
-      ></SectionHeader>
+      <Fade>
+        <SectionHeader
+          sx={{ mb: "10rem" }}
+          className="animate__animated animate__fadeInUp"
+          title="Zero Knowledge Required"
+          content="Our zero knowledge obsession is more than just secure off-chain proofs. We’re committed to making the Ethereum developer experience as easy as possible, with familiar developer tools, no new languages, 3rd-party integrations, product synergy and built-in incentives. Scroll is:"
+          action={
+            <Button href="" target="_blank" color="primary">
+              Read our story
+            </Button>
+          }
+        />
+      </Fade>
       {FEATURES.map((feature, idx) => (
         <FeatureBox key={idx}>
           <FeatureIcon src={feature.icon} />

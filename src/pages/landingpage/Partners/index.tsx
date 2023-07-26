@@ -116,15 +116,15 @@ const Carousel = () => (
   <Box>
     <Marquee>
       <TrackLeft>
-        {MarqueeLeft.map(item => (
-          <Logo key={item.id} src={item.logo} alt={item.alt} />
+        {MarqueeLeft.map((item, idx) => (
+          <Logo key={idx} src={item.logo} alt={item.alt} />
         ))}
       </TrackLeft>
     </Marquee>
     <Marquee>
       <TrackRight>
-        {MarqueeRight.map(item => (
-          <Logo key={item.id} src={item.logo} alt={item.alt} />
+        {MarqueeRight.map((item, idx) => (
+          <Logo key={idx} src={item.logo} alt={item.alt} />
         ))}
       </TrackRight>
     </Marquee>
@@ -136,6 +136,7 @@ const Partners = () => {
     <PartnersContainer>
       <SectionWrapper>
         <SectionHeader
+          className="animate__animated animate__fadeInUp"
           sx={{ mb: "10rem" }}
           title="Build with the Best in Web3"
           content="We’re part of an ecosystem with a greater purpose – permissionless, flexible, and dedicated to improving the future of Ethereum."

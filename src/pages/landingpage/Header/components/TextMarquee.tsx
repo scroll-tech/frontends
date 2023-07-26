@@ -27,7 +27,7 @@ const TextSlider: React.FC = () => {
       }, 2000)
 
       return () => clearInterval(regularTimer)
-    }, 1000)
+    }, 3000)
 
     return () => clearTimeout(initialTimer)
   }, [])
@@ -69,7 +69,7 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
   height: "9.4rem",
   lineHeight: "9.4rem",
   padding: "0 2rem",
-  animation: `${slideInOutAnimation} 2s linear infinite`,
+  animation: `${slideInOutAnimation} 2s linear infinite 2s`,
   [theme.breakpoints.down("md")]: {
     height: "4.7rem",
     lineHeight: "4.7rem",
