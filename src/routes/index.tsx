@@ -4,6 +4,8 @@ import Ecosystem from "@/pages/ecosystem"
 import Portal from "@/pages/home"
 import RollupScanBatch from "@/pages/rollup/batch"
 import RollupScanBlock from "@/pages/rollup/block"
+import RollupScanChunk from "@/pages/rollup/chunk"
+import RollupScanChunkDetail from "@/pages/rollup/chunk/detail"
 import RollupScan from "@/pages/rollup/index"
 import Blog from "@/views/blog"
 import BlogDetail from "@/views/blog/detail"
@@ -71,9 +73,27 @@ const routes = [
     element: <RollupScanBatch />,
   },
   {
+    name: "Rollup Explorer: Chunk List",
+    path: "/rollupscan/batch/:batchIndex/chunks",
+    fullPath: "/rollupscan/batch/:batchIndex/chunks",
+    element: <RollupScanChunk />,
+  },
+  {
+    name: "Rollup Explorer: Chunk Details",
+    path: "/rollupscan/batch/:batchIndex/chunk/:chunkIndex",
+    fullPath: "/rollupscan/batch/:batchIndex/chunk/:chunkIndex",
+    element: <RollupScanChunkDetail />,
+  },
+  {
     name: "Rollup Explorer: Block Details",
     path: "/rollupscan/batch/:batchIndex/blocks",
     fullPath: "/rollupscan/batch/:batchIndex/blocks",
+    element: <RollupScanBlock />,
+  },
+  {
+    name: "Rollup Explorer: Block Details",
+    path: "/rollupscan/batch/:batchIndex/chunk/:chunkIndex/blocks",
+    fullPath: "/rollupscan/batch/:batchIndex/chunk/:chunkIndex/blocks",
     element: <RollupScanBlock />,
   },
 ]
