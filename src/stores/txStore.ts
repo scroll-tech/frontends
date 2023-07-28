@@ -5,9 +5,10 @@ import { create } from "zustand"
 import { persist } from "zustand/middleware"
 
 import { fetchTxByHashUrl } from "@/apis/bridge"
+import { fetchBatchDetailUrl, searchUrl } from "@/apis/rollupscan"
 import { NETWORKS, TX_STATUS } from "@/constants"
 import { BLOCK_NUMBERS, BRIDGE_TRANSACTIONS } from "@/constants/storageKey"
-import { sentryDebug, storageAvailable } from "@/utils"
+import { convertDateToTimestamp, sentryDebug, storageAvailable } from "@/utils"
 
 interface OrderedTxDB {
   [key: string]: TimestampTx[]
@@ -27,6 +28,7 @@ interface TxStore {
   removeFrontTransactions: (hash) => void
   addEstimatedTimeMap: (key, value) => void
   generateTransactions: (walletAddress, transactions) => void
+  combineClaimableTransactions: (walletAddress, transactions) => void
   comboPageTransactions: (walletAddress, page, rowsPerPage) => Promise<any>
   updateOrderedTxs: (walletAddress, hash, param) => void
   addAbnormalTransactions: (walletAddress, tx) => void
@@ -74,7 +76,9 @@ interface Transaction {
   isL1: boolean
   symbolToken?: string
   timestamp?: number
-
+  isFinalized?: boolean
+  isClaimed?: boolean
+  claimInfo?: object
   assumedStatus?: string
   errMsg?: string
 }
@@ -83,74 +87,104 @@ const MAX_OFFSET_TIME = 30 * 60 * 1000
 
 const isValidOffsetTime = offsetTime => offsetTime < MAX_OFFSET_TIME
 
-const formatBackTxList = (backList, estimatedTimeMap) => {
+const isTransactionFinalized = async transaction => {
+  if (transaction.isL1) {
+    return false
+  }
+
+  try {
+    const { batch_index } = await scrollRequest(`${searchUrl}?keyword=${transaction.blockNumber}`)
+    if (batch_index !== -1) {
+      const {
+        batch: { rollup_status: rollupStatus },
+      } = await scrollRequest(`${fetchBatchDetailUrl}?index=${batch_index}`)
+      return rollupStatus === "finalized" || rollupStatus === "skipped"
+    }
+  } catch (error) {
+    console.error("An error occurred while checking transaction status:", error)
+  }
+
+  return false
+}
+
+const formatBackTxList = async (backList, estimatedTimeMap) => {
   const nextEstimatedTimeMap = { ...estimatedTimeMap }
   const blockNumbers = readItem(localStorage, BLOCK_NUMBERS)
   if (!backList.length) {
     return { txList: [], estimatedTimeMap: nextEstimatedTimeMap }
   }
-  const txList = backList.map(tx => {
-    const amount = tx.amount
-    const fromName = NETWORKS[+!tx.isL1].name
-    const fromExplore = NETWORKS[+!tx.isL1].explorer
-    const toName = NETWORKS[+tx.isL1].name
-    const toExplore = NETWORKS[+tx.isL1].explorer
-    const toHash = tx.finalizeTx?.hash
+  const txList = await Promise.all(
+    backList.map(async tx => {
+      const amount = tx.amount
+      const fromName = NETWORKS[+!tx.isL1].name
+      const fromExplore = NETWORKS[+!tx.isL1].explorer
+      const toName = NETWORKS[+tx.isL1].name
+      const toExplore = NETWORKS[+tx.isL1].explorer
+      const toHash = tx.finalizeTx?.hash
+      let isFinalized
 
-    // 1. have no time to compute fromEstimatedEndTime
-    // 2. compute toEstimatedEndTime from backend data
-    // 3. when tx is marked success then remove estimatedEndTime to slim storage data
-    // 4. estimatedTime is greater than 30 mins then warn but save
-    // 5. if the second deal succeeded, then the first should succeed too.
-    if (tx.isL1) {
-      if (tx.blockNumber > blockNumbers[0] && blockNumbers[0] !== -1 && !nextEstimatedTimeMap[`from_${tx.hash}`]) {
-        const estimatedOffsetTime = (tx.blockNumber - blockNumbers[0]) * 12 * 1000
-        if (isValidOffsetTime(estimatedOffsetTime)) {
-          nextEstimatedTimeMap[`from_${tx.hash}`] = Date.now() + estimatedOffsetTime
-        } else if (!tx.finalizeTx?.blockNumber || tx.finalizeTx.blockNumber > blockNumbers[1]) {
-          nextEstimatedTimeMap[`from_${tx.hash}`] = 0
-          sentryDebug(`safe block number: ${blockNumbers[0]}`)
+      // 1. have no time to compute fromEstimatedEndTime
+      // 2. compute toEstimatedEndTime from backend data
+      // 3. when tx is marked success then remove estimatedEndTime to slim storage data
+      // 4. estimatedTime is greater than 30 mins then warn but save
+      // 5. if the second deal succeeded, then the first should succeed too.
+      if (tx.isL1) {
+        if (tx.blockNumber > blockNumbers[0] && blockNumbers[0] !== -1 && !nextEstimatedTimeMap[`from_${tx.hash}`]) {
+          const estimatedOffsetTime = (tx.blockNumber - blockNumbers[0]) * 12 * 1000
+          if (isValidOffsetTime(estimatedOffsetTime)) {
+            nextEstimatedTimeMap[`from_${tx.hash}`] = Date.now() + estimatedOffsetTime
+          } else if (!tx.finalizeTx?.blockNumber || tx.finalizeTx.blockNumber > blockNumbers[1]) {
+            nextEstimatedTimeMap[`from_${tx.hash}`] = 0
+            sentryDebug(`safe block number: ${blockNumbers[0]}`)
+          }
+        } else if (tx.blockNumber <= blockNumbers[0] && Object.keys(nextEstimatedTimeMap).includes(`from_${tx.hash}`)) {
+          delete nextEstimatedTimeMap[`from_${tx.hash}`]
         }
-      } else if (tx.blockNumber <= blockNumbers[0] && Object.keys(nextEstimatedTimeMap).includes(`from_${tx.hash}`)) {
-        delete nextEstimatedTimeMap[`from_${tx.hash}`]
-      }
-    } else {
-      if (
-        tx.finalizeTx?.blockNumber &&
-        blockNumbers[0] !== -1 &&
-        tx.finalizeTx.blockNumber > blockNumbers[0] &&
-        !nextEstimatedTimeMap[`to_${toHash}`]
-      ) {
-        const estimatedOffsetTime = (tx.finalizeTx.blockNumber - blockNumbers[0]) * 12 * 1000
-        if (isValidOffsetTime(estimatedOffsetTime)) {
-          nextEstimatedTimeMap[`to_${toHash}`] = Date.now() + estimatedOffsetTime
-        } else {
-          nextEstimatedTimeMap[`to_${toHash}`] = 0
-          sentryDebug(`safe block number: ${blockNumbers[0]}`)
+      } else {
+        if (!tx.isL1) {
+          isFinalized = await isTransactionFinalized(tx)
         }
-      } else if (
-        tx.finalizeTx?.blockNumber &&
-        tx.finalizeTx.blockNumber <= blockNumbers[0] &&
-        Object.keys(nextEstimatedTimeMap).includes(`to_${toHash}`)
-      ) {
-        delete nextEstimatedTimeMap[`to_${toHash}`]
-      }
-    }
 
-    return {
-      hash: tx.hash,
-      amount,
-      fromName,
-      fromExplore,
-      fromBlockNumber: tx.blockNumber,
-      toHash,
-      toName,
-      toExplore,
-      toBlockNumber: tx.finalizeTx?.blockNumber,
-      isL1: tx.isL1,
-      symbolToken: tx.isL1 ? tx.l1Token : tx.l2Token,
-    }
-  })
+        if (
+          tx.finalizeTx?.blockNumber &&
+          blockNumbers[0] !== -1 &&
+          tx.finalizeTx.blockNumber > blockNumbers[0] &&
+          !nextEstimatedTimeMap[`to_${toHash}`]
+        ) {
+          const estimatedOffsetTime = (tx.finalizeTx.blockNumber - blockNumbers[0]) * 12 * 1000
+          if (isValidOffsetTime(estimatedOffsetTime)) {
+            nextEstimatedTimeMap[`to_${toHash}`] = Date.now() + estimatedOffsetTime
+          } else {
+            nextEstimatedTimeMap[`to_${toHash}`] = 0
+            sentryDebug(`safe block number: ${blockNumbers[0]}`)
+          }
+        } else if (
+          tx.finalizeTx?.blockNumber &&
+          tx.finalizeTx.blockNumber <= blockNumbers[0] &&
+          Object.keys(nextEstimatedTimeMap).includes(`to_${toHash}`)
+        ) {
+          delete nextEstimatedTimeMap[`to_${toHash}`]
+        }
+      }
+
+      return {
+        hash: tx.hash,
+        amount,
+        fromName,
+        fromExplore,
+        fromBlockNumber: tx.blockNumber,
+        toHash,
+        toName,
+        toExplore,
+        toBlockNumber: tx.finalizeTx?.blockNumber,
+        isL1: tx.isL1,
+        symbolToken: tx.isL1 ? tx.l1Token : tx.l2Token,
+        isFinalized: isFinalized,
+        claimInfo: tx.claimInfo,
+        isClaimed: tx.finalizeTx?.hash,
+      }
+    }),
+  )
 
   return {
     txList,
@@ -173,7 +207,7 @@ const eliminateOvertimeTx = frontList => {
 const detailOrderdTxs = async (pageOrderedTxs, frontTransactions, abnormalTransactions, estimatedTimeMap) => {
   const needFetchTxs = pageOrderedTxs.filter(item => item.position === TxPosition.Backend).map(item => item.hash)
 
-  let historyList = []
+  let historyList: Transaction[] = []
   let returnedEstimatedTimeMap = estimatedTimeMap
   if (needFetchTxs.length) {
     const { data } = await scrollRequest(fetchTxByHashUrl, {
@@ -183,7 +217,7 @@ const detailOrderdTxs = async (pageOrderedTxs, frontTransactions, abnormalTransa
       },
       body: JSON.stringify({ txs: needFetchTxs }),
     })
-    const { txList, estimatedTimeMap: nextEstimatedTimeMap } = formatBackTxList(data.result, estimatedTimeMap)
+    const { txList, estimatedTimeMap: nextEstimatedTimeMap } = await formatBackTxList(data.result, estimatedTimeMap)
     historyList = txList
     returnedEstimatedTimeMap = nextEstimatedTimeMap
   }
@@ -260,14 +294,14 @@ const useTxStore = create<TxStore>()(
 
       // polling transactions
       // slim frontTransactions and keep the latest 3 backTransactions
-      generateTransactions: (walletAddress, historyList) => {
+      generateTransactions: async (walletAddress, historyList) => {
         const { frontTransactions, estimatedTimeMap: preEstimatedTimeMap, orderedTxDB, pageTransactions } = get()
         const realHistoryList = historyList.filter(item => item)
 
         const untimedFrontList = eliminateOvertimeTx(frontTransactions)
 
         if (realHistoryList.length) {
-          const { txList: formattedHistoryList, estimatedTimeMap } = formatBackTxList(realHistoryList, preEstimatedTimeMap)
+          const { txList: formattedHistoryList, estimatedTimeMap } = await formatBackTxList(realHistoryList, preEstimatedTimeMap)
           const formattedHistoryListHash = formattedHistoryList.map(item => item.hash)
           const formattedHistoryListMap = Object.fromEntries(formattedHistoryList.map(item => [item.hash, item]))
           const pendingFrontList = untimedFrontList.filter(item => !formattedHistoryListHash.includes(item.hash))
@@ -323,7 +357,23 @@ const useTxStore = create<TxStore>()(
           estimatedTimeMap: nextEstimatedTimeMap,
         })
       },
-
+      // combine claimable transactions and sort
+      combineClaimableTransactions: (walletAddress, claimableList) => {
+        const { orderedTxDB } = get()
+        const orderedTxs = orderedTxDB[walletAddress] ?? []
+        const claimableTxs = claimableList.map(item => ({
+          hash: item.hash,
+          timestamp: convertDateToTimestamp(item.createdTime),
+          position: TxPosition.Backend,
+        }))
+        const txList = [...orderedTxs, ...claimableTxs].filter((v, i, a) => a.findIndex(t => t.hash === v.hash) === i)
+        txList.sort((a, b) => {
+          return b.timestamp - a.timestamp
+        })
+        set({
+          orderedTxDB: { ...orderedTxDB, [walletAddress]: txList },
+        })
+      },
       // when connect and disconnect
       clearTransactions: () => {
         set({

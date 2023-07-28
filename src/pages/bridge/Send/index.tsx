@@ -17,6 +17,7 @@ import useCheckValidAmount from "@/hooks/useCheckValidAmount"
 import { amountToBN, sanitizeNumericalString, switchNetwork } from "@/utils"
 import { toTokenDisplay } from "@/utils"
 
+import ConfirmDialog from "../ConfirmDialog"
 import DetailRow from "../components/InfoTooltip/DetailRow"
 import FeeDetails from "../components/InfoTooltip/FeeDetails"
 import ApproveLoading from "./ApproveLoading"
@@ -35,6 +36,7 @@ const Send: FC = () => {
   const { networksAndSigners, tokenList } = useApp()
 
   const [fromNetwork, setFromNetwork] = useState({} as any)
+  const [ConfirmDialogVisible, setConfirmDialogVisible] = useState(false)
   const [toNetwork, setToNetwork] = useState({} as any)
   const [totalBonderFeeDisplay, setTotalBonderFeeDisplay] = useState("-")
   const [estimatedGasCost, setEstimatedGasCost] = useState<undefined | bigint>(undefined)
@@ -214,7 +216,6 @@ const Send: FC = () => {
       const Token = new ethers.Contract((fromToken as ERC20Token).address, L1_erc20ABI, networksAndSigners[chainId as number].signer)
       return checkApproval(parsedAmount, Token, STANDARD_ERC20_GATEWAY_PROXY_ADDR[chainId as number])
     } catch (err) {
-      console.log("~~~err", err)
       return false
     }
   }, [fromNetwork, fromToken, necessaryCondition, checkApproval])
@@ -256,7 +257,14 @@ const Send: FC = () => {
       await switchNetwork(chainId)
     } catch (error) {
       // when there is a switch-network popover in MetaMask and refreshing page would throw an error
-      console.log(error, "error")
+    }
+  }
+
+  const handleSend = () => {
+    if (fromNetwork.chainId === CHAIN_ID.L1) {
+      handleSendTransaction()
+    } else {
+      setConfirmDialogVisible(true)
     }
   }
 
@@ -321,13 +329,7 @@ const Send: FC = () => {
               Approve USDC
             </LoadingButton>
           ) : (
-            <LoadingButton
-              sx={{ mt: "2rem", width: "100%" }}
-              onClick={handleSendTransaction}
-              disabled={!sendButtonActive}
-              loading={sending}
-              variant="contained"
-            >
+            <LoadingButton sx={{ mt: "2rem", width: "100%" }} onClick={handleSend} disabled={!sendButtonActive} loading={sending} variant="contained">
               Send {tokenSymbol} to {toNetwork.name}
             </LoadingButton>
           )}
@@ -335,6 +337,7 @@ const Send: FC = () => {
           <SendLoading value={txValue} from={fromNetwork.name} to={toNetwork.name} open={sendingModalOpen} onClose={handleCloseSendLoading} />
         </div>
       </div>
+      <ConfirmDialog open={ConfirmDialogVisible} setOpen={setConfirmDialogVisible} send={handleSendTransaction} />
     </StyleContext.Provider>
   )
 }

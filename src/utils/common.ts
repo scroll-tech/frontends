@@ -64,3 +64,13 @@ export const storageAvailable = type => {
     )
   }
 }
+
+export const convertDateToTimestamp = (dateString: string, isMilliseconds: boolean = true): number => {
+  let date = new Date(dateString)
+  let timestamp = date.getTime()
+
+  if (!isMilliseconds) {
+    timestamp = timestamp / 1000
+  }
+  return Math.floor(timestamp)
+}
