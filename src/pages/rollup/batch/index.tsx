@@ -72,7 +72,7 @@ const BoxItem = styled(Box)(({ theme }) => ({
   },
 }))
 
-const Blocks = () => {
+const Batch = () => {
   const params = useParams()
   const { batch, isLoading } = useBatchDetail(params.batchIndex)
   const theme = useTheme()
@@ -127,7 +127,7 @@ const Blocks = () => {
       <Header />
       <Box className="wrapper mx-auto" sx={{ marginBottom: "16rem" }}>
         <Breadcrumbs aria-label="breadcrumb" sx={{ fontWeight: 600 }} separator={<NavigateNext fontSize="large" />}>
-          <RouterLink to="/rollupscan">All results</RouterLink>
+          <RouterLink to="/rollupscan?page=1&per_page=10">Batches</RouterLink>
           <Typography sx={{ fontWeight: 600 }} color="text.primary">
             Batch {params.batchIndex}
           </Typography>
@@ -164,6 +164,13 @@ const Blocks = () => {
                 <BoxItem>
                   <LabelTypography>Transactions</LabelTypography>
                   <Typography>{batch.total_tx_num}</Typography>
+                </BoxItem>
+                <Divider />
+                <BoxItem>
+                  <LabelTypography>Chunks</LabelTypography>
+                  <Link component={RouterLink} to={`/rollupscan/batch/${batch.index}/chunks`}>
+                    {batch.end_chunk_index - batch.start_chunk_index + 1}
+                  </Link>
                 </BoxItem>
                 <Divider />
                 <BoxItem>
@@ -227,4 +234,4 @@ const Blocks = () => {
   )
 }
 
-export default Blocks
+export default Batch

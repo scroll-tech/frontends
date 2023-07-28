@@ -10,7 +10,11 @@ export const fetchBatchListUrl = `${baseUrl}${prefix}/batches`
 
 export const fetchBatchDetailUrl = `${baseUrl}${prefix}/batch`
 
-export const fetchBlockListUrl = `${baseUrl}${prefix}/blocks`
+export const fetchChunkListUrl = `${baseUrl}${prefix}/chunks`
+
+export const fetchChunkBlocksUrl = `${baseUrl}${prefix}/chunk_blocks`
+
+export const fetchBatchBlocksUrl = `${baseUrl}${prefix}/batch_blocks`
 
 export const searchUrl = `${baseUrl}${prefix}/search`
 

@@ -1,6 +1,11 @@
 import useSWR from "swr"
 
-import { fetchBatchDetailUrl, fetchBlockListUrl, fetchLastBatchIndexesUrl } from "@/apis/rollupscan"
+import { fetchBatchBlocksUrl, fetchBatchDetailUrl, fetchChunkBlocksUrl, fetchChunkListUrl, fetchLastBatchIndexesUrl } from "@/apis/rollupscan"
+
+export enum BLOCK_LIST_TYPE {
+  BATCH = "Batch",
+  CHUNK = "Chunk",
+}
 
 const fetcher = (url: string) => scrollRequest(url)
 
@@ -24,8 +29,26 @@ export function useBatchDetail(batchIndex) {
   }
 }
 
-export function useBlockList(batchIndex) {
-  const { data, error, isLoading } = useSWR(`${fetchBlockListUrl}?batch_index=${batchIndex}`, fetcher)
+export function useChunkList(index) {
+  const { data, error, isLoading } = useSWR(`${fetchChunkListUrl}?batch_index=${index}`, fetcher)
+  return {
+    chunks: data?.chunks,
+    isLoading,
+    isError: error,
+  }
+}
+
+export function useChunkBlocks(index) {
+  const { data, error, isLoading } = useSWR(`${fetchChunkBlocksUrl}?chunk_index=${index}`, fetcher)
+  return {
+    blocks: data?.blocks,
+    isLoading,
+    isError: error,
+  }
+}
+
+export function useBatchBlocks(index) {
+  const { data, error, isLoading } = useSWR(`${fetchBatchBlocksUrl}?batch_index=${index}`, fetcher)
   return {
     blocks: data?.blocks,
     isLoading,

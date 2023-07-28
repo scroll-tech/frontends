@@ -22,14 +22,18 @@ module.exports = {
     },
   ],
   // local proxy
-  // devServer: {
-  //   proxy: {
-  //     "/bridgehistory/api": {
-  //       target: "http://localhost:4000",
-  //       pathRewrite: { "^/bridgehistory/api": "/api" },
-  //     },
-  //   },
-  // },
+  devServer: {
+    proxy: {
+      // "/bridgehistory/api": {
+      //   target: "http://localhost:4000",
+      //   pathRewrite: { "^/bridgehistory/api": "/api" },
+      //  },
+      // "/rollupscan/api": {
+      //   target: "http://10.0.3.119:8560",
+      //   pathRewrite: { "^/rollupscan/api": "/api" },
+      // },
+    },
+  },
 
   webpack: {
     alias: {
