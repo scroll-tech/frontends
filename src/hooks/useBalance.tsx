@@ -19,9 +19,7 @@ const useBalance = (token: any, network?: any) => {
       }
       const l1ERC20 = new ethers.Contract(token.address, L1_erc20ABI, provider)
       return await l1ERC20.balanceOf(address)
-    } catch (error) {
-      console.log(error)
-    }
+    } catch (error) {}
   }
 
   const { data, error, isLoading } = useSWR(

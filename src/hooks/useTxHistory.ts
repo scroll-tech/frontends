@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react"
 import useStorage from "squirrel-gill"
 import useSWR from "swr"
 
-import { fetchTxByHashUrl } from "@/apis/bridge"
+import { fetchClaimableTxListUrl, fetchTxByHashUrl } from "@/apis/bridge"
 import { BRIDGE_PAGE_SIZE, CHAIN_ID } from "@/constants"
 import { BLOCK_NUMBERS } from "@/constants/storageKey"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
@@ -17,10 +17,11 @@ export interface TxHistory {
 
 const useTxHistory = networksAndSigners => {
   const { walletCurrentAddress } = useRainbowContext()
-  const { pageTransactions, generateTransactions, comboPageTransactions } = useTxStore()
+  const { pageTransactions, generateTransactions, comboPageTransactions, combineClaimableTransactions } = useTxStore()
   const [blockNumbers, setBlockNumbers] = useStorage(localStorage, BLOCK_NUMBERS, [-1, -1])
 
   const [errorMessage, setErrorMessage] = useState("")
+  const [claimableTx, setclaimableTx] = useState<[] | null>(null)
 
   const fetchTxList = useCallback(({ txs }) => {
     return scrollRequest(fetchTxByHashUrl, {
@@ -31,6 +32,16 @@ const useTxHistory = networksAndSigners => {
       body: JSON.stringify({ txs }),
     }).then(data => data)
   }, [])
+
+  useEffect(() => {
+    if (walletCurrentAddress) {
+      try {
+        scrollRequest(`${fetchClaimableTxListUrl}?address=${walletCurrentAddress}&offset=0&limit=100`).then(data => {
+          setclaimableTx(data.data.result)
+        })
+      } catch (error) {}
+    }
+  }, [walletCurrentAddress])
 
   // fetch to hash/blockNumber from backend
   const { data } = useSWR<any>(
@@ -53,12 +64,11 @@ const useTxHistory = networksAndSigners => {
   )
 
   const fetchBlockNumber = useCallback(async () => {
-    if (networksAndSigners[`${CHAIN_ID.L1}ForSafeBlock`].provider && networksAndSigners[CHAIN_ID.L2].provider) {
-      const fetchL1BlockNumber = networksAndSigners[`${CHAIN_ID.L1}ForSafeBlock`].provider.getBlock("safe")
+    if (networksAndSigners[CHAIN_ID.L1].provider && networksAndSigners[CHAIN_ID.L2].provider) {
+      const fetchL1BlockNumber = networksAndSigners[CHAIN_ID.L1].provider.getBlock("latest")
       const fetchL2BlockNumber = networksAndSigners[CHAIN_ID.L2].provider.getBlock("latest")
 
       const blockNumbers = await Promise.allSettled([fetchL1BlockNumber, fetchL2BlockNumber])
-
       return blockNumbers.map(item => (item.status === "fulfilled" ? item.value.number : -1))
     }
     return null
@@ -98,6 +108,12 @@ const useTxHistory = networksAndSigners => {
       generateTransactions(walletCurrentAddress, data.data.result)
     }
   }, [data])
+
+  useEffect(() => {
+    if (claimableTx) {
+      combineClaimableTransactions(walletCurrentAddress, claimableTx)
+    }
+  }, [claimableTx])
 
   return {
     blockNumbers,

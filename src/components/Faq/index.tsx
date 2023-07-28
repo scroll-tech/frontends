@@ -1,3 +1,5 @@
+import { useEffect } from "react"
+import { useLocation } from "react-router-dom"
 import { makeStyles } from "tss-react/mui"
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
@@ -34,9 +36,9 @@ const useStyles = makeStyles()((theme: Theme) => {
 })
 
 const FaqItem = props => {
-  const { id, title, children } = props
+  const { id, title, children, expanded } = props
   return (
-    <Accordion>
+    <Accordion defaultExpanded={expanded}>
       <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: "text.primary" }} />} id={id}>
         <Typography variant="h6">{title}</Typography>
       </AccordionSummary>
@@ -48,6 +50,20 @@ const FaqItem = props => {
 const Faq = props => {
   const { children } = props
   const { classes } = useStyles()
+
+  const { hash } = useLocation()
+
+  useEffect(() => {
+    if (hash) {
+      const targetElement = document.querySelector(hash)
+      if (targetElement) {
+        setTimeout(() => {
+          targetElement.scrollIntoView({ behavior: "smooth" })
+        }, 200)
+      }
+    }
+  }, [hash])
+
   return (
     <div className={classes.wrapper}>
       <div className={classes.title}>
@@ -79,9 +95,15 @@ const Faq = props => {
         </Typography>
       </FaqItem>
       {children}
-      <FaqItem title="Where can I find Scroll architecture overview?" id="end">
+      <FaqItem title="Where can I find Scroll architecture overview?">
         <Typography variant="body1" color="textSecondary">
           Check our <Link href={SITE_MAP.Architecture}>architecture blog article</Link>.
+        </Typography>
+      </FaqItem>
+      <FaqItem title="What’s happening with my transaction?" id="end" expanded={hash === "#end"}>
+        <Typography variant="body1" color="textSecondary">
+          If you choose to use Scroll‘s traditional path instead of a fast exit bridge, you will have to wait ~1-4 hours before you can claim your
+          funds.
         </Typography>
       </FaqItem>
     </div>
