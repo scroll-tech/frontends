@@ -47,7 +47,7 @@ const ButtonContainer = styled(Box)(({ theme }) => ({
 const Header = () => {
   return (
     <Container>
-      <FadeInUp sx={{ display: "flex" }}>
+      <FadeInUp duration={700} sx={{ display: "flex" }}>
         <Title variant="H1" data-aos="fade-up">
           Scroll is
         </Title>
