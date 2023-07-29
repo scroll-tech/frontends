@@ -19,7 +19,7 @@ const FEATURES = [
   },
   {
     icon: SecurityIcon,
-    title: "We put security first at every step",
+    title: "For developers, by developers",
     description:
       "We’ve built trust with the Ethereum community using fully open-source code since day one. From a developer's perspective, building in the open leads to more secure and better-designed systems that combine the best ideas among value-aligned developers.",
   },
@@ -57,6 +57,10 @@ const FeatureBox = styled(Box)(({ theme }) => ({
       },
     },
   },
+  [theme.breakpoints.up("xl")]: {
+    paddingBottom: "20rem",
+    gap: "20rem",
+  },
 }))
 
 const FeatureIcon = styled(WebpImage)(({ theme }) => ({
@@ -83,6 +87,11 @@ const FeatureTextBox = styled(Box)(({ theme }) => ({
   },
 }))
 
+const Spacer = styled(Box)(({ theme }) => ({
+  height: "6.6vw",
+  minHeight: "10rem",
+}))
+
 const FeatureDescription = styled(Typography)(({ theme }) => ({ textAlign: "left" }))
 
 const Feature = () => {
@@ -90,7 +99,6 @@ const Feature = () => {
     <SectionWrapper>
       <FadeInUp>
         <SectionHeader
-          sx={{ mb: "10rem" }}
           title="Zero Knowledge Required"
           content="Our zero knowledge obsession is more than just secure off-chain proofs. We’re committed to making the Ethereum developer experience as easy as possible, with familiar developer tools, no new languages, 3rd-party integrations, product synergy and built-in incentives. Scroll is:"
           action={
@@ -100,6 +108,7 @@ const Feature = () => {
           }
         />
       </FadeInUp>
+      <Spacer />
       {FEATURES.map((feature, idx) => (
         <FeatureBox key={idx}>
           {idx % 2 === 0 ? (

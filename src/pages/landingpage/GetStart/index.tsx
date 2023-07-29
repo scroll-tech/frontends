@@ -68,13 +68,13 @@ const StepContainer = styled(Box)(({ theme }) => ({
   marginBottom: "13rem",
   gap: "1.6rem",
   "& .step-box:nth-of-type(1) img": {
-    width: "4.3rem",
+    width: "2.3rem",
   },
   "& .step-box:nth-of-type(2) img": {
-    width: "4rem",
+    width: "3.4rem",
   },
   "& .step-box:nth-of-type(3) img": {
-    width: "3.4rem",
+    width: "3.3rem",
   },
   [theme.breakpoints.down("md")]: {
     flexDirection: "column",
@@ -94,6 +94,7 @@ const StepContainer = styled(Box)(({ theme }) => ({
 const StepBox = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
+  flex: 1,
   [theme.breakpoints.down("md")]: {
     marginBottom: "5.2rem",
   },

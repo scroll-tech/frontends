@@ -30,14 +30,25 @@ const Container = styled(Box)(({ theme }) => ({
   },
 }))
 
+const ButtonContainer = styled(Box)(({ theme }) => ({
+  display: "flex",
+  gap: "3rem",
+  [theme.breakpoints.down("md")]: {
+    flexDirection: "column",
+  },
+}))
+
 const StartBuilding = () => {
   return (
     <Container>
       <FadeInUp>
         <Title>Scroll into the Future of Ethereum</Title>
-        <Button href="" target="_blank" color="primary">
-          Start building
-        </Button>
+        <ButtonContainer>
+          <Button target="_blank" color="primary">
+            Bridge into Scroll
+          </Button>
+          <Button target="_blank">Start building</Button>
+        </ButtonContainer>
       </FadeInUp>
     </Container>
   )
