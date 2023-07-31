@@ -14,7 +14,7 @@ const StyledBox = styled(Stack)(({ theme }) => ({
   top: 0,
   width: "100%",
   zIndex: 10,
-  background: "#fef8f4",
+  // background: "#fef8f4",
   // borderBottom: `1px solid ${theme.palette.border.main}`,
 }))
 
