@@ -102,7 +102,7 @@ const FeaturedCard = props => {
               <SvgIcon
                 onClick={e => handleOpenTab(e, social, { website, twitterHandle })}
                 component={social.icon}
-                sx={{ fontSize: "2rem", verticalAlign: "middle" }}
+                sx={{ fontSize: "1.8rem", verticalAlign: "middle" }}
                 inheritViewBox
               ></SvgIcon>
             </motion.span>
