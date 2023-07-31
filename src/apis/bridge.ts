@@ -1,10 +1,9 @@
 import { requireEnv } from "@/utils"
 
-const baseUrl = requireEnv("REACT_APP_API_BASE_URI")
-const prefix = requireEnv("REACT_APP_BRIDGE_API_PREFIX")
+const baseUrl = requireEnv("REACT_APP_BRIDGE_API_URI")
 
-export const fetchTxByHashUrl = `${baseUrl}${prefix}/txsbyhashes`
+export const fetchTxByHashUrl = `${baseUrl}/txsbyhashes`
 
-export const fetchTxListUrl = `${baseUrl}${prefix}/txs`
+export const fetchTxListUrl = `${baseUrl}/txs`
 
-export const fetchClaimableTxListUrl = `${baseUrl}${prefix}/claimable`
+export const fetchClaimableTxListUrl = `${baseUrl}/claimable`

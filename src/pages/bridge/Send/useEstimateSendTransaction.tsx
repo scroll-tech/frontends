@@ -40,17 +40,13 @@ export function useEstimateSendTransaction(props) {
   }
 
   const withdrawETH = async () => {
-    const fee = await getPriceFee(selectedToken)
     return instance["withdrawETH(uint256,uint256)"].estimateGas(minimumAmount, GAS_LIMIT.WITHDRAW_ETH, {
-      value: minimumAmount + fee,
+      value: minimumAmount,
     })
   }
 
   const withdrawERC20 = async () => {
-    const fee = await getPriceFee(selectedToken)
-    return instance["withdrawERC20(address,uint256,uint256)"].estimateGas(selectedToken.address, minimumAmount, GAS_LIMIT.WITHDRAW_ERC20, {
-      value: fee,
-    })
+    return instance["withdrawERC20(address,uint256,uint256)"].estimateGas(selectedToken.address, minimumAmount, GAS_LIMIT.WITHDRAW_ERC20)
   }
 
   const estimateSend = async () => {
