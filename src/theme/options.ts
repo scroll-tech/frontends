@@ -166,11 +166,11 @@ export const typographyOptions = {
       fontWeight: 500,
     },
   },
-  // body1: {
-  //   fontWeight: 400,
-  //   fontSize: "1.6rem",
-  //   lineHeight: "2.6rem",
-  // },
+  body1: {
+    fontWeight: 400,
+    fontSize: "1.6rem",
+    lineHeight: "normal",
+  },
   // body2: {
   //   fontWeight: 400,
   //   fontSize: "1.4rem",
