@@ -41,7 +41,7 @@ const ExplorerCard = props => {
         <Stack direction="column">
           <Box className={classes.header}>
             <SvgIcon sx={{ fontSize: ["1.3rem", "2.3rem"], alignSelf: ["center", "flex-end"] }} component={ExternaLinkIcon} inheritViewBox></SvgIcon>
-            <SvgIcon sx={{ fontSize: ["2.6rem", "3.5rem"] }} component={icon} inheritViewBox></SvgIcon>
+            <SvgIcon sx={{ fontSize: ["2.8rem", "3.3rem"] }} component={icon} inheritViewBox></SvgIcon>
           </Box>
 
           <Typography
