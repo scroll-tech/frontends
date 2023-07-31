@@ -3,6 +3,7 @@ import Bridge from "@/pages/bridge"
 import Ecosystem from "@/pages/ecosystem"
 import Portal from "@/pages/home"
 import Home from "@/pages/landingpage"
+import OurStory from "@/pages/ourStory"
 import RollupScanBatch from "@/pages/rollup/batch"
 import RollupScanBlock from "@/pages/rollup/block"
 import RollupScanChunk from "@/pages/rollup/chunk"
@@ -19,6 +20,11 @@ const routes = [
     name: "Native zkEVM Layer 2 for Ethereum",
     path: "/",
     element: <Home />,
+  },
+  {
+    name: "Our Story",
+    path: "/story",
+    element: <OurStory />,
   },
   { name: "Blog", path: "/blog", element: <Blog /> },
   { name: "Team", path: "/team", element: <Team /> },
