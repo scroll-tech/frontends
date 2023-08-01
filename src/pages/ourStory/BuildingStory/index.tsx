@@ -44,13 +44,18 @@ const useStyles = makeStyles()(theme => ({
     gridTemplateColumns: "repeat(4, 1fr)",
     gridGap: "3rem",
     marginTop: "11rem",
+    [theme.breakpoints.down("sm")]: {
+      gridTemplateColumns: "repeat(2, 1fr)",
+      gridGap: "2rem",
+      marginTop: "5rem",
+    },
   },
 }))
 
 const BuildingStory = () => {
   const { classes } = useStyles()
   return (
-    <SectionWrapper full sx={{ pt: "26rem", pb: "13rem" }}>
+    <SectionWrapper full sx={{ pt: ["11rem", "26rem"], pb: ["12rem", "13rem"] }}>
       <SectionHeader
         title="Read the stories behind building Scroll"
         content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut urna iaculis quam mollis consequat."

@@ -13,7 +13,7 @@ const CORE_MEMBERS = [
   {
     avatar: SandyAvatar,
     name: "Sandy",
-    content: "founder in Hong Kong",
+    desc: "founder in Hong Kong",
   },
   {
     avatar: YeAvatar,
@@ -38,7 +38,7 @@ const CORE_MEMBERS = [
   {
     avatar: BackupAvatar,
     name: "Dan",
-    content: "devrel lead in Oklahoma, US",
+    desc: "devrel lead in Oklahoma, US",
   },
   {
     avatar: BackupAvatar,
@@ -70,13 +70,18 @@ const useStyles = makeStyles()(theme => ({
     gridRowGap: "6rem",
     margin: "13rem auto 0",
     width: "min-content",
+    [theme.breakpoints.down("sm")]: {
+      gridTemplateColumns: "repeat(2, 1fr)",
+      gridColumnGap: "4.6rem",
+      gridRowGap: "5rem",
+    },
   },
 }))
 
 const Team = () => {
   const { classes } = useStyles()
   return (
-    <SectionWrapper full sx={{ pt: "26rem" }}>
+    <SectionWrapper full sx={{ pt: ["11rem", "26rem"] }}>
       <SectionHeader
         title="Our team"
         content="The Scroll team is a tight-knit group of cryptography researchers, engineers, experts, and community champions. We're a global remote team that values autonomy and high performance through kindness, direct communication, and empathy."
@@ -84,7 +89,10 @@ const Team = () => {
       <Box className={classes.grid}>
         {CORE_MEMBERS.map(item => (
           <Box>
-            <Avatar sx={{ backgroundColor: "themeBackground.highlight", width: "16.3rem", height: "16.3rem" }} src={item.avatar}></Avatar>
+            <Avatar
+              sx={{ backgroundColor: "themeBackground.highlight", width: ["11.6rem", "16.3rem"], height: ["11.6rem", "16.3rem"] }}
+              src={item.avatar}
+            ></Avatar>
             <Typography sx={{ fontSize: "2rem", fontWeight: 600, mt: "2.2rem", mb: "0.6rem", textAlign: "center" }}>{item.name}</Typography>
             <Typography sx={{ fontSize: "2rem", textAlign: "center" }}>{item.desc}</Typography>
           </Box>

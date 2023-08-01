@@ -25,12 +25,16 @@ const useStyles = makeStyles<any>()((theme, { cover }) => ({
     padding: cover ? "3.6rem 3rem 2.8rem 3rem" : "3rem",
     display: "flex",
     flexDirection: "column",
+    [theme.breakpoints.down("sm")]: {
+      padding: cover ? "1.5rem 2rem 3rem" : "2rem",
+    },
   },
   noCover: {
     flex: 1,
     display: "flex",
     flexDirection: "column-reverse",
     justifyContent: "space-between",
+    minHeight: "10.6rem",
     ".building-story-card-icon": {
       alignSelf: "flex-end",
     },
@@ -64,7 +68,7 @@ const StoryCard = props => {
             ></SvgIcon>
           </Box>
 
-          <Typography sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: "normal", mt: "2.4rem" }}>{content}</Typography>
+          <Typography sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: "normal", mt: ["1.2rem", "2.4rem"] }}>{content}</Typography>
         </CardContent>
       </Card>
     </Link>
