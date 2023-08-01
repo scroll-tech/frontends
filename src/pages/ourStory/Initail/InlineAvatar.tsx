@@ -2,19 +2,19 @@ import { makeStyles } from "tss-react/mui"
 
 import { Avatar, Box } from "@mui/material"
 
-const useStyles = makeStyles<any>()((theme, { fontSize }) => ({
+const useStyles = makeStyles<any>()((theme, { size }) => ({
   placeholder: {
     position: "relative",
-    height: fontSize,
-    width: "5rem",
+    height: size === "small" ? "2.6rem" : "3.2rem",
+    width: size === "small" ? "4rem" : "5rem",
     display: "inline-block",
     verticalAlign: "middle",
   },
   avatar: {
     position: "absolute",
-    width: "5rem",
-    height: "5rem",
-    backgroundColor: "#FFDEB5",
+    width: size === "small" ? "4rem" : "5rem",
+    height: size === "small" ? "4rem" : "5rem",
+    backgroundColor: theme.palette.themeBackground.highlight,
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
@@ -27,8 +27,8 @@ const useStyles = makeStyles<any>()((theme, { fontSize }) => ({
 }))
 
 const InlineAvater = props => {
-  const { fontSize, ...restProps } = props
-  const { classes } = useStyles({ fontSize })
+  const { fontSize, size = "middle", ...restProps } = props
+  const { classes } = useStyles({ size })
   return (
     <Box className={classes.placeholder}>
       <Avatar classes={{ root: classes.avatar, img: classes.img }} {...restProps}></Avatar>
