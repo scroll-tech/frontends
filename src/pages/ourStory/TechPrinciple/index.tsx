@@ -1,3 +1,4 @@
+import { isMobileOnly } from "react-device-detect"
 import { makeStyles } from "tss-react/mui"
 
 import { Box, SvgIcon, Typography } from "@mui/material"
@@ -17,6 +18,7 @@ const PRINCIPLES = [
         Security <br /> at every step
       </>
     ),
+    mobileTitle: "Security at every step",
     content: "Scroll provides full Layer 1 security on Layer 2, ensuring a secure and decentralized consensus mechanism.",
   },
   {
@@ -27,12 +29,12 @@ const PRINCIPLES = [
         <br /> byte by byte
       </>
     ),
+    mobileTitle: "Ethereum equivalence, byte by byte",
     content: "Seamless migration with EVM-equivalence, eliminating code changes and disruptions for users and developers.",
   },
   null,
   null,
-  null,
-  null,
+
   {
     icon: ExternalSvg,
     title: (
@@ -41,6 +43,7 @@ const PRINCIPLES = [
         <br /> new way to scale
       </>
     ),
+    mobileTitle: "Proof of a powerful new way to scale",
     content: "Scroll utilizes a novel hierarchical zero-knowledge proof system, enabling secure and scalable operations with fast finality.",
   },
   {
@@ -51,6 +54,7 @@ const PRINCIPLES = [
         <br /> across all layers
       </>
     ),
+    mobileTitle: "Decentralization across all layers",
     content: "Scroll embraces openness to achieve decentralization across node operators, provers, sequencers, and our entire community.",
   },
 ]
@@ -62,13 +66,24 @@ const useStyles = makeStyles()(theme => ({
     gridColumnGap: "5rem",
     gridRowGap: "8rem",
     marginTop: "8rem",
+    [theme.breakpoints.down("sm")]: {
+      display: "flex",
+      flexDirection: "column",
+      gap: "6rem",
+    },
+  },
+  empty: {
+    gridColumn: "span 2",
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
   },
 }))
 
 const OurStory = () => {
   const { classes } = useStyles()
   return (
-    <SectionWrapper full sx={{ pt: "13.5rem" }}>
+    <SectionWrapper full sx={{ pt: ["11rem", "13.5rem"] }}>
       <SectionHeader
         title="Our technical principles"
         content="Comprehensive security, Ethereum equivalence for seamless developer experience, and decentralization across all layers are at the core of how we build Scroll."
@@ -78,12 +93,14 @@ const OurStory = () => {
           <>
             {item ? (
               <Box>
-                <SvgIcon sx={{ fontSize: "3.2rem" }} component={item.icon} inheritViewBox></SvgIcon>
-                <Typography sx={{ fontSize: "2.4rem", fontWeight: 600, mt: "2.6rem", mb: "2rem" }}>{item.title}</Typography>
-                <Typography>{item.content}</Typography>
+                <SvgIcon sx={{ fontSize: ["2.8rem", "3.2rem"] }} component={item.icon} inheritViewBox></SvgIcon>
+                <Typography sx={{ fontSize: ["1.6rem", "2.4rem"], fontWeight: 600, mt: ["1rem", "2.6rem"], mb: ["1rem", "2rem"] }}>
+                  {isMobileOnly ? item.mobileTitle : item.title}
+                </Typography>
+                <Typography sx={{ fontSize: "1.6rem" }}>{item.content}</Typography>
               </Box>
             ) : (
-              <Box></Box>
+              <Box className={classes.empty}></Box>
             )}
           </>
         ))}
