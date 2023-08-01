@@ -326,14 +326,14 @@ const Send: FC = () => {
               loading={approving}
               variant="contained"
             >
-              Approve USDC
+              Approve {tokenSymbol}
             </LoadingButton>
           ) : (
             <LoadingButton sx={{ mt: "2rem", width: "100%" }} onClick={handleSend} disabled={!sendButtonActive} loading={sending} variant="contained">
               Send {tokenSymbol} to {toNetwork.name}
             </LoadingButton>
           )}
-          <ApproveLoading open={approving} onClose={handleCloseApproveLoading} />
+          <ApproveLoading open={approving} tokenSymbol={tokenSymbol} onClose={handleCloseApproveLoading} />
           <SendLoading value={txValue} from={fromNetwork.name} to={toNetwork.name} open={sendingModalOpen} onClose={handleCloseSendLoading} />
         </div>
       </div>
