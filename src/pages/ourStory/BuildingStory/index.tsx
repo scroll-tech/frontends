@@ -1,7 +1,6 @@
 import { makeStyles } from "tss-react/mui"
 
-import { Box } from "@mui/material"
-
+import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
 import SectionHeader from "@/components/SectionHeader"
 import SectionWrapper from "@/components/SectionWrapper"
 
@@ -50,6 +49,12 @@ const useStyles = makeStyles()(theme => ({
       marginTop: "5rem",
     },
   },
+  withCover: {
+    gridColumn: "span 2",
+  },
+  noCover: {
+    gridColumn: "span 1",
+  },
 }))
 
 const BuildingStory = () => {
@@ -60,11 +65,13 @@ const BuildingStory = () => {
         title="Read the stories behind building Scroll"
         content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut urna iaculis quam mollis consequat."
       ></SectionHeader>
-      <Box className={classes.grid}>
+      <SuccessionToView className={classes.grid}>
         {STORIES.map(item => (
-          <StoryCard {...item}></StoryCard>
+          <SuccessionItem className={item.cover ? classes.withCover : classes.noCover}>
+            <StoryCard key={item.title} {...item}></StoryCard>
+          </SuccessionItem>
         ))}
-      </Box>
+      </SuccessionToView>
     </SectionWrapper>
   )
 }

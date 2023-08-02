@@ -1,8 +1,9 @@
-import React, { useState } from "react"
-import { NavLink } from "react-router-dom"
+import React, { useMemo, useState } from "react"
+import { NavLink, useLocation } from "react-router-dom"
+import { useStyles } from "tss-react/mui"
 
 import { OpenInNew } from "@mui/icons-material"
-import { Box, Fade, Link, Stack } from "@mui/material"
+import { Box, Fade, Link, Popper, Stack } from "@mui/material"
 import { styled } from "@mui/system"
 
 import Logo from "@/components/ScrollLogo"
@@ -15,7 +16,10 @@ const StyledBox = styled(Stack)(({ theme }) => ({
   top: 0,
   width: "100%",
   zIndex: 10,
-  // background: "#fef8f4",
+  background: "#fef8f4",
+  "&.scroll-header-no-bg": {
+    background: "transparent",
+  },
   // borderBottom: `1px solid ${theme.palette.border.main}`,
 }))
 
@@ -90,7 +94,6 @@ const SubMenuButton = styled(Box)(({ theme }) => ({
 }))
 
 const SubMenuList = styled(Box)(({ theme }) => ({
-  position: "absolute",
   border: "2px solid #FFCC9F",
   left: 0,
   background: "rgb(255,247,241)",
@@ -149,12 +152,21 @@ const LinkStyledSubButton = styled(NavLink)(({ theme }) => ({
 const App = ({ currentMenu }) => {
   const [checked, setChecked] = useState("")
 
-  const handleMouseEnter = key => {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+
+  const { pathname } = useLocation()
+  const { cx } = useStyles()
+
+  const noBg = useMemo(() => ["/story"].includes(pathname), [pathname])
+
+  const handleMouseEnter = (e, key) => {
     setChecked(key)
+    setAnchorEl(e.currentTarget)
   }
 
   const handleMouseLeave = () => {
     setChecked("")
+    setAnchorEl(null)
   }
 
   const renderSubMenuList = children => {
@@ -184,11 +196,11 @@ const App = ({ currentMenu }) => {
       return (
         <SubMenuButton
           className={currentMenu === item.key ? "active" : ""}
-          onMouseEnter={() => handleMouseEnter(item.key)}
+          onMouseEnter={e => handleMouseEnter(e, item.key)}
           onMouseLeave={handleMouseLeave}
           key={item.key}
         >
-          <Stack direction="row" alignItems="center" spacing="6px">
+          <Stack direction="row" alignItems="center" spacing="6px" sx={{ cursor: "pointer" }}>
             <span>{item.label}</span>
             <svg className="expand-more" xmlns="http://www.w3.org/2000/svg" width="9" height="5" viewBox="0 0 9 5" fill="none">
               <path
@@ -197,9 +209,13 @@ const App = ({ currentMenu }) => {
               />
             </svg>
           </Stack>
-          <Fade in={item.key === checked}>
-            <SubMenuList onClick={handleMouseLeave}>{renderSubMenuList(item.children)}</SubMenuList>
-          </Fade>
+          <Popper open={item.key === checked} anchorEl={anchorEl} transition>
+            {({ TransitionProps }) => (
+              <Fade {...TransitionProps}>
+                <SubMenuList onClick={handleMouseLeave}>{renderSubMenuList(item.children)}</SubMenuList>
+              </Fade>
+            )}
+          </Popper>
         </SubMenuButton>
       )
     } else if (item.isExternal) {
@@ -228,8 +244,8 @@ const App = ({ currentMenu }) => {
   }
 
   return (
-    <StyledBox>
-      <Announcement />
+    <StyledBox className={cx(noBg && "scroll-header-no-bg")}>
+      {/* <Announcement /> */}
       <HeaderContainer>
         <NavLink to="/" className="flex">
           <Logo />

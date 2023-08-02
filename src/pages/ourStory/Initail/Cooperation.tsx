@@ -1,3 +1,4 @@
+import { motion } from "framer-motion"
 import { isMobileOnly } from "react-device-detect"
 import { makeStyles } from "tss-react/mui"
 
@@ -24,43 +25,87 @@ const useStyles = makeStyles()(theme => ({
     [theme.breakpoints.up("sm")]: {
       width: "8.8rem",
       height: "8.8rem",
-      position: "absolute",
-      "&:nth-of-type(1)": {
-        top: 0,
-        left: "20%",
-        transform: "translateY(-50%)",
-      },
-      "&:nth-of-type(2)": {
-        top: 0,
-        right: "18%",
-        transform: "translateY(-30%)",
-      },
-      "&:nth-of-type(3)": {
-        bottom: 0,
-        right: 0,
-        transform: "translate(20%, 20%)",
-      },
-      "&:nth-of-type(4)": {
-        bottom: 0,
-        right: "30%",
-        transform: "translateY(70%)",
-      },
-      "&:nth-of-type(5)": {
-        bottom: 0,
-        left: "26%",
-        transform: "translateY(90%)",
-      },
-      "&:nth-of-type(6)": {
-        top: "50%",
-        left: 0,
-        transform: "translateX(-50%)",
-      },
     },
   },
 }))
 
 const Cooperation = () => {
   const { classes } = useStyles()
+
+  const logos = [
+    {
+      hidden: {
+        top: "100%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+      },
+      show: {
+        top: 0,
+        left: "20%",
+        transform: "translateY(-50%)",
+      },
+    },
+    {
+      hidden: {
+        top: "100%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+      },
+      show: {
+        top: 0,
+        left: "78%",
+        transform: "translateY(-30%)",
+      },
+    },
+    {
+      hidden: {
+        top: "100%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+      },
+      show: {
+        top: "100%",
+        left: "100%",
+        transform: "translate(-80%, -80%)",
+      },
+    },
+    {
+      hidden: {
+        top: "100%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+      },
+      show: {
+        top: "100%",
+        left: "65%",
+        transform: "translateY(-30%)",
+      },
+    },
+    {
+      hidden: {
+        top: "100%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+      },
+      show: {
+        top: "100%",
+        left: "26%",
+        transform: "translateY(-10%)",
+      },
+    },
+    {
+      hidden: {
+        top: "100%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+      },
+      show: {
+        top: "50%",
+        left: 0,
+        transform: "translateX(-50%)",
+      },
+    },
+  ]
   return (
     <Paper elevation={0} className={classes.cooperation}>
       <Typography sx={{ fontSize: ["2.6rem", "3.2rem"] }}>
@@ -75,8 +120,17 @@ const Cooperation = () => {
         </Stack>
       ) : (
         <>
-          {PARTNER_LIST.map(item => (
-            <Avatar className={classes.logo} key={item} src={`${PARTNER_LOGO_PUBLIC_URL}${item}.png`}></Avatar>
+          {PARTNER_LIST.map((item, index) => (
+            <motion.div
+              style={{ position: "absolute" }}
+              initial="hidden"
+              whileInView="show"
+              variants={logos[index]}
+              viewport={{ once: true, amount: "all" }}
+              transition={{ ease: [0.16, 1, 0.3, 1], duration: 1 }}
+            >
+              <Avatar className={classes.logo} key={item} src={`${PARTNER_LOGO_PUBLIC_URL}${item}.png`}></Avatar>
+            </motion.div>
           ))}
         </>
       )}
