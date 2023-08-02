@@ -1,11 +1,12 @@
 import { makeStyles } from "tss-react/mui"
 
-import { Avatar, Box, Typography } from "@mui/material"
+import { Avatar, Typography } from "@mui/material"
 
 import BackupAvatar from "@/assets/svgs/refactor/backup-avatar.svg"
 import HaichenAvatar from "@/assets/svgs/refactor/haichen-avatar.svg"
 import SandyAvatar from "@/assets/svgs/refactor/sandy-avatar.svg"
 import YeAvatar from "@/assets/svgs/refactor/ye-avatar.svg"
+import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
 import SectionHeader from "@/components/SectionHeader"
 import SectionWrapper from "@/components/SectionWrapper"
 
@@ -78,28 +79,29 @@ const useStyles = makeStyles()(theme => ({
   },
 }))
 
-const Team = () => {
+const TeamMembers = () => {
   const { classes } = useStyles()
+
   return (
     <SectionWrapper full sx={{ pt: ["11rem", "26rem"] }}>
       <SectionHeader
         title="Our team"
         content="The Scroll team is a tight-knit group of cryptography researchers, engineers, experts, and community champions. We're a global remote team that values autonomy and high performance through kindness, direct communication, and empathy."
       ></SectionHeader>
-      <Box className={classes.grid}>
+      <SuccessionToView className={classes.grid}>
         {CORE_MEMBERS.map(item => (
-          <Box>
+          <SuccessionItem key={item.name}>
             <Avatar
               sx={{ backgroundColor: "themeBackground.highlight", width: ["11.6rem", "16.3rem"], height: ["11.6rem", "16.3rem"] }}
               src={item.avatar}
             ></Avatar>
             <Typography sx={{ fontSize: "2rem", fontWeight: 600, mt: "2.2rem", mb: "0.6rem", textAlign: "center" }}>{item.name}</Typography>
             <Typography sx={{ fontSize: "2rem", textAlign: "center" }}>{item.desc}</Typography>
-          </Box>
+          </SuccessionItem>
         ))}
-      </Box>
+      </SuccessionToView>
     </SectionWrapper>
   )
 }
 
-export default Team
+export default TeamMembers

@@ -6,16 +6,11 @@ import { ReactComponent as ExternaLinkIcon } from "@/assets/svgs/refactor/extern
 import Link from "@/components/Link"
 
 const useStyles = makeStyles<any>()((theme, { cover }) => ({
-  gridItem: {
-    gridColumn: cover ? "span 2" : "span 1",
-  },
   card: {
     backgroundColor: theme.palette.themeBackground.normal,
     borderRadius: "2.5rem",
     cursor: "pointer",
     height: "100%",
-    [theme.breakpoints.down("sm")]: {},
-
     "&:hover": {
       backgroundColor: theme.palette.themeBackground.highlight,
     },
@@ -54,7 +49,7 @@ const StoryCard = props => {
   const { classes, cx } = useStyles({ cover })
 
   return (
-    <Link href={href} external className={classes.gridItem}>
+    <Link href={href} external>
       <Card {...restProps} elevation={0} className={classes.card}>
         {cover && <CardMedia sx={{ height: 230, borderRadius: "2.5rem" }} image={cover} />}
         <CardContent className={classes.cardContent}>

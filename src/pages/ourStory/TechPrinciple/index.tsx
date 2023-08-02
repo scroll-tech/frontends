@@ -7,6 +7,7 @@ import { ReactComponent as DecentralisationSvg } from "@/assets/svgs/refactor/st
 import { ReactComponent as EthSvg } from "@/assets/svgs/refactor/story-eth.svg"
 import { ReactComponent as ExternalSvg } from "@/assets/svgs/refactor/story-external.svg"
 import { ReactComponent as SecuritySvg } from "@/assets/svgs/refactor/story-security.svg"
+import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
 import SectionHeader from "@/components/SectionHeader"
 import SectionWrapper from "@/components/SectionWrapper"
 
@@ -82,29 +83,30 @@ const useStyles = makeStyles()(theme => ({
 
 const OurStory = () => {
   const { classes } = useStyles()
+
   return (
     <SectionWrapper full sx={{ pt: ["11rem", "13.5rem"] }}>
       <SectionHeader
         title="Our technical principles"
         content="Comprehensive security, Ethereum equivalence for seamless developer experience, and decentralization across all layers are at the core of how we build Scroll."
       ></SectionHeader>
-      <Box className={classes.grid}>
+      <SuccessionToView className={classes.grid}>
         {PRINCIPLES.map(item => (
           <>
             {item ? (
-              <Box>
+              <SuccessionItem>
                 <SvgIcon sx={{ fontSize: ["2.8rem", "3.2rem"] }} component={item.icon} inheritViewBox></SvgIcon>
                 <Typography sx={{ fontSize: ["1.6rem", "2.4rem"], fontWeight: 600, mt: ["1rem", "2.6rem"], mb: ["1rem", "2rem"] }}>
                   {isMobileOnly ? item.mobileTitle : item.title}
                 </Typography>
                 <Typography sx={{ fontSize: "1.6rem" }}>{item.content}</Typography>
-              </Box>
+              </SuccessionItem>
             ) : (
               <Box className={classes.empty}></Box>
             )}
           </>
         ))}
-      </Box>
+      </SuccessionToView>
     </SectionWrapper>
   )
 }

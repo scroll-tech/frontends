@@ -5,7 +5,7 @@ import { Box, Stack, Typography } from "@mui/material"
 
 const useStyles = makeStyles()(theme => ({
   bg: {
-    width: "100vw",
+    width: "100%",
     height: "100vh",
     marginTop: "-6.5rem",
     background: "url(/imgs/story/story-bg.png) no-repeat center",
