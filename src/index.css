@@ -11,7 +11,7 @@ iframe,
 embed,
 object {
   display: inline;
-  vertical-align: initial;
+  vertical-align: middle;
 }
 
 @media screen and (max-width: 600px) {
