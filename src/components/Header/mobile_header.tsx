@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { NavLink } from "react-router-dom"
 
-import { ExpandMore, OpenInNew } from "@mui/icons-material"
+import { ExpandMore } from "@mui/icons-material"
 import { Box, Collapse, Link, List, ListItemButton, Stack } from "@mui/material"
 import { styled } from "@mui/system"
 
@@ -37,17 +37,16 @@ const Bar = styled("div")(({ theme }) => ({
 
 const MenuContent = styled(Box)(({ theme }) => ({
   margin: "0.5rem 1.6rem 0",
-  borderRadius: "0.6rem",
   background: "rgb(255,247,241)",
-  border: "2px solid #FFCC9F",
 }))
 
 const ListItem = styled(ListItemButton)(({ theme }) => ({
-  fontWeight: 500,
-  height: "4rem",
-  lineHeight: "4rem",
-  color: "#333",
-  margin: "0 1.2rem",
+  fontWeight: 600,
+  fontSize: "2rem",
+  height: "5.5rem",
+  lineHeight: "5.5rem",
+  color: "#101010",
+  margin: "0",
   display: "flex",
   justifyContent: "space-between",
   padding: "0 !important",
@@ -59,15 +58,25 @@ const ListItem = styled(ListItemButton)(({ theme }) => ({
     color: theme.palette.primary.main,
   },
   "&:not(:first-of-type)": {
-    borderTop: "1px solid #FFCC9F",
+    borderTop: "1px solid #101010",
+  },
+}))
+
+const MenuLinkStyledButton = styled(NavLink)(({ theme }) => ({
+  fontWeight: 600,
+  fontSize: "2rem",
+  height: "5.5rem",
+  lineHeight: "5.5rem",
+  color: "#101010",
+  width: "100%",
+  "&.active": {
+    color: theme.palette.primary.main,
   },
 }))
 
 const SubListItem = styled(ListItemButton)(({ theme }) => ({
-  fontWeight: 400,
-  height: "3rem",
-  lineHeight: "3rem",
-  color: "#333",
+  height: "4rem",
+  lineHeight: "4rem",
   margin: "0 !important",
   display: "flex",
   justifyContent: "space-between",
@@ -75,13 +84,12 @@ const SubListItem = styled(ListItemButton)(({ theme }) => ({
 }))
 
 const LinkStyledButton = styled(NavLink)(({ theme }) => ({
-  fontWeight: 400,
-  fontSize: "1.5rem",
-  height: "3rem",
-  lineHeight: "3rem",
-  color: "#717171",
+  fontWeight: 500,
+  fontSize: "1.8rem",
+  height: "4rem",
+  lineHeight: "4rem",
+  color: "#101010",
   width: "100%",
-  paddingLeft: "2rem",
   "&.active": {
     color: theme.palette.primary.main,
     fontWeight: 500,
@@ -89,19 +97,18 @@ const LinkStyledButton = styled(NavLink)(({ theme }) => ({
 }))
 
 const ExternalLink = styled(Link)(({ theme }) => ({
-  fontWeight: 400,
-  fontSize: "1.5rem",
-  height: "3rem",
-  lineHeight: "3rem",
-  color: "#717171",
+  fontWeight: 500,
+  fontSize: "1.8rem",
+  height: "4rem",
+  lineHeight: "4rem",
+  color: "#101010",
   display: "flex",
   alignItems: "center",
   width: "100%",
-  paddingLeft: "2rem",
 }))
 
 const SectionList = styled("div")(({ theme }) => ({
-  paddingBottom: "1rem",
+  paddingBottom: "2.5rem",
   "&:not(:last-child)::after": {
     content: '""',
     borderTop: `1px solid ${theme.palette.border.main}`,
@@ -144,9 +151,16 @@ const App = ({ currentMenu }) => {
     >
       {navigations.map(item => (
         <React.Fragment key={item.key}>
-          <ListItem className={activeCollapse === item.key ? "active" : ""} sx={{ py: "1rem" }} onClick={() => toggleCollapse(item.key)}>
-            {item.label} <ExpandMoreIcon fontSize="large" className={activeCollapse === item.key ? "active" : ""} />
-          </ListItem>
+          {item.children ? (
+            <ListItem className={activeCollapse === item.key ? "active" : ""} sx={{ py: "1rem" }} onClick={() => toggleCollapse(item.key)}>
+              {item.label} <ExpandMoreIcon fontSize="large" className={activeCollapse === item.key ? "active" : ""} />
+            </ListItem>
+          ) : (
+            <ListItem className={activeCollapse === item.key ? "active" : ""} sx={{ py: "1rem" }} onClick={() => toggleDrawer(false)}>
+              <MenuLinkStyledButton to={item.href}>{item.label}</MenuLinkStyledButton>
+            </ListItem>
+          )}
+
           <Collapse in={activeCollapse === item.key} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
               {item.children?.map(section => (
@@ -156,7 +170,19 @@ const App = ({ currentMenu }) => {
                       <SubListItem onClick={() => toggleDrawer(false)} sx={{ mx: 4 }} key={subItem.key}>
                         <ExternalLink underline="none" href={subItem.href}>
                           {subItem.label}
-                          <OpenInNew sx={{ fontSize: "1.6rem", ml: "0.4rem" }} />
+                          <svg
+                            style={{ fontSize: "1.6rem", marginLeft: "0.4rem" }}
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="9"
+                            height="9"
+                            viewBox="0 0 9 9"
+                            fill="none"
+                          >
+                            <path
+                              d="M9 0V6.86538L7.83812 5.7035V1.96385C5.46463 4.26924 3.29542 6.77999 0.853849 9L0 8.16344C2.42536 5.94344 4.5762 3.46728 6.93347 1.1781H3.31272L2.13462 0H9Z"
+                              fill="#101010"
+                            />
+                          </svg>
                         </ExternalLink>
                       </SubListItem>
                     ) : (
@@ -189,7 +215,7 @@ const App = ({ currentMenu }) => {
         </Menu>
       </NavStack>
       {open && (
-        <Box sx={{ background: "#ffffff", height: "calc(100vh - 3.2rem)" }}>
+        <Box sx={{ background: "#FFF8F3", paddingTop: "5rem", height: "calc(100vh - 3.2rem)" }}>
           <MenuContent role="presentation" onKeyDown={() => toggleDrawer(false)}>
             {renderList()}
           </MenuContent>
