@@ -10,7 +10,7 @@ const Header = () => {
   return (
     <>
       <SectionWrapper
-        maxWidth="1438px"
+        full
         sx={{
           pt: ["7.3rem", "7.3rem", "15.4rem"],
           pb: ["4rem", "4rem", "15.4rem"],

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react"
 
 import { Alert, Box, Link, Snackbar } from "@mui/material"
-import { styled } from "@mui/material/styles"
+import { styled } from "@mui/system"
 
 import { ecosystemListHashUrl } from "@/apis/ecosystem"
 import LoadingPage from "@/components/LoadingPage"
@@ -9,27 +9,13 @@ import { DIVERGENT_CATEGORY_MAP } from "@/constants"
 
 import GalleryItem from "./GalleryItem"
 
-const Grid = styled("div")(
-  ({ theme }) => `
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  width: max-content;
-  margin: 3rem auto;
-  grid-auto-columns: 1fr;
-  grid-gap: 3rem;
-  ${theme.breakpoints.down("lg")} {
-    grid-template-columns: repeat(3, 1fr);
-  };
-  ${theme.breakpoints.down("md")} {
-    grid-template-columns: repeat(2, 1fr);
-  };
-  ${theme.breakpoints.down("sm")} {
-    grid-template-columns: 1fr;
-    width: 100%;
-    grid-gap: 2rem;
-  };
-`,
-)
+const Grid = styled("div")(({ theme }) => ({
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fill, minmax(30rem, 1fr))",
+  width: "100%",
+  padding: "3rem 0",
+  gridGap: "3rem",
+}))
 
 const Gallery = props => {
   const { selectedCategory } = props
@@ -88,7 +74,7 @@ const Gallery = props => {
             ))}
           </Grid>
           {hasMore && (
-            <Box sx={{ textAlign: "center", mt: ["5.5rem", "12.5rem"] }}>
+            <Box sx={{ textAlign: "center", mt: ["2.5rem", "9.5rem"] }}>
               <Link
                 component="button"
                 sx={{

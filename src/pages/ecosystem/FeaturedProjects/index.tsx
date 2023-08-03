@@ -39,13 +39,13 @@ const featuredProjects = [
 
 const FeaturedProjects = props => {
   return (
-    <SectionWrapper maxWidth="1438px" dark sx={{ pt: ["6rem", "15.4rem"], pb: ["12rem", "16rem"] }}>
+    <SectionWrapper full dark sx={{ pt: ["6rem", "15.4rem"], pb: ["12rem", "16rem"] }}>
       <SectionHeader
         dark
         title="Featured projects"
         content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut urna iaculis quam mollis consequat."
       ></SectionHeader>
-      <Stack direction={isMobileOnly ? "column" : "row"} gap={isMobileOnly ? "4rem" : "3rem"} sx={{ mt: ["5.2rem", "12.6rem"] }}>
+      <Stack direction={isMobileOnly ? "column" : "row"} gap={isMobileOnly ? "4rem" : "4%"} sx={{ mt: ["5.2rem", "12.6rem"] }}>
         {featuredProjects.map(item => (
           <FeaturedCard key={item.name} {...item}></FeaturedCard>
         ))}
