@@ -50,7 +50,7 @@ const useStyles = makeStyles()(theme => ({
     transform: "translateX(0) !important",
     transition: "transform 227ms cubic-bezier(0.4, 0, 0.2, 1) 0ms !important",
     // TODO: why
-    "@media (min-width: 1500px)": {
+    "@media (min-width: 1500px) and (max-width: 1700px)": {
       marginLeft: "-0.5px",
     },
   },
