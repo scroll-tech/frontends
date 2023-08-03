@@ -13,17 +13,15 @@ const useStyles = makeStyles()(theme => ({
     flex: 1,
     display: "flex",
     flexDirection: "column",
-    aspectRatio: "4 / 5",
     padding: "1.5rem",
     borderRadius: "2.5rem",
     [theme.breakpoints.down("sm")]: {
-      aspectRatio: "unset",
       height: "29.4rem",
     },
   },
   imgWrapper: {
-    aspectRatio: "414 / 250",
     display: "flex",
+    height: "25rem",
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: theme.palette.themeBackground.dark,
@@ -90,6 +88,7 @@ const FeaturedCard = props => {
           className={classes.description}
           sx={{
             mt: ["0.9rem", "2.4rem"],
+            mb: "2rem",
             lineHeight: "normal",
             fontSize: ["1.6rem", "2rem"],
           }}

@@ -12,15 +12,15 @@ import RenderIfVisible from "@/components/RenderIfVisible"
 import { ECOSYSTEM_SOCIAL_LIST } from "@/constants"
 
 const useStyles = makeStyles()(theme => ({
+  renderWrapper: {
+    aspectRatio: "1 / 1",
+    width: "100%",
+  },
   wrapper: {
     position: "relative",
     perspective: "1000px",
-    width: "32.5rem",
-    height: "32.5rem",
-    [theme.breakpoints.down("sm")]: {
-      width: "100%",
-      height: "100%",
-    },
+    width: "100%",
+    height: "100%",
   },
   flipCard: {
     position: "relative",
@@ -35,7 +35,6 @@ const useStyles = makeStyles()(theme => ({
     width: "100%",
     height: "100%",
     backfaceVisibility: "hidden",
-    padding: "2.5rem 3rem 3rem",
     borderRadius: "2.5rem",
     backgroundColor: theme.palette.themeBackground.dark,
 
@@ -44,11 +43,13 @@ const useStyles = makeStyles()(theme => ({
     },
   },
   front: {
+    padding: "2rem 2rem 3rem",
     [theme.breakpoints.down("sm")]: {
       padding: "0 2rem 0 4.5rem",
     },
   },
   back: {
+    padding: "2.5rem 3rem 3rem",
     [theme.breakpoints.down("sm")]: {
       padding: "1.6rem 2rem",
     },
@@ -59,11 +60,11 @@ const useStyles = makeStyles()(theme => ({
     right: "2rem",
     fontSize: "2rem",
   },
-  girdBox: {
+  frontContent: {
     display: "grid",
     gridTemplateColumns: "1fr",
     gridTemplateRows: "repeat(2, min-content) 1fr",
-    paddingTop: "4.5rem",
+    paddingTop: "6rem",
     height: "100%",
     justifyItems: "center",
     gridRowGap: "2rem",
@@ -85,6 +86,7 @@ const useStyles = makeStyles()(theme => ({
     justifyContent: "center",
     flexWrap: "wrap",
     alignItems: "end",
+    margin: "-4px -5px",
     [theme.breakpoints.down("sm")]: {
       alignItems: "start",
       margin: "-4px",
@@ -100,7 +102,7 @@ const useStyles = makeStyles()(theme => ({
     fontWeight: "500",
     fontSize: "1.6rem",
     lineHeight: "normal",
-    margin: "0 5px",
+    margin: "4px 5px",
     [theme.breakpoints.down("sm")]: {
       fontSize: "1.2rem",
       padding: "2px 12px",
@@ -139,7 +141,7 @@ const GalleryItem = props => {
     window.open(website)
   }
   return (
-    <RenderIfVisible defaultHeight={isMobileOnly ? 150 : 325}>
+    <RenderIfVisible defaultHeight={isMobileOnly ? 150 : 0} rootElementClass={classes.renderWrapper}>
       <motion.div className={classes.wrapper} onClick={handleFlipCard} whileHover={{ translateY: "-2px", scale: 1.005 }}>
         <motion.div
           className={classes.flipCard}
@@ -153,14 +155,14 @@ const GalleryItem = props => {
             // transition={{ duration: 0.3, ease: "easeInOut" }}
           >
             {isMobileOnly && <SvgIcon className={classes.info} component={InfoIcon} inheritViewBox></SvgIcon>}
-            <Box className={classes.girdBox}>
+            <Box className={classes.frontContent}>
               <Stack
                 justifyContent="center"
                 alignItems="center"
                 sx={{
                   width: ["6rem", "7rem"],
                   height: ["6rem", "7rem"],
-                  backgroundColor: theme => theme.palette.background.paper,
+                  backgroundColor: "background.paper",
                   borderRadius: "3.5rem",
                   overflow: "hidden",
                   gridRow: ["span 2", "unset"],
@@ -193,17 +195,25 @@ const GalleryItem = props => {
               >
                 {name}
               </Typography>
-              <Typography
-                sx={{
-                  lineHeight: "normal",
-                  fontSize: ["1.6rem", "2rem"],
-                  color: "#FFF8F3",
-                  flex: 1,
-                  overflow: "hidden",
-                }}
-              >
-                {desc}
-              </Typography>
+              <Box sx={{ flex: 1 }}>
+                <Typography
+                  sx={{
+                    lineHeight: "normal",
+                    fontSize: ["1.6rem", "2rem"],
+                    color: "#FFF8F3",
+                    "@media (max-width: 600px)": {
+                      display: "-webkit-box",
+                      "-webkit-box-orient": "vertical",
+                      "-webkit-line-clamp": "4",
+                      overflow: "hidden",
+                      height: "9rem",
+                    },
+                  }}
+                >
+                  {desc}
+                </Typography>
+              </Box>
+
               <Stack direction="row" spacing="1.8rem" justifyContent="flex-end" sx={{ width: "100%" }}>
                 {ECOSYSTEM_SOCIAL_LIST.map(social => (
                   <motion.span key={social.name} whileHover={{ scale: 1.1 }}>

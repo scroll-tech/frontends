@@ -28,7 +28,7 @@ const Protocals = props => {
     setCategory(e.target.value)
   }
   return (
-    <SectionWrapper maxWidth="1438px" sx={{ pt: ["6rem", "15.4rem"] }}>
+    <SectionWrapper full sx={{ pt: ["6rem", "15.4rem"] }}>
       <SectionHeader
         title="All protocols"
         content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut urna urna urna iaculis quam mollis consequat."

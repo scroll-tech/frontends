@@ -19,6 +19,10 @@ const lightTheme = createTheme({
         root: {
           paddingLeft: "2rem",
           paddingRight: "2rem",
+          "@media(min-width: 600px)": {
+            paddingLeft: "6rem",
+            paddingRight: "6rem",
+          },
         },
         maxWidthLg: {
           maxWidth: "1300px",
