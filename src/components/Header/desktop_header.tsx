@@ -1,6 +1,5 @@
-import React, { useMemo, useState } from "react"
-import { NavLink, useLocation } from "react-router-dom"
-import { useStyles } from "tss-react/mui"
+import React, { useState } from "react"
+import { NavLink } from "react-router-dom"
 
 import { OpenInNew } from "@mui/icons-material"
 import { Box, Fade, Link, Popper, Stack } from "@mui/material"
@@ -9,16 +8,14 @@ import { styled } from "@mui/system"
 import Logo from "@/components/ScrollLogo"
 
 import { navigations } from "./constants"
+import useCheckNoBg from "./useCheckNoBg"
 
-const StyledBox = styled(Stack)(({ theme }) => ({
+const StyledBox = styled<any>(Stack)(({ theme, noBg }) => ({
   position: "sticky",
   top: 0,
   width: "100%",
   zIndex: 10,
-  background: "#fef8f4",
-  "&.scroll-header-no-bg": {
-    background: "transparent",
-  },
+  background: noBg ? "transparent" : theme.palette.themeBackground.light,
   // borderBottom: `1px solid ${theme.palette.border.main}`,
 }))
 
@@ -149,14 +146,11 @@ const LinkStyledSubButton = styled(NavLink)(({ theme }) => ({
 }))
 
 const App = ({ currentMenu }) => {
+  const noBg = useCheckNoBg()
+
   const [checked, setChecked] = useState("")
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-
-  const { pathname } = useLocation()
-  const { cx } = useStyles()
-
-  const noBg = useMemo(() => ["/story"].includes(pathname), [pathname])
 
   const handleMouseEnter = (e, key) => {
     setChecked(key)
@@ -243,7 +237,7 @@ const App = ({ currentMenu }) => {
   }
 
   return (
-    <StyledBox className={cx(noBg && "scroll-header-no-bg")}>
+    <StyledBox noBg={noBg}>
       {/* <Announcement /> */}
       <HeaderContainer>
         <NavLink to="/" className="flex">

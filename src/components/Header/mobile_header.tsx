@@ -7,6 +7,7 @@ import { styled } from "@mui/system"
 
 import Logo from "../ScrollLogo"
 import { navigations } from "./constants"
+import useCheckNoBg from "./useCheckNoBg"
 
 const NavStack = styled(Stack)(({ theme }) => ({
   height: "3rem",
@@ -118,6 +119,7 @@ const ExpandMoreIcon = styled(ExpandMore)(({ theme }) => ({
 }))
 
 const App = ({ currentMenu }) => {
+  const noBg = useCheckNoBg()
   const [open, setOpen] = useState(false)
   const [activeCollapse, setActiveCollapse] = useState("")
 
@@ -175,7 +177,7 @@ const App = ({ currentMenu }) => {
   )
 
   return (
-    <Box className={open ? "active" : ""}>
+    <Box className={open ? "active" : ""} sx={{ backgroundColor: noBg && !open ? "transparent" : "themeBackground.light" }}>
       <NavStack direction="row" justifyContent="space-between" alignItems="center">
         <NavLink to="/" className="flex">
           <Box onClick={() => toggleDrawer(false)}>
