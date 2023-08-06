@@ -25,7 +25,7 @@ export function useSendTransaction(props) {
   const { addTransaction, updateTransaction, addEstimatedTimeMap, updateOrderedTxs, addAbnormalTransactions, removeFrontTransactions } = useTxStore()
   const { changeHistoryVisible } = useBridgeStore()
   const [sending, setSending] = useState<boolean>(false)
-  const { getPriceFee } = usePriceFee()
+  const { getGasLimit, getGasPrice } = usePriceFee()
 
   const parsedAmount = useMemo(() => {
     if (!fromTokenAmount || !selectedToken) return BigInt(0)
@@ -151,22 +151,21 @@ export function useSendTransaction(props) {
   }
 
   const depositETH = async () => {
-    const fee = await getPriceFee(selectedToken, fromNetwork.isL1)
-    return networksAndSigners[CHAIN_ID.L1].gateway["depositETH(uint256,uint256)"](parsedAmount, GAS_LIMIT.DEPOSIT_ETH, {
+    const gasLimit = await getGasLimit()
+    const gasPrice = await getGasPrice()
+    const fee = gasPrice * gasLimit
+    return networksAndSigners[CHAIN_ID.L1].gateway["depositETH(uint256,uint256)"](parsedAmount, gasLimit, {
       value: parsedAmount + fee,
     })
   }
 
   const depositERC20 = async () => {
-    const fee = await getPriceFee(selectedToken, fromNetwork.isL1)
-    return networksAndSigners[CHAIN_ID.L1].gateway["depositERC20(address,uint256,uint256)"](
-      selectedToken.address,
-      parsedAmount,
-      GAS_LIMIT.DEPOSIT_ERC20,
-      {
-        value: fee,
-      },
-    )
+    const gasLimit = await getGasLimit()
+    const gasPrice = await getGasPrice()
+    const fee = gasPrice * gasLimit
+    return networksAndSigners[CHAIN_ID.L1].gateway["depositERC20(address,uint256,uint256)"](selectedToken.address, parsedAmount, gasLimit, {
+      value: fee,
+    })
   }
 
   const withdrawETH = async () => {

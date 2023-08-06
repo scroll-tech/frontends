@@ -1,6 +1,7 @@
 import { requireEnv } from "@/utils"
 
 export const ETH_SYMBOL = requireEnv("REACT_APP_ETH_SYMBOL")
+export const WETH_SYMBOL = "WETH"
 
 export const CHAIN_ID = {
   L1: parseInt(requireEnv("REACT_APP_CHAIN_ID_L1") as string),
