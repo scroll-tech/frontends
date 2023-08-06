@@ -55,7 +55,9 @@ function useSufficientBalance(
         return setSufficientBalance(true)
       }
 
-      if (!enoughFeeBalance) {
+      if (!tokenBalance) {
+        message = `Insufficient balance. Your account has 0 ${selectedToken.symbol}.`
+      } else if (!enoughFeeBalance) {
         const diff = tokenBalance - fee - (estimatedGasCost ?? BigInt(0))
         message = `Insufficient balance to cover the cost of tx. The amount should be less than ${toTokenDisplay(
           diff,

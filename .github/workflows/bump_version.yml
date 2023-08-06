@@ -6,7 +6,7 @@ name: "Bump Version on Staging"
 on:
   push:
     branches:
-      - alpha
+      - sepolia
 
 jobs:
   bump-version:

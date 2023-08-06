@@ -26,7 +26,7 @@ const useStyles = makeStyles()(theme => {
 })
 
 const ApproveLoading = props => {
-  const { open, onClose } = props
+  const { open, onClose, tokenSymbol } = props
   const { walletName } = useRainbowContext()
   const { classes } = useStyles()
 
@@ -65,7 +65,7 @@ const ApproveLoading = props => {
         </Typography>
         <div className={classes.section}>
           <Typography variant="body1" gutterBottom sx={{ fontWeight: 600 }}>
-            Approve USDC
+            Approve {tokenSymbol}
           </Typography>
           <Typography variant="body1">Approve on your {walletName} wallet</Typography>
         </div>
