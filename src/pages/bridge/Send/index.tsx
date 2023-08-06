@@ -7,7 +7,7 @@ import { Alert, Typography } from "@mui/material"
 import L1_erc20ABI from "@/assets/abis/L1_erc20ABI.json"
 import LoadingButton from "@/components/LoadingButton"
 import TextButton from "@/components/TextButton"
-import { CHAIN_ID, ETH_SYMBOL, GATEWAY_ROUTE_PROXY_ADDR, NETWORKS, WETH_GATEWAY_PROXY_ADDR } from "@/constants"
+import { CHAIN_ID, ETH_SYMBOL, GATEWAY_ROUTE_PROXY_ADDR, NETWORKS, WETH_GATEWAY_PROXY_ADDR, WETH_SYMBOL } from "@/constants"
 import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
 import { useApp } from "@/contexts/AppContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
@@ -114,7 +114,7 @@ const Send: FC = () => {
 
   const handleTotalBonderFeeDisplay = async () => {
     if (networksAndSigners[fromNetwork.chainId]?.signer) {
-      const fee = await getPriceFee(fromToken, fromNetwork.isL1)
+      const fee = await getPriceFee()
       const display = fromTokenAmount ? toTokenDisplay(fee + (estimatedGasCost as bigint)) + " " + ETH_SYMBOL : "-"
       setTotalBonderFeeDisplay(display)
     }
@@ -207,7 +207,7 @@ const Send: FC = () => {
   }, [fromTokenAmount, warningTip])
 
   const approveAddress = useMemo(() => {
-    if (!fromNetwork.isL1 && fromToken.symbol === "WETH") return WETH_GATEWAY_PROXY_ADDR[fromNetwork.chainId]
+    if (!fromNetwork.isL1 && fromToken.symbol === WETH_SYMBOL) return WETH_GATEWAY_PROXY_ADDR[fromNetwork.chainId]
     return GATEWAY_ROUTE_PROXY_ADDR[fromNetwork.chainId]
   }, [fromNetwork, fromToken])
 
