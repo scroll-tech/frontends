@@ -36,7 +36,7 @@ const useTxHistory = networksAndSigners => {
   useEffect(() => {
     if (walletCurrentAddress) {
       try {
-        scrollRequest(`${fetchClaimableTxListUrl}?address=${walletCurrentAddress}&offset=0&limit=100`).then(data => {
+        scrollRequest(`${fetchClaimableTxListUrl}?address=${walletCurrentAddress}&page=1&page_size=100`).then(data => {
           setclaimableTx(data.data.result)
         })
       } catch (error) {}
