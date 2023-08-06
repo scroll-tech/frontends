@@ -1,7 +1,7 @@
 import { isError } from "ethers"
 import { useMemo, useState } from "react"
 
-import { CHAIN_ID, GAS_LIMIT, NETWORKS } from "@/constants"
+import { CHAIN_ID, NETWORKS } from "@/constants"
 import { TX_STATUS } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
@@ -169,17 +169,13 @@ export function useSendTransaction(props) {
   }
 
   const withdrawETH = async () => {
-    return networksAndSigners[CHAIN_ID.L2].gateway["withdrawETH(uint256,uint256)"](parsedAmount, GAS_LIMIT.WITHDRAW_ETH, {
+    return networksAndSigners[CHAIN_ID.L2].gateway["withdrawETH(uint256,uint256)"](parsedAmount, 0, {
       value: parsedAmount,
     })
   }
 
   const withdrawERC20 = async () => {
-    return networksAndSigners[CHAIN_ID.L2].gateway["withdrawERC20(address,uint256,uint256)"](
-      selectedToken.address,
-      parsedAmount,
-      GAS_LIMIT.WITHDRAW_ERC20,
-    )
+    return networksAndSigners[CHAIN_ID.L2].gateway["withdrawERC20(address,uint256,uint256)"](selectedToken.address, parsedAmount, 0)
   }
 
   const sendl1ToL2 = () => {

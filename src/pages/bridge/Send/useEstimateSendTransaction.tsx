@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-import { CHAIN_ID, GAS_LIMIT } from "@/constants"
+import { CHAIN_ID } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { usePriceFee } from "@/hooks"
@@ -44,13 +44,13 @@ export function useEstimateSendTransaction(props) {
   }
 
   const withdrawETH = async () => {
-    return instance["withdrawETH(uint256,uint256)"].estimateGas(minimumAmount, GAS_LIMIT.WITHDRAW_ETH, {
+    return instance["withdrawETH(uint256,uint256)"].estimateGas(minimumAmount, 0, {
       value: minimumAmount,
     })
   }
 
   const withdrawERC20 = async () => {
-    return instance["withdrawERC20(address,uint256,uint256)"].estimateGas(selectedToken.address, minimumAmount, GAS_LIMIT.WITHDRAW_ERC20)
+    return instance["withdrawERC20(address,uint256,uint256)"].estimateGas(selectedToken.address, minimumAmount, 0)
   }
 
   const estimateSend = async () => {
