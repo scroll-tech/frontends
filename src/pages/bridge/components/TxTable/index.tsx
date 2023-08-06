@@ -283,11 +283,11 @@ const TxRow = props => {
 
   const handleClaim = async claimInfo => {
     const contract = new ethers.Contract(requireEnv("REACT_APP_L1_SCROLL_MESSENGER"), L1ScrollMessenger, networksAndSigners[chainId as number].signer)
-    const { from, to, value, nonce, message, proof, batch_hash } = claimInfo
+    const { from, to, value, nonce, message, proof, batch_index } = claimInfo
     try {
       setLoading(true)
       const tx = await contract.relayMessageWithProof(from, to, value, nonce, message, {
-        batchHash: batch_hash,
+        batchIndex: batch_index,
         merkleProof: proof,
       })
 
