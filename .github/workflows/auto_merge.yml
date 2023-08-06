@@ -6,7 +6,7 @@ name: Auto Merge
 on:
   pull_request:
     branches:
-      - alpha
+      - sepolia
       - staging
     types:
       - labeled
@@ -27,7 +27,7 @@ jobs:
     if: |
       endsWith(github.event.pull_request.title, ' [bot]') &&
       !(
-        github.head_ref == 'alpha' &&
+        github.head_ref == 'sepolia' &&
         github.base_ref == 'staging'
       )
     runs-on: ubuntu-latest
