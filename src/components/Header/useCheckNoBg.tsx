@@ -10,14 +10,16 @@ const useCheckNoBg = () => {
   useEffect(() => {
     if (isNoBgPage) {
       const element = isMobileOnly ? document.body : document.documentElement
+      const elementListener = isMobileOnly ? document.body : window
       const handleScroll = () => {
         const scrollTop = element.scrollTop
         const screenHeight = window.screen.height
         setIsNoBgSection(scrollTop < screenHeight)
       }
-      element.addEventListener("scroll", handleScroll)
+      elementListener.addEventListener("scroll", handleScroll)
       return () => {
-        element.removeEventListener("scroll", handleScroll)
+        setIsNoBgSection(true)
+        elementListener.removeEventListener("scroll", handleScroll)
       }
     }
   }, [isNoBgPage])

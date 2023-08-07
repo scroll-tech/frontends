@@ -1,3 +1,4 @@
+import { Fragment } from "react"
 import { isMobileOnly } from "react-device-detect"
 import { makeStyles } from "tss-react/mui"
 
@@ -81,18 +82,18 @@ const useStyles = makeStyles()(theme => ({
   },
 }))
 
-const OurStory = () => {
+const TechPrinciple = () => {
   const { classes } = useStyles()
 
   return (
-    <SectionWrapper full sx={{ pt: ["11rem", "13.5rem"] }}>
+    <SectionWrapper sx={{ pt: ["11rem", "13.5rem"] }}>
       <SectionHeader
         title="Our technical principles"
         content="Comprehensive security, Ethereum equivalence for seamless developer experience, and decentralization across all layers are at the core of how we build Scroll."
       ></SectionHeader>
       <SuccessionToView className={classes.grid}>
-        {PRINCIPLES.map(item => (
-          <>
+        {PRINCIPLES.map((item, index) => (
+          <Fragment key={index}>
             {item ? (
               <SuccessionItem>
                 <SvgIcon sx={{ fontSize: ["2.8rem", "3.2rem"] }} component={item.icon} inheritViewBox></SvgIcon>
@@ -104,11 +105,11 @@ const OurStory = () => {
             ) : (
               <Box className={classes.empty}></Box>
             )}
-          </>
+          </Fragment>
         ))}
       </SuccessionToView>
     </SectionWrapper>
   )
 }
 
-export default OurStory
+export default TechPrinciple
