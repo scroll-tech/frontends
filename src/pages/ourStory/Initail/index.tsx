@@ -43,7 +43,7 @@ const Initail = () => {
   const avatarSize = useMemo(() => (isMobileOnly ? "small" : "middle"), [isMobileOnly])
 
   return (
-    <SectionWrapper maxWidth="127.5rem" sx={{ textAlign: "center", pt: ["11.2rem", "15.4rem"] }}>
+    <SectionWrapper maxWidth="127.5rem" sx={{ textAlign: "center", pt: ["11.2rem", "15.4rem"], pb: ["22rem", "49rem"] }}>
       <OrientationToView>
         <Typography>Founded in 2021,</Typography>
         <Typography sx={{ textIndent: "2em", whiteSpace: "pre-wrap" }}>
@@ -113,8 +113,8 @@ const Initail = () => {
           security, and ownership to potentially billions of users and developers. 
         </Typography>
       </OrientationToView>
-      <OrientationToView once={false}>
-        <Box sx={{ mt: ["23rem", "36rem"], mb: ["22rem", "49rem"] }}>
+      <OrientationToView>
+        <Box sx={{ mt: ["23rem", "36rem"] }}>
           <Typography sx={{ fontWeight: 700 }}>And we're only getting started.</Typography>
         </Box>
       </OrientationToView>

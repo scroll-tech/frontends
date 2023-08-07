@@ -30,7 +30,7 @@ const STORY_VALUES = [
 
 const Value = () => {
   return (
-    <SectionWrapper dark round full sx={{ pt: "5.4rem" }}>
+    <SectionWrapper dark round sx={{ pt: "5.4rem" }}>
       <Stack direction={isMobileOnly ? "column" : "row"} justifyContent="space-between" spacing="3rem">
         <Stack direction="column" justifyContent="space-between" sx={{ flex: 1 }}>
           <SectionHeader

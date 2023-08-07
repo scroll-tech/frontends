@@ -11,12 +11,11 @@ import Announcement from "./announcement"
 import { navigations } from "./constants"
 import useCheckNoBg from "./useCheckNoBg"
 
-const StyledBox = styled<any>(Stack)(({ theme, noBg }) => ({
+const StyledBox = styled(Stack)(({ theme }) => ({
   position: "sticky",
   top: 0,
   width: "100%",
   zIndex: 10,
-  background: noBg ? "transparent" : theme.palette.themeBackground.light,
   // borderBottom: `1px solid ${theme.palette.border.main}`,
 }))
 
@@ -238,7 +237,7 @@ const App = ({ currentMenu }) => {
   }
 
   return (
-    <StyledBox noBg={noBg}>
+    <StyledBox sx={{ backgroundColor: noBg ? "transparent" : "themeBackground.light" }}>
       {/* <Announcement /> */}
       <HeaderContainer>
         <NavLink to="/" className="flex">

@@ -10,6 +10,7 @@ import StartBuilding from "./StartBuilding"
 
 const Container = styled(Box)(({ theme }) => ({
   background: "#fef8f4",
+  overflow: "hidden",
 }))
 
 const StyledBox = styled(Box)(({ theme }) => ({

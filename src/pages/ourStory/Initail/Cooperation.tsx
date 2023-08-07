@@ -122,6 +122,7 @@ const Cooperation = () => {
         <>
           {PARTNER_LIST.map((item, index) => (
             <motion.div
+              key={item}
               style={{ position: "absolute" }}
               initial="hidden"
               whileInView="show"

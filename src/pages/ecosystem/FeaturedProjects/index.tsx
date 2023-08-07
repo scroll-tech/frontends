@@ -39,7 +39,7 @@ const featuredProjects = [
 
 const FeaturedProjects = props => {
   return (
-    <SectionWrapper full dark sx={{ pt: ["6rem", "15.4rem"], pb: ["12rem", "16rem"] }}>
+    <SectionWrapper dark sx={{ pt: ["6rem", "15.4rem"], pb: ["12rem", "16rem"] }}>
       <SectionHeader
         dark
         title="Featured projects"

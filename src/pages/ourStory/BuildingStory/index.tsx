@@ -60,14 +60,14 @@ const useStyles = makeStyles()(theme => ({
 const BuildingStory = () => {
   const { classes } = useStyles()
   return (
-    <SectionWrapper full sx={{ pt: ["11rem", "26rem"], pb: ["12rem", "13rem"] }}>
+    <SectionWrapper sx={{ pt: ["11rem", "26rem"], pb: ["12rem", "13rem"] }}>
       <SectionHeader
         title="Read the stories behind building Scroll"
         content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut urna iaculis quam mollis consequat."
       ></SectionHeader>
       <SuccessionToView className={classes.grid}>
         {STORIES.map(item => (
-          <SuccessionItem className={item.cover ? classes.withCover : classes.noCover}>
+          <SuccessionItem key={item.title} className={item.cover ? classes.withCover : classes.noCover}>
             <StoryCard key={item.title} {...item}></StoryCard>
           </SuccessionItem>
         ))}
