@@ -47,7 +47,7 @@ const navigations = [
             isExternal: true,
           },
           {
-            label: "Unifra Explorer",
+            label: "L2Scan Explorer",
             key: "unifraBlockExplorer",
             href: EXPLORER_URL.Unifra,
             isExternal: true,
