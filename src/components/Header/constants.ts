@@ -27,7 +27,7 @@ const navigations = [
           {
             label: "User Guide",
             key: "user guide",
-            href: "https://guide.scroll.io/",
+            href: "https://docs.scroll.xyz/en/user-guide/",
             isExternal: true,
           },
         ],
@@ -73,13 +73,13 @@ const navigations = [
           {
             label: "Developer Guide",
             key: "developer guide",
-            href: "https://guide.scroll.io/developers/building-on-scroll",
+            href: "https://docs.scroll.xyz/en/developers/",
             isExternal: true,
           },
           {
             label: "Contribute",
             key: "contribute",
-            href: "https://guide.scroll.io/contribute-to-scroll/contributing-to-scroll",
+            href: "https://github.com/scroll-tech/contribute-to-scroll",
             isExternal: true,
           },
         ],

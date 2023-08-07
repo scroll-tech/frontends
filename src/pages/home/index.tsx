@@ -71,7 +71,7 @@ export default function Home() {
             <a
               className="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer"
               target="_blank"
-              href="https://guide.scroll.io/user-guide/common-errors#incorrect-nonce-error-when-sending-a-transaction-in-metamask"
+              href="https://docs.scroll.xyz/en/user-guide/common-errors/"
               rel="noreferrer"
             >
               Reset {walletName || "wallet"} for Scroll's L2
