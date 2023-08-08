@@ -372,6 +372,7 @@ const useTxStore = create<TxStore>()(
         })
         set({
           orderedTxDB: { ...orderedTxDB, [walletAddress]: txList },
+          total: txList.length,
         })
       },
       // when connect and disconnect
