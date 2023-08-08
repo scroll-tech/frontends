@@ -23,11 +23,11 @@ const isMajorOrMinorBumped = (oldVersion: string, newVersion: string): boolean =
   return oldSemver.major !== newSemver.major || oldSemver.minor !== newSemver.minor
 }
 
+const Environment = requireEnv("REACT_APP_SCROLL_ENVIRONMENT").toLocaleLowerCase()
+
 const handleEnvironmentChange = () => {
-  const Environment = requireEnv("REACT_APP_SCROLL_ENVIRONMENT").toLocaleLowerCase()
   if (getItem(ENVIRONMENT_NAME) !== Environment) {
     clearState()
-    setItem(ENVIRONMENT_NAME, Environment)
   }
 }
 
@@ -45,6 +45,7 @@ export const VersionChecker = ({ children }: any) => {
         setItem(BRIDGE_TRANSACTIONS, bridgeTxs)
       }
     }
+    setItem(ENVIRONMENT_NAME, Environment)
     setVersion(currentVersion)
     setVersionMatched(true)
   }, [])
