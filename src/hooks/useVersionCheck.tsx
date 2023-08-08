@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useLocalStorage } from "react-use"
 
-import { APP_VERSION, BRIDGE_TRANSACTIONS } from "@/constants/storageKey"
+import { APP_VERSION, BRIDGE_TRANSACTIONS, ENVIRONMENT_NAME } from "@/constants/storageKey"
 import { requireEnv } from "@/utils"
 import { clearState, getItem, setItem } from "@/utils/localStorage"
 
@@ -23,12 +23,21 @@ const isMajorOrMinorBumped = (oldVersion: string, newVersion: string): boolean =
   return oldSemver.major !== newSemver.major || oldSemver.minor !== newSemver.minor
 }
 
+const handleEnvironmentChange = () => {
+  const Environment = requireEnv("REACT_APP_SCROLL_ENVIRONMENT").toLocaleLowerCase()
+  if (getItem(ENVIRONMENT_NAME) !== Environment) {
+    clearState()
+    setItem(ENVIRONMENT_NAME, Environment)
+  }
+}
+
 export const VersionChecker = ({ children }: any) => {
   const [versionMatched, setVersionMatched] = useState(false)
   const [oldVersion, setVersion] = useLocalStorage(APP_VERSION)
 
   useEffect(() => {
     const currentVersion = requireEnv("REACT_APP_VERSION")
+    handleEnvironmentChange()
     if (isMajorOrMinorBumped(oldVersion as string, currentVersion)) {
       const bridgeTxs = getItem(BRIDGE_TRANSACTIONS)
       clearState()
