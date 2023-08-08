@@ -15,22 +15,18 @@ const AnnouncementStack = styled(Stack)(
   `,
 )
 
-const ReadMoreLink = styled("a")(
-  ({ theme }) => `
-  font-weight: 700;
-  `,
-)
+// const ReadMoreLink = styled("a")(
+//   ({ theme }) => `
+//   font-weight: 700;
+//   `,
+// )
 
 const Announcement = () => {
   const match = useMatch("/alpha/*")
   if (match) {
     return null
   }
-  return (
-    <AnnouncementStack>
-      Scroll's Alpha Testnet is now live. <ReadMoreLink href="/alpha">Try it!</ReadMoreLink>
-    </AnnouncementStack>
-  )
+  return <AnnouncementStack>Scroll's Alpha Testnet is deprecated.</AnnouncementStack>
 }
 
 export default Announcement

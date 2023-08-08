@@ -5,6 +5,7 @@ import { ExpandMore, OpenInNew } from "@mui/icons-material"
 import { Box, Container, Fade, Link, Stack } from "@mui/material"
 import { styled } from "@mui/system"
 
+import Announcement from "@/components/Header/announcement"
 import Logo from "@/components/Logo"
 import { MEDIAS } from "@/constants"
 
@@ -229,7 +230,7 @@ const App = ({ currentMenu }) => {
 
   return (
     <StyledBox>
-      {/* <Announcement /> */}
+      <Announcement />
       <HeaderContainer>
         <NavLink to="/" className="flex">
           <Logo />
