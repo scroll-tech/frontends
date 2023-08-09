@@ -1,5 +1,5 @@
 import { BigNumber } from "@ethersproject/bignumber"
-import { ethers } from "ethers"
+import { AbiCoder, ethers } from "ethers"
 import { useMemo } from "react"
 import useStorage from "squirrel-gill"
 
@@ -12,13 +12,22 @@ import { requireEnv } from "@/utils"
 const OFFSET = "0x1111000000000000000000000000000000001111"
 const amount = BigInt(1)
 
+enum GatewayType {
+  ETH_GATEWAY = "ETH_GATEWAY",
+  WETH_GATEWAY = "WETH_GATEWAY",
+  STANDARD_ERC20_GATEWAY = "STANDARD_ERC20_GATEWAY",
+}
+
 // Contracts
 const L2Contracts = {
-  ETHGateway: { abi: require("@/assets/abis/L2ETHGateway.json"), env: "REACT_APP_L2_ETH_GATEWAY_PROXY_ADDR" },
-  WETHGateway: { abi: require("@/assets/abis/L2WETHGateway.json"), env: "REACT_APP_L2_WETH_GATEWAY_PROXY_ADDR" },
-  ERC20Gateway: { abi: require("@/assets/abis/L2StandardERC20Gateway.json"), env: "REACT_APP_L1_STANDARD_ERC20_GATEWAY_PROXY_ADDR" },
-  ScrollMessenger: { abi: require("@/assets/abis/L2ScrollMessenger.json"), env: "REACT_APP_L2_SCROLL_MESSENGER" },
-  GasPriceOracle: { abi: require("@/assets/abis/L2GasPriceOracle.json"), env: "REACT_APP_L2_GAS_PRICE_ORACLE" },
+  [GatewayType.ETH_GATEWAY]: { abi: require("@/assets/abis/L2ETHGateway.json"), env: "REACT_APP_L2_ETH_GATEWAY_PROXY_ADDR" },
+  [GatewayType.WETH_GATEWAY]: { abi: require("@/assets/abis/L2WETHGateway.json"), env: "REACT_APP_L2_WETH_GATEWAY_PROXY_ADDR" },
+  [GatewayType.STANDARD_ERC20_GATEWAY]: {
+    abi: require("@/assets/abis/L2StandardERC20Gateway.json"),
+    env: "REACT_APP_L2_STANDARD_ERC20_GATEWAY_PROXY_ADDR",
+  },
+  SCROLL_MESSENGER: { abi: require("@/assets/abis/L2ScrollMessenger.json"), env: "REACT_APP_L2_SCROLL_MESSENGER" },
+  GAS_PRICE_ORACLE: { abi: require("@/assets/abis/L2GasPriceOracle.json"), env: "REACT_APP_L2_GAS_PRICE_ORACLE" },
 }
 
 const getContract = (contractName, providerOrSigner) =>
@@ -56,7 +65,7 @@ const usePriceFee = () => {
 
   const getGasPrice = async () => {
     try {
-      const L2GasPriceOracleContract = getContract("GasPriceOracle", networksAndSigners[CHAIN_ID.L1].signer)
+      const L2GasPriceOracleContract = getContract("GAS_PRICE_ORACLE", networksAndSigners[CHAIN_ID.L1].signer)
       const gasPrice = await L2GasPriceOracleContract.l2BaseFee()
       return gasPrice
     } catch (err) {
@@ -66,51 +75,79 @@ const usePriceFee = () => {
 
   const getGasLimit = async () => {
     if (l2Token.symbol === ETH_SYMBOL) {
-      return await getEthL2GasLimit()
+      return await getGasLimitGeneric(GatewayType.ETH_GATEWAY)
     } else if (l2Token.symbol === WETH_SYMBOL) {
-      return await getWETHL2GasLimit()
+      return await getGasLimitGeneric(GatewayType.WETH_GATEWAY)
     } else {
-      return await getERC20L2GasLimit()
+      return await getGasLimitGeneric(GatewayType.STANDARD_ERC20_GATEWAY)
     }
+  }
+
+  const messageDataGeneric = contractName => {
+    let finalizeDepositParams: any = []
+    let finalizeDepositMethod = "finalizeDepositERC20"
+
+    if (contractName === GatewayType.ETH_GATEWAY) {
+      finalizeDepositParams = [walletCurrentAddress, walletCurrentAddress, amount, "0x"]
+      finalizeDepositMethod = "finalizeDepositETH"
+    } else if (contractName === GatewayType.WETH_GATEWAY) {
+      finalizeDepositParams = [
+        (l1Token as ERC20Token).address,
+        (l2Token as ERC20Token).address,
+        walletCurrentAddress,
+        walletCurrentAddress,
+        amount,
+        "0x",
+      ]
+    } else {
+      finalizeDepositParams = [
+        (l1Token as ERC20Token).address,
+        (l2Token as ERC20Token).address,
+        walletCurrentAddress,
+        walletCurrentAddress,
+        amount,
+        AbiCoder.defaultAbiCoder().encode(
+          ["bool", "bytes"],
+          [
+            true,
+            AbiCoder.defaultAbiCoder().encode(
+              ["bytes", "bytes"],
+              ["0x", AbiCoder.defaultAbiCoder().encode(["string", "string", "uint8"], [l2Token.symbol, l2Token.name, l2Token.decimals])],
+            ),
+          ],
+        ),
+      ]
+    }
+
+    return { finalizeDepositParams, finalizeDepositMethod }
   }
 
   const getGasLimitGeneric = async contractName => {
     const { provider } = networksAndSigners[CHAIN_ID.L2]
 
     const gateway = getContract(contractName, provider)
-    const l2messenger = getContract("ScrollMessenger", provider)
-    const finalizeDepositParams = [
-      (l1Token as ERC20Token).address,
-      (l2Token as ERC20Token).address,
-      walletCurrentAddress,
-      walletCurrentAddress,
-      amount,
-      "0x",
-    ].filter(Boolean)
-    const finalizeDepositMethod = "address" in l1Token ? "finalizeDepositERC20" : "finalizeDepositETH"
+    const l2messenger = getContract("SCROLL_MESSENGER", provider)
+    const { finalizeDepositMethod, finalizeDepositParams } = messageDataGeneric(contractName)
     const message = gateway.interface.encodeFunctionData(finalizeDepositMethod, finalizeDepositParams)
 
     const calldata = l2messenger.interface.encodeFunctionData("relayMessage", [
-      requireEnv(L2Contracts[contractName].env.replace("2", "1")), // l1 gateway
-      requireEnv(L2Contracts[contractName].env),
-      amount,
+      requireEnv(`REACT_APP_L1_${contractName}_PROXY_ADDR`), // l1 gateway
+      requireEnv(`REACT_APP_L2_${contractName}_PROXY_ADDR`), // l2 gateway
+      contractName === GatewayType.STANDARD_ERC20_GATEWAY ? 0 : amount,
       ethers.MaxUint256,
       message,
     ])
 
     const gaslimit = await provider.estimateGas({
       from: BigNumber.from(requireEnv("REACT_APP_L1_SCROLL_MESSENGER")).add(BigNumber.from(OFFSET)).mod(BigNumber.from(2).pow(160)).toHexString(),
-      to: requireEnv(L2Contracts.ScrollMessenger.env),
+      to: requireEnv(L2Contracts.SCROLL_MESSENGER.env),
       data: calldata,
     })
-    return (BigInt(gaslimit) * BigInt(110)) / BigInt(100)
+
+    return (BigInt(gaslimit) * BigInt(120)) / BigInt(100)
   }
 
-  const getEthL2GasLimit = () => getGasLimitGeneric("ETHGateway")
-  const getWETHL2GasLimit = () => getGasLimitGeneric("WETHGateway")
-  const getERC20L2GasLimit = () => getGasLimitGeneric("ERC20Gateway")
-
-  return { getPriceFee, getEthL2GasLimit, getWETHL2GasLimit, getERC20L2GasLimit, getGasLimit, getGasPrice }
+  return { getPriceFee, getGasLimit, getGasPrice }
 }
 
 export default usePriceFee
