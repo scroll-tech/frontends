@@ -238,7 +238,7 @@ const App = ({ currentMenu }) => {
 
   return (
     <StyledBox sx={{ backgroundColor: noBg ? "transparent" : "themeBackground.light" }}>
-      {/* <Announcement /> */}
+      <Announcement />
       <HeaderContainer>
         <NavLink to="/" className="flex">
           <Logo />
