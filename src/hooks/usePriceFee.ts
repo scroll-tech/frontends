@@ -1,4 +1,3 @@
-import { BigNumber } from "@ethersproject/bignumber"
 import { AbiCoder, ethers } from "ethers"
 import { useMemo } from "react"
 import useStorage from "squirrel-gill"
@@ -139,7 +138,7 @@ const usePriceFee = () => {
     ])
 
     const gaslimit = await provider.estimateGas({
-      from: BigNumber.from(requireEnv("REACT_APP_L1_SCROLL_MESSENGER")).add(BigNumber.from(OFFSET)).mod(BigNumber.from(2).pow(160)).toHexString(),
+      from: "0x" + (BigInt(requireEnv("REACT_APP_L1_SCROLL_MESSENGER")) + (BigInt(OFFSET) % BigInt(Math.pow(2, 160)))).toString(16),
       to: requireEnv(L2Contracts.SCROLL_MESSENGER.env),
       data: calldata,
     })
