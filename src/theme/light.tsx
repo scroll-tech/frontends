@@ -75,15 +75,19 @@ const lightTheme = createTheme({
       },
       styleOverrides: {
         root: {
-          fontSize: "16px",
-          fontWeight: 600,
-          lineHeight: "1",
-          padding: "16px 28px",
+          fontSize: "2rem",
+          fontWeight: 500,
+          lineHeight: "normal",
+          padding: "0 3.5rem",
+          height: "4.6rem",
           textTransform: "inherit",
-          width: "max-content",
-          // whiteSpace: "nowrap",
+          borderRadius: "2.3rem",
+          backgroundColor: "#f0f0f0",
+          boxShadow: boxShadowOptions.none,
           "&:hover": {
-            boxShadow: boxShadowOptions.buttonHover,
+            boxShadow: boxShadowOptions.none,
+            backgroundColor: "#5B5B5B",
+            color: paletteOptions.primary.contrastText,
           },
         },
       },
@@ -91,10 +95,18 @@ const lightTheme = createTheme({
         {
           props: { variant: "contained", color: "primary" },
           style: {
-            boxShadow: boxShadowOptions.none,
-            lineHeight: "18px",
             "&:hover": {
-              backgroundColor: paletteOptions.primary.light,
+              backgroundColor: paletteOptions.primary.main,
+            },
+          },
+        },
+        {
+          props: { variant: "contained", color: "info" },
+          style: {
+            backgroundColor: paletteOptions.themeBackground.normal,
+            color: paletteOptions.text.primary,
+            "&:hover": {
+              backgroundColor: paletteOptions.themeBackground.normal,
             },
           },
         },
@@ -147,7 +159,7 @@ const lightTheme = createTheme({
     MuiPopover: {
       styleOverrides: {
         paper: {
-          boxShadow: boxShadowOptions.select,
+          boxShadow: boxShadowOptions.none,
         },
       },
     },

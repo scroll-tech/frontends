@@ -57,6 +57,7 @@ export const paletteOptions = {
     dark: "#101010",
     normal: "#FFF0DD",
     highlight: "#FFDEB5",
+    optionHightlight: "#FFE6C8",
     tag: "#262626",
   },
   border: {
