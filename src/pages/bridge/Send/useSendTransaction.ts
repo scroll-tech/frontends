@@ -4,8 +4,8 @@ import { useMemo, useState } from "react"
 import { CHAIN_ID, NETWORKS } from "@/constants"
 import { TX_STATUS } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
+import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { usePriceFee } from "@/hooks"
 import useBridgeStore from "@/stores/bridgeStore"
 import useTxStore, { TxPosition, isValidOffsetTime } from "@/stores/txStore"
 import { amountToBN, sentryDebug } from "@/utils"
@@ -25,7 +25,7 @@ export function useSendTransaction(props) {
   const { addTransaction, updateTransaction, addEstimatedTimeMap, updateOrderedTxs, addAbnormalTransactions, removeFrontTransactions } = useTxStore()
   const { changeHistoryVisible } = useBridgeStore()
   const [sending, setSending] = useState<boolean>(false)
-  const { getGasLimit, getGasPrice } = usePriceFee()
+  const { gasLimit, gasPrice } = usePriceFeeContext()
 
   const parsedAmount = useMemo(() => {
     if (!fromTokenAmount || !selectedToken) return BigInt(0)
@@ -151,8 +151,6 @@ export function useSendTransaction(props) {
   }
 
   const depositETH = async () => {
-    const gasLimit = await getGasLimit()
-    const gasPrice = await getGasPrice()
     const fee = gasPrice * gasLimit
     return networksAndSigners[CHAIN_ID.L1].gateway["depositETH(uint256,uint256)"](parsedAmount, gasLimit, {
       value: parsedAmount + fee,
@@ -160,8 +158,6 @@ export function useSendTransaction(props) {
   }
 
   const depositERC20 = async () => {
-    const gasLimit = await getGasLimit()
-    const gasPrice = await getGasPrice()
     const fee = gasPrice * gasLimit
     return networksAndSigners[CHAIN_ID.L1].gateway["depositERC20(address,uint256,uint256)"](selectedToken.address, parsedAmount, gasLimit, {
       value: fee,

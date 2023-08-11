@@ -2,8 +2,8 @@ import { useEffect, useState } from "react"
 
 import { CHAIN_ID } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
+import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { usePriceFee } from "@/hooks"
 
 export function useEstimateSendTransaction(props) {
   const { fromNetwork, toNetwork, selectedToken } = props
@@ -11,7 +11,7 @@ export function useEstimateSendTransaction(props) {
   const { networksAndSigners } = useApp()
 
   const { checkConnectedChainId } = useRainbowContext()
-  const { getGasLimit, getGasPrice } = usePriceFee()
+  const { gasLimit, gasPrice } = usePriceFeeContext()
   const [instance, setInstance] = useState<any>(null)
   // const [instance, setEstimateGas] = useState<any>(null)
 
@@ -25,8 +25,6 @@ export function useEstimateSendTransaction(props) {
   }, [networksAndSigners])
 
   const depositETH = async () => {
-    const gasLimit = await getGasLimit()
-    const gasPrice = await getGasPrice()
     const fee = gasPrice * gasLimit
     return instance["depositETH(uint256,uint256)"].estimateGas(minimumAmount, gasLimit, {
       value: minimumAmount + fee,
@@ -34,8 +32,6 @@ export function useEstimateSendTransaction(props) {
   }
 
   const depositERC20 = async () => {
-    const gasLimit = await getGasLimit()
-    const gasPrice = await getGasPrice()
     const fee = gasPrice * gasLimit
 
     return instance["depositERC20(address,uint256,uint256)"].estimateGas(selectedToken.address, minimumAmount, gasLimit, {

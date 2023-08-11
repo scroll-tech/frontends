@@ -1,5 +1,5 @@
 import { AbiCoder, ethers } from "ethers"
-import { useMemo } from "react"
+import React, { createContext, useContext, useEffect, useMemo, useState } from "react"
 import useStorage from "squirrel-gill"
 
 import { CHAIN_ID, ETH_SYMBOL, WETH_SYMBOL } from "@/constants"
@@ -10,6 +10,12 @@ import { requireEnv } from "@/utils"
 
 const OFFSET = "0x1111000000000000000000000000000000001111"
 const amount = BigInt(1)
+
+type Props = {
+  gasLimit: bigint
+  gasPrice: bigint
+  errorMessage: string
+}
 
 enum GatewayType {
   ETH_GATEWAY = "ETH_GATEWAY",
@@ -32,10 +38,37 @@ const L2Contracts = {
 const getContract = (contractName, providerOrSigner) =>
   new ethers.Contract(requireEnv(L2Contracts[contractName].env), L2Contracts[contractName].abi, providerOrSigner)
 
-const usePriceFee = () => {
+const PriceFeeContext = createContext<Props | undefined>(undefined)
+
+export const usePriceFeeContext = () => {
+  const context = useContext(PriceFeeContext)
+  if (!context) {
+    throw new Error("usePriceFeeContext must be used within a PriceFeeProvider")
+  }
+  return context
+}
+
+export const PriceFeeProvider = ({ children }) => {
   const { walletCurrentAddress, chainId } = useRainbowContext()
   const [tokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
   const { networksAndSigners, tokenList } = useApp()
+  const [gasLimit, setGasLimit] = useState(BigInt(0))
+  const [gasPrice, setGasPrice] = useState(BigInt(0))
+  const [errorMessage, setErrorMessage] = useState("")
+
+  useEffect(() => {
+    const { provider } = networksAndSigners[CHAIN_ID.L2]
+    if (provider) {
+      if (chainId === CHAIN_ID.L1) {
+        getGasPrice().then(price => setGasPrice(price))
+        getGasLimit().then(limit => setGasLimit(limit))
+      } else {
+        //  Currently, the computation required for proof generation is done and subsidized by Scroll.
+        setGasLimit(BigInt(0))
+        setGasPrice(BigInt(0))
+      }
+    }
+  }, [tokenSymbol, networksAndSigners[CHAIN_ID.L2]])
 
   const l1Token = useMemo(
     () => tokenList.find(item => item.chainId === CHAIN_ID.L1 && item.symbol === tokenSymbol) ?? ({} as any as Token),
@@ -47,27 +80,14 @@ const usePriceFee = () => {
     [tokenList, tokenSymbol],
   )
 
-  const getPriceFee = async () => {
-    if (chainId === CHAIN_ID.L1) {
-      try {
-        const gasPrice = await getGasPrice()
-        const gasLimit = await getGasLimit()
-        return gasPrice * gasLimit
-      } catch (err) {
-        throw new Error("Failed to get gas fee")
-      }
-    } else {
-      //  Currently, the computation required for proof generation is done and subsidized by Scroll.
-      return BigInt(0)
-    }
-  }
-
   const getGasPrice = async () => {
     try {
       const L2GasPriceOracleContract = getContract("GAS_PRICE_ORACLE", networksAndSigners[CHAIN_ID.L1].signer)
       const gasPrice = await L2GasPriceOracleContract.l2BaseFee()
+      setErrorMessage("")
       return gasPrice
     } catch (err) {
+      setErrorMessage("Failed to get gas price")
       throw new Error("Failed to get gas price")
     }
   }
@@ -137,16 +157,19 @@ const usePriceFee = () => {
       message,
     ])
 
-    const gaslimit = await provider.estimateGas({
-      from: "0x" + (BigInt(requireEnv("REACT_APP_L1_SCROLL_MESSENGER")) + (BigInt(OFFSET) % BigInt(Math.pow(2, 160)))).toString(16),
-      to: requireEnv(L2Contracts.SCROLL_MESSENGER.env),
-      data: calldata,
-    })
-
-    return (BigInt(gaslimit) * BigInt(120)) / BigInt(100)
+    try {
+      const gaslimit = await provider.estimateGas({
+        from: "0x" + (BigInt(requireEnv("REACT_APP_L1_SCROLL_MESSENGER")) + (BigInt(OFFSET) % BigInt(Math.pow(2, 160)))).toString(16),
+        to: requireEnv(L2Contracts.SCROLL_MESSENGER.env),
+        data: calldata,
+      })
+      setErrorMessage("")
+      return (BigInt(gaslimit) * BigInt(120)) / BigInt(100)
+    } catch (error) {
+      setErrorMessage("Failed to get gas limit")
+      throw new Error("Failed to get gas limit")
+    }
   }
 
-  return { getPriceFee, getGasLimit, getGasPrice }
+  return <PriceFeeContext.Provider value={{ gasLimit, gasPrice, errorMessage }}>{children}</PriceFeeContext.Provider>
 }
-
-export default usePriceFee
