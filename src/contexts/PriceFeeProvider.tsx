@@ -1,5 +1,5 @@
 import { AbiCoder, ethers } from "ethers"
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react"
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react"
 import useStorage from "squirrel-gill"
 
 import { CHAIN_ID, ETH_SYMBOL, WETH_SYMBOL } from "@/constants"
@@ -15,6 +15,7 @@ type Props = {
   gasLimit: bigint
   gasPrice: bigint
   errorMessage: string
+  fetchData: () => void
 }
 
 enum GatewayType {
@@ -56,7 +57,7 @@ export const PriceFeeProvider = ({ children }) => {
   const [gasPrice, setGasPrice] = useState(BigInt(0))
   const [errorMessage, setErrorMessage] = useState("")
 
-  useEffect(() => {
+  const fetchData = useCallback(() => {
     const { provider } = networksAndSigners[CHAIN_ID.L2]
     if (provider) {
       if (chainId === CHAIN_ID.L1) {
@@ -66,9 +67,14 @@ export const PriceFeeProvider = ({ children }) => {
         //  Currently, the computation required for proof generation is done and subsidized by Scroll.
         setGasLimit(BigInt(0))
         setGasPrice(BigInt(0))
+        setErrorMessage("")
       }
     }
-  }, [tokenSymbol, networksAndSigners[CHAIN_ID.L2]])
+  }, [chainId, networksAndSigners[CHAIN_ID.L2]])
+
+  useEffect(() => {
+    fetchData()
+  }, [tokenSymbol, chainId, networksAndSigners[CHAIN_ID.L2]])
 
   const l1Token = useMemo(
     () => tokenList.find(item => item.chainId === CHAIN_ID.L1 && item.symbol === tokenSymbol) ?? ({} as any as Token),
@@ -87,6 +93,7 @@ export const PriceFeeProvider = ({ children }) => {
       setErrorMessage("")
       return gasPrice
     } catch (err) {
+      console.log(err)
       setErrorMessage("Failed to get gas price")
       throw new Error("Failed to get gas price")
     }
@@ -171,5 +178,5 @@ export const PriceFeeProvider = ({ children }) => {
     }
   }
 
-  return <PriceFeeContext.Provider value={{ gasLimit, gasPrice, errorMessage }}>{children}</PriceFeeContext.Provider>
+  return <PriceFeeContext.Provider value={{ gasLimit, gasPrice, errorMessage, fetchData }}>{children}</PriceFeeContext.Provider>
 }

@@ -33,7 +33,7 @@ const Send: FC = () => {
   const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
   const { classes: styles, cx } = useSendStyles()
   const { networksAndSigners, tokenList } = useApp()
-  const { gasLimit, gasPrice, errorMessage: priceFeeErrorMessage } = usePriceFeeContext()
+  const { gasLimit, gasPrice, errorMessage: priceFeeErrorMessage, fetchData: fetchPriceFee } = usePriceFeeContext()
 
   const [fromNetwork, setFromNetwork] = useState({} as any)
   const [ConfirmDialogVisible, setConfirmDialogVisible] = useState(false)
@@ -131,7 +131,11 @@ const Send: FC = () => {
   // network->sufficient->tx error
   const warningTip = useMemo(() => {
     if (priceFeeErrorMessage) {
-      return priceFeeErrorMessage
+      return (
+        <>
+          {priceFeeErrorMessage}, <TextButton onClick={() => fetchPriceFee()}>Click here to retry.</TextButton>
+        </>
+      )
     } else if (!walletName) {
       return <TextButton onClick={connect}>Click here to connect wallet.</TextButton>
     } else if (!isCorrectNetwork) {
