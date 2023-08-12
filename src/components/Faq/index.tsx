@@ -38,9 +38,9 @@ const useStyles = makeStyles()((theme: Theme) => {
 const FaqItem = props => {
   const { id, title, children, expanded } = props
   return (
-    <Accordion defaultExpanded={expanded}>
+    <Accordion square sx={{ background: "transparent" }} defaultExpanded={expanded}>
       <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: "text.primary" }} />} id={id}>
-        <Typography variant="h6">{title}</Typography>
+        <Typography variant="H4">{title}</Typography>
       </AccordionSummary>
       <AccordionDetails>{children}</AccordionDetails>
     </Accordion>
@@ -67,19 +67,22 @@ const Faq = props => {
   return (
     <div className={classes.wrapper}>
       <div className={classes.title}>
-        <Typography variant="h4">FAQs</Typography>
+        <Typography variant="H1">FAQs</Typography>
       </div>
       <FaqItem title="How do I get started?" id="start">
-        <Typography variant="body1" color="textSecondary">
+        <Typography variant="Body3" color="textSecondary">
+          Welcome to Scroll's Alpha Testnet.
+        </Typography>
+        <Typography variant="Body3" color="textSecondary">
           Here is how to explore the platform:
         </Typography>
-        <Typography variant="body1" color="textSecondary" className={classes.orderedParagraph}>
+        <Typography variant="Body3" color="textSecondary" className={classes.orderedParagraph}>
           1. Transfer and withdraw test tokens in <Link href={SITE_MAP.Bridge}>Bridge</Link>.
         </Typography>
-        <Typography variant="body1" color="textSecondary" className={classes.orderedParagraph}>
+        <Typography variant="Body3" color="textSecondary" className={classes.orderedParagraph}>
           2. Swap test tokens or provide liquidity in <Link href={SITE_MAP.Swap}>Swap</Link>.
         </Typography>
-        <Typography variant="body1" color="textSecondary" className={classes.orderedParagraph}>
+        <Typography variant="Body3" color="textSecondary" className={classes.orderedParagraph}>
           3. View transactions’ and blocks’ statuses in the{" "}
           <Link href={SITE_MAP.L1Explorer} external>
             Scroll L1
@@ -90,18 +93,18 @@ const Faq = props => {
           </Link>{" "}
           Block Explorers and the <Link href={SITE_MAP.RollupExplorer}>Rollup Explorer</Link>.
         </Typography>
-        <Typography variant="body1" color="textSecondary">
+        <Typography variant="Body3" color="textSecondary">
           More instructions <Link href={SITE_MAP.Home}>here</Link>.
         </Typography>
       </FaqItem>
       {children}
       <FaqItem title="Where can I find Scroll architecture overview?">
-        <Typography variant="body1" color="textSecondary">
+        <Typography variant="Body3" color="textSecondary">
           Check our <Link href={SITE_MAP.Architecture}>architecture blog article</Link>.
         </Typography>
       </FaqItem>
       <FaqItem title="What’s happening with my transaction?" id="end" expanded={hash === "#end"}>
-        <Typography variant="body1" color="textSecondary">
+        <Typography variant="Body3" color="textSecondary">
           If you choose to use Scroll‘s traditional path instead of a fast exit bridge, you will have to wait ~1-4 hours before you can claim your
           funds.
         </Typography>

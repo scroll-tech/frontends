@@ -5,6 +5,7 @@ import Ecosystem from "@/pages/ecosystem"
 import Home from "@/pages/landingpage"
 // import Bridge from "@/pages/bridge"
 import Bridge from "@/pages/new-bridge"
+import BridgeFAQ from "@/pages/new-bridge/FAQ"
 import OurStory from "@/pages/ourStory"
 import Portal from "@/pages/portal"
 import PrivacyPolicy from "@/pages/privacyPolicy"
@@ -58,6 +59,12 @@ const routes = [
     path: "/bridge",
     fullPath: "/bridge",
     element: <Bridge />,
+  },
+  {
+    name: "Bridge FAQ",
+    path: "/bridge/faq",
+    fullPath: "/bridge/faq",
+    element: <BridgeFAQ />,
   },
   {
     name: "Ecosystem",

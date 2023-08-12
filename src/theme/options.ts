@@ -61,7 +61,7 @@ export const paletteOptions = {
     tag: "#262626",
   },
   border: {
-    main: "#C9CBCE",
+    main: "#000",
   },
   link: {
     main: "#FF684B",
