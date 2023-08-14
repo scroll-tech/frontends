@@ -7,12 +7,12 @@ import { Alert, Typography } from "@mui/material"
 import L1_erc20ABI from "@/assets/abis/L1_erc20ABI.json"
 import LoadingButton from "@/components/LoadingButton"
 import TextButton from "@/components/TextButton"
-import { CHAIN_ID, ETH_SYMBOL, GATEWAY_ROUTE_PROXY_ADDR, NETWORKS, WETH_GATEWAY_PROXY_ADDR } from "@/constants"
+import { CHAIN_ID, ETH_SYMBOL, GATEWAY_ROUTE_PROXY_ADDR, NETWORKS, WETH_GATEWAY_PROXY_ADDR, WETH_SYMBOL } from "@/constants"
 import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
 import { useApp } from "@/contexts/AppContextProvider"
+import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useApprove, useAsyncMemo, useBalance, useSufficientBalance } from "@/hooks"
-import { usePriceFee } from "@/hooks"
 import useCheckValidAmount from "@/hooks/useCheckValidAmount"
 import { amountToBN, sanitizeNumericalString, switchNetwork } from "@/utils"
 import { toTokenDisplay } from "@/utils"
@@ -30,10 +30,10 @@ import { useSendTransaction } from "./useSendTransaction"
 
 const Send: FC = () => {
   const { checkConnectedChainId, chainId, walletName, connect } = useRainbowContext()
-
   const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
   const { classes: styles, cx } = useSendStyles()
   const { networksAndSigners, tokenList } = useApp()
+  const { gasLimit, gasPrice, errorMessage: priceFeeErrorMessage, fetchData: fetchPriceFee } = usePriceFeeContext()
 
   const [fromNetwork, setFromNetwork] = useState({} as any)
   const [ConfirmDialogVisible, setConfirmDialogVisible] = useState(false)
@@ -104,7 +104,6 @@ const Send: FC = () => {
   }, [chainId, fromToken, fromTokenAmount])
 
   const isCorrectNetwork = useMemo(() => !!chainId && fromNetwork.chainId === chainId, [chainId, fromNetwork])
-  const { getPriceFee } = usePriceFee()
 
   useEffect(() => {
     if (estimatedGasCost !== undefined) {
@@ -114,7 +113,7 @@ const Send: FC = () => {
 
   const handleTotalBonderFeeDisplay = async () => {
     if (networksAndSigners[fromNetwork.chainId]?.signer) {
-      const fee = await getPriceFee(fromToken, fromNetwork.isL1)
+      const fee = gasLimit * gasPrice
       const display = fromTokenAmount ? toTokenDisplay(fee + (estimatedGasCost as bigint)) + " " + ETH_SYMBOL : "-"
       setTotalBonderFeeDisplay(display)
     }
@@ -131,7 +130,13 @@ const Send: FC = () => {
 
   // network->sufficient->tx error
   const warningTip = useMemo(() => {
-    if (!walletName) {
+    if (priceFeeErrorMessage) {
+      return (
+        <>
+          {priceFeeErrorMessage}, <TextButton onClick={() => fetchPriceFee()}>Click here to retry.</TextButton>
+        </>
+      )
+    } else if (!walletName) {
       return <TextButton onClick={connect}>Click here to connect wallet.</TextButton>
     } else if (!isCorrectNetwork) {
       return (
@@ -161,7 +166,7 @@ const Send: FC = () => {
       )
     }
     return null
-  }, [walletName, connect, isCorrectNetwork, warning, sendError, fromNetwork, isValid])
+  }, [walletName, connect, isCorrectNetwork, warning, sendError, fromNetwork, isValid, priceFeeErrorMessage])
 
   // Switch the fromNetwork <--> toNetwork
   const handleSwitchDirection = () => {
@@ -207,7 +212,7 @@ const Send: FC = () => {
   }, [fromTokenAmount, warningTip])
 
   const approveAddress = useMemo(() => {
-    if (!fromNetwork.isL1 && fromToken.symbol === "WETH") return WETH_GATEWAY_PROXY_ADDR[fromNetwork.chainId]
+    if (!fromNetwork.isL1 && fromToken.symbol === WETH_SYMBOL) return WETH_GATEWAY_PROXY_ADDR[fromNetwork.chainId]
     return GATEWAY_ROUTE_PROXY_ADDR[fromNetwork.chainId]
   }, [fromNetwork, fromToken])
 
