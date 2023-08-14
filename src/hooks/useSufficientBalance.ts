@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 
-import { CHAIN_ID } from "@/constants"
+import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { useIsSmartContractWallet, usePriceFee } from "@/hooks"
+import { useIsSmartContractWallet } from "@/hooks"
 import { toTokenDisplay } from "@/utils"
 
 function useSufficientBalance(
@@ -17,9 +17,7 @@ function useSufficientBalance(
   const [sufficientBalance, setSufficientBalance] = useState(false)
   const [warning, setWarning] = useState("")
   const { isSmartContractWallet } = useIsSmartContractWallet()
-  const { getPriceFee } = usePriceFee()
-
-  const isL1 = useMemo(() => selectedToken.chainId === CHAIN_ID.L1, [selectedToken])
+  const { gasLimit, gasPrice } = usePriceFeeContext()
 
   useEffect(() => {
     async function checkEnoughBalance() {
@@ -38,13 +36,13 @@ function useSufficientBalance(
       let message: string = ""
 
       if (selectedToken.native) {
-        fee = await getPriceFee(selectedToken, isL1)
+        fee = gasLimit * gasPrice
         totalCost = amount + (estimatedGasCost ?? BigInt(0)) + fee
         enoughFeeBalance = tokenBalance >= totalCost
         enoughTokenBalance = enoughFeeBalance
       } else {
         const nativeTokenBalance = await networksAndSigner.provider.getBalance(walletCurrentAddress)
-        fee = await getPriceFee(selectedToken, isL1)
+        fee = gasLimit * gasPrice
         totalCost = (estimatedGasCost ?? BigInt(0)) + fee
         enoughFeeBalance = nativeTokenBalance >= totalCost
         enoughTokenBalance = tokenBalance >= amount

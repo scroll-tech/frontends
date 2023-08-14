@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 
-import { CHAIN_ID, GAS_LIMIT } from "@/constants"
+import { CHAIN_ID } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
+import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { usePriceFee } from "@/hooks"
 
 export function useEstimateSendTransaction(props) {
   const { fromNetwork, toNetwork, selectedToken } = props
@@ -11,7 +11,7 @@ export function useEstimateSendTransaction(props) {
   const { networksAndSigners } = useApp()
 
   const { checkConnectedChainId } = useRainbowContext()
-  const { getPriceFee } = usePriceFee()
+  const { gasLimit, gasPrice } = usePriceFeeContext()
   const [instance, setInstance] = useState<any>(null)
   // const [instance, setEstimateGas] = useState<any>(null)
 
@@ -25,28 +25,28 @@ export function useEstimateSendTransaction(props) {
   }, [networksAndSigners])
 
   const depositETH = async () => {
-    const fee = await getPriceFee(selectedToken, fromNetwork.isL1)
-    return instance["depositETH(uint256,uint256)"].estimateGas(minimumAmount, GAS_LIMIT.DEPOSIT_ETH, {
+    const fee = gasPrice * gasLimit
+    return instance["depositETH(uint256,uint256)"].estimateGas(minimumAmount, gasLimit, {
       value: minimumAmount + fee,
     })
   }
 
   const depositERC20 = async () => {
-    const fee = await getPriceFee(selectedToken, fromNetwork.isL1)
+    const fee = gasPrice * gasLimit
 
-    return instance["depositERC20(address,uint256,uint256)"].estimateGas(selectedToken.address, minimumAmount, GAS_LIMIT.DEPOSIT_ERC20, {
+    return instance["depositERC20(address,uint256,uint256)"].estimateGas(selectedToken.address, minimumAmount, gasLimit, {
       value: fee,
     })
   }
 
   const withdrawETH = async () => {
-    return instance["withdrawETH(uint256,uint256)"].estimateGas(minimumAmount, GAS_LIMIT.WITHDRAW_ETH, {
+    return instance["withdrawETH(uint256,uint256)"].estimateGas(minimumAmount, 0, {
       value: minimumAmount,
     })
   }
 
   const withdrawERC20 = async () => {
-    return instance["withdrawERC20(address,uint256,uint256)"].estimateGas(selectedToken.address, minimumAmount, GAS_LIMIT.WITHDRAW_ERC20)
+    return instance["withdrawERC20(address,uint256,uint256)"].estimateGas(selectedToken.address, minimumAmount, 0)
   }
 
   const estimateSend = async () => {
