@@ -16,6 +16,7 @@ const useStyles = makeStyles()(theme => ({
   sendWrapper: {
     borderRadius: "2rem",
     overflow: "hidden",
+    maxWidth: "64rem",
   },
   tabList: {},
   tab: {

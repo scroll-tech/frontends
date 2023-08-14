@@ -81,6 +81,8 @@ interface Transaction {
   claimInfo?: object
   assumedStatus?: string
   errMsg?: string
+  initiatedAt?: string
+  finalisedAt?: string
 }
 
 const MAX_OFFSET_TIME = 30 * 60 * 1000
@@ -121,6 +123,9 @@ const formatBackTxList = async (backList, estimatedTimeMap) => {
       const toName = NETWORKS[+tx.isL1].name
       const toExplore = NETWORKS[+tx.isL1].explorer
       const toHash = tx.finalizeTx?.hash
+      const initiatedAt = tx.blockTimestamp
+      const finalisedAt = tx.finalizeTx?.blockTimestamp
+
       let isFinalized
 
       // 1. have no time to compute fromEstimatedEndTime
@@ -182,6 +187,8 @@ const formatBackTxList = async (backList, estimatedTimeMap) => {
         isFinalized: isFinalized,
         claimInfo: tx.claimInfo,
         isClaimed: tx.finalizeTx?.hash,
+        initiatedAt,
+        finalisedAt,
       }
     }),
   )

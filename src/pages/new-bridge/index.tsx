@@ -15,8 +15,15 @@ const Bridge = () => {
   return (
     <AppProvider>
       <SectionWrapper
-        maxWidth="74.8rem"
-        sx={{ pt: "8.4rem", height: "calc(100vh - 6.5rem)", display: "flex", flexDirection: "column", alignItems: "center" }}
+        sx={{
+          pt: "8.4rem",
+          width: "fit-content",
+          height: "calc(100vh - 6.5rem)",
+          minHeight: "86rem",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
       >
         <Typography sx={{ fontSize: "4.8rem", fontWeight: 600 }}>Bridge into Scroll</Typography>
         <ConnectorAndHistory sx={{ mt: "4rem", mb: "3rem" }}></ConnectorAndHistory>
