@@ -1,5 +1,5 @@
 import { AbiCoder, ethers } from "ethers"
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react"
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react"
 import useStorage from "squirrel-gill"
 
 import { CHAIN_ID, ETH_SYMBOL, WETH_SYMBOL } from "@/constants"
@@ -56,6 +56,7 @@ export const PriceFeeProvider = ({ children }) => {
   const [gasLimit, setGasLimit] = useState(BigInt(0))
   const [gasPrice, setGasPrice] = useState(BigInt(0))
   const [errorMessage, setErrorMessage] = useState("")
+  const intervalRef = useRef<number | null>(null)
 
   const fetchData = useCallback(() => {
     const { provider } = networksAndSigners[CHAIN_ID.L2]
@@ -70,10 +71,18 @@ export const PriceFeeProvider = ({ children }) => {
         setErrorMessage("")
       }
     }
-  }, [chainId, networksAndSigners[CHAIN_ID.L2]])
+  }, [chainId, networksAndSigners[CHAIN_ID.L2], tokenSymbol])
 
   useEffect(() => {
     fetchData()
+    intervalRef.current = setInterval(() => {
+      fetchData()
+    }, 60 * 1000) as unknown as number
+    return () => {
+      if (intervalRef.current !== null) {
+        clearInterval(intervalRef.current)
+      }
+    }
   }, [tokenSymbol, chainId, networksAndSigners[CHAIN_ID.L2]])
 
   const l1Token = useMemo(
