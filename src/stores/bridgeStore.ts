@@ -4,6 +4,11 @@ type Mode = "Transaction" | "History"
 
 type TransactionType = "Deposit" | "Withdraw"
 
+interface TxResult {
+  hash: string
+  amount: string
+}
+
 interface BridgeStore {
   historyVisible: boolean
   changeHistoryVisible: (value) => void
@@ -13,12 +18,13 @@ interface BridgeStore {
   toNetwork: Network
   mode: Mode
   txType: TransactionType
-  isL1: () => boolean
+  txResult: TxResult | null
 
   changeFromNetwork: (network: Network) => void
   changeToNetwork: (network: Network) => void
   changeMode: (mode: Mode) => void
   changeTxType: (txType: TransactionType) => void
+  changeTxResult: (txResult: TxResult | null) => void
 }
 
 const useBridgeStore = create<BridgeStore>()((set, get) => ({
@@ -36,7 +42,7 @@ const useBridgeStore = create<BridgeStore>()((set, get) => ({
   toNetwork: {},
   mode: "Transaction",
   txType: "Deposit",
-  isL1: () => !!get().fromNetwork.isL1,
+  txResult: null,
 
   changeFromNetwork: network => {
     set({
@@ -56,6 +62,12 @@ const useBridgeStore = create<BridgeStore>()((set, get) => ({
   changeTxType: txType => {
     set({
       txType,
+    })
+  },
+
+  changeTxResult: txResult => {
+    set({
+      txResult,
     })
   },
 }))

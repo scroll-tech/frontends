@@ -7,6 +7,7 @@ import { Box, Tab } from "@mui/material"
 import { CHAIN_ID, NETWORKS } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useBridgeStore from "@/stores/bridgeStore"
+import { switchNetwork } from "@/utils"
 
 import Deposit from "./Deposit"
 import Withdraw from "./Withdraw"
@@ -19,7 +20,7 @@ const useStyles = makeStyles()(theme => ({
   tabList: {},
   tab: {
     height: "5.6rem",
-    width: "31.4rem",
+    width: "32rem",
     fontSize: "2rem",
     fontWeight: 500,
     color: theme.palette.text.primary,
@@ -27,15 +28,14 @@ const useStyles = makeStyles()(theme => ({
     "&.Mui-selected": {
       color: theme.palette.text.primary,
       fontWeight: 600,
-      backgroundColor: theme.palette.themeBackground.highlight,
+      backgroundColor: theme.palette.themeBackground.optionHightlight,
     },
   },
   indicator: {
     display: "none",
   },
   tabPanel: {
-    backgroundColor: theme.palette.themeBackground.highlight,
-    height: "36.6rem",
+    backgroundColor: theme.palette.themeBackground.optionHightlight,
     padding: "3rem 5.4rem",
   },
 }))
@@ -43,7 +43,7 @@ const useStyles = makeStyles()(theme => ({
 const Send = () => {
   const { classes } = useStyles()
   const { chainId } = useRainbowContext()
-  const { txType, changeTxType, changeFromNetwork, changeToNetwork } = useBridgeStore()
+  const { txType, fromNetwork, toNetwork, changeTxType, changeFromNetwork, changeToNetwork } = useBridgeStore()
 
   useEffect(() => {
     if (chainId && Object.values(CHAIN_ID).includes(chainId)) {
@@ -58,12 +58,15 @@ const Send = () => {
 
   const handleChange = (e, newValue) => {
     changeTxType(newValue)
+    changeFromNetwork(toNetwork)
+    changeToNetwork(fromNetwork)
+    switchNetwork(toNetwork.chainId)
   }
 
   return (
-    <Box sx={{ width: "62.8rem" }} className={classes.sendWrapper}>
+    <Box className={classes.sendWrapper}>
       <TabContext value={txType}>
-        <TabList onChange={handleChange} TabIndicatorProps={{}} textColor="primary" classes={{ root: classes.tabList, indicator: classes.indicator }}>
+        <TabList onChange={handleChange} textColor="primary" classes={{ root: classes.tabList, indicator: classes.indicator }}>
           <Tab label="Deposit to Scroll" value="Deposit" classes={{ root: classes.tab }}></Tab>
           <Tab label="Withdraw to Ethereum" value="Withdraw" classes={{ root: classes.tab }}></Tab>
         </TabList>

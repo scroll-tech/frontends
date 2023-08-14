@@ -10,20 +10,20 @@ import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useBridgeStore from "@/stores/bridgeStore"
 
 const NetworkIndicator = () => {
-  const { walletCurrentAddress } = useRainbowContext()
+  const { chainId } = useRainbowContext()
 
-  const { isL1, changeMode } = useBridgeStore()
+  const { fromNetwork, changeMode } = useBridgeStore()
 
   const icon = useMemo(() => {
-    if (!walletCurrentAddress && isL1()) {
-      return MainnetInactiveSvg
-    } else if (!walletCurrentAddress && !isL1()) {
-      return ScrollInactiveSvg
-    } else if (walletCurrentAddress && isL1()) {
+    if (chainId && chainId === fromNetwork.chainId && fromNetwork.isL1) {
       return MainnetSvg
+    } else if (chainId && chainId === fromNetwork.chainId && !fromNetwork.isL1) {
+      return ScrollSvg
+    } else if (fromNetwork.isL1) {
+      return MainnetInactiveSvg
     }
-    return ScrollSvg
-  }, [walletCurrentAddress, isL1])
+    return ScrollInactiveSvg
+  }, [chainId, fromNetwork])
 
   const handleChangeMode = () => {
     changeMode("Transaction")

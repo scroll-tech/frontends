@@ -95,6 +95,7 @@ const lightTheme = createTheme({
         {
           props: { variant: "contained", color: "primary" },
           style: {
+            backgroundColor: paletteOptions.primary.main,
             "&:hover": {
               backgroundColor: paletteOptions.primary.main,
             },
@@ -227,8 +228,8 @@ const lightTheme = createTheme({
         root: ({ theme, ownerState }) => ({
           borderRadius: "1rem",
           fontSize: "1.6rem",
-          lineHeight: "2.6rem",
-          padding: "2rem",
+          lineHeight: "normal",
+          padding: "1.2rem 2.5rem",
           width: "100%",
           boxSizing: "border-box",
           color: ownerState.severity && paletteOptions[ownerState.severity].main,

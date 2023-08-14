@@ -15,7 +15,7 @@ export const paletteOptions = {
   text: {
     primary: "#101010",
     secondary: "#595959",
-    disabled: "#B4B4B4",
+    disabled: "#FFDEB5",
   },
   // for alert
   info: {
@@ -23,8 +23,8 @@ export const paletteOptions = {
     main: "#0095DA",
   },
   success: {
-    light: "#E0FEE7",
-    main: "#00A82A",
+    light: "#DFFCF8",
+    main: "#0F8E7E",
   },
   warning: {
     light: "#FFF8CB",

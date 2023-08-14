@@ -1,15 +1,15 @@
-import { Box } from "@mui/material"
+import useBridgeStore from "@/stores/bridgeStore"
 
-import BalanceInput from "./BalanceInput"
-import NetworkDirection from "./NetworkDirection"
+import SendTransaction from "./SendTransaction"
+import TxSuccess from "./TxSuccess"
 
 const Deposit = () => {
-  return (
-    <Box>
-      <NetworkDirection></NetworkDirection>
-      <BalanceInput></BalanceInput>
-    </Box>
-  )
+  const { txResult } = useBridgeStore()
+
+  if (txResult) {
+    return <TxSuccess></TxSuccess>
+  }
+  return <SendTransaction></SendTransaction>
 }
 
 export default Deposit

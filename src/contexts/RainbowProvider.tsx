@@ -4,7 +4,7 @@ import { braveWallet, coinbaseWallet, injectedWallet, metaMaskWallet, walletConn
 import { type WalletClient } from "@wagmi/core"
 import { BrowserProvider, ethers } from "ethers"
 import { createContext, useCallback, useContext, useMemo } from "react"
-import { WagmiConfig, configureChains, createConfig, sepolia, useAccount, useDisconnect, useNetwork, useWalletClient } from "wagmi"
+import { WagmiConfig, configureChains, createConfig, sepolia, useAccount, useBalance, useDisconnect, useNetwork, useWalletClient } from "wagmi"
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc"
 import { publicProvider } from "wagmi/providers/public"
 
@@ -15,6 +15,7 @@ type RainbowContextProps = {
   provider: ethers.BrowserProvider | null
   walletCurrentAddress?: string
   chainId?: number
+  balance?: bigint
   connect: () => void
   disconnect: () => void
   walletName: string | undefined
@@ -127,7 +128,9 @@ const Web3ContextProvider = props => {
 
   const { openConnectModal } = useConnectModal()
   const { disconnect } = useDisconnect()
+
   const { connector: activeConnector, address, isConnected } = useAccount()
+  const { data: balance } = useBalance({ address })
   const { chain } = useNetwork()
 
   const provider = useMemo(() => {
@@ -149,6 +152,7 @@ const Web3ContextProvider = props => {
         walletCurrentAddress: address,
         walletName: activeConnector?.name,
         chainId: chain?.id,
+        balance: balance?.value,
         connect: openConnectModal as () => void,
         disconnect,
         checkConnectedChainId,

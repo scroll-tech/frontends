@@ -18,6 +18,9 @@ const useStyles = makeStyles()(theme => ({
     width: "22rem",
     padding: 0,
     color: "#396CE8",
+    "&:hover": {
+      color: "#396CE8",
+    },
   },
   openButton: {
     borderRadius: "2.3rem 2.3rem 0 0",
@@ -42,6 +45,9 @@ const useStyles = makeStyles()(theme => ({
     "&:hover": {
       backgroundColor: theme.palette.themeBackground.optionHightlight,
     },
+  },
+  listItemIcon: {
+    color: "transparent",
   },
   listItemText: {
     fontWeight: 600,
@@ -101,8 +107,8 @@ const Dropdown = props => {
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose} TransitionComponent={Fade} classes={{ paper: classes.paper, list: classes.list }}>
         {operations.map(({ icon, label, action }) => (
-          <MenuItem onClick={action} classes={{ root: classes.listItem }}>
-            <ListItemIcon>
+          <MenuItem key={label} classes={{ root: classes.listItem }} onClick={action}>
+            <ListItemIcon classes={{ root: classes.listItemIcon }}>
               <SvgIcon sx={{ width: "auto", height: "auto" }} component={icon}></SvgIcon>
             </ListItemIcon>
             <ListItemText classes={{ primary: classes.listItemText }}>{label}</ListItemText>
