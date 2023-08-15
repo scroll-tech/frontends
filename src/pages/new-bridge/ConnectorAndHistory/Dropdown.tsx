@@ -40,13 +40,22 @@ const useStyles = makeStyles()(theme => ({
   listItem: {
     height: "4.6rem",
     padding: "0 2rem",
+    gap: "0.8rem",
     backgroundColor: theme.palette.themeBackground.normal,
     "&:hover": {
       backgroundColor: theme.palette.themeBackground.optionHightlight,
     },
+    [theme.breakpoints.down("sm")]: {
+      padding: 0,
+      justifyContent: "center",
+    },
   },
   listItemIcon: {
     color: "transparent",
+    minWidth: "unset !important",
+  },
+  listItemTextRoot: {
+    flex: "unset",
   },
   listItemText: {
     fontWeight: 600,
@@ -87,7 +96,7 @@ const Dropdown = props => {
     () => [
       {
         icon: EtherscanSvg,
-        label: "View on Etherscan",
+        label: "Block explorer",
         action: viewEtherscan,
       },
       { icon: copied ? CopySuccessSvg : CopySvg, label: "Copy address", action: copyAddress },
@@ -120,7 +129,7 @@ const Dropdown = props => {
             <ListItemIcon classes={{ root: classes.listItemIcon }}>
               <SvgIcon sx={{ width: "auto", height: "auto" }} component={icon}></SvgIcon>
             </ListItemIcon>
-            <ListItemText classes={{ primary: classes.listItemText }}>{label}</ListItemText>
+            <ListItemText classes={{ root: classes.listItemTextRoot, primary: classes.listItemText }}>{label}</ListItemText>
           </MenuItem>
         ))}
       </Menu>

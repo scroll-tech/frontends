@@ -40,6 +40,10 @@ const useStyles = makeStyles()(theme => ({
       color: theme.palette.text.primary,
       backgroundColor: theme.palette.themeBackground.optionHightlight,
     },
+    [theme.breakpoints.down("sm")]: {
+      minWidth: "5rem",
+      fontSize: "1.4rem",
+    },
   },
 }))
 

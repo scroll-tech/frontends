@@ -1,4 +1,4 @@
-import ETHSvg from "@/assets/svgs/eth.svg"
+import ETHSvg from "@/assets/svgs/refactor/bridge-network-mainnet.svg"
 import { ReactComponent as MainnetSvg } from "@/assets/svgs/refactor/bridge-network-mainnet.svg"
 import { ReactComponent as ScrollSvg } from "@/assets/svgs/refactor/bridge-network-scroll.svg"
 import { getPrettyTestnetName } from "@/utils"

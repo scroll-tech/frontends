@@ -15,6 +15,9 @@ const useStyles = makeStyles()(theme => ({
     width: "100%",
     gap: "4rem",
     justifyContent: "center",
+    [theme.breakpoints.down("sm")]: {
+      gap: "2rem",
+    },
   },
   tab: {
     minHeight: "unset",
@@ -27,6 +30,9 @@ const useStyles = makeStyles()(theme => ({
 
     "&.Mui-selected": {
       color: theme.palette.text.primary,
+    },
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "1.4rem",
     },
   },
   indicator: {
