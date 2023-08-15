@@ -12,7 +12,7 @@ const useStyles = makeStyles()(theme => ({
   cooperation: {
     position: "relative",
     borderRadius: "2.5rem",
-    padding: "4.4rem 4rem 5.4rem",
+    padding: "4.4rem 6rem 5.4rem",
     backgroundColor: theme.palette.themeBackground.normal,
     [theme.breakpoints.down("sm")]: {
       padding: "5.4rem 2rem 6rem",
@@ -109,8 +109,8 @@ const Cooperation = () => {
   return (
     <Paper elevation={0} className={classes.cooperation}>
       <Typography sx={{ fontSize: ["2.6rem", "3.2rem"] }}>
-        From Day One,<br></br>Scroll embraced openness by choosing to be an open-source project. Collaboration from various projects and active
-        community participation make our platform more robust and battle-tested. 
+        From Day One,<br></br>Scroll prioritized transparency by choosing to be an open-source project. Collaboration from various projects and active
+        community participation make the Scroll platform more robust and battle-tested.
       </Typography>
       {isMobileOnly ? (
         <Stack direction="row" justifyContent="space-between" sx={{ mt: "5.4rem" }}>

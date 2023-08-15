@@ -2,29 +2,31 @@ import { isDesktop, isMobileOnly } from "react-device-detect"
 
 import { Box, Stack, SvgIcon, Typography } from "@mui/material"
 
-import { ReactComponent as BridgeSvg } from "@/assets/svgs/refactor/story-bridge.svg"
+import { ReactComponent as CommunitySvg } from "@/assets/svgs/refactor/story-value-community.svg"
+import { ReactComponent as NeutralitySvg } from "@/assets/svgs/refactor/story-value-neutrality.svg"
+import { ReactComponent as OpennessSvg } from "@/assets/svgs/refactor/story-value-openness.svg"
 import ValueImg from "@/assets/svgs/refactor/story-value.svg"
 import SectionHeader from "@/components/SectionHeader"
 import SectionWrapper from "@/components/SectionWrapper"
 
 const STORY_VALUES = [
   {
-    icon: BridgeSvg,
-    title: "Aligned to a common mission",
-    content:
-      "Preserving the core properties of decentralization and censorship resistance is our priority. As an end goal, Scroll aims to achieve the same levels as Ethereum itself using a measured approach – no matter how long it takes.",
-  },
-  {
-    icon: BridgeSvg,
-    title: "Committed to cultivating trust",
+    icon: OpennessSvg,
+    title: "Openness",
     content:
       "Transparency is at the heart of our operations. We openly share our work and research with the public, engaging regularly with the community to foster an open Ethereum ecosystem. Our approach emphasizes documentation, clarity, and prioritizing specifications and modularity for reliable progress.",
   },
   {
-    icon: BridgeSvg,
-    title: "Assured without arrogance",
+    icon: CommunitySvg,
+    title: "Community-driven",
     content:
-      "We embrace directness with kindness and prioritize safety while remaining open to calculated risks. At Scroll, we maintain confidence without arrogance, assuming the best intentions from our community. We celebrate successes and humbly learn from our shortcomings.",
+      "Decentralizing the future is our constant pursuit. We strive to create pathways to shared ownership, ensuring no single entity holds disproportionate power or influence. We are committed to foster an inclusive ecosystem that grows organically, competes fairly, and scales together for the benefit of Ethereum's future.",
+  },
+  {
+    icon: NeutralitySvg,
+    title: "Credible neutrality",
+    content:
+      "We are fair, unbiased, and do not favor any specific application – essential for building an open, competitive, and scalable ecosystem. We cultivate organic growth with infinite possibilities. We generalize and make policies transparent in partnership. Our relationships with partners are policy-based, not relationship-based.",
   },
 ]
 
@@ -44,10 +46,15 @@ const Value = () => {
             </Box>
           )}
         </Stack>
-        <Stack direction="column" spacing={isMobileOnly ? "5.6rem" : "13rem"} sx={{ flex: 1, pt: ["9rem", "14.6rem"], pb: ["12rem", "14rem"] }}>
+        <Stack direction="column" spacing={isMobileOnly ? "5.6rem" : "12rem"} sx={{ flex: 1, pt: ["9rem", "14.6rem"], pb: ["12rem", "14rem"] }}>
           {STORY_VALUES.map(({ icon, title, content }) => (
             <Stack direction="column" key={title} spacing={isMobileOnly ? "1rem" : "2.2rem"}>
-              <SvgIcon sx={{ fontSize: ["3.2rem", "4.2rem"] }} component={icon} inheritViewBox></SvgIcon>
+              <SvgIcon
+                sx={{ width: "min-content", height: "min-content", "@media(max-width: 600px)": { transform: "scale(0.8)" } }}
+                component={icon}
+                inheritViewBox
+              ></SvgIcon>
+
               <Typography
                 sx={{
                   fontSize: ["1.6rem", "2.4rem"],
