@@ -1,5 +1,6 @@
 import { ethers } from "ethers"
 import { useMemo, useState } from "react"
+import { isMobileOnly } from "react-device-detect"
 import useStorage from "squirrel-gill"
 
 import { Box, Stack, Typography } from "@mui/material"
@@ -149,7 +150,7 @@ const SendTransaction = props => {
   }
 
   return (
-    <Stack direction="column" alignItems="center" sx={{ height: "34rem" }}>
+    <Stack direction="column" alignItems="center" sx={{ height: ["31rem", "34rem"] }}>
       <NetworkDirection></NetworkDirection>
       <BalanceInput
         sx={{ mt: "3rem" }}
@@ -164,13 +165,13 @@ const SendTransaction = props => {
       <Typography sx={{ fontSize: "1.4rem", fontWeight: 500, width: "32.4rem", textAlign: "center", margin: "0 auto" }} color="primary">
         {bridgeWarning}
       </Typography>
-      <Box sx={{ flex: 1, display: "flex", alignItems: "flex-end" }}>
+      <Box sx={{ flex: 1, display: "flex", alignItems: "flex-end", width: "100%" }}>
         {needApproval ? (
-          <Button color="primary" disabled={!needApproval} onClick={handleApprove}>
+          <Button width={isMobileOnly ? "100%" : "25rem"} color="primary" disabled={!needApproval} onClick={handleApprove}>
             Approve {tokenSymbol}
           </Button>
         ) : (
-          <Button color="primary" disabled={!sendButtonActive} onClick={handleSend}>
+          <Button width={isMobileOnly ? "100%" : "25rem"} color="primary" disabled={!sendButtonActive} onClick={handleSend}>
             {txType === "Deposit" ? "Deposit Funds" : "Withdraw Funds"}
           </Button>
         )}

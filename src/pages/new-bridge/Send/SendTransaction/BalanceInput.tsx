@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from "react"
+import { isMobileOnly } from "react-device-detect"
 import { makeStyles } from "tss-react/mui"
 
 import { Button, InputBase, Stack, Typography } from "@mui/material"
@@ -16,11 +17,16 @@ const useStyles = makeStyles()(theme => ({
     backgroundColor: theme.palette.themeBackground.normal,
     padding: "2.8rem 3rem",
     borderRadius: "2rem",
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+      padding: "2.8rem 2rem",
+    },
   },
   input: {
     fontSize: "4rem",
-    height: "4rem",
-    padding: "0 0 2px",
+    height: "3.5rem",
+    padding: 0,
+    marginBottom: "6px",
     fontWeight: 600,
   },
   maxButton: {
@@ -57,7 +63,7 @@ const BalanceInput = props => {
 
   return (
     <>
-      <Stack direction="row" spacing="2rem" alignItems="center" className={classes.root} {...restProps}>
+      <Stack direction="row" spacing={isMobileOnly ? "1.2rem" : "2rem"} alignItems="center" className={classes.root} {...restProps}>
         <TokenSelect value={selectedToken} options={tokenOptions} onChange={onChangeToken}></TokenSelect>
         <Stack direction="column">
           <InputBase
@@ -67,7 +73,7 @@ const BalanceInput = props => {
             classes={{ input: classes.input }}
             onChange={handleChangeAmount}
           ></InputBase>
-          <Typography sx={{ fontSize: "1.3rem", fontWeight: 600, color: disabled ? "text.disabled" : "#0F8E7E" }}>
+          <Typography sx={{ fontSize: "1.3rem", fontWeight: 600, color: disabled ? "text.disabled" : "#0F8E7E", lineHeight: 1 }}>
             {displayedBalance} available
           </Typography>
         </Stack>

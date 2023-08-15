@@ -33,7 +33,6 @@ const useStyles = makeStyles()(theme => ({
   },
   paper: {
     borderRadius: "0 0 2.3rem 2.3rem",
-    width: "22rem",
   },
   list: {
     padding: 0,
@@ -56,16 +55,18 @@ const useStyles = makeStyles()(theme => ({
 }))
 
 const Dropdown = props => {
+  const { sx } = props
   const { classes, cx } = useStyles()
   const { walletCurrentAddress, disconnect } = useRainbowContext()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-
+  const [anchorWidth, setAnchorWidth] = useState(0)
   const [copied, setCopied] = useState(false)
 
   const open = useMemo(() => Boolean(anchorEl), [anchorEl])
 
   const handleClick = e => {
     setAnchorEl(e.currentTarget)
+    setAnchorWidth(e.currentTarget.clientWidth)
   }
 
   const handleClose = () => {
@@ -100,12 +101,20 @@ const Dropdown = props => {
         variant="contained"
         color="info"
         classes={{ root: cx(classes.button, open && classes.openButton), endIcon: cx(classes.endIcon, open && classes.reverseEndIcon) }}
+        sx={sx}
         onClick={handleClick}
         endIcon={<SvgIcon sx={{ fontSize: "1.3rem !important" }} component={ArrowDownSvg} inheritViewBox></SvgIcon>}
       >
         {truncateAddress(walletCurrentAddress as string)}
       </Button>
-      <Menu anchorEl={anchorEl} open={open} onClose={handleClose} TransitionComponent={Fade} classes={{ paper: classes.paper, list: classes.list }}>
+      <Menu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        TransitionComponent={Fade}
+        sx={{ ".MuiMenu-paper": { width: anchorWidth } }}
+        classes={{ paper: classes.paper, list: classes.list }}
+      >
         {operations.map(({ icon, label, action }) => (
           <MenuItem key={label} classes={{ root: classes.listItem }} onClick={action}>
             <ListItemIcon classes={{ root: classes.listItemIcon }}>

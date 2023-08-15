@@ -1,11 +1,14 @@
 // import createCache from "@emotion/cache"
-import { Typography } from "@mui/material"
+import { isMobileOnly } from "react-device-detect"
+
+import { Stack, Typography } from "@mui/material"
 
 import SectionWrapper from "@/components/SectionWrapper"
 import AppProvider from "@/contexts/AppContextProvider"
 import useBridgeStore from "@/stores/bridgeStore"
 
 import ConnectorAndHistory from "./ConnectorAndHistory"
+import NetworkIndicator from "./ConnectorAndHistory/NetworkIndicator"
 import FAQsLink from "./FAQ/link"
 import Send from "./Send"
 import TxHistory from "./TxHistory"
@@ -22,11 +25,14 @@ const Bridge = () => {
           minHeight: "86rem",
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
+          alignItems: ["flex-start", "center"],
         }}
       >
-        <Typography sx={{ fontSize: "4.8rem", fontWeight: 600 }}>Bridge into Scroll</Typography>
-        <ConnectorAndHistory sx={{ mt: "4rem", mb: "3rem" }}></ConnectorAndHistory>
+        <Stack direction="row" sx={{ width: "100%" }} justifyContent="space-between" alignItems="center">
+          <Typography sx={{ fontSize: ["4rem", "4.8rem"], fontWeight: 600 }}>Bridge into Scroll</Typography>
+          {isMobileOnly && <NetworkIndicator></NetworkIndicator>}
+        </Stack>
+        <ConnectorAndHistory sx={{ mt: "4rem", mb: ["2rem", "3rem"], width: ["100%", "51.6rem"] }}></ConnectorAndHistory>
         {mode === "Transaction" ? <Send></Send> : <TxHistory></TxHistory>}
         <FAQsLink />
       </SectionWrapper>

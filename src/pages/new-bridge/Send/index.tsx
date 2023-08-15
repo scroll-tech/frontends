@@ -17,6 +17,9 @@ const useStyles = makeStyles()(theme => ({
     borderRadius: "2rem",
     overflow: "hidden",
     maxWidth: "64rem",
+    [theme.breakpoints.down("sm")]: {
+      maxWidth: "100%",
+    },
   },
   tabList: {},
   tab: {
@@ -25,11 +28,18 @@ const useStyles = makeStyles()(theme => ({
     fontSize: "2rem",
     fontWeight: 500,
     color: theme.palette.text.primary,
+    padding: 0,
     backgroundColor: theme.palette.themeBackground.normal,
+    textTransform: "unset",
     "&.Mui-selected": {
       color: theme.palette.text.primary,
       fontWeight: 600,
       backgroundColor: theme.palette.themeBackground.optionHightlight,
+    },
+
+    [theme.breakpoints.down("sm")]: {
+      width: "50%",
+      fontSize: "1.6rem",
     },
   },
   indicator: {
@@ -38,6 +48,9 @@ const useStyles = makeStyles()(theme => ({
   tabPanel: {
     backgroundColor: theme.palette.themeBackground.optionHightlight,
     padding: "3rem 5.4rem",
+    [theme.breakpoints.down("sm")]: {
+      padding: "3rem 2rem 2rem",
+    },
   },
 }))
 

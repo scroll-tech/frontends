@@ -89,6 +89,9 @@ const lightTheme = createTheme({
             backgroundColor: "#5B5B5B",
             color: paletteOptions.primary.contrastText,
           },
+          "@media(max-width: 600px)": {
+            padding: 0,
+          },
         },
       },
       variants: [
