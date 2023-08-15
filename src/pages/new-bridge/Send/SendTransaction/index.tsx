@@ -165,7 +165,7 @@ const SendTransaction = props => {
       <Typography sx={{ fontSize: "1.4rem", fontWeight: 500, width: "32.4rem", textAlign: "center", margin: "0 auto" }} color="primary">
         {bridgeWarning}
       </Typography>
-      <Box sx={{ flex: 1, display: "flex", alignItems: "flex-end", width: "100%" }}>
+      <Box sx={{ flex: 1, display: "flex", alignItems: "flex-end", width: "100%", justifyContent: "center" }}>
         {needApproval ? (
           <Button width={isMobileOnly ? "100%" : "25rem"} color="primary" disabled={!needApproval} onClick={handleApprove}>
             Approve {tokenSymbol}
