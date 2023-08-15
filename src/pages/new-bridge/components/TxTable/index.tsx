@@ -6,6 +6,7 @@ import { makeStyles } from "tss-react/mui"
 import {
   CircularProgress,
   LinearProgress,
+  Pagination,
   Paper,
   Skeleton,
   Stack,
@@ -111,8 +112,12 @@ const useStyles = makeStyles()(theme => {
 })
 
 const TxTable = (props: any) => {
-  const { data, loading } = props
+  const { data, loading, pagination } = props
   const { classes } = useStyles()
+
+  const handleChangePage = (e, newPage) => {
+    pagination?.onChange?.(newPage)
+  }
 
   return (
     <>
@@ -141,6 +146,19 @@ const TxTable = (props: any) => {
           </TableBody>
         </Table>
       </TableContainer>
+      {pagination && (
+        <div className="flex justify-end mt-[2.8rem]">
+          <Pagination
+            size="small"
+            classes={{
+              root: classes.pagination,
+            }}
+            page={pagination?.page}
+            count={pagination?.count}
+            onChange={handleChangePage}
+          />
+        </div>
+      )}
     </>
   )
 }

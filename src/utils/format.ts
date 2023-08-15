@@ -55,7 +55,7 @@ export const toTokenDisplay = (num, decimals: bigint = BigInt(18), symbol?: stri
   let formatted = commafy(formatUnits(num, decimals), significantDecimals)
 
   // Remove trailing zeros after decimal point
-  formatted = formatted.replace(/(\.\d*?)0+$/, "$1").replace(/\.$/, "")
+  // formatted = formatted.replace(/(\.\d*?)0+$/, "$1").replace(/\.$/, "")
 
   if (symbol) {
     formatted += ` ${symbol}`

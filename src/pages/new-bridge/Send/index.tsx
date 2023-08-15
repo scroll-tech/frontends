@@ -7,8 +7,8 @@ import { Box, Tab } from "@mui/material"
 import { CHAIN_ID, NETWORKS } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useBridgeStore from "@/stores/bridgeStore"
-import { switchNetwork } from "@/utils"
 
+// import { switchNetwork } from "@/utils"
 import Deposit from "./Deposit"
 import Withdraw from "./Withdraw"
 
@@ -74,7 +74,7 @@ const Send = () => {
     changeTxType(newValue)
     changeFromNetwork(toNetwork)
     changeToNetwork(fromNetwork)
-    switchNetwork(toNetwork.chainId)
+    // switchNetwork(toNetwork.chainId)
   }
 
   return (
