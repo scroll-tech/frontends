@@ -57,15 +57,12 @@ const Subscribe = () => {
       <SubscribeBox>
         <SvgIcon sx={{ fontSize: ["4.8rem", "7rem"] }} component={SubscribeIcon} inheritViewBox></SvgIcon>
         <Stack direction="column" flex={1}>
-          <Typography sx={{ fontSize: ["2rem", "2.4rem"], fontWeight: 600, lineHeight: "normal" }}>Contribute and join our survey</Typography>
-          <Typography sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: "normal", mt: ["1rem", 0] }}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          </Typography>
+          <Typography sx={{ fontSize: ["2rem", "2.4rem"], fontWeight: 600 }}>Stay up-to-date on the latest Scroll Developer news</Typography>
         </Stack>
         <MailchimpSubscribe
           url={url}
           render={({ subscribe, status, message }: any) => (
-            <Box sx={{ position: "relative", mt: ["3.2rem", "3.2rem", 0], flex: 1, width: ["100%", "auto"], textAlign: "right" }}>
+            <Box sx={{ position: "relative", mt: ["3.2rem", "3.2rem", 0], width: ["100%", "auto"], textAlign: "right" }}>
               <EmailInput
                 value={email}
                 end={status === "success"}
@@ -75,14 +72,12 @@ const Subscribe = () => {
               ></EmailInput>
 
               {customMessage && (
-                <Typography sx={{ position: "absolute", fontSize: "1.6rem", textAlign: "center", mt: "1rem", width: "100%", lineHeight: "normal" }}>
+                <Typography sx={{ position: "absolute", fontSize: "1.6rem", textAlign: "center", mt: "1rem", width: "100%" }}>
                   {customMessage}
                 </Typography>
               )}
               {status === "error" && (
-                <Typography sx={{ position: "absolute", fontSize: "1.6rem", textAlign: "center", mt: "1rem", width: "100%", lineHeight: "normal" }}>
-                  {message}
-                </Typography>
+                <Typography sx={{ position: "absolute", fontSize: "1.6rem", textAlign: "center", mt: "1rem", width: "100%" }}>{message}</Typography>
               )}
             </Box>
           )}
