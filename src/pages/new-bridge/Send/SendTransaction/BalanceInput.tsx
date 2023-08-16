@@ -28,6 +28,13 @@ const useStyles = makeStyles()(theme => ({
     padding: 0,
     marginBottom: "6px",
     fontWeight: 600,
+    // fontFamily: "Roboto Flex",
+  },
+  fromBalance: {
+    fontSize: "1.3rem",
+    fontWeight: 600,
+    lineHeight: 1,
+    // fontFamily: "Roboto Flex",
   },
   maxButton: {
     width: "6.8rem",
@@ -77,7 +84,7 @@ const BalanceInput = props => {
             classes={{ input: classes.input }}
             onChange={handleChangeAmount}
           ></InputBase>
-          <Typography sx={{ fontSize: "1.3rem", fontWeight: 600, color: disabled ? "text.disabled" : "#0F8E7E", lineHeight: 1 }}>
+          <Typography className={classes.fromBalance} sx={{ color: disabled ? "text.disabled" : "#0F8E7E" }}>
             {displayedBalance} available
           </Typography>
         </Stack>

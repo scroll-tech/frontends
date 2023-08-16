@@ -1,8 +1,9 @@
-import { useState } from "react"
 import { makeStyles } from "tss-react/mui"
 
 import { TabContext, TabList, TabPanel } from "@mui/lab"
 import { Stack, Tab } from "@mui/material"
+
+import useBridgeStore from "@/stores/bridgeStore"
 
 import Claim from "./Claim"
 import SendTransaction from "./SendTransaction"
@@ -48,27 +49,27 @@ const useStyles = makeStyles()(theme => ({
 
 const Withdraw = () => {
   const { classes } = useStyles()
-  const [txStep, setTxStep] = useState<"tx1" | "tx2">("tx1")
+  const { withDrawStep, changeWithdrawStep } = useBridgeStore()
 
   const handleChange = (e, newValue) => {
-    setTxStep(newValue)
+    changeWithdrawStep(newValue)
   }
 
   return (
     <Stack direction="column" sx={{ height: "100%" }}>
-      <TabContext value={txStep}>
+      <TabContext value={withDrawStep}>
         <TabList
           onChange={handleChange}
           textColor="primary"
           classes={{ root: classes.tabList, flexContainer: classes.tabFlex, indicator: classes.indicator }}
         >
-          <Tab label="Step 1: Withdraw from Scroll" value="tx1" classes={{ root: classes.tab }}></Tab>
-          <Tab label="Step 2: Claim on Ethereum" value="tx2" classes={{ root: classes.tab }}></Tab>
+          <Tab label="Step 1: Withdraw from Scroll" value="1" classes={{ root: classes.tab }}></Tab>
+          <Tab label="Step 2: Claim on Ethereum" value="2" classes={{ root: classes.tab }}></Tab>
         </TabList>
-        <TabPanel value="tx1" classes={{ root: classes.tabPanel }}>
+        <TabPanel value="1" classes={{ root: classes.tabPanel }}>
           <SendTransaction></SendTransaction>
         </TabPanel>
-        <TabPanel value="tx2" classes={{ root: classes.tabPanel }}>
+        <TabPanel value="2" classes={{ root: classes.tabPanel }}>
           <Claim></Claim>
         </TabPanel>
       </TabContext>

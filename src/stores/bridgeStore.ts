@@ -1,8 +1,12 @@
 import { create } from "zustand"
 
+import { NETWORKS } from "@/constants"
+
 type Mode = "Transaction" | "History"
 
 type TransactionType = "Deposit" | "Withdraw"
+
+type WithDrawStep = "1" | "2"
 
 interface TxResult {
   hash: string
@@ -18,13 +22,17 @@ interface BridgeStore {
   toNetwork: Network
   mode: Mode
   txType: TransactionType
+  withDrawStep: WithDrawStep
   txResult: TxResult | null
+  isNetworkCorrect: boolean
 
   changeFromNetwork: (network: Network) => void
   changeToNetwork: (network: Network) => void
   changeMode: (mode: Mode) => void
   changeTxType: (txType: TransactionType) => void
   changeTxResult: (txResult: TxResult | null) => void
+  changeWithdrawStep: (withDrawStep: WithDrawStep) => void
+  changeIsNetworkCorrect: (isNetworkCorrect: boolean) => void
 }
 
 const useBridgeStore = create<BridgeStore>()((set, get) => ({
@@ -38,11 +46,13 @@ const useBridgeStore = create<BridgeStore>()((set, get) => ({
 
   // new-bridge
 
-  fromNetwork: {},
-  toNetwork: {},
+  fromNetwork: NETWORKS[0],
+  toNetwork: NETWORKS[1],
   mode: "Transaction",
   txType: "Deposit",
+  withDrawStep: "1",
   txResult: null,
+  isNetworkCorrect: true,
 
   changeFromNetwork: network => {
     set({
@@ -68,6 +78,18 @@ const useBridgeStore = create<BridgeStore>()((set, get) => ({
   changeTxResult: txResult => {
     set({
       txResult,
+    })
+  },
+
+  changeWithdrawStep: withDrawStep => {
+    set({
+      withDrawStep,
+    })
+  },
+
+  changeIsNetworkCorrect: isNetworkCorrect => {
+    set({
+      isNetworkCorrect,
     })
   },
 }))

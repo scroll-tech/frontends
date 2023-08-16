@@ -29,7 +29,7 @@ const SendTransaction = props => {
   // TODO: extract tokenList
   const { tokenList, networksAndSigners } = useApp()
   const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
-  const { txType, fromNetwork } = useBridgeStore()
+  const { txType, isNetworkCorrect, fromNetwork } = useBridgeStore()
 
   const [amount, setAmount] = useState<string>()
   const [sendError, setSendError] = useState<any>()
@@ -55,7 +55,6 @@ const SendTransaction = props => {
   const estimatedGasCost = useGasFee(selectedToken)
 
   const totalFee = useTotalFee(selectedToken, estimatedGasCost)
-  // console.log(totalFee, "totalFee")
 
   const { insufficientWarning } = useSufficientBalance(
     selectedToken,
@@ -72,7 +71,7 @@ const SendTransaction = props => {
           Your wallet is not connected. <TextButton onClick={connect}>Please connect your wallet to proceed.</TextButton>
         </>
       )
-    } else if (chainId !== fromNetwork.chainId) {
+    } else if (!isNetworkCorrect) {
       return (
         <>
           Your wallet is connected to an unsupported network.{" "}
@@ -98,7 +97,7 @@ const SendTransaction = props => {
       )
     }
     return null
-  }, [chainId, fromNetwork, insufficientWarning, isValid, invalidAmountMessage])
+  }, [chainId, isNetworkCorrect, fromNetwork, insufficientWarning, isValid, invalidAmountMessage])
 
   const necessaryCondition = useMemo(() => {
     return amount && !bridgeWarning

@@ -4,7 +4,7 @@ import { makeStyles } from "tss-react/mui"
 import { TabContext, TabList, TabPanel } from "@mui/lab"
 import { Box, Tab } from "@mui/material"
 
-import { CHAIN_ID, NETWORKS } from "@/constants"
+import { CHAIN_ID } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useBridgeStore from "@/stores/bridgeStore"
 
@@ -57,24 +57,24 @@ const useStyles = makeStyles()(theme => ({
 const Send = () => {
   const { classes } = useStyles()
   const { chainId } = useRainbowContext()
-  const { txType, fromNetwork, toNetwork, changeTxType, changeFromNetwork, changeToNetwork } = useBridgeStore()
+  const { txType, fromNetwork, toNetwork, withDrawStep, changeTxType, changeFromNetwork, changeToNetwork, changeIsNetworkCorrect } = useBridgeStore()
 
   useEffect(() => {
-    if (chainId && Object.values(CHAIN_ID).includes(chainId)) {
-      const fromNetworkIndex = NETWORKS.findIndex(item => item.chainId === chainId)
-      changeFromNetwork(NETWORKS[fromNetworkIndex])
-      changeToNetwork(NETWORKS[+!fromNetworkIndex])
+    let networkCorrect
+    if (txType === "Deposit") {
+      networkCorrect = fromNetwork.isL1 && chainId === CHAIN_ID.L1
+    } else if (withDrawStep === "1") {
+      networkCorrect = !fromNetwork.isL1 && chainId === CHAIN_ID.L2
     } else {
-      changeFromNetwork(NETWORKS[0])
-      changeToNetwork(NETWORKS[1])
+      networkCorrect = chainId === CHAIN_ID.L1
     }
-  }, [chainId])
+    changeIsNetworkCorrect(networkCorrect)
+  }, [fromNetwork, txType, withDrawStep, chainId])
 
   const handleChange = (e, newValue) => {
     changeTxType(newValue)
     changeFromNetwork(toNetwork)
     changeToNetwork(fromNetwork)
-    // switchNetwork(toNetwork.chainId)
   }
 
   return (
