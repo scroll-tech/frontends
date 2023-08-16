@@ -54,7 +54,7 @@ const StoryCard = props => {
         {cover && <CardMedia sx={{ height: 230, borderRadius: "2.5rem" }} image={cover} />}
         <CardContent className={classes.cardContent}>
           <Box className={cx(cover ? classes.withCover : classes.noCover)}>
-            <Typography sx={{ fontSize: ["1.6rem", "2.4rem"], fontWeight: 600 }}>{title}</Typography>
+            <Typography sx={[{ fontSize: ["1.6rem", "2.4rem"], fontWeight: 600 }, theme => theme.singleLineEllipsis]}>{title}</Typography>
             <SvgIcon
               sx={{ fontSize: ["1.3rem", "2.3rem"] }}
               className="building-story-card-icon"
@@ -63,7 +63,7 @@ const StoryCard = props => {
             ></SvgIcon>
           </Box>
 
-          <Typography sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: "normal", mt: ["1.2rem", "2.4rem"] }}>{content}</Typography>
+          <Typography sx={[{ fontSize: ["1.6rem", "2rem"], mt: ["1.2rem", "2.4rem"] }, theme => theme.multilineEllipsis]}>{content}</Typography>
         </CardContent>
       </Card>
     </Link>

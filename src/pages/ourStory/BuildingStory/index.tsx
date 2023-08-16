@@ -1,3 +1,4 @@
+import { isMobileOnly } from "react-device-detect"
 import { makeStyles } from "tss-react/mui"
 
 import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
@@ -11,7 +12,7 @@ const STORIES = [
     cover: "imgs/story/story-blog-cover.png",
     title: "Our philosophy on zk...",
     content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dictum auctor sem et malesuada. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dictum auctor sem et malesuada.",
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dictum auctor sem et malesuada. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dictum auctor sem et malesuada. consectetur adipiscing elit. Donec dictum auctor sem et malesuada",
   },
   {
     title: "Podcast title here",
@@ -51,14 +52,19 @@ const useStyles = makeStyles()(theme => ({
   },
   withCover: {
     gridColumn: "span 2",
+    overflow: "hidden",
   },
   noCover: {
     gridColumn: "span 1",
+    overflow: "hidden",
+  },
+  cardItem5: {
+    gridRow: 3,
   },
 }))
 
 const BuildingStory = () => {
-  const { classes } = useStyles()
+  const { classes, cx } = useStyles()
   return (
     <SectionWrapper sx={{ pt: ["11rem", "26rem"], pb: ["12rem", "13rem"] }}>
       <SectionHeader
@@ -66,8 +72,11 @@ const BuildingStory = () => {
         content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut urna iaculis quam mollis consequat."
       ></SectionHeader>
       <SuccessionToView className={classes.grid}>
-        {STORIES.map(item => (
-          <SuccessionItem key={item.title} className={item.cover ? classes.withCover : classes.noCover}>
+        {STORIES.map((item, index) => (
+          <SuccessionItem
+            key={item.title}
+            className={cx(item.cover ? classes.withCover : classes.noCover, isMobileOnly && classes[`cardItem${index}`])}
+          >
             <StoryCard key={item.title} {...item}></StoryCard>
           </SuccessionItem>
         ))}

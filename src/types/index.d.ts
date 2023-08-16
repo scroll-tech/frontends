@@ -21,6 +21,17 @@ declare module "@mui/material/styles" {
       select: string
       tile: string
     }
+    singleLineEllipsis: {
+      overflow: string
+      whiteSpace: string
+      textOverflow: string
+    }
+    multilineEllipsis: {
+      display: string
+      "-webkit-box-orient": string
+      "-webkit-line-clamp": string
+      overflow: string
+    }
   }
   interface ThemeOptions {
     boxShadows?: {
@@ -29,6 +40,17 @@ declare module "@mui/material/styles" {
       buttonHover: string
       select: string
       tile: string
+    }
+    singleLineEllipsis?: {
+      overflow: string
+      whiteSpace: string
+      textOverflow: string
+    }
+    multilineEllipsis?: {
+      display: string
+      "-webkit-box-orient": string
+      "-webkit-line-clamp": string
+      overflow: string
     }
   }
   interface Palette {
