@@ -33,7 +33,7 @@ export const resourceList = [
   },
   {
     name: "User Guide",
-    href: "https://guide.scroll.io/",
+    href: "https://docs.scroll.xyz/en/user-guide/",
   },
   {
     name: "Press Kit",
