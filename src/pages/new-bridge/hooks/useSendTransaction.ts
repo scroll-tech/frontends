@@ -1,11 +1,11 @@
 import { isError } from "ethers"
 import { useMemo, useState } from "react"
 
-import { CHAIN_ID, GAS_LIMIT, NETWORKS } from "@/constants"
+import { CHAIN_ID, NETWORKS } from "@/constants"
 import { TX_STATUS } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
+import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { usePriceFee } from "@/hooks"
 import useBridgeStore from "@/stores/bridgeStore"
 import useTxStore, { TxPosition, isValidOffsetTime } from "@/stores/txStore"
 import { amountToBN, sentryDebug } from "@/utils"
@@ -24,8 +24,9 @@ export function useSendTransaction(props) {
   } = useApp()
   const { addTransaction, updateTransaction, addEstimatedTimeMap, updateOrderedTxs, addAbnormalTransactions, removeFrontTransactions } = useTxStore()
   const { changeHistoryVisible, fromNetwork, toNetwork, changeTxResult } = useBridgeStore()
+  const { gasLimit, gasPrice } = usePriceFeeContext()
+
   const [sending, setSending] = useState<boolean>(false)
-  const { getPriceFee } = usePriceFee()
 
   const parsedAmount = useMemo(() => {
     if (!fromTokenAmount || !selectedToken) return BigInt(0)
@@ -153,36 +154,27 @@ export function useSendTransaction(props) {
   }
 
   const depositETH = async () => {
-    const fee = await getPriceFee(selectedToken, fromNetwork.isL1)
-    return networksAndSigners[CHAIN_ID.L1].gateway["depositETH(uint256,uint256)"](parsedAmount, GAS_LIMIT.DEPOSIT_ETH, {
+    const fee = gasPrice * gasLimit
+    return networksAndSigners[CHAIN_ID.L1].gateway["depositETH(uint256,uint256)"](parsedAmount, gasLimit, {
       value: parsedAmount + fee,
     })
   }
 
   const depositERC20 = async () => {
-    const fee = await getPriceFee(selectedToken, fromNetwork.isL1)
-    return networksAndSigners[CHAIN_ID.L1].gateway["depositERC20(address,uint256,uint256)"](
-      selectedToken.address,
-      parsedAmount,
-      GAS_LIMIT.DEPOSIT_ERC20,
-      {
-        value: fee,
-      },
-    )
+    const fee = gasPrice * gasLimit
+    return networksAndSigners[CHAIN_ID.L1].gateway["depositERC20(address,uint256,uint256)"](selectedToken.address, parsedAmount, gasLimit, {
+      value: fee,
+    })
   }
 
   const withdrawETH = async () => {
-    return networksAndSigners[CHAIN_ID.L2].gateway["withdrawETH(uint256,uint256)"](parsedAmount, GAS_LIMIT.WITHDRAW_ETH, {
+    return networksAndSigners[CHAIN_ID.L2].gateway["withdrawETH(uint256,uint256)"](parsedAmount, 0, {
       value: parsedAmount,
     })
   }
 
   const withdrawERC20 = async () => {
-    return networksAndSigners[CHAIN_ID.L2].gateway["withdrawERC20(address,uint256,uint256)"](
-      selectedToken.address,
-      parsedAmount,
-      GAS_LIMIT.WITHDRAW_ERC20,
-    )
+    return networksAndSigners[CHAIN_ID.L2].gateway["withdrawERC20(address,uint256,uint256)"](selectedToken.address, parsedAmount, 0)
   }
 
   const sendl1ToL2 = () => {

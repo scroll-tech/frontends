@@ -11,6 +11,7 @@ import TextButton from "@/components/TextButton"
 import { ETH_SYMBOL, GATEWAY_ROUTE_PROXY_ADDR, WETH_GATEWAY_PROXY_ADDR } from "@/constants"
 import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
 import { useApp } from "@/contexts/AppContextProvider"
+import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useApprove, useAsyncMemo } from "@/hooks"
 import useCheckValidAmount from "@/hooks/useCheckValidAmount"
@@ -20,7 +21,6 @@ import { amountToBN, switchNetwork } from "@/utils"
 import useGasFee from "../../hooks/useGasFee"
 import { useSendTransaction } from "../../hooks/useSendTransaction"
 import useSufficientBalance from "../../hooks/useSufficientBalance"
-import useTotalFee from "../../hooks/useTotalFee"
 import BalanceInput from "./BalanceInput"
 import NetworkDirection from "./NetworkDirection"
 
@@ -29,6 +29,8 @@ const SendTransaction = props => {
   // TODO: extract tokenList
   const { tokenList, networksAndSigners } = useApp()
   const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
+  const { gasLimit, gasPrice } = usePriceFeeContext()
+
   const { txType, isNetworkCorrect, fromNetwork } = useBridgeStore()
 
   const [amount, setAmount] = useState<string>()
@@ -54,7 +56,7 @@ const SendTransaction = props => {
 
   const estimatedGasCost = useGasFee(selectedToken)
 
-  const totalFee = useTotalFee(selectedToken, estimatedGasCost)
+  const totalFee = useMemo(() => (estimatedGasCost ?? BigInt(0)) + gasLimit * gasPrice, [estimatedGasCost, gasLimit, gasPrice])
 
   const { insufficientWarning } = useSufficientBalance(
     selectedToken,
