@@ -116,6 +116,7 @@ const StepTitle = styled(Typography)(({ theme }) => ({
   marginBottom: "2.4rem",
   [theme.breakpoints.down("md")]: {
     marginBottom: "1rem",
+    fontSize: "2rem",
   },
 }))
 
@@ -123,6 +124,9 @@ const StepDescription = styled(Typography)(({ theme }) => ({
   textAlign: "left",
   color: "#ffffff",
   maxWidth: "32.6rem",
+  [theme.breakpoints.down("md")]: {
+    fontSize: "1.6rem",
+  },
 }))
 
 // const Poster = styled(Box)(({ theme }) => ({
