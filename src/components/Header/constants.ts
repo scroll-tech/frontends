@@ -91,15 +91,14 @@ const navigations = [
         label: "Explore2",
         children: [
           {
+            label: "Blog",
+            key: "blog",
+            href: "/blog",
+          },
+          {
             label: "Join our Team ",
             key: "join our team",
             href: "/join-us",
-          },
-          {
-            label: "Events",
-            key: "events",
-            href: "",
-            isExternal: true,
           },
         ],
       },
