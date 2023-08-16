@@ -49,8 +49,8 @@ const ArticleSummary = styled(Typography)({
 })
 
 const ArticlePoster = styled(WebpImage)(({ theme }) => ({
-  width: "38rem",
-  height: "23.3rem",
+  width: "auto",
+  maxHeight: "15.4rem",
   cursor: "pointer",
   borderRadius: "2.5rem",
 }))
