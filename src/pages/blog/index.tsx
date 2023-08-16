@@ -13,18 +13,33 @@ import blogSource from "./data.json"
 
 const BlogContainer = styled(Box)(({ theme }) => ({
   padding: "0 6rem 14rem",
-  background: "#fef8f4",
   [theme.breakpoints.down("md")]: {
     margin: "0 0 8rem",
+    padding: "0 2rem 6rem",
   },
 }))
 
-const Header = styled(Box)({
+const BlogBox = styled(Box)(({ theme }) => ({
+  marginBottom: "9rem",
+  [theme.breakpoints.down("md")]: {
+    marginBottom: "0",
+    padding: "3rem 0",
+    "&:not(:last-of-type)": {
+      borderBottom: `1px solid ${theme.palette.themeBackground.highlight}`,
+    },
+  },
+}))
+
+const Header = styled(Box)(({ theme }) => ({
   padding: "15.5rem 0",
   display: "grid",
   gap: "6rem",
   gridTemplateColumns: "3fr 2fr",
-})
+  [theme.breakpoints.down("md")]: {
+    gridTemplateColumns: "1fr",
+    padding: "4.8rem 0",
+  },
+}))
 
 const FilterContainer = styled(Box)({})
 
@@ -48,7 +63,7 @@ const BlogBody = styled(Box)(({ theme }) => ({
   gap: "3rem",
   gridTemplateColumns: "1fr 4fr",
   [theme.breakpoints.down("md")]: {
-    // flexDirection: "column-reverse",
+    gridTemplateColumns: "1fr",
   },
 }))
 
@@ -146,9 +161,9 @@ const Blog = () => {
     return (
       <BlogList>
         {blogs.map(blog => (
-          <Box sx={{ marginBottom: "9rem" }} key={blog.title}>
+          <BlogBox key={blog.title}>
             <ArticleCard small={!isUnderLarge} blog={blog} />
-          </Box>
+          </BlogBox>
         ))}
       </BlogList>
     )
@@ -223,7 +238,7 @@ const Blog = () => {
     <BlogContainer>
       <Header>
         <Typography sx={{ fontSize: ["4rem", "7.8rem"], lineHeight: 1, fontWeight: 600 }}>Scroll Blog</Typography>
-        <Typography sx={{ fontSize: ["2rem", "2.6rem"], maxWidth: ["24.8", "68rem"] }}>
+        <Typography sx={{ fontSize: ["2rem", "2.6rem"], display: ["none", "block"], maxWidth: ["24.8", "68rem"] }}>
           Learn about Scroll’s technology, research, and latest developments.
         </Typography>
       </Header>
