@@ -118,7 +118,7 @@ const Feature = () => {
       <Spacer />
       {FEATURES.map((feature, idx) => (
         <FeatureBox key={idx}>
-          {idx % 2 === 0 ? (
+          {idx % 2 !== 0 ? (
             <>
               <SlideInLeft triggerOnce>
                 <FeatureIcon src={feature.icon} />

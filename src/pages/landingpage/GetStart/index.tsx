@@ -8,6 +8,7 @@ import SecurityIcon from "@/assets/images/homepage/home/start_link.png"
 import EVMEquivalenceIcon from "@/assets/images/homepage/home/start_setting.png"
 import { FadeInUp } from "@/components/Animation"
 import Button from "@/components/Button"
+import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
 import SectionHeader from "@/components/SectionHeader"
 
 const STEPS = [
@@ -62,7 +63,7 @@ const Background = styled(Box)(({ theme }) => ({
   borderRadius: "40px 40px 0px 0px",
 }))
 
-const StepContainer = styled(Box)(({ theme }) => ({
+const StepContainer = styled(SuccessionToView)(({ theme }) => ({
   display: "flex",
   justifyContent: "space-between",
   marginBottom: "13rem",
@@ -129,13 +130,6 @@ const StepDescription = styled(Typography)(({ theme }) => ({
   },
 }))
 
-// const Poster = styled(Box)(({ theme }) => ({
-//   height: "37rem",
-//   background: "url(/imgs/home/section_1_bg.png) center  / cover no-repeat ",
-//   margin: "0 auto",
-//   borderRadius: "4rem",
-// }))
-
 const GetStart = () => {
   const [, setScrollPosition] = useState(0)
   const sectionRef = useRef<HTMLDivElement | null>(null)
@@ -186,17 +180,19 @@ const GetStart = () => {
               </Button>
             }
           ></SectionHeader>
+        </FadeInUp>
 
-          <StepContainer>
-            {STEPS.map((feature, idx) => (
+        <StepContainer>
+          {STEPS.map((feature, idx) => (
+            <SuccessionItem>
               <StepBox className="step-box" key={idx}>
                 <StepIcon src={feature.icon} />
                 <StepTitle variant="H4">{feature.title}</StepTitle>
                 <StepDescription variant="Body3">{feature.description}</StepDescription>
               </StepBox>
-            ))}
-          </StepContainer>
-        </FadeInUp>
+            </SuccessionItem>
+          ))}
+        </StepContainer>
       </InnerBox>
     </Container>
   )

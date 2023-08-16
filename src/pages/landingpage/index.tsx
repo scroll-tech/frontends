@@ -1,7 +1,7 @@
 import { Box } from "@mui/material"
 import { styled } from "@mui/system"
 
-import Blog from "./Blog"
+import Blog from "../ourStory/BuildingStory"
 import Feature from "./Feature"
 import GetStart from "./GetStart"
 import Header from "./Header"

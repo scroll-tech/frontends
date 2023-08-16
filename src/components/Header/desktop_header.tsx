@@ -114,7 +114,7 @@ const SubMenuList = styled(Box)(({ theme }) => ({
 const SectionList = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  width: "12rem",
+  width: "10rem",
 }))
 
 const LinkButton = styled(Link)(({ theme }) => ({
