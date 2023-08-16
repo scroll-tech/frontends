@@ -1,7 +1,6 @@
 import React, { useState } from "react"
 import { NavLink } from "react-router-dom"
 
-import { OpenInNew } from "@mui/icons-material"
 import { Box, Fade, Link, Popper, Stack } from "@mui/material"
 import { styled } from "@mui/system"
 
@@ -16,7 +15,12 @@ const StyledBox = styled(Stack)(({ theme }) => ({
   top: 0,
   width: "100%",
   zIndex: 10,
-  // borderBottom: `1px solid ${theme.palette.border.main}`,
+}))
+
+const StyledPopper = styled(Popper)(({ theme }) => ({
+  width: "100vw",
+  // background: "rgb(255,247,241)",
+  paddingBottom: "4rem",
 }))
 
 const HeaderContainer = styled(Box)(({ theme }) => ({
@@ -36,6 +40,9 @@ const MenuLinkButton = styled(Link)(({ theme }) => ({
   lineHeight: "65px",
   position: "relative",
   color: theme.palette.text.primary,
+  "&:hover": {
+    fontWeight: 500,
+  },
 }))
 
 const ExternalLink = styled("p")(({ theme }) => ({
@@ -46,6 +53,9 @@ const ExternalLink = styled("p")(({ theme }) => ({
   color: "#333",
   display: "flex",
   alignItems: "center",
+  "&:hover": {
+    fontWeight: 500,
+  },
 }))
 
 const LinkStyledButton = styled(NavLink)(({ theme }) => ({
@@ -58,8 +68,11 @@ const LinkStyledButton = styled(NavLink)(({ theme }) => ({
   lineHeight: "65px",
   position: "relative",
   color: theme.palette.text.primary,
+  "&:hover": {
+    fontWeight: 500,
+  },
   "&.active": {
-    color: theme.palette.primary.main,
+    fontWeight: 600,
   },
 }))
 
@@ -73,16 +86,15 @@ const SubMenuButton = styled(Box)(({ theme }) => ({
   lineHeight: "65px",
   position: "relative",
   color: theme.palette.text.primary,
-  // color: "#A0A0A0",
   "&.active": {
-    color: theme.palette.primary.main,
+    fontWeight: 600,
   },
   "& .expand-more": {
     willChange: "transform",
     transition: "transform .3s ease-in-out",
   },
   "&:hover": {
-    color: theme.palette.primary.main,
+    fontWeight: 500,
     [`& .expand-more`]: {
       transform: "rotate(180deg)",
     },
@@ -90,58 +102,49 @@ const SubMenuButton = styled(Box)(({ theme }) => ({
 }))
 
 const SubMenuList = styled(Box)(({ theme }) => ({
-  border: "2px solid #FFCC9F",
   left: 0,
-  background: "rgb(255,247,241)",
   zIndex: 1,
   borderRadius: `${theme.shape.borderRadius}px`,
   display: "flex",
-  flexDirection: "column",
+  flexDirection: "row",
   overflow: "hidden",
-  padding: "1.6rem 0",
-  width: "20rem",
+  padding: "0",
 }))
 
 const SectionList = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  "&:not(:last-child)::after": {
-    content: '""',
-    margin: "0 1.8rem 1rem",
-    borderBottom: `1px solid ${theme.palette.border.main}`,
-    paddingBottom: "1rem",
-  },
+  width: "12rem",
 }))
 
 const LinkButton = styled(Link)(({ theme }) => ({
   "& p": {
-    lineHeight: "2.6rem",
-    height: "2.6rem",
+    lineHeight: "2.9rem",
+    height: "2.9rem",
     fontSize: "1.6rem",
-    color: "#717171",
+    color: theme.palette.text.primary,
     fontWeight: 400,
-    padding: "2px 0 2px 1.8rem",
+    padding: "0 0 0 1rem",
     cursor: "pointer",
     "&:hover": {
-      color: theme.palette.primary.main,
+      color: theme.palette.text.primary,
     },
   },
 }))
 
 const LinkStyledSubButton = styled(NavLink)(({ theme }) => ({
-  lineHeight: "2.6rem",
-  height: "2.6rem",
+  lineHeight: "2.9rem",
+  height: "2.9rem",
   fontSize: "1.6rem",
-  color: "#717171",
   fontWeight: 400,
-  padding: "2px 0 2px 1.8rem",
+  padding: "0px 0 0px 1rem",
   cursor: "pointer",
+  color: theme.palette.text.primary,
   "&:hover": {
-    color: theme.palette.primary.main,
+    fontWeight: 500,
   },
   "&.active": {
-    color: theme.palette.primary.main,
-    fontWeight: 500,
+    fontWeight: 600,
   },
 }))
 
@@ -151,10 +154,12 @@ const App = ({ currentMenu }) => {
   const [checked, setChecked] = useState("")
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [popperLeft, setPopperLeft] = useState<number>(0)
 
   const handleMouseEnter = (e, key) => {
     setChecked(key)
     setAnchorEl(e.currentTarget)
+    setPopperLeft(e.currentTarget.getBoundingClientRect().x)
   }
 
   const handleMouseLeave = () => {
@@ -169,9 +174,7 @@ const App = ({ currentMenu }) => {
           subItem.isExternal ? (
             <LinkButton target="_blank" underline="none" key={subItem.label} href={subItem.href}>
               <Stack direction="row" alignItems="center" spacing={1}>
-                <ExternalLink>
-                  {subItem.label} <OpenInNew sx={{ fontSize: "1.4rem", ml: "0.4rem", color: "" }} />
-                </ExternalLink>
+                <ExternalLink>{subItem.label}</ExternalLink>
               </Stack>
             </LinkButton>
           ) : (
@@ -202,13 +205,13 @@ const App = ({ currentMenu }) => {
               />
             </svg>
           </Stack>
-          <Popper open={item.key === checked} anchorEl={anchorEl} transition>
+          <StyledPopper style={{ paddingLeft: popperLeft }} open={item.key === checked} placement="bottom-start" anchorEl={anchorEl} transition>
             {({ TransitionProps }) => (
               <Fade {...TransitionProps}>
                 <SubMenuList onClick={handleMouseLeave}>{renderSubMenuList(item.children)}</SubMenuList>
               </Fade>
             )}
-          </Popper>
+          </StyledPopper>
         </SubMenuButton>
       )
     } else if (item.isExternal) {
