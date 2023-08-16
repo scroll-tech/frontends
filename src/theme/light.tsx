@@ -6,6 +6,17 @@ const defaultTransition = "all 0.15s ease-out"
 
 const lightTheme = createTheme({
   // check in bridge
+  singleLineEllipsis: {
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+    textOverflow: "ellipsis",
+  },
+  multilineEllipsis: {
+    display: "-webkit-box",
+    "-webkit-box-orient": "vertical",
+    "-webkit-line-clamp": "4",
+    overflow: "hidden",
+  },
   shape: {
     borderRadius: 6,
   },
