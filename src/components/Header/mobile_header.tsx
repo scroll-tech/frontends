@@ -46,17 +46,14 @@ const ListItem = styled(ListItemButton)(({ theme }) => ({
   fontSize: "2rem",
   height: "5.5rem",
   lineHeight: "5.5rem",
-  color: "#101010",
+  color: theme.palette.text.primary,
   margin: "0",
   display: "flex",
   justifyContent: "space-between",
   padding: "0 !important",
-  "&.active": {
-    color: theme.palette.primary.main,
-  },
+  "&.active": {},
   "&:hover": {
     background: "transparent",
-    color: theme.palette.primary.main,
   },
   "&:not(:first-of-type)": {
     borderTop: "1px solid #101010",
@@ -71,7 +68,7 @@ const MenuLinkStyledButton = styled(NavLink)(({ theme }) => ({
   color: "#101010",
   width: "100%",
   "&.active": {
-    color: theme.palette.primary.main,
+    color: theme.palette.text.primary,
   },
 }))
 
@@ -109,12 +106,8 @@ const ExternalLink = styled(Link)(({ theme }) => ({
 }))
 
 const SectionList = styled("div")(({ theme }) => ({
-  paddingBottom: "2.5rem",
-  "&:not(:last-child)::after": {
-    content: '""',
-    borderTop: `1px solid ${theme.palette.border.main}`,
-    margin: "1rem 2rem 0",
-    display: "block",
+  "&:last-of-type": {
+    paddingBottom: "2.5rem",
   },
 }))
 
@@ -172,19 +165,6 @@ const App = ({ currentMenu }) => {
                       <SubListItem onClick={() => toggleDrawer(false)} sx={{ mx: 4 }} key={subItem.key}>
                         <ExternalLink underline="none" href={subItem.href}>
                           {subItem.label}
-                          <svg
-                            style={{ fontSize: "1.6rem", marginLeft: "0.4rem" }}
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="9"
-                            height="9"
-                            viewBox="0 0 9 9"
-                            fill="none"
-                          >
-                            <path
-                              d="M9 0V6.86538L7.83812 5.7035V1.96385C5.46463 4.26924 3.29542 6.77999 0.853849 9L0 8.16344C2.42536 5.94344 4.5762 3.46728 6.93347 1.1781H3.31272L2.13462 0H9Z"
-                              fill="#101010"
-                            />
-                          </svg>
                         </ExternalLink>
                       </SubListItem>
                     ) : (

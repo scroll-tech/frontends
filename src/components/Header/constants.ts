@@ -1,5 +1,3 @@
-import { EXPLORER_URL } from "../../constants/common"
-
 const navigations = [
   {
     label: "Our Story",
@@ -12,18 +10,8 @@ const navigations = [
     href: "",
     children: [
       {
-        label: "Quickstart",
+        label: "Explore1",
         children: [
-          {
-            label: "Testnet",
-            key: "portal",
-            href: "/portal",
-          },
-          {
-            label: "Bridge",
-            key: "bridge",
-            href: "/bridge",
-          },
           {
             label: "Ecosystem",
             key: "ecosystem",
@@ -92,38 +80,59 @@ const navigations = [
     ],
   },
 
-  {
-    label: "About",
-    key: "about",
-    href: "",
-    children: [
-      {
-        label: "About",
-        children: [
           {
             label: "Blog",
             key: "blog",
             href: "/blog",
           },
+        ],
+      },
+      {
+        label: "Explore2",
+        children: [
           {
-            label: "Join Us",
-            key: "join us",
-            href: "/join-us",
+            label: "Join our Team ",
+            key: "join our team",
+            href: "/join-our-team",
           },
           {
-            label: "Team",
-            key: "team",
-            href: "/team",
-          },
-          {
-            label: "Community",
-            key: "community",
-            href: "https://community.scroll.io/",
+            label: "Events",
+            key: "events",
+            href: "",
             isExternal: true,
           },
         ],
       },
     ],
+  },
+  {
+    label: "Develop",
+    key: "develop",
+    href: "",
+    children: [
+      {
+        label: "develop",
+        children: [
+          {
+            label: "Docs",
+            key: "docs",
+            href: "https://develop.docs.scroll.xyz",
+            isExternal: true,
+          },
+          {
+            label: "Status",
+            key: "status",
+            href: "https://status.scroll.io/",
+            isExternal: true,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    label: "Bridge",
+    key: "bridge",
+    href: "/bridge",
   },
 ]
 
