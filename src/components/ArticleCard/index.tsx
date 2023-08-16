@@ -49,8 +49,9 @@ const ArticleSummary = styled(Typography)({
 })
 
 const ArticlePoster = styled(WebpImage)(({ theme }) => ({
-  width: "auto",
-  maxHeight: "15.4rem",
+  width: "100%",
+  maxWidth: "51.7rem",
+  height: "auto",
   cursor: "pointer",
   borderRadius: "2.5rem",
 }))
@@ -76,7 +77,11 @@ const ArticleCard = ({ blog, small = false }) => {
           {blog.date} ・ {blog.type}
         </ArticleDate>
       </ArticleInfo>
-      <ArticlePoster src={blog.posterImg} webpsrc={blog.posterImg.replace(".jpg", ".webp")} onClick={handleClick}></ArticlePoster>
+      <ArticlePoster
+        // src={blog.posterImg}
+        src="https://cdn.discordapp.com/attachments/1095150664881016856/1141254540994297867/cover.png"
+        onClick={handleClick}
+      ></ArticlePoster>
     </Card>
   )
 }

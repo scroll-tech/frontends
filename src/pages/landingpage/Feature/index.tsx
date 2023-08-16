@@ -75,6 +75,7 @@ const FeatureTitle = styled(Typography)(({ theme }) => ({
   marginBottom: "2rem",
   [theme.breakpoints.down("md")]: {
     marginBottom: "1rem",
+    fontSize: "2rem",
   },
 }))
 
@@ -83,7 +84,8 @@ const FeatureTextBox = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   [theme.breakpoints.down("md")]: {
-    width: "35rem",
+    maxWidth: "35rem",
+    width: "100%",
   },
 }))
 
@@ -92,7 +94,12 @@ const Spacer = styled(Box)(({ theme }) => ({
   minHeight: "10rem",
 }))
 
-const FeatureDescription = styled(Typography)(({ theme }) => ({ textAlign: "left" }))
+const FeatureDescription = styled(Typography)(({ theme }) => ({
+  textAlign: "left",
+  [theme.breakpoints.down("md")]: {
+    fontSize: "1.6rem",
+  },
+}))
 
 const Feature = () => {
   return (
