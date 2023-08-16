@@ -13,8 +13,7 @@ const useCheckNoBg = () => {
       const elementListener = isMobileOnly ? document.body : window
       const handleScroll = () => {
         const scrollTop = element.scrollTop
-        const screenHeight = window.screen.height
-        setIsNoBgSection(scrollTop < screenHeight)
+        setIsNoBgSection(scrollTop < 10)
       }
       elementListener.addEventListener("scroll", handleScroll)
       return () => {
