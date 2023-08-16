@@ -93,7 +93,7 @@ const navigations = [
           {
             label: "Join our Team ",
             key: "join our team",
-            href: "/join-our-team",
+            href: "/join-us",
           },
           {
             label: "Events",
