@@ -5,16 +5,16 @@ import { styled } from "@mui/system"
 
 import WebpImage from "@/components/WebpImage"
 
-const ArticleInfo = styled(Box)(({ theme }) => ({}))
-
 const ArticleTitle = styled(Typography)(({ theme }) => ({
-  color: theme.palette.text.primary,
   fontWeight: 700,
   cursor: "pointer",
   lineHeight: "2.8rem",
   display: "table-cell",
   verticalAlign: "bottom",
   marginBottom: "0.6rem",
+  [theme.breakpoints.down("md")]: {
+    fontSize: "2rem",
+  },
 }))
 
 const Card = styled(Box)(({ theme }) => ({
@@ -24,21 +24,27 @@ const Card = styled(Box)(({ theme }) => ({
   textAlign: "left",
   margin: "0 auto",
   overflow: "hidden",
-  "&.small": {
-    maxWidth: "38rem",
-    flexDirection: "column",
-    boxShadow: "rgb(0 0 0 / 15%) 5px 5px 3px",
-    borderRadius: `${theme.shape.borderRadius}px`,
+  color: theme.palette.text.primary,
+  "&:hover *": {
+    cursor: "pointer",
+    color: "#6d6d6d",
+  },
+  [theme.breakpoints.down("md")]: {
+    gridTemplateColumns: "1fr",
+    gap: "2rem",
   },
 }))
 
-const ArticleDate = styled(Typography)({
+const ArticleDate = styled(Typography)(({ theme }) => ({
   marginBottom: "0.5rem",
   fontSize: "1.4rem",
   fontWeight: 500,
-})
+  [theme.breakpoints.down("md")]: {
+    marginTop: "1.4rem",
+  },
+}))
 
-const ArticleSummary = styled(Typography)({
+const ArticleSummary = styled(Typography)(({ theme }) => ({
   marginBottom: "2.2rem",
   overflow: "hidden",
   maxWidth: "44rem",
@@ -46,7 +52,16 @@ const ArticleSummary = styled(Typography)({
   display: "-webkit-box",
   "-webkit-line-clamp": 2,
   "-webkit-box-orient": "vertical",
-})
+  [theme.breakpoints.down("md")]: {
+    display: "none",
+  },
+}))
+
+const ArticleInfo = styled(Box)(({ theme }) => ({
+  [theme.breakpoints.down("md")]: {
+    gridRow: 2,
+  },
+}))
 
 const ArticlePoster = styled(WebpImage)(({ theme }) => ({
   width: "100%",
@@ -54,6 +69,9 @@ const ArticlePoster = styled(WebpImage)(({ theme }) => ({
   height: "auto",
   cursor: "pointer",
   borderRadius: "2.5rem",
+  [theme.breakpoints.down("md")]: {
+    gridRow: 1,
+  },
 }))
 
 const ArticleCard = ({ blog, small = false }) => {
@@ -78,7 +96,6 @@ const ArticleCard = ({ blog, small = false }) => {
         </ArticleDate>
       </ArticleInfo>
       <ArticlePoster
-        // src={blog.posterImg}
         src="https://cdn.discordapp.com/attachments/1095150664881016856/1141254540994297867/cover.png"
         onClick={handleClick}
       ></ArticlePoster>

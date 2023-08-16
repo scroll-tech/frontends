@@ -93,6 +93,10 @@ body {
   --onboard-spacing-5: 0.8rem;
 }
 
+.App {
+  background: #fff8f3;
+}
+
 onboard-v2 .outer-container icon {
   width: 1.6rem;
   height: 1.6rem;
