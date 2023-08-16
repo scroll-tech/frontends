@@ -10,16 +10,17 @@ import Announcement from "./announcement"
 import { navigations } from "./constants"
 import useCheckNoBg from "./useCheckNoBg"
 
-const StyledBox = styled(Stack)(({ theme }) => ({
+const StyledBox = styled<any>(Stack)(({ theme, noBg }) => ({
   position: "sticky",
   top: 0,
   width: "100%",
   zIndex: 10,
+  backgroundColor: noBg ? "transparent" : theme.palette.themeBackground.light,
 }))
 
-const StyledPopper = styled(Popper)(({ theme }) => ({
-  width: "100vw",
-  // background: "rgb(255,247,241)",
+const StyledPopper = styled<any>(Popper)(({ theme, noBg }) => ({
+  width: "100%",
+  backgroundColor: noBg ? "transparent" : theme.palette.themeBackground.light,
   paddingBottom: "4rem",
 }))
 
@@ -205,7 +206,14 @@ const App = ({ currentMenu }) => {
               />
             </svg>
           </Stack>
-          <StyledPopper style={{ paddingLeft: popperLeft }} open={item.key === checked} placement="bottom-start" anchorEl={anchorEl} transition>
+          <StyledPopper
+            style={{ paddingLeft: popperLeft }}
+            open={item.key === checked}
+            placement="bottom-start"
+            anchorEl={anchorEl}
+            transition
+            noBg={noBg}
+          >
             {({ TransitionProps }) => (
               <Fade {...TransitionProps}>
                 <SubMenuList onClick={handleMouseLeave}>{renderSubMenuList(item.children)}</SubMenuList>
@@ -240,7 +248,7 @@ const App = ({ currentMenu }) => {
   }
 
   return (
-    <StyledBox sx={{ backgroundColor: noBg ? "transparent" : "themeBackground.light" }}>
+    <StyledBox noBg={noBg}>
       <Announcement />
       <HeaderContainer>
         <NavLink to="/" className="flex">
