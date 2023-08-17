@@ -1,4 +1,4 @@
-# Announcing the Scroll Beta Testnet
+# Announcing the Scroll Beta Testnet on Sepolia
 
 We are thrilled to enter the Beta phase of our journey with our Scroll Sepolia testnet, launching today for developers and users. Over 100 projects have integrated with Scroll to date, with many more on the way. These projects have successfully finalized more than 2.6 million batches to Layer 1 (L1) with more than 47 million transactions, 9 million wallet addresses, and 4 million contracts deployed. 
 
