@@ -1,24 +1,30 @@
 import { useEffect, useMemo, useState } from "react"
+import { isMobileOnly } from "react-device-detect"
+import { makeStyles } from "tss-react/mui"
 
 import { Alert, Box, Link, Snackbar } from "@mui/material"
-import { styled } from "@mui/system"
 
 import { ecosystemListHashUrl } from "@/apis/ecosystem"
 import LoadingPage from "@/components/LoadingPage"
+import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
 import { DIVERGENT_CATEGORY_MAP } from "@/constants"
 
 import GalleryItem from "./GalleryItem"
 
-const Grid = styled("div")(({ theme }) => ({
-  display: "grid",
-  gridTemplateColumns: "repeat(auto-fill, minmax(30rem, 1fr))",
-  width: "100%",
-  padding: "3rem 0",
-  gridGap: "3rem",
+const useStyles = makeStyles()(theme => ({
+  grid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fill, minmax(30rem, 1fr))",
+    width: "100%",
+    padding: "3rem 0",
+    gridGap: "3rem",
+  },
 }))
 
 const Gallery = props => {
   const { selectedCategory } = props
+
+  const { classes } = useStyles()
 
   const [loading, setLoading] = useState(false)
   const [page, setPage] = useState(1)
@@ -68,11 +74,13 @@ const Gallery = props => {
         <LoadingPage height="60vh"></LoadingPage>
       ) : (
         <>
-          <Grid>
+          <SuccessionToView className={classes.grid} threshold={isMobileOnly ? 0 : 0.1}>
             {filteredEcosystemList?.map((item: any) => (
-              <GalleryItem key={item.name} item={item}></GalleryItem>
+              <SuccessionItem key={item.name}>
+                <GalleryItem item={item}></GalleryItem>
+              </SuccessionItem>
             ))}
-          </Grid>
+          </SuccessionToView>
           {hasMore && (
             <Box sx={{ textAlign: "center", mt: ["2.5rem", "9.5rem"] }}>
               <Link

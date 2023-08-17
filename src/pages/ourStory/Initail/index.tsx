@@ -102,7 +102,7 @@ const Initail = () => {
           <img style={{ maxWidth: isMobileOnly ? "100%" : "unset" }} src="/imgs/story/story-initial-2.png" alt=""></img>
         </OrientationToView>
         <OrientationToView direction={isMobileOnly ? "up" : "left"}>
-          <Typography sx={{ textAlign: "left" }}>
+          <Typography sx={{ textAlign: ["center", "left"] }}>
             What sets Scroll apart in the competitive zero knowledge rollup space is our commitment to EVM compatibility. By aiming for seamless
             integration with Ethereum and prioritizing an exceptional developer experience, we are determined to revolutionize Ethereum's scalability
             potential. 

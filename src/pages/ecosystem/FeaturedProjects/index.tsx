@@ -1,7 +1,6 @@
-import { isMobileOnly } from "react-device-detect"
+import { makeStyles } from "tss-react/mui"
 
-import { Stack } from "@mui/material"
-
+import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
 import SectionHeader from "@/components/SectionHeader"
 import SectionWrapper from "@/components/SectionWrapper"
 
@@ -37,7 +36,24 @@ const featuredProjects = [
   },
 ]
 
+const useStyles = makeStyles()(theme => ({
+  flex: {
+    display: "flex",
+    gap: "4%",
+    marginTop: "12.6rem",
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+      gap: "4rem",
+      marginTop: "5.2rem",
+    },
+  },
+  flexItem: {
+    flex: 1,
+  },
+}))
+
 const FeaturedProjects = props => {
+  const { classes } = useStyles()
   return (
     <SectionWrapper dark sx={{ pt: ["6rem", "15.4rem"], pb: ["12rem", "16rem"] }}>
       <SectionHeader
@@ -45,11 +61,13 @@ const FeaturedProjects = props => {
         title="Featured projects"
         content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut urna iaculis quam mollis consequat."
       ></SectionHeader>
-      <Stack direction={isMobileOnly ? "column" : "row"} gap={isMobileOnly ? "4rem" : "4%"} sx={{ mt: ["5.2rem", "12.6rem"] }}>
+      <SuccessionToView className={classes.flex}>
         {featuredProjects.map(item => (
-          <FeaturedCard key={item.name} {...item}></FeaturedCard>
+          <SuccessionItem key={item.name} className={classes.flexItem}>
+            <FeaturedCard {...item}></FeaturedCard>
+          </SuccessionItem>
         ))}
-      </Stack>
+      </SuccessionToView>
     </SectionWrapper>
   )
 }
