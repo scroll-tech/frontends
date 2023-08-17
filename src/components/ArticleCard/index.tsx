@@ -87,19 +87,14 @@ const ArticleCard = ({ blog, small = false }) => {
 
   return (
     <Card>
-      <ArticleInfo>
-        <ArticleTitle onClick={handleClick} variant="H4">
-          {blog.title}
-        </ArticleTitle>
+      <ArticleInfo onClick={handleClick}>
+        <ArticleTitle variant="H4">{blog.title}</ArticleTitle>
         <ArticleSummary variant="Body3">{blog.summary}</ArticleSummary>
         <ArticleDate variant="body2">
           {blog.date} ・ {blog.type}
         </ArticleDate>
       </ArticleInfo>
-      <ArticlePoster
-        src="https://cdn.discordapp.com/attachments/1095150664881016856/1141254540994297867/cover.png"
-        onClick={handleClick}
-      ></ArticlePoster>
+      <ArticlePoster src="https://cdn.discordapp.com/attachments/1095150664881016856/1141254540994297867/cover.png"></ArticlePoster>
     </Card>
   )
 }
