@@ -48,6 +48,9 @@ const useStyles = makeStyles()(theme => ({
   tabPanel: {
     backgroundColor: theme.palette.themeBackground.optionHightlight,
     padding: "3rem 5.4rem",
+    "&.tx": {
+      padding: "3rem",
+    },
     [theme.breakpoints.down("sm")]: {
       padding: "3rem 2rem 2rem",
     },
@@ -87,7 +90,7 @@ const Send = () => {
         <TabPanel value="Deposit" classes={{ root: classes.tabPanel }}>
           <Deposit></Deposit>
         </TabPanel>
-        <TabPanel value="Withdraw" classes={{ root: classes.tabPanel }}>
+        <TabPanel value="Withdraw" className={withDrawStep === "2" ? "tx" : ""} classes={{ root: classes.tabPanel }}>
           <Withdraw></Withdraw>
         </TabPanel>
       </TabContext>

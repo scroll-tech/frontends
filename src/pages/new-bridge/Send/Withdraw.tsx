@@ -7,6 +7,7 @@ import useBridgeStore from "@/stores/bridgeStore"
 
 import Claim from "./Claim"
 import SendTransaction from "./SendTransaction"
+import TxSuccess from "./TxSuccess"
 
 const useStyles = makeStyles()(theme => ({
   tabList: {
@@ -49,10 +50,14 @@ const useStyles = makeStyles()(theme => ({
 
 const Withdraw = () => {
   const { classes } = useStyles()
-  const { withDrawStep, changeWithdrawStep } = useBridgeStore()
+  const { withDrawStep, changeWithdrawStep, txResult } = useBridgeStore()
 
   const handleChange = (e, newValue) => {
     changeWithdrawStep(newValue)
+  }
+
+  if (txResult) {
+    return <TxSuccess></TxSuccess>
   }
 
   return (

@@ -38,9 +38,9 @@ const useStyles = makeStyles()(theme => {
     tableWrapper: {
       boxShadow: "unset",
       borderRadius: "20px",
-      width: "92rem",
+      width: "62.8rem",
       backgroundColor: theme.palette.themeBackground.optionHightlight,
-      padding: "2rem 5rem 1rem 3rem",
+      padding: "2.5rem 3rem",
     },
     tableTitle: {
       marginTop: "2.8rem",
@@ -98,7 +98,7 @@ const useStyles = makeStyles()(theme => {
         fontSize: "1.6rem",
       },
       ".MuiPaginationItem-root": {
-        color: theme.palette.text.secondary,
+        color: theme.palette.text.primary,
       },
       ".MuiPaginationItem-root.Mui-selected": {
         fontWeight: 700,
@@ -126,10 +126,10 @@ const TxTable = (props: any) => {
           <TableHead className={classes.tableHeader}>
             <TableRow>
               <TableCell align="left">Initiated At</TableCell>
-              <TableCell>Finalised At</TableCell>
+              {/* <TableCell>Finalised At</TableCell> */}
               <TableCell>Action</TableCell>
               <TableCell>Amount</TableCell>
-              <TableCell>Status</TableCell>
+              {/* <TableCell>Status</TableCell> */}
               <TableCell>Transaction Hash</TableCell>
             </TableRow>
           </TableHead>
@@ -145,20 +145,20 @@ const TxTable = (props: any) => {
             )}
           </TableBody>
         </Table>
+        {pagination && (
+          <div className="flex justify-center mt-[2.8rem]">
+            <Pagination
+              size="small"
+              classes={{
+                root: classes.pagination,
+              }}
+              page={pagination?.page}
+              count={pagination?.count}
+              onChange={handleChangePage}
+            />
+          </div>
+        )}
       </TableContainer>
-      {pagination && (
-        <div className="flex justify-end mt-[2.8rem]">
-          <Pagination
-            size="small"
-            classes={{
-              root: classes.pagination,
-            }}
-            page={pagination?.page}
-            count={pagination?.count}
-            onChange={handleChangePage}
-          />
-        </div>
-      )}
     </>
   )
 }
@@ -243,11 +243,11 @@ const TxRow = props => {
           <span>{formatDate(tx.initiatedAt)}</span>
         </Typography>
       </TableCell>
-      <TableCell>
+      {/* <TableCell>
         <Typography>
           <span>{tx.finalisedAt}</span>
         </Typography>
-      </TableCell>
+      </TableCell> */}
       <TableCell>
         <Typography sx={{ fontWeight: 500 }}>{actionText(tx)}</Typography>
       </TableCell>
@@ -257,9 +257,9 @@ const TxRow = props => {
           {tokenInfoLoading ? <Skeleton variant="text" width="5rem" className="inline-block" /> : <span>{tokenInfo.symbol}</span>}
         </Typography>
       </TableCell>
-      <TableCell>
+      {/* <TableCell>
         <Stack direction="column" spacing="1.4rem"></Stack>
-      </TableCell>
+      </TableCell> */}
       <TableCell sx={{ width: "18rem" }}>
         <Stack direction="column">
           <Typography>{tx.fromName}: </Typography>

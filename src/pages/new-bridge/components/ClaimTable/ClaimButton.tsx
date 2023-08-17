@@ -2,6 +2,7 @@ import { ethers } from "ethers"
 import { useState } from "react"
 
 import { Box, CircularProgress, Tooltip } from "@mui/material"
+import { styled } from "@mui/system"
 
 import L1ScrollMessenger from "@/assets/abis/L1ScrollMessenger.json"
 import { CHAIN_ID } from "@/constants/common"
@@ -9,6 +10,29 @@ import { useApp } from "@/contexts/AppContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { requireEnv } from "@/utils"
 import { switchNetwork } from "@/utils"
+
+const StyledButton = styled("button")(({ theme }) => ({
+  width: "8.6rem",
+  height: "2.8rem",
+  lineHeight: "3rem",
+  borderRadius: "14px",
+  color: "#ffffff",
+  fontWeight: 600,
+  background: theme.palette.primary.main,
+  cursor: "pointer",
+  "&:disabled": {
+    background: theme.palette.primary.disabled,
+  },
+  "&.claimed": {
+    background: " #DFFCF8",
+    color: "#0F8E7E",
+  },
+  "&.claiming": {},
+  "&.pending": {
+    background: "#F0F0F0",
+    color: "#5B5B5B",
+  },
+}))
 
 const ClaimButton = props => {
   const { tx, isFinalized } = props
@@ -51,22 +75,21 @@ const ClaimButton = props => {
   if (isFinalized) {
     if (isOnScrollLayer1) {
       return (
-        <button onClick={() => handleClaim(tx.claimInfo)} disabled={loading} color="primary">
+        <StyledButton className="" onClick={() => handleClaim(tx.claimInfo)} disabled={loading} color="primary">
           Claim {loading ? <CircularProgress size={16} sx={{ position: "absolute", right: "0.8rem" }} color="inherit" /> : null}
-        </button>
+        </StyledButton>
       )
     } else {
       return (
         <Tooltip placement="top" title="Please connect to the L1 network to claim your withdrawal.">
           <Box>
-            <button
+            <StyledButton
               onMouseEnter={() => setClaimButtonLabel("Switch")}
               onMouseLeave={() => setClaimButtonLabel("Claim")}
               onClick={() => handleSwitchNetwork(CHAIN_ID.L1)}
-              style={{ width: "80px", textAlign: "left" }}
             >
               {claimButtonLabel}
-            </button>
+            </StyledButton>
           </Box>
         </Tooltip>
       )
@@ -78,7 +101,7 @@ const ClaimButton = props => {
         title="Scroll provers are still finalizing your transaction, this can take up to 4 hours. Once done, you'll be able to claim it here for use on the target network."
       >
         <Box>
-          <button disabled>Claim</button>
+          <StyledButton className="pending">Claim</StyledButton>
         </Box>
       </Tooltip>
     )

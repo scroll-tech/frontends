@@ -138,6 +138,7 @@ const SendTransaction = props => {
     if (fromNetwork.isL1) {
       sendTransaction()
     } else {
+      sendTransaction()
       // TODO: withdraw
     }
   }
