@@ -18,7 +18,7 @@ The upgraded Pre-Alpha Testnet will be the first chance for early developers to 
 
 While testnet registration is open to anyone, we are permissioning access at this stage as we improve our proving algorithm and scale our proving cluster. Sign up at [scroll.io](http://scroll.io/) for testnet access as we actively work to scale this up and support more users. Meanwhile, we are excited to open the sign up for developers to get early support at [scroll.io/early-dev](http://scroll.io/early-dev)! Tell us a bit more about yourself and your projects to get prioritized.
 
-- If you already have access, check out our new contract deployment [doc](https://guide.scroll.io/developers/contract-deployment-tutorial) and sample deploy [repo](https://github.com/scroll-tech/scroll-contract-deploy-demo). We have one line deploy scripts using Hardhat and Foundry ready for you to try!
+- If you already have access, check out our new contract deployment [doc](https://docs.scroll.xyz/en/developers/guides/contract-deployment-tutorial/) and sample deploy [repo](https://github.com/scroll-tech/scroll-contract-deploy-demo). We have one line deploy scripts using Hardhat and Foundry ready for you to try!
 
 - For those at DevCon Bogota, we are running a workshop at the ZK Community Hub from 1:30p to 3:00p on Oct 12. Come by in-person to deploy a contract on Scroll with us! We will present more details about the upgrade and performance at 11:00a Oct 13, see event [link](https://app.devcon.org/schedule/AE8X9L) for more details.
 

@@ -61,7 +61,7 @@ export const DOCUMENTATION = [
   {
     name: "User Guide",
     description: "",
-    link: "https://guide.scroll.io",
+    link: "https://docs.scroll.xyz/en/user-guide/",
   },
 ]
 
