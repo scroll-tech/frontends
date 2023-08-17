@@ -2,7 +2,7 @@ import { motion } from "framer-motion"
 import { isMobileOnly } from "react-device-detect"
 
 const SuccessionToView = props => {
-  const { children, once = true, ...restProps } = props
+  const { children, threshold, once = true, ...restProps } = props
 
   const container = {
     hidden: { opacity: 0 },
@@ -15,7 +15,13 @@ const SuccessionToView = props => {
   }
 
   return (
-    <motion.div initial="hidden" whileInView="show" variants={container} viewport={{ once, amount: isMobileOnly ? 0 : 0.8 }} {...restProps}>
+    <motion.div
+      initial="hidden"
+      whileInView="show"
+      variants={container}
+      viewport={{ once, amount: threshold ?? (isMobileOnly ? 0 : 0.8) }}
+      {...restProps}
+    >
       {children}
     </motion.div>
   )

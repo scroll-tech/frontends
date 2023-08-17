@@ -128,7 +128,7 @@ const Cooperation = () => {
               whileInView="show"
               variants={logos[index]}
               viewport={{ once: true, amount: "all" }}
-              transition={{ ease: [0.16, 1, 0.3, 1], duration: 1 }}
+              transition={{ ease: [0.16, 1, 0.3, 1], duration: 1.2 }}
             >
               <Avatar className={classes.logo} key={item} src={`${PARTNER_LOGO_PUBLIC_URL}${item}.png`}></Avatar>
             </motion.div>

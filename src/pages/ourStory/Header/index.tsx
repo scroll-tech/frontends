@@ -3,6 +3,8 @@ import { makeStyles } from "tss-react/mui"
 
 import { Box, Stack, Typography } from "@mui/material"
 
+import OrientationToView from "@/components/Motion/OrientationToView"
+
 const useStyles = makeStyles()(theme => ({
   bg: {
     width: "100%",
@@ -39,10 +41,14 @@ const Header = () => {
     <Box className={classes.bg}>
       <Box className={classes.mask}>
         <Stack direction="column" spacing={isMobileOnly ? "3.2rem" : "1.4rem"} alignItems="center">
-          <Typography sx={{ fontSize: ["4rem", "7.8rem"], lineHeight: 1, fontWeight: 600 }}>Our story</Typography>
-          <Typography sx={{ fontSize: ["2rem", "2.6rem"], maxWidth: ["24.8", "68rem"] }}>
-            We are pragmatic problem solvers, passionate community builders and champions of open-source code.
-          </Typography>
+          <OrientationToView>
+            <Typography sx={{ fontSize: ["4rem", "7.8rem"], lineHeight: 1, fontWeight: 600 }}>Our story</Typography>
+          </OrientationToView>
+          <OrientationToView delay={0.3}>
+            <Typography sx={{ fontSize: ["2rem", "2.6rem"], maxWidth: ["24.8", "68rem"] }}>
+              We are pragmatic problem solvers, passionate community builders and champions of open-source code.
+            </Typography>
+          </OrientationToView>
         </Stack>
       </Box>
     </Box>

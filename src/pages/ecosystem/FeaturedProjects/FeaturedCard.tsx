@@ -10,7 +10,7 @@ import { ECOSYSTEM_SOCIAL_LIST } from "@/constants"
 
 const useStyles = makeStyles()(theme => ({
   card: {
-    flex: 1,
+    height: "100%",
     display: "flex",
     flexDirection: "column",
     padding: "1.5rem",
@@ -52,6 +52,7 @@ const useStyles = makeStyles()(theme => ({
   },
   description: {
     gridArea: "description",
+    ...theme.multilineEllipsis,
   },
   media: {
     gridArea: "media",
@@ -81,7 +82,7 @@ const FeaturedCard = props => {
         ></Img>
       </Box>
       <Box className={classes.content} sx={{ px: ["0.4rem", "1.5rem"], pb: [0, "1.5rem"], pt: ["1.5rem", "2.4rem"] }}>
-        <Typography className={classes.name} sx={{ fontSize: ["1.6rem", "2.2rem"], lineHeight: "normal", fontWeight: 600 }}>
+        <Typography className={classes.name} sx={{ fontSize: ["1.6rem", "2.2rem"], fontWeight: 600 }}>
           {name}
         </Typography>
         <Typography
@@ -89,7 +90,6 @@ const FeaturedCard = props => {
           sx={{
             mt: ["0.9rem", "2.4rem"],
             mb: "2rem",
-            lineHeight: "normal",
             fontSize: ["1.6rem", "2rem"],
           }}
         >
