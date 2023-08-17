@@ -1,7 +1,7 @@
 import { orderBy } from "lodash"
 import { useEffect, useState } from "react"
 
-import { CTune as TuneIcon } from "@mui/icons-material"
+import { Tune as TuneIcon } from "@mui/icons-material"
 import { Box, Modal, Typography } from "@mui/material"
 import { useTheme } from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
