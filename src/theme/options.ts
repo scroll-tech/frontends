@@ -63,7 +63,7 @@ export const paletteOptions = {
     main: "#C9CBCE",
   },
   link: {
-    main: "#00A6F2",
+    main: "#FF684B",
   },
   // for tag
   tagSuccess: {
