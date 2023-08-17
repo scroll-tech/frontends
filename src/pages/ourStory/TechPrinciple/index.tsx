@@ -97,7 +97,7 @@ const TechPrinciple = () => {
             {item ? (
               <SuccessionItem>
                 <SvgIcon sx={{ fontSize: ["2.8rem", "3.2rem"] }} component={item.icon} inheritViewBox></SvgIcon>
-                <Typography sx={{ fontSize: ["1.6rem", "2.4rem"], fontWeight: 600, mt: ["1rem", "2.6rem"], mb: ["1rem", "2rem"] }}>
+                <Typography sx={{ fontSize: ["2rem", "2.4rem"], fontWeight: 600, mt: ["1rem", "2.6rem"], mb: ["1rem", "2rem"] }}>
                   {isMobileOnly ? item.mobileTitle : item.title}
                 </Typography>
                 <Typography sx={{ fontSize: "1.6rem" }}>{item.content}</Typography>

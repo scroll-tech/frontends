@@ -60,7 +60,7 @@ const Value = () => {
 
                 <Typography
                   sx={{
-                    fontSize: ["1.6rem", "2.4rem"],
+                    fontSize: ["2rem", "2.4rem"],
                     fontWeight: 600,
                     color: "primary.contrastText",
                   }}
