@@ -1,3 +1,4 @@
+import { NETWORKS } from "@/constants/networks"
 import { isProduction, requireEnv } from "@/utils"
 
 import { EXPLORER_URL } from "./common"
@@ -40,7 +41,7 @@ export const NAVIGATIONS = [
   },
   {
     name: "L1 Block Explorer",
-    description: "See your L1 transactions on Goerli's block explorer.",
+    description: `See your L1 transactions on ${NETWORKS[0].name}'s block explorer.`,
     isExternal: true,
     subdomainOrPath: EXPLORER_URL.L1,
   },
