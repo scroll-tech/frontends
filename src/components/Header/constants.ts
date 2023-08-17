@@ -27,7 +27,7 @@ const navigations = [
           {
             label: "User Guide",
             key: "user guide",
-            href: "https://docs.scroll.xyz/en/user-guide/",
+            href: "https://docs.scroll.io/en/user-guide/",
             isExternal: true,
           },
         ],
@@ -61,19 +61,19 @@ const navigations = [
           {
             label: "Documentation",
             key: "documentation",
-            href: "https://docs.scroll.xyz/en/home/",
+            href: "https://docs.scroll.io/en/home/",
             isExternal: true,
           },
           {
             label: "Developer Guide",
             key: "developer guide",
-            href: "https://docs.scroll.xyz/en/developers/",
+            href: "https://docs.scroll.io/en/developers/",
             isExternal: true,
           },
           {
             label: "Technology",
             key: "technology",
-            href: "https://docs.scroll.xyz/en/technology/",
+            href: "https://docs.scroll.io/en/technology/",
             isExternal: true,
           },
         ],

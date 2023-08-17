@@ -155,7 +155,7 @@ const Send: FC = () => {
           The transaction failed. Your {walletName} wallet might not be up to date.{" "}
           <b>
             <u
-              onClick={() => window.open("https://docs.scroll.xyz/en/user-guide/common-errors/")}
+              onClick={() => window.open("https://docs.scroll.io/en/user-guide/common-errors/")}
               style={{ textUnderlineOffset: "0.4rem", cursor: "pointer" }}
             >
               Reset your {walletName} account
