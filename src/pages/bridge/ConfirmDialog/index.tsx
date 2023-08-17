@@ -11,6 +11,7 @@ import FormControlLabel from "@mui/material/FormControlLabel"
 import { styled } from "@mui/system"
 
 import Link from "@/components/Link"
+import { NETWORKS } from "@/constants/networks"
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialog-paper": {
@@ -53,7 +54,7 @@ const ConfirmDialog = ({ open, setOpen, send }) => {
 
   return (
     <StyledDialog maxWidth={false} open={open}>
-      <DialogTitle sx={{ fontSize: "2.4rem", mb: "2rem", fontWeight: 600 }}>Move funds to Goerli</DialogTitle>
+      <DialogTitle sx={{ fontSize: "2.4rem", mb: "2rem", fontWeight: 600 }}>Move funds to {NETWORKS[0].name}</DialogTitle>
       <DialogContent>
         <DialogContentText sx={{ mb: "2rem", fontWeight: 500 }}>
           <StyledLink external href="/bridge#end" underline="always">
@@ -65,7 +66,7 @@ const ConfirmDialog = ({ open, setOpen, send }) => {
           control={<Checkbox size="medium" checked={checkbox1Selected} onChange={() => setCheckbox1Selected(!checkbox1Selected)} />}
           label={
             <DialogContentText sx={{ fontSize: "1.4rem", lineHeight: "2rem", cursor: "pointer" }}>
-              I understand that it will take ~1-4 hours before I can claim my funds on Ethereum Goerli
+              I understand that it will take ~1-4 hours before I can claim my funds on {NETWORKS[0].name}
             </DialogContentText>
           }
         />
