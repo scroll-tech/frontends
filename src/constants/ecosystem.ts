@@ -27,12 +27,12 @@ export const ECOSYSTEM_EXPLORER_LIST = [
     href: LEARN_BUILD_LINK,
     title: "Learn how to build with Scroll",
     content:
-      "Lorem ipsum dolor sit amet, consectetur elit. Donec dictum auctor sem et malesuada. Sed facilisis, lorem libero fringilla dictum auctor mauris.",
+      "Scroll is compatible with Ethereum at the bytecode level, meaning everything works right out of the box. For a walkthrough, start with the User Guide's Setup page.",
   },
   {
     icon: DoubleEyesIcon,
     href: LOOKING_FOR_A_DAPP_LINK,
-    title: "Looking for a Dapp?",
+    title: "Looking for a dapp?",
     content:
       "Lorem ipsum dolor sit amet, consectetur elit. Donec dictum auctor sem et malesuada. Sed facilisis, lorem libero fringilla dictum auctor mauris.",
   },

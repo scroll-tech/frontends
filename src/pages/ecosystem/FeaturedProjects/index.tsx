@@ -59,7 +59,7 @@ const FeaturedProjects = props => {
       <SectionHeader
         dark
         title="Featured projects"
-        content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut urna iaculis quam mollis consequat."
+        content="Our story is continually being written and shaped by the community. Here are some exciting examples of projects making an impact on our world."
       ></SectionHeader>
       <SuccessionToView className={classes.flex}>
         {featuredProjects.map(item => (

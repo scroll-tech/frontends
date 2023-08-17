@@ -30,8 +30,8 @@ const Protocals = props => {
   return (
     <SectionWrapper sx={{ pt: ["6rem", "15.4rem"] }}>
       <SectionHeader
-        title="All protocols"
-        content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut urna urna urna iaculis quam mollis consequat."
+        title="Find your purpose with Scroll"
+        content="Whatever the use case, we’re building for what’s next. Browse all protocols and discover new inspiration."
         action={
           <Button href="" target="_blank" color="primary" width={isMobileOnly ? "19.4rem" : "25rem"}>
             Looking for a dapp?

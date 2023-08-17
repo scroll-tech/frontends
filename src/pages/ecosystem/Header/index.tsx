@@ -18,7 +18,7 @@ const Header = () => {
           display: "flex",
           flexDirection: ["column", "column", "row"],
           justifyContent: "space-between",
-          alignItems: ["center", "initial"],
+          alignItems: "center",
         }}
       >
         <OrientationToView>
@@ -27,24 +27,25 @@ const Header = () => {
               fontSize: ["4rem", "7.8rem"],
               lineHeight: ["5rem", "8.5rem"],
               fontWeight: 600,
-              width: ["max-content", "min-content"],
+              textAlign: ["center", "left"],
+              width: ["100%", "66rem"],
             }}
           >
-            Scroll Ecosystem
+            An Ecosystem Forever in Motion
           </Typography>
         </OrientationToView>
-        <Stack direction="column" justifyContent="space-between" sx={{ pb: [0, "1.5rem"], maxWidth: ["100%", "68rem"] }}>
+        <Stack direction="column" justifyContent="space-between" spacing={isMobileOnly ? "3.8rem" : "2.5rem"} sx={{ maxWidth: ["100%", "68rem"] }}>
           <OrientationToView>
             <Typography
               sx={{
                 fontSize: ["2rem", "2.6rem"],
                 lineHeight: "normal",
                 mt: ["2rem", "2rem", 0],
-                mb: ["3.8rem", "3.8rem", 0],
                 textAlign: ["center", "left"],
               }}
             >
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut iaculis quam mollis consequat.
+              Join a supportive, collaborative ecosystem with a greater purpose – permissionless, flexible, and dedicated to defining the future of
+              Ethereum.
             </Typography>
           </OrientationToView>
           <OrientationToView delay={0.3}>
