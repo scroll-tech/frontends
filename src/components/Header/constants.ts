@@ -96,11 +96,15 @@ const navigations = [
             href: "/blog",
           },
           {
-            label: "Join our Team ",
+            label: "Join Us ",
             key: "join our team",
             href: "/join-us",
           },
         ],
+      },
+      {
+        label: "Explore2",
+        children: [],
       },
     ],
   },

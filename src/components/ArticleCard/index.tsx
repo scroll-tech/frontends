@@ -71,6 +71,7 @@ const ArticlePoster = styled(WebpImage)(({ theme }) => ({
   borderRadius: "2.5rem",
   [theme.breakpoints.down("md")]: {
     gridRow: 1,
+    borderRadius: "1.5rem",
   },
 }))
 
