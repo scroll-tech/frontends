@@ -6,7 +6,7 @@ import { styled } from "@mui/system"
 const AnnouncementStack = styled(Stack)(
   ({ theme }) => `
     line-height: 2.6rem;
-    background: ${theme.palette.link.main};
+    background: rgb(235, 113, 6);
     text-align: center;
     color: ${theme.palette.background.default};
     font-size: 1.6rem;
@@ -28,7 +28,7 @@ const Announcement = () => {
   }
   return (
     <AnnouncementStack>
-      Scroll's Alpha Testnet is now live. <ReadMoreLink href="/alpha">Try it!</ReadMoreLink>
+      Scroll's Alpha Testnet is deprecated. Switch to <ReadMoreLink href="https://scroll.io">scroll.io</ReadMoreLink>
     </AnnouncementStack>
   )
 }
