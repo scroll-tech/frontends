@@ -94,7 +94,7 @@ Stay tuned for more exciting updates!
     4. https://github.com/scroll-tech/scroll-guides/tree/main/contract-deploy-demo
 8. How do I get funds on Scroll Sepolia?
     1. Make sure you have added the Scroll Sepolia RPC: https://scroll.io/portal.
-    2. Use [https://docs.scroll.io/en/user-guide/faucet/](https://docs.scroll.xyz/en/user-guide/faucet/) to find public Sepolia faucets. 
+    2. Use [https://docs.scroll.io/en/user-guide/faucet/](https://docs.scroll.io/en/user-guide/faucet/) to find public Sepolia faucets. 
     3. Bridge Sepolia ETH to Scroll Sepolia using our official bridge: https://scroll.io/bridge
 9. I am having issues; where can I get help?
     1. User issues: Please get in touch with us on Discord in the #general-support channel, and we’ll do our best to assist you!
