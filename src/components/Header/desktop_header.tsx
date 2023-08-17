@@ -19,9 +19,8 @@ const StyledBox = styled<any>(Stack)(({ theme, noBg }) => ({
 }))
 
 const StyledPopper = styled<any>(Popper)(({ theme, noBg }) => ({
-  width: "100%",
   backgroundColor: noBg ? "transparent" : theme.palette.themeBackground.light,
-  paddingBottom: "4rem",
+  paddingBottom: "1rem",
 }))
 
 const HeaderContainer = styled(Box)(({ theme }) => ({
@@ -115,7 +114,7 @@ const SubMenuList = styled(Box)(({ theme }) => ({
 const SectionList = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  width: "10rem",
+  width: "fit-content",
 }))
 
 const LinkButton = styled(Link)(({ theme }) => ({
@@ -125,7 +124,7 @@ const LinkButton = styled(Link)(({ theme }) => ({
     fontSize: "1.6rem",
     color: theme.palette.text.primary,
     fontWeight: 400,
-    padding: "0 0 0 1rem",
+    padding: "0 1rem",
     cursor: "pointer",
     "&:hover": {
       color: theme.palette.text.primary,
@@ -138,7 +137,7 @@ const LinkStyledSubButton = styled(NavLink)(({ theme }) => ({
   height: "2.9rem",
   fontSize: "1.6rem",
   fontWeight: 400,
-  padding: "0px 0 0px 1rem",
+  padding: "0 1rem",
   cursor: "pointer",
   color: theme.palette.text.primary,
   "&:hover": {
@@ -155,12 +154,10 @@ const App = ({ currentMenu }) => {
   const [checked, setChecked] = useState("")
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const [popperLeft, setPopperLeft] = useState<number>(0)
 
   const handleMouseEnter = (e, key) => {
     setChecked(key)
     setAnchorEl(e.currentTarget)
-    setPopperLeft(e.currentTarget.getBoundingClientRect().x)
   }
 
   const handleMouseLeave = () => {
@@ -206,14 +203,7 @@ const App = ({ currentMenu }) => {
               />
             </svg>
           </Stack>
-          <StyledPopper
-            style={{ paddingLeft: popperLeft }}
-            open={item.key === checked}
-            placement="bottom-start"
-            anchorEl={anchorEl}
-            transition
-            noBg={noBg}
-          >
+          <StyledPopper open={item.key === checked} placement="bottom-start" anchorEl={anchorEl} transition noBg={noBg}>
             {({ TransitionProps }) => (
               <Fade {...TransitionProps}>
                 <SubMenuList onClick={handleMouseLeave}>{renderSubMenuList(item.children)}</SubMenuList>
