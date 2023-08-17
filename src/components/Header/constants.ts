@@ -23,22 +23,21 @@ const navigations = [
             href: "https://community.scroll.io",
             isExternal: true,
           },
-        ],
-      },
-      {
-        label: "Explore2",
-        children: [
           {
             label: "Blog",
             key: "blog",
             href: "/blog",
           },
           {
-            label: "Join our Team ",
+            label: "Join Us ",
             key: "join our team",
             href: "/join-us",
           },
         ],
+      },
+      {
+        label: "Explore2",
+        children: [],
       },
     ],
   },

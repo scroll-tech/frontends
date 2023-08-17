@@ -1,8 +1,8 @@
 import { orderBy } from "lodash"
 import { useEffect, useState } from "react"
 
-import { Check as CheckIcon, Close as CloseIcon, Tune as TuneIcon } from "@mui/icons-material"
-import { Box, Divider, Modal, Typography } from "@mui/material"
+import { CTune as TuneIcon } from "@mui/icons-material"
+import { Box, Modal, Typography } from "@mui/material"
 import { useTheme } from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import { styled } from "@mui/system"
@@ -27,6 +27,9 @@ const BlogBox = styled(Box)(({ theme }) => ({
     "&:not(:last-of-type)": {
       borderBottom: `1px solid ${theme.palette.themeBackground.highlight}`,
     },
+    "&:first-of-type": {
+      padding: "0 0 3rem",
+    },
   },
 }))
 
@@ -38,10 +41,45 @@ const Header = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
     gridTemplateColumns: "1fr",
     padding: "4.8rem 0",
+    gap: "1rem",
   },
 }))
 
-const FilterContainer = styled(Box)({})
+const Title = styled(Typography)(({ theme }) => ({
+  fontSize: "7.8rem",
+  lineHeight: 1,
+  fontWeight: 600,
+  [theme.breakpoints.down("md")]: {
+    fontSize: "4rem",
+  },
+}))
+
+const Summary = styled(Typography)(({ theme }) => ({
+  fontSize: "2.6rem",
+  maxWidth: "68rem",
+  [theme.breakpoints.down("md")]: {
+    fontSize: "2rem",
+  },
+}))
+
+const FilterContainer = styled(Box)(({ theme }) => ({
+  [theme.breakpoints.down("md")]: {
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+}))
+
+const MobileFilter = styled(Box)(({ theme }) => ({
+  marginBottom: "1.7rem",
+  fontSize: "1.6rem",
+  fontWeight: 500,
+  color: theme.palette.text.primary,
+  cursor: "pointer",
+  borderRadius: "20px",
+  border: `1px solid ${theme.palette.text.primary}`,
+  width: "fit-content",
+  padding: "0.5rem 1.2rem",
+}))
 
 const FilterModal = styled(Box)({
   display: "flex",
@@ -52,10 +90,9 @@ const FilterModal = styled(Box)({
 
 const FilterModalContent = styled(Box)(({ theme }) => ({
   background: theme.palette.background.default,
-  borderRadius: "0.6rem",
+  borderRadius: "2rem",
   width: "35.8rem",
-  height: "64rem",
-  paddingTop: "3rem",
+  padding: "1.4rem 1.8rem",
 }))
 
 const BlogBody = styled(Box)(({ theme }) => ({
@@ -64,6 +101,7 @@ const BlogBody = styled(Box)(({ theme }) => ({
   gridTemplateColumns: "1fr 4fr",
   [theme.breakpoints.down("md")]: {
     gridTemplateColumns: "1fr",
+    gap: "0",
   },
 }))
 
@@ -76,11 +114,13 @@ const FilterTypeName = styled(Typography)(({ theme }) => ({
     marginTop: "6.8rem",
   },
   [theme.breakpoints.down("md")]: {
-    height: "60px",
-    lineHeight: "60px",
+    height: "4rem",
+    lineHeight: "4rem",
     marginBottom: 0,
-    fontSize: "1.4rem",
-    paddingLeft: "3.3rem",
+    fontSize: "2rem",
+    "&:nth-of-type(2)": {
+      marginTop: "5rem",
+    },
   },
 }))
 
@@ -96,19 +136,11 @@ const FilterItem = styled(Typography)(({ theme }) => ({
     fontWeight: 700,
   },
   [theme.breakpoints.down("md")]: {
-    height: "60px",
-    lineHeight: "60px",
+    fontWeight: 500,
+    height: "3.6rem",
+    lineHeight: "3.6rem",
     marginBottom: 0,
-    fontSize: "1.4rem",
-    paddingLeft: "3.3rem",
-    "&.active": {
-      color: theme.palette.primary.main,
-      background: "rgba(51, 51, 51, 0.1)",
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      paddingRight: "1.6rem",
-    },
+    fontSize: "1.8rem",
   },
 }))
 
@@ -191,25 +223,25 @@ const Blog = () => {
     }
     return (
       <FilterContainer>
-        <Box
-          display="flex"
-          justifyContent="flex-end"
-          alignItems="center"
-          onClick={handleFilterOpen}
-          sx={{ marginBottom: "1.7rem", color: theme => theme.palette.link.main }}
-        >
-          <Typography sx={{ marginRight: "0.8rem", color: theme => theme.palette.link.main }}>Filters</Typography>
-          <TuneIcon />
-        </Box>
+        <MobileFilter display="flex" justifyContent="flex-end" alignItems="center" onClick={handleFilterOpen}>
+          <TuneIcon sx={{ marginRight: "1rem", fontSize: "" }} />
+          <Typography>Filters</Typography>
+        </MobileFilter>
         <Modal open={filterOpen} onClose={handleFilterClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
           <FilterModal>
             <FilterModalContent>
-              <Box sx={{ textAlign: "right" }}>
-                <CloseIcon onClick={handleFilterClose} sx={{ fontSize: "2.8rem", marginRight: "1rem" }} />
+              <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4rem" }}>
+                <Typography sx={{ fontWeight: 600, fontSize: "2.8rem" }}>Filters</Typography>
+                <svg xmlns="http://www.w3.org/2000/svg" onClick={handleFilterClose} width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M17.731 1.56775C18.0897 1.20911 18.0897 0.627628 17.731 0.268984C17.3724 -0.0896612 16.7909 -0.0896612 16.4322 0.268984L9 7.70123L1.56775 0.268984C1.20911 -0.0896611 0.627629 -0.0896611 0.268984 0.268984C-0.0896607 0.627628 -0.0896607 1.20911 0.268984 1.56775L7.70123 9L0.268984 16.4323C-0.0896612 16.7909 -0.0896612 17.3724 0.268984 17.731C0.627628 18.0897 1.20911 18.0897 1.56775 17.731L17.731 1.56775ZM12.0065 10.7078C11.6479 10.3491 11.0664 10.3491 10.7078 10.7078C10.3491 11.0664 10.3491 11.6479 10.7078 12.0065L16.4322 17.731C16.7909 18.0897 17.3724 18.0897 17.731 17.731C18.0897 17.3724 18.0897 16.7909 17.731 16.4322L12.0065 10.7078Z"
+                    fill="black"
+                  />
+                </svg>
               </Box>
-              <Typography variant="h3" sx={{ paddingLeft: "3.3rem" }}>
-                Filters
-              </Typography>
+
               <FilterTypeName>Category</FilterTypeName>
               {categories.map(category => (
                 <FilterItem
@@ -217,14 +249,13 @@ const Blog = () => {
                   key={category}
                   className={category === queryForm.category ? "active" : ""}
                 >
-                  {category} {category === queryForm.category ? <CheckIcon sx={{ fontSize: "3rem" }} /> : ""}
+                  {category}
                 </FilterItem>
               ))}
-              <Divider sx={{ margin: "1rem 1.6rem 1rem 3.3rem" }} />
-              <FilterTypeName>Order by</FilterTypeName>
+              <FilterTypeName sx={{ marginTop: "5rem" }}>Order by</FilterTypeName>
               {listType.map(type => (
                 <FilterItem onClick={() => hanleFilter("sort", type)} key={type} className={type === queryForm.sort ? "active" : ""}>
-                  {type} {type === queryForm.sort ? <CheckIcon sx={{ fontSize: "3rem" }} /> : ""}
+                  {type}
                 </FilterItem>
               ))}
             </FilterModalContent>
@@ -237,10 +268,8 @@ const Blog = () => {
   return (
     <BlogContainer>
       <Header>
-        <Typography sx={{ fontSize: ["4rem", "7.8rem"], lineHeight: 1, fontWeight: 600 }}>Scroll Blog</Typography>
-        <Typography sx={{ fontSize: ["2rem", "2.6rem"], display: ["none", "block"], maxWidth: ["24.8", "68rem"] }}>
-          Learn about Scroll’s technology, research, and latest developments.
-        </Typography>
+        <Title>Scroll Blog</Title>
+        <Summary>Learn about Scroll’s technology, research, and latest developments.</Summary>
       </Header>
       <BlogBody>
         {renderFilter()}
