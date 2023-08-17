@@ -12,7 +12,7 @@ const SectionHeader = props => {
       alignItems="flex-end"
       {...rest}
     >
-      <Stack direction="column" sx={{ width: ["100%", "56rem"] }}>
+      <Stack direction="column" sx={{ width: ["100%", "60rem"] }}>
         <Typography
           sx={{
             fontSize: ["3.2rem", "4.6rem"],
