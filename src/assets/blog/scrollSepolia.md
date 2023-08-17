@@ -89,15 +89,10 @@ Stay tuned for more exciting updates!
     2. It has the closest experience to Scroll Mainnet.
 6. How do I deploy on Scroll Sepolia?
     1. Like always, the same as Ethereum (aka “boring DevEx”)! Use https://scroll.io/portal to configure your wallet and clone https://github.com/scroll-tech/scroll-guides/tree/main/contract-deploy-demo to deploy your contract. Check out our Developer Quickstart for guidance on using your developer tooling of choice: https://docs.scroll.io/en/developers/developer-quickstart/
-7. Which repos are available? 
-    1. https://github.com/scroll-tech/go-ethereum
-    2. https://github.com/scroll-tech/scroll
-    3. https://github.com/scroll-tech/frontends
-    4. https://github.com/scroll-tech/scroll-guides/tree/main/contract-deploy-demo
-8. How do I get funds on Scroll Sepolia?
+7. How do I get funds on Scroll Sepolia?
     1. Make sure you have added the Scroll Sepolia RPC: https://scroll.io/portal.
     2. Use [https://docs.scroll.io/en/user-guide/faucet/](https://docs.scroll.io/en/user-guide/faucet/) to find public Sepolia faucets. 
     3. Bridge Sepolia ETH to Scroll Sepolia using our official bridge: https://scroll.io/bridge
-9. I am having issues; where can I get help?
+8. I am having issues; where can I get help?
     1. User issues: Please get in touch with us on Discord in the #general-support channel, and we’ll do our best to assist you!
     2. Developer issues: Please describe your problem in the #testnet-devs channel on Discord, and our DevRel team will help!
