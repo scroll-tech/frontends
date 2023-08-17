@@ -40,7 +40,7 @@ export const NAVIGATIONS = [
   },
   {
     name: "L1 Block Explorer",
-    description: "See your L1 transactions on Goerli's block explorer.",
+    description: "See your L1 transactions on Sepolia's block explorer.",
     isExternal: true,
     subdomainOrPath: EXPLORER_URL.L1,
   },
