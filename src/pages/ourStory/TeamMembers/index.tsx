@@ -77,6 +77,11 @@ const useStyles = makeStyles()(theme => ({
       gridRowGap: "5rem",
     },
   },
+  img: {
+    position: "relative",
+    top: "8px",
+    height: "auto",
+  },
 }))
 
 const TeamMembers = () => {
@@ -94,9 +99,10 @@ const TeamMembers = () => {
             <Avatar
               sx={{ backgroundColor: "themeBackground.highlight", width: ["11.6rem", "16.3rem"], height: ["11.6rem", "16.3rem"] }}
               src={item.avatar}
+              classes={{ img: classes.img }}
             ></Avatar>
             <Typography sx={{ fontSize: "2rem", fontWeight: 600, mt: "2.2rem", mb: "0.6rem", textAlign: "center" }}>{item.name}</Typography>
-            <Typography sx={{ fontSize: "2rem", textAlign: "center" }}>{item.desc}</Typography>
+            <Typography sx={{ fontSize: ["1.6rem", "2rem"], textAlign: "center" }}>{item.desc}</Typography>
           </SuccessionItem>
         ))}
       </SuccessionToView>
