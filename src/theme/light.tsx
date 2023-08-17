@@ -18,7 +18,7 @@ const lightTheme = createTheme({
     overflow: "hidden",
   },
   shape: {
-    borderRadius: 6,
+    borderRadius: 27,
   },
   palette: paletteOptions,
   typography: typographyOptions,
@@ -45,6 +45,7 @@ const lightTheme = createTheme({
       styleOverrides: {
         tooltip: {
           fontSize: "1.4rem",
+          borderRadius: "0.6rem",
         },
       },
       defaultProps: {

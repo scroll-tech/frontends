@@ -104,7 +104,6 @@ const CustomTableRow = styled(TableRow)(({ theme }) => ({
     right: 0,
     width: "0.8rem",
     height: "calc(100% - 1px)",
-    backgroundColor: theme.palette.background.default,
     transition: "all 0.5s ease",
   },
   "&.rowActive": {
@@ -169,7 +168,7 @@ const RollupTable = forwardRef<any, any>((props, ref) => {
         <Spinning />
       ) : (
         <>
-          <Typography variant="body1" color="textSecondary" align="left">
+          <Typography variant="body1" align="left">
             {total.toLocaleString()} results shown
           </Typography>
           <Table aria-label="Batch table">
