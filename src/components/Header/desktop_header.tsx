@@ -31,7 +31,7 @@ const HeaderContainer = styled(Box)(({ theme }) => ({
 }))
 
 const MenuLinkButton = styled(Link)(({ theme }) => ({
-  fontSize: "16px",
+  fontSize: "1.8rem",
   fontWeight: 400,
   paddingLeft: "25px",
   paddingRight: "25px",
@@ -47,19 +47,20 @@ const MenuLinkButton = styled(Link)(({ theme }) => ({
 
 const ExternalLink = styled("p")(({ theme }) => ({
   fontWeight: 400,
-  fontSize: "1.4rem",
+  fontSize: "1.8rem",
   height: "2.1rem",
   lineHeight: "2.1rem",
   color: "#333",
   display: "flex",
   alignItems: "center",
+  width: "100%",
   "&:hover": {
     fontWeight: 500,
   },
 }))
 
 const LinkStyledButton = styled(NavLink)(({ theme }) => ({
-  fontSize: "16px",
+  fontSize: "1.8rem",
   fontWeight: 400,
   paddingLeft: "10px",
   paddingRight: "10px",
@@ -77,10 +78,10 @@ const LinkStyledButton = styled(NavLink)(({ theme }) => ({
 }))
 
 const SubMenuButton = styled(Box)(({ theme }) => ({
-  fontSize: "16px",
+  fontSize: "1.8rem",
   fontWeight: 400,
-  paddingLeft: "10px",
-  paddingRight: "10px",
+  paddingLeft: "2rem",
+  paddingRight: "2rem",
   marginLeft: "0.5rem",
   marginRight: "0.5rem",
   lineHeight: "65px",
@@ -106,25 +107,34 @@ const SubMenuList = styled(Box)(({ theme }) => ({
   zIndex: 1,
   borderRadius: `${theme.shape.borderRadius}px`,
   display: "flex",
-  flexDirection: "row",
+  flexDirection: "column",
   overflow: "hidden",
-  padding: "0",
+  padding: "0 2rem",
 }))
 
 const SectionList = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  width: "fit-content",
+  width: "100%",
+  padding: "1.8rem 0",
+  "&:nth-child(1)": {
+    paddingTop: 0,
+  },
+  "&:nth-child(n+2)": {
+    borderTop: `1px solid ${theme.palette.text.primary}`,
+  },
+  "&:nth-last-child(1)": {
+    paddingBottom: "0.8rem",
+  },
 }))
 
 const LinkButton = styled(Link)(({ theme }) => ({
   "& p": {
     lineHeight: "2.9rem",
     height: "2.9rem",
-    fontSize: "1.6rem",
+    fontSize: "1.8rem",
     color: theme.palette.text.primary,
     fontWeight: 400,
-    padding: "0 1rem",
     cursor: "pointer",
     "&:hover": {
       color: theme.palette.text.primary,
@@ -135,9 +145,8 @@ const LinkButton = styled(Link)(({ theme }) => ({
 const LinkStyledSubButton = styled(NavLink)(({ theme }) => ({
   lineHeight: "2.9rem",
   height: "2.9rem",
-  fontSize: "1.6rem",
+  fontSize: "1.8rem",
   fontWeight: 400,
-  padding: "0 1rem",
   cursor: "pointer",
   color: theme.palette.text.primary,
   "&:hover": {
@@ -171,7 +180,7 @@ const App = ({ currentMenu }) => {
         {section.children?.map(subItem =>
           subItem.isExternal ? (
             <LinkButton target="_blank" underline="none" key={subItem.label} href={subItem.href}>
-              <Stack direction="row" alignItems="center" spacing={1}>
+              <Stack direction="row" alignItems="center" spacing={1} sx={{ width: "100%" }}>
                 <ExternalLink>{subItem.label}</ExternalLink>
               </Stack>
             </LinkButton>
