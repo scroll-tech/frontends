@@ -123,7 +123,7 @@ const formatBackTxList = async (backList, estimatedTimeMap) => {
       const toName = NETWORKS[+tx.isL1].name
       const toExplore = NETWORKS[+tx.isL1].explorer
       const toHash = tx.finalizeTx?.hash
-      const initiatedAt = tx.blockTimestamp
+      const initiatedAt = tx.blockTimestamp || tx.createdTime
       const finalisedAt = tx.finalizeTx?.blockTimestamp
 
       let isFinalized

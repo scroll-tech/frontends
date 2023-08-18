@@ -254,7 +254,7 @@ const TxRow = props => {
       <TableCell>
         <Typography sx={{ fontWeight: 500 }}>
           <span>{txAmount(tx.amount)} </span>
-          {tokenInfoLoading ? <Skeleton variant="text" width="5rem" className="inline-block" /> : <span>{tokenInfo.symbol}</span>}
+          {tokenInfoLoading ? <Skeleton variant="text" width="5rem" className="inline-block" /> : <span>{tokenInfo?.symbol}</span>}
         </Typography>
       </TableCell>
       {/* <TableCell>
