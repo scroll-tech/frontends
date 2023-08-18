@@ -11,6 +11,12 @@ import { requireEnv } from "@/utils"
 const OFFSET = "0x1111000000000000000000000000000000001111"
 const amount = BigInt(1)
 
+enum MIN_GASLIMIT {
+  ETH_GATEWAY = 14e4,
+  WETH_GATEWAY = 17e4,
+  STANDARD_ERC20_GATEWAY = 15e4,
+}
+
 type Props = {
   gasLimit: bigint
   gasPrice: bigint
@@ -104,7 +110,7 @@ export const PriceFeeProvider = ({ children }) => {
     } catch (err) {
       console.log(err)
       setErrorMessage("Failed to get gas price")
-      throw new Error("Failed to get gas price")
+      throw new Error(err)
     }
   }
 
@@ -180,10 +186,10 @@ export const PriceFeeProvider = ({ children }) => {
         data: calldata,
       })
       setErrorMessage("")
-      return (BigInt(gaslimit) * BigInt(120)) / BigInt(100)
+      return (BigInt(Math.max(Number(gaslimit), MIN_GASLIMIT[contractName] as unknown as number)) * BigInt(120)) / BigInt(100)
     } catch (error) {
       setErrorMessage("Failed to get gas limit")
-      throw new Error("Failed to get gas limit")
+      throw new Error(error)
     }
   }
 
