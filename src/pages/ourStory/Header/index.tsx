@@ -40,12 +40,12 @@ const Header = () => {
   return (
     <Box className={classes.bg}>
       <Box className={classes.mask}>
-        <Stack direction="column" spacing={isMobileOnly ? "3.2rem" : "1.4rem"} alignItems="center">
+        <Stack direction="column" spacing={isMobileOnly ? "2.2rem" : "1.4rem"} alignItems="center">
           <OrientationToView>
             <Typography sx={{ fontSize: ["4rem", "7.8rem"], lineHeight: 1, fontWeight: 600 }}>Our story</Typography>
           </OrientationToView>
           <OrientationToView delay={0.3}>
-            <Typography sx={{ fontSize: ["2rem", "2.6rem"], maxWidth: ["24.8", "68rem"] }}>
+            <Typography sx={{ fontSize: ["2rem", "2.6rem"], maxWidth: ["24.8rem", "68rem"] }}>
               We are pragmatic problem solvers, passionate community builders and champions of open-source code.
             </Typography>
           </OrientationToView>
