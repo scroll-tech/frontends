@@ -46,6 +46,12 @@ const navigations = [
             href: EXPLORER_URL.L2,
             isExternal: true,
           },
+          {
+            label: "Dora Explorer",
+            key: "doraBlockExplorer",
+            href: EXPLORER_URL.Dora,
+            isExternal: true,
+          },
         ],
       },
     ],
