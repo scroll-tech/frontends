@@ -4,12 +4,9 @@ import { makeStyles } from "tss-react/mui"
 
 import { Button, InputBase, Stack, Typography } from "@mui/material"
 
-import { ETH_SYMBOL } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { sanitizeNumericalString, toTokenDisplay } from "@/utils"
 
-import DetailRow from "./InfoTooltip/DetailRow"
-import FeeDetails from "./InfoTooltip/FeeDetails"
 import TokenSelect from "./TokenSelect"
 
 const useStyles = makeStyles()(theme => ({
@@ -46,6 +43,10 @@ const useStyles = makeStyles()(theme => ({
     "&:hover": {
       color: theme.palette.text.primary,
       backgroundColor: theme.palette.themeBackground.optionHightlight,
+    },
+    "&.Mui-disabled": {
+      color: "#EBC28E",
+      backgroundColor: "#FFF5E8",
     },
     [theme.breakpoints.down("sm")]: {
       minWidth: "5rem",
@@ -92,18 +93,6 @@ const BalanceInput = props => {
           Max
         </Button>
       </Stack>
-
-      <DetailRow
-        title="Fees"
-        sx={{ mt: "0.8rem" }}
-        tooltip={<FeeDetails />}
-        value={
-          <>
-            <Typography>{value ? toTokenDisplay(fee, selectedToken.decimals, ETH_SYMBOL) : "-"}</Typography>
-          </>
-        }
-        large
-      />
     </>
   )
 }

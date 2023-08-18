@@ -2,11 +2,11 @@ import { motion, useCycle } from "framer-motion"
 import { isMobileOnly } from "react-device-detect"
 import { makeStyles } from "tss-react/mui"
 
-import { ButtonBase, IconButton, SvgIcon } from "@mui/material"
+import { ButtonBase, CircularProgress, IconButton, SvgIcon } from "@mui/material"
 
 import { ReactComponent as ArrowRightIcon } from "@/assets/svgs/refactor/arrow-right.svg"
 
-const useStyles = makeStyles<any>()((theme, { width, color }) => ({
+const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading }) => ({
   wrapper: {
     position: "relative",
     height: "5.4rem",
@@ -14,6 +14,9 @@ const useStyles = makeStyles<any>()((theme, { width, color }) => ({
     [theme.breakpoints.down("sm")]: {
       height: "4.8rem",
     },
+  },
+  wrapperDisabled: {
+    backgroundColor: "#FFF0DD80",
   },
   button: {
     fontSize: "2rem",
@@ -24,11 +27,21 @@ const useStyles = makeStyles<any>()((theme, { width, color }) => ({
     border: `1px solid ${color === "primary" ? theme.palette.primary.main : theme.palette.text.primary}`,
     color: color === "primary" ? theme.palette.primary.main : theme.palette.text.primary,
     borderRadius: "1rem",
-
     [theme.breakpoints.down("sm")]: {
       fontSize: "1.6rem",
       paddingLeft: "4.8rem",
     },
+  },
+  buttonDisabled: {
+    borderColor: "#EBC28E",
+    color: "#EBC28E",
+  },
+  buttonLoading: {
+    paddingLeft: "2rem",
+    paddingRight: "2rem",
+    border: "unset",
+    justifyContent: "space-between",
+    color: "#0F8E7E",
   },
   active: {
     color: theme.palette.primary.contrastText,
@@ -42,6 +55,13 @@ const useStyles = makeStyles<any>()((theme, { width, color }) => ({
     [theme.breakpoints.down("sm")]: {
       width: "4.8rem",
     },
+  },
+  maskLoading: {
+    width: "100% !important",
+    backgroundColor: "#DFFCF8",
+  },
+  maskDisabled: {
+    backgroundColor: "#EBC28E",
   },
   icon: {
     width: "5.4rem",
@@ -73,25 +93,41 @@ const maskMobile = {
 }
 // color: "primary" | undefined
 const Button = props => {
-  const { width = "25rem", sx, color, children, ...restProps } = props
-  const { classes, cx } = useStyles({ color, width })
+  const { width = "25rem", sx, color, loading, disabled, children, ...restProps } = props
+  const { classes, cx } = useStyles({ color, width, disabled, loading })
 
   const [isHover, setIsHover] = useCycle(false, true)
+
+  const handleHover = () => {
+    if (!disabled && !loading) {
+      setIsHover()
+    }
+  }
 
   return (
     // TODO: allow sx, allow size=small/medium
     <motion.div
-      className={classes.wrapper}
-      onHoverStart={setIsHover as any}
-      onHoverEnd={setIsHover as any}
+      className={cx(classes.wrapper, disabled && classes.wrapperDisabled)}
+      onHoverStart={handleHover}
+      onHoverEnd={handleHover}
       animate={isHover ? "expanding" : "normal"}
     >
-      <IconButton classes={{ root: classes.icon }} component="span" disabled>
-        <SvgIcon component={ArrowRightIcon} inheritViewBox></SvgIcon>
-      </IconButton>
-      <motion.div className={classes.mask} variants={isMobileOnly ? maskMobile : maskDesktop}></motion.div>
-      <ButtonBase classes={{ root: classes.button }} className={cx(isHover && classes.active)} {...restProps}>
-        {children}
+      {!loading && (
+        <IconButton classes={{ root: classes.icon }} component="span" disabled>
+          <SvgIcon component={ArrowRightIcon} inheritViewBox></SvgIcon>
+        </IconButton>
+      )}
+      <motion.div
+        className={cx(classes.mask, loading && classes.maskLoading, disabled && classes.maskDisabled)}
+        variants={isMobileOnly ? maskMobile : maskDesktop}
+      ></motion.div>
+      <ButtonBase
+        classes={{ root: cx(classes.button, loading && classes.buttonLoading, disabled && classes.buttonDisabled) }}
+        disabled={disabled || loading}
+        className={cx(isHover && classes.active)}
+        {...restProps}
+      >
+        {children} {loading && <CircularProgress sx={{ color: "#0F8E7E" }} size={24} thickness={4}></CircularProgress>}
       </ButtonBase>
     </motion.div>
   )

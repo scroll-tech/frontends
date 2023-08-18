@@ -8,16 +8,20 @@ import NetworkIndicator from "./NetworkIndicator"
 import WalletConnector from "./WalletConnector"
 
 const ConnectorAndHistory = props => {
-  const { changeMode } = useBridgeStore()
+  const { changeMode, mode } = useBridgeStore()
   const handleChangeMode = () => {
-    changeMode("History")
+    if (mode === "Transaction") {
+      changeMode("History")
+    } else {
+      changeMode("Transaction")
+    }
   }
   return (
     <Stack direction="row" spacing={isMobileOnly ? "2rem" : "1.5rem"} {...props}>
-      <WalletConnector sx={{ flex: 1 }}></WalletConnector>
+      <WalletConnector sx={{ flex: 1, p: 0 }}></WalletConnector>
       {isDesktop && <NetworkIndicator></NetworkIndicator>}
       <Button variant="contained" color="inherit" sx={{ fontSize: ["1.6rem", "2rem"], p: 0, flex: 1 }} onClick={handleChangeMode}>
-        Transaction History
+        {mode === "Transaction" ? "Transaction History" : "Bridge"}
       </Button>
     </Stack>
   )

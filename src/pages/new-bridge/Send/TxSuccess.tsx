@@ -5,6 +5,7 @@ import useStorage from "squirrel-gill"
 import { Alert, Box, Typography } from "@mui/material"
 
 import Button from "@/components/Button"
+import Link from "@/components/Link"
 import TextButton from "@/components/TextButton"
 import { ETH_SYMBOL } from "@/constants"
 import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
@@ -16,8 +17,13 @@ const TxSuccess = () => {
 
   const transactionUrl = useMemo(() => `${fromNetwork.explorer}/tx/${txResult?.hash}`, [fromNetwork, txResult])
 
-  // TODO: temporarily
-  const handleReturn = () => {
+  const handleReturnDeposit = () => {
+    changeTxResult(null)
+  }
+
+  // TODO: need confirm
+  const handleReturnWithdraw = () => {
+    changeWithdrawStep("1")
     changeTxResult(null)
   }
 
@@ -29,7 +35,7 @@ const TxSuccess = () => {
   if (txType === "Deposit") {
     return (
       <Box sx={{ height: "34rem" }}>
-        <Alert icon={false} severity="success" sx={{ fontSize: "2.4rem", fontWeight: "600", textAlign: "center" }} onClick={handleReturn}>
+        <Alert icon={false} severity="success" sx={{ fontSize: "2.4rem", fontWeight: "600", textAlign: "center" }}>
           Success!
         </Alert>
         <Typography sx={{ fontSize: "1.8rem", fontWeight: 700, mt: "2.5rem" }}>
@@ -39,15 +45,19 @@ const TxSuccess = () => {
         <Typography sx={{ fontSize: "1.8rem", fontWeight: 700, mt: "4rem" }}>
           This is your tx hash: <Typography sx={{ fontWeight: 400 }}>{txResult?.hash}</Typography>
         </Typography>
-        <TextButton sx={{ color: "success.main", fontSize: "1.6rem" }} href={transactionUrl} external>
+        <Link sx={{ color: "success.main", fontSize: "1.6rem" }} underline="always" href={transactionUrl} external>
           Check your transaction in our block explorer
+        </Link>
+        <Typography sx={{ fontSize: "1.8rem", fontWeight: 700, mt: "4rem" }}>Deposit more {tokenSymbol}</Typography>
+        <TextButton sx={{ color: "success.main", fontSize: "1.6rem" }} underline="always" onClick={handleReturnDeposit} external>
+          Return to Deposit
         </TextButton>
       </Box>
     )
   } else if (txType === "Withdraw" && withDrawStep === "1") {
     return (
       <Box sx={{ height: "34rem" }}>
-        <Alert icon={false} severity="success" sx={{ fontSize: "2.4rem", fontWeight: "600", textAlign: "center" }} onClick={handleReturn}>
+        <Alert icon={false} severity="success" sx={{ fontSize: "2.4rem", fontWeight: "600", textAlign: "center" }}>
           Success!
         </Alert>
         <Typography sx={{ fontSize: "1.8rem", fontWeight: 700, mt: "2.5rem" }}>
@@ -57,9 +67,9 @@ const TxSuccess = () => {
         <Typography sx={{ fontSize: "1.8rem", fontWeight: 700, mt: "4rem" }}>
           This is your tx hash: <Typography sx={{ fontWeight: 400 }}>{txResult?.hash}</Typography>
         </Typography>
-        <TextButton sx={{ color: "success.main", fontSize: "1.6rem", marginBottom: "4.8rem" }} href={transactionUrl} external>
+        <Link sx={{ color: "success.main", fontSize: "1.6rem", marginBottom: "4.8rem" }} underline="always" href={transactionUrl} external>
           Check your transaction in our block explorer
-        </TextButton>
+        </Link>
         <Button width={isMobileOnly ? "100%" : "35rem"} color="primary" onClick={handleClaim}>
           Claim Funds on {toNetwork.name}
         </Button>
@@ -68,7 +78,7 @@ const TxSuccess = () => {
   }
   return (
     <Box sx={{ height: "34rem" }}>
-      <Alert icon={false} severity="success" sx={{ fontSize: "2.4rem", fontWeight: "600", textAlign: "center" }} onClick={handleReturn}>
+      <Alert icon={false} severity="success" sx={{ fontSize: "2.4rem", fontWeight: "600", textAlign: "center" }}>
         Success!
       </Alert>
       <Typography sx={{ fontSize: "1.8rem", fontWeight: 700, mt: "2.5rem" }}>
@@ -78,8 +88,12 @@ const TxSuccess = () => {
       <Typography sx={{ fontSize: "1.8rem", fontWeight: 700, mt: "4rem" }}>
         This is your tx hash: <Typography sx={{ fontWeight: 400 }}>{txResult?.hash}</Typography>
       </Typography>
-      <TextButton sx={{ color: "success.main", fontSize: "1.6rem" }} href={transactionUrl} external>
+      <Link sx={{ color: "success.main", fontSize: "1.6rem" }} href={transactionUrl} underline="always" external>
         Check your transaction in our block explorer
+      </Link>
+      <Typography sx={{ fontSize: "1.8rem", fontWeight: 700, mt: "4rem" }}>Withdraw more {tokenSymbol}</Typography>
+      <TextButton sx={{ color: "success.main", fontSize: "1.6rem" }} underline="always" onClick={handleReturnWithdraw} external>
+        Return to Withdraw
       </TextButton>
     </Box>
   )

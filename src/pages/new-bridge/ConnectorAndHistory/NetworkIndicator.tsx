@@ -1,6 +1,6 @@
 import { useMemo } from "react"
 
-import { ButtonBase, SvgIcon } from "@mui/material"
+import { SvgIcon } from "@mui/material"
 
 import { ReactComponent as MainnetInactiveSvg } from "@/assets/svgs/refactor/bridge-network-mainnet-inactive.svg"
 import { ReactComponent as MainnetSvg } from "@/assets/svgs/refactor/bridge-network-mainnet.svg"
@@ -12,7 +12,7 @@ import useBridgeStore from "@/stores/bridgeStore"
 const NetworkIndicator = () => {
   const { chainId } = useRainbowContext()
 
-  const { fromNetwork, changeMode } = useBridgeStore()
+  const { fromNetwork } = useBridgeStore()
 
   const icon = useMemo(() => {
     if (chainId && chainId === fromNetwork.chainId && fromNetwork.isL1) {
@@ -25,15 +25,7 @@ const NetworkIndicator = () => {
     return ScrollInactiveSvg
   }, [chainId, fromNetwork])
 
-  const handleChangeMode = () => {
-    changeMode("Transaction")
-  }
-
-  return (
-    <ButtonBase onClick={handleChangeMode}>
-      <SvgIcon sx={{ fontSize: "4.6rem" }} component={icon} inheritViewBox></SvgIcon>
-    </ButtonBase>
-  )
+  return <SvgIcon sx={{ fontSize: "4.6rem" }} component={icon} inheritViewBox></SvgIcon>
 }
 
 export default NetworkIndicator

@@ -12,8 +12,7 @@ const TextButton = props => {
         fontWeight: 600,
         ...sx,
       }}
-      underline="none"
-      className="hover:underline"
+      underline="hover"
       {...restProps}
     >
       {children}

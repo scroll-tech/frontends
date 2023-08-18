@@ -10,11 +10,6 @@ import useBridgeStore from "@/stores/bridgeStore"
 import useTxStore, { TxPosition, isValidOffsetTime } from "@/stores/txStore"
 import { amountToBN, sentryDebug } from "@/utils"
 
-export type TransactionHandled = {
-  transaction: any
-  txModel: any
-}
-
 export function useSendTransaction(props) {
   const { amount: fromTokenAmount, setSendError, selectedToken } = props
   const { walletCurrentAddress } = useRainbowContext()

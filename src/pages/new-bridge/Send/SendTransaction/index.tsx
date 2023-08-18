@@ -16,12 +16,14 @@ import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useApprove, useAsyncMemo } from "@/hooks"
 import useCheckValidAmount from "@/hooks/useCheckValidAmount"
 import useBridgeStore from "@/stores/bridgeStore"
-import { amountToBN, switchNetwork } from "@/utils"
+import { amountToBN, switchNetwork, toTokenDisplay } from "@/utils"
 
 import useGasFee from "../../hooks/useGasFee"
 import { useSendTransaction } from "../../hooks/useSendTransaction"
 import useSufficientBalance from "../../hooks/useSufficientBalance"
 import BalanceInput from "./BalanceInput"
+import DetailRow from "./InfoTooltip/DetailRow"
+import FeeDetails from "./InfoTooltip/FeeDetails"
 import NetworkDirection from "./NetworkDirection"
 
 const SendTransaction = props => {
@@ -44,7 +46,7 @@ const SendTransaction = props => {
 
   const { checkApproval } = useApprove(selectedToken)
 
-  const { send: sendTransaction } = useSendTransaction({
+  const { send: sendTransaction, sending } = useSendTransaction({
     amount,
     setSendError,
     selectedToken,
@@ -53,7 +55,6 @@ const SendTransaction = props => {
   const { isValid, message: invalidAmountMessage } = useCheckValidAmount(amount)
 
   // fee start
-
   const estimatedGasCost = useGasFee(selectedToken)
 
   const totalFee = useMemo(() => (estimatedGasCost ?? BigInt(0)) + gasLimit * gasPrice, [estimatedGasCost, gasLimit, gasPrice])
@@ -66,18 +67,30 @@ const SendTransaction = props => {
   )
   // fee end
 
+  const displayedFee = useMemo(() => {
+    if (!isNetworkCorrect || !amount) {
+      return "-"
+    }
+    return toTokenDisplay(totalFee, selectedToken.decimals, ETH_SYMBOL)
+  }, [isNetworkCorrect, amount, totalFee, selectedToken])
+
   const bridgeWarning = useMemo(() => {
     if (!chainId) {
       return (
         <>
-          Your wallet is not connected. <TextButton onClick={connect}>Please connect your wallet to proceed.</TextButton>
+          Your wallet is not connected.{" "}
+          <TextButton underline="always" onClick={connect}>
+            Please connect your wallet to proceed.
+          </TextButton>
         </>
       )
     } else if (!isNetworkCorrect) {
       return (
         <>
           Your wallet is connected to an unsupported network.{" "}
-          <TextButton onClick={() => switchNetwork(fromNetwork.chainId)}>Click here to switch to {fromNetwork.name}.</TextButton>
+          <TextButton underline="always" onClick={() => switchNetwork(fromNetwork.chainId)}>
+            Click here to switch to {fromNetwork.name}.
+          </TextButton>
         </>
       )
     } else if (insufficientWarning) {
@@ -88,10 +101,7 @@ const SendTransaction = props => {
       return (
         <>
           The transaction failed. Your {walletName} wallet might not be up to date.{" "}
-          <TextButton
-            onClick={() => window.open("https://guide.scroll.io/user-guide/common-errors")}
-            style={{ textUnderlineOffset: "0.4rem", cursor: "pointer" }}
-          >
+          <TextButton underline="always" onClick={() => window.open("https://guide.scroll.io/user-guide/common-errors")}>
             Reset your {walletName} account
           </TextButton>
           {" before using Scroll Bridge."}
@@ -164,6 +174,7 @@ const SendTransaction = props => {
         tokenOptions={tokenOptions}
         onChangeToken={handleChangeTokenSymbol}
       ></BalanceInput>
+      <DetailRow title="Fees" sx={{ my: "0.8rem" }} tooltip={<FeeDetails />} value={<Typography>{displayedFee}</Typography>} large />
       <Typography sx={{ fontSize: "1.4rem", fontWeight: 500, width: "32.4rem", textAlign: "center", margin: "0 auto" }} color="primary">
         {bridgeWarning}
       </Typography>
@@ -173,8 +184,8 @@ const SendTransaction = props => {
             Approve {tokenSymbol}
           </Button>
         ) : (
-          <Button width={isMobileOnly ? "100%" : "25rem"} color="primary" disabled={!sendButtonActive} onClick={handleSend}>
-            {txType === "Deposit" ? "Deposit Funds" : "Withdraw Funds"}
+          <Button width={isMobileOnly ? "100%" : "22rem"} color="primary" disabled={!sendButtonActive} loading={sending} onClick={handleSend}>
+            {txType === "Deposit" ? "Depositing Funds" : "Withdraw Funds"}
           </Button>
         )}
       </Box>

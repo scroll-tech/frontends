@@ -11,19 +11,16 @@ function useSufficientBalance(selectedToken: any, amount?: bigint, fee?: bigint,
   const { networksAndSigners } = useApp()
   const networksAndSigner = networksAndSigners[chainId as number]
 
-  const { fromNetwork } = useBridgeStore()
+  const { isNetworkCorrect } = useBridgeStore()
   const [, setSufficientBalance] = useState(false)
   const [warning, setWarning] = useState("")
   const { isSmartContractWallet } = useIsSmartContractWallet()
 
   useEffect(() => {
     async function checkEnoughBalance() {
-      if (!chainId || chainId !== fromNetwork.chainId) {
-        return
-      }
-      if (!(amount && networksAndSigner && networksAndSigner.signer)) {
+      if (!isNetworkCorrect || !amount) {
         setWarning("")
-        return setSufficientBalance(false)
+        return
       }
 
       let enoughFeeBalance: boolean
@@ -80,7 +77,7 @@ function useSufficientBalance(selectedToken: any, amount?: bigint, fee?: bigint,
     } else {
       checkEnoughBalance()
     }
-  }, [networksAndSigner, amount?.toString(), fee, tokenBalance.toString()])
+  }, [networksAndSigner, amount, fee, tokenBalance])
 
   return {
     insufficientWarning: warning,
