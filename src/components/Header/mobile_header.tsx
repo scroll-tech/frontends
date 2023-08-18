@@ -109,6 +109,13 @@ const SectionList = styled("div")(({ theme }) => ({
   "&:last-of-type": {
     paddingBottom: "2.5rem",
   },
+  "&:nth-last-child(-n+2)": {
+    paddingBottom: "1.6rem",
+  },
+  "&:nth-child(n+2)": {
+    borderTop: `1px solid ${theme.palette.text.primary}`,
+    paddingTop: "1.6rem",
+  },
 }))
 
 const ExpandMoreIcon = styled(ExpandMore)(({ theme }) => ({

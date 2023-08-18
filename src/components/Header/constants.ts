@@ -1,3 +1,6 @@
+import { NETWORKS } from "@/constants"
+import { requireEnv } from "@/utils"
+
 const navigations = [
   {
     label: "Our Story",
@@ -5,12 +8,62 @@ const navigations = [
     href: "/story",
   },
   {
+    label: "Develop",
+    key: "develop",
+    href: "",
+    children: [
+      {
+        label: "develop1",
+        children: [
+          {
+            label: "Docs",
+            key: "docs",
+            href: "https://docs.scroll.xyz/en/home/",
+            isExternal: true,
+          },
+          {
+            label: "Testnet",
+            key: "testnet",
+            href: "/portal",
+          },
+          {
+            label: "Status",
+            key: "status",
+            href: "https://status.scroll.io/",
+            isExternal: true,
+          },
+        ],
+      },
+      {
+        label: "develop2",
+        children: [
+          {
+            label: "Rollup Explorer",
+            key: "rollupscan",
+            href: "/rollupscan",
+          },
+          {
+            label: "Etherscan",
+            key: "etherscan",
+            href: NETWORKS[0].explorer,
+            isExternal: true,
+          },
+          {
+            label: "Dora Explorer",
+            key: "dora",
+            href: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_DORA"),
+            isExternal: true,
+          },
+        ],
+      },
+    ],
+  },
+  {
     label: "Explore",
     key: "explore",
     href: "",
     children: [
       {
-        label: "Explore1",
         children: [
           {
             label: "Ecosystem",
@@ -99,34 +152,6 @@ const navigations = [
             label: "Join Us ",
             key: "join our team",
             href: "/join-us",
-          },
-        ],
-      },
-      {
-        label: "Explore2",
-        children: [],
-      },
-    ],
-  },
-  {
-    label: "Develop",
-    key: "develop",
-    href: "",
-    children: [
-      {
-        label: "develop",
-        children: [
-          {
-            label: "Docs",
-            key: "docs",
-            href: "https://develop.docs.scroll.xyz",
-            isExternal: true,
-          },
-          {
-            label: "Status",
-            key: "status",
-            href: "https://status.scroll.io/",
-            isExternal: true,
           },
         ],
       },
