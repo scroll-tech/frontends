@@ -8,6 +8,7 @@ const useCheckNoBg = () => {
   const [isNoBgSection, setIsNoBgSection] = useState(isNoBgPage)
 
   useEffect(() => {
+    setIsNoBgSection(isNoBgPage)
     if (isNoBgPage) {
       const element = isMobileOnly ? document.body : document.documentElement
       const elementListener = isMobileOnly ? document.body : window
