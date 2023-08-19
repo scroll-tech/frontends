@@ -1,10 +1,10 @@
-import { useCallback, useMemo } from "react"
+import { formatUnits } from "ethers"
+import { useMemo } from "react"
 import { isMobileOnly } from "react-device-detect"
 import { makeStyles } from "tss-react/mui"
 
 import { Button, InputBase, Stack, Typography } from "@mui/material"
 
-import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { sanitizeNumericalString, toTokenDisplay } from "@/utils"
 
 import TokenSelect from "./TokenSelect"
@@ -56,10 +56,8 @@ const useStyles = makeStyles()(theme => ({
 }))
 
 const BalanceInput = props => {
-  const { value, onChange, onMaxAmount, token: selectedToken, tokenOptions, fee, disabled, onChangeToken, ...restProps } = props
+  const { value, onChange, onMaxAmount, balance, token: selectedToken, tokenOptions, fee, disabled, onChangeToken, ...restProps } = props
   const { classes } = useStyles()
-
-  const { balance } = useRainbowContext()
 
   const displayedBalance = useMemo(() => (disabled ? "0.00" : toTokenDisplay(balance, selectedToken.decimals)), [selectedToken, balance, disabled])
 
@@ -68,15 +66,22 @@ const BalanceInput = props => {
     onChange(amount)
   }
 
-  const handleMaxAmount = useCallback(() => {
-    const maxValue = toTokenDisplay((balance ?? BigInt(0)) - fee, selectedToken.decimals)
-    onChange(maxValue)
-  }, [balance, fee])
+  const handleMaxAmount = () => {
+    if (balance) {
+      const maxValue = formatUnits(balance - fee, selectedToken.decimals)
+      onChange(maxValue)
+    }
+  }
+
+  const handleChangeToken = value => {
+    onChange("")
+    onChangeToken(value)
+  }
 
   return (
     <>
       <Stack direction="row" spacing={isMobileOnly ? "1.2rem" : "2rem"} alignItems="center" className={classes.root} {...restProps}>
-        <TokenSelect value={selectedToken} options={tokenOptions} onChange={onChangeToken}></TokenSelect>
+        <TokenSelect value={selectedToken} options={tokenOptions} onChange={handleChangeToken}></TokenSelect>
         <Stack direction="column">
           <InputBase
             value={value}

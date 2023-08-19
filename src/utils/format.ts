@@ -41,6 +41,7 @@ export const toHexadecimal = (value: number): string => {
 }
 
 export const toTokenDisplay = (num, decimals: bigint = BigInt(18), symbol?: string) => {
+  // TODO: should be pure
   if (_.isNil(num) || !decimals) {
     return "-"
   }

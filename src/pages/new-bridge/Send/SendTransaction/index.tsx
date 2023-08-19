@@ -18,6 +18,7 @@ import useCheckValidAmount from "@/hooks/useCheckValidAmount"
 import useBridgeStore from "@/stores/bridgeStore"
 import { amountToBN, switchNetwork, toTokenDisplay } from "@/utils"
 
+import useBalance from "../../hooks/useBalance"
 import useGasFee from "../../hooks/useGasFee"
 import { useSendTransaction } from "../../hooks/useSendTransaction"
 import useSufficientBalance from "../../hooks/useSufficientBalance"
@@ -27,10 +28,11 @@ import FeeDetails from "./InfoTooltip/FeeDetails"
 import NetworkDirection from "./NetworkDirection"
 
 const SendTransaction = props => {
-  const { chainId, balance, connect, walletName } = useRainbowContext()
+  const { chainId, connect, walletName } = useRainbowContext()
   // TODO: extract tokenList
   const { tokenList, networksAndSigners } = useApp()
   const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
+
   const { gasLimit, gasPrice } = usePriceFeeContext()
 
   const { txType, isNetworkCorrect, fromNetwork } = useBridgeStore()
@@ -44,6 +46,8 @@ const SendTransaction = props => {
 
   const selectedToken: any = useMemo(() => tokenOptions.find(item => item.symbol === tokenSymbol) ?? {}, [tokenOptions, tokenSymbol])
 
+  const balance = useBalance(selectedToken.address)
+
   const { checkApproval } = useApprove(selectedToken)
 
   const { send: sendTransaction, sending } = useSendTransaction({
@@ -56,6 +60,7 @@ const SendTransaction = props => {
 
   // fee start
   const estimatedGasCost = useGasFee(selectedToken)
+  // const estimatedGasCost = BigInt(0)
 
   const totalFee = useMemo(() => (estimatedGasCost ?? BigInt(0)) + gasLimit * gasPrice, [estimatedGasCost, gasLimit, gasPrice])
 
@@ -170,6 +175,7 @@ const SendTransaction = props => {
         onChange={handleChangeAmount}
         token={selectedToken}
         fee={totalFee}
+        balance={balance}
         disabled={fromNetwork.chainId !== chainId}
         tokenOptions={tokenOptions}
         onChangeToken={handleChangeTokenSymbol}
