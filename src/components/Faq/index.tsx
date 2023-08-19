@@ -20,9 +20,9 @@ const useStyles = makeStyles()((theme: Theme) => {
       },
     },
     title: {
-      marginBottom: "3.6rem",
+      marginBottom: "6rem",
       [theme.breakpoints.down("md")]: {
-        marginBottom: "1rem",
+        marginBottom: "3.4rem",
       },
     },
     specialParagraph: {
@@ -48,7 +48,8 @@ const FaqItem = props => {
 }
 
 const Faq = props => {
-  const { children } = props
+  const { backUrl, backText, children } = props
+
   const { classes } = useStyles()
 
   const { hash } = useLocation()
@@ -69,6 +70,13 @@ const Faq = props => {
       <div className={classes.title}>
         <Typography variant="H1">FAQs</Typography>
       </div>
+      <Link
+        sx={{ fontSize: ["1.6rem", "2rem"], fontWeight: 500, color: "text.primary", lineHeight: 1, mb: ["1rem", "3.6rem"], display: "inline-block" }}
+        underline="always"
+        href={backUrl}
+      >
+        {backText}
+      </Link>
       <FaqItem title="How do I get started?" id="start">
         <Typography variant="Body3" color="textSecondary">
           Welcome to Scroll's Alpha Testnet.
