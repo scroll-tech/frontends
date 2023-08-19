@@ -272,10 +272,15 @@ const Send: FC = () => {
 
   const handleSend = () => {
     if (fromNetwork.chainId === CHAIN_ID.L1) {
-      handleSendTransaction()
+      handleSendTransactionWithGasLimit()
     } else {
       setConfirmDialogVisible(true)
     }
+  }
+
+  const handleSendTransactionWithGasLimit = async () => {
+    const gasLimit = await estimateSend()
+    handleSendTransaction((gasLimit * BigInt(120)) / BigInt(100))
   }
 
   return (
@@ -347,7 +352,7 @@ const Send: FC = () => {
           <SendLoading value={txValue} from={fromNetwork.name} to={toNetwork.name} open={sendingModalOpen} onClose={handleCloseSendLoading} />
         </div>
       </div>
-      <ConfirmDialog open={ConfirmDialogVisible} setOpen={setConfirmDialogVisible} send={handleSendTransaction} />
+      <ConfirmDialog open={ConfirmDialogVisible} setOpen={setConfirmDialogVisible} send={handleSendTransactionWithGasLimit} />
     </StyleContext.Provider>
   )
 }

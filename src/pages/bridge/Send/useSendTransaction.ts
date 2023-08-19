@@ -15,6 +15,8 @@ export type TransactionHandled = {
   txModel: any
 }
 
+let gasLimitForSend = BigInt(0)
+
 export function useSendTransaction(props) {
   const { fromNetwork, fromTokenAmount, setSendError, toNetwork, selectedToken } = props
   const { walletCurrentAddress } = useRainbowContext()
@@ -32,7 +34,8 @@ export function useSendTransaction(props) {
     return amountToBN(fromTokenAmount, selectedToken.decimals)
   }, [fromTokenAmount, selectedToken?.decimals])
 
-  const send = async () => {
+  const send = async (gasLimit: bigint) => {
+    gasLimitForSend = gasLimit
     setSending(true)
     let tx
     let currentBlockNumber
@@ -167,11 +170,14 @@ export function useSendTransaction(props) {
   const withdrawETH = async () => {
     return networksAndSigners[CHAIN_ID.L2].gateway["withdrawETH(uint256,uint256)"](parsedAmount, 0, {
       value: parsedAmount,
+      gasLimit: gasLimitForSend,
     })
   }
 
   const withdrawERC20 = async () => {
-    return networksAndSigners[CHAIN_ID.L2].gateway["withdrawERC20(address,uint256,uint256)"](selectedToken.address, parsedAmount, 0)
+    return networksAndSigners[CHAIN_ID.L2].gateway["withdrawERC20(address,uint256,uint256)"](selectedToken.address, parsedAmount, 0, {
+      gasLimit: gasLimitForSend,
+    })
   }
 
   const sendl1ToL2 = () => {
