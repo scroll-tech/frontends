@@ -35,13 +35,12 @@ const StyledButton = styled("button")(({ theme }) => ({
 }))
 
 const ClaimButton = props => {
-  const { tx, isFinalized } = props
+  const { tx } = props
   const { networksAndSigners } = useApp()
   const { chainId } = useRainbowContext()
   const [claimButtonLabel, setClaimButtonLabel] = useState("Claim")
-  //   const { classes, cx } = useStyles()
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(!false)
 
   const handleSwitchNetwork = async (chainId: number) => {
     try {
@@ -72,7 +71,7 @@ const ClaimButton = props => {
 
   const isOnScrollLayer1 = chainId === CHAIN_ID.L1
 
-  if (isFinalized) {
+  if (tx.isFinalized) {
     if (isOnScrollLayer1) {
       return (
         <StyledButton className="" onClick={() => handleClaim(tx.claimInfo)} disabled={loading} color="primary">

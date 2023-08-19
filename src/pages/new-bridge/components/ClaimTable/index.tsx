@@ -1,4 +1,3 @@
-import { useMemo } from "react"
 import { makeStyles } from "tss-react/mui"
 
 import {
@@ -17,7 +16,6 @@ import {
 
 import Link from "@/components/Link"
 import { EXPLORER_URL } from "@/constants"
-import { useLastBlockNums } from "@/hooks/useRollupInfo"
 import useTokenInfo from "@/hooks/useTokenInfo"
 import { generateExploreLink, toTokenDisplay, truncateHash } from "@/utils"
 
@@ -35,6 +33,7 @@ const useStyles = makeStyles()(theme => {
     tableWrapper: {
       boxShadow: "unset",
       backgroundColor: theme.palette.themeBackground.optionHightlight,
+      borderRadius: 0,
     },
     tableTitle: {
       marginTop: "2.8rem",
@@ -74,9 +73,7 @@ const useStyles = makeStyles()(theme => {
       ".MuiPaginationItem-text": {
         fontSize: "1.6rem",
       },
-      ".MuiPaginationItem-root": {
-        color: theme.palette.text.secondary,
-      },
+      ".MuiPaginationItem-root": {},
       ".MuiPaginationItem-root.Mui-selected": {
         fontWeight: 700,
         backgroundColor: "unset",
@@ -95,7 +92,6 @@ const TxTable = (props: any) => {
   const handleChangePage = (e, newPage) => {
     pagination?.onChange?.(newPage)
   }
-  const { lastBlockNums } = useLastBlockNums()
 
   return (
     <>
@@ -115,7 +111,7 @@ const TxTable = (props: any) => {
             ) : (
               <>
                 {data?.map((tx: any) => (
-                  <TxRow key={tx.hash} tx={tx} lastFinalized={lastBlockNums?.finalized_index ?? 0} />
+                  <TxRow key={tx.hash} tx={tx} />
                 ))}
               </>
             )}
@@ -140,7 +136,7 @@ const TxTable = (props: any) => {
 }
 
 const TxRow = props => {
-  const { tx, lastFinalized } = props
+  const { tx } = props
 
   const { loading: tokenInfoLoading, tokenInfo } = useTokenInfo(tx.l1Token, true)
 
@@ -148,12 +144,8 @@ const TxRow = props => {
     return toTokenDisplay(amount, tokenInfo?.decimals ? BigInt(tokenInfo.decimals) : undefined)
   }
 
-  const isFinalized = useMemo(() => {
-    return lastFinalized > tx.claimInfo?.batch_index
-  }, [lastFinalized])
-
   const txStatus = () => {
-    if (isFinalized) {
+    if (tx.isFinalized) {
       return <Typography sx={{ fontWeight: 600 }}>Ready to be Claimed </Typography>
     } else {
       return <Typography sx={{ fontWeight: 600 }}>Claim Pending...</Typography>
@@ -163,7 +155,7 @@ const TxRow = props => {
   return (
     <TableRow key={tx.hash}>
       <TableCell>
-        <ClaimButton tx={tx} isFinalized={isFinalized} />
+        <ClaimButton tx={tx} />
       </TableCell>
       <TableCell>
         <Typography sx={{ fontWeight: 500 }}>

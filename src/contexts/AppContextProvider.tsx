@@ -11,6 +11,7 @@ import L2_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L2_GATEWAY_ROUTER_PROXY_A
 import { CHAIN_ID, ETH_SYMBOL, GATEWAY_ROUTE_PROXY_ADDR, NATIVE_TOKEN_LIST, RPC_URL } from "@/constants"
 import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useClaim from "@/hooks/useClaim"
 import useTxHistory, { TxHistory } from "@/hooks/useTxHistory"
 import { requireEnv } from "@/utils"
 
@@ -18,6 +19,7 @@ type AppContextProps = {
   networksAndSigners: any
   txHistory: TxHistory
   tokenList: Token[]
+  claim: any
 }
 
 const AppContext = createContext<AppContextProps | undefined>(undefined)
@@ -35,6 +37,7 @@ const AppContextProvider = ({ children }: any) => {
   const [fetchTokenListError, setFetchTokenListError] = useState("")
 
   const txHistory = useTxHistory(networksAndSigners)
+  const claim = useClaim(networksAndSigners)
 
   // TODO: need refactoring inspired by publicClient and walletClient
   const update = async (walletProvider: BrowserProvider, address: string) => {
@@ -110,6 +113,7 @@ const AppContextProvider = ({ children }: any) => {
       value={{
         networksAndSigners,
         txHistory,
+        claim,
         tokenList: tokenList ?? NATIVE_TOKEN_LIST,
       }}
     >

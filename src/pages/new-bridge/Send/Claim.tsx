@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 
 import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
-import { fetchClaimableTxListUrl } from "@/apis/bridge"
 import { BRIDGE_PAGE_SIZE } from "@/constants"
+import { useApp } from "@/contexts/AppContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import ClaimTable from "@/pages/new-bridge/components/ClaimTable"
+import useClaimStore from "@/stores/claimStore"
 
 const TableBox = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -17,38 +18,28 @@ const TableBox = styled(Box)(({ theme }) => ({
 
 const Claim = (props: any) => {
   const { walletCurrentAddress } = useRainbowContext()
-  const [claimableTx, setclaimableTx] = useState<[] | null>(null)
-  const [claimableTxPage, setClaimableTxPage] = useState(1)
-  const [claimableTxTotal, setclaimableTxTotal] = useState(0)
+  const {
+    claim: { refreshPageTransactions },
+  } = useApp()
 
-  const fetchData = (page: number = 1) => {
-    try {
-      scrollRequest(`${fetchClaimableTxListUrl}?address=${walletCurrentAddress}&page=${page}&page_size=${BRIDGE_PAGE_SIZE}`).then(data => {
-        setclaimableTx(data.data.result)
-        setclaimableTxTotal(data.data.total)
-      })
-    } catch (error) {}
-  }
+  const { page, total, claimableTransactions } = useClaimStore()
 
   useEffect(() => {
-    if (walletCurrentAddress) {
-      fetchData()
-    }
+    handleChangePage(1)
   }, [walletCurrentAddress])
 
   const handleChangePage = currentPage => {
-    setClaimableTxPage(currentPage)
-    fetchData(currentPage)
+    refreshPageTransactions(currentPage)
   }
 
   return (
     <TableBox>
-      {claimableTx?.length ? (
+      {claimableTransactions?.length ? (
         <ClaimTable
-          data={claimableTx}
+          data={claimableTransactions}
           pagination={{
-            count: Math.ceil(claimableTxTotal / BRIDGE_PAGE_SIZE),
-            page: claimableTxPage,
+            count: Math.ceil(total / BRIDGE_PAGE_SIZE),
+            page,
             onChange: handleChangePage,
           }}
         />

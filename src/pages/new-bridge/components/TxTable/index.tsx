@@ -66,7 +66,7 @@ const useStyles = makeStyles()(theme => {
     tableBody: {
       ".MuiTableCell-root": {
         verticalAlign: "top",
-        padding: "3rem 2rem",
+        padding: "2rem",
         "*": {
           fontSize: "1.4rem",
         },
@@ -146,7 +146,7 @@ const TxTable = (props: any) => {
           </TableBody>
         </Table>
         {pagination && (
-          <div className="flex justify-center mt-[2.8rem]">
+          <div className="flex justify-center mt-[2rem]">
             <Pagination
               size="small"
               classes={{

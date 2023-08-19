@@ -64,8 +64,8 @@ const useTxHistory = networksAndSigners => {
   )
 
   const fetchBlockNumber = useCallback(async () => {
-    if (networksAndSigners[CHAIN_ID.L1].provider && networksAndSigners[CHAIN_ID.L2].provider) {
-      const fetchL1BlockNumber = networksAndSigners[CHAIN_ID.L1].provider.getBlock("latest")
+    if (networksAndSigners[`${CHAIN_ID.L1}ForSafeBlock`].provider && networksAndSigners[CHAIN_ID.L2].provider) {
+      const fetchL1BlockNumber = networksAndSigners[`${CHAIN_ID.L1}ForSafeBlock`].provider.getBlock("safe")
       const fetchL2BlockNumber = networksAndSigners[CHAIN_ID.L2].provider.getBlock("latest")
 
       const blockNumbers = await Promise.allSettled([fetchL1BlockNumber, fetchL2BlockNumber])
