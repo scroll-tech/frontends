@@ -3,6 +3,7 @@ import { isMobileOnly } from "react-device-detect"
 
 import { Stack, Typography } from "@mui/material"
 
+import GlobalWarning from "@/components/GlobalWarning"
 import SectionWrapper from "@/components/SectionWrapper"
 import AppProvider from "@/contexts/AppContextProvider"
 import { PriceFeeProvider } from "@/contexts/PriceFeeProvider"
@@ -19,6 +20,7 @@ const Bridge = () => {
   return (
     <AppProvider>
       <PriceFeeProvider>
+        <GlobalWarning></GlobalWarning>
         <SectionWrapper
           sx={{
             pt: "8.4rem",
