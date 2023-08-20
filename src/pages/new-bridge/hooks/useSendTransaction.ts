@@ -44,12 +44,15 @@ export function useSendTransaction(props) {
       // TODO: shouldn't add it here(by @ricmoo)
       tx = tx.replaceableTransaction(currentBlockNumber)
       changeHistoryVisible(true)
+
+      console.log("发送完了")
       // TODO: reprice
       changeTxResult({ hash: tx.hash, amount: fromTokenAmount })
       handleTransaction(tx)
       updateOrderedTxs(walletCurrentAddress, tx.hash, TxPosition.Frontend)
       tx.wait()
         .then(receipt => {
+          console.log("收到receipt了")
           if (receipt?.status === 1) {
             handleTransaction(tx, {
               fromBlockNumber: receipt.blockNumber,

@@ -3,7 +3,7 @@ import { useMemo } from "react"
 import { isMobileOnly } from "react-device-detect"
 import { makeStyles } from "tss-react/mui"
 
-import { Button, InputBase, Stack, Typography } from "@mui/material"
+import { Button, InputBase, Skeleton, Stack, Typography } from "@mui/material"
 
 import { sanitizeNumericalString, toTokenDisplay } from "@/utils"
 
@@ -56,7 +56,19 @@ const useStyles = makeStyles()(theme => ({
 }))
 
 const BalanceInput = props => {
-  const { value, onChange, onMaxAmount, balance, token: selectedToken, tokenOptions, fee, disabled, onChangeToken, ...restProps } = props
+  const {
+    value,
+    onChange,
+    onMaxAmount,
+    balance,
+    balanceLoading,
+    token: selectedToken,
+    tokenOptions,
+    fee,
+    disabled,
+    onChangeToken,
+    ...restProps
+  } = props
   const { classes } = useStyles()
 
   const displayedBalance = useMemo(() => (disabled ? "0.00" : toTokenDisplay(balance, selectedToken.decimals)), [selectedToken, balance, disabled])
@@ -68,7 +80,8 @@ const BalanceInput = props => {
 
   const handleMaxAmount = () => {
     if (balance) {
-      const maxValue = formatUnits(balance - fee, selectedToken.decimals)
+      const shouldPayFee = selectedToken.native ? fee : BigInt(0)
+      const maxValue = formatUnits(balance - shouldPayFee, selectedToken.decimals)
       onChange(maxValue)
     }
   }
@@ -90,9 +103,13 @@ const BalanceInput = props => {
             classes={{ input: classes.input }}
             onChange={handleChangeAmount}
           ></InputBase>
-          <Typography className={classes.fromBalance} sx={{ color: disabled ? "text.disabled" : "#0F8E7E" }}>
-            {displayedBalance} available
-          </Typography>
+          {balanceLoading ? (
+            <Skeleton variant="text" width="12rem" />
+          ) : (
+            <Typography className={classes.fromBalance} sx={{ color: disabled ? "text.disabled" : "#0F8E7E" }}>
+              {displayedBalance} available
+            </Typography>
+          )}
         </Stack>
         <Button className={classes.maxButton} variant="contained" color="info" disabled={disabled} onClick={handleMaxAmount}>
           Max

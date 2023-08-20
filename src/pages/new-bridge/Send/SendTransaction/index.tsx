@@ -46,7 +46,10 @@ const SendTransaction = props => {
 
   const selectedToken: any = useMemo(() => tokenOptions.find(item => item.symbol === tokenSymbol) ?? {}, [tokenOptions, tokenSymbol])
 
-  const balance = useBalance(selectedToken.address)
+  // TODO:
+  // const { balance, loading: balanceLoading } = useBalance(selectedToken, fromNetwork)
+
+  const { balance, isLoading: balanceLoading } = useBalance(selectedToken.address)
 
   const { checkApproval } = useApprove(selectedToken)
 
@@ -176,6 +179,7 @@ const SendTransaction = props => {
         token={selectedToken}
         fee={totalFee}
         balance={balance}
+        balanceLoading={balanceLoading}
         disabled={fromNetwork.chainId !== chainId}
         tokenOptions={tokenOptions}
         onChangeToken={handleChangeTokenSymbol}
