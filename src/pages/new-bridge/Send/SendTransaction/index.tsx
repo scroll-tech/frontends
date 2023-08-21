@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { isMobileOnly } from "react-device-detect"
 import useStorage from "squirrel-gill"
 
@@ -11,12 +11,12 @@ import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
 import { useApp } from "@/contexts/AppContextProvider"
 import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import useCheckValidAmount from "@/hooks/useCheckValidAmount"
 import useBridgeStore from "@/stores/bridgeStore"
 import { amountToBN, switchNetwork, toTokenDisplay } from "@/utils"
 
 import useApprove from "../../hooks/useApprove"
 import useBalance from "../../hooks/useBalance"
+import useCheckValidAmount from "../../hooks/useCheckValidAmount"
 import useGasFee from "../../hooks/useGasFee"
 import { useSendTransaction } from "../../hooks/useSendTransaction"
 import useSufficientBalance from "../../hooks/useSufficientBalance"
@@ -26,7 +26,7 @@ import FeeDetails from "./InfoTooltip/FeeDetails"
 import NetworkDirection from "./NetworkDirection"
 
 const SendTransaction = props => {
-  const { chainId, connect, walletName } = useRainbowContext()
+  const { chainId, connect } = useRainbowContext()
   // TODO: extract tokenList
   const { tokenList } = useApp()
   const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
@@ -36,7 +36,6 @@ const SendTransaction = props => {
   const { txType, isNetworkCorrect, fromNetwork } = useBridgeStore()
 
   const [amount, setAmount] = useState<string>()
-  const [sendError, setSendError] = useState<any>()
 
   const tokenOptions = useMemo(() => {
     return fromNetwork.chainId ? tokenList.filter(item => item.chainId === fromNetwork.chainId) : []
@@ -48,14 +47,16 @@ const SendTransaction = props => {
 
   const { isNeeded: needApproval, approve, isLoading: approveLoading } = useApprove(fromNetwork, selectedToken, amount)
 
-  const { send: sendTransaction, sending } = useSendTransaction({
+  const {
+    send: sendTransaction,
+    isLoading: sendLoading,
+    error: sendError,
+  } = useSendTransaction({
     amount,
-    setSendError,
     selectedToken,
   })
 
-  const { isValid, message: invalidAmountMessage } = useCheckValidAmount(amount)
-
+  const invalidAmountMessage = useCheckValidAmount(amount)
   // fee start
   const estimatedGasCost = useGasFee(selectedToken)
   // const estimatedGasCost = BigInt(0)
@@ -98,40 +99,45 @@ const SendTransaction = props => {
       )
     } else if (insufficientWarning) {
       return insufficientWarning
-    } else if (!isValid) {
+    } else if (invalidAmountMessage) {
       return invalidAmountMessage
     } else if (sendError && sendError !== "cancel" && sendError.code !== 4001) {
+      // TODO: should refer to the position of the success tip
+      // at present, it won't disappear
       return (
-        <>
-          The transaction failed. Your {walletName} wallet might not be up to date.{" "}
-          <TextButton underline="always" onClick={() => window.open("https://guide.scroll.io/user-guide/common-errors")}>
-            Reset your {walletName} account
-          </TextButton>
-          {" before using Scroll Bridge."}
-        </>
+        // <>
+        //   The transaction failed. Your {walletName} wallet might not be up to date.{" "}
+        //   <TextButton underline="always" onClick={() => window.open("https://guide.scroll.io/user-guide/common-errors")}>
+        //     Reset your {walletName} account
+        //   </TextButton>
+        //   {" before using Scroll Bridge."}
+        // </>
+        <>{sendError.message}</>
       )
     }
     return null
-  }, [chainId, isNetworkCorrect, fromNetwork, insufficientWarning, isValid, invalidAmountMessage])
+  }, [chainId, isNetworkCorrect, fromNetwork, insufficientWarning, invalidAmountMessage, sendError])
 
   const necessaryCondition = useMemo(() => {
     return amount && !bridgeWarning
   }, [amount, bridgeWarning])
 
-  const sendButtonActive = useMemo(() => {
-    return !needApproval && necessaryCondition
-  }, [needApproval, necessaryCondition])
-
   const sendText = useMemo(() => {
-    if (txType === "Deposit" && sending) {
+    if (txType === "Deposit" && sendLoading) {
       return "Depositing Funds"
-    } else if (txType === "Deposit" && !sending) {
+    } else if (txType === "Deposit" && !sendLoading) {
       return "Deposit Funds"
-    } else if (txType === "Withdraw" && sending) {
+    } else if (txType === "Withdraw" && sendLoading) {
       return "Withdraw Funds"
     }
     return "Withdrawing Funds"
-  }, [txType, sending])
+  }, [txType, sendLoading])
+
+  useEffect(() => {
+    if (!sendLoading && sendError !== "cancel") {
+      setAmount("")
+    }
+  }, [sendLoading, sendError])
 
   const handleSend = () => {
     if (fromNetwork.isL1) {
@@ -175,7 +181,7 @@ const SendTransaction = props => {
             key="approve"
             width={isMobileOnly ? "100%" : "25rem"}
             color="primary"
-            disabled={!needApproval}
+            disabled={!needApproval || !necessaryCondition}
             loading={approveLoading}
             onClick={approve}
           >
@@ -187,8 +193,8 @@ const SendTransaction = props => {
             key="send"
             width={isMobileOnly ? "100%" : "25rem"}
             color="primary"
-            disabled={!sendButtonActive}
-            loading={sending}
+            disabled={!necessaryCondition}
+            loading={sendLoading}
             onClick={handleSend}
           >
             {sendText}

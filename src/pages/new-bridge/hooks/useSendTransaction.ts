@@ -11,7 +11,7 @@ import useTxStore, { TxPosition, isValidOffsetTime } from "@/stores/txStore"
 import { amountToBN, sentryDebug } from "@/utils"
 
 export function useSendTransaction(props) {
-  const { amount: fromTokenAmount, setSendError, selectedToken } = props
+  const { amount: fromTokenAmount, selectedToken } = props
   const { walletCurrentAddress } = useRainbowContext()
   const {
     networksAndSigners,
@@ -21,7 +21,8 @@ export function useSendTransaction(props) {
   const { changeHistoryVisible, fromNetwork, toNetwork, changeTxResult } = useBridgeStore()
   const { gasLimit, gasPrice } = usePriceFeeContext()
 
-  const [sending, setSending] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [sendError, setSendError] = useState<any>()
 
   const parsedAmount = useMemo(() => {
     if (!fromTokenAmount || !selectedToken) return BigInt(0)
@@ -29,7 +30,7 @@ export function useSendTransaction(props) {
   }, [fromTokenAmount, selectedToken?.decimals])
 
   const send = async () => {
-    setSending(true)
+    setIsLoading(true)
     let tx
     let currentBlockNumber
     try {
@@ -45,15 +46,13 @@ export function useSendTransaction(props) {
       tx = tx.replaceableTransaction(currentBlockNumber)
       changeHistoryVisible(true)
 
-      console.log("发送完了")
-      // TODO: reprice
-      changeTxResult({ hash: tx.hash, amount: fromTokenAmount })
       handleTransaction(tx)
       updateOrderedTxs(walletCurrentAddress, tx.hash, TxPosition.Frontend)
       tx.wait()
         .then(receipt => {
-          console.log("收到receipt了")
           if (receipt?.status === 1) {
+            changeTxResult({ hash: tx.hash, amount: fromTokenAmount })
+
             handleTransaction(tx, {
               fromBlockNumber: receipt.blockNumber,
             })
@@ -67,10 +66,13 @@ export function useSendTransaction(props) {
               }
             }
           } else {
+            const errorMessage = "due to any operation that can cause the transaction or top-level call to revert"
+            setSendError({ code: 0, message: errorMessage })
+
             // Something failed in the EVM
             updateOrderedTxs(walletCurrentAddress, tx.hash, TxPosition.Abnormal)
             // EIP-658
-            markTransactionAbnormal(tx, TX_STATUS.failed, "due to any operation that can cause the transaction or top-level call to revert")
+            markTransactionAbnormal(tx, TX_STATUS.failed, errorMessage)
           }
         })
         .catch(error => {
@@ -99,16 +101,17 @@ export function useSendTransaction(props) {
               }
             }
           } else {
+            setSendError(error)
             // when the transaction execution failed (status is 0)
             updateOrderedTxs(walletCurrentAddress, tx.hash, TxPosition.Abnormal)
             markTransactionAbnormal(tx, TX_STATUS.failed, error.message)
           }
         })
         .finally(() => {
-          setSending(false)
+          setIsLoading(false)
         })
     } catch (error) {
-      setSending(false)
+      setIsLoading(false)
       // reject && insufficient funds(send error)
       if (!isError(error, "ACTION_REJECTED")) {
         setSendError(error)
@@ -193,6 +196,7 @@ export function useSendTransaction(props) {
 
   return {
     send,
-    sending,
+    isLoading,
+    error: sendError,
   }
 }

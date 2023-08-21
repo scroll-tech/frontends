@@ -8,7 +8,6 @@ import { CHAIN_ID } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useBridgeStore from "@/stores/bridgeStore"
 
-// import { switchNetwork } from "@/utils"
 import Deposit from "./Deposit"
 import Withdraw from "./Withdraw"
 
@@ -60,7 +59,8 @@ const useStyles = makeStyles()(theme => ({
 const Send = () => {
   const { classes } = useStyles()
   const { chainId } = useRainbowContext()
-  const { txType, fromNetwork, toNetwork, withDrawStep, changeTxType, changeFromNetwork, changeToNetwork, changeIsNetworkCorrect } = useBridgeStore()
+  const { txType, fromNetwork, toNetwork, withDrawStep, changeTxType, changeTxResult, changeFromNetwork, changeToNetwork, changeIsNetworkCorrect } =
+    useBridgeStore()
 
   useEffect(() => {
     let networkCorrect
@@ -78,6 +78,7 @@ const Send = () => {
     changeTxType(newValue)
     changeFromNetwork(toNetwork)
     changeToNetwork(fromNetwork)
+    changeTxResult(null)
   }
 
   return (

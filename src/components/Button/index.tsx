@@ -100,13 +100,12 @@ const Button = props => {
   const [isHover, setIsHover] = useCycle(false, true)
 
   const handleHover = () => {
-    if (!disabled && !loading) {
-      setIsHover()
-    }
+    setIsHover()
   }
 
   return (
     // TODO: allow sx, allow size=small/medium
+    // avoid setting both 'disabled' and 'loading' to true.
     <motion.div
       className={cx(classes.wrapper, disabled && classes.wrapperDisabled)}
       onHoverStart={handleHover}
