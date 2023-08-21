@@ -13,8 +13,8 @@ const lightTheme = createTheme({
   },
   multilineEllipsis: {
     display: "-webkit-box",
-    "-webkit-box-orient": "vertical",
-    "-webkit-line-clamp": "4",
+    WebkitBoxOrient: "vertical",
+    WebkitLineClamp: "4",
     overflow: "hidden",
   },
   shape: {

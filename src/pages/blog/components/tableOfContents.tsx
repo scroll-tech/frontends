@@ -103,7 +103,7 @@ const TableOfContents: FC = () => {
         <li className="header-link hover:bg-transparent">
           <Link to="/blog">
             <ArrowBackIosIcon />
-            <Typography sx={{ color: "inherit", cursor: "inherit" }}>All Articles</Typography>
+            <Typography sx={{ color: "inherit", cursor: "inherit", fontWeight: 500 }}>All Articles</Typography>
           </Link>
         </li>
         {headings.map(header => (

@@ -28,8 +28,8 @@ declare module "@mui/material/styles" {
     }
     multilineEllipsis: {
       display: string
-      "-webkit-box-orient": string
-      "-webkit-line-clamp": string
+      WebkitBoxOrient: BoxOrient
+      WebkitLineClamp: string
       overflow: string
     }
   }
@@ -48,8 +48,8 @@ declare module "@mui/material/styles" {
     }
     multilineEllipsis?: {
       display: string
-      "-webkit-box-orient": string
-      "-webkit-line-clamp": string
+      WebkitBoxOrient: BoxOrient
+      WebkitLineClamp: string
       overflow: string
     }
   }
