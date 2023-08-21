@@ -184,8 +184,8 @@ const GetStart = () => {
 
         <StepContainer>
           {STEPS.map((feature, idx) => (
-            <SuccessionItem>
-              <StepBox className="step-box" key={idx}>
+            <SuccessionItem key={idx}>
+              <StepBox className="step-box">
                 <StepIcon src={feature.icon} />
                 <StepTitle variant="H4">{feature.title}</StepTitle>
                 <StepDescription variant="Body3">{feature.description}</StepDescription>

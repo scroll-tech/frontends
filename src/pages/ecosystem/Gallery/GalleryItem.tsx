@@ -203,8 +203,8 @@ const GalleryItem = props => {
                     color: "#FFF8F3",
                     "@media (max-width: 600px)": {
                       display: "-webkit-box",
-                      "-webkit-box-orient": "vertical",
-                      "-webkit-line-clamp": "4",
+                      WebkitLineClamp: 4,
+                      WebkitBoxOrient: "vertical",
                       overflow: "hidden",
                       height: "9rem",
                     },

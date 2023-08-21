@@ -146,8 +146,7 @@ onboard-v2 .outer-container icon {
 .header-link.active,
 .header-link:hover,
 .header-link:focus {
-  color: #eb7106;
-  background-color: #f8f8f8;
+  font-weight: 500;
 }
 
 .header-link a {
