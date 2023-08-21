@@ -1,23 +1,21 @@
-import { ethers } from "ethers"
 import { useMemo, useState } from "react"
 import { isMobileOnly } from "react-device-detect"
 import useStorage from "squirrel-gill"
 
 import { Box, Stack, Typography } from "@mui/material"
 
-import L1_erc20ABI from "@/assets/abis/L1_erc20ABI.json"
 import Button from "@/components/Button"
 import TextButton from "@/components/TextButton"
-import { ETH_SYMBOL, GATEWAY_ROUTE_PROXY_ADDR, WETH_GATEWAY_PROXY_ADDR } from "@/constants"
+import { ETH_SYMBOL } from "@/constants"
 import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
 import { useApp } from "@/contexts/AppContextProvider"
 import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { useApprove, useAsyncMemo } from "@/hooks"
 import useCheckValidAmount from "@/hooks/useCheckValidAmount"
 import useBridgeStore from "@/stores/bridgeStore"
 import { amountToBN, switchNetwork, toTokenDisplay } from "@/utils"
 
+import useApprove from "../../hooks/useApprove"
 import useBalance from "../../hooks/useBalance"
 import useGasFee from "../../hooks/useGasFee"
 import { useSendTransaction } from "../../hooks/useSendTransaction"
@@ -30,7 +28,7 @@ import NetworkDirection from "./NetworkDirection"
 const SendTransaction = props => {
   const { chainId, connect, walletName } = useRainbowContext()
   // TODO: extract tokenList
-  const { tokenList, networksAndSigners } = useApp()
+  const { tokenList } = useApp()
   const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
 
   const { gasLimit, gasPrice } = usePriceFeeContext()
@@ -46,12 +44,9 @@ const SendTransaction = props => {
 
   const selectedToken: any = useMemo(() => tokenOptions.find(item => item.symbol === tokenSymbol) ?? {}, [tokenOptions, tokenSymbol])
 
-  // TODO:
-  // const { balance, loading: balanceLoading } = useBalance(selectedToken, fromNetwork)
-
   const { balance, isLoading: balanceLoading } = useBalance(selectedToken.address)
 
-  const { checkApproval } = useApprove(selectedToken)
+  const { isNeeded: needApproval, approve, isLoading: approveLoading } = useApprove(fromNetwork, selectedToken, amount)
 
   const { send: sendTransaction, sending } = useSendTransaction({
     amount,
@@ -123,34 +118,20 @@ const SendTransaction = props => {
     return amount && !bridgeWarning
   }, [amount, bridgeWarning])
 
-  const approveAddress = useMemo(() => {
-    if (!fromNetwork.isL1 && selectedToken.symbol === "WETH") return WETH_GATEWAY_PROXY_ADDR[fromNetwork.chainId]
-    return GATEWAY_ROUTE_PROXY_ADDR[fromNetwork.chainId]
-  }, [fromNetwork, selectedToken])
-
-  const needApproval = useAsyncMemo(async () => {
-    if (!necessaryCondition || (selectedToken as NativeToken).native) {
-      return false
-    }
-
-    try {
-      const parsedAmount = amountToBN(amount, selectedToken.decimals)
-      const Token = new ethers.Contract((selectedToken as ERC20Token).address, L1_erc20ABI, networksAndSigners[chainId as number].signer)
-      return checkApproval(parsedAmount, Token, approveAddress)
-    } catch (err) {
-      return false
-    }
-  }, [selectedToken, necessaryCondition, checkApproval, amount])
-
   const sendButtonActive = useMemo(() => {
     return !needApproval && necessaryCondition
   }, [needApproval, necessaryCondition])
 
-  const handleApprove = async () => {
-    const tokenInstance = new ethers.Contract((selectedToken as ERC20Token).address, L1_erc20ABI, networksAndSigners[chainId as number].signer)
-    const tx = await tokenInstance.approve(approveAddress, ethers.MaxUint256)
-    await tx?.wait()
-  }
+  const sendText = useMemo(() => {
+    if (txType === "Deposit" && sending) {
+      return "Depositing Funds"
+    } else if (txType === "Deposit" && !sending) {
+      return "Deposit Funds"
+    } else if (txType === "Withdraw" && sending) {
+      return "Withdraw Funds"
+    }
+    return "Withdrawing Funds"
+  }, [txType, sending])
 
   const handleSend = () => {
     if (fromNetwork.isL1) {
@@ -190,12 +171,27 @@ const SendTransaction = props => {
       </Typography>
       <Box sx={{ flex: 1, display: "flex", alignItems: "flex-end", width: "100%", justifyContent: "center" }}>
         {needApproval ? (
-          <Button width={isMobileOnly ? "100%" : "25rem"} color="primary" disabled={!needApproval} onClick={handleApprove}>
-            Approve {tokenSymbol}
+          <Button
+            key="approve"
+            width={isMobileOnly ? "100%" : "25rem"}
+            color="primary"
+            disabled={!needApproval}
+            loading={approveLoading}
+            onClick={approve}
+          >
+            {approveLoading ? "Approving" : "Approve"}
+            {tokenSymbol}
           </Button>
         ) : (
-          <Button width={isMobileOnly ? "100%" : "22rem"} color="primary" disabled={!sendButtonActive} loading={sending} onClick={handleSend}>
-            {txType === "Deposit" ? "Depositing Funds" : "Withdraw Funds"}
+          <Button
+            key="send"
+            width={isMobileOnly ? "100%" : "25rem"}
+            color="primary"
+            disabled={!sendButtonActive}
+            loading={sending}
+            onClick={handleSend}
+          >
+            {sendText}
           </Button>
         )}
       </Box>

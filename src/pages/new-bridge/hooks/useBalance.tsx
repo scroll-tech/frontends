@@ -5,7 +5,7 @@ import { useRainbowContext } from "@/contexts/RainbowProvider"
 const useBalance = tokenAddress => {
   const { walletCurrentAddress } = useRainbowContext()
 
-  const { data, isLoading } = useBalance_RAW({ address: walletCurrentAddress, token: tokenAddress, staleTime: 1000 })
+  const { data, isLoading } = useBalance_RAW({ address: walletCurrentAddress, token: tokenAddress, watch: true })
 
   return { balance: data?.value, isLoading }
 }
