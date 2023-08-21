@@ -17,6 +17,7 @@ import {
 import Link from "@/components/Link"
 import { EXPLORER_URL } from "@/constants"
 import useTokenInfo from "@/hooks/useTokenInfo"
+import { ClaimStatus } from "@/stores/claimStore"
 import { generateExploreLink, toTokenDisplay, truncateHash } from "@/utils"
 
 import ClaimButton from "./ClaimButton"
@@ -145,11 +146,57 @@ const TxRow = props => {
   }
 
   const txStatus = () => {
-    if (tx.isFinalized) {
-      return <Typography sx={{ fontWeight: 600 }}>Ready to be Claimed </Typography>
-    } else {
-      return <Typography sx={{ fontWeight: 600 }}>Claim Pending...</Typography>
+    if (tx.claimStatus === ClaimStatus.CLAIMED) {
+      return (
+        <>
+          <Typography sx={{ fontWeight: 600 }}> Claimed </Typography>
+          <Typography sx={{ fontWeight: 400 }}>
+            Transaction sent: <br />
+            {tx.initiatedAt}
+          </Typography>
+          <Typography sx={{ fontWeight: 400 }}>
+            Finalised At:
+            {tx.finalisedAt}
+          </Typography>
+        </>
+      )
+    } else if (tx.claimStatus === ClaimStatus.CLAIMING) {
+      return (
+        <>
+          <Typography sx={{ fontWeight: 600 }}> Claiming... </Typography>
+          <Typography sx={{ fontWeight: 400 }}>
+            Transaction sent: <br />
+            {tx.initiatedAt}
+          </Typography>
+        </>
+      )
+    } else if (tx.claimStatus === ClaimStatus.CLAIMABLE) {
+      return (
+        <>
+          <Typography sx={{ fontWeight: 600 }}> Ready to be Claimed </Typography>
+          <Typography sx={{ fontWeight: 400 }}>
+            Transaction sent: <br />
+            {tx.initiatedAt}
+          </Typography>
+        </>
+      )
     }
+
+    return (
+      <>
+        <Typography sx={{ fontWeight: 600 }}> Scroll provers are still finalizing your transaction</Typography>
+        <Typography sx={{ fontWeight: 400 }}>
+          Transaction sent: <br />
+          {tx.initiatedAt}
+        </Typography>
+      </>
+    )
+
+    // if (tx.claimStatus === ClaimStatus.CLAIMED) {
+    //   return <Typography sx={{ fontWeight: 600 }}> Claimed </Typography>
+    // } else {
+    //   return <Typography sx={{ fontWeight: 600 }}>Claim Pending...</Typography>
+    // }
   }
 
   return (

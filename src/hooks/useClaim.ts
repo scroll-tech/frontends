@@ -14,7 +14,7 @@ export interface TxHistory {
 const useClaim = networksAndSigners => {
   const { walletCurrentAddress } = useRainbowContext()
 
-  const { getClaimableTransactions, claimableTransactions, updateTransactions } = useClaimStore()
+  const { getClaimableTransactions, claimableTransactions, updateTransactions, claimingTransactionsMap } = useClaimStore()
 
   const [errorMessage, setErrorMessage] = useState("")
 
@@ -65,7 +65,7 @@ const useClaim = networksAndSigners => {
     if (data?.data?.result.length) {
       updateTransactions(data.data.result)
     }
-  }, [data])
+  }, [data, claimingTransactionsMap])
 
   return {
     errorMessage,

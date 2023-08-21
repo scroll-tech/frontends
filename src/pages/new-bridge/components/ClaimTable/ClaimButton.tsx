@@ -8,6 +8,7 @@ import L1ScrollMessenger from "@/assets/abis/L1ScrollMessenger.json"
 import { CHAIN_ID } from "@/constants/common"
 import { useApp } from "@/contexts/AppContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useClaimStore, { ClaimStatus } from "@/stores/claimStore"
 import { requireEnv } from "@/utils"
 import { switchNetwork } from "@/utils"
 
@@ -20,14 +21,15 @@ const StyledButton = styled("button")(({ theme }) => ({
   fontWeight: 600,
   background: theme.palette.primary.main,
   cursor: "pointer",
+  position: "relative",
   "&:disabled": {
-    background: theme.palette.primary.disabled,
+    background: "#DFFCF8",
+    color: " #0F8E7E",
   },
   "&.claimed": {
     background: " #DFFCF8",
     color: "#0F8E7E",
   },
-  "&.claiming": {},
   "&.pending": {
     background: "#F0F0F0",
     color: "#5B5B5B",
@@ -39,8 +41,9 @@ const ClaimButton = props => {
   const { networksAndSigners } = useApp()
   const { chainId } = useRainbowContext()
   const [claimButtonLabel, setClaimButtonLabel] = useState("Claim")
+  const { addClaimingTransaction } = useClaimStore()
 
-  const [loading, setLoading] = useState(!false)
+  const [loading, setLoading] = useState(false)
 
   const handleSwitchNetwork = async (chainId: number) => {
     try {
@@ -51,17 +54,18 @@ const ClaimButton = props => {
     }
   }
 
-  const handleClaim = async claimInfo => {
+  const handleClaim = async () => {
     const contract = new ethers.Contract(requireEnv("REACT_APP_L1_SCROLL_MESSENGER"), L1ScrollMessenger, networksAndSigners[chainId as number].signer)
-    const { from, to, value, nonce, message, proof, batch_index } = claimInfo
+    const { from, to, value, nonce, message, proof, batch_index } = tx.claimInfo
     try {
       setLoading(true)
-      const tx = await contract.relayMessageWithProof(from, to, value, nonce, message, {
+      const result = await contract.relayMessageWithProof(from, to, value, nonce, message, {
         batchIndex: batch_index,
         merkleProof: proof,
       })
-
-      await tx.wait()
+      addClaimingTransaction(tx.hash)
+      await result.wait()
+      console.log(tx)
     } catch (error) {
       console.log(error.toString())
       // alert(error)
@@ -69,13 +73,25 @@ const ClaimButton = props => {
     }
   }
 
-  const isOnScrollLayer1 = chainId === CHAIN_ID.L1
+  if (tx.claimStatus === ClaimStatus.CLAIMED) {
+    return (
+      <StyledButton className="claimed" color="primary">
+        Claimed
+      </StyledButton>
+    )
+  } else if (tx.claimStatus === ClaimStatus.CLAIMING || loading) {
+    return (
+      <StyledButton className="" disabled color="primary">
+        Claim <CircularProgress size={14} sx={{ position: "absolute", right: "0.8rem", top: "0.6rem" }} color="inherit" />
+      </StyledButton>
+    )
+  } else if (tx.claimStatus === ClaimStatus.CLAIMABLE) {
+    const isOnScrollLayer1 = chainId === CHAIN_ID.L1
 
-  if (tx.isFinalized) {
     if (isOnScrollLayer1) {
       return (
-        <StyledButton className="" onClick={() => handleClaim(tx.claimInfo)} disabled={loading} color="primary">
-          Claim {loading ? <CircularProgress size={16} sx={{ position: "absolute", right: "0.8rem" }} color="inherit" /> : null}
+        <StyledButton className="" color="primary" onClick={handleClaim}>
+          Claim
         </StyledButton>
       )
     } else {
@@ -93,18 +109,18 @@ const ClaimButton = props => {
         </Tooltip>
       )
     }
-  } else {
-    return (
-      <Tooltip
-        placement="top"
-        title="Scroll provers are still finalizing your transaction, this can take up to 4 hours. Once done, you'll be able to claim it here for use on the target network."
-      >
-        <Box>
-          <StyledButton className="pending">Claim</StyledButton>
-        </Box>
-      </Tooltip>
-    )
   }
+  // ClaimStatus.NOT_READY
+  return (
+    <Tooltip
+      placement="top"
+      title="Scroll provers are still finalizing your transaction, this can take up to 4 hours. Once done, you'll be able to claim it here for use on the target network."
+    >
+      <Box>
+        <StyledButton className="pending">Claim</StyledButton>
+      </Box>
+    </Tooltip>
+  )
 }
 
 export default ClaimButton

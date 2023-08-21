@@ -15,8 +15,18 @@ interface TxStore {
   loading: boolean
   estimatedTimeMap: object
   claimableTransactions: Transaction[]
+  claimingTransactionsMap: object
   getClaimableTransactions: (address, page) => Promise<any>
   updateTransactions: (transactions) => Promise<any>
+  addClaimingTransaction: (transaction) => void
+}
+
+export const enum ClaimStatus {
+  // Batch not finalized
+  NOT_READY = 1,
+  CLAIMABLE = 2,
+  CLAIMING = 3,
+  CLAIMED = 4,
 }
 
 interface Transaction {
@@ -32,13 +42,12 @@ interface Transaction {
   isL1: boolean
   symbolToken?: string
   timestamp?: number
-  isFinalized?: boolean
-  isClaimed?: boolean
   claimInfo?: object
   assumedStatus?: string
   errMsg?: string
   initiatedAt?: string
   finalisedAt?: string
+  claimStatus: string
 }
 
 const MAX_OFFSET_TIME = 30 * 60 * 1000
@@ -56,7 +65,20 @@ const getLastFinalizedBatch = async () => {
   return 0
 }
 
-const formatTxList = async (backList, estimatedTimeMap) => {
+const getTxStatus = (tx, claimingTransactionsMap, lastFinalizedBatch) => {
+  let claimStatus = ClaimStatus.NOT_READY
+  if (tx.finalizeTx?.hash) {
+    claimStatus = ClaimStatus.CLAIMED
+  } else if (claimingTransactionsMap[tx.hash] && claimingTransactionsMap[tx.hash] + 1000 * 60 * 60 > +new Date()) {
+    claimStatus = ClaimStatus.CLAIMING
+  } else if (tx.claimInfo?.batch_index <= lastFinalizedBatch) {
+    claimStatus = ClaimStatus.CLAIMABLE
+  }
+
+  return claimStatus
+}
+
+const formatTxList = async (backList, estimatedTimeMap, claimingTransactionsMap) => {
   const nextEstimatedTimeMap = { ...estimatedTimeMap }
   const blockNumbers = readItem(localStorage, BLOCK_NUMBERS)
   if (!backList.length) {
@@ -72,8 +94,7 @@ const formatTxList = async (backList, estimatedTimeMap) => {
     const toHash = tx.finalizeTx?.hash
     const initiatedAt = tx.blockTimestamp || tx.createdTime
     const finalisedAt = tx.finalizeTx?.blockTimestamp
-
-    const isFinalized = tx.claimInfo?.batch_index <= lastFinalizedBatch
+    const claimStatus = getTxStatus(tx, claimingTransactionsMap, lastFinalizedBatch)
 
     if (
       tx.finalizeTx?.blockNumber &&
@@ -108,11 +129,10 @@ const formatTxList = async (backList, estimatedTimeMap) => {
       toBlockNumber: tx.finalizeTx?.blockNumber,
       isL1: tx.isL1,
       symbolToken: tx.isL1 ? tx.l1Token : tx.l2Token,
-      isFinalized,
       claimInfo: tx.claimInfo,
-      isClaimed: tx.finalizeTx?.hash,
       initiatedAt,
       finalisedAt,
+      claimStatus,
     }
   })
 
@@ -130,13 +150,14 @@ const useTxStore = create<TxStore>()(
       estimatedTimeMap: {},
       loading: false,
       claimableTransactions: [],
+      claimingTransactionsMap: {},
       getClaimableTransactions: async (walletAddress, page) => {
-        const { estimatedTimeMap: preEstimatedTimeMap } = get()
+        const { estimatedTimeMap: preEstimatedTimeMap, claimingTransactionsMap } = get()
         try {
           const {
             data: { total, result },
           } = await scrollRequest(`${fetchClaimableTxListUrl}?address=${walletAddress}&page=${page}&page_size=${BRIDGE_PAGE_SIZE}`)
-          const { txList, estimatedTimeMap } = await formatTxList(result, preEstimatedTimeMap)
+          const { txList, estimatedTimeMap } = await formatTxList(result, preEstimatedTimeMap, claimingTransactionsMap)
           set({
             claimableTransactions: txList,
             estimatedTimeMap,
@@ -145,16 +166,28 @@ const useTxStore = create<TxStore>()(
           })
         } catch (error) {}
       },
+      addClaimingTransaction: transaction => {
+        const { claimingTransactionsMap: preClaimingTransactionsMap } = get()
+        set({
+          claimingTransactionsMap: {
+            ...preClaimingTransactionsMap,
+            [transaction]: +new Date(),
+          },
+        })
+      },
       updateTransactions: async transactions => {
-        const { claimableTransactions: preClaimableTransactions } = get()
+        const { claimableTransactions: preClaimableTransactions, estimatedTimeMap: preEstimatedTimeMap, claimingTransactionsMap } = get()
+        const { txList, estimatedTimeMap } = await formatTxList(transactions, preEstimatedTimeMap, claimingTransactionsMap)
+
         const transactionsHash = {}
-        transactions.forEach(t => {
+        txList.forEach(t => {
           transactionsHash[t.hash] = t
         })
         const result = preClaimableTransactions.map(transaction => transactionsHash[transaction.hash] || transaction)
 
         set({
           claimableTransactions: result,
+          estimatedTimeMap,
         })
       },
     }),
