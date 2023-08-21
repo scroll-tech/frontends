@@ -24,7 +24,7 @@ const useCheckNoBg = () => {
     }
   }, [isNoBgPage])
 
-  return isNoBgPage && isNoBgSection
+  return isNoBgPage && isNoBgSection ? "transparent" : ""
 }
 
 export default useCheckNoBg
