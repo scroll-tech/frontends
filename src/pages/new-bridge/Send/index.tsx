@@ -38,7 +38,7 @@ const useStyles = makeStyles()(theme => ({
 
     [theme.breakpoints.down("sm")]: {
       width: "50%",
-      fontSize: "1.6rem",
+      fontSize: "1.4rem",
     },
   },
   indicator: {

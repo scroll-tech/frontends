@@ -12,6 +12,7 @@ const useStyles = makeStyles()(theme => ({
     [theme.breakpoints.down("sm")]: {
       flex: 1,
       overflow: "hidden",
+      padding: "0 1rem",
     },
   },
   chipLabel: {
@@ -19,6 +20,7 @@ const useStyles = makeStyles()(theme => ({
     paddingRight: 0,
     [theme.breakpoints.down("sm")]: {
       fontSize: "1.4rem",
+      paddingLeft: "0.6rem",
     },
   },
   icon: {

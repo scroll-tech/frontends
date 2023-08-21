@@ -23,6 +23,9 @@ const useStyles = makeStyles()(theme => ({
   },
   label: {
     fontWeight: 800,
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "1.4rem",
+    },
   },
   xlabel: {
     fontSize: "2.8rem",

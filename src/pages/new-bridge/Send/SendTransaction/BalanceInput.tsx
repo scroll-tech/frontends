@@ -16,7 +16,7 @@ const useStyles = makeStyles()(theme => ({
     borderRadius: "2rem",
     [theme.breakpoints.down("sm")]: {
       width: "100%",
-      padding: "2.8rem 2rem",
+      padding: "2rem",
     },
   },
   input: {
@@ -25,13 +25,23 @@ const useStyles = makeStyles()(theme => ({
     padding: 0,
     marginBottom: "6px",
     fontWeight: 600,
+    lineHeight: 1,
     // fontFamily: "Roboto Flex",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "2.8rem",
+      height: "2.4rem",
+      marginBottom: "4px",
+    },
   },
   fromBalance: {
     fontSize: "1.3rem",
     fontWeight: 600,
     lineHeight: 1,
+    whiteSpace: "nowrap",
     // fontFamily: "Roboto Flex",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "1.2rem",
+    },
   },
   maxButton: {
     width: "6.8rem",

@@ -27,6 +27,9 @@ const useStyles = makeStyles()(theme => ({
   },
   endIcon: {
     marginLeft: "1.5rem",
+    [theme.breakpoints.down("sm")]: {
+      marginLeft: "0.5rem",
+    },
   },
   reverseEndIcon: {
     transform: "rotateX(180deg)",
@@ -40,7 +43,7 @@ const useStyles = makeStyles()(theme => ({
   listItem: {
     height: "4.6rem",
     padding: "0 2rem",
-    gap: "0.8rem",
+    gap: "0.9rem",
     backgroundColor: theme.palette.themeBackground.normal,
     "&:hover": {
       backgroundColor: theme.palette.themeBackground.optionHightlight,
@@ -127,7 +130,7 @@ const Dropdown = props => {
         {operations.map(({ icon, label, action }) => (
           <MenuItem key={label} classes={{ root: classes.listItem }} onClick={action}>
             <ListItemIcon classes={{ root: classes.listItemIcon }}>
-              <SvgIcon sx={{ width: "auto", height: "auto" }} component={icon}></SvgIcon>
+              <SvgIcon sx={{ width: "auto", height: "auto" }} component={icon} inheritViewBox></SvgIcon>
             </ListItemIcon>
             <ListItemText classes={{ root: classes.listItemTextRoot, primary: classes.listItemText }}>{label}</ListItemText>
           </MenuItem>

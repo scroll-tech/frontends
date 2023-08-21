@@ -157,7 +157,7 @@ const SendTransaction = props => {
   }
 
   return (
-    <Stack direction="column" alignItems="center" sx={{ height: ["31rem", "34rem"] }}>
+    <Stack direction="column" alignItems="center" sx={{ height: ["28rem", "34rem"] }}>
       <NetworkDirection></NetworkDirection>
       <BalanceInput
         sx={{ mt: "3rem" }}
@@ -172,7 +172,7 @@ const SendTransaction = props => {
         onChangeToken={handleChangeTokenSymbol}
       ></BalanceInput>
       <DetailRow title="Fees" sx={{ my: "0.8rem" }} tooltip={<FeeDetails />} value={<Typography>{displayedFee}</Typography>} large />
-      <Typography sx={{ fontSize: "1.4rem", fontWeight: 500, width: "32.4rem", textAlign: "center", margin: "0 auto" }} color="primary">
+      <Typography sx={{ fontSize: "1.4rem", fontWeight: 500, width: ["100%", "32.4rem"], textAlign: "center", margin: "0 auto" }} color="primary">
         {bridgeWarning}
       </Typography>
       <Box sx={{ flex: 1, display: "flex", alignItems: "flex-end", width: "100%", justifyContent: "center" }}>

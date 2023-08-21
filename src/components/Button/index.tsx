@@ -63,6 +63,9 @@ const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading })
   maskDisabled: {
     backgroundColor: "#EBC28E",
     width: "5.4rem !important",
+    [theme.breakpoints.down("sm")]: {
+      width: "4.8rem !important",
+    },
   },
   icon: {
     width: "5.4rem",

@@ -25,10 +25,11 @@ const useStyles = makeStyles()(theme => ({
         borderRadius: "1rem",
       },
       [theme.breakpoints.down("sm")]: {
-        width: "11rem",
-        height: "5.4rem",
-        gap: "0.8rem",
-        padding: "0.8rem 1rem",
+        width: "9rem",
+        height: "4rem",
+        gap: "0.6rem",
+        padding: "0.5rem 0.8rem",
+        paddingRight: "2rem !important",
       },
     },
     ".MuiSelect-icon": {
@@ -37,7 +38,8 @@ const useStyles = makeStyles()(theme => ({
       right: "2.5rem",
       color: theme.palette.text.primary,
       [theme.breakpoints.down("sm")]: {
-        right: "1rem",
+        right: "0.8rem",
+        width: "8px",
       },
     },
     ".MuiSelect-iconOpen": {
@@ -53,6 +55,7 @@ const useStyles = makeStyles()(theme => ({
   },
   menuItem: {
     padding: "1rem 2.5rem",
+    gap: "1rem",
     backgroundColor: theme.palette.themeBackground.optionHightlight,
     "&:hover": {
       backgroundColor: theme.palette.themeBackground.optionHightlight,
@@ -68,16 +71,21 @@ const useStyles = makeStyles()(theme => ({
       },
     },
     [theme.breakpoints.down("sm")]: {
-      padding: "0.8rem 1rem",
+      padding: "0.6rem 0.8rem",
+      width: "9rem",
+      gap: "0.6rem",
     },
   },
-  listItemIcon: { minWidth: "unset" },
+  listItemIcon: { minWidth: "unset !important" },
   listItemText: {
     fontSize: "2.4rem",
     fontWeight: 600,
     cursor: "pointer",
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+    textOverflow: "ellipsis",
     [theme.breakpoints.down("sm")]: {
-      fontSize: "1.8rem",
+      fontSize: "1.6rem",
     },
   },
 }))
