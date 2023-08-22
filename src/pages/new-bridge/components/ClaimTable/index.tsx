@@ -1,3 +1,5 @@
+import dayjs from "dayjs"
+import { useMemo } from "react"
 import Countdown from "react-countdown"
 import { makeStyles } from "tss-react/mui"
 
@@ -103,7 +105,7 @@ const TxTable = (props: any) => {
           <TableHead className={classes.tableHeader}>
             <TableRow>
               <TableCell align="left">Claim</TableCell>
-              <TableCell>Amount</TableCell>
+              <TableCell sx={{ width: "4rem" }}>Amount</TableCell>
               <TableCell>Transaction Hash</TableCell>
               <TableCell>Status</TableCell>
             </TableRow>
@@ -148,6 +150,11 @@ const TxRow = props => {
     return toTokenDisplay(amount, tokenInfo?.decimals ? BigInt(tokenInfo.decimals) : undefined)
   }
 
+  const initiatedAt = useMemo(() => {
+    const date = dayjs(tx.initiatedAt)
+    return tx.initiatedAt ? date.format("MM/YYYY HH:mm:ss") : "-"
+  }, [tx])
+
   const txStatus = () => {
     if (tx.claimStatus === ClaimStatus.CLAIMED) {
       return (
@@ -155,7 +162,7 @@ const TxRow = props => {
           <Typography sx={{ fontWeight: 600 }}> Claimed </Typography>
           <Typography sx={{ fontWeight: 400 }}>
             Transaction sent: <br />
-            {tx.initiatedAt}
+            {initiatedAt}
           </Typography>
           <Typography sx={{ fontWeight: 400 }}>
             Finalised At:
@@ -169,7 +176,7 @@ const TxRow = props => {
           <Typography sx={{ fontWeight: 600 }}> Claiming... </Typography>
           <Typography sx={{ fontWeight: 400 }}>
             Transaction sent: <br />
-            {tx.initiatedAt}
+            {initiatedAt}
           </Typography>
         </>
       )
@@ -179,7 +186,7 @@ const TxRow = props => {
           <Typography sx={{ fontWeight: 600 }}> Ready to be Claimed </Typography>
           <Typography sx={{ fontWeight: 400 }}>
             Transaction sent: <br />
-            {tx.initiatedAt}
+            {initiatedAt}
           </Typography>
         </>
       )
@@ -187,10 +194,10 @@ const TxRow = props => {
 
     return (
       <>
-        <Typography sx={{ fontWeight: 600 }}> Scroll provers are still finalizing your transaction</Typography>
+        <Typography sx={{ fontWeight: 600 }}>Not yet finalised</Typography>
         <Typography sx={{ fontWeight: 400 }}>
           Transaction sent: <br />
-          {tx.initiatedAt}
+          {initiatedAt}
         </Typography>
       </>
     )
