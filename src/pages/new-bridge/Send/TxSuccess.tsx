@@ -45,11 +45,11 @@ const TxSuccess = () => {
         <Typography sx={{ fontSize: "1.8rem", fontWeight: 700, mt: "4rem" }}>
           This is your tx hash: <Typography sx={{ fontWeight: 400 }}>{txResult?.hash}</Typography>
         </Typography>
-        <Link sx={{ color: "success.main", fontSize: "1.6rem" }} underline="always" href={transactionUrl} external>
+        <Link sx={{ color: "success.main" }} underline="always" href={transactionUrl} external>
           Check your transaction in our block explorer
         </Link>
         <Typography sx={{ fontSize: "1.8rem", fontWeight: 700, mt: "4rem" }}>Deposit more {tokenSymbol}</Typography>
-        <TextButton sx={{ color: "success.main", fontSize: "1.6rem" }} underline="always" onClick={handleReturnDeposit} external>
+        <TextButton sx={{ color: "success.main" }} underline="always" onClick={handleReturnDeposit}>
           Return to Deposit
         </TextButton>
       </Box>
@@ -67,7 +67,7 @@ const TxSuccess = () => {
         <Typography sx={{ fontSize: "1.8rem", fontWeight: 700, mt: "4rem" }}>
           This is your tx hash: <Typography sx={{ fontWeight: 400 }}>{txResult?.hash}</Typography>
         </Typography>
-        <Link sx={{ color: "success.main", fontSize: "1.6rem", marginBottom: "4.8rem" }} underline="always" href={transactionUrl} external>
+        <Link sx={{ color: "success.main", marginBottom: "4.8rem" }} underline="always" href={transactionUrl} external>
           Check your transaction in our block explorer
         </Link>
         <Button width={isMobileOnly ? "100%" : "35rem"} color="primary" onClick={handleClaim}>
@@ -88,11 +88,11 @@ const TxSuccess = () => {
       <Typography sx={{ fontSize: "1.8rem", fontWeight: 700, mt: "4rem" }}>
         This is your tx hash: <Typography sx={{ fontWeight: 400 }}>{txResult?.hash}</Typography>
       </Typography>
-      <Link sx={{ color: "success.main", fontSize: "1.6rem" }} href={transactionUrl} underline="always" external>
+      <Link sx={{ color: "success.main" }} href={transactionUrl} underline="always" external>
         Check your transaction in our block explorer
       </Link>
       <Typography sx={{ fontSize: "1.8rem", fontWeight: 700, mt: "4rem" }}>Withdraw more {tokenSymbol}</Typography>
-      <TextButton sx={{ color: "success.main", fontSize: "1.6rem" }} underline="always" onClick={handleReturnWithdraw} external>
+      <TextButton sx={{ color: "success.main" }} underline="always" onClick={handleReturnWithdraw}>
         Return to Withdraw
       </TextButton>
     </Box>

@@ -83,7 +83,7 @@ const SendTransaction = props => {
       return (
         <>
           Your wallet is not connected.{" "}
-          <TextButton underline="always" onClick={connect}>
+          <TextButton underline="always" sx={{ fontSize: "1.4rem" }} onClick={connect}>
             Please connect your wallet to proceed.
           </TextButton>
         </>
@@ -92,7 +92,7 @@ const SendTransaction = props => {
       return (
         <>
           Your wallet is connected to an unsupported network.{" "}
-          <TextButton underline="always" onClick={() => switchNetwork(fromNetwork.chainId)}>
+          <TextButton underline="always" sx={{ fontSize: "1.4rem" }} onClick={() => switchNetwork(fromNetwork.chainId)}>
             Click here to switch to {fromNetwork.name}.
           </TextButton>
         </>

@@ -316,7 +316,7 @@ const lightTheme = createTheme({
       styleOverrides: {
         root: ({ theme }) => ({
           color: theme.palette.link.main,
-          fontSize: "inherit",
+          fontSize: "1.6rem",
           fontWeight: 600,
           cursor: "pointer",
         }),

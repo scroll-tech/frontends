@@ -8,8 +8,6 @@ const TextButton = props => {
       sx={{
         color: "primary.main",
         verticalAlign: "baseline",
-        fontSize: "1.4rem",
-        fontWeight: 600,
         ...sx,
       }}
       underline="hover"

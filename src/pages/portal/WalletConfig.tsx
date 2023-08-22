@@ -70,7 +70,7 @@ const WalletConfig = () => {
               {walletName ? (
                 <AddNetworkButton chainId={item.chainId} onReadd={handleReadd} />
               ) : (
-                <TextButton onClick={connect}> Connect Wallet</TextButton>
+                <TextButton onClick={connect}>Connect Wallet</TextButton>
               )}
             </Stack>
           </DescriptionItem>
