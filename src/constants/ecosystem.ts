@@ -32,9 +32,9 @@ export const ECOSYSTEM_EXPLORER_LIST = [
   {
     icon: DoubleEyesIcon,
     href: LOOKING_FOR_A_DAPP_LINK,
-    title: "Looking for a dapp?",
+    title: "Request a Dapp",
     content:
-      "Lorem ipsum dolor sit amet, consectetur elit. Donec dictum auctor sem et malesuada. Sed facilisis, lorem libero fringilla dictum auctor mauris.",
+      "At Scroll, we want to provide the most vibrant ecosystem for our users. Can’t find the application you’re looking for on Scroll? We want to know!",
   },
 ]
 

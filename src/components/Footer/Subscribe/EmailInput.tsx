@@ -33,6 +33,9 @@ const useStyles = makeStyles()(theme => ({
   },
   input: {
     textAlign: "center",
+    "&::placeholder": {
+      color: "#DCDCDC",
+    },
   },
 
   mask: {

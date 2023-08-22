@@ -54,7 +54,7 @@ const Header = () => {
                 Bridge into Scroll
               </Button>
               <Button href={LIST_YOUR_DAPP_LINK} target="_blank" width={isMobileOnly ? "18.4rem" : "25rem"}>
-                List Your dapp
+                List your Dapp
               </Button>
             </Stack>
           </OrientationToView>

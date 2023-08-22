@@ -74,7 +74,7 @@ const Gallery = props => {
         <LoadingPage height="60vh"></LoadingPage>
       ) : (
         <>
-          <SuccessionToView className={classes.grid} threshold={isMobileOnly ? 0 : 0.1}>
+          <SuccessionToView className={classes.grid} threshold={isMobileOnly ? 0 : 1} animate="show">
             {filteredEcosystemList?.map((item: any) => (
               <SuccessionItem key={item.name}>
                 <GalleryItem item={item}></GalleryItem>
