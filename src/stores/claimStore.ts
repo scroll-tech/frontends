@@ -19,6 +19,7 @@ interface TxStore {
   getClaimableTransactions: (address, page) => Promise<any>
   updateTransactions: (transactions) => Promise<any>
   addClaimingTransaction: (transaction) => void
+  addEstimatedTimeMap: (key, value) => void
 }
 
 export const enum ClaimStatus {
@@ -52,7 +53,7 @@ interface Transaction {
 
 const MAX_OFFSET_TIME = 30 * 60 * 1000
 
-const isValidOffsetTime = offsetTime => offsetTime < MAX_OFFSET_TIME
+export const isValidOffsetTime = offsetTime => offsetTime < MAX_OFFSET_TIME
 
 const getLastFinalizedBatch = async () => {
   try {
@@ -65,14 +66,37 @@ const getLastFinalizedBatch = async () => {
   return 0
 }
 
-const getTxStatus = (tx, claimingTransactionsMap, lastFinalizedBatch) => {
-  let claimStatus = ClaimStatus.NOT_READY
-  if (tx.finalizeTx?.hash) {
+const getTxStatus = (tx, claimingTransactionsMap, lastFinalizedBatch, nextEstimatedTimeMap) => {
+  const blockNumbers = readItem(localStorage, BLOCK_NUMBERS)
+
+  if (
+    tx.finalizeTx?.blockNumber &&
+    blockNumbers[0] !== -1 &&
+    tx.finalizeTx.blockNumber > blockNumbers[0] &&
+    !nextEstimatedTimeMap[`claim_${tx.hash}`]
+  ) {
+    const estimatedOffsetTime = (tx.finalizeTx.blockNumber - blockNumbers[0]) * 12 * 1000
+    if (isValidOffsetTime(estimatedOffsetTime)) {
+      nextEstimatedTimeMap[`claim_${tx.hash}`] = Date.now() + estimatedOffsetTime
+    } else {
+      nextEstimatedTimeMap[`claim_${tx.hash}`] = 0
+      sentryDebug(`safe block number: ${blockNumbers[0]}`)
+    }
+  } else if (
+    tx.finalizeTx?.blockNumber &&
+    tx.finalizeTx.blockNumber <= blockNumbers[0] &&
+    Object.keys(nextEstimatedTimeMap).includes(`claim_${tx.hash}`)
+  ) {
+    delete nextEstimatedTimeMap[`claim_${tx.hash}`]
+  }
+
+  let claimStatus = ClaimStatus.CLAIMABLE
+  if (tx.finalizeTx?.hash && tx.finalizeTx.blockNumber <= blockNumbers[0]) {
     claimStatus = ClaimStatus.CLAIMED
   } else if (claimingTransactionsMap[tx.hash] && claimingTransactionsMap[tx.hash] + 1000 * 60 * 60 > +new Date()) {
     claimStatus = ClaimStatus.CLAIMING
-  } else if (tx.claimInfo?.batch_index <= lastFinalizedBatch) {
-    claimStatus = ClaimStatus.CLAIMABLE
+  } else if (tx.claimInfo?.batch_index > lastFinalizedBatch) {
+    claimStatus = ClaimStatus.NOT_READY
   }
 
   return claimStatus
@@ -80,10 +104,10 @@ const getTxStatus = (tx, claimingTransactionsMap, lastFinalizedBatch) => {
 
 const formatTxList = async (backList, estimatedTimeMap, claimingTransactionsMap) => {
   const nextEstimatedTimeMap = { ...estimatedTimeMap }
-  const blockNumbers = readItem(localStorage, BLOCK_NUMBERS)
   if (!backList.length) {
     return { txList: [], estimatedTimeMap: nextEstimatedTimeMap }
   }
+
   const lastFinalizedBatch = await getLastFinalizedBatch()
   const txList = backList.map(tx => {
     const amount = tx.amount
@@ -94,28 +118,7 @@ const formatTxList = async (backList, estimatedTimeMap, claimingTransactionsMap)
     const toHash = tx.finalizeTx?.hash
     const initiatedAt = tx.blockTimestamp || tx.createdTime
     const finalisedAt = tx.finalizeTx?.blockTimestamp
-    const claimStatus = getTxStatus(tx, claimingTransactionsMap, lastFinalizedBatch)
-
-    if (
-      tx.finalizeTx?.blockNumber &&
-      blockNumbers[0] !== -1 &&
-      tx.finalizeTx.blockNumber > blockNumbers[0] &&
-      !nextEstimatedTimeMap[`claim_${toHash}`]
-    ) {
-      const estimatedOffsetTime = (tx.finalizeTx.blockNumber - blockNumbers[0]) * 12 * 1000
-      if (isValidOffsetTime(estimatedOffsetTime)) {
-        nextEstimatedTimeMap[`claim_${toHash}`] = Date.now() + estimatedOffsetTime
-      } else {
-        nextEstimatedTimeMap[`claim_${toHash}`] = 0
-        sentryDebug(`safe block number: ${blockNumbers[0]}`)
-      }
-    } else if (
-      tx.finalizeTx?.blockNumber &&
-      tx.finalizeTx.blockNumber <= blockNumbers[0] &&
-      Object.keys(nextEstimatedTimeMap).includes(`claim_${toHash}`)
-    ) {
-      delete nextEstimatedTimeMap[`claim_${toHash}`]
-    }
+    const claimStatus = getTxStatus(tx, claimingTransactionsMap, lastFinalizedBatch, nextEstimatedTimeMap)
 
     return {
       hash: tx.hash,
@@ -173,6 +176,12 @@ const useTxStore = create<TxStore>()(
             ...preClaimingTransactionsMap,
             [transaction]: +new Date(),
           },
+        })
+      },
+      addEstimatedTimeMap: (key, value) => {
+        const nextEstimatedTimeMap = { ...get().estimatedTimeMap, [key]: value }
+        set({
+          estimatedTimeMap: nextEstimatedTimeMap,
         })
       },
       updateTransactions: async transactions => {

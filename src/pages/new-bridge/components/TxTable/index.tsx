@@ -38,7 +38,7 @@ const useStyles = makeStyles()(theme => {
     tableWrapper: {
       boxShadow: "unset",
       borderRadius: "20px",
-      width: "62.8rem",
+      width: "66.8rem",
       backgroundColor: theme.palette.themeBackground.optionHightlight,
       padding: "2.5rem 3rem",
     },
@@ -129,7 +129,7 @@ const TxTable = (props: any) => {
               {/* <TableCell>Finalised At</TableCell> */}
               <TableCell>Action</TableCell>
               <TableCell>Amount</TableCell>
-              {/* <TableCell>Status</TableCell> */}
+              <TableCell>Status</TableCell>
               <TableCell>Transaction Hash</TableCell>
             </TableRow>
           </TableHead>
@@ -218,14 +218,14 @@ const TxRow = props => {
     }
     return (
       <span>
-        estimated waiting time: {hours}h {minutes}m {seconds}s
+        Ready in {minutes}m {seconds}s (estimate)
       </span>
     )
   }
 
   const formatDate = (inputStr: string): string => {
     const date = dayjs(inputStr)
-    return date.format("DD/MM/YYYY HH:mm:ss")
+    return inputStr ? date.format("DD/MM/YYYY HH:mm:ss") : "-"
   }
 
   const actionText = tx => {
@@ -257,10 +257,13 @@ const TxRow = props => {
           {tokenInfoLoading ? <Skeleton variant="text" width="5rem" className="inline-block" /> : <span>{tokenInfo?.symbol}</span>}
         </Typography>
       </TableCell>
-      {/* <TableCell>
-        <Stack direction="column" spacing="1.4rem"></Stack>
-      </TableCell> */}
-      <TableCell sx={{ width: "18rem" }}>
+      <TableCell>
+        <Stack direction="column" spacing="1.4rem">
+          {" "}
+          status
+        </Stack>
+      </TableCell>
+      <TableCell sx={{ width: "21rem" }}>
         <Stack direction="column">
           <Typography>{tx.fromName}: </Typography>
           <Link external href={generateExploreLink(tx.fromExplore, tx.hash)} className="leading-normal flex-1">

@@ -8,7 +8,7 @@ import L1ScrollMessenger from "@/assets/abis/L1ScrollMessenger.json"
 import { CHAIN_ID } from "@/constants/common"
 import { useApp } from "@/contexts/AppContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import useClaimStore, { ClaimStatus } from "@/stores/claimStore"
+import useClaimStore, { ClaimStatus, isValidOffsetTime } from "@/stores/claimStore"
 import { requireEnv } from "@/utils"
 import { switchNetwork } from "@/utils"
 
@@ -38,10 +38,13 @@ const StyledButton = styled("button")(({ theme }) => ({
 
 const ClaimButton = props => {
   const { tx } = props
-  const { networksAndSigners } = useApp()
+  const {
+    networksAndSigners,
+    txHistory: { blockNumbers },
+  } = useApp()
   const { chainId } = useRainbowContext()
   const [claimButtonLabel, setClaimButtonLabel] = useState("Claim")
-  const { addClaimingTransaction } = useClaimStore()
+  const { addClaimingTransaction, addEstimatedTimeMap } = useClaimStore()
 
   const [loading, setLoading] = useState(false)
 
@@ -64,7 +67,59 @@ const ClaimButton = props => {
         merkleProof: proof,
       })
       addClaimingTransaction(tx.hash)
-      await result.wait()
+      result
+        .wait()
+        .then(receipt => {
+          if (receipt?.status === 1) {
+            const estimatedOffsetTime = (receipt.blockNumber - blockNumbers[0]) * 12 * 1000
+            if (isValidOffsetTime(estimatedOffsetTime)) {
+              addEstimatedTimeMap(`claim_${tx.hash}`, Date.now() + estimatedOffsetTime)
+            } else {
+              addEstimatedTimeMap(`claim_${tx.hash}`, 0)
+            }
+          } else {
+            // const errorMessage = "due to any operation that can cause the transaction or top-level call to revert"
+            // Something failed in the EVM
+            // updateOrderedTxs(walletCurrentAddress, tx.hash, TxPosition.Abnormal)
+            // EIP-658
+            // markTransactionAbnormal(tx, TX_STATUS.failed, errorMessage)
+          }
+        })
+        .catch(error => {
+          // TRANSACTION_REPLACED or TIMEOUT
+          // sentryDebug(error.message)
+          // if (isError(error, "TRANSACTION_REPLACED")) {
+          //   if (error.cancelled) {
+          //     markTransactionAbnormal(tx, TX_STATUS.canceled, "transaction was cancelled")
+          //     updateOrderedTxs(walletCurrentAddress, tx.hash, TxPosition.Abnormal)
+          //     setSendError("cancel")
+          //   } else {
+          //     const { blockNumber, hash: transactionHash } = error.receipt
+          //     handleTransaction(tx, {
+          //       fromBlockNumber: blockNumber,
+          //       hash: transactionHash,
+          //     })
+          //     updateOrderedTxs(walletCurrentAddress, tx.hash, transactionHash)
+          //     if (fromNetwork.isL1) {
+          //       const estimatedOffsetTime = (blockNumber - blockNumbers[0]) * 12 * 1000
+          //       if (isValidOffsetTime(estimatedOffsetTime)) {
+          //         addEstimatedTimeMap(`from_${transactionHash}`, Date.now() + estimatedOffsetTime)
+          //       } else {
+          //         addEstimatedTimeMap(`from_${transactionHash}`, 0)
+          //         sentryDebug(`safe block number: ${blockNumbers[0]}`)
+          //       }
+          //     }
+          //   }
+          // } else {
+          // setSendError(error)
+          // when the transaction execution failed (status is 0)
+          // updateOrderedTxs(walletCurrentAddress, tx.hash, TxPosition.Abnormal)
+          // markTransactionAbnormal(tx, TX_STATUS.failed, error.message)
+          // }
+        })
+        .finally(() => {
+          setLoading(false)
+        })
       console.log(tx)
     } catch (error) {
       console.log(error.toString())

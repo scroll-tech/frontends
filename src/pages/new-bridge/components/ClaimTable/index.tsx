@@ -1,7 +1,9 @@
+import Countdown from "react-countdown"
 import { makeStyles } from "tss-react/mui"
 
 import {
   CircularProgress,
+  LinearProgress,
   Pagination,
   Paper,
   Skeleton,
@@ -17,7 +19,7 @@ import {
 import Link from "@/components/Link"
 import { EXPLORER_URL } from "@/constants"
 import useTokenInfo from "@/hooks/useTokenInfo"
-import { ClaimStatus } from "@/stores/claimStore"
+import useClaimStore, { ClaimStatus } from "@/stores/claimStore"
 import { generateExploreLink, toTokenDisplay, truncateHash } from "@/utils"
 
 import ClaimButton from "./ClaimButton"
@@ -140,6 +142,7 @@ const TxRow = props => {
   const { tx } = props
 
   const { loading: tokenInfoLoading, tokenInfo } = useTokenInfo(tx.l1Token, true)
+  const { estimatedTimeMap } = useClaimStore()
 
   const txAmount = amount => {
     return toTokenDisplay(amount, tokenInfo?.decimals ? BigInt(tokenInfo.decimals) : undefined)
@@ -199,6 +202,32 @@ const TxRow = props => {
     // }
   }
 
+  const renderEstimatedWaitingTime = timestamp => {
+    if (tx.claimStatus === ClaimStatus.CLAIMED) {
+      return null
+    } else if (timestamp === 0) {
+      return <Typography variant="body2">Estimating...</Typography>
+    } else if (timestamp) {
+      return (
+        <Typography variant="body2" color="textSecondary">
+          <Countdown date={timestamp} renderer={renderCountDown}></Countdown>
+        </Typography>
+      )
+    }
+    return null
+  }
+
+  const renderCountDown = ({ total, hours, minutes, seconds, completed }) => {
+    if (completed) {
+      return <LinearProgress />
+    }
+    return (
+      <span>
+        Ready in {minutes}m {seconds}s (estimate)
+      </span>
+    )
+  }
+
   return (
     <TableRow key={tx.hash}>
       <TableCell>
@@ -214,6 +243,15 @@ const TxRow = props => {
         <Link external href={generateExploreLink(EXPLORER_URL.L2, tx.hash)} className="leading-normal flex-1">
           {truncateHash(tx.hash)}
         </Link>
+        <br />
+        {tx.toHash ? (
+          <>
+            <Link external href={generateExploreLink(EXPLORER_URL.L1, tx.toHash)} className="leading-normal flex-1">
+              {truncateHash(tx.toHash)}
+            </Link>
+          </>
+        ) : null}
+        {renderEstimatedWaitingTime(estimatedTimeMap[`claim_${tx.hash}`])}
       </TableCell>
       <TableCell>{txStatus()}</TableCell>
     </TableRow>
