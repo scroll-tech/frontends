@@ -10,9 +10,15 @@ const useStyles = makeStyles()(theme => ({
     width: "100%",
     height: "100vh",
     marginTop: "-6.5rem",
-    background: "url(/imgs/story/story-bg.png) no-repeat center",
+    paddingTop: "16.4rem",
+    background: "url(/imgs/story/story-hero-bg-desktop.svg) no-repeat center",
     backgroundSize: "cover",
     textAlign: "center",
+
+    [theme.breakpoints.down("sm")]: {
+      background: " url(/imgs/story/story-hero-bg-mobile.svg) no-repeat center",
+      backgroundSize: "cover",
+    },
   },
   mask: {
     width: "84rem",
@@ -39,18 +45,16 @@ const Header = () => {
   const { classes } = useStyles()
   return (
     <Box className={classes.bg}>
-      <Box className={classes.mask}>
-        <Stack direction="column" spacing={isMobileOnly ? "2.2rem" : "1.4rem"} alignItems="center">
-          <OrientationToView>
-            <Typography sx={{ fontSize: ["4rem", "7.8rem"], lineHeight: 1, fontWeight: 600 }}>Our story</Typography>
-          </OrientationToView>
-          <OrientationToView delay={0.3}>
-            <Typography sx={{ fontSize: ["2rem", "2.6rem"], maxWidth: ["24.8rem", "68rem"] }}>
-              We are pragmatic problem solvers, passionate community builders and champions of open-source code.
-            </Typography>
-          </OrientationToView>
-        </Stack>
-      </Box>
+      <Stack direction="column" spacing={isMobileOnly ? "1.2rem" : "1.4rem"} alignItems="center">
+        <OrientationToView>
+          <Typography sx={{ fontSize: ["4rem", "7.8rem"], lineHeight: 1, fontWeight: 600 }}>Our story</Typography>
+        </OrientationToView>
+        <OrientationToView delay={0.3}>
+          <Typography sx={{ fontSize: ["2rem", "2.6rem"], maxWidth: ["24.8rem", "68rem"] }}>
+            We are pragmatic problem solvers, passionate community builders and champions of open-source code.
+          </Typography>
+        </OrientationToView>
+      </Stack>
     </Box>
   )
 }
