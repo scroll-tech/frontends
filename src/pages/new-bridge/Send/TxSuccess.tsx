@@ -7,6 +7,7 @@ import { Alert, Box, Typography } from "@mui/material"
 import Button from "@/components/Button"
 import Link from "@/components/Link"
 import TextButton from "@/components/TextButton"
+import TxAlert from "@/components/TxAlert"
 import { ETH_SYMBOL } from "@/constants"
 import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
 import useBridgeStore from "@/stores/bridgeStore"
@@ -35,9 +36,8 @@ const TxSuccess = () => {
   if (txType === "Deposit") {
     return (
       <Box sx={{ height: "34rem" }}>
-        <Alert icon={false} severity="success" sx={{ fontSize: "2.4rem", fontWeight: "600", textAlign: "center" }}>
-          Success!
-        </Alert>
+        <TxAlert severity="success">Success!</TxAlert>
+
         <Typography sx={{ fontSize: "1.8rem", fontWeight: 700, mt: "2.5rem" }}>
           Moving {txResult?.amount} {tokenSymbol} to {toNetwork.name}
         </Typography>

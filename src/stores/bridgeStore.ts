@@ -12,7 +12,10 @@ interface TxResult {
   hash: string
   amount: string
 }
-
+interface TxError {
+  hash?: string
+  message: string
+}
 interface BridgeStore {
   historyVisible: boolean
   changeHistoryVisible: (value) => void
@@ -24,6 +27,7 @@ interface BridgeStore {
   txType: TransactionType
   withDrawStep: WithDrawStep
   txResult: TxResult | null
+  txError: TxError | null
   isNetworkCorrect: boolean
 
   changeFromNetwork: (network: Network) => void
@@ -31,6 +35,7 @@ interface BridgeStore {
   changeMode: (mode: Mode) => void
   changeTxType: (txType: TransactionType) => void
   changeTxResult: (txResult: TxResult | null) => void
+  changeTxError: (txError: TxError | null) => void
   changeWithdrawStep: (withDrawStep: WithDrawStep) => void
   changeIsNetworkCorrect: (isNetworkCorrect: boolean) => void
 }
@@ -52,6 +57,7 @@ const useBridgeStore = create<BridgeStore>()((set, get) => ({
   txType: "Deposit",
   withDrawStep: "1",
   txResult: null,
+  txError: null,
   isNetworkCorrect: true,
 
   changeFromNetwork: network => {
@@ -78,6 +84,12 @@ const useBridgeStore = create<BridgeStore>()((set, get) => ({
   changeTxResult: txResult => {
     set({
       txResult,
+    })
+  },
+
+  changeTxError: txError => {
+    set({
+      txError,
     })
   },
 

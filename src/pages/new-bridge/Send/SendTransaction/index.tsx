@@ -33,7 +33,7 @@ const SendTransaction = props => {
 
   const { gasLimit, gasPrice } = usePriceFeeContext()
 
-  const { txType, isNetworkCorrect, fromNetwork } = useBridgeStore()
+  const { txType, isNetworkCorrect, fromNetwork, changeTxError } = useBridgeStore()
 
   const [amount, setAmount] = useState<string>()
 
@@ -101,22 +101,9 @@ const SendTransaction = props => {
       return insufficientWarning
     } else if (invalidAmountMessage) {
       return invalidAmountMessage
-    } else if (sendError && sendError !== "cancel" && sendError.code !== 4001) {
-      // TODO: should refer to the position of the success tip
-      // at present, it won't disappear
-      return (
-        // <>
-        //   The transaction failed. Your {walletName} wallet might not be up to date.{" "}
-        //   <TextButton underline="always" onClick={() => window.open("https://guide.scroll.io/user-guide/common-errors")}>
-        //     Reset your {walletName} account
-        //   </TextButton>
-        //   {" before using Scroll Bridge."}
-        // </>
-        <>{sendError.message}</>
-      )
     }
     return null
-  }, [chainId, isNetworkCorrect, fromNetwork, insufficientWarning, invalidAmountMessage, sendError])
+  }, [chainId, isNetworkCorrect, fromNetwork, insufficientWarning, invalidAmountMessage])
 
   const necessaryCondition = useMemo(() => {
     return amount && !bridgeWarning
@@ -134,10 +121,21 @@ const SendTransaction = props => {
   }, [txType, sendLoading])
 
   useEffect(() => {
-    if (!sendLoading && sendError !== "cancel") {
+    // TODO: refactor
+    // sendError: undefined  tx success
+    // sendError: !(cancel||reject)  tx failure
+    if (!sendLoading && sendError !== "cancel" && sendError !== "reject") {
       setAmount("")
     }
   }, [sendLoading, sendError])
+
+  useEffect(() => {
+    if (sendError && sendError !== "cancel" && sendError !== "reject") {
+      changeTxError({ message: sendError.message })
+    } else {
+      changeTxError(null)
+    }
+  }, [sendError])
 
   const handleSend = () => {
     if (fromNetwork.isL1) {

@@ -113,7 +113,9 @@ export function useSendTransaction(props) {
     } catch (error) {
       setIsLoading(false)
       // reject && insufficient funds(send error)
-      if (!isError(error, "ACTION_REJECTED")) {
+      if (isError(error, "ACTION_REJECTED")) {
+        setSendError("reject")
+      } else {
         setSendError(error)
       }
     }
