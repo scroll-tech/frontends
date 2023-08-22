@@ -8,6 +8,7 @@ import Link from "@/components/Link"
 const useStyles = makeStyles()(theme => ({
   card: {
     backgroundColor: theme.palette.themeBackground.normal,
+    height: "100%",
     padding: "3rem",
     borderRadius: "2.5rem",
     cursor: "pointer",
@@ -40,16 +41,22 @@ const ExplorerCard = props => {
       <Card {...restProps} elevation={0} classes={{ root: classes.card }}>
         <Stack direction="column">
           <Box className={classes.header}>
-            <SvgIcon sx={{ fontSize: ["1.3rem", "2.3rem"], alignSelf: ["center", "flex-end"] }} component={ExternaLinkIcon} inheritViewBox></SvgIcon>
+            <SvgIcon sx={{ fontSize: ["1.3rem", "2rem"], alignSelf: ["center", "flex-end"] }} component={ExternaLinkIcon} inheritViewBox></SvgIcon>
             <SvgIcon sx={{ fontSize: ["2.8rem", "3.3rem"] }} component={icon} inheritViewBox></SvgIcon>
           </Box>
 
           <Typography
-            sx={{ fontSize: ["1.6rem", "2.4rem"], fontWeight: 600, lineHeight: "normal", mt: ["1.5rem", "2.6rem"], mb: ["0.9rem", "0.6rem"] }}
+            sx={{
+              fontSize: ["1.6rem", "2.4rem"],
+              fontWeight: 600,
+              mt: ["1.5rem", "2.6rem"],
+              mb: ["0.9rem", "0.6rem"],
+              cursor: "inherit",
+            }}
           >
             {title}
           </Typography>
-          <Typography sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: "normal" }}>{content}</Typography>
+          <Typography sx={{ fontSize: ["1.6rem", "2rem"], cursor: "inherit" }}>{content}</Typography>
         </Stack>
       </Card>
     </Link>

@@ -50,9 +50,9 @@ const useStyles = makeStyles()(theme => ({
     transform: "translateX(0) !important",
     transition: "transform 227ms cubic-bezier(0.4, 0, 0.2, 1) 0ms !important",
     // TODO: why
-    "@media (min-width: 1500px) and (max-width: 1700px)": {
-      marginLeft: "-0.5px",
-    },
+    // "@media (min-width: 1500px) and (max-width: 1700px)": {
+    //   marginLeft: "-0.5px",
+    // },
   },
   suspend: {
     borderRadius: "2.6rem",
@@ -64,6 +64,9 @@ const useStyles = makeStyles()(theme => ({
     [theme.breakpoints.down("sm")]: {
       paddingTop: "0.4rem",
       paddingBottom: "3rem",
+      paddingLeft: "3.4rem",
+      display: "grid",
+      gridTemplateColumns: "repeat(2, 1fr)",
     },
   },
 }))
@@ -95,6 +98,7 @@ const Select = props => {
         MenuListProps: { classes: { root: classes.menuList } },
       }}
       renderValue={selected => {
+        console.log(selected, "selected")
         return (
           <Stack direction="row" alignItems="center" spacing={1.5}>
             <SvgIcon sx={{ fontSize: "2rem" }} component={WidgetsIcon} inheritViewBox></SvgIcon>

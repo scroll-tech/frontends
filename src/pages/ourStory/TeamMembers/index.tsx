@@ -14,52 +14,52 @@ const CORE_MEMBERS = [
   {
     avatar: SandyAvatar,
     name: "Sandy",
-    desc: "founder in Hong Kong",
+    desc: "Founder in Hong Kong",
   },
   {
     avatar: YeAvatar,
     name: "Ye",
-    desc: "founder in Beijing",
+    desc: "Founder in Beijing",
   },
   {
     avatar: HaichenAvatar,
     name: "Haichen",
-    desc: "founder in San Francisco",
+    desc: "Founder in San Francisco",
   },
   {
     avatar: BackupAvatar,
     name: "Jane",
-    desc: "head of operations in London",
+    desc: "Head of operations in London",
   },
   {
     avatar: BackupAvatar,
     name: "Toghrul",
-    desc: "senior researcher in Dubai",
+    desc: "Senior researcher in Dubai",
   },
   {
     avatar: BackupAvatar,
     name: "Dan",
-    desc: "devrel lead in Oklahoma, US",
+    desc: "Devrel lead in Oklahoma, US",
   },
   {
     avatar: BackupAvatar,
     name: "Lea",
-    desc: "partnerships lead in Berlin",
+    desc: "Partnerships lead in Berlin",
   },
   {
     avatar: BackupAvatar,
     name: "Mohammad",
-    desc: "protocol researcher - Vancouver, Canada",
+    desc: "Protocol researcher - Vancouver, Canada",
   },
   {
     avatar: BackupAvatar,
     name: "Mei",
-    desc: "comms & outreach lead in Texas, US",
+    desc: "Comms & outreach lead in Texas, US",
   },
   {
     avatar: BackupAvatar,
     name: "Peter",
-    desc: "infrastructure engineer in Budapest, Hungary",
+    desc: "Infrastructure engineer in Budapest, Hungary",
   },
 ]
 
