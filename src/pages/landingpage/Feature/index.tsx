@@ -1,9 +1,10 @@
 import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
-import ScalabilityIcon from "@/assets/images/homepage/home/feature_icon_1.png"
-import SecurityIcon from "@/assets/images/homepage/home/feature_icon_2.png"
-import EVMEquivalenceIcon from "@/assets/images/homepage/home/feature_icon_3.png"
+import SeatureIcon1 from "@/assets/images/homepage/home/feature_icon_1.png"
+import SeatureIcon2 from "@/assets/images/homepage/home/feature_icon_2.png"
+import SeatureIcon3 from "@/assets/images/homepage/home/feature_icon_3.png"
+import SeatureIcon4 from "@/assets/images/homepage/home/feature_icon_4.png"
 import { FadeInUp, SlideInLeft, SlideInRight } from "@/components/Animation"
 import Button from "@/components/Button"
 import SectionHeader from "@/components/SectionHeader"
@@ -12,28 +13,28 @@ import WebpImage from "@/components/WebpImage"
 
 const FEATURES = [
   {
-    icon: ScalabilityIcon,
-    title: "Proof of a powerful new way to scale",
+    icon: SeatureIcon1,
+    title: "EVM-equivalence for seamless scaling",
     description:
-      "Scroll leverages a novel hierarchical zero-knowledge proof system and removes the tradeoff between security and scalability with minimal trust assumptions, fast finality, and seamless migration from the base layer.",
+      "Scroll is designed by and for Ethereum developers. A swift, reliable and scalable Layer 2 blockchain, Scroll extends Ethereum's capabilities, enabling apps to scale without any surprises. Thanks to bytecode-level compatibility, existing Ethereum apps can migrate onto Scroll as is, and at a significantly reduced cost.",
   },
   {
-    icon: SecurityIcon,
-    title: "For developers, by developers",
+    icon: SeatureIcon2,
+    title: "Collective vision for Ethereum’s future",
     description:
-      "We’ve built trust with the Ethereum community using fully open-source code since day one. From a developer's perspective, building in the open leads to more secure and better-designed systems that combine the best ideas among value-aligned developers.",
+      "We’ve been building in the open since Day 1 with the Ethereum community. Our open developmental approach combines the best ideas among value-aligned contributors and leads to more secure and better-designed systems. Scroll is forging a community-driven path to redefine and evolve Ethereum’s roadmap.",
   },
   {
-    icon: EVMEquivalenceIcon,
-    title: "Ethereum equivalent, byte by byte",
+    icon: SeatureIcon3,
+    title: "Unwavering security at every layer",
     description:
-      "Scroll is one of the most familiar developer experiences outside Ethereum itself. EVM-compatible smart contracts can be easily deployed to Scroll. And thanks to bytecode-level compatibility, existing Ethereum apps can migrate onto Scroll as is.",
+      "Scroll uses advanced zero-knowledge proof technology, battle-tested EVM models, and rigorous audits to ensure that our foundation is rooted in security and reliability. By prioritizing code security through open-source collaboration, Scroll protects our developers and users against vulnerabilities.",
   },
   {
-    icon: SecurityIcon,
-    title: "Security first at every step",
+    icon: SeatureIcon4,
+    title: "Rooted in technical rigor and credibility",
     description:
-      "Scroll prioritizes security by leveraging battle-tested EVM models and conducting rigorous audits. We believe the open-source DNA of Scroll will make it the most secure and robust ZK-rollup, helping us maintain the highest level of code security.",
+      "Stability and trustworthiness are the building blocks to our network’s growth. Scroll is steadfast in maintaining credible neutrality to reduce imbalances of power within our ecosystem. In pursuit of our long-term vision, we immerse ourselves in solving meaningful and challenging research problems with a focus on technical detail, accuracy and results.",
   },
 ]
 
@@ -43,7 +44,7 @@ const FeatureBox = styled(Box)(({ theme }) => ({
   justifyContent: "center",
   gap: "10rem",
   paddingBottom: "16rem",
-  "&:nth-of-type(odd)": {
+  "&:nth-of-type(even)": {
     flexDirection: "row-reverse",
   },
   [theme.breakpoints.down("md")]: {
@@ -107,9 +108,9 @@ const Feature = () => {
       <FadeInUp>
         <SectionHeader
           title="Zero Knowledge Required"
-          content="Our zero knowledge obsession is more than just secure off-chain proofs. We’re committed to making the Ethereum developer experience as easy as possible, with familiar developer tools, no new languages, 3rd-party integrations, product synergy and built-in incentives. Scroll is:"
+          content="Scroll’s mission is to provide an accessible scaling solution that preserves the essence of Ethereum – trust-minimized, secure and open-source. Like a scroll, our story is constantly evolving in our quest to secure Ethereum’s future and making the developer experience as easy as possible."
           action={
-            <Button href="" target="_blank" color="primary">
+            <Button href="/story" color="primary">
               Read our story
             </Button>
           }
@@ -118,7 +119,7 @@ const Feature = () => {
       <Spacer />
       {FEATURES.map((feature, idx) => (
         <FeatureBox key={idx}>
-          {idx % 2 !== 0 ? (
+          {idx % 2 === 0 ? (
             <>
               <SlideInLeft triggerOnce>
                 <FeatureIcon src={feature.icon} />

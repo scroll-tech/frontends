@@ -62,8 +62,8 @@ const StatusChip = styled(Chip)(({ theme }) => ({
     color: theme.palette.tagCommitted.main,
   },
   "&.finalized": {
-    backgroundColor: theme.palette.tagSuccess.light,
-    color: theme.palette.tagSuccess.main,
+    backgroundColor: "#DFFCF8",
+    color: "#0F8E7E",
   },
   "&.skipped": {
     backgroundColor: theme.palette.tagCommitted.light,

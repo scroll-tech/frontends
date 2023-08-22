@@ -15,8 +15,7 @@ const Container = styled(Box)(({ theme }) => ({
   paddingTop: "13.8rem",
   paddingBottom: "15.5rem",
   [theme.breakpoints.down("md")]: {
-    paddingTop: "6.8rem",
-    paddingBottom: "11.2rem",
+    padding: "6.8rem 2rem 11.2rem",
   },
 }))
 
@@ -30,7 +29,7 @@ const Title = styled(Typography)(({ theme }) => ({
 const SubTitle = styled(Typography)(({ theme }) => ({
   marginTop: "2rem",
   marginBottom: "5rem",
-  maxWidth: "68rem",
+  maxWidth: "77rem",
   [theme.breakpoints.down("md")]: {
     marginBottom: "4rem",
   },
@@ -55,13 +54,16 @@ const Header = () => {
 
         <TextMarquee />
         <SubTitle variant="Body1" textAlign="center">
-          The community-first, Ethereum-equivalent zkEVM  on an open path to proof at scale.
+          Scroll seamlessly extends Ethereum’s capabilities through zero knowledge tech and EVM equivalence. The L2 blockchain built by Ethereum devs
+          for Ethereum devs.
         </SubTitle>
         <ButtonContainer>
-          <Button target="_blank" color="primary">
+          <Button href="/bridge" color="primary">
             Bridge into Scroll
           </Button>
-          <Button target="_blank">Start building</Button>
+          <Button target="_blank" href="https://docs.scroll.xyz/en/home/">
+            Start building
+          </Button>
         </ButtonContainer>
       </FadeInUp>
     </Container>

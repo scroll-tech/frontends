@@ -181,7 +181,15 @@ const App = ({ currentMenu }) => {
           subItem.isExternal ? (
             <LinkButton target="_blank" underline="none" key={subItem.label} href={subItem.href}>
               <Stack direction="row" alignItems="center" spacing={1} sx={{ width: "100%" }}>
-                <ExternalLink>{subItem.label}</ExternalLink>
+                <ExternalLink>
+                  {subItem.label}
+                  <svg style={{ marginLeft: "0.5rem" }} xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none">
+                    <path
+                      d="M9 1V7.86538L7.83812 6.7035V2.96385C5.46463 5.26924 3.29542 7.77999 0.853849 10L0 9.16344C2.42536 6.94344 4.5762 4.46728 6.93347 2.1781H3.31272L2.13462 1H9Z"
+                      fill="#101010"
+                    />
+                  </svg>
+                </ExternalLink>
               </Stack>
             </LinkButton>
           ) : (

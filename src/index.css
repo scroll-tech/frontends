@@ -118,10 +118,12 @@ onboard-v2 .outer-container icon {
   }
 }
 
-.markdown-body {
-  /* height: 100vh; */
-  /* overflow: scroll; */
+div.markdown-body h1,
+div.markdown-body h2,
+div.markdown-body h3 {
+  border-bottom: 0;
 }
+
 .markdown-body ol {
   list-style-type: decimal;
 }
