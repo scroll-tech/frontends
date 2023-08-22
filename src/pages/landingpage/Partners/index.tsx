@@ -142,8 +142,8 @@ const Partners = () => {
             title="Build with the Best in Web3"
             content="We’re part of an ecosystem with a greater purpose – permissionless, flexible, and dedicated to improving the future of Ethereum."
             action={
-              <Button href="" target="_blank" color="primary">
-                Explore ecosystem
+              <Button href="/ecosystem" color="primary">
+                Explore projects
               </Button>
             }
           ></SectionHeader>

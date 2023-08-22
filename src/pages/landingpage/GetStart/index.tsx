@@ -65,28 +65,30 @@ const Background = styled(Box)(({ theme }) => ({
 
 const StepContainer = styled(SuccessionToView)(({ theme }) => ({
   display: "flex",
-  justifyContent: "space-between",
+  // justifyContent: "space-between",
   marginBottom: "13rem",
-  gap: "1.6rem",
-  "& .step-box:nth-of-type(1) img": {
+  "& > div": {
+    flex: 1,
+  },
+  "& > div:nth-of-type(1) img": {
     width: "2.3rem",
   },
-  "& .step-box:nth-of-type(2) img": {
+  "& > div:nth-of-type(2) img": {
     width: "3.4rem",
   },
-  "& .step-box:nth-of-type(3) img": {
+  "& > div:nth-of-type(3) img": {
     width: "3.3rem",
   },
   [theme.breakpoints.down("md")]: {
     flexDirection: "column",
     marginBottom: "5rem",
-    "& .step-box:nth-of-type(1) img": {
+    "& > div:nth-of-type(1) img": {
       width: "3.3rem",
     },
-    "& .step-box:nth-of-type(2) img": {
+    "& > div:nth-of-type(2) img": {
       width: "3.2rem",
     },
-    "& .step-box:nth-of-type(3) img": {
+    "& > div:nth-of-type(3) img": {
       width: "2.8rem",
     },
   },
@@ -175,7 +177,7 @@ const GetStart = () => {
             title="Getting started with Scroll"
             content="Scroll is compatible with Ethereum at the bytecode level, meaning everything works right out of the box."
             action={
-              <Button href="" target="_blank" color="primary">
+              <Button href="https://docs.scroll.xyz/en/home/" target="_blank" color="primary">
                 Start building
               </Button>
             }

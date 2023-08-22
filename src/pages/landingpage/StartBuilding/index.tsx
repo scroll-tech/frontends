@@ -45,10 +45,12 @@ const StartBuilding = () => {
       <FadeInUp>
         <Title>Scroll into the Future of Ethereum</Title>
         <ButtonContainer>
-          <Button target="_blank" color="primary">
+          <Button href="/bridge" color="primary">
             Bridge into Scroll
           </Button>
-          <Button target="_blank">Start building</Button>
+          <Button target="_blank" href="https://docs.scroll.xyz/en/home/">
+            Start building
+          </Button>
         </ButtonContainer>
       </FadeInUp>
     </Container>
