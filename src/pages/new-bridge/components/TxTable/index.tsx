@@ -238,6 +238,10 @@ const TxRow = props => {
         </Tooltip>
       )
     }
+    //withdraw claimable
+    if (!tx.isL1 && fromStatus === TX_STATUS.success) {
+      return <button className={cx(classes.chip, classes.pendingChip)}>Claimable</button>
+    }
     return (
       <button className={cx(classes.chip, classes.pendingChip)}>
         Pending <CircularProgress size={12} sx={{ marginLeft: "0.2rem" }} color="inherit" />
