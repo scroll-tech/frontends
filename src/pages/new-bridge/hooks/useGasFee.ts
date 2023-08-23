@@ -34,7 +34,7 @@ const useGasFee = selectedToken => {
           setGasLimit(value.gasLimit)
         })
         .catch(error => {
-          // console.log(error, "useGasFee error")
+          // console.log(error, "useGasFee limit error")
           setGasFee(BigInt(0))
           setGasLimit(BigInt(0))
         })

@@ -167,9 +167,7 @@ const TxRow = props => {
   const { tx } = props
   const { estimatedTimeMap } = useTxStore()
 
-  const {
-    txHistory: { blockNumbers },
-  } = useApp()
+  const { blockNumbers } = useApp()
 
   const txStatus = useCallback(
     (blockNumber, assumedStatus, isL1, to) => {

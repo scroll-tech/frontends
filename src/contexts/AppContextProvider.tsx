@@ -9,7 +9,7 @@ import { tokenListUrl } from "@/apis/dynamic"
 import L1_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L1_GATEWAY_ROUTER_PROXY_ADDR.json"
 import L2_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L2_GATEWAY_ROUTER_PROXY_ADDR.json"
 import { CHAIN_ID, ETH_SYMBOL, GATEWAY_ROUTE_PROXY_ADDR, NATIVE_TOKEN_LIST, RPC_URL } from "@/constants"
-import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
+import { BLOCK_NUMBERS, BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useClaim from "@/hooks/useClaim"
 import useTxHistory, { TxHistory } from "@/hooks/useTxHistory"
@@ -18,6 +18,7 @@ import { requireEnv } from "@/utils"
 type AppContextProps = {
   networksAndSigners: any
   txHistory: TxHistory
+  blockNumbers: number[]
   tokenList: Token[]
   claim: any
 }
@@ -29,6 +30,8 @@ const branchName = requireEnv("REACT_APP_SCROLL_ENVIRONMENT").toLocaleLowerCase(
 const AppContextProvider = ({ children }: any) => {
   const { provider, walletCurrentAddress, chainId } = useRainbowContext()
   const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
+  const [blockNumbers] = useStorage(localStorage, BLOCK_NUMBERS, [-1, -1])
+
   const [networksAndSigners, setNetworksAndSigners] = useState({
     [CHAIN_ID.L1]: {},
     [CHAIN_ID.L2]: {},
@@ -113,6 +116,7 @@ const AppContextProvider = ({ children }: any) => {
       value={{
         networksAndSigners,
         txHistory,
+        blockNumbers,
         claim,
         tokenList: tokenList ?? NATIVE_TOKEN_LIST,
       }}

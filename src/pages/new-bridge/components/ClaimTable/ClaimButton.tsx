@@ -38,10 +38,7 @@ const StyledButton = styled("button")(({ theme }) => ({
 
 const ClaimButton = props => {
   const { tx } = props
-  const {
-    networksAndSigners,
-    txHistory: { blockNumbers },
-  } = useApp()
+  const { networksAndSigners, blockNumbers } = useApp()
   const { chainId } = useRainbowContext()
   const [claimButtonLabel, setClaimButtonLabel] = useState("Claim")
   const { addClaimingTransaction, addEstimatedTimeMap } = useClaimStore()

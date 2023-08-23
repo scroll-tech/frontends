@@ -59,9 +59,8 @@ const SendTransaction = props => {
   const invalidAmountMessage = useCheckValidAmount(amount)
   // fee start
   const { gasFee: estimatedGasCost } = useGasFee(selectedToken)
-  // const estimatedGasCost = BigInt(0)
 
-  const totalFee = useMemo(() => (estimatedGasCost ?? BigInt(0)) + gasLimit * gasPrice, [estimatedGasCost, gasLimit, gasPrice])
+  const totalFee = useMemo(() => estimatedGasCost + gasLimit * gasPrice, [estimatedGasCost, gasLimit, gasPrice])
 
   const { insufficientWarning } = useSufficientBalance(
     selectedToken,
@@ -188,7 +187,7 @@ const SendTransaction = props => {
             loading={approveLoading}
             onClick={approve}
           >
-            {approveLoading ? "Approving" : "Approve"}
+            {approveLoading ? "Approving " : "Approve "}
             {tokenSymbol}
           </Button>
         ) : (

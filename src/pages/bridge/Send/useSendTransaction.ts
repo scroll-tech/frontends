@@ -20,10 +20,8 @@ let gasLimitForSend = BigInt(0)
 export function useSendTransaction(props) {
   const { fromNetwork, fromTokenAmount, setSendError, toNetwork, selectedToken } = props
   const { walletCurrentAddress } = useRainbowContext()
-  const {
-    networksAndSigners,
-    txHistory: { blockNumbers },
-  } = useApp()
+
+  const { networksAndSigners, blockNumbers } = useApp()
   const { addTransaction, updateTransaction, addEstimatedTimeMap, updateOrderedTxs, addAbnormalTransactions, removeFrontTransactions } = useTxStore()
   const { changeHistoryVisible } = useBridgeStore()
   const [sending, setSending] = useState<boolean>(false)

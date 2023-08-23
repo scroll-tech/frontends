@@ -13,10 +13,7 @@ import { amountToBN, sentryDebug } from "@/utils"
 export function useSendTransaction(props) {
   const { amount: fromTokenAmount, selectedToken } = props
   const { walletCurrentAddress } = useRainbowContext()
-  const {
-    networksAndSigners,
-    txHistory: { blockNumbers },
-  } = useApp()
+  const { networksAndSigners, blockNumbers } = useApp()
   const { addTransaction, updateTransaction, addEstimatedTimeMap, updateOrderedTxs, addAbnormalTransactions, removeFrontTransactions } = useTxStore()
   const { changeHistoryVisible, fromNetwork, toNetwork, changeTxResult } = useBridgeStore()
   const { gasLimit, gasPrice } = usePriceFeeContext()

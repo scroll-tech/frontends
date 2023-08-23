@@ -1,15 +1,21 @@
 import { Alert, Snackbar } from "@mui/material"
 
-import useCheckNetworkAvailable from "@/hooks/useCheckNetworkAvailable"
+import { RPC_URL } from "@/constants"
+import useBlockNumbers from "@/hooks/useBlockNumbers"
 
 const GlobalWarning = () => {
-  const { isL2Available } = useCheckNetworkAvailable()
+  const { isL1Available, isL2Available } = useBlockNumbers()
 
   return (
     <>
+      {!isL1Available && (
+        <Snackbar open={true}>
+          <Alert severity="error">{RPC_URL.L1} is not available, please wait...</Alert>
+        </Snackbar>
+      )}
       {!isL2Available && (
         <Snackbar open={true}>
-          <Alert severity="error">L2 rpc network is not available, please wait</Alert>
+          <Alert severity="error">{RPC_URL.L2} is not available, please wait...</Alert>
         </Snackbar>
       )}
     </>
