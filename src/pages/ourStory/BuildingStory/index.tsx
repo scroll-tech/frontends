@@ -1,8 +1,6 @@
 import { isMobileOnly } from "react-device-detect"
-import { useNavigate } from "react-router-dom"
 import { makeStyles } from "tss-react/mui"
 
-import Button from "@/components/Button"
 import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
 import SectionHeader from "@/components/SectionHeader"
 import SectionWrapper from "@/components/SectionWrapper"
@@ -67,22 +65,12 @@ const useStyles = makeStyles()(theme => ({
 
 const BuildingStory = () => {
   const { classes, cx } = useStyles()
-  const navigate = useNavigate()
-
-  const handleGoBlog = () => {
-    navigate("/blog")
-  }
 
   return (
     <SectionWrapper sx={{ pt: ["11rem", "26rem"], pb: ["12rem", "13rem"] }}>
       <SectionHeader
         title="Read the stories behind building Scroll"
         content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut urna iaculis quam mollis consequat."
-        action={
-          <Button color="primary" width={isMobileOnly ? "18.5rem" : "25rem"} onClick={handleGoBlog}>
-            Read more
-          </Button>
-        }
       ></SectionHeader>
       <SuccessionToView className={classes.grid}>
         {STORIES.map((item, index) => (
