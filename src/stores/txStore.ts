@@ -205,7 +205,7 @@ const formatBackTxList = async (backList, estimatedTimeMap) => {
       }
     }),
   )
-
+  // delete nextEstimatedTimeMap.to_undefined
   return {
     txList,
     estimatedTimeMap: nextEstimatedTimeMap,

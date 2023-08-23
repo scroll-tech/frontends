@@ -15,7 +15,7 @@ export interface TxHistory {
 const useClaim = () => {
   const { walletCurrentAddress } = useRainbowContext()
 
-  const { claimingTransactionsMap, comboPageTransactions, pageTransactions, generateTransactions } = useClaimStore()
+  const { comboPageTransactions, pageTransactions, generateTransactions } = useClaimStore()
 
   const [errorMessage, setErrorMessage] = useState("")
 
@@ -31,9 +31,9 @@ const useClaim = () => {
 
   const { data } = useSWR<any>(
     () => {
-      const needToRefreshTransactions = pageTransactions.filter(item => !item.toHash && !item.assumedStatus)
-      if (needToRefreshTransactions.length && walletCurrentAddress) {
-        const txs = needToRefreshTransactions.map(item => item.hash).filter((item, index, arr) => index === arr.indexOf(item))
+      // const needToRefreshTransactions = pageTransactions.filter(item => !item.toHash && !item.assumedStatus)
+      if (pageTransactions.length && walletCurrentAddress) {
+        const txs = pageTransactions.map(item => item.hash).filter((item, index, arr) => index === arr.indexOf(item))
         return { txs }
       }
       return null
@@ -66,7 +66,7 @@ const useClaim = () => {
     if (data?.data?.result.length) {
       generateTransactions(data.data.result)
     }
-  }, [data, claimingTransactionsMap])
+  }, [data])
 
   return {
     errorMessage,

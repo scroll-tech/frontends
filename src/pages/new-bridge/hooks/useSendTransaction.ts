@@ -172,7 +172,6 @@ export function useSendTransaction(props) {
   }
 
   const withdrawETH = async () => {
-    console.log(txGasLimit)
     return networksAndSigners[CHAIN_ID.L2].gateway["withdrawETH(uint256,uint256)"](parsedAmount, 0, {
       value: parsedAmount,
       gasLimit: txGasLimit,

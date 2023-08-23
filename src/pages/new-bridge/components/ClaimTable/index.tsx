@@ -20,8 +20,11 @@ import {
 
 import Link from "@/components/Link"
 import { EXPLORER_URL } from "@/constants"
+import { useApp } from "@/contexts/AppContextProvider"
+import { useLastBlockNums } from "@/hooks/useRollupInfo"
 import useTokenInfo from "@/hooks/useTokenInfo"
-import useClaimStore, { ClaimStatus } from "@/stores/claimStore"
+import { ClaimStatus } from "@/stores/claimStore"
+import useTxStore from "@/stores/txStore"
 import { generateExploreLink, toTokenDisplay, truncateHash } from "@/utils"
 
 import ClaimButton from "./ClaimButton"
@@ -54,7 +57,7 @@ const useStyles = makeStyles()(theme => {
         borderBottom: "unset",
         fontWeight: 600,
         fontSize: "1.6rem",
-        padding: "0.8rem 1.6rem",
+        padding: "0.8rem",
         color: theme.palette.text.primary,
         "&:first-of-type": {
           paddingLeft: 0,
@@ -65,12 +68,15 @@ const useStyles = makeStyles()(theme => {
       height: "18.3rem",
       ".MuiTableCell-root": {
         verticalAlign: "top",
-        padding: "2rem 2rem",
+        padding: "2rem 0.8rem",
         "*": {
           fontSize: "1.4rem",
         },
         "&:first-of-type": {
           paddingLeft: 0,
+        },
+        "&:last-of-type": {
+          paddingRight: 0,
         },
       },
     },
@@ -94,6 +100,7 @@ const TxTable = (props: any) => {
   const { data, loading, pagination } = props
   const { classes } = useStyles()
 
+  const { lastBlockNums } = useLastBlockNums()
   const handleChangePage = (e, newPage) => {
     pagination?.onChange?.(newPage)
   }
@@ -105,7 +112,7 @@ const TxTable = (props: any) => {
           <TableHead className={classes.tableHeader}>
             <TableRow>
               <TableCell align="left">Claim</TableCell>
-              <TableCell sx={{ width: "4rem" }}>Amount</TableCell>
+              <TableCell>Amount</TableCell>
               <TableCell>Transaction Hash</TableCell>
               <TableCell>Status</TableCell>
             </TableRow>
@@ -116,7 +123,7 @@ const TxTable = (props: any) => {
             ) : (
               <>
                 {data?.map((tx: any) => (
-                  <TxRow key={tx.hash} tx={tx} />
+                  <TxRow key={tx.hash} tx={tx} finalizedIndex={lastBlockNums?.finalized_index ?? 0} />
                 ))}
               </>
             )}
@@ -141,76 +148,57 @@ const TxTable = (props: any) => {
 }
 
 const TxRow = props => {
-  const { tx } = props
+  const { tx, finalizedIndex } = props
+  const { estimatedTimeMap } = useTxStore()
 
   const { loading: tokenInfoLoading, tokenInfo } = useTokenInfo(tx.l1Token, true)
-  const { estimatedTimeMap } = useClaimStore()
 
   const txAmount = amount => {
     return toTokenDisplay(amount, tokenInfo?.decimals ? BigInt(tokenInfo.decimals) : undefined)
   }
 
+  const { blockNumbers } = useApp()
+
+  const txStatus = useMemo(() => {
+    const { assumedStatus, toBlockNumber, claimInfo } = tx
+    if (assumedStatus) {
+      return ClaimStatus.FAILED
+    }
+    if (toBlockNumber && toBlockNumber <= blockNumbers[0]) {
+      return ClaimStatus.CLAIMED
+    }
+    if (toBlockNumber) {
+      return ClaimStatus.CLAIMING
+    }
+    if (+claimInfo?.batch_index && claimInfo?.batch_index <= finalizedIndex) {
+      return ClaimStatus.CLAIMABLE
+    }
+    return ClaimStatus.NOT_READY
+  }, [blockNumbers, tx, finalizedIndex])
+
   const initiatedAt = useMemo(() => {
     const date = dayjs(tx.initiatedAt)
-    return tx.initiatedAt ? date.format("MM/YYYY HH:mm:ss") : "-"
+    return tx.initiatedAt ? date.format("MM/YY HH:mm:ss") : "-"
   }, [tx])
 
-  const txStatus = () => {
-    if (tx.claimStatus === ClaimStatus.CLAIMED) {
-      return (
-        <>
-          <Typography sx={{ fontWeight: 600 }}> Claimed </Typography>
-          <Typography sx={{ fontWeight: 400 }}>
-            Transaction sent: <br />
-            {initiatedAt}
-          </Typography>
-          <Typography sx={{ fontWeight: 400 }}>
-            Finalised At:
-            {tx.finalisedAt}
-          </Typography>
-        </>
-      )
-    } else if (tx.claimStatus === ClaimStatus.CLAIMING) {
-      return (
-        <>
-          <Typography sx={{ fontWeight: 600 }}> Claiming... </Typography>
-          <Typography sx={{ fontWeight: 400 }}>
-            Transaction sent: <br />
-            {initiatedAt}
-          </Typography>
-        </>
-      )
-    } else if (tx.claimStatus === ClaimStatus.CLAIMABLE) {
-      return (
-        <>
-          <Typography sx={{ fontWeight: 600 }}> Ready to be Claimed </Typography>
-          <Typography sx={{ fontWeight: 400 }}>
-            Transaction sent: <br />
-            {initiatedAt}
-          </Typography>
-        </>
-      )
-    }
-
+  const txStatusCopy = () => {
     return (
       <>
-        <Typography sx={{ fontWeight: 600 }}>Not yet finalised</Typography>
-        <Typography sx={{ fontWeight: 400 }}>
-          Transaction sent: <br />
-          {initiatedAt}
+        <Typography sx={{ fontWeight: 600 }}>
+          {txStatus === ClaimStatus.CLAIMED ? "Claimed" : null}
+          {txStatus === ClaimStatus.CLAIMING ? "Claiming... " : null}
+          {txStatus === ClaimStatus.CLAIMABLE ? "Ready to be Claimed" : null}
+          {txStatus === ClaimStatus.NOT_READY ? "Not yet finalised" : null}
         </Typography>
+
+        {renderEstimatedWaitingTime(estimatedTimeMap[`to_${tx.toHash}`])}
+        <Typography sx={{ fontWeight: 400 }}>Transaction sent: {initiatedAt}</Typography>
       </>
     )
-
-    // if (tx.claimStatus === ClaimStatus.CLAIMED) {
-    //   return <Typography sx={{ fontWeight: 600 }}> Claimed </Typography>
-    // } else {
-    //   return <Typography sx={{ fontWeight: 600 }}>Claim Pending...</Typography>
-    // }
   }
 
   const renderEstimatedWaitingTime = timestamp => {
-    if (tx.claimStatus === ClaimStatus.CLAIMED) {
+    if (txStatus === ClaimStatus.CLAIMED) {
       return null
     } else if (timestamp === 0) {
       return <Typography variant="body2">Estimating...</Typography>
@@ -238,7 +226,7 @@ const TxRow = props => {
   return (
     <TableRow key={tx.hash}>
       <TableCell>
-        <ClaimButton tx={tx} />
+        <ClaimButton tx={tx} txStatus={txStatus} />
       </TableCell>
       <TableCell>
         <Typography sx={{ fontWeight: 500 }}>
@@ -247,20 +235,22 @@ const TxRow = props => {
         </Typography>
       </TableCell>
       <TableCell>
-        <Link external href={generateExploreLink(EXPLORER_URL.L2, tx.hash)} className="leading-normal flex-1">
-          {truncateHash(tx.hash)}
-        </Link>
-        <br />
+        <Typography>
+          Scroll:{" "}
+          <Link external href={generateExploreLink(EXPLORER_URL.L2, tx.hash)} className="leading-normal flex-1">
+            {truncateHash(tx.hash)}
+          </Link>
+        </Typography>
         {tx.toHash ? (
-          <>
+          <Typography>
+            Ethereum:{" "}
             <Link external href={generateExploreLink(EXPLORER_URL.L1, tx.toHash)} className="leading-normal flex-1">
               {truncateHash(tx.toHash)}
             </Link>
-          </>
+          </Typography>
         ) : null}
-        {renderEstimatedWaitingTime(estimatedTimeMap[`claim_${tx.hash}`])}
       </TableCell>
-      <TableCell>{txStatus()}</TableCell>
+      <TableCell>{txStatusCopy()}</TableCell>
     </TableRow>
   )
 }
