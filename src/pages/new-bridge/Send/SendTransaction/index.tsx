@@ -31,7 +31,7 @@ const SendTransaction = props => {
   const { tokenList } = useApp()
   const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
 
-  const { gasLimit, gasPrice } = usePriceFeeContext()
+  const { gasLimit, gasPrice, errorMessage: gasErrorMsg } = usePriceFeeContext()
 
   const { txType, isNetworkCorrect, fromNetwork, changeTxError } = useBridgeStore()
 
@@ -58,7 +58,7 @@ const SendTransaction = props => {
 
   const invalidAmountMessage = useCheckValidAmount(amount)
   // fee start
-  const estimatedGasCost = useGasFee(selectedToken)
+  const { gasFee: estimatedGasCost } = useGasFee(selectedToken)
   // const estimatedGasCost = BigInt(0)
 
   const totalFee = useMemo(() => (estimatedGasCost ?? BigInt(0)) + gasLimit * gasPrice, [estimatedGasCost, gasLimit, gasPrice])
@@ -73,10 +73,13 @@ const SendTransaction = props => {
 
   const displayedFee = useMemo(() => {
     if (!isNetworkCorrect || !amount) {
-      return "-"
+      return <Typography>-</Typography>
+    }
+    if (gasErrorMsg) {
+      return <Typography sx={{ color: "primary.main" }}>-</Typography>
     }
     return toTokenDisplay(totalFee, selectedToken.decimals, ETH_SYMBOL)
-  }, [isNetworkCorrect, amount, totalFee, selectedToken])
+  }, [isNetworkCorrect, amount, totalFee, selectedToken, gasErrorMsg])
 
   const bridgeWarning = useMemo(() => {
     if (!chainId) {
@@ -101,9 +104,11 @@ const SendTransaction = props => {
       return insufficientWarning
     } else if (invalidAmountMessage) {
       return invalidAmountMessage
+    } else if (gasErrorMsg) {
+      return gasErrorMsg
     }
     return null
-  }, [chainId, isNetworkCorrect, fromNetwork, insufficientWarning, invalidAmountMessage])
+  }, [chainId, isNetworkCorrect, fromNetwork, insufficientWarning, invalidAmountMessage, gasErrorMsg])
 
   const necessaryCondition = useMemo(() => {
     return amount && !bridgeWarning
@@ -169,7 +174,7 @@ const SendTransaction = props => {
         tokenOptions={tokenOptions}
         onChangeToken={handleChangeTokenSymbol}
       ></BalanceInput>
-      <DetailRow title="Fees" sx={{ my: "0.8rem" }} tooltip={<FeeDetails />} value={<Typography>{displayedFee}</Typography>} large />
+      <DetailRow title="Fees" sx={{ my: "0.8rem" }} tooltip={<FeeDetails />} value={displayedFee} large />
       <Typography sx={{ fontSize: "1.4rem", fontWeight: 500, width: ["100%", "32.4rem"], textAlign: "center", margin: "0 auto" }} color="primary">
         {bridgeWarning}
       </Typography>

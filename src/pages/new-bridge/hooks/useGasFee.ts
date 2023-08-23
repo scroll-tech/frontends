@@ -1,4 +1,5 @@
-import useSWR from "swr"
+import { useState } from "react"
+import { useBlockNumber } from "wagmi"
 
 import { useApp } from "@/contexts/AppContextProvider"
 import useBridgeStore from "@/stores/bridgeStore"
@@ -14,29 +15,32 @@ const useGasFee = selectedToken => {
     selectedToken,
   })
 
-  const calculateGasFee = async ({ provider }) => {
-    const { maxFeePerGas: gasPrice } = await provider.getFeeData()
+  const [gasFee, setGasFee] = useState(BigInt(0))
+  const [gasLimit, setGasLimit] = useState(BigInt(0))
 
-    const gasLimit = await estimateSend()
-    const estimatedGasCost = BigInt(gasLimit) * BigInt(gasPrice || 1e9)
-    return estimatedGasCost
+  const calculateGasFee = async () => {
+    const { maxFeePerGas: gasPrice } = await networksAndSigners[fromNetwork.chainId].provider.getFeeData()
+    const limit = await estimateSend()
+    const estimatedGasCost = BigInt(limit) * BigInt(gasPrice || 1e9)
+    return { gasLimit: limit, gasFee: estimatedGasCost }
   }
-  const { data } = useSWR(
-    () => {
-      const provider = networksAndSigners[fromNetwork.chainId].provider
-      if (provider) {
-        return {
-          provider,
-        }
-      }
-      return null
+
+  useBlockNumber({
+    enabled: !!networksAndSigners[fromNetwork.chainId].provider,
+    onBlock(blockNumber) {
+      calculateGasFee()
+        .then(value => {
+          setGasFee(value.gasFee)
+          setGasLimit(value.gasLimit)
+        })
+        .catch(error => {
+          // console.log(error, "useGasFee error")
+          setGasFee(BigInt(0))
+          setGasLimit(BigInt(0))
+        })
     },
-    calculateGasFee,
-    {
-      refreshInterval: 1e3,
-    },
-  )
-  return data
+  })
+  return { gasLimit, gasFee }
 }
 
 export default useGasFee

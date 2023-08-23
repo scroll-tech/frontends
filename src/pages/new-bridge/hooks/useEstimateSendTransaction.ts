@@ -21,7 +21,7 @@ export function useEstimateSendTransaction(props) {
     if (gateway) {
       setInstance(gateway)
     }
-  }, [networksAndSigners])
+  }, [networksAndSigners, fromNetwork])
 
   const depositETH = async () => {
     const fee = gasPrice * gasLimit
