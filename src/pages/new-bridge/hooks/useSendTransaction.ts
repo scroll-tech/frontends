@@ -10,10 +10,13 @@ import useBridgeStore from "@/stores/bridgeStore"
 import useTxStore, { TxDirection, TxPosition, isValidOffsetTime } from "@/stores/txStore"
 import { amountToBN, sentryDebug } from "@/utils"
 
+import useGasFee from "./useGasFee"
+
 export function useSendTransaction(props) {
   const { amount: fromTokenAmount, selectedToken } = props
   const { walletCurrentAddress } = useRainbowContext()
   const { networksAndSigners, blockNumbers } = useApp()
+  const { gasLimit: txGasLimit } = useGasFee(selectedToken)
   const { addTransaction, updateTransaction, addEstimatedTimeMap, updateOrderedTxs, addAbnormalTransactions, removeFrontTransactions } = useTxStore()
   const { changeHistoryVisible, fromNetwork, toNetwork, changeTxResult } = useBridgeStore()
   const { gasLimit, gasPrice } = usePriceFeeContext()
@@ -169,13 +172,17 @@ export function useSendTransaction(props) {
   }
 
   const withdrawETH = async () => {
+    console.log(txGasLimit)
     return networksAndSigners[CHAIN_ID.L2].gateway["withdrawETH(uint256,uint256)"](parsedAmount, 0, {
       value: parsedAmount,
+      gasLimit: txGasLimit,
     })
   }
 
   const withdrawERC20 = async () => {
-    return networksAndSigners[CHAIN_ID.L2].gateway["withdrawERC20(address,uint256,uint256)"](selectedToken.address, parsedAmount, 0)
+    return networksAndSigners[CHAIN_ID.L2].gateway["withdrawERC20(address,uint256,uint256)"](selectedToken.address, parsedAmount, 0, {
+      gasLimit: txGasLimit,
+    })
   }
 
   const sendl1ToL2 = () => {

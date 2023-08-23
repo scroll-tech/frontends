@@ -20,7 +20,7 @@ const useGasFee = selectedToken => {
 
   const calculateGasFee = async () => {
     const { maxFeePerGas: gasPrice } = await networksAndSigners[fromNetwork.chainId].provider.getFeeData()
-    const limit = await estimateSend()
+    const limit = ((await estimateSend()) * BigInt(120)) / BigInt(100)
     const estimatedGasCost = BigInt(limit) * BigInt(gasPrice || 1e9)
     return { gasLimit: limit, gasFee: estimatedGasCost }
   }
