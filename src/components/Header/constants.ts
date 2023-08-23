@@ -70,6 +70,7 @@ const navigations = [
     href: "",
     children: [
       {
+        label: "explore1",
         children: [
           {
             label: "Ecosystem",

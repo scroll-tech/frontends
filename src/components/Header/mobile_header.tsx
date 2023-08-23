@@ -112,7 +112,7 @@ const SectionList = styled("div")(({ theme }) => ({
   "&:nth-last-child(-n+2)": {
     paddingBottom: "1.6rem",
   },
-  "&:nth-child(n+2)": {
+  "&:nth-of-type(n+2)": {
     borderTop: `1px solid ${theme.palette.text.primary}`,
     paddingTop: "1.6rem",
   },

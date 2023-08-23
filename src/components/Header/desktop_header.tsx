@@ -117,13 +117,13 @@ const SectionList = styled(Box)(({ theme }) => ({
   flexDirection: "column",
   width: "100%",
   padding: "1.8rem 0",
-  "&:nth-child(1)": {
+  "&:nth-of-type(1)": {
     paddingTop: 0,
   },
-  "&:nth-child(n+2)": {
+  "&:nth-of-type(n+2)": {
     borderTop: `1px solid ${theme.palette.text.primary}`,
   },
-  "&:nth-last-child(1)": {
+  "&:nth-last-of-type(1)": {
     paddingBottom: "0.8rem",
   },
 }))
