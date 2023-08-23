@@ -22,7 +22,7 @@ const Claim = (props: any) => {
     claim: { refreshPageTransactions },
   } = useApp()
 
-  const { page, total, claimableTransactions } = useClaimStore()
+  const { page, total, pageTransactions } = useClaimStore()
 
   useEffect(() => {
     handleChangePage(1)
@@ -34,9 +34,9 @@ const Claim = (props: any) => {
 
   return (
     <TableBox>
-      {claimableTransactions?.length ? (
+      {pageTransactions?.length ? (
         <ClaimTable
-          data={claimableTransactions}
+          data={pageTransactions}
           pagination={{
             count: Math.ceil(total / BRIDGE_PAGE_SIZE),
             page,

@@ -40,7 +40,7 @@ const AppContextProvider = ({ children }: any) => {
   const [fetchTokenListError, setFetchTokenListError] = useState("")
 
   const txHistory = useTxHistory(networksAndSigners)
-  const claim = useClaim(networksAndSigners)
+  const claim = useClaim()
 
   // TODO: need refactoring inspired by publicClient and walletClient
   const update = async (walletProvider: BrowserProvider, address: string) => {

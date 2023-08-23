@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react"
 import useSWR from "swr"
 
 import { fetchTxByHashUrl } from "@/apis/bridge"
+import { BRIDGE_PAGE_SIZE } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useClaimStore from "@/stores/claimStore"
 
@@ -11,10 +12,10 @@ export interface TxHistory {
   changeErrorMessage: (value) => void
 }
 
-const useClaim = networksAndSigners => {
+const useClaim = () => {
   const { walletCurrentAddress } = useRainbowContext()
 
-  const { getClaimableTransactions, claimableTransactions, updateTransactions, claimingTransactionsMap } = useClaimStore()
+  const { claimingTransactionsMap, comboPageTransactions, pageTransactions, generateTransactions } = useClaimStore()
 
   const [errorMessage, setErrorMessage] = useState("")
 
@@ -30,7 +31,7 @@ const useClaim = networksAndSigners => {
 
   const { data } = useSWR<any>(
     () => {
-      const needToRefreshTransactions = claimableTransactions.filter(item => !item.toHash && !item.assumedStatus)
+      const needToRefreshTransactions = pageTransactions.filter(item => !item.toHash && !item.assumedStatus)
       if (needToRefreshTransactions.length && walletCurrentAddress) {
         const txs = needToRefreshTransactions.map(item => item.hash).filter((item, index, arr) => index === arr.indexOf(item))
         return { txs }
@@ -49,7 +50,7 @@ const useClaim = networksAndSigners => {
   const refreshPageTransactions = useCallback(
     page => {
       if (walletCurrentAddress) {
-        getClaimableTransactions(walletCurrentAddress, page).catch(e => {
+        comboPageTransactions(walletCurrentAddress, page, BRIDGE_PAGE_SIZE).catch(e => {
           setErrorMessage(e)
         })
       }
@@ -63,7 +64,7 @@ const useClaim = networksAndSigners => {
 
   useEffect(() => {
     if (data?.data?.result.length) {
-      updateTransactions(data.data.result)
+      generateTransactions(data.data.result)
     }
   }, [data, claimingTransactionsMap])
 

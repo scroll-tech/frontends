@@ -41,7 +41,7 @@ const ClaimButton = props => {
   const { networksAndSigners, blockNumbers } = useApp()
   const { chainId } = useRainbowContext()
   const [claimButtonLabel, setClaimButtonLabel] = useState("Claim")
-  const { addClaimingTransaction, addEstimatedTimeMap } = useClaimStore()
+  const { addEstimatedTimeMap } = useClaimStore()
 
   const [loading, setLoading] = useState(false)
 
@@ -63,7 +63,6 @@ const ClaimButton = props => {
         batchIndex: batch_index,
         merkleProof: proof,
       })
-      addClaimingTransaction(tx.hash)
       result
         .wait()
         .then(receipt => {

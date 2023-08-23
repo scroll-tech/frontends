@@ -2,11 +2,12 @@ import { readItem } from "squirrel-gill/lib/storage"
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
 
-import { fetchClaimableTxListUrl } from "@/apis/bridge"
+import { fetchTxByHashUrl } from "@/apis/bridge"
 import { fetchLastBatchIndexesUrl } from "@/apis/rollupscan"
 import { NETWORKS } from "@/constants"
-import { BRIDGE_PAGE_SIZE } from "@/constants"
 import { BLOCK_NUMBERS, CLAIM_TRANSACTIONS } from "@/constants/storageKey"
+import { BRIDGE_TRANSACTIONS } from "@/constants/storageKey"
+import { TxDirection, TxPosition } from "@/stores/txStore"
 import { sentryDebug } from "@/utils"
 
 interface TxStore {
@@ -14,12 +15,11 @@ interface TxStore {
   total: number
   loading: boolean
   estimatedTimeMap: object
-  claimableTransactions: Transaction[]
+  pageTransactions: Transaction[]
   claimingTransactionsMap: object
-  getClaimableTransactions: (address, page) => Promise<any>
-  updateTransactions: (transactions) => Promise<any>
-  addClaimingTransaction: (transaction) => void
+  comboPageTransactions: (walletAddress, page, rowsPerPage) => Promise<any>
   addEstimatedTimeMap: (key, value) => void
+  generateTransactions: (transactions) => void
 }
 
 export const enum ClaimStatus {
@@ -145,6 +145,37 @@ const formatTxList = async (backList, estimatedTimeMap, claimingTransactionsMap)
   }
 }
 
+const detailOrderdTxs = async (pageOrderedTxs, frontTransactions, abnormalTransactions, estimatedTimeMap) => {
+  const needFetchTxs = pageOrderedTxs.filter(item => item.position === TxPosition.Backend).map(item => item.hash)
+
+  let historyList: Transaction[] = []
+  let returnedEstimatedTimeMap = estimatedTimeMap
+  if (needFetchTxs.length) {
+    const { data } = await scrollRequest(fetchTxByHashUrl, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ txs: needFetchTxs }),
+    })
+    const { txList, estimatedTimeMap: nextEstimatedTimeMap } = await formatTxList(data.result, estimatedTimeMap, {})
+    historyList = txList
+    returnedEstimatedTimeMap = nextEstimatedTimeMap
+  }
+
+  const pageTransactions = pageOrderedTxs
+    .map(({ hash, position }) => {
+      if (position === TxPosition.Backend) {
+        return historyList.find((item: any) => item.hash === hash)
+      } else if (position === TxPosition.Abnormal) {
+        return abnormalTransactions.find(item => item.hash === hash) || frontTransactions.find(item => item.hash === hash)
+      }
+      return frontTransactions.find(item => item.hash === hash)
+    })
+    .filter(item => item) // TODO: fot test
+  return { pageTransactions, estimatedTimeMap: returnedEstimatedTimeMap }
+}
+
 const useTxStore = create<TxStore>()(
   persist(
     (set, get) => ({
@@ -152,51 +183,59 @@ const useTxStore = create<TxStore>()(
       total: 0,
       estimatedTimeMap: {},
       loading: false,
-      claimableTransactions: [],
       claimingTransactionsMap: {},
-      getClaimableTransactions: async (walletAddress, page) => {
-        const { estimatedTimeMap: preEstimatedTimeMap, claimingTransactionsMap } = get()
-        try {
-          const {
-            data: { total, result },
-          } = await scrollRequest(`${fetchClaimableTxListUrl}?address=${walletAddress}&page=${page}&page_size=${BRIDGE_PAGE_SIZE}`)
-          const { txList, estimatedTimeMap } = await formatTxList(result, preEstimatedTimeMap, claimingTransactionsMap)
-          set({
-            claimableTransactions: txList,
-            estimatedTimeMap,
-            page,
-            total: total,
-          })
-        } catch (error) {}
-      },
-      addClaimingTransaction: transaction => {
-        const { claimingTransactionsMap: preClaimingTransactionsMap } = get()
-        set({
-          claimingTransactionsMap: {
-            ...preClaimingTransactionsMap,
-            [transaction]: +new Date(),
-          },
-        })
-      },
+      pageTransactions: [],
       addEstimatedTimeMap: (key, value) => {
         const nextEstimatedTimeMap = { ...get().estimatedTimeMap, [key]: value }
         set({
           estimatedTimeMap: nextEstimatedTimeMap,
         })
       },
-      updateTransactions: async transactions => {
-        const { claimableTransactions: preClaimableTransactions, estimatedTimeMap: preEstimatedTimeMap, claimingTransactionsMap } = get()
-        const { txList, estimatedTimeMap } = await formatTxList(transactions, preEstimatedTimeMap, claimingTransactionsMap)
+      // polling transactions
+      // slim frontTransactions and keep the latest 3 backTransactions
+      generateTransactions: async historyList => {
+        const { state } = readItem(localStorage, BRIDGE_TRANSACTIONS)
 
-        const transactionsHash = {}
-        txList.forEach(t => {
-          transactionsHash[t.hash] = t
-        })
-        const result = preClaimableTransactions.map(transaction => transactionsHash[transaction.hash] || transaction)
+        const { estimatedTimeMap: preEstimatedTimeMap, pageTransactions } = state
+        const realHistoryList = historyList.filter(item => item)
 
-        set({
-          claimableTransactions: result,
+        if (realHistoryList.length) {
+          const { txList: formattedHistoryList, estimatedTimeMap } = await formatTxList(realHistoryList, preEstimatedTimeMap, {})
+          const formattedHistoryListMap = Object.fromEntries(formattedHistoryList.map(item => [item.hash, item]))
+
+          const refreshPageTransaction = pageTransactions.map(item => {
+            if (formattedHistoryListMap[item.hash]) {
+              return formattedHistoryListMap[item.hash]
+            }
+            return item
+          })
+
+          set({
+            pageTransactions: refreshPageTransaction,
+            estimatedTimeMap,
+          })
+        }
+      },
+      comboPageTransactions: async (address, page, rowsPerPage) => {
+        const { state } = readItem(localStorage, BRIDGE_TRANSACTIONS)
+        const { orderedTxDB, frontTransactions, abnormalTransactions, estimatedTimeMap } = state
+
+        const orderedTxs = orderedTxDB[address] ?? []
+        set({ loading: true })
+        const withdrawTx = orderedTxs.filter(tx => tx.direction === TxDirection.Withdraw)
+        const pageOrderedTxs = withdrawTx.slice((page - 1) * rowsPerPage, page * rowsPerPage)
+        const { pageTransactions, estimatedTimeMap: nextEstimatedTimeMap } = await detailOrderdTxs(
+          pageOrderedTxs,
+          frontTransactions,
+          abnormalTransactions,
           estimatedTimeMap,
+        )
+        set({
+          pageTransactions,
+          page,
+          total: withdrawTx.length,
+          loading: false,
+          estimatedTimeMap: nextEstimatedTimeMap,
         })
       },
     }),
