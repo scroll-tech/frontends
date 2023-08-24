@@ -21,14 +21,23 @@ const useStyles = makeStyles()(theme => ({
     "&:hover": {
       color: "#396CE8",
     },
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "1.6rem",
+    },
   },
   openButton: {
     borderRadius: "2.3rem 2.3rem 0 0",
   },
   endIcon: {
     marginLeft: "1.5rem",
+    ".MuiSvgIcon-root": {
+      fontSize: "1.3rem",
+    },
     [theme.breakpoints.down("sm")]: {
       marginLeft: "0.5rem",
+      ".MuiSvgIcon-root": {
+        fontSize: "1rem",
+      },
     },
   },
   reverseEndIcon: {
@@ -115,7 +124,7 @@ const Dropdown = props => {
         classes={{ root: cx(classes.button, open && classes.openButton), endIcon: cx(classes.endIcon, open && classes.reverseEndIcon) }}
         sx={sx}
         onClick={handleClick}
-        endIcon={<SvgIcon sx={{ fontSize: "1.3rem !important" }} component={ArrowDownSvg} inheritViewBox></SvgIcon>}
+        endIcon={<SvgIcon component={ArrowDownSvg} inheritViewBox></SvgIcon>}
       >
         {truncateAddress(walletCurrentAddress as string)}
       </Button>

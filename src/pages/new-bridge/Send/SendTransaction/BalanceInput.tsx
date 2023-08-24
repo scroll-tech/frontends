@@ -29,7 +29,6 @@ const useStyles = makeStyles()(theme => ({
     // fontFamily: "Roboto Flex",
     [theme.breakpoints.down("sm")]: {
       fontSize: "2.8rem",
-      height: "2.4rem",
       marginBottom: "4px",
     },
   },
