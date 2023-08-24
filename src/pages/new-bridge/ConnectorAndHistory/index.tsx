@@ -8,9 +8,11 @@ import NetworkIndicator from "./NetworkIndicator"
 import WalletConnector from "./WalletConnector"
 
 const ConnectorAndHistory = props => {
-  const { changeMode, mode } = useBridgeStore()
+  const { changeMode, mode, changeTxResult, changeTxError } = useBridgeStore()
   const handleChangeMode = () => {
     if (mode === "Transaction") {
+      changeTxResult(null)
+      changeTxError(null)
       changeMode("History")
     } else {
       changeMode("Transaction")
