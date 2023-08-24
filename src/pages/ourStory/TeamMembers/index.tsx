@@ -2,7 +2,7 @@ import { makeStyles } from "tss-react/mui"
 
 import { Avatar, Typography } from "@mui/material"
 
-import DanAvatar from "@/assets/svgs/members/Dan-avatar.svg"
+import DanielAvatar from "@/assets/svgs/members/Dan-avatar.svg"
 import HaichenAvatar from "@/assets/svgs/members/Haichen-avatar.svg"
 import JaneAvatar from "@/assets/svgs/members/Jane-avatar.svg"
 import LeaAvatar from "@/assets/svgs/members/Lea-avatar.svg"
@@ -39,8 +39,8 @@ const CORE_MEMBERS = [
     desc: "Comms & outreach lead in Texas, US",
   },
   {
-    avatar: DanAvatar,
-    name: "Dan",
+    avatar: DanielAvatar,
+    name: "Daniel",
     desc: "Devrel lead in Oklahoma, US",
   },
   {
