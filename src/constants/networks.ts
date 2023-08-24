@@ -1,13 +1,16 @@
-import ETHSvg from "@/assets/svgs/eth.svg"
+import ETHSvg from "@/assets/svgs/refactor/bridge-network-mainnet.svg"
+import { ReactComponent as MainnetSvg } from "@/assets/svgs/refactor/bridge-network-mainnet.svg"
+import { ReactComponent as ScrollSvg } from "@/assets/svgs/refactor/bridge-network-scroll.svg"
 import { getPrettyTestnetName } from "@/utils"
 
 import { CHAIN_ID, ETH_SYMBOL, EXPLORER_URL, RPC_URL } from "./common"
 
-export const NETWORKS = [
+export const NETWORKS: Network[] = [
   {
     name: "Ethereum Sepolia",
     slug: "sepolia",
     imageUrl: "/imgs/bridge/mainnet.svg",
+    icon: MainnetSvg,
     rpcUrl: RPC_URL.L1,
     explorer: EXPLORER_URL.L1,
     chainId: CHAIN_ID.L1,
@@ -18,6 +21,7 @@ export const NETWORKS = [
     name: getPrettyTestnetName(),
     slug: "layer2",
     imageUrl: "/logo.png",
+    icon: ScrollSvg,
     rpcUrl: RPC_URL.L2,
     explorer: EXPLORER_URL.L2,
     chainId: CHAIN_ID.L2,

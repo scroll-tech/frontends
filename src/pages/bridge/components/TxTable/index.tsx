@@ -166,9 +166,7 @@ const TxRow = props => {
 
   const [loading, setLoading] = useState(false)
 
-  const {
-    txHistory: { blockNumbers },
-  } = useApp()
+  const { blockNumbers } = useApp()
 
   const txStatus = useCallback(
     (blockNumber, assumedStatus, isL1, to) => {

@@ -21,6 +21,17 @@ declare module "@mui/material/styles" {
       select: string
       tile: string
     }
+    singleLineEllipsis: {
+      overflow: string
+      whiteSpace: string
+      textOverflow: string
+    }
+    multilineEllipsis: {
+      display: string
+      WebkitBoxOrient: BoxOrient
+      WebkitLineClamp: string
+      overflow: string
+    }
   }
   interface ThemeOptions {
     boxShadows?: {
@@ -30,8 +41,27 @@ declare module "@mui/material/styles" {
       select: string
       tile: string
     }
+    singleLineEllipsis?: {
+      overflow: string
+      whiteSpace: string
+      textOverflow: string
+    }
+    multilineEllipsis?: {
+      display: string
+      WebkitBoxOrient: BoxOrient
+      WebkitLineClamp: string
+      overflow: string
+    }
   }
   interface Palette {
+    themeBackground: {
+      light: string
+      dark: string
+      normal: string
+      highlight: string
+      optionHightlight: string
+      tag: string
+    }
     link: {
       main: string
     }
@@ -79,6 +109,14 @@ declare module "@mui/material/styles" {
   }
 
   interface PaletteOptions {
+    themeBackground: {
+      light: string
+      dark: string
+      normal: string
+      highlight: string
+      optionHightlight: string
+      tag: string
+    }
     link?: {
       main?: string
     }
@@ -124,5 +162,17 @@ declare module "@mui/material/styles" {
       dark?: string
       contrastText?: string
     }
+  }
+}
+
+declare module "@mui/material/Typography" {
+  interface TypographyPropsVariantOverrides {
+    H1: true
+    H2: true
+    H3: true
+    H4: true
+    Body1: true
+    Body2: true
+    Body3: true
   }
 }

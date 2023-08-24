@@ -120,8 +120,8 @@ module.exports = {
       },
     },
     fontFamily: {
-      sans: ['"Inter"', ...defaultTheme.fontFamily.sans],
-      display: ['"Inter"', ...defaultTheme.fontFamily.sans],
+      sans: ['"TransSansPremium"', ...defaultTheme.fontFamily.sans],
+      display: ['"TransSansPremium"', ...defaultTheme.fontFamily.sans],
     },
     screens: {
       sm: "600px",

@@ -5,10 +5,6 @@ import { ReactComponent as YoutubeIcon } from "@/assets/svgs/footer/youtube.svg"
 
 export const aboutList = [
   {
-    name: "Team",
-    to: "/team",
-  },
-  {
     name: "Join Us",
     to: "/join-us",
   },
@@ -37,7 +33,7 @@ export const resourceList = [
   },
   {
     name: "Press Kit",
-    href: "https://scrollzkp.notion.site/Scroll-Brand-Assets-PUBLIC-AREA-c4e2cca84be342aa8b00e8bda92ee4f7",
+    href: "https://scrollzkp.notion.site/Scroll-Rebrand-Assets-5bb83465f56f40989c4f772b39ed3a06",
   },
 ]
 

@@ -30,7 +30,7 @@ interface TxStore {
   generateTransactions: (walletAddress, transactions) => void
   combineClaimableTransactions: (walletAddress, transactions) => void
   comboPageTransactions: (walletAddress, page, rowsPerPage) => Promise<any>
-  updateOrderedTxs: (walletAddress, hash, param) => void
+  updateOrderedTxs: (walletAddress, hash, param, direction?) => void
   addAbnormalTransactions: (walletAddress, tx) => void
   clearTransactions: () => void
 }
@@ -53,6 +53,16 @@ const TxPosition = {
   Backend: ITxPosition.Backend,
 }
 
+const enum ITxDirection {
+  Deposit = 1,
+  Withdraw = 2,
+}
+
+const TxDirection = {
+  Deposit: ITxDirection.Deposit,
+  Withdraw: ITxDirection.Withdraw,
+}
+
 const MAX_LIMIT = 1000
 
 interface TimestampTx {
@@ -62,6 +72,9 @@ interface TimestampTx {
   // 2: abnormal tx -> failed|canceled
   // 3: successful tx
   position: ITxPosition
+  // 1: deposit
+  // 2: withdraw
+  direction?: ITxDirection
 }
 interface Transaction {
   hash: string
@@ -81,6 +94,8 @@ interface Transaction {
   claimInfo?: object
   assumedStatus?: string
   errMsg?: string
+  initiatedAt?: string
+  finalisedAt?: string
 }
 
 const MAX_OFFSET_TIME = 30 * 60 * 1000
@@ -121,6 +136,9 @@ const formatBackTxList = async (backList, estimatedTimeMap) => {
       const toName = NETWORKS[+tx.isL1].name
       const toExplore = NETWORKS[+tx.isL1].explorer
       const toHash = tx.finalizeTx?.hash
+      const initiatedAt = tx.blockTimestamp || tx.createdTime
+      const finalisedAt = tx.finalizeTx?.blockTimestamp
+
       let isFinalized
 
       // 1. have no time to compute fromEstimatedEndTime
@@ -182,10 +200,12 @@ const formatBackTxList = async (backList, estimatedTimeMap) => {
         isFinalized: isFinalized,
         claimInfo: tx.claimInfo,
         isClaimed: tx.finalizeTx?.hash,
+        initiatedAt,
+        finalisedAt,
       }
     }),
   )
-
+  // delete nextEstimatedTimeMap.to_undefined
   return {
     txList,
     estimatedTimeMap: nextEstimatedTimeMap,
@@ -227,7 +247,7 @@ const detailOrderdTxs = async (pageOrderedTxs, frontTransactions, abnormalTransa
       if (position === TxPosition.Backend) {
         return historyList.find((item: any) => item.hash === hash)
       } else if (position === TxPosition.Abnormal) {
-        return abnormalTransactions.find(item => item.hash === hash)
+        return abnormalTransactions.find(item => item.hash === hash) || frontTransactions.find(item => item.hash === hash)
       }
       return frontTransactions.find(item => item.hash === hash)
     })
@@ -365,8 +385,20 @@ const useTxStore = create<TxStore>()(
           hash: item.hash,
           timestamp: convertDateToTimestamp(item.createdTime),
           position: TxPosition.Backend,
+          direction: TxDirection.Withdraw,
         }))
-        const txList = [...orderedTxs, ...claimableTxs].filter((v, i, a) => a.findIndex(t => t.hash === v.hash) === i)
+        const txList = [...orderedTxs, ...claimableTxs]
+          .map(tx => {
+            // Ensure backward compatibility with old data, and add the direction attribute for transactions that haven't been claimed.
+            if (claimableTxs.some(claimableTx => claimableTx.hash === tx.hash)) {
+              return {
+                ...tx,
+                direction: TxDirection.Withdraw,
+              }
+            }
+            return tx
+          })
+          .filter((v, i, a) => a.findIndex(t => t.hash === v.hash) === i)
         txList.sort((a, b) => {
           return b.timestamp - a.timestamp
         })
@@ -406,7 +438,7 @@ const useTxStore = create<TxStore>()(
         }
       },
 
-      updateOrderedTxs: (walletAddress, hash, param) =>
+      updateOrderedTxs: (walletAddress, hash, param, direction?) =>
         set(
           produce(state => {
             // position: 1|2|3
@@ -414,11 +446,12 @@ const useTxStore = create<TxStore>()(
               const current = state.orderedTxDB[walletAddress]?.find(item => item.hash === hash)
               if (current) {
                 current.position = param
+                current.direction = direction
               } else if (
                 storageAvailable("localStorage") &&
                 (!state.orderedTxDB[walletAddress] || state.orderedTxDB[walletAddress].length < MAX_LIMIT)
               ) {
-                const newRecord = { hash, timestamp: Date.now(), position: param }
+                const newRecord = { hash, timestamp: Date.now(), position: param, direction }
                 if (state.orderedTxDB[walletAddress]) {
                   state.orderedTxDB[walletAddress].unshift(newRecord)
                 } else {
@@ -431,7 +464,7 @@ const useTxStore = create<TxStore>()(
                 state.abnormalTransactions = state.abnormalTransactions.filter(item => !abandonedTxHashs.includes(item.hash))
                 state.orderedTxDB[address] = state.orderedTxDB[address].slice(0, state.orderedTxDB[address].length - 3)
 
-                const newRecord = { hash, timestamp: Date.now(), position: param }
+                const newRecord = { hash, timestamp: Date.now(), position: param, direction }
                 if (state.orderedTxDB[walletAddress]) {
                   state.orderedTxDB[walletAddress].unshift(newRecord)
                 } else {
@@ -452,6 +485,6 @@ const useTxStore = create<TxStore>()(
   ),
 )
 
-export { isValidOffsetTime, TxPosition }
+export { isValidOffsetTime, TxPosition, TxDirection }
 
 export default useTxStore

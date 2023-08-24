@@ -1,18 +1,20 @@
 import IframeEmbedding from "@/components/IframeEmbedding"
-import Bridge from "@/pages/bridge"
+import Blog from "@/pages/blog"
+import BlogDetail from "@/pages/blog/detail"
 import Ecosystem from "@/pages/ecosystem"
-import Portal from "@/pages/home"
+import Home from "@/pages/landingpage"
+// import Bridge from "@/pages/bridge"
+import Bridge from "@/pages/new-bridge"
+import BridgeFAQ from "@/pages/new-bridge/FAQ"
+import OurStory from "@/pages/ourStory"
+import Portal from "@/pages/portal"
+import PrivacyPolicy from "@/pages/privacyPolicy"
 import RollupScanBatch from "@/pages/rollup/batch"
 import RollupScanBlock from "@/pages/rollup/block"
 import RollupScanChunk from "@/pages/rollup/chunk"
 import RollupScanChunkDetail from "@/pages/rollup/chunk/detail"
 import RollupScan from "@/pages/rollup/index"
-import Blog from "@/views/blog"
-import BlogDetail from "@/views/blog/detail"
-import Home from "@/views/home"
-import PrivacyPolicy from "@/views/privacyPolicy"
-import Team from "@/views/team"
-import Terms from "@/views/terms"
+import Terms from "@/pages/terms"
 
 const routes = [
   {
@@ -20,8 +22,12 @@ const routes = [
     path: "/",
     element: <Home />,
   },
+  {
+    name: "Our Story",
+    path: "/story",
+    element: <OurStory />,
+  },
   { name: "Blog", path: "/blog", element: <Blog /> },
-  { name: "Team", path: "/team", element: <Team /> },
   {
     name: "Join Us",
     path: "/join-us",
@@ -53,6 +59,12 @@ const routes = [
     path: "/bridge",
     fullPath: "/bridge",
     element: <Bridge />,
+  },
+  {
+    name: "Bridge FAQ",
+    path: "/bridge/faq",
+    fullPath: "/bridge/faq",
+    element: <BridgeFAQ />,
   },
   {
     name: "Ecosystem",

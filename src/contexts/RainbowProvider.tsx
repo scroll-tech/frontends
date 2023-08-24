@@ -3,6 +3,7 @@ import "@rainbow-me/rainbowkit/styles.css"
 import { braveWallet, coinbaseWallet, injectedWallet, metaMaskWallet, walletConnectWallet } from "@rainbow-me/rainbowkit/wallets"
 import { type WalletClient } from "@wagmi/core"
 import { BrowserProvider, ethers } from "ethers"
+import produce from "immer"
 import { createContext, useCallback, useContext, useMemo } from "react"
 import { WagmiConfig, configureChains, createConfig, sepolia, useAccount, useDisconnect, useNetwork, useWalletClient } from "wagmi"
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc"
@@ -13,7 +14,7 @@ import { requireEnv } from "@/utils"
 
 type RainbowContextProps = {
   provider: ethers.BrowserProvider | null
-  walletCurrentAddress?: string
+  walletCurrentAddress?: `0x${string}`
   chainId?: number
   connect: () => void
   disconnect: () => void
@@ -45,13 +46,17 @@ export const scrollChain: Chain = {
   },
 }
 
+const sepoliaChain = produce(sepolia, draft => {
+  draft.rpcUrls.public.http = [RPC_URL.L1 as any]
+})
+
 const projectId = requireEnv("REACT_APP_CONNECT_WALLET_PROJECT_ID")
 
 const RainbowContext = createContext<RainbowContextProps | undefined>(undefined)
 
 const { chains, publicClient } = configureChains(
   // ankr
-  [sepolia, scrollChain],
+  [sepoliaChain, scrollChain],
   [
     publicProvider(),
     jsonRpcProvider({
@@ -127,6 +132,7 @@ const Web3ContextProvider = props => {
 
   const { openConnectModal } = useConnectModal()
   const { disconnect } = useDisconnect()
+
   const { connector: activeConnector, address, isConnected } = useAccount()
   const { chain } = useNetwork()
 

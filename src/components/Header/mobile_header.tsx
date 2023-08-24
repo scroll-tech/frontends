@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react"
 import { NavLink } from "react-router-dom"
 
-import { ExpandMore, OpenInNew } from "@mui/icons-material"
+import { ExpandMore } from "@mui/icons-material"
 import { Box, Collapse, Link, List, ListItemButton, Stack } from "@mui/material"
 import { styled } from "@mui/system"
 
-import Logo from "../Logo"
-import Announcement from "./announcement"
+import Logo from "../ScrollLogo"
 import { navigations } from "./constants"
+import useCheckNoBg from "./useCheckNoBg"
 
 const NavStack = styled(Stack)(({ theme }) => ({
   height: "3rem",
@@ -38,37 +38,43 @@ const Bar = styled("div")(({ theme }) => ({
 
 const MenuContent = styled(Box)(({ theme }) => ({
   margin: "0.5rem 1.6rem 0",
-  borderRadius: "0.6rem",
   background: "rgb(255,247,241)",
-  border: "2px solid #FFCC9F",
 }))
 
 const ListItem = styled(ListItemButton)(({ theme }) => ({
-  fontWeight: 500,
-  height: "4rem",
-  lineHeight: "4rem",
-  color: "#333",
-  margin: "0 1.2rem",
+  fontWeight: 600,
+  fontSize: "2rem",
+  height: "5.5rem",
+  lineHeight: "5.5rem",
+  color: theme.palette.text.primary,
+  margin: "0",
   display: "flex",
   justifyContent: "space-between",
   padding: "0 !important",
-  "&.active": {
-    color: theme.palette.primary.main,
-  },
+  "&.active": {},
   "&:hover": {
     background: "transparent",
-    color: theme.palette.primary.main,
   },
   "&:not(:first-of-type)": {
-    borderTop: "1px solid #FFCC9F",
+    borderTop: "1px solid #101010",
+  },
+}))
+
+const MenuLinkStyledButton = styled(NavLink)(({ theme }) => ({
+  fontWeight: 600,
+  fontSize: "2rem",
+  height: "5.5rem",
+  lineHeight: "5.5rem",
+  color: "#101010",
+  width: "100%",
+  "&.active": {
+    color: theme.palette.text.primary,
   },
 }))
 
 const SubListItem = styled(ListItemButton)(({ theme }) => ({
-  fontWeight: 400,
-  height: "3rem",
-  lineHeight: "3rem",
-  color: "#333",
+  height: "4rem",
+  lineHeight: "4rem",
   margin: "0 !important",
   display: "flex",
   justifyContent: "space-between",
@@ -76,13 +82,12 @@ const SubListItem = styled(ListItemButton)(({ theme }) => ({
 }))
 
 const LinkStyledButton = styled(NavLink)(({ theme }) => ({
-  fontWeight: 400,
-  fontSize: "1.5rem",
-  height: "3rem",
-  lineHeight: "3rem",
-  color: "#717171",
+  fontWeight: 500,
+  fontSize: "1.8rem",
+  height: "4rem",
+  lineHeight: "4rem",
+  color: "#101010",
   width: "100%",
-  paddingLeft: "2rem",
   "&.active": {
     color: theme.palette.primary.main,
     fontWeight: 500,
@@ -90,24 +95,26 @@ const LinkStyledButton = styled(NavLink)(({ theme }) => ({
 }))
 
 const ExternalLink = styled(Link)(({ theme }) => ({
-  fontWeight: 400,
-  fontSize: "1.5rem",
-  height: "3rem",
-  lineHeight: "3rem",
-  color: "#717171",
+  fontWeight: 500,
+  fontSize: "1.8rem",
+  height: "4rem",
+  lineHeight: "4rem",
+  color: "#101010",
   display: "flex",
   alignItems: "center",
   width: "100%",
-  paddingLeft: "2rem",
 }))
 
 const SectionList = styled("div")(({ theme }) => ({
-  paddingBottom: "1rem",
-  "&:not(:last-child)::after": {
-    content: '""',
-    borderTop: `1px solid ${theme.palette.border.main}`,
-    margin: "1rem 2rem 0",
-    display: "block",
+  "&:last-of-type": {
+    paddingBottom: "2.5rem",
+  },
+  "&:nth-last-child(-n+2)": {
+    paddingBottom: "1.6rem",
+  },
+  "&:nth-of-type(n+2)": {
+    borderTop: `1px solid ${theme.palette.text.primary}`,
+    paddingTop: "1.6rem",
   },
 }))
 
@@ -119,6 +126,7 @@ const ExpandMoreIcon = styled(ExpandMore)(({ theme }) => ({
 }))
 
 const App = ({ currentMenu }) => {
+  const noBg = useCheckNoBg()
   const [open, setOpen] = useState(false)
   const [activeCollapse, setActiveCollapse] = useState("")
 
@@ -145,9 +153,16 @@ const App = ({ currentMenu }) => {
     >
       {navigations.map(item => (
         <React.Fragment key={item.key}>
-          <ListItem className={activeCollapse === item.key ? "active" : ""} sx={{ py: "1rem" }} onClick={() => toggleCollapse(item.key)}>
-            {item.label} <ExpandMoreIcon fontSize="large" className={activeCollapse === item.key ? "active" : ""} />
-          </ListItem>
+          {item.children ? (
+            <ListItem className={activeCollapse === item.key ? "active" : ""} sx={{ py: "1rem" }} onClick={() => toggleCollapse(item.key)}>
+              {item.label} <ExpandMoreIcon fontSize="large" className={activeCollapse === item.key ? "active" : ""} />
+            </ListItem>
+          ) : (
+            <ListItem className={activeCollapse === item.key ? "active" : ""} sx={{ py: "1rem" }} onClick={() => toggleDrawer(false)}>
+              <MenuLinkStyledButton to={item.href}>{item.label}</MenuLinkStyledButton>
+            </ListItem>
+          )}
+
           <Collapse in={activeCollapse === item.key} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
               {item.children?.map(section => (
@@ -157,7 +172,19 @@ const App = ({ currentMenu }) => {
                       <SubListItem onClick={() => toggleDrawer(false)} sx={{ mx: 4 }} key={subItem.key}>
                         <ExternalLink underline="none" href={subItem.href}>
                           {subItem.label}
-                          <OpenInNew sx={{ fontSize: "1.6rem", ml: "0.4rem" }} />
+                          <svg
+                            style={{ marginLeft: "0.5rem" }}
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="10"
+                            height="10"
+                            viewBox="0 0 10 10"
+                            fill="none"
+                          >
+                            <path
+                              d="M9 1V7.86538L7.83812 6.7035V2.96385C5.46463 5.26924 3.29542 7.77999 0.853849 10L0 9.16344C2.42536 6.94344 4.5762 4.46728 6.93347 2.1781H3.31272L2.13462 1H9Z"
+                              fill="#101010"
+                            />
+                          </svg>
                         </ExternalLink>
                       </SubListItem>
                     ) : (
@@ -176,30 +203,27 @@ const App = ({ currentMenu }) => {
   )
 
   return (
-    <>
-      <Box className={open ? "active" : ""}>
-        <NavStack direction="row" justifyContent="space-between" alignItems="center">
-          <NavLink to="/" className="flex">
-            <Box onClick={() => toggleDrawer(false)}>
-              <Logo />
-            </Box>
-          </NavLink>
-          <Menu onClick={() => toggleDrawer(!open)} className={open ? "active" : ""}>
-            <Bar></Bar>
-            <Bar></Bar>
-            <Bar></Bar>
-          </Menu>
-        </NavStack>
-        {open && (
-          <Box sx={{ background: "#ffffff", height: "calc(100vh - 3.2rem)" }}>
-            <MenuContent role="presentation" onKeyDown={() => toggleDrawer(false)}>
-              {renderList()}
-            </MenuContent>
+    <Box className={open ? "active" : ""} sx={{ backgroundColor: noBg && !open ? "transparent" : "themeBackground.light" }}>
+      <NavStack direction="row" justifyContent="space-between" alignItems="center">
+        <NavLink to="/" className="flex">
+          <Box onClick={() => toggleDrawer(false)}>
+            <Logo />
           </Box>
-        )}
-      </Box>
-      <Announcement />
-    </>
+        </NavLink>
+        <Menu onClick={() => toggleDrawer(!open)} className={open ? "active" : ""}>
+          <Bar></Bar>
+          <Bar></Bar>
+          <Bar></Bar>
+        </Menu>
+      </NavStack>
+      {open && (
+        <Box sx={{ background: "#FFF8F3", paddingTop: "5rem", height: "calc(100vh - 3.2rem)" }}>
+          <MenuContent role="presentation" onKeyDown={() => toggleDrawer(false)}>
+            {renderList()}
+          </MenuContent>
+        </Box>
+      )}
+    </Box>
   )
 }
 

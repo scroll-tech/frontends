@@ -1,67 +1,76 @@
-import { useRef } from "react"
+import { isMobileOnly } from "react-device-detect"
 
-import { Button as MuiButton, Stack, Typography } from "@mui/material"
-import { styled } from "@mui/system"
+import { Box, Stack, Typography } from "@mui/material"
 
-import Link from "@/components/Link"
-import PageHeader from "@/components/PageHeader"
-import useIsMobile from "@/hooks/useIsMobile"
-
-const Button = styled(MuiButton)<any>(
-  ({ theme }) => `
-    width: 20.8rem;
-    height: 5rem;
-    padding: 0;
-  `,
-)
+import Button from "@/components/Button"
+import OrientationToView from "@/components/Motion/OrientationToView"
+import SectionWrapper from "@/components/SectionWrapper"
+import { LIST_YOUR_DAPP_LINK } from "@/constants"
 
 const Header = () => {
-  const isMobile = useIsMobile()
-
-  const typeformLinkRef = useRef("https://scrollzkp.typeform.com/buildwithscroll")
-
   return (
-    <PageHeader title="Scroll Ecosystem">
-      {isMobile ? (
-        <>
-          <Typography color="textSecondary" sx={{ fontSize: "1.2rem", lineHeight: "1.4rem", fontFamily: "Inter" }}>
-            Want to join the Scroll ecosystem?{" "}
-            <Link external href={typeformLinkRef.current} sx={{ color: "primary.main", fontSize: "inherit" }}>
-              Contact us
-            </Link>
+    <>
+      <SectionWrapper
+        full
+        sx={{
+          pt: ["7.3rem", "7.3rem", "15.4rem"],
+          pb: ["4rem", "4rem", "15.4rem"],
+          display: "flex",
+          flexDirection: ["column", "column", "row"],
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <OrientationToView>
+          <Typography
+            sx={{
+              fontSize: ["4rem", "7.8rem"],
+              lineHeight: ["5rem", "8.5rem"],
+              fontWeight: 600,
+              textAlign: ["center", "left"],
+              width: ["100%", "66rem"],
+            }}
+          >
+            An Ecosystem Forever in Motion
           </Typography>
-          {/* <Typography color="textSecondary" sx={{ fontSize: "1.2rem", lineHeight: "1.4rem", fontFamily: "Inter", mt: "2rem" }}>
-              Stay up to date with our{" "}
-              <Link external href="" sx={{ color: "primary.main", fontSize: "inherit" }}>
-                Ecosystem Roadmap
-              </Link>
-            </Typography> */}
-        </>
-      ) : (
-        <>
-          <Typography color="textSecondary" sx={{ fontSize: "2.2rem" }}>
-            Want to join the Scroll ecosystem?
-          </Typography>
-          <Stack direction="row" spacing={4} sx={{ mt: "3rem" }} justifyContent="center">
-            <Button variant="contained" href={typeformLinkRef.current} target="_blank">
-              Contact us
-            </Button>
-            {/* <Button
-                color="secondary"
-                href=""
-                sx={{
-                  backgroundColor: "transparent",
-                  "&:hover": {
-                    backgroundColor: "transparent",
-                  },
-                }}
-              >
-                Ecosystem Roadmap
-              </Button> */}
-          </Stack>
-        </>
-      )}
-    </PageHeader>
+        </OrientationToView>
+        <Stack direction="column" justifyContent="space-between" spacing={isMobileOnly ? "3.8rem" : "2.5rem"} sx={{ maxWidth: ["100%", "68rem"] }}>
+          <OrientationToView>
+            <Typography
+              sx={{
+                fontSize: ["2rem", "2.6rem"],
+                lineHeight: "normal",
+                mt: ["2rem", "2rem", 0],
+                textAlign: ["center", "left"],
+              }}
+            >
+              Join a supportive, collaborative ecosystem with a greater purpose – permissionless, flexible, and dedicated to defining the future of
+              Ethereum.
+            </Typography>
+          </OrientationToView>
+          <OrientationToView delay={0.3}>
+            <Stack direction={isMobileOnly ? "column" : "row"} spacing={isMobileOnly ? "2rem" : "3rem"} alignItems="center">
+              <Button href="/bridge" color="primary" width={isMobileOnly ? "18.4rem" : "25rem"}>
+                Bridge into Scroll
+              </Button>
+              <Button href={LIST_YOUR_DAPP_LINK} target="_blank" width={isMobileOnly ? "18.4rem" : "25rem"}>
+                List your dApp
+              </Button>
+            </Stack>
+          </OrientationToView>
+        </Stack>
+      </SectionWrapper>
+      <Box sx={{ backgroundColor: theme => theme.palette.themeBackground.light }}>
+        <Box
+          sx={{
+            borderRadius: "4rem 4rem 0 0",
+            height: ["50.8rem", "37rem"],
+            background: "no-repeat bottom center url(/imgs/ecosystem/ecosystem-bg.png)",
+            backgroundSize: "cover",
+          }}
+        ></Box>
+      </Box>
+    </>
   )
 }
 

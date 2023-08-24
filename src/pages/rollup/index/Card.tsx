@@ -6,7 +6,9 @@ import { styled } from "@mui/material/styles"
 
 const Card = styled(Paper)(({ theme }) => ({
   flex: "1",
-  boxShadow: theme.boxShadows.tile,
+  boxShadow: "none",
+  borderRadius: "2.7rem",
+  background: "#FFF0DD",
   paddingLeft: "6rem",
   paddingTop: "2.7rem",
   paddingBottom: "2.2rem",
@@ -26,8 +28,9 @@ const Card = styled(Paper)(({ theme }) => ({
 }))
 
 const CardTitle = styled(Typography)(({ theme }) => ({
-  fontWeight: 500,
+  fontWeight: 600,
   marginRight: "0.6rem",
+  color: theme.palette.text.primary,
   [theme.breakpoints.down("md")]: {
     fontSize: "1.4rem",
     lineHeight: "2rem",

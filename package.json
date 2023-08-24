@@ -1,6 +1,6 @@
 {
   "name": "scroll.io",
-  "version": "4.0.18",
+  "version": "4.0.19",
   "private": false,
   "license": "MIT",
   "scripts": {
@@ -75,6 +75,7 @@
     "lodash": "^4.17.21",
     "numbro": "^2.3.6",
     "react": "^18.2.0",
+    "react-awesome-reveal": "^4.2.5",
     "react-cool-img": "^1.2.12",
     "react-countdown": "^2.3.2",
     "react-dom": "^18.2.0",
