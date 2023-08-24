@@ -54,7 +54,7 @@ const WalletConfig = () => {
       <Descriptions title={`Configure ${walletName || "wallet"} for our zkEVM testnet`}>
         <DescriptionItem sx={{ flexDirection: "column", gap: "3rem", alignItems: "flex-start !important" }}>
           <Typography>Note: Please completely remove previous Scroll networks from your {walletName || "wallet"} before proceeding, then:</Typography>
-          <Link href="https://docs.scroll.xyz/en/user-guide/common-errors/" underline="hover" external>
+          <Link href="https://docs.scroll.io/en/user-guide/common-errors/" underline="hover" external>
             Reset {walletName || "wallet"} for Scroll's L2
           </Link>
         </DescriptionItem>

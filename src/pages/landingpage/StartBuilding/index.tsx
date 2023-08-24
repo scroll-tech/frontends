@@ -48,7 +48,7 @@ const StartBuilding = () => {
           <Button href="/bridge" color="primary">
             Bridge into Scroll
           </Button>
-          <Button target="_blank" href="https://docs.scroll.xyz/en/home/">
+          <Button target="_blank" href="https://docs.scroll.io/en/home/">
             Start building
           </Button>
         </ButtonContainer>

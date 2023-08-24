@@ -177,7 +177,7 @@ const GetStart = () => {
             title="Getting started with Scroll"
             content="Scroll is compatible with Ethereum at bytecode-level, meaning everything works right out of the box."
             action={
-              <Button href="https://docs.scroll.xyz/en/home/" target="_blank" color="primary">
+              <Button href="https://docs.scroll.io/en/home/" target="_blank" color="primary">
                 Start building
               </Button>
             }

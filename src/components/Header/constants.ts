@@ -18,7 +18,7 @@ const navigations = [
           {
             label: "Docs",
             key: "docs",
-            href: "https://docs.scroll.xyz/en/home/",
+            href: "https://docs.scroll.io/en/home/",
             isExternal: true,
           },
           {
@@ -79,7 +79,7 @@ const navigations = [
           {
             label: "User Guide",
             key: "userGuide",
-            href: "https://docs.scroll.xyz/en/user-guide/",
+            href: "https://docs.scroll.io/en/user-guide/",
             isExternal: true,
           },
           {

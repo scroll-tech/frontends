@@ -13,7 +13,7 @@ const STORIES = [
     title: "Build with Scroll: Quickstart Guide",
     content:
       "Check out our documentation and start developing and deploying on Scroll right away with all of your favorite tools for building and testing smart contracts.",
-    href: "https://docs.scroll.xyz/en/home/",
+    href: "https://docs.scroll.io/en/home/",
     imageTitle: (
       <>
         Build <br></br>
