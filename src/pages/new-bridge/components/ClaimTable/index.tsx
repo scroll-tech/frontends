@@ -237,14 +237,14 @@ const TxRow = props => {
       <TableCell>
         <Typography>
           Scroll:{" "}
-          <Link external href={generateExploreLink(EXPLORER_URL.L2, tx.hash)} className="leading-normal flex-1">
+          <Link sx={{ color: "#396CE8" }} external href={generateExploreLink(EXPLORER_URL.L2, tx.hash)} className="leading-normal flex-1">
             {truncateHash(tx.hash)}
           </Link>
         </Typography>
         {tx.toHash ? (
           <Typography>
             Ethereum:{" "}
-            <Link external href={generateExploreLink(EXPLORER_URL.L1, tx.toHash)} className="leading-normal flex-1">
+            <Link sx={{ color: "#396CE8" }} external href={generateExploreLink(EXPLORER_URL.L1, tx.toHash)} className="leading-normal flex-1">
               {truncateHash(tx.toHash)}
             </Link>
           </Typography>

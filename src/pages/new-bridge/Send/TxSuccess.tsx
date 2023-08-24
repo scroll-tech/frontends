@@ -73,7 +73,7 @@ const TxSuccess = () => {
 
         <Box sx={{ flex: 1, display: "flex", alignItems: "flex-end", width: "100%", marginTop: "4.8rem", justifyContent: "center" }}>
           <Button width={isMobileOnly ? "100%" : "35rem"} color="primary" onClick={handleClaim}>
-            Claim Funds on {toNetwork.name}
+            Claim Funds on Ethereum
           </Button>
         </Box>
       </Box>

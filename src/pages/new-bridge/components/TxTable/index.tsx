@@ -24,6 +24,7 @@ import Link from "@/components/Link"
 import { TX_STATUS } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
 import useTokenInfo from "@/hooks/useTokenInfo"
+import useBridgeStore from "@/stores/bridgeStore"
 import useTxStore from "@/stores/txStore"
 import { generateExploreLink, toTokenDisplay, truncateHash } from "@/utils"
 
@@ -137,10 +138,10 @@ const TxTable = (props: any) => {
         <Table aria-label="Tx Table">
           <TableHead className={classes.tableHeader}>
             <TableRow>
-              <TableCell align="left">Initiated At</TableCell>
-              <TableCell sx={{ width: "12rem" }}>Action</TableCell>
+              <TableCell align="center">Status</TableCell>
               <TableCell>Amount</TableCell>
-              <TableCell>Status</TableCell>
+              <TableCell sx={{ width: "12rem" }}>Action</TableCell>
+              <TableCell align="left">Initiated At</TableCell>
               <TableCell>Transaction Hash</TableCell>
             </TableRow>
           </TableHead>
@@ -178,6 +179,7 @@ const TxRow = props => {
   const { tx } = props
   const { estimatedTimeMap } = useTxStore()
   const { classes, cx } = useStyles()
+  const { changeMode, changeTxType, changeWithdrawStep } = useBridgeStore()
 
   const { blockNumbers } = useApp()
 
@@ -206,6 +208,12 @@ const TxRow = props => {
   }, [tx, txStatus])
 
   const { loading: tokenInfoLoading, tokenInfo } = useTokenInfo(tx.symbolToken, tx.isL1)
+
+  const moveToClaim = () => {
+    changeMode("Transaction")
+    changeTxType("Withdraw")
+    changeWithdrawStep("2")
+  }
 
   const renderStatus = () => {
     if (toStatus === TX_STATUS.success) {
@@ -240,7 +248,11 @@ const TxRow = props => {
     }
     //withdraw claimable
     if (!tx.isL1 && fromStatus === TX_STATUS.success) {
-      return <button className={cx(classes.chip, classes.pendingChip)}>Claimable</button>
+      return (
+        <button onClick={moveToClaim} className={cx(classes.chip, classes.pendingChip)}>
+          Claimable
+        </button>
+      )
     }
     return (
       <button className={cx(classes.chip, classes.pendingChip)}>
@@ -295,30 +307,33 @@ const TxRow = props => {
   return (
     <TableRow key={tx.hash}>
       <TableCell>
-        <Typography>
-          <span>{formatDate(tx.initiatedAt)}</span>
-        </Typography>
+        <Stack direction="column" spacing="1.4rem">
+          {renderStatus()}
+        </Stack>
       </TableCell>
-      <TableCell>
-        <Typography sx={{ fontWeight: 500 }}>{actionText(tx)}</Typography>
-      </TableCell>
+
       <TableCell>
         <Typography sx={{ fontWeight: 500 }}>
           <span>{txAmount(tx.amount)} </span>
           {tokenInfoLoading ? <Skeleton variant="text" width="5rem" className="inline-block" /> : <span>{tokenInfo?.symbol}</span>}
         </Typography>
       </TableCell>
+
       <TableCell>
-        <Stack direction="column" spacing="1.4rem">
-          {" "}
-          {renderStatus()}
-        </Stack>
+        <Typography sx={{ fontWeight: 500 }}>{actionText(tx)}</Typography>
       </TableCell>
+
+      <TableCell>
+        <Typography>
+          <span>{formatDate(tx.initiatedAt)}</span>
+        </Typography>
+      </TableCell>
+
       <TableCell sx={{ width: "21rem" }}>
         <Stack direction="column">
           <Typography>
             {tx.isL1 ? "Ethereum" : "Scroll"}:{" "}
-            <Link external href={generateExploreLink(tx.fromExplore, tx.hash)} className="leading-normal flex-1">
+            <Link external sx={{ color: "#396CE8" }} href={generateExploreLink(tx.fromExplore, tx.hash)} className="leading-normal flex-1">
               {truncateHash(tx.hash)}
             </Link>
           </Typography>
@@ -331,7 +346,7 @@ const TxRow = props => {
           <Typography>
             {tx.isL1 ? "Scroll" : "Ethereum"}:{" "}
             {tx.toHash ? (
-              <Link external href={generateExploreLink(tx.toExplore, tx.toHash)} className="leading-normal flex-1">
+              <Link external sx={{ color: "#396CE8" }} href={generateExploreLink(tx.toExplore, tx.toHash)} className="leading-normal flex-1">
                 {truncateHash(tx.toHash)}
               </Link>
             ) : (

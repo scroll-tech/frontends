@@ -23,7 +23,7 @@ const FAQ = () => {
   const { walletName } = useRainbowContext()
   const { classes } = useStyles()
   return (
-    <Faq backUrl="/bridge" backText="Back to Bridge">
+    <Faq backUrl="/bridge" backText="< Back to Bridge">
       <FaqItem title="What is a blockchain Bridge?" id="2">
         <Typography variant="Body3" color="textSecondary">
           All blockchains develop in isolated environments, this means they cannot natively communicate, and tokens cannot move freely between
