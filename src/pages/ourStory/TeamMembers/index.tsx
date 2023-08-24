@@ -20,7 +20,7 @@ const CORE_MEMBERS = [
   {
     avatar: YeAvatar,
     name: "Ye",
-    desc: "Co-founder in Beijing",
+    desc: "Co-founder in London, UK",
   },
   {
     avatar: SandyAvatar,
