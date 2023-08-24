@@ -40,7 +40,7 @@ const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading })
     paddingLeft: "2rem",
     paddingRight: "2rem",
     border: "unset",
-    justifyContent: "space-between",
+    gap: "0.4em",
     color: "#0F8E7E",
   },
   active: {
@@ -130,7 +130,7 @@ const Button = props => {
         className={cx(isHover && classes.active)}
         {...restProps}
       >
-        {children} {loading && <CircularProgress sx={{ color: "#0F8E7E" }} size={24} thickness={4}></CircularProgress>}
+        {children} {loading && <CircularProgress sx={{ color: "#0F8E7E" }} size={isMobileOnly ? 18 : 24} thickness={4}></CircularProgress>}
       </ButtonBase>
     </motion.div>
   )
