@@ -177,6 +177,7 @@ const SendTransaction = props => {
         balance={balance}
         balanceLoading={balanceLoading}
         disabled={fromNetwork.chainId !== chainId}
+        readOnly={approveLoading || sendLoading}
         tokenOptions={tokenOptions}
         onChangeToken={handleChangeTokenSymbol}
       ></BalanceInput>

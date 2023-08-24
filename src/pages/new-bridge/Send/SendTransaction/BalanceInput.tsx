@@ -75,6 +75,7 @@ const BalanceInput = props => {
     tokenOptions,
     fee,
     disabled,
+    readOnly,
     onChangeToken,
     ...restProps
   } = props
@@ -110,6 +111,7 @@ const BalanceInput = props => {
             placeholder="0.00"
             disabled={disabled}
             classes={{ input: classes.input }}
+            readOnly={readOnly}
             onChange={handleChangeAmount}
           ></InputBase>
           {balanceLoading ? (
