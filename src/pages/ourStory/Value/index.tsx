@@ -6,7 +6,6 @@ import { Box, Stack, SvgIcon, Typography } from "@mui/material"
 import { ReactComponent as CommunitySvg } from "@/assets/svgs/refactor/story-value-community.svg"
 import { ReactComponent as NeutralitySvg } from "@/assets/svgs/refactor/story-value-neutrality.svg"
 import { ReactComponent as OpennessSvg } from "@/assets/svgs/refactor/story-value-openness.svg"
-import ValueImg from "@/assets/svgs/refactor/story-value.svg"
 import ScrollExpandedBg from "@/components/ScrollExpandedBg"
 import SectionHeader from "@/components/SectionHeader"
 
@@ -45,7 +44,7 @@ const Value = () => {
             ></SectionHeader>
             {isDesktop && (
               <Box sx={{ position: "sticky", bottom: "8rem", mt: "24rem", mb: "14rem" }}>
-                <img src={ValueImg} alt="value"></img>
+                <img src="/imgs/story/story-value.svg" alt="value"></img>
               </Box>
             )}
           </Stack>

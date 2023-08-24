@@ -2,62 +2,69 @@ import { makeStyles } from "tss-react/mui"
 
 import { Avatar, Typography } from "@mui/material"
 
-import BackupAvatar from "@/assets/svgs/refactor/backup-avatar.svg"
-import HaichenAvatar from "@/assets/svgs/refactor/haichen-avatar.svg"
-import SandyAvatar from "@/assets/svgs/refactor/sandy-avatar.svg"
-import YeAvatar from "@/assets/svgs/refactor/ye-avatar.svg"
+import DanAvatar from "@/assets/svgs/members/Dan-avatar.svg"
+import HaichenAvatar from "@/assets/svgs/members/Haichen-avatar.svg"
+import JaneAvatar from "@/assets/svgs/members/Jane-avatar.svg"
+import LeaAvatar from "@/assets/svgs/members/Lea-avatar.svg"
+import MeiAvatar from "@/assets/svgs/members/Mei-avatar.svg"
+import MohammadAvatar from "@/assets/svgs/members/Mohammad-avatar.svg"
+import PeterAvatar from "@/assets/svgs/members/Peter-avatar.svg"
+import SandyAvatar from "@/assets/svgs/members/Sandy-avatar.svg"
+import ToghrulAvatar from "@/assets/svgs/members/Toghrul-avatar.svg"
+import YeAvatar from "@/assets/svgs/members/Ye-avatar.svg"
 import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
 import SectionHeader from "@/components/SectionHeader"
 import SectionWrapper from "@/components/SectionWrapper"
 
 const CORE_MEMBERS = [
   {
-    avatar: SandyAvatar,
-    name: "Sandy",
-    desc: "Co-founder in Hong Kong",
-  },
-  {
     avatar: YeAvatar,
     name: "Ye",
     desc: "Co-founder in Beijing",
   },
+  {
+    avatar: SandyAvatar,
+    name: "Sandy",
+    desc: "Co-founder in Hong Kong",
+  },
+
   {
     avatar: HaichenAvatar,
     name: "Haichen",
     desc: "Co-founder in San Francisco",
   },
   {
-    avatar: BackupAvatar,
-    name: "Jane",
-    desc: "Head of operations in London",
-  },
-  {
-    avatar: BackupAvatar,
-    name: "Toghrul",
-    desc: "Senior researcher in Dubai",
-  },
-  {
-    avatar: BackupAvatar,
-    name: "Dan",
-    desc: "Devrel lead in Oklahoma, US",
-  },
-  {
-    avatar: BackupAvatar,
-    name: "Lea",
-    desc: "Partnerships lead in Berlin",
-  },
-  {
-    avatar: BackupAvatar,
-    name: "Mohammad",
-    desc: "Protocol researcher - Vancouver, Canada",
-  },
-  {
-    avatar: BackupAvatar,
+    avatar: MeiAvatar,
     name: "Mei",
     desc: "Comms & outreach lead in Texas, US",
   },
   {
-    avatar: BackupAvatar,
+    avatar: DanAvatar,
+    name: "Dan",
+    desc: "Devrel lead in Oklahoma, US",
+  },
+  {
+    avatar: JaneAvatar,
+    name: "Jane",
+    desc: "Head of operations in London",
+  },
+  {
+    avatar: MohammadAvatar,
+    name: "Mohammad",
+    desc: "Protocol researcher - Vancouver, Canada",
+  },
+  {
+    avatar: LeaAvatar,
+    name: "Lea",
+    desc: "Partnerships lead in Berlin",
+  },
+  {
+    avatar: ToghrulAvatar,
+    name: "Toghrul",
+    desc: "Senior researcher in Dubai",
+  },
+  {
+    avatar: PeterAvatar,
     name: "Peter",
     desc: "Infrastructure engineer in Budapest, Hungary",
   },

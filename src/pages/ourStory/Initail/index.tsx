@@ -1,18 +1,15 @@
 import { useMemo } from "react"
-import { isDesktop, isMobileOnly } from "react-device-detect"
+import { isMobileOnly } from "react-device-detect"
 import { makeStyles } from "tss-react/mui"
 
 import { Box, Typography as MuiTypography, Stack } from "@mui/material"
 import { styled } from "@mui/system"
 
-import HaichenAvatar from "@/assets/svgs/refactor/haichen-avatar.svg"
-import SandyAvatar from "@/assets/svgs/refactor/sandy-avatar.svg"
-// import StoryBucket from "@/assets/svgs/refactor/story-bucket.svg"
-import StoryDiamond from "@/assets/svgs/refactor/story-diamond.svg"
-import YeAvatar from "@/assets/svgs/refactor/ye-avatar.svg"
+import HaichenAvatar from "@/assets/svgs/members/Haichen-avatar.svg"
+import SandyAvatar from "@/assets/svgs/members/Sandy-avatar.svg"
+import YeAvatar from "@/assets/svgs/members/Ye-avatar.svg"
 import OrientationToView from "@/components/Motion/OrientationToView"
 import SectionWrapper from "@/components/SectionWrapper"
-import WebpImage from "@/components/WebpImage"
 
 import Cooperation from "./Cooperation"
 import InlineAvater from "./InlineAvatar"
@@ -64,9 +61,7 @@ const Initail = () => {
       </OrientationToView>
       <Line orientation="vertical" textAlign="center" className={classes.divider} />
       <OrientationToView>
-        <WebpImage src={StoryDiamond}></WebpImage>
-        {isDesktop && <WebpImage src={StoryDiamond}></WebpImage>}
-        {isDesktop && <WebpImage src={StoryDiamond}></WebpImage>}
+        <img style={{ maxWidth: isMobileOnly ? "100%" : "unset" }} src="/imgs/story/story-initial-1.svg" alt=""></img>
       </OrientationToView>
       <Line orientation="vertical" textAlign="center" className={classes.divider} />
       <OrientationToView>
@@ -79,7 +74,7 @@ const Initail = () => {
       </OrientationToView>
       <Line orientation="vertical" textAlign="center" className={classes.divider} />
 
-      <Stack direction={isMobileOnly ? "column" : "row"} alignItems="center" spacing={isMobileOnly ? "12rem" : "13.6rem"}>
+      <Stack direction={isMobileOnly ? "column" : "row"} alignItems="center" spacing={isMobileOnly ? "12rem" : "6rem"}>
         <OrientationToView direction={isMobileOnly ? "up" : "right"}>
           <Typography sx={{ textAlign: ["center", "left"] }}>
             Realizing that Ethereum equivalence was the only viable path forward, the trio embarked on a mission to build an open-source, scalable
@@ -88,7 +83,7 @@ const Initail = () => {
           </Typography>
         </OrientationToView>
         <OrientationToView direction={isMobileOnly ? "up" : "left"}>
-          <img style={{ maxWidth: isMobileOnly ? "100%" : "unset" }} src="/imgs/story/story-initial-1.png" alt=""></img>
+          <img style={{ maxWidth: isMobileOnly ? "100%" : "unset" }} src="/imgs/story/story-initial-2.svg" alt=""></img>
         </OrientationToView>
       </Stack>
       <Line orientation="vertical" textAlign="center" className={classes.divider} />
@@ -97,9 +92,9 @@ const Initail = () => {
       </OrientationToView>
       <Line orientation="vertical" textAlign="center" className={classes.divider} />
 
-      <Stack direction={isMobileOnly ? "column-reverse" : "row"} alignItems="center" spacing={isMobileOnly ? "12rem" : "13.6rem"}>
+      <Stack direction={isMobileOnly ? "column-reverse" : "row"} alignItems="center" spacing={isMobileOnly ? "12rem" : "6rem"}>
         <OrientationToView direction={isMobileOnly ? "up" : "right"}>
-          <img style={{ maxWidth: isMobileOnly ? "100%" : "unset" }} src="/imgs/story/story-initial-2.png" alt=""></img>
+          <img style={{ maxWidth: isMobileOnly ? "100%" : "unset" }} src="/imgs/story/story-initial-3.svg" alt=""></img>
         </OrientationToView>
         <OrientationToView direction={isMobileOnly ? "up" : "left"}>
           <Typography sx={{ textAlign: ["center", "left"] }}>
