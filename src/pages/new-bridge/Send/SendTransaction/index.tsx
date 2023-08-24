@@ -31,7 +31,7 @@ const SendTransaction = props => {
   const { tokenList } = useApp()
   const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
 
-  const { gasLimit, gasPrice, errorMessage: gasErrorMsg } = usePriceFeeContext()
+  const { gasLimit, gasPrice, errorMessage: priceFeeErrorMessage, fetchData: fetchPriceFee } = usePriceFeeContext()
 
   const { txType, isNetworkCorrect, fromNetwork, changeTxError } = useBridgeStore()
 
@@ -74,11 +74,11 @@ const SendTransaction = props => {
     if (!isNetworkCorrect || !amount) {
       return <Typography>-</Typography>
     }
-    if (gasErrorMsg) {
+    if (priceFeeErrorMessage) {
       return <Typography sx={{ color: "primary.main" }}>-</Typography>
     }
     return toTokenDisplay(totalFee, selectedToken.decimals, ETH_SYMBOL)
-  }, [isNetworkCorrect, amount, totalFee, selectedToken, gasErrorMsg])
+  }, [isNetworkCorrect, amount, totalFee, selectedToken, priceFeeErrorMessage])
 
   const bridgeWarning = useMemo(() => {
     if (!chainId) {
@@ -103,11 +103,18 @@ const SendTransaction = props => {
       return insufficientWarning
     } else if (invalidAmountMessage) {
       return invalidAmountMessage
-    } else if (gasErrorMsg) {
-      return gasErrorMsg
+    } else if (priceFeeErrorMessage && amount) {
+      return (
+        <>
+          {priceFeeErrorMessage},{" "}
+          <TextButton underline="always" sx={{ fontSize: "1.4rem" }} onClick={() => fetchPriceFee()}>
+            Click here to retry.
+          </TextButton>
+        </>
+      )
     }
     return null
-  }, [chainId, isNetworkCorrect, fromNetwork, insufficientWarning, invalidAmountMessage, gasErrorMsg])
+  }, [chainId, isNetworkCorrect, fromNetwork, insufficientWarning, invalidAmountMessage, priceFeeErrorMessage, amount])
 
   const necessaryCondition = useMemo(() => {
     return amount && !bridgeWarning
