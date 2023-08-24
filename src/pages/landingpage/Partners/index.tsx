@@ -141,7 +141,7 @@ const Marquee = styled(Box)(({ theme }) => ({
 
 const TrackLeft = styled("div")(({ theme }) => ({
   display: "flex",
-  animation: `${MarqueeAnimationLeft} 32s linear infinite`,
+  animation: `${MarqueeAnimationLeft} 60s linear infinite`,
   marginBottom: "4.4rem",
   width: "max-content",
   [theme.breakpoints.down("md")]: {
@@ -151,7 +151,7 @@ const TrackLeft = styled("div")(({ theme }) => ({
 
 const TrackRight = styled("div")(({ theme }) => ({
   display: "flex",
-  animation: `${MarqueeAnimationRight} 32s linear infinite`,
+  animation: `${MarqueeAnimationRight} 60s linear infinite`,
   width: "max-content",
 }))
 
