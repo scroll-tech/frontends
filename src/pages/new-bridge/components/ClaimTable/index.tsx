@@ -134,7 +134,7 @@ const TxTable = (props: any) => {
         </Table>
       </TableContainer>
       {pagination && (
-        <div className="flex justify-end mt-[2.8rem]">
+        <div className="flex justify-center mt-[2.8rem]">
           <Pagination
             size="small"
             classes={{
