@@ -16,13 +16,13 @@ const STEPS = [
     icon: ScalabilityIcon,
     title: "Bridge your ETH",
     description:
-      "Once you’ve acquired testnet ETH, you can bridge your testnet ETH to the Scroll Alpha Testnet (Layer 2) using our bridge. For a walkthrough, start with the user guide’s setup page.",
+      "Once you’ve acquired testnet ETH, you can bridge your testnet ETH to the Scroll Sepolia Testnet (Layer 2) using our bridge. For a walkthrough, start with the user guide’s setup page.",
   },
   {
     icon: SecurityIcon,
     title: "Change RPC provider",
     description:
-      "Configure your Ethereum tools to the Scroll Alpha testnet. You’ll just need to point your favorite builder tools at a Scroll Alpha Testnet RPC Provider.",
+      "Configure your Ethereum tools to the Scroll Sepolia testnet. You’ll just need to point your favorite builder tools at a Scroll Sepolia Testnet RPC Provider.",
   },
   {
     icon: EVMEquivalenceIcon,
