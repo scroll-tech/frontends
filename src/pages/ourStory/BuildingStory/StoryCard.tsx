@@ -1,9 +1,11 @@
+import { isMobileOnly } from "react-device-detect"
 import { makeStyles } from "tss-react/mui"
 
-import { Box, Card, CardContent, CardMedia, SvgIcon, Typography } from "@mui/material"
+import { Box, Card, CardContent, CardMedia, Stack, SvgIcon, Typography } from "@mui/material"
 
 import { ReactComponent as ExternaLinkIcon } from "@/assets/svgs/refactor/external-link.svg"
 import Link from "@/components/Link"
+import ScrollLogo from "@/components/ScrollLogo"
 
 const useStyles = makeStyles<any>()((theme, { cover }) => ({
   card: {
@@ -15,50 +17,119 @@ const useStyles = makeStyles<any>()((theme, { cover }) => ({
       backgroundColor: theme.palette.themeBackground.highlight,
     },
   },
+  cardMediaWrapper: {
+    position: "relative",
+  },
+  cardMediaMark: {
+    position: "absolute",
+    top: "2.4rem",
+    left: "3rem",
+    [theme.breakpoints.down("sm")]: {
+      top: "1.6rem",
+      left: "2rem",
+    },
+  },
+  cardMediaTitle: {
+    color: theme.palette.primary.contrastText,
+    fontWeight: 600,
+    fontSize: "5rem",
+    lineHeight: 1,
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "3.2rem",
+    },
+  },
+  cardMediaLogo: {
+    width: "10rem",
+    [theme.breakpoints.down("sm")]: {
+      width: "7rem",
+    },
+  },
+  cardMedia: {
+    borderRadius: "2.5rem",
+    backgroundColor: theme.palette.text.primary,
+  },
   cardContent: {
     height: cover ? "calc(100% - 23rem)" : "100%",
     padding: cover ? "3.6rem 3rem 2.8rem 3rem" : "3rem",
-    display: "flex",
-    flexDirection: "column",
+    display: "grid",
+    gridTemplateColumns: "1fr min-content",
+    rowGap: "2.4rem",
+    columnGap: "6.8rem",
     [theme.breakpoints.down("sm")]: {
       padding: cover ? "1.5rem 2rem 3rem" : "2rem",
+      rowGap: "1.2rem",
+      columnGap: "2rem",
     },
   },
   noCover: {
-    flex: 1,
-    display: "flex",
-    flexDirection: "column-reverse",
-    justifyContent: "space-between",
-    minHeight: "10.6rem",
+    gridTemplateAreas: ` 
+    "title title"
+    "content content"
+    ". icon";
+    `,
+    gridTemplateRows: "repeat(2, min-content) 1fr",
+
     ".building-story-card-icon": {
       alignSelf: "flex-end",
     },
   },
   withCover: {
-    flex: 1,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    gridTemplateAreas: ` 
+    "title icon"
+    "content content"
+    `,
+    gridTemplateRows: "min-content 1fr",
+    ".building-story-card-icon": {
+      alignSelf: "flex-start",
+      marginTop: "8px",
+      [theme.breakpoints.down("sm")]: {
+        marginTop: "5px",
+      },
+    },
+  },
+  icon: {
+    gridArea: "icon",
+  },
+  title: {
+    gridArea: "title",
+  },
+  content: {
+    gridArea: "content",
   },
 }))
 
 const StoryCard = props => {
-  const { title, cover, content, icon, href, ...restProps } = props
+  const { title, imageTitle, cover, content, icon, href, ...restProps } = props
 
   const { classes, cx } = useStyles({ cover })
 
   return (
     <Link href={href} external>
       <Card {...restProps} elevation={0} className={classes.card}>
-        {cover && <CardMedia sx={{ height: 230, borderRadius: "2.5rem" }} image={cover} />}
-        <CardContent className={classes.cardContent}>
-          <Box className={cx(cover ? classes.withCover : classes.noCover)}>
-            <Typography sx={[{ fontSize: ["1.6rem", "2.4rem"], fontWeight: 600 }, theme => theme.singleLineEllipsis]}>{title}</Typography>
-            <SvgIcon sx={{ fontSize: ["1.3rem", "2rem"] }} className="building-story-card-icon" component={ExternaLinkIcon} inheritViewBox></SvgIcon>
+        {cover && (
+          <Box className={classes.cardMediaWrapper}>
+            <CardMedia sx={{ height: ["13rem", "23rem"] }} classes={{ root: classes.cardMedia }} image={cover} />
+            <Stack direction="column" className={classes.cardMediaMark} spacing={isMobileOnly ? "1rem" : "2rem"}>
+              <Typography className={classes.cardMediaTitle}>{imageTitle}</Typography>
+              <ScrollLogo light className={classes.cardMediaLogo}></ScrollLogo>
+            </Stack>
           </Box>
+        )}
 
-          <Typography sx={[{ fontSize: ["1.6rem", "2rem"], mt: ["1.2rem", "2.4rem"] }, theme => theme.multilineEllipsis]}>{content}</Typography>
+        <CardContent className={cx(classes.cardContent, cover ? classes.withCover : classes.noCover)}>
+          <SvgIcon
+            sx={{ fontSize: ["1.3rem", "2rem"] }}
+            className={cx(classes.icon, "building-story-card-icon")}
+            component={ExternaLinkIcon}
+            inheritViewBox
+          ></SvgIcon>
+
+          <Typography sx={{ fontSize: ["1.6rem", "2.4rem"], fontWeight: 600, cursor: "inherit" }} className={classes.title}>
+            {title}
+          </Typography>
+          <Typography sx={{ fontSize: ["1.6rem", "2rem"], cursor: "inherit" }} className={classes.content}>
+            {content}
+          </Typography>
         </CardContent>
       </Card>
     </Link>
