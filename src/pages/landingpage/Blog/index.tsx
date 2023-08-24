@@ -24,7 +24,7 @@ const STORIES = [
   {
     title: "Scroll’s Fresh Coat: A Community Touch",
     content: "Discover our updated website and developer portal, shaped with community insights and collaboration.",
-    href: "",
+    href: "/blog/scrollsFreshCoat",
   },
   {
     title: "Announcing the Scroll Beta Testnet on Sepolia",
