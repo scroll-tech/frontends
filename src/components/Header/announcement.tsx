@@ -6,9 +6,9 @@ import { styled } from "@mui/system"
 const AnnouncementStack = styled(Stack)(
   ({ theme }) => `
     line-height: 2.6rem;
-    background: ${theme.palette.link.main};
+    background: #62e6d4;
     text-align: center;
-    color: ${theme.palette.background.default};
+    color: ${theme.palette.text.primary};
     font-size: 1.6rem;
     padding: 1.6rem;
     display: inline-block;

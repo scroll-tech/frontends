@@ -1,85 +1,115 @@
 import { motion } from "framer-motion"
 import { useState } from "react"
 import Img from "react-cool-img"
+import { isMobileOnly } from "react-device-detect"
+import { makeStyles } from "tss-react/mui"
 
-import { InfoOutlined, ReplayOutlined } from "@mui/icons-material"
 import { Box, Stack, SvgIcon, Typography } from "@mui/material"
-import { styled } from "@mui/material/styles"
 
 import { ecosystemListLogoUrl } from "@/apis/ecosystem"
+import { ReactComponent as InfoIcon } from "@/assets/svgs/refactor/info.svg"
 import RenderIfVisible from "@/components/RenderIfVisible"
+import { ECOSYSTEM_SOCIAL_LIST } from "@/constants"
 
-import { socialLinks } from "../helper"
+const useStyles = makeStyles()(theme => ({
+  renderWrapper: {
+    aspectRatio: "1 / 1",
+    width: "100%",
+  },
+  wrapper: {
+    position: "relative",
+    perspective: "1000px",
+    width: "100%",
+    height: "100%",
+  },
+  flipCard: {
+    position: "relative",
+    transformStyle: "preserve-3d",
+    width: "100%",
+    height: "100%",
+  },
+  faceSide: {
+    position: "absolute",
+    top: "0",
+    left: "0",
+    width: "100%",
+    height: "100%",
+    backfaceVisibility: "hidden",
+    borderRadius: "2.5rem",
+    backgroundColor: theme.palette.themeBackground.dark,
 
-const Wrapper = styled(motion.div)(
-  ({ theme }) => `
-  position: relative;
-  perspective: 1000px;
-  margin: 2rem;
-  width: 30rem;
-  height: 30rem;
-  ${theme.breakpoints.down("sm")} {
-    width: 100%;
-    margin: 1rem 0;
-  };
-`,
-)
-
-const FlipCard = styled(motion.div)(
-  ({ theme }) => `
-  position: relative;
-  transform-style: preserve-3d;
-  width: 100%;
-  height: 100%;
-  `,
-)
-
-const FaceSide = styled(motion.div)(
-  ({ theme, className }) => `
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  box-shadow: ${theme.boxShadows.tile};
-  padding: 1rem;
-  border-radius: ${theme.shape.borderRadius}px;
-  background-color: ${theme.palette.background.default},
-  ${theme.breakpoints.down("sm")} {
-    padding: 1.6rem;
-  };
-  .MuiAvatar-img{
-    height: auto;
-  }
-`,
-)
-
-const IconBox = styled(Box)(
-  ({ theme }) => `
-  position: absolute;
-  width: 100%;
-  margin-left: -1rem;
-  padding: 0 1rem;
-  ${theme.breakpoints.down("sm")} {
-    padding: 0 1.6rem;
-    margin-left: -1.6rem;
-  };
-  `,
-)
-
-const Tag = styled("span")(
-  ({ theme }) => `
-  display: inline-block;
-  color: #eee;
-  background-color: #404040;
-  border-radius: 6px;
-  padding: 4px 6px;
-  font-weight: 900;
-  font-size: 12px;
-  margin: 4px;
-`,
-)
+    ".MuiAvatarImg": {
+      height: "auto",
+    },
+  },
+  front: {
+    padding: "2rem 2rem 3rem",
+    [theme.breakpoints.down("sm")]: {
+      padding: "0 2rem 0 4.5rem",
+    },
+  },
+  back: {
+    padding: "2.5rem 3rem 3rem",
+    [theme.breakpoints.down("sm")]: {
+      padding: "1.6rem 2rem",
+    },
+  },
+  info: {
+    position: "absolute",
+    top: "2rem",
+    right: "2rem",
+    fontSize: "2rem",
+  },
+  frontContent: {
+    display: "grid",
+    gridTemplateColumns: "1fr",
+    gridTemplateRows: "repeat(2, min-content) 1fr",
+    paddingTop: "6rem",
+    height: "100%",
+    justifyItems: "center",
+    gridRowGap: "2rem",
+    [theme.breakpoints.down("sm")]: {
+      gridTemplateColumns: "min-content 1fr",
+      gridTemplateRows: "repeat(2, min-content)",
+      paddingTop: 0,
+      gridColumnGap: "2rem",
+      gridRowGap: "1rem",
+      justifyItems: "start",
+      height: "auto",
+      position: "relative",
+      top: "50%",
+      transform: "translateY(-50%)",
+    },
+  },
+  tagWrapper: {
+    display: "flex",
+    justifyContent: "center",
+    flexWrap: "wrap",
+    alignItems: "end",
+    margin: "-4px -5px",
+    [theme.breakpoints.down("sm")]: {
+      alignItems: "start",
+      margin: "-4px",
+      justifyContent: "flex-start",
+    },
+  },
+  tag: {
+    display: "inline-block",
+    color: theme.palette.primary.contrastText,
+    backgroundColor: theme.palette.themeBackground.tag,
+    borderRadius: "2rem",
+    padding: "6px 12px",
+    fontWeight: "500",
+    fontSize: "1.6rem",
+    lineHeight: "normal",
+    margin: "4px 5px",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "1.2rem",
+      padding: "2px 12px",
+      margin: "4px",
+    },
+  },
+}))
 
 const variants = {
   front: { transform: "rotateY(0deg)" },
@@ -93,6 +123,7 @@ const GalleryItem = props => {
     item: { name, hash, ext, tags, desc, website, twitterHandle },
   } = props
   const logo = ecosystemListLogoUrl + name + ext
+  const { classes, cx } = useStyles()
 
   const [isBack, setIsBack] = useState(false)
 
@@ -110,69 +141,99 @@ const GalleryItem = props => {
     window.open(website)
   }
   return (
-    <RenderIfVisible defaultHeight={340}>
-      <Wrapper onClick={handleFlipCard} whileHover={{ translateY: "-2px", scale: 1.005 }}>
-        <FlipCard animate={isBack ? "back" : "front"} variants={variants} transition={{ duration: 0.3, ease: "easeInOut" }}>
-          <FaceSide
-            className="front"
-            whileHover={{ boxShadow: "2px 2px 10px 2px rgba(131, 131, 131, 0.5)" }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
+    <RenderIfVisible defaultHeight={isMobileOnly ? 150 : 0} rootElementClass={classes.renderWrapper}>
+      <motion.div className={classes.wrapper} onClick={handleFlipCard} whileHover={{ translateY: "-2px", scale: 1.005 }}>
+        <motion.div
+          className={classes.flipCard}
+          animate={isBack ? "back" : "front"}
+          variants={variants}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+        >
+          <motion.div
+            className={cx(classes.faceSide, classes.front)}
+            // whileHover={{ boxShadow: "2px 2px 10px 2px rgba(131, 131, 131, 0.5)" }}
+            // transition={{ duration: 0.3, ease: "easeInOut" }}
           >
-            <IconBox sx={{ display: "flex", justifyContent: "flex-end" }}>
-              <InfoOutlined sx={{ color: "#686868" }}></InfoOutlined>
-            </IconBox>
-            <Stack direction="column" spacing={2} alignItems="center" sx={{ mt: "7rem" }}>
-              <Stack direction="row" spacing={1.25} alignItems="center">
-                <Img alt={name} src={logo} placeholder={hash} width={84} height={84}></Img>
-                <Typography sx={{ fontFamily: "Inter", fontWeight: 600, fontSize: ["2rem", "2.4rem"], width: "min-content" }}>{name}</Typography>
-              </Stack>
-              <Stack direction="row" sx={{ flexWrap: "wrap", justifyContent: "center" }}>
-                {tags ? tags.map(value => <Tag key={value}>{value.trim()}</Tag>) : null}
-              </Stack>
-            </Stack>
-          </FaceSide>
-          <FaceSide
-            className="back"
-            whileHover={{ boxShadow: "2px 2px 10px 2px rgba(131, 131, 131, 0.5)" }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            style={{ transform: "rotateY(180deg)" }}
-          >
-            <Stack direction="column" justifyContent="space-between" sx={{ height: "100%" }}>
-              <Stack direction="row" justifyContent="space-between">
-                <Stack direction="row" alignItems="center" spacing={0.5}>
-                  <Img alt={name} src={logo} placeholder={hash} width={22} height={22}></Img>
-                  <Typography sx={{ fontWeight: 600, fontSize: 12 }}>{name}</Typography>
-                </Stack>
-                <ReplayOutlined sx={{ color: "#686868" }}></ReplayOutlined>
-              </Stack>
-              <Typography
+            {isMobileOnly && <SvgIcon className={classes.info} component={InfoIcon} inheritViewBox></SvgIcon>}
+            <Box className={classes.frontContent}>
+              <Stack
+                justifyContent="center"
+                alignItems="center"
                 sx={{
-                  mb: "1rem",
-                  px: "1rem",
-                  lineHeight: ["1.8rem", "1.6rem"],
-                  fontFamily: "Inter",
-                  fontWeight: 500,
-                  fontSize: ["1.6rem", "1.4rem"],
+                  width: ["6rem", "7rem"],
+                  height: ["6rem", "7rem"],
+                  backgroundColor: "background.paper",
+                  borderRadius: "3.5rem",
+                  overflow: "hidden",
+                  gridRow: ["span 2", "unset"],
+                  alignSelf: "center",
                 }}
               >
-                {desc}
+                <Img alt={name} src={logo} placeholder={hash} width={isMobileOnly ? 60 : 70} height={isMobileOnly ? 60 : 70}></Img>
+              </Stack>
+              <Typography sx={{ fontWeight: 600, fontSize: ["2rem", "2.4rem"], lineHeight: "3rem", color: "#FFF8F3" }}>{name}</Typography>
+              <Box className={classes.tagWrapper}>
+                {tags
+                  ? tags.map(value => (
+                      <span className={classes.tag} key={value}>
+                        {value.trim()}
+                      </span>
+                    ))
+                  : null}
+              </Box>
+            </Box>
+          </motion.div>
+          <motion.div
+            className={cx(classes.faceSide, classes.back)}
+            // whileHover={{ boxShadow: "2px 2px 10px 2px rgba(131, 131, 131, 0.5)" }}
+            // transition={{ duration: 0.3, ease: "easeInOut" }}
+            style={{ transform: "rotateY(180deg)" }}
+          >
+            <Stack direction="column" sx={{ height: "100%" }}>
+              <Typography
+                sx={{ fontSize: "2.4rem", lineHeight: "3rem", fontWeight: 600, color: "#FFF8F3", mb: "1.8rem", display: ["none", "inline-block"] }}
+              >
+                {name}
               </Typography>
-              <Stack direction="row" spacing={[1, 0.5]} justifyContent="flex-end" sx={{ width: "100%" }}>
-                {socialLinks.map(social => (
-                  <motion.span key={social.name} whileHover={{ scale: 1.1, color: "#686868" }} style={{ color: "#404040" }}>
+              <Box sx={{ flex: 1 }}>
+                <Typography
+                  sx={{
+                    lineHeight: "normal",
+                    fontSize: ["1.6rem", "2rem"],
+                    color: "#FFF8F3",
+                    "@media (max-width: 600px)": {
+                      display: "-webkit-box",
+                      WebkitLineClamp: 4,
+                      WebkitBoxOrient: "vertical",
+                      overflow: "hidden",
+                      height: "9rem",
+                    },
+                  }}
+                >
+                  {desc}
+                </Typography>
+              </Box>
+
+              <Stack direction="row" spacing="1.8rem" justifyContent="flex-end" sx={{ width: "100%" }}>
+                {ECOSYSTEM_SOCIAL_LIST.map(social => (
+                  <motion.span key={social.name} whileHover={{ scale: 1.1 }}>
                     <SvgIcon
                       onClick={e => handleOpenTab(e, social, { website, twitterHandle })}
                       component={social.icon}
-                      sx={{ width: ["2.2rem", "2rem"], height: ["2.2rem", "2rem"], verticalAlign: "middle" }}
+                      sx={{
+                        fontSize: "1.8rem",
+                        verticalAlign: "middle",
+                        color: theme => theme.palette.primary.contrastText,
+                      }}
                       inheritViewBox
                     ></SvgIcon>
                   </motion.span>
                 ))}
               </Stack>
             </Stack>
-          </FaceSide>
-        </FlipCard>
-      </Wrapper>
+          </motion.div>
+        </motion.div>
+      </motion.div>
     </RenderIfVisible>
   )
 }

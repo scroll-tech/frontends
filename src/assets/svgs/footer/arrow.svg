@@ -8,6 +8,6 @@
 <g transform="matrix(1 0 0 1 540 540)" id="eaff8e1d-47a8-48dc-82b7-2c1f78f8ab81"  >
 </g>
 <g transform="matrix(180 0 0 180 540 540)"  >
-<path style="stroke: rgb(89,89,89); stroke-width: 1; stroke-dasharray: none; stroke-linecap: round; stroke-dashoffset: 0; stroke-linejoin: round; stroke-miterlimit: 4; fill: none; fill-rule: nonzero; opacity: 1;"  transform=" translate(-3, -3.5)" d="M 1 1 L 5 3.5 L 1 6" stroke-linecap="round" />
+<path style="stroke: #FFF8F3; stroke-width: 1; stroke-dasharray: none; stroke-linecap: round; stroke-dashoffset: 0; stroke-linejoin: round; stroke-miterlimit: 4; fill: none; fill-rule: nonzero; opacity: 1;"  transform=" translate(-3, -3.5)" d="M 1 1 L 5 3.5 L 1 6" stroke-linecap="round" />
 </g>
 </svg>

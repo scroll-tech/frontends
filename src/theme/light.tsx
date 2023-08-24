@@ -6,8 +6,19 @@ const defaultTransition = "all 0.15s ease-out"
 
 const lightTheme = createTheme({
   // check in bridge
+  singleLineEllipsis: {
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+    textOverflow: "ellipsis",
+  },
+  multilineEllipsis: {
+    display: "-webkit-box",
+    WebkitBoxOrient: "vertical",
+    WebkitLineClamp: "4",
+    overflow: "hidden",
+  },
   shape: {
-    borderRadius: 6,
+    borderRadius: 27,
   },
   palette: paletteOptions,
   typography: typographyOptions,
@@ -17,9 +28,15 @@ const lightTheme = createTheme({
     MuiContainer: {
       styleOverrides: {
         root: {
-          "&.MuiContainer-maxWidthLg": {
-            maxWidth: "1300px",
+          paddingLeft: "2rem",
+          paddingRight: "2rem",
+          "@media(min-width: 600px)": {
+            paddingLeft: "6rem",
+            paddingRight: "6rem",
           },
+        },
+        maxWidthLg: {
+          maxWidth: "1300px",
         },
       },
     },
@@ -28,6 +45,7 @@ const lightTheme = createTheme({
       styleOverrides: {
         tooltip: {
           fontSize: "1.4rem",
+          borderRadius: "0.6rem",
         },
       },
       defaultProps: {
@@ -57,15 +75,22 @@ const lightTheme = createTheme({
       },
       styleOverrides: {
         root: {
-          fontSize: "16px",
-          fontWeight: 600,
-          lineHeight: "1",
-          padding: "16px 28px",
+          fontSize: "2rem",
+          fontWeight: 500,
+          lineHeight: "normal",
+          padding: "0 3.5rem",
+          height: "4.6rem",
           textTransform: "inherit",
-          width: "max-content",
-          // whiteSpace: "nowrap",
+          borderRadius: "2.3rem",
+          backgroundColor: "#f0f0f0",
+          boxShadow: boxShadowOptions.none,
           "&:hover": {
-            boxShadow: boxShadowOptions.buttonHover,
+            boxShadow: boxShadowOptions.none,
+            backgroundColor: "#5B5B5B",
+            color: paletteOptions.primary.contrastText,
+          },
+          "@media(max-width: 600px)": {
+            padding: 0,
           },
         },
       },
@@ -73,10 +98,19 @@ const lightTheme = createTheme({
         {
           props: { variant: "contained", color: "primary" },
           style: {
-            boxShadow: boxShadowOptions.none,
-            lineHeight: "18px",
+            backgroundColor: paletteOptions.primary.main,
             "&:hover": {
-              backgroundColor: paletteOptions.primary.light,
+              backgroundColor: paletteOptions.primary.main,
+            },
+          },
+        },
+        {
+          props: { variant: "contained", color: "info" },
+          style: {
+            backgroundColor: paletteOptions.themeBackground.normal,
+            color: paletteOptions.text.primary,
+            "&:hover": {
+              backgroundColor: paletteOptions.themeBackground.normal,
             },
           },
         },
@@ -129,15 +163,24 @@ const lightTheme = createTheme({
     MuiPopover: {
       styleOverrides: {
         paper: {
-          transition: defaultTransition,
-          borderRadius: "2rem",
-          boxShadow: boxShadowOptions.select,
+          boxShadow: boxShadowOptions.none,
         },
       },
     },
 
     // default body1
     MuiTypography: {
+      defaultProps: {
+        variantMapping: {
+          H1: "h1",
+          H2: "h2",
+          H3: "h3",
+          H4: "h4",
+          Body1: "p",
+          Body2: "p",
+          Body3: "p",
+        },
+      },
       styleOverrides: {
         root: {
           cursor: "default",
@@ -188,8 +231,8 @@ const lightTheme = createTheme({
         root: ({ theme, ownerState }) => ({
           borderRadius: "1rem",
           fontSize: "1.6rem",
-          lineHeight: "2.6rem",
-          padding: "2rem",
+          lineHeight: "normal",
+          padding: "1.2rem 2.5rem",
           width: "100%",
           boxSizing: "border-box",
           color: ownerState.severity && paletteOptions[ownerState.severity].main,

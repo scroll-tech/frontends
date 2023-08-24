@@ -24,7 +24,7 @@ function Homepage() {
   }
 
   return (
-    <div className="App bg-white min-h-[100vh]">
+    <div className="App min-h-[100vh] bg-[#FFF8F3]">
       <Helmet>
         <title>Scroll{route ? " – " + route.name : null}</title>
         <meta name="description" content="Native zkEVM Layer 2 for Ethereum" />

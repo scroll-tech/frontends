@@ -32,8 +32,8 @@ const StatusChip = styled(Chip)(({ theme }) => ({
     color: theme.palette.tagCommitted.main,
   },
   "&.finalized": {
-    backgroundColor: theme.palette.tagSuccess.light,
-    color: theme.palette.tagSuccess.main,
+    backgroundColor: "#DFFCF8",
+    color: "#0F8E7E",
   },
   "&.skipped": {
     backgroundColor: theme.palette.tagCommitted.light,
@@ -51,6 +51,7 @@ const StatusChip = styled(Chip)(({ theme }) => ({
 const LabelTypography = styled(Typography)(({ theme }) => ({
   paddingLeft: "5rem",
   width: "30rem",
+  fontWeight: 500,
   [theme.breakpoints.down("md")]: {
     paddingLeft: "1.6rem",
     width: "25rem",
@@ -141,7 +142,7 @@ const Batch = () => {
                 sx={{
                   width: "100%",
                   border: theme => `1px solid ${theme.palette.border.main}`,
-                  borderRadius: "10px",
+                  borderRadius: "27px",
                   marginTop: "2.2rem",
                 }}
                 aria-label="batch"

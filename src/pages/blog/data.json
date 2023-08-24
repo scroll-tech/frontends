@@ -1,0 +1,124 @@
+[
+  {
+    "type": "Announcement",
+    "id": "scrollsFreshCoat",
+    "date": "2023-08-24",
+    "title": "Announcing Scroll's rebrand.",
+    "posterTitle": "Scroll's Evolution",
+    "summary": "We are excited to finally unveil Scroll's fresh look.",
+    "posterImg": "/imgs/homepage/blog/poster_cover_13.jpg"
+  },
+  {
+    "type": "Announcement",
+    "id": "scrollSepolia",
+    "date": "2023-08-17",
+    "title": "Announcing the Scroll Beta Testnet on Sepolia",
+    "posterTitle": "Scroll Beta on Sepolia",
+    "summary": "We are excited to announce that our Beta testnet is now live on Sepolia.",
+    "posterImg": "/imgs/homepage/blog/poster_cover_12.jpg"
+  },
+  {
+    "type": "Announcement",
+    "id": "contributeToScroll",
+    "date": "2023-07-13",
+    "title": "Announcing the 'Contribute to Scroll' Initiative",
+    "posterTitle": "Contribute to Scroll",
+    "summary": "You can now start contributing to Scroll easily.",
+    "posterImg": "/imgs/homepage/blog/poster_cover_11.jpg"
+  },
+  {
+    "type": "Announcement",
+    "id": "alphaTestnet",
+    "date": "2023-02-27",
+    "title": "Announcing the Scroll Alpha Testnet on Goerli",
+    "posterTitle": "Alpha Testnet on Goerli",
+    "summary": "We are excited to announce that our Alpha testnet is now live on Goerli.",
+    "posterImg": "/imgs/homepage/blog/poster_cover_10.jpg"
+  },
+  {
+    "type": "Announcement",
+    "id": "releaseNote0109",
+    "date": "2023-01-13",
+    "title": "Release Note for 0109 Upgrade",
+    "posterTitle": "Release Note 0109",
+    "summary": "This release note describes the changes introduced in the testnet upgrade on Jan 9.",
+    "posterImg": "/imgs/homepage/blog/poster_cover_9.jpg"
+  },
+  {
+    "type": "Technical",
+    "id": "proofGeneration",
+    "date": "2022-12-14",
+    "title": "The Anatomy of Proof Generation",
+    "posterTitle": "Proof Generation",
+    "summary": "A technical deep dive into the computational costs of proof generation.",
+    "posterImg": "/imgs/homepage/blog/poster_cover_8.jpg"
+  },
+  {
+    "type": "Technical",
+    "id": "kzg",
+    "date": "2022-10-25",
+    "title": "KZG in Practice: Polynomial Commitment Schemes and Their Usage in Scaling Ethereum",
+    "posterTitle": "KZG in Practice",
+    "summary": "An introduction to polynomial commitment schemes and their usage in Scroll and Ethereum.",
+    "posterImg": "/imgs/homepage/blog/poster_cover_7.jpg"
+  },
+  {
+    "type": "Announcement",
+    "id": "upgradingPreAlphaTestnet",
+    "date": "2022-10-09",
+    "title": "Upgrading the Scroll Pre-Alpha Testnet",
+    "posterTitle": "Scroll Pre-Alpha Testnet",
+    "summary": "Our new testnet upgrade enables smart contract deployment on Scroll.",
+    "posterImg": "/imgs/homepage/blog/poster_cover_6.jpg",
+    "canonical": "https://scroll.mirror.xyz/FYzq9QWb2UhS00p-AOFMBh1Oq6SCqLA6L855GAHczOw"
+  },
+  {
+    "type": "Technical",
+    "id": "architecture",
+    "date": "2022-08-01",
+    "title": "Scroll’s Architecture Overview",
+    "posterTitle": "Scroll’s Architecture Overview",
+    "summary": "The architecture overview of our EVM-equivalent zkRollup aiming to scale Ethereum.",
+    "posterImg": "/imgs/homepage/blog/poster_cover_5.jpg",
+    "canonical": "https://scroll.mirror.xyz/nDAbJbSIJdQIWqp9kn8J0MVS4s6pYBwHmK7keidQs-k"
+  },
+  {
+    "type": "General",
+    "id": "technicalPrinciples",
+    "date": "2022-07-21",
+    "title": "Technical Principles",
+    "posterTitle": "Technical Principles",
+    "summary": "To scale Ethereum with our zkRollup, we have designed Scroll based on this set of principles.",
+    "posterImg": "/imgs/homepage/blog/poster_cover_4.jpg",
+    "canonical": "https://scroll.mirror.xyz/N7cAie4ul0PdSxNdv2FTqgMV2JEkhOJocsxfeqe4SFE"
+  },
+  {
+    "type": "General",
+    "id": "preAlphaTestnet",
+    "date": "2022-07-19",
+    "title": "Scroll Pre-Alpha Testnet",
+    "posterTitle": "Scroll Pre-Alpha Testnet",
+    "summary": "After over a year of building our zkEVM in close collaboration with the PSE - the Pre-Alpha!",
+    "posterImg": "/imgs/homepage/blog/poster_cover_3.jpg",
+    "canonical": "https://scroll.mirror.xyz/XQyXDgyxoefag6hcBgGJFz8qrb10rmSU-zUBvY3Q9_A"
+  },
+  {
+    "type": "General",
+    "id": "visionAndValues",
+    "date": "2022-06-13",
+    "title": "Vision and Values",
+    "posterTitle": "Vision and Values",
+    "summary": "The promise of Ethereum is to build a decentralized computing platform widely accessible to all.",
+    "posterImg": "/imgs/homepage/blog/poster_cover_2.jpg",
+    "canonical": "https://scroll.mirror.xyz/EYn7ODhQAnNWABwWcu5xZLts_wEXTZAEWyTgExGS1DA"
+  },
+  {
+    "type": "General",
+    "id": "zkEVM",
+    "date": "2021-09-28",
+    "title": "zkEVM",
+    "posterTitle": "zkEVM",
+    "summary": "We believe zkRollups to be the holy grail: a best-in-class Layer 2 scaling solution for Ethereum.",
+    "posterImg": "/imgs/homepage/blog/poster_cover_1.jpg"
+  }
+]

@@ -1,85 +1,80 @@
 import { useNavigate } from "react-router-dom"
 
-import { Box, Button, Typography } from "@mui/material"
+import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import WebpImage from "@/components/WebpImage"
 
-const ArticleInfo = styled(Box)(
-  ({ theme }) => `
-    max-width: 40rem;
-    &.small {
-      padding: 0 2rem 4rem;
-      ${theme.breakpoints.down("md")} {
-        height: 34rem;
-      };
-  }
-  `,
-)
+const ArticleTitle = styled(Typography)(({ theme }) => ({
+  fontWeight: 700,
+  lineHeight: "2.8rem",
+  display: "table-cell",
+  verticalAlign: "bottom",
+  marginBottom: "0.6rem",
+  [theme.breakpoints.down("md")]: {
+    fontSize: "2rem",
+  },
+}))
 
-const ArticleTitle = styled(Typography)(
-  ({ theme }) => `
-        color: ${theme.palette.text.primary};
-        font-weight: 600;
-        cursor: pointer;
-        line-height: 2.8rem;
-        display: table-cell;
-        vertical-align: bottom;
-        &.small {
-          height: 10rem;
-        }
-        `,
-)
+const Card = styled(Box)(({ theme }) => ({
+  display: "grid",
+  gridTemplateColumns: "1fr 1fr",
+  gap: "3rem",
+  textAlign: "left",
+  margin: "0 auto",
+  overflow: "hidden",
+  cursor: "pointer",
+  color: theme.palette.text.primary,
+  "&:hover *": {
+    color: "#6d6d6d",
+  },
+  [theme.breakpoints.down("md")]: {
+    gridTemplateColumns: "1fr",
+    gap: "2rem",
+  },
+}))
 
-const Card = styled(Box)(
-  ({ theme }) => `
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        max-width: 84rem;
-        text-align: left;
-        margin: 0 auto;
-        overflow: hidden;
-        &.small {
-          max-width: 38rem;
-          flex-direction: column;
-          box-shadow: rgb(0 0 0 / 15%) 5px 5px 3px;
-          border-radius: ${theme.shape.borderRadius}px;
-        }
-    `,
-)
+const ArticleDate = styled(Typography)(({ theme }) => ({
+  marginBottom: "0.5rem",
+  fontSize: "1.4rem",
+  fontWeight: 500,
+  [theme.breakpoints.down("md")]: {
+    marginTop: "1.4rem",
+  },
+}))
 
-const ArticleDate = styled(Typography)(
-  ({ theme }) => `
-  margin-bottom: 0.5rem;
-          `,
-)
+const ArticleSummary = styled(Typography)(({ theme }) => ({
+  marginBottom: "2.2rem",
+  overflow: "hidden",
+  maxWidth: "44rem",
+  textOverflow: "ellipsis",
+  display: "-webkit-box",
+  WebkitLineClamp: 2,
+  WebkitBoxOrient: "vertical",
+  [theme.breakpoints.down("md")]: {
+    display: "none",
+  },
+}))
 
-const ArticleSummary = styled(Typography)(
-  ({ theme }) => `
-    margin-bottom: 2.2rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-            `,
-)
+const ArticleInfo = styled(Box)(({ theme }) => ({
+  [theme.breakpoints.down("md")]: {
+    gridRow: 2,
+  },
+}))
 
-const ArticlePoster = styled(WebpImage)(
-  ({ theme }) => `
-      width: 38rem;
-      height: 23.3rem;
-      cursor: pointer;
-      ${theme.breakpoints.up("lg")} {
-        border-radius: ${theme.shape.borderRadius}px;
-      };
-    `,
-)
+const ArticlePoster = styled(WebpImage)(({ theme }) => ({
+  width: "100%",
+  maxWidth: "51.7rem",
+  height: "auto",
+  borderRadius: "2.5rem",
+  [theme.breakpoints.down("md")]: {
+    gridRow: 1,
+    borderRadius: "1.5rem",
+  },
+}))
 
 const ArticleCard = ({ blog, small = false }) => {
   const navigate = useNavigate()
-
   const handleClick = () => {
     if (blog.externalLink) {
       window.location.href = blog.externalLink
@@ -89,22 +84,15 @@ const ArticleCard = ({ blog, small = false }) => {
   }
 
   return (
-    <Card className={small ? "small" : ""}>
-      <ArticlePoster src={blog.posterImg} webpsrc={blog.posterImg.replace(".jpg", ".webp")} onClick={handleClick}></ArticlePoster>
-      <ArticleInfo className={small ? "small" : ""}>
-        <ArticleTitle className={small ? "small" : ""} onClick={handleClick} variant="subtitle1">
-          {blog.title}
-        </ArticleTitle>
-        <ArticleDate className={small ? "small" : ""} variant="body2" color="textSecondary">
+    <Card onClick={handleClick}>
+      <ArticleInfo>
+        <ArticleTitle variant="H4">{blog.title}</ArticleTitle>
+        <ArticleSummary variant="Body3">{blog.summary}</ArticleSummary>
+        <ArticleDate variant="body2">
           {blog.date} ・ {blog.type}
         </ArticleDate>
-        <ArticleSummary className={small ? "small" : ""} variant="body1" color="textSecondary">
-          {blog.summary}
-        </ArticleSummary>
-        <Button className={small ? "small" : ""} onClick={handleClick} color="secondary">
-          Read More
-        </Button>
       </ArticleInfo>
+      <ArticlePoster src={blog.posterImg}></ArticlePoster>
     </Card>
   )
 }

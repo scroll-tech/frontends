@@ -1,6 +1,7 @@
 import { AbiCoder, ethers } from "ethers"
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react"
+import React, { createContext, useContext, useMemo, useState } from "react"
 import useStorage from "squirrel-gill"
+import { useBlockNumber } from "wagmi"
 
 import { CHAIN_ID, ETH_SYMBOL, WETH_SYMBOL } from "@/constants"
 import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
@@ -62,14 +63,16 @@ export const PriceFeeProvider = ({ children }) => {
   const [gasLimit, setGasLimit] = useState(BigInt(0))
   const [gasPrice, setGasPrice] = useState(BigInt(0))
   const [errorMessage, setErrorMessage] = useState("")
-  const intervalRef = useRef<number | null>(null)
 
-  const fetchData = useCallback(() => {
+  const fetchData = async () => {
     const { provider } = networksAndSigners[CHAIN_ID.L2]
     if (provider) {
       if (chainId === CHAIN_ID.L1) {
-        getGasPrice().then(price => setGasPrice(price))
-        getGasLimit().then(limit => setGasLimit(limit))
+        const price = await getGasPrice()
+        const limit = await getGasLimit()
+        // console.log(price, limit, "gas price/limit")
+        setGasPrice(price)
+        setGasLimit(limit)
       } else {
         //  Currently, the computation required for proof generation is done and subsidized by Scroll.
         setGasLimit(BigInt(0))
@@ -77,19 +80,20 @@ export const PriceFeeProvider = ({ children }) => {
         setErrorMessage("")
       }
     }
-  }, [chainId, networksAndSigners[CHAIN_ID.L2], tokenSymbol])
+  }
 
-  useEffect(() => {
-    fetchData()
-    intervalRef.current = setInterval(() => {
+  useBlockNumber({
+    // enabled: !!(networksAndSigners[CHAIN_ID.L1].signer && networksAndSigners[CHAIN_ID.L2].provider),
+    onBlock(blockNumber) {
       fetchData()
-    }, 60 * 1000) as unknown as number
-    return () => {
-      if (intervalRef.current !== null) {
-        clearInterval(intervalRef.current)
-      }
-    }
-  }, [tokenSymbol, chainId, networksAndSigners[CHAIN_ID.L2]])
+        .then(() => {
+          setErrorMessage("")
+        })
+        .catch(error => {
+          setErrorMessage(error.message)
+        })
+    },
+  })
 
   const l1Token = useMemo(
     () => tokenList.find(item => item.chainId === CHAIN_ID.L1 && item.symbol === tokenSymbol) ?? ({} as any as Token),
@@ -105,12 +109,10 @@ export const PriceFeeProvider = ({ children }) => {
     try {
       const L2GasPriceOracleContract = getContract("GAS_PRICE_ORACLE", networksAndSigners[CHAIN_ID.L1].signer)
       const gasPrice = await L2GasPriceOracleContract.l2BaseFee()
-      setErrorMessage("")
       return gasPrice
     } catch (err) {
-      console.log(err)
-      setErrorMessage("Failed to get gas price")
-      throw new Error(err)
+      // console.log(err)
+      throw new Error("Failed to get gas price")
     }
   }
 
@@ -185,10 +187,8 @@ export const PriceFeeProvider = ({ children }) => {
         to: requireEnv(L2Contracts.SCROLL_MESSENGER.env),
         data: calldata,
       })
-      setErrorMessage("")
       return (BigInt(Math.max(Number(gaslimit), MIN_GASLIMIT[contractName] as unknown as number)) * BigInt(120)) / BigInt(100)
     } catch (error) {
-      setErrorMessage("Failed to get gas limit")
       throw new Error(error)
     }
   }

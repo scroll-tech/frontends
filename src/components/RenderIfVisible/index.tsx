@@ -26,32 +26,36 @@ const RenderIfVisible = ({
 
   // if height of the items are not equal
   // const innerRef = useRef<HTMLDivElement>(null)
-  // const [rootHeight, setRootHeight] = useState<number>(defaultHeight)
-  // useEffect(() => {
-  //   if (innerRef.current) {
-  //     const localRef = innerRef.current
-  //     const resizeObserver = new ResizeObserver(entries => {
-  //       const resizeEntry = entries[0]
+  const [rootHeight, setRootHeight] = useState<number>(defaultHeight)
+  useEffect(() => {
+    if (!defaultHeight) {
+      setRootHeight(0)
+    } else {
+      if (intersectionRef.current) {
+        const localRef = intersectionRef.current
+        const resizeObserver = new ResizeObserver(entries => {
+          const resizeEntry = entries[0]
 
-  //       /* Sets the height of the container if the previous value is the default one or if the current value is greater than its previous value */
-  //       setRootHeight(prev => {
-  //         if ((prev === defaultHeight && resizeEntry?.contentRect.height !== 0) || resizeEntry?.contentRect.height > prev) {
-  //           return resizeEntry?.contentRect.height
-  //         }
-  //         return prev
-  //       })
-  //     })
+          /* Sets the height of the container if the previous value is the default one or if the current value is greater than its previous value */
+          setRootHeight(prev => {
+            if ((prev === defaultHeight && resizeEntry?.contentRect.height !== 0) || resizeEntry?.contentRect.height > prev) {
+              return resizeEntry?.contentRect.height
+            }
+            return prev
+          })
+        })
 
-  //     resizeObserver.observe(localRef)
-  //     return () => {
-  //       if (localRef) {
-  //         resizeObserver.unobserve(localRef)
-  //       }
-  //     }
-  //   }
-  //   return () => {}
-  // }, [innerRef, setRootHeight, defaultHeight])
-  // const rootStyle = useMemo(() => ({ height: `${rootHeight}px` }), [rootHeight])
+        resizeObserver.observe(localRef)
+        return () => {
+          if (localRef) {
+            resizeObserver.unobserve(localRef)
+          }
+        }
+      }
+    }
+  }, [setRootHeight, defaultHeight])
+
+  const rootStyle = useMemo(() => ({ height: rootHeight ? `${rootHeight}px` : "auto" }), [rootHeight])
 
   // Set visibility with intersection observer
   useEffect(() => {
@@ -83,10 +87,10 @@ const RenderIfVisible = ({
   const rootClasses = useMemo(() => `renderIfVisible ${rootElementClass}`, [rootElementClass])
 
   return React.createElement(rootElement, {
-    children: <>{isVisible ? <>{children}</> : null}</>,
+    children: isVisible ? <>{children}</> : null,
     ref: intersectionRef,
     className: rootClasses,
-    style: { height: `${defaultHeight}px` },
+    style: rootStyle,
   })
 }
 

@@ -1,18 +1,17 @@
-import { Link } from "@mui/material"
+import Link from "@/components/Link"
 
 const TextButton = props => {
-  const { onClick, children } = props
+  const { sx, children, ...restProps } = props
   return (
     <Link
       component="button"
       sx={{
-        color: "warning.main",
+        color: "primary.main",
         verticalAlign: "baseline",
-        fontWeight: 600,
+        ...sx,
       }}
-      underline="none"
-      className="hover:underline"
-      onClick={onClick}
+      underline="hover"
+      {...restProps}
     >
       {children}
     </Link>

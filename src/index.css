@@ -11,9 +11,18 @@ iframe,
 embed,
 object {
   display: inline;
-  vertical-align: initial;
+  vertical-align: middle;
 }
 
+@media screen and (max-width: 600px) {
+  html {
+    overflow: hidden;
+  }
+  body {
+    overflow: auto !important;
+    max-height: 100vh;
+  }
+}
 html {
   scroll-padding-top: 140px;
 }
@@ -23,92 +32,43 @@ body {
   /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif; */
-  font-family: "SF UI Text";
+  font-family: "TransSansPremium";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-variant-ligatures: no-contextual;
 }
 
 @font-face {
-  font-family: "Pulp Display";
-  src: url("./assets/fonts/PulpDisplay-Regular.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 400;
-}
-
-@font-face {
-  font-family: "Pulp Display";
-  src: url("./assets/fonts/PulpDisplay-Medium.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 500;
-}
-
-@font-face {
-  font-family: "Pulp Display";
-  src: url("./assets/fonts/PulpDisplay-SemiBold.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 600;
-}
-
-@font-face {
-  font-family: "SF UI Text";
-  src: url("./assets/fonts/SFUIText-Light.ttf") format("truetype");
+  font-family: "TransSansPremium";
+  src: url("./assets/fonts/TransSansPremium-Light.otf") format("truetype");
   font-style: normal;
   font-weight: 300;
 }
 
 @font-face {
-  font-family: "SF UI Text";
-  src: url("./assets/fonts/SFUIText-Regular.ttf") format("truetype");
+  font-family: "TransSansPremium";
+  src: url("./assets/fonts/TransSansPremium-Regular.otf") format("truetype");
   font-style: normal;
   font-weight: 400;
 }
 
 @font-face {
-  font-family: "SF UI Text";
-  src: url("./assets/fonts/SFUIText-Medium.ttf") format("truetype");
+  font-family: "TransSansPremium";
+  src: url("./assets/fonts/TransSansPremium-Medium.otf") format("truetype");
   font-style: normal;
   font-weight: 500;
 }
 
 @font-face {
-  font-family: "SF UI Text";
-  src: url("./assets/fonts/SFUIText-Semibold.ttf") format("truetype");
+  font-family: "TransSansPremium";
+  src: url("./assets/fonts/TransSansPremium-SemiBold.otf") format("truetype");
   font-style: normal;
   font-weight: 600;
 }
 
 @font-face {
-  font-family: "SF UI Text";
-  src: url("./assets/fonts/SFUIText-Bold.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 700;
-}
-
-@font-face {
-  font-family: "Inter";
-  src: url("./assets/fonts/Inter-Regular.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 400;
-}
-
-@font-face {
-  font-family: "Inter";
-  src: url("./assets/fonts/Inter-Medium.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 500;
-}
-
-@font-face {
-  font-family: "Inter";
-  src: url("./assets/fonts/Inter-SemiBold.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 600;
-}
-
-@font-face {
-  font-family: "Inter";
-  src: url("./assets/fonts/Inter-Bold.ttf") format("truetype");
+  font-family: "TransSansPremium";
+  src: url("./assets/fonts/TransSansPremium-Bold.otf") format("truetype");
   font-style: normal;
   font-weight: 700;
 }
@@ -118,7 +78,7 @@ body {
   /* --swiper-pagination-bullet-inactive-color: #595959; */
 
   /* semibold/light never been used  */
-  --onboard-font-family-normal: "SF UI Text", "system-ui", "BlinkMacSystemFont", "Roboto", "Helvetica Neue", "Segoe UI", "Arial", "sans-serif",
+  --onboard-font-family-normal: "TransSansPremium", "system-ui", "BlinkMacSystemFont", "Roboto", "Helvetica Neue", "Segoe UI", "Arial", "sans-serif",
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
   /* need update after customize web3-onboard */
@@ -131,6 +91,10 @@ body {
   --onboard-font-size-5: 1.6rem;
   --onboard-spacing-4: 1.6rem;
   --onboard-spacing-5: 0.8rem;
+}
+
+.App {
+  background: #fff8f3;
 }
 
 onboard-v2 .outer-container icon {
@@ -154,10 +118,12 @@ onboard-v2 .outer-container icon {
   }
 }
 
-.markdown-body {
-  /* height: 100vh; */
-  /* overflow: scroll; */
+div.markdown-body h1,
+div.markdown-body h2,
+div.markdown-body h3 {
+  border-bottom: 0;
 }
+
 .markdown-body ol {
   list-style-type: decimal;
 }
@@ -182,8 +148,7 @@ onboard-v2 .outer-container icon {
 .header-link.active,
 .header-link:hover,
 .header-link:focus {
-  color: #eb7106;
-  background-color: #f8f8f8;
+  font-weight: 500;
 }
 
 .header-link a {

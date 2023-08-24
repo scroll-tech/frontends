@@ -41,6 +41,7 @@ export const toHexadecimal = (value: number): string => {
 }
 
 export const toTokenDisplay = (num, decimals: bigint = BigInt(18), symbol?: string) => {
+  // TODO: should be pure
   if (_.isNil(num) || !decimals) {
     return "-"
   }
@@ -53,6 +54,9 @@ export const toTokenDisplay = (num, decimals: bigint = BigInt(18), symbol?: stri
   }
 
   let formatted = commafy(formatUnits(num, decimals), significantDecimals)
+
+  // Remove trailing zeros after decimal point
+  // formatted = formatted.replace(/(\.\d*?)0+$/, "$1").replace(/\.$/, "")
 
   if (symbol) {
     formatted += ` ${symbol}`

@@ -1,37 +1,30 @@
 import { useEffect, useMemo, useState } from "react"
+import { isMobileOnly } from "react-device-detect"
+import { makeStyles } from "tss-react/mui"
 
-import { Alert, Box, Snackbar } from "@mui/material"
-import { styled } from "@mui/material/styles"
+import { Alert, Box, Link, Snackbar } from "@mui/material"
 
 import { ecosystemListHashUrl } from "@/apis/ecosystem"
-import LoadingButton from "@/components/LoadingButton"
 import LoadingPage from "@/components/LoadingPage"
+import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
 import { DIVERGENT_CATEGORY_MAP } from "@/constants"
 
 import GalleryItem from "./GalleryItem"
 
-const Container = styled("div")(
-  ({ theme }) => `
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  width: max-content;
-  margin: 3rem auto;
-  grid-auto-columns: 1fr;
-  ${theme.breakpoints.down("lg")} {
-    grid-template-columns: repeat(2, 1fr);
-    width: max-content;
-    margin: 2rem auto;
-  };
-  ${theme.breakpoints.down("sm")} {
-    grid-template-columns: 1fr;
-    width: 100%;
-    margin: 2rem auto;
-  };
-`,
-)
+const useStyles = makeStyles()(theme => ({
+  grid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fill, minmax(30rem, 1fr))",
+    width: "100%",
+    padding: "3rem 0",
+    gridGap: "3rem",
+  },
+}))
 
 const Gallery = props => {
   const { selectedCategory } = props
+
+  const { classes } = useStyles()
 
   const [loading, setLoading] = useState(false)
   const [page, setPage] = useState(1)
@@ -53,14 +46,6 @@ const Gallery = props => {
       })
   }, [page])
 
-  // TODO: for test, remove later
-  // const hasMore = true
-  // useEffect(() => {
-  //   if ((ecosystemList.slice(-1)[0] as any)?.isLastOne) {
-  //     setPage(1)
-  //   }
-  // }, [ecosystemList])
-
   const hasMore = useMemo(() => {
     if (!ecosystemList.length) {
       return false
@@ -70,10 +55,10 @@ const Gallery = props => {
   }, [ecosystemList])
 
   const filteredEcosystemList = useMemo(() => {
-    if (selectedCategory === "All") {
+    if (selectedCategory === "All categories") {
       return ecosystemList
     }
-    return ecosystemList.filter((item: any) => item.tags.some(item => DIVERGENT_CATEGORY_MAP[selectedCategory].includes(item)))
+    return ecosystemList.filter((item: any) => item.tags.some(item => DIVERGENT_CATEGORY_MAP[selectedCategory]?.includes(item)))
   }, [ecosystemList, selectedCategory])
 
   const handleClose = () => {
@@ -89,25 +74,42 @@ const Gallery = props => {
         <LoadingPage height="60vh"></LoadingPage>
       ) : (
         <>
-          <Container>
+          <SuccessionToView className={classes.grid} threshold={isMobileOnly ? 0 : 1} animate="show">
             {filteredEcosystemList?.map((item: any) => (
-              <GalleryItem key={item.name} item={item}></GalleryItem>
+              <SuccessionItem key={item.name}>
+                <GalleryItem item={item}></GalleryItem>
+              </SuccessionItem>
             ))}
-            <Snackbar open={!!errorMsg} autoHideDuration={6000} onClose={handleClose}>
-              <Alert severity="error" onClose={handleClose}>
-                {errorMsg}
-              </Alert>
-            </Snackbar>
-          </Container>
+          </SuccessionToView>
           {hasMore && (
-            <Box sx={{ textAlign: "center", mb: ["2rem", "3rem", "5rem"] }}>
-              <LoadingButton sx={{ width: "20rem" }} variant="contained" loading={loading && page > 1} onClick={handleLoadNextPage}>
-                Load More
-              </LoadingButton>
+            <Box sx={{ textAlign: "center", mt: ["2.5rem", "9.5rem"] }}>
+              <Link
+                component="button"
+                sx={{
+                  fontSize: ["1.6rem", "2rem"],
+                  fontWeight: 500,
+                  lineHeight: "normal",
+                  color: "#727272",
+                  textDecorationColor: "#727272",
+                  "&:hover": {
+                    color: "#4F4F4F",
+                    textDecorationColor: "#4F4F4F",
+                  },
+                }}
+                // loading={loading && page > 1}
+                onClick={handleLoadNextPage}
+              >
+                Load more
+              </Link>
             </Box>
           )}
         </>
       )}
+      <Snackbar open={!!errorMsg} autoHideDuration={6000} onClose={handleClose}>
+        <Alert severity="error" onClose={handleClose}>
+          {errorMsg}
+        </Alert>
+      </Snackbar>
     </>
   )
 }
