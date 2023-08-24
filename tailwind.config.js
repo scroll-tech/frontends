@@ -120,8 +120,8 @@ module.exports = {
       },
     },
     fontFamily: {
-      sans: ['"SF UI Text"', ...defaultTheme.fontFamily.sans],
-      display: ['"SF UI Text"', ...defaultTheme.fontFamily.sans],
+      sans: ['"TransSansPremium"', ...defaultTheme.fontFamily.sans],
+      display: ['"TransSansPremium"', ...defaultTheme.fontFamily.sans],
     },
     screens: {
       sm: "600px",

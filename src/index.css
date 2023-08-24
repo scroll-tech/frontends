@@ -32,42 +32,42 @@ body {
   /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif; */
-  font-family: "SF UI Text";
+  font-family: "TransSansPremium";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-variant-ligatures: no-contextual;
 }
 
 @font-face {
-  font-family: "SF UI Text";
+  font-family: "TransSansPremium";
   src: url("./assets/fonts/TransSansPremium-Light.otf") format("truetype");
   font-style: normal;
   font-weight: 300;
 }
 
 @font-face {
-  font-family: "SF UI Text";
+  font-family: "TransSansPremium";
   src: url("./assets/fonts/TransSansPremium-Regular.otf") format("truetype");
   font-style: normal;
   font-weight: 400;
 }
 
 @font-face {
-  font-family: "SF UI Text";
+  font-family: "TransSansPremium";
   src: url("./assets/fonts/TransSansPremium-Medium.otf") format("truetype");
   font-style: normal;
   font-weight: 500;
 }
 
 @font-face {
-  font-family: "SF UI Text";
+  font-family: "TransSansPremium";
   src: url("./assets/fonts/TransSansPremium-SemiBold.otf") format("truetype");
   font-style: normal;
   font-weight: 600;
 }
 
 @font-face {
-  font-family: "SF UI Text";
+  font-family: "TransSansPremium";
   src: url("./assets/fonts/TransSansPremium-Bold.otf") format("truetype");
   font-style: normal;
   font-weight: 700;
@@ -78,7 +78,7 @@ body {
   /* --swiper-pagination-bullet-inactive-color: #595959; */
 
   /* semibold/light never been used  */
-  --onboard-font-family-normal: "SF UI Text", "system-ui", "BlinkMacSystemFont", "Roboto", "Helvetica Neue", "Segoe UI", "Arial", "sans-serif",
+  --onboard-font-family-normal: "TransSansPremium", "system-ui", "BlinkMacSystemFont", "Roboto", "Helvetica Neue", "Segoe UI", "Arial", "sans-serif",
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
   /* need update after customize web3-onboard */

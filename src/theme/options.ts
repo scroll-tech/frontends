@@ -96,7 +96,7 @@ export const paletteOptions = {
 
 export const typographyOptions = {
   fontFamily: [
-    "SF UI Text",
+    "TransSansPremium",
     "system-ui",
     "BlinkMacSystemFont",
     "Roboto",
