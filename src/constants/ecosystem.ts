@@ -17,7 +17,7 @@ export const DIVERGENT_CATEGORY_MAP = {
 
 export const LIST_YOUR_DAPP_LINK = "https://scrollzkp.typeform.com/buildwithscroll"
 
-export const LOOKING_FOR_A_DAPP_LINK = ""
+export const LOOKING_FOR_A_DAPP_LINK = "https://scrollzkp.typeform.com/to/mHYILHJx"
 
 export const LEARN_BUILD_LINK = "https://deploy-preview-10--scroll-documentation.netlify.app/en/docs/getting-started/overview/"
 
