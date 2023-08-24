@@ -4,9 +4,16 @@ import { makeStyles } from "tss-react/mui"
 
 import { Avatar, Paper, Stack, Typography } from "@mui/material"
 
-const PARTNER_LIST = ["NEST Protocol", "LI.FI", "QuestN", "Owlto Finance", "JOJO Exchange", "Carrot"]
+const PARTNER_LIST = [
+  "story-partener-1.svg",
+  "story-partener-2.svg",
+  "story-partener-3.svg",
+  "story-partener-4.svg",
+  "story-partener-5.png",
+  "story-partener-6.svg",
+]
 
-const PARTNER_LOGO_PUBLIC_URL = "https://scroll-eco-list.netlify.app/logos/"
+const PARTNER_LOGO_PUBLIC_URL = "/imgs/story/"
 
 const useStyles = makeStyles()(theme => ({
   cooperation: {
@@ -20,6 +27,7 @@ const useStyles = makeStyles()(theme => ({
     },
   },
   logo: {
+    backgroundColor: theme.palette.background.default,
     width: "6rem",
     height: "6rem",
     [theme.breakpoints.up("sm")]: {
@@ -115,7 +123,7 @@ const Cooperation = () => {
       {isMobileOnly ? (
         <Stack direction="row" justifyContent="space-between" sx={{ mt: "5.4rem" }}>
           {PARTNER_LIST.slice(0, 5).map(item => (
-            <Avatar className={classes.logo} key={item} src={`${PARTNER_LOGO_PUBLIC_URL}${item}.png`}></Avatar>
+            <Avatar className={classes.logo} key={item} src={`${PARTNER_LOGO_PUBLIC_URL}${item}`}></Avatar>
           ))}
         </Stack>
       ) : (
@@ -130,7 +138,7 @@ const Cooperation = () => {
               viewport={{ once: true, amount: "all" }}
               transition={{ ease: [0.16, 1, 0.3, 1], duration: 1.2 }}
             >
-              <Avatar className={classes.logo} key={item} src={`${PARTNER_LOGO_PUBLIC_URL}${item}.png`}></Avatar>
+              <Avatar className={classes.logo} key={item} src={`${PARTNER_LOGO_PUBLIC_URL}${item}`}></Avatar>
             </motion.div>
           ))}
         </>

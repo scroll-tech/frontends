@@ -4,12 +4,13 @@ import { ReactComponent as ScrollLogoLightIcon } from "@/assets/svgs/refactor/sc
 import { ReactComponent as ScrollLogoIcon } from "@/assets/svgs/refactor/scroll-logo.svg"
 
 const ScrollLogo = props => {
-  const { light } = props
+  const { light, ...restProps } = props
   return (
     <SvgIcon
       sx={{ fontSize: "8rem", height: "auto", verticalAlign: "middle" }}
       component={light ? ScrollLogoLightIcon : ScrollLogoIcon}
       inheritViewBox
+      {...restProps}
     ></SvgIcon>
   )
 }

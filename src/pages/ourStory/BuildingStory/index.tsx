@@ -9,32 +9,50 @@ import StoryCard from "./StoryCard"
 
 const STORIES = [
   {
-    cover: "imgs/story/story-blog-cover.png",
-    title: "Our philosophy on zk...",
+    cover: "imgs/story/story-blog-cover-1.png",
+    title: "What it means to build in the open on the Zero Knowledge podcast",
+    imageTitle: (
+      <>
+        Building in<br></br> the Open
+      </>
+    ),
     content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dictum auctor sem et malesuada. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dictum auctor sem et malesuada. consectetur adipiscing elit. Donec dictum auctor sem et malesuada",
+      "Scroll co-founders Ye Zhang and Sandy Peng talk with Anna Rose about progress made over the past year and what it really means for Scroll to build in the open.",
+    href: "https://zeroknowledge.fm/275-2/",
   },
   {
-    title: "Podcast title here",
-    content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dictum auctor sem et malesuada.",
-  },
-  {
-    title: "News article here",
-    content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dictum auctor sem et malesuada.",
-  },
-  {
-    title: "KOL blog here",
-    content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dictum auctor sem et malesuada.",
-  },
-  {
-    title: "Founder blog here",
-    content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dictum auctor sem et malesuada.",
-  },
-  {
-    cover: "imgs/story/story-blog-cover.png",
-    title: "We <3 our devs...",
+    title: "Where Scroll Stands in the Ethereum Scaling Race",
     content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dictum auctor sem et malesuada. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dictum auctor sem et malesuada.",
+      "Scroll co-founder Sandy Peng is interviewed by the CoinDesk team about why “slow and steady” is the best way to build deliberately in web3.",
+    href: "https://www.coindesk.com/video/scroll-co-founder-on-ethereum-scaling-race/",
+  },
+  {
+    title: "Diving Deep Into ZK With Scroll’s Co-Founders",
+    content:
+      "Scroll’s co-founders explore how zk tech will scale Ethereum, the power of validity proofs, and Scroll’s technical advantages on the Empire podcast.",
+    href: "https://blockworks.co/podcast/empire/dc33c4f8-da5f-11ec-a5ac-27c2459d4600",
+  },
+  {
+    title: "zkEVMs in 2023 and Why Deploy on Scroll",
+    content: "Hear Scroll partnership lead Lea Scmitt recap what 2023 has meant for the realm of zkEVMs and why you should deploy on Scroll.",
+    href: "https://www.youtube.com/watch?v=maddK7ch0v0",
+  },
+  {
+    title: "Get Introduced to zkRollups and zkEVMs",
+    content:
+      "Scroll co-founder Haichen gives an overview of the scalability problem on Ethereum, what zkRolllups and zkEVMs are, how they work, and why they are necessary.",
+    href: "https://www.youtube.com/watch?v=JdjRcW13LME",
+  },
+  {
+    cover: "imgs/story/story-blog-cover-2.png",
+    imageTitle: (
+      <>
+        Building Blocks <br></br>of Scroll
+      </>
+    ),
+    title: "Architecture, Decentralization, and Scroll’s Community-Oriented Mindset",
+    content: "Hear Scroll co-founder Ye Zhang chat about Scroll’s infra, performance, and developer experience on the HODLong 后浪 podcast.",
+    href: "https://hodlong-hou-lang.simplecast.com/episodes/ep24-en-scroll-loZKiYu5",
   },
 ]
 
