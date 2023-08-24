@@ -32,7 +32,7 @@ const PRINCIPLES = [
       </>
     ),
     mobileTitle: "Ethereum equivalence, byte by byte",
-    content: "Seamless migration with EVM-equivalence, eliminating code changes and disruptions for users and developers.",
+    content: "Scroll permits seamless migration with EVM-equivalence, eliminating code changes and disruptions for users and developers.",
   },
   null,
   null,
@@ -46,7 +46,7 @@ const PRINCIPLES = [
       </>
     ),
     mobileTitle: "Proof of a powerful new way to scale",
-    content: "Scroll utilizes a novel hierarchical zero-knowledge proof system, enabling secure and scalable operations with fast finality.",
+    content: "Scroll utilizes a novel hierarchical zero knowledge proof system, enabling secure and scalable operations with fast finality.",
   },
   {
     icon: DecentralisationSvg,

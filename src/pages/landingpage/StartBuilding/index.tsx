@@ -43,7 +43,7 @@ const StartBuilding = () => {
   return (
     <Container>
       <FadeInUp>
-        <Title>Scroll into the Future of Ethereum</Title>
+        <Title>Scroll into the future of Ethereum</Title>
         <ButtonContainer>
           <Button href="/bridge" color="primary">
             Bridge into Scroll

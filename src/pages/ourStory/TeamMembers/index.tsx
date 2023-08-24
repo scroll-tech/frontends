@@ -14,17 +14,17 @@ const CORE_MEMBERS = [
   {
     avatar: SandyAvatar,
     name: "Sandy",
-    desc: "Founder in Hong Kong",
+    desc: "Co-founder in Hong Kong",
   },
   {
     avatar: YeAvatar,
     name: "Ye",
-    desc: "Founder in Beijing",
+    desc: "Co-founder in Beijing",
   },
   {
     avatar: HaichenAvatar,
     name: "Haichen",
-    desc: "Founder in San Francisco",
+    desc: "Co-founder in San Francisco",
   },
   {
     avatar: BackupAvatar,
@@ -91,7 +91,7 @@ const TeamMembers = () => {
     <SectionWrapper sx={{ pt: ["11rem", "26rem"] }}>
       <SectionHeader
         title="Our team"
-        content="The Scroll team is a tight-knit group of cryptography researchers, engineers, experts, and community champions. We're a global remote team that values autonomy and high performance through kindness, direct communication, and empathy."
+        content="The Scroll team is a tight-knit group of cryptography researchers, engineers, experts, and community champions. We're a global, remote team that values autonomy and high performance through kindness, direct communication, and empathy."
       ></SectionHeader>
       <SuccessionToView className={classes.grid}>
         {CORE_MEMBERS.map(item => (

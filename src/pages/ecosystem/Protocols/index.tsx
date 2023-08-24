@@ -26,7 +26,7 @@ const Protocals = props => {
         content="Whatever the use case, we’re building for what’s next. Browse all protocols and discover new inspiration."
         action={
           <Button href={LOOKING_FOR_A_DAPP_LINK} target="_blank" color="primary" width={isMobileOnly ? "19.4rem" : "25rem"}>
-            Request a Dapp
+            Request a dApp
           </Button>
         }
       ></SectionHeader>

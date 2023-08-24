@@ -32,7 +32,7 @@ const Team = () => {
       <PageHeader
         title="Join Scroll and work with the best"
         subTitle="Scroll is a globally distributed team. We are united in our goal to improve Ethereum while maintaining decentralization and transparency.
-          Join our team to work with experts in zero-knowledge cryptography and distributed systems on cutting edge technology."
+          Join our team to work with experts in zero knowledge cryptography and distributed systems on cutting edge technology."
       >
         <Button variant="contained" onClick={() => navigate("/join-us")} sx={{ margin: "3rem auto 6rem" }}>
           View Open Positions

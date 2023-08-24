@@ -30,7 +30,7 @@ A polynomial commitment scheme is a [commitment scheme](https://en.wikipedia.org
 
 Now, with _polynomial_ commitment schemes, the committer commits to a _polynomial_ $\phi$, rather than some arbitrary message $m$. Polynomial commitment schemes satisfy the above-mentioned properties of normal commitment schemes, _and also achieve an additional property_: the committer should be able to “open” certain evaluations of the committed polynomial without revealing the entire thing. For example, the committer should be able to prove that $\phi(a)=b$ without revealing exactly what $\phi(x)$ is.
 
-This is a really awesome property that is extremely useful for zero-knowledge applications! We can use it to prove that we have some polynomial which satisfies certain properties (in this case, that it passes through a certain point $(a,b)$), all _without revealing what the polynomial is_!
+This is a really awesome property that is extremely useful for zero knowledge applications! We can use it to prove that we have some polynomial which satisfies certain properties (in this case, that it passes through a certain point $(a,b)$), all _without revealing what the polynomial is_!
 
 Another reason why this property is useful is that the commitment $c$ is generally much smaller than the polynomial it represents. We’ll see a commitment scheme where a polynomial of arbitrarily large degree can be represented by its commitment as a single group element. This is especially desirable when thinking about posting data on-chain, where block space is a valuable asset, and any sort of compression can be immediately translated into cost savings.
 

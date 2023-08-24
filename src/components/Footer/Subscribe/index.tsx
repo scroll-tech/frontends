@@ -57,7 +57,7 @@ const Subscribe = () => {
       <SubscribeBox>
         <SvgIcon sx={{ fontSize: ["4.8rem", "7rem"] }} component={SubscribeIcon} inheritViewBox></SvgIcon>
         <Stack direction="column" flex={1}>
-          <Typography sx={{ fontSize: ["2rem", "2.4rem"], fontWeight: 600 }}>Stay up-to-date on the latest Scroll Developer news</Typography>
+          <Typography sx={{ fontSize: ["2rem", "2.4rem"], fontWeight: 600 }}>Stay up-to-date on the latest Scroll developer news</Typography>
         </Stack>
         <MailchimpSubscribe
           url={url}

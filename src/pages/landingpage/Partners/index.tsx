@@ -139,7 +139,7 @@ const Partners = () => {
         <FadeInUp>
           <SectionHeader
             sx={{ mb: "10rem" }}
-            title="Build with the Best in Web3"
+            title="Build with the best in web3"
             content="We’re part of an ecosystem with a greater purpose – permissionless, flexible, and dedicated to improving the future of Ethereum."
             action={
               <Button href="/ecosystem" color="primary">

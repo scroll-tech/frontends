@@ -5,10 +5,6 @@ import { ReactComponent as YoutubeIcon } from "@/assets/svgs/footer/youtube.svg"
 
 export const aboutList = [
   {
-    name: "Team",
-    to: "/team",
-  },
-  {
     name: "Join Us",
     to: "/join-us",
   },
