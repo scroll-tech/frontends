@@ -9,6 +9,15 @@ import Logo_5 from "@/assets/images/homepage/home/partner_logo_5.svg"
 import Logo_6 from "@/assets/images/homepage/home/partner_logo_6.svg"
 import Logo_7 from "@/assets/images/homepage/home/partner_logo_7.svg"
 import Logo_8 from "@/assets/images/homepage/home/partner_logo_8.svg"
+import Logo_9 from "@/assets/images/homepage/home/partner_logo_9.svg"
+import Logo_10 from "@/assets/images/homepage/home/partner_logo_10.svg"
+import Logo_11 from "@/assets/images/homepage/home/partner_logo_11.svg"
+import Logo_12 from "@/assets/images/homepage/home/partner_logo_12.svg"
+import Logo_13 from "@/assets/images/homepage/home/partner_logo_13.svg"
+import Logo_14 from "@/assets/images/homepage/home/partner_logo_14.svg"
+import Logo_15 from "@/assets/images/homepage/home/partner_logo_15.svg"
+import Logo_16 from "@/assets/images/homepage/home/partner_logo_16.svg"
+import Logo_17 from "@/assets/images/homepage/home/partner_logo_17.svg"
 import { FadeInUp } from "@/components/Animation"
 import Button from "@/components/Button"
 import SectionHeader from "@/components/SectionHeader"
@@ -62,10 +71,55 @@ const PARTNER_LIST = [
     logo: Logo_8,
     alt: "Logo",
   },
+  {
+    id: 9,
+    logo: Logo_9,
+    alt: "Logo",
+  },
+  {
+    id: 10,
+    logo: Logo_10,
+    alt: "Logo",
+  },
+  {
+    id: 11,
+    logo: Logo_11,
+    alt: "Logo",
+  },
+  {
+    id: 12,
+    logo: Logo_12,
+    alt: "Logo",
+  },
+  {
+    id: 13,
+    logo: Logo_13,
+    alt: "Logo",
+  },
+  {
+    id: 14,
+    logo: Logo_14,
+    alt: "Logo",
+  },
+  {
+    id: 15,
+    logo: Logo_15,
+    alt: "Logo",
+  },
+  {
+    id: 16,
+    logo: Logo_16,
+    alt: "Logo",
+  },
+  {
+    id: 17,
+    logo: Logo_17,
+    alt: "Logo",
+  },
 ]
 
-const MarqueeLeft: Partner[] = [].concat(...Array(4).fill(PARTNER_LIST))
-const MarqueeRight: Partner[] = [].concat(...Array(4).fill(PARTNER_LIST)).reverse()
+const MarqueeLeft: Partner[] = [].concat(...Array(2).fill(PARTNER_LIST))
+const MarqueeRight: Partner[] = [].concat(...Array(2).fill(PARTNER_LIST)).reverse()
 
 const PartnersContainer = styled(Box)(({ theme }) => ({}))
 
