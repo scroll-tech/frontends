@@ -98,7 +98,6 @@ const Select = props => {
         MenuListProps: { classes: { root: classes.menuList } },
       }}
       renderValue={selected => {
-        console.log(selected, "selected")
         return (
           <Stack direction="row" alignItems="center" spacing={1.5}>
             <SvgIcon sx={{ fontSize: "2rem" }} component={WidgetsIcon} inheritViewBox></SvgIcon>
