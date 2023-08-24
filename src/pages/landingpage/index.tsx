@@ -15,11 +15,11 @@ const Container = styled(Box)(({ theme }) => ({
 const StyledBox = styled(Box)(({ theme }) => ({
   height: "37rem",
   width: "100%",
-  background: "url(/imgs/home/section_1_bg.png) center / cover no-repeat",
+  background: "url(/imgs/home/section_1_bg.svg) center / cover no-repeat",
   borderRadius: "4rem 4rem 0 0",
   [theme.breakpoints.down("md")]: {
     height: "50.8rem",
-    background: "url(/imgs/home/section_1_bg_mobile.png) center / cover no-repeat",
+    background: "url(/imgs/home/section_1_bg_mobile.svg) center / cover no-repeat",
   },
 }))
 

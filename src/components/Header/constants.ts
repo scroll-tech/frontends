@@ -15,15 +15,15 @@ const navigations = [
         label: "develop1",
         children: [
           {
+            label: "Testnet",
+            key: "testnet",
+            href: "/portal",
+          },
+          {
             label: "Docs",
             key: "docs",
             href: "https://docs.scroll.io/en/home/",
             isExternal: true,
-          },
-          {
-            label: "Testnet",
-            key: "testnet",
-            href: "/portal",
           },
           {
             label: "Status",
@@ -76,6 +76,11 @@ const navigations = [
             href: "/ecosystem",
           },
           {
+            label: "Blog",
+            key: "blog",
+            href: "/blog",
+          },
+          {
             label: "User Guide",
             key: "userGuide",
             href: "https://docs.scroll.io/en/user-guide/",
@@ -88,14 +93,10 @@ const navigations = [
             isExternal: true,
           },
           {
-            label: "Blog",
-            key: "blog",
-            href: "/blog",
-          },
-          {
             label: "Join Us ",
             key: "join our team",
-            href: "/join-us",
+            href: "https://jobs.lever.co/ScrollFoundation",
+            isExternal: true,
           },
         ],
       },
