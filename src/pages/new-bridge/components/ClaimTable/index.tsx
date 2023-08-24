@@ -68,7 +68,7 @@ const useStyles = makeStyles()(theme => {
       },
     },
     tableBody: {
-      height: "18.3rem",
+      minHeight: "18.3rem",
       ".MuiTableCell-root": {
         verticalAlign: "top",
         padding: "2rem 0.8rem",
