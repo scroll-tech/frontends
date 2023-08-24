@@ -38,7 +38,7 @@ export const paletteOptions = {
     disabled: "rgba(51, 51, 51, 0.3)",
     disabledBackground: "rgba(51, 51, 51, 0.1)",
   },
-  divider: "#C9CBCE",
+  divider: "#101010",
   background: {
     default: "#FFF",
     paper: "#FFF",
