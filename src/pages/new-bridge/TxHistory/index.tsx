@@ -8,7 +8,10 @@ import useTxStore from "@/stores/txStore"
 import TxTable from "../components/TxTable"
 
 const TableBox = styled(Box)(({ theme }) => ({
-  // backgroundColor: theme.palette.themeBackground.optionHightlight,
+  minHeight: "20rem",
+  borderRadius: "40px",
+  backgroundColor: theme.palette.themeBackground.optionHightlight,
+  width: "100%",
 }))
 
 const TransactionsList = (props: any) => {
@@ -34,7 +37,7 @@ const TransactionsList = (props: any) => {
           }}
         />
       ) : (
-        <Typography variant="body1" color="textSecondary" sx={{ width: "40rem" }}>
+        <Typography variant="body1" color="textSecondary" sx={{ padding: "2rem" }}>
           Your transactions will appear here...
         </Typography>
       )}
