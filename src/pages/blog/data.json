@@ -1,6 +1,15 @@
 [
   {
     "type": "Announcement",
+    "id": "scrollSepolia",
+    "date": "2023-08-17",
+    "title": "Announcing the Scroll Beta Testnet on Sepolia",
+    "posterTitle": "Scroll Beta on Sepolia",
+    "summary": "We are excited to announce that our Beta testnet is now live on Sepolia.",
+    "posterImg": "/imgs/homepage/blog/poster_cover_12.jpg"
+  },
+  {
+    "type": "Announcement",
     "id": "contributeToScroll",
     "date": "2023-07-13",
     "title": "Announcing the 'Contribute to Scroll' Initiative",
