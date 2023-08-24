@@ -1,6 +1,15 @@
 [
   {
     "type": "Announcement",
+    "id": "scrollsFreshCoat",
+    "date": "2023-08-24",
+    "title": "Announcing Scroll's rebrand.",
+    "posterTitle": "Scroll's Evolution",
+    "summary": "We are excited to finally unveil Scroll's fresh look.",
+    "posterImg": "/imgs/homepage/blog/poster_cover_13.jpg"
+  },
+  {
+    "type": "Announcement",
     "id": "scrollSepolia",
     "date": "2023-08-17",
     "title": "Announcing the Scroll Beta Testnet on Sepolia",
