@@ -1,6 +1,6 @@
 ## Scroll’s Fresh Coat: A Community Touch
 
-#### Discover our updated website and developer portal, shaped by collective insights and collaboration
+#### Discover our updated website and documentation, shaped by collective insights and collaboration
 Scrollers, we're thrilled to unveil our fresh new look! But first, let's delve into why this transformation is happening. 
 
 Scroll was born from a small collective of dedicated contributors, united by the vision of scaling Ethereum for the billions of people who have yet to onboard and fostering an exceptional developer experience. Fast-forward three years, and we've evolved into a global, decentralized movement with hundreds of thousands of people tracking our journey. 
