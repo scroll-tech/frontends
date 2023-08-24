@@ -19,11 +19,6 @@ const useStyles = makeStyles<any>()((theme, { size }) => ({
     left: "50%",
     transform: "translate(-50%, -50%)",
   },
-  img: {
-    position: "relative",
-    top: "4px",
-    height: "auto",
-  },
 }))
 
 const InlineAvater = props => {
@@ -31,7 +26,7 @@ const InlineAvater = props => {
   const { classes } = useStyles({ size })
   return (
     <Box className={classes.placeholder}>
-      <Avatar classes={{ root: classes.avatar, img: classes.img }} {...restProps}></Avatar>
+      <Avatar classes={{ root: classes.avatar }} {...restProps}></Avatar>
     </Box>
   )
 }
