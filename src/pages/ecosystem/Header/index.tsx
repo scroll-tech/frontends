@@ -65,7 +65,10 @@ const Header = () => {
           sx={{
             borderRadius: "4rem 4rem 0 0",
             height: ["50.8rem", "37rem"],
-            background: "no-repeat bottom center url(/imgs/ecosystem/ecosystem-bg.png)",
+            background: [
+              "url(/imgs/ecosystem/ecosystem-bg-mobile.svg) center / cover no-repeat",
+              "url(/imgs/ecosystem/ecosystem-bg.svg) center / cover no-repeat",
+            ],
             backgroundSize: "cover",
           }}
         ></Box>

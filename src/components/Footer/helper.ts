@@ -6,7 +6,7 @@ import { ReactComponent as YoutubeIcon } from "@/assets/svgs/footer/youtube.svg"
 export const aboutList = [
   {
     name: "Join Us",
-    to: "/join-us",
+    href: "https://jobs.lever.co/ScrollFoundation",
   },
   {
     name: "Health Status",
