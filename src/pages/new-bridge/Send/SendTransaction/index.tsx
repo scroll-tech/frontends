@@ -182,7 +182,19 @@ const SendTransaction = props => {
         onChangeToken={handleChangeTokenSymbol}
       ></BalanceInput>
       <DetailRow title="Fees" sx={{ my: "0.8rem" }} tooltip={<FeeDetails />} value={displayedFee} large />
-      <Typography sx={{ fontSize: "1.4rem", fontWeight: 500, width: ["100%", "32.4rem"], textAlign: "center", margin: "0 auto" }} color="primary">
+      <Typography
+        sx={{
+          fontSize: "1.4rem",
+          fontWeight: 500,
+          width: ["calc(100% + 1rem)", "32.4rem"],
+          textAlign: "center",
+          margin: "0 auto",
+          "@media (max-width: 600px)": {
+            marginLeft: "-0.5rem",
+          },
+        }}
+        color="primary"
+      >
         {bridgeWarning}
       </Typography>
       <Box sx={{ flex: 1, display: "flex", alignItems: "flex-end", width: "100%", justifyContent: "center" }}>

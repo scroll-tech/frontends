@@ -32,8 +32,10 @@ const Bridge = () => {
             alignItems: ["flex-start", "center"],
           }}
         >
-          <Stack direction="row" sx={{ width: "100%" }} justifyContent="space-between" alignItems="center">
-            <Typography sx={{ fontSize: ["4rem", "4.8rem"], fontWeight: 600, textAlign: "center", width: "100%" }}>Bridge into Scroll</Typography>
+          <Stack direction="row" sx={{ width: "100%" }} spacing="4px" justifyContent="space-between" alignItems="center">
+            <Typography sx={{ fontSize: ["4rem", "4.8rem"], fontWeight: 600, textAlign: "center", width: "100%", whiteSpace: "nowrap" }}>
+              Bridge into Scroll
+            </Typography>
             {isMobileOnly && <NetworkIndicator></NetworkIndicator>}
           </Stack>
           <ConnectorAndHistory sx={{ mt: "4rem", mb: ["2rem", "3rem"], width: ["100%", "51.6rem"] }}></ConnectorAndHistory>
