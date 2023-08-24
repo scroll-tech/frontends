@@ -4,6 +4,7 @@ import Countdown from "react-countdown"
 import { makeStyles } from "tss-react/mui"
 
 import {
+  Box,
   CircularProgress,
   LinearProgress,
   Pagination,
@@ -32,9 +33,8 @@ import ClaimButton from "./ClaimButton"
 const useStyles = makeStyles()(theme => {
   return {
     tableContainer: {
-      whiteSpace: "nowrap",
       [theme.breakpoints.down("sm")]: {
-        paddingBottom: "1.6rem",
+        width: "100%",
         overflowX: "scroll",
       },
     },
@@ -42,6 +42,9 @@ const useStyles = makeStyles()(theme => {
       boxShadow: "unset",
       backgroundColor: theme.palette.themeBackground.optionHightlight,
       borderRadius: 0,
+      [theme.breakpoints.down("sm")]: {
+        minWidth: "50rem",
+      },
     },
     tableTitle: {
       marginTop: "2.8rem",
@@ -106,12 +109,12 @@ const TxTable = (props: any) => {
   }
 
   return (
-    <>
+    <Box className={classes.tableContainer}>
       <TableContainer component={Paper} className={classes.tableWrapper}>
         <Table aria-label="Tx Table">
           <TableHead className={classes.tableHeader}>
             <TableRow>
-              <TableCell align="left">Claim</TableCell>
+              <TableCell align="center">Claim</TableCell>
               <TableCell>Amount</TableCell>
               <TableCell>Transaction Hash</TableCell>
               <TableCell>Status</TableCell>
@@ -143,7 +146,7 @@ const TxTable = (props: any) => {
           />
         </div>
       )}
-    </>
+    </Box>
   )
 }
 
@@ -151,7 +154,7 @@ const TxRow = props => {
   const { tx, finalizedIndex } = props
   const { estimatedTimeMap } = useTxStore()
 
-  const { loading: tokenInfoLoading, tokenInfo } = useTokenInfo(tx.l1Token, true)
+  const { loading: tokenInfoLoading, tokenInfo } = useTokenInfo(tx.symbolToken, true)
 
   const txAmount = amount => {
     return toTokenDisplay(amount, tokenInfo?.decimals ? BigInt(tokenInfo.decimals) : undefined)
@@ -212,7 +215,7 @@ const TxRow = props => {
     return null
   }
 
-  const renderCountDown = ({ total, hours, minutes, seconds, completed }) => {
+  const renderCountDown = ({ minutes, seconds, completed }) => {
     if (completed) {
       return <LinearProgress />
     }

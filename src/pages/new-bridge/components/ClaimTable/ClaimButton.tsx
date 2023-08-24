@@ -146,9 +146,29 @@ const ClaimButton = props => {
 
   if (txStatus === ClaimStatus.FAILED) {
     return (
-      <StyledButton className="claimed" color="primary">
-        Failed
-      </StyledButton>
+      <Tooltip placement="top" title={tx.errMsg || tx.assumedStatus}>
+        <StyledButton className="claimed" color="primary">
+          Failed{" "}
+          <svg style={{ marginLeft: "4px" }} xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M7 12.75C10.175 12.75 12.75 10.175 12.75 7C12.75 3.825 10.175 1.25 7 1.25C3.825 1.25 1.25 3.825 1.25 7C1.25 10.175 3.825 12.75 7 12.75ZM7 14C10.865 14 14 10.865 14 7C14 3.135 10.865 0 7 0C3.135 0 0 3.135 0 7C0 10.865 3.135 14 7 14Z"
+              fill="currentColor"
+            />
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M7 5.56C7.345 5.56 7.625 5.84 7.625 6.185V10.185C7.625 10.53 7.345 10.81 7 10.81C6.655 10.81 6.375 10.53 6.375 10.185V6.185C6.375 5.84 6.655 5.56 7 5.56Z"
+              fill="currentColor"
+            />
+            <path
+              d="M7 4.435C7.34518 4.435 7.625 4.15518 7.625 3.81C7.625 3.46482 7.34518 3.185 7 3.185C6.65482 3.185 6.375 3.46482 6.375 3.81C6.375 4.15518 6.65482 4.435 7 4.435Z"
+              fill="currentColor"
+            />
+          </svg>
+        </StyledButton>
+      </Tooltip>
     )
   } else if (txStatus === ClaimStatus.CLAIMED) {
     return (
