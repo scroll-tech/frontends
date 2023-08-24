@@ -1,7 +1,6 @@
-import { isMobileOnly } from "react-device-detect"
 import { makeStyles } from "tss-react/mui"
 
-import { Box, Card, CardContent, CardMedia, Stack, SvgIcon, Typography } from "@mui/material"
+import { Box, Card, CardContent, CardMedia, SvgIcon, Typography } from "@mui/material"
 
 import { ReactComponent as ExternaLinkIcon } from "@/assets/svgs/refactor/external-link.svg"
 import Link from "@/components/Link"
@@ -20,33 +19,36 @@ const useStyles = makeStyles<any>()((theme, { cover }) => ({
   cardMediaWrapper: {
     position: "relative",
   },
-  cardMediaMark: {
+
+  cardMediaTitle: {
     position: "absolute",
     top: "2.4rem",
     left: "3rem",
-    [theme.breakpoints.down("sm")]: {
-      top: "1.6rem",
-      left: "2rem",
-    },
-  },
-  cardMediaTitle: {
     color: theme.palette.primary.contrastText,
     fontWeight: 600,
     fontSize: "5rem",
     lineHeight: 1,
     [theme.breakpoints.down("sm")]: {
       fontSize: "3.2rem",
+      top: "1.6rem",
+      left: "2rem",
     },
   },
   cardMediaLogo: {
+    position: "absolute",
+    bottom: "2.4rem",
+    left: "3rem",
     width: "10rem",
     [theme.breakpoints.down("sm")]: {
       width: "7rem",
+      bottom: "1.6rem",
+      left: "2rem",
     },
   },
   cardMedia: {
     borderRadius: "2.5rem",
     backgroundColor: theme.palette.text.primary,
+    position: "relative",
   },
   cardContent: {
     height: cover ? "calc(100% - 23rem)" : "100%",
@@ -109,10 +111,8 @@ const StoryCard = props => {
         {cover && (
           <Box className={classes.cardMediaWrapper}>
             <CardMedia sx={{ height: ["13rem", "23rem"] }} classes={{ root: classes.cardMedia }} image={cover} />
-            <Stack direction="column" className={classes.cardMediaMark} spacing={isMobileOnly ? "1rem" : "2rem"}>
-              <Typography className={classes.cardMediaTitle}>{imageTitle}</Typography>
-              <ScrollLogo light className={classes.cardMediaLogo}></ScrollLogo>
-            </Stack>
+            <Typography className={classes.cardMediaTitle}>{imageTitle}</Typography>
+            <ScrollLogo light className={classes.cardMediaLogo}></ScrollLogo>
           </Box>
         )}
 

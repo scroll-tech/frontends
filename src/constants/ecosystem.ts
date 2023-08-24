@@ -19,7 +19,7 @@ export const LIST_YOUR_DAPP_LINK = "https://scrollzkp.typeform.com/buildwithscro
 
 export const LOOKING_FOR_A_DAPP_LINK = "https://scrollzkp.typeform.com/to/mHYILHJx"
 
-export const LEARN_BUILD_LINK = "https://deploy-preview-10--scroll-documentation.netlify.app/en/docs/getting-started/overview/"
+export const LEARN_BUILD_LINK = "https://docs.scroll.xyz/en/getting-started/overview/"
 
 export const ECOSYSTEM_EXPLORER_LIST = [
   {
