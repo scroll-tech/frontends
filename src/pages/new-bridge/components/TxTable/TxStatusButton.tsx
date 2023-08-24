@@ -151,8 +151,7 @@ const TxStatus = props => {
 
   //withdraw step2
   if (!tx.isL1 && fromStatus === TX_STATUS.success) {
-    // withdraw not  claimable
-    console.log("txxx", tx?.claimInfo?.batch_index, finalizedIndex)
+    // withdraw claimable
     if (+tx?.claimInfo?.batch_index && tx?.claimInfo?.batch_index <= finalizedIndex) {
       return (
         <button onClick={moveToClaim} className={cx(classes.chip, classes.pendingChip)}>
@@ -161,6 +160,7 @@ const TxStatus = props => {
       )
     }
 
+    // withdraw not claimable
     return (
       <Tooltip
         placement="top"

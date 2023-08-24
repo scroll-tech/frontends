@@ -71,7 +71,6 @@ const ClaimButton = props => {
         .then(receipt => {
           if (receipt?.status === 1) {
             const estimatedOffsetTime = (receipt.blockNumber - blockNumbers[0]) * 12 * 1000
-            console.log("receipt", receipt)
             if (isValidOffsetTime(estimatedOffsetTime)) {
               addEstimatedTimeMap(`to_${receipt.blockHash}`, Date.now() + estimatedOffsetTime)
             } else {
@@ -120,7 +119,6 @@ const ClaimButton = props => {
         .finally(() => {
           setLoading(false)
         })
-      console.log(tx)
     } catch (error) {
       console.log(error.toString())
       setLoading(false)
