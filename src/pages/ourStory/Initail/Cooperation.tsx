@@ -109,7 +109,7 @@ const Cooperation = () => {
   return (
     <Paper elevation={0} className={classes.cooperation}>
       <Typography sx={{ fontSize: ["2.6rem", "3.2rem"] }}>
-        From Day One,<br></br>Scroll prioritized transparency by choosing to be an open-source project. Collaboration from various projects and active
+        From day one,<br></br>Scroll prioritized transparency by choosing to be an open-source project. Collaboration from various projects and active
         community participation make the Scroll platform more robust and battle-tested.
       </Typography>
       {isMobileOnly ? (

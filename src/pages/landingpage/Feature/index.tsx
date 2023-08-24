@@ -16,25 +16,25 @@ const FEATURES = [
     icon: SeatureIcon1,
     title: "EVM-equivalence for seamless scaling",
     description:
-      "Scroll is designed by and for Ethereum developers. A swift, reliable and scalable Layer 2 blockchain, Scroll extends Ethereum's capabilities, enabling apps to scale without any surprises. Thanks to bytecode-level compatibility, existing Ethereum apps can migrate onto Scroll as is, and at a significantly reduced cost.",
+      "Scroll is designed by and for Ethereum developers. A swift, reliable and scalable Layer 2 blockchain, Scroll extends Ethereum's capabilities, enabling apps to scale without any surprises. Thanks to bytecode-level compatibility, existing Ethereum apps can migrate onto Scroll as-is, and at a significantly reduced cost.",
   },
   {
     icon: SeatureIcon2,
     title: "Collective vision for Ethereum’s future",
     description:
-      "We’ve been building in the open since Day 1 with the Ethereum community. Our open developmental approach combines the best ideas among value-aligned contributors and leads to more secure and better-designed systems. Scroll is forging a community-driven path to redefine and evolve Ethereum’s roadmap.",
+      "We’ve been building in the open since day one with the Ethereum community. Our open development approach combines the best ideas among value-aligned contributors and leads to more secure and better-designed systems. Scroll is forging a community-driven path to redefine and evolve Ethereum’s roadmap.",
   },
   {
     icon: SeatureIcon3,
     title: "Unwavering security at every layer",
     description:
-      "Scroll uses advanced zero-knowledge proof technology, battle-tested EVM models, and rigorous audits to ensure that our foundation is rooted in security and reliability. By prioritizing code security through open-source collaboration, Scroll protects our developers and users against vulnerabilities.",
+      "Scroll uses advanced zero knowledge proof technology, battle-tested EVM models, and rigorous audits to ensure that our foundation is rooted in security and reliability. By prioritizing code security through open-source collaboration, Scroll protects our developers and users against vulnerabilities.",
   },
   {
     icon: SeatureIcon4,
     title: "Rooted in technical rigor and credibility",
     description:
-      "Stability and trustworthiness are the building blocks to our network’s growth. Scroll is steadfast in maintaining credible neutrality to reduce imbalances of power within our ecosystem. In pursuit of our long-term vision, we immerse ourselves in solving meaningful and challenging research problems with a focus on technical detail, accuracy and results.",
+      "Stability and trustworthiness are the building blocks to our network’s growth. Scroll is steadfast in maintaining credible neutrality to reduce imbalances of power within our ecosystem. In pursuit of our long-term vision, we immerse ourselves in solving meaningful and challenging research problems with a focus on technical detail, accuracy, and results.",
   },
 ]
 
@@ -107,7 +107,7 @@ const Feature = () => {
     <SectionWrapper>
       <FadeInUp>
         <SectionHeader
-          title="Zero Knowledge Required"
+          title="Zero knowledge required"
           content="Scroll’s mission is to provide an accessible scaling solution that preserves the essence of Ethereum – trust-minimized, secure and open-source. Like a scroll, our story is constantly evolving in our quest to secure Ethereum’s future and making the developer experience as easy as possible."
           action={
             <Button href="/story" color="primary">

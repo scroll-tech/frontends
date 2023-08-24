@@ -48,7 +48,7 @@ const Initail = () => {
         <Typography>Founded in 2021,</Typography>
         <Typography sx={{ textIndent: "2em", whiteSpace: "pre-wrap" }}>
           our vision is to create an inclusive and infinite ecosystem for Ethereum. In 2020, as DeFi boomed and Ethereum faced network congestion, our
-          founders—Ye <InlineAvater size={avatarSize} alt="Ye" src={YeAvatar} />, a mathematician fascinated by zero-knowledge proofs; Haichen{" "}
+          founders—Ye <InlineAvater size={avatarSize} alt="Ye" src={YeAvatar} />, a mathematician fascinated by zero knowledge proofs; Haichen{" "}
           <InlineAvater size={avatarSize} alt="Haichen" src={HaichenAvatar} />, a systems engineer drawn to cryptography; and Sandy{" "}
           <InlineAvater size={avatarSize} alt="Sandy" src={SandyAvatar} />, an experienced web3 researcher and investor—joined forces.
         </Typography>
@@ -58,7 +58,7 @@ const Initail = () => {
         <Typography sx={{ textIndent: "2em", whiteSpace: "pre-wrap" }}>
           An in-depth discussion about the purpose of blockchain and the scalability trilemma ensued. Understanding that Ethereum's deliberate
           trade-off for prioritizing security and decentralization resulted in slower transaction times, the founders saw an opportunity: a scaling
-          solution nearly identical to Ethereum with lower costs, faster speeds and infinite scaling. 
+          solution nearly identical to Ethereum with lower costs, faster speeds, and infinite scaling. 
         </Typography>
         <Typography sx={{ mt: ["3rem", "5rem"] }}>And thus, Scroll was born.</Typography>
       </OrientationToView>
@@ -73,8 +73,8 @@ const Initail = () => {
         <Typography>
           At the time, Ye <InlineAvater size={avatarSize} alt="Ye" src={YeAvatar} /> was a visionary PhD student <br></br>with groundbreaking research
           on hardware provers. The huge potential for efficiency improvements using zero knowledge hardware and cryptographic technology inspired him
-          to build a byte-code-level compatible solution closely resembling the EVM (Ethereum Virtual Machine). Only through such an improvement in
-          efficiency could the concept of the zkEVM (zero-knowledge Ethereum Virtual Machine) come to life, enabling aseamless developer experience.
+          to build a bytecode-level compatible solution closely resembling the EVM (Ethereum Virtual Machine). Only through such an improvement in
+          efficiency could the concept of the zkEVM (zero knowledge Ethereum Virtual Machine) come to life, enabling a seamless developer experience.
         </Typography>
       </OrientationToView>
       <Line orientation="vertical" textAlign="center" className={classes.divider} />

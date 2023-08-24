@@ -70,7 +70,7 @@ const BuildingStory = () => {
     <SectionWrapper sx={{ pt: ["11rem", "26rem"], pb: ["12rem", "13rem"] }}>
       <SectionHeader
         title="Begin your journey with Scroll"
-        content="Learn more about zero knowledge proofs, zkEVMs and the future of scaling Ethereum."
+        content="Learn more about zero knowledge proofs, zkEVMs, and the future of scaling Ethereum."
         action={
           <Button href="/blog" color="primary">
             Read more

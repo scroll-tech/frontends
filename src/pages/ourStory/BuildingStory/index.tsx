@@ -70,7 +70,7 @@ const BuildingStory = () => {
     <SectionWrapper sx={{ pt: ["11rem", "26rem"], pb: ["12rem", "13rem"] }}>
       <SectionHeader
         title="Read the stories behind building Scroll"
-        content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut urna iaculis quam mollis consequat."
+        content="Check out what our founders, community members, and thought leaders are saying about Scroll and building a native zkEVM."
       ></SectionHeader>
       <SuccessionToView className={classes.grid}>
         {STORIES.map((item, index) => (

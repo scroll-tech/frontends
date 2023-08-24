@@ -16,7 +16,7 @@ const STEPS = [
     icon: ScalabilityIcon,
     title: "Bridge your ETH",
     description:
-      "Once you’ve acquired testnet ETH, you can bridge your testnet ETH to the Scroll Alpha Testnet (Layer 2) using our Bridge. For a walkthrough, start with the User Guide's Setup page.",
+      "Once you’ve acquired testnet ETH, you can bridge your testnet ETH to the Scroll Alpha Testnet (Layer 2) using our bridge. For a walkthrough, start with the user guide’s setup page.",
   },
   {
     icon: SecurityIcon,
@@ -175,7 +175,7 @@ const GetStart = () => {
             dark
             sx={{ mb: "13rem" }}
             title="Getting started with Scroll"
-            content="Scroll is compatible with Ethereum at the bytecode level, meaning everything works right out of the box."
+            content="Scroll is compatible with Ethereum at bytecode-level, meaning everything works right out of the box."
             action={
               <Button href="https://docs.scroll.xyz/en/home/" target="_blank" color="primary">
                 Start building

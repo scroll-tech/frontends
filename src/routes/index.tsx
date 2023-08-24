@@ -12,7 +12,6 @@ import RollupScanBlock from "@/pages/rollup/block"
 import RollupScanChunk from "@/pages/rollup/chunk"
 import RollupScanChunkDetail from "@/pages/rollup/chunk/detail"
 import RollupScan from "@/pages/rollup/index"
-import Team from "@/pages/team"
 import Terms from "@/pages/terms"
 
 const routes = [
@@ -27,7 +26,6 @@ const routes = [
     element: <OurStory />,
   },
   { name: "Blog", path: "/blog", element: <Blog /> },
-  { name: "Team", path: "/team", element: <Team /> },
   {
     name: "Join Us",
     path: "/join-us",

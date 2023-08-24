@@ -15,7 +15,7 @@ const STORY_VALUES = [
     icon: OpennessSvg,
     title: "Openness",
     content:
-      "Transparency is at the heart of our operations. We openly share our work and research with the public, engaging regularly with the community to foster an open Ethereum ecosystem. Our approach emphasizes documentation, clarity, and prioritizing specifications and modularity for reliable progress.",
+      "Transparency is at the heart of our operations. We openly share our work and research with the public, engaging regularly with the community to foster an open Ethereum ecosystem. Our approach emphasizes documentation, clarity, and prioritizes specifications and modularity for reliable progress.",
   },
   {
     icon: CommunitySvg,
@@ -27,7 +27,7 @@ const STORY_VALUES = [
     icon: NeutralitySvg,
     title: "Credible neutrality",
     content:
-      "We are fair, unbiased, and do not favor any specific application – essential for building an open, competitive, and scalable ecosystem. We cultivate organic growth with infinite possibilities. We generalize and make policies transparent in partnership. Our relationships with partners are policy-based, not relationship-based.",
+      "We are fair, unbiased, and do not favor any specific application – essential for building an open, competitive, and scalable ecosystem. We cultivate organic growth with infinite possibilities. We make policies transparent in our partnerships. Our relationships with partners are policy-based, not relationship-based.",
   },
 ]
 
@@ -41,7 +41,7 @@ const Value = () => {
             <SectionHeader
               dark
               title="Our values"
-              content="At Scroll, we have a shared mission to uphold neutrality, openness, and be community-first, as we strive to preserve Ethereum's core properties and prioritize the collective well-being of our ecosystem."
+              content="At Scroll, we have a shared mission to uphold neutrality, openness, and be community-first as we strive to preserve Ethereum's core properties and prioritize the collective well-being of our ecosystem."
             ></SectionHeader>
             {isDesktop && (
               <Box sx={{ position: "sticky", bottom: "8rem", mt: "24rem", mb: "14rem" }}>
