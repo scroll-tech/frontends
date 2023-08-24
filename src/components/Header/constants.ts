@@ -1,4 +1,3 @@
-import { NETWORKS } from "@/constants"
 import { requireEnv } from "@/utils"
 
 const navigations = [
@@ -45,7 +44,7 @@ const navigations = [
           {
             label: "Etherscan",
             key: "etherscan",
-            href: NETWORKS[0].explorer,
+            href: "https://sepolia.scrollscan.dev/",
             isExternal: true,
           },
           {
