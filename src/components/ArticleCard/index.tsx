@@ -92,7 +92,7 @@ const ArticleCard = ({ blog, small = false }) => {
           {blog.date} ・ {blog.type}
         </ArticleDate>
       </ArticleInfo>
-      <ArticlePoster src="https://cdn.discordapp.com/attachments/1095150664881016856/1141254540994297867/cover.png"></ArticlePoster>
+      <ArticlePoster src={blog.posterImg}></ArticlePoster>
     </Card>
   )
 }

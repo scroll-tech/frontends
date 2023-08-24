@@ -1,10 +1,10 @@
 import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
-import SeatureIcon1 from "@/assets/images/homepage/home/feature_icon_1.png"
-import SeatureIcon2 from "@/assets/images/homepage/home/feature_icon_2.png"
-import SeatureIcon3 from "@/assets/images/homepage/home/feature_icon_3.png"
-import SeatureIcon4 from "@/assets/images/homepage/home/feature_icon_4.png"
+import FeatureIcon1 from "@/assets/images/homepage/home/feature_icon_1.png"
+import FeatureIcon2 from "@/assets/images/homepage/home/feature_icon_2.png"
+import FeatureIcon3 from "@/assets/images/homepage/home/feature_icon_3.png"
+import FeatureIcon4 from "@/assets/images/homepage/home/feature_icon_4.png"
 import { FadeInUp, SlideInLeft, SlideInRight } from "@/components/Animation"
 import Button from "@/components/Button"
 import SectionHeader from "@/components/SectionHeader"
@@ -13,25 +13,25 @@ import WebpImage from "@/components/WebpImage"
 
 const FEATURES = [
   {
-    icon: SeatureIcon1,
+    icon: FeatureIcon1,
     title: "EVM-equivalence for seamless scaling",
     description:
       "Scroll is designed by and for Ethereum developers. A swift, reliable and scalable Layer 2 blockchain, Scroll extends Ethereum's capabilities, enabling apps to scale without any surprises. Thanks to bytecode-level compatibility, existing Ethereum apps can migrate onto Scroll as-is, and at a significantly reduced cost.",
   },
   {
-    icon: SeatureIcon2,
+    icon: FeatureIcon2,
     title: "Collective vision for Ethereum’s future",
     description:
       "We’ve been building in the open since day one with the Ethereum community. Our open development approach combines the best ideas among value-aligned contributors and leads to more secure and better-designed systems. Scroll is forging a community-driven path to redefine and evolve Ethereum’s roadmap.",
   },
   {
-    icon: SeatureIcon3,
+    icon: FeatureIcon3,
     title: "Unwavering security at every layer",
     description:
       "Scroll uses advanced zero knowledge proof technology, battle-tested EVM models, and rigorous audits to ensure that our foundation is rooted in security and reliability. By prioritizing code security through open-source collaboration, Scroll protects our developers and users against vulnerabilities.",
   },
   {
-    icon: SeatureIcon4,
+    icon: FeatureIcon4,
     title: "Rooted in technical rigor and credibility",
     description:
       "Stability and trustworthiness are the building blocks to our network’s growth. Scroll is steadfast in maintaining credible neutrality to reduce imbalances of power within our ecosystem. In pursuit of our long-term vision, we immerse ourselves in solving meaningful and challenging research problems with a focus on technical detail, accuracy, and results.",

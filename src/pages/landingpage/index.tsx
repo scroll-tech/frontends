@@ -19,6 +19,7 @@ const StyledBox = styled(Box)(({ theme }) => ({
   borderRadius: "4rem 4rem 0 0",
   [theme.breakpoints.down("md")]: {
     height: "50.8rem",
+    background: "url(/imgs/home/section_1_bg_mobile.png) center / cover no-repeat",
   },
 }))
 
