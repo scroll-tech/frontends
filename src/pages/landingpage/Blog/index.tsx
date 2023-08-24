@@ -9,11 +9,17 @@ import StoryCard from "@/pages/ourStory/BuildingStory/StoryCard"
 
 const STORIES = [
   {
-    cover: "/imgs/homepage/blog-cover-1.png",
+    cover: "/imgs/homepage/blog-cover-1.svg",
     title: "Build with Scroll: Quickstart Guide",
     content:
       "Check out our documentation and start developing and deploying on Scroll right away with all of your favorite tools for building and testing smart contracts.",
     href: "https://docs.scroll.xyz/en/home/",
+    imageTitle: (
+      <>
+        Build <br></br>
+        with Scroll
+      </>
+    ),
   },
   {
     title: "Scroll’s Fresh Coat: A Community Touch",
@@ -38,10 +44,15 @@ const STORIES = [
     href: "/blog/architecture",
   },
   {
-    cover: "/imgs/homepage/blog-cover-2.png",
+    cover: "/imgs/homepage/blog-cover-2.svg",
     title: "Join Scroll at ETH Warsaw",
     content: "Scroll will be in Warsaw, Poland, from Aug 31-Sept 3. Come say hi and grab some new swag!",
     href: "https://www.notion.so/scrollzkp/cc9ae9da3d894a90937e04818542e97d?v=a08e1f4656104aefa7b8d3ac829f1c90",
+    imageTitle: (
+      <>
+        Scroll at<br></br>ETH Warsaw
+      </>
+    ),
   },
 ]
 
