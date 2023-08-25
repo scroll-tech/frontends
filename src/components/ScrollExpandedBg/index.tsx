@@ -29,6 +29,11 @@ const Background = styled(Box)(({ theme }) => ({
   left: "50%",
   transform: "translateX(-50%)",
   maxWidth: "100%",
+
+  // in consideration of the main content width
+  [theme.breakpoints.down("xl")]: {
+    minWidth: "100%",
+  },
 }))
 const ScrollExpandedBg = props => {
   const { anchorEl, children } = props
