@@ -176,7 +176,7 @@ const GetStart = () => {
         <FadeInUp>
           <SectionHeader
             dark
-            sx={{ mb: "10rem", mt: "-10rem" }}
+            sx={{ mb: "10rem", mt: ["-10rem", 0] }}
             title="Getting started with Scroll"
             content="Scroll is compatible with Ethereum at bytecode-level, meaning everything works right out of the box."
             action={
