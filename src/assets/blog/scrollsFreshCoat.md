@@ -19,7 +19,7 @@ The depicted human figures represent our family of builders and users hailing fr
 ### New Elements in Motion:
 Recognizing the reality that millions around the world possess smartphones without access to computers, we have now tailored our updates for both mobile and desktop users. Across every page of our website, you'll find enhanced accessibility to information about our ecosystem, contributors, core beliefs, and a simplified route to bridge assets onto Scroll.
 
-Each page features substantial improvements to enhance user experience, a direct response to the evolving needs of our community. Check out our [website](https://scroll.io/) and [developer portal](https://https://docs.scroll.io/en/home/) to get a sample! 
+Each page features substantial improvements to enhance user experience, a direct response to the evolving needs of our community. Check out our [website](https://scroll.io/) and [documentation site](https://docs.scroll.io/en/home/) to get a sample! 
 
 ![](https://hackmd.io/_uploads/Hk9UYaE6n.png)
 
