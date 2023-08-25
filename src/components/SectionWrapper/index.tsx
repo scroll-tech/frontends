@@ -4,11 +4,11 @@ const SectionWrapper = props => {
   const { dark, round, children, sx, full, maxWidth = "152rem", ...restProps } = props
   return (
     <Box
+      {...restProps}
       sx={{
         backgroundColor: theme => (dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.light),
         borderRadius: round ? "4rem 4rem 0 0 " : "unset",
       }}
-      {...restProps}
     >
       <Container
         sx={{

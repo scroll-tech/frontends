@@ -139,6 +139,28 @@ const Marquee = styled(Box)(({ theme }) => ({
   width: "100%",
 }))
 
+const CarouselBox = styled(Box)(({ theme }) => ({
+  position: "relative",
+  "@media (min-width:1900px)": {
+    "&::before, &::after": {
+      content: "''",
+      height: "100%",
+      position: "absolute",
+      top: 0,
+      width: "40% !important",
+      zIndex: 42,
+    },
+    "&::before": {
+      background: "linear-gradient(90deg, #fef8f4 30%, rgba(0, 0, 0, 0) 100%) 0% 0% repeat scroll rgba(0, 0, 0, 0)",
+      left: 0,
+    },
+    "&::after": {
+      background: "linear-gradient(270deg, #fef8f4 30%, rgba(0, 0, 0, 0) 100%) 0% 0% repeat scroll rgba(0, 0, 0, 0)",
+      right: 0,
+    },
+  },
+}))
+
 const TrackLeft = styled("div")(({ theme }) => ({
   display: "flex",
   animation: `${MarqueeAnimationLeft} 60s linear infinite`,
@@ -168,7 +190,7 @@ const Logo = styled("img")(({ theme }) => ({
 }))
 
 const Carousel = () => (
-  <Box>
+  <CarouselBox>
     <Marquee>
       <TrackLeft>
         {MarqueeLeft.map((item, idx) => (
@@ -183,7 +205,7 @@ const Carousel = () => (
         ))}
       </TrackRight>
     </Marquee>
-  </Box>
+  </CarouselBox>
 )
 
 const Partners = () => {
