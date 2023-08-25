@@ -97,7 +97,7 @@ const BlogDetail = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("md"))
 
   const getPosterUri = () => {
-    return window.location.origin + currentBlog.posterImg
+    return window.location.origin + (currentBlog.ogImg || currentBlog.posterImg)
   }
 
   return (
