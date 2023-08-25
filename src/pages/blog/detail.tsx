@@ -60,6 +60,10 @@ const BlogDetail = () => {
   const params = useParams()
 
   useEffect(() => {
+    if (params.blogId === "scrollsFreshCoat") {
+      navigate("/blog/scrolls-fresh-coat")
+      return
+    }
     getCurrentBlog()
     // @ts-ignore
     let anchors = [...document.querySelectorAll("a")]
@@ -81,7 +85,7 @@ const BlogDetail = () => {
       navigate("/404")
     }
     getMoreBlog()
-  }, [])
+  }, [params.blogId])
 
   const getMoreBlog = () => {
     const blogs = shuffle(blogSource.filter(blog => blog.id !== params.blogId)).slice(0, 3)
