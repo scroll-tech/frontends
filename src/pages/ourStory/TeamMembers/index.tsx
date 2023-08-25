@@ -73,15 +73,27 @@ const CORE_MEMBERS = [
 const useStyles = makeStyles()(theme => ({
   grid: {
     display: "grid",
-    gridTemplateColumns: "repeat(5, 16.3rem)",
+    gridTemplateColumns: "repeat(auto-fill, minmax(16.3rem, 1fr))",
     gridColumnGap: "8.9rem",
     gridRowGap: "6rem",
     margin: "13rem auto 0",
-    width: "min-content",
+    width: "100%",
+    maxWidth: "117.1rem",
     [theme.breakpoints.down("sm")]: {
+      width: "min-content",
       gridTemplateColumns: "repeat(2, 1fr)",
       gridColumnGap: "4.6rem",
       gridRowGap: "5rem",
+    },
+  },
+  gridItem: {
+    width: "16.3rem",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifySelf: "center",
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
     },
   },
   img: {
@@ -102,7 +114,7 @@ const TeamMembers = () => {
       ></SectionHeader>
       <SuccessionToView className={classes.grid}>
         {CORE_MEMBERS.map(item => (
-          <SuccessionItem key={item.name}>
+          <SuccessionItem key={item.name} className={classes.gridItem}>
             <Avatar
               sx={{ backgroundColor: "themeBackground.highlight", width: ["11.6rem", "16.3rem"], height: ["11.6rem", "16.3rem"] }}
               src={item.avatar}

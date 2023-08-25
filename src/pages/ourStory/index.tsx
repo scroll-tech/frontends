@@ -8,7 +8,7 @@ import Value from "./Value"
 
 const OurStory = () => {
   return (
-    <div style={{ maxWidth: "100vw", overflow: "hidden" }}>
+    <>
       <Header></Header>
       <Initail></Initail>
       <Value></Value>
@@ -16,7 +16,7 @@ const OurStory = () => {
       <TeamMembers></TeamMembers>
       <BuildingStory></BuildingStory>
       <JoinTeam></JoinTeam>
-    </div>
+    </>
   )
 }
 
