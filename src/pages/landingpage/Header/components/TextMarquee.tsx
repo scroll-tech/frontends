@@ -4,8 +4,7 @@ import { Box, Typography } from "@mui/material"
 import { keyframes, styled } from "@mui/system"
 
 const TextSlider: React.FC = () => {
-  // const texts = ["Scalable", "Open-Source", "Cryptographically Secured", "Ethereum Aligned", "Egalitarian", "Modular"]
-  const texts = ["Scalable", "Open-Source", "Secured", "Ethereum Aligned", "Egalitarian", "Modular"]
+  const texts = ["Scalable", "Open-Source", "Cryptographically Secured", "Ethereum Aligned", "Egalitarian", "Modular"]
 
   const [currentIndex, setCurrentIndex] = useState(0)
 
