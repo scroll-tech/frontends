@@ -90,7 +90,7 @@ const BuildingStory = () => {
         title="Read the stories behind building Scroll"
         content="Check out what our founders, community members, and thought leaders are saying about Scroll and building a native zkEVM."
       ></SectionHeader>
-      <SuccessionToView className={classes.grid} threshold={isMobileOnly ? 0 : 0.3}>
+      <SuccessionToView className={classes.grid}>
         {STORIES.map((item, index) => (
           <SuccessionItem
             key={item.title}
