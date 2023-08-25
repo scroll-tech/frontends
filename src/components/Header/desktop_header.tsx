@@ -5,6 +5,7 @@ import { Box, Fade, Link, Popper, Stack } from "@mui/material"
 import { styled } from "@mui/system"
 
 import Logo from "@/components/ScrollLogo"
+import SectionWrapper from "@/components/SectionWrapper"
 
 import Announcement from "./announcement"
 import { navigations } from "./constants"
@@ -257,12 +258,14 @@ const App = ({ currentMenu }) => {
   return (
     <StyledBox transparent={noBg}>
       <Announcement />
-      <HeaderContainer>
-        <NavLink to="/" className="flex">
-          <Logo />
-        </NavLink>
-        <Box>{renderNavigationList()}</Box>
-      </HeaderContainer>
+      <SectionWrapper sx={{ pt: 0 }}>
+        <HeaderContainer>
+          <NavLink to="/" className="flex">
+            <Logo />
+          </NavLink>
+          <Box>{renderNavigationList()}</Box>
+        </HeaderContainer>
+      </SectionWrapper>
     </StyledBox>
   )
 }

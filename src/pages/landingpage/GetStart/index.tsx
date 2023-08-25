@@ -34,7 +34,7 @@ const STEPS = [
 const Container = styled(Box)(({ theme }) => ({
   borderRadius: "40px 40px 0px 0px",
   paddingTop: "15.4rem",
-  paddingBottom: "160px",
+  paddingBottom: "16rem",
   background: "transparent",
   display: "flex !important",
   justifyContent: "center",
@@ -43,6 +43,9 @@ const Container = styled(Box)(({ theme }) => ({
   margin: "0 auto",
   "& .MuiContainer-root": {
     position: "relative",
+  },
+  [theme.breakpoints.down("md")]: {
+    paddingBottom: "0",
   },
 }))
 
@@ -81,7 +84,7 @@ const StepContainer = styled(SuccessionToView)(({ theme }) => ({
   },
   [theme.breakpoints.down("md")]: {
     flexDirection: "column",
-    marginBottom: "5rem",
+    marginBottom: "2rem",
     "& > div:nth-of-type(1) img": {
       width: "3.3rem",
     },
@@ -99,7 +102,7 @@ const StepBox = styled(Box)(({ theme }) => ({
   flexDirection: "column",
   flex: 1,
   [theme.breakpoints.down("md")]: {
-    marginBottom: "5.2rem",
+    marginBottom: "7.2rem",
   },
 }))
 
@@ -156,8 +159,14 @@ const GetStart = () => {
       if (rect.top <= viewTop) {
         const scrolledDistance = viewTop - rect.top
         const percentageScrolled = Math.min(scrolledDistance / viewTop, 1)
-
-        const widthIncrease = 0.5 * percentageScrolled
+        let ratio = 0.5
+        if (window.innerWidth <= 1920 && window.innerWidth > 1680) {
+          ratio = 1
+        }
+        if (window.innerWidth > 1920) {
+          ratio = 2
+        }
+        const widthIncrease = ratio * percentageScrolled
         const targetWidthPercentage = 100 + widthIncrease * 100
 
         return `${targetWidthPercentage}%`
@@ -173,7 +182,7 @@ const GetStart = () => {
         <FadeInUp>
           <SectionHeader
             dark
-            sx={{ mb: "13rem" }}
+            sx={{ mb: "10rem", mt: ["-10rem", 0] }}
             title="Getting started with Scroll"
             content="Scroll is compatible with Ethereum at bytecode-level, meaning everything works right out of the box."
             action={

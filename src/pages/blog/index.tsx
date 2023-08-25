@@ -8,6 +8,7 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 import { styled } from "@mui/system"
 
 import ArticleCard from "@/components/ArticleCard"
+import SectionWrapper from "@/components/SectionWrapper"
 
 import blogSource from "./data.json"
 
@@ -267,14 +268,16 @@ const Blog = () => {
 
   return (
     <BlogContainer>
-      <Header>
-        <Title>Scroll Blog</Title>
-        <Summary>Learn about Scroll’s technology, research, and latest developments.</Summary>
-      </Header>
-      <BlogBody>
-        {renderFilter()}
-        {renderBlogs()}
-      </BlogBody>
+      <SectionWrapper sx={{ pt: 0 }}>
+        <Header>
+          <Title>Scroll Blog</Title>
+          <Summary>Learn about Scroll’s technology, research, and latest developments.</Summary>
+        </Header>
+        <BlogBody>
+          {renderFilter()}
+          {renderBlogs()}
+        </BlogBody>
+      </SectionWrapper>
     </BlogContainer>
   )
 }
