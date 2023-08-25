@@ -34,9 +34,9 @@ const CORE_MEMBERS = [
     desc: "Co-founder in San Francisco",
   },
   {
-    avatar: MeiAvatar,
-    name: "Mei",
-    desc: "Comms & outreach lead in Texas, US",
+    avatar: JaneAvatar,
+    name: "Jane",
+    desc: "Head of operations in London",
   },
   {
     avatar: DanielAvatar,
@@ -44,9 +44,9 @@ const CORE_MEMBERS = [
     desc: "Devrel lead in Oklahoma, US",
   },
   {
-    avatar: JaneAvatar,
-    name: "Jane",
-    desc: "Head of operations in London",
+    avatar: MeiAvatar,
+    name: "Mei",
+    desc: "Comms & outreach lead in Texas, US",
   },
   {
     avatar: MohammadAvatar,

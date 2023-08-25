@@ -75,7 +75,6 @@ export default function Searchbar(props) {
       </IconButton>
       <InputBase
         sx={{ ml: 1, flex: 1 }}
-        autoFocus
         placeholder="Search by block height / block hash"
         inputProps={{ "aria-label": "Search by block height / block hash" }}
         onKeyDown={handleKeyDown}

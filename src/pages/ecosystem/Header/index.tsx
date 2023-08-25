@@ -11,7 +11,7 @@ const Header = () => {
   return (
     <>
       <SectionWrapper
-        full
+        // full
         sx={{
           pt: ["7.3rem", "7.3rem", "15.4rem"],
           pb: ["4rem", "4rem", "15.4rem"],
@@ -64,7 +64,7 @@ const Header = () => {
         <Box
           sx={{
             borderRadius: "4rem 4rem 0 0",
-            height: ["50.8rem", "37rem"],
+            height: ["50.8rem", "37rem", "24vw"],
             background: [
               "url(/imgs/ecosystem/ecosystem-bg-mobile.svg) center / cover no-repeat",
               "url(/imgs/ecosystem/ecosystem-bg.svg) center / cover no-repeat",

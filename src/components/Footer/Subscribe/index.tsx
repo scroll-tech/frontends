@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import MailchimpSubscribe from "react-mailchimp-subscribe"
 
-import { Box, Stack, SvgIcon, Typography } from "@mui/material"
+import { Box, Container, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { ReactComponent as SubscribeIcon } from "@/assets/svgs/footer/subscribe.svg"
@@ -54,35 +54,37 @@ const Subscribe = () => {
         p: ["6rem 2rem", "6rem 2rem", "3.2rem 6rem"],
       }}
     >
-      <SubscribeBox>
-        <SvgIcon sx={{ fontSize: ["4.8rem", "7rem"] }} component={SubscribeIcon} inheritViewBox></SvgIcon>
-        <Stack direction="column" flex={1}>
-          <Typography sx={{ fontSize: ["2rem", "2.4rem"], fontWeight: 600 }}>Stay up-to-date on the latest Scroll developer news</Typography>
-        </Stack>
-        <MailchimpSubscribe
-          url={url}
-          render={({ subscribe, status, message }: any) => (
-            <Box sx={{ position: "relative", mt: ["3.2rem", "3.2rem", 0], width: ["100%", "auto"], textAlign: "right" }}>
-              <EmailInput
-                value={email}
-                end={status === "success"}
-                onChange={handleChangeEmail}
-                onClick={() => handleSubmit(subscribe)}
-                onEnter={() => handleSubmit(subscribe)}
-              ></EmailInput>
+      <Container sx={{ maxWidth: "152rem !important" }}>
+        <SubscribeBox>
+          <SvgIcon sx={{ fontSize: ["4.8rem", "7rem"] }} component={SubscribeIcon} inheritViewBox></SvgIcon>
+          <Stack direction="column" flex={1}>
+            <Typography sx={{ fontSize: ["2rem", "2.4rem"], fontWeight: 600 }}>Stay up-to-date on the latest Scroll developer news</Typography>
+          </Stack>
+          <MailchimpSubscribe
+            url={url}
+            render={({ subscribe, status, message }: any) => (
+              <Box sx={{ position: "relative", mt: ["3.2rem", "3.2rem", 0], width: ["100%", "auto"], textAlign: "right" }}>
+                <EmailInput
+                  value={email}
+                  end={status === "success"}
+                  onChange={handleChangeEmail}
+                  onClick={() => handleSubmit(subscribe)}
+                  onEnter={() => handleSubmit(subscribe)}
+                ></EmailInput>
 
-              {customMessage && (
-                <Typography sx={{ position: "absolute", fontSize: "1.6rem", textAlign: "center", mt: "1rem", width: "100%" }}>
-                  {customMessage}
-                </Typography>
-              )}
-              {status === "error" && (
-                <Typography sx={{ position: "absolute", fontSize: "1.6rem", textAlign: "center", mt: "1rem", width: "100%" }}>{message}</Typography>
-              )}
-            </Box>
-          )}
-        />
-      </SubscribeBox>
+                {customMessage && (
+                  <Typography sx={{ position: "absolute", fontSize: "1.6rem", textAlign: "center", mt: "1rem", width: "100%" }}>
+                    {customMessage}
+                  </Typography>
+                )}
+                {status === "error" && (
+                  <Typography sx={{ position: "absolute", fontSize: "1.6rem", textAlign: "center", mt: "1rem", width: "100%" }}>{message}</Typography>
+                )}
+              </Box>
+            )}
+          />
+        </SubscribeBox>
+      </Container>
     </Box>
   )
 }

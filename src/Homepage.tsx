@@ -20,7 +20,7 @@ function Homepage() {
   }
 
   const getImageUrl = () => {
-    return window.location.origin + "/logo_for_og.png"
+    return window.location.origin + "/logo_for_og_image.png"
   }
 
   return (

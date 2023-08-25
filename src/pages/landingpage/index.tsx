@@ -21,6 +21,9 @@ const StyledBox = styled(Box)(({ theme }) => ({
     height: "50.8rem",
     background: "url(/imgs/home/section_1_bg_mobile.svg) center / cover no-repeat",
   },
+  [theme.breakpoints.up("xl")]: {
+    height: "24vw",
+  },
 }))
 
 const LandingPage = () => {
