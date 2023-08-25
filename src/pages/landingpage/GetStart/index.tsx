@@ -159,7 +159,13 @@ const GetStart = () => {
       if (rect.top <= viewTop) {
         const scrolledDistance = viewTop - rect.top
         const percentageScrolled = Math.min(scrolledDistance / viewTop, 1)
-        const ratio = window.innerHeight > 1900 ? 2 : 0.5
+        let ratio = 0.5
+        if (window.innerWidth <= 1920 && window.innerWidth > 1680) {
+          ratio = 1
+        }
+        if (window.innerWidth > 1920) {
+          ratio = 2
+        }
         const widthIncrease = ratio * percentageScrolled
         const targetWidthPercentage = 100 + widthIncrease * 100
 
