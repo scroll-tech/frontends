@@ -11,7 +11,8 @@ const Title = styled(Typography)(({ theme }) => ({
   textAlign: "center",
   [theme.breakpoints.down("md")]: {
     fontSize: "3.2rem",
-    lineHeight: "4.3rem",
+    lineHeight: "3.8rem",
+    marginBottom: "2.8rem",
   },
 }))
 
@@ -25,7 +26,7 @@ const Container = styled(Box)(({ theme }) => ({
   borderRadius: "40px 40px 0px 0px",
   background: "#FFF0DD",
   [theme.breakpoints.down("md")]: {
-    paddingTop: "5.2rem",
+    paddingTop: "5.4rem",
     paddingBottom: "6rem",
   },
 }))

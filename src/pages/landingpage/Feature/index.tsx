@@ -50,13 +50,14 @@ const FeatureBox = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
     flexDirection: "column !important",
     alignItems: "flex-start",
-    paddingBottom: "11.8rem",
-    "&:nth-of-type(odd)": {
-      alignItems: "flex-end",
-      "& *": {
-        textAlign: "right !important",
-      },
+    paddingBottom: "10rem",
+    gap: "6rem",
+    // "&:nth-of-type(odd)": {
+    // alignItems: "flex-end",
+    "& *": {
+      textAlign: "center!important",
     },
+    // },
   },
   [theme.breakpoints.up("xl")]: {
     paddingBottom: "20rem",
@@ -67,7 +68,7 @@ const FeatureBox = styled(Box)(({ theme }) => ({
 const FeatureIcon = styled(WebpImage)(({ theme }) => ({
   width: "47.4rem",
   [theme.breakpoints.down("md")]: {
-    width: "18.5rem",
+    width: "100%",
   },
 }))
 
@@ -77,6 +78,7 @@ const FeatureTitle = styled(Typography)(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
     marginBottom: "1rem",
     fontSize: "2rem",
+    textAlign: "center",
   },
 }))
 
@@ -87,6 +89,7 @@ const FeatureTextBox = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
     maxWidth: "35rem",
     width: "100%",
+    textAlign: "center",
   },
 }))
 

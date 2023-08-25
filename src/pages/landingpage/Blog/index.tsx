@@ -65,7 +65,7 @@ const useStyles = makeStyles()(theme => ({
     [theme.breakpoints.down("sm")]: {
       gridTemplateColumns: "repeat(2, 1fr)",
       gridGap: "2rem",
-      marginTop: "5rem",
+      marginTop: "10rem",
     },
   },
   withCover: {
