@@ -6,7 +6,8 @@
     "title": "Scroll's Fresh Coat: A Community Touch",
     "posterTitle": "Scroll's Evolution",
     "summary": "Discover our updated website and documentation, shaped by collective insights and collaboration.",
-    "posterImg": "/imgs/homepage/blog/poster_cover_13.jpg"
+    "posterImg": "/imgs/homepage/blog/poster_cover_13.jpg",
+    "ogImg": "/imgs/homepage/blog/poster_cover_13_og.png"
   },
   {
     "type": "Announcement",

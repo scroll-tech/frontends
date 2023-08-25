@@ -20,7 +20,7 @@ const SuccessionToView = props => {
       whileInView="show"
       animate={animate}
       variants={container}
-      viewport={{ once, amount: threshold ?? (isMobileOnly ? 0 : 0.8) }}
+      viewport={{ once, amount: threshold ?? (isMobileOnly ? 0 : 0.3) }}
       {...restProps}
     >
       {children}
