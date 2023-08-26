@@ -17,8 +17,11 @@ const SubscribeBox = styled(Box)(({ theme }) => ({
   alignItems: "center",
   [theme.breakpoints.down("md")]: {
     flexDirection: "column",
-    gap: "1.8rem",
     alignItems: "flex-start",
+    gap: "2.6rem",
+  },
+  [theme.breakpoints.down("sm")]: {
+    gap: "1.8rem",
   },
 }))
 
