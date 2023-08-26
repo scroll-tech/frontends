@@ -16,6 +16,7 @@ const useStyles = makeStyles()(theme => ({
     borderRadius: "2rem",
     overflow: "hidden",
     maxWidth: "64rem",
+    width: "100%",
     "& *": {
       fontFamily: "var(--developer-page-font-family) !important",
     },
@@ -24,10 +25,12 @@ const useStyles = makeStyles()(theme => ({
       maxWidth: "100%",
     },
   },
-  tabList: {},
+  tabList: {
+    width: "100%",
+  },
   tab: {
+    flex: 1,
     height: "5.6rem",
-    width: "32rem",
     fontSize: "2rem",
     fontWeight: 500,
     color: theme.palette.text.primary,
@@ -85,7 +88,11 @@ const Send = () => {
   return (
     <Box className={classes.sendWrapper}>
       <TabContext value={txType}>
-        <TabList onChange={handleChange} textColor="primary" classes={{ root: classes.tabList, indicator: classes.indicator }}>
+        <TabList
+          onChange={handleChange}
+          textColor="primary"
+          classes={{ root: classes.tabList, fixed: classes.tabList, flexContainer: classes.tabList, indicator: classes.indicator }}
+        >
           <Tab label="Deposit to Scroll" value="Deposit" classes={{ root: classes.tab }}></Tab>
           <Tab label="Withdraw to Ethereum" value="Withdraw" classes={{ root: classes.tab }}></Tab>
         </TabList>
