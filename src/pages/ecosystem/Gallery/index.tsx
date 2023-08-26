@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react"
-// import { isMobileOnly } from "react-device-detect"
 import { makeStyles } from "tss-react/mui"
 
 import { Alert, Box, Link, Snackbar } from "@mui/material"

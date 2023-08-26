@@ -4,10 +4,10 @@ import { Link as RouterLink, useParams } from "react-router-dom"
 
 import { InfoOutlined, NavigateNext } from "@mui/icons-material"
 import { Box, Breadcrumbs, Divider, Tooltip, Typography } from "@mui/material"
-import { styled, useTheme } from "@mui/material/styles"
-import useMediaQuery from "@mui/material/useMediaQuery"
+import { styled } from "@mui/material/styles"
 
 import Link from "@/components/Link"
+import useCheckViewport from "@/hooks/useCheckViewport"
 import { useChunkList } from "@/hooks/useRollupInfo"
 
 import Header from "../components/Header"
@@ -46,8 +46,8 @@ const BoxItem = styled(Box)(({ theme }) => ({
 const Chunk = () => {
   const params = useParams()
   const { chunks = [], isLoading } = useChunkList(params.batchIndex)
-  const theme = useTheme()
-  const isDesktop = useMediaQuery(theme.breakpoints.up("md"))
+
+  const { isLandscape } = useCheckViewport()
 
   const chunk = useMemo(() => chunks.find(item => item.index === +params.chunkIndex), [chunks])
 
@@ -58,7 +58,7 @@ const Chunk = () => {
   }
 
   const truncatedHash = (hash: string) => {
-    if (isDesktop) {
+    if (isLandscape) {
       return hash
     } else {
       return `${hash.substring(0, 6)}…${hash.substring(62, 66)}`

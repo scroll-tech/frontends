@@ -1,14 +1,14 @@
-import { isMobileOnly } from "react-device-detect"
-
 import { Box, Container, Stack, Typography } from "@mui/material"
 
 import { NETWORKS } from "@/constants"
+import useCheckViewport from "@/hooks/useCheckViewport"
 
 import SendFeedback from "./SendFeedback"
 import TestFlow from "./TestFlow"
 import WalletConfig from "./WalletConfig"
 
 const Portal = () => {
+  const { isMobile } = useCheckViewport()
   return (
     <Container>
       <Box sx={{ textAlign: "center", mt: ["6.8rem", "13.8rem"] }}>
@@ -17,7 +17,7 @@ const Portal = () => {
       </Box>
       <Stack
         direction="column"
-        gap={isMobileOnly ? "4rem" : "6rem"}
+        gap={isMobile ? "4rem" : "6rem"}
         alignItems="center"
         sx={{
           mt: ["8rem", "12rem"],

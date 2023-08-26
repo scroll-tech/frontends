@@ -14,7 +14,9 @@ const useCheckViewport = () => {
   const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"))
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
 
+  // mobile(orientation: portrait)
   const isPortrait = useMediaQuery(theme.breakpoints.down("md"))
+  // desktop(orientation: landscape)
   const isLandscape = useMediaQuery(theme.breakpoints.up("md"))
 
   return { isDesktop, isTabletLandscape, isTablet, isMobile, isPortrait, isLandscape }

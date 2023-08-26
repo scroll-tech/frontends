@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react"
-import { isMobileOnly } from "react-device-detect"
 import useStorage from "squirrel-gill"
 
 import { Box, Stack, Typography } from "@mui/material"
@@ -12,6 +11,7 @@ import { useApp } from "@/contexts/AppContextProvider"
 import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useBalance } from "@/hooks"
+import useCheckViewport from "@/hooks/useCheckViewport"
 import useBridgeStore from "@/stores/bridgeStore"
 import { amountToBN, switchNetwork, toTokenDisplay } from "@/utils"
 
@@ -30,6 +30,7 @@ const SendTransaction = props => {
   const { chainId, connect } = useRainbowContext()
   // TODO: extract tokenList
   const { tokenList } = useApp()
+  const { isMobile } = useCheckViewport()
   const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
 
   const { gasLimit, gasPrice, errorMessage: priceFeeErrorMessage, fetchData: fetchPriceFee } = usePriceFeeContext()
@@ -203,7 +204,7 @@ const SendTransaction = props => {
         {needApproval ? (
           <Button
             key="approve"
-            width={isMobileOnly ? "100%" : "25rem"}
+            width={isMobile ? "100%" : "25rem"}
             color="primary"
             disabled={!needApproval || !necessaryCondition}
             loading={approveLoading}
@@ -215,7 +216,7 @@ const SendTransaction = props => {
         ) : (
           <Button
             key="send"
-            width={isMobileOnly ? "100%" : "25rem"}
+            width={isMobile ? "100%" : "25rem"}
             color="primary"
             disabled={!necessaryCondition}
             loading={sendLoading}
