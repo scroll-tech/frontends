@@ -34,7 +34,7 @@ const Container = styled(Box)(({ theme }) => ({
 const ButtonContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   gap: "3rem",
-  [theme.breakpoints.down("md")]: {
+  [theme.breakpoints.down("sm")]: {
     flexDirection: "column",
     gap: "2rem",
   },

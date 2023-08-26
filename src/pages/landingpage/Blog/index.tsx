@@ -1,4 +1,3 @@
-import { isMobileOnly } from "react-device-detect"
 import { makeStyles } from "tss-react/mui"
 
 import Button from "@/components/Button"
@@ -117,10 +116,7 @@ const BuildingStory = () => {
       ></SectionHeader>
       <SuccessionToView className={classes.grid}>
         {STORIES.map((item, index) => (
-          <SuccessionItem
-            key={item.title}
-            className={cx(item.cover ? classes.withCover : classes.noCover, isMobileOnly && classes[`cardItem${index}`])}
-          >
+          <SuccessionItem key={item.title} className={cx(item.cover ? classes.withCover : classes.noCover, classes[`cardItem${index}`])}>
             <StoryCard key={item.title} {...item}></StoryCard>
           </SuccessionItem>
         ))}

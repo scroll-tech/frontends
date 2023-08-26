@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react"
 
-import { Box, Typography } from "@mui/material"
+import { Box, Container as MuiContainer, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import ScalabilityIcon from "@/assets/images/homepage/home/start_bridge.png"
@@ -50,11 +50,9 @@ const Container = styled(Box)(({ theme }) => ({
   },
 }))
 
-const InnerBox = styled(Box)(({ theme }) => ({
+const InnerBox = styled(MuiContainer)(({ theme }) => ({
   position: "relative",
   width: "100%",
-  paddingLeft: "24px",
-  paddingRight: "24px",
 }))
 
 const Background = styled(Box)(({ theme }) => ({
@@ -70,6 +68,8 @@ const Background = styled(Box)(({ theme }) => ({
 const StepContainer = styled(SuccessionToView)(({ theme }) => ({
   display: "flex",
   // justifyContent: "space-between",
+  flexWrap: "wrap",
+  gap: "2rem",
   marginBottom: "13rem",
   "& > div": {
     flex: 1,
@@ -83,7 +83,7 @@ const StepContainer = styled(SuccessionToView)(({ theme }) => ({
   "& > div:nth-of-type(3) img": {
     width: "3.3rem",
   },
-  [theme.breakpoints.down("md")]: {
+  [theme.breakpoints.down("sm")]: {
     flexDirection: "column",
     marginBottom: "3.4rem",
     "& > div:nth-of-type(1) img": {

@@ -72,7 +72,7 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
   color: "#101010",
   borderRadius: "1rem",
   lineHeight: "9.4rem",
-  height: "9.4rem",
+  // height: "9.4rem",
   padding: "0 2rem",
   textAlign: "center",
   animation: `${slideOutAnimation} 1s linear 1s, ${slideInOutAnimation} 2s linear infinite 2s`,
