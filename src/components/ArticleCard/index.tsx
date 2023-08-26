@@ -26,9 +26,11 @@ const Card = styled(Box)(({ theme }) => ({
     cursor: "pointer !important",
     opacity: 0.7,
   },
-  [theme.breakpoints.down("md")]: {
-    gridTemplateColumns: "1fr",
+  [theme.breakpoints.down("lg")]: {
     gap: "2rem",
+  },
+  [theme.breakpoints.down("sm")]: {
+    gridTemplateColumns: "1fr",
   },
 }))
 
@@ -56,7 +58,7 @@ const ArticleSummary = styled(Typography)(({ theme }) => ({
 }))
 
 const ArticleInfo = styled(Box)(({ theme }) => ({
-  [theme.breakpoints.down("md")]: {
+  [theme.breakpoints.down("sm")]: {
     gridRow: 2,
   },
 }))
@@ -66,6 +68,8 @@ const ArticlePoster = styled(WebpImage)(({ theme }) => ({
   maxWidth: "51.7rem",
   height: "auto",
   borderRadius: "2.5rem",
+  justifySelf: "flex-end",
+
   [theme.breakpoints.down("md")]: {
     gridRow: 1,
     borderRadius: "1.5rem",
