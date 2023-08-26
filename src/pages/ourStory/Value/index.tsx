@@ -1,5 +1,4 @@
 import { useRef } from "react"
-import { isDesktop, isMobileOnly } from "react-device-detect"
 
 import { Box, Stack, SvgIcon, Typography } from "@mui/material"
 
@@ -8,6 +7,7 @@ import { ReactComponent as NeutralitySvg } from "@/assets/svgs/refactor/story-va
 import { ReactComponent as OpennessSvg } from "@/assets/svgs/refactor/story-value-openness.svg"
 import ScrollExpandedBg from "@/components/ScrollExpandedBg"
 import SectionHeader from "@/components/SectionHeader"
+import useCheckViewport from "@/hooks/useCheckViewport"
 
 const STORY_VALUES = [
   {
@@ -31,26 +31,27 @@ const STORY_VALUES = [
 ]
 
 const Value = () => {
+  const { isPortrait } = useCheckViewport()
   const contentRef = useRef(null)
   return (
     <ScrollExpandedBg anchorEl={contentRef}>
-      <Box ref={contentRef} sx={{ position: "relative", width: "100%", paddingLeft: ["2rem", "6rem"], paddingRight: ["2rem", "6rem"] }}>
-        <Stack direction={isMobileOnly ? "column" : "row"} justifyContent="space-between" spacing="3rem">
+      <Box ref={contentRef} sx={{ position: "relative", width: "100%", px: ["2rem", "6rem"] }}>
+        <Stack direction={isPortrait ? "column" : "row"} justifyContent="space-between" spacing={isPortrait ? "3rem" : "12rem"}>
           <Stack direction="column" justifyContent="space-between" sx={{ flex: 1 }}>
             <SectionHeader
               dark
               title="Our values"
               content="At Scroll, we have a shared mission to uphold neutrality, openness, and be community-first as we strive to preserve Ethereum's core properties and prioritize the collective well-being of our ecosystem."
             ></SectionHeader>
-            {isDesktop && (
-              <Box sx={{ position: "sticky", bottom: "8rem", mt: "24rem", mb: "14rem" }}>
+            {!isPortrait && (
+              <Box sx={{ position: "sticky", bottom: "8rem", mt: "30rem", mb: "14rem" }}>
                 <img src="/imgs/story/story-value.svg" alt="value"></img>
               </Box>
             )}
           </Stack>
-          <Stack direction="column" spacing={isMobileOnly ? "5.6rem" : "12rem"} sx={{ flex: 1, pt: ["7rem", "14.6rem"], pb: ["9rem", "14rem"] }}>
+          <Stack direction="column" spacing={isPortrait ? "5.6rem" : "12rem"} sx={{ flex: 1, pt: ["7rem", "14.6rem"], pb: ["9rem", "14rem"] }}>
             {STORY_VALUES.map(({ icon, title, content }) => (
-              <Stack direction="column" key={title} spacing={isMobileOnly ? "1rem" : "2.2rem"}>
+              <Stack direction="column" key={title} spacing={isPortrait ? "1rem" : "2.2rem"}>
                 <SvgIcon
                   sx={{ width: "min-content", height: "min-content", "@media(max-width: 600px)": { transform: "scale(0.8)" } }}
                   component={icon}

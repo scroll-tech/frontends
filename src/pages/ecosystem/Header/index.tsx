@@ -1,4 +1,4 @@
-import { isMobileOnly } from "react-device-detect"
+import { makeStyles } from "tss-react/mui"
 
 import { Box, Stack, Typography } from "@mui/material"
 
@@ -6,58 +6,90 @@ import Button from "@/components/Button"
 import OrientationToView from "@/components/Motion/OrientationToView"
 import SectionWrapper from "@/components/SectionWrapper"
 import { LIST_YOUR_DAPP_LINK } from "@/constants"
+import useCheckViewport from "@/hooks/useCheckViewport"
+
+const useStyles = makeStyles()(theme => ({
+  root: {
+    display: "grid",
+    gridTemplateColumns: "min-content min-content",
+    rowGap: "2.5rem",
+    columnGap: "4rem",
+    paddingBottom: "15.4rem",
+    justifyContent: "space-between",
+    [theme.breakpoints.down("xl")]: {
+      gridTemplateColumns: "min-content 1fr",
+    },
+    [theme.breakpoints.down("lg")]: {
+      gridTemplateColumns: "1fr",
+      gap: "2rem",
+      paddingTop: "7.3rem",
+      paddingBottom: "4rem",
+    },
+    [theme.breakpoints.down("sm")]: {
+      paddingTop: "7.3rem",
+      paddingBottom: "4rem",
+    },
+  },
+  titleWrapper: {
+    gridRow: "span 2",
+  },
+  subTitleWrapper: {
+    width: "68rem",
+    [theme.breakpoints.down("xl")]: {
+      width: "100%",
+      maxWidth: "68rem",
+    },
+  },
+  actionGroup: {
+    display: "flex",
+    [theme.breakpoints.between("sm", "lg")]: {
+      justifyContent: "flex-end",
+      marginTop: "4rem",
+    },
+  },
+}))
 
 const Header = () => {
+  const { classes } = useStyles()
+  const { isPortrait, isMobile } = useCheckViewport()
   return (
     <>
-      <SectionWrapper
-        sx={{
-          pt: ["6.8rem", "7.3rem", "15.4rem"],
-          pb: ["10rem", "10rem", "15.4rem"],
-          display: "flex",
-          flexDirection: ["column", "column", "row"],
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <OrientationToView>
+      <SectionWrapper className={classes.root}>
+        <OrientationToView className={classes.titleWrapper}>
           <Typography
             sx={{
               fontSize: ["4rem", "7.8rem"],
               lineHeight: ["5rem", "8.5rem"],
               fontWeight: 600,
               textAlign: ["center", "left"],
-              width: ["100%", "66rem"],
+              width: "max-content",
             }}
           >
-            An Ecosystem Forever in Motion
+            An Ecosystem <br></br> Forever in Motion
           </Typography>
         </OrientationToView>
-        <Stack direction="column" justifyContent="space-between" spacing={isMobileOnly ? "4rem" : "2.5rem"} sx={{ maxWidth: ["100%", "68rem"] }}>
-          <OrientationToView>
-            <Typography
-              sx={{
-                fontSize: ["2rem", "2.6rem"],
-                lineHeight: "normal",
-                mt: ["2rem", "2rem", 0],
-                textAlign: ["center", "left"],
-              }}
-            >
-              Join a supportive, collaborative ecosystem with a greater purpose – permissionless, flexible, and dedicated to defining the future of
-              Ethereum.
-            </Typography>
-          </OrientationToView>
-          <OrientationToView delay={0.3}>
-            <Stack direction={isMobileOnly ? "column" : "row"} spacing={isMobileOnly ? "2rem" : "3rem"} alignItems="center">
-              <Button href="/bridge" color="primary">
-                Bridge into Scroll
-              </Button>
-              <Button href={LIST_YOUR_DAPP_LINK} target="_blank">
-                List your dApp
-              </Button>
-            </Stack>
-          </OrientationToView>
-        </Stack>
+
+        <OrientationToView className={classes.subTitleWrapper}>
+          <Typography
+            sx={{
+              fontSize: ["2rem", "2.6rem"],
+              textAlign: ["center", "left"],
+            }}
+          >
+            Join a supportive, collaborative ecosystem with a greater purpose – permissionless, flexible, and dedicated to defining the future of
+            Ethereum.
+          </Typography>
+        </OrientationToView>
+        <OrientationToView delay={0.3} className={classes.actionGroup}>
+          <Stack direction={isMobile ? "column" : "row"} spacing={isPortrait ? "2rem" : "3rem"} alignItems="center">
+            <Button href="/bridge" color="primary" width={isMobile ? "18.4rem" : "25rem"}>
+              Bridge into Scroll
+            </Button>
+            <Button href={LIST_YOUR_DAPP_LINK} target="_blank" width={isMobile ? "18.4rem" : "25rem"}>
+              List your dApp
+            </Button>
+          </Stack>
+        </OrientationToView>
       </SectionWrapper>
       <Box sx={{ backgroundColor: theme => theme.palette.themeBackground.light }}>
         <Box

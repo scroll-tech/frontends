@@ -2,7 +2,7 @@ import { motion } from "framer-motion"
 import { isMobileOnly } from "react-device-detect"
 
 const OrientationToView = props => {
-  const { children, direction = "up", once = true, delay } = props
+  const { children, direction = "up", once = true, delay, ...restProps } = props
   const variants = {
     up: {
       hidden: {
@@ -52,6 +52,7 @@ const OrientationToView = props => {
       variants={variants[direction]}
       viewport={{ once, amount: isMobileOnly ? 0.6 : "all" }}
       transition={{ ease: [0.16, 1, 0.3, 1], duration: 1, delay }}
+      {...restProps}
     >
       {children}
     </motion.div>
