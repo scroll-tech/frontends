@@ -1,11 +1,10 @@
 import React, { useState } from "react"
 import { NavLink } from "react-router-dom"
 
-import { Box, Fade, Link, Popper, Stack } from "@mui/material"
+import { Box, Container, Fade, Link, Popper, Stack } from "@mui/material"
 import { styled } from "@mui/system"
 
 import Logo from "@/components/ScrollLogo"
-import SectionWrapper from "@/components/SectionWrapper"
 
 import Announcement from "./announcement"
 import { navigations } from "./constants"
@@ -28,7 +27,6 @@ const HeaderContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  padding: "0 2rem",
 }))
 
 const MenuLinkButton = styled(Link)(({ theme }) => ({
@@ -258,14 +256,14 @@ const App = ({ currentMenu }) => {
   return (
     <StyledBox transparent={noBg}>
       <Announcement />
-      <SectionWrapper sx={{ pt: 0 }}>
+      <Container sx={{ maxWidth: "152rem !important" }}>
         <HeaderContainer>
           <NavLink to="/" className="flex">
             <Logo />
           </NavLink>
           <Box>{renderNavigationList()}</Box>
         </HeaderContainer>
-      </SectionWrapper>
+      </Container>
     </StyledBox>
   )
 }

@@ -23,7 +23,6 @@ const useCheckNoBg = () => {
       }
     }
   }, [isNoBgPage])
-
   return isNoBgPage && isNoBgSection ? "transparent" : ""
 }
 
