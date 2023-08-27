@@ -51,7 +51,7 @@ const Subscribe = () => {
     <Box
       sx={{
         backgroundColor: theme => theme.palette.themeBackground.highlight,
-        p: ["6rem 2rem", "6rem 2rem", "3.2rem 6rem"],
+        py: ["6rem", "6rem", "3.2rem"],
       }}
     >
       <Container sx={{ maxWidth: "152rem !important" }}>
