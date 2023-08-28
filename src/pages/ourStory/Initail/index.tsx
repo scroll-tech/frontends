@@ -74,7 +74,7 @@ const Initail = () => {
       </OrientationToView>
       <Line orientation="vertical" textAlign="center" className={classes.divider} />
 
-      <Stack direction={isMobileOnly ? "column" : "row"} alignItems="center" spacing={isMobileOnly ? "12rem" : "6rem"}>
+      <Stack direction={isMobileOnly ? "column" : "row"} alignItems="center" spacing={isMobileOnly ? "10rem" : "6rem"}>
         <OrientationToView direction={isMobileOnly ? "up" : "right"}>
           <Typography sx={{ textAlign: ["center", "left"] }}>
             Realizing that Ethereum equivalence was the only viable path forward, the trio embarked on a mission to build an open-source, scalable
@@ -92,7 +92,7 @@ const Initail = () => {
       </OrientationToView>
       <Line orientation="vertical" textAlign="center" className={classes.divider} />
 
-      <Stack direction={isMobileOnly ? "column-reverse" : "row"} alignItems="center" spacing={isMobileOnly ? "12rem" : "6rem"}>
+      <Stack direction={isMobileOnly ? "column-reverse" : "row"} alignItems="center" spacing={isMobileOnly ? "10rem" : "6rem"}>
         <OrientationToView direction={isMobileOnly ? "up" : "right"}>
           <img style={{ maxWidth: isMobileOnly ? "100%" : "unset" }} src="/imgs/story/story-initial-3.svg" alt=""></img>
         </OrientationToView>

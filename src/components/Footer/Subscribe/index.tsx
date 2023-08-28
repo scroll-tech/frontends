@@ -63,7 +63,7 @@ const Subscribe = () => {
           <MailchimpSubscribe
             url={url}
             render={({ subscribe, status, message }: any) => (
-              <Box sx={{ position: "relative", mt: ["3.2rem", "3.2rem", 0], width: ["100%", "auto"], textAlign: "right" }}>
+              <Box sx={{ position: "relative", width: ["100%", "auto"], textAlign: "right" }}>
                 <EmailInput
                   value={email}
                   end={status === "success"}
