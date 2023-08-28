@@ -84,7 +84,7 @@ const StepContainer = styled(SuccessionToView)(({ theme }) => ({
   },
   [theme.breakpoints.down("md")]: {
     flexDirection: "column",
-    marginBottom: "2rem",
+    marginBottom: "3.2rem",
     "& > div:nth-of-type(1) img": {
       width: "3.3rem",
     },
@@ -102,7 +102,7 @@ const StepBox = styled(Box)(({ theme }) => ({
   flexDirection: "column",
   flex: 1,
   [theme.breakpoints.down("md")]: {
-    marginBottom: "7.2rem",
+    marginBottom: "5.6rem",
   },
 }))
 
@@ -118,17 +118,16 @@ const StepIcon = styled("img")(({ theme }) => ({
 
 const StepTitle = styled(Typography)(({ theme }) => ({
   textAlign: "left",
-  color: "#ffffff",
+  color: theme.palette.primary.contrastText,
   marginBottom: "2.4rem",
   [theme.breakpoints.down("md")]: {
     marginBottom: "1rem",
-    fontSize: "2rem",
   },
 }))
 
 const StepDescription = styled(Typography)(({ theme }) => ({
   textAlign: "left",
-  color: "#ffffff",
+  color: theme.palette.primary.contrastText,
   maxWidth: "32.6rem",
   [theme.breakpoints.down("md")]: {
     fontSize: "1.6rem",

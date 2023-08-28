@@ -185,51 +185,54 @@ export const typographyOptions = {
 
   H1: {
     fontSize: "7.8rem",
-    lineHeight: "8.5rem",
+    lineHeight: "normal",
     fontWeight: 600,
     [theme.breakpoints.down("sm")]: {
       fontSize: "4rem",
-      lineHeight: "4.4rem",
     },
   },
 
+  // TODO: not use
   H2: {
     fontSize: "4.8rem",
-    lineHeight: "5.5rem",
+    lineHeight: "normal",
     fontWeight: 600,
     [theme.breakpoints.down("sm")]: {
       fontSize: "3.2rem",
-      lineHeight: "3.8rem",
     },
   },
 
+  // TODO: not use
   H3: {
     fontSize: "4.6rem",
-    lineHeight: "5.5rem",
+    lineHeight: "normal",
     fontWeight: 500,
   },
   H4: {
     fontSize: "2.4rem",
-    lineHeight: "3.4rem",
+    lineHeight: "normal",
     fontWeight: 600,
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "2rem",
+    },
   },
   Body1: {
     fontSize: "2.6rem",
-    lineHeight: "3.6rem",
+    lineHeight: "normal",
     fontWeight: 400,
     [theme.breakpoints.down("sm")]: {
       fontSize: "2rem",
-      lineHeight: "2.6rem",
     },
   },
+  // TODO: not use
   Body2: {
     fontSize: "2.4rem",
-    lineHeight: "3.4rem",
+    lineHeight: "normal",
     fontWeight: 400,
   },
   Body3: {
     fontSize: "2.0rem",
-    lineHeight: "2.8rem",
+    lineHeight: "normal",
     fontWeight: 400,
   },
 }

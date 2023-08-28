@@ -86,7 +86,7 @@ const TechPrinciple = () => {
   const { classes } = useStyles()
 
   return (
-    <SectionWrapper sx={{ pt: ["11rem", "13.5rem"] }}>
+    <SectionWrapper>
       <SectionHeader
         title="Our technical principles"
         content="Comprehensive security, Ethereum equivalence for seamless developer experience, and decentralization across all layers are at the core of how we build Scroll."

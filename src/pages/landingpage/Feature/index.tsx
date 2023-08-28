@@ -77,7 +77,6 @@ const FeatureTitle = styled(Typography)(({ theme }) => ({
   marginBottom: "2rem",
   [theme.breakpoints.down("md")]: {
     marginBottom: "1rem",
-    fontSize: "2rem",
     textAlign: "center",
   },
 }))
