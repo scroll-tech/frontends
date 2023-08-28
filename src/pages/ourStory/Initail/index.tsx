@@ -65,6 +65,7 @@ const useStyles = makeStyles()(theme => ({
     },
     [theme.breakpoints.down("sm")]: {
       maxWidth: "100%",
+      minWidth: "unset",
     },
   },
   sideImg: {
