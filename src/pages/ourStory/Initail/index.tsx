@@ -23,6 +23,10 @@ const Typography = styled(MuiTypography)(({ theme }) => ({
   },
 }))
 
+const CoFounder = styled("span")(() => ({
+  whiteSpace: "nowrap",
+}))
+
 const useStyles = makeStyles()(theme => ({
   divider: {
     height: "19.5rem",
@@ -43,16 +47,26 @@ const Initail = () => {
     <SectionWrapper maxWidth="127.5rem" sx={{ textAlign: "center", pb: "22rem" }}>
       <OrientationToView>
         <Typography>Founded in 2021,</Typography>
-        <Typography sx={{ textIndent: "2em", whiteSpace: "pre-wrap" }}>
+        <Typography sx={{ whiteSpace: "pre-wrap" }}>
           our vision is to create an inclusive and infinite ecosystem for Ethereum. In 2020, as DeFi boomed and Ethereum faced network congestion, our
-          founders—Ye <InlineAvater size={avatarSize} alt="Ye" src={YeAvatar} />, a mathematician fascinated by zero knowledge proofs; Haichen{" "}
-          <InlineAvater size={avatarSize} alt="Haichen" src={HaichenAvatar} />, a systems engineer drawn to cryptography; and Sandy{" "}
-          <InlineAvater size={avatarSize} alt="Sandy" src={SandyAvatar} />, an experienced web3 researcher and investor—joined forces.
+          founders—
+          <CoFounder>
+            Ye <InlineAvater size={avatarSize} alt="Ye" src={YeAvatar} />
+          </CoFounder>
+          , a mathematician fascinated by zero knowledge proofs;{" "}
+          <CoFounder>
+            Haichen <InlineAvater size={avatarSize} alt="Haichen" src={HaichenAvatar} />
+          </CoFounder>
+          , a systems engineer drawn to cryptography; and{" "}
+          <CoFounder>
+            Sandy <InlineAvater size={avatarSize} alt="Sandy" src={SandyAvatar} />
+          </CoFounder>
+          , an experienced web3 researcher and investor—joined forces.
         </Typography>
       </OrientationToView>
       <Line orientation="vertical" textAlign="center" className={classes.divider} />
       <OrientationToView>
-        <Typography sx={{ textIndent: "2em", whiteSpace: "pre-wrap" }}>
+        <Typography sx={{ whiteSpace: "pre-wrap" }}>
           An in-depth discussion about the purpose of blockchain and the scalability trilemma ensued. Understanding that Ethereum's deliberate
           trade-off for prioritizing security and decentralization resulted in slower transaction times, the founders saw an opportunity: a scaling
           solution nearly identical to Ethereum with lower costs, faster speeds, and infinite scaling. 
@@ -66,10 +80,14 @@ const Initail = () => {
       <Line orientation="vertical" textAlign="center" className={classes.divider} />
       <OrientationToView>
         <Typography>
-          At the time, Ye <InlineAvater size={avatarSize} alt="Ye" src={YeAvatar} /> was a visionary PhD student <br></br>with groundbreaking research
-          on hardware provers. The huge potential for efficiency improvements using zero knowledge hardware and cryptographic technology inspired him
-          to build a bytecode-level compatible solution closely resembling the EVM (Ethereum Virtual Machine). Only through such an improvement in
-          efficiency could the concept of the zkEVM (zero knowledge Ethereum Virtual Machine) come to life, enabling a seamless developer experience.
+          At the time,{" "}
+          <CoFounder>
+            Ye <InlineAvater size={avatarSize} alt="Ye" src={YeAvatar} />
+          </CoFounder>{" "}
+          was a visionary PhD student <br></br>with groundbreaking research on hardware provers. The huge potential for efficiency improvements using
+          zero knowledge hardware and cryptographic technology inspired him to build a bytecode-level compatible solution closely resembling the EVM
+          (Ethereum Virtual Machine). Only through such an improvement in efficiency could the concept of the zkEVM (zero knowledge Ethereum Virtual
+          Machine) come to life, enabling a seamless developer experience.
         </Typography>
       </OrientationToView>
       <Line orientation="vertical" textAlign="center" className={classes.divider} />
