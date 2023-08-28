@@ -1,4 +1,5 @@
-import { Box, Typography } from "@mui/material"
+import { Box, Typography, useMediaQuery } from "@mui/material"
+import { useTheme } from "@mui/material/styles"
 import { styled } from "@mui/system"
 
 import FeatureIcon1 from "@/assets/images/homepage/home/feature_icon_1.png"
@@ -105,6 +106,41 @@ const FeatureDescription = styled(Typography)(({ theme }) => ({
 }))
 
 const Feature = () => {
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"))
+
+  const ComponentToRender = (featureIdx, elementIdx, children) => {
+    if (isMobile) {
+      return <FadeInUp>{children}</FadeInUp>
+    }
+
+    const isEven = featureIdx % 2 === 0
+
+    if (elementIdx === 0) {
+      return isEven ? <SlideInLeft triggerOnce>{children}</SlideInLeft> : <SlideInRight triggerOnce>{children}</SlideInRight>
+    } else {
+      return isEven ? <SlideInRight triggerOnce>{children}</SlideInRight> : <SlideInLeft triggerOnce>{children}</SlideInLeft>
+    }
+  }
+
+  const renderFeatures = () => {
+    return FEATURES.map((feature, featureIdx) => {
+      return (
+        <FeatureBox key={featureIdx}>
+          {ComponentToRender(featureIdx, 0, <FeatureIcon src={feature.icon} />)}
+          {ComponentToRender(
+            featureIdx,
+            1,
+            <FeatureTextBox>
+              <FeatureTitle variant="H4">{feature.title}</FeatureTitle>
+              <FeatureDescription variant="Body3">{feature.description}</FeatureDescription>
+            </FeatureTextBox>,
+          )}
+        </FeatureBox>
+      )
+    })
+  }
+
   return (
     <SectionWrapper>
       <FadeInUp>
@@ -119,35 +155,7 @@ const Feature = () => {
         />
       </FadeInUp>
       <Spacer />
-      {FEATURES.map((feature, idx) => (
-        <FeatureBox key={idx}>
-          {idx % 2 === 0 ? (
-            <>
-              <SlideInLeft triggerOnce>
-                <FeatureIcon src={feature.icon} />
-              </SlideInLeft>
-              <SlideInRight triggerOnce>
-                <FeatureTextBox>
-                  <FeatureTitle variant="H4">{feature.title}</FeatureTitle>
-                  <FeatureDescription variant="Body3">{feature.description}</FeatureDescription>
-                </FeatureTextBox>
-              </SlideInRight>
-            </>
-          ) : (
-            <>
-              <SlideInRight triggerOnce>
-                <FeatureIcon src={feature.icon} />
-              </SlideInRight>
-              <SlideInLeft triggerOnce>
-                <FeatureTextBox>
-                  <FeatureTitle variant="H4">{feature.title}</FeatureTitle>
-                  <FeatureDescription variant="Body3">{feature.description}</FeatureDescription>
-                </FeatureTextBox>
-              </SlideInLeft>
-            </>
-          )}
-        </FeatureBox>
-      ))}
+      {renderFeatures()}
     </SectionWrapper>
   )
 }
