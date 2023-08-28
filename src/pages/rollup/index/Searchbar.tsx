@@ -14,12 +14,13 @@ const SearchbarContainer = styled(Paper)(({ theme }) => ({
   paddingRight: "0.5rem",
   display: "flex",
   alignItems: "center",
-  marginBottom: "3.5rem",
+  marginBottom: "6rem",
   boxShadow: "none",
   height: "5.5rem",
   [theme.breakpoints.down("md")]: {
     padding: "0",
     overflow: "hidden",
+    marginBottom: "3rem",
   },
 }))
 
@@ -63,7 +64,7 @@ export default function Searchbar(props) {
 
   return (
     <SearchbarContainer>
-      <IconButton sx={{ paddingLeft: "3rem", color: "text.secondary", pointerEvents: "none" }} component="label" aria-label="search">
+      <IconButton sx={{ paddingLeft: ["1.8rem", "2.2rem"], color: "text.secondary", pointerEvents: "none" }} component="label" aria-label="search">
         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="23" viewBox="0 0 22 23" fill="none">
           <path
             fill-rule="evenodd"
@@ -74,7 +75,7 @@ export default function Searchbar(props) {
         </svg>
       </IconButton>
       <InputBase
-        sx={{ ml: 1, flex: 1 }}
+        sx={{ ml: 1, flex: 1, pr: ["1.8rem", "2.2rem"] }}
         placeholder="Search by block height / block hash"
         inputProps={{ "aria-label": "Search by block height / block hash" }}
         onKeyDown={handleKeyDown}

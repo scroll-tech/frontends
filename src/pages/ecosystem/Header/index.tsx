@@ -11,10 +11,9 @@ const Header = () => {
   return (
     <>
       <SectionWrapper
-        // full
         sx={{
-          pt: ["7.3rem", "7.3rem", "15.4rem"],
-          pb: ["4rem", "4rem", "15.4rem"],
+          pt: ["6.8rem", "7.3rem", "15.4rem"],
+          pb: ["10rem", "10rem", "15.4rem"],
           display: "flex",
           flexDirection: ["column", "column", "row"],
           justifyContent: "space-between",
@@ -34,7 +33,7 @@ const Header = () => {
             An Ecosystem Forever in Motion
           </Typography>
         </OrientationToView>
-        <Stack direction="column" justifyContent="space-between" spacing={isMobileOnly ? "3.8rem" : "2.5rem"} sx={{ maxWidth: ["100%", "68rem"] }}>
+        <Stack direction="column" justifyContent="space-between" spacing={isMobileOnly ? "4rem" : "2.5rem"} sx={{ maxWidth: ["100%", "68rem"] }}>
           <OrientationToView>
             <Typography
               sx={{
@@ -50,10 +49,10 @@ const Header = () => {
           </OrientationToView>
           <OrientationToView delay={0.3}>
             <Stack direction={isMobileOnly ? "column" : "row"} spacing={isMobileOnly ? "2rem" : "3rem"} alignItems="center">
-              <Button href="/bridge" color="primary" width={isMobileOnly ? "18.4rem" : "25rem"}>
+              <Button href="/bridge" color="primary">
                 Bridge into Scroll
               </Button>
-              <Button href={LIST_YOUR_DAPP_LINK} target="_blank" width={isMobileOnly ? "18.4rem" : "25rem"}>
+              <Button href={LIST_YOUR_DAPP_LINK} target="_blank">
                 List your dApp
               </Button>
             </Stack>

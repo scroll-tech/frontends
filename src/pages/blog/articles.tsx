@@ -12,9 +12,7 @@ const ArticleBox = styled(Box)(
   ({ theme }) => `
           display: flex;
           justify-content: space-between;
-          margin-top: 2.7rem;
           ${theme.breakpoints.down("md")} {
-            margin-bottom: 4rem;
             justify-content: center;
         };
         `,

@@ -84,6 +84,7 @@ const useStyles = makeStyles()(theme => ({
       gridTemplateColumns: "repeat(2, 1fr)",
       gridColumnGap: "4.6rem",
       gridRowGap: "5rem",
+      margin: "8rem auto 0",
     },
   },
   gridItem: {
@@ -120,7 +121,9 @@ const TeamMembers = () => {
               src={item.avatar}
               classes={{ img: classes.img }}
             ></Avatar>
-            <Typography sx={{ fontSize: "2rem", fontWeight: 600, mt: "2.2rem", mb: "0.6rem", textAlign: "center" }}>{item.name}</Typography>
+            <Typography sx={{ fontSize: "2rem", fontWeight: 600, mt: ["1.2rem", "2.2rem"], mb: [0, "0.6rem"], textAlign: "center" }}>
+              {item.name}
+            </Typography>
             <Typography sx={{ fontSize: ["1.6rem", "2rem"], textAlign: "center" }}>{item.desc}</Typography>
           </SuccessionItem>
         ))}

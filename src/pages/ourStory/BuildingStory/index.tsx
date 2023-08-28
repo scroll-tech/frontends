@@ -1,4 +1,3 @@
-import { isMobileOnly } from "react-device-detect"
 import { makeStyles } from "tss-react/mui"
 
 import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
@@ -62,7 +61,11 @@ const useStyles = makeStyles()(theme => ({
     gridTemplateColumns: "repeat(4, 1fr)",
     gridGap: "3rem",
     marginTop: "11rem",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.between("md", "lg")]: {
+      gridTemplateColumns: "repeat(2, 1fr)",
+      gridTemplateRows: "repeat(4, 1fr)",
+    },
+    [theme.breakpoints.down("md")]: {
       gridTemplateColumns: "repeat(2, 1fr)",
       gridGap: "2rem",
       marginTop: "5rem",
@@ -71,13 +74,29 @@ const useStyles = makeStyles()(theme => ({
   withCover: {
     gridColumn: "span 2",
     overflow: "hidden",
+    [theme.breakpoints.between("md", "lg")]: {
+      gridColumn: "span 1",
+      gridRow: "span 2",
+    },
   },
   noCover: {
     gridColumn: "span 1",
     overflow: "hidden",
+    [theme.breakpoints.between("md", "lg")]: {
+      gridRow: "span 1",
+    },
+    [theme.breakpoints.down("md")]: {
+      gridColumn: "span 2",
+    },
   },
   cardItem5: {
-    gridRow: 3,
+    [theme.breakpoints.between("md", "lg")]: {
+      gridRow: "3 / 5",
+      gridColumn: 2,
+    },
+    [theme.breakpoints.down("md")]: {
+      gridRow: 4,
+    },
   },
 }))
 
@@ -92,10 +111,7 @@ const BuildingStory = () => {
       ></SectionHeader>
       <SuccessionToView className={classes.grid}>
         {STORIES.map((item, index) => (
-          <SuccessionItem
-            key={item.title}
-            className={cx(item.cover ? classes.withCover : classes.noCover, isMobileOnly && classes[`cardItem${index}`])}
-          >
+          <SuccessionItem key={item.title} className={cx(item.cover ? classes.withCover : classes.noCover, classes[`cardItem${index}`])}>
             <StoryCard key={item.title} {...item}></StoryCard>
           </SuccessionItem>
         ))}

@@ -15,8 +15,7 @@ import blogSource from "./data.json"
 const BlogContainer = styled(Box)(({ theme }) => ({
   padding: "0 6rem 14rem",
   [theme.breakpoints.down("md")]: {
-    margin: "0 0 8rem",
-    padding: "0 2rem 6rem",
+    padding: "0 2rem 9rem",
   },
 }))
 
@@ -41,8 +40,8 @@ const Header = styled(Box)(({ theme }) => ({
   gridTemplateColumns: "3fr 2fr",
   [theme.breakpoints.down("md")]: {
     gridTemplateColumns: "1fr",
-    padding: "4.8rem 0",
-    gap: "1rem",
+    padding: "6.8rem 0 8rem",
+    gap: "2rem",
   },
 }))
 

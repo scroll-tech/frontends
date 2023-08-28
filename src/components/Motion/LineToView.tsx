@@ -5,7 +5,7 @@ const LineToView = props => {
 
   return (
     <motion.div
-      style={{ transformOrigin: "0 0", transition: "transform .7s cubic-bezier(0.16, 1, 0.3, 1)" }}
+      style={{ transformOrigin: "0 0" }}
       initial={{ transform: "scaleY(0)" }}
       whileInView={{ transform: "scaleY(1)" }}
       transition={{ delay: 0.5 }}

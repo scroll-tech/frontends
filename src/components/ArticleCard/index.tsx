@@ -11,9 +11,6 @@ const ArticleTitle = styled(Typography)(({ theme }) => ({
   display: "table-cell",
   verticalAlign: "bottom",
   marginBottom: "0.6rem",
-  [theme.breakpoints.down("md")]: {
-    fontSize: "2rem",
-  },
 }))
 
 const Card = styled(Box)(({ theme }) => ({
@@ -47,6 +44,7 @@ const ArticleSummary = styled(Typography)(({ theme }) => ({
   marginBottom: "2.2rem",
   overflow: "hidden",
   maxWidth: "44rem",
+  lineHeight: "2.8rem",
   textOverflow: "ellipsis",
   display: "-webkit-box",
   WebkitLineClamp: 2,

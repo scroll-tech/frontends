@@ -13,17 +13,16 @@ const Card = styled(Paper)(({ theme }) => ({
   paddingTop: "2.7rem",
   paddingBottom: "2.2rem",
   cursor: "pointer",
-  "&:first-of-type": {
-    marginRight: "3.2rem",
-  },
+
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
+
   [theme.breakpoints.down("md")]: {
     paddingLeft: "1.4rem",
     paddingRight: "1rem",
     paddingTop: "1.4rem",
     paddingBottom: "1.1rem",
-    "&:first-of-type": {
-      marginRight: "2.4rem",
-    },
   },
 }))
 
@@ -58,7 +57,7 @@ const InfoCard = ({ title, value, total, description, onClickCard }: any) => {
 
   return (
     <Card onClick={onClickCard}>
-      <Box display="flex" alignItems="center" sx={{ marginBottom: "0.8rem" }}>
+      <Box display="flex" sx={{ marginBottom: "0.8rem" }}>
         <CardTitle variant="body1" color="textSecondary" sx={{ cursor: "pointer" }}>
           {title}
         </CardTitle>

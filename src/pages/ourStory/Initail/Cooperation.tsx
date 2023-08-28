@@ -121,7 +121,7 @@ const Cooperation = () => {
         community participation make the Scroll platform more robust and battle-tested.
       </Typography>
       {isMobileOnly ? (
-        <Stack direction="row" justifyContent="space-between" sx={{ mt: "5.4rem" }}>
+        <Stack direction="row" justifyContent="space-between" sx={{ mt: "4rem" }}>
           {PARTNER_LIST.slice(0, 5).map(item => (
             <Avatar className={classes.logo} key={item} src={`${PARTNER_LOGO_PUBLIC_URL}${item}`}></Avatar>
           ))}

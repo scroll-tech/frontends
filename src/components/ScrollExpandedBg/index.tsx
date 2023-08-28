@@ -9,12 +9,13 @@ const Wrapper = styled(Box)(({ theme }) => ({
 
 const Container = styled(Box)(({ theme }) => ({
   borderRadius: "40px 40px 0px 0px",
-  paddingTop: "15.4rem",
+  paddingTop: "5.4rem",
   background: "transparent",
   display: "flex !important",
   justifyContent: "center",
   maxWidth: "144rem",
   margin: "0 auto",
+  [theme.breakpoints.down("sm")]: {},
 }))
 
 const Background = styled(Box)(({ theme }) => ({

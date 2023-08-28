@@ -30,6 +30,7 @@ const Bridge = () => {
             display: "flex",
             flexDirection: "column",
             alignItems: ["flex-start", "center"],
+            maxWidth: ["100% !important"],
           }}
         >
           <Stack direction="row" sx={{ width: "100%" }} spacing="4px" justifyContent="space-between" alignItems="center">

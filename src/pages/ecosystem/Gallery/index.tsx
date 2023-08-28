@@ -17,7 +17,12 @@ const useStyles = makeStyles()(theme => ({
     gridTemplateColumns: "repeat(auto-fill, minmax(30rem, 1fr))",
     width: "100%",
     padding: "3rem 0",
-    gridGap: "3rem",
+    gap: "3rem",
+
+    [theme.breakpoints.down("sm")]: {
+      padding: "2rem 0",
+      gap: "2rem",
+    },
   },
 }))
 
@@ -82,7 +87,7 @@ const Gallery = props => {
             ))}
           </SuccessionToView>
           {hasMore && (
-            <Box sx={{ textAlign: "center", mt: ["2.5rem", "9.5rem"] }}>
+            <Box sx={{ textAlign: "center", mt: ["1.2rem", "9.5rem"] }}>
               <Link
                 component="button"
                 sx={{
