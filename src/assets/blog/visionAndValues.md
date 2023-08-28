@@ -24,13 +24,13 @@ Of course, we won’t stop there; after this first step, we plan to add experime
 
 ### Build in the open with the community
 
-Scroll is built to be community-centric and fully open-source from day one. We believe such important technology should be open to everyone to understand and audit. We use public specs and repos, and we are collaborating with community members from the Ethereum Foundation Privacy and Scaling Explorations team to build the zkEVM in the open.
+Scroll is built to be community-centric and fully open source from day one. We believe such important technology should be open to everyone to understand and audit. We use public specs and repos, and we are collaborating with community members from the Ethereum Foundation Privacy and Scaling Explorations team to build the zkEVM in the open.
 
-When building a platform which can _define_ ownership of financial assets, the ability to openly audit and verify the code is essential. Otherwise, what if the platform is faking proofs or not actually following the protocol? By being open-source, we enable a fundamental level of community trust in Scroll. Even in the development phase, anyone can check on our progress simply by viewing our Github repos. This forces us to be transparent and responsible to our community.
+When building a platform which can _define_ ownership of financial assets, the ability to openly audit and verify the code is essential. Otherwise, what if the platform is faking proofs or not actually following the protocol? By being open source, we enable a fundamental level of community trust in Scroll. Even in the development phase, anyone can check on our progress simply by viewing our Github repos. This forces us to be transparent and responsible to our community.
 
 From a developer’s perspective, building in the open leads to more secure and better designed systems. By virtue of being accessible, Scroll’s code constantly receives both internal and external peer review. Moreover, by implementing designs and improvements from community contributors, such open systems are able to aggregate the best ideas from a growing community of values-aligned developers.
 
-We believe the open-source DNA at the very heart of Scroll will make it the most secure and robust ZK-rollup, and we will continue collaborating with the community and contributing our solutions back to Ethereum. Our ultimate goal is to advance the end goal of Ethereum scaling -- "zk-SNARK everything".
+We believe the open source DNA at the very heart of Scroll will make it the most secure and robust ZK-rollup, and we will continue collaborating with the community and contributing our solutions back to Ethereum. Our ultimate goal is to advance the end goal of Ethereum scaling -- "zk-SNARK everything".
 
 ### Fight for decentralization and censorship resistance
 

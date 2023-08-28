@@ -29,7 +29,7 @@ const FEATURES = [
     icon: FeatureIcon3,
     title: "Unwavering security at every layer",
     description:
-      "Scroll uses advanced zero knowledge proof technology, battle-tested EVM models, and rigorous audits to ensure that our foundation is rooted in security and reliability. By prioritizing code security through open-source collaboration, Scroll protects our developers and users against vulnerabilities.",
+      "Scroll uses advanced zero knowledge proof technology, battle-tested EVM models, and rigorous audits to ensure that our foundation is rooted in security and reliability. By prioritizing code security through open source collaboration, Scroll protects our developers and users against vulnerabilities.",
   },
   {
     icon: FeatureIcon4,
@@ -146,7 +146,7 @@ const Feature = () => {
       <FadeInUp>
         <SectionHeader
           title="Zero knowledge required"
-          content="Scroll’s mission is to provide an accessible scaling solution that preserves the essence of Ethereum – trust-minimized, secure and open-source. Like a scroll, our story is constantly evolving in our quest to secure Ethereum’s future and making the developer experience as easy as possible."
+          content="Scroll’s mission is to provide an accessible scaling solution that preserves the essence of Ethereum – trust-minimized, secure and open source. Like a scroll, our story is constantly evolving in our quest to secure Ethereum’s future and making the developer experience as easy as possible."
           action={
             <Button href="/story" color="primary">
               Read our story

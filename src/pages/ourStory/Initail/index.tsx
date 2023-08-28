@@ -95,7 +95,7 @@ const Initail = () => {
       <Stack direction={isMobileOnly ? "column" : "row"} alignItems="center" spacing={isMobileOnly ? "10rem" : "6rem"}>
         <OrientationToView direction={isMobileOnly ? "up" : "right"}>
           <Typography sx={{ textAlign: ["center", "left"] }}>
-            Realizing that Ethereum equivalence was the only viable path forward, the trio embarked on a mission to build an open-source, scalable
+            Realizing that Ethereum equivalence was the only viable path forward, the trio embarked on a mission to build an open source, scalable
             ecosystem leveraging the native capabilities of a zkEVM, while maintaining Ethereum’s L1 security and upholding the community’s commitment
             to decentralization.
           </Typography>
