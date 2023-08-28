@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 
 import { Box, Typography } from "@mui/material"
 import { keyframes, styled } from "@mui/system"
@@ -7,40 +7,58 @@ const TextSlider: React.FC = () => {
   const texts = ["Scalable", "Open-Source", "Cryptographically Secured", "Ethereum Aligned", "Egalitarian", "Modular"]
 
   const [currentIndex, setCurrentIndex] = useState(0)
+  const textRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
-    const initialTimer = setTimeout(() => {
+    const handleAnimationIteration = () => {
       setCurrentIndex(prevIndex => (prevIndex + 1) % texts.length)
-      const regularTimer = setInterval(() => {
-        setCurrentIndex(prevIndex => (prevIndex + 1) % texts.length)
-      }, 2000)
-      return () => clearInterval(regularTimer)
-    }, 3000)
-    return () => clearTimeout(initialTimer)
+    }
+
+    const initialTimer = window.setTimeout(() => {
+      setCurrentIndex(prevIndex => (prevIndex + 1) % texts.length)
+      textRef.current?.addEventListener("animationiteration", handleAnimationIteration)
+    }, 2000)
+
+    return () => {
+      clearTimeout(initialTimer)
+
+      textRef.current?.removeEventListener("animationiteration", handleAnimationIteration)
+    }
   }, [])
 
   return (
     <TextContainer>
-      <StyledTypography variant="H1">{texts[currentIndex]}</StyledTypography>
+      <StyledTypography ref={textRef} variant="H1">
+        {texts[currentIndex]}
+      </StyledTypography>
     </TextContainer>
   )
 }
 
 const slideInOutAnimation = keyframes`
   0% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(0);
-  }
-  50% {
     transform: translateY(100%);
   }
-  60% {
+  10% {
+    transform: translateY(0);
+  }
+  90% {
     transform: translateY(0);
   }
   100% {
+    transform: translateY(100%);
+  }
+`
+
+const slideOutAnimation = keyframes`
+  0% {
     transform: translateY(0);
+  }
+  80% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(100%);
   }
 `
 
@@ -57,7 +75,7 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
   height: "9.4rem",
   padding: "0 2rem",
   textAlign: "center",
-  animation: `${slideInOutAnimation} 2s linear infinite 2s`,
+  animation: `${slideOutAnimation} 1s linear 1s, ${slideInOutAnimation} 2s linear infinite 2s`,
   [theme.breakpoints.down("md")]: {
     height: "auto",
     lineHeight: "4.7rem",
