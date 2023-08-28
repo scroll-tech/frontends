@@ -22,11 +22,11 @@ import blogSource from "./data.json"
 const BlogContainer = styled(Box)(
   ({ theme }) => `
     max-width: 100rem;
-    padding: 8rem 0;
+    padding: 8rem 6rem 14rem;
     overflow: visible;
     display: flex;
   ${theme.breakpoints.down("md")} {
-    padding: 4rem 1.6rem;
+    padding: 4rem 2rem;
     display: block;
     overflow: hidden;
   };
@@ -147,14 +147,13 @@ const BlogDetail = () => {
             </Box>
           </BlogContainer>
           {isMobile ? (
-            <Box sx={{ paddingBottom: "6rem" }}>
+            <Box sx={{ paddingBottom: "10rem" }}>
               <Typography
                 variant="h1"
                 sx={{
                   textAlign: "center",
-                  marginBottom: {
-                    md: "4rem",
-                  },
+                  mt: "3rem",
+                  mb: "2rem",
                 }}
               >
                 More articles from Scroll

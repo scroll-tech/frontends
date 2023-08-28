@@ -18,6 +18,8 @@ const useStyles = makeStyles()(theme => ({
     [theme.breakpoints.down("sm")]: {
       background: " url(/imgs/story/story-hero-bg-mobile.svg) no-repeat center",
       backgroundSize: "cover",
+      paddingTop: "13rem",
+      marginTop: "-6.2rem",
     },
     "@media (min-width:1900px)": {
       paddingTop: "20rem",
@@ -48,7 +50,7 @@ const Header = () => {
   const { classes } = useStyles()
   return (
     <Box className={classes.bg}>
-      <Stack direction="column" spacing={isMobileOnly ? "1.2rem" : "1.4rem"} alignItems="center">
+      <Stack direction="column" spacing={isMobileOnly ? "2rem" : "1.4rem"} alignItems="center">
         <OrientationToView>
           <Typography sx={{ fontSize: ["4rem", "7.8rem"], lineHeight: 1, fontWeight: 600 }}>Our story</Typography>
         </OrientationToView>

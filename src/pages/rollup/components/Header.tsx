@@ -1,7 +1,7 @@
-import { Box, Typography } from "@mui/material"
+import { Container, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
-const HeaderContainer = styled(Box)(({ theme }) => ({
+const HeaderContainer = styled(Container)(({ theme }) => ({
   textAlign: "center",
 }))
 
@@ -13,15 +13,18 @@ const Title = styled(Typography)(({ theme }) => ({
   marginBottom: "1.3rem",
   [theme.breakpoints.down("md")]: {
     fontSize: "4rem",
+    marginTop: "6.8rem",
+    marginBottom: "2rem",
   },
 }))
 
 const Summary = styled(Typography)(({ theme }) => ({
   fontSize: "2.6rem",
   maxWidth: "68rem",
-  margin: "0 auto 8rem",
+  margin: "0 auto 12rem",
   [theme.breakpoints.down("md")]: {
     fontSize: "2rem",
+    margin: "0 auto 8rem",
   },
 }))
 

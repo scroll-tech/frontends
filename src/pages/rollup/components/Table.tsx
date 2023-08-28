@@ -8,6 +8,12 @@ const StyledTable = styled(Table)(({ theme }) => ({
   border: `1px solid ${theme.palette.divider}`,
   borderCollapse: "separate",
   overflow: "hidden",
+  [theme.breakpoints.down("sm")]: {
+    marginTop: "1.2rem",
+  },
+  ".MuiTableCell-root": {
+    whiteSpace: "nowrap",
+  },
 }))
 
 export default StyledTable

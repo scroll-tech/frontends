@@ -10,8 +10,9 @@ const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading })
   wrapper: {
     position: "relative",
     height: "5.4rem",
-    width,
+    width: width ?? "25rem",
     [theme.breakpoints.down("sm")]: {
+      width: width ?? "18.5rem",
       height: "4.8rem",
     },
   },
@@ -97,7 +98,7 @@ const maskMobile = {
 }
 // color: "primary" | undefined
 const Button = props => {
-  const { width = "25rem", sx, color, loading, disabled, children, ...restProps } = props
+  const { width, sx, color, loading, disabled, children, ...restProps } = props
   const { classes, cx } = useStyles({ color, width, disabled, loading })
 
   const [isHover, setIsHover] = useCycle(false, true)

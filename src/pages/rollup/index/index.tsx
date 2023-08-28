@@ -16,9 +16,14 @@ import Searchbar from "./Searchbar"
 import Table from "./Table"
 
 const InfoBox = styled(Box)(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  marginBottom: "6.2rem",
+  display: "grid",
+  gridTemplateColumns: "repeat(2, 1fr)",
+  columnGap: "3rem",
+  marginBottom: "6.4rem",
+  [theme.breakpoints.down("sm")]: {
+    columnGap: "2rem",
+    marginBottom: "3.5rem",
+  },
 }))
 
 const Rollup = () => {
@@ -99,7 +104,7 @@ const Rollup = () => {
   return (
     <Box>
       <Header />
-      <Box sx={{ maxWidth: "130rem", p: ["0 1.6rem 1.6rem", "0 1.6rem 1.6rem", "0 2.4rem 2.4rem"], mx: "auto", mt: [0, "2.4rem"] }}>
+      <Box sx={{ maxWidth: "130rem", px: ["2rem", "2rem", "6rem"], mx: "auto", mb: ["12rem", "14rem"] }}>
         <InfoBox>
           <Card
             title="Last Committed Batch"

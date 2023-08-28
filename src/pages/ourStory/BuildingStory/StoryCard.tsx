@@ -1,3 +1,4 @@
+import { isMobile } from "react-device-detect"
 import { makeStyles } from "tss-react/mui"
 
 import { Box, Card, CardContent, CardMedia, SvgIcon, Typography } from "@mui/material"
@@ -49,6 +50,9 @@ const useStyles = makeStyles<any>()((theme, { cover }) => ({
     borderRadius: "2.5rem",
     backgroundColor: theme.palette.text.primary,
     position: "relative",
+    [theme.breakpoints.between("md", "lg")]: {
+      backgroundPosition: "right",
+    },
   },
   cardContent: {
     height: cover ? "calc(100% - 23rem)" : "100%",
@@ -116,7 +120,7 @@ const StoryCard = props => {
           </Box>
         )}
 
-        <CardContent className={cx(classes.cardContent, cover ? classes.withCover : classes.noCover)}>
+        <CardContent className={cx(classes.cardContent, cover || isMobile ? classes.withCover : classes.noCover)}>
           <SvgIcon
             sx={{ fontSize: ["1.3rem", "2rem"] }}
             className={cx(classes.icon, "building-story-card-icon")}

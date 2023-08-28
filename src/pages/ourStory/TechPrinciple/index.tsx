@@ -21,6 +21,7 @@ const PRINCIPLES = [
       </>
     ),
     mobileTitle: "Security at every step",
+    mobileScale: "0.88",
     content: "Scroll provides full Layer 1 security on Layer 2, ensuring a secure and decentralized consensus mechanism.",
   },
   {
@@ -32,6 +33,7 @@ const PRINCIPLES = [
       </>
     ),
     mobileTitle: "Ethereum equivalence, byte by byte",
+    mobileScale: "0.87",
     content: "Scroll permits seamless migration with EVM-equivalence, eliminating code changes and disruptions for users and developers.",
   },
   null,
@@ -46,6 +48,7 @@ const PRINCIPLES = [
       </>
     ),
     mobileTitle: "Proof of a powerful new way to scale",
+    mobileScale: "0.73",
     content: "Scroll utilizes a novel hierarchical zero knowledge proof system, enabling secure and scalable operations with fast finality.",
   },
   {
@@ -57,6 +60,7 @@ const PRINCIPLES = [
       </>
     ),
     mobileTitle: "Decentralization across all layers",
+    mobileScale: "0.785",
     content: "Scroll embraces openness to achieve decentralization across node operators, provers, sequencers, and our entire community.",
   },
 ]
@@ -86,7 +90,7 @@ const TechPrinciple = () => {
   const { classes } = useStyles()
 
   return (
-    <SectionWrapper sx={{ pt: ["11rem", "13.5rem"] }}>
+    <SectionWrapper>
       <SectionHeader
         title="Our technical principles"
         content="Comprehensive security, Ethereum equivalence for seamless developer experience, and decentralization across all layers are at the core of how we build Scroll."
@@ -96,7 +100,11 @@ const TechPrinciple = () => {
           <Fragment key={index}>
             {item ? (
               <SuccessionItem>
-                <SvgIcon sx={{ fontSize: ["2.8rem", "3.2rem"] }} component={item.icon} inheritViewBox></SvgIcon>
+                <SvgIcon
+                  sx={{ width: "auto", height: "auto", "@media (max-width: 600px)": { transform: `scale(${item.mobileScale})` } }}
+                  component={item.icon}
+                  inheritViewBox
+                ></SvgIcon>
                 <Typography sx={{ fontSize: ["2rem", "2.4rem"], fontWeight: 600, mt: ["1rem", "2.6rem"], mb: ["1rem", "2rem"] }}>
                   {isMobileOnly ? item.mobileTitle : item.title}
                 </Typography>

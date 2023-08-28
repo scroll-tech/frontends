@@ -1,9 +1,6 @@
-import { isMobile } from "react-device-detect"
 import { Link } from "react-router-dom"
 
-import { Stack, SvgIcon, Typography } from "@mui/material"
-
-import { ReactComponent as ArrowIcon } from "@/assets/svgs/footer/arrow.svg"
+import { Stack, Typography } from "@mui/material"
 
 const LinkText = props => {
   return (
@@ -21,7 +18,6 @@ const LinkText = props => {
       >
         {props.children}
       </Typography>
-      {isMobile && <SvgIcon component={ArrowIcon} inheritViewBox sx={{ fontSize: "0.6rem", verticalAlign: "middle" }}></SvgIcon>}
     </Stack>
   )
 }

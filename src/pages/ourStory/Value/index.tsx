@@ -48,7 +48,7 @@ const Value = () => {
               </Box>
             )}
           </Stack>
-          <Stack direction="column" spacing={isMobileOnly ? "5.6rem" : "12rem"} sx={{ flex: 1, pt: ["9rem", "14.6rem"], pb: ["12rem", "14rem"] }}>
+          <Stack direction="column" spacing={isMobileOnly ? "5.6rem" : "12rem"} sx={{ flex: 1, pt: ["7rem", "14.6rem"], pb: ["9rem", "14rem"] }}>
             {STORY_VALUES.map(({ icon, title, content }) => (
               <Stack direction="column" key={title} spacing={isMobileOnly ? "1rem" : "2.2rem"}>
                 <SvgIcon
