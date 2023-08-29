@@ -70,7 +70,7 @@ const Value = () => {
             sx={{ flex: 1, pt: ["7rem", "7rem", "14.6rem"], pb: ["9rem", "10rem", "14rem"] }}
           >
             {STORY_VALUES.map(({ icon, title, content }) => (
-              <Stack direction="column" key={title} spacing={isPortrait ? "1rem" : "2.2rem"}>
+              <Stack direction="column" key={title}>
                 <SvgIcon
                   sx={{ width: "min-content", height: "min-content", "@media(max-width: 600px)": { transform: "scale(0.8)" } }}
                   component={icon}
@@ -81,6 +81,8 @@ const Value = () => {
                   sx={{
                     fontSize: ["2rem", "2.4rem"],
                     fontWeight: 600,
+                    mt: ["1.3rem", "1.8rem", "2.2rem"],
+                    mb: ["0.8rem", "1.4rem", "2rem"],
                     color: "primary.contrastText",
                   }}
                 >

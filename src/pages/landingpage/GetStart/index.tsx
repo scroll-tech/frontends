@@ -115,7 +115,7 @@ const StepIcon = styled("img")(({ theme }) => ({
   },
   [theme.breakpoints.down("sm")]: {
     height: "3rem",
-    marginBottom: "1rem",
+    marginBottom: "1.2rem",
   },
 }))
 
@@ -127,7 +127,7 @@ const StepTitle = styled(Typography)(({ theme }) => ({
     marginBottom: "1.4rem",
   },
   [theme.breakpoints.down("sm")]: {
-    marginBottom: "1rem",
+    marginBottom: "0.8rem",
   },
 }))
 
