@@ -35,6 +35,7 @@ const useStyles = makeStyles()(theme => ({
     textAlign: "center",
     "&::placeholder": {
       color: "#DCDCDC",
+      opacity: 1,
     },
   },
 
