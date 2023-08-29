@@ -1,5 +1,4 @@
-import { Box, Typography, useMediaQuery } from "@mui/material"
-import { useTheme } from "@mui/material/styles"
+import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import FeatureIcon1 from "@/assets/images/homepage/home/feature_icon_1.png"
@@ -11,6 +10,7 @@ import Button from "@/components/Button"
 import SectionHeader from "@/components/SectionHeader"
 import SectionWrapper from "@/components/SectionWrapper"
 import WebpImage from "@/components/WebpImage"
+import useCheckViewport from "@/hooks/useCheckViewport"
 
 const FEATURES = [
   {
@@ -106,11 +106,10 @@ const FeatureDescription = styled(Typography)(({ theme }) => ({
 }))
 
 const Feature = () => {
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"))
+  const { isPortrait } = useCheckViewport()
 
   const ComponentToRender = (featureIdx, elementIdx, children) => {
-    if (isMobile) {
+    if (isPortrait) {
       return <FadeInUp>{children}</FadeInUp>
     }
 
