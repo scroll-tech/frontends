@@ -129,14 +129,13 @@ div.markdown-body h3 {
 }
 
 .header-link {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: 400;
   padding-left: 1em;
   cursor: pointer;
   display: block;
-  font-weight: lighter;
-  line-height: 2.8rem;
-  margin: 0.8rem 0;
+  line-height: normal;
+  margin: 0.5rem 0;
   padding-right: 1.8em;
   transition: all 0.2s;
 }
