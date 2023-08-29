@@ -1,12 +1,13 @@
 import { makeStyles } from "tss-react/mui"
 
 import { Chip, Stack, SvgIcon, Typography } from "@mui/material"
+import { alpha } from "@mui/material/styles"
 
 import useBridgeStore from "@/stores/bridgeStore"
 
 const useStyles = makeStyles()(theme => ({
   chip: {
-    backgroundColor: theme.palette.themeBackground.light,
+    backgroundColor: alpha(theme.palette.themeBackground.light, 0.5),
     padding: "0 1.5rem",
     height: "3.5rem",
     [theme.breakpoints.down("sm")]: {

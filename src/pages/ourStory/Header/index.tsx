@@ -56,7 +56,7 @@ const Header = () => {
         </OrientationToView>
         <OrientationToView delay={0.3}>
           <Typography sx={{ fontSize: ["2rem", "2.6rem"], maxWidth: ["24.8rem", "68rem"] }}>
-            We are pragmatic problem solvers, passionate community builders, and champions of open-source code.
+            We are pragmatic problem solvers, passionate community builders, and champions of open source code.
           </Typography>
         </OrientationToView>
       </Stack>
