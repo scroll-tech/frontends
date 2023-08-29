@@ -20,7 +20,7 @@ const CORE_MEMBERS = [
   {
     avatar: YeAvatar,
     name: "Ye",
-    desc: "Co-founder in London, UK",
+    desc: "Co-founder in London",
   },
   {
     avatar: SandyAvatar,
@@ -41,17 +41,17 @@ const CORE_MEMBERS = [
   {
     avatar: DanielAvatar,
     name: "Daniel",
-    desc: "Devrel lead in Oklahoma, US",
+    desc: "Devrel lead in Oklahoma City",
   },
   {
     avatar: MeiAvatar,
     name: "Mei",
-    desc: "Comms & outreach lead in Texas, US",
+    desc: "Comms & outreach lead in Austin",
   },
   {
     avatar: MohammadAvatar,
     name: "Mohammad",
-    desc: "Protocol researcher - Vancouver, Canada",
+    desc: "Protocol researcher in Vancouver",
   },
   {
     avatar: LeaAvatar,
@@ -66,7 +66,7 @@ const CORE_MEMBERS = [
   {
     avatar: PeterAvatar,
     name: "Peter",
-    desc: "Infrastructure engineer in Budapest, Hungary",
+    desc: "Infrastructure engineer in Budapest",
   },
 ]
 
