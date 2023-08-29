@@ -36,7 +36,7 @@ const useStyles = makeStyles()(theme => ({
     height: "100%",
     backfaceVisibility: "hidden",
     borderRadius: "2.5rem",
-    backgroundColor: theme.palette.themeBackground.dark,
+    backgroundColor: theme.palette.themeBackground.normal,
 
     ".MuiAvatarImg": {
       height: "auto",
@@ -95,8 +95,8 @@ const useStyles = makeStyles()(theme => ({
   },
   tag: {
     display: "inline-block",
-    color: theme.palette.primary.contrastText,
-    backgroundColor: theme.palette.themeBackground.tag,
+    color: "#C58D49",
+    backgroundColor: theme.palette.themeBackground.highlight,
     borderRadius: "2rem",
     padding: "6px 12px",
     fontWeight: "500",
@@ -171,7 +171,9 @@ const GalleryItem = props => {
               >
                 <Img alt={name} src={logo} placeholder={hash} width={isMobileOnly ? 60 : 70} height={isMobileOnly ? 60 : 70}></Img>
               </Stack>
-              <Typography sx={{ fontWeight: 600, fontSize: ["2rem", "2.4rem"], lineHeight: "3rem", color: "#FFF8F3" }}>{name}</Typography>
+              <Typography sx={{ fontWeight: 600, fontSize: ["2rem", "2.4rem"], lineHeight: "3rem", color: theme => theme.palette.text.primary }}>
+                {name}
+              </Typography>
               <Box className={classes.tagWrapper}>
                 {tags
                   ? tags.map(value => (
@@ -191,7 +193,14 @@ const GalleryItem = props => {
           >
             <Stack direction="column" sx={{ height: "100%" }}>
               <Typography
-                sx={{ fontSize: "2.4rem", lineHeight: "3rem", fontWeight: 600, color: "#FFF8F3", mb: "1.8rem", display: ["none", "inline-block"] }}
+                sx={{
+                  fontSize: "2.4rem",
+                  lineHeight: "3rem",
+                  fontWeight: 600,
+                  color: theme => theme.palette.text.primary,
+                  mb: "1.8rem",
+                  display: ["none", "inline-block"],
+                }}
               >
                 {name}
               </Typography>
@@ -200,7 +209,7 @@ const GalleryItem = props => {
                   sx={{
                     lineHeight: "normal",
                     fontSize: ["1.6rem", "2rem"],
-                    color: "#FFF8F3",
+                    color: theme => theme.palette.text.primary,
                     "@media (max-width: 600px)": {
                       display: "-webkit-box",
                       WebkitLineClamp: 4,
@@ -223,7 +232,7 @@ const GalleryItem = props => {
                       sx={{
                         fontSize: "1.8rem",
                         verticalAlign: "middle",
-                        color: theme => theme.palette.primary.contrastText,
+                        color: theme => theme.palette.text.primary,
                       }}
                       inheritViewBox
                     ></SvgIcon>
