@@ -37,37 +37,33 @@ body {
 
 @font-face {
   font-family: "TransSansPremium";
-  src: url("./assets/fonts/TransSansPremium-Light.otf") format("truetype");
-  font-style: normal;
+  src: url("./assets/fonts/TransSansPremium-Light.woff2") format("woff2"), url("./assets/fonts/TransSansPremium-Light.woff") format("woff");
   font-weight: 300;
+  font-style: normal;
 }
-
 @font-face {
   font-family: "TransSansPremium";
-  src: url("./assets/fonts/TransSansPremium-Regular.otf") format("truetype");
-  font-style: normal;
+  src: url("./assets/fonts/TransSansPremium-Regular.woff2") format("woff2"), url("./assets/fonts/TransSansPremium-Regular.woff") format("woff");
   font-weight: 400;
+  font-style: normal;
 }
-
 @font-face {
   font-family: "TransSansPremium";
-  src: url("./assets/fonts/TransSansPremium-Medium.otf") format("truetype");
-  font-style: normal;
+  src: url("./assets/fonts/TransSansPremium-Medium.woff2") format("woff2"), url("./assets/fonts/TransSansPremium-Medium.woff") format("woff");
   font-weight: 500;
+  font-style: normal;
 }
-
 @font-face {
   font-family: "TransSansPremium";
-  src: url("./assets/fonts/TransSansPremium-SemiBold.otf") format("truetype");
-  font-style: normal;
+  src: url("./assets/fonts/TransSansPremium-SemiBold.woff2") format("woff2"), url("./assets/fonts/TransSansPremium-SemiBold.woff") format("woff");
   font-weight: 600;
+  font-style: normal;
 }
-
 @font-face {
   font-family: "TransSansPremium";
-  src: url("./assets/fonts/TransSansPremium-Bold.otf") format("truetype");
-  font-style: normal;
+  src: url("./assets/fonts/TransSansPremium-Bold.woff2") format("woff2"), url("./assets/fonts/TransSansPremium-Bold.woff") format("woff");
   font-weight: 700;
+  font-style: normal;
 }
 
 :root {

@@ -21,6 +21,11 @@ const useStyles = makeStyles()(theme => ({
       paddingTop: "13rem",
       marginTop: "-6.2rem",
     },
+
+    "@media (max-width: 375px)": {
+      background: "url(/imgs/story/story-hero-bg-375.svg) no-repeat center",
+      backgroundSize: "cover",
+    },
     "@media (min-width:1900px)": {
       paddingTop: "20rem",
     },
@@ -56,7 +61,7 @@ const Header = () => {
         </OrientationToView>
         <OrientationToView delay={0.3}>
           <Typography sx={{ fontSize: ["2rem", "2.6rem"], maxWidth: ["24.8rem", "68rem"] }}>
-            We are pragmatic problem solvers, passionate community builders, and champions of open-source code.
+            We are pragmatic problem solvers, passionate community builders, and champions of open source code.
           </Typography>
         </OrientationToView>
       </Stack>
