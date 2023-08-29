@@ -11,7 +11,7 @@ import useCheckViewport from "@/hooks/useCheckViewport"
 const useStyles = makeStyles()(theme => ({
   root: {
     display: "grid",
-    gridTemplateColumns: "min-content min-content",
+    gridTemplateColumns: "repeat(2, min-content)",
     rowGap: "2.5rem",
     columnGap: "4rem",
     paddingBottom: "15.4rem",
@@ -28,6 +28,7 @@ const useStyles = makeStyles()(theme => ({
     [theme.breakpoints.down("sm")]: {
       paddingTop: "7.3rem",
       paddingBottom: "4rem",
+      justifyItems: "center",
     },
   },
   titleWrapper: {
