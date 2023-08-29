@@ -21,6 +21,11 @@ const useStyles = makeStyles()(theme => ({
       paddingTop: "13rem",
       marginTop: "-6.2rem",
     },
+
+    "@media (max-width: 375px)": {
+      background: "url(/imgs/story/story-hero-bg-375.svg) no-repeat center",
+      backgroundSize: "cover",
+    },
     "@media (min-width:1900px)": {
       paddingTop: "20rem",
     },
