@@ -34,6 +34,7 @@ const STEPS = [
 const Container = styled(Box)(({ theme }) => ({
   borderRadius: "40px 40px 0px 0px",
   paddingTop: "15.4rem",
+  maxWidth: "144rem",
   paddingBottom: "16rem",
   background: "transparent",
   display: "flex !important",

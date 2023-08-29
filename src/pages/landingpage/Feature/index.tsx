@@ -64,8 +64,11 @@ const FeatureBox = styled(Box)(({ theme }) => ({
 }))
 
 const FeatureIcon = styled(WebpImage)(({ theme }) => ({
-  width: "47.4rem",
+  width: "100%",
   display: "inline-block",
+  [theme.breakpoints.up("md")]: {
+    maxWidth: "47.4rem",
+  },
   [theme.breakpoints.down("md")]: {
     width: "60%",
   },
@@ -84,9 +87,12 @@ const FeatureTitle = styled(Typography)(({ theme }) => ({
 }))
 
 const FeatureTextBox = styled(Box)(({ theme }) => ({
-  width: "47.4rem",
+  width: "100%",
   display: "flex",
   flexDirection: "column",
+  [theme.breakpoints.up("md")]: {
+    maxWidth: "47.4rem",
+  },
   [theme.breakpoints.down("md")]: {
     width: "100%",
     textAlign: "center",
