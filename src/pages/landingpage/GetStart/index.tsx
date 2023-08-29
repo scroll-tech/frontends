@@ -66,14 +66,11 @@ const Background = styled(Box)(({ theme }) => ({
 }))
 
 const StepContainer = styled(SuccessionToView)(({ theme }) => ({
-  display: "flex",
-  // justifyContent: "space-between",
-  flexWrap: "wrap",
+  display: "grid",
+  gridTemplateColumns: "repeat(3, 1fr)",
   gap: "2rem",
   marginBottom: "13rem",
-  "& > div": {
-    flex: 1,
-  },
+
   "& > div:nth-of-type(1) img": {
     width: "2.3rem",
   },
@@ -83,9 +80,13 @@ const StepContainer = styled(SuccessionToView)(({ theme }) => ({
   "& > div:nth-of-type(3) img": {
     width: "3.3rem",
   },
+  [theme.breakpoints.down("md")]: {
+    rowGap: "5.6rem",
+    gridTemplateColumns: "repeat(2, 1fr)",
+  },
   [theme.breakpoints.down("sm")]: {
-    flexDirection: "column",
-    marginBottom: "3.4rem",
+    gridTemplateColumns: "1fr",
+    marginBottom: "5.6rem",
     "& > div:nth-of-type(1) img": {
       width: "3.3rem",
     },
@@ -102,26 +103,23 @@ const StepBox = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   flex: 1,
-  [theme.breakpoints.down("md")]: {
-    marginBottom: "5.6rem",
-  },
 }))
 
 const StepIcon = styled("img")(({ theme }) => ({
   height: "4rem",
   objectFit: "contain",
-  marginBottom: "2.8rem",
-  [theme.breakpoints.down("md")]: {
+  marginBottom: "2.2rem",
+  [theme.breakpoints.down("sm")]: {
     height: "3rem",
-    marginBottom: "1.5rem",
+    marginBottom: "1rem",
   },
 }))
 
 const StepTitle = styled(Typography)(({ theme }) => ({
   textAlign: "left",
   color: theme.palette.primary.contrastText,
-  marginBottom: "2.4rem",
-  [theme.breakpoints.down("md")]: {
+  marginBottom: "2rem",
+  [theme.breakpoints.down("sm")]: {
     marginBottom: "1rem",
   },
 }))
@@ -130,7 +128,7 @@ const StepDescription = styled(Typography)(({ theme }) => ({
   textAlign: "left",
   color: theme.palette.primary.contrastText,
   maxWidth: "32.6rem",
-  [theme.breakpoints.down("md")]: {
+  [theme.breakpoints.down("sm")]: {
     fontSize: "1.6rem",
   },
 }))
@@ -182,7 +180,7 @@ const GetStart = () => {
         <FadeInUp>
           <SectionHeader
             dark
-            sx={{ mb: "10rem" }}
+            sx={{ mb: ["10rem", "12.5rem"] }}
             title="Getting started with Scroll"
             content="Scroll is compatible with Ethereum at bytecode-level, meaning everything works right out of the box."
             action={
