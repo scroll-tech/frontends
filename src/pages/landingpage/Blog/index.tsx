@@ -104,7 +104,7 @@ const BuildingStory = () => {
   const { classes, cx } = useStyles()
 
   return (
-    <SectionWrapper sx={{ pt: ["11rem", "26rem"], pb: ["12rem", "13rem"] }}>
+    <SectionWrapper sx={{ pt: ["11rem", "18rem", "26rem"], pb: ["12rem", "13rem"] }}>
       <SectionHeader
         title="Begin your journey with Scroll"
         content="Learn more about zero knowledge proofs, zkEVMs, and the future of scaling Ethereum."

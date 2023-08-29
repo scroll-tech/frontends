@@ -4,7 +4,7 @@ import useCheckViewport from "@/hooks/useCheckViewport"
 
 const SuccessionToView = props => {
   const { children, threshold, animate, once = true, ...restProps } = props
-  const { isMobile } = useCheckViewport()
+  const { isPortrait } = useCheckViewport()
 
   const container = {
     hidden: { opacity: 0 },
@@ -22,7 +22,7 @@ const SuccessionToView = props => {
       whileInView="show"
       animate={animate}
       variants={container}
-      viewport={{ once, amount: threshold ?? (isMobile ? 0 : 0.3) }}
+      viewport={{ once, amount: threshold ?? (isPortrait ? 0 : 0.3) }}
       {...restProps}
     >
       {children}

@@ -9,7 +9,7 @@ const LineToView = props => {
       initial={{ transform: "scaleY(0)" }}
       whileInView={{ transform: "scaleY(1)" }}
       transition={{ delay: 0.5 }}
-      viewport={{ once, amount: 0.3 }}
+      viewport={{ once, amount: 1 }}
     >
       {children}
     </motion.div>

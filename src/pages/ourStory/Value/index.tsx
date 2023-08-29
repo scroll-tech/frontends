@@ -6,7 +6,6 @@ import { ReactComponent as CommunitySvg } from "@/assets/svgs/refactor/story-val
 import { ReactComponent as NeutralitySvg } from "@/assets/svgs/refactor/story-value-neutrality.svg"
 import { ReactComponent as OpennessSvg } from "@/assets/svgs/refactor/story-value-openness.svg"
 import ScrollExpandedBg from "@/components/ScrollExpandedBg"
-import SectionHeader from "@/components/SectionHeader"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
 const STORY_VALUES = [
@@ -38,18 +37,38 @@ const Value = () => {
       <Box ref={contentRef} sx={{ position: "relative", width: "100%", px: ["2rem", "6rem"] }}>
         <Stack direction={isPortrait ? "column" : "row"} justifyContent="space-between" spacing={isPortrait ? "3rem" : "12rem"}>
           <Stack direction="column" justifyContent="space-between" sx={{ flex: 1 }}>
-            <SectionHeader
-              dark
-              title="Our values"
-              content="At Scroll, we have a shared mission to uphold neutrality, openness, and be community-first as we strive to preserve Ethereum's core properties and prioritize the collective well-being of our ecosystem."
-            ></SectionHeader>
+            <Stack direction="column" sx={{ maxWidth: ["100%", "100%", "100%", "60rem"] }}>
+              <Typography
+                sx={{
+                  fontSize: ["3.2rem", "4.6rem"],
+                  fontWeight: 500,
+                  mb: ["1rem", "2rem"],
+                  color: theme => theme.palette.primary.contrastText,
+                }}
+              >
+                Our values
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: ["1.8rem", "2.4rem"],
+                  color: theme => theme.palette.primary.contrastText,
+                }}
+              >
+                At Scroll, we have a shared mission to uphold neutrality, openness, and be community-first as we strive to preserve Ethereum's core
+                properties and prioritize the collective well-being of our ecosystem.
+              </Typography>
+            </Stack>
             {!isPortrait && (
               <Box sx={{ position: "sticky", bottom: "8rem", mt: "30rem", mb: "14rem" }}>
                 <img src="/imgs/story/story-value.svg" alt="value"></img>
               </Box>
             )}
           </Stack>
-          <Stack direction="column" spacing={isPortrait ? "5.6rem" : "12rem"} sx={{ flex: 1, pt: ["7rem", "14.6rem"], pb: ["9rem", "14rem"] }}>
+          <Stack
+            direction="column"
+            spacing={isPortrait ? "5.6rem" : "12rem"}
+            sx={{ flex: 1, pt: ["7rem", "7rem", "14.6rem"], pb: ["9rem", "10rem", "14rem"] }}
+          >
             {STORY_VALUES.map(({ icon, title, content }) => (
               <Stack direction="column" key={title} spacing={isPortrait ? "1rem" : "2.2rem"}>
                 <SvgIcon

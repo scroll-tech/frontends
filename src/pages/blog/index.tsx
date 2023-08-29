@@ -43,7 +43,7 @@ const Title = styled(Typography)(({ theme }) => ({
   fontSize: "7.8rem",
   lineHeight: 1,
   fontWeight: 600,
-  [theme.breakpoints.down("md")]: {
+  [theme.breakpoints.down("sm")]: {
     fontSize: "4rem",
   },
 }))
@@ -53,8 +53,10 @@ const Summary = styled(Typography)(({ theme }) => ({
   maxWidth: "56rem",
   marginTop: "2.4rem",
   [theme.breakpoints.down("md")]: {
-    fontSize: "2rem",
     marginTop: "2rem",
+  },
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "2rem",
   },
 }))
 

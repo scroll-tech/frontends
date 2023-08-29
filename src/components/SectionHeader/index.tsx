@@ -16,7 +16,7 @@ const SectionHeader = props => {
   return (
     <Stack
       direction={isPortrait ? "column" : "row"}
-      spacing={isPortrait ? "4.8rem" : "0"}
+      spacing={isPortrait && action ? "4.8rem" : "0"}
       justifyContent="space-between"
       alignItems={isPortrait ? "flex-start" : "flex-end"}
       {...rest}

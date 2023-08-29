@@ -2,14 +2,14 @@ import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 const Container = styled(Box)(({ theme }) => ({
-  padding: "14rem 2.4rem",
+  padding: "14rem 6rem",
   [theme.breakpoints.down("md")]: {
-    padding: "8rem 1.6rem",
+    padding: "8rem 2rem",
   },
   "& *": {
     fontSize: "2rem",
     textAlign: "justify",
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down("sm")]: {
       fontSize: "1.6rem",
     },
   },

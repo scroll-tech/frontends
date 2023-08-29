@@ -83,6 +83,7 @@ const StepContainer = styled(SuccessionToView)(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
     rowGap: "5.6rem",
     gridTemplateColumns: "repeat(2, 1fr)",
+    marginBottom: "10rem",
   },
   [theme.breakpoints.down("sm")]: {
     gridTemplateColumns: "1fr",
@@ -109,6 +110,9 @@ const StepIcon = styled("img")(({ theme }) => ({
   height: "4rem",
   objectFit: "contain",
   marginBottom: "2.2rem",
+  [theme.breakpoints.down("md")]: {
+    marginBottom: "1.8rem",
+  },
   [theme.breakpoints.down("sm")]: {
     height: "3rem",
     marginBottom: "1rem",
@@ -119,6 +123,9 @@ const StepTitle = styled(Typography)(({ theme }) => ({
   textAlign: "left",
   color: theme.palette.primary.contrastText,
   marginBottom: "2rem",
+  [theme.breakpoints.down("md")]: {
+    marginBottom: "1.4rem",
+  },
   [theme.breakpoints.down("sm")]: {
     marginBottom: "1rem",
   },

@@ -5,7 +5,7 @@ import useCheckViewport from "@/hooks/useCheckViewport"
 const OrientationToView = props => {
   const { children, direction = "up", once = true, delay, ...restProps } = props
 
-  const { isMobile } = useCheckViewport()
+  const { isPortrait } = useCheckViewport()
   const variants = {
     up: {
       hidden: {
@@ -53,7 +53,7 @@ const OrientationToView = props => {
       initial="hidden"
       whileInView="show"
       variants={variants[direction]}
-      viewport={{ once, amount: isMobile ? 0.6 : "all" }}
+      viewport={{ once, amount: isPortrait ? 0.3 : 1 }}
       transition={{ ease: [0.16, 1, 0.3, 1], duration: 1, delay }}
       {...restProps}
     >

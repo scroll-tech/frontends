@@ -88,7 +88,7 @@ const Gallery = props => {
             ))}
           </SuccessionToView>
           {hasMore && (
-            <Box sx={{ textAlign: "center", mt: ["1.2rem", "9.5rem"] }}>
+            <Box sx={{ textAlign: "center", mt: ["1.2rem", "1.2rem", "9.5rem"] }}>
               <Link
                 component="button"
                 sx={{

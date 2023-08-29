@@ -150,8 +150,8 @@ const BlogDetail = () => {
                 variant="h1"
                 sx={{
                   textAlign: "center",
-                  mt: "3rem",
-                  mb: "2rem",
+                  mt: ["3rem", "5rem"],
+                  mb: ["2rem", "3rem"],
                 }}
               >
                 More articles from Scroll

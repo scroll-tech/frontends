@@ -101,7 +101,7 @@ const TechPrinciple = () => {
             <Typography sx={{ fontSize: ["2rem", "2.4rem"], fontWeight: 600, mt: ["1rem", "2.6rem"], mb: ["1rem", "2rem"] }}>
               {isMobile ? item.mobileTitle : item.title}
             </Typography>
-            <Typography sx={{ fontSize: "1.6rem" }}>{item.content}</Typography>
+            <Typography sx={{ fontSize: ["1.6rem", "2rem"] }}>{item.content}</Typography>
           </SuccessionItem>
         ))}
       </SuccessionToView>

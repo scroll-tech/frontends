@@ -12,7 +12,7 @@ const SectionWrapper = props => {
     >
       <Container
         sx={{
-          pt: ["8rem", "15.4rem"],
+          pt: ["8rem", "10rem", "15.4rem"],
           maxWidth: full ? "unset !important" : `${maxWidth} !important`,
           borderRadius: round ? "4rem 4rem 0 0 " : "unset",
           ...sx,

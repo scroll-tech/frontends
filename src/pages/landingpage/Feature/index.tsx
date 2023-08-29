@@ -106,9 +106,6 @@ const Spacer = styled(Box)(({ theme }) => ({
 
 const FeatureDescription = styled(Typography)(({ theme }) => ({
   textAlign: "left",
-  [theme.breakpoints.down("md")]: {
-    fontSize: "2rem",
-  },
   [theme.breakpoints.down("sm")]: {
     fontSize: "1.6rem",
   },
