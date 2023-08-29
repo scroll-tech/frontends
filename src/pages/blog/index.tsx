@@ -34,13 +34,8 @@ const BlogBox = styled(Box)(({ theme }) => ({
 
 const Header = styled(Box)(({ theme }) => ({
   padding: "15.5rem 0",
-  display: "grid",
-  gap: "6rem",
-  gridTemplateColumns: "3fr 2fr",
   [theme.breakpoints.down("md")]: {
-    gridTemplateColumns: "1fr",
     padding: "6.8rem 0 8rem",
-    gap: "2rem",
   },
 }))
 
@@ -55,9 +50,11 @@ const Title = styled(Typography)(({ theme }) => ({
 
 const Summary = styled(Typography)(({ theme }) => ({
   fontSize: "2.6rem",
-  maxWidth: "68rem",
+  maxWidth: "56rem",
+  marginTop: "2.4rem",
   [theme.breakpoints.down("md")]: {
     fontSize: "2rem",
+    marginTop: "2rem",
   },
 }))
 

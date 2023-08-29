@@ -39,10 +39,10 @@ const Container = styled(Box)(({ theme }) => ({
   display: "flex !important",
   justifyContent: "center",
   position: "relative",
-  maxWidth: "144rem",
   margin: "0 auto",
   "& .MuiContainer-root": {
     position: "relative",
+    maxWidth: "152rem",
   },
   [theme.breakpoints.down("md")]: {
     paddingTop: "5.4rem",
@@ -70,7 +70,6 @@ const StepContainer = styled(SuccessionToView)(({ theme }) => ({
   gridTemplateColumns: "repeat(3, 1fr)",
   gap: "2rem",
   marginBottom: "13rem",
-
   "& > div:nth-of-type(1) img": {
     width: "2.3rem",
   },
