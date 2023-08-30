@@ -21,7 +21,6 @@ import {
 
 import Link from "@/components/Link"
 import { EXPLORER_URL } from "@/constants"
-import { useApp } from "@/contexts/AppContextProvider"
 import { useLastBlockNums } from "@/hooks/useRollupInfo"
 import useTokenInfo from "@/hooks/useTokenInfo"
 import { ClaimStatus } from "@/stores/claimStore"
@@ -160,24 +159,22 @@ const TxRow = props => {
     return toTokenDisplay(amount, tokenInfo?.decimals ? BigInt(tokenInfo.decimals) : undefined)
   }
 
-  const { blockNumbers } = useApp()
-
   const txStatus = useMemo(() => {
     const { assumedStatus, toBlockNumber, claimInfo } = tx
     if (assumedStatus) {
       return ClaimStatus.FAILED
     }
-    if (toBlockNumber && toBlockNumber <= blockNumbers[0]) {
+    if (toBlockNumber) {
       return ClaimStatus.CLAIMED
     }
-    if (toBlockNumber) {
+    if (estimatedTimeMap[`claim_${tx.hash}`]) {
       return ClaimStatus.CLAIMING
     }
     if (+claimInfo?.batch_index && claimInfo?.batch_index <= finalizedIndex) {
       return ClaimStatus.CLAIMABLE
     }
     return ClaimStatus.NOT_READY
-  }, [blockNumbers, tx, finalizedIndex])
+  }, [tx, finalizedIndex, estimatedTimeMap[`claim_${tx.hash}`]])
 
   const initiatedAt = useMemo(() => {
     const date = dayjs(tx.initiatedAt)

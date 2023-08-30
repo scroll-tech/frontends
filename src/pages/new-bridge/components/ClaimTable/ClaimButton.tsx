@@ -62,6 +62,7 @@ const ClaimButton = props => {
     const { from, to, value, nonce, message, proof, batch_index } = tx.claimInfo
     try {
       setLoading(true)
+      addEstimatedTimeMap(`claim_${tx.hash}`, Date.now())
       const result = await contract.relayMessageWithProof(from, to, value, nonce, message, {
         batchIndex: batch_index,
         merkleProof: proof,
@@ -73,8 +74,10 @@ const ClaimButton = props => {
             const estimatedOffsetTime = (receipt.blockNumber - blockNumbers[0]) * 12 * 1000
             if (isValidOffsetTime(estimatedOffsetTime)) {
               addEstimatedTimeMap(`to_${receipt.blockHash}`, Date.now() + estimatedOffsetTime)
+              addEstimatedTimeMap(`claim_${tx.hash}`, Date.now() + estimatedOffsetTime)
             } else {
               addEstimatedTimeMap(`to_${receipt.blockHash}`, 0)
+              addEstimatedTimeMap(`claim_${tx.hash}`, 0)
             }
           } else {
             const errorMessage = "due to any operation that can cause the transaction or top-level call to revert"
@@ -104,7 +107,7 @@ const ClaimButton = props => {
               //   if (isValidOffsetTime(estimatedOffsetTime)) {
               //     addEstimatedTimeMap(`from_${transactionHash}`, Date.now() + estimatedOffsetTime)
               //   } else {
-              //     addEstimatedTimeMap(`from_${transactionHash}`, 0)
+              // addEstimatedTimeMap(`claim_${tx.hash}`, 0)
               //     sentryDebug(`safe block number: ${blockNumbers[0]}`)
               //   }
               // }
@@ -114,6 +117,7 @@ const ClaimButton = props => {
             // when the transaction execution failed (status is 0)
             updateOrderedTxs(walletCurrentAddress, tx.hash, TxPosition.Abnormal)
             markTransactionAbnormal(tx, TX_STATUS.failed, error.message)
+            addEstimatedTimeMap(`claim_${tx.hash}`, 0)
           }
         })
         .finally(() => {

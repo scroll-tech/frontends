@@ -12,8 +12,8 @@ import useClaimStore from "@/stores/claimStore"
 const TableBox = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  justifyContent: "center",
   alignItems: "center",
+  minHeight: "20rem",
 }))
 
 const Claim = (props: any) => {
@@ -34,7 +34,7 @@ const Claim = (props: any) => {
 
   return (
     <TableBox>
-      {pageTransactions?.length ? (
+      {pageTransactions?.length && walletCurrentAddress ? (
         <ClaimTable
           data={pageTransactions}
           pagination={{
@@ -44,7 +44,7 @@ const Claim = (props: any) => {
           }}
         />
       ) : (
-        <Typography variant="body1" color="textSecondary" sx={{ width: "40rem" }}>
+        <Typography variant="body1" color="textSecondary" sx={{ color: "#C58D49" }}>
           Your claimable transactions will appear here...
         </Typography>
       )}

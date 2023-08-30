@@ -1,6 +1,6 @@
 import { makeStyles } from "tss-react/mui"
 
-import { CircularProgress, Tooltip } from "@mui/material"
+import { Tooltip } from "@mui/material"
 
 import { TX_STATUS } from "@/constants"
 import useBridgeStore from "@/stores/bridgeStore"
@@ -172,11 +172,7 @@ const TxStatus = props => {
       </Tooltip>
     )
   }
-  return (
-    <button className={cx(classes.chip, classes.pendingChip)}>
-      Pending <CircularProgress size={12} sx={{ marginLeft: "0.2rem" }} color="inherit" />
-    </button>
-  )
+  return <button className={cx(classes.chip, classes.pendingChip)}>Pending</button>
 }
 
 export default TxStatus
