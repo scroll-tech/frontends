@@ -52,7 +52,17 @@ const Bridge = () => {
             </Typography>
             {isMobileOnly && <NetworkIndicator></NetworkIndicator>}
           </Stack>
-          <ConnectorAndHistory sx={{ mt: "4rem", mb: ["2rem", "3rem"], width: ["100%", "51.6rem"] }}></ConnectorAndHistory>
+
+          <ConnectorAndHistory
+            sx={{
+              mt: "4rem",
+              mb: ["2rem", "3rem"],
+              width: ["100%", "51.6rem"],
+              "& *": {
+                fontFamily: "var(--developer-page-font-family) !important",
+              },
+            }}
+          ></ConnectorAndHistory>
           {mode === "Transaction" ? <Send></Send> : <TxHistory></TxHistory>}
           <FAQsLink />
         </SectionWrapper>

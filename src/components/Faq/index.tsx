@@ -13,6 +13,9 @@ const useStyles = makeStyles()((theme: Theme) => {
     wrapper: {
       width: "92rem",
       margin: "14rem auto",
+      "& *": {
+        fontFamily: "var(--developer-page-font-family) !important",
+      },
       [theme.breakpoints.down("md")]: {
         width: "100%",
         marginTop: "6.4rem",

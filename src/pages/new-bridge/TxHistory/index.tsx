@@ -12,6 +12,9 @@ const TableBox = styled(Box)(({ theme }) => ({
   borderRadius: "40px",
   backgroundColor: theme.palette.themeBackground.optionHightlight,
   width: "100%",
+  "& *": {
+    fontFamily: "var(--developer-page-font-family) !important",
+  },
 }))
 
 const TransactionsList = (props: any) => {

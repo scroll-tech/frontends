@@ -104,7 +104,17 @@ const Rollup = () => {
   return (
     <Box>
       <Header />
-      <Box sx={{ maxWidth: "130rem", px: ["2rem", "2rem", "6rem"], mx: "auto", mb: ["12rem", "14rem"] }}>
+      <Box
+        sx={{
+          maxWidth: "130rem",
+          px: ["2rem", "2rem", "6rem"],
+          mx: "auto",
+          mb: ["12rem", "14rem"],
+          "& *": {
+            fontFamily: "var(--developer-page-font-family) !important",
+          },
+        }}
+      >
         <InfoBox>
           <Card
             title="Last Committed Batch"

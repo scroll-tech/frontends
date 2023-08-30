@@ -74,6 +74,9 @@ body {
   --onboard-font-family-normal: "TransSansPremium", "system-ui", "BlinkMacSystemFont", "Roboto", "Helvetica Neue", "Segoe UI", "Arial", "sans-serif",
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
+  /* same as scroll documnet */
+  --developer-page-font-family: "Roboto Flex", "trans-sans", "circular", Arial, "Helvetica Neue", Helvetica, sans-serif;
+
   /* need update after customize web3-onboard */
   --onboard-primary-100: #fee7e030;
   --onboard-primary-200: #f8c5a2;
