@@ -10,7 +10,11 @@ const ArticleTitle = styled(Typography)(({ theme }) => ({
   lineHeight: "2.8rem",
   display: "table-cell",
   verticalAlign: "bottom",
-  marginBottom: "0.6rem",
+  marginBottom: "0.7rem",
+  cursor: "pointer",
+  "&:hover": {
+    opacity: 0.7,
+  },
 }))
 
 const Card = styled(Box)(({ theme }) => ({
@@ -20,11 +24,7 @@ const Card = styled(Box)(({ theme }) => ({
   textAlign: "left",
   margin: "0 auto",
   overflow: "hidden",
-  cursor: "pointer",
   color: theme.palette.text.primary,
-  "&:hover *": {
-    color: "#6d6d6d",
-  },
   [theme.breakpoints.down("md")]: {
     gridTemplateColumns: "1fr",
     gap: "2rem",
@@ -49,6 +49,10 @@ const ArticleSummary = styled(Typography)(({ theme }) => ({
   display: "-webkit-box",
   WebkitLineClamp: 2,
   WebkitBoxOrient: "vertical",
+  cursor: "pointer",
+  "&:hover": {
+    opacity: 0.7,
+  },
   [theme.breakpoints.down("md")]: {
     display: "none",
   },
@@ -65,6 +69,10 @@ const ArticlePoster = styled(WebpImage)(({ theme }) => ({
   maxWidth: "51.7rem",
   height: "auto",
   borderRadius: "2.5rem",
+  cursor: "pointer",
+  "&:hover": {
+    opacity: 0.7,
+  },
   [theme.breakpoints.down("md")]: {
     gridRow: 1,
     borderRadius: "1.5rem",
@@ -82,15 +90,19 @@ const ArticleCard = ({ blog, small = false }) => {
   }
 
   return (
-    <Card onClick={handleClick}>
+    <Card>
       <ArticleInfo>
-        <ArticleTitle variant="H4">{blog.title}</ArticleTitle>
-        <ArticleSummary variant="Body3">{blog.summary}</ArticleSummary>
+        <ArticleTitle variant="H4" onClick={handleClick}>
+          {blog.title}
+        </ArticleTitle>
+        <ArticleSummary variant="Body3" onClick={handleClick}>
+          {blog.summary}
+        </ArticleSummary>
         <ArticleDate variant="body2">
           {blog.date} ・ {blog.type}
         </ArticleDate>
       </ArticleInfo>
-      <ArticlePoster src={blog.posterImg}></ArticlePoster>
+      <ArticlePoster src={blog.posterImg} onClick={handleClick}></ArticlePoster>
     </Card>
   )
 }
