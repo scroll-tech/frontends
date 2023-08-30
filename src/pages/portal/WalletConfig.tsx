@@ -52,12 +52,6 @@ const WalletConfig = () => {
   return (
     <>
       <Descriptions title={`Configure ${walletName || "wallet"} for our zkEVM testnet`}>
-        <DescriptionItem sx={{ flexDirection: "column", gap: "3rem", alignItems: "flex-start !important" }}>
-          <Typography>Note: Please completely remove previous Scroll networks from your {walletName || "wallet"} before proceeding, then:</Typography>
-          <Link href="https://docs.scroll.io/en/user-guide/common-errors/" underline="hover" external>
-            Having issues? Try completely…
-          </Link>
-        </DescriptionItem>
         {NETWORKS.map((item, index) => (
           <DescriptionItem key={item.name}>
             <Typography bold>Layer{index + 1}</Typography>
@@ -75,6 +69,15 @@ const WalletConfig = () => {
             </Stack>
           </DescriptionItem>
         ))}
+        <DescriptionItem>
+          <Typography>
+            Having issues? Try completely removing previous Scroll networks from your {walletName || "wallet"}. Troubleshoot other{" "}
+            <Link href="https://docs.scroll.io/en/user-guide/common-errors/" underline="hover" external>
+              Common Errors
+            </Link>{" "}
+            here.
+          </Typography>
+        </DescriptionItem>
       </Descriptions>
       <Snackbar open={!!tip} autoHideDuration={6000} onClose={handleClose}>
         <Alert severity="info" onClose={handleClose}>
