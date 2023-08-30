@@ -85,6 +85,7 @@ const ClaimButton = props => {
             updateOrderedTxs(walletCurrentAddress, tx.hash, TxPosition.Abnormal)
             //EIP - 658
             markTransactionAbnormal(tx, TX_STATUS.failed, errorMessage)
+            addEstimatedTimeMap(`claim_${tx.hash}`, 0)
           }
         })
         .catch(error => {
@@ -96,21 +97,14 @@ const ClaimButton = props => {
               updateOrderedTxs(walletCurrentAddress, tx.hash, TxPosition.Abnormal)
               // setSendError("cancel")
             } else {
-              // const { blockNumber, hash: transactionHash } = error.receipt
-              // handleTransaction(tx, {
-              //   fromBlockNumber: blockNumber,
-              //   hash: transactionHash,
-              // })
-              // updateOrderedTxs(walletCurrentAddress, tx.hash, transactionHash)
-              // if (fromNetwork.isL1) {
-              //   const estimatedOffsetTime = (blockNumber - blockNumbers[0]) * 12 * 1000
-              //   if (isValidOffsetTime(estimatedOffsetTime)) {
-              //     addEstimatedTimeMap(`from_${transactionHash}`, Date.now() + estimatedOffsetTime)
-              //   } else {
-              // addEstimatedTimeMap(`claim_${tx.hash}`, 0)
-              //     sentryDebug(`safe block number: ${blockNumbers[0]}`)
-              //   }
-              // }
+              const { blockNumber } = error.receipt
+              const estimatedOffsetTime = (blockNumber - blockNumbers[0]) * 12 * 1000
+              if (isValidOffsetTime(estimatedOffsetTime)) {
+                addEstimatedTimeMap(`from_${tx.hash}`, Date.now() + estimatedOffsetTime)
+              } else {
+                addEstimatedTimeMap(`claim_${tx.hash}`, 0)
+                sentryDebug(`safe block number: ${blockNumbers[0]}`)
+              }
             }
           } else {
             // setSendError(error)

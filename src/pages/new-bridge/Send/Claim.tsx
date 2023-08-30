@@ -22,10 +22,17 @@ const Claim = (props: any) => {
     claim: { refreshPageTransactions },
   } = useApp()
 
-  const { page, total, pageTransactions } = useClaimStore()
+  const { page, total, pageTransactions, loading, targetTransaction, setTargetTransaction, orderedTxDB } = useClaimStore()
 
   useEffect(() => {
-    handleChangePage(1)
+    if (targetTransaction) {
+      const index = orderedTxDB.findIndex(tx => tx.hash === targetTransaction)
+      const page = Math.ceil((index + 1) / BRIDGE_PAGE_SIZE)
+      handleChangePage(page)
+      setTargetTransaction(null)
+    } else {
+      handleChangePage(1)
+    }
   }, [walletCurrentAddress])
 
   const handleChangePage = currentPage => {
@@ -37,6 +44,7 @@ const Claim = (props: any) => {
       {pageTransactions?.length && walletCurrentAddress ? (
         <ClaimTable
           data={pageTransactions}
+          loading={loading}
           pagination={{
             count: Math.ceil(total / BRIDGE_PAGE_SIZE),
             page,

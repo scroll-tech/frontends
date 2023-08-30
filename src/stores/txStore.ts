@@ -485,6 +485,6 @@ const useTxStore = create<TxStore>()(
   ),
 )
 
-export { isValidOffsetTime, TxPosition, TxDirection }
+export { isValidOffsetTime, TxPosition, TxDirection, TimestampTx }
 
 export default useTxStore

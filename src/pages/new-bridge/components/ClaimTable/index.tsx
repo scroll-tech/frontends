@@ -95,6 +95,20 @@ const useStyles = makeStyles()(theme => {
         fontSize: "2.4rem",
       },
     },
+    loadingBox: {
+      position: "absolute",
+      top: "0",
+      left: "0",
+      right: "0",
+      bottom: "0",
+      background: "rgba(255,255,255,0.5)",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    loadingIndicator: {
+      color: "#EB7106",
+    },
   }
 })
 
@@ -120,15 +134,11 @@ const TxTable = (props: any) => {
             </TableRow>
           </TableHead>
           <TableBody className={classes.tableBody}>
-            {loading ? (
-              <CircularProgress />
-            ) : (
-              <>
-                {data?.map((tx: any) => (
-                  <TxRow key={tx.hash} tx={tx} finalizedIndex={lastBlockNums?.finalized_index ?? 0} />
-                ))}
-              </>
-            )}
+            <>
+              {data?.map((tx: any) => (
+                <TxRow key={tx.hash} tx={tx} finalizedIndex={lastBlockNums?.finalized_index ?? 0} />
+              ))}
+            </>
           </TableBody>
         </Table>
       </TableContainer>
@@ -145,6 +155,11 @@ const TxTable = (props: any) => {
           />
         </div>
       )}
+      {loading ? (
+        <Box className={classes.loadingBox}>
+          <CircularProgress className={classes.loadingIndicator} />
+        </Box>
+      ) : null}
     </Box>
   )
 }
