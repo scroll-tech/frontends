@@ -16,6 +16,9 @@ const useStyles = makeStyles()(theme => ({
     borderRadius: "2rem",
     overflow: "hidden",
     maxWidth: "64rem",
+    "& *": {
+      fontFamily: "var(--developer-page-font-family) !important",
+    },
     [theme.breakpoints.down("sm")]: {
       maxWidth: "100%",
     },

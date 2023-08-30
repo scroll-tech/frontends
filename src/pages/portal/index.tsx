@@ -19,7 +19,16 @@ const Portal = () => {
         direction="column"
         gap={isMobileOnly ? "4rem" : "6rem"}
         alignItems="center"
-        sx={{ mt: ["8rem", "12rem"], mb: ["12rem", "14rem"], maxWidth: ["100%", "1036px"], px: ["2rem", 0], margin: "0 auto" }}
+        sx={{
+          mt: ["8rem", "12rem"],
+          mb: ["12rem", "14rem"],
+          maxWidth: ["100%", "1036px"],
+          px: ["2rem", 0],
+          margin: "0 auto",
+          "& *": {
+            fontFamily: "var(--developer-page-font-family) !important",
+          },
+        }}
       >
         <WalletConfig></WalletConfig>
         <TestFlow></TestFlow>

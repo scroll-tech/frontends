@@ -22,7 +22,8 @@ const useStyles = makeStyles()(theme => ({
     alignItems: "center",
   },
   label: {
-    fontWeight: 800,
+    fontWeight: 600,
+    fontSize: "1.6rem",
     [theme.breakpoints.down("sm")]: {
       fontSize: "1.4rem",
     },
@@ -30,10 +31,9 @@ const useStyles = makeStyles()(theme => ({
   xlabel: {
     fontSize: "2.8rem",
     textAlign: "right",
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       fontSize: "2rem",
     },
-    fontWeight: 800,
   },
 }))
 
