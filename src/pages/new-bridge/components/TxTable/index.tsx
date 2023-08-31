@@ -156,7 +156,7 @@ const TxTable = (props: any) => {
   return (
     <>
       <TableContainer component={Paper} className={classes.tableWrapper}>
-        <Table aria-label="Tx Table">
+        <Table aria-label="Tx Table" sx={{ minHeight: "20rem" }}>
           <TableHead className={classes.tableHeader}>
             <TableRow>
               <TableCell align="center">Status</TableCell>
