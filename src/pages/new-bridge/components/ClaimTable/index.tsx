@@ -207,7 +207,7 @@ const TxRow = props => {
         </Typography>
 
         {renderEstimatedWaitingTime(estimatedTimeMap[`to_${tx.toHash}`])}
-        <Typography sx={{ fontWeight: 400 }}>Transaction sent: {initiatedAt}</Typography>
+        <Typography sx={{ fontWeight: 400, whiteSpace: "nowrap" }}>Transaction sent: {initiatedAt}</Typography>
       </>
     )
   }
