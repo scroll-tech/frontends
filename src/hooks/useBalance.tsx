@@ -11,6 +11,7 @@ const useBalance = (token: any, network?: any) => {
 
   async function fetchBalance({ provider, token, network, address }) {
     try {
+      console.log("fetchBalance", address, provider, token, network)
       if (!address || !provider || !token.chainId) {
         return null
       }
