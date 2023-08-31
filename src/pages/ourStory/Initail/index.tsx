@@ -44,6 +44,9 @@ const useStyles = makeStyles()(theme => ({
         flex: 1,
       },
     },
+    [theme.breakpoints.down("lg")]: {
+      gap: "3rem",
+    },
     [theme.breakpoints.down("md")]: {
       flexDirection: "column",
       gap: "8rem",
@@ -70,7 +73,7 @@ const useStyles = makeStyles()(theme => ({
   },
   sideImg: {
     maxWidth: "unset",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("lg")]: {
       maxWidth: "100%",
     },
   },
