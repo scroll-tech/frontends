@@ -23,7 +23,8 @@ const Card = styled(Box)(({ theme }) => ({
   cursor: "pointer",
   color: theme.palette.text.primary,
   "&:hover *": {
-    color: "#6d6d6d",
+    cursor: "pointer !important",
+    opacity: 0.7,
   },
   [theme.breakpoints.down("md")]: {
     gridTemplateColumns: "1fr",
