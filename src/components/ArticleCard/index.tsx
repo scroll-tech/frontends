@@ -10,7 +10,7 @@ const ArticleTitle = styled(Typography)(({ theme }) => ({
   lineHeight: "2.8rem",
   display: "table-cell",
   verticalAlign: "bottom",
-  marginBottom: "0.6rem",
+  marginBottom: "0.7rem",
 }))
 
 const Card = styled(Box)(({ theme }) => ({
@@ -20,10 +20,11 @@ const Card = styled(Box)(({ theme }) => ({
   textAlign: "left",
   margin: "0 auto",
   overflow: "hidden",
-  cursor: "pointer",
   color: theme.palette.text.primary,
+  cursor: "pointer",
   "&:hover *": {
-    color: "#6d6d6d",
+    cursor: "pointer !important",
+    opacity: 0.7,
   },
   [theme.breakpoints.down("md")]: {
     gridTemplateColumns: "1fr",
