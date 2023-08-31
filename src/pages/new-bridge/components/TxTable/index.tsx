@@ -161,9 +161,11 @@ const TxTable = (props: any) => {
             <TableRow>
               <TableCell align="center">Status</TableCell>
               <TableCell>Amount</TableCell>
-              <TableCell sx={{ width: "12rem" }}>Action</TableCell>
-              <TableCell align="left">Initiated At</TableCell>
-              <TableCell>Transaction Hash</TableCell>
+              <TableCell sx={{ width: "16rem" }}>Action</TableCell>
+              <TableCell sx={{ width: "12rem" }} align="left">
+                Initiated At
+              </TableCell>
+              <TableCell sx={{ width: "32rem" }}>Transaction Hash</TableCell>
             </TableRow>
           </TableHead>
           <TableBody className={classes.tableBody}>
