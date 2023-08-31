@@ -187,7 +187,7 @@ const SendTransaction = props => {
       <DetailRow title="Fees" sx={{ my: "0.8rem" }} tooltip={<FeeDetails />} value={displayedFee} large />
       <Typography
         sx={{
-          fontSize: "1.4rem",
+          fontSize: "1.3rem",
           fontWeight: 500,
           width: ["calc(100% + 1rem)", "32.4rem"],
           textAlign: "center",
