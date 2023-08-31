@@ -1,18 +1,27 @@
-import { isMobileOnly } from "react-device-detect"
+import { Box, Stack, Typography } from "@mui/material"
+import { styled } from "@mui/material/styles"
 
-import { Stack, Typography } from "@mui/material"
+import useCheckViewport from "@/hooks/useCheckViewport"
+
+const ActionWrapper = styled(Box)(({ theme }) => ({
+  display: "flex",
+  width: "100%",
+  justifyContent: "flex-end",
+}))
 
 const SectionHeader = props => {
   const { dark, title, content, action, ...rest } = props
+  const { isPortrait } = useCheckViewport()
+
   return (
     <Stack
-      direction={isMobileOnly ? "column" : "row"}
-      spacing={isMobileOnly ? "4.8rem" : "0"}
+      direction={isPortrait ? "column" : "row"}
+      spacing={isPortrait && action ? "4.8rem" : "0"}
       justifyContent="space-between"
-      alignItems="flex-end"
+      alignItems={isPortrait ? "flex-start" : "flex-end"}
       {...rest}
     >
-      <Stack direction="column" sx={{ width: ["100%", "60rem"] }}>
+      <Stack direction="column" sx={{ maxWidth: ["100%", "100%", "60rem"] }}>
         <Typography
           sx={{
             fontSize: ["3.2rem", "4.6rem"],
@@ -34,7 +43,7 @@ const SectionHeader = props => {
           {content}
         </Typography>
       </Stack>
-      {action}
+      <ActionWrapper>{action}</ActionWrapper>
     </Stack>
   )
 }

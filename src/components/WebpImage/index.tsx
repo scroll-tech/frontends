@@ -1,8 +1,9 @@
 function WebpImage(props) {
+  const { src, webpsrc, ...restProps } = props
   return (
-    <picture>
-      <source srcSet={props.webpsrc} type="image/webp" />
-      <img alt="img" {...props} />
+    <picture {...restProps}>
+      <source srcSet={webpsrc} type="image/webp" />
+      <img alt="img" src={src} />
     </picture>
   )
 }

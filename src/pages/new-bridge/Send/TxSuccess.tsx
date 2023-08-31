@@ -1,5 +1,4 @@
 import { useMemo } from "react"
-import { isMobileOnly } from "react-device-detect"
 import useStorage from "squirrel-gill"
 
 import { Alert, Box, Typography } from "@mui/material"
@@ -10,12 +9,14 @@ import TextButton from "@/components/TextButton"
 import TxAlert from "@/components/TxAlert"
 import { ETH_SYMBOL } from "@/constants"
 import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
+import useCheckViewport from "@/hooks/useCheckViewport"
 import useBridgeStore from "@/stores/bridgeStore"
 
 const TxSuccess = () => {
   const { fromNetwork, toNetwork, txResult, changeTxResult, txType, withDrawStep, changeWithdrawStep } = useBridgeStore()
   const [tokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
 
+  const { isMobile } = useCheckViewport()
   const transactionUrl = useMemo(() => `${fromNetwork.explorer}/tx/${txResult?.hash}`, [fromNetwork, txResult])
 
   const handleReturnDeposit = () => {
@@ -72,7 +73,7 @@ const TxSuccess = () => {
         </Link>
 
         <Box sx={{ flex: 1, display: "flex", alignItems: "flex-end", width: "100%", marginTop: "4.8rem", justifyContent: "center" }}>
-          <Button width={isMobileOnly ? "100%" : "35rem"} color="primary" onClick={handleClaim}>
+          <Button width={isMobile ? "100%" : "35rem"} color="primary" onClick={handleClaim}>
             Claim Funds on Ethereum
           </Button>
         </Box>

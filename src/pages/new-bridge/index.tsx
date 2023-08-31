@@ -1,6 +1,5 @@
 // import createCache from "@emotion/cache"
 import { useEffect } from "react"
-import { isMobileOnly } from "react-device-detect"
 
 import { Stack, Typography } from "@mui/material"
 
@@ -9,6 +8,7 @@ import SectionWrapper from "@/components/SectionWrapper"
 import { NETWORKS } from "@/constants"
 import AppProvider from "@/contexts/AppContextProvider"
 import { PriceFeeProvider } from "@/contexts/PriceFeeProvider"
+import useCheckViewport from "@/hooks/useCheckViewport"
 import useBridgeStore from "@/stores/bridgeStore"
 
 import ConnectorAndHistory from "./ConnectorAndHistory"
@@ -18,6 +18,8 @@ import Send from "./Send"
 import TxHistory from "./TxHistory"
 
 const Bridge = () => {
+  const { isMobile } = useCheckViewport()
+
   const { mode, txType, changeFromNetwork, changeToNetwork } = useBridgeStore()
 
   useEffect(() => {
@@ -38,7 +40,7 @@ const Bridge = () => {
           sx={{
             pt: "8.4rem",
             width: "fit-content",
-            height: "calc(100vh - 6.5rem)",
+            height: "calc(100vh - 69.2rem)",
             minHeight: "86rem",
             display: "flex",
             flexDirection: "column",
@@ -50,7 +52,7 @@ const Bridge = () => {
             <Typography sx={{ fontSize: ["4rem", "4.8rem"], fontWeight: 600, textAlign: "center", width: "100%", whiteSpace: "nowrap" }}>
               Bridge into Scroll
             </Typography>
-            {isMobileOnly && <NetworkIndicator></NetworkIndicator>}
+            {isMobile && <NetworkIndicator></NetworkIndicator>}
           </Stack>
 
           <ConnectorAndHistory

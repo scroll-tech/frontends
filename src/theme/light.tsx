@@ -30,7 +30,7 @@ const lightTheme = createTheme({
         root: {
           paddingLeft: "2rem",
           paddingRight: "2rem",
-          "@media(min-width: 600px)": {
+          "@media(min-width: 900px)": {
             paddingLeft: "6rem",
             paddingRight: "6rem",
           },

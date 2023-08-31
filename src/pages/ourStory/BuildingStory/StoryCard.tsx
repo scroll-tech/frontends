@@ -1,4 +1,3 @@
-import { isMobile } from "react-device-detect"
 import { makeStyles } from "tss-react/mui"
 
 import { Box, Card, CardContent, CardMedia, SvgIcon, Typography } from "@mui/material"
@@ -6,6 +5,7 @@ import { Box, Card, CardContent, CardMedia, SvgIcon, Typography } from "@mui/mat
 import { ReactComponent as ExternaLinkIcon } from "@/assets/svgs/refactor/external-link.svg"
 import Link from "@/components/Link"
 import ScrollLogo from "@/components/ScrollLogo"
+import useCheckViewport from "@/hooks/useCheckViewport"
 
 const useStyles = makeStyles<any>()((theme, { cover }) => ({
   card: {
@@ -109,6 +109,8 @@ const StoryCard = props => {
 
   const { classes, cx } = useStyles({ cover })
 
+  const { isPortrait } = useCheckViewport()
+
   return (
     <Link href={href} external>
       <Card {...restProps} elevation={0} className={classes.card}>
@@ -120,7 +122,7 @@ const StoryCard = props => {
           </Box>
         )}
 
-        <CardContent className={cx(classes.cardContent, cover || isMobile ? classes.withCover : classes.noCover)}>
+        <CardContent className={cx(classes.cardContent, cover || isPortrait ? classes.withCover : classes.noCover)}>
           <SvgIcon
             sx={{ fontSize: ["1.3rem", "2rem"] }}
             className={cx(classes.icon, "building-story-card-icon")}

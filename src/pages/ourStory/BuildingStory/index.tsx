@@ -104,7 +104,7 @@ const BuildingStory = () => {
   const { classes, cx } = useStyles()
 
   return (
-    <SectionWrapper sx={{ pt: ["11rem", "26rem"], pb: ["12rem", "13rem"] }}>
+    <SectionWrapper sx={{ pt: ["11rem", "18rem", "26rem"], pb: ["12rem", "13rem"] }}>
       <SectionHeader
         title="Read the stories behind building Scroll"
         content="Check out what our founders, community members, and thought leaders are saying about Scroll and building a native zkEVM."

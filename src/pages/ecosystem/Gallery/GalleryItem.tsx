@@ -1,7 +1,6 @@
 import { motion } from "framer-motion"
 import { useState } from "react"
 import Img from "react-cool-img"
-import { isMobileOnly } from "react-device-detect"
 import { makeStyles } from "tss-react/mui"
 
 import { Box, Stack, SvgIcon, Typography } from "@mui/material"
@@ -10,6 +9,7 @@ import { ecosystemListLogoUrl } from "@/apis/ecosystem"
 import { ReactComponent as InfoIcon } from "@/assets/svgs/refactor/info.svg"
 import RenderIfVisible from "@/components/RenderIfVisible"
 import { ECOSYSTEM_SOCIAL_LIST } from "@/constants"
+import useCheckViewport from "@/hooks/useCheckViewport"
 
 const useStyles = makeStyles()(theme => ({
   renderWrapper: {
@@ -125,6 +125,8 @@ const GalleryItem = props => {
   const logo = ecosystemListLogoUrl + name + ext
   const { classes, cx } = useStyles()
 
+  const { isMobile } = useCheckViewport()
+
   const [isBack, setIsBack] = useState(false)
 
   const handleFlipCard = e => {
@@ -141,7 +143,7 @@ const GalleryItem = props => {
     window.open(website)
   }
   return (
-    <RenderIfVisible defaultHeight={isMobileOnly ? 150 : 0} rootElementClass={classes.renderWrapper}>
+    <RenderIfVisible defaultHeight={isMobile ? 150 : 0} rootElementClass={classes.renderWrapper}>
       <motion.div className={classes.wrapper} onClick={handleFlipCard} whileHover={{ translateY: "-2px", scale: 1.005 }}>
         <motion.div
           className={classes.flipCard}
@@ -154,7 +156,7 @@ const GalleryItem = props => {
             // whileHover={{ boxShadow: "2px 2px 10px 2px rgba(131, 131, 131, 0.5)" }}
             // transition={{ duration: 0.3, ease: "easeInOut" }}
           >
-            {isMobileOnly && <SvgIcon className={classes.info} component={InfoIcon} inheritViewBox></SvgIcon>}
+            {isMobile && <SvgIcon className={classes.info} component={InfoIcon} inheritViewBox></SvgIcon>}
             <Box className={classes.frontContent}>
               <Stack
                 justifyContent="center"
@@ -169,7 +171,7 @@ const GalleryItem = props => {
                   alignSelf: "center",
                 }}
               >
-                <Img alt={name} src={logo} placeholder={hash} width={isMobileOnly ? 60 : 70} height={isMobileOnly ? 60 : 70}></Img>
+                <Img alt={name} src={logo} placeholder={hash} width={isMobile ? 60 : 70} height={isMobile ? 60 : 70}></Img>
               </Stack>
               <Typography sx={{ fontWeight: 600, fontSize: ["2rem", "2.4rem"], lineHeight: "3rem", color: theme => theme.palette.text.primary }}>
                 {name}

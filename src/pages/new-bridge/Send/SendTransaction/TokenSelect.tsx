@@ -85,7 +85,7 @@ const useStyles = makeStyles()(theme => ({
     whiteSpace: "nowrap",
     textOverflow: "ellipsis",
     [theme.breakpoints.down("sm")]: {
-      fontSize: "1.6rem",
+      fontSize: "1.5rem",
     },
   },
 }))

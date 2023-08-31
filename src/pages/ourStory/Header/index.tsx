@@ -1,9 +1,9 @@
-import { isMobileOnly } from "react-device-detect"
 import { makeStyles } from "tss-react/mui"
 
 import { Box, Stack, Typography } from "@mui/material"
 
 import OrientationToView from "@/components/Motion/OrientationToView"
+import useCheckViewport from "@/hooks/useCheckViewport"
 
 const useStyles = makeStyles()(theme => ({
   bg: {
@@ -53,9 +53,11 @@ const useStyles = makeStyles()(theme => ({
 
 const Header = () => {
   const { classes } = useStyles()
+  const { isMobile } = useCheckViewport()
+
   return (
     <Box className={classes.bg}>
-      <Stack direction="column" spacing={isMobileOnly ? "2rem" : "1.4rem"} alignItems="center">
+      <Stack direction="column" spacing={isMobile ? "2rem" : "1.4rem"} alignItems="center">
         <OrientationToView>
           <Typography sx={{ fontSize: ["4rem", "7.8rem"], lineHeight: 1, fontWeight: 600 }}>Our story</Typography>
         </OrientationToView>

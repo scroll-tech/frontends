@@ -108,7 +108,7 @@ const TeamMembers = () => {
   const { classes } = useStyles()
 
   return (
-    <SectionWrapper sx={{ pt: ["11rem", "26rem"] }}>
+    <SectionWrapper sx={{ pt: ["11rem", "18rem", "26rem"] }}>
       <SectionHeader
         title="Our team"
         content="The Scroll team is a tight-knit group of cryptography researchers, engineers, experts, and community champions. We're a global, remote team that values autonomy and high performance through kindness, direct communication, and empathy."

@@ -19,6 +19,10 @@ const Card = styled(Paper)(({ theme }) => ({
   justifyContent: "space-between",
 
   [theme.breakpoints.down("md")]: {
+    padding: "1.8rem 2rem 1.2rem",
+  },
+
+  [theme.breakpoints.down("sm")]: {
     paddingLeft: "1.4rem",
     paddingRight: "1rem",
     paddingTop: "1.4rem",
@@ -30,7 +34,7 @@ const CardTitle = styled(Typography)(({ theme }) => ({
   fontWeight: 600,
   marginRight: "0.6rem",
   color: theme.palette.text.primary,
-  [theme.breakpoints.down("md")]: {
+  [theme.breakpoints.down("sm")]: {
     fontSize: "1.4rem",
     lineHeight: "2rem",
     marginRight: "0.2rem",

@@ -1,10 +1,10 @@
 import { motion, useCycle } from "framer-motion"
-import { isMobileOnly } from "react-device-detect"
 import { makeStyles } from "tss-react/mui"
 
 import { ButtonBase, CircularProgress, IconButton, SvgIcon } from "@mui/material"
 
 import { ReactComponent as ArrowRightIcon } from "@/assets/svgs/refactor/arrow-right.svg"
+import useCheckViewport from "@/hooks/useCheckViewport"
 
 const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading }) => ({
   wrapper: {
@@ -101,6 +101,8 @@ const Button = props => {
   const { width, sx, color, loading, disabled, children, ...restProps } = props
   const { classes, cx } = useStyles({ color, width, disabled, loading })
 
+  const { isMobile } = useCheckViewport()
+
   const [isHover, setIsHover] = useCycle(false, true)
 
   const handleHover = () => {
@@ -123,7 +125,7 @@ const Button = props => {
       )}
       <motion.div
         className={cx(classes.mask, loading && classes.maskLoading, disabled && classes.maskDisabled)}
-        variants={isMobileOnly ? maskMobile : maskDesktop}
+        variants={isMobile ? maskMobile : maskDesktop}
       ></motion.div>
       <ButtonBase
         classes={{ root: cx(classes.button, loading && classes.buttonLoading, disabled && classes.buttonDisabled) }}
@@ -131,7 +133,7 @@ const Button = props => {
         className={cx(isHover && classes.active)}
         {...restProps}
       >
-        {children} {loading && <CircularProgress sx={{ color: "#0F8E7E" }} size={isMobileOnly ? 18 : 24} thickness={4}></CircularProgress>}
+        {children} {loading && <CircularProgress sx={{ color: "#0F8E7E" }} size={isMobile ? 18 : 24} thickness={4}></CircularProgress>}
       </ButtonBase>
     </motion.div>
   )

@@ -129,7 +129,7 @@ const TxTable = (props: any) => {
             <TableRow>
               <TableCell align="center">Claim</TableCell>
               <TableCell>Amount</TableCell>
-              <TableCell>Transaction Hash</TableCell>
+              <TableCell sx={{ width: "18rem" }}>Transaction Hash</TableCell>
               <TableCell>Status</TableCell>
             </TableRow>
           </TableHead>
@@ -207,7 +207,7 @@ const TxRow = props => {
         </Typography>
 
         {renderEstimatedWaitingTime(estimatedTimeMap[`to_${tx.toHash}`])}
-        <Typography sx={{ fontWeight: 400 }}>Transaction sent: {initiatedAt}</Typography>
+        <Typography sx={{ fontWeight: 400, whiteSpace: "nowrap" }}>Transaction sent: {initiatedAt}</Typography>
       </>
     )
   }

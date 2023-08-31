@@ -3,12 +3,11 @@ import { useEffect, useState } from "react"
 
 import { Tune as TuneIcon } from "@mui/icons-material"
 import { Box, Modal, Typography } from "@mui/material"
-import { useTheme } from "@mui/material/styles"
-import useMediaQuery from "@mui/material/useMediaQuery"
 import { styled } from "@mui/system"
 
 import ArticleCard from "@/components/ArticleCard"
 import SectionWrapper from "@/components/SectionWrapper"
+import useCheckViewport from "@/hooks/useCheckViewport"
 
 import blogSource from "./data.json"
 
@@ -35,13 +34,8 @@ const BlogBox = styled(Box)(({ theme }) => ({
 
 const Header = styled(Box)(({ theme }) => ({
   padding: "15.5rem 0",
-  display: "grid",
-  gap: "6rem",
-  gridTemplateColumns: "3fr 2fr",
   [theme.breakpoints.down("md")]: {
-    gridTemplateColumns: "1fr",
     padding: "6.8rem 0 8rem",
-    gap: "2rem",
   },
 }))
 
@@ -49,21 +43,25 @@ const Title = styled(Typography)(({ theme }) => ({
   fontSize: "7.8rem",
   lineHeight: 1,
   fontWeight: 600,
-  [theme.breakpoints.down("md")]: {
+  [theme.breakpoints.down("sm")]: {
     fontSize: "4rem",
   },
 }))
 
 const Summary = styled(Typography)(({ theme }) => ({
   fontSize: "2.6rem",
-  maxWidth: "68rem",
+  maxWidth: "56rem",
+  marginTop: "2.4rem",
   [theme.breakpoints.down("md")]: {
+    marginTop: "2rem",
+  },
+  [theme.breakpoints.down("sm")]: {
     fontSize: "2rem",
   },
 }))
 
 const FilterContainer = styled(Box)(({ theme }) => ({
-  [theme.breakpoints.down("md")]: {
+  [theme.breakpoints.down("lg")]: {
     display: "flex",
     justifyContent: "flex-end",
   },
@@ -79,6 +77,9 @@ const MobileFilter = styled(Box)(({ theme }) => ({
   border: `1px solid ${theme.palette.text.primary}`,
   width: "fit-content",
   padding: "0.5rem 1.2rem",
+  [theme.breakpoints.between("sm", "lg")]: {
+    marginBottom: "3rem",
+  },
 }))
 
 const FilterModal = styled(Box)({
@@ -99,7 +100,7 @@ const BlogBody = styled(Box)(({ theme }) => ({
   display: "grid",
   gap: "3rem",
   gridTemplateColumns: "1fr 4fr",
-  [theme.breakpoints.down("md")]: {
+  [theme.breakpoints.down("lg")]: {
     gridTemplateColumns: "1fr",
     gap: "0",
   },
@@ -113,7 +114,7 @@ const FilterTypeName = styled(Typography)(({ theme }) => ({
   "&:nth-of-type(2)": {
     marginTop: "6.8rem",
   },
-  [theme.breakpoints.down("md")]: {
+  [theme.breakpoints.down("lg")]: {
     height: "4rem",
     lineHeight: "4rem",
     marginBottom: 0,
@@ -135,7 +136,7 @@ const FilterItem = styled(Typography)(({ theme }) => ({
   "&:hover": {
     fontWeight: 700,
   },
-  [theme.breakpoints.down("md")]: {
+  [theme.breakpoints.down("lg")]: {
     fontWeight: 500,
     height: "3.6rem",
     lineHeight: "3.6rem",
@@ -157,11 +158,9 @@ const BlogList = styled("ul")(({ theme }) => ({
 }))
 
 const Blog = () => {
+  const { isDesktop } = useCheckViewport()
   const listType = ["Newest", "Oldest"]
   const categories = ["All", "Announcement", "General", "Technical"]
-  const theme = useTheme()
-  const isDesktop = useMediaQuery(theme.breakpoints.up("md"))
-  const isUnderLarge = useMediaQuery(theme.breakpoints.up("lg"))
   const [filterOpen, setFilterOpen] = useState(false)
   const handleFilterOpen = () => setFilterOpen(true)
   const handleFilterClose = () => setFilterOpen(false)
@@ -194,7 +193,7 @@ const Blog = () => {
       <BlogList>
         {blogs.map(blog => (
           <BlogBox key={blog.title}>
-            <ArticleCard small={!isUnderLarge} blog={blog} />
+            <ArticleCard small={!isDesktop} blog={blog} />
           </BlogBox>
         ))}
       </BlogList>

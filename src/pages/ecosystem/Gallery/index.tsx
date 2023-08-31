@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react"
-import { isMobileOnly } from "react-device-detect"
 import { makeStyles } from "tss-react/mui"
 
 import { Alert, Box, Link, Snackbar } from "@mui/material"
@@ -8,6 +7,7 @@ import { ecosystemListHashUrl } from "@/apis/ecosystem"
 import LoadingPage from "@/components/LoadingPage"
 import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
 import { DIVERGENT_CATEGORY_MAP } from "@/constants"
+import useCheckViewport from "@/hooks/useCheckViewport"
 
 import GalleryItem from "./GalleryItem"
 
@@ -28,8 +28,9 @@ const useStyles = makeStyles()(theme => ({
 
 const Gallery = props => {
   const { selectedCategory } = props
-
   const { classes } = useStyles()
+
+  const { isMobile } = useCheckViewport()
 
   const [loading, setLoading] = useState(false)
   const [page, setPage] = useState(1)
@@ -79,7 +80,7 @@ const Gallery = props => {
         <LoadingPage height="60vh"></LoadingPage>
       ) : (
         <>
-          <SuccessionToView className={classes.grid} threshold={isMobileOnly ? 0 : 1} animate="show">
+          <SuccessionToView className={classes.grid} threshold={isMobile ? 0 : 1} animate="show">
             {filteredEcosystemList?.map((item: any) => (
               <SuccessionItem key={item.name}>
                 <GalleryItem item={item}></GalleryItem>
@@ -87,7 +88,7 @@ const Gallery = props => {
             ))}
           </SuccessionToView>
           {hasMore && (
-            <Box sx={{ textAlign: "center", mt: ["1.2rem", "9.5rem"] }}>
+            <Box sx={{ textAlign: "center", mt: ["1.2rem", "1.2rem", "9.5rem"] }}>
               <Link
                 component="button"
                 sx={{

@@ -1,10 +1,9 @@
-import { isMobileOnly } from "react-device-detect"
-
 import { Typography as MuiTypography, Stack } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
 import Button from "@/components/Button"
 import TxAlert from "@/components/TxAlert"
+import useCheckViewport from "@/hooks/useCheckViewport"
 import useBridgeStore from "@/stores/bridgeStore"
 
 const Typography = styled(MuiTypography)(({ theme }) => ({
@@ -20,6 +19,7 @@ const Typography = styled(MuiTypography)(({ theme }) => ({
 
 // TODO: In order to prevent withdraw from having more displays, do not merge first
 const TxFailure = () => {
+  const { isMobile } = useCheckViewport()
   const { txError, changeTxError, txType, withDrawStep } = useBridgeStore()
 
   const handleGoback = () => {
@@ -32,7 +32,7 @@ const TxFailure = () => {
         <TxAlert severity="error">Failed</TxAlert>
         <Typography sx={{ fontSize: "1.8rem", overflow: "auto" }}>{txError?.message}</Typography>
         <Stack flex={1} direction="column" justifyContent="flex-end" alignItems="center">
-          <Button color="primary" width={isMobileOnly ? "100%" : "35rem"} onClick={handleGoback}>
+          <Button color="primary" width={isMobile ? "100%" : "35rem"} onClick={handleGoback}>
             Return to Deposit
           </Button>
         </Stack>
@@ -44,7 +44,7 @@ const TxFailure = () => {
         <TxAlert severity="error">Failed</TxAlert>
         <Typography sx={{ fontSize: "1.8rem", overflow: "auto" }}>{txError?.message}</Typography>
         <Stack flex={1} direction="column" justifyContent="flex-end" alignItems="center">
-          <Button color="primary" width={isMobileOnly ? "100%" : "35rem"} onClick={handleGoback}>
+          <Button color="primary" width={isMobile ? "100%" : "35rem"} onClick={handleGoback}>
             Return to Withdraw
           </Button>
         </Stack>

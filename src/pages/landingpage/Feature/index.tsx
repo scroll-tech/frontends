@@ -1,5 +1,4 @@
-import { Box, Typography, useMediaQuery } from "@mui/material"
-import { useTheme } from "@mui/material/styles"
+import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import FeatureIcon1 from "@/assets/images/homepage/home/feature_icon_1.png"
@@ -11,6 +10,7 @@ import Button from "@/components/Button"
 import SectionHeader from "@/components/SectionHeader"
 import SectionWrapper from "@/components/SectionWrapper"
 import WebpImage from "@/components/WebpImage"
+import useCheckViewport from "@/hooks/useCheckViewport"
 
 const FEATURES = [
   {
@@ -53,12 +53,9 @@ const FeatureBox = styled(Box)(({ theme }) => ({
     alignItems: "flex-start",
     paddingBottom: "10rem",
     gap: "6rem",
-    // "&:nth-of-type(odd)": {
-    // alignItems: "flex-end",
     "& *": {
       textAlign: "center!important",
     },
-    // },
   },
   [theme.breakpoints.up("xl")]: {
     paddingBottom: "20rem",
@@ -67,9 +64,16 @@ const FeatureBox = styled(Box)(({ theme }) => ({
 }))
 
 const FeatureIcon = styled(WebpImage)(({ theme }) => ({
-  width: "47.4rem",
+  width: "100%",
+  display: "inline-block",
+  [theme.breakpoints.up("md")]: {
+    maxWidth: "47.4rem",
+  },
   [theme.breakpoints.down("md")]: {
-    width: "100%",
+    width: "60%",
+  },
+  [theme.breakpoints.down("sm")]: {
+    width: "80%",
   },
 }))
 
@@ -83,11 +87,13 @@ const FeatureTitle = styled(Typography)(({ theme }) => ({
 }))
 
 const FeatureTextBox = styled(Box)(({ theme }) => ({
-  width: "47.4rem",
+  width: "100%",
   display: "flex",
   flexDirection: "column",
+  [theme.breakpoints.up("md")]: {
+    maxWidth: "47.4rem",
+  },
   [theme.breakpoints.down("md")]: {
-    maxWidth: "35rem",
     width: "100%",
     textAlign: "center",
   },
@@ -100,17 +106,16 @@ const Spacer = styled(Box)(({ theme }) => ({
 
 const FeatureDescription = styled(Typography)(({ theme }) => ({
   textAlign: "left",
-  [theme.breakpoints.down("md")]: {
+  [theme.breakpoints.down("sm")]: {
     fontSize: "1.6rem",
   },
 }))
 
 const Feature = () => {
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"))
+  const { isPortrait } = useCheckViewport()
 
   const ComponentToRender = (featureIdx, elementIdx, children) => {
-    if (isMobile) {
+    if (isPortrait) {
       return <FadeInUp>{children}</FadeInUp>
     }
 

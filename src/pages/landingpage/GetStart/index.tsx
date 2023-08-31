@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react"
 
-import { Box, Typography } from "@mui/material"
+import { Box, Container as MuiContainer, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import ScalabilityIcon from "@/assets/images/homepage/home/start_bridge.png"
@@ -34,15 +34,16 @@ const STEPS = [
 const Container = styled(Box)(({ theme }) => ({
   borderRadius: "40px 40px 0px 0px",
   paddingTop: "15.4rem",
+  maxWidth: "152rem",
   paddingBottom: "16rem",
   background: "transparent",
   display: "flex !important",
   justifyContent: "center",
   position: "relative",
-  maxWidth: "144rem",
   margin: "0 auto",
   "& .MuiContainer-root": {
     position: "relative",
+    maxWidth: "152rem",
   },
   [theme.breakpoints.down("md")]: {
     paddingTop: "5.4rem",
@@ -50,11 +51,9 @@ const Container = styled(Box)(({ theme }) => ({
   },
 }))
 
-const InnerBox = styled(Box)(({ theme }) => ({
+const InnerBox = styled(MuiContainer)(({ theme }) => ({
   position: "relative",
   width: "100%",
-  paddingLeft: "24px",
-  paddingRight: "24px",
 }))
 
 const Background = styled(Box)(({ theme }) => ({
@@ -68,12 +67,10 @@ const Background = styled(Box)(({ theme }) => ({
 }))
 
 const StepContainer = styled(SuccessionToView)(({ theme }) => ({
-  display: "flex",
-  // justifyContent: "space-between",
+  display: "grid",
+  gridTemplateColumns: "repeat(3, 1fr)",
+  gap: "2rem",
   marginBottom: "13rem",
-  "& > div": {
-    flex: 1,
-  },
   "& > div:nth-of-type(1) img": {
     width: "2.3rem",
   },
@@ -84,8 +81,13 @@ const StepContainer = styled(SuccessionToView)(({ theme }) => ({
     width: "3.3rem",
   },
   [theme.breakpoints.down("md")]: {
-    flexDirection: "column",
-    marginBottom: "3.4rem",
+    rowGap: "5.6rem",
+    gridTemplateColumns: "repeat(2, 1fr)",
+    marginBottom: "10rem",
+  },
+  [theme.breakpoints.down("sm")]: {
+    gridTemplateColumns: "1fr",
+    marginBottom: "5.6rem",
     "& > div:nth-of-type(1) img": {
       width: "3.3rem",
     },
@@ -102,27 +104,30 @@ const StepBox = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   flex: 1,
-  [theme.breakpoints.down("md")]: {
-    marginBottom: "5.6rem",
-  },
 }))
 
 const StepIcon = styled("img")(({ theme }) => ({
   height: "4rem",
   objectFit: "contain",
-  marginBottom: "2.8rem",
+  marginBottom: "2.2rem",
   [theme.breakpoints.down("md")]: {
+    marginBottom: "1.8rem",
+  },
+  [theme.breakpoints.down("sm")]: {
     height: "3rem",
-    marginBottom: "1.5rem",
+    marginBottom: "1.2rem",
   },
 }))
 
 const StepTitle = styled(Typography)(({ theme }) => ({
   textAlign: "left",
   color: theme.palette.primary.contrastText,
-  marginBottom: "2.4rem",
+  marginBottom: "2rem",
   [theme.breakpoints.down("md")]: {
-    marginBottom: "1rem",
+    marginBottom: "1.4rem",
+  },
+  [theme.breakpoints.down("sm")]: {
+    marginBottom: "0.8rem",
   },
 }))
 
@@ -130,7 +135,7 @@ const StepDescription = styled(Typography)(({ theme }) => ({
   textAlign: "left",
   color: theme.palette.primary.contrastText,
   maxWidth: "32.6rem",
-  [theme.breakpoints.down("md")]: {
+  [theme.breakpoints.down("sm")]: {
     fontSize: "1.6rem",
   },
 }))
@@ -182,7 +187,7 @@ const GetStart = () => {
         <FadeInUp>
           <SectionHeader
             dark
-            sx={{ mb: "10rem" }}
+            sx={{ mb: ["10rem", "12.5rem"] }}
             title="Getting started with Scroll"
             content="Scroll is compatible with Ethereum at bytecode-level, meaning everything works right out of the box."
             action={

@@ -4,11 +4,11 @@ import { Link as RouterLink, useParams } from "react-router-dom"
 
 import { InfoOutlined, NavigateNext, OpenInNew } from "@mui/icons-material"
 import { Box, Breadcrumbs, Chip, Divider, Stack, Tooltip, Typography } from "@mui/material"
-import { styled, useTheme } from "@mui/material/styles"
-import useMediaQuery from "@mui/material/useMediaQuery"
+import { styled } from "@mui/material/styles"
 
 import Link from "@/components/Link"
 import { EXPLORER_URL } from "@/constants"
+import useCheckViewport from "@/hooks/useCheckViewport"
 import { useBatchDetail } from "@/hooks/useRollupInfo"
 
 import Header from "../components/Header"
@@ -76,8 +76,7 @@ const BoxItem = styled(Box)(({ theme }) => ({
 const Batch = () => {
   const params = useParams()
   const { batch, isLoading } = useBatchDetail(params.batchIndex)
-  const theme = useTheme()
-  const isDesktop = useMediaQuery(theme.breakpoints.up("md"))
+  const { isLandscape } = useCheckViewport()
 
   useEffect(() => {}, [])
 
@@ -88,7 +87,7 @@ const Batch = () => {
   }
 
   const truncatedHash = (hash: string) => {
-    if (isDesktop) {
+    if (isLandscape) {
       return hash
     } else {
       return `${hash.substring(0, 6)}…${hash.substring(62, 66)}`

@@ -42,7 +42,7 @@ const useStyles = makeStyles()(theme => {
     tableWrapper: {
       boxShadow: "unset",
       borderRadius: "20px",
-      width: "68.8rem",
+      maxWidth: "68.8rem",
       backgroundColor: theme.palette.themeBackground.optionHightlight,
       padding: "2.5rem 3rem",
       position: "relative",
@@ -161,9 +161,11 @@ const TxTable = (props: any) => {
             <TableRow>
               <TableCell align="center">Status</TableCell>
               <TableCell>Amount</TableCell>
-              <TableCell sx={{ width: "12rem" }}>Action</TableCell>
-              <TableCell align="left">Initiated At</TableCell>
-              <TableCell>Transaction Hash</TableCell>
+              <TableCell sx={{ width: "16rem" }}>Action</TableCell>
+              <TableCell sx={{ width: "12rem" }} align="left">
+                Initiated At
+              </TableCell>
+              <TableCell sx={{ width: "32rem" }}>Transaction Hash</TableCell>
             </TableRow>
           </TableHead>
           <TableBody className={classes.tableBody}>
