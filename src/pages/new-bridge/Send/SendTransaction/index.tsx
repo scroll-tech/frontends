@@ -11,11 +11,12 @@ import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
 import { useApp } from "@/contexts/AppContextProvider"
 import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import { useBalance } from "@/hooks"
 import useBridgeStore from "@/stores/bridgeStore"
 import { amountToBN, switchNetwork, toTokenDisplay } from "@/utils"
 
 import useApprove from "../../hooks/useApprove"
-import useBalance from "../../hooks/useBalance"
+// import useBalance from "../../hooks/useBalance"
 import useCheckValidAmount from "../../hooks/useCheckValidAmount"
 import useGasFee from "../../hooks/useGasFee"
 import { useSendTransaction } from "../../hooks/useSendTransaction"
@@ -43,7 +44,8 @@ const SendTransaction = props => {
 
   const selectedToken: any = useMemo(() => tokenOptions.find(item => item.symbol === tokenSymbol) ?? {}, [tokenOptions, tokenSymbol])
 
-  const { balance, isLoading: balanceLoading } = useBalance(selectedToken.address)
+  // const { balance, isLoading: balanceLoading } = useBalance(selectedToken.address)
+  const { balance, loading: balanceLoading } = useBalance(selectedToken, fromNetwork)
 
   const { isNeeded: needApproval, approve, isLoading: approveLoading } = useApprove(fromNetwork, selectedToken, amount)
 
