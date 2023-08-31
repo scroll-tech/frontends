@@ -16,6 +16,9 @@ const useStyles = makeStyles()(theme => ({
     borderRadius: "2rem",
     overflow: "hidden",
     maxWidth: "64rem",
+    "& *": {
+      fontFamily: "var(--developer-page-font-family) !important",
+    },
     [theme.breakpoints.down("sm")]: {
       maxWidth: "100%",
     },
@@ -59,8 +62,7 @@ const useStyles = makeStyles()(theme => ({
 const Send = () => {
   const { classes } = useStyles()
   const { chainId } = useRainbowContext()
-  const { txType, fromNetwork, toNetwork, withDrawStep, changeTxType, changeTxResult, changeFromNetwork, changeToNetwork, changeIsNetworkCorrect } =
-    useBridgeStore()
+  const { txType, fromNetwork, withDrawStep, changeTxType, changeTxResult, changeIsNetworkCorrect } = useBridgeStore()
 
   useEffect(() => {
     let networkCorrect
@@ -76,8 +78,6 @@ const Send = () => {
 
   const handleChange = (e, newValue) => {
     changeTxType(newValue)
-    changeFromNetwork(toNetwork)
-    changeToNetwork(fromNetwork)
     changeTxResult(null)
   }
 
