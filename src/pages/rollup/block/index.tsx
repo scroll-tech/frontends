@@ -19,7 +19,15 @@ const Blocks = () => {
   return (
     <Box>
       <Header />
-      <Box className="wrapper mx-auto" sx={{ marginBottom: "16rem" }}>
+      <Box
+        className="wrapper mx-auto"
+        sx={{
+          marginBottom: "16rem",
+          "& *": {
+            fontFamily: "var(--developer-page-font-family) !important",
+          },
+        }}
+      >
         <Breadcrumbs aria-label="breadcrumb" sx={{ fontWeight: 600 }} separator={<NavigateNextIcon fontSize="large" />}>
           <Link to="/rollupscan?page=1&per_page=10">Batches</Link>
           <Link to={`/rollupscan/batch/${params.batchIndex}`}> Batch {params.batchIndex}</Link>
