@@ -4,6 +4,7 @@ import Countdown from "react-countdown"
 import { makeStyles } from "tss-react/mui"
 
 import {
+  Box,
   CircularProgress,
   LinearProgress,
   Pagination,
@@ -44,6 +45,7 @@ const useStyles = makeStyles()(theme => {
       width: "68.8rem",
       backgroundColor: theme.palette.themeBackground.optionHightlight,
       padding: "2.5rem 3rem",
+      position: "relative",
       [theme.breakpoints.down("sm")]: {
         width: "calc(100vw - 4rem)",
       },
@@ -125,6 +127,20 @@ const useStyles = makeStyles()(theme => {
         fontSize: "2.4rem",
       },
     },
+    loadingBox: {
+      position: "absolute",
+      top: "0",
+      left: "0",
+      right: "0",
+      bottom: "0",
+      background: "rgba(255,255,255,0.5)",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    loadingIndicator: {
+      color: "#EB7106",
+    },
   }
 })
 
@@ -151,15 +167,11 @@ const TxTable = (props: any) => {
             </TableRow>
           </TableHead>
           <TableBody className={classes.tableBody}>
-            {loading ? (
-              <CircularProgress />
-            ) : (
-              <>
-                {data?.map((tx: any) => (
-                  <TxRow finalizedIndex={lastBlockNums?.finalized_index ?? 0} key={tx.hash} tx={tx} />
-                ))}
-              </>
-            )}
+            <>
+              {data?.map((tx: any) => (
+                <TxRow finalizedIndex={lastBlockNums?.finalized_index ?? 0} key={tx.hash} tx={tx} />
+              ))}
+            </>
           </TableBody>
         </Table>
         {pagination && (
@@ -175,6 +187,11 @@ const TxTable = (props: any) => {
             />
           </div>
         )}
+        {loading ? (
+          <Box className={classes.loadingBox}>
+            <CircularProgress className={classes.loadingIndicator} />
+          </Box>
+        ) : null}
       </TableContainer>
     </>
   )
@@ -194,8 +211,17 @@ const TxRow = props => {
       if (assumedStatus && to) {
         return TX_STATUS.empty
       }
-      if (blockNumber && blockNumbers && blockNumbers[+!(isL1 ^ to)] >= blockNumber) {
-        return TX_STATUS.success
+
+      if (blockNumber && blockNumbers) {
+        if (isL1) {
+          if ((!to && blockNumbers[0] >= blockNumber) || (to && blockNumbers[1] >= blockNumber)) {
+            return TX_STATUS.success
+          }
+        } else {
+          if ((!to && blockNumbers[1] >= blockNumber) || to) {
+            return TX_STATUS.success
+          }
+        }
       }
       return TX_STATUS.pending
     },

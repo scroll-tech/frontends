@@ -1,9 +1,10 @@
 import { makeStyles } from "tss-react/mui"
 
-import { CircularProgress, Tooltip } from "@mui/material"
+import { Tooltip } from "@mui/material"
 
 import { TX_STATUS } from "@/constants"
 import useBridgeStore from "@/stores/bridgeStore"
+import useClaimStore from "@/stores/claimStore"
 
 const useStyles = makeStyles()(theme => {
   return {
@@ -110,11 +111,13 @@ const TxStatus = props => {
   const { toStatus, tx, fromStatus, finalizedIndex } = props
   const { classes, cx } = useStyles()
   const { changeMode, changeTxType, changeWithdrawStep } = useBridgeStore()
+  const { setTargetTransaction } = useClaimStore()
 
   const moveToClaim = () => {
     changeMode("Transaction")
     changeTxType("Withdraw")
     changeWithdrawStep("2")
+    setTargetTransaction(tx.hash)
   }
 
   if (toStatus === TX_STATUS.success) {
@@ -172,11 +175,7 @@ const TxStatus = props => {
       </Tooltip>
     )
   }
-  return (
-    <button className={cx(classes.chip, classes.pendingChip)}>
-      Pending <CircularProgress size={12} sx={{ marginLeft: "0.2rem" }} color="inherit" />
-    </button>
-  )
+  return <button className={cx(classes.chip, classes.pendingChip)}>Pending</button>
 }
 
 export default TxStatus

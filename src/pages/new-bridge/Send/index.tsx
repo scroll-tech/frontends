@@ -19,6 +19,7 @@ const useStyles = makeStyles()(theme => ({
     "& *": {
       fontFamily: "var(--developer-page-font-family) !important",
     },
+    position: "relative",
     [theme.breakpoints.down("sm")]: {
       maxWidth: "100%",
     },
