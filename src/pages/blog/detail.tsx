@@ -9,11 +9,10 @@ import remarkGfm from "remark-gfm"
 import remarkMath from "remark-math"
 
 import { Box, Typography } from "@mui/material"
-import { useTheme } from "@mui/material/styles"
-import useMediaQuery from "@mui/material/useMediaQuery"
 import { styled } from "@mui/system"
 
 import LoadingPage from "@/components/LoadingPage"
+import useCheckViewport from "@/hooks/useCheckViewport"
 
 import Articles from "./articles"
 import TOC from "./components/tableOfContents"
@@ -97,8 +96,7 @@ const BlogDetail = () => {
     setCurrentBlog(blog)
   }
 
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"))
+  const { isPortrait } = useCheckViewport()
 
   const getPosterUri = () => {
     return window.location.origin + (currentBlog.ogImg || currentBlog.posterImg)
@@ -146,14 +144,14 @@ const BlogDetail = () => {
               </BlogNavbar>
             </Box>
           </BlogContainer>
-          {isMobile ? (
+          {isPortrait ? (
             <Box sx={{ paddingBottom: "10rem" }}>
               <Typography
                 variant="h1"
                 sx={{
                   textAlign: "center",
-                  mt: "3rem",
-                  mb: "2rem",
+                  mt: ["3rem", "5rem"],
+                  mb: ["2rem", "3rem"],
                 }}
               >
                 More articles from Scroll

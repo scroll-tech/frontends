@@ -1,5 +1,4 @@
 import { useMemo } from "react"
-import { isMobileOnly } from "react-device-detect"
 import { makeStyles } from "tss-react/mui"
 
 import { Box, Typography as MuiTypography, Stack } from "@mui/material"
@@ -10,6 +9,7 @@ import SandyAvatar from "@/assets/svgs/members/Sandy-avatar.svg"
 import YeAvatar from "@/assets/svgs/members/Ye-avatar.svg"
 import OrientationToView from "@/components/Motion/OrientationToView"
 import SectionWrapper from "@/components/SectionWrapper"
+import useCheckViewport from "@/hooks/useCheckViewport"
 
 import Cooperation from "./Cooperation"
 import InlineAvater from "./InlineAvatar"
@@ -36,12 +36,54 @@ const useStyles = makeStyles()(theme => ({
       margin: "5.2rem 0",
     },
   },
+  twoSidesSection: {
+    flexDirection: "row",
+    gap: "6rem",
+    [theme.breakpoints.between("md", "lg")]: {
+      "& > *": {
+        flex: 1,
+      },
+    },
+    [theme.breakpoints.down("lg")]: {
+      gap: "3rem",
+    },
+    [theme.breakpoints.down("md")]: {
+      flexDirection: "column",
+      gap: "8rem",
+    },
+    [theme.breakpoints.down("sm")]: {
+      gap: "10rem",
+    },
+  },
+  mobileReverse: {
+    [theme.breakpoints.down("md")]: {
+      flexDirection: "column-reverse",
+    },
+  },
+  centerImg: {
+    maxWidth: "unset",
+    [theme.breakpoints.down("lg")]: {
+      maxWidth: "80%",
+      minWidth: "48rem",
+    },
+    [theme.breakpoints.down("sm")]: {
+      maxWidth: "100%",
+      minWidth: "unset",
+    },
+  },
+  sideImg: {
+    maxWidth: "unset",
+    [theme.breakpoints.down("lg")]: {
+      maxWidth: "100%",
+    },
+  },
 }))
 
 const Initail = () => {
-  const { classes } = useStyles()
+  const { classes, cx } = useStyles()
+  const { isMobile, isLandscape } = useCheckViewport()
 
-  const avatarSize = useMemo(() => (isMobileOnly ? "small" : "middle"), [isMobileOnly])
+  const avatarSize = useMemo(() => (isMobile ? "small" : "middle"), [isMobile])
 
   return (
     <SectionWrapper maxWidth="127.5rem" sx={{ textAlign: "center", pb: "22rem" }}>
@@ -75,7 +117,7 @@ const Initail = () => {
       </OrientationToView>
       <Line orientation="vertical" textAlign="center" className={classes.divider} />
       <OrientationToView>
-        <img style={{ maxWidth: isMobileOnly ? "100%" : "unset" }} src="/imgs/story/story-initial-1.svg" alt=""></img>
+        <img className={classes.centerImg} src="/imgs/story/story-initial-1.svg" alt=""></img>
       </OrientationToView>
       <Line orientation="vertical" textAlign="center" className={classes.divider} />
       <OrientationToView>
@@ -92,16 +134,16 @@ const Initail = () => {
       </OrientationToView>
       <Line orientation="vertical" textAlign="center" className={classes.divider} />
 
-      <Stack direction={isMobileOnly ? "column" : "row"} alignItems="center" spacing={isMobileOnly ? "10rem" : "6rem"}>
-        <OrientationToView direction={isMobileOnly ? "up" : "right"}>
-          <Typography sx={{ textAlign: ["center", "left"] }}>
-            Realizing that Ethereum equivalence was the only viable path forward, the trio embarked on a mission to build an open source, scalable
+      <Stack alignItems="center" className={classes.twoSidesSection}>
+        <OrientationToView direction={isLandscape ? "right" : "up"}>
+          <Typography sx={{ textAlign: ["center", "center", "left"] }}>
+            Realizing that Ethereum equivalence was the only viable path forward, the trio embarked on a mission to build an open-source, scalable
             ecosystem leveraging the native capabilities of a zkEVM, while maintaining Ethereum’s L1 security and upholding the community’s commitment
             to decentralization.
           </Typography>
         </OrientationToView>
-        <OrientationToView direction={isMobileOnly ? "up" : "left"}>
-          <img style={{ maxWidth: isMobileOnly ? "100%" : "unset" }} src="/imgs/story/story-initial-2.svg" alt=""></img>
+        <OrientationToView direction={isLandscape ? "left" : "up"}>
+          <img className={classes.sideImg} src="/imgs/story/story-initial-2.svg" alt=""></img>
         </OrientationToView>
       </Stack>
       <Line orientation="vertical" textAlign="center" className={classes.divider} />
@@ -110,12 +152,12 @@ const Initail = () => {
       </OrientationToView>
       <Line orientation="vertical" textAlign="center" className={classes.divider} />
 
-      <Stack direction={isMobileOnly ? "column-reverse" : "row"} alignItems="center" spacing={isMobileOnly ? "10rem" : "6rem"}>
-        <OrientationToView direction={isMobileOnly ? "up" : "right"}>
-          <img style={{ maxWidth: isMobileOnly ? "100%" : "unset" }} src="/imgs/story/story-initial-3.svg" alt=""></img>
+      <Stack className={cx(classes.twoSidesSection, classes.mobileReverse)} alignItems="center">
+        <OrientationToView direction={isLandscape ? "right" : "up"}>
+          <img className={classes.sideImg} src="/imgs/story/story-initial-3.svg" alt=""></img>
         </OrientationToView>
-        <OrientationToView direction={isMobileOnly ? "up" : "left"}>
-          <Typography sx={{ textAlign: ["center", "left"] }}>
+        <OrientationToView direction={isLandscape ? "left" : "up"}>
+          <Typography sx={{ textAlign: ["center", "center", "left"] }}>
             What sets Scroll apart in the competitive zero knowledge rollup space is our commitment to EVM compatibility. By aiming for seamless
             integration with Ethereum and prioritizing an exceptional developer experience, we are determined to revolutionize Ethereum's scalability
             potential. 

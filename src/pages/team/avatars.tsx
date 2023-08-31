@@ -3,8 +3,6 @@ import { Swiper, SwiperSlide } from "swiper/react"
 
 import { Twitter as TwitterIcon } from "@mui/icons-material"
 import { Box, Link, Typography } from "@mui/material"
-import { useTheme } from "@mui/material/styles"
-import useMediaQuery from "@mui/material/useMediaQuery"
 import { styled } from "@mui/system"
 
 import HaichenAvatar from "@/assets/images/homepage/team/Haichen.jpg"
@@ -14,6 +12,7 @@ import SandyAvatarWebp from "@/assets/images/homepage/team/Sandy.webp"
 import YeAvatar from "@/assets/images/homepage/team/Ye.jpg"
 import YeAvatarWebp from "@/assets/images/homepage/team/Ye.webp"
 import WebpImage from "@/components/WebpImage"
+import useCheckViewport from "@/hooks/useCheckViewport"
 
 const UserName = styled(Typography)(
   ({ theme }) => `
@@ -86,14 +85,14 @@ const UserCard = ({ user }) => (
 )
 
 const Avatars = () => {
-  const theme = useTheme()
-  const isDesktop = useMediaQuery(theme.breakpoints.up("md"))
+  const { isLandscape } = useCheckViewport()
+
   return (
-    <Box className={isDesktop ? "wrapper" : ""} display="flex" justifyContent="space-around">
+    <Box className={isLandscape ? "wrapper" : ""} display="flex" justifyContent="space-around">
       <Swiper
-        slidesPerView={isDesktop ? 3 : 2}
-        spaceBetween={isDesktop ? 0 : 8}
-        centeredSlides={!isDesktop}
+        slidesPerView={isLandscape ? 3 : 2}
+        spaceBetween={isLandscape ? 0 : 8}
+        centeredSlides={!isLandscape}
         pagination={{
           clickable: true,
         }}

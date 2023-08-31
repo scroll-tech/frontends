@@ -2,11 +2,10 @@ import { Pagination } from "swiper"
 import { Swiper, SwiperSlide } from "swiper/react"
 
 import { Box } from "@mui/material"
-import { useTheme } from "@mui/material/styles"
-import useMediaQuery from "@mui/material/useMediaQuery"
 import { styled } from "@mui/system"
 
 import ArticleCard from "@/components/ArticleCard"
+import useCheckViewport from "@/hooks/useCheckViewport"
 
 const ArticleBox = styled(Box)(
   ({ theme }) => `
@@ -19,25 +18,23 @@ const ArticleBox = styled(Box)(
 )
 
 const Articles = props => {
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"))
-  const isUnderLarge = useMediaQuery(theme.breakpoints.down("lg"))
+  const { isPortrait, isTabletLandscape } = useCheckViewport()
   let slidesPerView = 3
-  if (isMobile) {
-    slidesPerView = 1
-  } else if (isUnderLarge) {
+  if (isTabletLandscape) {
     slidesPerView = 2
+  } else if (isPortrait) {
+    slidesPerView = 1
   }
   return (
     <Swiper
       slidesPerView={slidesPerView}
       spaceBetween={0}
-      centeredSlides={isMobile}
+      centeredSlides={isPortrait}
       pagination={{
         clickable: true,
       }}
       modules={[Pagination]}
-      className={!isMobile ? "wrapper" : ""}
+      className={!isPortrait ? "wrapper" : ""}
     >
       {props.blogs.map(blog => (
         <SwiperSlide key={blog.title}>

@@ -1,8 +1,9 @@
 import { motion } from "framer-motion"
-import { isMobileOnly } from "react-device-detect"
 import { makeStyles } from "tss-react/mui"
 
 import { Avatar, Paper, Stack, Typography } from "@mui/material"
+
+import useCheckViewport from "@/hooks/useCheckViewport"
 
 const PARTNER_LIST = [
   "story-partener-1.svg",
@@ -39,6 +40,8 @@ const useStyles = makeStyles()(theme => ({
 
 const Cooperation = () => {
   const { classes } = useStyles()
+
+  const { isMobile } = useCheckViewport()
 
   const logos = [
     {
@@ -120,7 +123,7 @@ const Cooperation = () => {
         From day one,<br></br>Scroll prioritized transparency by choosing to be an open source project. Collaboration from various projects and active
         community participation make the Scroll platform more robust and battle-tested.
       </Typography>
-      {isMobileOnly ? (
+      {isMobile ? (
         <Stack direction="row" justifyContent="space-between" sx={{ mt: "4rem" }}>
           {PARTNER_LIST.slice(0, 5).map(item => (
             <Avatar className={classes.logo} key={item} src={`${PARTNER_LOGO_PUBLIC_URL}${item}`}></Avatar>

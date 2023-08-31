@@ -8,56 +8,6 @@ import useClaimStore from "@/stores/claimStore"
 
 const useStyles = makeStyles()(theme => {
   return {
-    tableContainer: {
-      whiteSpace: "nowrap",
-      [theme.breakpoints.down("sm")]: {
-        paddingBottom: "1.6rem",
-        overflowX: "scroll",
-      },
-    },
-    tableWrapper: {
-      boxShadow: "unset",
-      borderRadius: "20px",
-      width: "68.8rem",
-      backgroundColor: theme.palette.themeBackground.optionHightlight,
-      padding: "2.5rem 3rem",
-    },
-    tableTitle: {
-      marginTop: "2.8rem",
-      marginBottom: "3rem",
-      [theme.breakpoints.down("sm")]: {
-        marginTop: "1.6rem",
-        marginBottom: "1.6rem",
-      },
-    },
-    tableHeader: {
-      borderBottom: `3px solid ${theme.palette.border.main}`,
-      ".MuiTableCell-head": {
-        borderBottom: "unset",
-        fontWeight: 600,
-        fontSize: "1.6rem",
-        padding: "0.8rem 1.6rem",
-        color: theme.palette.text.primary,
-        "&:first-of-type": {
-          paddingLeft: 0,
-        },
-      },
-    },
-    tableBody: {
-      ".MuiTableCell-root": {
-        verticalAlign: "top",
-        padding: "2rem",
-        "*": {
-          fontSize: "1.4rem",
-        },
-        "&:first-of-type": {
-          paddingLeft: 0,
-        },
-        "&:last-of-type": {
-          paddingRight: 0,
-        },
-      },
-    },
     chip: {
       width: "8.6rem",
       height: "2.8rem",

@@ -10,8 +10,10 @@ const Title = styled(Typography)(({ theme }) => ({
   fontWeight: 500,
   textAlign: "center",
   [theme.breakpoints.down("md")]: {
+    marginBottom: "3.2rem",
+  },
+  [theme.breakpoints.down("sm")]: {
     fontSize: "3.2rem",
-    lineHeight: "3.8rem",
     marginBottom: "2.8rem",
   },
 }))
@@ -26,6 +28,10 @@ const Container = styled(Box)(({ theme }) => ({
   borderRadius: "40px 40px 0px 0px",
   background: "#FFF0DD",
   [theme.breakpoints.down("md")]: {
+    paddingTop: "8.4rem",
+    paddingBottom: "9rem",
+  },
+  [theme.breakpoints.down("sm")]: {
     paddingTop: "5.4rem",
     paddingBottom: "6rem",
   },
@@ -34,7 +40,7 @@ const Container = styled(Box)(({ theme }) => ({
 const ButtonContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   gap: "3rem",
-  [theme.breakpoints.down("md")]: {
+  [theme.breakpoints.down("sm")]: {
     flexDirection: "column",
     gap: "2rem",
   },

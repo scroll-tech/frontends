@@ -1,23 +1,23 @@
-import { isMobileOnly } from "react-device-detect"
-
-import { Box, Stack, Typography } from "@mui/material"
+import { Box, Container, Stack, Typography } from "@mui/material"
 
 import { NETWORKS } from "@/constants"
+import useCheckViewport from "@/hooks/useCheckViewport"
 
 import SendFeedback from "./SendFeedback"
 import TestFlow from "./TestFlow"
 import WalletConfig from "./WalletConfig"
 
 const Portal = () => {
+  const { isMobile } = useCheckViewport()
   return (
-    <>
+    <Container>
       <Box sx={{ textAlign: "center", mt: ["6.8rem", "13.8rem"] }}>
         <Typography sx={{ fontSize: ["4rem", "7.8rem"], lineHeight: 1, fontWeight: 600 }}>{NETWORKS[1].name}</Typography>
         <Typography sx={{ fontSize: ["2rem", "2.6rem"], mt: ["2rem", "1.4rem"] }}>Get started with our testnet now!</Typography>
       </Box>
       <Stack
         direction="column"
-        gap={isMobileOnly ? "4rem" : "6rem"}
+        gap={isMobile ? "4rem" : "6rem"}
         alignItems="center"
         sx={{
           mt: ["8rem", "12rem"],
@@ -34,7 +34,7 @@ const Portal = () => {
         <TestFlow></TestFlow>
         <SendFeedback></SendFeedback>
       </Stack>
-    </>
+    </Container>
   )
 }
 

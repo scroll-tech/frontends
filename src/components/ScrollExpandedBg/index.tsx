@@ -13,7 +13,7 @@ const Container = styled(Box)(({ theme }) => ({
   background: "transparent",
   display: "flex !important",
   justifyContent: "center",
-  maxWidth: "144rem",
+  maxWidth: "152rem",
   margin: "0 auto",
   [theme.breakpoints.down("sm")]: {},
 }))
@@ -23,7 +23,7 @@ const Background = styled(Box)(({ theme }) => ({
   top: "0",
   bottom: "0",
   width: "60%",
-  minWidth: "144rem",
+  minWidth: "152rem",
   background: theme.palette.themeBackground.dark,
   willChange: "width, height",
   borderRadius: "40px 40px 0px 0px",

@@ -29,7 +29,7 @@ const Protocals = props => {
           </Button>
         }
       ></SectionHeader>
-      <Select value={category} onChange={handleChangeCategory} sx={{ mb: ["1.2rem", "3rem"], mt: ["10rem", "12.6rem"] }}>
+      <Select value={category} onChange={handleChangeCategory} sx={{ mb: ["1.2rem", "1.8rem", "3rem"], mt: ["10rem", "10rem", "12.6rem"] }}>
         {allCategories.current.map(item => (
           <MenuItem key={item} value={item} sx={{ py: 0, minHeight: "auto" }}>
             <Typography sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: ["3.5rem", "4.5rem"] }}>{item}</Typography>

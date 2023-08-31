@@ -1,10 +1,10 @@
 import { formatUnits } from "ethers"
 import { useMemo } from "react"
-import { isMobileOnly } from "react-device-detect"
 import { makeStyles } from "tss-react/mui"
 
 import { Button, InputBase, Skeleton, Stack, Typography } from "@mui/material"
 
+import useCheckViewport from "@/hooks/useCheckViewport"
 import { sanitizeNumericalString, toTokenDisplay } from "@/utils"
 
 import TokenSelect from "./TokenSelect"
@@ -81,6 +81,8 @@ const BalanceInput = props => {
   } = props
   const { classes } = useStyles()
 
+  const { isMobile } = useCheckViewport()
+
   const displayedBalance = useMemo(() => (disabled ? "0.00" : toTokenDisplay(balance, selectedToken.decimals)), [selectedToken, balance, disabled])
 
   const handleChangeAmount = e => {
@@ -103,7 +105,7 @@ const BalanceInput = props => {
 
   return (
     <>
-      <Stack direction="row" spacing={isMobileOnly ? "1.2rem" : "2rem"} alignItems="center" className={classes.root} {...restProps}>
+      <Stack direction="row" spacing={isMobile ? "1.2rem" : "2rem"} alignItems="center" className={classes.root} {...restProps}>
         <TokenSelect value={selectedToken} options={tokenOptions} onChange={handleChangeToken}></TokenSelect>
         <Stack direction="column">
           <InputBase

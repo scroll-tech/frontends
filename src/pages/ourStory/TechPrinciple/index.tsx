@@ -1,8 +1,7 @@
 import { Fragment } from "react"
-import { isMobileOnly } from "react-device-detect"
 import { makeStyles } from "tss-react/mui"
 
-import { Box, SvgIcon, Typography } from "@mui/material"
+import { SvgIcon, Typography } from "@mui/material"
 
 import { ReactComponent as DecentralisationSvg } from "@/assets/svgs/refactor/story-decentralisation.svg"
 import { ReactComponent as EthSvg } from "@/assets/svgs/refactor/story-eth.svg"
@@ -11,6 +10,7 @@ import { ReactComponent as SecuritySvg } from "@/assets/svgs/refactor/story-secu
 import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
 import SectionHeader from "@/components/SectionHeader"
 import SectionWrapper from "@/components/SectionWrapper"
+import useCheckViewport from "@/hooks/useCheckViewport"
 
 const PRINCIPLES = [
   {
@@ -36,9 +36,6 @@ const PRINCIPLES = [
     mobileScale: "0.87",
     content: "Scroll permits seamless migration with EVM-equivalence, eliminating code changes and disruptions for users and developers.",
   },
-  null,
-  null,
-
   {
     icon: ExternalSvg,
     title: (
@@ -72,22 +69,20 @@ const useStyles = makeStyles()(theme => ({
     gridColumnGap: "5rem",
     gridRowGap: "8rem",
     marginTop: "8rem",
+    [theme.breakpoints.down("md")]: {
+      gridTemplateColumns: "repeat(2, 1fr)",
+    },
     [theme.breakpoints.down("sm")]: {
       display: "flex",
       flexDirection: "column",
       gap: "6rem",
     },
   },
-  empty: {
-    gridColumn: "span 2",
-    [theme.breakpoints.down("sm")]: {
-      display: "none",
-    },
-  },
 }))
 
 const TechPrinciple = () => {
   const { classes } = useStyles()
+  const { isMobile } = useCheckViewport()
 
   return (
     <SectionWrapper>
@@ -97,23 +92,17 @@ const TechPrinciple = () => {
       ></SectionHeader>
       <SuccessionToView className={classes.grid}>
         {PRINCIPLES.map((item, index) => (
-          <Fragment key={index}>
-            {item ? (
-              <SuccessionItem>
-                <SvgIcon
-                  sx={{ width: "auto", height: "auto", "@media (max-width: 600px)": { transform: `scale(${item.mobileScale})` } }}
-                  component={item.icon}
-                  inheritViewBox
-                ></SvgIcon>
-                <Typography sx={{ fontSize: ["2rem", "2.4rem"], fontWeight: 600, mt: ["1rem", "2.6rem"], mb: ["1rem", "2rem"] }}>
-                  {isMobileOnly ? item.mobileTitle : item.title}
-                </Typography>
-                <Typography sx={{ fontSize: "1.6rem" }}>{item.content}</Typography>
-              </SuccessionItem>
-            ) : (
-              <Box className={classes.empty}></Box>
-            )}
-          </Fragment>
+          <SuccessionItem>
+            <SvgIcon
+              sx={{ width: "auto", height: "auto", "@media (max-width: 600px)": { transform: `scale(${item.mobileScale})` } }}
+              component={item.icon}
+              inheritViewBox
+            ></SvgIcon>
+            <Typography sx={{ fontSize: ["2rem", "2.4rem"], fontWeight: 600, mt: ["1.3rem", "1.8rem", "2.2rem"], mb: ["0.8rem", "1.4rem", "2rem"] }}>
+              {isMobile ? item.mobileTitle : item.title}
+            </Typography>
+            <Typography sx={{ fontSize: ["1.6rem", "2rem"] }}>{item.content}</Typography>
+          </SuccessionItem>
         ))}
       </SuccessionToView>
     </SectionWrapper>

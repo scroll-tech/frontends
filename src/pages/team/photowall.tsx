@@ -1,6 +1,4 @@
 import { Box } from "@mui/material"
-import { useTheme } from "@mui/material/styles"
-import useMediaQuery from "@mui/material/useMediaQuery"
 import { styled } from "@mui/system"
 
 import Pic1 from "@/assets/images/homepage/team/pic_1.jpg"
@@ -14,6 +12,7 @@ import Pic4Webp from "@/assets/images/homepage/team/pic_4.webp"
 import Pic5 from "@/assets/images/homepage/team/pic_5.jpg"
 import Pic5Webp from "@/assets/images/homepage/team/pic_5.webp"
 import WebpImage from "@/components/WebpImage"
+import useCheckViewport from "@/hooks/useCheckViewport"
 
 const Photo = styled(WebpImage)(
   ({ theme }) => `
@@ -32,12 +31,11 @@ const PhotoContainer = styled(Box)(
 )
 
 const Photowall = () => {
-  const theme = useTheme()
-  const isDesktop = useMediaQuery(theme.breakpoints.up("md"))
+  const { isLandscape } = useCheckViewport()
 
   return (
     <PhotoContainer className="wrapper">
-      {isDesktop ? (
+      {isLandscape ? (
         <>
           <Box sx={{ width: "41.2%" }}>
             <Photo src={Pic1} webpsrc={Pic1Webp} sx={{ marginBottom: "3.86%" }} />
