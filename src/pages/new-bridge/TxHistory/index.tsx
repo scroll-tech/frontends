@@ -8,8 +8,8 @@ import useTxStore from "@/stores/txStore"
 import TxTable from "../components/TxTable"
 
 const TableBox = styled(Box)(({ theme }) => ({
-  minHeight: "20rem",
-  borderRadius: "40px",
+  minHeight: "26.8rem",
+  borderRadius: "2rem",
   backgroundColor: theme.palette.themeBackground.optionHightlight,
   width: "100%",
   "& *": {
@@ -22,7 +22,7 @@ const TransactionsList = (props: any) => {
     txHistory: { refreshPageTransactions },
   } = useApp()
 
-  const { page, total, pageTransactions } = useTxStore()
+  const { page, total, pageTransactions, loading } = useTxStore()
 
   const handleChangePage = currentPage => {
     refreshPageTransactions(currentPage)
@@ -33,6 +33,7 @@ const TransactionsList = (props: any) => {
       {pageTransactions.length ? (
         <TxTable
           data={pageTransactions}
+          loading={loading}
           pagination={{
             count: Math.ceil(total / BRIDGE_PAGE_SIZE),
             page,
@@ -40,7 +41,7 @@ const TransactionsList = (props: any) => {
           }}
         />
       ) : (
-        <Typography variant="body1" color="textSecondary" sx={{ padding: "2rem" }}>
+        <Typography variant="body1" color="textSecondary" sx={{ paddingTop: "2rem", color: "#C58D49" }} align="center">
           Your transactions will appear here...
         </Typography>
       )}

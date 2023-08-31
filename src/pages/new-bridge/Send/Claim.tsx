@@ -12,8 +12,8 @@ import useClaimStore from "@/stores/claimStore"
 const TableBox = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  justifyContent: "center",
   alignItems: "center",
+  minHeight: "20rem",
 }))
 
 const Claim = (props: any) => {
@@ -22,10 +22,17 @@ const Claim = (props: any) => {
     claim: { refreshPageTransactions },
   } = useApp()
 
-  const { page, total, pageTransactions } = useClaimStore()
+  const { page, total, pageTransactions, loading, targetTransaction, setTargetTransaction, orderedTxDB } = useClaimStore()
 
   useEffect(() => {
-    handleChangePage(1)
+    if (targetTransaction) {
+      const index = orderedTxDB.findIndex(tx => tx.hash === targetTransaction)
+      const page = Math.ceil((index + 1) / BRIDGE_PAGE_SIZE)
+      handleChangePage(page)
+      setTargetTransaction(null)
+    } else {
+      handleChangePage(1)
+    }
   }, [walletCurrentAddress])
 
   const handleChangePage = currentPage => {
@@ -34,9 +41,10 @@ const Claim = (props: any) => {
 
   return (
     <TableBox>
-      {pageTransactions?.length ? (
+      {pageTransactions?.length && walletCurrentAddress ? (
         <ClaimTable
           data={pageTransactions}
+          loading={loading}
           pagination={{
             count: Math.ceil(total / BRIDGE_PAGE_SIZE),
             page,
@@ -44,7 +52,7 @@ const Claim = (props: any) => {
           }}
         />
       ) : (
-        <Typography variant="body1" color="textSecondary" sx={{ width: "40rem" }}>
+        <Typography variant="body1" color="textSecondary" sx={{ color: "#C58D49" }}>
           Your claimable transactions will appear here...
         </Typography>
       )}

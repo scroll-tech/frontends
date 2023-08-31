@@ -6,15 +6,18 @@ import { fetchTxByHashUrl } from "@/apis/bridge"
 import { NETWORKS } from "@/constants"
 import { CLAIM_TRANSACTIONS } from "@/constants/storageKey"
 import { BRIDGE_TRANSACTIONS } from "@/constants/storageKey"
-import { TxDirection, TxPosition } from "@/stores/txStore"
+import { TimestampTx, TxDirection, TxPosition } from "@/stores/txStore"
 
 interface TxStore {
   page: number
   total: number
   loading: boolean
+  targetTransaction: string | null
   pageTransactions: Transaction[]
+  orderedTxDB: TimestampTx[]
   comboPageTransactions: (walletAddress, page, rowsPerPage) => Promise<any>
   generateTransactions: (transactions) => void
+  setTargetTransaction: (address) => void
 }
 
 export const enum ClaimStatus {
@@ -124,6 +127,8 @@ const useTxStore = create<TxStore>()(
       total: 0,
       loading: false,
       pageTransactions: [],
+      orderedTxDB: [],
+      targetTransaction: null,
       // polling transactions
       // slim frontTransactions and keep the latest 3 backTransactions
       generateTransactions: async historyList => {
@@ -157,10 +162,16 @@ const useTxStore = create<TxStore>()(
         const pageOrderedTxs = withdrawTx.slice((page - 1) * rowsPerPage, page * rowsPerPage)
         const { pageTransactions } = await detailOrderdTxs(pageOrderedTxs, frontTransactions, abnormalTransactions)
         set({
+          orderedTxDB: withdrawTx,
           pageTransactions,
           page,
           total: withdrawTx.length,
           loading: false,
+        })
+      },
+      setTargetTransaction: address => {
+        set({
+          targetTransaction: address,
         })
       },
     }),

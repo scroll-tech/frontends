@@ -21,7 +21,6 @@ import {
 
 import Link from "@/components/Link"
 import { EXPLORER_URL } from "@/constants"
-import { useApp } from "@/contexts/AppContextProvider"
 import { useLastBlockNums } from "@/hooks/useRollupInfo"
 import useTokenInfo from "@/hooks/useTokenInfo"
 import { ClaimStatus } from "@/stores/claimStore"
@@ -96,6 +95,20 @@ const useStyles = makeStyles()(theme => {
         fontSize: "2.4rem",
       },
     },
+    loadingBox: {
+      position: "absolute",
+      top: "0",
+      left: "0",
+      right: "0",
+      bottom: "0",
+      background: "rgba(255,255,255,0.5)",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    loadingIndicator: {
+      color: "#EB7106",
+    },
   }
 })
 
@@ -121,15 +134,11 @@ const TxTable = (props: any) => {
             </TableRow>
           </TableHead>
           <TableBody className={classes.tableBody}>
-            {loading ? (
-              <CircularProgress />
-            ) : (
-              <>
-                {data?.map((tx: any) => (
-                  <TxRow key={tx.hash} tx={tx} finalizedIndex={lastBlockNums?.finalized_index ?? 0} />
-                ))}
-              </>
-            )}
+            <>
+              {data?.map((tx: any) => (
+                <TxRow key={tx.hash} tx={tx} finalizedIndex={lastBlockNums?.finalized_index ?? 0} />
+              ))}
+            </>
           </TableBody>
         </Table>
       </TableContainer>
@@ -146,6 +155,11 @@ const TxTable = (props: any) => {
           />
         </div>
       )}
+      {loading ? (
+        <Box className={classes.loadingBox}>
+          <CircularProgress className={classes.loadingIndicator} />
+        </Box>
+      ) : null}
     </Box>
   )
 }
@@ -160,24 +174,22 @@ const TxRow = props => {
     return toTokenDisplay(amount, tokenInfo?.decimals ? BigInt(tokenInfo.decimals) : undefined)
   }
 
-  const { blockNumbers } = useApp()
-
   const txStatus = useMemo(() => {
     const { assumedStatus, toBlockNumber, claimInfo } = tx
     if (assumedStatus) {
       return ClaimStatus.FAILED
     }
-    if (toBlockNumber && toBlockNumber <= blockNumbers[0]) {
+    if (toBlockNumber) {
       return ClaimStatus.CLAIMED
     }
-    if (toBlockNumber) {
+    if (estimatedTimeMap[`claim_${tx.hash}`]) {
       return ClaimStatus.CLAIMING
     }
     if (+claimInfo?.batch_index && claimInfo?.batch_index <= finalizedIndex) {
       return ClaimStatus.CLAIMABLE
     }
     return ClaimStatus.NOT_READY
-  }, [blockNumbers, tx, finalizedIndex])
+  }, [tx, finalizedIndex, estimatedTimeMap[`claim_${tx.hash}`]])
 
   const initiatedAt = useMemo(() => {
     const date = dayjs(tx.initiatedAt)
