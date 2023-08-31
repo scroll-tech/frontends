@@ -7,6 +7,8 @@ const useBalance = tokenAddress => {
 
   const { data, isLoading } = useBalance_RAW({ address: walletCurrentAddress, token: tokenAddress, watch: true })
 
+  console.log("useBalance_RAW", "tokenAddress", data)
+
   return { balance: data?.value, isLoading }
 }
 
