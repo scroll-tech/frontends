@@ -10,7 +10,7 @@ const ArticleTitle = styled(Typography)(({ theme }) => ({
   lineHeight: "2.8rem",
   display: "table-cell",
   verticalAlign: "bottom",
-  marginBottom: "0.7rem",
+  marginBottom: "0.6rem",
 }))
 
 const Card = styled(Box)(({ theme }) => ({
@@ -20,8 +20,8 @@ const Card = styled(Box)(({ theme }) => ({
   textAlign: "left",
   margin: "0 auto",
   overflow: "hidden",
-  color: theme.palette.text.primary,
   cursor: "pointer",
+  color: theme.palette.text.primary,
   "&:hover *": {
     cursor: "pointer !important",
     opacity: 0.7,

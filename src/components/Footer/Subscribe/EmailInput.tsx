@@ -10,6 +10,9 @@ const useStyles = makeStyles()(theme => ({
     display: "inline-block",
     height: "5.4rem",
     width: "44.8rem",
+    [theme.breakpoints.up("md")]: {
+      maxWidth: "41vw",
+    },
 
     [theme.breakpoints.down("sm")]: {
       height: "4.8rem",
@@ -35,6 +38,7 @@ const useStyles = makeStyles()(theme => ({
     textAlign: "center",
     "&::placeholder": {
       color: "#DCDCDC",
+      opacity: 1,
     },
   },
 
