@@ -129,7 +129,7 @@ const TxTable = (props: any) => {
             <TableRow>
               <TableCell align="center">Claim</TableCell>
               <TableCell>Amount</TableCell>
-              <TableCell>Transaction Hash</TableCell>
+              <TableCell sx={{ width: "18rem" }}>Transaction Hash</TableCell>
               <TableCell>Status</TableCell>
             </TableRow>
           </TableHead>

@@ -40,7 +40,7 @@ const Bridge = () => {
           sx={{
             pt: "8.4rem",
             width: "fit-content",
-            height: "calc(100vh - 6.5rem)",
+            height: "calc(100vh - 69.2rem)",
             minHeight: "86rem",
             display: "flex",
             flexDirection: "column",
