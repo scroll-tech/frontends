@@ -79,9 +79,9 @@ const FeatureIcon = styled(WebpImage)(({ theme }) => ({
 
 const FeatureTitle = styled(Typography)(({ theme }) => ({
   textAlign: "left",
-  marginBottom: "2rem",
+  marginBottom: "1.5rem",
   [theme.breakpoints.down("md")]: {
-    marginBottom: "1rem",
+    marginBottom: "0.8rem",
     textAlign: "center",
   },
 }))

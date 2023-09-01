@@ -35,14 +35,23 @@ const useStyles = makeStyles()((theme: Theme) => {
       marginLeft: "1.2em",
       textIndent: "-1.2em",
     },
+
+    summary: {
+      margin: "3.1rem 0",
+      [theme.breakpoints.down("sm")]: {
+        margin: "2.6rem 0",
+      },
+    },
   }
 })
 
 const FaqItem = props => {
+  const { classes } = useStyles()
+
   const { id, title, children, expanded } = props
   return (
     <Accordion square sx={{ background: "transparent" }} defaultExpanded={expanded}>
-      <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: "text.primary" }} />} id={id}>
+      <AccordionSummary classes={{ content: classes.summary }} expandIcon={<ExpandMoreIcon sx={{ color: "text.primary" }} />} id={id}>
         <Typography variant="H4">{title}</Typography>
       </AccordionSummary>
       <AccordionDetails>{children}</AccordionDetails>
