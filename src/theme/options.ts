@@ -170,7 +170,7 @@ export const typographyOptions = {
   body1: {
     fontWeight: 400,
     fontSize: "1.6rem",
-    lineHeight: "normal",
+    lineHeight: 1.4,
   },
   // body2: {
   //   fontWeight: 400,
@@ -210,7 +210,7 @@ export const typographyOptions = {
   },
   H4: {
     fontSize: "2.4rem",
-    lineHeight: "normal",
+    lineHeight: 1.4,
     fontWeight: 600,
     [theme.breakpoints.down("sm")]: {
       fontSize: "2rem",
@@ -218,7 +218,7 @@ export const typographyOptions = {
   },
   Body1: {
     fontSize: "2.6rem",
-    lineHeight: "normal",
+    lineHeight: 1.4,
     fontWeight: 400,
     [theme.breakpoints.down("sm")]: {
       fontSize: "2rem",
@@ -232,7 +232,7 @@ export const typographyOptions = {
   },
   Body3: {
     fontSize: "2.0rem",
-    lineHeight: "normal",
+    lineHeight: 1.4,
     fontWeight: 400,
   },
 }
