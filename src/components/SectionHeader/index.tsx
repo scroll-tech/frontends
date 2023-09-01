@@ -25,9 +25,8 @@ const SectionHeader = props => {
         <Typography
           sx={{
             fontSize: ["3.2rem", "4.6rem"],
-            lineHeight: ["4rem", "5rem"],
             fontWeight: 500,
-            mb: ["1.4rem", "2.4rem"],
+            mb: ["0.8rem", "1.4rem"],
             color: theme => (dark ? theme.palette.primary.contrastText : "unset"),
           }}
         >
@@ -36,7 +35,6 @@ const SectionHeader = props => {
         <Typography
           sx={{
             fontSize: ["1.8rem", "2.4rem"],
-            lineHeight: ["normal", "3rem"],
             color: theme => (dark ? theme.palette.primary.contrastText : "unset"),
           }}
         >
