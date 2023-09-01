@@ -33,13 +33,13 @@ const STORIES = [
   },
   {
     title: "zkEVMs in 2023 and Why Deploy on Scroll",
-    content: "Hear Scroll partnership lead Lea Scmitt recap what 2023 has meant for the realm of zkEVMs and why you should deploy on Scroll.",
+    content: "Hear Scroll partnership lead Lea Schmitt recap what 2023 has meant for the realm of zkEVMs and why you should deploy on Scroll.",
     href: "https://www.youtube.com/watch?v=maddK7ch0v0",
   },
   {
     title: "Get Introduced to zkRollups and zkEVMs",
     content:
-      "Scroll co-founder Haichen gives an overview of the scalability problem on Ethereum, what zkRolllups and zkEVMs are, how they work, and why they are necessary.",
+      "Scroll co-founder Haichen gives an overview of the scalability problem on Ethereum, what zkRollups and zkEVMs are, how they work, and why they are necessary.",
     href: "https://www.youtube.com/watch?v=JdjRcW13LME",
   },
   {
