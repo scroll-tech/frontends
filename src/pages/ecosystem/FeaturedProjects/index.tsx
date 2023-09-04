@@ -43,16 +43,18 @@ const useStyles = makeStyles()(theme => ({
   flex: {
     display: "grid",
     gridTemplateColumns: "repeat(3, 1fr)",
-    gap: "4%",
-    marginTop: "12.6rem",
+    gap: "4rem",
+    marginTop: "12rem",
     [theme.breakpoints.down("lg")]: {
       gridTemplateColumns: "repeat(2, 1fr)",
     },
+    [theme.breakpoints.down("md")]: {
+      marginTop: "8rem",
+    },
     "@media (max-width: 760px)": {
+      marginTop: "5.2rem",
       display: "flex",
       flexDirection: "column",
-      gap: "4rem",
-      marginTop: "5.2rem",
       alignItems: "stretch",
     },
   },
@@ -61,7 +63,7 @@ const useStyles = makeStyles()(theme => ({
 const FeaturedProjects = props => {
   const { classes } = useStyles()
   return (
-    <SectionWrapper dark sx={{ pt: ["6rem", "15.4rem"], pb: ["12rem", "16rem"] }}>
+    <SectionWrapper dark sx={{ pb: ["12rem", "16rem"] }}>
       <SectionHeader
         dark
         title="Featured projects"
