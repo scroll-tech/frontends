@@ -25,7 +25,7 @@ const NetworkIndicator = () => {
     return ScrollInactiveSvg
   }, [chainId, fromNetwork])
 
-  return <SvgIcon sx={{ fontSize: "4.6rem" }} component={icon} inheritViewBox></SvgIcon>
+  return <SvgIcon sx={{ fontSize: "4.6rem", cursor: "auto" }} component={icon} inheritViewBox></SvgIcon>
 }
 
 export default NetworkIndicator

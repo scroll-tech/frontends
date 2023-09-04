@@ -17,7 +17,7 @@ const TableBox = styled(Box)(({ theme }) => ({
 }))
 
 const Claim = (props: any) => {
-  const { walletCurrentAddress } = useRainbowContext()
+  const { walletCurrentAddress, chainId } = useRainbowContext()
   const {
     claim: { refreshPageTransactions },
   } = useApp()
@@ -41,7 +41,7 @@ const Claim = (props: any) => {
 
   return (
     <TableBox>
-      {pageTransactions?.length && walletCurrentAddress ? (
+      {pageTransactions?.length && chainId ? (
         <ClaimTable
           data={pageTransactions}
           loading={loading}
