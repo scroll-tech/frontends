@@ -42,7 +42,7 @@ const useStyles = makeStyles()(theme => {
     tableWrapper: {
       boxShadow: "unset",
       borderRadius: "20px",
-      maxWidth: "68.8rem",
+      maxWidth: "70rem",
       backgroundColor: theme.palette.themeBackground.optionHightlight,
       padding: "2.5rem 3rem",
       position: "relative",
