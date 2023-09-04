@@ -10,6 +10,8 @@ import useBridgeStore from "@/stores/bridgeStore"
 import useClaimStore from "@/stores/claimStore"
 import useTxStore from "@/stores/txStore"
 
+import RetryButton from "./RetryButton"
+
 const useStyles = makeStyles()(theme => {
   return {
     chip: {
@@ -77,7 +79,6 @@ const TxStatus = props => {
 
   const { changeTxType, changeWithdrawStep, changeHistoryVisible, changeTxResult } = useBridgeStore()
   const { setTargetTransaction } = useClaimStore()
-
   const renderEstimatedWaitingTime = timestamp => {
     if (timestamp === 0) {
       return <>Pending</>
@@ -108,6 +109,10 @@ const TxStatus = props => {
 
   if (toStatus === TX_STATUS.success) {
     return <Chip className={cx(classes.chip, classes.successChip)} label={TX_STATUS.success}></Chip>
+  }
+
+  if (tx.isL1 && tx.msgHash && Date.now() > new Date(tx.initiatedAt).getTime() + 1000 * 60 * 60 * 4) {
+    return <RetryButton tx={tx} />
   }
 
   if (tx.assumedStatus) {

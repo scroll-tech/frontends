@@ -90,6 +90,7 @@ interface Transaction {
   errMsg?: string
   initiatedAt?: string
   finalisedAt?: string
+  msgHash?: string
 }
 
 const MAX_OFFSET_TIME = 30 * 60 * 1000
@@ -160,6 +161,7 @@ const formatBackTxList = (backList, estimatedTimeMap) => {
       isClaimed: tx.finalizeTx?.hash,
       initiatedAt,
       finalisedAt,
+      msgHash: tx.msgHash,
     }
   })
 

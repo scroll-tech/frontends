@@ -1,3 +1,4 @@
+import { isHexString } from "ethers"
 import { isNil } from "lodash"
 import find from "lodash/find"
 import { DependencyList } from "react"
@@ -76,4 +77,10 @@ export const convertDateToTimestamp = (dateString: string, isMilliseconds: boole
     timestamp = timestamp / 1000
   }
   return Math.floor(timestamp)
+}
+
+export function isValidTransactionHash(txHash: string): boolean {
+  // A valid transaction hash is a hex string of length 66 characters (including the '0x' prefix)
+  const isValidLength = txHash.length === 66
+  return isValidLength && isHexString(txHash)
 }

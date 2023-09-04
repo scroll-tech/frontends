@@ -241,7 +241,6 @@ export const PriceFeeProvider = ({ children }) => {
         to: requireEnv(Contracts.SCROLL_MESSENGER.env),
         data: calldata,
       })
-
       return (BigInt(Math.max(Number(gaslimit), MIN_GASLIMIT[gatewayType] as unknown as number)) * BigInt(120)) / BigInt(100)
     } catch (error) {
       throw new Error(error)

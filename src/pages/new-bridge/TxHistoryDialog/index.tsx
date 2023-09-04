@@ -5,6 +5,7 @@ import { Dialog, DialogTitle, IconButton, SvgIcon, Typography } from "@mui/mater
 import { ReactComponent as CloseSvg } from "@/assets/svgs/refactor/bridge-close.svg"
 import useBridgeStore from "@/stores/bridgeStore"
 
+import ImportTx from "./ImportTx"
 import TxHistoryTable from "./TxHistoryTable"
 
 const useStyles = makeStyles()(theme => ({
@@ -37,6 +38,8 @@ const TxHistoryDialog = (props: any) => {
         id="customized-dialog-title"
       >
         <Typography sx={{ fontSize: ["1.8rem", "2.4rem"], fontWeight: 600, lineHeight: 1 }}>Transaction History</Typography>
+        <ImportTx />
+
         <IconButton sx={{ p: 0, "&:hover": { backgroundColor: "unset" } }} onClick={handleClose}>
           <SvgIcon sx={{ fontSize: ["1.6rem", "1.8rem"] }} component={CloseSvg} inheritViewBox></SvgIcon>
         </IconButton>
