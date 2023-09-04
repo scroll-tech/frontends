@@ -22,7 +22,7 @@ const TransactionsList = (props: any) => {
   const {
     txHistory: { refreshPageTransactions },
   } = useApp()
-  const { walletCurrentAddress } = useRainbowContext()
+  const { chainId } = useRainbowContext()
 
   const { page, total, pageTransactions, loading } = useTxStore()
 
@@ -32,7 +32,7 @@ const TransactionsList = (props: any) => {
 
   return (
     <TableBox>
-      {pageTransactions.length && walletCurrentAddress ? (
+      {pageTransactions.length && chainId ? (
         <TxTable
           data={pageTransactions}
           loading={loading}
