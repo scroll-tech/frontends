@@ -118,7 +118,10 @@ const ClaimButton = props => {
           setLoading(false)
         })
     } catch (error) {
-      console.log(error.toString())
+      if (isError(error, "ACTION_REJECTED")) {
+        addEstimatedTimeMap(`claim_${tx.hash}`, 0)
+      }
+
       setLoading(false)
     }
   }

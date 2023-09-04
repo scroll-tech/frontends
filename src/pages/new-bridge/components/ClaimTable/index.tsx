@@ -182,7 +182,8 @@ const TxRow = props => {
     if (toBlockNumber) {
       return ClaimStatus.CLAIMED
     }
-    if (estimatedTimeMap[`claim_${tx.hash}`]) {
+    // The estimated claim time will not exceed 5 minutes.
+    if (estimatedTimeMap[`claim_${tx.hash}`] + 1000 * 60 * 5 > Date.now()) {
       return ClaimStatus.CLAIMING
     }
     if (+claimInfo?.batch_index && claimInfo?.batch_index <= finalizedIndex) {
