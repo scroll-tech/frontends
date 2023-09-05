@@ -1,14 +1,11 @@
 import { motion } from "framer-motion"
-import Img from "react-cool-img"
 import { makeStyles } from "tss-react/mui"
 
 import { Box, Card, Stack, SvgIcon, Typography } from "@mui/material"
 
-import { ecosystemListLogoUrl } from "@/apis/ecosystem"
 import { ECOSYSTEM_SOCIAL_LIST } from "@/constants"
-import useCheckViewport from "@/hooks/useCheckViewport"
 
-const useStyles = makeStyles()(theme => ({
+const useStyles = makeStyles<any>()((theme, { name }) => ({
   card: {
     height: "100%",
     display: "flex",
@@ -24,7 +21,7 @@ const useStyles = makeStyles()(theme => ({
     height: "25rem",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: theme.palette.themeBackground.dark,
+    background: name === "Aave" ? "linear-gradient(251deg, #B6509E 4.86%, #2EBAC6 94.85%)" : theme.palette.themeBackground.dark,
     borderRadius: "1.5rem",
     [theme.breakpoints.down("sm")]: {
       aspectRatio: "360 / 132",
@@ -59,9 +56,9 @@ const useStyles = makeStyles()(theme => ({
   },
 }))
 const FeaturedCard = props => {
-  const { name, ext, desc, hash, website, twitterHandle, ...restProps } = props
-  const { classes } = useStyles()
-  const { isMobile } = useCheckViewport()
+  const { name, ext, desc, hash, logo, website, twitterHandle, ...restProps } = props
+  const { classes } = useStyles({ name })
+  // const { isMobile } = useCheckViewport()
 
   const handleOpenTab = (e, item, { website, twitterHandle }) => {
     e.stopPropagation()
@@ -75,7 +72,7 @@ const FeaturedCard = props => {
   return (
     <Card {...restProps} elevation={0} classes={{ root: classes.card }}>
       <Box className={classes.imgWrapper}>
-        <Img alt={name} src={ecosystemListLogoUrl + name + ext} placeholder={hash} width={isMobile ? 80 : 136} height={isMobile ? 80 : 136}></Img>
+        <SvgIcon sx={{ width: "auto", height: "auto", transform: ["scale(0.7)", "scale(1)"] }} component={logo} inheritViewBox></SvgIcon>
       </Box>
       <Box className={classes.content} sx={{ px: ["0.4rem", "1.5rem"], pb: [0, "1.5rem"], pt: ["1.5rem", "2.4rem"] }}>
         <Typography className={classes.name} sx={{ fontSize: ["1.6rem", "2.2rem"], fontWeight: 600 }}>
