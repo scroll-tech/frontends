@@ -19,8 +19,10 @@ const useGasFee = selectedToken => {
   const [gasLimit, setGasLimit] = useState(BigInt(0))
 
   const calculateGasFee = async () => {
-    const { maxFeePerGas: gasPrice } = await networksAndSigners[fromNetwork.chainId].provider.getFeeData()
+    const { maxFeePerGas, gasPrice: rawGasPrice } = await networksAndSigners[fromNetwork.chainId].provider.getFeeData()
     const limit = ((await estimateSend()) * BigInt(120)) / BigInt(100)
+    // sepolia scroll not support EIP-1559
+    const gasPrice = fromNetwork.isL1 ? maxFeePerGas : rawGasPrice
     const estimatedGasCost = BigInt(limit) * BigInt(gasPrice || 1e9)
     return { gasLimit: limit, gasFee: estimatedGasCost }
   }
