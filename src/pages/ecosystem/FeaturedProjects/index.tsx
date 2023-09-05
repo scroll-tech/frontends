@@ -43,7 +43,7 @@ const useStyles = makeStyles()(theme => ({
   flex: {
     display: "grid",
     gridTemplateColumns: "repeat(3, 1fr)",
-    gap: "4rem",
+    gap: "3rem",
     marginTop: "12rem",
     [theme.breakpoints.down("lg")]: {
       gridTemplateColumns: "repeat(2, 1fr)",
@@ -56,6 +56,9 @@ const useStyles = makeStyles()(theme => ({
       display: "flex",
       flexDirection: "column",
       alignItems: "stretch",
+    },
+    [theme.breakpoints.down("sm")]: {
+      gap: "2rem",
     },
   },
 }))
