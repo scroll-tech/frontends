@@ -146,7 +146,7 @@ const ClaimButton = props => {
   if (txStatus === ClaimStatus.FAILED) {
     return (
       <Tooltip placement="top" title={tx.errMsg || tx.assumedStatus}>
-        <StyledButton className="claimed" color="primary">
+        <StyledButton className="failed" color="primary">
           Failed{" "}
           <svg style={{ marginLeft: "4px" }} xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
             <path
