@@ -1,9 +1,7 @@
 import { NETWORKS } from "@/constants/networks"
-import { isProduction, requireEnv } from "@/utils"
+import { requireEnv } from "@/utils"
 
 import { EXPLORER_URL } from "./common"
-
-export const TESTNET_NAME = "Scroll " + (isProduction ? "Sepolia" : requireEnv("REACT_APP_SCROLL_ENVIRONMENT"))
 
 export const SITE_MAP = {
   Home: "/portal",
@@ -17,17 +15,6 @@ export const SITE_MAP = {
 }
 
 export const NAVIGATIONS = [
-  {
-    name: "Testnet",
-    description: "Main Testnet Portal",
-    subdomainOrPath: "",
-  },
-  {
-    name: "Guide",
-    description: "",
-    isExternal: true,
-    subdomainOrPath: "guide",
-  },
   {
     name: "Bridge",
     description: "Use our Hop fork to transfer tokens between L1 and L2.",
@@ -50,6 +37,12 @@ export const NAVIGATIONS = [
     description: "See your L2 transactions on our fork of Blockscout.",
     isExternal: true,
     subdomainOrPath: EXPLORER_URL.L2,
+  },
+  {
+    name: "Documentation",
+    description: `See the full ${NETWORKS[1].name} User Guide here.`,
+    isExternal: true,
+    subdomainOrPath: "https://docs.scroll.io/en/user-guide/",
   },
 ]
 

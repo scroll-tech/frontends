@@ -1,1 +1,1 @@
-export const tokenListUrl = param => `https://raw.githubusercontent.com/scroll-tech/token-list/${param}/scroll.tokenlist.json`
+export const tokenListUrl = "https://scroll-tech.github.io/token-list/scroll.tokenlist.json"

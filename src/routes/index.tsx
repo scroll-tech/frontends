@@ -61,7 +61,7 @@ const routes = [
     element: <PrivacyPolicy />,
   },
   {
-    name: "Testnet",
+    name: "Resources",
     path: "portal",
     fullPath: "/portal",
     element: <Portal />,
