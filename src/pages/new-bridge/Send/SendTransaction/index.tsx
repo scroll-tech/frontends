@@ -64,6 +64,7 @@ const SendTransaction = props => {
   const { gasFee: estimatedGasCost } = useGasFee(selectedToken)
 
   const totalFee = useMemo(() => estimatedGasCost + gasLimit * gasPrice, [estimatedGasCost, gasLimit, gasPrice])
+  const relayFee = useMemo(() => gasLimit * gasPrice, [gasLimit, gasPrice])
 
   const { insufficientWarning } = useSufficientBalance(
     selectedToken,
@@ -80,8 +81,8 @@ const SendTransaction = props => {
     if (priceFeeErrorMessage) {
       return <Typography sx={{ color: "primary.main" }}>-</Typography>
     }
-    return toTokenDisplay(totalFee, selectedToken.decimals, ETH_SYMBOL)
-  }, [isNetworkCorrect, amount, totalFee, selectedToken, priceFeeErrorMessage])
+    return toTokenDisplay(relayFee, selectedToken.decimals, ETH_SYMBOL)
+  }, [isNetworkCorrect, amount, relayFee, selectedToken, priceFeeErrorMessage])
 
   const bridgeWarning = useMemo(() => {
     if (!chainId) {
