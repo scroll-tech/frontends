@@ -1,4 +1,5 @@
 import { requireEnv } from "@/utils"
+import { isProduction } from "@/utils"
 
 const navigations = [
   {
@@ -14,10 +15,18 @@ const navigations = [
         label: "develop1",
         children: [
           {
-            label: "Testnet",
-            key: "testnet",
-            href: "/portal",
+            label: "Mainnet",
+            key: "mainnet-resources",
             rootKey: "develop",
+            href: !isProduction ? "https://scroll.io/portal" : "/portal",
+            isExternal: !isProduction,
+          },
+          {
+            label: "Sepolia Testnet",
+            key: "sepolia-resources",
+            rootKey: "develop",
+            href: isProduction ? "https://sepolia.scroll.io/portal" : "/portal",
+            isExternal: isProduction,
           },
           {
             label: "Docs",
@@ -43,9 +52,9 @@ const navigations = [
             rootKey: "develop",
           },
           {
-            label: "Etherscan",
+            label: "Scrollscan",
             key: "etherscan",
-            href: "https://sepolia.scrollscan.dev/",
+            href: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2"),
             isExternal: true,
           },
           {

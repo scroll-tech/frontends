@@ -33,7 +33,6 @@ const useStyles = makeStyles()(theme => ({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-
     [theme.breakpoints.down("sm")]: {
       padding: "2rem 1.6rem",
       flexDirection: "column",

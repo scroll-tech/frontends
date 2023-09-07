@@ -1,13 +1,12 @@
 import { ethers } from "ethers"
 import { useState } from "react"
 
-import L1StandardERC20Gateway from "@/assets/abis/L1StandardERC20Gateway.json"
+import L1_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L1_GATEWAY_ROUTER_PROXY_ADDR.json"
 import L1_erc20ABI from "@/assets/abis/L1_erc20ABI.json"
-import L2StandardERC20Gateway from "@/assets/abis/L2StandardERC20Gateway.json"
-import { CHAIN_ID } from "@/constants"
+import L2_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L2_GATEWAY_ROUTER_PROXY_ADDR.json"
+import { CHAIN_ID, GATEWAY_ROUTE_PROXY_ADDR } from "@/constants"
 import { USER_TOKEN_LIST } from "@/constants/storageKey"
 import { useApp } from "@/contexts/AppContextProvider"
-import { requireEnv } from "@/utils"
 import { loadState, saveState } from "@/utils/localStorage"
 
 export enum TOKEN_LEVEL {
@@ -34,16 +33,18 @@ const useAddToken = () => {
     const l1Provider = getProvider(CHAIN_ID.L1)
     const l2Provider = getProvider(CHAIN_ID.L2)
 
-    const l1Erc20Gateway = getContract(requireEnv("REACT_APP_L1_STANDARD_ERC20_GATEWAY_PROXY_ADDR"), L1StandardERC20Gateway, l1Provider)
-    const l2Erc20Gateway = getContract(requireEnv("REACT_APP_L2_STANDARD_ERC20_GATEWAY_PROXY_ADDR"), L2StandardERC20Gateway, l2Provider)
+    const l1Erc20Gateway = getContract(GATEWAY_ROUTE_PROXY_ADDR[CHAIN_ID.L1], L1_GATEWAY_ROUTER_PROXY_ABI, l1Provider)
+    const l2Erc20Gateway = getContract(GATEWAY_ROUTE_PROXY_ADDR[CHAIN_ID.L2], L2_GATEWAY_ROUTER_PROXY_ABI, l2Provider)
 
     try {
       const l1TokenAddress = isL1 ? address : await l2Erc20Gateway.getL1ERC20Address(address)
       const l2TokenAddress = isL1 ? await l1Erc20Gateway.getL2ERC20Address(address) : address
+
       const l1TokenContract = getContract(l1TokenAddress, L1_erc20ABI, l1Provider)
       const l2TokenContract = getContract(l2TokenAddress, L1_erc20ABI, l2Provider)
 
       const l1TokenDetails = await getTokenDetails(l1TokenContract)
+
       const l2TokenDetails = await getTokenDetails(l2TokenContract)
 
       const l1Token = {
@@ -54,6 +55,7 @@ const useAddToken = () => {
       }
       const l2Token = {
         ...l2TokenDetails,
+        name: l1TokenDetails.name,
         chainId: CHAIN_ID.L2,
         address: l2TokenAddress,
         tokenLevel: TOKEN_LEVEL.local,

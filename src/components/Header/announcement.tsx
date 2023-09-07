@@ -3,6 +3,8 @@ import { useMatch } from "react-router-dom"
 import { Stack } from "@mui/material"
 import { styled } from "@mui/system"
 
+import { requireEnv } from "@/utils"
+
 const AnnouncementStack = styled(Stack)(
   ({ theme }) => `
     line-height: 2.6rem;
@@ -28,7 +30,7 @@ const Announcement = () => {
   }
   return (
     <AnnouncementStack>
-      Scroll Sepolia is now live. <ReadMoreLink href="/portal">Try it!</ReadMoreLink>
+      Scroll {requireEnv("REACT_APP_SCROLL_ENVIRONMENT")} is now live. <ReadMoreLink href="/portal">Try it!</ReadMoreLink>
     </AnnouncementStack>
   )
 }
