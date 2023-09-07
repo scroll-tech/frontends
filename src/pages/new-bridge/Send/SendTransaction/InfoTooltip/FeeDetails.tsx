@@ -17,14 +17,16 @@ type Props = {
   bonderFeeUsd?: string
   destinationTxFee?: string
   destinationTxFeeUsd?: string
+  content?: string
 }
 
-const FeeDetails: FC<Props> = () => {
+const FeeDetails: FC<Props> = props => {
   const { classes: styles } = useStyles()
   return (
     <div className={styles.root}>
       <Typography variant="body1" className={styles.text}>
-        We require a small fee to cover relaying and rollup costs.
+        {props.content}
+        {/* We require a small fee to cover relaying and rollup costs. */}
       </Typography>
     </div>
   )

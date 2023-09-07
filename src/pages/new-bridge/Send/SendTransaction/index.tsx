@@ -64,6 +64,7 @@ const SendTransaction = props => {
   const { gasFee: estimatedGasCost } = useGasFee(selectedToken)
 
   const totalFee = useMemo(() => estimatedGasCost + gasLimit * gasPrice, [estimatedGasCost, gasLimit, gasPrice])
+  const relayFee = useMemo(() => gasLimit * gasPrice, [gasLimit, gasPrice])
 
   const { insufficientWarning } = useSufficientBalance(
     selectedToken,
@@ -73,15 +74,27 @@ const SendTransaction = props => {
   )
   // fee end
 
-  const displayedFee = useMemo(() => {
+  const displayedL1Fee = useMemo(() => {
     if (!isNetworkCorrect || !amount) {
       return <Typography>-</Typography>
     }
     if (priceFeeErrorMessage) {
       return <Typography sx={{ color: "primary.main" }}>-</Typography>
     }
-    return toTokenDisplay(totalFee, selectedToken.decimals, ETH_SYMBOL)
-  }, [isNetworkCorrect, amount, totalFee, selectedToken, priceFeeErrorMessage])
+    const fee = txType === "Deposit" ? estimatedGasCost : relayFee
+    return toTokenDisplay(fee, selectedToken.decimals, ETH_SYMBOL)
+  }, [isNetworkCorrect, amount, estimatedGasCost, relayFee, selectedToken, priceFeeErrorMessage])
+
+  const displayedL2Fee = useMemo(() => {
+    if (!isNetworkCorrect || !amount) {
+      return <Typography>-</Typography>
+    }
+    if (priceFeeErrorMessage) {
+      return <Typography sx={{ color: "primary.main" }}>-</Typography>
+    }
+    const fee = txType === "Deposit" ? relayFee : estimatedGasCost
+    return toTokenDisplay(fee, selectedToken.decimals, ETH_SYMBOL)
+  }, [isNetworkCorrect, amount, relayFee, estimatedGasCost, selectedToken, priceFeeErrorMessage])
 
   const bridgeWarning = useMemo(() => {
     if (!chainId) {
@@ -184,7 +197,20 @@ const SendTransaction = props => {
         tokenOptions={tokenOptions}
         onChangeToken={handleChangeTokenSymbol}
       ></BalanceInput>
-      <DetailRow title="Fees" sx={{ my: "0.8rem" }} tooltip={<FeeDetails />} value={displayedFee} large />
+      <DetailRow
+        title="L1 gas"
+        sx={{ mt: "0.8rem", mb: "0.4rem" }}
+        tooltip={<FeeDetails content="L1 fees go to Ethereum Validators." />}
+        value={displayedL1Fee}
+        large
+      />
+      <DetailRow
+        title="L2 gas"
+        sx={{ mb: "0.8rem" }}
+        tooltip={<FeeDetails content="L2 fees are collected by the chain to cover costs of execution." />}
+        value={displayedL2Fee}
+        large
+      />
       <Typography
         sx={{
           fontSize: "1.3rem",
