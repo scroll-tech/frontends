@@ -70,6 +70,7 @@ const ClaimButton = props => {
       result
         .wait()
         .then(receipt => {
+          console.log(receipt, "claim receipt")
           if (receipt?.status === 1) {
             const estimatedOffsetTime = (receipt.blockNumber - blockNumbers[0]) * 12 * 1000
             if (isValidOffsetTime(estimatedOffsetTime)) {
@@ -89,6 +90,8 @@ const ClaimButton = props => {
           }
         })
         .catch(error => {
+          console.log(error, "catch claim wait error")
+
           // TRANSACTION_REPLACED or TIMEOUT
           sentryDebug(error.message)
           if (isError(error, "TRANSACTION_REPLACED")) {
@@ -118,6 +121,8 @@ const ClaimButton = props => {
           setLoading(false)
         })
     } catch (error) {
+      console.log(error, "catch claim error")
+
       if (isError(error, "ACTION_REJECTED")) {
         addEstimatedTimeMap(`claim_${tx.hash}`, 0)
       }

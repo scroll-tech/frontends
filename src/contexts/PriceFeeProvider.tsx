@@ -12,12 +12,6 @@ import { requireEnv } from "@/utils"
 const OFFSET = "0x1111000000000000000000000000000000001111"
 const amount = BigInt(1)
 
-enum MIN_GASLIMIT {
-  ETH_GATEWAY = 14e4,
-  WETH_GATEWAY = 17e4,
-  STANDARD_ERC20_GATEWAY = 15e4,
-}
-
 type Props = {
   gasLimit: bigint
   gasPrice: bigint
@@ -70,7 +64,7 @@ export const PriceFeeProvider = ({ children }) => {
       if (chainId === CHAIN_ID.L1) {
         const price = await getGasPrice()
         const limit = await getGasLimit()
-        // console.log(price, limit, "gas price/limit")
+        console.log(price, limit, "relay price/limit")
         setGasPrice(price)
         setGasLimit(limit)
       } else {
@@ -107,7 +101,7 @@ export const PriceFeeProvider = ({ children }) => {
 
   const getGasPrice = async () => {
     try {
-      const L2GasPriceOracleContract = getContract("GAS_PRICE_ORACLE", networksAndSigners[CHAIN_ID.L1].signer)
+      const L2GasPriceOracleContract = getContract("GAS_PRICE_ORACLE", networksAndSigners[CHAIN_ID.L1].provider)
       const gasPrice = await L2GasPriceOracleContract.l2BaseFee()
       return gasPrice
     } catch (err) {
@@ -187,7 +181,7 @@ export const PriceFeeProvider = ({ children }) => {
         to: requireEnv(L2Contracts.SCROLL_MESSENGER.env),
         data: calldata,
       })
-      return (BigInt(Math.max(Number(gaslimit), MIN_GASLIMIT[contractName] as unknown as number)) * BigInt(120)) / BigInt(100)
+      return (gaslimit * BigInt(120)) / BigInt(100)
     } catch (error) {
       throw new Error(error)
     }

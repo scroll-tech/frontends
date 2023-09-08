@@ -260,7 +260,7 @@ const maxLengthAccount = (orderedTxDB: OrderedTxDB) => {
   let maxLength = 0
   let address
   for (let i = 0; i < briefList.length; i++) {
-    if (briefList[i][1] > maxLength) {
+    if ((briefList[i][1] as number) > maxLength) {
       maxLength = briefList[i][1] as number
       address = briefList[i][0]
     }

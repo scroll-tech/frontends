@@ -51,6 +51,7 @@ export function useSendTransaction(props) {
       updateOrderedTxs(walletCurrentAddress, tx.hash, TxPosition.Frontend, txDirection)
       tx.wait()
         .then(receipt => {
+          console.log(receipt, "receipt")
           if (receipt?.status === 1) {
             changeTxResult({ hash: tx.hash, amount: fromTokenAmount })
 
@@ -77,6 +78,8 @@ export function useSendTransaction(props) {
           }
         })
         .catch(error => {
+          console.log(error, "wait catch error")
+
           // TRANSACTION_REPLACED or TIMEOUT
           sentryDebug(error.message)
           if (isError(error, "TRANSACTION_REPLACED")) {
@@ -112,6 +115,8 @@ export function useSendTransaction(props) {
           setIsLoading(false)
         })
     } catch (error) {
+      console.log(error, "send catch error")
+
       setIsLoading(false)
       // reject && insufficient funds(send error)
       if (isError(error, "ACTION_REJECTED")) {

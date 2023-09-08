@@ -53,6 +53,8 @@ export function useSendTransaction(props) {
       updateOrderedTxs(walletCurrentAddress, tx.hash, TxPosition.Frontend)
       tx.wait()
         .then(receipt => {
+          console.log(receipt, "wait receipt")
+
           if (receipt?.status === 1) {
             handleTransaction(tx, {
               fromBlockNumber: receipt.blockNumber,
@@ -74,6 +76,7 @@ export function useSendTransaction(props) {
           }
         })
         .catch(error => {
+          console.log(error, "catch wait error")
           // TRANSACTION_REPLACED or TIMEOUT
           sentryDebug(error.message)
           if (isError(error, "TRANSACTION_REPLACED")) {
@@ -108,6 +111,7 @@ export function useSendTransaction(props) {
           setSending(false)
         })
     } catch (error) {
+      console.log(error, "catch send error")
       setSending(false)
       // reject && insufficient funds(send error)
       if (!isError(error, "ACTION_REJECTED")) {

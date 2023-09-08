@@ -1,3 +1,4 @@
+import { getPublicClient } from "@wagmi/core"
 import { useState } from "react"
 import { useBlockNumber } from "wagmi"
 
@@ -19,11 +20,18 @@ const useGasFee = selectedToken => {
   const [gasLimit, setGasLimit] = useState(BigInt(0))
 
   const calculateGasFee = async () => {
-    const { maxFeePerGas, gasPrice: rawGasPrice } = await networksAndSigners[fromNetwork.chainId].provider.getFeeData()
-    const limit = ((await estimateSend()) * BigInt(120)) / BigInt(100)
-    // sepolia scroll not support EIP-1559
-    const gasPrice = fromNetwork.isL1 ? maxFeePerGas : rawGasPrice
-    const estimatedGasCost = BigInt(limit) * BigInt(gasPrice || 1e9)
+    const rawlimit = await estimateSend()
+    const limit = (rawlimit * BigInt(120)) / BigInt(100)
+    let gasPrice
+    if (fromNetwork.isL1) {
+      const { maxFeePerGas } = await getPublicClient({ chainId: fromNetwork.chainId }).estimateFeesPerGas()
+      gasPrice = maxFeePerGas as bigint
+    } else {
+      const { gasPrice: legacyGasPrice } = await getPublicClient({ chainId: fromNetwork.chainId }).estimateFeesPerGas({ type: "legacy" })
+      gasPrice = legacyGasPrice as bigint
+    }
+    const estimatedGasCost = BigInt(limit) * BigInt(gasPrice)
+    console.log(gasPrice, limit, "gas price/limit")
     return { gasLimit: limit, gasFee: estimatedGasCost }
   }
 

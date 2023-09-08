@@ -66,7 +66,7 @@ const useStyles = makeStyles()(theme => ({
 const Send = () => {
   const { classes } = useStyles()
   const { chainId } = useRainbowContext()
-  const { txType, fromNetwork, withDrawStep, changeTxType, changeTxResult, changeIsNetworkCorrect } = useBridgeStore()
+  const { txType, fromNetwork, withDrawStep, changeTxType, changeTxResult, changeTxError, changeIsNetworkCorrect } = useBridgeStore()
 
   useEffect(() => {
     let networkCorrect
@@ -83,6 +83,7 @@ const Send = () => {
   const handleChange = (e, newValue) => {
     changeTxType(newValue)
     changeTxResult(null)
+    changeTxError(null)
   }
 
   return (
