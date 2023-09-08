@@ -12,7 +12,7 @@ export const SITE_MAP = {
   L1Explorer: EXPLORER_URL.L1,
   L2Explorer: EXPLORER_URL.L2,
   RollupExplorer: "/rollupscan",
-  Swap: "https://uniswap-v3.scroll.io/",
+  Swap: requireEnv("REACT_APP_L2_SWAP_URI"),
   Architecture: "/blog/architecture",
 }
 

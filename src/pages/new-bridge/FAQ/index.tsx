@@ -5,7 +5,6 @@ import { Typography } from "@mui/material"
 import Faq, { FaqItem } from "@/components/Faq"
 import Link from "@/components/Link"
 import { SITE_MAP } from "@/constants"
-import { useRainbowContext } from "@/contexts/RainbowProvider"
 
 const useStyles = makeStyles()(() => {
   return {
@@ -20,13 +19,12 @@ const useStyles = makeStyles()(() => {
 })
 
 const FAQ = () => {
-  const { walletName } = useRainbowContext()
   const { classes } = useStyles()
   return (
     <Faq backUrl="/bridge" backText="< Back to Bridge">
       <FaqItem title="What is a blockchain Bridge?" id="2">
         <Typography variant="Body3" color="textSecondary">
-          All blockchains develop in isolated environments, this means they cannot natively communicate, and tokens cannot move freely between
+          All blockchains are developed in isolated environments, this means they cannot natively communicate, and tokens cannot move freely between
           blockchains.
         </Typography>
         <Typography variant="Body3" color="textSecondary" className={classes.specialParagraph}>
@@ -35,16 +33,14 @@ const FAQ = () => {
       </FaqItem>
       <FaqItem title="How to send tokens using the Bridge?" id="3">
         <Typography variant="Body3" color="textSecondary" className={classes.orderedParagraph}>
-          1. Select the network you wish to transfer to. For example from Scroll L1 (on top) to Scroll L2 (at the bottom). You can click the "↓"
-          button to switch positions.
+          1. Select Deposit or Withdraw.
         </Typography>
         <Typography variant="Body3" color="textSecondary" className={classes.orderedParagraph}>
-          2. Select the token (ETH or USDC) you wish to transfer.
+          2. Select the token (ETH, GHO, or WETH) you wish to transfer.
         </Typography>
         <Typography variant="Body3" color="textSecondary" className={classes.orderedParagraph}>
-          3. Click on Send. A pop up window from {walletName} will ask you for the transfer confirmation. If this is your first time transferring
-          USDC,
-          {walletName} will ask you to Approve the Scroll Bridge contract to access your USDC token.
+          3. Click on Send. A pop up window from will ask you for the transfer confirmation. If this is your first time transferring ETH, you will be
+          prompted to approve the Scroll Bridge contract to access your ETH token.
         </Typography>
         <Typography variant="Body3" color="textSecondary" className={classes.orderedParagraph}>
           4. Once the transaction is confirmed, the token will be deducted from your Scroll L1 or Scroll L2 wallet.
