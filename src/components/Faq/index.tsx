@@ -16,6 +16,9 @@ const useStyles = makeStyles()((theme: Theme) => {
       "& *": {
         fontFamily: "var(--developer-page-font-family) !important",
       },
+      "& a": {
+        fontSize: "2rem",
+      },
       [theme.breakpoints.down("md")]: {
         width: "100%",
         marginTop: "6.4rem",
