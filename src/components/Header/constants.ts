@@ -33,6 +33,11 @@ const sepoliaNavigations = [
             href: "https://status.scroll.io/",
             isExternal: true,
           },
+          {
+            label: "Early Developer NFT",
+            key: "developer-nft",
+            href: "/developer-nft",
+          },
         ],
       },
       {

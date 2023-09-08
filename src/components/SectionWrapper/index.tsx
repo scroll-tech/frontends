@@ -8,6 +8,9 @@ const SectionWrapper = props => {
       sx={{
         backgroundColor: theme => (dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.light),
         borderRadius: round ? "4rem 4rem 0 0 " : "unset",
+        "& .MuiTypography-root": {
+          color: theme => (dark ? theme.palette.primary.contrastText : theme.palette.text.primary),
+        },
       }}
     >
       <Container
