@@ -6,7 +6,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import { Accordion, AccordionDetails, AccordionSummary, Theme, Typography } from "@mui/material"
 
 import Link from "@/components/Link"
-import { SITE_MAP } from "@/constants"
+import { NETWORKS, SITE_MAP } from "@/constants"
 
 const useStyles = makeStyles()((theme: Theme) => {
   return {
@@ -15,6 +15,9 @@ const useStyles = makeStyles()((theme: Theme) => {
       margin: "14rem auto",
       "& *": {
         fontFamily: "var(--developer-page-font-family) !important",
+      },
+      "& a": {
+        fontSize: "2rem",
       },
       [theme.breakpoints.down("md")]: {
         width: "100%",
@@ -91,7 +94,7 @@ const Faq = props => {
       </Link>
       <FaqItem title="How do I get started?" id="start">
         <Typography variant="Body3" color="textSecondary">
-          Welcome to Scroll's Alpha Testnet.
+          Welcome to {NETWORKS[1].name}.
         </Typography>
         <Typography variant="Body3" color="textSecondary">
           Here is how to explore the platform:
@@ -118,15 +121,9 @@ const Faq = props => {
         </Typography>
       </FaqItem>
       {children}
-      <FaqItem title="Where can I find Scroll architecture overview?">
+      <FaqItem title="Where can I find the Scroll architecture overview?">
         <Typography variant="Body3" color="textSecondary">
           Check our <Link href={SITE_MAP.Architecture}>architecture blog article</Link>.
-        </Typography>
-      </FaqItem>
-      <FaqItem title="What’s happening with my transaction?" id="end" expanded={hash === "#end"}>
-        <Typography variant="Body3" color="textSecondary">
-          If you choose to use Scroll‘s traditional path instead of a fast exit bridge, you will have to wait ~1-4 hours before you can claim your
-          funds.
         </Typography>
       </FaqItem>
     </div>
