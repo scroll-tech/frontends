@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-// import useSWR from "swr"
 import { makeStyles } from "tss-react/mui"
 
 import { LinearProgress } from "@mui/material"
@@ -45,12 +44,7 @@ const Connector = props => {
     return () => {
       clearInterval(timer)
     }
-  }, [])
-
-  // TODO: revalidate when "phrase" change
-  // useSWR("aaa", calculateProgress, {
-  //   refreshInterval: 1e3,
-  // })
+  }, [phrase])
 
   return (
     <LinearProgress

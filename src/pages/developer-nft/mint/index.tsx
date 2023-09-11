@@ -28,8 +28,8 @@ const MintNFT = () => {
   return (
     <SectionWrapper dark sx={{ pt: "7.8rem", height: "calc(100vh - 7.5rem)", display: "flex", justifyContent: "center" }}>
       <Stack direction="row" spacing="4.8rem" alignItems="center">
-        <Stack direction="column" spacing="4.8rem" alignItems="flex-start" sx={{ width: "49rem" }}>
-          <Typography sx={{ fontSize: "7.8rem", fontWeight: 600, lineHeight: "8.5rem" }}>Scroll Early Developer NFT</Typography>
+        <Stack direction="column" spacing="4.8rem" alignItems="flex-start">
+          <Typography sx={{ fontSize: "7.8rem", fontWeight: 600, lineHeight: "8.5rem", width: "49rem" }}>Scroll Early Developer NFT</Typography>
           <Stack direction="row" spacing="4.8rem">
             <Statistic label="NFTs Minted">
               {mintedAmount}

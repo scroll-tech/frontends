@@ -8,7 +8,7 @@ import { ReactComponent as NeutralitySvg } from "@/assets/svgs/refactor/story-va
 import LineToView from "@/components/Motion/LineToView"
 import { DEVELOPER_NFT_STEPS } from "@/constants"
 
-import Point from "../Header/Point"
+import Statistic from "../../components/Statistic/StatisticReverse"
 
 const NFT_VALUES = [
   {
@@ -71,7 +71,7 @@ const MintNFT = () => {
       <Stack direction="row" alignItems="center" spacing="10.9rem" sx={{ mt: "4.8rem" }}>
         {DEVELOPER_NFT_STEPS.slice(-2).map(({ date, title }, index) => (
           <>
-            <Point key={title} size="small" title={dayjs(date).format("MMM D, YYYY")} subTitle={title}></Point>
+            <Statistic key={title} size="small" title={dayjs(date).format("MMM D, YYYY")} subTitle={title}></Statistic>
             {index < DEVELOPER_NFT_STEPS.slice(-2).length - 1 && (
               <Divider sx={{ width: "12rem", borderWidth: 2, borderColor: theme => theme.palette.primary.contrastText }}></Divider>
             )}

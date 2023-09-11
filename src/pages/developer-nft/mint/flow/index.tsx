@@ -13,7 +13,6 @@ import QuestionStep from "./QuestionStep"
 
 const useStyles = makeStyles()(theme => ({
   flowSwiper: {
-    height: "100%",
     "& ": {
       color: theme.palette.primary.contrastText,
     },
@@ -23,7 +22,7 @@ const useStyles = makeStyles()(theme => ({
 const MintFlow = () => {
   const { classes } = useStyles()
   return (
-    <SectionWrapper dark full sx={{ p: "0 !important", minHeight: "calc(100vh - 7.5rem)" }}>
+    <SectionWrapper dark full sx={{ p: "0 !important" }}>
       <Swiper
         pagination={{
           type: "progressbar",

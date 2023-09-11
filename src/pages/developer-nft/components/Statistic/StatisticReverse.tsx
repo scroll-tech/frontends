@@ -1,6 +1,6 @@
 import { Stack, Typography } from "@mui/material"
 
-const Point = props => {
+const StatisticReverse = props => {
   const { title, subTitle, size } = props
   return (
     <Stack direction="column" alignItems="center" justifyContent="center" sx={{ width: size === "small" ? "38.8rem" : "10rem" }}>
@@ -12,4 +12,4 @@ const Point = props => {
   )
 }
 
-export default Point
+export default StatisticReverse

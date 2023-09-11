@@ -19,8 +19,8 @@ const CheckElegbility = () => {
   }
 
   const handleCheck = () => {
-    // setIsEligible(1)
-    setIsEligible(-1)
+    setIsEligible(1)
+    // setIsEligible(-1)
   }
 
   const renderCheck = () => {

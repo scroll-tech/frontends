@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useMemo } from "react"
 import Countdown, { zeroPad } from "react-countdown"
 
 import { Box, Stack, Typography } from "@mui/material"
@@ -9,7 +9,7 @@ import { DEVELOPER_NFT_PHRASES } from "@/constants"
 import useNFTStore from "@/stores/nftStore"
 
 import NFTCard from "../../components/NFTCard"
-import Point from "./Point"
+import Statistic from "../../components/Statistic/StatisticReverse"
 
 const Separator = styled(Typography)(({ theme }) => ({
   fontSize: "6.4rem",
@@ -19,6 +19,13 @@ const Separator = styled(Typography)(({ theme }) => ({
 const Header = () => {
   const { phrase, changePhrase, checkPhrase } = useNFTStore()
 
+  const nftCountdown = useMemo(() => {
+    if (phrase === "warm-up") {
+      return ["starts", DEVELOPER_NFT_PHRASES.Start]
+    }
+    return ["ends", DEVELOPER_NFT_PHRASES.End]
+  }, [phrase])
+
   useEffect(() => {
     checkPhrase()
   }, [])
@@ -27,8 +34,7 @@ const Header = () => {
     if (completed) {
       if (phrase === "warm-up") {
         changePhrase("in-progress")
-      }
-      if (phrase === "in-progress") {
+      } else if (phrase === "in-progress") {
         changePhrase("end")
       }
       return null
@@ -36,13 +42,13 @@ const Header = () => {
 
     return (
       <Stack direction="row" alignItems="center" spacing="3.2rem">
-        <Point title={days} subTitle="Days"></Point>
+        <Statistic title={days} subTitle="Days"></Statistic>
         <Separator>:</Separator>
-        <Point title={zeroPad(hours)} subTitle="Hours"></Point>
+        <Statistic title={zeroPad(hours)} subTitle="Hours"></Statistic>
         <Separator>:</Separator>
-        <Point title={zeroPad(minutes)} subTitle="Minutes"></Point>
+        <Statistic title={zeroPad(minutes)} subTitle="Minutes"></Statistic>
         <Separator>:</Separator>
-        <Point title={zeroPad(seconds)} subTitle="Seconds"></Point>
+        <Statistic title={zeroPad(seconds)} subTitle="Seconds"></Statistic>
       </Stack>
     )
   }
@@ -62,9 +68,8 @@ const Header = () => {
         <NFTCard image={NFTImage} name="Scroll Early Developer NFT"></NFTCard>
       </Box>
       <Typography sx={{ fontSize: "7.8rem", lineHeight: "8.5rem", fontWeight: 600 }}>Early Developer NFT program</Typography>
-      <Typography sx={{ fontSize: "2.4rem", fontWeight: 600 }}>Program {phrase === "warm-up" ? "starts" : "ends"} in</Typography>
-      {phrase === "warm-up" && <Countdown key="warm-up" date={DEVELOPER_NFT_PHRASES.Start} renderer={renderCountDown}></Countdown>}
-      {phrase === "in-progress" && <Countdown key="in-progress" date={DEVELOPER_NFT_PHRASES.End} renderer={renderCountDown}></Countdown>}
+      <Typography sx={{ fontSize: "2.4rem", fontWeight: 600 }}>Program {nftCountdown[0]} in</Typography>
+      <Countdown key={phrase} date={nftCountdown[1]} renderer={renderCountDown}></Countdown>
     </Stack>
   )
 }
