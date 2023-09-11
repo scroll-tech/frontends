@@ -67,7 +67,8 @@ body {
 }
 
 :root {
-  --swiper-theme-color: #eb7106 !important;
+  --swiper-theme-color: #62e6d4 !important;
+  --swiper-pagination-progressbar-bg-color: #ffffff70;
   /* --swiper-pagination-bullet-inactive-color: #595959; */
 
   /* semibold/light never been used  */

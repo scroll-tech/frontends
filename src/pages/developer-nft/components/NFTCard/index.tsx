@@ -9,7 +9,7 @@ const useStyles = makeStyles<any>()((theme, { size }) => ({
   cardImage: {
     width: size === "large" ? "32rem" : "25.8rem",
     aspectRatio: "1 / 1",
-    margin: size === "large" ? "11.5px 11.5px 0" : "9.5px 9.px 0",
+    margin: size === "large" ? "11.5px 11.5px 0" : "9.5px 9.5px 0",
   },
   cardContent: {
     textAlign: "center",

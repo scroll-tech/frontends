@@ -34,6 +34,7 @@ const lightTheme = createTheme({
             paddingLeft: "6rem",
             paddingRight: "6rem",
           },
+          maxWidth: "152rem !important",
         },
         maxWidthLg: {
           maxWidth: "1300px",

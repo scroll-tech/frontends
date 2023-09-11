@@ -21,6 +21,7 @@ const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, w
   },
   wrapperDisabled: {
     backgroundColor: "#FFF0DD80",
+    borderRadius: "1rem",
   },
   button: {
     fontSize: "2rem",
