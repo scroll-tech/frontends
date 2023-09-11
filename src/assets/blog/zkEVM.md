@@ -105,7 +105,7 @@ So, it’s clear that the proof of zkEVM needs to contain the following aspects 
 - The bytecode is correctly loaded from persistent storage
   (You are running the correct opcode loaded from a given address)
 - The opcodes in the bytecode are executed one by one consistently
-  (They bytecode is executed in order without missing or skipping any opcode)
+  (The bytecode is executed in order without missing or skipping any opcode)
 - Each opcode is executed correctly
   (Three sub-steps in each opcode are carried out correctly, R/W + computation)
 
