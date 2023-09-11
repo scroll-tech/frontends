@@ -5,14 +5,14 @@ import { Alert, SvgIcon } from "@mui/material"
 import { ReactComponent as ErrorSvg } from "@/assets/svgs/refactor/nft-alert-error.svg"
 import { ReactComponent as SuccessSvg } from "@/assets/svgs/refactor/nft-alert-success.svg"
 
-const useStyles = makeStyles()(theme => ({
+const useStyles = makeStyles<any>()((theme, { type }) => ({
   root: {
     borderRadius: 5,
-    padding: "1.5rem",
+    padding: type === "multiline" ? "0.8rem 1.6rem" : "1.5rem",
   },
   standardError: {
     backgroundColor: "#FF684B",
-    color: theme.palette.primary.contrastText,
+    color: "#FFEBD7",
     fontWeight: 500,
   },
   standardSuccess: {
@@ -23,12 +23,15 @@ const useStyles = makeStyles()(theme => ({
   icon: {
     marginRight: 8,
   },
+  message: {
+    lineHeight: type === "multiline" ? 1.5 : 1.2,
+  },
 }))
 
 const CheckAlert = props => {
-  const { children, ...restProps } = props
+  const { type, children, ...restProps } = props
 
-  const { classes } = useStyles()
+  const { classes } = useStyles({ type })
 
   return (
     <Alert
@@ -41,6 +44,7 @@ const CheckAlert = props => {
         icon: classes.icon,
         standardError: classes.standardError,
         standardSuccess: classes.standardSuccess,
+        message: classes.message,
       }}
       {...restProps}
     >

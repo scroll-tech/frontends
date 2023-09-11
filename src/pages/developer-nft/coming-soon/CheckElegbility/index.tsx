@@ -7,7 +7,7 @@ import Button from "@/components/Button"
 import { DEVELOPER_NFT_PHRASES } from "@/constants"
 import useNFTStore from "@/stores/nftStore"
 
-import Alert from "./Alert"
+import Alert from "../../components/Alert"
 
 const CheckElegbility = () => {
   const { phrase } = useNFTStore()

@@ -2,29 +2,28 @@ import { makeStyles } from "tss-react/mui"
 
 import { Card, CardContent, CardMedia } from "@mui/material"
 
-const useStyles = makeStyles()(theme => ({
+const useStyles = makeStyles<any>()((theme, { size }) => ({
   card: {
-    width: "27.7rem",
-    borderRadius: "1.5rem",
+    borderRadius: size === "large" ? "2rem" : "1.5rem",
   },
   cardImage: {
-    width: "25.8rem",
-    height: "25.8rem",
-    margin: "9.5px auto 0",
+    width: size === "large" ? "32rem" : "25.8rem",
+    aspectRatio: "1 / 1",
+    margin: size === "large" ? "11.5px 11.5px 0" : "9.5px 9.px 0",
   },
   cardContent: {
     textAlign: "center",
-    fontSize: "1.5rem",
-    lineHeight: "2.5rem",
+    fontSize: size === "large" ? "1.85rem" : "1.5rem",
+    lineHeight: "calc(1 + 2 / 3)",
     fontWeight: 600,
-    paddingTop: "1.2rem",
-    paddingBottom: "1.95rem !important",
+    paddingTop: size === "large" ? "1.5rem" : "1.2rem",
+    paddingBottom: size === "large" ? "2.4rem !important" : "1.95rem !important",
   },
 }))
 
 const NFTCard = props => {
-  const { name, image } = props
-  const { classes } = useStyles()
+  const { size, name, image } = props
+  const { classes } = useStyles({ size })
 
   return (
     <Card classes={{ root: classes.card }}>
