@@ -12,6 +12,7 @@ import Logo from "../ScrollLogo"
 import Announcement from "./announcement"
 import { navigations } from "./constants"
 import useCheckNoBg from "./useCheckNoBg"
+import useCheckTheme from "./useCheckTheme"
 
 const NavStack = styled(Stack)(({ theme }) => ({
   height: "3rem",
@@ -32,25 +33,25 @@ const Menu = styled("div")(({ theme }) => ({
   },
 }))
 
-const Bar = styled("div")(({ theme }) => ({
+const Bar = styled<any>("div")(({ theme, dark }) => ({
   width: "2rem",
   height: ".2rem",
-  backgroundColor: "#000",
+  backgroundColor: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
   margin: " 5px 0",
   transition: "0.4s",
 }))
 
-const MenuContent = styled(Box)(({ theme }) => ({
+const MenuContent = styled<any>(Box)(({ theme, dark }) => ({
   margin: "0.5rem 1.6rem 0",
-  background: "rgb(255,247,241)",
+  background: dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.light,
 }))
 
-const ListItem = styled(ListItemButton)(({ theme }) => ({
+const ListItem = styled<any>(ListItemButton)(({ theme, dark }) => ({
   fontWeight: 600,
   fontSize: "2rem",
   height: "5.5rem",
   lineHeight: "5.5rem",
-  color: theme.palette.text.primary,
+  color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
   margin: "0",
   display: "flex",
   justifyContent: "space-between",
@@ -60,19 +61,19 @@ const ListItem = styled(ListItemButton)(({ theme }) => ({
     background: "transparent",
   },
   "&:not(:first-of-type)": {
-    borderTop: "1px solid #101010",
+    borderTop: `1px solid ${dark ? theme.palette.primary.contrastText : theme.palette.text.primary}`,
   },
 }))
 
-const MenuLinkStyledButton = styled(NavLink)(({ theme }) => ({
+const MenuLinkStyledButton = styled<any>(NavLink)(({ theme, dark }) => ({
   fontWeight: 600,
   fontSize: "2rem",
   height: "5.5rem",
   lineHeight: "5.5rem",
-  color: "#101010",
+  color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
   width: "100%",
   "&.active": {
-    color: theme.palette.text.primary,
+    color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
   },
 }))
 
@@ -85,25 +86,25 @@ const SubListItem = styled(ListItemButton)(({ theme }) => ({
   padding: "0  !important",
 }))
 
-const LinkStyledButton = styled(NavLink)(({ theme }) => ({
+const LinkStyledButton = styled<any>(NavLink)(({ theme, dark }) => ({
   fontWeight: 500,
   fontSize: "1.8rem",
   height: "4rem",
   lineHeight: "4rem",
-  color: "#101010",
+  color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
   width: "100%",
   "&.active": {
-    color: theme.palette.primary.main,
+    color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
     fontWeight: 500,
   },
 }))
 
-const ExternalLink = styled(Link)(({ theme }) => ({
+const ExternalLink = styled<any>(Link)(({ theme, dark }) => ({
   fontWeight: 500,
   fontSize: "1.8rem",
   height: "4rem",
   lineHeight: "4rem",
-  color: "#101010",
+  color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
   display: "flex",
   alignItems: "center",
   width: "100%",
@@ -133,6 +134,7 @@ const App = ({ currentMenu }) => {
   const noBg = useCheckNoBg()
   const showWalletConnector = useShowWalletConnector()
 
+  const dark = useCheckTheme()
   const [open, setOpen] = useState(false)
   const [activeCollapse, setActiveCollapse] = useState("")
 
@@ -160,12 +162,19 @@ const App = ({ currentMenu }) => {
       {navigations.map(item => (
         <React.Fragment key={item.key}>
           {item.children ? (
-            <ListItem className={activeCollapse === item.key ? "active" : ""} sx={{ py: "1rem" }} onClick={() => toggleCollapse(item.key)}>
+            <ListItem
+              dark={dark}
+              className={activeCollapse === item.key ? "active" : ""}
+              sx={{ py: "1rem" }}
+              onClick={() => toggleCollapse(item.key)}
+            >
               {item.label} <ExpandMoreIcon fontSize="large" className={activeCollapse === item.key ? "active" : ""} />
             </ListItem>
           ) : (
-            <ListItem className={activeCollapse === item.key ? "active" : ""} sx={{ py: "1rem" }} onClick={() => toggleDrawer(false)}>
-              <MenuLinkStyledButton to={item.href}>{item.label}</MenuLinkStyledButton>
+            <ListItem dark={dark} className={activeCollapse === item.key ? "active" : ""} sx={{ py: "1rem" }} onClick={() => toggleDrawer(false)}>
+              <MenuLinkStyledButton to={item.href} dark={dark}>
+                {item.label}
+              </MenuLinkStyledButton>
             </ListItem>
           )}
 
@@ -179,7 +188,7 @@ const App = ({ currentMenu }) => {
                     .map(subItem =>
                       subItem.isExternal ? (
                         <SubListItem onClick={() => toggleDrawer(false)} sx={{ mx: 4 }} key={subItem.key}>
-                          <ExternalLink underline="none" href={subItem.href}>
+                          <ExternalLink underline="none" href={subItem.href} dark={dark}>
                             {subItem.label}
                             <svg
                               style={{ marginLeft: "0.5rem" }}
@@ -191,14 +200,16 @@ const App = ({ currentMenu }) => {
                             >
                               <path
                                 d="M9 1V7.86538L7.83812 6.7035V2.96385C5.46463 5.26924 3.29542 7.77999 0.853849 10L0 9.16344C2.42536 6.94344 4.5762 4.46728 6.93347 2.1781H3.31272L2.13462 1H9Z"
-                                fill="#101010"
+                                fill="currentColor"
                               />
                             </svg>
                           </ExternalLink>
                         </SubListItem>
                       ) : (
                         <SubListItem onClick={() => toggleDrawer(false)} sx={{ mx: 4 }} key={subItem.key}>
-                          <LinkStyledButton to={subItem.href}>{subItem.label}</LinkStyledButton>
+                          <LinkStyledButton to={subItem.href} dark={dark}>
+                            {subItem.label}
+                          </LinkStyledButton>
                         </SubListItem>
                       ),
                     )}
@@ -212,26 +223,35 @@ const App = ({ currentMenu }) => {
   )
 
   return (
-    <Box className={open ? "active" : ""} sx={{ backgroundColor: noBg && !open ? "transparent" : "themeBackground.light" }}>
+    <Box
+      className={open ? "active" : ""}
+      sx={{ backgroundColor: noBg && !open ? "transparent" : dark ? "themeBackground.dark" : "themeBackground.light" }}
+    >
       <Announcement />
       <NavStack direction="row" justifyContent="space-between" alignItems="center">
         <NavLink to="/" className="flex">
           <Box onClick={() => toggleDrawer(false)}>
-            <Logo />
+            <Logo light={dark} />
           </Box>
         </NavLink>
         <Stack direction="row" spacing="0.8rem" alignItems="center">
           {showWalletConnector && <WalletToolkit></WalletToolkit>}
           <Menu onClick={() => toggleDrawer(!open)} className={open ? "active" : ""}>
-            <Bar></Bar>
-            <Bar></Bar>
-            <Bar></Bar>
+            <Bar dark={dark}></Bar>
+            <Bar dark={dark}></Bar>
+            <Bar dark={dark}></Bar>
           </Menu>
         </Stack>
       </NavStack>
       {open && (
-        <Box sx={{ background: "#FFF8F3", paddingTop: "5rem", height: "calc(100vh - 3.2rem)" }}>
-          <MenuContent role="presentation" onKeyDown={() => toggleDrawer(false)}>
+        <Box
+          sx={{
+            background: theme => (dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.light),
+            paddingTop: "5rem",
+            height: "calc(100vh - 3.2rem)",
+          }}
+        >
+          <MenuContent role="presentation" dark={dark} onKeyDown={() => toggleDrawer(false)}>
             {renderList()}
           </MenuContent>
         </Box>

@@ -14,13 +14,14 @@ import useShowWalletConnector from "@/hooks/useShowWalletToolkit"
 import Announcement from "./announcement"
 import { navigations } from "./constants"
 import useCheckNoBg from "./useCheckNoBg"
+import useCheckTheme from "./useCheckTheme"
 
-const StyledBox = styled<any>(Stack)(({ theme, transparent }) => ({
+const StyledBox = styled<any>(Stack)(({ theme, transparent, dark }) => ({
   position: "sticky",
   top: 0,
   width: "100%",
   zIndex: 10,
-  backgroundColor: transparent ? "transparent" : theme.palette.themeBackground.light,
+  backgroundColor: transparent ? "transparent" : dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.light,
 }))
 
 const StyledPopper = styled<any>(Popper)(({ theme, transparent }) => ({
@@ -35,7 +36,7 @@ const HeaderContainer = styled(Box)(({ theme }) => ({
   alignItems: "center",
 }))
 
-const MenuLinkButton = styled(Link)(({ theme }) => ({
+const MenuLinkButton = styled<any>(Link)(({ theme, dark }) => ({
   fontSize: "1.8rem",
   fontWeight: 400,
   paddingLeft: "25px",
@@ -44,7 +45,7 @@ const MenuLinkButton = styled(Link)(({ theme }) => ({
   marginRight: "4px",
   lineHeight: "65px",
   position: "relative",
-  color: theme.palette.text.primary,
+  color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
   "&:hover": {
     fontWeight: 500,
   },
@@ -64,7 +65,7 @@ const ExternalLink = styled("p")(({ theme }) => ({
   },
 }))
 
-const LinkStyledButton = styled(NavLink)(({ theme }) => ({
+const LinkStyledButton = styled<any>(NavLink)(({ theme, dark }) => ({
   fontSize: "1.8rem",
   fontWeight: 400,
   marginLeft: "0.5rem",
@@ -81,7 +82,7 @@ const LinkStyledButton = styled(NavLink)(({ theme }) => ({
   },
 }))
 
-const SubMenuButton = styled(Stack)(({ theme }) => ({
+const SubMenuButton = styled<any>(Box)(({ theme, dark }) => ({
   fontSize: "1.8rem",
   fontWeight: 400,
   marginLeft: "0.5rem",
@@ -89,7 +90,7 @@ const SubMenuButton = styled(Stack)(({ theme }) => ({
   lineHeight: "65px",
   position: "relative",
   cursor: "pointer",
-  color: theme.palette.text.primary,
+  color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
   "&.active": {
     fontWeight: 600,
   },
@@ -109,7 +110,7 @@ const SubMenuList = styled(Box)(({ theme }) => ({
   overflow: "hidden",
 }))
 
-const SectionList = styled(Box)(({ theme }) => ({
+const SectionList = styled<any>(Box)(({ theme, dark }) => ({
   display: "flex",
   flexDirection: "column",
   width: "100%",
@@ -118,34 +119,34 @@ const SectionList = styled(Box)(({ theme }) => ({
     paddingTop: 0,
   },
   "&:nth-of-type(n+2)": {
-    borderTop: `1px solid ${theme.palette.text.primary}`,
+    borderTop: `1px solid ${dark ? theme.palette.primary.contrastText : theme.palette.text.primary}`,
   },
   "&:nth-last-of-type(1)": {
     paddingBottom: "0.8rem",
   },
 }))
 
-const LinkButton = styled(Link)(({ theme }) => ({
+const LinkButton = styled<any>(Link)(({ theme, dark }) => ({
   "& p": {
     lineHeight: "2.9rem",
     height: "2.9rem",
     fontSize: "1.8rem",
-    color: theme.palette.text.primary,
+    color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
     fontWeight: 400,
     cursor: "pointer",
     "&:hover": {
-      color: theme.palette.text.primary,
+      color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
     },
   },
 }))
 
-const LinkStyledSubButton = styled(NavLink)(({ theme }) => ({
+const LinkStyledSubButton = styled<any>(NavLink)(({ theme, dark }) => ({
   lineHeight: "2.9rem",
   height: "2.9rem",
   fontSize: "1.8rem",
   fontWeight: 400,
   cursor: "pointer",
-  color: theme.palette.text.primary,
+  color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
   "&:hover": {
     fontWeight: 500,
   },
@@ -158,6 +159,8 @@ const App = ({ currentMenu }) => {
   const { cx } = useStyles()
   const noBg = useCheckNoBg()
   const { isDesktop } = useCheckViewport()
+
+  const dark = useCheckTheme()
 
   const [checked, setChecked] = useState("")
 
@@ -175,15 +178,15 @@ const App = ({ currentMenu }) => {
     setAnchorEl(null)
   }
 
-  const renderSubMenuList = children => {
+  const renderSubMenuList = (children, dark) => {
     return children.map(section => (
-      <SectionList key={section.label}>
+      <SectionList key={section.label} dark={dark}>
         {section.children
           // only show sub menu item when the href is set
           ?.filter(subItem => subItem.href)
           .map(subItem =>
             subItem.isExternal ? (
-              <LinkButton target="_blank" underline="none" key={subItem.label} href={subItem.href}>
+              <LinkButton target="_blank" underline="none" dark={dark} key={subItem.label} href={subItem.href}>
                 <Stack direction="row" alignItems="center" spacing={1} sx={{ width: "100%" }}>
                   <ExternalLink>
                     {subItem.label}
@@ -197,7 +200,7 @@ const App = ({ currentMenu }) => {
                 </Stack>
               </LinkButton>
             ) : (
-              <LinkStyledSubButton key={subItem.label} to={subItem.href}>
+              <LinkStyledSubButton key={subItem.label} to={subItem.href} dark={dark}>
                 {subItem.label}
               </LinkStyledSubButton>
             ),
@@ -206,7 +209,7 @@ const App = ({ currentMenu }) => {
     ))
   }
 
-  const renderNavigationItem = item => {
+  const renderNavigationItem = (item, dark) => {
     if (item.children) {
       return (
         <SubMenuButton
@@ -237,13 +240,13 @@ const App = ({ currentMenu }) => {
       )
     } else if (item.isExternal) {
       return (
-        <MenuLinkButton underline="none" href={item.href} key={item.key}>
+        <MenuLinkButton underline="none" href={item.href} key={item.key} dark={dark}>
           {item.label}
         </MenuLinkButton>
       )
     } else {
       return (
-        <LinkStyledButton to={item.href} end={item.end} key={item.key}>
+        <LinkStyledButton className={currentMenu === item.key ? "active" : ""} dark={dark} to={item.href} end={item.end} key={item.key}>
           {item.label}
         </LinkStyledButton>
       )
@@ -254,19 +257,19 @@ const App = ({ currentMenu }) => {
     return (
       <Stack direction="row" spacing={isDesktop ? "4.4rem" : "2rem"} justifyContent="space-between" alignItems="center">
         {navigations.map(item => (
-          <React.Fragment key={item.key}>{renderNavigationItem(item)}</React.Fragment>
+          <React.Fragment key={item.key}>{renderNavigationItem(item, dark)}</React.Fragment>
         ))}
       </Stack>
     )
   }
 
   return (
-    <StyledBox transparent={noBg}>
+    <StyledBox transparent={noBg} dark={dark}>
       <Announcement />
       <Container sx={{ maxWidth: "152rem !important" }}>
         <HeaderContainer>
           <NavLink to="/" className="flex">
-            <Logo />
+            <Logo light={dark} />
           </NavLink>
           <Stack direction="row" spacing={isDesktop ? "4.4rem" : "2rem"} alignItems="center">
             <Box>{renderNavigationList()}</Box>
