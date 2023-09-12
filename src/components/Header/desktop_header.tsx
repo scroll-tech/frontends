@@ -178,7 +178,7 @@ const App = ({ currentMenu }) => {
     setAnchorEl(null)
   }
 
-  const renderSubMenuList = (children, dark) => {
+  const renderSubMenuList = children => {
     return children.map(section => (
       <SectionList key={section.label} dark={dark}>
         {section.children
@@ -209,7 +209,7 @@ const App = ({ currentMenu }) => {
     ))
   }
 
-  const renderNavigationItem = (item, dark) => {
+  const renderNavigationItem = item => {
     if (item.children) {
       return (
         <SubMenuButton
@@ -257,7 +257,7 @@ const App = ({ currentMenu }) => {
     return (
       <Stack direction="row" spacing={isDesktop ? "4.4rem" : "2rem"} justifyContent="space-between" alignItems="center">
         {navigations.map(item => (
-          <React.Fragment key={item.key}>{renderNavigationItem(item, dark)}</React.Fragment>
+          <React.Fragment key={item.key}>{renderNavigationItem(item)}</React.Fragment>
         ))}
       </Stack>
     )
@@ -266,7 +266,7 @@ const App = ({ currentMenu }) => {
   return (
     <StyledBox transparent={noBg} dark={dark}>
       <Announcement />
-      <Container sx={{ maxWidth: "152rem !important" }}>
+      <Container>
         <HeaderContainer>
           <NavLink to="/" className="flex">
             <Logo light={dark} />

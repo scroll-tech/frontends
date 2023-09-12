@@ -27,18 +27,15 @@ const lightTheme = createTheme({
   components: {
     MuiContainer: {
       styleOverrides: {
-        root: {
+        root: ({ theme }) => ({
           paddingLeft: "2rem",
           paddingRight: "2rem",
-          "@media(min-width: 900px)": {
+          maxWidth: "152rem !important",
+          [theme.breakpoints.down("md")]: {
             paddingLeft: "6rem",
             paddingRight: "6rem",
           },
-          maxWidth: "152rem !important",
-        },
-        maxWidthLg: {
-          maxWidth: "1300px",
-        },
+        }),
       },
     },
 
