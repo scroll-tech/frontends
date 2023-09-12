@@ -5,6 +5,7 @@ import { type WalletClient } from "@wagmi/core"
 import { BrowserProvider, ethers } from "ethers"
 import produce from "immer"
 import { createContext, useCallback, useContext, useMemo } from "react"
+import { defineChain } from "viem"
 import { WagmiConfig, configureChains, createConfig, sepolia, useAccount, useDisconnect, useNetwork, useWalletClient } from "wagmi"
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc"
 import { publicProvider } from "wagmi/providers/public"
@@ -22,7 +23,7 @@ type RainbowContextProps = {
   checkConnectedChainId: (chainId: number) => boolean
 }
 
-export const scrollChain: Chain = {
+export const scrollChain: Chain = defineChain({
   id: CHAIN_ID.L2,
   name: TESTNET_NAME,
   network: TESTNET_NAME,
@@ -44,10 +45,17 @@ export const scrollChain: Chain = {
   blockExplorers: {
     default: { name: "Blockscout", url: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2") },
   },
-}
+})
 
-const sepoliaChain = produce(sepolia, draft => {
+const refactorSepoliaChain = produce(sepolia, draft => {
   draft.rpcUrls.public.http = [RPC_URL.L1 as any]
+})
+
+const sepoliaChain = defineChain({
+  ...refactorSepoliaChain,
+  fees: {
+    baseFeeMultiplier: 2.01,
+  },
 })
 
 const projectId = requireEnv("REACT_APP_CONNECT_WALLET_PROJECT_ID")
