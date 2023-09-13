@@ -82,7 +82,7 @@ const connectors = connectorsForWallets([
             name: "Scroll",
             description: "Get started with our testnet now.",
             url: "https://scroll.io/",
-            icons: ["https://scroll.io/logo.png"],
+            icons: ["https://scroll.io/logo_walletconnect.png"],
           },
           qrModalOptions: {
             explorerRecommendedWalletIds: [
