@@ -54,7 +54,7 @@ const refactorSepoliaChain = produce(sepolia, draft => {
 const sepoliaChain = defineChain({
   ...refactorSepoliaChain,
   fees: {
-    baseFeeMultiplier: 2.01,
+    baseFeeMultiplier: 2.1,
   },
 })
 
