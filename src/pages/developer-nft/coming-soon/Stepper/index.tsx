@@ -13,6 +13,16 @@ import useNFTStore from "@/stores/nftStore"
 import Connector from "./Connector"
 
 const useStyles = makeStyles()(theme => ({
+  stepper: {
+    marginTop: "2.4rem",
+    maxWidth: "98rem",
+    width: "100%",
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+      gap: 8,
+      height: "24rem",
+    },
+  },
   step: {
     "&.Mui-completed span": {
       color: "#62E3D1",
@@ -22,6 +32,9 @@ const useStyles = makeStyles()(theme => ({
     flexDirection: "column",
     gap: 8,
     alignItems: "center",
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "row",
+    },
   },
   stepLabelContainer: {
     textAlign: "center",
@@ -32,8 +45,13 @@ const useStyles = makeStyles()(theme => ({
   stepLabelText: {
     color: theme.palette.primary.contrastText,
     fontSize: "2rem",
-    fontWeight: 600,
-    lineHeight: "2.8rem",
+    fontWeight: "600 !important",
+    lineHeight: "normal",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "1.6rem",
+      lineHeight: "1.5",
+      textAlign: "left",
+    },
   },
 }))
 
@@ -70,7 +88,7 @@ const NFTStepper = () => {
   }, [activeStep])
 
   return (
-    <Stepper sx={{ mt: "2.4rem" }} activeStep={activeStep} connector={<Connector></Connector>}>
+    <Stepper classes={{ root: classes.stepper }} activeStep={activeStep} connector={<Connector></Connector>}>
       {DEVELOPER_NFT_STEPS.map(({ date, label }, index) => {
         return (
           <Step classes={{ root: classes.step }} key={label} completed={index <= activeStep}>
@@ -83,7 +101,11 @@ const NFTStepper = () => {
               }}
               StepIconComponent={PhraseStepIcon}
               optional={
-                <Typography sx={{ fontSize: "1.8rem", lineHeight: "2.5rem" }} component="span">
+                // TODO: NumberTypography not allow component="span"
+                <Typography
+                  component="span"
+                  sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: [1.5, "normal"], fontFamily: "var(--developer-page-font-family)" }}
+                >
                   {dayjs(date).format("MMM D, YYYY")}
                 </Typography>
               }

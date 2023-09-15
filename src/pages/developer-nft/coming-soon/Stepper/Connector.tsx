@@ -9,9 +9,12 @@ import useNFTStore from "@/stores/nftStore"
 
 const useStyles = makeStyles<any>()(theme => ({
   root: {
-    width: "30.6rem",
+    flex: 1,
     height: 4,
     borderRadius: 2,
+    [theme.breakpoints.down("sm")]: {
+      width: 4,
+    },
   },
   colorPrimary: {
     backgroundColor: alpha(theme.palette.background.default, 0.6),
@@ -31,10 +34,10 @@ const Connector = props => {
     const calculateProgress = () => {
       const current = Date.now()
       if (phrase === "warm-up") {
-        const progress1 = ((current - DEVELOPER_NFT_PHRASES.Annoucement) / (DEVELOPER_NFT_PHRASES.Start - DEVELOPER_NFT_PHRASES.Annoucement)) * 100
+        const progress1 = ((current - DEVELOPER_NFT_PHRASES.Announces) / (DEVELOPER_NFT_PHRASES.Starts - DEVELOPER_NFT_PHRASES.Announces)) * 100
         setProgress([progress1, 0])
       } else if (phrase === "in-progress") {
-        const progress2 = ((current - DEVELOPER_NFT_PHRASES.Start) / (DEVELOPER_NFT_PHRASES.End - DEVELOPER_NFT_PHRASES.Start)) * 100
+        const progress2 = ((current - DEVELOPER_NFT_PHRASES.Starts) / (DEVELOPER_NFT_PHRASES.Ends - DEVELOPER_NFT_PHRASES.Starts)) * 100
         setProgress([100, progress2])
       } else {
         setProgress([100, 100])
@@ -61,6 +64,15 @@ const Connector = props => {
         },
         "&:nth-of-type(2) .MuiLinearProgress-bar": {
           transform: `translateX(-${100 - progress[1]}%) !important`,
+        },
+
+        "@media (max-width: 600px)": {
+          "&:nth-of-type(1) .MuiLinearProgress-bar": {
+            transform: `translateY(-${100 - progress[0]}%) !important`,
+          },
+          "&:nth-of-type(2) .MuiLinearProgress-bar": {
+            transform: `translateY(-${100 - progress[1]}%) !important`,
+          },
         },
       }}
     />

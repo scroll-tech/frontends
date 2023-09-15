@@ -2,11 +2,12 @@ import dayjs from "dayjs"
 
 // test
 
-const AnnoucementDate = new Date()
+// const AnnoucementDate = new Date()
+const AnnoucementDate = new Date("2023-09-11T13:41:00Z")
 
-const StartDate = dayjs(AnnoucementDate).add("1", "m")
+const StartDate = dayjs(AnnoucementDate).add("1", "d")
 
-const EndDate = dayjs(AnnoucementDate).add("3", "m")
+const EndDate = dayjs(AnnoucementDate).add("10", "d")
 
 // UTC
 // const AnnoucementDate = new Date("2023-09-08T13:41:00Z")
@@ -16,9 +17,9 @@ const EndDate = dayjs(AnnoucementDate).add("3", "m")
 // const EndDate = dayjs(StartDate).add("45", "day")
 
 export const DEVELOPER_NFT_STEPS = [
-  { label: "Annoucement", date: AnnoucementDate, title: "" },
-  { label: "Start", date: StartDate, title: "Genesis Block" },
-  { label: "End", date: EndDate, title: "Program Ends" },
+  { label: "Announces", date: AnnoucementDate, title: "" },
+  { label: "Starts", date: StartDate, title: "Genesis Block" },
+  { label: "Ends", date: EndDate, title: "Program Ends" },
 ]
 
 export const DEVELOPER_NFT_PHRASES = Object.fromEntries(DEVELOPER_NFT_STEPS.map(item => [item.label, item.date.valueOf()]))

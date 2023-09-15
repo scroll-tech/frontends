@@ -21,11 +21,11 @@ const useNFTStore = create<NFTStore>()((set, get) => ({
 
   checkPhrase: () => {
     const current = Date.now()
-    if (current > DEVELOPER_NFT_PHRASES.Annoucement && current < DEVELOPER_NFT_PHRASES.Start) {
+    if (current > DEVELOPER_NFT_PHRASES.Announces && current < DEVELOPER_NFT_PHRASES.Starts) {
       set({
         phrase: "warm-up",
       })
-    } else if (current > DEVELOPER_NFT_PHRASES.Start && current < DEVELOPER_NFT_PHRASES.End) {
+    } else if (current > DEVELOPER_NFT_PHRASES.Starts && current < DEVELOPER_NFT_PHRASES.Ends) {
       set({
         phrase: "in-progress",
       })

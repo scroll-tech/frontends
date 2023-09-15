@@ -32,7 +32,7 @@ const MintNFT = () => {
           <Typography sx={{ fontSize: "7.8rem", fontWeight: 600, lineHeight: "8.5rem", width: "49rem" }}>Scroll Early Developer NFT</Typography>
           <Stack direction="row" spacing="4.8rem">
             <Statistic label="NFTs Minted">{mintedAmount}</Statistic>
-            <Statistic label="Released">{dayjs(DEVELOPER_NFT_PHRASES.Start).format("MMM D, YYYY")}</Statistic>
+            <Statistic label="Released">{dayjs(DEVELOPER_NFT_PHRASES.Starts).format("MMM D, YYYY")}</Statistic>
           </Stack>
           {ineligible ? (
             <Alert type="multiline" severity="error">

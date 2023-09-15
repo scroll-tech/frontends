@@ -31,7 +31,7 @@ const lightTheme = createTheme({
           paddingLeft: "2rem",
           paddingRight: "2rem",
           maxWidth: "152rem !important",
-          [theme.breakpoints.down("md")]: {
+          [theme.breakpoints.up("md")]: {
             paddingLeft: "6rem",
             paddingRight: "6rem",
           },
