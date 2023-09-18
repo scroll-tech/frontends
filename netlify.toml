@@ -5,6 +5,11 @@ status = 302
 force = true
 conditions = {Country = "cn"}
 
+[[redirects]]
+from = "/*"
+to = "/"
+status = 200
+
 # we use content based hash for filenames
 # 31536000 is 1 year, recommended by cra
 # cra doc https://create-react-app.dev/docs/production-build/
