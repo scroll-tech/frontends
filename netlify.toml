@@ -3,7 +3,6 @@ from = "/unavailable.html"
 to = "/"
 status = 302
 force = true
-conditions = {Country = ["!CN"]}
 
 [[redirects]]
 from = "/*"
