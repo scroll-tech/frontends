@@ -5,7 +5,7 @@
 
 [[redirects]]
 from = "/*"
-to = "/story"
+to = "/unavailable.html"
 status = 302
 force = true
 conditions = {Country = "cn"}
