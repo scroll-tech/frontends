@@ -1,5 +1,10 @@
 [[redirects]]
-from = "/"
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+from = "/*"
 to = "/story"
 status = 302
 force = true
