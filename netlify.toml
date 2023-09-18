@@ -1,10 +1,5 @@
 [[redirects]]
 from = "/*"
-to = "/"
-status = 200
-
-[[redirects]]
-from = "/*"
 to = "/unavailable.html"
 status = 302
 force = true
