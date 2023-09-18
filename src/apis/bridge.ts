@@ -7,3 +7,5 @@ export const fetchTxByHashUrl = `${baseUrl}/txsbyhashes`
 export const fetchTxListUrl = `${baseUrl}/txs`
 
 export const fetchClaimableTxListUrl = `${baseUrl}/claimable`
+
+export const fetchDepositStatusUrl = `${baseUrl}/claimable`

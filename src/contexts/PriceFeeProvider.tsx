@@ -3,6 +3,7 @@ import React, { createContext, useContext, useMemo, useState } from "react"
 import useStorage from "squirrel-gill"
 import { useBlockNumber } from "wagmi"
 
+import { fetchDepositStatusUrl } from "@/apis/bridge"
 import { CHAIN_ID, ETH_SYMBOL, WETH_SYMBOL } from "@/constants"
 import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
 import { useApp } from "@/contexts/AppContextProvider"
@@ -12,10 +13,18 @@ import { requireEnv } from "@/utils"
 const OFFSET = "0x1111000000000000000000000000000000001111"
 const amount = BigInt(1)
 
-enum MIN_GASLIMIT {
-  ETH_GATEWAY = 14e4,
-  WETH_GATEWAY = 17e4,
-  STANDARD_ERC20_GATEWAY = 15e4,
+// For users who haven't deposited, a higher gas limit is required
+enum INITIAL_MIN_GASLIMIT {
+  ETH_GATEWAY = 136500,
+  WETH_GATEWAY = 172000,
+  STANDARD_ERC20_GATEWAY = 152000,
+}
+
+// For users who have deposited
+enum SUBSEQUENT_MIN_GASLIMIT {
+  ETH_GATEWAY = 112000,
+  WETH_GATEWAY = 155000,
+  STANDARD_ERC20_GATEWAY = 135000,
 }
 
 type Props = {
@@ -63,6 +72,26 @@ export const PriceFeeProvider = ({ children }) => {
   const [gasLimit, setGasLimit] = useState(BigInt(0))
   const [gasPrice, setGasPrice] = useState(BigInt(0))
   const [errorMessage, setErrorMessage] = useState("")
+  const [userDepositStatus, setUserDepositStatus] = useState({
+    [GatewayType.ETH_GATEWAY]: false,
+    [GatewayType.WETH_GATEWAY]: false,
+    [GatewayType.STANDARD_ERC20_GATEWAY]: false,
+  })
+
+  const getDepositStatus = async () => {
+    try {
+      scrollRequest(`${fetchDepositStatusUrl}?address=${walletCurrentAddress}`).then(data => {
+        setUserDepositStatus({
+          [GatewayType.ETH_GATEWAY]: true,
+          [GatewayType.WETH_GATEWAY]: true,
+          [GatewayType.STANDARD_ERC20_GATEWAY]: true,
+        })
+      })
+    } catch (err) {
+      // console.log(err)
+      throw new Error("Failed to get deposit status")
+    }
+  }
 
   const fetchData = async () => {
     const { provider } = networksAndSigners[CHAIN_ID.L2]
@@ -92,6 +121,7 @@ export const PriceFeeProvider = ({ children }) => {
         .catch(error => {
           setErrorMessage(error.message)
         })
+      getDepositStatus()
     },
   })
 
@@ -165,6 +195,11 @@ export const PriceFeeProvider = ({ children }) => {
     return { finalizeDepositParams, finalizeDepositMethod }
   }
 
+  const getMinGaslimit = contractName => {
+    const minGaslimit = userDepositStatus[contractName] ? SUBSEQUENT_MIN_GASLIMIT : INITIAL_MIN_GASLIMIT
+    return minGaslimit[contractName] as unknown as number
+  }
+
   const getGasLimitGeneric = async contractName => {
     const { provider } = networksAndSigners[CHAIN_ID.L2]
 
@@ -187,7 +222,7 @@ export const PriceFeeProvider = ({ children }) => {
         to: requireEnv(L2Contracts.SCROLL_MESSENGER.env),
         data: calldata,
       })
-      return (BigInt(Math.max(Number(gaslimit), MIN_GASLIMIT[contractName] as unknown as number)) * BigInt(120)) / BigInt(100)
+      return (BigInt(Math.max(Number(gaslimit), getMinGaslimit(contractName))) * BigInt(120)) / BigInt(100)
     } catch (error) {
       throw new Error(error)
     }
