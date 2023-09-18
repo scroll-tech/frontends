@@ -4,11 +4,11 @@
   status = 200
 
 [[redirects]]
-from = "/*"
-to = "/unavailable.html"
-status = 302
-force = true
-conditions = {Country = "cn"}
+  from = "/*"
+  to = "/unavailable.html"
+  status = 302
+  force = true
+  conditions = {Country = "cn"}
 
 # we use content based hash for filenames
 # 31536000 is 1 year, recommended by cra
