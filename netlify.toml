@@ -1,15 +1,15 @@
 [[redirects]]
+from = "/unavailable.html"
+to = "/"
+status = 302
+conditions = {Country = "!cn"}
+
+[[redirects]]
 from = "/*"
 to = "/unavailable.html"
 status = 302
 force = true
 conditions = {Country = "cn"}
-
-[[redirects]]
-from = "/unavailable.html"
-to = "/"
-status = 302
-conditions = {Country = "!cn"}
 
 [[redirects]]
 from = "/*"
