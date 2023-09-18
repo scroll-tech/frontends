@@ -7,7 +7,8 @@ status = 200
 from = "/*"
 to = "/unavailable.html"
 status = 302
-conditions = {Country = ["cn"]}
+conditions = {Country = ["cn","CN"]}
+force = true
 
 # we use content based hash for filenames
 # 31536000 is 1 year, recommended by cra
