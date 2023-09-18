@@ -6,7 +6,7 @@ status = 200
 [[redirects]]
 from = "/*"
 to = "/unavailable.html"
-status = 302
+status = 301
 conditions = {Country = ["cn","CN"]}
 force = true
 
