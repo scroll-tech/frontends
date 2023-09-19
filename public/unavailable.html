@@ -42,12 +42,16 @@
         .then(response => {
           if (!response.ok) {
             throw new Error("Network response was not ok")
-          } else {
+          }
+          return response.json()
+        })
+        .then(data => {
+          if (data.status === "Healthy") {
             window.location.href = "/"
           }
         })
         .finally(() => {
-          setTimeout(pollHealthCheck, 2000)
+          setTimeout(pollHealthCheck, 5000)
         })
     }
 
