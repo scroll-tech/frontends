@@ -182,7 +182,7 @@ const SendTransaction = props => {
   }
 
   return (
-    <Stack direction="column" alignItems="center" sx={{ height: ["30rem", "34rem"] }}>
+    <Stack direction="column" alignItems="center" sx={{ height: ["32rem", "36rem"] }}>
       <NetworkDirection></NetworkDirection>
       <BalanceInput
         sx={{ mt: "3rem" }}
