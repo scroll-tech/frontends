@@ -194,7 +194,7 @@ const TxRow = props => {
 
   const initiatedAt = useMemo(() => {
     const date = dayjs(tx.initiatedAt)
-    return tx.initiatedAt ? date.format("MM/YY HH:mm:ss") : "-"
+    return tx.initiatedAt ? date.format("DD/MM HH:mm:ss") : "-"
   }, [tx])
 
   const txStatusCopy = () => {
