@@ -22,6 +22,13 @@ status = 200
 [[headers]]
 for = "/static/*"
 
+[[headers]]
+for = "/healthcheck.json"
+[headers.values]
+Cache-Control = "no-store, no-cache, must-revalidate, post-check=0, pre-check=0"
+Pragma = "no-cache"
+Expires = "0"
+
 [headers.values]
 Cache-Control = "max-age=31536000"
 

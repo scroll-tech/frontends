@@ -36,4 +36,21 @@
       <p>Due to relevant policies, this service is not available in your region.</p>
     </div>
   </body>
+  <script>
+    function pollHealthCheck() {
+      fetch("/healthcheck.json")
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok")
+          } else {
+            window.location.href = "/"
+          }
+        })
+        .finally(() => {
+          setTimeout(pollHealthCheck, 2000)
+        })
+    }
+
+    pollHealthCheck()
+  </script>
 </html>
