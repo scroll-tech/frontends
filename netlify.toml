@@ -21,6 +21,8 @@ status = 200
 # cra doc https://create-react-app.dev/docs/production-build/
 [[headers]]
 for = "/static/*"
+[headers.values]
+Cache-Control = "max-age=31536000"
 
 [[headers]]
 for = "/healthcheck.json"
@@ -28,9 +30,6 @@ for = "/healthcheck.json"
 Cache-Control = "no-store, no-cache, must-revalidate, post-check=0, pre-check=0"
 Pragma = "no-cache"
 Expires = "0"
-
-[headers.values]
-Cache-Control = "max-age=31536000"
 
 [[plugins]]
 package = "/plugins/netlify/env"
