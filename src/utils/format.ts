@@ -29,7 +29,7 @@ export const truncateAddress = (address: string): string => {
 }
 
 export const truncateHash = (hash: string) => {
-  return hash ? `${hash.substring(0, 6)}…${hash.substring(62, 66)}` : "-"
+  return hash ? `${hash.slice(0, 6)}…${hash.slice(-4)}` : "-"
 }
 
 export const convertHexadecimal = (value: string): number => {

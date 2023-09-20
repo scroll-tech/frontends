@@ -45,7 +45,7 @@ const useStyles = makeStyles()(theme => ({
   tabPanel: {
     backgroundColor: theme.palette.themeBackground.optionHightlight,
     flex: 1,
-    padding: "3rem 0 0",
+    padding: "1.6rem 0 0",
   },
 }))
 

@@ -34,9 +34,8 @@ const Bridge = () => {
         <SectionWrapper
           sx={{
             pt: "8.4rem",
-            width: "fit-content",
-            height: "calc(100vh - 69.2rem)",
-            minHeight: "86rem",
+            pb: "6rem",
+            minHeight: "calc(100vh - 69.2rem)",
             display: "flex",
             flexDirection: "column",
             alignItems: ["flex-start", "center"],

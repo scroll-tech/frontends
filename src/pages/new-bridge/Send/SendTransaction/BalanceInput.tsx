@@ -11,47 +11,58 @@ import TokenSelect from "./TokenSelect"
 
 const useStyles = makeStyles()(theme => ({
   root: {
-    backgroundColor: theme.palette.themeBackground.normal,
-    padding: "2.8rem 3rem",
+    padding: "0",
+    width: "100%",
     borderRadius: "2rem",
     [theme.breakpoints.down("sm")]: {
       width: "100%",
-      padding: "2rem",
     },
   },
   input: {
-    fontSize: "4rem",
-    height: "3.5rem",
+    width: "100%",
+    fontSize: "2rem",
+    height: "5.4rem",
     padding: 0,
-    marginBottom: "6px",
-    fontWeight: 600,
+    fontWeight: 500,
     lineHeight: 1,
-    // fontFamily: "Roboto Flex",
+    background: "#ffffff",
+    border: "1px solid #473835",
+    borderRadius: "1rem",
+    paddingLeft: "1.4rem",
+    "&.Mui-disabled": {
+      backgroundColor: "#FFF5E8",
+      border: "1px solid #A39B9A",
+      cursor: "not-allowed",
+    },
     [theme.breakpoints.down("sm")]: {
-      fontSize: "2.8rem",
-      marginBottom: "4px",
+      fontSize: "2.4rem",
+      height: "4.6rem",
     },
   },
   fromBalance: {
-    fontSize: "1.3rem",
+    fontSize: "1.4rem",
     fontWeight: 600,
-    lineHeight: 1,
+    lineHeight: 2,
+    marginTop: "0.4rem",
+    color: "#A39B9A",
     whiteSpace: "nowrap",
-    // fontFamily: "Roboto Flex",
     [theme.breakpoints.down("sm")]: {
       fontSize: "1.2rem",
     },
   },
   maxButton: {
-    width: "6.8rem",
+    marginLeft: "2px",
+    textDecoration: "underline",
     height: "2.8rem",
-    fontSize: "1.6rem",
+    fontSize: "1.4rem",
     padding: 0,
-    backgroundColor: theme.palette.themeBackground.optionHightlight,
     fontWeight: 600,
+    backgroundColor: "transparent !important",
+    minWidth: "unset",
+    color: theme.palette.primary.main,
     "&:hover": {
-      color: theme.palette.text.primary,
-      backgroundColor: theme.palette.themeBackground.optionHightlight,
+      color: theme.palette.primary.main,
+      opacity: 0.8,
     },
     "&.Mui-disabled": {
       color: "#EBC28E",
@@ -83,7 +94,10 @@ const BalanceInput = props => {
 
   const { isMobile } = useCheckViewport()
 
-  const displayedBalance = useMemo(() => (disabled ? "0.00" : toTokenDisplay(balance, selectedToken.decimals)), [selectedToken, balance, disabled])
+  const displayedBalance = useMemo(
+    () => (disabled ? "0.00" : toTokenDisplay(balance, selectedToken.decimals, selectedToken.symbol)),
+    [selectedToken, balance, disabled],
+  )
 
   const handleChangeAmount = e => {
     const amount = sanitizeNumericalString(e.target.value)
@@ -106,26 +120,27 @@ const BalanceInput = props => {
   return (
     <>
       <Stack direction="row" spacing={isMobile ? "1.2rem" : "2rem"} alignItems="center" className={classes.root} {...restProps}>
+        <InputBase
+          value={value}
+          placeholder="0.0000"
+          disabled={disabled}
+          classes={{ input: classes.input }}
+          sx={{ width: "100%" }}
+          readOnly={readOnly}
+          onChange={handleChangeAmount}
+        ></InputBase>
         <TokenSelect value={selectedToken} options={tokenOptions} onChange={handleChangeToken}></TokenSelect>
-        <Stack direction="column">
-          <InputBase
-            value={value}
-            placeholder="0.00"
-            disabled={disabled}
-            classes={{ input: classes.input }}
-            readOnly={readOnly}
-            onChange={handleChangeAmount}
-          ></InputBase>
-          {balanceLoading ? (
-            <Skeleton variant="text" width="12rem" />
-          ) : (
-            <Typography className={classes.fromBalance} sx={{ color: disabled ? "text.disabled" : "#0F8E7E" }}>
-              {displayedBalance} available
-            </Typography>
-          )}
-        </Stack>
+      </Stack>
+      <Stack sx={{ width: "100%" }} direction="row" alignItems="center" justifyContent="flex-start">
+        {balanceLoading ? (
+          <Skeleton variant="text" width="12rem" />
+        ) : (
+          <Typography className={classes.fromBalance} sx={{ color: disabled ? "text.disabled" : "#0F8E7E" }}>
+            Available: {displayedBalance}
+          </Typography>
+        )}
         <Button className={classes.maxButton} variant="contained" color="info" disabled={disabled} onClick={handleMaxAmount}>
-          Max
+          (Max)
         </Button>
       </Stack>
     </>

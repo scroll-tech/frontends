@@ -1,7 +1,7 @@
 import { BrowserProvider, JsonRpcProvider, JsonRpcSigner, ethers } from "ethers"
 import { createContext, useContext, useEffect, useState } from "react"
 import useStorage from "squirrel-gill"
-import useSWR from "swr"
+import useSWR, { mutate } from "swr"
 
 import { Alert, Snackbar } from "@mui/material"
 
@@ -9,11 +9,12 @@ import { tokenListUrl } from "@/apis/dynamic"
 import L1_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L1_GATEWAY_ROUTER_PROXY_ADDR.json"
 import L2_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L2_GATEWAY_ROUTER_PROXY_ADDR.json"
 import { CHAIN_ID, ETH_SYMBOL, GATEWAY_ROUTE_PROXY_ADDR, NATIVE_TOKEN_LIST, RPC_URL } from "@/constants"
-import { BLOCK_NUMBERS, BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
+import { BLOCK_NUMBERS, BRIDGE_TOKEN_SYMBOL, USER_TOKEN_LIST } from "@/constants/storageKey"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useClaim from "@/hooks/useClaim"
 import useTxHistory, { TxHistory } from "@/hooks/useTxHistory"
 import { requireEnv } from "@/utils"
+import { loadState } from "@/utils/localStorage"
 
 type AppContextProps = {
   networksAndSigners: any
@@ -21,6 +22,7 @@ type AppContextProps = {
   blockNumbers: number[]
   tokenList: Token[]
   claim: any
+  refreshTokenList: () => void
 }
 
 const AppContext = createContext<AppContextProps | undefined>(undefined)
@@ -84,8 +86,32 @@ const AppContextProvider = ({ children }: any) => {
   const { data: tokenList } = useSWR(tokenListUrl(branchName), url => {
     return scrollRequest(url)
       .then((data: any) => {
-        const filteredList = data.tokens
-        return [...NATIVE_TOKEN_LIST, ...filteredList]
+        const tokensListTokens = data.tokens
+        const currentUserTokens = loadState(USER_TOKEN_LIST) || []
+
+        const combinedList = [...NATIVE_TOKEN_LIST, ...tokensListTokens, ...currentUserTokens]
+        const uniqueList = combinedList.reduce(
+          (accumulator, token) => {
+            // If the token doesn't have an address, consider it a native token and add it directly
+            if (!token.address) {
+              accumulator.result.push(token)
+              return accumulator
+            }
+            // Convert address to lowercase for case-insensitive deduplication
+            const lowercaseAddress = token.address.toLowerCase()
+            // Create a key combining address and chainId to ensure different chainIds are not deduplicated
+            const key = `${lowercaseAddress}-${token.chainId}`
+
+            if (!accumulator.seen[key]) {
+              accumulator.seen[key] = true
+              accumulator.result.push(token)
+            }
+            return accumulator
+          },
+          { seen: {}, result: [] },
+        ).result
+
+        return uniqueList
       })
       .catch(() => {
         setFetchTokenListError("Fail to fetch token list")
@@ -93,6 +119,10 @@ const AppContextProvider = ({ children }: any) => {
         return null
       })
   })
+
+  const refreshTokenList = () => {
+    mutate(tokenListUrl(branchName))
+  }
 
   useEffect(() => {
     if (provider && walletCurrentAddress) {
@@ -119,6 +149,7 @@ const AppContextProvider = ({ children }: any) => {
         blockNumbers,
         claim,
         tokenList: tokenList ?? NATIVE_TOKEN_LIST,
+        refreshTokenList,
       }}
     >
       {children}
