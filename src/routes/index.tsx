@@ -6,6 +6,7 @@ import ComingSoon from "@/pages/developer-nft/coming-soon"
 import DeveloperNFT from "@/pages/developer-nft/index"
 import MintNFT from "@/pages/developer-nft/mint"
 import MintFlow from "@/pages/developer-nft/mint/flow"
+import MintedNFT from "@/pages/developer-nft/mint/my"
 import Ecosystem from "@/pages/ecosystem"
 import Home from "@/pages/landingpage"
 // import Bridge from "@/pages/bridge"
@@ -225,6 +226,12 @@ const mainnetRoutes = [
     path: "/developer-nft/mint/flow",
     fullPath: "/developer-nft/mint/flow",
     element: <MintFlow />,
+  },
+  {
+    name: "Early Developer NFT",
+    path: "/developer-nft/my",
+    fullPath: "/developer-nft/my",
+    element: <MintedNFT />,
   },
 ]
 

@@ -236,11 +236,6 @@ const lightTheme = createTheme({
           color: ownerState.severity && paletteOptions[ownerState.severity].main,
           backgroundColor: ownerState.severity && paletteOptions[ownerState.severity].light,
           alignItems: "center",
-          [theme.breakpoints.down("sm")]: {
-            flexDirection: "column",
-            textAlign: "center",
-            padding: " 1.6rem 3rem",
-          },
         }),
         icon: ({ theme, ownerState }) => ({
           display: "flex",
@@ -249,10 +244,6 @@ const lightTheme = createTheme({
           marginRight: "1.8rem",
           padding: 0,
           color: `${ownerState.severity && paletteOptions[ownerState.severity].main} !important`,
-          [theme.breakpoints.down("sm")]: {
-            justifyContent: "center",
-            marginRight: 0,
-          },
         }),
         message: {
           padding: 0,

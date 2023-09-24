@@ -10,8 +10,8 @@ import NFTCard from "../../components/NFTCard"
 const FinalStep = () => {
   const navigate = useNavigate()
 
-  const handleGoHome = () => {
-    navigate("/")
+  const handleGoShow = () => {
+    navigate("/developer-nft/my")
   }
   return (
     <Container sx={{ pt: "7.4rem", pb: "14rem" }}>
@@ -28,9 +28,11 @@ const FinalStep = () => {
         >
           <NFTCard size="large" image={NFTImage} name="Scroll Early Developer NFT"></NFTCard>
         </Box>
-        <Typography sx={{ fontSize: "4.8rem", fontWeight: 600, lineHeight: "6.8rem" }}>You have successfully minted your NFT!</Typography>
-        <Button color="primary" onClick={handleGoHome}>
-          Back to home
+        <Typography sx={{ fontSize: "4.8rem", fontWeight: 600, lineHeight: "6.8rem", width: "61.6rem", textAlign: "center" }}>
+          You have successfully minted Scroll Origin NFT!
+        </Typography>
+        <Button color="primary" onClick={handleGoShow}>
+          Done
         </Button>
       </Stack>
     </Container>

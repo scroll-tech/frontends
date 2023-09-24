@@ -2,12 +2,13 @@ import { useState } from "react"
 import { useSwiper } from "swiper/react"
 import { makeStyles } from "tss-react/mui"
 
-import { Container, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Stack } from "@mui/material"
+import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material"
 
 import Button from "@/components/Button"
 import OrientationToView from "@/components/Motion/OrientationToView"
 
 import Alert from "../../components/Alert"
+import StepWrapper from "./StepWrapper"
 
 const useStyles = makeStyles()(theme => ({
   form: {
@@ -56,38 +57,35 @@ const QuestionStep = props => {
   }
 
   return (
-    <Container sx={{ pt: "12rem" }}>
-      <Stack direction="row">
-        <FormControl classes={{ root: classes.form }}>
-          <FormLabel focused={false} classes={{ root: classes.answerSubject }}>
-            {subject}
-          </FormLabel>
-          <RadioGroup classes={{ root: classes.formGroup }} value={value} onChange={handleChange} name="radio-buttons-group">
-            {options.map(({ title, explaination }, index) => (
-              <>
-                <FormControlLabel
-                  classes={{ root: classes.optionLabel, label: classes.optionLabelText }}
-                  value={index}
-                  control={<Radio sx={{ color: theme => theme.palette.text.primary }} />}
-                  label={title}
-                />
-                {Number(value) === index && (
-                  <OrientationToView direction="left">
-                    <Alert type="multiline" variants="success" sx={{ mt: "0.8rem" }}>
-                      {explaination}
-                    </Alert>
-                  </OrientationToView>
-                )}
-              </>
-            ))}
-          </RadioGroup>
-          <Button color="primary" gloomy={!value} onClick={handleContinue}>
-            Continue
-          </Button>
-        </FormControl>
-        <img src="/imgs/nft/flow-question.svg" alt="flow-question"></img>
-      </Stack>
-    </Container>
+    <StepWrapper src="/imgs/nft/flow-question.svg">
+      <FormControl classes={{ root: classes.form }}>
+        <FormLabel focused={false} classes={{ root: classes.answerSubject }}>
+          {subject}
+        </FormLabel>
+        <RadioGroup classes={{ root: classes.formGroup }} value={value} onChange={handleChange} name="radio-buttons-group">
+          {options.map(({ title, explaination }, index) => (
+            <>
+              <FormControlLabel
+                classes={{ root: classes.optionLabel, label: classes.optionLabelText }}
+                value={index}
+                control={<Radio sx={{ color: theme => theme.palette.text.primary }} />}
+                label={title}
+              />
+              {Number(value) === index && (
+                <OrientationToView direction="left">
+                  <Alert type="multiline" variants="success" sx={{ mt: "0.8rem" }}>
+                    {explaination}
+                  </Alert>
+                </OrientationToView>
+              )}
+            </>
+          ))}
+        </RadioGroup>
+        <Button color="primary" gloomy={!value} onClick={handleContinue}>
+          Continue
+        </Button>
+      </FormControl>
+    </StepWrapper>
   )
 }
 
