@@ -1,11 +1,26 @@
 // import { Fade } from "react-awesome-reveal"
-import { Box, Typography } from "@mui/material"
+import { useEffect, useState } from "react"
+import { makeStyles } from "tss-react/mui"
+
+import { Box, Tooltip, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { FadeInUp } from "@/components/Animation"
 import Button from "@/components/Button"
+import Link from "@/components/Link"
 
 import TextMarquee from "./components/TextMarquee"
+
+const useStyles = makeStyles()(theme => ({
+  tooltip: {
+    padding: "1.6rem 2.4rem",
+    backgroundColor: "#90F8EA",
+    marginTop: "1.8rem",
+  },
+  arrow: {
+    color: "#90F8EA",
+  },
+}))
 
 const Container = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -16,6 +31,12 @@ const Container = styled(Box)(({ theme }) => ({
   paddingBottom: "15.5rem",
   [theme.breakpoints.down("md")]: {
     padding: "6.8rem 2rem 10rem",
+  },
+}))
+
+const FixedTooltip = styled(Tooltip)(({ theme }) => ({
+  ".MuiTooltip-tooltip": {
+    padding: "1.6rem",
   },
 }))
 
@@ -45,6 +66,19 @@ const ButtonContainer = styled(Box)(({ theme }) => ({
 }))
 
 const Header = () => {
+  const { classes } = useStyles()
+
+  const [isEventVisible, setIsEventVisible] = useState(false)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsEventVisible(true)
+    }, 2000)
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [])
+
   return (
     <Container>
       <FadeInUp duration={700} sx={{ display: "flex" }}>
@@ -61,9 +95,25 @@ const Header = () => {
           <Button href="/bridge" color="primary">
             Bridge into Scroll
           </Button>
-          <Button target="_blank" href="https://docs.scroll.io/en/home/">
-            Start building
-          </Button>
+          <FixedTooltip
+            open={isEventVisible}
+            classes={{ tooltip: classes.tooltip, arrow: classes.arrow }}
+            title={
+              <Typography sx={{ fontSize: ["1.6rem", "1.8rem"], lineHeight: "2.4rem" }}>
+                Mint your{" "}
+                <Link href="/developer-nft" sx={{ fontSize: "inherit", color: "inherit" }} underline="always">
+                  Scroll Origins
+                </Link>
+              </Typography>
+            }
+            arrow
+          >
+            <Box>
+              <Button target="_blank" href="https://docs.scroll.io/en/home/">
+                Start building
+              </Button>
+            </Box>
+          </FixedTooltip>
         </ButtonContainer>
       </FadeInUp>
     </Container>
