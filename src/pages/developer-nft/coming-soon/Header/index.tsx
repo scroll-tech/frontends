@@ -60,7 +60,7 @@ const Header = () => {
       <NFTCard
         sx={{
           py: ["1.2rem", "2.6rem"],
-          width: ["90%", "31.2rem"],
+          width: ["26rem", "31.2rem"],
         }}
       ></NFTCard>
       <Typography sx={{ fontSize: ["4rem", "7.8rem"], lineHeight: ["5.6rem", "8.5rem"], fontWeight: 600 }}>Scroll Origins</Typography>

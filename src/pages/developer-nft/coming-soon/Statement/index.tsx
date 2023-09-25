@@ -33,7 +33,7 @@ const MintNFT = () => {
         We are committed to growing the best developer community to scale Ethereum. This program aligns with Scroll’s values in important ways:
       </Typography>
       <Stack direction={isPortrait ? "column" : "row"} spacing={isPortrait ? "3.2rem" : "4.8rem"} alignItems="center">
-        <CardMedia image={StatementSvg} sx={{ width: ["100%", "100%", "56.1rem"], aspectRatio: "562 / 324" }}></CardMedia>
+        <CardMedia image={StatementSvg} sx={{ width: ["100%", "calc(100% - 4rem)", "56.1rem"], aspectRatio: "562 / 324" }}></CardMedia>
         <Stack direction="column" sx={{ flex: 1, gap: ["4.8rem", "3.2rem", "4.8rem"] }}>
           {NFT_VALUES.map(({ icon, title, content }) => (
             <Stack direction="column" key={title}>

@@ -28,9 +28,11 @@ const lightTheme = createTheme({
     MuiContainer: {
       styleOverrides: {
         root: ({ theme }) => ({
-          paddingLeft: "2rem",
-          paddingRight: "2rem",
           maxWidth: "152rem !important",
+          [theme.breakpoints.up("xs")]: {
+            paddingLeft: "2rem",
+            paddingRight: "2rem",
+          },
           [theme.breakpoints.up("md")]: {
             paddingLeft: "6rem",
             paddingRight: "6rem",

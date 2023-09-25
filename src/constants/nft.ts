@@ -2,19 +2,19 @@ import dayjs from "dayjs"
 
 // test
 
-// const AnnoucementDate = new Date()
+const AnnoucementDate = new Date()
 // const AnnoucementDate = new Date("2023-09-11T13:41:00Z")
 
-// const StartDate = dayjs(AnnoucementDate).add("1", "d")
+const StartDate = dayjs(AnnoucementDate).add("1", "m")
 
-// const EndDate = dayjs(AnnoucementDate).add("10", "d")
+const EndDate = dayjs(AnnoucementDate).add("10", "m")
 
 // UTC
-const AnnoucementDate = new Date("2023-09-08T13:41:00Z")
+// const AnnoucementDate = new Date("2023-09-08T13:41:00Z")
 
-const StartDate = new Date("2023-09-24T00:00:00Z") // mainnet
+// const StartDate = new Date("2023-09-24T00:00:00Z") // mainnet
 
-const EndDate = dayjs(StartDate).add("45", "day")
+// const EndDate = dayjs(StartDate).add("45", "day")
 
 export const DEVELOPER_NFT_STEPS = [
   { label: "Announces", date: AnnoucementDate, title: "" },
