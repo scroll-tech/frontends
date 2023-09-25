@@ -1,14 +1,13 @@
 import { useEffect, useMemo } from "react"
 import Countdown, { zeroPad } from "react-countdown"
 
-import { Box, Stack, Typography } from "@mui/material"
+import { Stack, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
-// import NFT from "@/assets/images/nft-image.png"
 import { DEVELOPER_NFT_PHRASES } from "@/constants"
 import useNFTStore from "@/stores/nftStore"
 
-import NFTImage from "../../components/NFTCard/NFTImage"
+import NFTCard from "../../components/NFTCard"
 import Statistic from "../../components/Statistic/StatisticReverse"
 
 const Separator = styled(Typography)(({ theme }) => ({
@@ -58,20 +57,13 @@ const Header = () => {
 
   return (
     <Stack sx={{ width: "100%", gap: ["1.6rem", "2.4rem"] }} direction="column" alignItems="center">
-      <Box
+      <NFTCard
         sx={{
-          background: "url(/imgs/nft/loop.svg) center no-repeat",
-          backgroundSize: "cover",
-          width: ["100%", "42.1rem"],
-          aspectRatio: "1/1",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+          py: ["1.2rem", "2.6rem"],
+          width: ["90%", "31.2rem"],
         }}
-      >
-        <NFTImage sx={{ width: "65%", aspectRatio: ["211/247", "277/ 324"] }} src="/imgs/nft/nft-image.png"></NFTImage>
-      </Box>
-      <Typography sx={{ fontSize: ["4rem", "7.8rem"], lineHeight: ["5.6rem", "8.5rem"], fontWeight: 600 }}>Scroll Origin NFT</Typography>
+      ></NFTCard>
+      <Typography sx={{ fontSize: ["4rem", "7.8rem"], lineHeight: ["5.6rem", "8.5rem"], fontWeight: 600 }}>Scroll Origins</Typography>
       <Typography sx={{ fontSize: ["1.6rem", "2.4rem"], fontWeight: 600 }}>Program {nftCountdown[0]} in</Typography>
       <Countdown key={phrase} date={nftCountdown[1]} renderer={renderCountDown}></Countdown>
     </Stack>

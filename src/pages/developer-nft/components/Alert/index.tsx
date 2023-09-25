@@ -8,7 +8,7 @@ import { ReactComponent as SuccessSvg } from "@/assets/svgs/refactor/nft-alert-s
 const useStyles = makeStyles<any>()((theme, { type }) => ({
   root: {
     borderRadius: type === "multiline" ? 10 : 5,
-    padding: type === "multiline" ? "1.2rem 1.6rem" : "0.9rem 1.6rem",
+    padding: type === "multiline" ? "1.2rem 1.6rem" : "1.5rem",
     [theme.breakpoints.down("sm")]: {
       padding: "1.2rem 1.6rem",
     },

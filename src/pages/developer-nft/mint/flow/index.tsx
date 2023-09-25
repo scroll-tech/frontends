@@ -13,8 +13,8 @@ import QuestionStep from "./QuestionStep"
 
 const useStyles = makeStyles()(theme => ({
   flowSwiper: {
-    "& ": {
-      color: theme.palette.primary.contrastText,
+    "&": {
+      // color: theme.palette.primary.contrastText,
     },
   },
 }))

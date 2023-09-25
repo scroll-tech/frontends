@@ -11,17 +11,17 @@ import useCheckViewport from "@/hooks/useCheckViewport"
 
 import Statistic from "../../components/Statistic/StatisticReverse"
 
-// Scroll Origin NFT
+// Scroll Origins
 const NFT_VALUES = [
   {
     icon: CommunitySvg,
     title: "Community-driven",
-    content: "At Scroll, we seek to to reward and recognize all builders who are contributing to the foundation and future of our ecosystem",
+    content: "At Scroll, we seek to to reward and recognize all builders who contribute to the foundation and future of our ecosystem.",
   },
   {
     icon: NeutralitySvg,
     title: "Credible Neutrality",
-    content: "Through this program, all early builders of Scroll will have an equal opportunity to be rewarded and recognized",
+    content: "Through this program, all early builders of Scroll will have an equal opportunity to be rewarded and recognized.",
   },
 ]
 
@@ -30,7 +30,7 @@ const MintNFT = () => {
   return (
     <Box sx={{ maxWidth: "98rem", width: "100%", pt: ["4.8rem", "5.5rem", "8rem"] }}>
       <Typography sx={{ fontSize: ["2.4rem", "3.2rem"], lineHeight: ["3.2rem", "4.8rem"], textAlign: "center", mb: "3.2rem" }}>
-        We are committed to growing the best developer community to scale the Ethereum Ecosystem. The program aligns with Scroll’s values:
+        We are committed to growing the best developer community to scale Ethereum. This program aligns with Scroll’s values in important ways:
       </Typography>
       <Stack direction={isPortrait ? "column" : "row"} spacing={isPortrait ? "3.2rem" : "4.8rem"} alignItems="center">
         <CardMedia image={StatementSvg} sx={{ width: ["100%", "100%", "56.1rem"], aspectRatio: "562 / 324" }}></CardMedia>
@@ -73,8 +73,11 @@ const MintNFT = () => {
         />
       </LineToView>
       <Typography sx={{ fontSize: ["2.4rem", "3.2rem"], lineHeight: ["3.2rem", "4.8rem"], textAlign: "center" }}>
-        To qualify for the Scroll Origin NFT, you must deploy a {!isPortrait && <br></br>}project within{" "}
-        <Typography component="span" sx={{ fontSize: "inherit", lineHeight: "inherit", fontWeight: 700, color: "#FF664D !important" }}>
+        To qualify for the Scroll Origins, you must deploy a project within{" "}
+        <Typography
+          component="span"
+          sx={{ fontSize: "inherit", lineHeight: "inherit", fontWeight: 700, color: "#FF664D !important", whiteSpace: "nowrap" }}
+        >
           45 days
         </Typography>{" "}
         of Genesis Block. Your NFT will be ready for Mint at the end of the program.

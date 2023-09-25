@@ -1,8 +1,7 @@
 import { useNavigate } from "react-router-dom"
 
-import { Box, Container, Stack, Typography } from "@mui/material"
+import { Container, Stack, Typography } from "@mui/material"
 
-import NFTImage from "@/assets/images/nft-image.png"
 import Button from "@/components/Button"
 
 import NFTCard from "../../components/NFTCard"
@@ -16,18 +15,7 @@ const FinalStep = () => {
   return (
     <Container sx={{ pt: "7.4rem", pb: "14rem" }}>
       <Stack alignItems="center" spacing="3rem">
-        <Box
-          sx={{
-            background: "url(/imgs/nft/big-loop.svg) center no-repeat",
-            width: "52rem",
-            height: "52rem",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <NFTCard size="large" image={NFTImage} name="Scroll Early Developer NFT"></NFTCard>
-        </Box>
+        <NFTCard sx={{ width: ["80%", "42rem"] }}></NFTCard>
         <Typography sx={{ fontSize: "4.8rem", fontWeight: 600, lineHeight: "6.8rem", width: "61.6rem", textAlign: "center" }}>
           You have successfully minted Scroll Origin NFT!
         </Typography>

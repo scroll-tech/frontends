@@ -1,13 +1,13 @@
 import dayjs from "dayjs"
 import { useState } from "react"
 
-import { Box, Stack, Typography } from "@mui/material"
+import { Stack, Typography } from "@mui/material"
 
 import SectionWrapper from "@/components/SectionWrapper"
 import { DEVELOPER_NFT_PHRASES } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
-import NFTImage from "../../components/NFTCard/NFTImage"
+import NFTCard from "../../components/NFTCard"
 import Statistic from "../../components/Statistic"
 
 const MintNFT = () => {
@@ -17,9 +17,10 @@ const MintNFT = () => {
   return (
     <SectionWrapper
       dark
+      full
       sx={{
         pt: "7.8rem",
-        pb: ["8rem", "16rem"],
+        pb: ["8rem", "18.4rem"],
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -35,22 +36,10 @@ const MintNFT = () => {
         },
       }}
     >
-      <Box
-        sx={{
-          background: "url(/imgs/nft/big-loop.svg) center no-repeat",
-          backgroundSize: "cover",
-          width: ["100%", "52rem"],
-          aspectRatio: "1/1",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <NFTImage sx={{ width: "65%", aspectRatio: ["211/247", "343/401"] }} src="/imgs/nft/nft-image.png"></NFTImage>
-      </Box>
+      <NFTCard sx={{ width: ["80%", "42rem"] }}></NFTCard>
       <Stack direction="column" spacing={isPortrait ? "2.4rem" : "4.8rem"} alignItems={isPortrait ? "center" : "flex-start"}>
-        <Typography sx={{ fontSize: ["4rem", "7.8rem"], fontWeight: 600, width: "57.6rem", lineHeight: ["5.6rem", "8.5rem"] }}>
-          You have minted Scroll Origin NFT!
+        <Typography sx={{ fontSize: ["4rem", "7.8rem"], fontWeight: 600, maxWidth: ["auto", "61rem"], lineHeight: ["5.6rem", "8.5rem"] }}>
+          You have minted a Scroll Origin NFT!
         </Typography>
         <Stack direction="row" spacing={isMobile ? "2.4rem" : "4.8rem"}>
           <Statistic label="NFTs Minted">{mintedAmount}</Statistic>

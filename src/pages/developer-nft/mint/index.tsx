@@ -1,8 +1,8 @@
 import dayjs from "dayjs"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
-// import { useNavigate } from "react-router-dom"
-import { Box, Stack, Typography } from "@mui/material"
+import { Stack, Typography } from "@mui/material"
 
 import Button from "@/components/Button"
 import SectionWrapper from "@/components/SectionWrapper"
@@ -10,27 +10,28 @@ import { DEVELOPER_NFT_PHRASES } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
 import Alert from "../components/Alert"
-import NFTImage from "../components/NFTCard/NFTImage"
+import NFTCard from "../components/NFTCard"
 import Statistic from "../components/Statistic"
 
 const MintNFT = () => {
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
   const { isMobile, isPortrait } = useCheckViewport()
   const [mintedAmount] = useState(640)
 
+  // eslint-disable-next-line
   const [ineligible, setIneligible] = useState(false)
 
   const handleMint = () => {
     // TODO:
-    setIneligible(true)
-    // navigate("./flow")
+    // setIneligible(true)
+    navigate("./flow")
   }
 
   return (
     <SectionWrapper
       dark
       sx={{
-        pt: "7.8rem",
+        pt: [0, "8rem"],
         pb: ["8rem", "16rem"],
         display: "flex",
         justifyContent: "center",
@@ -47,21 +48,9 @@ const MintNFT = () => {
         },
       }}
     >
-      <Box
-        sx={{
-          background: "url(/imgs/nft/big-loop.svg) center no-repeat",
-          backgroundSize: "cover",
-          width: ["100%", "52rem"],
-          aspectRatio: "1/1",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <NFTImage sx={{ width: "65%", aspectRatio: ["211/247", "343/401"] }} src="/imgs/nft/nft-image.png"></NFTImage>
-      </Box>
+      <NFTCard sx={{ width: ["80%", "42rem"], py: ["1.2rem", "1.8rem"] }}></NFTCard>
       <Stack direction="column" spacing={isPortrait ? "2.4rem" : "4.8rem"} alignItems={isPortrait ? "center" : "flex-start"}>
-        <Typography sx={{ fontSize: ["4rem", "7.8rem"], fontWeight: 600, lineHeight: ["5.6rem", "8.5rem"] }}>Scroll Origin NFT</Typography>
+        <Typography sx={{ fontSize: ["4rem", "7.8rem"], fontWeight: 600, lineHeight: ["5.6rem", "8.5rem"] }}>Scroll Origins</Typography>
         <Stack direction="row" spacing={isMobile ? "2.4rem" : "4.8rem"}>
           <Statistic label="NFTs Minted">{mintedAmount}</Statistic>
           <Statistic label="Released">{dayjs(DEVELOPER_NFT_PHRASES.Starts).format("MMM D, YYYY")}</Statistic>
@@ -76,7 +65,6 @@ const MintNFT = () => {
           </Button>
         )}
       </Stack>
-      {/* </Stack> */}
     </SectionWrapper>
   )
 }
