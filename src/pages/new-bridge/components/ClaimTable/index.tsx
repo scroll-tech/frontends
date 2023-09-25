@@ -21,12 +21,12 @@ import {
 
 import Link from "@/components/Link"
 import { EXPLORER_URL } from "@/constants"
-import { useLastBlockNums } from "@/hooks/useRollupInfo"
 import useTokenInfo from "@/hooks/useTokenInfo"
 import { ClaimStatus } from "@/stores/claimStore"
 import useTxStore from "@/stores/txStore"
 import { generateExploreLink, toTokenDisplay, truncateHash } from "@/utils"
 
+import useLastFinalizedBatchIndex from "../../hooks/useLastFinalizedBatchIndex"
 import ClaimButton from "./ClaimButton"
 
 const useStyles = makeStyles()(theme => {
@@ -116,7 +116,7 @@ const TxTable = (props: any) => {
   const { data, loading, pagination } = props
   const { classes } = useStyles()
 
-  const { lastBlockNums } = useLastBlockNums()
+  const { lastFinalizedBatchIndex } = useLastFinalizedBatchIndex()
   const handleChangePage = (e, newPage) => {
     pagination?.onChange?.(newPage)
   }
@@ -136,7 +136,7 @@ const TxTable = (props: any) => {
           <TableBody className={classes.tableBody}>
             <>
               {data?.map((tx: any) => (
-                <TxRow key={tx.hash} tx={tx} finalizedIndex={lastBlockNums?.finalized_index ?? 0} />
+                <TxRow key={tx.hash} tx={tx} finalizedIndex={lastFinalizedBatchIndex ?? 0} />
               ))}
             </>
           </TableBody>
