@@ -37,6 +37,10 @@ const MintNFT = () => {
         justifyContent: "center",
         alignItems: "center",
         gap: "8rem",
+        "& .MuiTypography-root": {
+          color: theme => theme.palette.primary.contrastText,
+        },
+
         "@media (max-width: 1280px)": {
           display: "grid",
           gridTemplateColumns: "max-content 1fr",

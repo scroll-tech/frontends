@@ -17,7 +17,6 @@ const MintNFT = () => {
   return (
     <SectionWrapper
       dark
-      full
       sx={{
         pt: "7.8rem",
         pb: ["8rem", "18.4rem"],
@@ -25,6 +24,9 @@ const MintNFT = () => {
         justifyContent: "center",
         alignItems: "center",
         gap: "8rem",
+        "& .MuiTypography-root": {
+          color: theme => theme.palette.primary.contrastText,
+        },
         "@media (max-width: 1280px)": {
           display: "grid",
           gridTemplateColumns: "max-content 1fr",

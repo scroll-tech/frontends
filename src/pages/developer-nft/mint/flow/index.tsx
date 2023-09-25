@@ -2,7 +2,6 @@ import "swiper/css"
 import "swiper/css/pagination"
 import { Pagination } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
-import { makeStyles } from "tss-react/mui"
 
 import SectionWrapper from "@/components/SectionWrapper"
 import { FLOW_QUESTIONS } from "@/constants"
@@ -11,24 +10,14 @@ import FinalStep from "./FinalStep"
 import InitialStep from "./InitialStep"
 import QuestionStep from "./QuestionStep"
 
-const useStyles = makeStyles()(theme => ({
-  flowSwiper: {
-    "&": {
-      // color: theme.palette.primary.contrastText,
-    },
-  },
-}))
-
 const MintFlow = () => {
-  const { classes } = useStyles()
   return (
-    <SectionWrapper dark full sx={{ p: "0 !important" }}>
+    <SectionWrapper dark full sx={{ p: "0 !important", "& .MuiTypography-root": { color: theme => theme.palette.primary.contrastText } }}>
       <Swiper
         pagination={{
           type: "progressbar",
         }}
         modules={[Pagination]}
-        className={classes.flowSwiper}
       >
         <SwiperSlide>
           <InitialStep></InitialStep>
