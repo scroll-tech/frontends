@@ -14,7 +14,7 @@ export interface TxHistory {
 
 const useTxHistory = networksAndSigners => {
   const { walletCurrentAddress } = useRainbowContext()
-  const { pageTransactions, generateTransactions, comboPageTransactions, combineClaimableTransactions, orderedTxDB } = useTxStore()
+  const { pageTransactions, generateTransactions, comboPageTransactions, combineClaimableTransactions, orderedTxDB, clearTransactions } = useTxStore()
 
   const [errorMessage, setErrorMessage] = useState("")
   const [claimableTx, setclaimableTx] = useState<[] | null>(null)
@@ -27,6 +27,10 @@ const useTxHistory = networksAndSigners => {
       },
       body: JSON.stringify({ txs }),
     }).then(data => data)
+  }, [])
+
+  useEffect(() => {
+    clearTransactions()
   }, [])
 
   useEffect(() => {

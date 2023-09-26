@@ -195,7 +195,7 @@ const eliminateOvertimeTx = frontList => {
 }
 
 const detailOrderdTxs = async (pageOrderedTxs, frontTransactions, abnormalTransactions, estimatedTimeMap) => {
-  const needFetchTxs = pageOrderedTxs.filter(item => item.position === TxPosition.Backend).map(item => item.hash)
+  const needFetchTxs = pageOrderedTxs.map(item => item.hash)
 
   let historyList: Transaction[] = []
   let returnedEstimatedTimeMap = estimatedTimeMap
@@ -212,14 +212,10 @@ const detailOrderdTxs = async (pageOrderedTxs, frontTransactions, abnormalTransa
     returnedEstimatedTimeMap = nextEstimatedTimeMap
   }
 
+  const allTransactions = [...historyList, ...abnormalTransactions, ...frontTransactions]
   const pageTransactions = pageOrderedTxs
-    .map(({ hash, position }) => {
-      if (position === TxPosition.Backend) {
-        return historyList.find((item: any) => item.hash === hash)
-      } else if (position === TxPosition.Abnormal) {
-        return abnormalTransactions.find(item => item.hash === hash) || frontTransactions.find(item => item.hash === hash)
-      }
-      return frontTransactions.find(item => item.hash === hash)
+    .map(({ hash }) => {
+      return allTransactions.find(item => item.hash === hash)
     })
     .filter(item => item) // TODO: fot test
   return { pageTransactions, estimatedTimeMap: returnedEstimatedTimeMap }
