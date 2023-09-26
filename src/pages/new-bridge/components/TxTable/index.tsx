@@ -23,11 +23,11 @@ import {
 import Link from "@/components/Link"
 import { TX_STATUS } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
-import { useLastBlockNums } from "@/hooks/useRollupInfo"
 import useTokenInfo from "@/hooks/useTokenInfo"
 import useTxStore from "@/stores/txStore"
 import { generateExploreLink, toTokenDisplay, truncateHash } from "@/utils"
 
+import useLastFinalizedBatchIndex from "../../hooks/useLastFinalizedBatchIndex"
 import TxStatusButton from "./TxStatusButton"
 
 const useStyles = makeStyles()(theme => {
@@ -147,7 +147,7 @@ const useStyles = makeStyles()(theme => {
 const TxTable = (props: any) => {
   const { data, loading, pagination } = props
   const { classes } = useStyles()
-  const { lastBlockNums } = useLastBlockNums()
+  const { lastFinalizedBatchIndex } = useLastFinalizedBatchIndex()
 
   const handleChangePage = (e, newPage) => {
     pagination?.onChange?.(newPage)
@@ -171,7 +171,7 @@ const TxTable = (props: any) => {
           <TableBody className={classes.tableBody}>
             <>
               {data?.map((tx: any) => (
-                <TxRow finalizedIndex={lastBlockNums?.finalized_index ?? 0} key={tx.hash} tx={tx} />
+                <TxRow finalizedIndex={lastFinalizedBatchIndex ?? 0} key={tx.hash} tx={tx} />
               ))}
             </>
           </TableBody>

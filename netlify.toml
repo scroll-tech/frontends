@@ -49,6 +49,7 @@ REACT_APP_L2_GAS_PRICE_ORACLE = "0x247969F4fad93a33d4826046bc3eAE0D36BdE548"
 REACT_APP_L2_SCAN_URI = "https://scroll.l2scan.co/"
 REACT_APP_EXTERNAL_EXPLORER_URI_DORA = "https://www.ondora.xyz/zh/network/scroll-sepolia/interactions"
 REACT_APP_L2_SWAP_URI = "https://uniswap-showcase.sepolia.scroll.xyz/"
+REACT_APP_SCROLL_CHAIN="0x2D567EcE699Eabe5afCd141eDB7A4f2D0D6ce8a0"
 
 [context.deploy-preview.environment]
 # setup later
