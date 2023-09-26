@@ -6,7 +6,7 @@ import { fetchTxByHashUrl } from "@/apis/bridge"
 import { NETWORKS } from "@/constants"
 import { CLAIM_TRANSACTIONS } from "@/constants/storageKey"
 import { BRIDGE_TRANSACTIONS } from "@/constants/storageKey"
-import { TimestampTx, TxDirection, TxPosition } from "@/stores/txStore"
+import { TimestampTx, TxDirection } from "@/stores/txStore"
 
 interface TxStore {
   page: number
@@ -92,7 +92,7 @@ const formatTxList = async backList => {
 }
 
 const detailOrderdTxs = async (pageOrderedTxs, frontTransactions, abnormalTransactions) => {
-  const needFetchTxs = pageOrderedTxs.filter(item => item.position === TxPosition.Backend).map(item => item.hash)
+  const needFetchTxs = pageOrderedTxs.map(item => item.hash)
 
   let historyList: Transaction[] = []
   if (needFetchTxs.length) {
@@ -106,15 +106,11 @@ const detailOrderdTxs = async (pageOrderedTxs, frontTransactions, abnormalTransa
     const { txList } = await formatTxList(data.result)
     historyList = txList
   }
+  const allTransactions = [...historyList, ...abnormalTransactions, ...frontTransactions]
 
   const pageTransactions = pageOrderedTxs
     .map(({ hash, position }) => {
-      if (position === TxPosition.Backend) {
-        return historyList.find((item: any) => item.hash === hash)
-      } else if (position === TxPosition.Abnormal) {
-        return abnormalTransactions.find(item => item.hash === hash) || frontTransactions.find(item => item.hash === hash)
-      }
-      return frontTransactions.find(item => item.hash === hash)
+      return allTransactions.find(item => item.hash === hash)
     })
     .filter(item => item) // TODO: fot test
   return { pageTransactions }
