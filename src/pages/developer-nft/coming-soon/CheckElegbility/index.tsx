@@ -20,8 +20,10 @@ const CheckElegbility = () => {
   const { isMobile } = useCheckViewport()
 
   const [isEligible, setIsEligible] = useState(0)
+  const [loading, setLoading] = useState(true)
 
   const handleCheck = async () => {
+    setLoading(true)
     scrollRequest(`${L2_SCAN_URI}api/beta/contracts?creator=${walletCurrentAddress}`, {
       headers: {
         Authorization: `Bearer ${UNIFRA_API_KEY}`,
@@ -36,6 +38,9 @@ const CheckElegbility = () => {
       })
       .catch(e => {
         setIsEligible(-1)
+      })
+      .finally(() => {
+        setLoading(false)
       })
   }
 
@@ -59,8 +64,8 @@ const CheckElegbility = () => {
       ) : (
         <>
           {chainId ? (
-            <Button color="primary" width={isMobile ? "21rem" : "25rem"} onClick={handleCheck}>
-              Check eligibility
+            <Button color="primary" width={isMobile ? "21rem" : "25rem"} loading={loading} onClick={handleCheck}>
+              {loading ? "Checking" : "Check"} eligibility
             </Button>
           ) : (
             <Button color="primary" width={isMobile ? "30.4rem" : "36.8rem"} onClick={connect}>
