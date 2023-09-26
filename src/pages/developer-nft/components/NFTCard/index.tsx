@@ -128,7 +128,9 @@ const NFTCard = props => {
               transition={{ ease: "linear", duration: 2 }}
               d={PATH_LIST[pathIndex]}
               stroke="#90F9EA"
-              stroke-width="4"
+              stroke-width="4" // why not work
+              style={{ strokeWidth: "4" }}
+              stroke-dasharray="1000"
               stroke-miterlimit="10"
               stroke-linecap="round"
             />
