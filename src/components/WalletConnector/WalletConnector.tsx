@@ -9,8 +9,9 @@ import { ReactComponent as BlockSvg } from "@/assets/svgs/refactor/nft-block.svg
 import { ReactComponent as CopySvg } from "@/assets/svgs/refactor/nft-copy.svg"
 import { ReactComponent as DisconnectSvg } from "@/assets/svgs/refactor/nft-disconnect.svg"
 import { ReactComponent as DownTriangleSvg } from "@/assets/svgs/refactor/nft-down-triangle.svg"
+import { CHAIN_ID, EXPLORER_URL } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { truncateAddress } from "@/utils"
+import { generateExploreLink, truncateAddress } from "@/utils"
 
 const useStyles = makeStyles()(theme => ({
   button: {
@@ -82,8 +83,8 @@ const WalletConnector = props => {
   }
 
   const viewScan = useCallback(() => {
-    window.open(`https://sepolia.etherscan.io/address/${walletCurrentAddress}`)
-  }, [walletCurrentAddress])
+    window.open(generateExploreLink(EXPLORER_URL[chainId === CHAIN_ID.L1 ? "L1" : "L2"], walletCurrentAddress, "address"))
+  }, [walletCurrentAddress, chainId])
 
   const copyAddress = useCallback(() => {
     copy(walletCurrentAddress as string)
