@@ -18,6 +18,7 @@ const useStyles = makeStyles()(theme => ({
     fontSize: "1.6rem",
     padding: "0.5rem 1.6rem",
     borderRadius: "1rem",
+    lineHeight: 1.5,
     border: `1px solid ${theme.palette.primary.contrastText}`,
   },
   openButton: {

@@ -14,6 +14,7 @@ import useShowWalletConnector from "@/hooks/useShowWalletToolkit"
 import Announcement from "./announcement"
 import { navigations } from "./constants"
 import useCheckNoBg from "./useCheckNoBg"
+import useCheckShowWalletConnector from "./useCheckShowWalletConnector"
 import useCheckTheme from "./useCheckTheme"
 
 const StyledBox = styled<any>(Stack)(({ theme, transparent, dark }) => ({
@@ -159,6 +160,8 @@ const App = ({ currentMenu }) => {
   const { cx } = useStyles()
   const noBg = useCheckNoBg()
   const { isDesktop } = useCheckViewport()
+
+  const showWalletConnector = useCheckShowWalletConnector()
 
   const dark = useCheckTheme()
 

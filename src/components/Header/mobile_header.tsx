@@ -12,6 +12,7 @@ import Logo from "../ScrollLogo"
 import Announcement from "./announcement"
 import { navigations } from "./constants"
 import useCheckNoBg from "./useCheckNoBg"
+import useCheckShowWalletConnector from "./useCheckShowWalletConnector"
 import useCheckTheme from "./useCheckTheme"
 
 const NavStack = styled(Stack)(({ theme }) => ({
@@ -135,6 +136,7 @@ const App = ({ currentMenu }) => {
   const showWalletConnector = useShowWalletConnector()
 
   const dark = useCheckTheme()
+  const showWalletConnector = useCheckShowWalletConnector()
   const [open, setOpen] = useState(false)
   const [activeCollapse, setActiveCollapse] = useState("")
 
