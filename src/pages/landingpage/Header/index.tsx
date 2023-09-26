@@ -1,5 +1,5 @@
 // import { Fade } from "react-awesome-reveal"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { makeStyles } from "tss-react/mui"
 
 import { Box, Tooltip, Typography } from "@mui/material"
@@ -69,6 +69,7 @@ const Header = () => {
   const { classes } = useStyles()
 
   const [isEventVisible, setIsEventVisible] = useState(false)
+  const buttonRef = useRef()
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -98,6 +99,9 @@ const Header = () => {
           <FixedTooltip
             open={isEventVisible}
             classes={{ tooltip: classes.tooltip, arrow: classes.arrow }}
+            PopperProps={{
+              container: buttonRef.current,
+            }}
             title={
               <Typography sx={{ fontSize: ["1.6rem", "1.8rem"], lineHeight: "2.4rem" }}>
                 Mint your{" "}
@@ -108,7 +112,7 @@ const Header = () => {
             }
             arrow
           >
-            <Box>
+            <Box ref={buttonRef}>
               <Button target="_blank" href="https://docs.scroll.io/en/home/">
                 Start building
               </Button>
