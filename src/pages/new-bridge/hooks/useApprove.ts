@@ -22,8 +22,15 @@ const useApprove = (fromNetwork, selectedToken, amount) => {
   }, [fromNetwork, selectedToken])
 
   const tokenInstance = useMemo(() => {
-    if (networksAndSigners[chainId as number]?.signer && !selectedToken.native) {
-      return new ethers.Contract((selectedToken as ERC20Token).address, L1_erc20ABI, networksAndSigners[chainId as number].signer)
+    // ETH & L2 ERC20 don't need approval
+    const hasSigner = networksAndSigners[chainId as number]?.signer
+    const isNativeToken = selectedToken.native
+    const isL2Erc20 = !fromNetwork.isL1 && selectedToken.symbol !== WETH_SYMBOL
+
+    if (hasSigner && !isNativeToken && !isL2Erc20) {
+      const { address } = selectedToken as ERC20Token
+      const { signer } = networksAndSigners[chainId as number]
+      return new ethers.Contract(address, L1_erc20ABI, signer)
     }
     return null
   }, [selectedToken, networksAndSigners[chainId as number]])
@@ -45,9 +52,6 @@ const useApprove = (fromNetwork, selectedToken, amount) => {
   }
 
   useEffect(() => {
-    if ((selectedToken as NativeToken).native || !tokenInstance) {
-      setIsNeeded(false)
-    }
     checkApproval(selectedToken, amount).then(needApproval => {
       setIsNeeded(needApproval)
     })
