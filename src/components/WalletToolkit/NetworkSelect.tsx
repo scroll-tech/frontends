@@ -1,12 +1,13 @@
 import { useMemo, useState } from "react"
 import { makeStyles } from "tss-react/mui"
 
-import { ButtonBase, Fade, ListItemIcon, ListItemText, Menu, MenuItem, SvgIcon } from "@mui/material"
+import { ButtonBase, Fade, ListItemIcon, ListItemText, Menu, MenuItem, SvgIcon, Tooltip } from "@mui/material"
 
 import { ReactComponent as DownTriangleSvg } from "@/assets/svgs/refactor/wallet-connector-down-triangle.svg"
+import { ReactComponent as WrongNetworkSvg } from "@/assets/svgs/refactor/wallet-connector-wrong-network.svg"
 import { NETWORKS } from "@/constants"
-
-// TODO: logic
+import { useRainbowContext } from "@/contexts/RainbowProvider"
+import { switchNetwork } from "@/utils"
 
 const useStyles = makeStyles<any>()((theme, { dark }) => ({
   button: {
@@ -23,6 +24,17 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
   },
   reverseEndIcon: {
     transform: "rotateX(180deg)",
+  },
+  tooltip: {
+    color: "#756A67",
+    backgroundColor: "#F1F0F0",
+    fontSize: "1.2rem",
+    padding: "0.8rem 1.6rem",
+    lineHeight: "1.6rem",
+    marginRight: "0.8rem !important",
+  },
+  arrow: {
+    color: "#F1F0F0",
   },
   paper: {
     marginTop: "0.6rem",
@@ -54,9 +66,15 @@ const WalletConnector = props => {
   const { sx, dark } = props
   const { classes, cx } = useStyles({ dark })
 
+  const { chainId } = useRainbowContext()
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
   const open = useMemo(() => Boolean(anchorEl), [anchorEl])
+
+  const isThirdPartyNetwork = useMemo(() => !NETWORKS.find(item => item.chainId === chainId), [chainId])
+
+  const currentNetworkIcon = useMemo(() => NETWORKS.find(item => item.chainId === chainId)?.icon ?? WrongNetworkSvg, [chainId])
 
   const handleClick = e => {
     setAnchorEl(e.currentTarget)
@@ -66,18 +84,30 @@ const WalletConnector = props => {
     setAnchorEl(null)
   }
 
-  const handleSelectNetwork = () => {}
+  const handleSwitchNetwork = chainId => {
+    switchNetwork(chainId).then(() => {
+      handleClose()
+    })
+  }
 
   return (
     <>
-      <ButtonBase classes={{ root: classes.button }} sx={sx} onClick={handleClick}>
-        <SvgIcon sx={{ fontSize: "2.4rem" }} component={NETWORKS[0].icon} inheritViewBox></SvgIcon>
-        <SvgIcon className={cx(classes.endIcon, open && classes.reverseEndIcon)} component={DownTriangleSvg} inheritViewBox></SvgIcon>
-      </ButtonBase>
-
+      {isThirdPartyNetwork ? (
+        <Tooltip title="The current network is not supported" classes={{ tooltip: classes.tooltip, arrow: classes.arrow }} placement="left" arrow>
+          <ButtonBase classes={{ root: classes.button }} sx={sx} onClick={handleClick}>
+            <SvgIcon sx={{ fontSize: "1.8rem" }} component={currentNetworkIcon} inheritViewBox></SvgIcon>
+            <SvgIcon className={cx(classes.endIcon, open && classes.reverseEndIcon)} component={DownTriangleSvg} inheritViewBox></SvgIcon>
+          </ButtonBase>
+        </Tooltip>
+      ) : (
+        <ButtonBase classes={{ root: classes.button }} sx={sx} onClick={handleClick}>
+          <SvgIcon sx={{ fontSize: isThirdPartyNetwork ? "1.8rem" : "2.4rem" }} component={currentNetworkIcon} inheritViewBox></SvgIcon>
+          <SvgIcon className={cx(classes.endIcon, open && classes.reverseEndIcon)} component={DownTriangleSvg} inheritViewBox></SvgIcon>
+        </ButtonBase>
+      )}
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose} TransitionComponent={Fade} classes={{ paper: classes.paper, list: classes.list }}>
-        {NETWORKS.map(({ icon, name }) => (
-          <MenuItem key={name} classes={{ root: classes.listItem }} onClick={handleSelectNetwork}>
+        {NETWORKS.map(({ icon, name, chainId }) => (
+          <MenuItem key={name} classes={{ root: classes.listItem }} onClick={() => handleSwitchNetwork(chainId)}>
             <ListItemIcon classes={{ root: classes.listItemIcon }}>
               <SvgIcon sx={{ fontSize: "2.4rem" }} component={icon} inheritViewBox></SvgIcon>
             </ListItemIcon>

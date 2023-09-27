@@ -30,7 +30,7 @@ const BridgeHistoryButton = props => {
 
   return (
     <ButtonBase classes={{ root: classes.button }} {...props} onClick={handleOpenHistory}>
-      <SvgIcon sx={{ fontSize: "1.6rem" }} component={HistorySvg} inheritViewBox></SvgIcon>
+      <SvgIcon sx={{ fontSize: "1.8rem" }} component={HistorySvg} inheritViewBox></SvgIcon>
       {!isMobile && "History"}
     </ButtonBase>
   )

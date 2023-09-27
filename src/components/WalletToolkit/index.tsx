@@ -2,6 +2,7 @@ import { useLocation } from "react-router-dom"
 
 import { Stack } from "@mui/material"
 
+import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
 import BridgeHistoryButton from "./BridgeHistoryButton"
@@ -12,11 +13,12 @@ const WalletToolkit = props => {
   const { dark } = props
   const { pathname } = useLocation()
   const { isMobile } = useCheckViewport()
+  const { chainId } = useRainbowContext()
 
   return (
     <Stack direction="row" spacing="0.8rem">
-      {!isMobile && <NetworkIndicator></NetworkIndicator>}
-      {pathname === "/bridge" && <BridgeHistoryButton></BridgeHistoryButton>}
+      {chainId && !isMobile && <NetworkIndicator></NetworkIndicator>}
+      {chainId && pathname === "/bridge" && <BridgeHistoryButton></BridgeHistoryButton>}
       <WalletDropdown dark={dark}></WalletDropdown>
     </Stack>
   )

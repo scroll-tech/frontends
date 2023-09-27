@@ -8,9 +8,14 @@ import useBridgeStore from "@/stores/bridgeStore"
 import TxHistoryTable from "./TxHistoryTable"
 
 const useStyles = makeStyles()(theme => ({
+  root: {
+    ".MuiBackdrop-root": {
+      backgroundColor: theme.palette.primary.contrastText,
+    },
+  },
   paper: {
     backgroundColor: theme.palette.themeBackground.optionHightlight,
-
+    boxShadow: "unset",
     [theme.breakpoints.down("sm")]: {
       maxWidth: "unset",
     },
@@ -24,7 +29,7 @@ const TxHistoryDialog = (props: any) => {
     changeHistoryVisible(false)
   }
   return (
-    <Dialog maxWidth={false} open={historyVisible} classes={{ paper: classes.paper }} onClose={handleClose}>
+    <Dialog maxWidth={false} open={historyVisible} classes={{ root: classes.root, paper: classes.paper }} onClose={handleClose}>
       <DialogTitle
         sx={{
           m: 0,

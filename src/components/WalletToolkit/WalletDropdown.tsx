@@ -30,7 +30,11 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
     borderBottomColor: "transparent",
   },
   connectButton: {
+    fontFamily: "var(--onboard-font-family-normal)",
     backgroundColor: "#FF684B",
+    color: theme.palette.primary.contrastText,
+    fontSize: "1.8rem",
+    fontWeight: 500,
   },
   endIcon: {
     fontSize: "1.6rem",
