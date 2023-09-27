@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react"
 
 import L1_erc20ABI from "@/assets/abis/L1_erc20ABI.json"
 import { GATEWAY_ROUTE_PROXY_ADDR, WETH_GATEWAY_PROXY_ADDR, WETH_SYMBOL } from "@/constants"
+import { CHAIN_ID } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { amountToBN } from "@/utils"
@@ -25,7 +26,7 @@ const useApprove = (fromNetwork, selectedToken, amount) => {
     // ETH & L2 ERC20 don't need approval
     const hasSigner = networksAndSigners[chainId as number]?.signer
     const isNativeToken = selectedToken.native
-    const isL2Erc20 = !fromNetwork.isL1 && selectedToken.symbol !== WETH_SYMBOL
+    const isL2Erc20 = selectedToken.chainId === CHAIN_ID.L2 && selectedToken.symbol !== WETH_SYMBOL
 
     if (hasSigner && !isNativeToken && !isL2Erc20) {
       const { address } = selectedToken as ERC20Token
