@@ -15,12 +15,12 @@ export interface TxHistory {
 
 const useClaim = () => {
   const { walletCurrentAddress } = useRainbowContext()
-  const { txType, withDrawStep } = useBridgeStore()
+  const { txType, withDrawStep, mode } = useBridgeStore()
 
   const { comboPageTransactions, pageTransactions, generateTransactions } = useClaimStore()
 
   const isOnClaimPage = useMemo(() => {
-    return txType === "Withdraw" && withDrawStep === "2"
+    return mode === "Transaction" && txType === "Withdraw" && withDrawStep === "2"
   }, [txType, withDrawStep])
 
   const [errorMessage, setErrorMessage] = useState("")
