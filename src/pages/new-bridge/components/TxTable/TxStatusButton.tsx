@@ -60,11 +60,12 @@ const useStyles = makeStyles()(theme => {
 const TxStatus = props => {
   const { toStatus, tx, fromStatus, finalizedIndex } = props
   const { classes, cx } = useStyles()
-  const { changeMode, changeTxType, changeWithdrawStep } = useBridgeStore()
+  const { changeTxType, changeWithdrawStep, changeHistoryVisible } = useBridgeStore()
   const { setTargetTransaction } = useClaimStore()
 
   const moveToClaim = () => {
-    changeMode("Transaction")
+    changeHistoryVisible("false")
+
     changeTxType("Withdraw")
     changeWithdrawStep("2")
     setTargetTransaction(tx.hash)

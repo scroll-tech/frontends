@@ -5,6 +5,9 @@ import { Box, Container, Fade, Link, Popper, Stack } from "@mui/material"
 import { styled } from "@mui/system"
 
 import Logo from "@/components/ScrollLogo"
+import WalletToolkit from "@/components/WalletToolkit"
+import useCheckViewport from "@/hooks/useCheckViewport"
+import useShowWalletConnector from "@/hooks/useShowWalletToolkit"
 
 import Announcement from "./announcement"
 import { navigations } from "./constants"
@@ -61,13 +64,12 @@ const ExternalLink = styled("p")(({ theme }) => ({
 const LinkStyledButton = styled(NavLink)(({ theme }) => ({
   fontSize: "1.8rem",
   fontWeight: 400,
-  paddingLeft: "10px",
-  paddingRight: "10px",
   marginLeft: "0.5rem",
   marginRight: "0.5rem",
   lineHeight: "65px",
   position: "relative",
   color: theme.palette.text.primary,
+  whiteSpace: "nowrap",
   "&:hover": {
     fontWeight: 500,
   },
@@ -79,8 +81,6 @@ const LinkStyledButton = styled(NavLink)(({ theme }) => ({
 const SubMenuButton = styled(Box)(({ theme }) => ({
   fontSize: "1.8rem",
   fontWeight: 400,
-  paddingLeft: "2rem",
-  paddingRight: "2rem",
   marginLeft: "0.5rem",
   marginRight: "0.5rem",
   lineHeight: "65px",
@@ -158,8 +158,11 @@ const LinkStyledSubButton = styled(NavLink)(({ theme }) => ({
 
 const App = ({ currentMenu }) => {
   const noBg = useCheckNoBg()
+  const { isDesktop } = useCheckViewport()
 
   const [checked, setChecked] = useState("")
+
+  const showWalletConnector = useShowWalletConnector()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
@@ -245,7 +248,7 @@ const App = ({ currentMenu }) => {
 
   const renderNavigationList = () => {
     return (
-      <Stack direction="row" justifyContent="space-between" alignItems="center">
+      <Stack direction="row" spacing={isDesktop ? "4.4rem" : "2rem"} justifyContent="space-between" alignItems="center">
         {navigations.map(item => (
           <React.Fragment key={item.key}>{renderNavigationItem(item)}</React.Fragment>
         ))}
@@ -261,7 +264,10 @@ const App = ({ currentMenu }) => {
           <NavLink to="/" className="flex">
             <Logo />
           </NavLink>
-          <Box>{renderNavigationList()}</Box>
+          <Stack direction="row" spacing={isDesktop ? "4.4rem" : "2rem"} alignItems="center">
+            <Box>{renderNavigationList()}</Box>
+            {showWalletConnector && <WalletToolkit></WalletToolkit>}
+          </Stack>
         </HeaderContainer>
       </Container>
     </StyledBox>

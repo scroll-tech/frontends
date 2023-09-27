@@ -6,18 +6,16 @@ import { ButtonBase, Fade, ListItemIcon, ListItemText, Menu, MenuItem, SvgIcon }
 import { ReactComponent as DownTriangleSvg } from "@/assets/svgs/refactor/wallet-connector-down-triangle.svg"
 import { NETWORKS } from "@/constants"
 
-const useStyles = makeStyles()(theme => ({
+// TODO: logic
+
+const useStyles = makeStyles<any>()((theme, { dark }) => ({
   button: {
-    fontFamily: "var(--developer-page-font-family)",
-    fontSize: "1.6rem",
-    padding: "0.5rem 1.6rem",
-    borderRadius: "1rem",
-    lineHeight: 1.5,
-    border: `1px solid ${theme.palette.primary.contrastText}`,
-  },
-  openButton: {
-    borderRadius: "1rem 1rem 0 0",
-    borderBottomColor: "transparent",
+    height: "3.6rem",
+    padding: "0 1.2rem",
+    border: dark ? `1px solid ${theme.palette.primary.contrastText}` : "none",
+    backgroundColor: dark ? "unset" : theme.palette.themeBackground.normal,
+    color: "#473835",
+    borderRadius: "0.5rem",
   },
   endIcon: {
     fontSize: "1.6rem",
@@ -27,19 +25,18 @@ const useStyles = makeStyles()(theme => ({
     transform: "rotateX(180deg)",
   },
   paper: {
-    borderRadius: "0 0 1rem 1rem",
-    border: `1px solid ${theme.palette.primary.contrastText}`,
-    backgroundColor: theme.palette.themeBackground.dark,
+    marginTop: "0.6rem",
+    borderRadius: "0.5rem",
+    border: dark ? `1px solid ${theme.palette.primary.contrastText}` : "none",
+    backgroundColor: dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.normal,
     borderTop: "none",
-    marginTop: -1.5,
   },
   list: {
-    padding: 0,
+    padding: "0.8rem 0",
   },
   listItem: {
-    height: "3.6rem",
-    padding: "0 1.6rem",
-    gap: "0.9rem",
+    padding: "0.8rem 1.2rem",
+    gap: "0.8rem",
   },
   listItemIcon: {
     minWidth: "unset !important",
@@ -49,47 +46,40 @@ const useStyles = makeStyles()(theme => ({
     fontSize: "1.6rem",
     fontFamily: "var(--developer-page-font-family)",
     cursor: "pointer",
-    color: theme.palette.primary.contrastText,
+    color: dark ? theme.palette.primary.contrastText : "#473835",
   },
 }))
 
 const WalletConnector = props => {
-  const { sx } = props
-  const { classes, cx } = useStyles()
+  const { sx, dark } = props
+  const { classes, cx } = useStyles({ dark })
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const [anchorWidth, setAnchorWidth] = useState(0)
 
   const open = useMemo(() => Boolean(anchorEl), [anchorEl])
 
   const handleClick = e => {
     setAnchorEl(e.currentTarget)
-    setAnchorWidth(e.currentTarget.offsetWidth)
   }
 
   const handleClose = () => {
     setAnchorEl(null)
   }
 
+  const handleSelectNetwork = () => {}
+
   return (
     <>
-      <ButtonBase classes={{ root: cx(classes.button, open && classes.openButton) }} sx={sx} onClick={handleClick}>
-        <SvgIcon></SvgIcon>
+      <ButtonBase classes={{ root: classes.button }} sx={sx} onClick={handleClick}>
+        <SvgIcon sx={{ fontSize: "2.4rem" }} component={NETWORKS[0].icon} inheritViewBox></SvgIcon>
         <SvgIcon className={cx(classes.endIcon, open && classes.reverseEndIcon)} component={DownTriangleSvg} inheritViewBox></SvgIcon>
       </ButtonBase>
 
-      <Menu
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        TransitionComponent={Fade}
-        sx={{ ".MuiMenu-paper": { width: anchorWidth } }}
-        classes={{ paper: classes.paper, list: classes.list }}
-      >
+      <Menu anchorEl={anchorEl} open={open} onClose={handleClose} TransitionComponent={Fade} classes={{ paper: classes.paper, list: classes.list }}>
         {NETWORKS.map(({ icon, name }) => (
-          <MenuItem key={name} classes={{ root: classes.listItem }}>
+          <MenuItem key={name} classes={{ root: classes.listItem }} onClick={handleSelectNetwork}>
             <ListItemIcon classes={{ root: classes.listItemIcon }}>
-              <SvgIcon sx={{ fontSize: "1.6rem" }} component={icon} inheritViewBox></SvgIcon>
+              <SvgIcon sx={{ fontSize: "2.4rem" }} component={icon} inheritViewBox></SvgIcon>
             </ListItemIcon>
             <ListItemText classes={{ primary: classes.listItemText }}>{name}</ListItemText>
           </MenuItem>

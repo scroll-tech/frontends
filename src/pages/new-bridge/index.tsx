@@ -8,19 +8,14 @@ import SectionWrapper from "@/components/SectionWrapper"
 import { NETWORKS } from "@/constants"
 import AppProvider from "@/contexts/AppContextProvider"
 import { PriceFeeProvider } from "@/contexts/PriceFeeProvider"
-import useCheckViewport from "@/hooks/useCheckViewport"
 import useBridgeStore from "@/stores/bridgeStore"
 
-import ConnectorAndHistory from "./ConnectorAndHistory"
-import NetworkIndicator from "./ConnectorAndHistory/NetworkIndicator"
 import FAQsLink from "./FAQ/link"
 import Send from "./Send"
-import TxHistory from "./TxHistory"
+import TxHistoryDialog from "./TxHistoryDialog"
 
 const Bridge = () => {
-  const { isMobile } = useCheckViewport()
-
-  const { mode, txType, changeFromNetwork, changeToNetwork } = useBridgeStore()
+  const { txType, changeFromNetwork, changeToNetwork } = useBridgeStore()
 
   useEffect(() => {
     if (txType === "Deposit") {
@@ -48,24 +43,13 @@ const Bridge = () => {
             maxWidth: ["100% !important"],
           }}
         >
-          <Stack direction="row" sx={{ width: "100%" }} spacing="4px" justifyContent="space-between" alignItems="center">
+          <Stack direction="row" sx={{ width: "100%", mb: ["3rem", "5rem"] }} spacing="4px" justifyContent="space-between" alignItems="center">
             <Typography sx={{ fontSize: ["4rem", "4.8rem"], fontWeight: 600, textAlign: "center", width: "100%", whiteSpace: "nowrap" }}>
               Bridge into Scroll
             </Typography>
-            {isMobile && <NetworkIndicator></NetworkIndicator>}
           </Stack>
-
-          <ConnectorAndHistory
-            sx={{
-              mt: "4rem",
-              mb: ["2rem", "3rem"],
-              width: ["100%", "51.6rem"],
-              "& *": {
-                fontFamily: "var(--developer-page-font-family) !important",
-              },
-            }}
-          ></ConnectorAndHistory>
-          {mode === "Transaction" ? <Send></Send> : <TxHistory></TxHistory>}
+          <Send></Send>
+          <TxHistoryDialog></TxHistoryDialog>
           <FAQsLink />
         </SectionWrapper>
       </PriceFeeProvider>

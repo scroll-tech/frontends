@@ -13,56 +13,64 @@ import { CHAIN_ID, EXPLORER_URL } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { generateExploreLink, truncateAddress } from "@/utils"
 
-const useStyles = makeStyles()(theme => ({
+const useStyles = makeStyles<any>()((theme, { dark }) => ({
   button: {
     fontFamily: "var(--developer-page-font-family)",
     fontSize: "1.6rem",
-    padding: "0.5rem 1.6rem",
-    borderRadius: "1rem",
-    lineHeight: 1.5,
-    border: `1px solid ${theme.palette.primary.contrastText}`,
+    height: "3.6rem",
+    padding: "0 1.2rem",
+    borderRadius: "0.5rem",
+    border: dark ? `1px solid ${theme.palette.primary.contrastText}` : "none",
+    backgroundColor: dark ? "unset" : theme.palette.themeBackground.normal,
+    color: dark ? theme.palette.primary.contrastText : "#473835",
+    whiteSpace: "nowrap",
   },
   openButton: {
     borderRadius: "1rem 1rem 0 0",
     borderBottomColor: "transparent",
   },
+  connectButton: {
+    backgroundColor: "#FF684B",
+  },
   endIcon: {
     fontSize: "1.6rem",
     marginLeft: "0.8rem",
+    color: dark ? theme.palette.primary.contrastText : "#473835",
   },
   reverseEndIcon: {
     transform: "rotateX(180deg)",
   },
   paper: {
-    borderRadius: "0 0 1rem 1rem",
-    border: `1px solid ${theme.palette.primary.contrastText}`,
-    backgroundColor: theme.palette.themeBackground.dark,
+    borderRadius: "0 0 0.5rem 0.5rem",
+    border: dark ? `1px solid ${theme.palette.primary.contrastText}` : "none",
+    backgroundColor: dark ? "unset" : theme.palette.themeBackground.normal,
     borderTop: "none",
     marginTop: -1.5,
   },
   list: {
-    padding: 0,
+    padding: "0.4rem 0 0",
   },
   listItem: {
-    height: "3.6rem",
-    padding: "0 1.6rem",
-    gap: "0.9rem",
+    height: "4rem",
+    padding: "0 1.2rem",
+    gap: "0.8rem",
   },
   listItemIcon: {
     minWidth: "unset !important",
+    color: dark ? theme.palette.primary.contrastText : "#473835",
   },
 
   listItemText: {
     fontSize: "1.6rem",
     fontFamily: "var(--developer-page-font-family)",
     cursor: "pointer",
-    color: theme.palette.primary.contrastText,
+    color: dark ? theme.palette.primary.contrastText : "#473835",
   },
 }))
 
 const WalletDropdown = props => {
-  const { sx } = props
-  const { classes, cx } = useStyles()
+  const { sx, dark } = props
+  const { classes, cx } = useStyles({ dark })
 
   const { walletCurrentAddress, connect, disconnect, chainId } = useRainbowContext()
 
@@ -119,7 +127,7 @@ const WalletDropdown = props => {
           <SvgIcon className={cx(classes.endIcon, open && classes.reverseEndIcon)} component={DownTriangleSvg} inheritViewBox></SvgIcon>
         </ButtonBase>
       ) : (
-        <ButtonBase classes={{ root: classes.button }} sx={sx} onClick={connect}>
+        <ButtonBase classes={{ root: cx(classes.button, classes.connectButton) }} sx={sx} onClick={connect}>
           Connect Wallet
         </ButtonBase>
       )}
