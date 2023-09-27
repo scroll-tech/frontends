@@ -21,7 +21,7 @@ const useClaim = () => {
 
   const isOnClaimPage = useMemo(() => {
     return mode === "Transaction" && txType === "Withdraw" && withDrawStep === "2"
-  }, [txType, withDrawStep])
+  }, [mode, txType, withDrawStep])
 
   const [errorMessage, setErrorMessage] = useState("")
 
