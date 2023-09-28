@@ -16,8 +16,8 @@ const useStyles = makeStyles()(theme => ({
   },
   tabFlex: {
     width: "100%",
-    gap: "4rem",
     justifyContent: "center",
+    borderBottom: "1px solid #5b5b5b",
     [theme.breakpoints.down("sm")]: {
       gap: "2rem",
     },
@@ -30,17 +30,19 @@ const useStyles = makeStyles()(theme => ({
     textTransform: "unset",
     color: theme.palette.text.primary,
     padding: 0,
-
+    width: "26.6rem",
     "&.Mui-selected": {
       color: theme.palette.text.primary,
     },
     [theme.breakpoints.down("sm")]: {
       fontSize: "1.4rem",
+      padding: "0 1rem",
+      width: "unset",
     },
   },
   indicator: {
-    height: "3px",
-    backgroundColor: theme.palette.text.primary,
+    height: "4px",
+    backgroundColor: "#FF684B",
   },
   tabPanel: {
     backgroundColor: theme.palette.themeBackground.optionHightlight,
