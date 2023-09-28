@@ -15,13 +15,8 @@ import Connector from "./Connector"
 const useStyles = makeStyles()(theme => ({
   stepper: {
     marginTop: "2.4rem",
-    maxWidth: "98rem",
+    maxWidth: "64rem",
     width: "100%",
-    [theme.breakpoints.down("sm")]: {
-      flexDirection: "column",
-      gap: 8,
-      height: "24rem",
-    },
   },
   step: {
     "&.Mui-completed span": {
@@ -32,9 +27,6 @@ const useStyles = makeStyles()(theme => ({
     flexDirection: "column",
     gap: 8,
     alignItems: "center",
-    [theme.breakpoints.down("sm")]: {
-      flexDirection: "row",
-    },
   },
   stepLabelContainer: {
     textAlign: "center",
@@ -48,9 +40,8 @@ const useStyles = makeStyles()(theme => ({
     fontWeight: "600 !important",
     lineHeight: "normal",
     [theme.breakpoints.down("sm")]: {
-      fontSize: "1.6rem",
+      fontSize: "1.8rem",
       lineHeight: "1.5",
-      textAlign: "left",
     },
   },
 }))
@@ -73,16 +64,16 @@ const NFTStepper = () => {
   const { phrase } = useNFTStore()
 
   const activeStep = useMemo(() => {
-    if (phrase === "warm-up") {
+    if (phrase === "in-progress") {
       return 0
-    } else if (phrase === "in-progress") {
+    } else if (phrase === "end") {
       return 1
     }
-    return 2
+    return -1
   }, [phrase])
 
   useEffect(() => {
-    if (activeStep === 2) {
+    if (activeStep === 1) {
       navigate("/developer-nft/mint")
     }
   }, [activeStep])

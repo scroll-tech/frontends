@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react"
+import { useEffect } from "react"
 import Countdown, { zeroPad } from "react-countdown"
 
 import { Stack, Typography } from "@mui/material"
@@ -21,22 +21,13 @@ const Separator = styled(Typography)(({ theme }) => ({
 const Header = () => {
   const { phrase, changePhrase, checkPhrase } = useNFTStore()
 
-  const nftCountdown = useMemo(() => {
-    if (phrase === "warm-up") {
-      return ["starts", DEVELOPER_NFT_PHRASES.Starts]
-    }
-    return ["ends", DEVELOPER_NFT_PHRASES.Ends]
-  }, [phrase])
-
   useEffect(() => {
     checkPhrase()
   }, [])
 
   const renderCountDown = ({ total, days, hours, minutes, seconds, completed }) => {
     if (completed) {
-      if (phrase === "warm-up") {
-        changePhrase("in-progress")
-      } else if (phrase === "in-progress") {
+      if (phrase === "in-progress") {
         changePhrase("end")
       }
       return null
@@ -64,8 +55,8 @@ const Header = () => {
         }}
       ></NFTCard>
       <Typography sx={{ fontSize: ["4rem", "7.8rem"], lineHeight: ["5.6rem", "8.5rem"], fontWeight: 600 }}>Scroll Origins</Typography>
-      <Typography sx={{ fontSize: ["1.6rem", "2.4rem"], fontWeight: 600 }}>Program {nftCountdown[0]} in</Typography>
-      <Countdown key={phrase} date={nftCountdown[1]} renderer={renderCountDown}></Countdown>
+      <Typography sx={{ fontSize: ["1.6rem", "2.4rem"], fontWeight: 600 }}>Program ends in</Typography>
+      <Countdown date={DEVELOPER_NFT_PHRASES.Ends} renderer={renderCountDown}></Countdown>
     </Stack>
   )
 }

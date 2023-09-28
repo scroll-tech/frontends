@@ -2,7 +2,7 @@ import { create } from "zustand"
 
 import { DEVELOPER_NFT_PHRASES } from "@/constants"
 
-type Phrase = "warm-up" | "in-progress" | "end"
+type Phrase = "" | "in-progress" | "end"
 
 interface NFTStore {
   phrase: Phrase
@@ -11,7 +11,7 @@ interface NFTStore {
 }
 
 const useNFTStore = create<NFTStore>()((set, get) => ({
-  phrase: "warm-up",
+  phrase: "",
 
   changePhrase: value => {
     set({
@@ -21,9 +21,9 @@ const useNFTStore = create<NFTStore>()((set, get) => ({
 
   checkPhrase: () => {
     const current = Date.now()
-    if (current > DEVELOPER_NFT_PHRASES.Announces && current < DEVELOPER_NFT_PHRASES.Starts) {
+    if (current < DEVELOPER_NFT_PHRASES.Starts) {
       set({
-        phrase: "warm-up",
+        phrase: "",
       })
     } else if (current > DEVELOPER_NFT_PHRASES.Starts && current < DEVELOPER_NFT_PHRASES.Ends) {
       set({

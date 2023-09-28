@@ -1,5 +1,4 @@
 import SectionWrapper from "@/components/SectionWrapper"
-import useNFTStore from "@/stores/nftStore"
 
 import CheckElegbility from "./CheckElegbility"
 import Header from "./Header"
@@ -7,7 +6,6 @@ import Statement from "./Statement"
 import Stepper from "./Stepper"
 
 const ComingSoon = () => {
-  const { phrase } = useNFTStore()
   return (
     <SectionWrapper
       dark
@@ -23,7 +21,7 @@ const ComingSoon = () => {
       <Header></Header>
       <Stepper></Stepper>
       <Statement></Statement>
-      {phrase === "in-progress" && <CheckElegbility></CheckElegbility>}
+      <CheckElegbility></CheckElegbility>
     </SectionWrapper>
   )
 }
