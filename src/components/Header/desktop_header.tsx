@@ -23,7 +23,8 @@ const StyledBox = styled<any>(Stack)(({ theme, transparent }) => ({
 
 const StyledPopper = styled<any>(Popper)(({ theme, transparent }) => ({
   backgroundColor: transparent ? "transparent" : theme.palette.themeBackground.light,
-  paddingBottom: "1rem",
+  padding: "0 2rem 1rem",
+  marginLeft: "-2rem !important",
 }))
 
 const HeaderContainer = styled(Box)(({ theme }) => ({
@@ -102,13 +103,9 @@ const SubMenuButton = styled(Box)(({ theme }) => ({
 }))
 
 const SubMenuList = styled(Box)(({ theme }) => ({
-  left: 0,
-  zIndex: 1,
-  borderRadius: `${theme.shape.borderRadius}px`,
   display: "flex",
   flexDirection: "column",
   overflow: "hidden",
-  padding: "0 2rem",
 }))
 
 const SectionList = styled(Box)(({ theme }) => ({
@@ -222,7 +219,7 @@ const App = ({ currentMenu }) => {
               />
             </svg>
           </Stack>
-          <StyledPopper open={item.key === checked} placement="bottom-start" anchorEl={anchorEl} transition transparent={noBg}>
+          <StyledPopper key={item.key} open={item.key === checked} placement="bottom-start" anchorEl={anchorEl} transition transparent={noBg}>
             {({ TransitionProps }) => (
               <Fade {...TransitionProps}>
                 <SubMenuList onClick={handleMouseLeave}>{renderSubMenuList(item.children)}</SubMenuList>
