@@ -45,7 +45,6 @@ const useStyles = makeStyles()(theme => {
       // maxWidth: "70rem",
       backgroundColor: theme.palette.themeBackground.optionHightlight,
       padding: "0 3rem 3rem",
-      position: "relative",
       [theme.breakpoints.down("sm")]: {
         width: "calc(100vw - 4rem)",
         padding: "0 2rem 2rem",
