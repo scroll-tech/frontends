@@ -111,7 +111,7 @@ const ListItemTextStyled = styled(ListItemText)(({ theme }) => ({
 }))
 
 const ErrorBoxStyled = styled(Box)(({ theme }) => ({
-  color: "red",
+  color: "#FF684B",
   fontSize: "1.3rem",
   fontWeight: 400,
   marginTop: "1rem",
@@ -277,7 +277,7 @@ function List(props: TokenListProps) {
         </Box>
         {filteredTokens.length === 0 && !loading ? (
           <ErrorBoxStyled>
-            Sorry, there are no token found. <br />
+            No results found. <br />
             Please enter a valid token name or address.
           </ErrorBoxStyled>
         ) : null}
