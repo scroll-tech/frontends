@@ -53,7 +53,11 @@ const useStyles = makeStyles()(theme => ({
   },
   tabPanel: {
     backgroundColor: theme.palette.themeBackground.optionHightlight,
-    padding: "2.4rem 5.4rem",
+    padding: "3rem 5.4rem",
+    "&.tx": {
+      padding: "3rem",
+    },
+
     [theme.breakpoints.down("sm")]: {
       padding: "3rem 2rem 2rem",
     },

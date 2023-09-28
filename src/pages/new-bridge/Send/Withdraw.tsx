@@ -18,6 +18,8 @@ const useStyles = makeStyles()(theme => ({
     width: "100%",
     justifyContent: "center",
     borderBottom: "1px solid #5b5b5b",
+    maxWidth: "52rem",
+    margin: "0 auto",
     [theme.breakpoints.down("sm")]: {
       gap: "2rem",
     },
@@ -30,7 +32,7 @@ const useStyles = makeStyles()(theme => ({
     textTransform: "unset",
     color: theme.palette.text.primary,
     padding: 0,
-    width: "26.6rem",
+    width: "26rem",
     "&.Mui-selected": {
       color: theme.palette.text.primary,
     },
