@@ -24,8 +24,8 @@ const StyledBox = styled<any>(Stack)(({ theme, transparent, dark }) => ({
   backgroundColor: transparent ? "transparent" : dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.light,
 }))
 
-const StyledPopper = styled<any>(Popper)(({ theme, transparent }) => ({
-  backgroundColor: transparent ? "transparent" : theme.palette.themeBackground.light,
+const StyledPopper = styled<any>(Popper)(({ theme, transparent, dark }) => ({
+  backgroundColor: transparent ? "transparent" : dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.light,
   padding: "0 2rem 1rem",
   marginLeft: "-2rem !important",
 }))
