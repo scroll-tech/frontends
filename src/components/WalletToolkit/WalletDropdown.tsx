@@ -26,7 +26,7 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
     whiteSpace: "nowrap",
   },
   openButton: {
-    borderRadius: "1rem 1rem 0 0",
+    borderRadius: "0.5rem 0.5rem 0 0",
     borderBottomColor: "transparent",
   },
   connectButton: {
