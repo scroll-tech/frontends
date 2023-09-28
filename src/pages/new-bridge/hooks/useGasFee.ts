@@ -17,6 +17,7 @@ const useGasFee = selectedToken => {
 
   const [gasFee, setGasFee] = useState(BigInt(0))
   const [gasLimit, setGasLimit] = useState(BigInt(0))
+  const [error, setError] = useState("")
 
   const calculateGasFee = async () => {
     const { maxFeePerGas, gasPrice: rawGasPrice } = await networksAndSigners[fromNetwork.chainId].provider.getFeeData()
@@ -34,15 +35,16 @@ const useGasFee = selectedToken => {
         .then(value => {
           setGasFee(value.gasFee)
           setGasLimit(value.gasLimit)
+          setError("")
         })
         .catch(error => {
-          // console.log(error, "useGasFee limit error")
           setGasFee(BigInt(0))
           setGasLimit(BigInt(0))
+          setError(error.message)
         })
     },
   })
-  return { gasLimit, gasFee }
+  return { gasLimit, gasFee, error, calculateGasFee }
 }
 
 export default useGasFee

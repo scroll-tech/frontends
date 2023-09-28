@@ -61,7 +61,7 @@ const SendTransaction = props => {
 
   const invalidAmountMessage = useCheckValidAmount(amount)
   // fee start
-  const { gasFee: estimatedGasCost } = useGasFee(selectedToken)
+  const { gasFee: estimatedGasCost, error: estimatedGasCostError, calculateGasFee } = useGasFee(selectedToken)
 
   const totalFee = useMemo(() => estimatedGasCost + gasLimit * gasPrice, [estimatedGasCost, gasLimit, gasPrice])
 
@@ -77,11 +77,11 @@ const SendTransaction = props => {
     if (!isNetworkCorrect || !amount) {
       return <Typography>-</Typography>
     }
-    if (priceFeeErrorMessage) {
+    if (priceFeeErrorMessage || estimatedGasCostError) {
       return <Typography sx={{ color: "primary.main" }}>-</Typography>
     }
     return toTokenDisplay(totalFee, selectedToken.decimals, ETH_SYMBOL)
-  }, [isNetworkCorrect, amount, totalFee, selectedToken, priceFeeErrorMessage])
+  }, [isNetworkCorrect, amount, totalFee, selectedToken, priceFeeErrorMessage, estimatedGasCostError])
 
   const bridgeWarning = useMemo(() => {
     if (!chainId) {
@@ -115,9 +115,18 @@ const SendTransaction = props => {
           </TextButton>
         </>
       )
+    } else if (estimatedGasCostError && amount) {
+      return (
+        <>
+          {estimatedGasCostError},{" "}
+          <TextButton underline="always" sx={{ fontSize: "1.4rem" }} onClick={() => calculateGasFee()}>
+            Click here to retry.
+          </TextButton>
+        </>
+      )
     }
     return null
-  }, [chainId, isNetworkCorrect, fromNetwork, insufficientWarning, invalidAmountMessage, priceFeeErrorMessage, amount])
+  }, [chainId, isNetworkCorrect, fromNetwork, insufficientWarning, invalidAmountMessage, priceFeeErrorMessage, amount, estimatedGasCostError])
 
   const necessaryCondition = useMemo(() => {
     return amount && !bridgeWarning
