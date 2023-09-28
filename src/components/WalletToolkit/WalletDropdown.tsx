@@ -33,6 +33,7 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
     fontFamily: "var(--onboard-font-family-normal)",
     backgroundColor: "#FF684B",
     color: theme.palette.primary.contrastText,
+    border: "none",
     fontSize: "1.8rem",
     fontWeight: 500,
   },

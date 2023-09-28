@@ -14,7 +14,6 @@ import useShowWalletConnector from "@/hooks/useShowWalletToolkit"
 import Announcement from "./announcement"
 import { navigations } from "./constants"
 import useCheckNoBg from "./useCheckNoBg"
-import useCheckShowWalletConnector from "./useCheckShowWalletConnector"
 import useCheckTheme from "./useCheckTheme"
 
 const StyledBox = styled<any>(Stack)(({ theme, transparent, dark }) => ({
@@ -52,12 +51,12 @@ const MenuLinkButton = styled<any>(Link)(({ theme, dark }) => ({
   },
 }))
 
-const ExternalLink = styled("p")(({ theme }) => ({
+const ExternalLink = styled<any>("p")(({ theme, dark }) => ({
   fontWeight: 400,
   fontSize: "1.8rem",
   height: "2.1rem",
   lineHeight: "2.1rem",
-  color: "#333",
+  color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
   display: "flex",
   alignItems: "center",
   width: "100%",
@@ -73,7 +72,7 @@ const LinkStyledButton = styled<any>(NavLink)(({ theme, dark }) => ({
   marginRight: "0.5rem",
   lineHeight: "65px",
   position: "relative",
-  color: theme.palette.text.primary,
+  color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
   whiteSpace: "nowrap",
   "&:hover": {
     fontWeight: 500,
@@ -161,8 +160,6 @@ const App = ({ currentMenu }) => {
   const noBg = useCheckNoBg()
   const { isDesktop } = useCheckViewport()
 
-  const showWalletConnector = useCheckShowWalletConnector()
-
   const dark = useCheckTheme()
 
   const [checked, setChecked] = useState("")
@@ -191,7 +188,7 @@ const App = ({ currentMenu }) => {
             subItem.isExternal ? (
               <LinkButton target="_blank" underline="none" dark={dark} key={subItem.label} href={subItem.href}>
                 <Stack direction="row" alignItems="center" spacing={1} sx={{ width: "100%" }}>
-                  <ExternalLink>
+                  <ExternalLink dark={dark}>
                     {subItem.label}
                     <svg style={{ marginLeft: "0.5rem" }} xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none">
                       <path
@@ -276,7 +273,7 @@ const App = ({ currentMenu }) => {
           </NavLink>
           <Stack direction="row" spacing={isDesktop ? "4.4rem" : "2rem"} alignItems="center">
             <Box>{renderNavigationList()}</Box>
-            {showWalletConnector && <WalletToolkit></WalletToolkit>}
+            {showWalletConnector && <WalletToolkit dark={dark}></WalletToolkit>}
           </Stack>
         </HeaderContainer>
       </Container>

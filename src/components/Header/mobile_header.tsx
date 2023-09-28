@@ -12,7 +12,6 @@ import Logo from "../ScrollLogo"
 import Announcement from "./announcement"
 import { navigations } from "./constants"
 import useCheckNoBg from "./useCheckNoBg"
-import useCheckShowWalletConnector from "./useCheckShowWalletConnector"
 import useCheckTheme from "./useCheckTheme"
 
 const NavStack = styled(Stack)(({ theme }) => ({
@@ -136,7 +135,6 @@ const App = ({ currentMenu }) => {
   const showWalletConnector = useShowWalletConnector()
 
   const dark = useCheckTheme()
-  const showWalletConnector = useCheckShowWalletConnector()
   const [open, setOpen] = useState(false)
   const [activeCollapse, setActiveCollapse] = useState("")
 
@@ -237,7 +235,7 @@ const App = ({ currentMenu }) => {
           </Box>
         </NavLink>
         <Stack direction="row" spacing="0.8rem" alignItems="center">
-          {showWalletConnector && <WalletToolkit></WalletToolkit>}
+          {showWalletConnector && <WalletToolkit dark={dark}></WalletToolkit>}
           <Menu onClick={() => toggleDrawer(!open)} className={open ? "active" : ""}>
             <Bar dark={dark}></Bar>
             <Bar dark={dark}></Bar>
