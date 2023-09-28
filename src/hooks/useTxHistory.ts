@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import useSWR from "swr"
 
 import { fetchClaimableTxListUrl, fetchTxByHashUrl } from "@/apis/bridge"
@@ -20,11 +20,7 @@ const useTxHistory = networksAndSigners => {
   const [errorMessage, setErrorMessage] = useState("")
   const [claimableTx, setclaimableTx] = useState<[] | null>(null)
 
-  const { mode } = useBridgeStore()
-
-  const isOnHistoryPage = useMemo(() => {
-    return mode === "History"
-  }, [mode])
+  const { historyVisible } = useBridgeStore()
 
   const fetchTxList = useCallback(({ txs }) => {
     return scrollRequest(fetchTxByHashUrl, {
@@ -55,7 +51,7 @@ const useTxHistory = networksAndSigners => {
     () => {
       const needToRefreshTransactions = pageTransactions.filter(item => !item.toHash && !item.assumedStatus)
 
-      if (needToRefreshTransactions.length && walletCurrentAddress && isOnHistoryPage) {
+      if (needToRefreshTransactions.length && walletCurrentAddress && historyVisible) {
         const txs = needToRefreshTransactions.map(item => item.hash).filter((item, index, arr) => index === arr.indexOf(item))
         return { txs }
       }
