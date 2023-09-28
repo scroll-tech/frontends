@@ -15,6 +15,7 @@ const AppBarStyled = styled(AppBar)(({ theme }) => ({
   boxShadow: "none",
   position: "sticky",
   backgroundColor: "transparent",
+  paddingRight: "0 !important",
 }))
 
 interface Props {
