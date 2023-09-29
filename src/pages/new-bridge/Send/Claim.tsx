@@ -31,6 +31,7 @@ const Claim = (props: any) => {
   }, [walletCurrentAddress])
 
   useEffect(() => {
+    // if targetTransaction has value, then we need to move to the target transaction
     if (targetTransaction) {
       const index = orderedTxDB.findIndex(tx => tx.hash === targetTransaction)
       const page = Math.ceil((index + 1) / BRIDGE_PAGE_SIZE)
