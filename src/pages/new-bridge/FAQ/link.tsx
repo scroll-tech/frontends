@@ -13,7 +13,7 @@ const FAQsLink = styled(Link)(({ theme }) => ({
 
 const BridgeLinks = () => {
   return (
-    <Stack direction="row" justifyContent="flex-end" sx={{ width: "100%" }}>
+    <Stack direction="row" justifyContent="center" sx={{ width: "100%" }}>
       <FAQsLink to="faq">
         FAQs
         <svg style={{ margin: "-2px 0 0 3px" }} xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8" fill="none">

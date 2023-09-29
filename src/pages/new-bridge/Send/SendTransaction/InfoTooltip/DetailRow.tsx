@@ -20,9 +20,10 @@ const useStyles = makeStyles()(theme => ({
   detailLabel: {
     display: "flex",
     alignItems: "center",
+    fontWeight: 600,
+    width: "14rem",
   },
   label: {
-    fontWeight: 600,
     fontSize: "1.6rem",
     [theme.breakpoints.down("sm")]: {
       fontSize: "1.4rem",
@@ -43,7 +44,7 @@ const DetailRow: FC<DetailRowProps & BoxProps> = props => {
   const variant = xlarge || large ? "h6" : "subtitle2"
 
   return (
-    <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ width: "100%", ...sx }}>
+    <Box display="flex" alignItems="center" sx={{ width: "100%", fontWeight: "400", margin: "0.6rem 0", ...sx }}>
       <Typography variant={variant} color="textPrimary" className={cx(styles.detailLabel, styles.label)}>
         <Box>{title}&nbsp;</Box>
         {tooltip ? <InfoTooltip title={tooltip} /> : null}

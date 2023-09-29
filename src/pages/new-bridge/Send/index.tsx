@@ -57,6 +57,7 @@ const useStyles = makeStyles()(theme => ({
     "&.tx": {
       padding: "3rem",
     },
+
     [theme.breakpoints.down("sm")]: {
       padding: "3rem 2rem 2rem",
     },

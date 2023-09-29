@@ -16,6 +16,8 @@ const useStyles = makeStyles()(theme => ({
   paper: {
     backgroundColor: theme.palette.themeBackground.optionHightlight,
     boxShadow: "unset",
+    width: "100%",
+    maxWidth: "70rem",
     [theme.breakpoints.down("sm")]: {
       maxWidth: "unset",
     },

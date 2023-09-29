@@ -33,7 +33,7 @@ export const NETWORKS: Network[] = [
 export const NATIVE_TOKEN_LIST: Token[] = [
   {
     chainId: CHAIN_ID.L1,
-    name: ETH_SYMBOL,
+    name: "Ether",
     symbol: ETH_SYMBOL,
     decimals: BigInt(18),
     native: true,
@@ -41,7 +41,7 @@ export const NATIVE_TOKEN_LIST: Token[] = [
   },
   {
     chainId: CHAIN_ID.L2,
-    name: ETH_SYMBOL,
+    name: "Ether",
     symbol: ETH_SYMBOL,
     decimals: BigInt(18),
     native: true,

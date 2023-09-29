@@ -46,7 +46,7 @@ const useTxHistory = networksAndSigners => {
   // fetch to hash/blockNumber from backend
   const { data } = useSWR<any>(
     () => {
-      const needToRefreshTransactions = pageTransactions.filter(item => !item.toHash && !item.assumedStatus)
+      const needToRefreshTransactions = pageTransactions.filter(item => !item.toHash)
 
       if (needToRefreshTransactions.length && walletCurrentAddress) {
         const txs = needToRefreshTransactions.map(item => item.hash).filter((item, index, arr) => index === arr.indexOf(item))

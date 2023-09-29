@@ -15,6 +15,8 @@ export const APP_VERSION = "appVersion"
 
 export const BLOCK_NUMBERS = "blockNumbers"
 
+export const USER_TOKEN_LIST = "userTokenList"
+
 export const STORAGE_AVAILABLE = "__storage_test__"
 
 export const ENVIRONMENT_NAME = "environmentName"
