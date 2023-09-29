@@ -18,7 +18,7 @@ export function useSendTransaction(props) {
   const { networksAndSigners, blockNumbers } = useApp()
   const { gasLimit: txGasLimit } = useGasFee(selectedToken)
   const { addTransaction, updateTransaction, addEstimatedTimeMap, updateOrderedTxs, addAbnormalTransactions, removeFrontTransactions } = useTxStore()
-  const { changeHistoryVisible, fromNetwork, toNetwork, changeTxResult } = useBridgeStore()
+  const { fromNetwork, toNetwork, changeTxResult } = useBridgeStore()
   const { gasLimit, gasPrice } = usePriceFeeContext()
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -45,7 +45,6 @@ export function useSendTransaction(props) {
       // start to check tx replacement from current block number
       // TODO: shouldn't add it here(by @ricmoo)
       tx = tx.replaceableTransaction(currentBlockNumber)
-      changeHistoryVisible(true)
 
       handleTransaction(tx)
       updateOrderedTxs(walletCurrentAddress, tx.hash, TxPosition.Frontend, txDirection)
