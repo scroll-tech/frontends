@@ -7,6 +7,7 @@ import { BRIDGE_PAGE_SIZE } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import ClaimTable from "@/pages/new-bridge/components/ClaimTable"
+import useBridgeStore from "@/stores/bridgeStore"
 import useClaimStore from "@/stores/claimStore"
 
 const TableBox = styled(Box)(({ theme }) => ({
@@ -23,17 +24,21 @@ const Claim = (props: any) => {
   } = useApp()
 
   const { page, total, pageTransactions, loading, targetTransaction, setTargetTransaction, orderedTxDB } = useClaimStore()
+  const { historyVisible } = useBridgeStore()
 
   useEffect(() => {
+    handleChangePage(1)
+  }, [walletCurrentAddress])
+
+  useEffect(() => {
+    // if targetTransaction has value, then we need to move to the target transaction
     if (targetTransaction) {
       const index = orderedTxDB.findIndex(tx => tx.hash === targetTransaction)
       const page = Math.ceil((index + 1) / BRIDGE_PAGE_SIZE)
       handleChangePage(page)
       setTargetTransaction(null)
-    } else {
-      handleChangePage(1)
     }
-  }, [walletCurrentAddress])
+  }, [historyVisible])
 
   const handleChangePage = currentPage => {
     refreshPageTransactions(currentPage)
