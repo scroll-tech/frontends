@@ -6,10 +6,13 @@ import { ButtonBase, CircularProgress, IconButton, SvgIcon } from "@mui/material
 import { ReactComponent as ArrowRightIcon } from "@/assets/svgs/refactor/arrow-right.svg"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
-const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading }) => ({
+const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, whiteButton }) => ({
   wrapper: {
     position: "relative",
     height: "5.4rem",
+    overflow: "hidden",
+    borderRadius: "1rem",
+    backgroundColor: whiteButton ? "#ffffff" : "transparent",
     width: width ?? "25rem",
     [theme.breakpoints.down("sm")]: {
       width: width ?? "18.5rem",
@@ -98,8 +101,8 @@ const maskMobile = {
 }
 // color: "primary" | undefined
 const Button = props => {
-  const { width, sx, color, loading, disabled, children, ...restProps } = props
-  const { classes, cx } = useStyles({ color, width, disabled, loading })
+  const { width, sx, color, loading, disabled, children, whiteButton, ...restProps } = props
+  const { classes, cx } = useStyles({ color, width, disabled, loading, whiteButton })
 
   const { isMobile } = useCheckViewport()
 

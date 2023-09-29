@@ -13,6 +13,7 @@ const TableBox = styled(Box)(({ theme }) => ({
   borderRadius: "2rem",
   backgroundColor: theme.palette.themeBackground.optionHightlight,
   width: "100%",
+  maxWidth: "70rem",
   "& *": {
     fontFamily: "var(--developer-page-font-family) !important",
   },

@@ -42,12 +42,12 @@ const useStyles = makeStyles()(theme => {
     tableWrapper: {
       boxShadow: "unset",
       borderRadius: "20px",
-      maxWidth: "70rem",
+      // maxWidth: "70rem",
       backgroundColor: theme.palette.themeBackground.optionHightlight,
-      padding: "2.5rem 3rem",
-      position: "relative",
+      padding: "0 3rem 3rem",
       [theme.breakpoints.down("sm")]: {
         width: "calc(100vw - 4rem)",
+        padding: "0 2rem 2rem",
       },
     },
     tableTitle: {

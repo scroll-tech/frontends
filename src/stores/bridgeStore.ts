@@ -2,8 +2,6 @@ import { create } from "zustand"
 
 import { NETWORKS } from "@/constants"
 
-type Mode = "Transaction" | "History"
-
 type TransactionType = "Deposit" | "Withdraw"
 
 type WithDrawStep = "1" | "2"
@@ -23,7 +21,6 @@ interface BridgeStore {
   // new-bridge
   fromNetwork: Network
   toNetwork: Network
-  mode: Mode
   txType: TransactionType
   withDrawStep: WithDrawStep
   txResult: TxResult | null
@@ -32,7 +29,6 @@ interface BridgeStore {
 
   changeFromNetwork: (network: Network) => void
   changeToNetwork: (network: Network) => void
-  changeMode: (mode: Mode) => void
   changeTxType: (txType: TransactionType) => void
   changeTxResult: (txResult: TxResult | null) => void
   changeTxError: (txError: TxError | null) => void
@@ -53,7 +49,6 @@ const useBridgeStore = create<BridgeStore>()((set, get) => ({
 
   fromNetwork: NETWORKS[0],
   toNetwork: NETWORKS[1],
-  mode: "Transaction",
   txType: "Deposit",
   withDrawStep: "1",
   txResult: null,
@@ -68,11 +63,6 @@ const useBridgeStore = create<BridgeStore>()((set, get) => ({
   changeToNetwork: network => {
     set({
       toNetwork: network,
-    })
-  },
-  changeMode: mode => {
-    set({
-      mode,
     })
   },
   changeTxType: txType => {

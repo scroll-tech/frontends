@@ -4,6 +4,7 @@ import useSWR from "swr"
 import { fetchClaimableTxListUrl, fetchTxByHashUrl } from "@/apis/bridge"
 import { BRIDGE_PAGE_SIZE } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useBridgeStore from "@/stores/bridgeStore"
 import useTxStore from "@/stores/txStore"
 
 export interface TxHistory {
@@ -18,6 +19,8 @@ const useTxHistory = networksAndSigners => {
 
   const [errorMessage, setErrorMessage] = useState("")
   const [claimableTx, setclaimableTx] = useState<[] | null>(null)
+
+  const { historyVisible } = useBridgeStore()
 
   const fetchTxList = useCallback(({ txs }) => {
     return scrollRequest(fetchTxByHashUrl, {
@@ -46,9 +49,9 @@ const useTxHistory = networksAndSigners => {
   // fetch to hash/blockNumber from backend
   const { data } = useSWR<any>(
     () => {
-      const needToRefreshTransactions = pageTransactions.filter(item => !item.toHash && !item.assumedStatus)
+      const needToRefreshTransactions = pageTransactions.filter(item => !item.toHash)
 
-      if (needToRefreshTransactions.length && walletCurrentAddress) {
+      if (needToRefreshTransactions.length && walletCurrentAddress && historyVisible) {
         const txs = needToRefreshTransactions.map(item => item.hash).filter((item, index, arr) => index === arr.indexOf(item))
         return { txs }
       }

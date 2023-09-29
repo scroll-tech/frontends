@@ -13,7 +13,7 @@ import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useBalance } from "@/hooks"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useBridgeStore from "@/stores/bridgeStore"
-import { amountToBN, switchNetwork, toTokenDisplay } from "@/utils"
+import { amountToBN, switchNetwork } from "@/utils"
 
 import useApprove from "../../hooks/useApprove"
 // import useBalance from "../../hooks/useBalance"
@@ -22,9 +22,8 @@ import useGasFee from "../../hooks/useGasFee"
 import { useSendTransaction } from "../../hooks/useSendTransaction"
 import useSufficientBalance from "../../hooks/useSufficientBalance"
 import BalanceInput from "./BalanceInput"
-import DetailRow from "./InfoTooltip/DetailRow"
-import FeeDetails from "./InfoTooltip/FeeDetails"
 import NetworkDirection from "./NetworkDirection"
+import TransactionSummary from "./TransactionSummary"
 
 const SendTransaction = props => {
   const { chainId, connect } = useRainbowContext()
@@ -61,9 +60,10 @@ const SendTransaction = props => {
 
   const invalidAmountMessage = useCheckValidAmount(amount)
   // fee start
-  const { gasFee: estimatedGasCost } = useGasFee(selectedToken)
+  const { gasFee: estimatedGasCost, error: estimatedGasCostError, calculateGasFee } = useGasFee(selectedToken)
 
   const totalFee = useMemo(() => estimatedGasCost + gasLimit * gasPrice, [estimatedGasCost, gasLimit, gasPrice])
+  const relayFee = useMemo(() => gasLimit * gasPrice, [gasLimit, gasPrice])
 
   const { insufficientWarning } = useSufficientBalance(
     selectedToken,
@@ -73,36 +73,8 @@ const SendTransaction = props => {
   )
   // fee end
 
-  const displayedFee = useMemo(() => {
-    if (!isNetworkCorrect || !amount) {
-      return <Typography>-</Typography>
-    }
-    if (priceFeeErrorMessage) {
-      return <Typography sx={{ color: "primary.main" }}>-</Typography>
-    }
-    return toTokenDisplay(totalFee, selectedToken.decimals, ETH_SYMBOL)
-  }, [isNetworkCorrect, amount, totalFee, selectedToken, priceFeeErrorMessage])
-
   const bridgeWarning = useMemo(() => {
-    if (!chainId) {
-      return (
-        <>
-          Your wallet is not connected.{" "}
-          <TextButton underline="always" sx={{ fontSize: "1.4rem" }} onClick={connect}>
-            Please connect your wallet to proceed.
-          </TextButton>
-        </>
-      )
-    } else if (!isNetworkCorrect) {
-      return (
-        <>
-          Your wallet is connected to an unsupported network.{" "}
-          <TextButton underline="always" sx={{ fontSize: "1.4rem" }} onClick={() => switchNetwork(fromNetwork.chainId)}>
-            Click here to switch to {fromNetwork.name}.
-          </TextButton>
-        </>
-      )
-    } else if (insufficientWarning) {
+    if (insufficientWarning) {
       return insufficientWarning
     } else if (invalidAmountMessage) {
       return invalidAmountMessage
@@ -115,9 +87,18 @@ const SendTransaction = props => {
           </TextButton>
         </>
       )
+    } else if (estimatedGasCostError && amount) {
+      return (
+        <>
+          {estimatedGasCostError},{" "}
+          <TextButton underline="always" sx={{ fontSize: "1.4rem" }} onClick={() => calculateGasFee()}>
+            Click here to retry.
+          </TextButton>
+        </>
+      )
     }
     return null
-  }, [chainId, isNetworkCorrect, fromNetwork, insufficientWarning, invalidAmountMessage, priceFeeErrorMessage, amount])
+  }, [chainId, isNetworkCorrect, fromNetwork, insufficientWarning, invalidAmountMessage, priceFeeErrorMessage, amount, estimatedGasCostError])
 
   const necessaryCondition = useMemo(() => {
     return amount && !bridgeWarning
@@ -160,19 +141,68 @@ const SendTransaction = props => {
     }
   }
 
-  const handleChangeTokenSymbol = e => {
-    setTokenSymbol(e.target.value.symbol)
+  const handleChangeTokenSymbol = symbol => {
+    setTokenSymbol(symbol)
   }
 
   const handleChangeAmount = value => {
     setAmount(value)
   }
 
+  const renderButton = () => {
+    if (!chainId) {
+      return (
+        <Button key="connect" width={isMobile ? "100%" : "25rem"} color="primary" onClick={connect} whiteButton>
+          Connect Wallet
+        </Button>
+      )
+    }
+
+    if (!isNetworkCorrect) {
+      return (
+        <Button key="switch" width={isMobile ? "100%" : "32rem"} color="primary" onClick={() => switchNetwork(fromNetwork.chainId)} whiteButton>
+          Switch to {fromNetwork.name}
+        </Button>
+      )
+    }
+
+    if (needApproval) {
+      return (
+        <Button
+          key="approve"
+          width={isMobile ? "100%" : "25rem"}
+          color="primary"
+          disabled={!needApproval || !necessaryCondition}
+          loading={approveLoading}
+          onClick={approve}
+          whiteButton
+        >
+          {approveLoading ? "Approving " : "Approve "}
+          {tokenSymbol}
+        </Button>
+      )
+    }
+
+    return (
+      <Button
+        key="send"
+        width={isMobile ? "100%" : "25rem"}
+        color="primary"
+        disabled={!necessaryCondition}
+        loading={sendLoading}
+        onClick={handleSend}
+        whiteButton
+      >
+        {sendText}
+      </Button>
+    )
+  }
+
   return (
-    <Stack direction="column" alignItems="center" sx={{ height: ["30rem", "34rem"] }}>
+    <Stack direction="column" alignItems="center" sx={{ minHeight: ["30rem", "47.6rem"] }}>
       <NetworkDirection></NetworkDirection>
       <BalanceInput
-        sx={{ mt: "3rem" }}
+        sx={{ mt: "1.6rem" }}
         value={amount}
         onChange={handleChangeAmount}
         token={selectedToken}
@@ -184,7 +214,15 @@ const SendTransaction = props => {
         tokenOptions={tokenOptions}
         onChangeToken={handleChangeTokenSymbol}
       ></BalanceInput>
-      <DetailRow title="Fees" sx={{ my: "0.8rem" }} tooltip={<FeeDetails />} value={displayedFee} large />
+      <TransactionSummary
+        selectedToken={selectedToken}
+        amount={amount}
+        priceFeeErrorMessage={priceFeeErrorMessage}
+        totalFee={totalFee}
+        relayFee={relayFee}
+        estimatedGasCost={estimatedGasCost}
+        bridgeWarning={bridgeWarning}
+      />
       <Typography
         sx={{
           fontSize: "1.3rem",
@@ -200,32 +238,7 @@ const SendTransaction = props => {
       >
         {bridgeWarning}
       </Typography>
-      <Box sx={{ flex: 1, display: "flex", alignItems: "flex-end", width: "100%", justifyContent: "center" }}>
-        {needApproval ? (
-          <Button
-            key="approve"
-            width={isMobile ? "100%" : "25rem"}
-            color="primary"
-            disabled={!needApproval || !necessaryCondition}
-            loading={approveLoading}
-            onClick={approve}
-          >
-            {approveLoading ? "Approving " : "Approve "}
-            {tokenSymbol}
-          </Button>
-        ) : (
-          <Button
-            key="send"
-            width={isMobile ? "100%" : "25rem"}
-            color="primary"
-            disabled={!necessaryCondition}
-            loading={sendLoading}
-            onClick={handleSend}
-          >
-            {sendText}
-          </Button>
-        )}
-      </Box>
+      <Box sx={{ flex: 1, display: "flex", alignItems: "flex-end", width: "100%", justifyContent: "center" }}>{renderButton()}</Box>
     </Stack>
   )
 }

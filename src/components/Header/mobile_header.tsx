@@ -5,6 +5,9 @@ import { ExpandMore } from "@mui/icons-material"
 import { Box, Collapse, Link, List, ListItemButton, Stack } from "@mui/material"
 import { styled } from "@mui/system"
 
+import WalletToolkit from "@/components/WalletToolkit"
+import useShowWalletConnector from "@/hooks/useShowWalletToolkit"
+
 import Logo from "../ScrollLogo"
 import { navigations } from "./constants"
 import useCheckNoBg from "./useCheckNoBg"
@@ -127,6 +130,8 @@ const ExpandMoreIcon = styled(ExpandMore)(({ theme }) => ({
 
 const App = ({ currentMenu }) => {
   const noBg = useCheckNoBg()
+  const showWalletConnector = useShowWalletConnector()
+
   const [open, setOpen] = useState(false)
   const [activeCollapse, setActiveCollapse] = useState("")
 
@@ -210,11 +215,14 @@ const App = ({ currentMenu }) => {
             <Logo />
           </Box>
         </NavLink>
-        <Menu onClick={() => toggleDrawer(!open)} className={open ? "active" : ""}>
-          <Bar></Bar>
-          <Bar></Bar>
-          <Bar></Bar>
-        </Menu>
+        <Stack direction="row" spacing="0.8rem" alignItems="center">
+          {showWalletConnector && <WalletToolkit></WalletToolkit>}
+          <Menu onClick={() => toggleDrawer(!open)} className={open ? "active" : ""}>
+            <Bar></Bar>
+            <Bar></Bar>
+            <Bar></Bar>
+          </Menu>
+        </Stack>
       </NavStack>
       {open && (
         <Box sx={{ background: "#FFF8F3", paddingTop: "5rem", height: "calc(100vh - 3.2rem)" }}>

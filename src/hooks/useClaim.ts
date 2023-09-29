@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import useSWR from "swr"
 
 import { fetchTxByHashUrl } from "@/apis/bridge"
 import { BRIDGE_PAGE_SIZE } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useBridgeStore from "@/stores/bridgeStore"
 import useClaimStore from "@/stores/claimStore"
 
 export interface TxHistory {
@@ -14,8 +15,13 @@ export interface TxHistory {
 
 const useClaim = () => {
   const { walletCurrentAddress } = useRainbowContext()
+  const { txType, withDrawStep, historyVisible } = useBridgeStore()
 
   const { comboPageTransactions, pageTransactions, generateTransactions } = useClaimStore()
+
+  const isOnClaimPage = useMemo(() => {
+    return !historyVisible && txType === "Withdraw" && withDrawStep === "2"
+  }, [historyVisible, txType, withDrawStep])
 
   const [errorMessage, setErrorMessage] = useState("")
 
@@ -31,9 +37,9 @@ const useClaim = () => {
 
   const { data } = useSWR<any>(
     () => {
-      // const needToRefreshTransactions = pageTransactions.filter(item => !item.toHash && !item.assumedStatus)
-      if (pageTransactions.length && walletCurrentAddress) {
-        const txs = pageTransactions.map(item => item.hash).filter((item, index, arr) => index === arr.indexOf(item))
+      const needToRefreshTransactions = pageTransactions.filter(item => !item.toHash)
+      if (needToRefreshTransactions.length && walletCurrentAddress && isOnClaimPage) {
+        const txs = needToRefreshTransactions.map(item => item.hash).filter((item, index, arr) => index === arr.indexOf(item))
         return { txs }
       }
       return null

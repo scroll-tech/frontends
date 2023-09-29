@@ -5,6 +5,9 @@ import { Box, Container, Fade, Link, Popper, Stack } from "@mui/material"
 import { styled } from "@mui/system"
 
 import Logo from "@/components/ScrollLogo"
+import WalletToolkit from "@/components/WalletToolkit"
+import useCheckViewport from "@/hooks/useCheckViewport"
+import useShowWalletConnector from "@/hooks/useShowWalletToolkit"
 
 import Announcement from "./announcement"
 import { navigations } from "./constants"
@@ -20,7 +23,8 @@ const StyledBox = styled<any>(Stack)(({ theme, transparent }) => ({
 
 const StyledPopper = styled<any>(Popper)(({ theme, transparent }) => ({
   backgroundColor: transparent ? "transparent" : theme.palette.themeBackground.light,
-  paddingBottom: "1rem",
+  padding: "0 2rem 1rem",
+  marginLeft: "-2rem !important",
 }))
 
 const HeaderContainer = styled(Box)(({ theme }) => ({
@@ -61,13 +65,12 @@ const ExternalLink = styled("p")(({ theme }) => ({
 const LinkStyledButton = styled(NavLink)(({ theme }) => ({
   fontSize: "1.8rem",
   fontWeight: 400,
-  paddingLeft: "10px",
-  paddingRight: "10px",
   marginLeft: "0.5rem",
   marginRight: "0.5rem",
   lineHeight: "65px",
   position: "relative",
   color: theme.palette.text.primary,
+  whiteSpace: "nowrap",
   "&:hover": {
     fontWeight: 500,
   },
@@ -79,8 +82,6 @@ const LinkStyledButton = styled(NavLink)(({ theme }) => ({
 const SubMenuButton = styled(Box)(({ theme }) => ({
   fontSize: "1.8rem",
   fontWeight: 400,
-  paddingLeft: "2rem",
-  paddingRight: "2rem",
   marginLeft: "0.5rem",
   marginRight: "0.5rem",
   lineHeight: "65px",
@@ -102,13 +103,9 @@ const SubMenuButton = styled(Box)(({ theme }) => ({
 }))
 
 const SubMenuList = styled(Box)(({ theme }) => ({
-  left: 0,
-  zIndex: 1,
-  borderRadius: `${theme.shape.borderRadius}px`,
   display: "flex",
   flexDirection: "column",
   overflow: "hidden",
-  padding: "0 2rem",
 }))
 
 const SectionList = styled(Box)(({ theme }) => ({
@@ -158,8 +155,11 @@ const LinkStyledSubButton = styled(NavLink)(({ theme }) => ({
 
 const App = ({ currentMenu }) => {
   const noBg = useCheckNoBg()
+  const { isDesktop } = useCheckViewport()
 
   const [checked, setChecked] = useState("")
+
+  const showWalletConnector = useShowWalletConnector()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
@@ -219,7 +219,7 @@ const App = ({ currentMenu }) => {
               />
             </svg>
           </Stack>
-          <StyledPopper open={item.key === checked} placement="bottom-start" anchorEl={anchorEl} transition transparent={noBg}>
+          <StyledPopper key={item.key} open={item.key === checked} placement="bottom-start" anchorEl={anchorEl} transition transparent={noBg}>
             {({ TransitionProps }) => (
               <Fade {...TransitionProps}>
                 <SubMenuList onClick={handleMouseLeave}>{renderSubMenuList(item.children)}</SubMenuList>
@@ -245,7 +245,7 @@ const App = ({ currentMenu }) => {
 
   const renderNavigationList = () => {
     return (
-      <Stack direction="row" justifyContent="space-between" alignItems="center">
+      <Stack direction="row" spacing={isDesktop ? "4.4rem" : "2rem"} justifyContent="space-between" alignItems="center">
         {navigations.map(item => (
           <React.Fragment key={item.key}>{renderNavigationItem(item)}</React.Fragment>
         ))}
@@ -261,7 +261,10 @@ const App = ({ currentMenu }) => {
           <NavLink to="/" className="flex">
             <Logo />
           </NavLink>
-          <Box>{renderNavigationList()}</Box>
+          <Stack direction="row" spacing={isDesktop ? "4.4rem" : "2rem"} alignItems="center">
+            <Box>{renderNavigationList()}</Box>
+            {showWalletConnector && <WalletToolkit></WalletToolkit>}
+          </Stack>
         </HeaderContainer>
       </Container>
     </StyledBox>
