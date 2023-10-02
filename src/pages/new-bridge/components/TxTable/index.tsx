@@ -264,7 +264,7 @@ const TxRow = props => {
       return <LinearProgress />
     }
     return (
-      <span>
+      <span style={{ whiteSpace: "nowrap" }}>
         Ready in {minutes}m {seconds}s (estimate)
       </span>
     )
