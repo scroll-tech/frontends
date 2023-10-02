@@ -34,7 +34,7 @@ const sepoliaNavigations = [
             isExternal: true,
           },
           {
-            label: "Early Developer NFT",
+            label: "Scroll Origins",
             key: "developer-nft",
             href: "/developer-nft",
           },
