@@ -21,7 +21,7 @@ import {
 } from "@mui/material"
 
 import Link from "@/components/Link"
-import { TX_STATUS } from "@/constants"
+import { NETWORKS, TX_STATUS } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
 import useTokenInfo from "@/hooks/useTokenInfo"
 import useTxStore from "@/stores/txStore"
@@ -312,7 +312,12 @@ const TxRow = props => {
         <Stack direction="column">
           <Typography>
             {tx.isL1 ? "Ethereum" : "Scroll"}:{" "}
-            <Link external sx={{ color: "#396CE8" }} href={generateExploreLink(tx.fromExplore, tx.hash)} className="leading-normal flex-1">
+            <Link
+              external
+              sx={{ color: "#396CE8" }}
+              href={generateExploreLink(NETWORKS[+!tx.isL1].explorer, tx.hash)}
+              className="leading-normal flex-1"
+            >
               {truncateHash(tx.hash)}
             </Link>
           </Typography>
@@ -325,7 +330,12 @@ const TxRow = props => {
           <Typography>
             {tx.isL1 ? "Scroll" : "Ethereum"}:{" "}
             {tx.toHash ? (
-              <Link external sx={{ color: "#396CE8" }} href={generateExploreLink(tx.toExplore, tx.toHash)} className="leading-normal flex-1">
+              <Link
+                external
+                sx={{ color: "#396CE8" }}
+                href={generateExploreLink(NETWORKS[+tx.isL1].explorer, tx.toHash)}
+                className="leading-normal flex-1"
+              >
                 {truncateHash(tx.toHash)}
               </Link>
             ) : (
