@@ -28,7 +28,7 @@ const STORIES = [
   {
     title: "Announcing the Scroll Beta Testnet on Sepolia",
     content: "Learn about the infastructure updates and improvements in our Beta Testnet as we enter the final phase before Mainnet.",
-    href: "/blog/alphaTestnet",
+    href: "/blog/scrollSepolia",
   },
   {
     title: "Announcing the 'Contribute to Scroll' Initiative",
