@@ -1,12 +1,16 @@
 import dayjs from "dayjs"
+import utc from "dayjs/plugin/utc.js"
 
+dayjs.extend(utc)
 // UTC
-const StartDate = new Date("2023-10-09T06:00:00Z") // mainnet
-const EndDate = dayjs(StartDate).add("45", "day")
+// const StartDate = new Date("2023-10-10T06:00:00Z") // mainnet
+export const StartDate = dayjs("2023-10-10T06:00:00Z") // mainnet
 
-//test
-// const StartDate = new Date("2023-09-26T06:00:00Z")
-// const EndDate = dayjs(StartDate).add("5", "day")
+export const Stage2StartDate = StartDate.add(30, "day")
+
+export const Stage3StartDate = Stage2StartDate.add(15, "day")
+
+export const EndDate = Stage3StartDate.add(15, "day").subtract(1, "ms")
 
 export const DEVELOPER_NFT_STEPS = [
   { label: "Starts", date: StartDate, title: "Genesis Block" },

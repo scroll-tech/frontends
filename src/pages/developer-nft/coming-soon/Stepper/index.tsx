@@ -1,4 +1,3 @@
-import dayjs from "dayjs"
 import { useEffect, useMemo } from "react"
 import { useNavigate } from "react-router-dom"
 import { makeStyles } from "tss-react/mui"
@@ -9,6 +8,7 @@ import { ReactComponent as StepCompletedSvg } from "@/assets/svgs/refactor/nft-s
 import { ReactComponent as StepDefaultSvg } from "@/assets/svgs/refactor/nft-step-default-icon.svg"
 import { DEVELOPER_NFT_STEPS } from "@/constants"
 import useNFTStore from "@/stores/nftStore"
+import { formatUTCDate } from "@/utils"
 
 import Connector from "./Connector"
 
@@ -93,11 +93,8 @@ const NFTStepper = () => {
               StepIconComponent={PhraseStepIcon}
               optional={
                 // TODO: NumberTypography not allow component="span"
-                <Typography
-                  component="span"
-                  sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: [1.5, "normal"], fontFamily: "var(--developer-page-font-family)" }}
-                >
-                  {dayjs(date).format("MMM D, YYYY")}
+                <Typography component="span" sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: [1.5, "normal"] }}>
+                  {formatUTCDate(date)}
                 </Typography>
               }
             >

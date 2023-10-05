@@ -20,7 +20,7 @@ const CheckElegbility = () => {
   const { isMobile } = useCheckViewport()
 
   const [isEligible, setIsEligible] = useState(0)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
 
   const handleCheck = async () => {
     setLoading(true)
@@ -37,7 +37,7 @@ const CheckElegbility = () => {
         }
       })
       .catch(e => {
-        setIsEligible(-1)
+        setIsEligible(-2)
       })
       .finally(() => {
         setLoading(false)
@@ -47,6 +47,8 @@ const CheckElegbility = () => {
   const renderCheck = () => {
     if (isEligible === -1) {
       return <Alert severity="error">Selected account is not eligible yet to mint. Deploy a project to be qualified.</Alert>
+    } else if (isEligible === -2) {
+      return <Alert severity="error">Network error. Please try again later</Alert>
     } else if (isEligible === 1) {
       return (
         <Alert severity="success">
@@ -58,7 +60,7 @@ const CheckElegbility = () => {
   }
 
   return (
-    <Stack sx={{ mt: "4.8rem" }} direction="column" alignItems="center" spacing="1.6rem">
+    <Stack sx={{ mt: ["3.2rem", "4.8rem"] }} direction="column" alignItems="center" spacing="1.6rem">
       {isEligible ? (
         <Collapse in={!!isEligible}>{renderCheck()}</Collapse>
       ) : (

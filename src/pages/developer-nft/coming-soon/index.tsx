@@ -2,13 +2,15 @@ import SectionWrapper from "@/components/SectionWrapper"
 
 import CheckElegbility from "./CheckElegbility"
 import Header from "./Header"
-import Statement from "./Statement"
+import Purpose from "./Purpose"
+import Stage from "./Stage"
 import Stepper from "./Stepper"
 
 const ComingSoon = () => {
   return (
     <SectionWrapper
       dark
+      maxWidth="108rem"
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -20,7 +22,8 @@ const ComingSoon = () => {
     >
       <Header></Header>
       <Stepper></Stepper>
-      <Statement></Statement>
+      <Purpose></Purpose>
+      <Stage></Stage>
       <CheckElegbility></CheckElegbility>
     </SectionWrapper>
   )

@@ -114,3 +114,15 @@ export const checkAmountOverflow = (inputAmount, decimals: bigint = BigInt(18)) 
     return false
   }
 }
+
+export const formatUTCDate = (date, needSub?: boolean) => {
+  let finalDate = date
+  if (needSub) {
+    finalDate = date.subtract(1, "ms")
+  }
+  return `${finalDate.utc().format("MMM D,YYYY h:mmA")} GMT`
+}
+
+export const formatDate = date => {
+  return date.format("MMM D,YYYY")
+}
