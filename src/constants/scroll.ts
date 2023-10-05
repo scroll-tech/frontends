@@ -57,7 +57,7 @@ export const DOCUMENTATION = [
   {
     name: "Architecture Overview",
     description: "",
-    link: SITE_MAP.Architecture,
+    link: "https://docs.scroll.io/en/technology/",
   },
   {
     name: "User Guide",
