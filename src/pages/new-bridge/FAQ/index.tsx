@@ -32,8 +32,9 @@ const FAQ = () => {
         </Typography>
       </FaqItem>
       <FaqItem title="How to send tokens using the Bridge?" id="3">
-      <Typography variant="Body3" color="textSecondary" className={classes.orderedParagraph}>
-          1. Switch to the correct network in your wallet. (If you are a first time Scroll user, you will need to add the Scroll network to your wallet. Add network <Link href={SITE_MAP.Home}>here</Link>.)
+        <Typography variant="Body3" color="textSecondary" className={classes.orderedParagraph}>
+          1. Switch to the correct network in your wallet. (If you are a first time Scroll user, you will need to add the Scroll network to your
+          wallet. Add network <Link href={SITE_MAP.Home}>here</Link>.)
         </Typography>
         <Typography variant="Body3" color="textSecondary" className={classes.orderedParagraph}>
           2. Select Deposit or Withdraw on the bridge.
