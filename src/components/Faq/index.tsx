@@ -103,10 +103,7 @@ const Faq = props => {
           1. Transfer and withdraw test tokens in <Link href={SITE_MAP.Bridge}>Bridge</Link>.
         </Typography>
         <Typography variant="Body3" color="textSecondary" className={classes.orderedParagraph}>
-          2. Swap test tokens or provide liquidity in <Link href={SITE_MAP.Swap}>Swap</Link>.
-        </Typography>
-        <Typography variant="Body3" color="textSecondary" className={classes.orderedParagraph}>
-          3. View transactions’ and blocks’ statuses in the{" "}
+          2. View status of transactions and blocks in the{" "}
           <Link href={SITE_MAP.L1Explorer} external>
             Scroll L1
           </Link>
