@@ -206,30 +206,26 @@ const App = ({ currentMenu }) => {
   const renderNavigationItem = item => {
     if (item.children) {
       return (
-        <>
-          <SubMenuButton
-            direction="row"
-            alignItems="center"
-            spacing="6px"
-            className={currentMenu === item.key ? "active" : ""}
-            onMouseEnter={e => handleMouseEnter(e, item.key)}
-            onMouseLeave={handleMouseLeave}
-          >
-            <span>{item.label}</span>
-            <SvgIcon className="expand-more" sx={{ width: "auto", height: "auto" }} component={TriangleDownSvg} inheritViewBox></SvgIcon>
-          </SubMenuButton>
-          <>
-            {item.key === checked && (
-              <StyledPopper open={true} placement="bottom-start" anchorEl={anchorEl} transition transparent={noBg}>
-                {({ TransitionProps }) => (
-                  <Fade {...TransitionProps}>
-                    <SubMenuList>{renderSubMenuList(item.children)}</SubMenuList>
-                  </Fade>
-                )}
-              </StyledPopper>
-            )}
-          </>
-        </>
+        <SubMenuButton
+          direction="row"
+          alignItems="center"
+          spacing="6px"
+          className={currentMenu === item.key ? "active" : ""}
+          onMouseEnter={e => handleMouseEnter(e, item.key)}
+          onMouseLeave={handleMouseLeave}
+        >
+          <span>{item.label}</span>
+          <SvgIcon className="expand-more" sx={{ width: "auto", height: "auto" }} component={TriangleDownSvg} inheritViewBox></SvgIcon>
+          {item.key === checked && (
+            <StyledPopper open={true} placement="bottom-start" anchorEl={anchorEl} transition transparent={noBg}>
+              {({ TransitionProps }) => (
+                <Fade {...TransitionProps}>
+                  <SubMenuList>{renderSubMenuList(item.children)}</SubMenuList>
+                </Fade>
+              )}
+            </StyledPopper>
+          )}
+        </SubMenuButton>
       )
     } else if (item.isExternal) {
       return (
