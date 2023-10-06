@@ -110,7 +110,7 @@ const ExternalLink = styled<any>(Link)(({ theme, dark }) => ({
   width: "100%",
 }))
 
-const SectionList = styled("div")(({ theme }) => ({
+const SectionList = styled<any>("div")(({ theme, dark }) => ({
   "&:last-of-type": {
     paddingBottom: "2.5rem",
   },
@@ -118,7 +118,7 @@ const SectionList = styled("div")(({ theme }) => ({
     paddingBottom: "1.6rem",
   },
   "&:nth-of-type(n+2)": {
-    borderTop: `1px solid ${theme.palette.text.primary}`,
+    borderTop: `1px solid ${dark ? theme.palette.primary.contrastText : theme.palette.text.primary}`,
     paddingTop: "1.6rem",
   },
 }))
@@ -144,7 +144,12 @@ const App = ({ currentMenu }) => {
 
   const toggleDrawer = isOpen => {
     setOpen(isOpen)
-    if (!isOpen) setActiveCollapse(currentMenu)
+    if (isOpen) {
+      window.document.body.classList.add("mobile-top-nav-open")
+    } else {
+      window.document.body.classList.remove("mobile-top-nav-open")
+      setActiveCollapse(currentMenu)
+    }
   }
 
   const toggleCollapse = collapse => {
@@ -181,7 +186,7 @@ const App = ({ currentMenu }) => {
           <Collapse in={activeCollapse === item.key} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
               {item.children?.map(section => (
-                <SectionList key={section.label}>
+                <SectionList key={section.label} dark={dark}>
                   {section.children
                     // only show sub items with href
                     ?.filter(subItem => subItem.href)
@@ -234,7 +239,7 @@ const App = ({ currentMenu }) => {
             <Logo light={dark} />
           </Box>
         </NavLink>
-        <Stack direction="row" spacing="0.8rem" alignItems="center">
+        <Stack direction="row" spacing="1.6rem" alignItems="center">
           {showWalletConnector && <WalletToolkit dark={dark}></WalletToolkit>}
           <Menu onClick={() => toggleDrawer(!open)} className={open ? "active" : ""}>
             <Bar dark={dark}></Bar>
@@ -248,7 +253,8 @@ const App = ({ currentMenu }) => {
           sx={{
             background: theme => (dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.light),
             paddingTop: "5rem",
-            height: "calc(100vh - 3.2rem)",
+            height: "calc(100vh - 6.2rem)",
+            overflowY: "auto",
           }}
         >
           <MenuContent role="presentation" dark={dark} onKeyDown={() => toggleDrawer(false)}>

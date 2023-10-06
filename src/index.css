@@ -35,6 +35,10 @@ body {
   font-variant-ligatures: no-contextual;
 }
 
+body.mobile-top-nav-open {
+  overflow: hidden !important;
+}
+
 @font-face {
   font-family: "TransSansPremium";
   src: url("./assets/fonts/TransSansPremium-Light.woff2") format("woff2"), url("./assets/fonts/TransSansPremium-Light.woff") format("woff");
