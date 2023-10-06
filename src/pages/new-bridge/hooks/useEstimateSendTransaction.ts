@@ -50,7 +50,7 @@ export function useEstimateSendTransaction(props) {
   const estimateSend = async () => {
     const isNetworkConnected = await checkConnectedChainId(fromNetwork.chainId)
     if (!isNetworkConnected) return
-    if (fromNetwork.isL1) {
+    if (fromNetwork.isL1 && gasLimit && gasPrice) {
       return await estimateSendL1ToL2()
     } else if (!fromNetwork.isL1 && toNetwork.isL1) {
       return await estimateSendL2ToL1()

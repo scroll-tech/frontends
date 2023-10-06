@@ -5,7 +5,7 @@ import { create } from "zustand"
 import { persist } from "zustand/middleware"
 
 import { fetchTxByHashUrl } from "@/apis/bridge"
-import { NETWORKS, TX_STATUS } from "@/constants"
+import { TX_STATUS } from "@/constants"
 import { BLOCK_NUMBERS, BRIDGE_TRANSACTIONS } from "@/constants/storageKey"
 import { convertDateToTimestamp, sentryDebug, storageAvailable } from "@/utils"
 
@@ -78,10 +78,6 @@ interface TimestampTx {
 interface Transaction {
   hash: string
   toHash?: string
-  fromName: string
-  toName: string
-  fromExplore: string
-  toExplore: string
   fromBlockNumber?: number
   toBlockNumber?: number
   amount: string
@@ -108,10 +104,6 @@ const formatBackTxList = (backList, estimatedTimeMap) => {
   }
   const txList = backList.map(tx => {
     const amount = tx.amount
-    const fromName = NETWORKS[+!tx.isL1].name
-    const fromExplore = NETWORKS[+!tx.isL1].explorer
-    const toName = NETWORKS[+tx.isL1].name
-    const toExplore = NETWORKS[+tx.isL1].explorer
     const toHash = tx.finalizeTx?.hash
     const initiatedAt = tx.blockTimestamp || tx.createdTime
     const finalisedAt = tx.finalizeTx?.blockTimestamp
@@ -159,12 +151,8 @@ const formatBackTxList = (backList, estimatedTimeMap) => {
     return {
       hash: tx.hash,
       amount,
-      fromName,
-      fromExplore,
       fromBlockNumber: tx.blockNumber,
       toHash,
-      toName,
-      toExplore,
       toBlockNumber: tx.finalizeTx?.blockNumber,
       isL1: tx.isL1,
       symbolToken: tx.isL1 ? tx.l1Token : tx.l2Token,

@@ -128,10 +128,6 @@ export function useSendTransaction(props) {
     }
     addTransaction({
       hash: tx.hash,
-      fromName: fromNetwork.name,
-      toName: toNetwork.name,
-      fromExplore: fromNetwork.explorer,
-      toExplore: toNetwork.explorer,
       amount: parsedAmount.toString(),
       isL1: fromNetwork.name === NETWORKS[0].name,
       symbolToken: selectedToken.address,
@@ -142,10 +138,6 @@ export function useSendTransaction(props) {
   const markTransactionAbnormal = (tx, assumedStatus, errMsg) => {
     addAbnormalTransactions(walletCurrentAddress, {
       hash: tx.hash,
-      fromName: fromNetwork.name,
-      toName: toNetwork.name,
-      fromExplore: fromNetwork.explorer,
-      toExplore: toNetwork.explorer,
       amount: parsedAmount.toString(),
       isL1: fromNetwork.name === NETWORKS[0].name,
       symbolToken: selectedToken.address,
