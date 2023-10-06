@@ -123,6 +123,14 @@ export const formatUTCDate = (date, needSub?: boolean) => {
   return `${finalDate.utc().format("MMM D,YYYY h:mmA")} GMT`
 }
 
-export const formatDate = date => {
-  return date.format("MMM D,YYYY")
+export const formatDate = (date, options: { needSub?: boolean; withTime?: boolean } = {}) => {
+  const { needSub, withTime } = options
+  let finalDate = date
+  if (needSub) {
+    finalDate = date.subtract(1, "ms")
+  }
+  if (withTime) {
+    return finalDate.format("MMM D,YYYY h:mmA")
+  }
+  return finalDate.format("MMM D,YYYY")
 }

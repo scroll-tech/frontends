@@ -4,21 +4,21 @@ import { Box, Divider, Stack, Typography } from "@mui/material"
 
 import { DEVELOPER_NFT_STEPS, EndDate, Stage2StartDate, Stage3StartDate, StartDate } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
-import { formatDate, formatUTCDate } from "@/utils"
+import { formatDate } from "@/utils"
 
 import Statistic from "../../components/Statistic/StatisticReverse"
 
 const NFT_STAGES = [
-  { title: "Quintic", duration: Stage2StartDate.diff(StartDate, "day"), endData: formatUTCDate(Stage2StartDate, true) },
+  { title: "Quintic", duration: Stage2StartDate.diff(StartDate, "day"), endData: formatDate(Stage2StartDate, { needSub: true, withTime: true }) },
   {
     title: "Quartic",
     duration: `${Stage2StartDate.diff(StartDate, "day")}-${Stage3StartDate.diff(StartDate, "day")}`,
-    endData: formatUTCDate(Stage3StartDate, true),
+    endData: formatDate(Stage3StartDate, { needSub: true, withTime: true }),
   },
   {
     title: "Cubic",
     duration: `${Stage3StartDate.diff(StartDate, "day")}-${EndDate.diff(StartDate, "day") + 1}`,
-    endData: formatUTCDate(EndDate),
+    endData: formatDate(EndDate, { withTime: true }),
   },
 ]
 
@@ -57,7 +57,7 @@ const Stage = () => {
           component="span"
           sx={{ fontSize: "inherit", lineHeight: "inherit", fontWeight: 700, color: "#FF664D !important", whiteSpace: "nowrap" }}
         >
-          {EndDate.diff(StartDate, "day")} days
+          {EndDate.diff(StartDate, "day") + 1} days
         </Typography>{" "}
         of Genesis Block. Your NFT will be available for minting at the end of the program.
       </Typography>

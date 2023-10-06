@@ -8,7 +8,7 @@ import { ReactComponent as StepCompletedSvg } from "@/assets/svgs/refactor/nft-s
 import { ReactComponent as StepDefaultSvg } from "@/assets/svgs/refactor/nft-step-default-icon.svg"
 import { DEVELOPER_NFT_STEPS } from "@/constants"
 import useNFTStore from "@/stores/nftStore"
-import { formatUTCDate } from "@/utils"
+import { formatDate } from "@/utils"
 
 import Connector from "./Connector"
 
@@ -27,6 +27,9 @@ const useStyles = makeStyles()(theme => ({
     flexDirection: "column",
     gap: 8,
     alignItems: "center",
+    [theme.breakpoints.down("sm")]: {
+      width: "9rem",
+    },
   },
   stepLabelContainer: {
     textAlign: "center",
@@ -94,7 +97,7 @@ const NFTStepper = () => {
               optional={
                 // TODO: NumberTypography not allow component="span"
                 <Typography component="span" sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: [1.5, "normal"] }}>
-                  {formatUTCDate(date)}
+                  {formatDate(date, { withTime: true })}
                 </Typography>
               }
             >
