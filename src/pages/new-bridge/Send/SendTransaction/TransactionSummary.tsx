@@ -41,14 +41,14 @@ const TransactionSummary: FC<Props> = props => {
 
   const { amount, priceFeeErrorMessage, selectedToken, estimatedGasCost, relayFee, totalFee, bridgeWarning } = props
 
-  const getDisplayedValue = (value, symbol = ETH_SYMBOL) => {
+  const getDisplayedValue = (value, decimals = BigInt(18), symbol = ETH_SYMBOL) => {
     const condition = isNetworkCorrect && amount && bridgeWarning === null
     if (!condition || priceFeeErrorMessage) return <CustomTypography isError={!!priceFeeErrorMessage}>-</CustomTypography>
-    return toTokenDisplay(value, selectedToken.decimals, symbol)
+    return toTokenDisplay(value, decimals, symbol)
   }
 
   const displayedAmount = useMemo(
-    () => getDisplayedValue(amountToBN(amount, selectedToken.decimals), selectedToken.symbol),
+    () => getDisplayedValue(amountToBN(amount, selectedToken.decimals), selectedToken.decimals, selectedToken.symbol),
     [isNetworkCorrect, amount, selectedToken, priceFeeErrorMessage, bridgeWarning],
   )
 
@@ -66,7 +66,11 @@ const TransactionSummary: FC<Props> = props => {
     if (selectedToken.symbol === ETH_SYMBOL) return getDisplayedValue(totalFee + amountToBN(amount, selectedToken.decimals))
     const condition = isNetworkCorrect && amount && bridgeWarning === null
     if (!condition || priceFeeErrorMessage) return <CustomTypography isError={!!priceFeeErrorMessage}>-</CustomTypography>
-    return getDisplayedValue(amountToBN(amount, selectedToken.decimals), selectedToken.symbol) + " + " + getDisplayedValue(totalFee)
+    return (
+      getDisplayedValue(amountToBN(amount, selectedToken.decimals), selectedToken.decimals, selectedToken.symbol) +
+      " + " +
+      getDisplayedValue(totalFee)
+    )
   }, [isNetworkCorrect, amount, totalFee, selectedToken, priceFeeErrorMessage, bridgeWarning])
 
   return (

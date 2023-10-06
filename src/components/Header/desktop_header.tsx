@@ -1,9 +1,10 @@
 import React, { useState } from "react"
 import { NavLink } from "react-router-dom"
 
-import { Box, Container, Fade, Link, Popper, Stack } from "@mui/material"
+import { Box, Container, Fade, Link, Popper, Stack, SvgIcon } from "@mui/material"
 import { styled } from "@mui/system"
 
+import { ReactComponent as TriangleDownSvg } from "@/assets/svgs/refactor/header-triangle-down.svg"
 import Logo from "@/components/ScrollLogo"
 import WalletToolkit from "@/components/WalletToolkit"
 import useCheckViewport from "@/hooks/useCheckViewport"
@@ -79,13 +80,14 @@ const LinkStyledButton = styled(NavLink)(({ theme }) => ({
   },
 }))
 
-const SubMenuButton = styled(Box)(({ theme }) => ({
+const SubMenuButton = styled(Stack)(({ theme }) => ({
   fontSize: "1.8rem",
   fontWeight: 400,
   marginLeft: "0.5rem",
   marginRight: "0.5rem",
   lineHeight: "65px",
   position: "relative",
+  cursor: "pointer",
   color: theme.palette.text.primary,
   "&.active": {
     fontWeight: 600,
@@ -205,27 +207,24 @@ const App = ({ currentMenu }) => {
     if (item.children) {
       return (
         <SubMenuButton
+          direction="row"
+          alignItems="center"
+          spacing="6px"
           className={currentMenu === item.key ? "active" : ""}
           onMouseEnter={e => handleMouseEnter(e, item.key)}
           onMouseLeave={handleMouseLeave}
-          key={item.key}
         >
-          <Stack direction="row" alignItems="center" spacing="6px" sx={{ cursor: "pointer" }}>
-            <span>{item.label}</span>
-            <svg className="expand-more" xmlns="http://www.w3.org/2000/svg" width="9" height="5" viewBox="0 0 9 5" fill="none">
-              <path
-                d="M4.98393 4.5L3.48482 4.5L0.234375 0.5L1.73169 0.5L4.24869 3.60242C5.09663 2.56061 5.80325 1.54181 6.73527 0.500001L8.23438 0.500001C6.99108 1.83333 6.22722 3.16667 4.98393 4.5Z"
-                fill="currentColor"
-              />
-            </svg>
-          </Stack>
-          <StyledPopper key={item.key} open={item.key === checked} placement="bottom-start" anchorEl={anchorEl} transition transparent={noBg}>
-            {({ TransitionProps }) => (
-              <Fade {...TransitionProps}>
-                <SubMenuList onClick={handleMouseLeave}>{renderSubMenuList(item.children)}</SubMenuList>
-              </Fade>
-            )}
-          </StyledPopper>
+          <span>{item.label}</span>
+          <SvgIcon className="expand-more" sx={{ width: "auto", height: "auto" }} component={TriangleDownSvg} inheritViewBox></SvgIcon>
+          {item.key === checked && (
+            <StyledPopper open={true} placement="bottom-start" anchorEl={anchorEl} transition transparent={noBg}>
+              {({ TransitionProps }) => (
+                <Fade {...TransitionProps}>
+                  <SubMenuList>{renderSubMenuList(item.children)}</SubMenuList>
+                </Fade>
+              )}
+            </StyledPopper>
+          )}
         </SubMenuButton>
       )
     } else if (item.isExternal) {

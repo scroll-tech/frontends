@@ -87,7 +87,7 @@ const SendTransaction = props => {
           </TextButton>
         </>
       )
-    } else if (estimatedGasCostError && amount) {
+    } else if (estimatedGasCostError && amount && !needApproval) {
       return (
         <>
           {estimatedGasCostError},{" "}
@@ -98,7 +98,17 @@ const SendTransaction = props => {
       )
     }
     return null
-  }, [chainId, isNetworkCorrect, fromNetwork, insufficientWarning, invalidAmountMessage, priceFeeErrorMessage, amount, estimatedGasCostError])
+  }, [
+    chainId,
+    isNetworkCorrect,
+    fromNetwork,
+    insufficientWarning,
+    invalidAmountMessage,
+    priceFeeErrorMessage,
+    amount,
+    estimatedGasCostError,
+    needApproval,
+  ])
 
   const necessaryCondition = useMemo(() => {
     return amount && !bridgeWarning
