@@ -39,9 +39,15 @@ const routes = [
     path: "/blog/:blogId",
     element: <BlogDetail />,
   },
+  // Avoid references from other places and retain temporarily.
   {
     name: "Terms and Conditions",
     path: "/terms-and-conditions",
+    element: <Terms />,
+  },
+  {
+    name: "Terms of Service",
+    path: "/terms-of-service",
     element: <Terms />,
   },
   {

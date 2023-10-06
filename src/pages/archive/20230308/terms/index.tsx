@@ -73,7 +73,7 @@ const TableofContents = styled("ul")(({ theme }) => ({
 const Terms = () => {
   return (
     <Container className="wrapper">
-      <TitleTypography variant="h1">Website Terms and Conditions[Archive]</TitleTypography>
+      <TitleTypography variant="h1">Website Terms and Conditions [Archived on Oct 9, 2023]</TitleTypography>
       <p>
         Scroll has updated the Website Terms and Conditions effective 8th March 2023. For existing Users, these updates will apply beginning on 8th
         March 2023. For new Users, these updates apply immediately.
