@@ -461,24 +461,33 @@ const Terms = () => {
               </p>
               <ul>
                 <li>
-                  neither you, nor any of your affiliates, nor, as applicable, any director, officer, employee, shareholder, agent, or representative
-                  of you or any of your affiliates is or shall become a Prohibited Person;
+                  <p>
+                    neither you, nor any of your affiliates, nor, as applicable, any director, officer, employee, shareholder, agent, or
+                    representative of you or any of your affiliates is or shall become a Prohibited Person;
+                  </p>
                 </li>
                 <li>
-                  you, your affiliates, and, as applicable, your directors, officers, employees, agents, and representatives and those of your
-                  affiliates are and have been in full compliance with Export Controls and Sanctions Laws, and shall not directly or indirectly engage
-                  in or facilitate any transaction, act, dealing, or practice in the use of the Service or Sites or otherwise in connection with these
-                  Terms that could cause any party to these Terms, including Scroll Foundation to violate or be subject to penalty or any other
-                  adverse consequences under any Export Controls and Sanctions Laws;
+                  <p>
+                    you, your affiliates, and, as applicable, your directors, officers, employees, agents, and representatives and those of your
+                    affiliates are and have been in full compliance with Export Controls and Sanctions Laws, and shall not directly or indirectly
+                    engage in or facilitate any transaction, act, dealing, or practice in the use of the Service or Sites or otherwise in connection
+                    with these Terms that could cause any party to these Terms, including Scroll Foundation to violate or be subject to penalty or any
+                    other adverse consequences under any Export Controls and Sanctions Laws;
+                  </p>
                 </li>
                 <li>
-                  you shall immediately cease using the Service or the Site (i) in the event that you, any of your affiliates, or, as applicable, any
-                  of your directors, officers, employees, shareholders, agents, or representatives or those of your affiliates becomes a Prohibited
-                  Person; or (ii) of any other changes to or noncompliance with any representation, warranty, or covenant provided herein; and
+                  <p>
+                    you shall immediately cease using the Service or the Site (i) in the event that you, any of your affiliates, or, as applicable,
+                    any of your directors, officers, employees, shareholders, agents, or representatives or those of your affiliates becomes a
+                    Prohibited Person; or (ii) of any other changes to or noncompliance with any representation, warranty, or covenant provided
+                    herein; and
+                  </p>
                 </li>
                 <li>
-                  you shall fully cooperate with Scroll Foundation in responding to any internal or government inquiry, investigation, or audit
-                  concerning compliance with Export Controls and Sanctions Laws in connection with these Terms.{" "}
+                  <p>
+                    you shall fully cooperate with Scroll Foundation in responding to any internal or government inquiry, investigation, or audit
+                    concerning compliance with Export Controls and Sanctions Laws in connection with these Terms.
+                  </p>
                 </li>
               </ul>
               <p>
@@ -492,28 +501,34 @@ const Terms = () => {
               <p>For purposes of this Section:</p>
               <ul>
                 <li>
-                  “Export Controls and Sanctions Laws” means all applicable export control and economic sanctions laws and regulations imposed,
-                  administered, or enforced from time to time by (i) the U.S. government, including the Export Administration Regulations, the
-                  International Traffic in Arms Regulations, and the trade and economic sanctions regulations administered by the U.S. Department of
-                  Treasury’s Office of Foreign Assets Control (“OFAC”); and (ii) the United Nations Security Council, the European Union, any European
-                  Union member state, the United Kingdom, and any other applicable governmental authority;
+                  <p>
+                    “Export Controls and Sanctions Laws” means all applicable export control and economic sanctions laws and regulations imposed,
+                    administered, or enforced from time to time by (i) the U.S. government, including the Export Administration Regulations, the
+                    International Traffic in Arms Regulations, and the trade and economic sanctions regulations administered by the U.S. Department of
+                    Treasury’s Office of Foreign Assets Control (“OFAC”); and (ii) the United Nations Security Council, the European Union, any
+                    European Union member state, the United Kingdom, and any other applicable governmental authority;
+                  </p>
                 </li>
                 <li>
-                  “Prohibited Person” means (i) any individual, entity, or wallet address that has been determined by competent authority to be the
-                  subject or target of any prohibition or restriction under Export Controls and Sanctions Laws; (ii) the government, including any
-                  political subdivision, agency, or instrumentality thereof, of any Sanctioned Jurisdiction or Venezuela; (iii) any individual or
-                  entity located, organized, operating, or residing in any Sanctioned Jurisdiction; (iv) any individual, entity, or wallet address
-                  that has been identified on the OFAC Specially Designated Nationals and Blocked Persons List or Consolidated Sanctions List, or
-                  designated on any similar list or order published by the U.S. government or any other applicable governmental authority, including,
-                  without limitation, the Denied Persons List, Entity List, Unverified List, or Military End User List of the U.S. Department of
-                  Commerce, or the Debarred List or Nonproliferation Sanctions List of the U.S. Department of State; and (v) any individual, entity,
-                  or wallet address owned or controlled by, or that acts for or on behalf of, any of the foregoing; and
+                  <p>
+                    “Prohibited Person” means (i) any individual, entity, or wallet address that has been determined by competent authority to be the
+                    subject or target of any prohibition or restriction under Export Controls and Sanctions Laws; (ii) the government, including any
+                    political subdivision, agency, or instrumentality thereof, of any Sanctioned Jurisdiction or Venezuela; (iii) any individual or
+                    entity located, organized, operating, or residing in any Sanctioned Jurisdiction; (iv) any individual, entity, or wallet address
+                    that has been identified on the OFAC Specially Designated Nationals and Blocked Persons List or Consolidated Sanctions List, or
+                    designated on any similar list or order published by the U.S. government or any other applicable governmental authority,
+                    including, without limitation, the Denied Persons List, Entity List, Unverified List, or Military End User List of the U.S.
+                    Department of Commerce, or the Debarred List or Nonproliferation Sanctions List of the U.S. Department of State; and (v) any
+                    individual, entity, or wallet address owned or controlled by, or that acts for or on behalf of, any of the foregoing; and
+                  </p>
                 </li>
                 <li>
-                  “Sanctioned Jurisdiction” means, at any time, any country, region or territory which is itself the subject or target of
-                  comprehensive economic sanctions or embargoes under Export Controls and Sanctions Laws, including, without limitation, Cuba, Iran,
-                  North Korea, Syria, the Crimea region of Ukraine, and the so-called Donetsk People’s Republic and Luhansk People’s Republic regions
-                  of Ukraine.
+                  <p>
+                    “Sanctioned Jurisdiction” means, at any time, any country, region or territory which is itself the subject or target of
+                    comprehensive economic sanctions or embargoes under Export Controls and Sanctions Laws, including, without limitation, Cuba, Iran,
+                    North Korea, Syria, the Crimea region of Ukraine, and the so-called Donetsk People’s Republic and Luhansk People’s Republic
+                    regions of Ukraine.
+                  </p>
                 </li>
               </ul>
             </li>
