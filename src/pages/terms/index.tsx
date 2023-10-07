@@ -31,7 +31,7 @@ const Container = styled(Box)(({ theme }) => ({
     listStyle: "disc",
     marginLeft: "1.6rem",
     "& ul": {
-      listStyle: "auto",
+      listStyle: "decimal",
       "& ul": {
         listStyle: "circle",
       },
@@ -74,9 +74,7 @@ const Terms = () => {
   return (
     <Container className="wrapper">
       <TitleTypography variant="h1">Terms of Service</TitleTypography>
-      <p>
-        Last updated: October 9<sup>th</sup>, 2023
-      </p>
+      <p>Last updated: October 9, 2023</p>
       <p>
         Scroll Foundation (“Scroll Foundation”, “we,” “us,” or “our”), currently provides a website-hosted user interface that can be accessed at
         <LinkStyled href="/bridge"> https://scroll.io/bridge</LinkStyled> (the “Interface”) for accessing, and certain information about, Scroll
