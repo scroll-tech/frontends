@@ -5,9 +5,6 @@ import Link from "@/components/Link"
 
 const Container = styled(Box)(({ theme }) => ({
   padding: "14rem 6rem",
-  [theme.breakpoints.down("md")]: {
-    padding: "8rem 2rem",
-  },
   "& *": {
     fontSize: "2rem",
     textAlign: "justify",
@@ -47,10 +44,25 @@ const Container = styled(Box)(({ theme }) => ({
       },
     },
   },
+  [theme.breakpoints.down("md")]: {
+    padding: "8rem 1.6rem",
+    "& ul": {
+      li: {
+        paddingLeft: "0",
+      },
+      width: "calc(100vw - 4.8rem) !important",
+      "& ul": {
+        marginLeft: "0",
+      },
+    },
+  },
 }))
 
 const LinkStyled = styled(Link)(({ theme }) => ({
   fontSize: "2rem",
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1.6rem",
+  },
 }))
 
 const TitleTypography = styled(Typography)(({ theme }) => ({
