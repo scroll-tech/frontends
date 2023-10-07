@@ -31,7 +31,7 @@ const BridgeLinks = () => {
         </svg>
       </FAQsLink>
       <FAQsLink style={{ marginLeft: "2rem" }} to="/terms-of-service">
-        TOC
+        T&C
         <svg style={{ margin: "-2px 0 0 3px" }} xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8" fill="none">
           <g clipPath="url(#clip0_4136_4325)">
             <path
