@@ -43,17 +43,17 @@ const routes = [
   {
     name: "Terms and Conditions",
     path: "/terms-and-conditions",
-    element: <Terms />,
-  },
-  {
-    name: "Terms of Service",
-    path: "/terms-of-service",
-    element: <Terms />,
+    element: <ArchiveTerms />,
   },
   {
     name: "Terms and Conditions[Archive]",
     path: "/archive/20230308/terms-and-conditions",
     element: <ArchiveTerms />,
+  },
+  {
+    name: "Terms of Service",
+    path: "/terms-of-service",
+    element: <Terms />,
   },
   {
     name: "Privacy Policy",
