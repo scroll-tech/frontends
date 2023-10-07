@@ -82,7 +82,7 @@ const LinkStyledButton = styled<any>(NavLink)(({ theme, dark }) => ({
   },
 }))
 
-const SubMenuButton = styled<any>(Box)(({ theme, dark }) => ({
+const SubMenuButton = styled<any>(Stack)(({ theme, dark }) => ({
   fontSize: "1.8rem",
   fontWeight: 400,
   marginLeft: "0.5rem",
@@ -216,6 +216,7 @@ const App = ({ currentMenu }) => {
           direction="row"
           alignItems="center"
           spacing="6px"
+          dark={dark}
           className={currentMenu === item.key ? "active" : ""}
           onMouseEnter={e => handleMouseEnter(e, item.key)}
           onMouseLeave={handleMouseLeave}
@@ -228,7 +229,7 @@ const App = ({ currentMenu }) => {
             inheritViewBox
           ></SvgIcon>
           {item.key === checked && (
-            <StyledPopper open={true} placement="bottom-start" anchorEl={anchorEl} transition transparent={noBg}>
+            <StyledPopper open={true} placement="bottom-start" anchorEl={anchorEl} transition transparent={noBg} dark={dark}>
               {({ TransitionProps }) => (
                 <Fade {...TransitionProps}>
                   <SubMenuList onClick={handleMouseLeave}>{renderSubMenuList(item.children)}</SubMenuList>
