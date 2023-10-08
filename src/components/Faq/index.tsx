@@ -103,14 +103,11 @@ const Faq = props => {
           1. Transfer and withdraw tokens in <Link href={SITE_MAP.Bridge}>Bridge</Link>.
         </Typography>
         <Typography variant="Body3" color="textSecondary" className={classes.orderedParagraph}>
-          2. View status of transactions and blocks in the{" "}
+          2. View the statuses of transactions and blocks in the{" "}
           <Link href={SITE_MAP.L1Explorer} external>
-            Scroll L1
+            Scroll
           </Link>
           ,{" "}
-          <Link href={SITE_MAP.L2Explorer} external>
-            Scroll L2
-          </Link>{" "}
           Block Explorers and the <Link href={SITE_MAP.RollupExplorer}>Rollup Explorer</Link>.
         </Typography>
         <Typography variant="Body3" color="textSecondary">
