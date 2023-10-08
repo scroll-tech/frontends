@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { NavLink } from "react-router-dom"
+import { useStyles } from "tss-react/mui"
 
 import { Box, Container, Fade, Link, Popper, Stack, SvgIcon } from "@mui/material"
 import { styled } from "@mui/system"
@@ -96,11 +97,9 @@ const SubMenuButton = styled(Stack)(({ theme }) => ({
     willChange: "transform",
     transition: "transform .3s ease-in-out",
   },
-  "&:hover": {
+  "& .expand-more-reverse": {
     fontWeight: 500,
-    [`& .expand-more`]: {
-      transform: "rotate(180deg)",
-    },
+    transform: "rotate(180deg)",
   },
 }))
 
@@ -156,6 +155,7 @@ const LinkStyledSubButton = styled(NavLink)(({ theme }) => ({
 }))
 
 const App = ({ currentMenu }) => {
+  const { cx } = useStyles()
   const noBg = useCheckNoBg()
   const { isDesktop } = useCheckViewport()
 
@@ -215,12 +215,17 @@ const App = ({ currentMenu }) => {
           onMouseLeave={handleMouseLeave}
         >
           <span>{item.label}</span>
-          <SvgIcon className="expand-more" sx={{ width: "auto", height: "auto" }} component={TriangleDownSvg} inheritViewBox></SvgIcon>
+          <SvgIcon
+            className={cx("expand-more", item.key === checked && "expand-more-reverse")}
+            sx={{ width: "auto", height: "auto" }}
+            component={TriangleDownSvg}
+            inheritViewBox
+          ></SvgIcon>
           {item.key === checked && (
             <StyledPopper open={true} placement="bottom-start" anchorEl={anchorEl} transition transparent={noBg}>
               {({ TransitionProps }) => (
                 <Fade {...TransitionProps}>
-                  <SubMenuList>{renderSubMenuList(item.children)}</SubMenuList>
+                  <SubMenuList onClick={handleMouseLeave}>{renderSubMenuList(item.children)}</SubMenuList>
                 </Fade>
               )}
             </StyledPopper>
@@ -235,7 +240,7 @@ const App = ({ currentMenu }) => {
       )
     } else {
       return (
-        <LinkStyledButton className={currentMenu === item.key ? "active" : ""} to={item.href} end={item.end} key={item.key}>
+        <LinkStyledButton to={item.href} end={item.end} key={item.key}>
           {item.label}
         </LinkStyledButton>
       )
