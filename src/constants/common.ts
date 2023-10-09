@@ -2,6 +2,7 @@ import { requireEnv } from "@/utils"
 
 export const ETH_SYMBOL = requireEnv("REACT_APP_ETH_SYMBOL")
 export const WETH_SYMBOL = "WETH"
+export const USDC_SYMBOL = "USDC"
 
 export const CHAIN_ID = {
   L1: parseInt(requireEnv("REACT_APP_CHAIN_ID_L1") as string),
@@ -33,4 +34,9 @@ export const WETH_GATEWAY_PROXY_ADDR = {
   [CHAIN_ID.L1]: requireEnv("REACT_APP_L1_WETH_GATEWAY_PROXY_ADDR"),
   [CHAIN_ID.L2]: requireEnv("REACT_APP_L2_WETH_GATEWAY_PROXY_ADDR"),
 }
+
+export const USDC_GATEWAY_PROXY_ADDR = {
+  [CHAIN_ID.L2]: requireEnv("REACT_APP_L2_USDC_GATEWAY_PROXY_ADDR"),
+}
+
 export const BRANCH_NAME = requireEnv("REACT_APP_SCROLL_ENVIRONMENT").toLocaleLowerCase()
