@@ -100,18 +100,14 @@ const Faq = props => {
           Here is how to explore the platform:
         </Typography>
         <Typography variant="Body3" color="textSecondary" className={classes.orderedParagraph}>
-          1. Transfer and withdraw test tokens in <Link href={SITE_MAP.Bridge}>Bridge</Link>.
+          1. Transfer and withdraw tokens in <Link href={SITE_MAP.Bridge}>Bridge</Link>.
         </Typography>
         <Typography variant="Body3" color="textSecondary" className={classes.orderedParagraph}>
-          2. View status of transactions and blocks in the{" "}
-          <Link href={SITE_MAP.L1Explorer} external>
-            Scroll L1
-          </Link>
-          ,{" "}
+          2. View the statuses of transactions and blocks in the{" "}
           <Link href={SITE_MAP.L2Explorer} external>
-            Scroll L2
-          </Link>{" "}
-          Block Explorers and the <Link href={SITE_MAP.RollupExplorer}>Rollup Explorer</Link>.
+            Scroll Block Explorers{" "}
+          </Link>
+          and the <Link href={SITE_MAP.RollupExplorer}>Rollup Explorer</Link>.
         </Typography>
         <Typography variant="Body3" color="textSecondary">
           More instructions <Link href={SITE_MAP.Home}>here</Link>.

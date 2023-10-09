@@ -24,7 +24,7 @@ const FAQ = () => {
     <Faq backUrl="/bridge" backText="< Back to Bridge">
       <FaqItem title="What is a blockchain Bridge?" id="2">
         <Typography variant="Body3" color="textSecondary">
-          All blockchains are developed in isolated environments, this means they cannot natively communicate, and tokens cannot move freely between
+          All blockchains are developed in isolated environments, this means they cannot natively communicate and tokens cannot move freely between
           blockchains.
         </Typography>
         <Typography variant="Body3" color="textSecondary" className={classes.specialParagraph}>
@@ -40,7 +40,7 @@ const FAQ = () => {
           2. Select Deposit or Withdraw on the bridge.
         </Typography>
         <Typography variant="Body3" color="textSecondary" className={classes.orderedParagraph}>
-          3. Select the token (ETH, GHO, or WETH) you wish to transfer.
+          3. Select the token (for ex. ETH) you wish to transfer.
         </Typography>
         <Typography variant="Body3" color="textSecondary" className={classes.orderedParagraph}>
           4. Click on Send. A pop up window from will ask you for the transfer confirmation. If this is your first time transferring ETH, you will be
