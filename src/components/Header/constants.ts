@@ -9,7 +9,6 @@ const navigations = [
   {
     label: "Develop",
     key: "develop",
-    href: "",
     children: [
       {
         label: "develop1",
@@ -18,6 +17,7 @@ const navigations = [
             label: "Testnet",
             key: "testnet",
             href: "/portal",
+            rootKey: "develop",
           },
           {
             label: "Docs",
@@ -40,6 +40,7 @@ const navigations = [
             label: "Rollup Explorer",
             key: "rollupscan",
             href: "/rollupscan",
+            rootKey: "develop",
           },
           {
             label: "Etherscan",
@@ -66,7 +67,6 @@ const navigations = [
   {
     label: "Explore",
     key: "explore",
-    href: "",
     children: [
       {
         children: [
@@ -74,11 +74,13 @@ const navigations = [
             label: "Ecosystem",
             key: "ecosystem",
             href: "/ecosystem",
+            rootKey: "explore",
           },
           {
             label: "Blog",
             key: "blog",
             href: "/blog",
+            rootKey: "explore",
           },
           {
             label: "User Guide",
