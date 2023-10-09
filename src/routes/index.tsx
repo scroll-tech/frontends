@@ -1,4 +1,5 @@
 import IframeEmbedding from "@/components/IframeEmbedding"
+import ArchiveTerms from "@/pages/archive/20230308/terms"
 import Blog from "@/pages/blog"
 import BlogDetail from "@/pages/blog/detail"
 import Ecosystem from "@/pages/ecosystem"
@@ -38,9 +39,20 @@ const routes = [
     path: "/blog/:blogId",
     element: <BlogDetail />,
   },
+  // Avoid references from other places and retain temporarily.
   {
     name: "Terms and Conditions",
     path: "/terms-and-conditions",
+    element: <ArchiveTerms />,
+  },
+  {
+    name: "Terms and Conditions[Archive]",
+    path: "/archive/20230308/terms-and-conditions",
+    element: <ArchiveTerms />,
+  },
+  {
+    name: "Terms of Service",
+    path: "/terms-of-service",
     element: <Terms />,
   },
   {

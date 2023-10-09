@@ -17,8 +17,8 @@ export const aboutList = [
     href: "/privacy-policy",
   },
   {
-    name: "Terms and Conditions",
-    href: "/terms-and-conditions",
+    name: "Terms of Service",
+    href: "/terms-of-service",
   },
 ]
 
