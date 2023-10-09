@@ -104,10 +104,10 @@ const Faq = props => {
         </Typography>
         <Typography variant="Body3" color="textSecondary" className={classes.orderedParagraph}>
           2. View the statuses of transactions and blocks in the{" "}
-          <Link href={SITE_MAP.L1Explorer} external>
-            Scroll
+          <Link href={SITE_MAP.L2Explorer} external>
+            Scroll Block Explorers
           </Link>
-          , Block Explorers and the <Link href={SITE_MAP.RollupExplorer}>Rollup Explorer</Link>.
+          and the <Link href={SITE_MAP.RollupExplorer}>Rollup Explorer</Link>.
         </Typography>
         <Typography variant="Body3" color="textSecondary">
           More instructions <Link href={SITE_MAP.Home}>here</Link>.
