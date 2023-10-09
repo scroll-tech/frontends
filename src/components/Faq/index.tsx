@@ -107,8 +107,7 @@ const Faq = props => {
           <Link href={SITE_MAP.L1Explorer} external>
             Scroll
           </Link>
-          ,{" "}
-          Block Explorers and the <Link href={SITE_MAP.RollupExplorer}>Rollup Explorer</Link>.
+          , Block Explorers and the <Link href={SITE_MAP.RollupExplorer}>Rollup Explorer</Link>.
         </Typography>
         <Typography variant="Body3" color="textSecondary">
           More instructions <Link href={SITE_MAP.Home}>here</Link>.
