@@ -360,7 +360,7 @@ const Terms = () => {
             </li>
             <li>
               <p>
-                <strong>Prohibited Uses;Legal Compliance. </strong>
+                <strong>Prohibited Uses; Legal Compliance. </strong>
                 You may use the Service or any Sites only for lawful purposes and in accordance with these Terms. The following are examples of the
                 kinds of content and/or uses that are prohibited. Scroll Foundation reserves the right to investigate and take appropriate legal
                 action against anyone who, in Scroll Foundation’s sole discretion, violates this provision, including reporting the violator to law
