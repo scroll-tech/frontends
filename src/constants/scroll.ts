@@ -1,7 +1,6 @@
-import { NETWORKS } from "@/constants/networks"
 import { requireEnv } from "@/utils"
 
-import { DOCUMENTATION_URL, EXPLORER_URL } from "./common"
+import { DOCUMENTATION_URL, EXPLORER_URL, L1_NAME, L2_NAME } from "./common"
 
 export const SITE_MAP = {
   Home: "/portal",
@@ -28,7 +27,7 @@ export const NAVIGATIONS = [
   },
   {
     name: "L1 Block Explorer",
-    description: `See your L1 transactions on ${NETWORKS[0].name}'s block explorer.`,
+    description: `See your L1 transactions on ${L1_NAME}'s block explorer.`,
     isExternal: true,
     subdomainOrPath: EXPLORER_URL.L1,
   },
@@ -40,7 +39,7 @@ export const NAVIGATIONS = [
   },
   {
     name: "Documentation",
-    description: `See the full ${NETWORKS[1].name} User Guide here.`,
+    description: `See the full ${L2_NAME} User Guide here.`,
     isExternal: true,
     subdomainOrPath: DOCUMENTATION_URL[requireEnv("REACT_APP_SCROLL_ENVIRONMENT")],
   },

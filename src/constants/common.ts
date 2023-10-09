@@ -4,6 +4,10 @@ export const ETH_SYMBOL = requireEnv("REACT_APP_ETH_SYMBOL")
 export const WETH_SYMBOL = "WETH"
 export const USDC_SYMBOL = "USDC"
 
+export const L1_NAME = `Ethereum ${requireEnv("REACT_APP_SCROLL_ENVIRONMENT")}`
+
+export const L2_NAME = `Scroll ${requireEnv("REACT_APP_SCROLL_ENVIRONMENT")}`
+
 export const CHAIN_ID = {
   L1: parseInt(requireEnv("REACT_APP_CHAIN_ID_L1") as string),
   L2: parseInt(requireEnv("REACT_APP_CHAIN_ID_L2") as string),
