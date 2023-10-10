@@ -39,4 +39,9 @@ export const USDC_GATEWAY_PROXY_ADDR = {
   [CHAIN_ID.L2]: requireEnv("REACT_APP_L2_USDC_GATEWAY_PROXY_ADDR"),
 }
 
+export const DOCUMENTATION_URL = {
+  Mainnet: "https://docs.scroll.io/en/developers/developer-quickstart/",
+  Sepolia: "https://docs.scroll.io/en/user-guide/",
+}
+
 export const BRANCH_NAME = requireEnv("REACT_APP_SCROLL_ENVIRONMENT").toLocaleLowerCase()
