@@ -67,7 +67,7 @@ const ListItemIconStyled = styled(ListItemIcon)(({ theme }) => ({
 const ListSymbolStyled = styled(Typography)(({ theme }) => ({
   display: "inline",
   color: "#473835",
-  fontFamily: "Roboto Flex",
+  fontFamily: "var(--developer-page-font-family)",
   fontSize: "1.7rem",
   fontStyle: "normal",
   fontWeight: 600,
@@ -78,7 +78,7 @@ const ListSymbolStyled = styled(Typography)(({ theme }) => ({
 const ListNameStyled = styled(Typography)(({ theme }) => ({
   display: "inline",
   color: "#756A67",
-  fontFamily: "Roboto Flex",
+  fontFamily: "var(--developer-page-font-family)",
   fontSize: "1.5rem",
   fontStyle: "normal",
   fontWeight: 400,
@@ -87,13 +87,14 @@ const ListNameStyled = styled(Typography)(({ theme }) => ({
 }))
 const ListAddressStyled = styled(Link)(({ theme }) => ({
   color: "#756A67",
-  fontFamily: "Trans Sans Premium",
+  fontFamily: "var(--developer-page-font-family)",
   fontSize: "1.5rem",
   fontStyle: "normal",
   fontWeight: 400,
   lineHeight: "2.2rem",
   letterSpacing: "0.15px",
   textDecorationLine: "underline",
+  textDecorationColor: "unset",
 }))
 
 const ListItemTextStyled = styled(ListItemText)(({ theme }) => ({
@@ -120,6 +121,21 @@ const ErrorBoxStyled = styled(Box)(({ theme }) => ({
   textAlign: "center",
   lineHeight: "1.8rem",
   padding: "0.7rem 0",
+}))
+
+const TokenListWrapper = styled(Box)(({ theme }) => ({
+  maxHeight: "50rem",
+  overflow: "auto",
+  "&::-webkit-scrollbar-thumb": {
+    backgroundColor: theme.palette.themeBackground.optionHightlight,
+    borderRadius: "8px",
+  },
+  "&::-webkit-scrollbar": {
+    width: "6px",
+  },
+  // Firefox
+  scrollbarWidth: "thin",
+  scrollbarColor: `${theme.palette.themeBackground.optionHightlight} transparent`,
 }))
 
 export interface TokenListProps {
@@ -175,7 +191,7 @@ const TokenList = ({ tokens, selectToken, selectedValue, txType }) => (
 )
 
 const OptimizedComponent = ({ listedbyUser, listedbyScroll, selectToken, selectedValue, txType }) => (
-  <Box sx={{ maxHeight: "50rem", overflow: "auto" }}>
+  <TokenListWrapper>
     {listedbyUser?.length > 0 && (
       <>
         <ListTitleStyled>Custom</ListTitleStyled>
@@ -188,7 +204,7 @@ const OptimizedComponent = ({ listedbyUser, listedbyScroll, selectToken, selecte
         <TokenList tokens={listedbyScroll} txType={txType} selectToken={selectToken} selectedValue={selectedValue} />
       </>
     )}
-  </Box>
+  </TokenListWrapper>
 )
 
 function List(props: TokenListProps) {
