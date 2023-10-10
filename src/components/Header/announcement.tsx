@@ -25,7 +25,8 @@ const ReadMoreLink = styled("a")(
 
 const Announcement = () => {
   const isHome = useMatch("/")
-  if (!isHome) {
+  const isPortal = useMatch("/portal")
+  if (!isHome && !isPortal) {
     return null
   }
   return (

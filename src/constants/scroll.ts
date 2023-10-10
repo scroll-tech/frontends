@@ -1,7 +1,7 @@
 import { NETWORKS } from "@/constants/networks"
 import { requireEnv } from "@/utils"
 
-import { EXPLORER_URL } from "./common"
+import { DOCUMENTATION_URL, EXPLORER_URL } from "./common"
 
 export const SITE_MAP = {
   Home: "/portal",
@@ -42,7 +42,7 @@ export const NAVIGATIONS = [
     name: "Documentation",
     description: `See the full ${NETWORKS[1].name} User Guide here.`,
     isExternal: true,
-    subdomainOrPath: "https://docs.scroll.io/en/user-guide/",
+    subdomainOrPath: DOCUMENTATION_URL[requireEnv("REACT_APP_SCROLL_ENVIRONMENT")],
   },
 ]
 
