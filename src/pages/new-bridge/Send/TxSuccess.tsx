@@ -11,6 +11,7 @@ import { ETH_SYMBOL } from "@/constants"
 import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useBridgeStore from "@/stores/bridgeStore"
+import { truncateHash } from "@/utils"
 
 const TxSuccess = () => {
   const { fromNetwork, toNetwork, txResult, changeTxResult, txType, withDrawStep, changeWithdrawStep } = useBridgeStore()
@@ -44,7 +45,7 @@ const TxSuccess = () => {
         </Typography>
         <Typography>...Approximately 20 minutes remaining</Typography>
         <Typography sx={{ fontSize: "1.8rem", fontWeight: 700, mt: "4rem" }}>
-          This is your tx hash: <Typography sx={{ fontWeight: 400 }}>{txResult?.hash}</Typography>
+          This is your tx hash: <Typography>{truncateHash(txResult?.hash as string)}</Typography>
         </Typography>
         <Link sx={{ color: "success.main" }} underline="always" href={transactionUrl} external>
           Check your transaction in block explorer
@@ -64,10 +65,9 @@ const TxSuccess = () => {
         <Typography sx={{ fontSize: "1.8rem", fontWeight: 700, mt: "2.5rem" }}>
           Moving {txResult?.amount} {tokenSymbol} to {toNetwork.name}
         </Typography>
-        {/* TODO: need to reconfirm the duration */}
         <Typography>...Approximately 1 hour remaining</Typography>
         <Typography sx={{ fontSize: "1.8rem", fontWeight: 700, mt: "4rem" }}>
-          This is your tx hash: <Typography sx={{ fontWeight: 400 }}>{txResult?.hash}</Typography>
+          This is your tx hash: <Typography>{truncateHash(txResult?.hash as string)}</Typography>
         </Typography>
         <Link sx={{ color: "success.main", marginBottom: "4.8rem" }} underline="always" href={transactionUrl} external>
           Check your transaction in block explorer
@@ -88,7 +88,7 @@ const TxSuccess = () => {
       </Alert>
       <Typography sx={{ fontSize: "1.8rem", fontWeight: 700, mt: "2.5rem" }}>Your withdrawal is completed!</Typography>
       <Typography sx={{ fontSize: "1.8rem", fontWeight: 700, mt: "4rem" }}>
-        This is your tx hash: <Typography sx={{ fontWeight: 400 }}>{txResult?.hash}</Typography>
+        This is your tx hash: <Typography>{truncateHash(txResult?.hash as string)}</Typography>
       </Typography>
       <Link sx={{ color: "success.main" }} href={transactionUrl} underline="always" external>
         Check your transaction in block explorer
