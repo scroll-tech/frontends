@@ -7,7 +7,7 @@ import { CHAIN_ID, ETH_SYMBOL, EXPLORER_URL, L1_NAME, L2_NAME, RPC_URL } from ".
 export const NETWORKS: Network[] = [
   {
     name: L1_NAME,
-    slug: "sepolia",
+    slug: "layer1",
     imageUrl: "/imgs/bridge/mainnet.svg",
     icon: MainnetSvg,
     rpcUrl: RPC_URL.L1,
