@@ -1,7 +1,7 @@
 import { useMemo } from "react"
 import useStorage from "squirrel-gill"
 
-import { Alert, Box, Typography } from "@mui/material"
+import { Alert, Box, Tooltip, Typography } from "@mui/material"
 
 import Button from "@/components/Button"
 import Link from "@/components/Link"
@@ -45,7 +45,10 @@ const TxSuccess = () => {
         </Typography>
         <Typography>...Approximately 20 minutes remaining</Typography>
         <Typography sx={{ fontSize: "1.8rem", fontWeight: 700, mt: "4rem" }}>
-          This is your tx hash: <Typography>{truncateHash(txResult?.hash as string)}</Typography>
+          This is your tx hash:
+          <Tooltip placement="top-start" title={txResult?.hash as string}>
+            <Typography>{truncateHash(txResult?.hash as string)}</Typography>
+          </Tooltip>
         </Typography>
         <Link sx={{ color: "success.main" }} underline="always" href={transactionUrl} external>
           Check your transaction in block explorer
@@ -67,7 +70,10 @@ const TxSuccess = () => {
         </Typography>
         <Typography>...Approximately 1 hour remaining</Typography>
         <Typography sx={{ fontSize: "1.8rem", fontWeight: 700, mt: "4rem" }}>
-          This is your tx hash: <Typography>{truncateHash(txResult?.hash as string)}</Typography>
+          This is your tx hash:
+          <Tooltip placement="top-start" title={txResult?.hash as string}>
+            <Typography>{truncateHash(txResult?.hash as string)}</Typography>
+          </Tooltip>
         </Typography>
         <Link sx={{ color: "success.main", marginBottom: "4.8rem" }} underline="always" href={transactionUrl} external>
           Check your transaction in block explorer
@@ -88,7 +94,10 @@ const TxSuccess = () => {
       </Alert>
       <Typography sx={{ fontSize: "1.8rem", fontWeight: 700, mt: "2.5rem" }}>Your withdrawal is completed!</Typography>
       <Typography sx={{ fontSize: "1.8rem", fontWeight: 700, mt: "4rem" }}>
-        This is your tx hash: <Typography>{truncateHash(txResult?.hash as string)}</Typography>
+        This is your tx hash:{" "}
+        <Tooltip placement="top-start" title={txResult?.hash as string}>
+          <Typography>{truncateHash(txResult?.hash as string)}</Typography>
+        </Tooltip>
       </Typography>
       <Link sx={{ color: "success.main" }} href={transactionUrl} underline="always" external>
         Check your transaction in block explorer
