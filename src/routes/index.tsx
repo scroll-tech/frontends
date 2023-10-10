@@ -1,71 +1,13 @@
-import IframeEmbedding from "@/components/IframeEmbedding"
-import ArchiveTerms from "@/pages/archive/20230308/terms"
-import Blog from "@/pages/blog"
-import BlogDetail from "@/pages/blog/detail"
-import Ecosystem from "@/pages/ecosystem"
-import Home from "@/pages/landingpage"
 // import Bridge from "@/pages/bridge"
 import Bridge from "@/pages/new-bridge"
 import BridgeFAQ from "@/pages/new-bridge/FAQ"
-import OurStory from "@/pages/ourStory"
-import Portal from "@/pages/portal"
-import PrivacyPolicy from "@/pages/privacyPolicy"
 import RollupScanBatch from "@/pages/rollup/batch"
 import RollupScanBlock from "@/pages/rollup/block"
 import RollupScanChunk from "@/pages/rollup/chunk"
 import RollupScanChunkDetail from "@/pages/rollup/chunk/detail"
 import RollupScan from "@/pages/rollup/index"
-import Terms from "@/pages/terms"
 
 const routes = [
-  {
-    name: "Native zkEVM Layer 2 for Ethereum",
-    path: "/",
-    element: <Home />,
-  },
-  {
-    name: "Our Story",
-    path: "/story",
-    element: <OurStory />,
-  },
-  { name: "Blog", path: "/blog", element: <Blog /> },
-  {
-    name: "Join Us",
-    path: "/join-us",
-    element: <IframeEmbedding url="https://jobs.lever.co/ScrollFoundation" DesktopHeight="207rem" MobileHeight="256rem" />,
-  },
-  {
-    name: "Blog Detail",
-    path: "/blog/:blogId",
-    element: <BlogDetail />,
-  },
-  // Avoid references from other places and retain temporarily.
-  {
-    name: "Terms and Conditions",
-    path: "/terms-and-conditions",
-    element: <ArchiveTerms />,
-  },
-  {
-    name: "Terms and Conditions[Archive]",
-    path: "/archive/20230308/terms-and-conditions",
-    element: <ArchiveTerms />,
-  },
-  {
-    name: "Terms of Service",
-    path: "/terms-of-service",
-    element: <Terms />,
-  },
-  {
-    name: "Privacy Policy",
-    path: "/privacy-policy",
-    element: <PrivacyPolicy />,
-  },
-  {
-    name: "Resources",
-    path: "portal",
-    fullPath: "/portal",
-    element: <Portal />,
-  },
   {
     name: "Bridge",
     path: "/bridge",
@@ -77,12 +19,6 @@ const routes = [
     path: "/bridge/faq",
     fullPath: "/bridge/faq",
     element: <BridgeFAQ />,
-  },
-  {
-    name: "Ecosystem",
-    path: "/ecosystem",
-    fullPath: "/ecosystem",
-    element: <Ecosystem />,
   },
   {
     name: "Rollup Explorer",

@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet-async"
 import { Route, Routes } from "react-router-dom"
 
-import Footer from "@/components/Footer"
+// import Footer from "@/components/Footer"
 import Header from "@/components/Header"
 import RainbowProvider from "@/contexts/RainbowProvider"
 import ScrollToTop from "@/hooks/useScrollToTop"
@@ -48,7 +48,7 @@ function Homepage() {
               ))}
               <Route path="*" element={<NotFound />} />
             </Routes>
-            <Footer />
+            {/* <Footer /> */}
           </ScrollToTop>
         </AppWrapper>
       </RainbowProvider>
