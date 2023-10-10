@@ -1,8 +1,12 @@
-import { requireEnv } from "@/utils"
+import { isProduction, requireEnv } from "@/utils"
 
 export const ETH_SYMBOL = requireEnv("REACT_APP_ETH_SYMBOL")
 export const WETH_SYMBOL = "WETH"
 export const USDC_SYMBOL = "USDC"
+
+export const L1_NAME = `Ethereum ${isProduction ? "" : requireEnv("REACT_APP_SCROLL_ENVIRONMENT")}`
+
+export const L2_NAME = `Scroll ${isProduction ? "" : requireEnv("REACT_APP_SCROLL_ENVIRONMENT")}`
 
 export const CHAIN_ID = {
   L1: parseInt(requireEnv("REACT_APP_CHAIN_ID_L1") as string),

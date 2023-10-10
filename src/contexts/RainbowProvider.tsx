@@ -9,7 +9,7 @@ import { WagmiConfig, configureChains, createConfig, mainnet, sepolia, useAccoun
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc"
 import { publicProvider } from "wagmi/providers/public"
 
-import { CHAIN_ID, ETH_SYMBOL, NETWORKS, RPC_URL } from "@/constants"
+import { CHAIN_ID, ETH_SYMBOL, L2_NAME, RPC_URL } from "@/constants"
 import { networkType, requireEnv } from "@/utils"
 
 type RainbowContextProps = {
@@ -24,13 +24,13 @@ type RainbowContextProps = {
 
 export const scrollChain: Chain = {
   id: CHAIN_ID.L2,
-  name: NETWORKS[1].name,
-  network: NETWORKS[1].name,
+  name: L2_NAME,
+  network: L2_NAME,
   iconUrl: "https://scroll.io/logo.png",
   iconBackground: "#fff",
   nativeCurrency: {
     decimals: 18,
-    name: NETWORKS[1].name,
+    name: L2_NAME,
     symbol: ETH_SYMBOL,
   },
   rpcUrls: {

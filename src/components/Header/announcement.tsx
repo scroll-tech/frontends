@@ -1,16 +1,18 @@
+import { useMemo } from "react"
 import { useMatch } from "react-router-dom"
 
 import { Stack } from "@mui/material"
 import { styled } from "@mui/system"
 
-import { requireEnv } from "@/utils"
+import Link from "@/components/Link"
+import { isProduction, requireEnv } from "@/utils"
 
-const AnnouncementStack = styled(Stack)(
-  ({ theme }) => `
+const AnnouncementStack = styled<any>(Stack)(
+  ({ theme, production }) => `
     line-height: 2.6rem;
-    background: #62e6d4;
+    background: ${production ? theme.palette.primary.main : "#62e6d4"};
     text-align: center;
-    color: ${theme.palette.text.primary};
+    color: ${production ? theme.palette.primary.contrastText : theme.palette.text.primary};
     font-size: 1.6rem;
     padding: 1.6rem;
     display: inline-block;
@@ -26,14 +28,28 @@ const ReadMoreLink = styled("a")(
 const Announcement = () => {
   const isHome = useMatch("/")
   const isPortal = useMatch("/portal")
-  if (!isHome && !isPortal) {
+
+  const announcementContent = useMemo(() => {
+    if (isProduction && (isHome || isPortal)) {
+      return (
+        <>
+          Scroll {requireEnv("REACT_APP_SCROLL_ENVIRONMENT")} is now live. <ReadMoreLink href="/portal">Try it!</ReadMoreLink>
+        </>
+      )
+    } else if (!isProduction) {
+      return (
+        <>
+          You are on the Scroll {requireEnv("REACT_APP_SCROLL_ENVIRONMENT")} Testnet website. Return to{" "}
+          <Link style={{ color: "inherit" }} href="https://scroll.io/" external>
+            Mainnet
+          </Link>
+        </>
+      )
+    }
     return null
-  }
-  return (
-    <AnnouncementStack>
-      Scroll {requireEnv("REACT_APP_SCROLL_ENVIRONMENT")} is now live. <ReadMoreLink href="/portal">Try it!</ReadMoreLink>
-    </AnnouncementStack>
-  )
+  }, [isProduction, isHome, isPortal])
+
+  return announcementContent && <AnnouncementStack production={isProduction}>{announcementContent}</AnnouncementStack>
 }
 
 export default Announcement
