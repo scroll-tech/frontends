@@ -88,7 +88,7 @@ const TxSuccess = () => {
       <Typography sx={{ fontSize: "1.8rem", fontWeight: 700, mt: "2.5rem" }}>
         Moving {txResult?.amount} {tokenSymbol} to {toNetwork.name}
       </Typography>
-      <Typography>...Approximately 10 minutes remaining</Typography>
+      <Typography>...Approximately 1 minutes remaining</Typography>
       <Typography sx={{ fontSize: "1.8rem", fontWeight: 700, mt: "4rem" }}>
         This is your tx hash: <Typography sx={{ fontWeight: 400 }}>{txResult?.hash}</Typography>
       </Typography>
