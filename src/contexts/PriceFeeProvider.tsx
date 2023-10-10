@@ -117,6 +117,14 @@ export const PriceFeeProvider = ({ children }) => {
   }
 
   const getGasLimit = async () => {
+    if (l2Token.symbol !== ETH_SYMBOL) {
+      const { provider } = networksAndSigners[CHAIN_ID.L2]
+      const code = await provider.getCode((l2Token as ERC20Token).address)
+      // This address does not have a contract deployed.
+      if (code === "0x") {
+        return BigInt(7e5)
+      }
+    }
     if (l2Token.symbol === ETH_SYMBOL) {
       return await getGasLimitGeneric(GatewayType.ETH_GATEWAY)
     } else if (l2Token.symbol === WETH_SYMBOL) {
