@@ -9,7 +9,7 @@ const Ecosystem = () => {
   return (
     <>
       <Header></Header>
-      {isProduction && <FeaturedProjects></FeaturedProjects>}
+      {!isProduction && <FeaturedProjects></FeaturedProjects>}
       <Protocols></Protocols>
       <Explorer></Explorer>
     </>
