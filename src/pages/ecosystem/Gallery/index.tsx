@@ -17,11 +17,12 @@ const useStyles = makeStyles()(theme => ({
     gridTemplateColumns: "repeat(auto-fill, minmax(30rem, 1fr))",
     width: "100%",
     padding: "3rem 0",
-    gap: "3rem",
+    rowGap: "5rem",
+    columnGap: "3rem",
 
     [theme.breakpoints.down("sm")]: {
       padding: "2rem 0",
-      gap: "2rem",
+      gap: "4rem",
     },
   },
 }))

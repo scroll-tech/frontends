@@ -11,6 +11,8 @@ import RenderIfVisible from "@/components/RenderIfVisible"
 import { ECOSYSTEM_SOCIAL_LIST } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
+import NetworkLabel from "./NetworkLabel"
+
 const useStyles = makeStyles()(theme => ({
   renderWrapper: {
     aspectRatio: "1 / 1",
@@ -44,6 +46,12 @@ const useStyles = makeStyles()(theme => ({
   },
   front: {
     padding: "2rem 2rem 3rem",
+
+    [theme.breakpoints.up("sm")]: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    },
     [theme.breakpoints.down("sm")]: {
       padding: "0 2rem 0 4.5rem",
     },
@@ -64,8 +72,6 @@ const useStyles = makeStyles()(theme => ({
     display: "grid",
     gridTemplateColumns: "1fr",
     gridTemplateRows: "repeat(2, min-content) 1fr",
-    paddingTop: "6rem",
-    height: "100%",
     justifyItems: "center",
     gridRowGap: "2rem",
     [theme.breakpoints.down("sm")]: {
@@ -87,6 +93,10 @@ const useStyles = makeStyles()(theme => ({
     flexWrap: "wrap",
     alignItems: "end",
     margin: "-4px -5px",
+    [theme.breakpoints.up("sm")]: {
+      position: "absolute",
+      bottom: "3rem",
+    },
     [theme.breakpoints.down("sm")]: {
       alignItems: "start",
       margin: "-4px",
@@ -109,6 +119,12 @@ const useStyles = makeStyles()(theme => ({
       margin: "4px",
     },
   },
+  networkLabel: {
+    position: "absolute",
+    right: 0,
+    top: 0,
+    transform: "translateY(-50%)",
+  },
 }))
 
 const variants = {
@@ -120,7 +136,7 @@ const variants = {
 
 const GalleryItem = props => {
   const {
-    item: { name, hash, ext, tags, desc, website, twitterHandle },
+    item: { name, hash, ext, tags, desc, website, twitterHandle, networkLabel },
   } = props
   const logo = ecosystemListLogoUrl + name + ext
   const { classes, cx } = useStyles()
@@ -156,6 +172,9 @@ const GalleryItem = props => {
             // whileHover={{ boxShadow: "2px 2px 10px 2px rgba(131, 131, 131, 0.5)" }}
             // transition={{ duration: 0.3, ease: "easeInOut" }}
           >
+            <NetworkLabel className={classes.networkLabel} primary={networkLabel === "Mainnet"}>
+              {networkLabel}
+            </NetworkLabel>
             {isMobile && <SvgIcon className={classes.info} component={InfoIcon} inheritViewBox></SvgIcon>}
             <Box className={classes.frontContent}>
               <Stack
@@ -193,6 +212,10 @@ const GalleryItem = props => {
             // transition={{ duration: 0.3, ease: "easeInOut" }}
             style={{ transform: "rotateY(180deg)" }}
           >
+            <NetworkLabel className={classes.networkLabel} primary={networkLabel === "Mainnet"}>
+              {networkLabel}
+            </NetworkLabel>
+
             <Stack direction="column" sx={{ height: "100%" }}>
               <Typography
                 sx={{
