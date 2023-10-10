@@ -47,7 +47,7 @@ const TxSuccess = () => {
           This is your tx hash: <Typography sx={{ fontWeight: 400 }}>{txResult?.hash}</Typography>
         </Typography>
         <Link sx={{ color: "success.main" }} underline="always" href={transactionUrl} external>
-          Check your transaction in our block explorer
+          Check your transaction in block explorer
         </Link>
         <Typography sx={{ fontSize: "1.8rem", fontWeight: 700, mt: "4rem" }}>Deposit more {tokenSymbol}</Typography>
         <TextButton sx={{ color: "success.main" }} underline="always" onClick={handleReturnDeposit}>
@@ -64,12 +64,13 @@ const TxSuccess = () => {
         <Typography sx={{ fontSize: "1.8rem", fontWeight: 700, mt: "2.5rem" }}>
           Moving {txResult?.amount} {tokenSymbol} to {toNetwork.name}
         </Typography>
+        {/* TODO: need to reconfirm the duration */}
         <Typography>...Approximately 1 hour remaining</Typography>
         <Typography sx={{ fontSize: "1.8rem", fontWeight: 700, mt: "4rem" }}>
           This is your tx hash: <Typography sx={{ fontWeight: 400 }}>{txResult?.hash}</Typography>
         </Typography>
         <Link sx={{ color: "success.main", marginBottom: "4.8rem" }} underline="always" href={transactionUrl} external>
-          Check your transaction in our block explorer
+          Check your transaction in block explorer
         </Link>
 
         <Box sx={{ flex: 1, display: "flex", alignItems: "flex-end", width: "100%", marginTop: "4.8rem", justifyContent: "center" }}>
@@ -85,15 +86,12 @@ const TxSuccess = () => {
       <Alert icon={false} severity="success" sx={{ fontSize: "2.4rem", fontWeight: "600", textAlign: "center" }}>
         Success!
       </Alert>
-      <Typography sx={{ fontSize: "1.8rem", fontWeight: 700, mt: "2.5rem" }}>
-        Moving {txResult?.amount} {tokenSymbol} to {toNetwork.name}
-      </Typography>
-      <Typography>...Approximately 1 minute remaining</Typography>
+      <Typography sx={{ fontSize: "1.8rem", fontWeight: 700, mt: "2.5rem" }}>Your withdrawal is completed!</Typography>
       <Typography sx={{ fontSize: "1.8rem", fontWeight: 700, mt: "4rem" }}>
         This is your tx hash: <Typography sx={{ fontWeight: 400 }}>{txResult?.hash}</Typography>
       </Typography>
       <Link sx={{ color: "success.main" }} href={transactionUrl} underline="always" external>
-        Check your transaction in our block explorer
+        Check your transaction in block explorer
       </Link>
       <Typography sx={{ fontSize: "1.8rem", fontWeight: 700, mt: "4rem" }}>Withdraw more {tokenSymbol}</Typography>
       <TextButton sx={{ color: "success.main" }} underline="always" onClick={handleReturnWithdraw}>
