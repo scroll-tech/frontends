@@ -10,9 +10,9 @@ import { isProduction, requireEnv } from "@/utils"
 const AnnouncementStack = styled<any>(Stack)(
   ({ theme, production }) => `
     line-height: 2.6rem;
-    background: ${production ? theme.palette.primary.main : "#62e6d4"};
+    background: ${production ? "#62e6d4" : theme.palette.primary.main};
     text-align: center;
-    color: ${production ? theme.palette.primary.contrastText : theme.palette.text.primary};
+    color: ${production ? theme.palette.text.primary : theme.palette.primary.contrastText};
     font-size: 1.6rem;
     padding: 1.6rem;
     display: inline-block;
