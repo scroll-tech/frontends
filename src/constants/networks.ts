@@ -1,15 +1,12 @@
-import _ from "lodash"
-
 import ETHSvg from "@/assets/svgs/refactor/bridge-network-mainnet.svg"
 import { ReactComponent as MainnetSvg } from "@/assets/svgs/refactor/bridge-network-mainnet.svg"
 import { ReactComponent as ScrollSvg } from "@/assets/svgs/refactor/bridge-network-scroll.svg"
-import { networkType } from "@/utils"
 
-import { CHAIN_ID, ETH_SYMBOL, EXPLORER_URL, RPC_URL } from "./common"
+import { CHAIN_ID, ETH_SYMBOL, EXPLORER_URL, L1_NAME, L2_NAME, RPC_URL } from "./common"
 
 export const NETWORKS: Network[] = [
   {
-    name: `Ethereum ${_.capitalize(networkType)}`,
+    name: L1_NAME,
     slug: "layer1",
     imageUrl: "/imgs/bridge/mainnet.svg",
     icon: MainnetSvg,
@@ -20,7 +17,7 @@ export const NETWORKS: Network[] = [
     isL1: true,
   },
   {
-    name: `Scroll ${_.capitalize(networkType)}`,
+    name: L2_NAME,
     slug: "layer2",
     imageUrl: "/logo.png",
     icon: ScrollSvg,

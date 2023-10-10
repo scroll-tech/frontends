@@ -9,6 +9,7 @@ import { NETWORKS } from "@/constants"
 import AppProvider from "@/contexts/AppContextProvider"
 import { PriceFeeProvider } from "@/contexts/PriceFeeProvider"
 import useBridgeStore from "@/stores/bridgeStore"
+import { isProduction, requireEnv } from "@/utils"
 
 import FAQsLink from "./FAQ/link"
 import Send from "./Send"
@@ -44,7 +45,7 @@ const Bridge = () => {
         >
           <Stack direction="row" sx={{ width: "100%", mb: ["3rem", "5rem"] }} spacing="4px" justifyContent="space-between" alignItems="center">
             <Typography sx={{ fontSize: ["4rem", "4.8rem"], fontWeight: 600, textAlign: "center", width: "100%", whiteSpace: "nowrap" }}>
-              Bridge
+              {isProduction ? "" : `${requireEnv("REACT_APP_SCROLL_ENVIRONMENT")} Testnet`} Bridge
             </Typography>
           </Stack>
           <Send></Send>
