@@ -7,7 +7,6 @@ import { Accordion, AccordionDetails, AccordionSummary, Theme, Typography } from
 
 import Link from "@/components/Link"
 import { NETWORKS, SITE_MAP } from "@/constants"
-import { isProduction } from "@/utils"
 
 const useStyles = makeStyles()((theme: Theme) => {
   return {
