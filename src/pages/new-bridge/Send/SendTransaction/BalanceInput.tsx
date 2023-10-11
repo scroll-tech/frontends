@@ -99,6 +99,10 @@ const BalanceInput = props => {
     [selectedToken, balance, disabled],
   )
 
+  const shouldPayFee = useMemo(() => (selectedToken.native ? fee : BigInt(0)), [selectedToken, fee])
+
+  const invalid = useMemo(() => balance <= shouldPayFee, [balance, shouldPayFee])
+
   const handleChangeAmount = e => {
     const amount = sanitizeNumericalString(e.target.value)
     onChange(amount)
@@ -139,7 +143,7 @@ const BalanceInput = props => {
             Available: {displayedBalance}
           </Typography>
         )}
-        <Button className={classes.maxButton} variant="contained" color="info" disabled={disabled} onClick={handleMaxAmount}>
+        <Button className={classes.maxButton} variant="contained" color="info" disabled={disabled || invalid} onClick={handleMaxAmount}>
           (Max)
         </Button>
       </Stack>
