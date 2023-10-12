@@ -22,7 +22,7 @@ const Portal = () => {
         alignItems="center"
         sx={{
           mt: ["8rem", "12rem"],
-          mb: ["12rem", "14rem"],
+          pb: ["12rem", "14rem"],
           maxWidth: ["100%", "1036px"],
           px: ["2rem", 0],
           margin: "0 auto",
