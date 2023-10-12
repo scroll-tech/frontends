@@ -67,22 +67,6 @@ const sepoliaNavigations = [
     ],
   },
   {
-    label: "Explore",
-    key: "explore",
-    children: [
-      {
-        children: [
-          {
-            label: "User Guide",
-            key: "userGuide",
-            href: "https://docs.scroll.io/en/user-guide/",
-            isExternal: true,
-          },
-        ],
-      },
-    ],
-  },
-  {
     label: "Bridge",
     key: "bridge",
     href: "/bridge",
