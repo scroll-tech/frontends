@@ -11,12 +11,15 @@ interface TxStore {
   page: number
   total: number
   loading: boolean
+  claimLoading: boolean
+  txStatus: ClaimStatus
   targetTransaction: string | null
   pageTransactions: Transaction[]
   orderedTxDB: TimestampTx[]
   comboPageTransactions: (walletAddress, page, rowsPerPage) => Promise<any>
   generateTransactions: (transactions) => void
   setTargetTransaction: (address) => void
+  clearTransactions: () => void
 }
 
 export const enum ClaimStatus {
@@ -42,6 +45,7 @@ interface Transaction {
   errMsg?: string
   initiatedAt?: string
   finalisedAt?: string
+  loading?: boolean
 }
 
 const MAX_OFFSET_TIME = 30 * 60 * 1000
@@ -109,6 +113,8 @@ const useTxStore = create<TxStore>()(
       page: 1,
       total: 0,
       loading: false,
+      claimLoading: false,
+      txStatus: 1,
       pageTransactions: [],
       orderedTxDB: [],
       targetTransaction: null,
@@ -155,6 +161,13 @@ const useTxStore = create<TxStore>()(
       setTargetTransaction: address => {
         set({
           targetTransaction: address,
+        })
+      },
+      clearTransactions: () => {
+        set({
+          pageTransactions: [],
+          page: 1,
+          total: 0,
         })
       },
     }),

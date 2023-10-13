@@ -25,7 +25,7 @@ const useLastFinalizedBatchIndex = () => {
   })
   return {
     loading: isLoading,
-    lastFinalizedBatchIndex: data,
+    lastFinalizedBatchIndex: data || 0,
     error,
   }
 }

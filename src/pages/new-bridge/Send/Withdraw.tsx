@@ -7,8 +7,6 @@ import useBridgeStore from "@/stores/bridgeStore"
 
 import Claim from "./Claim"
 import SendTransaction from "./SendTransaction"
-import TxFailure from "./TxFailure"
-import TxSuccess from "./TxSuccess"
 
 const useStyles = makeStyles()(theme => ({
   tabList: {
@@ -18,7 +16,7 @@ const useStyles = makeStyles()(theme => ({
     width: "100%",
     justifyContent: "center",
     borderBottom: "1px solid #5b5b5b",
-    maxWidth: "52rem",
+    // maxWidth: "52rem",
     margin: "0 auto",
     [theme.breakpoints.down("sm")]: {
       gap: "2rem",
@@ -26,13 +24,13 @@ const useStyles = makeStyles()(theme => ({
   },
   tab: {
     minHeight: "unset",
-    height: "3.4rem",
+    height: "4.4rem",
     fontSize: "1.6rem",
     fontWeight: 600,
     textTransform: "unset",
     color: theme.palette.text.primary,
     padding: 0,
-    width: "26rem",
+    flex: 1,
     "&.Mui-selected": {
       color: theme.palette.text.primary,
     },
@@ -55,16 +53,10 @@ const useStyles = makeStyles()(theme => ({
 
 const Withdraw = () => {
   const { classes } = useStyles()
-  const { withDrawStep, changeWithdrawStep, txResult, txError } = useBridgeStore()
+  const { withDrawStep, changeWithdrawStep } = useBridgeStore()
 
   const handleChange = (e, newValue) => {
     changeWithdrawStep(newValue)
-  }
-
-  if (txResult) {
-    return <TxSuccess></TxSuccess>
-  } else if (txError) {
-    return <TxFailure></TxFailure>
   }
 
   return (

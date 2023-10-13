@@ -81,21 +81,23 @@ const TransactionSummary: FC<Props> = props => {
       <Box
         sx={{
           borderRadius: "1rem",
-          background: "#FFF0DD",
+          background: theme => theme.palette.themeBackground.normal,
           width: "100%",
           padding: "1rem 1.6rem",
         }}
       >
-        <DetailRow title="You're moving" value={displayedAmount} large />
-        <DetailRow
-          title="L1 gas fee"
-          // tooltip={<FeeDetails content="L1 fees go to Ethereum Validators." />}
-          value={displayedL1Fee}
-          large
-        />
-        <DetailRow title="L2 gas fee" value={displayedL2Fee} large />
-        <Divider sx={{ my: "0.8rem" }} />
-        <DetailRow title="Total" sx={{ mt: "0.8rem" }} value={displayedTotalCost} large />
+        <DetailRow title={`You're ${txType === "Deposit" ? "depositing" : "withdrawing"}`} value={displayedAmount} large />
+        {txType === "Deposit" && (
+          <DetailRow
+            title="Ethereum gas fee"
+            // tooltip={<FeeDetails content="L1 fees go to Ethereum Validators." />}
+            value={displayedL1Fee}
+            large
+          />
+        )}
+        <DetailRow title="Scroll gas fee" value={displayedL2Fee} large />
+        <Divider sx={{ my: "1.2rem" }} />
+        <DetailRow title="Total" value={displayedTotalCost} large />
       </Box>
     </div>
   )

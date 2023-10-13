@@ -1,12 +1,10 @@
 import dayjs from "dayjs"
 import { useCallback, useMemo } from "react"
-import Countdown from "react-countdown"
 import { makeStyles } from "tss-react/mui"
 
 import {
   Box,
   CircularProgress,
-  LinearProgress,
   Pagination,
   Paper,
   Skeleton,
@@ -24,9 +22,9 @@ import Link from "@/components/Link"
 import { NETWORKS, TX_STATUS } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
 import useTokenInfo from "@/hooks/useTokenInfo"
-import useTxStore from "@/stores/txStore"
 import { generateExploreLink, toTokenDisplay, truncateHash } from "@/utils"
 
+import useCheckClaimStatus from "../../hooks/useCheckClaimStatus"
 import useLastFinalizedBatchIndex from "../../hooks/useLastFinalizedBatchIndex"
 import TxStatusButton from "./TxStatusButton"
 
@@ -43,7 +41,7 @@ const useStyles = makeStyles()(theme => {
       boxShadow: "unset",
       borderRadius: "20px",
       // maxWidth: "70rem",
-      backgroundColor: theme.palette.themeBackground.optionHightlight,
+      // backgroundColor: theme.palette.themeBackground.optionHightlight,
       padding: "0 3rem 3rem",
       [theme.breakpoints.down("sm")]: {
         width: "calc(100vw - 4rem)",
@@ -73,7 +71,7 @@ const useStyles = makeStyles()(theme => {
     },
     tableBody: {
       ".MuiTableCell-root": {
-        verticalAlign: "top",
+        verticalAlign: "center",
         padding: "2rem",
         "*": {
           fontSize: "1.4rem",
@@ -201,7 +199,6 @@ const TxTable = (props: any) => {
 
 const TxRow = props => {
   const { tx, finalizedIndex } = props
-  const { estimatedTimeMap } = useTxStore()
 
   const { blockNumbers } = useApp()
 
@@ -230,6 +227,15 @@ const TxRow = props => {
     [blockNumbers],
   )
 
+  const { claimTip } = useCheckClaimStatus(tx)
+
+  const toTip = useMemo(() => {
+    if (tx.isL1) {
+      return "-"
+    }
+    return claimTip
+  }, [tx])
+
   const fromStatus = useMemo(() => {
     return txStatus(tx.fromBlockNumber, tx.assumedStatus, tx.isL1, false)
   }, [tx, txStatus])
@@ -242,32 +248,6 @@ const TxRow = props => {
 
   const txAmount = amount => {
     return toTokenDisplay(amount, tokenInfo?.decimals ? BigInt(tokenInfo.decimals) : undefined)
-  }
-
-  const renderEstimatedWaitingTime = (timestamp, isL1, to) => {
-    if (fromStatus === TX_STATUS.success) {
-      return null
-    } else if (timestamp === 0) {
-      return <Typography variant="body2">Estimating...</Typography>
-    } else if (timestamp) {
-      return (
-        <Typography variant="body2" color="textSecondary">
-          <Countdown date={timestamp} renderer={renderCountDown}></Countdown>
-        </Typography>
-      )
-    }
-    return null
-  }
-
-  const renderCountDown = ({ total, hours, minutes, seconds, completed }) => {
-    if (completed) {
-      return <LinearProgress />
-    }
-    return (
-      <span style={{ whiteSpace: "nowrap" }}>
-        Ready in {minutes}m {seconds}s (estimate)
-      </span>
-    )
   }
 
   const formatDate = (inputStr: string): string => {
@@ -303,9 +283,7 @@ const TxRow = props => {
       </TableCell>
 
       <TableCell>
-        <Typography>
-          <span>{formatDate(tx.initiatedAt)}</span>
-        </Typography>
+        <Typography>{formatDate(tx.initiatedAt)}</Typography>
       </TableCell>
 
       <TableCell sx={{ width: "21rem" }}>
@@ -314,16 +292,14 @@ const TxRow = props => {
             {tx.isL1 ? "Ethereum" : "Scroll"}:{" "}
             <Link
               external
-              sx={{ color: "#396CE8" }}
+              sx={{ color: "#0F8E7E" }}
+              underline="always"
               href={generateExploreLink(NETWORKS[+!tx.isL1].explorer, tx.hash)}
               className="leading-normal flex-1"
             >
               {truncateHash(tx.hash)}
             </Link>
           </Typography>
-
-          {!tx.fromBlockNumber && !tx.assumedStatus && <LinearProgress />}
-          {renderEstimatedWaitingTime(estimatedTimeMap[`from_${tx.hash}`], tx.isL1, false)}
         </Stack>
 
         <Stack direction="column" className="mt-[0.4rem]">
@@ -332,18 +308,17 @@ const TxRow = props => {
             {tx.toHash ? (
               <Link
                 external
-                sx={{ color: "#396CE8" }}
+                sx={{ color: "#0F8E7E" }}
+                underline="always"
                 href={generateExploreLink(NETWORKS[+tx.isL1].explorer, tx.toHash)}
                 className="leading-normal flex-1"
               >
                 {truncateHash(tx.toHash)}
               </Link>
             ) : (
-              <span className="leading-normal flex-1">-</span>
-            )}{" "}
+              <span className="leading-normal flex-1">{toTip}</span>
+            )}
           </Typography>
-
-          {renderEstimatedWaitingTime(estimatedTimeMap[`to_${tx.toHash}`], tx.isL1, true)}
         </Stack>
       </TableCell>
     </TableRow>

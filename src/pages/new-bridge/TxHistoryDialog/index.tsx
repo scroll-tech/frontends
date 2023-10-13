@@ -10,14 +10,14 @@ import TxHistoryTable from "./TxHistoryTable"
 const useStyles = makeStyles()(theme => ({
   root: {
     ".MuiBackdrop-root": {
-      backgroundColor: theme.palette.primary.contrastText,
+      // backgroundColor: theme.palette.primary.contrastText,
     },
   },
   paper: {
-    backgroundColor: theme.palette.themeBackground.optionHightlight,
+    // backgroundColor: theme.palette.themeBackground.optionHightlight,
     boxShadow: "unset",
     width: "100%",
-    maxWidth: "70rem",
+    maxWidth: "75rem",
     [theme.breakpoints.down("sm")]: {
       maxWidth: "unset",
     },

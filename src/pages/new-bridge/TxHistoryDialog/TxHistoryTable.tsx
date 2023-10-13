@@ -9,11 +9,11 @@ import useTxStore from "@/stores/txStore"
 import TxTable from "../components/TxTable"
 
 const TableBox = styled(Box)(({ theme }) => ({
-  minHeight: "26.8rem",
+  // height: "36.5rem",
   borderRadius: "2rem",
-  backgroundColor: theme.palette.themeBackground.optionHightlight,
-  width: "100%",
-  maxWidth: "70rem",
+  // backgroundColor: theme.palette.background.default,
+  // width: "100%",
+  // maxWidth: "70rem",
   "& *": {
     fontFamily: "var(--developer-page-font-family) !important",
   },

@@ -1,11 +1,14 @@
+import dayjs from "dayjs"
 import { ethers } from "ethers"
 import { isError } from "ethers"
 import { useState } from "react"
+import Countdown from "react-countdown"
 
-import { Box, CircularProgress, Tooltip } from "@mui/material"
+import { Box, ButtonBase, Chip, CircularProgress, SvgIcon, Tooltip, alpha } from "@mui/material"
 import { styled } from "@mui/system"
 
 import L1ScrollMessenger from "@/assets/abis/L1ScrollMessenger.json"
+import { ReactComponent as InfoSvg } from "@/assets/svgs/refactor/bridge-info.svg"
 import { TX_STATUS } from "@/constants"
 import { CHAIN_ID } from "@/constants/common"
 import { useApp } from "@/contexts/AppContextProvider"
@@ -14,39 +17,80 @@ import { ClaimStatus } from "@/stores/claimStore"
 import useTxStore, { TxPosition, isValidOffsetTime } from "@/stores/txStore"
 import { requireEnv, sentryDebug, switchNetwork } from "@/utils"
 
-const StyledButton = styled("button")(({ theme }) => ({
-  width: "8.6rem",
-  height: "2.8rem",
-  borderRadius: "14px",
-  color: "#ffffff",
+const StyledButton = styled(ButtonBase)(({ theme }) => ({
+  width: "15rem",
+  height: "4rem",
+  fontSize: "1.4rem",
   fontWeight: 600,
-  background: theme.palette.primary.main,
-  cursor: "pointer",
+
+  borderRadius: "0.5rem",
   display: "flex",
-  alignItems: "center",
   justifyContent: "center",
-  "&.disabled": {
-    background: "#F0F0F0",
-    color: "#5B5B5B",
+  alignItems: "center",
+
+  color: theme.palette.primary.contrastText,
+  background: theme.palette.primary.main,
+}))
+
+const StyledChip = styled(Chip)(({ theme }) => ({
+  width: "15rem",
+  height: "4rem",
+  fontSize: "1.4rem",
+  fontWeight: 600,
+  padding: 0,
+  borderRadius: "2rem",
+  verticalAlign: "middle",
+
+  ".MuiChip-label": {
+    display: "flex",
+    alignItems: "center",
+  },
+
+  "&.loading": {
+    borderRadius: "0.5rem",
+    backgroundColor: alpha(theme.palette.primary.main, 0.6),
+    color: theme.palette.primary.contrastText,
+  },
+  "&.waiting": {
+    backgroundColor: theme.palette.themeBackground.normal,
+    color: "#8C591A",
   },
   "&.claimed": {
-    background: " #DFFCF8",
+    backgroundColor: "#DFFCF8",
     color: "#0F8E7E",
   },
   "&.failed": {
-    background: "#5B5B5B",
-    color: "#FFFFFF",
+    backgroundColor: "#FFE1DB",
+    color: "#FF684B",
   },
 }))
 
 const ClaimButton = props => {
-  const { tx, txStatus } = props
+  const { tx, txStatus, loading, changeLoading } = props
   const { networksAndSigners, blockNumbers } = useApp()
   const { chainId, walletCurrentAddress } = useRainbowContext()
   const [claimButtonLabel, setClaimButtonLabel] = useState("Claim")
   const { updateTransaction, addEstimatedTimeMap, updateOrderedTxs, removeFrontTransactions } = useTxStore()
 
-  const [loading, setLoading] = useState(false)
+  const renderEstimatedWaitingTime = initialUTCStr => {
+    if (!initialUTCStr) {
+      return <>{tx.isL1 ? "Ready" : "Claimable"} in ...</>
+    }
+    const timestamp = dayjs(tx.initiatedAt).add(1, "h").valueOf()
+
+    return <Countdown date={timestamp} renderer={renderCountDown}></Countdown>
+  }
+
+  const renderCountDown = ({ total, hours, minutes, seconds, completed }) => {
+    if (completed) {
+      return <>Pending</>
+    }
+    return (
+      <>
+        {tx.isL1 ? "Ready" : "Claimable"} in ~{minutes}m
+      </>
+    )
+  }
 
   const handleSwitchNetwork = async (chainId: number) => {
     try {
@@ -61,7 +105,7 @@ const ClaimButton = props => {
     const contract = new ethers.Contract(requireEnv("REACT_APP_L1_SCROLL_MESSENGER"), L1ScrollMessenger, networksAndSigners[chainId as number].signer)
     const { from, to, value, nonce, message, proof, batch_index } = tx.claimInfo
     try {
-      setLoading(true)
+      changeLoading(true)
       addEstimatedTimeMap(`claim_${tx.hash}`, Date.now())
       const result = await contract.relayMessageWithProof(from, to, value, nonce, message, {
         batchIndex: batch_index,
@@ -115,14 +159,14 @@ const ClaimButton = props => {
           }
         })
         .finally(() => {
-          setLoading(false)
+          changeLoading(false)
         })
     } catch (error) {
       if (isError(error, "ACTION_REJECTED")) {
         addEstimatedTimeMap(`claim_${tx.hash}`, 0)
       }
 
-      setLoading(false)
+      changeLoading(false)
     }
   }
 
@@ -146,40 +190,31 @@ const ClaimButton = props => {
   if (txStatus === ClaimStatus.FAILED) {
     return (
       <Tooltip placement="top" title={tx.errMsg || tx.assumedStatus}>
-        <StyledButton className="failed" color="primary">
-          Failed{" "}
-          <svg style={{ marginLeft: "4px" }} xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M7 12.75C10.175 12.75 12.75 10.175 12.75 7C12.75 3.825 10.175 1.25 7 1.25C3.825 1.25 1.25 3.825 1.25 7C1.25 10.175 3.825 12.75 7 12.75ZM7 14C10.865 14 14 10.865 14 7C14 3.135 10.865 0 7 0C3.135 0 0 3.135 0 7C0 10.865 3.135 14 7 14Z"
-              fill="currentColor"
-            />
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M7 5.56C7.345 5.56 7.625 5.84 7.625 6.185V10.185C7.625 10.53 7.345 10.81 7 10.81C6.655 10.81 6.375 10.53 6.375 10.185V6.185C6.375 5.84 6.655 5.56 7 5.56Z"
-              fill="currentColor"
-            />
-            <path
-              d="M7 4.435C7.34518 4.435 7.625 4.15518 7.625 3.81C7.625 3.46482 7.34518 3.185 7 3.185C6.65482 3.185 6.375 3.46482 6.375 3.81C6.375 4.15518 6.65482 4.435 7 4.435Z"
-              fill="currentColor"
-            />
-          </svg>
-        </StyledButton>
+        <StyledChip
+          className="failed"
+          color="primary"
+          label={
+            <>
+              <span>Failed</span>
+              <SvgIcon sx={{ fontSize: "1.6rem", ml: "0.4rem" }} component={InfoSvg} inheritViewBox></SvgIcon>
+            </>
+          }
+        ></StyledChip>
       </Tooltip>
     )
   } else if (txStatus === ClaimStatus.CLAIMED) {
-    return (
-      <StyledButton className="claimed" color="primary">
-        Claimed
-      </StyledButton>
-    )
+    return <StyledChip className="claimed" color="primary" label="Claimed"></StyledChip>
   } else if (txStatus === ClaimStatus.CLAIMING || loading) {
     return (
-      <StyledButton className="" disabled color="primary">
-        Claiming <CircularProgress size={10} sx={{ marginLeft: "0.5rem" }} color="inherit" />
-      </StyledButton>
+      <StyledChip
+        className="loading"
+        label={
+          <>
+            <span>Claiming</span>
+            <CircularProgress size={15} sx={{ ml: "0.4rem" }} color="inherit" />
+          </>
+        }
+      ></StyledChip>
     )
   } else if (txStatus === ClaimStatus.CLAIMABLE) {
     const isOnScrollLayer1 = chainId === CHAIN_ID.L1
@@ -206,15 +241,14 @@ const ClaimButton = props => {
       )
     }
   }
+
   // ClaimStatus.NOT_READY
   return (
     <Tooltip
       placement="top"
-      title="Scroll provers are still finalizing your transaction, this can take up to 4 hours. Once done, you'll be able to claim it here for use on the target network."
+      title="Scroll provers are still finalizing your transaction, this can take up to 1 hours. Once done, you'll be able to claim it here for use on the target network."
     >
-      <Box>
-        <StyledButton className="disabled">Claim</StyledButton>
-      </Box>
+      <StyledChip className="waiting" label={<>{renderEstimatedWaitingTime(tx.initiatedAt)}</>}></StyledChip>
     </Tooltip>
   )
 }
