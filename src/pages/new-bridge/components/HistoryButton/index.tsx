@@ -5,10 +5,11 @@ import { ButtonBase, SvgIcon } from "@mui/material"
 import { ReactComponent as HistorySvg } from "@/assets/svgs/refactor/bridge-history.svg"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useBridgeStore from "@/stores/bridgeStore"
+import { isProduction } from "@/utils"
 
 const useStyles = makeStyles()(theme => ({
   button: {
-    height: "3.6rem",
+    height: "4.8rem",
     padding: "0 1.2rem",
     backgroundColor: theme.palette.themeBackground.normal,
     color: "#473835",
@@ -16,6 +17,7 @@ const useStyles = makeStyles()(theme => ({
     fontWeight: 500,
     borderRadius: "0.5rem",
     gap: "0.5rem",
+    whiteSpace: "nowrap",
   },
 }))
 
@@ -31,7 +33,7 @@ const BridgeHistoryButton = props => {
   return (
     <ButtonBase classes={{ root: classes.button }} {...props} onClick={handleOpenHistory}>
       <SvgIcon sx={{ fontSize: "1.8rem" }} component={HistorySvg} inheritViewBox></SvgIcon>
-      {!isMobile && "History"}
+      {isMobile ? "" : isProduction ? "Transaction History" : "History"}
     </ButtonBase>
   )
 }
