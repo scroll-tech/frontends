@@ -42,9 +42,8 @@ const useStyles = makeStyles()(theme => ({
   },
   fromBalance: {
     fontSize: "1.4rem",
-    fontWeight: 600,
+    fontWeight: 500,
     lineHeight: 2,
-    marginTop: "0.4rem",
     color: "#A39B9A",
     whiteSpace: "nowrap",
     [theme.breakpoints.down("sm")]: {
@@ -52,7 +51,6 @@ const useStyles = makeStyles()(theme => ({
     },
   },
   maxButton: {
-    marginLeft: "2px",
     textDecoration: "underline",
     height: "2.8rem",
     fontSize: "1.4rem",
@@ -97,7 +95,7 @@ const BalanceInput = props => {
   const { isMobile } = useCheckViewport()
 
   const displayedBalance = useMemo(
-    () => (disabled ? "0.00" : toTokenDisplay(balance, selectedToken.decimals, selectedToken.symbol)),
+    () => (disabled ? "-" : toTokenDisplay(balance, selectedToken.decimals, selectedToken.symbol)),
     [selectedToken, balance, disabled],
   )
 
@@ -147,16 +145,14 @@ const BalanceInput = props => {
         ></InputBase>
         <TokenSelect value={selectedToken} options={tokenOptions} onChange={handleChangeToken} disabled={disabled}></TokenSelect>
       </Stack>
-      <Stack sx={{ width: "100%" }} direction="row" alignItems="center" justifyContent="flex-start">
+      <Stack sx={{ width: "100%", pt: "0.4rem" }} direction="row" alignItems="center" spacing="0.4rem">
         {balanceLoading ? (
           <Skeleton variant="text" width="12rem" />
         ) : (
-          <Typography className={classes.fromBalance} sx={{ color: disabled ? "text.disabled" : "#0F8E7E" }}>
-            Available: {displayedBalance}
-          </Typography>
+          <Typography className={classes.fromBalance}>Available: {displayedBalance}</Typography>
         )}
         <Button className={classes.maxButton} variant="contained" color="info" disabled={disabled || invalid} onClick={handleMaxAmount}>
-          (Max)
+          Max
         </Button>
       </Stack>
     </>

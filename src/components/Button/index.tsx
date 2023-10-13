@@ -1,7 +1,7 @@
 import { motion, useCycle } from "framer-motion"
 import { makeStyles } from "tss-react/mui"
 
-import { ButtonBase, CircularProgress, IconButton, SvgIcon } from "@mui/material"
+import { ButtonBase, CircularProgress, IconButton, SvgIcon, alpha } from "@mui/material"
 
 import { ReactComponent as ArrowRightIcon } from "@/assets/svgs/refactor/arrow-right.svg"
 import useCheckViewport from "@/hooks/useCheckViewport"
@@ -51,7 +51,7 @@ const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, w
     paddingRight: "2rem",
     border: "unset",
     gap: "0.4em",
-    color: "#0F8E7E",
+    color: theme.palette.primary.contrastText,
   },
   active: {
     color: theme.palette.primary.contrastText,
@@ -68,7 +68,7 @@ const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, w
   },
   maskLoading: {
     width: "100% !important",
-    backgroundColor: "#DFFCF8",
+    backgroundColor: alpha(theme.palette.primary.main, 0.6),
   },
   maskDisabled: {
     backgroundColor: "#EBC28E",
@@ -145,7 +145,7 @@ const Button = props => {
         disabled={disabled || gloomy || loading}
         {...restProps}
       >
-        {children} {loading && <CircularProgress sx={{ color: "#0F8E7E" }} size={isMobile ? 18 : 24} thickness={4}></CircularProgress>}
+        {children} {loading && <CircularProgress sx={{ color: "inherit" }} size={isMobile ? 18 : 24} thickness={4}></CircularProgress>}
       </ButtonBase>
     </motion.div>
   )
