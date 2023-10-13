@@ -24,7 +24,7 @@ export function useSendTransaction(props) {
   const { networksAndSigners, blockNumbers } = useApp()
   const { gasLimit: txGasLimit, maxFeePerGas, maxPriorityFeePerGas } = useGasFee(selectedToken)
   const { addTransaction, updateTransaction, addEstimatedTimeMap, updateOrderedTxs, addAbnormalTransactions, removeFrontTransactions } = useTxStore()
-  const { fromNetwork, toNetwork, changeTxResult } = useBridgeStore()
+  const { fromNetwork, toNetwork, changeTxResult, changeWithdrawStep } = useBridgeStore()
   const { gasLimit, gasPrice } = usePriceFeeContext()
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -57,8 +57,10 @@ export function useSendTransaction(props) {
       tx.wait()
         .then(receipt => {
           if (receipt?.status === 1) {
-            changeTxResult({ hash: tx.hash, amount: fromTokenAmount })
-
+            changeTxResult({ code: 1 })
+            if (!tx.isL1) {
+              changeWithdrawStep("2")
+            }
             handleTransaction(tx, {
               fromBlockNumber: receipt.blockNumber,
             })

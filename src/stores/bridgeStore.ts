@@ -6,14 +6,15 @@ type TransactionType = "Deposit" | "Withdraw"
 
 type WithDrawStep = "1" | "2"
 
-interface TxResult {
-  hash: string
-  amount: string
+interface TxSuccess {
+  code: 1
 }
 interface TxError {
-  hash?: string
+  code: 0
   message: string
 }
+
+type TxResult = TxSuccess | TxError | null
 interface BridgeStore {
   historyVisible: boolean
   changeHistoryVisible: (value) => void
@@ -23,15 +24,16 @@ interface BridgeStore {
   toNetwork: Network
   txType: TransactionType
   withDrawStep: WithDrawStep
-  txResult: TxResult | null
-  txError: TxError | null
+  txResult: TxResult
+  // txError: TxError | null
+  // txResult:
   isNetworkCorrect: boolean
 
   changeFromNetwork: (network: Network) => void
   changeToNetwork: (network: Network) => void
   changeTxType: (txType: TransactionType) => void
   changeTxResult: (txResult: TxResult | null) => void
-  changeTxError: (txError: TxError | null) => void
+  // changeTxError: (txError: TxError | null) => void
   changeWithdrawStep: (withDrawStep: WithDrawStep) => void
   changeIsNetworkCorrect: (isNetworkCorrect: boolean) => void
 }
@@ -52,7 +54,7 @@ const useBridgeStore = create<BridgeStore>()((set, get) => ({
   txType: "Deposit",
   withDrawStep: "1",
   txResult: null,
-  txError: null,
+  // txError: null,
   isNetworkCorrect: true,
 
   changeFromNetwork: network => {
@@ -77,11 +79,11 @@ const useBridgeStore = create<BridgeStore>()((set, get) => ({
     })
   },
 
-  changeTxError: txError => {
-    set({
-      txError,
-    })
-  },
+  // changeTxError: txError => {
+  //   set({
+  //     txError,
+  //   })
+  // },
 
   changeWithdrawStep: withDrawStep => {
     set({

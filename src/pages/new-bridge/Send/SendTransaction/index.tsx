@@ -34,7 +34,7 @@ const SendTransaction = props => {
 
   const { gasLimit, gasPrice, errorMessage: priceFeeErrorMessage, fetchData: fetchPriceFee, getL1DataFee } = usePriceFeeContext()
 
-  const { txType, isNetworkCorrect, fromNetwork, changeTxError } = useBridgeStore()
+  const { txType, isNetworkCorrect, fromNetwork, changeTxResult } = useBridgeStore()
 
   const [amount, setAmount] = useState<string>()
 
@@ -135,13 +135,13 @@ const SendTransaction = props => {
 
   const sendText = useMemo(() => {
     if (txType === "Deposit" && sendLoading) {
-      return "Depositing Funds"
+      return "Depositing funds"
     } else if (txType === "Deposit" && !sendLoading) {
-      return "Deposit Funds"
+      return "Deposit funds"
     } else if (txType === "Withdraw" && sendLoading) {
-      return "Withdrawing Funds"
+      return "Withdrawing funds"
     }
-    return "Withdraw Funds"
+    return "Withdraw funds"
   }, [txType, sendLoading])
 
   useEffect(() => {
@@ -155,19 +155,12 @@ const SendTransaction = props => {
 
   useEffect(() => {
     if (sendError && sendError !== "cancel" && sendError !== "reject") {
-      changeTxError({ message: sendError.message })
-    } else {
-      changeTxError(null)
+      changeTxResult({ code: 0, message: sendError.message })
     }
   }, [sendError])
 
   const handleSend = () => {
-    if (fromNetwork.isL1) {
-      sendTransaction()
-    } else {
-      sendTransaction()
-      // TODO: withdraw
-    }
+    sendTransaction()
   }
 
   const handleChangeTokenSymbol = symbol => {
@@ -268,7 +261,18 @@ const SendTransaction = props => {
       >
         {bridgeWarning}
       </Typography>
-      <Box sx={{ flex: 1, display: "flex", alignItems: "flex-end", width: "100%", justifyContent: "center" }}>{renderButton()}</Box>
+      <Box
+        sx={{
+          flex: 1,
+          display: "flex",
+          alignItems: "flex-end",
+          width: "100%",
+          justifyContent: "center",
+          "& .MuiButtonBase-root": { fontFamily: "var(--onboard-font-family-normal) !important" },
+        }}
+      >
+        {renderButton()}
+      </Box>
     </Stack>
   )
 }

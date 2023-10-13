@@ -1,7 +1,7 @@
 import { useEffect } from "react"
+import { makeStyles } from "tss-react/mui"
 
-import { Box, Typography } from "@mui/material"
-import { styled } from "@mui/system"
+import { Box, CircularProgress, Typography } from "@mui/material"
 
 import { BRIDGE_PAGE_SIZE } from "@/constants"
 import { useApp } from "@/contexts/AppContextProvider"
@@ -10,25 +10,48 @@ import ClaimTable from "@/pages/new-bridge/components/ClaimTable"
 import useBridgeStore from "@/stores/bridgeStore"
 import useClaimStore from "@/stores/claimStore"
 
-const TableBox = styled(Box)(({ theme }) => ({
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  minHeight: "20rem",
+const useStyles = makeStyles()(theme => ({
+  tableBox: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    minHeight: "34.3rem",
+  },
+  loadingBox: {
+    position: "absolute",
+    top: "0",
+    left: "0",
+    right: "0",
+    bottom: "0",
+    background: "rgba(255,255,255,0.5)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  loadingIndicator: {
+    color: "#EB7106",
+  },
 }))
 
 const Claim = (props: any) => {
+  const { classes } = useStyles()
   const { walletCurrentAddress, chainId } = useRainbowContext()
   const {
     claim: { refreshPageTransactions },
   } = useApp()
 
-  const { page, total, pageTransactions, loading, targetTransaction, setTargetTransaction, orderedTxDB } = useClaimStore()
+  const { page, total, pageTransactions, loading, targetTransaction, orderedTxDB, setTargetTransaction, clearTransactions } = useClaimStore()
   const { historyVisible } = useBridgeStore()
 
   useEffect(() => {
     handleChangePage(1)
   }, [walletCurrentAddress])
+
+  useEffect(() => {
+    return () => {
+      clearTransactions()
+    }
+  }, [])
 
   useEffect(() => {
     // if targetTransaction has value, then we need to move to the target transaction
@@ -45,11 +68,10 @@ const Claim = (props: any) => {
   }
 
   return (
-    <TableBox>
+    <Box className={classes.tableBox}>
       {pageTransactions?.length && chainId ? (
         <ClaimTable
           data={pageTransactions}
-          loading={loading}
           pagination={{
             count: Math.ceil(total / BRIDGE_PAGE_SIZE),
             page,
@@ -61,7 +83,12 @@ const Claim = (props: any) => {
           Your claimable transactions will appear here...
         </Typography>
       )}
-    </TableBox>
+      {loading ? (
+        <Box className={classes.loadingBox}>
+          <CircularProgress className={classes.loadingIndicator} />
+        </Box>
+      ) : null}
+    </Box>
   )
 }
 
