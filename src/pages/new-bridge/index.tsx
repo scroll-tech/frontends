@@ -14,6 +14,7 @@ import { isProduction, requireEnv } from "@/utils"
 import FAQsLink from "./FAQ/link"
 import Send from "./Send"
 import TxHistoryDialog from "./TxHistoryDialog"
+import HistoryButton from "./components/HistoryButton"
 
 const Bridge = () => {
   const { txType, changeFromNetwork, changeToNetwork } = useBridgeStore()
@@ -43,10 +44,11 @@ const Bridge = () => {
             maxWidth: ["100% !important"],
           }}
         >
-          <Stack direction="row" sx={{ width: "100%", mb: ["3rem", "5rem"] }} spacing="4px" justifyContent="space-between" alignItems="center">
-            <Typography sx={{ fontSize: ["4rem", "4.8rem"], fontWeight: 600, textAlign: "center", width: "100%", whiteSpace: "nowrap" }}>
+          <Stack direction="row" sx={{ mb: ["3rem", "5rem"], width: "64rem" }} spacing="2rem" justifyContent="space-between" alignItems="center">
+            <Typography sx={{ fontSize: ["4rem", "4.8rem"], fontWeight: 600, width: "100%", whiteSpace: "nowrap" }}>
               {isProduction ? "" : `${requireEnv("REACT_APP_SCROLL_ENVIRONMENT")} Testnet`} Bridge
             </Typography>
+            <HistoryButton></HistoryButton>
           </Stack>
           <Send></Send>
           <TxHistoryDialog></TxHistoryDialog>
