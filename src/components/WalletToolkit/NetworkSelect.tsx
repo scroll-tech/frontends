@@ -37,7 +37,7 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
     color: "#F1F0F0",
   },
   paper: {
-    marginTop: "0.6rem",
+    marginTop: "0.5rem",
     borderRadius: "0.5rem",
     border: dark ? `1px solid ${theme.palette.primary.contrastText}` : "none",
     backgroundColor: dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.normal,
