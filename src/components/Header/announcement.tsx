@@ -16,6 +16,7 @@ const AnnouncementStack = styled<any>(Stack)(
     font-size: 1.6rem;
     padding: 1.6rem;
     display: inline-block;
+    width: 100%;
   `,
 )
 

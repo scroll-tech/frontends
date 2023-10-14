@@ -9,6 +9,7 @@ import WalletToolkit from "@/components/WalletToolkit"
 import useShowWalletConnector from "@/hooks/useShowWalletToolkit"
 
 import Logo from "../ScrollLogo"
+import Announcement from "./announcement"
 import { navigations } from "./constants"
 import useCheckNoBg from "./useCheckNoBg"
 
@@ -212,6 +213,7 @@ const App = ({ currentMenu }) => {
 
   return (
     <Box className={open ? "active" : ""} sx={{ backgroundColor: noBg && !open ? "transparent" : "themeBackground.light" }}>
+      <Announcement />
       <NavStack direction="row" justifyContent="space-between" alignItems="center">
         <NavLink to="/" className="flex">
           <Box onClick={() => toggleDrawer(false)}>
