@@ -6,7 +6,7 @@ import { useIsSmartContractWallet } from "@/hooks"
 import useBridgeStore from "@/stores/bridgeStore"
 import { toTokenDisplay } from "@/utils"
 
-function useSufficientBalance(selectedToken: any, amount?: bigint, fee?: bigint, tokenBalance: bigint = BigInt(0)) {
+function useSufficientBalance(selectedToken: any, amount?: bigint, fee?: bigint | null, tokenBalance: bigint = BigInt(0)) {
   const { walletCurrentAddress, chainId } = useRainbowContext()
   const { networksAndSigners } = useApp()
   const networksAndSigner = networksAndSigners[chainId as number]
@@ -18,8 +18,17 @@ function useSufficientBalance(selectedToken: any, amount?: bigint, fee?: bigint,
 
   useEffect(() => {
     async function checkEnoughBalance() {
-      if (!isNetworkCorrect || !amount) {
+      if (!isNetworkCorrect || amount === undefined) {
         setWarning("")
+        return
+      }
+      const isZero = Number(amount) === 0
+      if (isZero) {
+        setWarning("The amount should be greater than 0!")
+        return
+      }
+      if (!tokenBalance) {
+        setWarning(`Insufficient balance. Your account has 0 ${selectedToken.symbol}.`)
         return
       }
 
@@ -32,7 +41,6 @@ function useSufficientBalance(selectedToken: any, amount?: bigint, fee?: bigint,
 
       if (selectedToken.native) {
         const totalCost = amount + totalFee
-
         enoughFeeBalance = tokenBalance >= totalCost
         enoughTokenBalance = enoughFeeBalance
       } else {
@@ -46,26 +54,35 @@ function useSufficientBalance(selectedToken: any, amount?: bigint, fee?: bigint,
         return setSufficientBalance(true)
       }
 
-      if (!tokenBalance) {
-        message = `Insufficient balance. Your account has 0 ${selectedToken.symbol}.`
-      } else if (!enoughFeeBalance) {
-        if (tokenBalance > totalFee) {
-          const diff = tokenBalance - totalFee
-          message = `Insufficient balance to cover the cost of tx. The amount should be less than ${toTokenDisplay(
-            diff,
-            selectedToken.decimals,
-            selectedToken.symbol,
-          )}`
-        } else {
-          message = `Insufficient balance to cover the cost of tx. Please add ETH to pay for tx fees.`
-        }
-
-        if (!selectedToken.native) {
-          message = `${nativeTokenBalance ? "Insufficient" : "No"} balance to cover the tx fee. Please add ETH to pay for tx fees.`
-        }
-      } else if (!enoughTokenBalance) {
+      if (!enoughTokenBalance && !selectedToken.native) {
         message = `Insufficient balance. The amount should be less than ${toTokenDisplay(tokenBalance, selectedToken.decimals, selectedToken.symbol)}`
+      } else if (!enoughFeeBalance) {
+        if (!selectedToken.native) {
+          message = `${nativeTokenBalance ? "Insufficient" : "No"} balance. Please add ETH to pay for tx fees.`
+        } else if (tokenBalance > totalFee) {
+          const diff = tokenBalance - totalFee
+          message = `Insufficient balance. The amount should be less than ${toTokenDisplay(diff, selectedToken.decimals, selectedToken.symbol)}`
+        } else {
+          message = `Insufficient balance. Please add ETH to pay for tx fees.`
+        }
       }
+
+      // if (!tokenBalance) {
+      //   message = `Insufficient balance. Your account has 0 ${selectedToken.symbol}.`
+      // } else if (!enoughFeeBalance) {
+      //   if (tokenBalance > totalFee) {
+      //     const diff = tokenBalance - totalFee
+      //     message = `Insufficient balance. The amount should be less than ${toTokenDisplay(diff, selectedToken.decimals, selectedToken.symbol)}`
+      //   } else {
+      //     message = `Insufficient balance. Please add ETH to pay for tx fees.`
+      //   }
+
+      //   if (!selectedToken.native) {
+      //     message = `${nativeTokenBalance ? "Insufficient" : "No"} balance. Please add ETH to pay for tx fees.`
+      //   }
+      // } else if (!enoughTokenBalance) {
+      //   message = `Insufficient balance. The amount should be less than ${toTokenDisplay(tokenBalance, selectedToken.decimals, selectedToken.symbol)}`
+      // }
 
       setWarning(message)
       setSufficientBalance(false)

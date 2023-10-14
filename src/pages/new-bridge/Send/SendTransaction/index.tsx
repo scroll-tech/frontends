@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from "react"
 import useStorage from "squirrel-gill"
 
-import { Box, Stack, Typography } from "@mui/material"
+import { Box, Stack, SvgIcon, Typography } from "@mui/material"
 
+import { ReactComponent as InfoSvg } from "@/assets/svgs/refactor/bridge-info.svg"
 import Button from "@/components/Button"
 import TextButton from "@/components/TextButton"
 import { ETH_SYMBOL } from "@/constants"
@@ -17,7 +18,7 @@ import { amountToBN, switchNetwork } from "@/utils"
 
 import useApprove from "../../hooks/useApprove"
 // import useBalance from "../../hooks/useBalance"
-import useCheckValidAmount from "../../hooks/useCheckValidAmount"
+// import useCheckValidAmount from "../../hooks/useCheckValidAmount"
 import useGasFee from "../../hooks/useGasFee"
 import { useSendTransaction } from "../../hooks/useSendTransaction"
 import useSufficientBalance from "../../hooks/useSufficientBalance"
@@ -32,7 +33,7 @@ const SendTransaction = props => {
   const { isMobile } = useCheckViewport()
   const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
 
-  const { gasLimit, gasPrice, errorMessage: priceFeeErrorMessage, fetchData: fetchPriceFee } = usePriceFeeContext()
+  const { gasLimit, gasPrice, errorMessage: relayFeeErrorMessage, fetchData: fetchPriceFee } = usePriceFeeContext()
 
   const { txType, isNetworkCorrect, fromNetwork, changeTxResult } = useBridgeStore()
 
@@ -48,7 +49,6 @@ const SendTransaction = props => {
   const { balance, loading: balanceLoading } = useBalance(selectedToken, fromNetwork)
 
   const { isNeeded: needApproval, approve, isLoading: approveLoading } = useApprove(fromNetwork, selectedToken, amount)
-
   const {
     send: sendTransaction,
     isLoading: sendLoading,
@@ -58,12 +58,11 @@ const SendTransaction = props => {
     selectedToken,
   })
 
-  const invalidAmountMessage = useCheckValidAmount(amount)
   // fee start
-  const { gasFee: estimatedGasCost, error: estimatedGasCostError, calculateGasFee } = useGasFee(selectedToken)
+  const { gasFee: estimatedGasCost, error: gasFeeErrorMessage, calculateGasFee } = useGasFee(selectedToken, needApproval)
 
-  const totalFee = useMemo(() => estimatedGasCost + gasLimit * gasPrice, [estimatedGasCost, gasLimit, gasPrice])
-  const relayFee = useMemo(() => gasLimit * gasPrice, [gasLimit, gasPrice])
+  const relayFee = useMemo(() => (gasLimit && gasPrice ? gasLimit * gasPrice : null), [gasLimit, gasPrice])
+  const totalFee = useMemo(() => (estimatedGasCost && relayFee ? estimatedGasCost + relayFee : null), [estimatedGasCost, relayFee])
 
   const { insufficientWarning } = useSufficientBalance(
     selectedToken,
@@ -72,43 +71,30 @@ const SendTransaction = props => {
     balance ?? undefined,
   )
   // fee end
-
   const bridgeWarning = useMemo(() => {
-    if (insufficientWarning) {
+    if (gasFeeErrorMessage && amount) {
+      return (
+        <>
+          {gasFeeErrorMessage},{" "}
+          <TextButton underline="always" sx={{ fontSize: "1.4rem", verticalAlign: "middle" }} onClick={() => calculateGasFee()}>
+            Click here to retry.
+          </TextButton>
+        </>
+      )
+    } else if (relayFeeErrorMessage && amount && !needApproval) {
+      return (
+        <>
+          {relayFeeErrorMessage},{" "}
+          <TextButton underline="always" sx={{ fontSize: "1.4rem", verticalAlign: "middle" }} onClick={() => fetchPriceFee()}>
+            Click here to retry.
+          </TextButton>
+        </>
+      )
+    } else if (insufficientWarning) {
       return insufficientWarning
-    } else if (invalidAmountMessage) {
-      return invalidAmountMessage
-    } else if (priceFeeErrorMessage && amount) {
-      return (
-        <>
-          {priceFeeErrorMessage},{" "}
-          <TextButton underline="always" sx={{ fontSize: "1.4rem" }} onClick={() => fetchPriceFee()}>
-            Click here to retry.
-          </TextButton>
-        </>
-      )
-    } else if (estimatedGasCostError && amount && !needApproval) {
-      return (
-        <>
-          {estimatedGasCostError},{" "}
-          <TextButton underline="always" sx={{ fontSize: "1.4rem" }} onClick={() => calculateGasFee()}>
-            Click here to retry.
-          </TextButton>
-        </>
-      )
     }
     return null
-  }, [
-    chainId,
-    isNetworkCorrect,
-    fromNetwork,
-    insufficientWarning,
-    invalidAmountMessage,
-    priceFeeErrorMessage,
-    amount,
-    estimatedGasCostError,
-    needApproval,
-  ])
+  }, [insufficientWarning, relayFeeErrorMessage, amount, gasFeeErrorMessage, needApproval])
 
   const necessaryCondition = useMemo(() => {
     return amount && !bridgeWarning
@@ -175,7 +161,7 @@ const SendTransaction = props => {
           key="approve"
           width={isMobile ? "100%" : "25rem"}
           color="primary"
-          disabled={!needApproval || !necessaryCondition}
+          disabled={!necessaryCondition}
           loading={approveLoading}
           onClick={approve}
           whiteButton
@@ -217,30 +203,36 @@ const SendTransaction = props => {
         tokenOptions={tokenOptions}
         onChangeToken={handleChangeTokenSymbol}
       ></BalanceInput>
+      <Box sx={{ height: "2rem", width: "100%" }}>
+        {bridgeWarning && (
+          <Typography
+            sx={{
+              fontSize: "1.4rem",
+              fontWeight: 500,
+              width: ["calc(100% + 1rem)", "100%"],
+              "@media (max-width: 600px)": {
+                marginLeft: "-0.5rem",
+              },
+            }}
+            color="primary"
+          >
+            <SvgIcon sx={{ fontSize: "1.4rem", mr: "0.4rem", verticalAlign: "middle" }} component={InfoSvg} inheritViewBox></SvgIcon>
+            <span style={{ verticalAlign: "middle" }}>{bridgeWarning}</span>
+          </Typography>
+        )}
+      </Box>
+
       <TransactionSummary
         selectedToken={selectedToken}
         amount={amount}
-        priceFeeErrorMessage={priceFeeErrorMessage}
-        totalFee={totalFee}
-        relayFee={relayFee}
-        estimatedGasCost={estimatedGasCost}
+        feeError={relayFeeErrorMessage || gasFeeErrorMessage}
+        // totalFee={totalFee}
+        l2GasFee={relayFee}
+        l1GasFee={estimatedGasCost}
         bridgeWarning={bridgeWarning}
+        needApproval={needApproval}
       />
-      <Typography
-        sx={{
-          fontSize: "1.3rem",
-          fontWeight: 500,
-          width: ["calc(100% + 1rem)", "32.4rem"],
-          textAlign: "center",
-          margin: "0 auto",
-          "@media (max-width: 600px)": {
-            marginLeft: "-0.5rem",
-          },
-        }}
-        color="primary"
-      >
-        {bridgeWarning}
-      </Typography>
+
       <Box
         sx={{
           flex: 1,

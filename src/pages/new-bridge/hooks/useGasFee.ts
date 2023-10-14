@@ -6,7 +6,7 @@ import useBridgeStore from "@/stores/bridgeStore"
 
 import { useEstimateSendTransaction } from "./useEstimateSendTransaction"
 
-const useGasFee = selectedToken => {
+const useGasFee = (selectedToken, needApproval) => {
   const { networksAndSigners } = useApp()
   const { fromNetwork, toNetwork } = useBridgeStore()
   const { estimateSend } = useEstimateSendTransaction({
@@ -15,13 +15,19 @@ const useGasFee = selectedToken => {
     selectedToken,
   })
 
-  const [gasFee, setGasFee] = useState(BigInt(0))
-  const [gasLimit, setGasLimit] = useState(BigInt(0))
+  const [gasFee, setGasFee] = useState<null | bigint>(null)
+  const [gasLimit, setGasLimit] = useState<null | bigint>(null)
   const [error, setError] = useState("")
 
   const calculateGasFee = async () => {
     const { maxFeePerGas, gasPrice: rawGasPrice } = await networksAndSigners[fromNetwork.chainId].provider.getFeeData()
-    const limit = ((await estimateSend()) * BigInt(120)) / BigInt(100)
+
+    const estimateLimit = await estimateSend()
+    if (estimateLimit === null) {
+      return { gasLimit: null, gasFee: null }
+    }
+
+    const limit = (estimateLimit * BigInt(120)) / BigInt(100)
     // scroll not support EIP-1559
     const gasPrice = fromNetwork.isL1 ? maxFeePerGas : rawGasPrice
     const estimatedGasCost = BigInt(limit) * BigInt(gasPrice || 1e9)
@@ -29,7 +35,7 @@ const useGasFee = selectedToken => {
   }
 
   useBlockNumber({
-    enabled: !!networksAndSigners[fromNetwork.chainId].provider,
+    enabled: !!networksAndSigners[fromNetwork.chainId].provider && needApproval === false,
     onBlock(blockNumber) {
       calculateGasFee()
         .then(value => {
@@ -38,9 +44,9 @@ const useGasFee = selectedToken => {
           setError("")
         })
         .catch(error => {
-          setGasFee(BigInt(0))
-          setGasLimit(BigInt(0))
-          setError(error.message)
+          setGasFee(null)
+          setGasLimit(null)
+          setError(error.message.split("(")[0].trim())
         })
     },
   })

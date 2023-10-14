@@ -31,6 +31,7 @@ const useStyles = makeStyles()(theme => ({
   label: {
     fontSize: "1.6rem",
     fontWeight: 400,
+    lineHeight: 1.5,
     [theme.breakpoints.down("sm")]: {
       fontSize: "1.4rem",
     },
