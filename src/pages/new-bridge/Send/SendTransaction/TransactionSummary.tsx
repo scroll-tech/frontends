@@ -1,4 +1,4 @@
-import { FC, useMemo } from "react"
+import { FC, useCallback, useMemo } from "react"
 import { makeStyles } from "tss-react/mui"
 
 import { Box, Divider, Typography } from "@mui/material"
@@ -25,13 +25,13 @@ const useStyles = makeStyles()(theme => ({
 
 type Props = {
   amount?: string
-  priceFeeErrorMessage?: string
+  feeError?: string
   selectedToken: any
-  estimatedGasCost: bigint
-  relayFee: bigint
-  totalFee: bigint
+  l1GasFee: bigint | null
+  l2GasFee: bigint | null
   l1DataFee?: bigint
   bridgeWarning?: string | JSX.Element | null
+  needApproval?: boolean
 }
 
 const CustomTypography = ({ isError, ...props }) => <Typography sx={{ color: isError ? "primary.main" : undefined }} {...props} />
@@ -40,43 +40,55 @@ const TransactionSummary: FC<Props> = props => {
   const { classes: styles } = useStyles()
   const { txType, isNetworkCorrect } = useBridgeStore()
 
-  const { amount, priceFeeErrorMessage, selectedToken, estimatedGasCost, relayFee, l1DataFee, totalFee, bridgeWarning } = props
+  const { amount, feeError, selectedToken, l1GasFee, l2GasFee, l1DataFee, needApproval } = props
 
-  const getDisplayedValue = (value, decimals = BigInt(18), symbol = ETH_SYMBOL) => {
-    const condition = isNetworkCorrect && amount && bridgeWarning === null
-    if (!condition || priceFeeErrorMessage) return <CustomTypography isError={!!priceFeeErrorMessage}>-</CustomTypography>
-    return toTokenDisplay(value, decimals, symbol)
-  }
-
-  const displayedAmount = useMemo(
-    () => getDisplayedValue(amountToBN(amount, selectedToken.decimals), selectedToken.decimals, selectedToken.symbol),
-    [isNetworkCorrect, amount, selectedToken, priceFeeErrorMessage, bridgeWarning],
+  const getDisplayedValue = useCallback(
+    (value, decimals = BigInt(18), symbol = ETH_SYMBOL) => {
+      const isGasOk = l1GasFee !== null && l2GasFee !== null
+      const condition = isNetworkCorrect && amount && isGasOk
+      if (needApproval !== false || !condition || feeError) return <CustomTypography isError={!!feeError}>-</CustomTypography>
+      return toTokenDisplay(value, decimals, symbol)
+    },
+    [needApproval, isNetworkCorrect, amount, feeError, l1GasFee, l2GasFee],
   )
 
-  const displayedL1Fee = useMemo(() => {
-    const fee = txType === "Deposit" ? estimatedGasCost : relayFee
-    return getDisplayedValue(fee)
-  }, [isNetworkCorrect, amount, estimatedGasCost, relayFee, selectedToken, priceFeeErrorMessage, bridgeWarning])
+  const getDisplayedMultiplexValue = useCallback(() => {
+    const isGasOk = l1GasFee !== null && l2GasFee !== null
+    const condition = isNetworkCorrect && amount && isGasOk
+    if (needApproval !== false || !condition || feeError) return <CustomTypography isError={!!feeError}>-</CustomTypography>
 
-  const displayedL2Fee = useMemo(() => {
-    const fee = txType === "Deposit" ? relayFee : estimatedGasCost
-    return getDisplayedValue(fee)
-  }, [isNetworkCorrect, amount, estimatedGasCost, relayFee, selectedToken, priceFeeErrorMessage, bridgeWarning])
-
-  const displayedL1DataFee = useMemo(() => {
-    return getDisplayedValue(l1DataFee)
-  }, [isNetworkCorrect, amount, estimatedGasCost, l1DataFee, selectedToken, priceFeeErrorMessage, bridgeWarning])
-
-  const displayedTotalCost = useMemo(() => {
-    if (selectedToken.symbol === ETH_SYMBOL) return getDisplayedValue(totalFee + amountToBN(amount, selectedToken.decimals))
-    const condition = isNetworkCorrect && amount && bridgeWarning === null
-    if (!condition || priceFeeErrorMessage) return <CustomTypography isError={!!priceFeeErrorMessage}>-</CustomTypography>
     return (
       getDisplayedValue(amountToBN(amount, selectedToken.decimals), selectedToken.decimals, selectedToken.symbol) +
       " + " +
-      getDisplayedValue(totalFee)
+      getDisplayedValue(l1GasFee + l2GasFee)
     )
-  }, [isNetworkCorrect, amount, totalFee, selectedToken, priceFeeErrorMessage, bridgeWarning])
+  }, [needApproval, isNetworkCorrect, amount, feeError, selectedToken, l1GasFee, l2GasFee])
+
+  const displayedAmount = useMemo(() => {
+    const value = amountToBN(amount, selectedToken.decimals)
+    return getDisplayedValue(value, selectedToken.decimals, selectedToken.symbol)
+  }, [amount, selectedToken, getDisplayedValue])
+
+  const displayedL1Fee = useMemo(() => {
+    const fee = txType === "Deposit" ? l1GasFee : l2GasFee
+    return getDisplayedValue(fee)
+  }, [amount, txType, l1GasFee, l2GasFee, getDisplayedValue])
+
+  const displayedL2Fee = useMemo(() => {
+    const fee = txType === "Deposit" ? l2GasFee : l1GasFee
+    return getDisplayedValue(fee)
+  }, [amount, txType, l1GasFee, l2GasFee, getDisplayedValue])
+
+  const displayedL1DataFee = useMemo(() => {
+    return getDisplayedValue(l1DataFee)
+  }, [l1DataFee, getDisplayedValue])
+
+  const displayedTotalCost = useMemo(() => {
+    const isGasOk = l1GasFee !== null && l2GasFee !== null
+    if (selectedToken.symbol === ETH_SYMBOL && isGasOk) return getDisplayedValue(l1GasFee + l2GasFee + amountToBN(amount))
+
+    return getDisplayedMultiplexValue()
+  }, [selectedToken, getDisplayedValue, getDisplayedMultiplexValue])
 
   return (
     <div className={styles.root}>
@@ -92,14 +104,7 @@ const TransactionSummary: FC<Props> = props => {
         }}
       >
         <DetailRow title={`You're ${txType === "Deposit" ? "depositing" : "withdrawing"}`} value={displayedAmount} large />
-        {txType === "Deposit" && (
-          <DetailRow
-            title="Ethereum gas fee"
-            // tooltip={<FeeDetails content="L1 fees go to Ethereum Validators." />}
-            value={displayedL1Fee}
-            large
-          />
-        )}
+        {txType === "Deposit" && <DetailRow title="Ethereum gas fee" value={displayedL1Fee} large />}
         <DetailRow title="Scroll gas fee" value={displayedL2Fee} large />
         {txType === "Withdraw" && <DetailRow title="Ethereum data fee" value={displayedL1DataFee} large />}
         <Divider sx={{ my: "1.2rem" }} />

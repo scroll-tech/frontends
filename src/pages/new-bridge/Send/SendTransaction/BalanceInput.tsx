@@ -102,11 +102,14 @@ const BalanceInput = props => {
   const shouldPayFee = useMemo(() => (selectedToken.native ? fee : BigInt(0)), [selectedToken, fee])
 
   const invalid = useMemo(() => {
-    if (balance) {
+    if (!selectedToken.native) {
+      return false
+    }
+    if (balance && shouldPayFee) {
       return BigInt(balance) - transactionBuffer <= BigInt(shouldPayFee)
     }
     return true
-  }, [balance, shouldPayFee, transactionBuffer])
+  }, [selectedToken, balance, shouldPayFee, transactionBuffer])
 
   const handleChangeAmount = e => {
     const amount = sanitizeNumericalString(e.target.value)
