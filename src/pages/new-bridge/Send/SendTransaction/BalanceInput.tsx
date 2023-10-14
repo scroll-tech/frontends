@@ -133,7 +133,7 @@ const BalanceInput = props => {
           readOnly={readOnly}
           onChange={handleChangeAmount}
         ></InputBase>
-        <TokenSelect value={selectedToken} options={tokenOptions} onChange={handleChangeToken}></TokenSelect>
+        <TokenSelect value={selectedToken} options={tokenOptions} onChange={handleChangeToken} disabled={disabled}></TokenSelect>
       </Stack>
       <Stack sx={{ width: "100%" }} direction="row" alignItems="center" justifyContent="flex-start">
         {balanceLoading ? (
