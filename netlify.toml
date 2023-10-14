@@ -27,7 +27,7 @@ REACT_APP_CONNECT_WALLET_PROJECT_ID = "14efbaafcf5232a47d93a68229b71028"
 
 
 [context.deploy-preview.environment]
-REACT_APP_SCROLL_ENVIRONMENT = "Staging"
+REACT_APP_SCROLL_ENVIRONMENT = "Sepolia"
 REACT_APP_API_BASE_URI = "https://sepolia-api.scroll.io"
 REACT_APP_BRIDGE_API_URI = "https://sepolia-api-bridge.scroll.io/api"
 REACT_APP_ROLLUPSCAN_API_URI = "https://sepolia-api-re.scroll.io/api"

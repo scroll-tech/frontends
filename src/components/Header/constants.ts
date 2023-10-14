@@ -1,7 +1,79 @@
-import { requireEnv } from "@/utils"
-import { isProduction } from "@/utils"
+import { isSepolia, requireEnv } from "@/utils"
 
-const navigations = [
+const sepoliaNavigations = [
+  {
+    label: "Develop",
+    key: "develop",
+    children: [
+      {
+        label: "develop1",
+        children: [
+          {
+            label: "Mainnet",
+            key: "mainnet-resources",
+            rootKey: "develop",
+            href: "https://scroll.io/portal",
+            isExternal: true,
+          },
+          {
+            label: "Sepolia Testnet",
+            key: "sepolia-resources",
+            rootKey: "develop",
+            href: "/portal",
+          },
+          {
+            label: "Docs",
+            key: "docs",
+            href: "https://docs.scroll.io/en/home/",
+            isExternal: true,
+          },
+          {
+            label: "Status",
+            key: "status",
+            href: "https://status.scroll.io/",
+            isExternal: true,
+          },
+        ],
+      },
+      {
+        label: "develop2",
+        children: [
+          {
+            label: "Rollup Explorer",
+            key: "rollupscan",
+            href: "/rollupscan",
+            rootKey: "develop",
+          },
+          {
+            label: "Scrollscan",
+            key: "etherscan",
+            href: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2"),
+            isExternal: true,
+          },
+          {
+            label: "L2 Scan",
+            key: "l2-scan",
+            href: requireEnv("REACT_APP_L2_SCAN_URI"),
+            isExternal: true,
+          },
+          {
+            label: "Dora Explorer",
+            key: "dora",
+            href: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_DORA"),
+            isExternal: true,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    label: "Bridge",
+    key: "bridge",
+    href: "/bridge",
+  },
+]
+
+const mainnetNavigations = [
   {
     label: "Our Story",
     key: "story",
@@ -18,15 +90,14 @@ const navigations = [
             label: "Mainnet",
             key: "mainnet-resources",
             rootKey: "develop",
-            href: !isProduction ? "https://scroll.io/portal" : "/portal",
-            isExternal: !isProduction,
+            href: "/portal",
           },
           {
             label: "Sepolia Testnet",
             key: "sepolia-resources",
             rootKey: "develop",
-            href: isProduction ? "https://sepolia.scroll.io/portal" : "/portal",
-            isExternal: isProduction,
+            href: "https://sepolia.scroll.io/portal",
+            isExternal: true,
           },
           {
             label: "Docs",
@@ -119,5 +190,7 @@ const navigations = [
     href: "/bridge",
   },
 ]
+
+const navigations = isSepolia ? sepoliaNavigations : mainnetNavigations
 
 export { navigations }
