@@ -56,7 +56,7 @@ const Header = () => {
         </Title>
 
         <TextMarquee />
-        <Title variant="H1" data-aos="fade-up">
+        <Title variant="H1" data-aos="fade-up" sx={{ mb: 0 }}>
           Live on {capitalize(networkType)}
         </Title>
         <SubTitle variant="Body1" textAlign="center">
