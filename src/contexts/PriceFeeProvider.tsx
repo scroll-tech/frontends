@@ -126,7 +126,10 @@ export const PriceFeeProvider = ({ children }) => {
           setErrorMessage("")
         })
         .catch(error => {
-          setErrorMessage(error.message)
+          //TODO:
+          // setGasLimit(null)
+          // setGasPrice(null)
+          setErrorMessage(error.message.split("(")[0].trim())
         })
     },
   })

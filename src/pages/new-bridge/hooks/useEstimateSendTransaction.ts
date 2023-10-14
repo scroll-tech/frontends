@@ -52,7 +52,7 @@ export function useEstimateSendTransaction(props) {
     if (!isNetworkConnected) return BigInt(0)
     const nativeTokenBalance = await networksAndSigners[fromNetwork.chainId].provider.getBalance(walletCurrentAddress)
     if (!nativeTokenBalance) {
-      return BigInt(0)
+      return null
     } else if (fromNetwork.isL1 && gasLimit && gasPrice) {
       return await estimateSendL1ToL2()
     } else if (!fromNetwork.isL1 && toNetwork.isL1) {
