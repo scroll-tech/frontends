@@ -1,9 +1,12 @@
 // import { Fade } from "react-awesome-reveal"
+import { capitalize } from "lodash"
+
 import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { FadeInUp } from "@/components/Animation"
 import Button from "@/components/Button"
+import { networkType } from "@/utils"
 
 import TextMarquee from "./components/TextMarquee"
 
@@ -53,9 +56,12 @@ const Header = () => {
         </Title>
 
         <TextMarquee />
+        <Title variant="H1" data-aos="fade-up">
+          Live on {capitalize(networkType)}
+        </Title>
         <SubTitle variant="Body1" textAlign="center">
-          Scroll seamlessly extends Ethereum’s capabilities through zero knowledge tech and EVM equivalence. The L2 blockchain built by Ethereum devs
-          for Ethereum devs.
+          Scroll seamlessly extends Ethereum’s capabilities through zero knowledge tech and EVM equivalence. The L2 network built by Ethereum devs for
+          Ethereum devs.
         </SubTitle>
         <ButtonContainer>
           <Button href="/bridge" color="primary">

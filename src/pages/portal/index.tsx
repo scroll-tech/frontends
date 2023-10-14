@@ -24,7 +24,7 @@ const Portal = () => {
           mt: ["8rem", "12rem"],
           pb: ["12rem", "14rem"],
           maxWidth: ["100%", "1036px"],
-          px: ["2rem", 0],
+          px: "0",
           margin: "0 auto",
           "& *": {
             fontFamily: "var(--developer-page-font-family) !important",
