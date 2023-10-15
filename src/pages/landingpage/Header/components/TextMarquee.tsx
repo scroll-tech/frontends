@@ -4,7 +4,7 @@ import { Box, Typography } from "@mui/material"
 import { keyframes, styled } from "@mui/system"
 
 const TextSlider: React.FC = () => {
-  const texts = ["Scalable", "Open-Source", "Cryptographically Secured", "Ethereum Aligned", "Modular"]
+  const texts = ["Scalable", "Open-Source", "Cryptographically Secured", "Ethereum Aligned", "Modular", "Live on Mainnet"]
 
   const [currentIndex, setCurrentIndex] = useState(0)
   const textRef = useRef<HTMLDivElement | null>(null)
