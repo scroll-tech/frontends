@@ -3,7 +3,7 @@ import React, { createContext, useContext, useMemo, useState } from "react"
 import useStorage from "squirrel-gill"
 import { useBlockNumber } from "wagmi"
 
-import { CHAIN_ID, ETH_SYMBOL, GATEWAY_ROUTE_PROXY_ADDR } from "@/constants"
+import { CHAIN_ID, ETH_SYMBOL } from "@/constants"
 import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
 import { useApp } from "@/contexts/AppContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
@@ -16,6 +16,10 @@ enum MIN_GASLIMIT {
   ETH_GATEWAY = 14e4,
   WETH_GATEWAY = 17e4,
   STANDARD_ERC20_GATEWAY = 15e4,
+  CUSTOM_ERC20_GATEWAY = 15e4,
+  USDC_GATEWAY = 16e4,
+  DAI_GATEWAY = 15e4,
+  LIDO_GATEWAY = 15e4,
 }
 
 type Props = {
@@ -41,9 +45,9 @@ const Address2GatewayType = {
   [requireEnv("REACT_APP_L1_WETH_GATEWAY_PROXY_ADDR")]: GatewayType.WETH_GATEWAY,
   [requireEnv("REACT_APP_L1_CUSTOM_ERC20_GATEWAY_PROXY_ADDR")]: GatewayType.CUSTOM_ERC20_GATEWAY,
   [requireEnv("REACT_APP_L1_STANDARD_ERC20_GATEWAY_PROXY_ADDR")]: GatewayType.STANDARD_ERC20_GATEWAY,
-  [requireEnv("REACT_APP_L1_USDC_GATEWAY_PROXY_ADDR")]: GatewayType.STANDARD_ERC20_GATEWAY,
-  [requireEnv("REACT_APP_L1_DAI_GATEWAY_PROXY_ADDR")]: GatewayType.STANDARD_ERC20_GATEWAY,
-  [requireEnv("REACT_APP_L1_LIDO_GATEWAY_PROXY_ADDR")]: GatewayType.STANDARD_ERC20_GATEWAY,
+  [requireEnv("REACT_APP_L1_USDC_GATEWAY_PROXY_ADDR")]: GatewayType.USDC_GATEWAY,
+  [requireEnv("REACT_APP_L1_DAI_GATEWAY_PROXY_ADDR")]: GatewayType.DAI_GATEWAY,
+  [requireEnv("REACT_APP_L1_LIDO_GATEWAY_PROXY_ADDR")]: GatewayType.LIDO_GATEWAY,
 }
 
 // Contracts
@@ -72,7 +76,7 @@ const Contracts = {
   },
   SCROLL_MESSENGER: { abi: require("@/assets/abis/L2ScrollMessenger.json"), env: "REACT_APP_L2_SCROLL_MESSENGER" },
   GAS_PRICE_ORACLE: { abi: require("@/assets/abis/L2GasPriceOracle.json"), env: "REACT_APP_L2_GAS_PRICE_ORACLE" },
-  L1_GATEWAY_ROUTER_PROXY: { abi: require("@/assets/abis/L1_GATEWAY_ROUTER_PROXY_ADDR.json"), env: GATEWAY_ROUTE_PROXY_ADDR[CHAIN_ID.L1] },
+  L1_GATEWAY_ROUTER_PROXY: { abi: require("@/assets/abis/L1_GATEWAY_ROUTER_PROXY_ADDR.json"), env: "REACT_APP_L1_GATEWAY_ROUTER_PROXY_ADDR" },
 }
 
 const getContract = (contractName, providerOrSigner) =>
@@ -225,17 +229,17 @@ export const PriceFeeProvider = ({ children }) => {
     const calldata = l2messenger.interface.encodeFunctionData("relayMessage", [
       l1GatewayAddress, // l1 gateway
       l2GatewayAddress, // l2 gateway
-      [GatewayType.STANDARD_ERC20_GATEWAY, GatewayType.CUSTOM_ERC20_GATEWAY].includes(gatewayType) ? 0 : amount,
+      [GatewayType.ETH_GATEWAY, GatewayType.WETH_GATEWAY].includes(gatewayType) ? amount : 0,
       ethers.MaxUint256,
       message,
     ])
-
     try {
       const gaslimit = await l2Provider.estimateGas({
         from: "0x" + (BigInt(requireEnv("REACT_APP_L1_SCROLL_MESSENGER")) + (BigInt(OFFSET) % BigInt(Math.pow(2, 160)))).toString(16),
         to: requireEnv(Contracts.SCROLL_MESSENGER.env),
         data: calldata,
       })
+
       return (BigInt(Math.max(Number(gaslimit), MIN_GASLIMIT[gatewayType] as unknown as number)) * BigInt(120)) / BigInt(100)
     } catch (error) {
       throw new Error(error)
