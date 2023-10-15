@@ -72,7 +72,7 @@ const Contracts = {
   },
   SCROLL_MESSENGER: { abi: require("@/assets/abis/L2ScrollMessenger.json"), env: "REACT_APP_L2_SCROLL_MESSENGER" },
   GAS_PRICE_ORACLE: { abi: require("@/assets/abis/L2GasPriceOracle.json"), env: "REACT_APP_L2_GAS_PRICE_ORACLE" },
-  L1_GATEWAY_ROUTER_PROXY: { abi: requireEnv("@/assets/abis/L1_GATEWAY_ROUTER_PROXY_ADDR.json"), env: GATEWAY_ROUTE_PROXY_ADDR[CHAIN_ID.L1] },
+  L1_GATEWAY_ROUTER_PROXY: { abi: require("@/assets/abis/L1_GATEWAY_ROUTER_PROXY_ADDR.json"), env: GATEWAY_ROUTE_PROXY_ADDR[CHAIN_ID.L1] },
 }
 
 const getContract = (contractName, providerOrSigner) =>
