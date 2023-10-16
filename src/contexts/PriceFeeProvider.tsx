@@ -165,8 +165,8 @@ export const PriceFeeProvider = ({ children }) => {
       return await getGasLimitGeneric(requireEnv(`REACT_APP_L1_ETH_GATEWAY_PROXY_ADDR`))
     } else {
       // fetch gateway address from router.getERC20Gateway((l1Token as ERC20Token).address)
-      const l1Erc20Gateway = getContract("L1_GATEWAY_ROUTER_PROXY", networksAndSigners[CHAIN_ID.L1].provider)
-      const gatewayAddress = await l1Erc20Gateway.getERC20Gateway((l1Token as ERC20Token).address)
+      const gatewayRouter = getContract("L1_GATEWAY_ROUTER_PROXY", networksAndSigners[CHAIN_ID.L1].provider)
+      const gatewayAddress = await gatewayRouter.getERC20Gateway((l1Token as ERC20Token).address)
       return await getGasLimitGeneric(gatewayAddress)
     }
   }
