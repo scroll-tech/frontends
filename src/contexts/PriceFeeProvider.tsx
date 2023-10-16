@@ -3,7 +3,7 @@ import React, { createContext, useContext, useMemo, useState } from "react"
 import useStorage from "squirrel-gill"
 import { useBlockNumber } from "wagmi"
 
-import { CHAIN_ID, ETH_SYMBOL, WETH_SYMBOL } from "@/constants"
+import { CHAIN_ID, ETH_SYMBOL } from "@/constants"
 import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
 import { useApp } from "@/contexts/AppContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
@@ -16,6 +16,10 @@ enum MIN_GASLIMIT {
   ETH_GATEWAY = 14e4,
   WETH_GATEWAY = 17e4,
   STANDARD_ERC20_GATEWAY = 15e4,
+  CUSTOM_ERC20_GATEWAY = 15e4,
+  USDC_GATEWAY = 16e4,
+  DAI_GATEWAY = 15e4,
+  LIDO_GATEWAY = 15e4,
 }
 
 type Props = {
@@ -29,22 +33,54 @@ enum GatewayType {
   ETH_GATEWAY = "ETH_GATEWAY",
   WETH_GATEWAY = "WETH_GATEWAY",
   STANDARD_ERC20_GATEWAY = "STANDARD_ERC20_GATEWAY",
+  CUSTOM_ERC20_GATEWAY = "CUSTOM_ERC20_GATEWAY",
+  USDC_GATEWAY = "USDC_GATEWAY",
+  DAI_GATEWAY = "DAI_GATEWAY",
+  LIDO_GATEWAY = "LIDO_GATEWAY",
+}
+
+// For USDC, Lido, and DAI, can use the STANDARD_ERC20_GATEWAY
+const Address2GatewayType = {
+  [requireEnv("REACT_APP_L1_ETH_GATEWAY_PROXY_ADDR")]: GatewayType.ETH_GATEWAY,
+  [requireEnv("REACT_APP_L1_WETH_GATEWAY_PROXY_ADDR")]: GatewayType.WETH_GATEWAY,
+  [requireEnv("REACT_APP_L1_CUSTOM_ERC20_GATEWAY_PROXY_ADDR")]: GatewayType.CUSTOM_ERC20_GATEWAY,
+  [requireEnv("REACT_APP_L1_STANDARD_ERC20_GATEWAY_PROXY_ADDR")]: GatewayType.STANDARD_ERC20_GATEWAY,
+  [requireEnv("REACT_APP_L1_USDC_GATEWAY_PROXY_ADDR")]: GatewayType.USDC_GATEWAY,
+  [requireEnv("REACT_APP_L1_DAI_GATEWAY_PROXY_ADDR")]: GatewayType.DAI_GATEWAY,
+  [requireEnv("REACT_APP_L1_LIDO_GATEWAY_PROXY_ADDR")]: GatewayType.LIDO_GATEWAY,
 }
 
 // Contracts
-const L2Contracts = {
+const Contracts = {
   [GatewayType.ETH_GATEWAY]: { abi: require("@/assets/abis/L2ETHGateway.json"), env: "REACT_APP_L2_ETH_GATEWAY_PROXY_ADDR" },
   [GatewayType.WETH_GATEWAY]: { abi: require("@/assets/abis/L2WETHGateway.json"), env: "REACT_APP_L2_WETH_GATEWAY_PROXY_ADDR" },
   [GatewayType.STANDARD_ERC20_GATEWAY]: {
     abi: require("@/assets/abis/L2StandardERC20Gateway.json"),
     env: "REACT_APP_L2_STANDARD_ERC20_GATEWAY_PROXY_ADDR",
   },
+  [GatewayType.CUSTOM_ERC20_GATEWAY]: {
+    abi: require("@/assets/abis/L2StandardERC20Gateway.json"),
+    env: "REACT_APP_L2_CUSTOM_ERC20_GATEWAY_PROXY_ADDR",
+  },
+  [GatewayType.USDC_GATEWAY]: {
+    abi: require("@/assets/abis/L2StandardERC20Gateway.json"),
+    env: "REACT_APP_L2_USDC_GATEWAY_PROXY_ADDR",
+  },
+  [GatewayType.DAI_GATEWAY]: {
+    abi: require("@/assets/abis/L2StandardERC20Gateway.json"),
+    env: "REACT_APP_L2_DAI_GATEWAY_PROXY_ADDR",
+  },
+  [GatewayType.LIDO_GATEWAY]: {
+    abi: require("@/assets/abis/L2StandardERC20Gateway.json"),
+    env: "REACT_APP_L2_LIDO_GATEWAY_PROXY_ADDR",
+  },
   SCROLL_MESSENGER: { abi: require("@/assets/abis/L2ScrollMessenger.json"), env: "REACT_APP_L2_SCROLL_MESSENGER" },
   GAS_PRICE_ORACLE: { abi: require("@/assets/abis/L2GasPriceOracle.json"), env: "REACT_APP_L2_GAS_PRICE_ORACLE" },
+  L1_GATEWAY_ROUTER_PROXY: { abi: require("@/assets/abis/L1_GATEWAY_ROUTER_PROXY_ADDR.json"), env: "REACT_APP_L1_GATEWAY_ROUTER_PROXY_ADDR" },
 }
 
 const getContract = (contractName, providerOrSigner) =>
-  new ethers.Contract(requireEnv(L2Contracts[contractName].env), L2Contracts[contractName].abi, providerOrSigner)
+  new ethers.Contract(requireEnv(Contracts[contractName].env), Contracts[contractName].abi, providerOrSigner)
 
 const PriceFeeContext = createContext<Props | undefined>(undefined)
 
@@ -126,22 +162,23 @@ export const PriceFeeProvider = ({ children }) => {
       }
     }
     if (l2Token.symbol === ETH_SYMBOL) {
-      return await getGasLimitGeneric(GatewayType.ETH_GATEWAY)
-    } else if (l2Token.symbol === WETH_SYMBOL) {
-      return await getGasLimitGeneric(GatewayType.WETH_GATEWAY)
+      return await getGasLimitGeneric(requireEnv(`REACT_APP_L1_ETH_GATEWAY_PROXY_ADDR`))
     } else {
-      return await getGasLimitGeneric(GatewayType.STANDARD_ERC20_GATEWAY)
+      // fetch gateway address from router.getERC20Gateway((l1Token as ERC20Token).address)
+      const gatewayRouter = getContract("L1_GATEWAY_ROUTER_PROXY", networksAndSigners[CHAIN_ID.L1].provider)
+      const gatewayAddress = await gatewayRouter.getERC20Gateway((l1Token as ERC20Token).address)
+      return await getGasLimitGeneric(gatewayAddress)
     }
   }
 
-  const messageDataGeneric = contractName => {
+  const messageDataGeneric = gatewayAddress => {
     let finalizeDepositParams: any = []
     let finalizeDepositMethod = "finalizeDepositERC20"
-
-    if (contractName === GatewayType.ETH_GATEWAY) {
+    const gatewayType = Address2GatewayType[gatewayAddress]
+    if (gatewayType === GatewayType.ETH_GATEWAY) {
       finalizeDepositParams = [walletCurrentAddress, walletCurrentAddress, amount, "0x"]
       finalizeDepositMethod = "finalizeDepositETH"
-    } else if (contractName === GatewayType.WETH_GATEWAY) {
+    } else if (gatewayType === GatewayType.WETH_GATEWAY) {
       finalizeDepositParams = [
         (l1Token as ERC20Token).address,
         (l2Token as ERC20Token).address,
@@ -150,6 +187,8 @@ export const PriceFeeProvider = ({ children }) => {
         amount,
         "0x",
       ]
+    } else if (gatewayType === GatewayType.CUSTOM_ERC20_GATEWAY) {
+      finalizeDepositParams = [(l1Token as ERC20Token).address, (l2Token as ERC20Token).address, walletCurrentAddress, walletCurrentAddress, 0, "0x"]
     } else {
       finalizeDepositParams = [
         (l1Token as ERC20Token).address,
@@ -173,29 +212,35 @@ export const PriceFeeProvider = ({ children }) => {
     return { finalizeDepositParams, finalizeDepositMethod }
   }
 
-  const getGasLimitGeneric = async contractName => {
-    const { provider } = networksAndSigners[CHAIN_ID.L2]
+  const getGasLimitGeneric = async l1GatewayAddress => {
+    const { provider: l1Provider } = networksAndSigners[CHAIN_ID.L1]
+    const { provider: l2Provider } = networksAndSigners[CHAIN_ID.L2]
+    const gatewayType = Address2GatewayType[l1GatewayAddress]
 
-    const gateway = getContract(contractName, provider)
-    const l2messenger = getContract("SCROLL_MESSENGER", provider)
-    const { finalizeDepositMethod, finalizeDepositParams } = messageDataGeneric(contractName)
+    const gateway = getContract(gatewayType, l2Provider)
+
+    const l2messenger = getContract("SCROLL_MESSENGER", l2Provider)
+
+    const { finalizeDepositMethod, finalizeDepositParams } = messageDataGeneric(l1GatewayAddress)
     const message = gateway.interface.encodeFunctionData(finalizeDepositMethod, finalizeDepositParams)
+    const l1Gateway = new ethers.Contract(l1GatewayAddress, Contracts[gatewayType].abi, l1Provider)
+    const l2GatewayAddress = await l1Gateway.counterpart()
 
     const calldata = l2messenger.interface.encodeFunctionData("relayMessage", [
-      requireEnv(`REACT_APP_L1_${contractName}_PROXY_ADDR`), // l1 gateway
-      requireEnv(`REACT_APP_L2_${contractName}_PROXY_ADDR`), // l2 gateway
-      contractName === GatewayType.STANDARD_ERC20_GATEWAY ? 0 : amount,
+      l1GatewayAddress, // l1 gateway
+      l2GatewayAddress, // l2 gateway
+      [GatewayType.ETH_GATEWAY, GatewayType.WETH_GATEWAY].includes(gatewayType) ? amount : 0,
       ethers.MaxUint256,
       message,
     ])
-
     try {
-      const gaslimit = await provider.estimateGas({
+      const gaslimit = await l2Provider.estimateGas({
         from: "0x" + (BigInt(requireEnv("REACT_APP_L1_SCROLL_MESSENGER")) + (BigInt(OFFSET) % BigInt(Math.pow(2, 160)))).toString(16),
-        to: requireEnv(L2Contracts.SCROLL_MESSENGER.env),
+        to: requireEnv(Contracts.SCROLL_MESSENGER.env),
         data: calldata,
       })
-      return (BigInt(Math.max(Number(gaslimit), MIN_GASLIMIT[contractName] as unknown as number)) * BigInt(120)) / BigInt(100)
+
+      return (BigInt(Math.max(Number(gaslimit), MIN_GASLIMIT[gatewayType] as unknown as number)) * BigInt(120)) / BigInt(100)
     } catch (error) {
       throw new Error(error)
     }
