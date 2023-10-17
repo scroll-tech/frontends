@@ -28,13 +28,13 @@ const PRINCIPLES = [
     icon: EthSvg,
     title: (
       <>
-        Ethereum equivalence,
+        Ethereum compatibility,
         <br /> byte by byte
       </>
     ),
-    mobileTitle: "Ethereum equivalence, byte by byte",
+    mobileTitle: "Ethereum compatibility, byte by byte",
     mobileScale: "0.87",
-    content: "Scroll permits seamless migration with EVM-equivalence, eliminating code changes and disruptions for users and developers.",
+    content: "Scroll permits seamless migration with EVM-compatibility, eliminating code changes and disruptions for users and developers.",
   },
   {
     icon: ExternalSvg,
@@ -88,7 +88,7 @@ const TechPrinciple = () => {
     <SectionWrapper>
       <SectionHeader
         title="Our technical principles"
-        content="Comprehensive security, Ethereum equivalence for seamless developer experience, and decentralization across all layers are at the core of how we build Scroll."
+        content="Comprehensive security, Ethereum compatibility for seamless developer experience, and decentralization across all layers are at the core of how we build Scroll."
       ></SectionHeader>
       <SuccessionToView className={classes.grid}>
         {PRINCIPLES.map((item, index) => (

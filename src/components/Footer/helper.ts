@@ -20,6 +20,10 @@ export const aboutList = [
     name: "Terms of Service",
     href: "/terms-of-service",
   },
+  {
+    name: "Bug Bounty",
+    href: "https://immunefi.com/bounty/scroll/",
+  },
 ]
 
 export const resourceList = [
