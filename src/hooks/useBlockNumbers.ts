@@ -30,7 +30,7 @@ const useBlockNumbers = () => {
   // }, [networksAndSigners])
 
   const { data: blockNumbersRes } = useSWR<any>("eth_blockNumber", fetchBlockNumber, {
-    refreshInterval: 2000,
+    refreshInterval: 6000,
   })
   // console.log(blockNumbersRes)
 
