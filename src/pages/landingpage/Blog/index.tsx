@@ -28,7 +28,7 @@ const STORIES = [
   {
     title: "A Letter from Scroll: Mainnet is Here!",
     content: "As we open the doors to Mainnet, our co-founders share what it took to reach this milestone and where we go from here. ",
-    href: null,
+    href: "/blog/founderLetter",
   },
   {
     title: "Announcing the 'Contribute to Scroll' Initiative",
