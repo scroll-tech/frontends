@@ -64,7 +64,7 @@ const useStyles = makeStyles()(theme => ({
   },
   info: {
     position: "absolute",
-    top: "2rem",
+    bottom: "2rem",
     right: "2rem",
     fontSize: "2rem",
   },

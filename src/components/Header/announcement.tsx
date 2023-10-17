@@ -50,7 +50,22 @@ const Announcement = () => {
     return null
   }, [isProduction, isHome, isPortal])
 
-  return announcementContent && <AnnouncementStack production={isProduction}>{announcementContent}</AnnouncementStack>
+  const rightHref = useMemo(() => {
+    if (isProduction && (isHome || isPortal)) {
+      return "/portal"
+    } else if (!isProduction) {
+      return "https://scroll.io/"
+    }
+    return ""
+  }, [isProduction, isHome, isPortal])
+
+  return (
+    announcementContent && (
+      <a href={rightHref} rel="noopener noreferrer">
+        <AnnouncementStack production={isProduction}>{announcementContent}</AnnouncementStack>
+      </a>
+    )
+  )
 }
 
 export default Announcement
