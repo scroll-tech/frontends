@@ -15,7 +15,7 @@ import useCheckViewport from "@/hooks/useCheckViewport"
 const FEATURES = [
   {
     icon: FeatureIcon1,
-    title: "EVM-equivalence for seamless scaling",
+    title: "EVM-compatibility for seamless scaling",
     description:
       "Scroll is designed by and for Ethereum developers. A swift, reliable and scalable Layer 2 blockchain, Scroll extends Ethereum's capabilities, enabling apps to scale without any surprises. Thanks to bytecode-level compatibility, existing Ethereum apps can migrate onto Scroll as-is, and at a significantly reduced cost.",
   },
