@@ -5,6 +5,10 @@ import { ReactComponent as YoutubeIcon } from "@/assets/svgs/footer/youtube.svg"
 
 export const aboutList = [
   {
+    name: "Bug Bounty",
+    href: "https://immunefi.com/bounty/scroll/",
+  },
+  {
     name: "Join Us",
     href: "https://jobs.lever.co/ScrollFoundation",
   },
@@ -19,10 +23,6 @@ export const aboutList = [
   {
     name: "Terms of Service",
     href: "/terms-of-service",
-  },
-  {
-    name: "Bug Bounty",
-    href: "https://immunefi.com/bounty/scroll/",
   },
 ]
 
