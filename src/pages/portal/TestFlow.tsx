@@ -8,7 +8,7 @@ import Descriptions, { DescriptionItem } from "./Descriptions"
 const TestFlow = () => {
   return (
     <Descriptions title="Test the following">
-      {NAVIGATIONS.slice(2).map(item => (
+      {NAVIGATIONS.map(item => (
         <DescriptionItem key={item.name} odd>
           <Link underline="hover" external={item.isExternal} href={item.subdomainOrPath}>
             {item.name}

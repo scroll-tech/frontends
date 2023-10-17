@@ -7,7 +7,7 @@ import { useRainbowContext } from "@/contexts/RainbowProvider"
 
 export function useEstimateSendTransaction(props) {
   const { fromNetwork, toNetwork, selectedToken } = props
-  const { checkConnectedChainId } = useRainbowContext()
+  const { checkConnectedChainId, walletCurrentAddress } = useRainbowContext()
   const { gasLimit, gasPrice } = usePriceFeeContext()
 
   const { networksAndSigners } = useApp()
@@ -50,7 +50,10 @@ export function useEstimateSendTransaction(props) {
   const estimateSend = async () => {
     const isNetworkConnected = await checkConnectedChainId(fromNetwork.chainId)
     if (!isNetworkConnected) return
-    if (fromNetwork.isL1 && gasLimit && gasPrice) {
+    const nativeTokenBalance = await networksAndSigners[fromNetwork.chainId].provider.getBalance(walletCurrentAddress)
+    if (!nativeTokenBalance) {
+      return BigInt(0)
+    } else if (fromNetwork.isL1 && gasLimit && gasPrice) {
       return await estimateSendL1ToL2()
     } else if (!fromNetwork.isL1 && toNetwork.isL1) {
       return await estimateSendL2ToL1()
@@ -65,11 +68,11 @@ export function useEstimateSendTransaction(props) {
     }
   }
 
-  const estimateSendL2ToL1 = () => {
+  const estimateSendL2ToL1 = async () => {
     if (selectedToken.native) {
-      return withdrawETH()
+      return await withdrawETH()
     } else {
-      return withdrawERC20()
+      return await withdrawERC20()
     }
   }
 

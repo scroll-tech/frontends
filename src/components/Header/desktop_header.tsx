@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { NavLink } from "react-router-dom"
+import { useStyles } from "tss-react/mui"
 
 import { Box, Container, Fade, Link, Popper, Stack, SvgIcon } from "@mui/material"
 import { styled } from "@mui/system"
@@ -96,11 +97,9 @@ const SubMenuButton = styled(Stack)(({ theme }) => ({
     willChange: "transform",
     transition: "transform .3s ease-in-out",
   },
-  "&:hover": {
+  "& .expand-more-reverse": {
     fontWeight: 500,
-    [`& .expand-more`]: {
-      transform: "rotate(180deg)",
-    },
+    transform: "rotate(180deg)",
   },
 }))
 
@@ -156,6 +155,7 @@ const LinkStyledSubButton = styled(NavLink)(({ theme }) => ({
 }))
 
 const App = ({ currentMenu }) => {
+  const { cx } = useStyles()
   const noBg = useCheckNoBg()
   const { isDesktop } = useCheckViewport()
 
@@ -178,27 +178,30 @@ const App = ({ currentMenu }) => {
   const renderSubMenuList = children => {
     return children.map(section => (
       <SectionList key={section.label}>
-        {section.children?.map(subItem =>
-          subItem.isExternal ? (
-            <LinkButton target="_blank" underline="none" key={subItem.label} href={subItem.href}>
-              <Stack direction="row" alignItems="center" spacing={1} sx={{ width: "100%" }}>
-                <ExternalLink>
-                  {subItem.label}
-                  <svg style={{ marginLeft: "0.5rem" }} xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none">
-                    <path
-                      d="M9 1V7.86538L7.83812 6.7035V2.96385C5.46463 5.26924 3.29542 7.77999 0.853849 10L0 9.16344C2.42536 6.94344 4.5762 4.46728 6.93347 2.1781H3.31272L2.13462 1H9Z"
-                      fill="#101010"
-                    />
-                  </svg>
-                </ExternalLink>
-              </Stack>
-            </LinkButton>
-          ) : (
-            <LinkStyledSubButton key={subItem.label} to={subItem.href}>
-              {subItem.label}
-            </LinkStyledSubButton>
-          ),
-        )}
+        {section.children
+          // only show sub menu item when the href is set
+          ?.filter(subItem => subItem.href)
+          .map(subItem =>
+            subItem.isExternal ? (
+              <LinkButton target="_blank" underline="none" key={subItem.label} href={subItem.href}>
+                <Stack direction="row" alignItems="center" spacing={1} sx={{ width: "100%" }}>
+                  <ExternalLink>
+                    {subItem.label}
+                    <svg style={{ marginLeft: "0.5rem" }} xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none">
+                      <path
+                        d="M9 1V7.86538L7.83812 6.7035V2.96385C5.46463 5.26924 3.29542 7.77999 0.853849 10L0 9.16344C2.42536 6.94344 4.5762 4.46728 6.93347 2.1781H3.31272L2.13462 1H9Z"
+                        fill="#101010"
+                      />
+                    </svg>
+                  </ExternalLink>
+                </Stack>
+              </LinkButton>
+            ) : (
+              <LinkStyledSubButton key={subItem.label} to={subItem.href}>
+                {subItem.label}
+              </LinkStyledSubButton>
+            ),
+          )}
       </SectionList>
     ))
   }
@@ -215,12 +218,17 @@ const App = ({ currentMenu }) => {
           onMouseLeave={handleMouseLeave}
         >
           <span>{item.label}</span>
-          <SvgIcon className="expand-more" sx={{ width: "auto", height: "auto" }} component={TriangleDownSvg} inheritViewBox></SvgIcon>
+          <SvgIcon
+            className={cx("expand-more", item.key === checked && "expand-more-reverse")}
+            sx={{ width: "auto", height: "auto" }}
+            component={TriangleDownSvg}
+            inheritViewBox
+          ></SvgIcon>
           {item.key === checked && (
             <StyledPopper open={true} placement="bottom-start" anchorEl={anchorEl} transition transparent={noBg}>
               {({ TransitionProps }) => (
                 <Fade {...TransitionProps}>
-                  <SubMenuList>{renderSubMenuList(item.children)}</SubMenuList>
+                  <SubMenuList onClick={handleMouseLeave}>{renderSubMenuList(item.children)}</SubMenuList>
                 </Fade>
               )}
             </StyledPopper>
@@ -235,7 +243,7 @@ const App = ({ currentMenu }) => {
       )
     } else {
       return (
-        <LinkStyledButton className={currentMenu === item.key ? "active" : ""} to={item.href} end={item.end} key={item.key}>
+        <LinkStyledButton to={item.href} end={item.end} key={item.key}>
           {item.label}
         </LinkStyledButton>
       )

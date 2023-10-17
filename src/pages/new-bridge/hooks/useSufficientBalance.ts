@@ -26,6 +26,7 @@ function useSufficientBalance(selectedToken: any, amount?: bigint, fee?: bigint,
       let enoughFeeBalance: boolean
       let enoughTokenBalance: boolean
       let message: string = ""
+      let nativeTokenBalance
 
       const totalFee = fee ?? BigInt(0)
 
@@ -36,8 +37,7 @@ function useSufficientBalance(selectedToken: any, amount?: bigint, fee?: bigint,
         enoughTokenBalance = enoughFeeBalance
       } else {
         const nativeTokenBalance = await networksAndSigner.provider.getBalance(walletCurrentAddress)
-
-        enoughFeeBalance = nativeTokenBalance >= totalFee
+        enoughFeeBalance = nativeTokenBalance ? nativeTokenBalance >= totalFee : false
         enoughTokenBalance = tokenBalance >= amount
       }
 
@@ -49,15 +49,19 @@ function useSufficientBalance(selectedToken: any, amount?: bigint, fee?: bigint,
       if (!tokenBalance) {
         message = `Insufficient balance. Your account has 0 ${selectedToken.symbol}.`
       } else if (!enoughFeeBalance) {
-        const diff = tokenBalance - totalFee
-        message = `Insufficient balance to cover the cost of tx. The amount should be less than ${toTokenDisplay(
-          diff,
-          selectedToken.decimals,
-          selectedToken.symbol,
-        )}`
+        if (tokenBalance > totalFee) {
+          const diff = tokenBalance - totalFee
+          message = `Insufficient balance to cover the cost of tx. The amount should be less than ${toTokenDisplay(
+            diff,
+            selectedToken.decimals,
+            selectedToken.symbol,
+          )}`
+        } else {
+          message = `Insufficient balance to cover the cost of tx. Please add ETH to pay for tx fees.`
+        }
 
         if (!selectedToken.native) {
-          message = "Insufficient balance to cover the tx fee. Please add ETH to pay for tx fees."
+          message = `${nativeTokenBalance ? "Insufficient" : "No"} balance to cover the tx fee. Please add ETH to pay for tx fees.`
         }
       } else if (!enoughTokenBalance) {
         message = `Insufficient balance. The amount should be less than ${toTokenDisplay(tokenBalance, selectedToken.decimals, selectedToken.symbol)}`

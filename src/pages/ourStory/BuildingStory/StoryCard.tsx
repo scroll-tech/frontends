@@ -123,12 +123,14 @@ const StoryCard = props => {
         )}
 
         <CardContent className={cx(classes.cardContent, cover || isPortrait ? classes.withCover : classes.noCover)}>
-          <SvgIcon
-            sx={{ fontSize: ["1.3rem", "2rem"] }}
-            className={cx(classes.icon, "building-story-card-icon")}
-            component={ExternaLinkIcon}
-            inheritViewBox
-          ></SvgIcon>
+          {href ? (
+            <SvgIcon
+              sx={{ fontSize: ["1.3rem", "2rem"] }}
+              className={cx(classes.icon, "building-story-card-icon")}
+              component={ExternaLinkIcon}
+              inheritViewBox
+            ></SvgIcon>
+          ) : null}
 
           <Typography sx={{ fontSize: ["1.6rem", "2.4rem"], fontWeight: 600, cursor: "inherit" }} className={classes.title}>
             {title}

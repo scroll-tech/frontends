@@ -7,7 +7,7 @@ import Link from "@/components/Link"
 import TextButton from "@/components/TextButton"
 import { NETWORKS } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { switchNetwork } from "@/utils"
+import { isProduction, switchNetwork } from "@/utils"
 
 import Descriptions, { DescriptionItem } from "./Descriptions"
 
@@ -51,7 +51,7 @@ const WalletConfig = () => {
 
   return (
     <>
-      <Descriptions title={`Configure ${walletName || "wallet"} for our zkEVM testnet`}>
+      <Descriptions title={`Configure for ${isProduction ? "Scroll mainnet" : "our Sepolia testnet"}`}>
         {NETWORKS.map((item, index) => (
           <DescriptionItem key={item.name}>
             <Typography bold>Layer{index + 1}</Typography>

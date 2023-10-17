@@ -5,12 +5,12 @@ import { type WalletClient } from "@wagmi/core"
 import { BrowserProvider, ethers } from "ethers"
 import produce from "immer"
 import { createContext, useCallback, useContext, useMemo } from "react"
-import { WagmiConfig, configureChains, createConfig, sepolia, useAccount, useDisconnect, useNetwork, useWalletClient } from "wagmi"
+import { WagmiConfig, configureChains, createConfig, mainnet, sepolia, useAccount, useDisconnect, useNetwork, useWalletClient } from "wagmi"
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc"
 import { publicProvider } from "wagmi/providers/public"
 
-import { CHAIN_ID, ETH_SYMBOL, RPC_URL, TESTNET_NAME } from "@/constants"
-import { requireEnv } from "@/utils"
+import { CHAIN_ID, ETH_SYMBOL, L2_NAME, RPC_URL } from "@/constants"
+import { networkType, requireEnv } from "@/utils"
 
 type RainbowContextProps = {
   provider: ethers.BrowserProvider | null
@@ -24,13 +24,13 @@ type RainbowContextProps = {
 
 export const scrollChain: Chain = {
   id: CHAIN_ID.L2,
-  name: TESTNET_NAME,
-  network: TESTNET_NAME,
+  name: L2_NAME,
+  network: L2_NAME,
   iconUrl: "https://scroll.io/logo.png",
   iconBackground: "#fff",
   nativeCurrency: {
     decimals: 18,
-    name: TESTNET_NAME,
+    name: L2_NAME,
     symbol: ETH_SYMBOL,
   },
   rpcUrls: {
@@ -42,11 +42,15 @@ export const scrollChain: Chain = {
     },
   },
   blockExplorers: {
-    default: { name: "Blockscout", url: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2") },
+    default: { name: "Scrollscan", url: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2") },
   },
 }
 
 const sepoliaChain = produce(sepolia, draft => {
+  draft.rpcUrls.public.http = [RPC_URL.L1 as any]
+})
+
+const mainnetChain = produce(mainnet, draft => {
   draft.rpcUrls.public.http = [RPC_URL.L1 as any]
 })
 
@@ -56,7 +60,7 @@ const RainbowContext = createContext<RainbowContextProps | undefined>(undefined)
 
 const { chains, publicClient } = configureChains(
   // ankr
-  [sepoliaChain, scrollChain],
+  [mainnetChain, sepoliaChain, scrollChain],
   [
     publicProvider(),
     jsonRpcProvider({
@@ -80,7 +84,7 @@ const connectors = connectorsForWallets([
         options: {
           metadata: {
             name: "Scroll",
-            description: "Get started with our testnet now.",
+            description: `Get started with our ${networkType} now.`,
             url: "https://scroll.io/",
             icons: ["https://scroll.io/logo_walletconnect.png"],
           },

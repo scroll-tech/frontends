@@ -16,8 +16,86 @@ import RollupScanChunk from "@/pages/rollup/chunk"
 import RollupScanChunkDetail from "@/pages/rollup/chunk/detail"
 import RollupScan from "@/pages/rollup/index"
 import Terms from "@/pages/terms"
+import { isSepolia } from "@/utils"
 
-const routes = [
+const sepoliaRoutes = [
+  {
+    name: "Native zkEVM Layer 2 for Ethereum",
+    path: "/",
+    element: <Portal />,
+  },
+  {
+    name: "Terms and Conditions[Archive]",
+    path: "/archive/20230308/terms-and-conditions",
+    element: <ArchiveTerms />,
+  },
+  {
+    name: "Terms of Service",
+    path: "/terms-of-service",
+    element: <Terms />,
+  },
+  {
+    name: "Privacy Policy",
+    path: "/privacy-policy",
+    element: <PrivacyPolicy />,
+  },
+  {
+    name: "Resources",
+    path: "portal",
+    fullPath: "/portal",
+    element: <Portal />,
+  },
+  {
+    name: "Bridge",
+    path: "/bridge",
+    fullPath: "/bridge",
+    element: <Bridge />,
+  },
+  {
+    name: "Bridge FAQ",
+    path: "/bridge/faq",
+    fullPath: "/bridge/faq",
+    element: <BridgeFAQ />,
+  },
+  {
+    name: "Rollup Explorer",
+    path: "/rollupscan",
+    fullPath: "/rollupscan",
+    element: <RollupScan />,
+  },
+  {
+    name: "Rollup Explorer: Batch Details",
+    path: "/rollupscan/batch/:batchIndex",
+    fullPath: "/rollupscan/batch/:batchIndex",
+    element: <RollupScanBatch />,
+  },
+  {
+    name: "Rollup Explorer: Chunk List",
+    path: "/rollupscan/batch/:batchIndex/chunks",
+    fullPath: "/rollupscan/batch/:batchIndex/chunks",
+    element: <RollupScanChunk />,
+  },
+  {
+    name: "Rollup Explorer: Chunk Details",
+    path: "/rollupscan/batch/:batchIndex/chunk/:chunkIndex",
+    fullPath: "/rollupscan/batch/:batchIndex/chunk/:chunkIndex",
+    element: <RollupScanChunkDetail />,
+  },
+  {
+    name: "Rollup Explorer: Block Details",
+    path: "/rollupscan/batch/:batchIndex/blocks",
+    fullPath: "/rollupscan/batch/:batchIndex/blocks",
+    element: <RollupScanBlock />,
+  },
+  {
+    name: "Rollup Explorer: Block Details",
+    path: "/rollupscan/batch/:batchIndex/chunk/:chunkIndex/blocks",
+    fullPath: "/rollupscan/batch/:batchIndex/chunk/:chunkIndex/blocks",
+    element: <RollupScanBlock />,
+  },
+]
+
+const mainnetRoutes = [
   {
     name: "Native zkEVM Layer 2 for Ethereum",
     path: "/",
@@ -61,7 +139,7 @@ const routes = [
     element: <PrivacyPolicy />,
   },
   {
-    name: "Testnet",
+    name: "Resources",
     path: "portal",
     fullPath: "/portal",
     element: <Portal />,
@@ -121,5 +199,7 @@ const routes = [
     element: <RollupScanBlock />,
   },
 ]
+
+const routes = isSepolia ? sepoliaRoutes : mainnetRoutes
 
 export default routes

@@ -46,7 +46,7 @@ const useStyles = makeStyles()(theme => ({
 }))
 
 const TokenSelect = props => {
-  const { options, onChange, value } = props
+  const { options, onChange, value, disabled } = props
   const { classes } = useStyles()
   const [open, setOpen] = useState(false)
   return (
@@ -57,6 +57,7 @@ const TokenSelect = props => {
         classes={{ root: classes.menuItem }}
         value={value}
         key={value.symbol}
+        disabled={disabled}
       >
         <ListItemIcon classes={{ root: classes.listItemIcon }}>
           <Avatar sx={{ width: "2.7rem", height: "2.7rem" }} src={value.logoURI}></Avatar>

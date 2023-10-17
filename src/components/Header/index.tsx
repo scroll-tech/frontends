@@ -38,50 +38,25 @@ export default function Header() {
   const { isLandscape } = useCheckViewport()
 
   const [currentMenu, setCurrentMenu] = useState("")
-  const location = useLocation()
+  const { pathname } = useLocation()
 
   useEffect(() => {
-    const rootMenu = findRootMenu(location.pathname)
+    const rootMenu = findRootMenu(pathname, navigations)
+    setCurrentMenu(rootMenu ?? "")
+  }, [pathname])
 
-    if (rootMenu) {
-      setCurrentMenu(rootMenu)
-    } else {
-      setCurrentMenu("")
-    }
-  }, [location.pathname])
-
-  const findRootMenu = (href: string): string | null => {
-    let rootMenu: string | null = null
-
-    for (let i = 0; i < navigations.length; i++) {
-      const nav = navigations[i]
-      const { children } = nav
-      if (!children) {
-        if (nav.href === href) {
-          rootMenu = nav.key
-          break
+  const findRootMenu = (pathname, menuList: Array<any>) => {
+    for (const menuItem of menuList) {
+      if (menuItem.href && pathname.includes(menuItem.href)) {
+        return menuItem.rootKey || menuItem.key
+      } else if (menuItem.children) {
+        const key = findRootMenu(pathname, menuItem.children)
+        if (key) {
+          return key
         }
-        break
       }
-
-      for (let j = 0; j < children.length; j++) {
-        const child = children[j]
-        const subChildren = child.children
-
-        for (let k = 0; k < subChildren.length; k++) {
-          if (subChildren[k].href === href) {
-            rootMenu = nav.key
-            break
-          }
-        }
-
-        if (rootMenu) break
-      }
-
-      if (rootMenu) break
     }
-
-    return rootMenu
+    return null
   }
 
   if (isLandscape) {
