@@ -137,7 +137,7 @@ const Initail = () => {
       <Stack alignItems="center" className={classes.twoSidesSection}>
         <OrientationToView direction={isLandscape ? "right" : "up"}>
           <Typography sx={{ textAlign: ["center", "center", "left"] }}>
-            Realizing that Ethereum equivalence was the only viable path forward, the trio embarked on a mission to build an open-source, scalable
+            Realizing that Ethereum compatibility was the only viable path forward, the trio embarked on a mission to build an open-source, scalable
             ecosystem leveraging the native capabilities of a zkEVM, while maintaining Ethereum’s L1 security and upholding the community’s commitment
             to decentralization.
           </Typography>

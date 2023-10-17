@@ -54,8 +54,8 @@ const Header = () => {
 
         <TextMarquee />
         <SubTitle variant="Body1" textAlign="center">
-          Scroll seamlessly extends Ethereum’s capabilities through zero knowledge tech and EVM equivalence. The L2 network built by Ethereum devs for
-          Ethereum devs.
+          Scroll seamlessly extends Ethereum’s capabilities through zero knowledge tech and EVM compatibility. The L2 network built by Ethereum devs
+          for Ethereum devs.
         </SubTitle>
         <ButtonContainer>
           <Button href="/bridge" color="primary">
