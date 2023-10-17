@@ -1,9 +1,6 @@
-import { NETWORKS } from "@/constants/networks"
-import { isProduction, requireEnv } from "@/utils"
+import { requireEnv } from "@/utils"
 
-import { EXPLORER_URL } from "./common"
-
-export const TESTNET_NAME = "Scroll " + (isProduction ? "Sepolia" : requireEnv("REACT_APP_SCROLL_ENVIRONMENT"))
+import { DOCUMENTATION_URL, EXPLORER_URL, L1_NAME, L2_NAME } from "./common"
 
 export const SITE_MAP = {
   Home: "/portal",
@@ -12,22 +9,10 @@ export const SITE_MAP = {
   L1Explorer: EXPLORER_URL.L1,
   L2Explorer: EXPLORER_URL.L2,
   RollupExplorer: "/rollupscan",
-  Swap: requireEnv("REACT_APP_L2_SWAP_URI"),
   Architecture: "/blog/architecture",
 }
 
 export const NAVIGATIONS = [
-  {
-    name: "Testnet",
-    description: "Main Testnet Portal",
-    subdomainOrPath: "",
-  },
-  {
-    name: "Guide",
-    description: "",
-    isExternal: true,
-    subdomainOrPath: "guide",
-  },
   {
     name: "Bridge",
     description: "Use our Hop fork to transfer tokens between L1 and L2.",
@@ -41,7 +26,7 @@ export const NAVIGATIONS = [
   },
   {
     name: "L1 Block Explorer",
-    description: `See your L1 transactions on ${NETWORKS[0].name}'s block explorer.`,
+    description: `See your L1 transactions on ${L1_NAME}'s block explorer.`,
     isExternal: true,
     subdomainOrPath: EXPLORER_URL.L1,
   },
@@ -50,6 +35,12 @@ export const NAVIGATIONS = [
     description: "See your L2 transactions on our fork of Blockscout.",
     isExternal: true,
     subdomainOrPath: EXPLORER_URL.L2,
+  },
+  {
+    name: "Documentation",
+    description: `See the full ${L2_NAME} User Guide here.`,
+    isExternal: true,
+    subdomainOrPath: DOCUMENTATION_URL[requireEnv("REACT_APP_SCROLL_ENVIRONMENT")],
   },
 ]
 

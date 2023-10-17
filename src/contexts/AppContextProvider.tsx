@@ -13,7 +13,6 @@ import { BLOCK_NUMBERS, BRIDGE_TOKEN_SYMBOL, USER_TOKEN_LIST } from "@/constants
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useClaim from "@/hooks/useClaim"
 import useTxHistory, { TxHistory } from "@/hooks/useTxHistory"
-import { requireEnv } from "@/utils"
 import { loadState } from "@/utils/localStorage"
 
 type AppContextProps = {
@@ -26,8 +25,6 @@ type AppContextProps = {
 }
 
 const AppContext = createContext<AppContextProps | undefined>(undefined)
-
-const branchName = requireEnv("REACT_APP_SCROLL_ENVIRONMENT").toLocaleLowerCase()
 
 const AppContextProvider = ({ children }: any) => {
   const { provider, walletCurrentAddress, chainId } = useRainbowContext()
@@ -83,7 +80,7 @@ const AppContextProvider = ({ children }: any) => {
     })
   }
 
-  const { data: tokenList } = useSWR(tokenListUrl(branchName), url => {
+  const { data: tokenList } = useSWR(tokenListUrl, url => {
     return scrollRequest(url)
       .then((data: any) => {
         const tokensListTokens = data.tokens
@@ -121,7 +118,7 @@ const AppContextProvider = ({ children }: any) => {
   })
 
   const refreshTokenList = () => {
-    mutate(tokenListUrl(branchName))
+    mutate(tokenListUrl)
   }
 
   useEffect(() => {

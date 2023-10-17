@@ -6,7 +6,7 @@ import Header from "@/components/Header"
 import RainbowProvider from "@/contexts/RainbowProvider"
 import ScrollToTop from "@/hooks/useScrollToTop"
 import NotFound from "@/pages/404"
-import { requireEnv } from "@/utils"
+import { isSepolia, requireEnv } from "@/utils"
 
 import AppWrapper from "./contexts"
 import useMatchedRoute from "./hooks/useMatchedRoute"
@@ -48,7 +48,7 @@ function Homepage() {
               ))}
               <Route path="*" element={<NotFound />} />
             </Routes>
-            <Footer />
+            {isSepolia ? null : <Footer />}
           </ScrollToTop>
         </AppWrapper>
       </RainbowProvider>
