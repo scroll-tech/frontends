@@ -20,12 +20,12 @@ const STEPS = [
   {
     icon: ScalabilityIcon,
     title: "Bridge your ETH",
-    description: `Once you’ve acquired ${tokenName}, you can bridge your ${tokenName} to the ${l2NetworkName} (Layer 2) using our bridge. For a walkthrough, start with the user guide’s setup page.`,
+    description: `You can bridge your ${tokenName} to ${l2NetworkName} using our native bridge or another ecosystem bridge. For a walkthrough, start with the user guide’s setup page.`,
   },
   {
     icon: SecurityIcon,
     title: "Change RPC provider",
-    description: `Configure your Ethereum tools to the ${l2NetworkName}. You’ll just need to point your favorite builder tools at a ${l2NetworkName} RPC Provider.`,
+    description: `To configure your Ethereum tools to Scroll you’ll just need to point your favorite builder tools to a Scroll RPC Provider.`,
   },
   {
     icon: EVMEquivalenceIcon,
@@ -192,7 +192,7 @@ const GetStart = () => {
             dark
             sx={{ mb: ["10rem", "12.5rem"] }}
             title="Getting started with Scroll"
-            content="Scroll is compatible with Ethereum at bytecode-level, meaning everything works right out of the box."
+            content="Scroll is compatible with Ethereum at the bytecode-level, meaning everything works right out of the box."
             action={
               <Button href="https://docs.scroll.io/en/home/" target="_blank" color="primary">
                 Start building

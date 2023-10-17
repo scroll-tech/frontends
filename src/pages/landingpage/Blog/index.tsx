@@ -26,9 +26,9 @@ const STORIES = [
     href: "/blog/scrolls-fresh-coat",
   },
   {
-    title: "Announcing the Scroll Beta Testnet on Sepolia",
-    content: "Learn about the infastructure updates and improvements in our Beta Testnet as we enter the final phase before Mainnet.",
-    href: "/blog/scrollSepolia",
+    title: "A Letter from Scroll: Mainnet is Here!",
+    content: "As we open the doors to Mainnet, our co-founders share what it took to reach this milestone and where we go from here. ",
+    href: null,
   },
   {
     title: "Announcing the 'Contribute to Scroll' Initiative",
@@ -44,12 +44,12 @@ const STORIES = [
   },
   {
     cover: "/imgs/homepage/blog-cover-2.svg",
-    title: "Join Scroll at ETH Warsaw",
-    content: "Scroll will be in Warsaw, Poland, from Aug 31-Sept 3. Come say hi and grab some new swag!",
-    href: "https://www.notion.so/scrollzkp/cc9ae9da3d894a90937e04818542e97d?v=a08e1f4656104aefa7b8d3ac829f1c90",
+    title: "Mainnet Launch Livestream",
+    content: "Hear from Scroll co-founders, engineering and research teams, ecosystem projects, and more. Join us!",
+    href: null,
     imageTitle: (
       <>
-        Scroll at<br></br>ETH Warsaw
+        Mainnet Launch<br></br> Livestream
       </>
     ),
   },
