@@ -66,7 +66,7 @@ const ConfirmDialog = ({ open, setOpen, send }) => {
           control={<Checkbox size="medium" checked={checkbox1Selected} onChange={() => setCheckbox1Selected(!checkbox1Selected)} />}
           label={
             <DialogContentText sx={{ fontSize: "1.4rem", lineHeight: "2rem", cursor: "pointer" }}>
-              I understand that it will take ~1-4 hours before I can claim my funds on {NETWORKS[0].name}
+              I understand that it will take 1 hour before I can claim my funds on {NETWORKS[0].name}
             </DialogContentText>
           }
         />

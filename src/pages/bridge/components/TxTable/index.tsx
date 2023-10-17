@@ -267,7 +267,7 @@ const TxRow = props => {
       return (
         <Tooltip
           placement="top"
-          title="Scroll provers are still finalizing your transaction, this can take up to 4 hours. Once done, you'll be able to claim it here for use on the target network."
+          title="Scroll provers are still finalizing your transaction, this can take up to 1 hour. Once done, you'll be able to claim it here for use on the target network."
         >
           <Box>
             <Button className={classes.claimButton} disabled>
