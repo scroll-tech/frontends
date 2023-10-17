@@ -49,7 +49,7 @@ const STORIES = [
     href: null,
     imageTitle: (
       <>
-        Mainnet Launch<br></br> Livestream
+        Mainnet <br></br>Housewarming<br></br> Party
       </>
     ),
   },
