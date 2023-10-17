@@ -110,8 +110,16 @@ const BalanceInput = props => {
 
   const handleMaxAmount = () => {
     if (balance) {
-      const shouldPayFee = selectedToken.native ? fee : BigInt(0)
-      const maxValue = formatUnits(balance - shouldPayFee, selectedToken.decimals)
+      let maxValue
+      if (selectedToken.native) {
+        // 0.01  0.001
+        maxValue = formatUnits(
+          BigInt(balance) - BigInt(shouldPayFee) - (selectedToken.isL1 ? BigInt(10000000000000000) : BigInt(1000000000000000)),
+          selectedToken.decimals,
+        )
+      } else {
+        maxValue = formatUnits(balance, selectedToken.decimals)
+      }
       onChange(maxValue)
     }
   }

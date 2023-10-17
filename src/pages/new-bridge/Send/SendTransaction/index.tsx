@@ -120,9 +120,9 @@ const SendTransaction = props => {
     } else if (txType === "Deposit" && !sendLoading) {
       return "Deposit Funds"
     } else if (txType === "Withdraw" && sendLoading) {
-      return "Withdraw Funds"
+      return "Withdrawing Funds"
     }
-    return "Withdrawing Funds"
+    return "Withdraw Funds"
   }, [txType, sendLoading])
 
   useEffect(() => {
