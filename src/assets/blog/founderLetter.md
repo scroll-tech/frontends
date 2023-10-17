@@ -36,7 +36,7 @@ Our focus on developer experience and security was not purely theoretical. In th
 
 Our testnets have allowed us to approach the Mainnet release with the attention to detail and caution necessary to ensure its success. This time also gave us the opportunity to more clearly carve out our place in the broader Ethereum ecosystem and to voice our values to the public. We will continue to operate our most recent testnet, [Scroll Sepolia](https://scroll.io/blog/scrollSepolia), as a testing ground for all upgrades to our Mainnet.
 
-A Global Effort
+### A Global Effort
 
 Over the past year, we have actively encouraged developers around the world to experiment on Scroll. By globally supporting grassroots events, hosting developer-centric workshops, and organizing ZK research education, radical and transformative ideas are emerging that we once could only imagine. We aim to continue fostering a wide array of innovative applications while minimizing costs for experimentation. As the community expands, we are heartened by the increasing collaborative contributions that will cater to the next billion users.
 
@@ -44,7 +44,7 @@ Our team is distributed across 26 countries, with a footprint covering every pop
 
 ![GroupPhotos](/imgs/homepage/blog/founderLetter/GroupPhotos.png)
 
-Commitment to Community
+### Commitment to Community
 
 Our mission transcends purely technological advancement; we cherish the spirit of Ethereum just as deeply as its security that we inherit. As our community blossoms, our core values remain steadfast: unwavering commitment to technical rigor, dedication to research and technology, warmth in our interactions, openness to being challenged, and a commitment to credible neutrality. We are shaping the future with our community, seeking to encourage collaboration rather than dominance in a zero-sum game. Our vision for the ecosystem is to be like Ethereum’s "infinite garden" where we can nurture and cultivate as gardeners, allowing for healthy, organic growth.
 
@@ -54,7 +54,7 @@ In this light, we welcome you to begin your journey on our Mainnet.
 
 With updated documentation and our [developer quickstart](https://docs.scroll.io/en/home/), it’s never been easier to use Scroll.
 
-- [For users](https://docs.scroll.io/en/user-guide/)
+- [For users](https://docs.scroll.io/en/getting-started/overview/)
 - [For developers](https://docs.scroll.io/en/developers/)
 
 ### Join Us
