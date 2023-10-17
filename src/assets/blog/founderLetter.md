@@ -2,8 +2,6 @@
 
 ![scroll mainnet live](/imgs/homepage/blog/founderLetter/scroll_mainnet_live.png)
 
-To our community,
-
 Scroll was founded in 2021 with the mission to scale Ethereum. After three successful testnets spanning over 15 months with extensive testing and rigorous security audits, we are thrilled to announce that Scroll Mainnet has officially launched for everyone to use. As we open the doors to Mainnet, we want to take a moment to reflect on our journey thus far.
 
 ### Starting With Research
@@ -56,6 +54,7 @@ With updated documentation and our [developer quickstart](https://docs.scroll.io
 
 - [For users](https://docs.scroll.io/en/getting-started/overview/)
 - [For developers](https://docs.scroll.io/en/developers/)
+- [Participate in our $1M bug bounty program](https://immunefi.com/bounty/scroll/)
 
 ### Join Us
 
