@@ -5,7 +5,7 @@ import { makeStyles } from "tss-react/mui"
 import { Button, InputBase, Skeleton, Stack, Typography } from "@mui/material"
 
 import useCheckViewport from "@/hooks/useCheckViewport"
-import { isProduction, sanitizeNumericalString, toTokenDisplay } from "@/utils"
+import { sanitizeNumericalString, toTokenDisplay } from "@/utils"
 
 import TokenSelect from "./TokenSelect"
 
@@ -114,7 +114,7 @@ const BalanceInput = props => {
       if (selectedToken.native) {
         // 0.01  0.001
         maxValue = formatUnits(
-          BigInt(balance) - BigInt(shouldPayFee) - (isProduction ? BigInt(10000000000000000) : BigInt(1000000000000000)),
+          BigInt(balance) - BigInt(shouldPayFee) - (selectedToken.isL1 ? BigInt(10000000000000000) : BigInt(1000000000000000)),
           selectedToken.decimals,
         )
       } else {
