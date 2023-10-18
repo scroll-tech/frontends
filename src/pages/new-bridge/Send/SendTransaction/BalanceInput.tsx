@@ -1,4 +1,4 @@
-import { formatUnits } from "ethers"
+import { formatUnits, parseUnits } from "ethers"
 import { useMemo } from "react"
 import { makeStyles } from "tss-react/mui"
 
@@ -114,7 +114,7 @@ const BalanceInput = props => {
       if (selectedToken.native) {
         // 0.01  0.001
         maxValue = formatUnits(
-          BigInt(balance) - BigInt(shouldPayFee) - (selectedToken.isL1 ? BigInt(10000000000000000) : BigInt(1000000000000000)),
+          BigInt(balance) - BigInt(shouldPayFee) - (selectedToken.chainId === 1 ? parseUnits("0.01", "ether") : parseUnits("0.001", "ether")),
           selectedToken.decimals,
         )
       } else {
