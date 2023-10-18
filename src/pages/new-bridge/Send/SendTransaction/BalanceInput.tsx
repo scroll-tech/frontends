@@ -101,7 +101,19 @@ const BalanceInput = props => {
 
   const shouldPayFee = useMemo(() => (selectedToken.native ? fee : BigInt(0)), [selectedToken, fee])
 
-  const invalid = useMemo(() => balance <= shouldPayFee, [balance, shouldPayFee])
+  const buffer = useMemo(() => {
+    if (selectedToken.native) {
+      return selectedToken.chainId === 1 ? parseUnits("0.01", "ether") : parseUnits("0.001", "ether")
+    }
+    return BigInt(0)
+  }, [selectedToken])
+
+  const invalid = useMemo(() => {
+    if (balance) {
+      return BigInt(balance) - buffer <= BigInt(shouldPayFee)
+    }
+    return true
+  }, [balance, shouldPayFee, buffer])
 
   const handleChangeAmount = e => {
     const amount = sanitizeNumericalString(e.target.value)
@@ -113,10 +125,7 @@ const BalanceInput = props => {
       let maxValue
       if (selectedToken.native) {
         // 0.01  0.001
-        maxValue = formatUnits(
-          BigInt(balance) - BigInt(shouldPayFee) - (selectedToken.chainId === 1 ? parseUnits("0.01", "ether") : parseUnits("0.001", "ether")),
-          selectedToken.decimals,
-        )
+        maxValue = formatUnits(BigInt(balance) - BigInt(shouldPayFee) - buffer, selectedToken.decimals)
       } else {
         maxValue = formatUnits(balance, selectedToken.decimals)
       }
