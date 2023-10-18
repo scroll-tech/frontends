@@ -46,7 +46,7 @@ const STORIES = [
     cover: "/imgs/homepage/blog-cover-2.svg",
     title: "Mainnet Launch Livestream",
     content: "Hear from Scroll co-founders, engineering and research teams, ecosystem projects, and more. Join us!",
-    href: null,
+    href: "https://launch.scroll.io/",
     imageTitle: (
       <>
         Mainnet <br></br>Housewarming<br></br> Party
