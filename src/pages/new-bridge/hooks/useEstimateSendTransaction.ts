@@ -49,7 +49,7 @@ export function useEstimateSendTransaction(props) {
 
   const estimateSend = async () => {
     const isNetworkConnected = await checkConnectedChainId(fromNetwork.chainId)
-    if (!isNetworkConnected) return
+    if (!isNetworkConnected) return BigInt(0)
     const nativeTokenBalance = await networksAndSigners[fromNetwork.chainId].provider.getBalance(walletCurrentAddress)
     if (!nativeTokenBalance) {
       return BigInt(0)
