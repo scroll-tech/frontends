@@ -18,6 +18,7 @@ const useGasFee = selectedToken => {
 
   const [gasFee, setGasFee] = useState(BigInt(0))
   const [gasLimit, setGasLimit] = useState(BigInt(0))
+  const [maxFeePerGas, setMaxFeePerGas] = useState<bigint | null>(null)
   const [error, setError] = useState("")
 
   const calculateGasFee = async () => {
@@ -33,7 +34,7 @@ const useGasFee = selectedToken => {
     }
     const limit = ((await estimateSend()) * BigInt(120)) / BigInt(100)
     const estimatedGasCost = BigInt(limit) * BigInt(gasPrice || 1e9)
-    return { gasLimit: limit, gasFee: estimatedGasCost }
+    return { gasLimit: limit, gasFee: estimatedGasCost, gasPrice }
   }
 
   useBlockNumber({
@@ -43,16 +44,18 @@ const useGasFee = selectedToken => {
         .then(value => {
           setGasFee(value.gasFee)
           setGasLimit(value.gasLimit)
+          setMaxFeePerGas(value.gasPrice)
           setError("")
         })
         .catch(error => {
           setGasFee(BigInt(0))
           setGasLimit(BigInt(0))
+          setMaxFeePerGas(null)
           setError(error.message)
         })
     },
   })
-  return { gasLimit, gasFee, error, calculateGasFee }
+  return { gasLimit, gasFee, error, calculateGasFee, maxFeePerGas }
 }
 
 export default useGasFee
