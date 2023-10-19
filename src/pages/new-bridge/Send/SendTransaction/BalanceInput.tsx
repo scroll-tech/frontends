@@ -1,4 +1,4 @@
-import { formatUnits, parseUnits } from "ethers"
+import { formatUnits } from "ethers"
 import { useMemo } from "react"
 import { makeStyles } from "tss-react/mui"
 
@@ -7,6 +7,7 @@ import { Button, InputBase, Skeleton, Stack, Typography } from "@mui/material"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import { sanitizeNumericalString, toTokenDisplay } from "@/utils"
 
+import useTransactionBuffer from "../../hooks/useTransactionBuffer"
 import TokenSelect from "./TokenSelect"
 
 const useStyles = makeStyles()(theme => ({
@@ -91,6 +92,7 @@ const BalanceInput = props => {
     ...restProps
   } = props
   const { classes } = useStyles()
+  const transactionBuffer = useTransactionBuffer(selectedToken)
 
   const { isMobile } = useCheckViewport()
 
@@ -101,19 +103,12 @@ const BalanceInput = props => {
 
   const shouldPayFee = useMemo(() => (selectedToken.native ? fee : BigInt(0)), [selectedToken, fee])
 
-  const buffer = useMemo(() => {
-    if (selectedToken.native) {
-      return selectedToken.chainId === 1 ? parseUnits("0.01", "ether") : parseUnits("0.001", "ether")
-    }
-    return BigInt(0)
-  }, [selectedToken])
-
   const invalid = useMemo(() => {
     if (balance) {
-      return BigInt(balance) - buffer <= BigInt(shouldPayFee)
+      return BigInt(balance) - transactionBuffer <= BigInt(shouldPayFee)
     }
     return true
-  }, [balance, shouldPayFee, buffer])
+  }, [balance, shouldPayFee, transactionBuffer])
 
   const handleChangeAmount = e => {
     const amount = sanitizeNumericalString(e.target.value)
@@ -125,7 +120,7 @@ const BalanceInput = props => {
       let maxValue
       if (selectedToken.native) {
         // 0.01  0.001
-        maxValue = formatUnits(BigInt(balance) - BigInt(shouldPayFee) - buffer, selectedToken.decimals)
+        maxValue = formatUnits(BigInt(balance) - BigInt(shouldPayFee) - transactionBuffer, selectedToken.decimals)
       } else {
         maxValue = formatUnits(balance, selectedToken.decimals)
       }
