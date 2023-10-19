@@ -82,7 +82,7 @@ We are committed to continuously improving the security of Scroll Mainnet and pr
 - Scroll is pursuing client diversity. It will make the protocol more resilient to have different full node implementations that can verify state transitions independently. Scroll will collaborate with the community to implement various sequencers.
 - Similar to client diversity, we are researching bringing [multi-provers](https://ethresear.ch/t/2fa-zk-rollups-using-sgx/14462) to Scroll. In addition to the zkEVM prover, we plan to add a second prover, the SGX prover, to attest to state transitions. Prover diversity can make validation more resilient to bugs and soundness gaps in any individual prover. We will share more details in a later blog post.
 
-Be sure check out our updated [documentation site](https://docs.scroll.io/en/home/) and bug bounty program for more comprehensive security information. 
+Be sure check out our updated [documentation site](https://docs.scroll.io/en/home/) and [bug bounty program](https://immunefi.com/bounty/scroll/) for more comprehensive security information. 
 
 Follow us on X at [@Scroll_ZKP](https://twitter.com/scroll_zkp) for the latest Scroll updates. 
 
