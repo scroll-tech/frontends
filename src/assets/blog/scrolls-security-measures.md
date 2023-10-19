@@ -56,9 +56,9 @@ In full transparency about our procedures and findings, we proudly present you w
 
 As an extension of our code audit, we launched our [bug bounty program](https://immunefi.com/bounty/scroll/) on the Immunefi platform. We invite security enthusiasts and experts who are interested in Scroll to scrutinize our code in order to identify any vulnerabilities that might not have been discovered through testing and audits. Depending on the severity of the reported bugs, we offer substantial rewards:
 
-- **Critical**: up to $1,000,000.00
-- **High**: $10,000.00 - $50,000.00
-- **Medium**: $5,000.00
+- **Critical**: up to \$1,000,000.00
+- **High**: \$10,000.00 - \$50,000.00
+- **Medium**: \$5,000.00
 
 The scope of the bug bounty program covers blockchain infrastructure and the smart contracts for bridging and rollup. For a detailed breakdown of bug categories, please refer to our [bug bounty page](https://immunefi.com/bounty/scroll/). 
 
@@ -88,4 +88,4 @@ Follow us on X at [@Scroll_ZKP](https://twitter.com/scroll_zkp) for the latest S
 
 ---
 
-In addition to the scopes listed in the bug bounty program, we also encourage security reviews on our [zkEVM circuits](https://github.com/scroll-tech/zkevm-circuits). For any discoveries, please send your reports to security@scroll.io. We will evaluate the reports and reward valid findings at least $5,000.00 (TBD).
+In addition to the scopes listed in the bug bounty program, we also encourage security reviews on our [zkEVM circuits](https://github.com/scroll-tech/zkevm-circuits). For any discoveries, please send your reports to security@scroll.io. We will evaluate the reports and reward valid findings at least \$5,000.00 (TBD).
