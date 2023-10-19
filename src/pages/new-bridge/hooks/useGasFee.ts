@@ -19,22 +19,25 @@ const useGasFee = selectedToken => {
   const [gasFee, setGasFee] = useState(BigInt(0))
   const [gasLimit, setGasLimit] = useState(BigInt(0))
   const [maxFeePerGas, setMaxFeePerGas] = useState<bigint | null>(null)
+  const [maxPriorityFeePerGas, setMaxPriorityFeePerGas] = useState<bigint | null>(null)
   const [error, setError] = useState("")
 
   const calculateGasFee = async () => {
     let gasPrice
+    let priorityFee
     // scroll not support EIP-1559
 
     if (fromNetwork.isL1) {
-      const { maxFeePerGas } = await getPublicClient({ chainId: fromNetwork.chainId }).estimateFeesPerGas()
+      const { maxFeePerGas, maxPriorityFeePerGas } = await getPublicClient({ chainId: fromNetwork.chainId }).estimateFeesPerGas()
       gasPrice = maxFeePerGas as bigint
+      priorityFee = maxPriorityFeePerGas as bigint
     } else {
       const { gasPrice: legacyGasPrice } = await getPublicClient({ chainId: fromNetwork.chainId }).estimateFeesPerGas({ type: "legacy" })
       gasPrice = legacyGasPrice as bigint
     }
     const limit = ((await estimateSend()) * BigInt(120)) / BigInt(100)
     const estimatedGasCost = BigInt(limit) * BigInt(gasPrice || 1e9)
-    return { gasLimit: limit, gasFee: estimatedGasCost, gasPrice }
+    return { gasLimit: limit, gasFee: estimatedGasCost, gasPrice, maxPriorityFeePerGas: priorityFee }
   }
 
   useBlockNumber({
@@ -45,17 +48,19 @@ const useGasFee = selectedToken => {
           setGasFee(value.gasFee)
           setGasLimit(value.gasLimit)
           setMaxFeePerGas(value.gasPrice)
+          setMaxPriorityFeePerGas(value.maxPriorityFeePerGas)
           setError("")
         })
         .catch(error => {
           setGasFee(BigInt(0))
           setGasLimit(BigInt(0))
           setMaxFeePerGas(null)
+          setMaxPriorityFeePerGas(null)
           setError(error.message)
         })
     },
   })
-  return { gasLimit, gasFee, error, calculateGasFee, maxFeePerGas }
+  return { gasLimit, gasFee, error, calculateGasFee, maxFeePerGas, maxPriorityFeePerGas }
 }
 
 export default useGasFee
