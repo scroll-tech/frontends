@@ -1,6 +1,16 @@
 [
   {
     "type": "Announcement",
+    "id": "scrolls-security-measures",
+    "date": "2023-10-19",
+    "title": "Scroll's Security Measures",
+    "posterTitle": "Scroll's Security Measures",
+    "summary": "At Scroll, security has always been our top priority guiding every decision we make.",
+    "posterImg": "/imgs/homepage/blog/poster_cover_15.png",
+    "ogImg": "/imgs/homepage/blog/poster_cover_15_og.png"
+  },
+  {
+    "type": "Announcement",
     "id": "founderLetter",
     "date": "2023-10-17",
     "title": "A Letter from Scroll: Mainnet is Here!",
