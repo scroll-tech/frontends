@@ -1,3 +1,4 @@
+import { getPublicClient } from "@wagmi/core"
 import { useState } from "react"
 import { useBlockNumber } from "wagmi"
 
@@ -17,15 +18,27 @@ const useGasFee = selectedToken => {
 
   const [gasFee, setGasFee] = useState(BigInt(0))
   const [gasLimit, setGasLimit] = useState(BigInt(0))
+  const [maxFeePerGas, setMaxFeePerGas] = useState<bigint | null>(null)
+  const [maxPriorityFeePerGas, setMaxPriorityFeePerGas] = useState<bigint | null>(null)
   const [error, setError] = useState("")
 
   const calculateGasFee = async () => {
-    const { maxFeePerGas, gasPrice: rawGasPrice } = await networksAndSigners[fromNetwork.chainId].provider.getFeeData()
-    const limit = ((await estimateSend()) * BigInt(120)) / BigInt(100)
+    let gasPrice
+    let priorityFee
     // scroll not support EIP-1559
-    const gasPrice = fromNetwork.isL1 ? maxFeePerGas : rawGasPrice
+
+    if (fromNetwork.isL1) {
+      const { maxFeePerGas, maxPriorityFeePerGas } = await getPublicClient({ chainId: fromNetwork.chainId }).estimateFeesPerGas()
+      gasPrice = maxFeePerGas as bigint
+      priorityFee = maxPriorityFeePerGas as bigint
+    } else {
+      const { gasPrice: legacyGasPrice } = await getPublicClient({ chainId: fromNetwork.chainId }).estimateFeesPerGas({ type: "legacy" })
+      gasPrice = legacyGasPrice as bigint
+      priorityFee = null
+    }
+    const limit = ((await estimateSend()) * BigInt(120)) / BigInt(100)
     const estimatedGasCost = BigInt(limit) * BigInt(gasPrice || 1e9)
-    return { gasLimit: limit, gasFee: estimatedGasCost }
+    return { gasLimit: limit, gasFee: estimatedGasCost, gasPrice, maxPriorityFeePerGas: priorityFee }
   }
 
   useBlockNumber({
@@ -35,16 +48,20 @@ const useGasFee = selectedToken => {
         .then(value => {
           setGasFee(value.gasFee)
           setGasLimit(value.gasLimit)
+          setMaxFeePerGas(value.gasPrice)
+          setMaxPriorityFeePerGas(value.maxPriorityFeePerGas)
           setError("")
         })
         .catch(error => {
           setGasFee(BigInt(0))
           setGasLimit(BigInt(0))
+          setMaxFeePerGas(null)
+          setMaxPriorityFeePerGas(null)
           setError(error.message)
         })
     },
   })
-  return { gasLimit, gasFee, error, calculateGasFee }
+  return { gasLimit, gasFee, error, calculateGasFee, maxFeePerGas, maxPriorityFeePerGas }
 }
 
 export default useGasFee
