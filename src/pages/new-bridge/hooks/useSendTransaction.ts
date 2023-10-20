@@ -8,15 +8,21 @@ import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useBridgeStore from "@/stores/bridgeStore"
 import useTxStore, { TxDirection, TxPosition, isValidOffsetTime } from "@/stores/txStore"
-import { amountToBN, sentryDebug } from "@/utils"
+import { amountToBN, isProduction, sentryDebug } from "@/utils"
 
 import useGasFee from "./useGasFee"
+
+type TxOptions = {
+  value: bigint
+  maxFeePerGas?: bigint | null
+  maxPriorityFeePerGas?: bigint | null
+}
 
 export function useSendTransaction(props) {
   const { amount: fromTokenAmount, selectedToken } = props
   const { walletCurrentAddress } = useRainbowContext()
   const { networksAndSigners, blockNumbers } = useApp()
-  const { gasLimit: txGasLimit } = useGasFee(selectedToken)
+  const { gasLimit: txGasLimit, maxFeePerGas, maxPriorityFeePerGas } = useGasFee(selectedToken)
   const { addTransaction, updateTransaction, addEstimatedTimeMap, updateOrderedTxs, addAbnormalTransactions, removeFrontTransactions } = useTxStore()
   const { fromNetwork, toNetwork, changeTxResult } = useBridgeStore()
   const { gasLimit, gasPrice } = usePriceFeeContext()
@@ -150,16 +156,31 @@ export function useSendTransaction(props) {
 
   const depositETH = async () => {
     const fee = gasPrice * gasLimit
-    return networksAndSigners[CHAIN_ID.L1].gateway["depositETH(uint256,uint256)"](parsedAmount, gasLimit, {
-      value: parsedAmount + fee,
-    })
+    const options: TxOptions = {
+      value: fee,
+    }
+
+    // set maxFeePerGas for testnet
+    if (maxFeePerGas && maxPriorityFeePerGas && !isProduction) {
+      options.maxFeePerGas = maxFeePerGas
+      options.maxPriorityFeePerGas = maxPriorityFeePerGas
+    }
+
+    return networksAndSigners[CHAIN_ID.L1].gateway["depositETH(uint256,uint256)"](parsedAmount, gasLimit, options)
   }
 
   const depositERC20 = async () => {
     const fee = gasPrice * gasLimit
-    return networksAndSigners[CHAIN_ID.L1].gateway["depositERC20(address,uint256,uint256)"](selectedToken.address, parsedAmount, gasLimit, {
+    const options: TxOptions = {
       value: fee,
-    })
+    }
+
+    if (maxFeePerGas && maxPriorityFeePerGas && !isProduction) {
+      options.maxFeePerGas = maxFeePerGas
+      options.maxPriorityFeePerGas = maxPriorityFeePerGas
+    }
+
+    return networksAndSigners[CHAIN_ID.L1].gateway["depositERC20(address,uint256,uint256)"](selectedToken.address, parsedAmount, gasLimit, options)
   }
 
   const withdrawETH = async () => {

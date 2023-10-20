@@ -6,10 +6,13 @@ import { useIsSmartContractWallet } from "@/hooks"
 import useBridgeStore from "@/stores/bridgeStore"
 import { toTokenDisplay } from "@/utils"
 
+import useTransactionBuffer from "./useTransactionBuffer"
+
 function useSufficientBalance(selectedToken: any, amount?: bigint, fee?: bigint, tokenBalance: bigint = BigInt(0)) {
   const { walletCurrentAddress, chainId } = useRainbowContext()
   const { networksAndSigners } = useApp()
   const networksAndSigner = networksAndSigners[chainId as number]
+  const transactionBuffer = useTransactionBuffer(selectedToken)
 
   const { isNetworkCorrect } = useBridgeStore()
   const [, setSufficientBalance] = useState(false)
@@ -28,7 +31,7 @@ function useSufficientBalance(selectedToken: any, amount?: bigint, fee?: bigint,
       let message: string = ""
       let nativeTokenBalance
 
-      const totalFee = fee ?? BigInt(0)
+      const totalFee = fee ? fee + transactionBuffer : BigInt(0)
 
       if (selectedToken.native) {
         const totalCost = amount + totalFee
