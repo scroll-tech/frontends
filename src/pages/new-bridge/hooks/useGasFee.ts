@@ -34,6 +34,7 @@ const useGasFee = selectedToken => {
     } else {
       const { gasPrice: legacyGasPrice } = await getPublicClient({ chainId: fromNetwork.chainId }).estimateFeesPerGas({ type: "legacy" })
       gasPrice = legacyGasPrice as bigint
+      priorityFee = null
     }
     const limit = ((await estimateSend()) * BigInt(120)) / BigInt(100)
     const estimatedGasCost = BigInt(limit) * BigInt(gasPrice || 1e9)
