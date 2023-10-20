@@ -21,9 +21,9 @@ const STORIES = [
     ),
   },
   {
-    title: "Scroll’s Fresh Coat: A Community Touch",
-    content: "Discover our updated website and developer portal, shaped with community insights and collaboration.",
-    href: "/blog/scrolls-fresh-coat",
+    title: "Scroll's Security Measures",
+    content: "At Scroll, security has always been our top priority guiding every decision we make.",
+    href: "/blog/scrolls-security-measures",
   },
   {
     title: "A Letter from Scroll: Mainnet is Here!",
@@ -31,10 +31,9 @@ const STORIES = [
     href: "/blog/founderLetter",
   },
   {
-    title: "Announcing the 'Contribute to Scroll' Initiative",
-    content:
-      "Open-source contributions are one of the most important cornerstones of the digital age, and at Scroll, we firmly believe in the power of community and are thrilled to introduce our initiative.",
-    href: "/blog/contributeToScroll",
+    title: "Scroll’s Fresh Coat: A Community Touch",
+    content: "Discover our updated website and developer portal, shaped with community insights and collaboration.",
+    href: "/blog/scrolls-fresh-coat",
   },
   {
     title: "Scroll’s Architecture Overview",
