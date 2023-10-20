@@ -157,7 +157,7 @@ export function useSendTransaction(props) {
   const depositETH = async () => {
     const fee = gasPrice * gasLimit
     const options: TxOptions = {
-      value: fee,
+      value: parsedAmount + fee,
     }
 
     // set maxFeePerGas for testnet
