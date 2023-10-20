@@ -1,16 +1,16 @@
 # Scroll’s Security Measures
 
-Security is one of the least visible yet most important features for any decentralized protocol.  With so much at stake — especially user funds — it is a priority that should never be compromised, overlooked, or taken for granted. At Scroll, security has always been our top priority guiding every decision we make, and for more than a year, we have gone through rigorous and extensive tests and multiple rounds of external audits to ensure the security of Scroll’s mainnet. 
+Security is one of the least visible yet most important features of any decentralized protocol.  With so much at stake — especially user funds — it is a priority that should never be compromised, overlooked, or taken for granted. At Scroll, security has always been our top priority guiding every decision we make and for more than a year, we have gone through rigorous and extensive tests and multiple rounds of external audits to ensure the security of Scroll Mainnet. 
 
-We’d like to share some of Scroll’s security features, give insight into the work we’ve done to set us on a secure path, and let you know about our new $1M bug bounty program. 
+We’d like to share some of Scroll’s security features, give insight into the work we’ve done to keep us on a secure path, and let you know about our new $1M bug bounty program. 
 
 ## Battle-Tested Cryptographic Libraries
 
-Cryptographic libraries are foundational tools for ensuring data security, user privacy, and data integrity. Using a well-established open-source library Halo2 developed by Electric Coin Co. means Scroll relies on algorithms and protocols that have been thoroughly researched and vetted by experts and stood the test of time. Their widespread scrutiny means that vulnerabilities are detected and fixed very quickly. 
+Cryptographic libraries are foundational tools for ensuring data security, user privacy, and data integrity. Using a well-established open-source library Halo2 developed by Electric Coin Co. means Scroll relies on algorithms and protocols that have been thoroughly researched and vetted by experts and stood the test of time. Their widespread scrutiny means that vulnerabilities can be detected and fixed very quickly. 
 
 ## Open-Source From Day One
 
-Scroll has been developing its zkEVM with the open-source community from Day One. We believe that building in the open with community not only makes for better code, but builds trust and increases security through its transparent and collaborative nature. According to [Linus’s law](https://en.wikipedia.org/wiki/Linus%27s_law): "given enough eyeballs, all bugs are shallow". With many eyes on our codebase, vulnerabilities can be spotted and addressed rapidly. If issues arise, the community can modify or even fork the project. Our approach ensures continuous feedback, making it challenging for attackers to exploit the software, as opposed to proprietary systems that rely on security through obscurity.
+Scroll has been developing its zkEVM with the open-source community from day one. We believe that building in the open with community not only makes for better code, but builds trust and increases security through its transparent and collaborative nature. According to [Linus’s law](https://en.wikipedia.org/wiki/Linus%27s_law): "given enough eyeballs, all bugs are shallow." With many eyes on our codebase, vulnerabilities can be spotted and addressed rapidly. If issues arise, the community can modify or even fork the project. Our approach ensures continuous feedback, making it challenging for attackers to exploit the software, as opposed to proprietary systems that rely on security through obscurity.
 
 ## Comprehensive Code Review and Testing
 
@@ -68,7 +68,7 @@ As our code and system matures, we will expand the scope of the bug bounty progr
 
 It is important to note that Scroll Mainnet has not yet reached its final, completely trustless and decentralized state. In our current stage, we are still riding with [training wheels](https://ethereum-magicians.org/t/proposed-milestones-for-rollups-taking-off-training-wheels/11571) to enhance Scroll’s operational security. Specifically, we have deployed the following mechanisms:
 
-- We introduced the `ScrollOwner` [contract](https://github.com/scroll-tech/scroll/blob/develop/contracts/src/misc/ScrollOwner.sol) that allows a fine-grained control of the Scroll contracts. Under normal situation, it is configured to mandate a 14-day delay for contract upgrades and 1/7/14-day delay for administrative contract methods based on the risks. During an emergency situation, the contract allows Scroll multisig to pull an immediate pause of the bridge and rollup to contain the loss. Scroll multisig currently also has the ability to bypass the delay for an instant upgrade in an emergency event. We will establish a security council and transfer the bypass privilege to its multisig soon.
+- We introduced the `ScrollOwner` [contract](https://github.com/scroll-tech/scroll/blob/develop/contracts/src/misc/ScrollOwner.sol) that allows a fine-grained control of the Scroll contracts. Under normal situations, it is configured to mandate a 14-day delay for contract upgrades and 1/7/14-day delay for administrative contract methods based on the risks. During an emergency situation, the contract allows Scroll multisig to pull an immediate pause of the bridge and rollup to contain the loss. Scroll multisig currently also has the ability to bypass the delay for an instant upgrade in an emergency event. Once the system has matured and proven its stability we will establish a security council and transfer the bypass privilege to its multisig.
 - A bridge monitor has been deployed to keep track of on-chain activities for both L1 and L2, ensuring that every deposit and withdrawal event is reciprocated accurately on its counterpart.
 - We operate a follower node internally that validates the state transitions using the transaction data submitted to the Ethereum.
 
@@ -82,10 +82,6 @@ We are committed to continuously improving the security of Scroll Mainnet and pr
 - Scroll is pursuing client diversity. It will make the protocol more resilient to have different full node implementations that can verify state transitions independently. Scroll will collaborate with the community to implement various sequencers.
 - Similar to client diversity, we are researching bringing [multi-provers](https://ethresear.ch/t/2fa-zk-rollups-using-sgx/14462) to Scroll. In addition to the zkEVM prover, we plan to add a second prover, the SGX prover, to attest to state transitions. Prover diversity can make validation more resilient to bugs and soundness gaps in any individual prover. We will share more details in a later blog post.
 
-Be sure check out our updated [documentation site](https://docs.scroll.io/en/home/) and [bug bounty program](https://immunefi.com/bounty/scroll/) for more comprehensive security information. 
+Be sure check out our updated [documentation site](https://docs.scroll.io/en/home/) and bug bounty program for more comprehensive security information. 
 
 Follow us on X at [@Scroll_ZKP](https://twitter.com/scroll_zkp) for the latest Scroll updates. 
-
----
-
-In addition to the scopes listed in the bug bounty program, we also encourage security reviews on our [zkEVM circuits](https://github.com/scroll-tech/zkevm-circuits). For any discoveries, please send your reports to security@scroll.io. We will evaluate the reports and reward valid findings at least \$5,000.00 (TBD).
