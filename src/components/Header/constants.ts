@@ -116,6 +116,12 @@ const mainnetNavigations = [
             href: "https://status.scroll.io/",
             isExternal: true,
           },
+          {
+            label: "Scroll Origins NFT",
+            key: "developer-nft",
+            rootKey: "develop",
+            href: "/developer-nft",
+          },
         ],
       },
       {

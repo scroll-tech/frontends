@@ -24,7 +24,7 @@ const CheckElegbility = () => {
 
   const handleCheck = async () => {
     setLoading(true)
-    scrollRequest(`${L2_SCAN_URI}api/beta/contracts?creator=${walletCurrentAddress}`, {
+    scrollRequest(`${L2_SCAN_URI}/api/beta/contracts?creator=${walletCurrentAddress}`, {
       headers: {
         Authorization: `Bearer ${UNIFRA_API_KEY}`,
       },
