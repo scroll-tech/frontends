@@ -17,6 +17,7 @@ const useGasFee = selectedToken => {
   })
 
   const [gasFee, setGasFee] = useState(BigInt(0))
+  const [displayedGasFee, setDisplayedGasFee] = useState(BigInt(0))
   const [gasLimit, setGasLimit] = useState(BigInt(0))
   const [maxFeePerGas, setMaxFeePerGas] = useState<bigint | null>(null)
   const [maxPriorityFeePerGas, setMaxPriorityFeePerGas] = useState<bigint | null>(null)
@@ -36,9 +37,19 @@ const useGasFee = selectedToken => {
       gasPrice = legacyGasPrice as bigint
       priorityFee = null
     }
-    const limit = ((await estimateSend()) * BigInt(120)) / BigInt(100)
+
+    const gas = await estimateSend()
+    const limit = (gas * BigInt(120)) / BigInt(100)
+    const displayedGasPrice = await getPublicClient({ chainId: fromNetwork.chainId }).getGasPrice()
     const estimatedGasCost = BigInt(limit) * BigInt(gasPrice || 1e9)
-    return { gasLimit: limit, gasFee: estimatedGasCost, gasPrice, maxPriorityFeePerGas: priorityFee }
+    const displayedEstimatedGasCost = BigInt(gas) * BigInt(displayedGasPrice || 1e9)
+    return {
+      gasLimit: limit,
+      gasFee: estimatedGasCost,
+      gasPrice,
+      maxPriorityFeePerGas: priorityFee,
+      displayedGasFee: displayedEstimatedGasCost,
+    }
   }
 
   useBlockNumber({
@@ -47,6 +58,7 @@ const useGasFee = selectedToken => {
       calculateGasFee()
         .then(value => {
           setGasFee(value.gasFee)
+          setDisplayedGasFee(value.displayedGasFee)
           setGasLimit(value.gasLimit)
           setMaxFeePerGas(value.gasPrice)
           setMaxPriorityFeePerGas(value.maxPriorityFeePerGas)
@@ -54,6 +66,7 @@ const useGasFee = selectedToken => {
         })
         .catch(error => {
           setGasFee(BigInt(0))
+          setDisplayedGasFee(BigInt(0))
           setGasLimit(BigInt(0))
           setMaxFeePerGas(null)
           setMaxPriorityFeePerGas(null)
@@ -61,7 +74,7 @@ const useGasFee = selectedToken => {
         })
     },
   })
-  return { gasLimit, gasFee, error, calculateGasFee, maxFeePerGas, maxPriorityFeePerGas }
+  return { gasLimit, gasFee, error, calculateGasFee, maxFeePerGas, maxPriorityFeePerGas, displayedGasFee }
 }
 
 export default useGasFee

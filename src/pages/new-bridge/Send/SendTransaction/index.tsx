@@ -60,9 +60,16 @@ const SendTransaction = props => {
 
   const invalidAmountMessage = useCheckValidAmount(amount)
   // fee start
-  const { gasFee: estimatedGasCost, error: estimatedGasCostError, calculateGasFee } = useGasFee(selectedToken)
+  const {
+    gasFee: estimatedGasCost,
+    error: estimatedGasCostError,
+    calculateGasFee,
+    displayedGasFee: displayedEstimatedGasCost,
+  } = useGasFee(selectedToken)
 
   const totalFee = useMemo(() => estimatedGasCost + gasLimit * gasPrice, [estimatedGasCost, gasLimit, gasPrice])
+  const displayedTotalFee = useMemo(() => displayedEstimatedGasCost + gasLimit * gasPrice, [displayedEstimatedGasCost, gasLimit, gasPrice])
+
   const relayFee = useMemo(() => gasLimit * gasPrice, [gasLimit, gasPrice])
 
   const { insufficientWarning } = useSufficientBalance(
@@ -228,9 +235,9 @@ const SendTransaction = props => {
         selectedToken={selectedToken}
         amount={amount}
         priceFeeErrorMessage={priceFeeErrorMessage}
-        totalFee={totalFee}
+        totalFee={displayedTotalFee}
         relayFee={relayFee}
-        estimatedGasCost={estimatedGasCost}
+        estimatedGasCost={displayedEstimatedGasCost}
         bridgeWarning={bridgeWarning}
       />
       <Typography
