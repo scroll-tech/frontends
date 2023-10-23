@@ -16,11 +16,7 @@ const useStyles = makeStyles()(theme => ({
     width: "100%",
     justifyContent: "center",
     borderBottom: "1px solid #5b5b5b",
-    // maxWidth: "52rem",
     margin: "0 auto",
-    [theme.breakpoints.down("sm")]: {
-      gap: "2rem",
-    },
   },
   tab: {
     minHeight: "unset",
@@ -67,8 +63,8 @@ const Withdraw = () => {
           textColor="primary"
           classes={{ root: classes.tabList, flexContainer: classes.tabFlex, indicator: classes.indicator }}
         >
-          <Tab label="Step 1: Withdraw from Scroll" value="1" classes={{ root: classes.tab }}></Tab>
-          <Tab label="Step 2: Claim on Ethereum" value="2" classes={{ root: classes.tab }}></Tab>
+          <Tab label="Step 1: Withdraw" value="1" classes={{ root: classes.tab }}></Tab>
+          <Tab label="Step 2: Claim" value="2" classes={{ root: classes.tab }}></Tab>
         </TabList>
         <TabPanel value="1" classes={{ root: classes.tabPanel }}>
           <SendTransaction></SendTransaction>
