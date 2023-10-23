@@ -9,13 +9,13 @@ import useTxStore from "@/stores/txStore"
 import TxTable from "../components/TxTable"
 
 const TableBox = styled(Box)(({ theme }) => ({
-  // height: "36.5rem",
   borderRadius: "2rem",
-  // backgroundColor: theme.palette.background.default,
-  // width: "100%",
-  // maxWidth: "70rem",
+  padding: "0 3rem 3rem",
   "& *": {
     fontFamily: "var(--developer-page-font-family) !important",
+  },
+  [theme.breakpoints.down("sm")]: {
+    padding: "0 2rem 2rem",
   },
 }))
 
@@ -31,6 +31,7 @@ const TransactionsList = (props: any) => {
     refreshPageTransactions(currentPage)
   }
 
+  // TODO: may need an image for emply list
   return (
     <TableBox>
       {pageTransactions.length && chainId ? (
@@ -44,7 +45,7 @@ const TransactionsList = (props: any) => {
           }}
         />
       ) : (
-        <Typography variant="body1" color="textSecondary" sx={{ paddingTop: "2rem", color: "#C58D49" }} align="center">
+        <Typography variant="body1" color="textSecondary" sx={{ height: "20rem", lineHeight: "20rem", color: "#C58D49" }} align="center">
           Your transactions will appear here...
         </Typography>
       )}

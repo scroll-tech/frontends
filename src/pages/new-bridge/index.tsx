@@ -44,8 +44,23 @@ const Bridge = () => {
             maxWidth: ["100% !important"],
           }}
         >
-          <Stack direction="row" sx={{ mb: ["3rem", "5rem"], width: "64rem" }} spacing="2rem" justifyContent="space-between" alignItems="center">
-            <Typography sx={{ fontSize: ["4rem", "4.8rem"], fontWeight: 600, width: "100%", whiteSpace: "nowrap" }}>
+          <Stack
+            direction="row"
+            sx={{ mb: ["3rem", "5rem"], width: "64rem", maxWidth: "100%" }}
+            spacing="2rem"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Typography
+              sx={{
+                fontSize: ["4rem", "4.8rem"],
+                fontWeight: 600,
+                width: "100%",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
               {isProduction ? "" : `${requireEnv("REACT_APP_SCROLL_ENVIRONMENT")} Testnet`} Bridge
             </Typography>
             <HistoryButton></HistoryButton>

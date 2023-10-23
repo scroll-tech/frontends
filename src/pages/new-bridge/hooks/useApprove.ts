@@ -35,6 +35,7 @@ const useApprove = (fromNetwork, selectedToken, amount) => {
       const { signer } = networksAndSigners[chainId as number]
       return new ethers.Contract(address, L1_erc20ABI, signer)
     }
+
     return null
   }, [selectedToken, networksAndSigners[chainId as number]])
 
