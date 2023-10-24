@@ -1,5 +1,5 @@
 import dayjs from "dayjs"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { Collapse, Stack } from "@mui/material"
 
@@ -21,6 +21,12 @@ const CheckElegbility = () => {
 
   const [isEligible, setIsEligible] = useState(0)
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if (walletCurrentAddress) {
+      setIsEligible(0)
+    }
+  }, [walletCurrentAddress])
 
   const handleCheck = async () => {
     setLoading(true)
