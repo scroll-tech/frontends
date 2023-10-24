@@ -16,7 +16,7 @@ import { navigations } from "./constants"
 import useCheckNoBg from "./useCheckNoBg"
 import useCheckTheme from "./useCheckTheme"
 
-const StyledBox = styled<any>(Stack)(({ theme, transparent, dark }) => ({
+const StyledBox = styled<any>(Stack, { shouldForwardProp: prop => prop !== "dark" })(({ theme, transparent, dark }) => ({
   position: "sticky",
   top: 0,
   width: "100%",
@@ -24,7 +24,7 @@ const StyledBox = styled<any>(Stack)(({ theme, transparent, dark }) => ({
   backgroundColor: transparent ? "transparent" : dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.light,
 }))
 
-const StyledPopper = styled<any>(Popper)(({ theme, transparent, dark }) => ({
+const StyledPopper = styled<any>(Popper, { shouldForwardProp: prop => prop !== "dark" })(({ theme, transparent, dark }) => ({
   backgroundColor: transparent ? "transparent" : dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.light,
   padding: "0 2rem 1rem",
   marginLeft: "-2rem !important",
@@ -36,7 +36,7 @@ const HeaderContainer = styled(Box)(({ theme }) => ({
   alignItems: "center",
 }))
 
-const MenuLinkButton = styled<any>(Link)(({ theme, dark }) => ({
+const MenuLinkButton = styled<any>(Link, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   fontSize: "1.8rem",
   fontWeight: 400,
   paddingLeft: "25px",
@@ -51,7 +51,7 @@ const MenuLinkButton = styled<any>(Link)(({ theme, dark }) => ({
   },
 }))
 
-const ExternalLink = styled<any>("p")(({ theme, dark }) => ({
+const ExternalLink = styled<any>("p", { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   fontWeight: 400,
   fontSize: "1.8rem",
   height: "2.1rem",
@@ -65,7 +65,7 @@ const ExternalLink = styled<any>("p")(({ theme, dark }) => ({
   },
 }))
 
-const LinkStyledButton = styled<any>(NavLink)(({ theme, dark }) => ({
+const LinkStyledButton = styled<any>(NavLink, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   fontSize: "1.8rem",
   fontWeight: 400,
   marginLeft: "0.5rem",
@@ -82,7 +82,7 @@ const LinkStyledButton = styled<any>(NavLink)(({ theme, dark }) => ({
   },
 }))
 
-const SubMenuButton = styled<any>(Stack)(({ theme, dark }) => ({
+const SubMenuButton = styled<any>(Stack, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   fontSize: "1.8rem",
   fontWeight: 400,
   marginLeft: "0.5rem",
@@ -110,7 +110,7 @@ const SubMenuList = styled(Box)(({ theme }) => ({
   overflow: "hidden",
 }))
 
-const SectionList = styled<any>(Box)(({ theme, dark }) => ({
+const SectionList = styled<any>(Box, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   display: "flex",
   flexDirection: "column",
   width: "100%",
@@ -126,7 +126,7 @@ const SectionList = styled<any>(Box)(({ theme, dark }) => ({
   },
 }))
 
-const LinkButton = styled<any>(Link)(({ theme, dark }) => ({
+const LinkButton = styled<any>(Link, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   "& p": {
     lineHeight: "2.9rem",
     height: "2.9rem",
@@ -140,7 +140,7 @@ const LinkButton = styled<any>(Link)(({ theme, dark }) => ({
   },
 }))
 
-const LinkStyledSubButton = styled<any>(NavLink)(({ theme, dark }) => ({
+const LinkStyledSubButton = styled<any>(NavLink, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   lineHeight: "2.9rem",
   height: "2.9rem",
   fontSize: "1.8rem",
@@ -224,7 +224,7 @@ const App = ({ currentMenu }) => {
           <span>{item.label}</span>
           <SvgIcon
             className={cx("expand-more", item.key === checked && "expand-more-reverse")}
-            sx={{ width: "auto", height: "auto" }}
+            sx={{ fontSize: "0.9rem" }}
             component={TriangleDownSvg}
             inheritViewBox
           ></SvgIcon>

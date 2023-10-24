@@ -1,3 +1,4 @@
+import { Fragment } from "react"
 import { makeStyles } from "tss-react/mui"
 
 import { Box, Divider, Stack, Typography } from "@mui/material"
@@ -65,12 +66,12 @@ const Stage = () => {
       </Typography>
       <Stack direction="row" justifyContent="center" alignItems="center" sx={{ gap: ["2rem", "1.6rem", "3.2rem"] }}>
         {DEVELOPER_NFT_STEPS.map(({ date, title }, index) => (
-          <>
-            <Statistic key={title} size="small" sx={{ width: ["12rem", "28rem", "41.8rem"] }} title={formatDate(date)} subTitle={title}></Statistic>
+          <Fragment key={title}>
+            <Statistic size="small" sx={{ width: ["12rem", "28rem", "41.8rem"] }} title={formatDate(date)} subTitle={title}></Statistic>
             {index < DEVELOPER_NFT_STEPS.length - 1 && (
               <Divider sx={{ width: ["4rem", "6rem", "12rem"], borderWidth: 2, borderColor: theme => theme.palette.primary.contrastText }}></Divider>
             )}
-          </>
+          </Fragment>
         ))}
       </Stack>
       <Stack direction="column">
@@ -80,7 +81,7 @@ const Stage = () => {
         </Typography>
         <Box className={classes.grid}>
           {NFT_STAGES.map(item => (
-            <Stack direction="column" spacing="0.8rem">
+            <Stack key={item.title} direction="column" spacing="0.8rem">
               <Typography sx={{ fontSize: ["2rem", "2.4rem"], lineHeight: "3.2rem" }}>{item.title}</Typography>
               <Typography sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: ["2.4rem", "3.2rem"] }}>
                 Deploy to Scroll Mainnet within Day {item.duration} of Genesis Block:

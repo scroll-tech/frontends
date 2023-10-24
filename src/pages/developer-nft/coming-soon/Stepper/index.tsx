@@ -53,9 +53,7 @@ const PhraseStepIcon = props => {
   const { completed, active } = props
   return (
     <StepIcon
-      icon={
-        <SvgIcon sx={{ width: "auto", height: "auto" }} component={completed || active ? StepCompletedSvg : StepDefaultSvg} inheritViewBox></SvgIcon>
-      }
+      icon={<SvgIcon sx={{ fontSize: "2rem" }} component={completed || active ? StepCompletedSvg : StepDefaultSvg} inheritViewBox></SvgIcon>}
     ></StepIcon>
   )
 }
