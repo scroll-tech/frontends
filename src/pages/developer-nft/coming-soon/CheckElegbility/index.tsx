@@ -1,13 +1,12 @@
-import dayjs from "dayjs"
 import { useEffect, useState } from "react"
 
 import { Collapse, Stack } from "@mui/material"
 
 import Button from "@/components/Button"
-import { DEVELOPER_NFT_PHRASES } from "@/constants"
+import { MintableDate } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
-import { requireEnv } from "@/utils"
+import { formatDate, requireEnv } from "@/utils"
 
 import Alert from "../../components/Alert"
 
@@ -56,11 +55,7 @@ const CheckElegbility = () => {
     } else if (isEligible === -2) {
       return <Alert severity="error">Network error. Please try again later</Alert>
     } else if (isEligible === 1) {
-      return (
-        <Alert severity="success">
-          You are eligible to mint the NFT. Come back on {dayjs(DEVELOPER_NFT_PHRASES.Ends).format("MMM D, YYYY")} to claim it.
-        </Alert>
-      )
+      return <Alert severity="success">You are eligible to mint the NFT. Come back on {formatDate(MintableDate)} to claim it.</Alert>
     }
     return null
   }

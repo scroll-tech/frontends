@@ -8,6 +8,7 @@ import { styled } from "@mui/system"
 import { FadeInUp } from "@/components/Animation"
 import Button from "@/components/Button"
 import Link from "@/components/Link"
+import { SCROLL_ORIGINS_NFT } from "@/constants"
 
 import TextMarquee from "./components/TextMarquee"
 
@@ -106,7 +107,7 @@ const Header = () => {
               <Typography sx={{ fontSize: ["1.6rem", "1.8rem"], lineHeight: "2.4rem" }}>
                 Mint your{" "}
                 <Link href="/developer-nft" sx={{ fontSize: "inherit", color: "inherit" }} underline="always">
-                  Scroll Origins
+                  {SCROLL_ORIGINS_NFT}
                 </Link>
               </Typography>
             }

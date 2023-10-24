@@ -2,7 +2,7 @@ import { makeStyles } from "tss-react/mui"
 
 import { Box, Divider, Stack, Typography } from "@mui/material"
 
-import { DEVELOPER_NFT_STEPS, EndDate, Stage2StartDate, Stage3StartDate, StartDate } from "@/constants"
+import { DEVELOPER_NFT_STEPS, EndDate, MintableDate, Stage2StartDate, Stage3StartDate, StartDate } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import { formatDate } from "@/utils"
 
@@ -37,10 +37,11 @@ const useStyles = makeStyles()(theme => ({
   },
   specialStatement: {
     textAlign: "center",
+    width: "97.8rem",
+    alignSelf: "center",
 
-    "@media (min-width: 1030px)": {
-      whiteSpace: "nowrap",
-      alignSelf: "center",
+    [theme.breakpoints.down("lg")]: {
+      width: "100%",
     },
   },
 }))
@@ -59,13 +60,14 @@ const Stage = () => {
         >
           {EndDate.diff(StartDate, "day") + 1} days
         </Typography>{" "}
-        of Genesis Block. Your NFT will be available for minting at the end of the program.
+        of Genesis Block. Your NFT will be available for minting on{" "}
+        <span style={{ whiteSpace: "nowrap" }}>{formatDate(MintableDate, { withTime: true })}</span>
       </Typography>
       <Stack direction="row" justifyContent="center" alignItems="center" sx={{ gap: ["2rem", "1.6rem", "3.2rem"] }}>
-        {DEVELOPER_NFT_STEPS.slice(-2).map(({ date, title }, index) => (
+        {DEVELOPER_NFT_STEPS.map(({ date, title }, index) => (
           <>
             <Statistic key={title} size="small" sx={{ width: ["12rem", "28rem", "41.8rem"] }} title={formatDate(date)} subTitle={title}></Statistic>
-            {index < DEVELOPER_NFT_STEPS.slice(-2).length - 1 && (
+            {index < DEVELOPER_NFT_STEPS.length - 1 && (
               <Divider sx={{ width: ["4rem", "6rem", "12rem"], borderWidth: 2, borderColor: theme => theme.palette.primary.contrastText }}></Divider>
             )}
           </>
@@ -73,7 +75,8 @@ const Stage = () => {
       </Stack>
       <Stack direction="column">
         <Typography className={classes.specialStatement} sx={{ fontSize: ["2.4rem", "3.2rem"], lineHeight: ["3.2rem", "4.8rem"] }}>
-          There will be different stages corresponding to the time of deployment:
+          There will be different stages corresponding to the time of deployment. We will also distribute some rare NFTs with mysterious rules
+          applied.
         </Typography>
         <Box className={classes.grid}>
           {NFT_STAGES.map(item => (

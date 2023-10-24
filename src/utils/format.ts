@@ -130,7 +130,7 @@ export const formatDate = (date, options: { needSub?: boolean; withTime?: boolea
     finalDate = date.subtract(1, "ms")
   }
   if (withTime) {
-    return finalDate.format("MMM D,YYYY h:mmA")
+    return finalDate.format("MMM D, YYYY h:mmA")
   }
-  return finalDate.format("MMM D,YYYY")
+  return finalDate.format("MMM D, YYYY")
 }

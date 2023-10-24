@@ -4,7 +4,7 @@ import Countdown, { zeroPad } from "react-countdown"
 import { Stack, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
-import { DEVELOPER_NFT_PHRASES } from "@/constants"
+import { DEVELOPER_NFT_PHRASES, SCROLL_ORIGINS_NFT } from "@/constants"
 import useNFTStore from "@/stores/nftStore"
 
 import NFTCard from "../../components/NFTCard"
@@ -54,7 +54,7 @@ const Header = () => {
           width: ["26rem", "31.2rem"],
         }}
       ></NFTCard>
-      <Typography sx={{ fontSize: ["4rem", "7.8rem"], lineHeight: ["5.6rem", "8.5rem"], fontWeight: 600 }}>Scroll Origins NFT</Typography>
+      <Typography sx={{ fontSize: ["4rem", "7.8rem"], lineHeight: ["5.6rem", "8.5rem"], fontWeight: 600 }}>{SCROLL_ORIGINS_NFT}</Typography>
       <Typography sx={{ fontSize: ["1.6rem", "2.4rem"], fontWeight: 600 }}>Program ends in</Typography>
       <Countdown date={DEVELOPER_NFT_PHRASES.Ends} renderer={renderCountDown}></Countdown>
     </Stack>
