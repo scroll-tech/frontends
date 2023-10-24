@@ -41,19 +41,20 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
     fontSize: "1.6rem",
     marginLeft: "0.8rem",
     color: dark ? theme.palette.primary.contrastText : "#473835",
+    willChange: "transform",
+    transition: "transform .3s ease-in-out",
   },
   reverseEndIcon: {
-    transform: "rotateX(180deg)",
+    transform: "rotate(180deg)",
   },
   paper: {
-    borderRadius: "0 0 0.5rem 0.5rem",
+    borderRadius: "0.5rem",
     border: dark ? `1px solid ${theme.palette.primary.contrastText}` : "none",
     backgroundColor: dark ? "unset" : theme.palette.themeBackground.normal,
-    borderTop: "none",
-    marginTop: -1.5,
+    marginTop: "0.5rem",
   },
   list: {
-    padding: "0.4rem 0 0",
+    padding: 0,
   },
   listItem: {
     height: "4rem",
@@ -127,7 +128,7 @@ const WalletDropdown = props => {
   return (
     <>
       {chainId ? (
-        <ButtonBase classes={{ root: cx(classes.button, open && classes.openButton) }} sx={sx} onClick={handleClick}>
+        <ButtonBase classes={{ root: classes.button }} sx={sx} onClick={handleClick}>
           {truncateAddress(walletCurrentAddress as string)}
           <SvgIcon className={cx(classes.endIcon, open && classes.reverseEndIcon)} component={DownTriangleSvg} inheritViewBox></SvgIcon>
         </ButtonBase>

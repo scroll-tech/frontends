@@ -21,9 +21,11 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
   endIcon: {
     fontSize: "1.6rem",
     marginLeft: "0.8rem",
+    willChange: "transform",
+    transition: "transform .3s ease-in-out",
   },
   reverseEndIcon: {
-    transform: "rotateX(180deg)",
+    transform: "rotate(180deg)",
   },
   tooltip: {
     color: "#756A67",
@@ -43,7 +45,7 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
     backgroundColor: dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.normal,
   },
   list: {
-    padding: "0.8rem 0",
+    padding: 0,
   },
   listItem: {
     padding: "0.8rem 1.2rem",
