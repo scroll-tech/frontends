@@ -39,6 +39,7 @@ const Connector = props => {
         setProgress(100)
       }
     }
+    calculateProgress()
     const timer = setInterval(calculateProgress, 1e5)
     return () => {
       clearInterval(timer)
