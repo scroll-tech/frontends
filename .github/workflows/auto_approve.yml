@@ -4,7 +4,7 @@ name: Auto Approve
 on:
   pull_request:
     branches:
-      - staging
+      - sepolia
 jobs:
   build:
     if: |
