@@ -18,7 +18,6 @@ import { amountToBN, switchNetwork } from "@/utils"
 
 import useApprove from "../../hooks/useApprove"
 // import useBalance from "../../hooks/useBalance"
-// import useCheckValidAmount from "../../hooks/useCheckValidAmount"
 import useGasFee from "../../hooks/useGasFee"
 import { useSendTransaction } from "../../hooks/useSendTransaction"
 import useSufficientBalance from "../../hooks/useSufficientBalance"
