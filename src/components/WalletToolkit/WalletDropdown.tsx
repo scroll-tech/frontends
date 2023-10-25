@@ -107,18 +107,14 @@ const WalletDropdown = props => {
 
   const operations = useMemo(
     () => [
-      ...(pathname === "/bridge"
-        ? [
-            {
-              icon: HistorySvg,
-              label: "Transaction history",
-              action: () => {
-                changeHistoryVisible(true)
-                handleClose()
-              },
-            },
-          ]
-        : []),
+      {
+        icon: HistorySvg,
+        label: "Transaction history",
+        action: () => {
+          changeHistoryVisible(true)
+          handleClose()
+        },
+      },
       {
         icon: BlockSvg,
         label: "Block explorer",

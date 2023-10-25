@@ -20,7 +20,7 @@ import {
 
 import Link from "@/components/Link"
 import { NETWORKS, TX_STATUS } from "@/constants"
-import { useApp } from "@/contexts/AppContextProvider"
+import { useBrigeContext } from "@/contexts/BridgeContextProvider"
 import useTokenInfo from "@/hooks/useTokenInfo"
 import { generateExploreLink, toTokenDisplay, truncateHash } from "@/utils"
 
@@ -193,7 +193,7 @@ const TxTable = (props: any) => {
 const TxRow = props => {
   const { tx, finalizedIndex } = props
 
-  const { blockNumbers } = useApp()
+  const { blockNumbers } = useBrigeContext()
 
   const txStatus = useCallback(
     (blockNumber, assumedStatus, isL1, to) => {

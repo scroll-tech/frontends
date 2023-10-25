@@ -5,7 +5,7 @@ import { useBlockNumber } from "wagmi"
 
 import { CHAIN_ID, ETH_SYMBOL } from "@/constants"
 import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
-import { useApp } from "@/contexts/AppContextProvider"
+import { useBrigeContext } from "@/contexts/BridgeContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { requireEnv } from "@/utils"
 
@@ -98,7 +98,7 @@ export const usePriceFeeContext = () => {
 export const PriceFeeProvider = ({ children }) => {
   const { walletCurrentAddress, chainId } = useRainbowContext()
   const [tokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
-  const { networksAndSigners, tokenList } = useApp()
+  const { networksAndSigners, tokenList } = useBrigeContext()
   const [gasLimit, setGasLimit] = useState(BigInt(0))
   const [gasPrice, setGasPrice] = useState(BigInt(0))
   const [errorMessage, setErrorMessage] = useState("")

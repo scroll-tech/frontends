@@ -3,17 +3,17 @@ import { useEffect } from "react"
 
 import { Stack, Typography } from "@mui/material"
 
+import GlobalComponents from "@/components/GlobalComponents"
 import GlobalWarning from "@/components/GlobalWarning"
 import SectionWrapper from "@/components/SectionWrapper"
 import { NETWORKS } from "@/constants"
-import AppProvider from "@/contexts/AppContextProvider"
+import BridgeContextProvider from "@/contexts/BridgeContextProvider"
 import { PriceFeeProvider } from "@/contexts/PriceFeeProvider"
 import useBridgeStore from "@/stores/bridgeStore"
 import { isProduction, requireEnv } from "@/utils"
 
 import FAQsLink from "./FAQ/link"
 import Send from "./Send"
-import TxHistoryDialog from "./TxHistoryDialog"
 import HistoryButton from "./components/HistoryButton"
 
 const Bridge = () => {
@@ -30,9 +30,10 @@ const Bridge = () => {
   }, [txType])
 
   return (
-    <AppProvider>
+    <BridgeContextProvider>
       <PriceFeeProvider>
         <GlobalWarning></GlobalWarning>
+        <GlobalComponents></GlobalComponents>
         <SectionWrapper
           sx={{
             pt: "8.4rem",
@@ -66,11 +67,10 @@ const Bridge = () => {
             <HistoryButton></HistoryButton>
           </Stack>
           <Send></Send>
-          <TxHistoryDialog></TxHistoryDialog>
           <FAQsLink />
         </SectionWrapper>
       </PriceFeeProvider>
-    </AppProvider>
+    </BridgeContextProvider>
   )
 }
 
