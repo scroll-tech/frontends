@@ -2,13 +2,13 @@ import { getPublicClient } from "@wagmi/core"
 import { useState } from "react"
 import { useBlockNumber } from "wagmi"
 
-import { useApp } from "@/contexts/AppContextProvider"
+import { useBrigeContext } from "@/contexts/BridgeContextProvider"
 import useBridgeStore from "@/stores/bridgeStore"
 
 import { useEstimateSendTransaction } from "./useEstimateSendTransaction"
 
 const useGasFee = (selectedToken, needApproval) => {
-  const { networksAndSigners } = useApp()
+  const { networksAndSigners } = useBrigeContext()
   const { fromNetwork, toNetwork } = useBridgeStore()
   const { estimateSend } = useEstimateSendTransaction({
     fromNetwork,

@@ -28,7 +28,7 @@ import L1ScrollMessenger from "@/assets/abis/L1ScrollMessenger.json"
 import Link from "@/components/Link"
 import { TX_STATUS } from "@/constants"
 import { CHAIN_ID } from "@/constants/common"
-import { useApp } from "@/contexts/AppContextProvider"
+import { useBrigeContext } from "@/contexts/BridgeContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useTokenInfo from "@/hooks/useTokenInfo"
 import useTxStore from "@/stores/txStore"
@@ -159,14 +159,14 @@ const TxTable = (props: any) => {
 const TxRow = props => {
   const { tx } = props
   const { estimatedTimeMap } = useTxStore()
-  const { networksAndSigners } = useApp()
+  const { networksAndSigners } = useBrigeContext()
   const { chainId } = useRainbowContext()
   const [claimButtonLabel, setClaimButtonLabel] = useState("Claim")
   const { classes, cx } = useStyles()
 
   const [loading, setLoading] = useState(false)
 
-  const { blockNumbers } = useApp()
+  const { blockNumbers } = useBrigeContext()
 
   const txStatus = useCallback(
     (blockNumber, assumedStatus, isL1, to) => {

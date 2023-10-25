@@ -11,7 +11,7 @@ import L1ScrollMessenger from "@/assets/abis/L1ScrollMessenger.json"
 import { ReactComponent as InfoSvg } from "@/assets/svgs/refactor/bridge-info.svg"
 import { TX_STATUS } from "@/constants"
 import { CHAIN_ID } from "@/constants/common"
-import { useApp } from "@/contexts/AppContextProvider"
+import { useBrigeContext } from "@/contexts/BridgeContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { ClaimStatus } from "@/stores/claimStore"
 import useTxStore, { TxPosition, isValidOffsetTime } from "@/stores/txStore"
@@ -67,7 +67,7 @@ const StyledChip = styled(Chip)(({ theme }) => ({
 
 const ClaimButton = props => {
   const { tx, txStatus, loading, changeLoading } = props
-  const { networksAndSigners, blockNumbers } = useApp()
+  const { networksAndSigners, blockNumbers } = useBrigeContext()
   const { chainId, walletCurrentAddress } = useRainbowContext()
   const [claimButtonLabel, setClaimButtonLabel] = useState("Claim")
   const { updateTransaction, addEstimatedTimeMap, updateOrderedTxs, removeFrontTransactions } = useTxStore()

@@ -1,7 +1,7 @@
 import createCache from "@emotion/cache"
 import { QueryClient, QueryClientProvider } from "react-query"
 
-import AppProvider from "@/contexts/AppContextProvider"
+import BridgeContextProvider from "@/contexts/BridgeContextProvider"
 
 import Content from "./Content"
 import FAQ from "./FAQ"
@@ -31,11 +31,11 @@ const queryClient = new QueryClient({
 const Bridge = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <AppProvider>
+      <BridgeContextProvider>
         <Header />
         <Content />
         <FAQ />
-      </AppProvider>
+      </BridgeContextProvider>
     </QueryClientProvider>
   )
 }

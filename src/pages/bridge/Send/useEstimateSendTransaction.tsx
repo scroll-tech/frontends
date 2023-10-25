@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react"
 
 import { CHAIN_ID } from "@/constants"
-import { useApp } from "@/contexts/AppContextProvider"
+import { useBrigeContext } from "@/contexts/BridgeContextProvider"
 import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 
 export function useEstimateSendTransaction(props) {
   const { fromNetwork, toNetwork, selectedToken } = props
 
-  const { networksAndSigners } = useApp()
+  const { networksAndSigners } = useBrigeContext()
 
   const { checkConnectedChainId } = useRainbowContext()
   const { gasLimit, gasPrice } = usePriceFeeContext()

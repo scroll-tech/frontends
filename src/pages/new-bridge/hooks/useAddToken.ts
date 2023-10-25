@@ -6,7 +6,7 @@ import L1_erc20ABI from "@/assets/abis/L1_erc20ABI.json"
 import L2_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L2_GATEWAY_ROUTER_PROXY_ADDR.json"
 import { CHAIN_ID, GATEWAY_ROUTE_PROXY_ADDR } from "@/constants"
 import { USER_TOKEN_LIST } from "@/constants/storageKey"
-import { useApp } from "@/contexts/AppContextProvider"
+import { useBrigeContext } from "@/contexts/BridgeContextProvider"
 import { loadState, saveState } from "@/utils/localStorage"
 
 export enum TOKEN_LEVEL {
@@ -16,7 +16,7 @@ export enum TOKEN_LEVEL {
 }
 
 const useAddToken = () => {
-  const { networksAndSigners, refreshTokenList } = useApp()
+  const { networksAndSigners, refreshTokenList } = useBrigeContext()
   const [isLoading, setIsLoading] = useState(false)
 
   const getProvider = chainId => networksAndSigners[chainId].provider

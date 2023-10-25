@@ -4,7 +4,7 @@ import { makeStyles } from "tss-react/mui"
 import { Box, CircularProgress, Typography } from "@mui/material"
 
 import { BRIDGE_PAGE_SIZE } from "@/constants"
-import { useApp } from "@/contexts/AppContextProvider"
+import { useBrigeContext } from "@/contexts/BridgeContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import ClaimTable from "@/pages/new-bridge/components/ClaimTable"
 import useBridgeStore from "@/stores/bridgeStore"
@@ -38,7 +38,7 @@ const Claim = (props: any) => {
   const { walletCurrentAddress, chainId } = useRainbowContext()
   const {
     claim: { refreshPageTransactions },
-  } = useApp()
+  } = useBrigeContext()
 
   const { page, total, pageTransactions, loading, targetTransaction, orderedTxDB, setTargetTransaction, clearTransactions } = useClaimStore()
   const { historyVisible } = useBridgeStore()

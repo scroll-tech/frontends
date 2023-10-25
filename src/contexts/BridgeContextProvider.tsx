@@ -15,7 +15,7 @@ import useClaim from "@/hooks/useClaim"
 import useTxHistory, { TxHistory } from "@/hooks/useTxHistory"
 import { loadState } from "@/utils/localStorage"
 
-type AppContextProps = {
+type BridgeContextProps = {
   networksAndSigners: any
   txHistory: TxHistory
   blockNumbers: number[]
@@ -24,9 +24,9 @@ type AppContextProps = {
   refreshTokenList: () => void
 }
 
-const AppContext = createContext<AppContextProps | undefined>(undefined)
+const BridgeContext = createContext<BridgeContextProps | undefined>(undefined)
 
-const AppContextProvider = ({ children }: any) => {
+const BridgeContextProvider = ({ children }: any) => {
   const { provider, walletCurrentAddress, chainId } = useRainbowContext()
   const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
   const [blockNumbers] = useStorage(localStorage, BLOCK_NUMBERS, [-1, -1])
@@ -139,7 +139,7 @@ const AppContextProvider = ({ children }: any) => {
   }
 
   return (
-    <AppContext.Provider
+    <BridgeContext.Provider
       value={{
         networksAndSigners,
         txHistory,
@@ -156,16 +156,16 @@ const AppContextProvider = ({ children }: any) => {
           {fetchTokenListError}
         </Alert>
       </Snackbar>
-    </AppContext.Provider>
+    </BridgeContext.Provider>
   )
 }
 
-export function useApp() {
-  const ctx = useContext(AppContext)
+export function useBrigeContext() {
+  const ctx = useContext(BridgeContext)
   if (!ctx) {
-    throw new Error("useApp must be used within AppProvider")
+    throw new Error("useBrigeContext must be used within BridgeContextProvider")
   }
   return ctx
 }
 
-export default AppContextProvider
+export default BridgeContextProvider
