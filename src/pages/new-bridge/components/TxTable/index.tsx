@@ -41,6 +41,9 @@ const useStyles = makeStyles()(theme => {
       boxShadow: "unset",
       borderRadius: "20px",
     },
+    tableMinHeight: {
+      minHeight: "20rem",
+    },
     tableTitle: {
       marginTop: "2.8rem",
       marginBottom: "3rem",
@@ -57,6 +60,7 @@ const useStyles = makeStyles()(theme => {
         fontSize: "1.6rem",
         padding: "0.8rem 1.6rem",
         color: theme.palette.text.primary,
+        whiteSpace: "nowrap",
         "&:first-of-type": {
           paddingLeft: 0,
         },
@@ -64,8 +68,7 @@ const useStyles = makeStyles()(theme => {
     },
     tableBody: {
       ".MuiTableCell-root": {
-        verticalAlign: "center",
-        padding: "2rem",
+        padding: "2rem 1.6rem",
         "*": {
           fontSize: "1.4rem",
         },
@@ -147,26 +150,29 @@ const TxTable = (props: any) => {
   return (
     <>
       <TableContainer component={Paper} className={classes.tableWrapper}>
-        <Table aria-label="Tx Table" sx={{ minHeight: "20rem" }}>
-          <TableHead className={classes.tableHeader}>
-            <TableRow>
-              <TableCell align="center">Status</TableCell>
-              <TableCell>Amount</TableCell>
-              <TableCell sx={{ width: "16rem" }}>Action</TableCell>
-              <TableCell sx={{ width: "12rem" }} align="left">
-                Initiated At
-              </TableCell>
-              <TableCell sx={{ width: "32rem" }}>Transaction Hash</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody className={classes.tableBody}>
-            <>
-              {data?.map((tx: any) => (
-                <TxRow finalizedIndex={lastFinalizedBatchIndex ?? 0} key={tx.hash} tx={tx} />
-              ))}
-            </>
-          </TableBody>
-        </Table>
+        <Box className={classes.tableMinHeight}>
+          <Table aria-label="Tx Table">
+            <TableHead className={classes.tableHeader}>
+              <TableRow>
+                <TableCell align="center">Status</TableCell>
+                <TableCell>Amount</TableCell>
+                <TableCell sx={{ width: "16rem" }}>Action</TableCell>
+                <TableCell sx={{ width: "12rem" }} align="left">
+                  Initiated At
+                </TableCell>
+                <TableCell sx={{ width: "32rem" }}>Transaction Hash</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody className={classes.tableBody}>
+              <>
+                {data?.map((tx: any) => (
+                  <TxRow finalizedIndex={lastFinalizedBatchIndex ?? 0} key={tx.hash} tx={tx} />
+                ))}
+              </>
+            </TableBody>
+          </Table>
+        </Box>
+
         {pagination && (
           <div className="flex justify-center mt-[2rem]">
             <Pagination
@@ -309,7 +315,9 @@ const TxRow = props => {
                 {truncateHash(tx.toHash)}
               </Link>
             ) : (
-              <span className="leading-normal flex-1">{toTip}</span>
+              <Typography component="span" sx={{ fontSize: "1.4rem", lineHeight: 1.5, whiteSpace: "nowrap" }}>
+                {toTip}
+              </Typography>
             )}
           </Typography>
         </Stack>
