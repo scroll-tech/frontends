@@ -2,8 +2,9 @@ import { formatUnits } from "ethers"
 import { useMemo } from "react"
 import { makeStyles } from "tss-react/mui"
 
-import { Button, InputBase, Skeleton, Stack, Typography } from "@mui/material"
+import { InputBase, Skeleton, Stack, Typography } from "@mui/material"
 
+import TextButton from "@/components/TextButton"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import { sanitizeNumericalString, toTokenDisplay } from "@/utils"
 
@@ -51,26 +52,15 @@ const useStyles = makeStyles()(theme => ({
     },
   },
   maxButton: {
-    textDecoration: "underline",
     height: "2.8rem",
     fontSize: "1.4rem",
-    padding: 0,
-    fontWeight: 600,
-    backgroundColor: "transparent !important",
-    minWidth: "unset",
-    color: theme.palette.primary.main,
     "&:hover": {
-      color: theme.palette.primary.main,
       opacity: 0.8,
     },
-    "&.Mui-disabled": {
-      color: "#EBC28E",
-      backgroundColor: "#FFF5E8",
-    },
-    [theme.breakpoints.down("sm")]: {
-      minWidth: "5rem",
-      fontSize: "1.4rem",
-    },
+  },
+  disabledMaxButton: {
+    pointerEvents: "none",
+    color: "#EBC28E",
   },
 }))
 
@@ -89,7 +79,7 @@ const BalanceInput = props => {
     onChangeToken,
     ...restProps
   } = props
-  const { classes } = useStyles()
+  const { cx, classes } = useStyles()
   const transactionBuffer = useTransactionBuffer(selectedToken)
 
   const { isMobile } = useCheckViewport()
@@ -154,9 +144,14 @@ const BalanceInput = props => {
         ) : (
           <Typography className={classes.fromBalance}>Available: {displayedBalance}</Typography>
         )}
-        <Button className={classes.maxButton} variant="contained" color="info" disabled={disabled || invalid} onClick={handleMaxAmount}>
+
+        <TextButton
+          underline="always"
+          className={cx(classes.maxButton, (disabled || invalid) && classes.disabledMaxButton)}
+          onClick={handleMaxAmount}
+        >
           Max
-        </Button>
+        </TextButton>
       </Stack>
     </>
   )

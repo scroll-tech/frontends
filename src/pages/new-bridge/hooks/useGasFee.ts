@@ -38,13 +38,22 @@ const useGasFee = (selectedToken, needApproval) => {
       priorityFee = null
     }
 
-    const gas = await estimateSend()
-    const limit = (gas * BigInt(120)) / BigInt(100)
+    const estimatedGasLimit = await estimateSend()
+    if (estimatedGasLimit === null) {
+      return {
+        gasLimit: null,
+        gasFee: null,
+        gasPrice,
+        maxPriorityFeePerGas: priorityFee,
+        displayedGasFee: null,
+      }
+    }
+    const enlargedGasLimit = (estimatedGasLimit * BigInt(120)) / BigInt(100)
     const displayedGasPrice = await getPublicClient({ chainId: fromNetwork.chainId }).getGasPrice()
-    const estimatedGasCost = BigInt(limit) * BigInt(gasPrice || 1e9)
-    const displayedEstimatedGasCost = BigInt(gas) * BigInt(displayedGasPrice || 1e9)
+    const estimatedGasCost = enlargedGasLimit * (gasPrice || BigInt(1e9))
+    const displayedEstimatedGasCost = estimatedGasLimit * (displayedGasPrice || BigInt(1e9))
     return {
-      gasLimit: limit,
+      gasLimit: enlargedGasLimit,
       gasFee: estimatedGasCost,
       gasPrice,
       maxPriorityFeePerGas: priorityFee,

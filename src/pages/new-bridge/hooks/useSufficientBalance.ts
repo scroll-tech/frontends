@@ -47,7 +47,7 @@ function useSufficientBalance(selectedToken: any, amount?: bigint, fee?: bigint 
         enoughFeeBalance = tokenBalance >= totalCost
         enoughTokenBalance = enoughFeeBalance
       } else {
-        const nativeTokenBalance = await networksAndSigner.provider.getBalance(walletCurrentAddress)
+        nativeTokenBalance = await networksAndSigner.provider.getBalance(walletCurrentAddress)
         enoughFeeBalance = nativeTokenBalance ? nativeTokenBalance >= totalFee : false
         enoughTokenBalance = tokenBalance >= amount
       }
@@ -70,23 +70,6 @@ function useSufficientBalance(selectedToken: any, amount?: bigint, fee?: bigint 
         }
       }
 
-      // if (!tokenBalance) {
-      //   message = `Insufficient balance. Your account has 0 ${selectedToken.symbol}.`
-      // } else if (!enoughFeeBalance) {
-      //   if (tokenBalance > totalFee) {
-      //     const diff = tokenBalance - totalFee
-      //     message = `Insufficient balance. The amount should be less than ${toTokenDisplay(diff, selectedToken.decimals, selectedToken.symbol)}`
-      //   } else {
-      //     message = `Insufficient balance. Please add ETH to pay for tx fees.`
-      //   }
-
-      //   if (!selectedToken.native) {
-      //     message = `${nativeTokenBalance ? "Insufficient" : "No"} balance. Please add ETH to pay for tx fees.`
-      //   }
-      // } else if (!enoughTokenBalance) {
-      //   message = `Insufficient balance. The amount should be less than ${toTokenDisplay(tokenBalance, selectedToken.decimals, selectedToken.symbol)}`
-      // }
-
       setWarning(message)
       setSufficientBalance(false)
     }
@@ -98,6 +81,7 @@ function useSufficientBalance(selectedToken: any, amount?: bigint, fee?: bigint 
     // We will trust on the wallet UI to handle this issue for now.
     if (isSmartContractWallet) {
       setSufficientBalance(true)
+      setWarning("")
     } else {
       checkEnoughBalance()
     }
