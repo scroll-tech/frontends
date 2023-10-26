@@ -10,7 +10,7 @@ import { NETWORKS } from "@/constants"
 import BridgeContextProvider from "@/contexts/BridgeContextProvider"
 import { PriceFeeProvider } from "@/contexts/PriceFeeProvider"
 import useBridgeStore from "@/stores/bridgeStore"
-import { isProduction, requireEnv } from "@/utils"
+import { isSepolia, requireEnv } from "@/utils"
 
 import FAQsLink from "./FAQ/link"
 import Send from "./Send"
@@ -62,7 +62,7 @@ const Bridge = () => {
                 textOverflow: "ellipsis",
               }}
             >
-              {isProduction ? "" : `${requireEnv("REACT_APP_SCROLL_ENVIRONMENT")} Testnet`} Bridge
+              {isSepolia ? `${requireEnv("REACT_APP_SCROLL_ENVIRONMENT")} Testnet` : ""} Bridge
             </Typography>
             <HistoryButton></HistoryButton>
           </Stack>

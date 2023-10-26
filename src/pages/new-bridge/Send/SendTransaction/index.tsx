@@ -74,7 +74,7 @@ const SendTransaction = props => {
     [amount, selectedToken, txGasLimit, txType],
   )
 
-  const relayFee = useMemo(() => (gasLimit && gasPrice ? gasLimit * gasPrice : null), [gasLimit, gasPrice])
+  const relayFee = useMemo(() => gasLimit * gasPrice, [gasLimit, gasPrice])
   const totalFee = useMemo(
     () => (estimatedGasCost && !relayFeeErrorMessage ? estimatedGasCost + relayFee + (l1DataFee ?? BigInt(0)) : null),
     [estimatedGasCost, relayFeeErrorMessage, relayFee, l1DataFee],
@@ -88,7 +88,7 @@ const SendTransaction = props => {
   )
   // fee end
   const bridgeWarning = useMemo(() => {
-    if (gasFeeErrorMessage && amount) {
+    if (gasFeeErrorMessage && amount && !needApproval) {
       return (
         <>
           {gasFeeErrorMessage},{" "}

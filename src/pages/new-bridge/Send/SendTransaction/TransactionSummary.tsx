@@ -46,7 +46,8 @@ const TransactionSummary: FC<Props> = props => {
     (value, decimals = BigInt(18), symbol = ETH_SYMBOL) => {
       const isGasOk = l1GasFee !== null && l2GasFee !== null
       const condition = isNetworkCorrect && amount && isGasOk
-      if (needApproval !== false || !condition || feeError) return <CustomTypography isError={!!feeError && amount}>-</CustomTypography>
+      if (needApproval !== false || !condition || feeError)
+        return <CustomTypography isError={!!feeError && amount && !needApproval}>-</CustomTypography>
       return toTokenDisplay(value, decimals, symbol)
     },
     [needApproval, isNetworkCorrect, amount, feeError, l1GasFee, l2GasFee],
@@ -55,14 +56,15 @@ const TransactionSummary: FC<Props> = props => {
   const getDisplayedMultiplexValue = useCallback(() => {
     const isGasOk = l1GasFee !== null && l2GasFee !== null
     const condition = isNetworkCorrect && amount && isGasOk
-    if (needApproval !== false || !condition || feeError) return <CustomTypography isError={!!feeError && amount}>-</CustomTypography>
+    if (needApproval !== false || !condition || feeError)
+      return <CustomTypography isError={!!feeError && amount && !needApproval}>-</CustomTypography>
 
     return (
       getDisplayedValue(amountToBN(amount, selectedToken.decimals), selectedToken.decimals, selectedToken.symbol) +
       " + " +
       getDisplayedValue(l1GasFee + l2GasFee)
     )
-  }, [needApproval, isNetworkCorrect, amount, feeError, selectedToken, l1GasFee, l2GasFee])
+  }, [needApproval, isNetworkCorrect, amount, feeError, selectedToken, l1GasFee, l2GasFee, needApproval])
 
   const displayedAmount = useMemo(() => {
     const value = amountToBN(amount, selectedToken.decimals)
