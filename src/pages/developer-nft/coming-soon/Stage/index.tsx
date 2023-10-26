@@ -18,7 +18,7 @@ const NFT_STAGES = [
   },
   {
     title: "Cubic",
-    duration: `${Stage3StartDate.diff(StartDate, "day")}-${EndDate.diff(StartDate, "day") + 1}`,
+    duration: `${Stage3StartDate.diff(StartDate, "day")}-${EndDate.diff(StartDate, "day")}`,
     endData: formatDate(EndDate, { withTime: true }),
   },
 ]
@@ -59,7 +59,7 @@ const Stage = () => {
           component="span"
           sx={{ fontSize: "inherit", lineHeight: "inherit", fontWeight: 700, color: "#FF664D !important", whiteSpace: "nowrap" }}
         >
-          {EndDate.diff(StartDate, "day") + 1} days
+          {EndDate.diff(StartDate, "day")} days
         </Typography>{" "}
         of Genesis Block. Your NFT will be available for minting on{" "}
         <span style={{ whiteSpace: "nowrap" }}>{formatDate(MintableDate, { withTime: true })}</span>

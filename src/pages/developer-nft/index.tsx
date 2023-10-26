@@ -12,7 +12,7 @@ const DeveloperNFT = () => {
 
   return (
     <>
-      {(!phrase || phrase === "in-progress") && <Navigate to="./coming-soon"></Navigate>}
+      {(!phrase || phrase === "in-progress") && <Navigate to="./check-eligibility"></Navigate>}
       {phrase === "end" && <Navigate to="./mint"></Navigate>}
     </>
   )

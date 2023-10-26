@@ -211,8 +211,8 @@ const mainnetRoutes = [
   },
   {
     name: "Coming Soon",
-    path: "/developer-nft/coming-soon",
-    fullPath: "/developer-nft/coming-soon",
+    path: "/developer-nft/check-eligibility",
+    fullPath: "/developer-nft/check-eligibility",
     element: <ComingSoon />,
   },
   // {
