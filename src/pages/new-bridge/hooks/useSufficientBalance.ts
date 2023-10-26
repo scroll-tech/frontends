@@ -27,7 +27,7 @@ function useSufficientBalance(selectedToken: any, amount?: bigint, fee?: bigint 
       }
       const isZero = Number(amount) === 0
       if (isZero) {
-        setWarning("The amount should be greater than 0!")
+        setWarning(">0")
         return
       }
       if (!tokenBalance) {

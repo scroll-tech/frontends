@@ -55,7 +55,7 @@ const SendTransaction = props => {
     isLoading: sendLoading,
     error: sendError,
   } = useSendTransaction({
-    validAmount,
+    amount: validAmount,
     selectedToken,
   })
 
@@ -90,7 +90,7 @@ const SendTransaction = props => {
   )
   // fee end
   const bridgeWarning = useMemo(() => {
-    if (gasFeeErrorMessage && amount && !needApproval) {
+    if (gasFeeErrorMessage && validAmount && !needApproval) {
       return (
         <>
           {gasFeeErrorMessage},{" "}
@@ -99,7 +99,7 @@ const SendTransaction = props => {
           </TextButton>
         </>
       )
-    } else if (relayFeeErrorMessage && amount && !needApproval) {
+    } else if (relayFeeErrorMessage && validAmount && !needApproval) {
       return (
         <>
           {relayFeeErrorMessage},{" "}
@@ -112,11 +112,11 @@ const SendTransaction = props => {
       return insufficientWarning
     }
     return null
-  }, [insufficientWarning, relayFeeErrorMessage, amount, gasFeeErrorMessage, needApproval])
+  }, [insufficientWarning, relayFeeErrorMessage, validAmount, gasFeeErrorMessage, needApproval])
 
   const necessaryCondition = useMemo(() => {
-    return amount && !bridgeWarning
-  }, [amount, bridgeWarning])
+    return validAmount && !bridgeWarning
+  }, [validAmount, bridgeWarning])
 
   const sendText = useMemo(() => {
     if (txType === "Deposit" && sendLoading) {
@@ -222,7 +222,7 @@ const SendTransaction = props => {
         onChangeToken={handleChangeTokenSymbol}
       ></BalanceInput>
       <Box sx={{ height: "2rem", width: "100%" }}>
-        {bridgeWarning && validAmount && (
+        {!!bridgeWarning && bridgeWarning !== ">0" && (
           <Typography
             sx={{
               fontSize: "1.4rem",

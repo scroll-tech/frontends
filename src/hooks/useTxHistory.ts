@@ -13,7 +13,7 @@ export interface TxHistory {
   changeErrorMessage: (value) => void
 }
 
-const useTxHistory = networksAndSigners => {
+const useTxHistory = () => {
   const { walletCurrentAddress } = useRainbowContext()
   const { pageTransactions, generateTransactions, comboPageTransactions, combineClaimableTransactions, orderedTxDB, clearTransactions } = useTxStore()
 
