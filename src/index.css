@@ -129,6 +129,10 @@ div.markdown-body h3 {
   list-style-type: decimal;
 }
 
+div.markdown-body img {
+  background-color: transparent;
+}
+
 .markdown-body ul {
   list-style-type: disc;
 }

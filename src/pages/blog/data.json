@@ -1,6 +1,16 @@
 [
   {
     "type": "Announcement",
+    "id": "scroll-origins-nft",
+    "date": "2023-10-26",
+    "title": "Announcing the Scroll Origins NFT",
+    "posterTitle": "Announcing the Scroll Origins NFT",
+    "summary": "To commemorate our launch, we are unveiling Scroll Origins, an NFT mint to celebrate our earliest builders who have been a part of our journey from the beginning.",
+    "posterImg": "/imgs/homepage/blog/poster_cover_16.png",
+    "ogImg": "/imgs/homepage/blog/poster_cover_16_og.png"
+  },
+  {
+    "type": "Announcement",
     "id": "scrolls-security-measures",
     "date": "2023-10-19",
     "title": "Scroll's Security Measures",
