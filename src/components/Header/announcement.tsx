@@ -7,18 +7,19 @@ import { styled } from "@mui/system"
 import Link from "@/components/Link"
 import { isProduction, requireEnv } from "@/utils"
 
-const AnnouncementStack = styled<any>(Stack)(
-  ({ theme, production }) => `
-    line-height: 2.6rem;
-    background: ${production ? "#62e6d4" : theme.palette.primary.main};
-    text-align: center;
-    color: ${production ? theme.palette.text.primary : theme.palette.primary.contrastText};
-    font-size: 1.6rem;
-    padding: 1.6rem;
-    display: inline-block;
-    width: 100%;
-  `,
-)
+const AnnouncementStack = styled<any>(Stack, { shouldForwardProp: prop => prop !== "production" })(({ theme, production }) => ({
+  lineHeight: "2.6rem",
+  background: production ? "#62e6d4" : theme.palette.primary.main,
+  textAlign: "center",
+  color: production ? theme.palette.text.primary : theme.palette.primary.contrastText,
+  fontSize: "1.6rem",
+  padding: "1.2rem",
+  display: "inline-block",
+  width: "100%",
+  [theme.breakpoints.down("sm")]: {
+    lineHeight: "2rem",
+  },
+}))
 
 const ReadMoreLink = styled("a")(
   ({ theme }) => `

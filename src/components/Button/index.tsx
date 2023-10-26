@@ -19,8 +19,14 @@ const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, w
       height: "4.8rem",
     },
   },
+  wrapperGloomy: {
+    opacity: 0.5,
+    pointerEvents: "none",
+  },
   wrapperDisabled: {
     backgroundColor: "#FFF0DD80",
+    borderRadius: "1rem",
+    pointerEvents: "none",
   },
   button: {
     fontSize: "2rem",
@@ -66,11 +72,8 @@ const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, w
   },
   maskDisabled: {
     backgroundColor: "#EBC28E",
-    width: "5.4rem !important",
-    [theme.breakpoints.down("sm")]: {
-      width: "4.8rem !important",
-    },
   },
+
   icon: {
     width: "5.4rem",
     height: "100%",
@@ -101,7 +104,7 @@ const maskMobile = {
 }
 // color: "primary" | undefined
 const Button = props => {
-  const { width, sx, color, loading, disabled, children, whiteButton, ...restProps } = props
+  const { width, sx, color, loading, disabled, gloomy, children, whiteButton, ...restProps } = props
   const { classes, cx } = useStyles({ color, width, disabled, loading, whiteButton })
 
   const { isMobile } = useCheckViewport()
@@ -116,7 +119,7 @@ const Button = props => {
     // TODO: allow sx, allow size=small/medium
     // avoid setting both 'disabled' and 'loading' to true.
     <motion.div
-      className={cx(classes.wrapper, disabled && classes.wrapperDisabled)}
+      className={cx(classes.wrapper, disabled && classes.wrapperDisabled, gloomy && classes.wrapperGloomy)}
       onHoverStart={handleHover}
       onHoverEnd={handleHover}
       animate={isHover ? "expanding" : "normal"}
@@ -131,9 +134,15 @@ const Button = props => {
         variants={isMobile ? maskMobile : maskDesktop}
       ></motion.div>
       <ButtonBase
-        classes={{ root: cx(classes.button, loading && classes.buttonLoading, disabled && classes.buttonDisabled) }}
-        disabled={disabled || loading}
-        className={cx(isHover && classes.active)}
+        classes={{
+          root: cx(
+            classes.button,
+            isHover && !gloomy && !disabled && classes.active,
+            loading && classes.buttonLoading,
+            disabled && classes.buttonDisabled,
+          ),
+        }}
+        disabled={disabled || gloomy || loading}
         {...restProps}
       >
         {children} {loading && <CircularProgress sx={{ color: "#0F8E7E" }} size={isMobile ? 18 : 24} thickness={4}></CircularProgress>}

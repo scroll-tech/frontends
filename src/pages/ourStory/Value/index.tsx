@@ -34,7 +34,7 @@ const Value = () => {
   const contentRef = useRef(null)
   return (
     <ScrollExpandedBg anchorEl={contentRef}>
-      <Box ref={contentRef} sx={{ position: "relative", width: "100%", px: ["2rem", "6rem"] }}>
+      <Box ref={contentRef} sx={{ position: "relative", width: "100%", px: ["2rem", "2rem", "6rem"] }}>
         <Stack direction={isPortrait ? "column" : "row"} justifyContent="space-between" spacing={isPortrait ? "3rem" : "12rem"}>
           <Stack direction="column" justifyContent="space-between" sx={{ flex: 1 }}>
             <Stack direction="column" sx={{ maxWidth: ["100%", "100%", "100%", "60rem"] }}>
