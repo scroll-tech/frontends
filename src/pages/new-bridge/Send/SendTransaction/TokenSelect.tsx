@@ -38,6 +38,9 @@ const useStyles = makeStyles()(theme => ({
       gap: "0.6rem",
     },
   },
+  readOnly: {
+    pointerEvents: "none",
+  },
   listItemIcon: { minWidth: "unset !important" },
   listItemText: {
     margin: "0 1rem",
@@ -54,15 +57,15 @@ const useStyles = makeStyles()(theme => ({
 }))
 
 const TokenSelect = props => {
-  const { options, onChange, value, disabled } = props
-  const { classes } = useStyles()
+  const { options, onChange, value, disabled, readOnly } = props
+  const { cx, classes } = useStyles()
   const [open, setOpen] = useState(false)
   return (
     <>
       <MenuItem
         onClick={() => setOpen(true)}
         sx={{ marginLeft: "0.8rem !important" }}
-        classes={{ root: classes.menuItem }}
+        classes={{ root: cx(classes.menuItem, readOnly && classes.readOnly) }}
         value={value}
         key={value.symbol}
         disabled={disabled}

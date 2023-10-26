@@ -129,8 +129,8 @@ const Send = () => {
         onClose={handleClose}
       >
         <div>
-          <Alert severity={txResult?.code ? "success" : "error"}>
-            {txResult?.code ? (
+          {txResult?.code === 1 && (
+            <Alert severity="success">
               <>
                 Submitted successfully! {txType === "Deposit" ? "It takes about 20 mins to be ready" : "It takes up to 1h to be claimable"}
                 <br />
@@ -138,13 +138,16 @@ const Send = () => {
                   View transaction history
                 </TextButton>
               </>
-            ) : (
+            </Alert>
+          )}
+          {txResult?.code === 0 && (
+            <Alert severity="error">
               <>
                 Failed in submission.
                 <br /> {txResult?.message}
               </>
-            )}
-          </Alert>
+            </Alert>
+          )}
         </div>
       </Snackbar>
     </Box>
