@@ -33,7 +33,7 @@ const useCheckClaimStatus = tx => {
     if (claimStatus === ClaimStatus.CLAIMABLE) {
       return "Ready to be claimed"
     } else if (claimStatus === ClaimStatus.NOT_READY) {
-      return "Pending"
+      return "Pending..."
     }
 
     return ""

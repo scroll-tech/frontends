@@ -14,7 +14,7 @@ import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useBalance } from "@/hooks"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useBridgeStore from "@/stores/bridgeStore"
-import { amountToBN, switchNetwork } from "@/utils"
+import { amountToBN, switchNetwork, trimErrorMessage } from "@/utils"
 
 import useApprove from "../../hooks/useApprove"
 // import useBalance from "../../hooks/useBalance"
@@ -38,6 +38,8 @@ const SendTransaction = props => {
 
   const [amount, setAmount] = useState<string>()
 
+  const validAmount = useMemo(() => (Number(amount) > 0 ? amount : ""), [amount])
+
   const tokenOptions = useMemo(() => {
     return fromNetwork.chainId ? tokenList.filter(item => item.chainId === fromNetwork.chainId) : []
   }, [tokenList, fromNetwork])
@@ -47,13 +49,13 @@ const SendTransaction = props => {
   // const { balance, isLoading: balanceLoading } = useBalance(selectedToken.address)
   const { balance, loading: balanceLoading } = useBalance(selectedToken, fromNetwork)
 
-  const { isNeeded: needApproval, approve, isLoading: approveLoading } = useApprove(fromNetwork, selectedToken, amount)
+  const { isNeeded: needApproval, approve, isLoading: approveLoading } = useApprove(fromNetwork, selectedToken, validAmount)
   const {
     send: sendTransaction,
     isLoading: sendLoading,
     error: sendError,
   } = useSendTransaction({
-    amount,
+    validAmount,
     selectedToken,
   })
 
@@ -126,7 +128,7 @@ const SendTransaction = props => {
 
   useEffect(() => {
     if (sendError && sendError !== "cancel" && sendError !== "reject") {
-      changeTxResult({ code: 0, message: sendError.message })
+      changeTxResult({ code: 0, message: trimErrorMessage(sendError.message) })
     }
   }, [sendError])
 
@@ -208,7 +210,7 @@ const SendTransaction = props => {
         onChangeToken={handleChangeTokenSymbol}
       ></BalanceInput>
       <Box sx={{ height: "2rem", width: "100%" }}>
-        {bridgeWarning && (
+        {bridgeWarning && validAmount && (
           <Typography
             sx={{
               fontSize: "1.4rem",
@@ -228,7 +230,7 @@ const SendTransaction = props => {
 
       <TransactionSummary
         selectedToken={selectedToken}
-        amount={amount}
+        amount={validAmount}
         feeError={relayFeeErrorMessage || gasFeeErrorMessage}
         // totalFee={displayedEstimatedGasCost}
         l2GasFee={relayFee}

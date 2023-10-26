@@ -7,7 +7,7 @@ import { CHAIN_ID, ETH_SYMBOL } from "@/constants"
 import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
 import { useBrigeContext } from "@/contexts/BridgeContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { requireEnv } from "@/utils"
+import { requireEnv, trimErrorMessage } from "@/utils"
 
 const OFFSET = "0x1111000000000000000000000000000000001111"
 const amount = BigInt(1)
@@ -129,7 +129,7 @@ export const PriceFeeProvider = ({ children }) => {
           //TODO:
           // setGasLimit(null)
           // setGasPrice(null)
-          setErrorMessage(error.message.split("(")[0].trim())
+          setErrorMessage(trimErrorMessage(error.message))
         })
     },
   })

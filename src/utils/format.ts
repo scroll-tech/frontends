@@ -134,3 +134,7 @@ export const formatDate = (date, options: { needSub?: boolean; withTime?: boolea
   }
   return finalDate.format("MMM D, YYYY")
 }
+
+export const trimErrorMessage = message => {
+  return message.split("(")[0].trim()
+}

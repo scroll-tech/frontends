@@ -44,7 +44,7 @@ const useApprove = (fromNetwork, selectedToken, amount) => {
       if (!tokenInstance) {
         return false
       }
-      if (!amount || Number(amount) === 0) {
+      if (!amount) {
         return undefined
       }
 

@@ -4,6 +4,7 @@ import { useBlockNumber } from "wagmi"
 
 import { useBrigeContext } from "@/contexts/BridgeContextProvider"
 import useBridgeStore from "@/stores/bridgeStore"
+import { trimErrorMessage } from "@/utils"
 
 import { useEstimateSendTransaction } from "./useEstimateSendTransaction"
 
@@ -79,7 +80,7 @@ const useGasFee = (selectedToken, needApproval) => {
           setGasLimit(null)
           setMaxFeePerGas(null)
           setMaxPriorityFeePerGas(null)
-          setError(error.message.split("(")[0].trim())
+          setError(trimErrorMessage(error.message))
         })
     },
   })
