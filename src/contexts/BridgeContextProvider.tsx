@@ -11,6 +11,7 @@ import L2_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L2_GATEWAY_ROUTER_PROXY_A
 import { CHAIN_ID, ETH_SYMBOL, GATEWAY_ROUTE_PROXY_ADDR, NATIVE_TOKEN_LIST, RPC_URL } from "@/constants"
 import { BLOCK_NUMBERS, BRIDGE_TOKEN_SYMBOL, USER_TOKEN_LIST } from "@/constants/storageKey"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useBlockNumbers from "@/hooks/useBlockNumbers"
 import useClaim from "@/hooks/useClaim"
 import useTxHistory, { TxHistory } from "@/hooks/useTxHistory"
 import { loadState } from "@/utils/localStorage"
@@ -28,6 +29,8 @@ const BridgeContext = createContext<BridgeContextProps | undefined>(undefined)
 
 const BridgeContextProvider = ({ children }: any) => {
   const { provider, walletCurrentAddress, chainId } = useRainbowContext()
+  const { isL1Available, isL2Available } = useBlockNumbers()
+
   const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
   const [blockNumbers] = useStorage(localStorage, BLOCK_NUMBERS, [-1, -1])
 
@@ -38,7 +41,7 @@ const BridgeContextProvider = ({ children }: any) => {
 
   const [fetchTokenListError, setFetchTokenListError] = useState("")
 
-  const txHistory = useTxHistory(networksAndSigners)
+  const txHistory = useTxHistory()
   const claim = useClaim()
 
   // TODO: need refactoring inspired by publicClient and walletClient
@@ -156,6 +159,20 @@ const BridgeContextProvider = ({ children }: any) => {
           {fetchTokenListError}
         </Alert>
       </Snackbar>
+      {!isL1Available && (
+        <Snackbar open={true}>
+          <Alert severity="error" key="l1">
+            {RPC_URL.L1} is not available, please wait...
+          </Alert>
+        </Snackbar>
+      )}
+      {!isL2Available && (
+        <Snackbar open={true}>
+          <Alert severity="error" key="l2">
+            {RPC_URL.L2} is not available, please wait...
+          </Alert>
+        </Snackbar>
+      )}
     </BridgeContext.Provider>
   )
 }

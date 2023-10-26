@@ -4,7 +4,6 @@ import { useEffect } from "react"
 import { Stack, Typography } from "@mui/material"
 
 import GlobalComponents from "@/components/GlobalComponents"
-import GlobalWarning from "@/components/GlobalWarning"
 import SectionWrapper from "@/components/SectionWrapper"
 import { NETWORKS } from "@/constants"
 import BridgeContextProvider from "@/contexts/BridgeContextProvider"
@@ -32,7 +31,6 @@ const Bridge = () => {
   return (
     <BridgeContextProvider>
       <PriceFeeProvider>
-        <GlobalWarning></GlobalWarning>
         <GlobalComponents></GlobalComponents>
         <SectionWrapper
           sx={{
