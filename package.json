@@ -1,6 +1,6 @@
 {
   "name": "scroll.io",
-  "version": "5.0.16",
+  "version": "5.0.17",
   "private": false,
   "license": "MIT",
   "scripts": {
@@ -141,7 +141,7 @@
   },
   "overrides": {
     "eslint-config-react-app": {
-      "@typescript-eslint/eslint-plugin":"^6.5.0",
+      "@typescript-eslint/eslint-plugin": "^6.5.0",
       "@typescript-eslint/parser": "^6.5.0"
     }
   }
