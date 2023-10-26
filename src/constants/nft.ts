@@ -8,13 +8,13 @@ dayjs.extend(utc)
 // const StartDate = new Date("2023-10-10T06:00:00Z") // mainnet
 export const StartDate = dayjs("2023-10-10T06:00:00Z") // mainnet
 
-export const Stage2StartDate = StartDate.add(30, "day")
+export const Stage2StartDate = dayjs("2023-11-09T23:00:00Z")
 
-export const Stage3StartDate = Stage2StartDate.add(15, "day")
+export const Stage3StartDate = dayjs("2023-11-24T23:00:00Z")
 
-export const EndDate = Stage3StartDate.add(15, "day").subtract(1, "ms")
+export const EndDate = dayjs("2023-12-09T23:00:00Z").subtract(1, "ms")
 
-export const MintableDate = Stage3StartDate.add(21, "day")
+export const MintableDate = dayjs("2023-12-14T23:00:00Z")
 
 export const DEVELOPER_NFT_STEPS = [
   { label: "Starts", date: StartDate, title: "Genesis Block" },
