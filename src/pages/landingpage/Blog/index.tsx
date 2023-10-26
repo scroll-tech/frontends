@@ -31,9 +31,10 @@ const STORIES = [
     href: "/blog/founderLetter",
   },
   {
-    title: "Scroll’s Fresh Coat: A Community Touch",
-    content: "Discover our updated website and developer portal, shaped with community insights and collaboration.",
-    href: "/blog/scrolls-fresh-coat",
+    title: "Announcing the Scroll Origins NFT",
+    content:
+      "To commemorate our launch, we are unveiling Scroll Origins, an NFT mint to celebrate our earliest builders who have been a part of our journey from the beginning.",
+    href: "/developer-nft",
   },
   {
     title: "Scroll’s Architecture Overview",
