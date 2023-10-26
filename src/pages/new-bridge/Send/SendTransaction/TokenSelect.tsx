@@ -17,12 +17,20 @@ const useStyles = makeStyles()(theme => ({
     padding: 0,
   },
   menuItem: {
-    background: "#ffffff",
+    backgroundColor: "#ffffff",
     border: "1px solid #473835",
     borderRadius: "1rem",
     height: "5.6rem",
     "&:hover": {
       backgroundColor: "#ffffff",
+    },
+    "&.Mui-disabled": {
+      backgroundColor: "#FFF5E8",
+      border: "1px solid #A39B9A",
+      opacity: 1,
+      "*": {
+        opacity: 0.75,
+      },
     },
     [theme.breakpoints.down("sm")]: {
       padding: "0.6rem 0.8rem",
