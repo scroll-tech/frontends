@@ -17,7 +17,7 @@ const WalletToolkit = props => {
 
   return (
     <Stack direction="row" spacing="0.8rem">
-      {chainId && !isMobile && <NetworkIndicator></NetworkIndicator>}
+      {chainId && !isMobile && <NetworkIndicator dark={dark}></NetworkIndicator>}
       {chainId && pathname === "/bridge" && <BridgeHistoryButton></BridgeHistoryButton>}
       <WalletDropdown dark={dark}></WalletDropdown>
     </Stack>

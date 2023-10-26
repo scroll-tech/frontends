@@ -1,3 +1,4 @@
+import { SCROLL_ORIGINS_NFT } from "@/constants"
 import { isSepolia, requireEnv } from "@/utils"
 
 const sepoliaNavigations = [
@@ -91,6 +92,12 @@ const mainnetNavigations = [
             key: "mainnet-resources",
             rootKey: "develop",
             href: "/portal",
+          },
+          {
+            label: SCROLL_ORIGINS_NFT,
+            key: "developer-nft",
+            rootKey: "develop",
+            href: "/developer-nft",
           },
           {
             label: "Sepolia Testnet",

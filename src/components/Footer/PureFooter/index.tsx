@@ -58,7 +58,7 @@ const useStyles = makeStyles()(theme => ({
 const Footer = () => {
   const { classes } = useStyles()
   return (
-    <SectionWrapper dark sx={{ p: ["6rem 2rem 8rem", "6rem 6rem 12rem"] }}>
+    <SectionWrapper dark sx={{ pt: "6rem", pb: ["8rem", "12rem"] }}>
       <Box className={classes.footerLayout}>
         <Link href="/" className={classes.logo}>
           <ScrollLogo light></ScrollLogo>

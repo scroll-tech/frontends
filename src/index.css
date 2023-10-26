@@ -35,6 +35,10 @@ body {
   font-variant-ligatures: no-contextual;
 }
 
+body.mobile-top-nav-open {
+  overflow: hidden !important;
+}
+
 @font-face {
   font-family: "TransSansPremium";
   src: url("./assets/fonts/TransSansPremium-Light.woff2") format("woff2"), url("./assets/fonts/TransSansPremium-Light.woff") format("woff");
@@ -67,7 +71,8 @@ body {
 }
 
 :root {
-  --swiper-theme-color: #eb7106 !important;
+  --swiper-theme-color: #62e6d4 !important;
+  --swiper-pagination-progressbar-bg-color: #ffffff70;
   /* --swiper-pagination-bullet-inactive-color: #595959; */
 
   /* semibold/light never been used  */
@@ -122,6 +127,10 @@ div.markdown-body h3 {
 
 .markdown-body ol {
   list-style-type: decimal;
+}
+
+div.markdown-body img {
+  background-color: transparent;
 }
 
 .markdown-body ul {

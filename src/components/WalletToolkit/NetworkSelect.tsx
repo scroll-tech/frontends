@@ -15,15 +15,17 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
     padding: "0 1.2rem",
     border: dark ? `1px solid ${theme.palette.primary.contrastText}` : "none",
     backgroundColor: dark ? "unset" : theme.palette.themeBackground.normal,
-    color: "#473835",
+    color: dark ? theme.palette.primary.contrastText : "#473835",
     borderRadius: "0.5rem",
   },
   endIcon: {
     fontSize: "1.6rem",
     marginLeft: "0.8rem",
+    willChange: "transform",
+    transition: "transform .3s ease-in-out",
   },
   reverseEndIcon: {
-    transform: "rotateX(180deg)",
+    transform: "rotate(180deg)",
   },
   tooltip: {
     color: "#756A67",
@@ -41,10 +43,9 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
     borderRadius: "0.5rem",
     border: dark ? `1px solid ${theme.palette.primary.contrastText}` : "none",
     backgroundColor: dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.normal,
-    borderTop: "none",
   },
   list: {
-    padding: "0.8rem 0",
+    padding: 0,
   },
   listItem: {
     padding: "0.8rem 1.2rem",
@@ -62,7 +63,7 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
   },
 }))
 
-const WalletConnector = props => {
+const NetworkSelect = props => {
   const { sx, dark } = props
   const { classes, cx } = useStyles({ dark })
 
@@ -95,7 +96,7 @@ const WalletConnector = props => {
       {isThirdPartyNetwork ? (
         <Tooltip title="The current network is not supported" classes={{ tooltip: classes.tooltip, arrow: classes.arrow }} placement="left" arrow>
           <ButtonBase classes={{ root: classes.button }} sx={sx} onClick={handleClick}>
-            <SvgIcon sx={{ fontSize: "1.8rem" }} component={currentNetworkIcon} inheritViewBox></SvgIcon>
+            <SvgIcon sx={{ fontSize: "1.8rem", color: "inherit" }} component={currentNetworkIcon} inheritViewBox></SvgIcon>
             <SvgIcon className={cx(classes.endIcon, open && classes.reverseEndIcon)} component={DownTriangleSvg} inheritViewBox></SvgIcon>
           </ButtonBase>
         </Tooltip>
@@ -119,4 +120,4 @@ const WalletConnector = props => {
   )
 }
 
-export default WalletConnector
+export default NetworkSelect
