@@ -27,17 +27,17 @@ const lightTheme = createTheme({
   components: {
     MuiContainer: {
       styleOverrides: {
-        root: {
-          paddingLeft: "2rem",
-          paddingRight: "2rem",
-          "@media(min-width: 900px)": {
+        root: ({ theme }) => ({
+          maxWidth: "152rem !important",
+          [theme.breakpoints.up("xs")]: {
+            paddingLeft: "2rem",
+            paddingRight: "2rem",
+          },
+          [theme.breakpoints.up("md")]: {
             paddingLeft: "6rem",
             paddingRight: "6rem",
           },
-        },
-        maxWidthLg: {
-          maxWidth: "1300px",
-        },
+        }),
       },
     },
 
@@ -238,11 +238,6 @@ const lightTheme = createTheme({
           color: ownerState.severity && paletteOptions[ownerState.severity].main,
           backgroundColor: ownerState.severity && paletteOptions[ownerState.severity].light,
           alignItems: "center",
-          [theme.breakpoints.down("sm")]: {
-            flexDirection: "column",
-            textAlign: "center",
-            padding: " 1.6rem 3rem",
-          },
         }),
         icon: ({ theme, ownerState }) => ({
           display: "flex",
@@ -251,10 +246,6 @@ const lightTheme = createTheme({
           marginRight: "1.8rem",
           padding: 0,
           color: `${ownerState.severity && paletteOptions[ownerState.severity].main} !important`,
-          [theme.breakpoints.down("sm")]: {
-            justifyContent: "center",
-            marginRight: 0,
-          },
         }),
         message: {
           padding: 0,

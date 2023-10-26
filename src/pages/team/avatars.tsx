@@ -1,4 +1,4 @@
-import { Pagination } from "swiper"
+import { Pagination } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
 
 import { Twitter as TwitterIcon } from "@mui/icons-material"

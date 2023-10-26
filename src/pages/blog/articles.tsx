@@ -1,4 +1,4 @@
-import { Pagination } from "swiper"
+import { Pagination } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
 
 import { Box } from "@mui/material"
