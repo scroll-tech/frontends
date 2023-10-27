@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
 
-import { Collapse, Stack } from "@mui/material"
+import { Collapse, Stack, Typography } from "@mui/material"
 
 import Button from "@/components/Button"
+import Link from "@/components/Link"
 import { MintableDate } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
@@ -77,6 +78,18 @@ const CheckElegbility = () => {
           )}
         </>
       )}
+      <Typography sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: ["2.4rem", "3.2rem"], mt: "0.8rem !important" }}>
+        Service provided by the{" "}
+        <Link
+          underline="always"
+          external
+          href="https://unifra.io"
+          sx={{ fontWeight: 700, fontSize: "inherit", textUnderlineOffset: "1px", textDecorationThickness: "1px" }}
+        >
+          Unifra team
+        </Link>
+        <strong>.</strong>
+      </Typography>
     </Stack>
   )
 }
