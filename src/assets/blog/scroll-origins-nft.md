@@ -4,7 +4,7 @@
 
 ### Mainnet is Here and it’s Time to Build!
 
-After launching three successful testnets, we are ready for developers and protocols to deploy their contracts and explore Scroll’s newly launched [Mainnet](https://scroll.io/blog/founderLetter). To commemorate this moment, we are launching Scroll Origins, an NFT mint to celebrate Scroll’s earliest builders. This makes a permanent onchain record that you were here with us at this critical moment.
+After launching three successful testnets, we are ready for developers and protocols to deploy their contracts and explore Scroll’s newly launched [Mainnet](https://scroll.io/blog/founderLetter). To commemorate this moment, we are launching [Scroll Origins](https://scroll.io/developer-nft/check-eligibility), an NFT mint to celebrate Scroll’s earliest builders. This makes a permanent onchain record that you were here with us at this critical moment.
 
 ### Scroll Values
 

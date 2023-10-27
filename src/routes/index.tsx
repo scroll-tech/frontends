@@ -204,13 +204,13 @@ const mainnetRoutes = [
     element: <RollupScanBlock />,
   },
   {
-    name: "Early Developer NFT",
+    name: "Scroll Origins NFT",
     path: "/developer-nft",
     fullPath: "/developer-nft",
     element: <DeveloperNFT />,
   },
   {
-    name: "Coming Soon",
+    name: "Scroll Origins NFT",
     path: "/developer-nft/check-eligibility",
     fullPath: "/developer-nft/check-eligibility",
     element: <ComingSoon />,
