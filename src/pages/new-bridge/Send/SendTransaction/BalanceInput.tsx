@@ -93,7 +93,7 @@ const BalanceInput = props => {
 
   const invalid = useMemo(() => {
     if (!selectedToken.native) {
-      return false
+      return !balance
     }
     if (balance && shouldPayFee) {
       return BigInt(balance) - transactionBuffer <= BigInt(shouldPayFee)
