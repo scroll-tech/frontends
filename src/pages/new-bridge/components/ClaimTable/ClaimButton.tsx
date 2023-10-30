@@ -87,7 +87,7 @@ const ClaimButton = props => {
     }
     return (
       <>
-        {tx.isL1 ? "Ready" : "Claimable"} in ~{minutes}m
+        {tx.isL1 ? "Ready" : "Claimable"} in ~{minutes ? `${minutes}m` : `${seconds}s`}
       </>
     )
   }
