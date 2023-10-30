@@ -177,7 +177,7 @@ const TxRow = props => {
       return "Claiming in progress"
     }
     return claimTip
-  }, [claimStatus, loading])
+  }, [claimStatus, claimTip, loading])
 
   const formatDate = (inputStr: string): string => {
     return inputStr ? dayjs(inputStr).format("DD/MM/YYYY HH:mm:ss") : "-"

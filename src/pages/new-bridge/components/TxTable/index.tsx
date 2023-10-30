@@ -230,10 +230,10 @@ const TxRow = props => {
 
   const toTip = useMemo(() => {
     if (tx.isL1) {
-      return "-"
+      return "Pending..."
     }
     return claimTip
-  }, [tx])
+  }, [tx, claimTip])
 
   const fromStatus = useMemo(() => {
     return txStatus(tx.fromBlockNumber, tx.assumedStatus, tx.isL1, false)

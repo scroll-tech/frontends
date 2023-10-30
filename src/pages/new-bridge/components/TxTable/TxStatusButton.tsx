@@ -79,14 +79,12 @@ const TxStatus = props => {
   const { setTargetTransaction } = useClaimStore()
 
   const renderEstimatedWaitingTime = timestamp => {
-    if (timestamp === 1) {
-      return <>{tx.isL1 ? "Ready" : "Claimable"} in ...</>
-    } else if (timestamp === 0) {
+    if (timestamp === 0) {
       return <>Pending</>
     } else if (timestamp) {
       return <Countdown date={timestamp} renderer={renderCountDown}></Countdown>
     }
-    return null
+    return <>{tx.isL1 ? "Ready" : "Claimable"} in ...</>
   }
 
   const renderCountDown = ({ total, hours, minutes, seconds, completed }) => {
@@ -95,7 +93,7 @@ const TxStatus = props => {
     }
     return (
       <>
-        {tx.isL1 ? "Ready" : "Claimable"} in ~{minutes}m
+        {tx.isL1 ? "Ready" : "Claimable"} in ~{minutes ? `${minutes}m` : `${seconds}s`}
       </>
     )
   }
@@ -146,7 +144,7 @@ const TxStatus = props => {
         title="Scroll provers are still finalizing your transaction, this can take up to 1 hour. Once done, you'll be able to claim it here for use on the target network."
       >
         <ButtonBase onClick={moveToClaim} className={cx(classes.chip, classes.waitingClaimChip)}>
-          {renderEstimatedWaitingTime(tx.initiatedAt ? dayjs(tx.initiatedAt).add(1, "h").valueOf() : 1)}
+          {renderEstimatedWaitingTime(tx.initiatedAt ? dayjs(tx.initiatedAt).add(1, "h").valueOf() : null)}
         </ButtonBase>
       </Tooltip>
     )
