@@ -132,10 +132,6 @@ const SendTransaction = props => {
     }
   }, [sendError])
 
-  const handleSend = () => {
-    sendTransaction()
-  }
-
   const handleChangeTokenSymbol = symbol => {
     setTokenSymbol(symbol)
   }
@@ -185,7 +181,7 @@ const SendTransaction = props => {
         color="primary"
         disabled={!necessaryCondition}
         loading={sendLoading}
-        onClick={handleSend}
+        onClick={sendTransaction}
         whiteButton
       >
         {sendText}
