@@ -58,6 +58,7 @@ export function useEstimateSendTransaction(props) {
     } else if (!fromNetwork.isL1 && toNetwork.isL1) {
       return await estimateSendL2ToL1()
     }
+    return null
   }
 
   const estimateSendL1ToL2 = () => {

@@ -91,7 +91,7 @@ const BalanceInput = props => {
 
   const shouldPayFee = useMemo(() => (selectedToken.native ? fee : BigInt(0)), [selectedToken, fee])
 
-  const invalid = useMemo(() => {
+  const maxDisabled = useMemo(() => {
     if (!selectedToken.native) {
       return !balance
     }
@@ -147,7 +147,7 @@ const BalanceInput = props => {
 
         <TextButton
           underline="always"
-          className={cx(classes.maxButton, (disabled || invalid) && classes.disabledMaxButton)}
+          className={cx(classes.maxButton, (disabled || maxDisabled) && classes.disabledMaxButton)}
           onClick={handleMaxAmount}
         >
           Max
