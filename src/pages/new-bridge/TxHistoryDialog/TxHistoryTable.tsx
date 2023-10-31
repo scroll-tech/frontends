@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material"
+import { Box } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { BRIDGE_PAGE_SIZE } from "@/constants"
@@ -6,6 +6,7 @@ import { useBrigeContext } from "@/contexts/BridgeContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useTxStore from "@/stores/txStore"
 
+import NoConnected from "../components/NoConnected"
 import TxTable from "../components/TxTable"
 
 const TableBox = styled(Box)(({ theme }) => ({
@@ -31,10 +32,9 @@ const TransactionsList = (props: any) => {
     refreshPageTransactions(currentPage)
   }
 
-  // TODO: may need an image for emply list
   return (
     <TableBox>
-      {pageTransactions.length && chainId ? (
+      {chainId ? (
         <TxTable
           data={pageTransactions}
           loading={loading}
@@ -45,9 +45,7 @@ const TransactionsList = (props: any) => {
           }}
         />
       ) : (
-        <Typography variant="body1" color="textSecondary" sx={{ height: "20rem", lineHeight: "20rem", color: "#C58D49" }} align="center">
-          Your transactions will appear here...
-        </Typography>
+        <NoConnected sx={{ height: ["20rem", "30rem"] }} description="Connect wallet to see your transaction history"></NoConnected>
       )}
     </TableBox>
   )

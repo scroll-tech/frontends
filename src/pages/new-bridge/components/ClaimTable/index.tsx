@@ -24,6 +24,7 @@ import { ClaimStatus } from "@/stores/claimStore"
 import { formatDate, generateExploreLink, toTokenDisplay, truncateHash } from "@/utils"
 
 import useCheckClaimStatus from "../../hooks/useCheckClaimStatus"
+import NoData from "../NoData"
 import ClaimButton from "./ClaimButton"
 
 const useStyles = makeStyles()(theme => {
@@ -119,38 +120,45 @@ const ClaimTable = (props: any) => {
 
   return (
     <Box className={classes.tableContainer}>
-      <TableContainer component={Paper} className={classes.tableWrapper}>
-        <Table aria-label="Tx Table">
-          <TableHead className={classes.tableHeader}>
-            <TableRow>
-              <TableCell align="center">Claim</TableCell>
-              <TableCell>Amount</TableCell>
-              <TableCell>Initiated At</TableCell>
-              <TableCell>Transaction Hash</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody className={classes.tableBody}>
-            <>
-              {data?.map((tx: any) => (
-                <TxRow key={tx.hash} tx={tx} />
-              ))}
-            </>
-          </TableBody>
-        </Table>
-      </TableContainer>
-      {pagination && (
-        <div className="flex justify-center mt-[2.8rem]">
-          <Pagination
-            size="small"
-            classes={{
-              root: classes.pagination,
-            }}
-            page={pagination?.page}
-            count={pagination?.count}
-            onChange={handleChangePage}
-          />
-        </div>
+      {data.length ? (
+        <>
+          <TableContainer component={Paper} className={classes.tableWrapper}>
+            <Table aria-label="Tx Table">
+              <TableHead className={classes.tableHeader}>
+                <TableRow>
+                  <TableCell align="center">Claim</TableCell>
+                  <TableCell>Amount</TableCell>
+                  <TableCell>Initiated At</TableCell>
+                  <TableCell>Transaction Hash</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody className={classes.tableBody}>
+                <>
+                  {data?.map((tx: any) => (
+                    <TxRow key={tx.hash} tx={tx} />
+                  ))}
+                </>
+              </TableBody>
+            </Table>
+          </TableContainer>
+          {pagination && (
+            <div className="flex justify-center mt-[2.8rem]">
+              <Pagination
+                size="small"
+                classes={{
+                  root: classes.pagination,
+                }}
+                page={pagination?.page}
+                count={pagination?.count}
+                onChange={handleChangePage}
+              />
+            </div>
+          )}
+        </>
+      ) : (
+        <NoData title="No claimable transactions" description="When you withdraw from Scroll, your claimable asset will appear here"></NoData>
       )}
+
       {loading ? (
         <Box className={classes.loadingBox}>
           <CircularProgress className={classes.loadingIndicator} />

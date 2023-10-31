@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { makeStyles } from "tss-react/mui"
 
-import { Box, CircularProgress, Typography } from "@mui/material"
+import { Box } from "@mui/material"
 
 import { BRIDGE_PAGE_SIZE } from "@/constants"
 import { useBrigeContext } from "@/contexts/BridgeContextProvider"
@@ -10,11 +10,14 @@ import ClaimTable from "@/pages/new-bridge/components/ClaimTable"
 import useBridgeStore from "@/stores/bridgeStore"
 import useClaimStore from "@/stores/claimStore"
 
+import NotConnected from "../components/NoConnected"
+
 const useStyles = makeStyles()(theme => ({
   tableBox: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    justifyContent: "center",
     minHeight: "34.3rem",
   },
   loadingBox: {
@@ -69,9 +72,10 @@ const Claim = (props: any) => {
 
   return (
     <Box className={classes.tableBox}>
-      {pageTransactions?.length && chainId ? (
+      {chainId ? (
         <ClaimTable
           data={pageTransactions}
+          loading={loading}
           pagination={{
             count: Math.ceil(total / BRIDGE_PAGE_SIZE),
             page,
@@ -79,15 +83,8 @@ const Claim = (props: any) => {
           }}
         />
       ) : (
-        <Typography variant="body1" color="textSecondary" sx={{ color: "#C58D49" }}>
-          Your claimable transactions will appear here...
-        </Typography>
+        <NotConnected description="Connect wallet to see your claimable asset"></NotConnected>
       )}
-      {loading ? (
-        <Box className={classes.loadingBox}>
-          <CircularProgress className={classes.loadingIndicator} />
-        </Box>
-      ) : null}
     </Box>
   )
 }
