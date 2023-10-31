@@ -1,4 +1,3 @@
-import dayjs from "dayjs"
 import { useMemo, useState } from "react"
 import { makeStyles } from "tss-react/mui"
 
@@ -22,7 +21,7 @@ import Link from "@/components/Link"
 import { EXPLORER_URL } from "@/constants"
 import useTokenInfo from "@/hooks/useTokenInfo"
 import { ClaimStatus } from "@/stores/claimStore"
-import { generateExploreLink, toTokenDisplay, truncateHash } from "@/utils"
+import { formatDate, generateExploreLink, toTokenDisplay, truncateHash } from "@/utils"
 
 import useCheckClaimStatus from "../../hooks/useCheckClaimStatus"
 import ClaimButton from "./ClaimButton"
@@ -179,10 +178,6 @@ const TxRow = props => {
     return claimTip
   }, [claimStatus, claimTip, loading])
 
-  const formatDate = (inputStr: string): string => {
-    return inputStr ? dayjs(inputStr).format("DD/MM/YYYY HH:mm:ss") : "-"
-  }
-
   return (
     <TableRow key={tx.hash}>
       <TableCell>
@@ -195,7 +190,7 @@ const TxRow = props => {
         </Typography>
       </TableCell>
       <TableCell>
-        <Typography>{formatDate(tx.initiatedAt)}</Typography>
+        <Typography>{tx.initiatedAt ? formatDate(tx.initiatedAt, { withTime: true }) : "-"}</Typography>
       </TableCell>
       <TableCell sx={{ width: "21rem" }}>
         <Stack direction="column">
