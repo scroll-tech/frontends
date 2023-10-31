@@ -1,4 +1,3 @@
-import dayjs from "dayjs"
 import { useCallback, useMemo } from "react"
 import { makeStyles } from "tss-react/mui"
 
@@ -22,7 +21,7 @@ import Link from "@/components/Link"
 import { NETWORKS, TX_STATUS } from "@/constants"
 import { useBrigeContext } from "@/contexts/BridgeContextProvider"
 import useTokenInfo from "@/hooks/useTokenInfo"
-import { generateExploreLink, toTokenDisplay, truncateHash } from "@/utils"
+import { formatDate, generateExploreLink, toTokenDisplay, truncateHash } from "@/utils"
 
 import useCheckClaimStatus from "../../hooks/useCheckClaimStatus"
 import useLastFinalizedBatchIndex from "../../hooks/useLastFinalizedBatchIndex"
@@ -249,11 +248,6 @@ const TxRow = props => {
     return toTokenDisplay(amount, tokenInfo?.decimals ? BigInt(tokenInfo.decimals) : undefined)
   }
 
-  const formatDate = (inputStr: string): string => {
-    const date = dayjs(inputStr)
-    return inputStr ? date.format("DD/MM/YYYY HH:mm:ss") : "-"
-  }
-
   const actionText = tx => {
     if (tx.isL1) {
       return `Deposit to Scroll`
@@ -282,7 +276,7 @@ const TxRow = props => {
       </TableCell>
 
       <TableCell>
-        <Typography>{formatDate(tx.initiatedAt)}</Typography>
+        <Typography>{tx.initiatedAt ? formatDate(tx.initiatedAt, { withTime: true }) : "-"}</Typography>
       </TableCell>
 
       <TableCell sx={{ width: "21rem" }}>
