@@ -31,7 +31,7 @@ const BridgeLinks = () => {
         </FAQsLink>
       )}
       <FAQsLink to="/terms-of-service">
-        Terms and Conditions
+        Terms of Service
         <SvgIcon component={LinkSvg} inheritViewBox></SvgIcon>
       </FAQsLink>
     </Stack>
