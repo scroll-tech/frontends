@@ -25,6 +25,7 @@ import { formatDate, generateExploreLink, toTokenDisplay, truncateHash } from "@
 
 import useCheckClaimStatus from "../../hooks/useCheckClaimStatus"
 import useLastFinalizedBatchIndex from "../../hooks/useLastFinalizedBatchIndex"
+import NoData from "../NoData"
 import TxStatusButton from "./TxStatusButton"
 
 const useStyles = makeStyles()(theme => {
@@ -149,47 +150,57 @@ const TxTable = (props: any) => {
   return (
     <>
       <TableContainer component={Paper} className={classes.tableWrapper}>
-        <Box className={classes.tableMinHeight}>
-          <Table aria-label="Tx Table">
-            <TableHead className={classes.tableHeader}>
-              <TableRow>
-                <TableCell align="center">Status</TableCell>
-                <TableCell>Amount</TableCell>
-                <TableCell sx={{ width: "16rem" }}>Action</TableCell>
-                <TableCell sx={{ width: "12rem" }} align="left">
-                  Initiated At
-                </TableCell>
-                <TableCell sx={{ width: "32rem" }}>Transaction Hash</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody className={classes.tableBody}>
-              <>
-                {data?.map((tx: any) => (
-                  <TxRow finalizedIndex={lastFinalizedBatchIndex ?? 0} key={tx.hash} tx={tx} />
-                ))}
-              </>
-            </TableBody>
-          </Table>
-        </Box>
+        {data.length ? (
+          <>
+            <Box className={classes.tableMinHeight}>
+              <Table aria-label="Tx Table">
+                <TableHead className={classes.tableHeader}>
+                  <TableRow>
+                    <TableCell align="center">Status</TableCell>
+                    <TableCell>Amount</TableCell>
+                    <TableCell sx={{ width: "16rem" }}>Action</TableCell>
+                    <TableCell sx={{ width: "12rem" }} align="left">
+                      Initiated At
+                    </TableCell>
+                    <TableCell sx={{ width: "32rem" }}>Transaction Hash</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody className={classes.tableBody}>
+                  <>
+                    {data.map((tx: any) => (
+                      <TxRow finalizedIndex={lastFinalizedBatchIndex ?? 0} key={tx.hash} tx={tx} />
+                    ))}
+                  </>
+                </TableBody>
+              </Table>
+            </Box>
 
-        {pagination && (
-          <div className="flex justify-center mt-[2rem]">
-            <Pagination
-              size="small"
-              classes={{
-                root: classes.pagination,
-              }}
-              page={pagination?.page}
-              count={pagination?.count}
-              onChange={handleChangePage}
-            />
-          </div>
+            {pagination && (
+              <div className="flex justify-center mt-[2rem]">
+                <Pagination
+                  size="small"
+                  classes={{
+                    root: classes.pagination,
+                  }}
+                  page={pagination?.page}
+                  count={pagination?.count}
+                  onChange={handleChangePage}
+                />
+              </div>
+            )}
+          </>
+        ) : (
+          <NoData
+            sx={{ height: ["20rem", "30rem"] }}
+            title="No transaction hisotry"
+            description="When you bridge assets, your transactions will appear here"
+          ></NoData>
         )}
-        {loading ? (
+        {loading && (
           <Box className={classes.loadingBox}>
             <CircularProgress className={classes.loadingIndicator} />
           </Box>
-        ) : null}
+        )}
       </TableContainer>
     </>
   )

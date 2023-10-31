@@ -63,6 +63,10 @@ const useStyles = makeStyles()(theme => ({
 
     [theme.breakpoints.down("sm")]: {
       padding: "3rem 2rem 2rem",
+
+      "&.withdraw": {
+        padding: "1rem 2rem 2rem",
+      },
     },
   },
 
