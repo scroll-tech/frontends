@@ -28,32 +28,36 @@ export const FLOW_QUESTIONS = [
     subject: "What’s the best way to get sponsored at Scroll?",
     options: [
       {
+        key: "A",
         title: "Win a hackathon in Scroll",
         explaination:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.",
       },
       {
+        key: "B",
         title: "Continue building great products at Scroll",
         explaination:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.",
+          "consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.",
       },
     ],
-    answer: 1,
+    answer: "B",
   },
   {
     subject: "What’s the best way to get sponsored at Scroll?",
     options: [
       {
+        key: "A",
         title: "Win a hackathon in Scroll",
         explaination:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.",
       },
       {
+        key: "B",
         title: "Continue building great products at Scroll",
         explaination:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.",
       },
     ],
-    answer: 0,
+    answer: "A",
   },
 ]

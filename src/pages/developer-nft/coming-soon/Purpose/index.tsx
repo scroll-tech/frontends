@@ -5,6 +5,7 @@ import { ReactComponent as CommunitySvg } from "@/assets/svgs/story/value-commun
 import { ReactComponent as NeutralitySvg } from "@/assets/svgs/story/value-neutrality.svg"
 import LineToView from "@/components/Motion/LineToView"
 import useCheckViewport from "@/hooks/useCheckViewport"
+import useNFTStore from "@/stores/nftStore"
 
 const NFT_VALUES = [
   {
@@ -21,9 +22,10 @@ const NFT_VALUES = [
 
 const Purpose = () => {
   const { isPortrait } = useCheckViewport()
+  const { phrase } = useNFTStore()
 
   return (
-    <Box sx={{ width: "100%", pt: ["4.8rem", "5.5rem", "8rem"] }}>
+    <Box sx={{ width: "100%", pt: phrase === "in-progress" ? ["4.8rem", "5.5rem", "8rem"] : ["3.2rem", "4.8rem"] }}>
       <Typography sx={{ fontSize: ["2.4rem", "3.2rem"], lineHeight: ["3.2rem", "4.8rem"], textAlign: "center", mb: ["4.8rem", "7.2rem"] }}>
         To celebrate the builders who are here with us at this important moment in our journey to scale Ethereum, we are offering a soulbound Scroll
         Origins NFT. This makes a permanent onchain record of your support and aligns with core Scroll values: 

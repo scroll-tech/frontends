@@ -18,7 +18,7 @@ const StepWrapper = props => {
   const { isPortrait } = useCheckViewport()
 
   return (
-    <Container sx={{ pt: "12rem", pb: ["8rem", "16rem"] }}>
+    <Container sx={{ pt: ["2rem", "4rem", "12rem"], pb: ["8rem", "16rem"] }}>
       <Stack direction={isPortrait ? "column" : "row"} alignItems={isPortrait ? "center" : "flex-start"} sx={{ gap: ["1.6rem", "8rem", "3.25rem"] }}>
         {children}
 

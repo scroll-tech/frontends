@@ -1,8 +1,8 @@
 import { create } from "zustand"
 
-import { DEVELOPER_NFT_PHRASES } from "@/constants"
+import { DEVELOPER_NFT_PHRASES, MintableDate } from "@/constants"
 
-type Phrase = "" | "in-progress" | "end"
+type Phrase = "" | "in-progress" | "waiting" | "end"
 
 interface NFTStore {
   phrase: Phrase
@@ -25,9 +25,13 @@ const useNFTStore = create<NFTStore>()((set, get) => ({
       set({
         phrase: "",
       })
-    } else if (current > DEVELOPER_NFT_PHRASES.Starts && current < DEVELOPER_NFT_PHRASES.Ends) {
+    } else if (current > DEVELOPER_NFT_PHRASES.Starts && current <= DEVELOPER_NFT_PHRASES.Ends) {
       set({
         phrase: "in-progress",
+      })
+    } else if (current > DEVELOPER_NFT_PHRASES.Ends && current < MintableDate) {
+      set({
+        phrase: "waiting",
       })
     } else {
       set({

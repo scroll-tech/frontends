@@ -1,5 +1,5 @@
 import dayjs from "dayjs"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { Stack, Typography } from "@mui/material"
 
@@ -11,14 +11,18 @@ import NFTCard from "../../components/NFTCard"
 import Statistic from "../../components/Statistic"
 
 const MintNFT = () => {
-  const { isMobile, isPortrait } = useCheckViewport()
+  const { isMobile, isPortrait, isDesktop } = useCheckViewport()
   const [mintedAmount] = useState(640)
+
+  useEffect(() => {
+    // TODO: if has NFT, then display
+  }, [])
 
   return (
     <SectionWrapper
       dark
       sx={{
-        pt: "7.8rem",
+        pt: ["2.4rem", "3.2rem", "7.8rem"],
         pb: ["8rem", "18.4rem"],
         display: "flex",
         justifyContent: "center",
@@ -39,9 +43,17 @@ const MintNFT = () => {
       }}
     >
       <NFTCard sx={{ width: ["80%", "42rem"] }}></NFTCard>
-      <Stack direction="column" spacing={isPortrait ? "2.4rem" : "4.8rem"} alignItems={isPortrait ? "center" : "flex-start"}>
-        <Typography sx={{ fontSize: ["4rem", "7.8rem"], fontWeight: 600, maxWidth: ["auto", "61rem"], lineHeight: ["5.6rem", "8.5rem"] }}>
-          You have minted a Scroll Origin NFT!
+      <Stack direction="column" spacing={isPortrait ? "2.4rem" : "4.8rem"} alignItems={isDesktop ? "flex-start" : "center"}>
+        <Typography
+          sx={{
+            fontSize: ["4rem", "7.2rem"],
+            fontWeight: 600,
+            maxWidth: ["auto", "63rem"],
+            lineHeight: ["5.6rem", "9.6rem"],
+            textAlign: ["center", "center", "center", "left"],
+          }}
+        >
+          You have successfully minted a Scroll Origins NFT!
         </Typography>
         <Stack direction="row" spacing={isMobile ? "2.4rem" : "4.8rem"}>
           <Statistic label="NFTs Minted">{mintedAmount}</Statistic>

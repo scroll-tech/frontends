@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { Container, Stack, Typography } from "@mui/material"
 
 import Button from "@/components/Button"
+import { SCROLL_ORIGINS_NFT } from "@/constants"
 
 import NFTCard from "../../components/NFTCard"
 
@@ -14,10 +15,12 @@ const FinalStep = () => {
   }
   return (
     <Container sx={{ pt: "7.4rem", pb: "14rem" }}>
-      <Stack alignItems="center" spacing="3rem">
+      <Stack alignItems="center" spacing="2.4rem">
         <NFTCard sx={{ width: ["80%", "42rem"] }}></NFTCard>
-        <Typography sx={{ fontSize: "4.8rem", fontWeight: 600, lineHeight: "6.8rem", width: "61.6rem", textAlign: "center" }}>
-          You have successfully minted Scroll Origin NFT!
+        <Typography
+          sx={{ fontSize: ["2.4rem", "4.8rem"], fontWeight: 600, lineHeight: ["3.2rem", "7.2rem"], width: ["100%", "61.6rem"], textAlign: "center" }}
+        >
+          You have successfully minted {SCROLL_ORIGINS_NFT}!
         </Typography>
         <Button color="primary" onClick={handleGoShow}>
           Done
