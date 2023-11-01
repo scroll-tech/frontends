@@ -45,7 +45,7 @@ const Bridge = () => {
         >
           <Stack
             direction="row"
-            sx={{ mb: ["3rem", "5rem"], width: "64rem", maxWidth: "100%" }}
+            sx={{ mb: "2.4rem", width: "64rem", maxWidth: "100%" }}
             spacing="2rem"
             justifyContent="space-between"
             alignItems="center"
@@ -53,6 +53,7 @@ const Bridge = () => {
             <Typography
               sx={{
                 fontSize: ["4rem", "4.8rem"],
+                lineHeight: ["4.8rem", "7.2rem"],
                 fontWeight: 600,
                 width: "100%",
                 whiteSpace: "nowrap",
