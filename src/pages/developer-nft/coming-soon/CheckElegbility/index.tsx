@@ -83,14 +83,14 @@ const CheckElegbility = () => {
         </>
       )}
       <Typography sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: ["2.4rem", "3.2rem"], mt: "0.8rem !important" }}>
-        Service provided by the{" "}
+        Service provided by{" "}
         <Link
           underline="always"
           external
-          href="https://unifra.io"
+          href={requireEnv("REACT_APP_L2_SCAN_URI")}
           sx={{ fontWeight: 700, fontSize: "inherit", textUnderlineOffset: "1px", textDecorationThickness: "1px" }}
         >
-          Unifra team
+          L2SCAN team
         </Link>
         <strong>.</strong>
       </Typography>
