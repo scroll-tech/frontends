@@ -1,6 +1,16 @@
 [
   {
     "type": "Announcement",
+    "id": "community-update-october",
+    "date": "2023-11-01",
+    "title": "Community Update: October",
+    "posterTitle": "Community Update: October",
+    "summary": "Dive into our October recap.",
+    "posterImg": "/imgs/homepage/blog/poster_cover_17.png",
+    "ogImg": "/imgs/homepage/blog/poster_cover_17_og.png"
+  },
+  {
+    "type": "Announcement",
     "id": "scroll-origins-nft",
     "date": "2023-10-26",
     "title": "Announcing the Scroll Origins NFT",
