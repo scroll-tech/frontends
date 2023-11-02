@@ -11,7 +11,8 @@ on:
 jobs:
   bump-version:
     if: |
-      !startsWith(github.event.head_commit.message , 'ci: version bump to ')
+      !startsWith(github.event.head_commit.message, 'ci: version bump to ') &&
+      !endsWith(github.event.head_commit.message, ' [bot]')
     name: "Bump version on production"
     permissions:
       contents: write
@@ -51,5 +52,5 @@ jobs:
           delete-branch: true
           branch: ci/_bump-version
           title: ${{ steps.get-version-bump-commit-message.outputs.title }}
-          labels: "bot/bump-version, automerge"
+          labels: "bot/bump-version, automerge, automerge-squash"
           body: ""
