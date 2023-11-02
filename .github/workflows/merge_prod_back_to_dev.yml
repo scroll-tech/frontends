@@ -30,7 +30,7 @@ jobs:
       - run: |
           git fetch --unshallow
           git checkout sepolia
-          git merge --no-ff mainnet -m "Auto-merge prod back to dev [bot]"
+          git merge --no-ff origin/mainnet -m "Auto-merge prod back to dev [bot]"
       - name: Create Pull Request for dev
         uses: peter-evans/create-pull-request@2b011faafdcbc9ceb11414d64d0573f37c774b04
         with:
