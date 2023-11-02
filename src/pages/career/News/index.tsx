@@ -62,9 +62,28 @@ const ExternalLink = styled(Link)(({ theme }) => ({
   },
 }))
 
+const Newscard = styled(Box)(({ theme }) => ({
+  cursor: "pointer",
+  "&:hover": {
+    opacity: 0.7,
+  },
+  "& *": {
+    cursor: "pointer !important",
+  },
+}))
+
 const News = () => {
   const { classes } = useStyles()
   const { isMobile } = useCheckViewport()
+
+  const handleClick = news => {
+    window.location.href = news.link
+    // if (blog.externalLink) {
+    //   window.location.href = blog.externalLink
+    // } else {
+    //   navigate("/blog/" + blog.id)
+    // }
+  }
 
   return (
     <SectionWrapper>
@@ -74,7 +93,7 @@ const News = () => {
       <SuccessionToView className={classes.grid}>
         {NEWS.map((item, index) => (
           <SuccessionItem>
-            <Box>
+            <Newscard onClick={() => handleClick(item)}>
               <SvgIcon sx={{ width: "100%", height: "auto" }} component={item.cover} inheritViewBox></SvgIcon>
               <Typography
                 sx={{ fontSize: ["2rem", "2.4rem"], fontWeight: 600, mt: ["1.3rem", "1.8rem", "2.2rem"], mb: ["0.8rem", "1.4rem", "2rem"] }}
@@ -90,7 +109,7 @@ const News = () => {
                   />
                 </svg>
               </ExternalLink>
-            </Box>
+            </Newscard>
           </SuccessionItem>
         ))}
       </SuccessionToView>
