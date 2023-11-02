@@ -1,3 +1,5 @@
+import { makeStyles } from "tss-react/mui"
+
 import { Box } from "@mui/material"
 
 import Header from "./Header"
@@ -7,9 +9,19 @@ import Perks from "./Perks"
 import Positions from "./Positions"
 import WorkApproach from "./WorkApproach"
 
+const useStyles = makeStyles()(theme => ({
+  container: {
+    marginTop: "-6.5rem",
+    paddingTop: "6.5rem",
+    overflow: "hidden",
+  },
+}))
+
 const Career = () => {
+  const { classes } = useStyles()
+
   return (
-    <Box sx={{ overflow: "hidden" }}>
+    <Box className={classes.container}>
       <Header />
       <Mission />
       <WorkApproach />
