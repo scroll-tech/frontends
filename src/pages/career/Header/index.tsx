@@ -96,7 +96,7 @@ const Header = () => {
             marginTop: "2rem",
             gridColumn: "1 / -1",
             width: "100%",
-            background: ["url(/imgs/career/career-bg.svg) center / contain no-repeat"],
+            background: ["url(/imgs/career/career-bg.svg) center / contain no-repeat", "url(/imgs/career/career-bg.svg) right / contain no-repeat"],
             backgroundSize: "cover",
           }}
         ></Box>
