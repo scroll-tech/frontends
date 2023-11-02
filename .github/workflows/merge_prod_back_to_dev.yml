@@ -1,0 +1,42 @@
+# when there's new bump version commit in dev branch (triggered by push in prod)
+# merge prod branch back to dev branch with merge (not squash)
+name: "Merge Prod Back to Dev"
+
+on:
+  push:
+    branches:
+      - sepolia
+
+jobs:
+  merge-back:
+    if: |
+      startsWith(github.event.head_commit.message, 'ci: version bump to ') &&
+      endsWith(github.event.head_commit.message, ' [bot]')
+    name: "Merge prod back to dev"
+    permissions:
+      contents: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Checkout source code"
+        uses: actions/checkout@v3
+        with:
+          ref: sepolia
+
+      - run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "github-actions"
+      - run: |
+          git fetch --unshallow
+          git checkout sepolia
+          git merge --no-ff mainnet -m "Auto-merge prod back to dev [bot]"
+      - name: Create Pull Request for dev
+        uses: peter-evans/create-pull-request@2b011faafdcbc9ceb11414d64d0573f37c774b04
+        with:
+          token: ${{ secrets.WRITE_TOKEN }}
+          delete-branch: true
+          branch: ci/_merge-prod-back-to-dev
+          title: "Auto-merge prod back to dev [bot]"
+          labels: "bot/merge-prod-back-to-dev, automerge, automerge-merge"
+          body: ""

@@ -1,8 +1,8 @@
 # auto merge any pr that
 # 1. has ` [bot]` at the end of the pr title
-# 2. has `automerge` and `automerge-merge` label
+# 2. has `automerge` and `automerge-squash` label
 # note the first character in ` [bot]` is a thin space https://www.wikiwand.com/en/Thin_space
-name: Auto Merge
+name: Auto Squash
 on:
   pull_request:
     branches:
@@ -22,8 +22,8 @@ on:
   status: {}
 jobs:
   # merge with WRITE_TOKEN so that subsequent actions can be triggered
-  # merge with merge instead of squash
-  automerge-merge:
+  # merge with squash
+  automerge-squash:
     if: |
       endsWith(github.event.pull_request.title, ' [bot]') &&
       !(
@@ -32,12 +32,13 @@ jobs:
       )
     runs-on: ubuntu-latest
     steps:
-      - id: automerge-merge
-        name: automerge-merge
+      - id: automerge-squash
+        name: automerge-squash
         uses: pascalgn/automerge-action@22948e0bc22f0aa673800da838595a3e7347e584
+        continue-on-error: true
         env:
           GITHUB_TOKEN: "${{ secrets.WRITE_TOKEN }}"
-          MERGE_METHOD: "merge"
-          MERGE_LABELS: "automerge, automerge-merge"
-          MERGE_REMOVE_LABELS: "automerge, automerge-merge"
+          MERGE_METHOD: "squash"
+          MERGE_LABELS: "automerge, automerge-squash"
+          MERGE_REMOVE_LABELS: "automerge, automerge-squash"
           MERGE_COMMIT_MESSAGE: "pull-request-title"
