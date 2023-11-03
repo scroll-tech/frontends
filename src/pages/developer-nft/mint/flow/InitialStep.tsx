@@ -16,10 +16,10 @@ const InitialStep = () => {
     <StepWrapper src="/imgs/nft/flow-initial-step.svg">
       <Stack direction="column" sx={{ gap: ["1.6rem", "2.4rem", "5.6rem"] }}>
         <Typography sx={{ fontSize: ["2.4rem", "4.8rem"], lineHeight: ["3.2rem", "7.2rem"], fontWeight: 600 }}>
-          Congratulations to be eligible for a Scroll Early Developer NFT and a key contributor in our community
+          Congratulations! You are eligible for Scroll Origins and we thank you for being a key contributor.
         </Typography>
         <Typography sx={{ fontSize: ["1.6rem", "2.4rem"], lineHeight: ["2.4rem", "3.6rem"], fontWeight: [400, 500] }}>
-          Scroll cares about building a community with mind-like people, that’s why we prepared this little quiz help you learn more about our value
+          Scroll cares about building a community with like-minded people. That’s why we prepared a short quiz help you learn more about our values
           and welcome you to become part of our community
         </Typography>
         <Button color="primary" onClick={handleStartFlow}>

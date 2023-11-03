@@ -55,7 +55,7 @@ const MintNFT = () => {
     <SectionWrapper
       dark
       sx={{
-        pt: [0, "8rem"],
+        pt: ["2.4rem", "4rem", "8rem"],
         pb: ["8rem", "16rem"],
         display: "flex",
         justifyContent: "center",
@@ -76,7 +76,7 @@ const MintNFT = () => {
         },
       }}
     >
-      <NFTCard sx={{ width: ["80%", "42rem"], py: ["1.2rem", "1.8rem"] }}></NFTCard>
+      <NFTCard sx={{ width: ["80%", "42.5rem"], pt: [0, "1rem"] }}></NFTCard>
       <Stack direction="column" spacing={isPortrait ? "2.4rem" : "4.8rem"} alignItems={isDesktop ? "flex-start" : "center"}>
         <Typography sx={{ fontSize: ["4rem", "7.8rem"], fontWeight: 600, lineHeight: ["5.6rem", "8.5rem"] }}>{SCROLL_ORIGINS_NFT}</Typography>
         <Stack direction="row" spacing={isMobile ? "2.4rem" : "4.8rem"}>

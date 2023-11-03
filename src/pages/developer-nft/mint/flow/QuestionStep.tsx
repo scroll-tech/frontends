@@ -32,7 +32,7 @@ const useStyles = makeStyles()(theme => ({
     marginTop: "5.6rem",
     marginBottom: "5.6rem",
 
-    [theme.breakpoints.up("md")]: {
+    [theme.breakpoints.down("md")]: {
       marginTop: "3.2rem",
       marginBottom: "3.2rem",
     },
@@ -48,10 +48,7 @@ const useStyles = makeStyles()(theme => ({
     backgroundColor: theme.palette.background.default,
     margin: 0,
     "&:nth-of-type(n + 2)": {
-      marginTop: "3.2rem",
-      [theme.breakpoints.up("md")]: {
-        marginTop: "2.4rem",
-      },
+      marginTop: "2.4rem",
       [theme.breakpoints.down("sm")]: {
         marginTop: "1.6rem",
       },

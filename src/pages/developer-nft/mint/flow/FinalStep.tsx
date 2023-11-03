@@ -14,9 +14,9 @@ const FinalStep = () => {
     navigate("/developer-nft/my")
   }
   return (
-    <Container sx={{ pt: "7.4rem", pb: "14rem" }}>
+    <Container sx={{ pt: ["2.4rem", "4rem", "6rem"], pb: ["8rem", "14rem"] }}>
       <Stack alignItems="center" spacing="2.4rem">
-        <NFTCard sx={{ width: ["80%", "42rem"] }}></NFTCard>
+        <NFTCard sx={{ width: ["80%", "42.5rem"], mb: "1rem" }}></NFTCard>
         <Typography
           sx={{ fontSize: ["2.4rem", "4.8rem"], fontWeight: 600, lineHeight: ["3.2rem", "7.2rem"], width: ["100%", "61.6rem"], textAlign: "center" }}
         >
