@@ -71,7 +71,8 @@ const useStyles = makeStyles()(theme => ({
   },
 
   snackbar: {
-    width: "49rem",
+    width: "max-content",
+    maxWidth: "calc(100% - 1.6rem)",
   },
 }))
 
@@ -145,7 +146,7 @@ const Send = () => {
             </Alert>
           )}
           {txResult?.code === 0 && (
-            <Alert severity="error">
+            <Alert severity="error" sx={{ maxWidth: "49rem" }}>
               <>
                 Failed in submission.
                 <br /> {txResult?.message}

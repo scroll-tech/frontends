@@ -34,7 +34,7 @@ const Bridge = () => {
         <GlobalComponents></GlobalComponents>
         <SectionWrapper
           sx={{
-            pt: "8.4rem",
+            pt: ["4.8rem", "8.4rem"],
             pb: "6rem",
             minHeight: "calc(100vh - 69.2rem)",
             display: "flex",

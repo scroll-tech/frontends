@@ -34,7 +34,6 @@ const useStyles = makeStyles()(theme => {
       whiteSpace: "nowrap",
       [theme.breakpoints.down("sm")]: {
         paddingBottom: "1.6rem",
-        overflowX: "scroll",
       },
     },
     tableWrapper: {
@@ -43,6 +42,9 @@ const useStyles = makeStyles()(theme => {
     },
     tableMinHeight: {
       minHeight: "20rem",
+      [theme.breakpoints.down("sm")]: {
+        overflowX: "auto",
+      },
     },
     tableTitle: {
       marginTop: "2.8rem",
@@ -107,6 +109,11 @@ const useStyles = makeStyles()(theme => {
       backgroundColor: theme.palette.tagSuccess.light,
     },
     pagination: {
+      overflowX: "auto",
+
+      ".MuiPagination-ul": {
+        flexWrap: "nowrap",
+      },
       ".MuiPaginationItem-text": {
         fontSize: "1.6rem",
       },
@@ -261,9 +268,17 @@ const TxRow = props => {
 
   const actionText = tx => {
     if (tx.isL1) {
-      return `Deposit to Scroll`
+      return (
+        <>
+          Deposit <span style={{ whiteSpace: "nowrap" }}>to Scroll</span>
+        </>
+      )
     } else {
-      return `Withdraw to Ethereum`
+      return (
+        <>
+          Withdraw <span style={{ whiteSpace: "nowrap" }}>to Ethereum</span>
+        </>
+      )
     }
   }
 
@@ -292,7 +307,7 @@ const TxRow = props => {
 
       <TableCell sx={{ width: "21rem" }}>
         <Stack direction="column">
-          <Typography>
+          <Typography sx={{ whiteSpace: "nowrap" }}>
             {tx.isL1 ? "Ethereum" : "Scroll"}:{" "}
             <Link
               external
@@ -307,7 +322,7 @@ const TxRow = props => {
         </Stack>
 
         <Stack direction="column" className="mt-[0.4rem]">
-          <Typography>
+          <Typography sx={{ whiteSpace: "nowrap" }}>
             {tx.isL1 ? "Scroll" : "Ethereum"}:{" "}
             {tx.toHash ? (
               <Link
