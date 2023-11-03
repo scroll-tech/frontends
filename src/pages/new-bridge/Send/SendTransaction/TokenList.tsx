@@ -46,7 +46,7 @@ const InputBaseStyled = styled(InputBase)(({ theme }) => ({
 
 const DialogContentStyled = styled(DialogContent)(({ theme }) => ({
   minHeight: "30rem",
-  padding: 0,
+  padding: "0 0 1.6rem",
 }))
 
 const MenuItemStyled = styled(MenuItem)(({ theme }) => ({
