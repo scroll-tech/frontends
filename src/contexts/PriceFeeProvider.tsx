@@ -1,4 +1,4 @@
-import { AbiCoder, ethers } from "ethers"
+import { AbiCoder, Transaction, ethers } from "ethers"
 import React, { createContext, useContext, useMemo, useState } from "react"
 import useStorage from "squirrel-gill"
 import { useBlockNumber } from "wagmi"
@@ -27,6 +27,7 @@ type Props = {
   gasPrice: bigint
   errorMessage: string
   fetchData: () => void
+  getL1DateFee: (selectedToken, amount, gasLimit) => Promise<bigint>
 }
 
 enum GatewayType {
@@ -75,7 +76,9 @@ const Contracts = {
     env: "REACT_APP_L2_LIDO_GATEWAY_PROXY_ADDR",
   },
   SCROLL_MESSENGER: { abi: require("@/assets/abis/L2ScrollMessenger.json"), env: "REACT_APP_L2_SCROLL_MESSENGER" },
-  GAS_PRICE_ORACLE: { abi: require("@/assets/abis/L2GasPriceOracle.json"), env: "REACT_APP_L2_GAS_PRICE_ORACLE" },
+  L1_GAS_PRICE_ORACLE: { abi: require("@/assets/abis/L1GasPriceOracle.json"), env: "REACT_APP_L1_GAS_PRICE_ORACLE" },
+  L2_GAS_PRICE_ORACLE: { abi: require("@/assets/abis/L2GasPriceOracle.json"), env: "REACT_APP_L2_GAS_PRICE_ORACLE" },
+
   L1_GATEWAY_ROUTER_PROXY: { abi: require("@/assets/abis/L1_GATEWAY_ROUTER_PROXY_ADDR.json"), env: "REACT_APP_L1_GATEWAY_ROUTER_PROXY_ADDR" },
 }
 
@@ -143,7 +146,7 @@ export const PriceFeeProvider = ({ children }) => {
 
   const getGasPrice = async () => {
     try {
-      const L2GasPriceOracleContract = getContract("GAS_PRICE_ORACLE", networksAndSigners[CHAIN_ID.L1].signer)
+      const L2GasPriceOracleContract = getContract("L2_GAS_PRICE_ORACLE", networksAndSigners[CHAIN_ID.L1].signer)
       const gasPrice = await L2GasPriceOracleContract.l2BaseFee()
       return gasPrice
     } catch (err) {
@@ -246,5 +249,34 @@ export const PriceFeeProvider = ({ children }) => {
     }
   }
 
-  return <PriceFeeContext.Provider value={{ gasLimit, gasPrice, errorMessage, fetchData }}>{children}</PriceFeeContext.Provider>
+  const buildUnsignedSerializedTransaction = async (selectedToken, amount, gasLimit) => {
+    const { gateway } = networksAndSigners[CHAIN_ID.L2]
+    if (selectedToken.symbol === ETH_SYMBOL) {
+      const data = gateway.interface.encodeFunctionData("withdrawETH(uint256,uint256)", [amount, 0])
+      return Transaction.from({
+        to: walletCurrentAddress,
+        data,
+        value: amount,
+        gasLimit,
+      }).unsignedSerialized
+    }
+
+    const data = gateway.interface.encodeFunctionData("withdrawERC20(address,uint256,uint256)", [selectedToken.address, amount, 0])
+    return Transaction.from({
+      to: walletCurrentAddress,
+      data,
+      gasLimit,
+    }).unsignedSerialized
+  }
+
+  // L1 Data Fee on L2
+  const getL1DateFee = async (selectedToken, amount = BigInt(1), gasLimit) => {
+    const tx = buildUnsignedSerializedTransaction(selectedToken, amount, gasLimit)
+
+    const L1GasPriceOracleContract = getContract("L1_GAS_PRICE_ORACLE", networksAndSigners[CHAIN_ID.L2].provider)
+    const l1DateFee = await L1GasPriceOracleContract.getL1Fee(tx)
+    return l1DateFee
+  }
+
+  return <PriceFeeContext.Provider value={{ gasLimit, gasPrice, errorMessage, fetchData, getL1DateFee }}>{children}</PriceFeeContext.Provider>
 }

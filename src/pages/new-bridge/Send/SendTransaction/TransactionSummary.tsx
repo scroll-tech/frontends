@@ -30,6 +30,7 @@ type Props = {
   estimatedGasCost: bigint
   relayFee: bigint
   totalFee: bigint
+  l1DataFee?: bigint
   bridgeWarning?: string | JSX.Element | null
 }
 
@@ -39,7 +40,7 @@ const TransactionSummary: FC<Props> = props => {
   const { classes: styles } = useStyles()
   const { txType, isNetworkCorrect } = useBridgeStore()
 
-  const { amount, priceFeeErrorMessage, selectedToken, estimatedGasCost, relayFee, totalFee, bridgeWarning } = props
+  const { amount, priceFeeErrorMessage, selectedToken, estimatedGasCost, relayFee, l1DataFee, totalFee, bridgeWarning } = props
 
   const getDisplayedValue = (value, decimals = BigInt(18), symbol = ETH_SYMBOL) => {
     const condition = isNetworkCorrect && amount && bridgeWarning === null
@@ -61,6 +62,10 @@ const TransactionSummary: FC<Props> = props => {
     const fee = txType === "Deposit" ? relayFee : estimatedGasCost
     return getDisplayedValue(fee)
   }, [isNetworkCorrect, amount, estimatedGasCost, relayFee, selectedToken, priceFeeErrorMessage, bridgeWarning])
+
+  const displayedL1DataFee = useMemo(() => {
+    return getDisplayedValue(l1DataFee)
+  }, [isNetworkCorrect, amount, estimatedGasCost, l1DataFee, selectedToken, priceFeeErrorMessage, bridgeWarning])
 
   const displayedTotalCost = useMemo(() => {
     if (selectedToken.symbol === ETH_SYMBOL) return getDisplayedValue(totalFee + amountToBN(amount, selectedToken.decimals))
@@ -94,6 +99,7 @@ const TransactionSummary: FC<Props> = props => {
           large
         />
         <DetailRow title="L2 gas fee" value={displayedL2Fee} large />
+        {txType === "Withdraw" && <DetailRow title="L1 data fee" value={displayedL1DataFee} large />}
         <Divider sx={{ my: "0.8rem" }} />
         <DetailRow title="Total" sx={{ mt: "0.8rem" }} value={displayedTotalCost} large />
       </Box>
