@@ -32,7 +32,6 @@ const useStyles = makeStyles()(theme => {
     tableContainer: {
       [theme.breakpoints.down("sm")]: {
         width: "100%",
-        overflowX: "scroll",
       },
     },
     tableWrapper: {
@@ -41,7 +40,8 @@ const useStyles = makeStyles()(theme => {
       borderRadius: 0,
       minHeight: "28.7rem",
       [theme.breakpoints.down("sm")]: {
-        minWidth: "50rem",
+        width: "100%",
+        overflowX: "auto",
       },
     },
     tableTitle: {
@@ -68,7 +68,10 @@ const useStyles = makeStyles()(theme => {
     tableBody: {
       minHeight: "18.3rem",
       ".MuiTableCell-root": {
-        padding: "2rem 0.8rem",
+        padding: "1.6rem 0.8rem",
+        [theme.breakpoints.down("sm")]: {
+          padding: "1.5rem 0.8rem",
+        },
         "*": {
           fontSize: "1.4rem",
         },
@@ -81,6 +84,11 @@ const useStyles = makeStyles()(theme => {
       },
     },
     pagination: {
+      overflowX: "auto",
+
+      ".MuiPagination-ul": {
+        flexWrap: "nowrap",
+      },
       ".MuiPaginationItem-text": {
         fontSize: "1.6rem",
       },
@@ -128,8 +136,8 @@ const ClaimTable = (props: any) => {
                 <TableRow>
                   <TableCell align="center">Claim</TableCell>
                   <TableCell>Amount</TableCell>
-                  <TableCell>Initiated At</TableCell>
-                  <TableCell>Transaction Hash</TableCell>
+                  <TableCell sx={{ whiteSpace: "nowrap" }}>Initiated At</TableCell>
+                  <TableCell sx={{ whiteSpace: "nowrap" }}>Transaction Hash</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody className={classes.tableBody}>
@@ -142,7 +150,7 @@ const ClaimTable = (props: any) => {
             </Table>
           </TableContainer>
           {pagination && (
-            <div className="flex justify-center mt-[2.8rem]">
+            <Stack direction="row" justifyContent="center" alignItems="flex-end" sx={{ mt: ["0.4rem", "1.4rem"] }}>
               <Pagination
                 size="small"
                 classes={{
@@ -152,7 +160,7 @@ const ClaimTable = (props: any) => {
                 count={pagination?.count}
                 onChange={handleChangePage}
               />
-            </div>
+            </Stack>
           )}
         </>
       ) : (
@@ -198,11 +206,11 @@ const TxRow = props => {
         </Typography>
       </TableCell>
       <TableCell>
-        <Typography>{tx.initiatedAt ? formatDate(tx.initiatedAt, { withTime: true }) : "-"}</Typography>
+        <Typography sx={{ minWidth: "8.2rem" }}>{tx.initiatedAt ? formatDate(tx.initiatedAt, { withTime: true }) : "-"}</Typography>
       </TableCell>
-      <TableCell sx={{ width: "21rem" }}>
+      <TableCell sx={{ minWidth: "21rem" }}>
         <Stack direction="column">
-          <Typography>
+          <Typography sx={{ whiteSpace: "nowrap" }}>
             Scroll:{" "}
             <Link
               external
@@ -216,8 +224,8 @@ const TxRow = props => {
           </Typography>
         </Stack>
 
-        <Stack direction="column" className="mt-[0.4rem]">
-          <Typography>
+        <Stack direction="column">
+          <Typography sx={{ whiteSpace: "nowrap" }}>
             Ethereum:{" "}
             {tx.toHash ? (
               <Link

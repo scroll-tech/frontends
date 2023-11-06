@@ -3,7 +3,7 @@ import { makeStyles } from "tss-react/mui"
 
 import { Box } from "@mui/material"
 
-import { BRIDGE_PAGE_SIZE } from "@/constants"
+import { CLAIM_TABEL_PAGE_SIZE } from "@/constants"
 import { useBrigeContext } from "@/contexts/BridgeContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import ClaimTable from "@/pages/new-bridge/components/ClaimTable"
@@ -18,7 +18,10 @@ const useStyles = makeStyles()(theme => ({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    minHeight: "34.3rem",
+    height: "44rem",
+    [theme.breakpoints.down("sm")]: {
+      height: "41.8rem",
+    },
   },
   loadingBox: {
     position: "absolute",
@@ -60,7 +63,7 @@ const Claim = (props: any) => {
     // if targetTransaction has value, then we need to move to the target transaction
     if (targetTransaction) {
       const index = orderedTxDB.findIndex(tx => tx.hash === targetTransaction)
-      const page = Math.ceil((index + 1) / BRIDGE_PAGE_SIZE)
+      const page = Math.ceil((index + 1) / CLAIM_TABEL_PAGE_SIZE)
       handleChangePage(page)
       setTargetTransaction(null)
     }
@@ -77,7 +80,7 @@ const Claim = (props: any) => {
           data={pageTransactions}
           loading={loading}
           pagination={{
-            count: Math.ceil(total / BRIDGE_PAGE_SIZE),
+            count: Math.ceil(total / CLAIM_TABEL_PAGE_SIZE),
             page,
             onChange: handleChangePage,
           }}
