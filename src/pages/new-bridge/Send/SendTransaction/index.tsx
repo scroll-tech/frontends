@@ -90,11 +90,26 @@ const SendTransaction = props => {
   )
   // fee end
   const bridgeWarning = useMemo(() => {
-    if (gasFeeErrorMessage && validAmount && !needApproval) {
+    if (!chainId) {
+      return (
+        <TextButton underline="always" sx={{ fontSize: "1.4rem" }} onClick={connect}>
+          Connect wallet
+        </TextButton>
+      )
+    } else if (chainId !== fromNetwork.chainId) {
+      return (
+        <>
+          Wrong network.{" "}
+          <TextButton underline="always" sx={{ fontSize: "1.4rem" }} onClick={() => switchNetwork(fromNetwork.chainId)}>
+            Switch to {fromNetwork.name}
+          </TextButton>
+        </>
+      )
+    } else if (gasFeeErrorMessage && validAmount && !needApproval) {
       return (
         <>
           {gasFeeErrorMessage},{" "}
-          <TextButton underline="always" sx={{ fontSize: "1.4rem", verticalAlign: "middle" }} onClick={() => calculateGasFee()}>
+          <TextButton underline="always" sx={{ fontSize: "1.4rem" }} onClick={() => calculateGasFee()}>
             Click here to retry.
           </TextButton>
         </>
@@ -103,7 +118,7 @@ const SendTransaction = props => {
       return (
         <>
           {relayFeeErrorMessage},{" "}
-          <TextButton underline="always" sx={{ fontSize: "1.4rem", verticalAlign: "middle" }} onClick={() => fetchPriceFee()}>
+          <TextButton underline="always" sx={{ fontSize: "1.4rem" }} onClick={() => fetchPriceFee()}>
             Click here to retry.
           </TextButton>
         </>
@@ -112,7 +127,7 @@ const SendTransaction = props => {
       return insufficientWarning
     }
     return null
-  }, [insufficientWarning, relayFeeErrorMessage, validAmount, gasFeeErrorMessage, needApproval])
+  }, [chainId, fromNetwork, insufficientWarning, relayFeeErrorMessage, validAmount, gasFeeErrorMessage, needApproval])
 
   const necessaryCondition = useMemo(() => {
     return validAmount && !bridgeWarning
@@ -231,7 +246,9 @@ const SendTransaction = props => {
             color="primary"
           >
             <SvgIcon sx={{ fontSize: "1.4rem", mr: "0.4rem", verticalAlign: "middle" }} component={InfoSvg} inheritViewBox></SvgIcon>
-            <span style={{ verticalAlign: "middle" }}>{bridgeWarning}</span>
+            <Stack direction="row" style={{ display: "inline-flex", verticalAlign: "middle", alignItems: "center", gap: "0.2rem" }}>
+              {bridgeWarning}
+            </Stack>
           </Typography>
         )}
       </Box>
