@@ -20,7 +20,10 @@ function Homepage() {
   }
 
   const getImageUrl = () => {
-    return window.location.origin + "/logo_for_og_image.png"
+    if (window.location.pathname.startsWith("/developer-nft")) {
+      return window.location.origin + "/og_scroll_origins_nft.png"
+    }
+    return window.location.origin + "/og_scroll.png"
   }
 
   return (
