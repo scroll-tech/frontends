@@ -19,8 +19,11 @@ function Homepage() {
     return window.location.href
   }
 
-  const getImageUrl = () => {
-    return window.location.origin + "/logo_for_og_image.png"
+  const getImageUrl = (type = "") => {
+    if (window.location.pathname.startsWith("/developer-nft")) {
+      return window.location.origin + `/${type || "og"}_scroll_origins_nft.png`
+    }
+    return window.location.origin + "/og_scroll.png"
   }
 
   return (
@@ -36,7 +39,7 @@ function Homepage() {
         <link rel="dns-prefetch" href={baseUrl} crossOrigin="anonymous" />
         <meta name="twitter:title" content={`Scroll ${route?.name ? "- " + route.name : ""}`} />
         <meta name="twitter:description" content="Native zkEVM Layer 2 for Ethereum" />
-        <meta name="twitter:image" content={getImageUrl()} />
+        <meta name="twitter:image" content={getImageUrl("twitter")} />
       </Helmet>
       <RainbowProvider>
         <AppWrapper>

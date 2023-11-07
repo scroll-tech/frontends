@@ -145,7 +145,7 @@ export const PriceFeeProvider = ({ children }) => {
     try {
       const L2GasPriceOracleContract = getContract("GAS_PRICE_ORACLE", networksAndSigners[CHAIN_ID.L1].signer)
       const gasPrice = await L2GasPriceOracleContract.l2BaseFee()
-      return gasPrice
+      return (gasPrice * BigInt(120)) / BigInt(100)
     } catch (err) {
       // console.log(err)
       throw new Error("Failed to get gas price")
