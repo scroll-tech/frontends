@@ -2,8 +2,9 @@ import { formatUnits } from "ethers"
 import { useMemo } from "react"
 import { makeStyles } from "tss-react/mui"
 
-import { Button, InputBase, Skeleton, Stack, Typography } from "@mui/material"
+import { InputBase, Skeleton, Stack, Typography } from "@mui/material"
 
+import TextButton from "@/components/TextButton"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import { sanitizeNumericalString, toTokenDisplay } from "@/utils"
 
@@ -17,6 +18,14 @@ const useStyles = makeStyles()(theme => ({
     borderRadius: "2rem",
     [theme.breakpoints.down("sm")]: {
       width: "100%",
+    },
+  },
+  inputWrapper: {
+    "&.Mui-error": {
+      ".MuiInputBase-input": {
+        border: `1px solid ${theme.palette.primary.main}`,
+        outline: `1px solid ${theme.palette.primary.main}`,
+      },
     },
   },
   input: {
@@ -42,9 +51,8 @@ const useStyles = makeStyles()(theme => ({
   },
   fromBalance: {
     fontSize: "1.4rem",
-    fontWeight: 600,
+    fontWeight: 500,
     lineHeight: 2,
-    marginTop: "0.4rem",
     color: "#A39B9A",
     whiteSpace: "nowrap",
     [theme.breakpoints.down("sm")]: {
@@ -52,27 +60,15 @@ const useStyles = makeStyles()(theme => ({
     },
   },
   maxButton: {
-    marginLeft: "2px",
-    textDecoration: "underline",
     height: "2.8rem",
     fontSize: "1.4rem",
-    padding: 0,
-    fontWeight: 600,
-    backgroundColor: "transparent !important",
-    minWidth: "unset",
-    color: theme.palette.primary.main,
     "&:hover": {
-      color: theme.palette.primary.main,
       opacity: 0.8,
     },
-    "&.Mui-disabled": {
-      color: "#EBC28E",
-      backgroundColor: "#FFF5E8",
-    },
-    [theme.breakpoints.down("sm")]: {
-      minWidth: "5rem",
-      fontSize: "1.4rem",
-    },
+  },
+  disabledMaxButton: {
+    pointerEvents: "none",
+    color: "#EBC28E",
   },
 }))
 
@@ -86,29 +82,37 @@ const BalanceInput = props => {
     token: selectedToken,
     tokenOptions,
     fee,
+    error,
     disabled,
     readOnly,
     onChangeToken,
+    onError,
     ...restProps
   } = props
-  const { classes } = useStyles()
+  const { cx, classes } = useStyles()
   const transactionBuffer = useTransactionBuffer(selectedToken)
 
   const { isMobile } = useCheckViewport()
 
   const displayedBalance = useMemo(
-    () => (disabled ? "0.00" : toTokenDisplay(balance, selectedToken.decimals, selectedToken.symbol)),
+    () => (disabled ? "-" : toTokenDisplay(balance, selectedToken.decimals, selectedToken.symbol)),
     [selectedToken, balance, disabled],
   )
 
   const shouldPayFee = useMemo(() => (selectedToken.native ? fee : BigInt(0)), [selectedToken, fee])
 
-  const invalid = useMemo(() => {
-    if (balance) {
-      return BigInt(balance) - transactionBuffer <= BigInt(shouldPayFee)
+  const judgeMaxWarning = () => {
+    if (!balance) {
+      return "No balance"
     }
-    return true
-  }, [balance, shouldPayFee, transactionBuffer])
+    if (shouldPayFee === null) {
+      return "FeeError"
+    }
+    if (balance && shouldPayFee) {
+      return BigInt(balance) - transactionBuffer <= BigInt(shouldPayFee) ? "Your balance is insufficient to cover tx fees." : ""
+    }
+    return ""
+  }
 
   const handleChangeAmount = e => {
     const amount = sanitizeNumericalString(e.target.value)
@@ -116,16 +120,19 @@ const BalanceInput = props => {
   }
 
   const handleMaxAmount = () => {
-    if (balance) {
-      let maxValue
-      if (selectedToken.native) {
-        // 0.01  0.001
-        maxValue = formatUnits(BigInt(balance) - BigInt(shouldPayFee) - transactionBuffer, selectedToken.decimals)
-      } else {
-        maxValue = formatUnits(balance, selectedToken.decimals)
-      }
-      onChange(maxValue)
+    const maxWarning = judgeMaxWarning()
+    if (maxWarning) {
+      onError(maxWarning)
+      return
     }
+    let maxValue
+    if (selectedToken.native) {
+      // 0.01  0.001
+      maxValue = formatUnits(BigInt(balance) - BigInt(shouldPayFee) - transactionBuffer, selectedToken.decimals)
+    } else {
+      maxValue = formatUnits(balance, selectedToken.decimals)
+    }
+    onChange(maxValue)
   }
 
   const handleChangeToken = value => {
@@ -140,24 +147,24 @@ const BalanceInput = props => {
           value={value}
           placeholder="0.0000"
           disabled={disabled}
-          classes={{ input: classes.input }}
+          classes={{ root: classes.inputWrapper, input: classes.input }}
+          error={error}
           sx={{ width: "100%" }}
           readOnly={readOnly}
           onChange={handleChangeAmount}
         ></InputBase>
-        <TokenSelect value={selectedToken} options={tokenOptions} onChange={handleChangeToken} disabled={disabled}></TokenSelect>
+        <TokenSelect value={selectedToken} options={tokenOptions} onChange={handleChangeToken} disabled={disabled} readOnly={readOnly}></TokenSelect>
       </Stack>
-      <Stack sx={{ width: "100%" }} direction="row" alignItems="center" justifyContent="flex-start">
+      <Stack sx={{ width: "100%", pt: "0.4rem" }} direction="row" alignItems="center" spacing="0.4rem">
         {balanceLoading ? (
           <Skeleton variant="text" width="12rem" />
         ) : (
-          <Typography className={classes.fromBalance} sx={{ color: disabled ? "text.disabled" : "#0F8E7E" }}>
-            Available: {displayedBalance}
-          </Typography>
+          <Typography className={classes.fromBalance}>Available: {displayedBalance}</Typography>
         )}
-        <Button className={classes.maxButton} variant="contained" color="info" disabled={disabled || invalid} onClick={handleMaxAmount}>
-          (Max)
-        </Button>
+
+        <TextButton underline="always" className={cx(classes.maxButton, disabled && classes.disabledMaxButton)} onClick={handleMaxAmount}>
+          Max
+        </TextButton>
       </Stack>
     </>
   )

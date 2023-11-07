@@ -10,7 +10,6 @@ const useStyles = makeStyles()(theme => ({
     padding: "0 1rem",
     height: "3.5rem",
     [theme.breakpoints.down("sm")]: {
-      flex: 1,
       overflow: "hidden",
       padding: "0 1rem",
     },

@@ -1,21 +1,21 @@
 import { ethers } from "ethers"
-import { useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 
 import L1_erc20ABI from "@/assets/abis/L1_erc20ABI.json"
 import { GATEWAY_ROUTE_PROXY_ADDR, USDC_GATEWAY_PROXY_ADDR, USDC_SYMBOL, WETH_GATEWAY_PROXY_ADDR, WETH_SYMBOL } from "@/constants"
 import { CHAIN_ID } from "@/constants"
-import { useApp } from "@/contexts/AppContextProvider"
+import { useBrigeContext } from "@/contexts/BridgeContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { amountToBN } from "@/utils"
 
 const useApprove = (fromNetwork, selectedToken, amount) => {
   const { walletCurrentAddress, chainId } = useRainbowContext()
-  const { networksAndSigners } = useApp()
+  const { networksAndSigners } = useBrigeContext()
 
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
 
-  const [isNeeded, setIsNeeded] = useState(false)
+  const [isNeeded, setIsNeeded] = useState<boolean>()
 
   const approveAddress = useMemo(() => {
     if (!fromNetwork.isL1 && selectedToken.symbol === WETH_SYMBOL) return WETH_GATEWAY_PROXY_ADDR[fromNetwork.chainId]
@@ -35,30 +35,35 @@ const useApprove = (fromNetwork, selectedToken, amount) => {
       const { signer } = networksAndSigners[chainId as number]
       return new ethers.Contract(address, L1_erc20ABI, signer)
     }
+
     return null
   }, [selectedToken, networksAndSigners[chainId as number]])
 
-  const checkApproval = async (token, amount) => {
+  const checkApproval = useCallback(async () => {
     try {
       if (!tokenInstance) {
         return false
       }
-      const parsedAmount = amountToBN(amount, token.decimals)
+      if (!amount) {
+        return undefined
+      }
+
+      const parsedAmount = amountToBN(amount, selectedToken.decimals)
       const approvedAmount = await tokenInstance.allowance(walletCurrentAddress, approveAddress)
       if (approvedAmount >= parsedAmount) {
         return false
       }
       return true
     } catch (err) {
-      return false
+      return undefined
     }
-  }
+  }, [tokenInstance, selectedToken, walletCurrentAddress, approveAddress, amount])
 
   useEffect(() => {
-    checkApproval(selectedToken, amount).then(needApproval => {
+    checkApproval().then(needApproval => {
       setIsNeeded(needApproval)
     })
-  }, [selectedToken, amount, approveAddress, tokenInstance])
+  }, [checkApproval])
 
   const approve = async () => {
     if (!tokenInstance) {
@@ -68,7 +73,7 @@ const useApprove = (fromNetwork, selectedToken, amount) => {
     try {
       const tx = await tokenInstance.approve(approveAddress, ethers.MaxUint256)
       await tx?.wait()
-      const needApproval = await checkApproval(selectedToken, amount)
+      const needApproval = await checkApproval()
       setIsNeeded(needApproval)
     } catch (error) {
       setError(error)
@@ -81,7 +86,7 @@ const useApprove = (fromNetwork, selectedToken, amount) => {
   const cancelApproval = async () => {
     const tx = await tokenInstance?.approve(approveAddress, 0)
     await tx?.wait()
-    const needApproval = await checkApproval(selectedToken, amount)
+    const needApproval = await checkApproval()
     setIsNeeded(needApproval)
   }
 

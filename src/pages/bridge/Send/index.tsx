@@ -9,7 +9,7 @@ import LoadingButton from "@/components/LoadingButton"
 import TextButton from "@/components/TextButton"
 import { CHAIN_ID, ETH_SYMBOL, GATEWAY_ROUTE_PROXY_ADDR, NETWORKS, WETH_GATEWAY_PROXY_ADDR, WETH_SYMBOL } from "@/constants"
 import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
-import { useApp } from "@/contexts/AppContextProvider"
+import { useBrigeContext } from "@/contexts/BridgeContextProvider"
 import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useApprove, useAsyncMemo, useBalance, useSufficientBalance } from "@/hooks"
@@ -32,7 +32,7 @@ const Send: FC = () => {
   const { checkConnectedChainId, chainId, walletName, connect } = useRainbowContext()
   const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
   const { classes: styles, cx } = useSendStyles()
-  const { networksAndSigners, tokenList } = useApp()
+  const { networksAndSigners, tokenList } = useBrigeContext()
   const { gasLimit, gasPrice, errorMessage: priceFeeErrorMessage, fetchData: fetchPriceFee } = usePriceFeeContext()
 
   const [fromNetwork, setFromNetwork] = useState({} as any)

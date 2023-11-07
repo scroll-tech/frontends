@@ -1,6 +1,6 @@
 import { Alert, Snackbar } from "@mui/material"
 
-import { useApp } from "@/contexts/AppContextProvider"
+import { useBrigeContext } from "@/contexts/BridgeContextProvider"
 import { PriceFeeProvider } from "@/contexts/PriceFeeProvider"
 
 import Send from "./Send"
@@ -8,7 +8,7 @@ import Send from "./Send"
 const Content = () => {
   const {
     txHistory: { errorMessage, changeErrorMessage },
-  } = useApp()
+  } = useBrigeContext()
 
   const handleClose = () => {
     changeErrorMessage("")

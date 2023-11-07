@@ -19,8 +19,15 @@ import useAddToken, { TOKEN_LEVEL } from "../../hooks/useAddToken"
 const DialogStyled = styled(Dialog)(({ theme }) => ({
   "& .MuiPaper-root": {
     maxWidth: "47rem !important",
+    borderRadius: "2rem",
+    maxHeight: "100vh",
     position: "absolute",
     top: "10rem",
+    [theme.breakpoints.down("sm")]: {
+      top: "2rem",
+      width: "calc(100% - 4rem)",
+      height: "calc(100% - 4rem)",
+    },
   },
 }))
 
@@ -28,6 +35,7 @@ const InputBaseStyled = styled(InputBase)(({ theme }) => ({
   width: "100%",
   borderRadius: "1rem",
   border: `1px solid ${theme.palette.text.primary}`,
+  fontFamily: "var(--developer-page-font-family)",
   height: "4.8rem",
   [theme.breakpoints.down("sm")]: {
     height: "4.8rem",
@@ -38,10 +46,11 @@ const InputBaseStyled = styled(InputBase)(({ theme }) => ({
 
 const DialogContentStyled = styled(DialogContent)(({ theme }) => ({
   minHeight: "30rem",
+  padding: "0 0 1.6rem",
 }))
 
 const MenuItemStyled = styled(MenuItem)(({ theme }) => ({
-  padding: "1rem 0",
+  padding: "1rem 2.4rem",
   gap: "1rem",
   "&:hover": {
     background: "rgba(255, 248, 243, 0.50)",
@@ -49,7 +58,9 @@ const MenuItemStyled = styled(MenuItem)(({ theme }) => ({
   "& *:hover": {
     cursor: "pointer !important",
   },
-  [theme.breakpoints.down("sm")]: {},
+  [theme.breakpoints.down("sm")]: {
+    padding: "1rem 2rem",
+  },
 }))
 
 const ListTitleStyled = styled(Typography)(({ theme }) => ({
@@ -58,6 +69,10 @@ const ListTitleStyled = styled(Typography)(({ theme }) => ({
   lineHeight: "3.5rem",
   letterSpacing: "0.17px",
   marginTop: "3rem",
+  padding: "0 2.4rem",
+  [theme.breakpoints.down("sm")]: {
+    padding: "0 2rem",
+  },
 }))
 
 const ListItemIconStyled = styled(ListItemIcon)(({ theme }) => ({
@@ -114,20 +129,23 @@ const ListItemTextStyled = styled(ListItemText)(({ theme }) => ({
 const ErrorBoxStyled = styled(Box)(({ theme }) => ({
   color: "#FF684B",
   fontSize: "1.3rem",
-  fontWeight: 400,
-  marginTop: "1rem",
+  fontWeight: 500,
+  margin: "1rem 2.4rem 0",
   background: "#FFE1DB",
   borderRadius: "1rem",
   textAlign: "center",
   lineHeight: "1.8rem",
   padding: "0.7rem 0",
+  [theme.breakpoints.down("sm")]: {
+    margin: "1rem 2rem 0",
+  },
 }))
 
 const TokenListWrapper = styled(Box)(({ theme }) => ({
   maxHeight: "50rem",
   overflow: "auto",
   "&::-webkit-scrollbar-thumb": {
-    backgroundColor: theme.palette.themeBackground.optionHightlight,
+    backgroundColor: "rgba(209, 205, 204, 0.30)",
     borderRadius: "8px",
   },
   "&::-webkit-scrollbar": {
@@ -135,7 +153,7 @@ const TokenListWrapper = styled(Box)(({ theme }) => ({
   },
   // Firefox
   scrollbarWidth: "thin",
-  scrollbarColor: `${theme.palette.themeBackground.optionHightlight} transparent`,
+  scrollbarColor: "rgba(209, 205, 204, 0.30) transparent",
 }))
 
 export interface TokenListProps {
@@ -249,7 +267,7 @@ function List(props: TokenListProps) {
 
   return (
     <DialogStyled fullWidth onClose={handleClose} open={open}>
-      <DialogTitle sx={{ marginBottom: ["0.8rem", "2.8rem"] }}>
+      <DialogTitle sx={{ marginBottom: ["0.8rem", "2.8rem"], padding: ["1.6rem 2rem", "1.6rem 2.4rem"] }}>
         <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <Box sx={{ fontSize: "2.4rem", fontWeight: 600 }}>Select a token</Box>
           <svg
@@ -274,10 +292,10 @@ function List(props: TokenListProps) {
         </Box>
       </DialogTitle>
       <DialogContentStyled>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Box sx={{ display: "flex", alignItems: "center", padding: ["0 2rem", "0 2.4rem"] }}>
           <InputBaseStyled
             startAdornment={
-              <svg style={{ margin: "0 1.4rem" }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <svg style={{ margin: "0 1rem 0 1.4rem" }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path
                   fill-rule="evenodd"
                   clip-rule="evenodd"

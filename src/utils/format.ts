@@ -1,3 +1,4 @@
+import dayjs from "dayjs"
 import { formatUnits, parseUnits } from "ethers"
 import _ from "lodash"
 import numbro from "numbro"
@@ -125,7 +126,7 @@ export const formatUTCDate = (date, needSub?: boolean) => {
 
 export const formatDate = (date, options: { needSub?: boolean; withTime?: boolean } = {}) => {
   const { needSub, withTime } = options
-  let finalDate = date
+  let finalDate = dayjs.isDayjs(date) ? date : dayjs(date)
   if (needSub) {
     finalDate = date.subtract(1, "ms")
   }
@@ -133,4 +134,8 @@ export const formatDate = (date, options: { needSub?: boolean; withTime?: boolea
     return finalDate.format("MMM D, YYYY h:mmA")
   }
   return finalDate.format("MMM D, YYYY")
+}
+
+export const trimErrorMessage = message => {
+  return message.split("(")[0].trim()
 }

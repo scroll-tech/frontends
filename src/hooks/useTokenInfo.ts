@@ -4,11 +4,11 @@ import useSWR from "swr"
 import L1_erc20ABI from "@/assets/abis/L1_erc20ABI.json"
 import { CHAIN_ID, ETH_SYMBOL } from "@/constants"
 import { TOKEN_INFO_MAP } from "@/constants/storageKey"
-import { useApp } from "@/contexts/AppContextProvider"
+import { useBrigeContext } from "@/contexts/BridgeContextProvider"
 import { loadState, saveState } from "@/utils/localStorage"
 
 const useTokenInfo = (address: string, isL1: boolean) => {
-  const { networksAndSigners } = useApp()
+  const { networksAndSigners } = useBrigeContext()
   const { data, isLoading } = useSWR(
     () => {
       const provider = networksAndSigners[isL1 ? CHAIN_ID.L1 : CHAIN_ID.L2].provider

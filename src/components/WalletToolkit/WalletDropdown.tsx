@@ -1,16 +1,19 @@
 import copy from "copy-to-clipboard"
 import { useCallback, useMemo, useState } from "react"
+import { useLocation } from "react-router-dom"
 import { makeStyles } from "tss-react/mui"
 
 import { ButtonBase, Fade, ListItemIcon, ListItemText, Menu, MenuItem, SvgIcon } from "@mui/material"
 
 import { ReactComponent as CopySuccessSvg } from "@/assets/svgs/refactor/bridge-copy-success.svg"
+import { ReactComponent as HistorySvg } from "@/assets/svgs/refactor/bridge-history.svg"
 import { ReactComponent as BlockSvg } from "@/assets/svgs/refactor/wallet-connector-block.svg"
 import { ReactComponent as CopySvg } from "@/assets/svgs/refactor/wallet-connector-copy.svg"
 import { ReactComponent as DisconnectSvg } from "@/assets/svgs/refactor/wallet-connector-disconnect.svg"
 import { ReactComponent as DownTriangleSvg } from "@/assets/svgs/refactor/wallet-connector-down-triangle.svg"
 import { CHAIN_ID, EXPLORER_URL } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useBridgeStore from "@/stores/bridgeStore"
 import { generateExploreLink, truncateAddress } from "@/utils"
 
 const useStyles = makeStyles<any>()((theme, { dark }) => ({
@@ -25,10 +28,7 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
     color: dark ? theme.palette.primary.contrastText : "#473835",
     whiteSpace: "nowrap",
   },
-  openButton: {
-    borderRadius: "0.5rem 0.5rem 0 0",
-    borderBottomColor: "transparent",
-  },
+
   connectButton: {
     fontFamily: "var(--onboard-font-family-normal)",
     backgroundColor: "#FF684B",
@@ -77,18 +77,18 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
 const WalletDropdown = props => {
   const { sx, dark } = props
   const { classes, cx } = useStyles({ dark })
+  const { pathname } = useLocation()
 
   const { walletCurrentAddress, connect, disconnect, chainId } = useRainbowContext()
+  const { changeHistoryVisible } = useBridgeStore()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const [anchorWidth, setAnchorWidth] = useState(0)
   const [copied, setCopied] = useState(false)
 
   const open = useMemo(() => Boolean(anchorEl), [anchorEl])
 
   const handleClick = e => {
     setAnchorEl(e.currentTarget)
-    setAnchorWidth(e.currentTarget.offsetWidth)
   }
 
   const handleClose = () => {
@@ -108,6 +108,14 @@ const WalletDropdown = props => {
   const operations = useMemo(
     () => [
       {
+        icon: HistorySvg,
+        label: "Transaction history",
+        action: () => {
+          changeHistoryVisible(true)
+          handleClose()
+        },
+      },
+      {
         icon: BlockSvg,
         label: "Block explorer",
         action: viewScan,
@@ -122,7 +130,7 @@ const WalletDropdown = props => {
         },
       },
     ],
-    [viewScan, copyAddress, copied, disconnect],
+    [pathname, viewScan, copyAddress, copied, disconnect],
   )
 
   return (
@@ -143,7 +151,14 @@ const WalletDropdown = props => {
         open={open}
         onClose={handleClose}
         TransitionComponent={Fade}
-        sx={{ ".MuiMenu-paper": { width: anchorWidth } }}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
         classes={{ paper: classes.paper, list: classes.list }}
       >
         {operations.map(({ icon, label, action }) => (

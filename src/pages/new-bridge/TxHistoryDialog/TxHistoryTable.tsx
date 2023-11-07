@@ -1,28 +1,29 @@
-import { Box, Typography } from "@mui/material"
+import { Box } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { BRIDGE_PAGE_SIZE } from "@/constants"
-import { useApp } from "@/contexts/AppContextProvider"
+import { useBrigeContext } from "@/contexts/BridgeContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useTxStore from "@/stores/txStore"
 
+import NoConnected from "../components/NoConnected"
 import TxTable from "../components/TxTable"
 
 const TableBox = styled(Box)(({ theme }) => ({
-  minHeight: "26.8rem",
   borderRadius: "2rem",
-  backgroundColor: theme.palette.themeBackground.optionHightlight,
-  width: "100%",
-  maxWidth: "70rem",
+  padding: "0 3rem 3rem",
   "& *": {
     fontFamily: "var(--developer-page-font-family) !important",
+  },
+  [theme.breakpoints.down("sm")]: {
+    padding: "0 2rem 2rem",
   },
 }))
 
 const TransactionsList = (props: any) => {
   const {
     txHistory: { refreshPageTransactions },
-  } = useApp()
+  } = useBrigeContext()
   const { chainId } = useRainbowContext()
 
   const { page, total, pageTransactions, loading } = useTxStore()
@@ -33,7 +34,7 @@ const TransactionsList = (props: any) => {
 
   return (
     <TableBox>
-      {pageTransactions.length && chainId ? (
+      {chainId ? (
         <TxTable
           data={pageTransactions}
           loading={loading}
@@ -44,9 +45,7 @@ const TransactionsList = (props: any) => {
           }}
         />
       ) : (
-        <Typography variant="body1" color="textSecondary" sx={{ paddingTop: "2rem", color: "#C58D49" }} align="center">
-          Your transactions will appear here...
-        </Typography>
+        <NoConnected sx={{ height: ["20rem", "30rem"] }} description="Connect wallet to see your transaction history"></NoConnected>
       )}
     </TableBox>
   )

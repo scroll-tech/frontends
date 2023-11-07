@@ -2,8 +2,10 @@ import { useEffect } from "react"
 import { makeStyles } from "tss-react/mui"
 
 import { TabContext, TabList, TabPanel } from "@mui/lab"
-import { Box, Tab } from "@mui/material"
+import { Box, Snackbar, Tab } from "@mui/material"
 
+import Alert from "@/components/Alert"
+import TextButton from "@/components/TextButton"
 import { CHAIN_ID } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useBridgeStore from "@/stores/bridgeStore"
@@ -54,20 +56,35 @@ const useStyles = makeStyles()(theme => ({
   tabPanel: {
     backgroundColor: theme.palette.themeBackground.optionHightlight,
     padding: "3rem 5.4rem",
-    "&.tx": {
-      padding: "3rem",
+
+    "&.withdraw": {
+      padding: "1rem 3rem 3rem",
     },
 
     [theme.breakpoints.down("sm")]: {
       padding: "3rem 2rem 2rem",
+
+      "&.withdraw": {
+        padding: "1rem 2rem 2rem",
+      },
+    },
+  },
+
+  snackbar: {
+    width: "max-content",
+    maxWidth: "calc(100% - 1.6rem)",
+
+    [theme.breakpoints.down("sm")]: {
+      left: "50%",
+      transform: "translateX(-50%)",
     },
   },
 }))
 
 const Send = () => {
-  const { classes } = useStyles()
+  const { classes, cx } = useStyles()
   const { chainId } = useRainbowContext()
-  const { txType, fromNetwork, withDrawStep, changeTxType, changeTxResult, changeIsNetworkCorrect } = useBridgeStore()
+  const { txType, txResult, fromNetwork, withDrawStep, changeTxType, changeTxResult, changeHistoryVisible, changeIsNetworkCorrect } = useBridgeStore()
 
   useEffect(() => {
     let networkCorrect
@@ -83,6 +100,15 @@ const Send = () => {
 
   const handleChange = (e, newValue) => {
     changeTxType(newValue)
+    handleClose()
+  }
+
+  const handleOpenHistory = () => {
+    changeHistoryVisible(true)
+    handleClose()
+  }
+
+  const handleClose = () => {
     changeTxResult(null)
   }
 
@@ -100,10 +126,41 @@ const Send = () => {
         <TabPanel value="Deposit" classes={{ root: classes.tabPanel }}>
           <Deposit></Deposit>
         </TabPanel>
-        <TabPanel value="Withdraw" className={withDrawStep === "2" ? "tx" : ""} classes={{ root: classes.tabPanel }}>
+        <TabPanel value="Withdraw" className={withDrawStep === "2" ? "tx" : ""} classes={{ root: cx(classes.tabPanel, "withdraw") }}>
           <Withdraw></Withdraw>
         </TabPanel>
       </TabContext>
+
+      <Snackbar
+        open={!!txResult}
+        autoHideDuration={6000}
+        classes={{ root: classes.snackbar }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        onClose={handleClose}
+      >
+        <div>
+          {txResult?.code === 1 && (
+            <Alert severity="success">
+              <>
+                Submitted successfully! <br />
+                {txType === "Deposit" ? "Funds take up to 20 mins to be ready" : "Funds take up to 1h to be claimable"}
+                <br />
+                <TextButton underline="always" sx={{ color: "inherit" }} onClick={handleOpenHistory}>
+                  View transaction history
+                </TextButton>
+              </>
+            </Alert>
+          )}
+          {txResult?.code === 0 && (
+            <Alert severity="error" sx={{ maxWidth: "49rem" }}>
+              <>
+                Failed in submission.
+                <br /> {txResult?.message}
+              </>
+            </Alert>
+          )}
+        </div>
+      </Snackbar>
     </Box>
   )
 }

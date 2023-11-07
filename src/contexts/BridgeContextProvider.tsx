@@ -11,11 +11,12 @@ import L2_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L2_GATEWAY_ROUTER_PROXY_A
 import { CHAIN_ID, ETH_SYMBOL, GATEWAY_ROUTE_PROXY_ADDR, NATIVE_TOKEN_LIST, RPC_URL } from "@/constants"
 import { BLOCK_NUMBERS, BRIDGE_TOKEN_SYMBOL, USER_TOKEN_LIST } from "@/constants/storageKey"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useBlockNumbers from "@/hooks/useBlockNumbers"
 import useClaim from "@/hooks/useClaim"
 import useTxHistory, { TxHistory } from "@/hooks/useTxHistory"
 import { loadState } from "@/utils/localStorage"
 
-type AppContextProps = {
+type BridgeContextProps = {
   networksAndSigners: any
   txHistory: TxHistory
   blockNumbers: number[]
@@ -24,10 +25,12 @@ type AppContextProps = {
   refreshTokenList: () => void
 }
 
-const AppContext = createContext<AppContextProps | undefined>(undefined)
+const BridgeContext = createContext<BridgeContextProps | undefined>(undefined)
 
-const AppContextProvider = ({ children }: any) => {
+const BridgeContextProvider = ({ children }: any) => {
   const { provider, walletCurrentAddress, chainId } = useRainbowContext()
+  const { isL1Available, isL2Available } = useBlockNumbers()
+
   const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
   const [blockNumbers] = useStorage(localStorage, BLOCK_NUMBERS, [-1, -1])
 
@@ -38,7 +41,7 @@ const AppContextProvider = ({ children }: any) => {
 
   const [fetchTokenListError, setFetchTokenListError] = useState("")
 
-  const txHistory = useTxHistory(networksAndSigners)
+  const txHistory = useTxHistory()
   const claim = useClaim()
 
   // TODO: need refactoring inspired by publicClient and walletClient
@@ -139,7 +142,7 @@ const AppContextProvider = ({ children }: any) => {
   }
 
   return (
-    <AppContext.Provider
+    <BridgeContext.Provider
       value={{
         networksAndSigners,
         txHistory,
@@ -156,16 +159,30 @@ const AppContextProvider = ({ children }: any) => {
           {fetchTokenListError}
         </Alert>
       </Snackbar>
-    </AppContext.Provider>
+      {!isL1Available && (
+        <Snackbar open={true}>
+          <Alert severity="error" key="l1">
+            {RPC_URL.L1} is not available, please wait...
+          </Alert>
+        </Snackbar>
+      )}
+      {!isL2Available && (
+        <Snackbar open={true}>
+          <Alert severity="error" key="l2">
+            {RPC_URL.L2} is not available, please wait...
+          </Alert>
+        </Snackbar>
+      )}
+    </BridgeContext.Provider>
   )
 }
 
-export function useApp() {
-  const ctx = useContext(AppContext)
+export function useBrigeContext() {
+  const ctx = useContext(BridgeContext)
   if (!ctx) {
-    throw new Error("useApp must be used within AppProvider")
+    throw new Error("useBrigeContext must be used within BridgeContextProvider")
   }
   return ctx
 }
 
-export default AppContextProvider
+export default BridgeContextProvider

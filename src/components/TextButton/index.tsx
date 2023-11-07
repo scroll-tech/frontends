@@ -1,7 +1,7 @@
 import Link from "@/components/Link"
 
 const TextButton = props => {
-  const { sx, children, ...restProps } = props
+  const { sx, underline = "hover", children, ...restProps } = props
   return (
     <Link
       component="button"
@@ -10,7 +10,7 @@ const TextButton = props => {
         verticalAlign: "baseline",
         ...sx,
       }}
-      underline="hover"
+      underline={underline}
       {...restProps}
     >
       {children}
