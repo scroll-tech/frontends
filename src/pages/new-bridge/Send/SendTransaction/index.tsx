@@ -38,6 +38,11 @@ const SendTransaction = props => {
 
   const [amount, setAmount] = useState<string>()
 
+  const [maxWarning, setMaxWarning] = useState<string>()
+
+  const [bridgeWarning, setBridgeWarning] = useState()
+  const [inputError, setInputError] = useState(false)
+
   const validAmount = useMemo(() => (Number(amount) > 0 ? amount : ""), [amount])
 
   const tokenOptions = useMemo(() => {
@@ -88,16 +93,18 @@ const SendTransaction = props => {
     totalFee,
     balance ?? undefined,
   )
-  // fee end
-  const bridgeWarning = useMemo(() => {
+
+  useEffect(() => {
+    let nextBridgeWarning
+    let nextInputError = false
     if (!chainId) {
-      return (
+      nextBridgeWarning = (
         <TextButton underline="always" sx={{ fontSize: "1.4rem" }} onClick={connect}>
           Connect wallet
         </TextButton>
       )
     } else if (chainId !== fromNetwork.chainId) {
-      return (
+      nextBridgeWarning = (
         <>
           Wrong network.{" "}
           <TextButton underline="always" sx={{ fontSize: "1.4rem" }} onClick={() => switchNetwork(fromNetwork.chainId)}>
@@ -105,8 +112,11 @@ const SendTransaction = props => {
           </TextButton>
         </>
       )
-    } else if (gasFeeErrorMessage && validAmount && !needApproval) {
-      return (
+    } else if (maxWarning && maxWarning !== "FeeError") {
+      nextBridgeWarning = <>{maxWarning}</>
+      nextInputError = true
+    } else if (gasFeeErrorMessage && (validAmount || maxWarning) && needApproval === false) {
+      nextBridgeWarning = (
         <>
           {gasFeeErrorMessage},{" "}
           <TextButton underline="always" sx={{ fontSize: "1.4rem" }} onClick={() => calculateGasFee()}>
@@ -114,8 +124,8 @@ const SendTransaction = props => {
           </TextButton>
         </>
       )
-    } else if (relayFeeErrorMessage && validAmount && !needApproval) {
-      return (
+    } else if (relayFeeErrorMessage && (validAmount || maxWarning) && needApproval === false) {
+      nextBridgeWarning = (
         <>
           {relayFeeErrorMessage},{" "}
           <TextButton underline="always" sx={{ fontSize: "1.4rem" }} onClick={() => fetchPriceFee()}>
@@ -124,10 +134,14 @@ const SendTransaction = props => {
         </>
       )
     } else if (insufficientWarning) {
-      return insufficientWarning
+      nextBridgeWarning = insufficientWarning
+      nextInputError = insufficientWarning !== ">0"
     }
-    return null
-  }, [chainId, fromNetwork, insufficientWarning, relayFeeErrorMessage, validAmount, gasFeeErrorMessage, needApproval])
+    setBridgeWarning(nextBridgeWarning)
+    setInputError(nextInputError)
+  }, [chainId, fromNetwork, maxWarning, insufficientWarning, relayFeeErrorMessage, validAmount, gasFeeErrorMessage, needApproval])
+
+  // fee end
 
   const necessaryCondition = useMemo(() => {
     return validAmount && !bridgeWarning
@@ -159,12 +173,20 @@ const SendTransaction = props => {
     }
   }, [sendError])
 
+  useEffect(() => {
+    setMaxWarning("")
+  }, [balance, amount, totalFee])
+
   const handleChangeTokenSymbol = symbol => {
     setTokenSymbol(symbol)
   }
 
   const handleChangeAmount = value => {
     setAmount(value)
+  }
+
+  const handleError = value => {
+    setMaxWarning(value)
   }
 
   const renderButton = () => {
@@ -206,7 +228,7 @@ const SendTransaction = props => {
         key="send"
         width={isMobile ? "100%" : "25rem"}
         color="primary"
-        disabled={!necessaryCondition}
+        disabled={!necessaryCondition || needApproval === undefined}
         loading={sendLoading}
         onClick={sendTransaction}
         whiteButton
@@ -223,6 +245,7 @@ const SendTransaction = props => {
         sx={{ mt: "1.6rem" }}
         value={amount}
         onChange={handleChangeAmount}
+        error={inputError}
         token={selectedToken}
         fee={totalFee}
         balance={balance}
@@ -230,6 +253,7 @@ const SendTransaction = props => {
         disabled={fromNetwork.chainId !== chainId}
         readOnly={approveLoading || sendLoading}
         tokenOptions={tokenOptions}
+        onError={handleError}
         onChangeToken={handleChangeTokenSymbol}
       ></BalanceInput>
       <Box sx={{ height: "2rem", width: "100%" }}>
