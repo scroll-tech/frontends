@@ -73,6 +73,11 @@ const useStyles = makeStyles()(theme => ({
   snackbar: {
     width: "max-content",
     maxWidth: "calc(100% - 1.6rem)",
+
+    [theme.breakpoints.down("sm")]: {
+      left: "50%",
+      transform: "translateX(-50%)",
+    },
   },
 }))
 
@@ -137,7 +142,8 @@ const Send = () => {
           {txResult?.code === 1 && (
             <Alert severity="success">
               <>
-                Submitted successfully! {txType === "Deposit" ? "It takes about 20 mins to be ready" : "It takes up to 1h to be claimable"}
+                Submitted successfully! <br />
+                {txType === "Deposit" ? "Funds take up to 20 mins to be ready" : "Funds take up to 1h to be claimable"}
                 <br />
                 <TextButton underline="always" sx={{ color: "inherit" }} onClick={handleOpenHistory}>
                   View transaction history
