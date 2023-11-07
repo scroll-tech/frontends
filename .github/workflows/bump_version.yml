@@ -4,15 +4,12 @@
 name: "Bump Version on sepolia"
 
 on:
-  push:
-    branches:
-      - mainnet
+  workflow_dispatch:
 
 jobs:
   bump-version:
     if: |
-      !startsWith(github.event.head_commit.message, 'ci: version bump to ') &&
-      !endsWith(github.event.head_commit.message, ' [bot]')
+      !startsWith(github.event.head_commit.message, 'ci: version bump to ')
     name: "Bump version on production"
     permissions:
       contents: write
