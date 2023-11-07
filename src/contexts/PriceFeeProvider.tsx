@@ -27,7 +27,7 @@ type Props = {
   gasPrice: bigint
   errorMessage: string
   fetchData: () => void
-  getL1DateFee: (selectedToken, amount, gasLimit) => Promise<bigint>
+  getL1DataFee: (selectedToken, amount, gasLimit) => Promise<bigint>
 }
 
 enum GatewayType {
@@ -270,7 +270,7 @@ export const PriceFeeProvider = ({ children }) => {
   }
 
   // L1 Data Fee on L2
-  const getL1DateFee = async (selectedToken, amount = BigInt(1), gasLimit) => {
+  const getL1DataFee = async (selectedToken, amount = BigInt(1), gasLimit) => {
     const tx = buildUnsignedSerializedTransaction(selectedToken, amount, gasLimit)
 
     const L1GasPriceOracleContract = getContract("L1_GAS_PRICE_ORACLE", networksAndSigners[CHAIN_ID.L2].provider)
@@ -278,5 +278,5 @@ export const PriceFeeProvider = ({ children }) => {
     return l1DateFee
   }
 
-  return <PriceFeeContext.Provider value={{ gasLimit, gasPrice, errorMessage, fetchData, getL1DateFee }}>{children}</PriceFeeContext.Provider>
+  return <PriceFeeContext.Provider value={{ gasLimit, gasPrice, errorMessage, fetchData, getL1DataFee }}>{children}</PriceFeeContext.Provider>
 }

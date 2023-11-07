@@ -32,7 +32,7 @@ const SendTransaction = props => {
   const { isMobile } = useCheckViewport()
   const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
 
-  const { gasLimit, gasPrice, errorMessage: priceFeeErrorMessage, fetchData: fetchPriceFee, getL1DateFee } = usePriceFeeContext()
+  const { gasLimit, gasPrice, errorMessage: priceFeeErrorMessage, fetchData: fetchPriceFee, getL1DataFee } = usePriceFeeContext()
 
   const { txType, isNetworkCorrect, fromNetwork, changeTxError } = useBridgeStore()
 
@@ -71,7 +71,7 @@ const SendTransaction = props => {
   const l1DataFee = useAsyncMemo(
     async () =>
       txType === "Withdraw" && amount && txGasLimit
-        ? await getL1DateFee(selectedToken, amountToBN(amount, selectedToken.decimals), txGasLimit)
+        ? await getL1DataFee(selectedToken, amountToBN(amount, selectedToken.decimals), txGasLimit)
         : BigInt(0),
     [amount, selectedToken, txGasLimit, txType],
   )
