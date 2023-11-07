@@ -8,7 +8,6 @@ import ScrollToTop from "@/hooks/useScrollToTop"
 import NotFound from "@/pages/404"
 import { isSepolia, requireEnv } from "@/utils"
 
-import AppWrapper from "./contexts"
 import useMatchedRoute from "./hooks/useMatchedRoute"
 import routes from "./routes"
 
@@ -42,18 +41,16 @@ function Homepage() {
         <meta name="twitter:image" content={getImageUrl("twitter")} />
       </Helmet>
       <RainbowProvider>
-        <AppWrapper>
-          <ScrollToTop>
-            <Header />
-            <Routes>
-              {routes.map((route, key) => (
-                <Route key={key} path={route.path} element={route.element} />
-              ))}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-            {isSepolia ? null : <Footer />}
-          </ScrollToTop>
-        </AppWrapper>
+        <ScrollToTop>
+          <Header />
+          <Routes>
+            {routes.map((route, key) => (
+              <Route key={key} path={route.path} element={route.element} />
+            ))}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          {isSepolia ? null : <Footer />}
+        </ScrollToTop>
       </RainbowProvider>
     </div>
   )

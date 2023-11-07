@@ -3,7 +3,7 @@ import { useMemo, useState } from "react"
 
 import { CHAIN_ID, NETWORKS } from "@/constants"
 import { TX_STATUS } from "@/constants"
-import { useApp } from "@/contexts/AppContextProvider"
+import { useBrigeContext } from "@/contexts/BridgeContextProvider"
 import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useBridgeStore from "@/stores/bridgeStore"
@@ -21,10 +21,10 @@ type TxOptions = {
 export function useSendTransaction(props) {
   const { amount: fromTokenAmount, selectedToken } = props
   const { walletCurrentAddress } = useRainbowContext()
-  const { networksAndSigners, blockNumbers } = useApp()
-  const { gasLimit: txGasLimit, maxFeePerGas, maxPriorityFeePerGas } = useGasFee(selectedToken)
+  const { networksAndSigners, blockNumbers } = useBrigeContext()
+  const { gasLimit: txGasLimit, maxFeePerGas, maxPriorityFeePerGas } = useGasFee(selectedToken, false)
   const { addTransaction, updateTransaction, addEstimatedTimeMap, updateOrderedTxs, addAbnormalTransactions, removeFrontTransactions } = useTxStore()
-  const { fromNetwork, toNetwork, changeTxResult } = useBridgeStore()
+  const { fromNetwork, toNetwork, changeTxResult, changeWithdrawStep } = useBridgeStore()
   const { gasLimit, gasPrice } = usePriceFeeContext()
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -57,8 +57,10 @@ export function useSendTransaction(props) {
       tx.wait()
         .then(receipt => {
           if (receipt?.status === 1) {
-            changeTxResult({ hash: tx.hash, amount: fromTokenAmount })
-
+            changeTxResult({ code: 1 })
+            if (!tx.isL1) {
+              changeWithdrawStep("2")
+            }
             handleTransaction(tx, {
               fromBlockNumber: receipt.blockNumber,
             })

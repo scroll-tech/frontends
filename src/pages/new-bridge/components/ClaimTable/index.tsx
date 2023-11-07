@@ -1,15 +1,13 @@
-import dayjs from "dayjs"
-import { useMemo } from "react"
-import Countdown from "react-countdown"
+import { useMemo, useState } from "react"
 import { makeStyles } from "tss-react/mui"
 
 import {
   Box,
   CircularProgress,
-  LinearProgress,
   Pagination,
   Paper,
   Skeleton,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -23,10 +21,10 @@ import Link from "@/components/Link"
 import { EXPLORER_URL } from "@/constants"
 import useTokenInfo from "@/hooks/useTokenInfo"
 import { ClaimStatus } from "@/stores/claimStore"
-import useTxStore from "@/stores/txStore"
-import { generateExploreLink, toTokenDisplay, truncateHash } from "@/utils"
+import { formatDate, generateExploreLink, toTokenDisplay, truncateHash } from "@/utils"
 
-import useLastFinalizedBatchIndex from "../../hooks/useLastFinalizedBatchIndex"
+import useCheckClaimStatus from "../../hooks/useCheckClaimStatus"
+import NoData from "../NoData"
 import ClaimButton from "./ClaimButton"
 
 const useStyles = makeStyles()(theme => {
@@ -34,15 +32,16 @@ const useStyles = makeStyles()(theme => {
     tableContainer: {
       [theme.breakpoints.down("sm")]: {
         width: "100%",
-        overflowX: "scroll",
       },
     },
     tableWrapper: {
       boxShadow: "unset",
       backgroundColor: theme.palette.themeBackground.optionHightlight,
       borderRadius: 0,
+      minHeight: "28.7rem",
       [theme.breakpoints.down("sm")]: {
-        minWidth: "50rem",
+        width: "100%",
+        overflowX: "auto",
       },
     },
     tableTitle: {
@@ -69,8 +68,10 @@ const useStyles = makeStyles()(theme => {
     tableBody: {
       minHeight: "18.3rem",
       ".MuiTableCell-root": {
-        verticalAlign: "top",
-        padding: "2rem 0.8rem",
+        padding: "1.6rem 0.8rem",
+        [theme.breakpoints.down("sm")]: {
+          padding: "1.5rem 0.8rem",
+        },
         "*": {
           fontSize: "1.4rem",
         },
@@ -83,6 +84,11 @@ const useStyles = makeStyles()(theme => {
       },
     },
     pagination: {
+      overflowX: "auto",
+
+      ".MuiPagination-ul": {
+        flexWrap: "nowrap",
+      },
       ".MuiPaginationItem-text": {
         fontSize: "1.6rem",
       },
@@ -112,49 +118,55 @@ const useStyles = makeStyles()(theme => {
   }
 })
 
-const TxTable = (props: any) => {
+const ClaimTable = (props: any) => {
   const { data, loading, pagination } = props
   const { classes } = useStyles()
 
-  const { lastFinalizedBatchIndex } = useLastFinalizedBatchIndex()
   const handleChangePage = (e, newPage) => {
     pagination?.onChange?.(newPage)
   }
 
   return (
     <Box className={classes.tableContainer}>
-      <TableContainer component={Paper} className={classes.tableWrapper}>
-        <Table aria-label="Tx Table" sx={{ minHeight: "20rem" }}>
-          <TableHead className={classes.tableHeader}>
-            <TableRow>
-              <TableCell align="center">Claim</TableCell>
-              <TableCell>Amount</TableCell>
-              <TableCell sx={{ width: "18rem" }}>Transaction Hash</TableCell>
-              <TableCell>Status</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody className={classes.tableBody}>
-            <>
-              {data?.map((tx: any) => (
-                <TxRow key={tx.hash} tx={tx} finalizedIndex={lastFinalizedBatchIndex ?? 0} />
-              ))}
-            </>
-          </TableBody>
-        </Table>
-      </TableContainer>
-      {pagination && (
-        <div className="flex justify-center mt-[2.8rem]">
-          <Pagination
-            size="small"
-            classes={{
-              root: classes.pagination,
-            }}
-            page={pagination?.page}
-            count={pagination?.count}
-            onChange={handleChangePage}
-          />
-        </div>
+      {data.length ? (
+        <>
+          <TableContainer component={Paper} className={classes.tableWrapper}>
+            <Table aria-label="Tx Table">
+              <TableHead className={classes.tableHeader}>
+                <TableRow>
+                  <TableCell align="center">Claim</TableCell>
+                  <TableCell>Amount</TableCell>
+                  <TableCell sx={{ whiteSpace: "nowrap" }}>Initiated At</TableCell>
+                  <TableCell sx={{ whiteSpace: "nowrap" }}>Transaction Hash</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody className={classes.tableBody}>
+                <>
+                  {data?.map((tx: any) => (
+                    <TxRow key={tx.hash} tx={tx} />
+                  ))}
+                </>
+              </TableBody>
+            </Table>
+          </TableContainer>
+          {pagination && (
+            <Stack direction="row" justifyContent="center" alignItems="flex-end" sx={{ mt: ["0.4rem", "1.4rem"] }}>
+              <Pagination
+                size="small"
+                classes={{
+                  root: classes.pagination,
+                }}
+                page={pagination?.page}
+                count={pagination?.count}
+                onChange={handleChangePage}
+              />
+            </Stack>
+          )}
+        </>
+      ) : (
+        <NoData title="No claimable transactions" description="When you withdraw from Scroll, your claimable asset will appear here"></NoData>
       )}
+
       {loading ? (
         <Box className={classes.loadingBox}>
           <CircularProgress className={classes.loadingIndicator} />
@@ -165,84 +177,27 @@ const TxTable = (props: any) => {
 }
 
 const TxRow = props => {
-  const { tx, finalizedIndex } = props
-  const { estimatedTimeMap } = useTxStore()
+  const { tx } = props
 
   const { loading: tokenInfoLoading, tokenInfo } = useTokenInfo(tx.symbolToken, tx.isL1)
+  const [loading, setLoading] = useState(false)
 
   const txAmount = amount => {
     return toTokenDisplay(amount, tokenInfo?.decimals ? BigInt(tokenInfo.decimals) : undefined)
   }
+  const { claimStatus, claimTip } = useCheckClaimStatus(tx)
 
-  const txStatus = useMemo(() => {
-    const { assumedStatus, toBlockNumber, claimInfo } = tx
-    if (assumedStatus) {
-      return ClaimStatus.FAILED
+  const claimTipWithLoading = useMemo(() => {
+    if (loading || claimStatus === ClaimStatus.CLAIMING) {
+      return "Claiming in progress"
     }
-    if (toBlockNumber) {
-      return ClaimStatus.CLAIMED
-    }
-    // The estimated claim time will not exceed 5 minutes.
-    if (estimatedTimeMap[`claim_${tx.hash}`] + 1000 * 60 * 5 > Date.now()) {
-      return ClaimStatus.CLAIMING
-    }
-    if (+claimInfo?.batch_index && claimInfo?.batch_index <= finalizedIndex) {
-      return ClaimStatus.CLAIMABLE
-    }
-    return ClaimStatus.NOT_READY
-  }, [tx, finalizedIndex, estimatedTimeMap[`claim_${tx.hash}`]])
-
-  const initiatedAt = useMemo(() => {
-    const date = dayjs(tx.initiatedAt)
-    return tx.initiatedAt ? date.format("DD/MM HH:mm:ss") : "-"
-  }, [tx])
-
-  const txStatusCopy = () => {
-    return (
-      <>
-        <Typography sx={{ fontWeight: 600 }}>
-          {txStatus === ClaimStatus.CLAIMED ? "Claimed" : null}
-          {txStatus === ClaimStatus.CLAIMING ? "Claiming... " : null}
-          {txStatus === ClaimStatus.CLAIMABLE ? "Ready to be Claimed" : null}
-          {txStatus === ClaimStatus.NOT_READY ? "Not yet finalised" : null}
-        </Typography>
-
-        {renderEstimatedWaitingTime(estimatedTimeMap[`to_${tx.toHash}`])}
-        <Typography sx={{ fontWeight: 400, whiteSpace: "nowrap" }}>Transaction sent: {initiatedAt}</Typography>
-      </>
-    )
-  }
-
-  const renderEstimatedWaitingTime = timestamp => {
-    if (txStatus === ClaimStatus.CLAIMED) {
-      return null
-    } else if (timestamp === 0) {
-      return <Typography variant="body2">Estimating...</Typography>
-    } else if (timestamp) {
-      return (
-        <Typography variant="body2" color="textSecondary">
-          <Countdown date={timestamp} renderer={renderCountDown}></Countdown>
-        </Typography>
-      )
-    }
-    return null
-  }
-
-  const renderCountDown = ({ minutes, seconds, completed }) => {
-    if (completed) {
-      return <LinearProgress />
-    }
-    return (
-      <span>
-        Ready in {minutes}m {seconds}s (estimate)
-      </span>
-    )
-  }
+    return claimTip
+  }, [claimStatus, claimTip, loading])
 
   return (
     <TableRow key={tx.hash}>
       <TableCell>
-        <ClaimButton tx={tx} txStatus={txStatus} />
+        <ClaimButton tx={tx} txStatus={claimStatus} loading={loading} changeLoading={setLoading} />
       </TableCell>
       <TableCell>
         <Typography sx={{ fontWeight: 500 }}>
@@ -251,24 +206,45 @@ const TxRow = props => {
         </Typography>
       </TableCell>
       <TableCell>
-        <Typography>
-          Scroll:{" "}
-          <Link sx={{ color: "#396CE8" }} external href={generateExploreLink(EXPLORER_URL.L2, tx.hash)} className="leading-normal flex-1">
-            {truncateHash(tx.hash)}
-          </Link>
-        </Typography>
-        {tx.toHash ? (
-          <Typography>
-            Ethereum:{" "}
-            <Link sx={{ color: "#396CE8" }} external href={generateExploreLink(EXPLORER_URL.L1, tx.toHash)} className="leading-normal flex-1">
-              {truncateHash(tx.toHash)}
+        <Typography sx={{ minWidth: "8.2rem" }}>{tx.initiatedAt ? formatDate(tx.initiatedAt, { withTime: true }) : "-"}</Typography>
+      </TableCell>
+      <TableCell sx={{ minWidth: "21rem" }}>
+        <Stack direction="column">
+          <Typography sx={{ whiteSpace: "nowrap" }}>
+            Scroll:{" "}
+            <Link
+              external
+              sx={{ color: "#0F8E7E" }}
+              underline="always"
+              href={generateExploreLink(EXPLORER_URL.L2, tx.hash)}
+              className="leading-normal flex-1"
+            >
+              {truncateHash(tx.hash)}
             </Link>
           </Typography>
-        ) : null}
+        </Stack>
+
+        <Stack direction="column">
+          <Typography sx={{ whiteSpace: "nowrap" }}>
+            Ethereum:{" "}
+            {tx.toHash ? (
+              <Link
+                external
+                sx={{ color: "#0F8E7E" }}
+                underline="always"
+                href={generateExploreLink(EXPLORER_URL.L1, tx.toHash)}
+                className="leading-normal flex-1"
+              >
+                {truncateHash(tx.toHash)}
+              </Link>
+            ) : (
+              <span className="leading-normal flex-1">{claimTipWithLoading}</span>
+            )}
+          </Typography>
+        </Stack>
       </TableCell>
-      <TableCell>{txStatusCopy()}</TableCell>
     </TableRow>
   )
 }
 
-export default TxTable
+export default ClaimTable

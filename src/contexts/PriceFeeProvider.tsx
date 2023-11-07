@@ -5,9 +5,9 @@ import { useBlockNumber } from "wagmi"
 
 import { CHAIN_ID, ETH_SYMBOL } from "@/constants"
 import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
-import { useApp } from "@/contexts/AppContextProvider"
+import { useBrigeContext } from "@/contexts/BridgeContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { requireEnv } from "@/utils"
+import { requireEnv, trimErrorMessage } from "@/utils"
 
 const OFFSET = "0x1111000000000000000000000000000000001111"
 const amount = BigInt(1)
@@ -98,7 +98,7 @@ export const usePriceFeeContext = () => {
 export const PriceFeeProvider = ({ children }) => {
   const { walletCurrentAddress, chainId } = useRainbowContext()
   const [tokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
-  const { networksAndSigners, tokenList } = useApp()
+  const { networksAndSigners, tokenList } = useBrigeContext()
   const [gasLimit, setGasLimit] = useState(BigInt(0))
   const [gasPrice, setGasPrice] = useState(BigInt(0))
   const [errorMessage, setErrorMessage] = useState("")
@@ -129,7 +129,10 @@ export const PriceFeeProvider = ({ children }) => {
           setErrorMessage("")
         })
         .catch(error => {
-          setErrorMessage(error.message)
+          //TODO:
+          // setGasLimit(null)
+          // setGasPrice(null)
+          setErrorMessage(trimErrorMessage(error.message))
         })
     },
   })
@@ -146,7 +149,7 @@ export const PriceFeeProvider = ({ children }) => {
 
   const getGasPrice = async () => {
     try {
-      const L2GasPriceOracleContract = getContract("L2_GAS_PRICE_ORACLE", networksAndSigners[CHAIN_ID.L1].signer)
+      const L2GasPriceOracleContract = getContract("L2_GAS_PRICE_ORACLE", networksAndSigners[CHAIN_ID.L1].provider)
       const gasPrice = await L2GasPriceOracleContract.l2BaseFee()
       return (gasPrice * BigInt(120)) / BigInt(100)
     } catch (err) {
@@ -156,22 +159,21 @@ export const PriceFeeProvider = ({ children }) => {
   }
 
   const getGasLimit = async () => {
-    if (l2Token.symbol !== ETH_SYMBOL) {
-      const { provider } = networksAndSigners[CHAIN_ID.L2]
-      const code = await provider.getCode((l2Token as ERC20Token).address)
-      // This address does not have a contract deployed.
-      if (code === "0x") {
-        return BigInt(7e5)
-      }
-    }
     if (l2Token.symbol === ETH_SYMBOL) {
       return await getGasLimitGeneric(requireEnv(`REACT_APP_L1_ETH_GATEWAY_PROXY_ADDR`))
-    } else {
-      // fetch gateway address from router.getERC20Gateway((l1Token as ERC20Token).address)
-      const gatewayRouter = getContract("L1_GATEWAY_ROUTER_PROXY", networksAndSigners[CHAIN_ID.L1].provider)
-      const gatewayAddress = await gatewayRouter.getERC20Gateway((l1Token as ERC20Token).address)
-      return await getGasLimitGeneric(gatewayAddress)
     }
+
+    const { provider } = networksAndSigners[CHAIN_ID.L2]
+    const code = await provider.getCode((l2Token as ERC20Token).address)
+    // This address does not have a contract deployed.
+    if (code === "0x") {
+      return BigInt(7e5)
+    }
+
+    // fetch gateway address from router.getERC20Gateway((l1Token as ERC20Token).address)
+    const gatewayRouter = getContract("L1_GATEWAY_ROUTER_PROXY", networksAndSigners[CHAIN_ID.L1].provider)
+    const gatewayAddress = await gatewayRouter.getERC20Gateway((l1Token as ERC20Token).address)
+    return await getGasLimitGeneric(gatewayAddress)
   }
 
   const messageDataGeneric = gatewayAddress => {

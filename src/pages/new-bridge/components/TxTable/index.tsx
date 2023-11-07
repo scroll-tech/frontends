@@ -1,12 +1,9 @@
-import dayjs from "dayjs"
 import { useCallback, useMemo } from "react"
-import Countdown from "react-countdown"
 import { makeStyles } from "tss-react/mui"
 
 import {
   Box,
   CircularProgress,
-  LinearProgress,
   Pagination,
   Paper,
   Skeleton,
@@ -22,12 +19,13 @@ import {
 
 import Link from "@/components/Link"
 import { NETWORKS, TX_STATUS } from "@/constants"
-import { useApp } from "@/contexts/AppContextProvider"
+import { useBrigeContext } from "@/contexts/BridgeContextProvider"
 import useTokenInfo from "@/hooks/useTokenInfo"
-import useTxStore from "@/stores/txStore"
-import { generateExploreLink, toTokenDisplay, truncateHash } from "@/utils"
+import { formatDate, generateExploreLink, toTokenDisplay, truncateHash } from "@/utils"
 
+import useCheckClaimStatus from "../../hooks/useCheckClaimStatus"
 import useLastFinalizedBatchIndex from "../../hooks/useLastFinalizedBatchIndex"
+import NoData from "../NoData"
 import TxStatusButton from "./TxStatusButton"
 
 const useStyles = makeStyles()(theme => {
@@ -36,18 +34,16 @@ const useStyles = makeStyles()(theme => {
       whiteSpace: "nowrap",
       [theme.breakpoints.down("sm")]: {
         paddingBottom: "1.6rem",
-        overflowX: "scroll",
       },
     },
     tableWrapper: {
       boxShadow: "unset",
       borderRadius: "20px",
-      // maxWidth: "70rem",
-      backgroundColor: theme.palette.themeBackground.optionHightlight,
-      padding: "0 3rem 3rem",
+    },
+    tableMinHeight: {
+      minHeight: "20rem",
       [theme.breakpoints.down("sm")]: {
-        width: "calc(100vw - 4rem)",
-        padding: "0 2rem 2rem",
+        overflowX: "auto",
       },
     },
     tableTitle: {
@@ -66,6 +62,7 @@ const useStyles = makeStyles()(theme => {
         fontSize: "1.6rem",
         padding: "0.8rem 1.6rem",
         color: theme.palette.text.primary,
+        whiteSpace: "nowrap",
         "&:first-of-type": {
           paddingLeft: 0,
         },
@@ -73,8 +70,7 @@ const useStyles = makeStyles()(theme => {
     },
     tableBody: {
       ".MuiTableCell-root": {
-        verticalAlign: "top",
-        padding: "2rem",
+        padding: "2rem 1.6rem",
         "*": {
           fontSize: "1.4rem",
         },
@@ -113,6 +109,11 @@ const useStyles = makeStyles()(theme => {
       backgroundColor: theme.palette.tagSuccess.light,
     },
     pagination: {
+      overflowX: "auto",
+
+      ".MuiPagination-ul": {
+        flexWrap: "nowrap",
+      },
       ".MuiPaginationItem-text": {
         fontSize: "1.6rem",
       },
@@ -156,44 +157,57 @@ const TxTable = (props: any) => {
   return (
     <>
       <TableContainer component={Paper} className={classes.tableWrapper}>
-        <Table aria-label="Tx Table" sx={{ minHeight: "20rem" }}>
-          <TableHead className={classes.tableHeader}>
-            <TableRow>
-              <TableCell align="center">Status</TableCell>
-              <TableCell>Amount</TableCell>
-              <TableCell sx={{ width: "16rem" }}>Action</TableCell>
-              <TableCell sx={{ width: "12rem" }} align="left">
-                Initiated At
-              </TableCell>
-              <TableCell sx={{ width: "32rem" }}>Transaction Hash</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody className={classes.tableBody}>
-            <>
-              {data?.map((tx: any) => (
-                <TxRow finalizedIndex={lastFinalizedBatchIndex ?? 0} key={tx.hash} tx={tx} />
-              ))}
-            </>
-          </TableBody>
-        </Table>
-        {pagination && (
-          <div className="flex justify-center mt-[2rem]">
-            <Pagination
-              size="small"
-              classes={{
-                root: classes.pagination,
-              }}
-              page={pagination?.page}
-              count={pagination?.count}
-              onChange={handleChangePage}
-            />
-          </div>
+        {data.length ? (
+          <>
+            <Box className={classes.tableMinHeight}>
+              <Table aria-label="Tx Table">
+                <TableHead className={classes.tableHeader}>
+                  <TableRow>
+                    <TableCell align="center">Status</TableCell>
+                    <TableCell>Amount</TableCell>
+                    <TableCell sx={{ width: "16rem" }}>Action</TableCell>
+                    <TableCell sx={{ width: "12rem" }} align="left">
+                      Initiated At
+                    </TableCell>
+                    <TableCell sx={{ width: "32rem" }}>Transaction Hash</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody className={classes.tableBody}>
+                  <>
+                    {data.map((tx: any) => (
+                      <TxRow finalizedIndex={lastFinalizedBatchIndex ?? 0} key={tx.hash} tx={tx} />
+                    ))}
+                  </>
+                </TableBody>
+              </Table>
+            </Box>
+
+            {pagination && (
+              <div className="flex justify-center mt-[2rem]">
+                <Pagination
+                  size="small"
+                  classes={{
+                    root: classes.pagination,
+                  }}
+                  page={pagination?.page}
+                  count={pagination?.count}
+                  onChange={handleChangePage}
+                />
+              </div>
+            )}
+          </>
+        ) : (
+          <NoData
+            sx={{ height: ["20rem", "30rem"] }}
+            title="No transaction hisotry"
+            description="When you bridge assets, your transactions will appear here"
+          ></NoData>
         )}
-        {loading ? (
+        {loading && (
           <Box className={classes.loadingBox}>
             <CircularProgress className={classes.loadingIndicator} />
           </Box>
-        ) : null}
+        )}
       </TableContainer>
     </>
   )
@@ -201,9 +215,8 @@ const TxTable = (props: any) => {
 
 const TxRow = props => {
   const { tx, finalizedIndex } = props
-  const { estimatedTimeMap } = useTxStore()
 
-  const { blockNumbers } = useApp()
+  const { blockNumbers } = useBrigeContext()
 
   const txStatus = useCallback(
     (blockNumber, assumedStatus, isL1, to) => {
@@ -230,6 +243,15 @@ const TxRow = props => {
     [blockNumbers],
   )
 
+  const { claimTip } = useCheckClaimStatus(tx)
+
+  const toTip = useMemo(() => {
+    if (tx.isL1) {
+      return "Pending..."
+    }
+    return claimTip
+  }, [tx, claimTip])
+
   const fromStatus = useMemo(() => {
     return txStatus(tx.fromBlockNumber, tx.assumedStatus, tx.isL1, false)
   }, [tx, txStatus])
@@ -244,42 +266,19 @@ const TxRow = props => {
     return toTokenDisplay(amount, tokenInfo?.decimals ? BigInt(tokenInfo.decimals) : undefined)
   }
 
-  const renderEstimatedWaitingTime = (timestamp, isL1, to) => {
-    if (fromStatus === TX_STATUS.success) {
-      return null
-    } else if (timestamp === 0) {
-      return <Typography variant="body2">Estimating...</Typography>
-    } else if (timestamp) {
-      return (
-        <Typography variant="body2" color="textSecondary">
-          <Countdown date={timestamp} renderer={renderCountDown}></Countdown>
-        </Typography>
-      )
-    }
-    return null
-  }
-
-  const renderCountDown = ({ total, hours, minutes, seconds, completed }) => {
-    if (completed) {
-      return <LinearProgress />
-    }
-    return (
-      <span style={{ whiteSpace: "nowrap" }}>
-        Ready in {minutes}m {seconds}s (estimate)
-      </span>
-    )
-  }
-
-  const formatDate = (inputStr: string): string => {
-    const date = dayjs(inputStr)
-    return inputStr ? date.format("DD/MM/YYYY HH:mm:ss") : "-"
-  }
-
   const actionText = tx => {
     if (tx.isL1) {
-      return `Deposit to Scroll`
+      return (
+        <>
+          Deposit <span style={{ whiteSpace: "nowrap" }}>to Scroll</span>
+        </>
+      )
     } else {
-      return `Withdraw to Ethereum`
+      return (
+        <>
+          Withdraw <span style={{ whiteSpace: "nowrap" }}>to Ethereum</span>
+        </>
+      )
     }
   }
 
@@ -303,47 +302,44 @@ const TxRow = props => {
       </TableCell>
 
       <TableCell>
-        <Typography>
-          <span>{formatDate(tx.initiatedAt)}</span>
-        </Typography>
+        <Typography>{tx.initiatedAt ? formatDate(tx.initiatedAt, { withTime: true }) : "-"}</Typography>
       </TableCell>
 
       <TableCell sx={{ width: "21rem" }}>
         <Stack direction="column">
-          <Typography>
+          <Typography sx={{ whiteSpace: "nowrap" }}>
             {tx.isL1 ? "Ethereum" : "Scroll"}:{" "}
             <Link
               external
-              sx={{ color: "#396CE8" }}
+              sx={{ color: "#0F8E7E" }}
+              underline="always"
               href={generateExploreLink(NETWORKS[+!tx.isL1].explorer, tx.hash)}
               className="leading-normal flex-1"
             >
               {truncateHash(tx.hash)}
             </Link>
           </Typography>
-
-          {!tx.fromBlockNumber && !tx.assumedStatus && <LinearProgress />}
-          {renderEstimatedWaitingTime(estimatedTimeMap[`from_${tx.hash}`], tx.isL1, false)}
         </Stack>
 
         <Stack direction="column" className="mt-[0.4rem]">
-          <Typography>
+          <Typography sx={{ whiteSpace: "nowrap" }}>
             {tx.isL1 ? "Scroll" : "Ethereum"}:{" "}
             {tx.toHash ? (
               <Link
                 external
-                sx={{ color: "#396CE8" }}
+                sx={{ color: "#0F8E7E" }}
+                underline="always"
                 href={generateExploreLink(NETWORKS[+tx.isL1].explorer, tx.toHash)}
                 className="leading-normal flex-1"
               >
                 {truncateHash(tx.toHash)}
               </Link>
             ) : (
-              <span className="leading-normal flex-1">-</span>
-            )}{" "}
+              <Typography component="span" sx={{ fontSize: "1.4rem", lineHeight: 1.5, whiteSpace: "nowrap" }}>
+                {toTip}
+              </Typography>
+            )}
           </Typography>
-
-          {renderEstimatedWaitingTime(estimatedTimeMap[`to_${tx.toHash}`], tx.isL1, true)}
         </Stack>
       </TableCell>
     </TableRow>

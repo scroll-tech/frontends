@@ -3,7 +3,6 @@ type EmptyNetwork = ValidNetwork<string, never>
 type ValidNetwork = {
   name: string
   slug: string
-  imageUrl: string
   icon: any
   rpcUrl: string
   explorer: string

@@ -17,18 +17,29 @@ const useStyles = makeStyles()(theme => ({
     padding: 0,
   },
   menuItem: {
-    background: "#ffffff",
+    backgroundColor: "#ffffff",
     border: "1px solid #473835",
     borderRadius: "1rem",
     height: "5.6rem",
     "&:hover": {
       backgroundColor: "#ffffff",
     },
+    "&.Mui-disabled": {
+      backgroundColor: "#FFF5E8",
+      border: "1px solid #A39B9A",
+      opacity: 1,
+      "*": {
+        opacity: 0.75,
+      },
+    },
     [theme.breakpoints.down("sm")]: {
       padding: "0.6rem 0.8rem",
       height: "4.8rem",
       gap: "0.6rem",
     },
+  },
+  readOnly: {
+    pointerEvents: "none",
   },
   listItemIcon: { minWidth: "unset !important" },
   listItemText: {
@@ -46,15 +57,15 @@ const useStyles = makeStyles()(theme => ({
 }))
 
 const TokenSelect = props => {
-  const { options, onChange, value, disabled } = props
-  const { classes } = useStyles()
+  const { options, onChange, value, disabled, readOnly } = props
+  const { cx, classes } = useStyles()
   const [open, setOpen] = useState(false)
   return (
     <>
       <MenuItem
         onClick={() => setOpen(true)}
         sx={{ marginLeft: "0.8rem !important" }}
-        classes={{ root: classes.menuItem }}
+        classes={{ root: cx(classes.menuItem, readOnly && classes.readOnly) }}
         value={value}
         key={value.symbol}
         disabled={disabled}

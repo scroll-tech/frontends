@@ -14,12 +14,12 @@ object {
   vertical-align: middle;
 }
 
-@media screen and (max-width: 600px) {
+/* @media screen and (max-width: 600px) {
   body {
     overflow: auto !important;
     max-height: 100vh;
   }
-}
+} */
 html {
   scroll-padding-top: 140px;
 }

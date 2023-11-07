@@ -2,12 +2,12 @@ import { ethers } from "ethers"
 import useSWR from "swr"
 
 import L1_erc20ABI from "@/assets/abis/L1_erc20ABI.json"
-import { useApp } from "@/contexts/AppContextProvider"
+import { useBrigeContext } from "@/contexts/BridgeContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 
 const useBalance = (token: any, network?: any) => {
   const { walletCurrentAddress } = useRainbowContext()
-  const { networksAndSigners } = useApp()
+  const { networksAndSigners } = useBrigeContext()
 
   async function fetchBalance({ provider, token, network, address }) {
     try {

@@ -8,7 +8,7 @@ import ButtonPopover from "@/components/ButtonPopover"
 import Link from "@/components/Link"
 import PageHeader from "@/components/PageHeader"
 import { NETWORKS } from "@/constants"
-import { useApp } from "@/contexts/AppContextProvider"
+import { useBrigeContext } from "@/contexts/BridgeContextProvider"
 import useBridgeStore from "@/stores/bridgeStore"
 import useTxStore from "@/stores/txStore"
 
@@ -30,7 +30,7 @@ const Title = styled(Typography)(({ theme }) => ({
 const Header = () => {
   const {
     txHistory: { refreshPageTransactions },
-  } = useApp()
+  } = useBrigeContext()
   const { loading } = useTxStore()
 
   const { historyVisible, changeHistoryVisible } = useBridgeStore()

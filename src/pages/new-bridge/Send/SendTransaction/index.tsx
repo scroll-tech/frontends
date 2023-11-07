@@ -1,23 +1,23 @@
 import { useEffect, useMemo, useState } from "react"
 import useStorage from "squirrel-gill"
 
-import { Box, Stack, Typography } from "@mui/material"
+import { Box, Stack, SvgIcon, Typography } from "@mui/material"
 
+import { ReactComponent as InfoSvg } from "@/assets/svgs/refactor/bridge-info.svg"
 import Button from "@/components/Button"
 import TextButton from "@/components/TextButton"
 import { ETH_SYMBOL } from "@/constants"
 import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
-import { useApp } from "@/contexts/AppContextProvider"
+import { useBrigeContext } from "@/contexts/BridgeContextProvider"
 import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useAsyncMemo, useBalance } from "@/hooks"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useBridgeStore from "@/stores/bridgeStore"
-import { amountToBN, switchNetwork } from "@/utils"
+import { amountToBN, switchNetwork, trimErrorMessage } from "@/utils"
 
 import useApprove from "../../hooks/useApprove"
 // import useBalance from "../../hooks/useBalance"
-import useCheckValidAmount from "../../hooks/useCheckValidAmount"
 import useGasFee from "../../hooks/useGasFee"
 import { useSendTransaction } from "../../hooks/useSendTransaction"
 import useSufficientBalance from "../../hooks/useSufficientBalance"
@@ -28,15 +28,22 @@ import TransactionSummary from "./TransactionSummary"
 const SendTransaction = props => {
   const { chainId, connect } = useRainbowContext()
   // TODO: extract tokenList
-  const { tokenList } = useApp()
+  const { tokenList } = useBrigeContext()
   const { isMobile } = useCheckViewport()
   const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
 
-  const { gasLimit, gasPrice, errorMessage: priceFeeErrorMessage, fetchData: fetchPriceFee, getL1DataFee } = usePriceFeeContext()
+  const { gasLimit, gasPrice, errorMessage: relayFeeErrorMessage, fetchData: fetchPriceFee, getL1DataFee } = usePriceFeeContext()
 
-  const { txType, isNetworkCorrect, fromNetwork, changeTxError } = useBridgeStore()
+  const { txType, isNetworkCorrect, fromNetwork, changeTxResult } = useBridgeStore()
 
   const [amount, setAmount] = useState<string>()
+
+  const [maxWarning, setMaxWarning] = useState<string>()
+
+  const [bridgeWarning, setBridgeWarning] = useState()
+  const [inputError, setInputError] = useState(false)
+
+  const validAmount = useMemo(() => (Number(amount) > 0 ? amount : ""), [amount])
 
   const tokenOptions = useMemo(() => {
     return fromNetwork.chainId ? tokenList.filter(item => item.chainId === fromNetwork.chainId) : []
@@ -47,26 +54,24 @@ const SendTransaction = props => {
   // const { balance, isLoading: balanceLoading } = useBalance(selectedToken.address)
   const { balance, loading: balanceLoading } = useBalance(selectedToken, fromNetwork)
 
-  const { isNeeded: needApproval, approve, isLoading: approveLoading } = useApprove(fromNetwork, selectedToken, amount)
-
+  const { isNeeded: needApproval, approve, isLoading: approveLoading } = useApprove(fromNetwork, selectedToken, validAmount)
   const {
     send: sendTransaction,
     isLoading: sendLoading,
     error: sendError,
   } = useSendTransaction({
-    amount,
+    amount: validAmount,
     selectedToken,
   })
 
-  const invalidAmountMessage = useCheckValidAmount(amount)
   // fee start
   const {
     gasFee: estimatedGasCost,
     gasLimit: txGasLimit,
-    error: estimatedGasCostError,
+    error: gasFeeErrorMessage,
     calculateGasFee,
     displayedGasFee: displayedEstimatedGasCost,
-  } = useGasFee(selectedToken)
+  } = useGasFee(selectedToken, needApproval)
 
   const l1DataFee = useAsyncMemo(
     async () =>
@@ -76,13 +81,11 @@ const SendTransaction = props => {
     [amount, selectedToken, txGasLimit, txType],
   )
 
-  const totalFee = useMemo(() => estimatedGasCost + gasLimit * gasPrice + (l1DataFee ?? BigInt(0)), [estimatedGasCost, gasLimit, gasPrice])
-  const displayedTotalFee = useMemo(
-    () => displayedEstimatedGasCost + gasLimit * gasPrice + (l1DataFee ?? BigInt(0)),
-    [displayedEstimatedGasCost, gasLimit, gasPrice],
-  )
-
   const relayFee = useMemo(() => gasLimit * gasPrice, [gasLimit, gasPrice])
+  const totalFee = useMemo(
+    () => (estimatedGasCost && !relayFeeErrorMessage ? estimatedGasCost + relayFee + (l1DataFee ?? BigInt(0)) : null),
+    [estimatedGasCost, relayFeeErrorMessage, relayFee, l1DataFee],
+  )
 
   const { insufficientWarning } = useSufficientBalance(
     selectedToken,
@@ -90,58 +93,69 @@ const SendTransaction = props => {
     totalFee,
     balance ?? undefined,
   )
-  // fee end
 
-  const bridgeWarning = useMemo(() => {
-    if (insufficientWarning) {
-      return insufficientWarning
-    } else if (invalidAmountMessage) {
-      return invalidAmountMessage
-    } else if (priceFeeErrorMessage && amount) {
-      return (
+  useEffect(() => {
+    let nextBridgeWarning
+    let nextInputError = false
+    if (!chainId) {
+      nextBridgeWarning = (
+        <TextButton underline="always" sx={{ fontSize: "1.4rem" }} onClick={connect}>
+          Connect wallet
+        </TextButton>
+      )
+    } else if (chainId !== fromNetwork.chainId) {
+      nextBridgeWarning = (
         <>
-          {priceFeeErrorMessage},{" "}
-          <TextButton underline="always" sx={{ fontSize: "1.4rem" }} onClick={() => fetchPriceFee()}>
-            Click here to retry.
+          Wrong network.{" "}
+          <TextButton underline="always" sx={{ fontSize: "1.4rem" }} onClick={() => switchNetwork(fromNetwork.chainId)}>
+            Switch to {fromNetwork.name}
           </TextButton>
         </>
       )
-    } else if (estimatedGasCostError && amount && !needApproval) {
-      return (
+    } else if (maxWarning && maxWarning !== "FeeError") {
+      nextBridgeWarning = <>{maxWarning}</>
+      nextInputError = true
+    } else if (gasFeeErrorMessage && (validAmount || maxWarning) && needApproval === false) {
+      nextBridgeWarning = (
         <>
-          {estimatedGasCostError},{" "}
+          {gasFeeErrorMessage},{" "}
           <TextButton underline="always" sx={{ fontSize: "1.4rem" }} onClick={() => calculateGasFee()}>
             Click here to retry.
           </TextButton>
         </>
       )
+    } else if (relayFeeErrorMessage && (validAmount || maxWarning) && needApproval === false) {
+      nextBridgeWarning = (
+        <>
+          {relayFeeErrorMessage},{" "}
+          <TextButton underline="always" sx={{ fontSize: "1.4rem" }} onClick={() => fetchPriceFee()}>
+            Click here to retry.
+          </TextButton>
+        </>
+      )
+    } else if (insufficientWarning) {
+      nextBridgeWarning = insufficientWarning
+      nextInputError = insufficientWarning !== ">0"
     }
-    return null
-  }, [
-    chainId,
-    isNetworkCorrect,
-    fromNetwork,
-    insufficientWarning,
-    invalidAmountMessage,
-    priceFeeErrorMessage,
-    amount,
-    estimatedGasCostError,
-    needApproval,
-  ])
+    setBridgeWarning(nextBridgeWarning)
+    setInputError(nextInputError)
+  }, [chainId, fromNetwork, maxWarning, insufficientWarning, relayFeeErrorMessage, validAmount, gasFeeErrorMessage, needApproval])
+
+  // fee end
 
   const necessaryCondition = useMemo(() => {
-    return amount && !bridgeWarning
-  }, [amount, bridgeWarning])
+    return validAmount && !bridgeWarning
+  }, [validAmount, bridgeWarning])
 
   const sendText = useMemo(() => {
     if (txType === "Deposit" && sendLoading) {
-      return "Depositing Funds"
+      return "Depositing funds"
     } else if (txType === "Deposit" && !sendLoading) {
-      return "Deposit Funds"
+      return "Deposit funds"
     } else if (txType === "Withdraw" && sendLoading) {
-      return "Withdrawing Funds"
+      return "Withdrawing funds"
     }
-    return "Withdraw Funds"
+    return "Withdraw funds"
   }, [txType, sendLoading])
 
   useEffect(() => {
@@ -155,20 +169,13 @@ const SendTransaction = props => {
 
   useEffect(() => {
     if (sendError && sendError !== "cancel" && sendError !== "reject") {
-      changeTxError({ message: sendError.message })
-    } else {
-      changeTxError(null)
+      changeTxResult({ code: 0, message: trimErrorMessage(sendError.message) })
     }
   }, [sendError])
 
-  const handleSend = () => {
-    if (fromNetwork.isL1) {
-      sendTransaction()
-    } else {
-      sendTransaction()
-      // TODO: withdraw
-    }
-  }
+  useEffect(() => {
+    setMaxWarning("")
+  }, [balance, amount, totalFee])
 
   const handleChangeTokenSymbol = symbol => {
     setTokenSymbol(symbol)
@@ -176,6 +183,10 @@ const SendTransaction = props => {
 
   const handleChangeAmount = value => {
     setAmount(value)
+  }
+
+  const handleError = value => {
+    setMaxWarning(value)
   }
 
   const renderButton = () => {
@@ -201,7 +212,7 @@ const SendTransaction = props => {
           key="approve"
           width={isMobile ? "100%" : "25rem"}
           color="primary"
-          disabled={!needApproval || !necessaryCondition}
+          disabled={!necessaryCondition}
           loading={approveLoading}
           onClick={approve}
           whiteButton
@@ -217,9 +228,9 @@ const SendTransaction = props => {
         key="send"
         width={isMobile ? "100%" : "25rem"}
         color="primary"
-        disabled={!necessaryCondition}
+        disabled={!necessaryCondition || needApproval === undefined}
         loading={sendLoading}
-        onClick={handleSend}
+        onClick={sendTransaction}
         whiteButton
       >
         {sendText}
@@ -228,12 +239,13 @@ const SendTransaction = props => {
   }
 
   return (
-    <Stack direction="column" alignItems="center" sx={{ minHeight: ["30rem", "47.6rem"] }}>
+    <Stack direction="column" alignItems="center">
       <NetworkDirection></NetworkDirection>
       <BalanceInput
         sx={{ mt: "1.6rem" }}
         value={amount}
         onChange={handleChangeAmount}
+        error={inputError}
         token={selectedToken}
         fee={totalFee}
         balance={balance}
@@ -241,34 +253,54 @@ const SendTransaction = props => {
         disabled={fromNetwork.chainId !== chainId}
         readOnly={approveLoading || sendLoading}
         tokenOptions={tokenOptions}
+        onError={handleError}
         onChangeToken={handleChangeTokenSymbol}
       ></BalanceInput>
+      <Box sx={{ height: "2rem", width: "100%" }}>
+        {!!bridgeWarning && bridgeWarning !== ">0" && (
+          <Typography
+            sx={{
+              fontSize: "1.4rem",
+              fontWeight: 500,
+              width: ["calc(100% + 1rem)", "100%"],
+              "@media (max-width: 600px)": {
+                marginLeft: "-0.5rem",
+              },
+            }}
+            color="primary"
+          >
+            <SvgIcon sx={{ fontSize: "1.4rem", mr: "0.4rem", verticalAlign: "middle" }} component={InfoSvg} inheritViewBox></SvgIcon>
+            <Stack direction="row" style={{ display: "inline-flex", verticalAlign: "middle", alignItems: "center", gap: "0.2rem" }}>
+              {bridgeWarning}
+            </Stack>
+          </Typography>
+        )}
+      </Box>
+
       <TransactionSummary
         selectedToken={selectedToken}
-        amount={amount}
-        priceFeeErrorMessage={priceFeeErrorMessage}
-        totalFee={displayedTotalFee}
-        relayFee={relayFee}
+        amount={validAmount}
+        feeError={relayFeeErrorMessage || gasFeeErrorMessage}
+        // totalFee={displayedEstimatedGasCost}
+        l2GasFee={relayFee}
+        l1GasFee={displayedEstimatedGasCost}
         l1DataFee={l1DataFee}
-        estimatedGasCost={displayedEstimatedGasCost}
         bridgeWarning={bridgeWarning}
+        needApproval={needApproval}
       />
-      <Typography
+
+      <Box
         sx={{
-          fontSize: "1.3rem",
-          fontWeight: 500,
-          width: ["calc(100% + 1rem)", "32.4rem"],
-          textAlign: "center",
-          margin: "0 auto",
-          "@media (max-width: 600px)": {
-            marginLeft: "-0.5rem",
-          },
+          mt: ["2.4rem", "2.8rem"],
+          display: "flex",
+          alignItems: "flex-end",
+          width: "100%",
+          justifyContent: "center",
+          "& .MuiButtonBase-root": { fontFamily: "var(--onboard-font-family-normal) !important" },
         }}
-        color="primary"
       >
-        {bridgeWarning}
-      </Typography>
-      <Box sx={{ flex: 1, display: "flex", alignItems: "flex-end", width: "100%", justifyContent: "center" }}>{renderButton()}</Box>
+        {renderButton()}
+      </Box>
     </Stack>
   )
 }

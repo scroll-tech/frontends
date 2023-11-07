@@ -8,7 +8,6 @@ export const NETWORKS: Network[] = [
   {
     name: L1_NAME,
     slug: "layer1",
-    imageUrl: "/imgs/bridge/mainnet.svg",
     icon: MainnetSvg,
     rpcUrl: RPC_URL.L1,
     explorer: EXPLORER_URL.L1,
@@ -19,7 +18,6 @@ export const NETWORKS: Network[] = [
   {
     name: L2_NAME,
     slug: "layer2",
-    imageUrl: "/logo.png",
     icon: ScrollSvg,
     rpcUrl: RPC_URL.L2,
     explorer: EXPLORER_URL.L2,

@@ -2,13 +2,14 @@ import { getPublicClient } from "@wagmi/core"
 import { useState } from "react"
 import { useBlockNumber } from "wagmi"
 
-import { useApp } from "@/contexts/AppContextProvider"
+import { useBrigeContext } from "@/contexts/BridgeContextProvider"
 import useBridgeStore from "@/stores/bridgeStore"
+import { trimErrorMessage } from "@/utils"
 
 import { useEstimateSendTransaction } from "./useEstimateSendTransaction"
 
-const useGasFee = selectedToken => {
-  const { networksAndSigners } = useApp()
+const useGasFee = (selectedToken, needApproval) => {
+  const { networksAndSigners } = useBrigeContext()
   const { fromNetwork, toNetwork } = useBridgeStore()
   const { estimateSend } = useEstimateSendTransaction({
     fromNetwork,
@@ -16,9 +17,9 @@ const useGasFee = selectedToken => {
     selectedToken,
   })
 
-  const [gasFee, setGasFee] = useState(BigInt(0))
-  const [displayedGasFee, setDisplayedGasFee] = useState(BigInt(0))
-  const [gasLimit, setGasLimit] = useState(BigInt(0))
+  const [gasFee, setGasFee] = useState<bigint | null>(null)
+  const [displayedGasFee, setDisplayedGasFee] = useState<bigint | null>(null)
+  const [gasLimit, setGasLimit] = useState<bigint | null>(null)
   const [maxFeePerGas, setMaxFeePerGas] = useState<bigint | null>(null)
   const [maxPriorityFeePerGas, setMaxPriorityFeePerGas] = useState<bigint | null>(null)
   const [error, setError] = useState("")
@@ -38,13 +39,22 @@ const useGasFee = selectedToken => {
       priorityFee = null
     }
 
-    const gas = await estimateSend()
-    const limit = (gas * BigInt(120)) / BigInt(100)
+    const estimatedGasLimit = await estimateSend()
+    if (estimatedGasLimit === null) {
+      return {
+        gasLimit: null,
+        gasFee: null,
+        gasPrice,
+        maxPriorityFeePerGas: priorityFee,
+        displayedGasFee: null,
+      }
+    }
+    const enlargedGasLimit = (estimatedGasLimit * BigInt(120)) / BigInt(100)
     const displayedGasPrice = await getPublicClient({ chainId: fromNetwork.chainId }).getGasPrice()
-    const estimatedGasCost = BigInt(limit) * BigInt(gasPrice || 1e9)
-    const displayedEstimatedGasCost = BigInt(gas) * BigInt(displayedGasPrice || 1e9)
+    const estimatedGasCost = enlargedGasLimit * (gasPrice || BigInt(1e9))
+    const displayedEstimatedGasCost = estimatedGasLimit * (displayedGasPrice || BigInt(1e9))
     return {
-      gasLimit: limit,
+      gasLimit: enlargedGasLimit,
       gasFee: estimatedGasCost,
       gasPrice,
       maxPriorityFeePerGas: priorityFee,
@@ -53,7 +63,7 @@ const useGasFee = selectedToken => {
   }
 
   useBlockNumber({
-    enabled: !!networksAndSigners[fromNetwork.chainId].provider,
+    enabled: !!networksAndSigners[fromNetwork.chainId].provider && needApproval === false,
     onBlock(blockNumber) {
       calculateGasFee()
         .then(value => {
@@ -65,12 +75,12 @@ const useGasFee = selectedToken => {
           setError("")
         })
         .catch(error => {
-          setGasFee(BigInt(0))
-          setDisplayedGasFee(BigInt(0))
-          setGasLimit(BigInt(0))
+          setGasFee(null)
+          setDisplayedGasFee(null)
+          setGasLimit(null)
           setMaxFeePerGas(null)
           setMaxPriorityFeePerGas(null)
-          setError(error.message)
+          setError(trimErrorMessage(error.message))
         })
     },
   })

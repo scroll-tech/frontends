@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 
 import { CHAIN_ID } from "@/constants"
-import { useApp } from "@/contexts/AppContextProvider"
+import { useBrigeContext } from "@/contexts/BridgeContextProvider"
 import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 
@@ -10,7 +10,7 @@ export function useEstimateSendTransaction(props) {
   const { checkConnectedChainId, walletCurrentAddress } = useRainbowContext()
   const { gasLimit, gasPrice } = usePriceFeeContext()
 
-  const { networksAndSigners } = useApp()
+  const { networksAndSigners } = useBrigeContext()
 
   const [instance, setInstance] = useState<any>(null)
 
@@ -52,12 +52,13 @@ export function useEstimateSendTransaction(props) {
     if (!isNetworkConnected) return BigInt(0)
     const nativeTokenBalance = await networksAndSigners[fromNetwork.chainId].provider.getBalance(walletCurrentAddress)
     if (!nativeTokenBalance) {
-      return BigInt(0)
+      return null
     } else if (fromNetwork.isL1 && gasLimit && gasPrice) {
       return await estimateSendL1ToL2()
     } else if (!fromNetwork.isL1 && toNetwork.isL1) {
       return await estimateSendL2ToL1()
     }
+    return null
   }
 
   const estimateSendL1ToL2 = () => {

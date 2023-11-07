@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material"
 
 import { BRIDGE_PAGE_SIZE } from "@/constants"
-import { useApp } from "@/contexts/AppContextProvider"
+import { useBrigeContext } from "@/contexts/BridgeContextProvider"
 import useTxStore from "@/stores/txStore"
 
 import TxTable from "../components/TxTable"
@@ -9,7 +9,7 @@ import TxTable from "../components/TxTable"
 const TransactionsList = (props: any) => {
   const {
     txHistory: { refreshPageTransactions },
-  } = useApp()
+  } = useBrigeContext()
 
   const { page, total, pageTransactions } = useTxStore()
 

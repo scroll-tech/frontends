@@ -3,17 +3,17 @@ import { useEffect } from "react"
 
 import { Stack, Typography } from "@mui/material"
 
-import GlobalWarning from "@/components/GlobalWarning"
+import GlobalComponents from "@/components/GlobalComponents"
 import SectionWrapper from "@/components/SectionWrapper"
 import { NETWORKS } from "@/constants"
-import AppProvider from "@/contexts/AppContextProvider"
+import BridgeContextProvider from "@/contexts/BridgeContextProvider"
 import { PriceFeeProvider } from "@/contexts/PriceFeeProvider"
 import useBridgeStore from "@/stores/bridgeStore"
-import { isProduction, requireEnv } from "@/utils"
+import { isSepolia, requireEnv } from "@/utils"
 
 import FAQsLink from "./FAQ/link"
 import Send from "./Send"
-import TxHistoryDialog from "./TxHistoryDialog"
+import HistoryButton from "./components/HistoryButton"
 
 const Bridge = () => {
   const { txType, changeFromNetwork, changeToNetwork } = useBridgeStore()
@@ -29,12 +29,12 @@ const Bridge = () => {
   }, [txType])
 
   return (
-    <AppProvider>
+    <BridgeContextProvider>
       <PriceFeeProvider>
-        <GlobalWarning></GlobalWarning>
+        <GlobalComponents></GlobalComponents>
         <SectionWrapper
           sx={{
-            pt: "8.4rem",
+            pt: ["4.8rem", "8.4rem"],
             pb: "6rem",
             minHeight: "calc(100vh - 69.2rem)",
             display: "flex",
@@ -43,17 +43,33 @@ const Bridge = () => {
             maxWidth: ["100% !important"],
           }}
         >
-          <Stack direction="row" sx={{ width: "100%", mb: ["3rem", "5rem"] }} spacing="4px" justifyContent="space-between" alignItems="center">
-            <Typography sx={{ fontSize: ["4rem", "4.8rem"], fontWeight: 600, textAlign: "center", width: "100%", whiteSpace: "nowrap" }}>
-              {isProduction ? "" : `${requireEnv("REACT_APP_SCROLL_ENVIRONMENT")} Testnet`} Bridge
+          <Stack
+            direction="row"
+            sx={{ mb: "2.4rem", width: "64rem", maxWidth: "100%" }}
+            spacing="2rem"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Typography
+              sx={{
+                fontSize: ["4rem", "4.8rem"],
+                lineHeight: ["4.8rem", "7.2rem"],
+                fontWeight: 600,
+                width: "100%",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {isSepolia ? `${requireEnv("REACT_APP_SCROLL_ENVIRONMENT")} Testnet` : ""} Bridge
             </Typography>
+            <HistoryButton></HistoryButton>
           </Stack>
           <Send></Send>
-          <TxHistoryDialog></TxHistoryDialog>
           <FAQsLink />
         </SectionWrapper>
       </PriceFeeProvider>
-    </AppProvider>
+    </BridgeContextProvider>
   )
 }
 

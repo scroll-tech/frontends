@@ -7,8 +7,6 @@ import useBridgeStore from "@/stores/bridgeStore"
 
 import Claim from "./Claim"
 import SendTransaction from "./SendTransaction"
-import TxFailure from "./TxFailure"
-import TxSuccess from "./TxSuccess"
 
 const useStyles = makeStyles()(theme => ({
   tabList: {
@@ -18,21 +16,17 @@ const useStyles = makeStyles()(theme => ({
     width: "100%",
     justifyContent: "center",
     borderBottom: "1px solid #5b5b5b",
-    maxWidth: "52rem",
     margin: "0 auto",
-    [theme.breakpoints.down("sm")]: {
-      gap: "2rem",
-    },
   },
   tab: {
     minHeight: "unset",
-    height: "3.4rem",
+    height: "4.4rem",
     fontSize: "1.6rem",
     fontWeight: 600,
     textTransform: "unset",
     color: theme.palette.text.primary,
     padding: 0,
-    width: "26rem",
+    flex: 1,
     "&.Mui-selected": {
       color: theme.palette.text.primary,
     },
@@ -55,16 +49,10 @@ const useStyles = makeStyles()(theme => ({
 
 const Withdraw = () => {
   const { classes } = useStyles()
-  const { withDrawStep, changeWithdrawStep, txResult, txError } = useBridgeStore()
+  const { withDrawStep, changeWithdrawStep } = useBridgeStore()
 
   const handleChange = (e, newValue) => {
     changeWithdrawStep(newValue)
-  }
-
-  if (txResult) {
-    return <TxSuccess></TxSuccess>
-  } else if (txError) {
-    return <TxFailure></TxFailure>
   }
 
   return (
@@ -75,8 +63,8 @@ const Withdraw = () => {
           textColor="primary"
           classes={{ root: classes.tabList, flexContainer: classes.tabFlex, indicator: classes.indicator }}
         >
-          <Tab label="Step 1: Withdraw from Scroll" value="1" classes={{ root: classes.tab }}></Tab>
-          <Tab label="Step 2: Claim on Ethereum" value="2" classes={{ root: classes.tab }}></Tab>
+          <Tab label="Step 1: Withdraw" value="1" classes={{ root: classes.tab }}></Tab>
+          <Tab label="Step 2: Claim" value="2" classes={{ root: classes.tab }}></Tab>
         </TabList>
         <TabPanel value="1" classes={{ root: classes.tabPanel }}>
           <SendTransaction></SendTransaction>
