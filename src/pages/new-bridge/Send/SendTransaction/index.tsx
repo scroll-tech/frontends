@@ -10,7 +10,7 @@ import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
 import { useApp } from "@/contexts/AppContextProvider"
 import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { useBalance } from "@/hooks"
+import { useAsyncMemo, useBalance } from "@/hooks"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useBridgeStore from "@/stores/bridgeStore"
 import { amountToBN, switchNetwork } from "@/utils"
@@ -32,7 +32,7 @@ const SendTransaction = props => {
   const { isMobile } = useCheckViewport()
   const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
 
-  const { gasLimit, gasPrice, errorMessage: priceFeeErrorMessage, fetchData: fetchPriceFee } = usePriceFeeContext()
+  const { gasLimit, gasPrice, errorMessage: priceFeeErrorMessage, fetchData: fetchPriceFee, getL1DataFee } = usePriceFeeContext()
 
   const { txType, isNetworkCorrect, fromNetwork, changeTxError } = useBridgeStore()
 
@@ -62,13 +62,25 @@ const SendTransaction = props => {
   // fee start
   const {
     gasFee: estimatedGasCost,
+    gasLimit: txGasLimit,
     error: estimatedGasCostError,
     calculateGasFee,
     displayedGasFee: displayedEstimatedGasCost,
   } = useGasFee(selectedToken)
 
-  const totalFee = useMemo(() => estimatedGasCost + gasLimit * gasPrice, [estimatedGasCost, gasLimit, gasPrice])
-  const displayedTotalFee = useMemo(() => displayedEstimatedGasCost + gasLimit * gasPrice, [displayedEstimatedGasCost, gasLimit, gasPrice])
+  const l1DataFee = useAsyncMemo(
+    async () =>
+      txType === "Withdraw" && amount && txGasLimit
+        ? await getL1DataFee(selectedToken, amountToBN(amount, selectedToken.decimals), txGasLimit)
+        : BigInt(0),
+    [amount, selectedToken, txGasLimit, txType],
+  )
+
+  const totalFee = useMemo(() => estimatedGasCost + gasLimit * gasPrice + (l1DataFee ?? BigInt(0)), [estimatedGasCost, gasLimit, gasPrice])
+  const displayedTotalFee = useMemo(
+    () => displayedEstimatedGasCost + gasLimit * gasPrice + (l1DataFee ?? BigInt(0)),
+    [displayedEstimatedGasCost, gasLimit, gasPrice],
+  )
 
   const relayFee = useMemo(() => gasLimit * gasPrice, [gasLimit, gasPrice])
 
@@ -237,6 +249,7 @@ const SendTransaction = props => {
         priceFeeErrorMessage={priceFeeErrorMessage}
         totalFee={displayedTotalFee}
         relayFee={relayFee}
+        l1DataFee={l1DataFee}
         estimatedGasCost={displayedEstimatedGasCost}
         bridgeWarning={bridgeWarning}
       />
