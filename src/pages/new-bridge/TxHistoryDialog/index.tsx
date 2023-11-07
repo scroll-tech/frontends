@@ -11,7 +11,7 @@ const useStyles = makeStyles()(theme => ({
   paper: {
     boxShadow: "unset",
     width: "100%",
-    maxWidth: "75rem",
+    maxWidth: "78rem",
     [theme.breakpoints.down("sm")]: {
       maxWidth: "unset",
     },

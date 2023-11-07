@@ -5,13 +5,12 @@ name: "Merge Prod Back to Dev"
 on:
   push:
     branches:
-      - sepolia
+      - mainnet
 
 jobs:
   merge-back:
     if: |
-      startsWith(github.event.head_commit.message, 'ci: version bump to ') &&
-      endsWith(github.event.head_commit.message, ' [bot]')
+      !endsWith(github.event.head_commit.message, ' [bot]')
     name: "Merge prod back to dev"
     permissions:
       contents: write
@@ -40,3 +39,8 @@ jobs:
           title: "Auto-merge prod back to dev [bot]"
           labels: "bot/merge-prod-back-to-dev, automerge, automerge-merge"
           body: ""
+      - name: Trigger Version Bump Wrokflow
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          event-type: bump-version
