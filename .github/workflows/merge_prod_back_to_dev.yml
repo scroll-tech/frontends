@@ -39,8 +39,3 @@ jobs:
           title: "Auto-merge prod back to dev [bot]"
           labels: "bot/merge-prod-back-to-dev, automerge, automerge-merge"
           body: ""
-      - name: Trigger Version Bump Wrokflow
-        uses: peter-evans/repository-dispatch@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          event-type: bump-version

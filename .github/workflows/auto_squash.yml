@@ -41,4 +41,4 @@ jobs:
           MERGE_METHOD: "squash"
           MERGE_LABELS: "automerge, automerge-squash"
           MERGE_REMOVE_LABELS: "automerge, automerge-squash"
-          MERGE_COMMIT_MESSAGE: "pull-request-title"
+          MERGE_COMMIT_MESSAGE: "Auto squash {pullRequest.number}  [bot]"
