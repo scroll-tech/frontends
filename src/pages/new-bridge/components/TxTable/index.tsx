@@ -42,9 +42,7 @@ const useStyles = makeStyles()(theme => {
     },
     tableMinHeight: {
       minHeight: "20rem",
-      [theme.breakpoints.down("sm")]: {
-        overflowX: "auto",
-      },
+      overflowX: "auto",
     },
     tableTitle: {
       marginTop: "2.8rem",
