@@ -18,7 +18,7 @@ const NotConnected = props => {
       >
         {description}
       </Typography>
-      <Button color="primary" width={isMobile ? "100%" : "22rem"} onClick={connect}>
+      <Button whiteButton color="primary" width={isMobile ? "100%" : "22rem"} onClick={connect}>
         Connect wallet
       </Button>
     </Stack>

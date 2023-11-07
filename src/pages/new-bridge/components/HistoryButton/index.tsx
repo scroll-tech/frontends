@@ -17,6 +17,9 @@ const useStyles = makeStyles()(theme => ({
     borderRadius: "0.5rem",
     gap: "0.5rem",
     whiteSpace: "nowrap",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "1.4rem",
+    },
   },
 }))
 
@@ -30,7 +33,7 @@ const BridgeHistoryButton = props => {
 
   return (
     <ButtonBase classes={{ root: classes.button }} {...props} onClick={handleOpenHistory}>
-      <SvgIcon sx={{ fontSize: "1.8rem" }} component={HistorySvg} inheritViewBox></SvgIcon>
+      <SvgIcon sx={{ fontSize: ["1.4rem", "1.8rem"] }} component={HistorySvg} inheritViewBox></SvgIcon>
       {isSepolia ? "" : "Transaction History"}
     </ButtonBase>
   )
