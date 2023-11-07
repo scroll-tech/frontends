@@ -40,4 +40,4 @@ jobs:
           MERGE_METHOD: "merge"
           MERGE_LABELS: "automerge, automerge-merge"
           MERGE_REMOVE_LABELS: "automerge, automerge-merge"
-          MERGE_COMMIT_MESSAGE: "pull-request-title"
+          MERGE_COMMIT_MESSAGE: "Auto merge {pullRequest.number}  [bot]"
