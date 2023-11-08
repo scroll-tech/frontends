@@ -1,73 +1,63 @@
-import { Fragment } from "react"
+// import { Fragment } from "react"
 import { makeStyles } from "tss-react/mui"
 
 import { SvgIcon, Typography } from "@mui/material"
 
-import { ReactComponent as DecentralisationSvg } from "@/assets/svgs/refactor/story-decentralisation.svg"
 import { ReactComponent as EthSvg } from "@/assets/svgs/refactor/story-eth.svg"
-import { ReactComponent as ExternalSvg } from "@/assets/svgs/refactor/story-external.svg"
-import { ReactComponent as SecuritySvg } from "@/assets/svgs/refactor/story-security.svg"
 import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
 import SectionWrapper from "@/components/SectionWrapper"
-import useCheckViewport from "@/hooks/useCheckViewport"
+
+// import useCheckViewport from "@/hooks/useCheckViewport"
 
 const PERKS = [
   {
-    icon: SecuritySvg,
-    title: <>Medical, dental & vision</>,
-    mobileTitle: "Medical, dental & vision",
+    icon: EthSvg,
+    title: "Fully remote working",
     mobileScale: "0.88",
-    content: "We offer competitive medical, dental, vision insurance for employees. This includes medical, dental, and vision premiums.",
+    content: "We have always been a fully remote team and Scrollers have the flexibility to choose where and when they work.",
   },
   {
     icon: EthSvg,
-    title: <>Time-off</>,
-    mobileTitle: "Time-off",
+    title: "Home office set up",
     mobileScale: "0.87",
-    content: "We want you to take time off to rest and rejuvenate. Notion offers flexible paid vacation as well as 10+ observed holidays by country.",
+    content: "A choice of equipment is provided through our onboarding partner Hofy, along with furniture needed to create a comfortable work space.",
   },
   {
-    icon: ExternalSvg,
-    title: <>Mental health & wellbeing</>,
-    mobileTitle: "Mental health & wellbeing",
+    icon: EthSvg,
+    title: "Paid time off",
     mobileScale: "0.73",
-    content: "You and your dependents will have access to providers that create personalized treatment plans, including therapy, coaching.",
+    content: "A total of 25 days PTO per year, plus local public holidays, and we encourage everyone to use it.",
   },
   {
-    icon: DecentralisationSvg,
-    title: <>Parental leave</>,
-    mobileTitle: "Parental leave",
+    icon: EthSvg,
+    title: "Growth budget",
     mobileScale: "0.785",
-    content: "We offer biological, adoptive, and foster parents paid time off to spend quality time with family.",
+    content: "Up to $3,000 USD per year to pursue learning and growth opportunities.",
   },
 
   {
-    icon: SecuritySvg,
-    title: <>Fertility coverage</>,
-    mobileTitle: "Fertility coverage",
+    icon: EthSvg,
+    title: "Co-working allowance",
     mobileScale: "0.88",
-    content: "We offer competitive medical, dental, vision insurance for employees. This includes medical, dental, and vision premiums",
+    content: "Up to $300 USD per month for co-working membership for those who prefer to work away from home.",
   },
   {
     icon: EthSvg,
-    title: <>Retirement matching</>,
-    mobileTitle: "Retirement matching",
+    title: "Private healthcare",
     mobileScale: "0.87",
-    content: "We want you to take time off to rest and rejuvenate. Notion offers flexible paid vacation as well as 10+ observed holidays by country.",
+    content: "Offered in selected countries, including the US, Canada and the UK.",
   },
   {
-    icon: ExternalSvg,
-    title: <>Commuter benefits</>,
-    mobileTitle: "Commuter benefits",
+    icon: EthSvg,
+    title: "Global offsites",
     mobileScale: "0.73",
-    content: "You and your dependents will have access to providers that create personalized treatment plans, including therapy, coaching.",
+    content: "We get together in a cool location at least once a year to get to know each other in person, work together, and have fun.",
   },
   {
-    icon: DecentralisationSvg,
-    title: <>Monthly stipend</>,
-    mobileTitle: "Monthly stipend",
+    icon: EthSvg,
+    title: "Team meetups",
     mobileScale: "0.785",
-    content: "We offer biological, adoptive, and foster parents paid time off to spend quality time with family.",
+    content: "We encourage teams to meet and work together in person at least once a year.",
   },
 ]
 
@@ -93,12 +83,12 @@ const useStyles = makeStyles()(theme => ({
 
 const Perks = () => {
   const { classes } = useStyles()
-  const { isMobile } = useCheckViewport()
+  // const { isMobile } = useCheckViewport()
 
   return (
     <SectionWrapper>
       <Typography variant="h1" sx={{ mb: ["3.2rem", "5.6rem"] }}>
-        Perks and benefit
+        Perks & benefits
       </Typography>
       <SuccessionToView className={classes.grid}>
         {PERKS.map((item, index) => (
@@ -109,7 +99,7 @@ const Perks = () => {
               inheritViewBox
             ></SvgIcon>
             <Typography sx={{ fontSize: ["2rem", "2.4rem"], fontWeight: 600, mt: ["1.3rem", "1.8rem", "2.2rem"], mb: ["0.8rem", "1.4rem", "2rem"] }}>
-              {isMobile ? item.mobileTitle : item.title}
+              {item.title}
             </Typography>
             <Typography sx={{ fontSize: ["1.6rem", "2rem"] }}>{item.content}</Typography>
           </SuccessionItem>

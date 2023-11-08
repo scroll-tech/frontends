@@ -97,8 +97,8 @@ const Mission = () => {
     <Container>
       <OrientationToView>
         <Title>
-          Scroll’s mission is to provide an accessible scaling solution that preserves the essence of Ethereum – trust-minimized, secure and open
-          source.
+          Scroll’s mission is to provide an accessible scaling solution that preserves the essence of Ethereum - trust-minimized, secure and
+          open-source.
         </Title>
       </OrientationToView>
 

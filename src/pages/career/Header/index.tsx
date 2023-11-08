@@ -81,7 +81,8 @@ const Header = () => {
               textAlign: ["center", "left"],
             }}
           >
-            Join a group of cyrptography researchers, engineers, experts, and community champions to create the best L2 Ethereum ecosystem.
+            Join our team of diverse and talented researchers, engineers, experts and community champions who are passionate about creating the best
+            L2 Ethereum ecosystem.
           </Typography>
         </OrientationToView>
         <OrientationToView delay={0.3} className={classes.actionGroup}>
