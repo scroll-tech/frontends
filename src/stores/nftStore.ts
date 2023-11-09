@@ -3,16 +3,19 @@ import { create } from "zustand"
 import { DEVELOPER_NFT_PHRASES, MintableDate } from "@/constants"
 
 type Phrase = "" | "in-progress" | "waiting" | "end"
+type Eligible = -1 | 0 | 1
 
 interface NFTStore {
   phrase: Phrase
+  isEligible: Eligible
   checkPhrase: () => void
   changePhrase: (phrase: Phrase) => void
+  changeIsEligible: (isEligible: Eligible) => void
 }
 
 const useNFTStore = create<NFTStore>()((set, get) => ({
   phrase: "",
-
+  isEligible: 0,
   changePhrase: value => {
     set({
       phrase: value,
@@ -38,6 +41,12 @@ const useNFTStore = create<NFTStore>()((set, get) => ({
         phrase: "end",
       })
     }
+  },
+
+  changeIsEligible: isEligible => {
+    set({
+      isEligible,
+    })
   },
 }))
 

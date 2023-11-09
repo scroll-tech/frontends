@@ -14,6 +14,7 @@ const MintFlow = () => {
   return (
     <SectionWrapper dark full sx={{ p: "0 !important", "& .MuiTypography-root": { color: theme => theme.palette.primary.contrastText } }}>
       <Swiper
+        style={{ zIndex: 0 }}
         pagination={{
           type: "progressbar",
         }}

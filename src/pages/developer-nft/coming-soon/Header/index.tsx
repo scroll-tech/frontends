@@ -1,5 +1,6 @@
 import { useEffect } from "react"
 import Countdown, { zeroPad } from "react-countdown"
+import { useNavigate } from "react-router-dom"
 
 import { Stack, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
@@ -19,11 +20,19 @@ const Separator = styled(Typography)(({ theme }) => ({
 }))
 
 const Header = () => {
+  const navigate = useNavigate()
+
   const { phrase, changePhrase, checkPhrase } = useNFTStore()
 
   useEffect(() => {
     checkPhrase()
   }, [])
+
+  useEffect(() => {
+    if (phrase === "end") {
+      navigate("/developer-nft/mint", { replace: true })
+    }
+  }, [phrase])
 
   const renderCountDown = ({ total, days, hours, minutes, seconds, completed }) => {
     if (completed) {

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 
+// import { useNavigate } from "react-router-dom"
 import { Box, Stack, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
@@ -23,12 +24,15 @@ const Grid = styled(Box)(({ theme }) => ({
 }))
 
 const MintNFT = () => {
+  // const navigate = useNavigate()
+
   const { isLandscape } = useCheckViewport()
   const [mintedAmount] = useState(640)
   const [rarity] = useState("20%")
 
   useEffect(() => {
-    // TODO: if has NFT, then display
+    // TODO: if has NFT, then display, if not, navigate back to /mint
+    // navigate("/developer-nft/mint")
   }, [])
 
   return (

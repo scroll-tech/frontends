@@ -14,6 +14,7 @@ const FinalStep = () => {
   const handleGoShow = () => {
     navigate("/developer-nft/my")
   }
+
   return (
     <Container sx={{ pt: ["2.4rem", "4rem"], pb: ["8rem", "14rem"] }}>
       <Stack alignItems="center" spacing="1.6rem">

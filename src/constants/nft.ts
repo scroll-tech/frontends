@@ -24,7 +24,7 @@ export const Stage3StartDate = dayjs("2023-10-24T23:00:00Z")
 
 export const EndDate = dayjs("2023-11-01T23:00:00Z").subtract(1, "ms")
 
-export const MintableDate = dayjs("2023-11-14T23:00:00Z")
+export const MintableDate = dayjs().add(1, "m")
 
 export const DEVELOPER_NFT_STEPS = [
   { label: "Starts", date: StartDate, title: "Genesis Block" },
