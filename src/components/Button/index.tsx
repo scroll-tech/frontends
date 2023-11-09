@@ -2,7 +2,7 @@ import { motion, useCycle } from "framer-motion"
 import { useMemo } from "react"
 import { makeStyles } from "tss-react/mui"
 
-import { ButtonBase, CircularProgress, IconButton, SvgIcon, alpha } from "@mui/material"
+import { ButtonBase, CircularProgress, IconButton, SvgIcon } from "@mui/material"
 
 import { ReactComponent as ArrowRightIcon } from "@/assets/svgs/common/arrow-right.svg"
 import useCheckViewport from "@/hooks/useCheckViewport"
@@ -19,6 +19,9 @@ const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, w
       width: width ?? "18.5rem",
       height: "4.8rem",
     },
+  },
+  wrapperLoading: {
+    opacity: 0.6,
   },
   wrapperGloomy: {
     opacity: 0.5,
@@ -69,7 +72,6 @@ const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, w
   },
   maskLoading: {
     width: "100% !important",
-    backgroundColor: alpha(theme.palette.primary.main, 0.6),
   },
   maskDisabled: {
     backgroundColor: "#EBC28E",
@@ -125,7 +127,7 @@ const Button = props => {
     // TODO: allow sx, allow size=small/medium
     // avoid setting both 'disabled' and 'loading' to true.
     <motion.div
-      className={cx(classes.wrapper, innerDisabled && classes.wrapperDisabled, gloomy && classes.wrapperGloomy)}
+      className={cx(classes.wrapper, innerDisabled && classes.wrapperDisabled, loading && classes.wrapperLoading, gloomy && classes.wrapperGloomy)}
       onHoverStart={handleHover}
       onHoverEnd={handleHover}
       animate={isHover ? "expanding" : "normal"}
