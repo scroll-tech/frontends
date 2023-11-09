@@ -11,11 +11,15 @@ const InitialStep = () => {
 
   const handleStartFlow = () => {
     swiper.slideNext()
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    })
   }
   return (
     <StepWrapper src="/imgs/nft/flow-initial-step.svg">
       <Stack direction="column" sx={{ gap: ["1.6rem", "2.4rem", "5.6rem"] }}>
-        <Typography sx={{ fontSize: ["2.4rem", "4.8rem"], lineHeight: ["3.2rem", "7.2rem"], fontWeight: 600 }}>
+        <Typography sx={{ fontSize: ["2.4rem", "4.8rem"], lineHeight: ["3.2rem", "6.4rem"], fontWeight: 600 }}>
           Congratulations! You are eligible for Scroll Origins and we thank you for being a key contributor.
         </Typography>
         <Typography sx={{ fontSize: ["1.6rem", "2.4rem"], lineHeight: ["2.4rem", "3.6rem"], fontWeight: [400, 500] }}>

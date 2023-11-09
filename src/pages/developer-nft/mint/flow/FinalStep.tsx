@@ -5,7 +5,8 @@ import { Container, Stack, Typography } from "@mui/material"
 import Button from "@/components/Button"
 import { SCROLL_ORIGINS_NFT } from "@/constants"
 
-import NFTCard from "../../components/NFTCard"
+import NFTImage from "../../components/NFTCard/NFTImage"
+import myNFT from "../my/myNFT"
 
 const FinalStep = () => {
   const navigate = useNavigate()
@@ -14,9 +15,9 @@ const FinalStep = () => {
     navigate("/developer-nft/my")
   }
   return (
-    <Container sx={{ pt: ["2.4rem", "4rem", "6rem"], pb: ["8rem", "14rem"] }}>
-      <Stack alignItems="center" spacing="2.4rem">
-        <NFTCard sx={{ width: ["80%", "42.5rem"], mb: "1rem" }}></NFTCard>
+    <Container sx={{ pt: ["2.4rem", "4rem"], pb: ["8rem", "14rem"] }}>
+      <Stack alignItems="center" spacing="1.6rem">
+        <NFTImage sx={{ width: ["108%", "52rem"] }} src={myNFT}></NFTImage>
         <Typography
           sx={{ fontSize: ["2.4rem", "4.8rem"], fontWeight: 600, lineHeight: ["3.2rem", "7.2rem"], width: ["100%", "61.6rem"], textAlign: "center" }}
         >

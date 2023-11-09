@@ -22,8 +22,8 @@ const MintFlow = () => {
         <SwiperSlide>
           <InitialStep></InitialStep>
         </SwiperSlide>
-        {FLOW_QUESTIONS.map(item => (
-          <SwiperSlide key={item.subject}>
+        {FLOW_QUESTIONS.map((item, index) => (
+          <SwiperSlide key={index}>
             <QuestionStep {...item}></QuestionStep>
           </SwiperSlide>
         ))}
