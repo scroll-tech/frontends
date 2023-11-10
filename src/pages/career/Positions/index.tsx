@@ -2,7 +2,6 @@ import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 // import { ReactComponent as BackgroundSvg } from "@/assets/svgs/career/join-us.svg"
-import BackgroundSvg from "@/assets/svgs/career/join-us.svg"
 import { FadeInUp } from "@/components/Animation"
 import Button from "@/components/Button"
 import useCheckViewport from "@/hooks/useCheckViewport"
@@ -50,7 +49,7 @@ const Positions = () => {
       {/* <Box sx={{ maxHeight: "85rem", width: "100%", overflow: "hidden", display: "flex", justifycontent: "center", alignItems: "center" }}>
         <SvgIcon sx={{ width: "100%", height: "auto" }} component={BackgroundSvg} inheritViewBox></SvgIcon>
       </Box> */}
-      <img alt="background" style={{ width: "100%" }} src={BackgroundSvg} />
+      <img alt="background" style={{ width: "100%" }} src={isMobile ? "/imgs/career/join-us-m.png" : "/imgs/career/join-us.png"} />
       <FadeInUp>
         <Title>
           Join Scroll and contribute in <br /> building the best L2 product in the web3 world.
