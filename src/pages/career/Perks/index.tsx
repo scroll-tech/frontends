@@ -20,50 +20,58 @@ const PERKS = [
   {
     icon: IconSVG1,
     title: "Fully remote working",
-    mobileScale: "0.88",
+    width: "2.7rem",
+    // mobileScale: "0.88",
     content: "We have always been a fully remote team and Scrollers have the flexibility to choose where and when they work.",
   },
   {
     icon: IconSVG2,
     title: "Home office set up",
-    mobileScale: "0.87",
+    width: "2.2rem",
+    // mobileScale: "0.87",
     content: "A choice of equipment is provided through our onboarding partner Hofy, along with furniture needed to create a comfortable work space.",
   },
   {
     icon: IconSVG3,
     title: "Paid time off",
-    mobileScale: "0.73",
+    width: "3.1rem",
+    // mobileScale: "0.73",
     content: "A total of 25 days PTO per year, plus local public holidays, and we encourage everyone to use it.",
   },
   {
     icon: IconSVG4,
     title: "Growth budget",
-    mobileScale: "0.785",
+    width: "3rem",
+    // mobileScale: "0.785",
     content: "Up to $3,000 USD per year to pursue learning and growth opportunities.",
   },
 
   {
     icon: IconSVG5,
     title: "Co-working allowance",
-    mobileScale: "0.88",
+    width: "2.7rem",
+    // mobileScale: "0.88",
     content: "Up to $300 USD per month for co-working membership for those who prefer to work away from home.",
   },
   {
     icon: IconSVG6,
     title: "Private healthcare",
-    mobileScale: "0.87",
+    width: "3.1rem",
+    // mobileScale: "0.87",
     content: "Offered in selected countries, including the US, Canada and the UK.",
   },
   {
     icon: IconSVG7,
     title: "Global offsites",
-    mobileScale: "0.73",
+    width: "4.3rem",
+    // mobileScale: "0.73",
     content: "We get together in a cool location at least once a year to get to know each other in person, work together, and have fun.",
   },
   {
     icon: IconSVG8,
     title: "Team meetups",
-    mobileScale: "0.785",
+    width: "3.3rem",
+    // mobileScale: "0.785",
     content: "We encourage teams to meet and work together in person at least once a year.",
   },
 ]
@@ -98,11 +106,7 @@ const Perks = () => {
       <SuccessionToView className={classes.grid}>
         {PERKS.map((item, index) => (
           <SuccessionItem>
-            <SvgIcon
-              sx={{ width: "auto", height: "auto", "@media (max-width: 600px)": { transform: `scale(${item.mobileScale})` } }}
-              component={item.icon}
-              inheritViewBox
-            ></SvgIcon>
+            <SvgIcon sx={{ width: item.width, height: "3.4rem" }} component={item.icon} inheritViewBox></SvgIcon>
             <Typography sx={{ fontSize: ["2rem", "2.4rem"], fontWeight: 600, mt: ["1.3rem", "1.8rem", "2.2rem"], mb: ["0.8rem", "1.4rem", "2rem"] }}>
               {item.title}
             </Typography>
