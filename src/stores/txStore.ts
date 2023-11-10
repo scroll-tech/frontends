@@ -68,7 +68,7 @@ interface TimestampTx {
   hash: string
   timestamp: number
   // 1: front tx
-  // 2: abnormal tx -> failed|canceled
+  // 2: abnormal tx -> failed|cancelled
   // 3: successful tx
   position: ITxPosition
   // 1: deposit

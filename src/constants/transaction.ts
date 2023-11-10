@@ -10,6 +10,6 @@ export enum TX_STATUS {
   success = "Success",
   pending = "Pending",
   failed = "Failed",
-  canceled = "Canceled",
+  cancelled = "Cancelled",
   empty = "N/A",
 }

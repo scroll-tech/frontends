@@ -137,7 +137,7 @@ const ClaimButton = props => {
           sentryDebug(error.message)
           if (isError(error, "TRANSACTION_REPLACED")) {
             if (error.cancelled) {
-              markTransactionAbnormal(tx, TX_STATUS.canceled, "transaction was cancelled")
+              markTransactionAbnormal(tx, TX_STATUS.cancelled, "transaction was cancelled")
               updateOrderedTxs(walletCurrentAddress, tx.hash, TxPosition.Abnormal)
               // setSendError("cancel")
             } else {

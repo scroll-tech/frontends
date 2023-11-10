@@ -54,7 +54,7 @@ const StatusChip = props => {
       return classes.successChip
     } else if (status === TX_STATUS.failed) {
       return classes.failedChip
-    } else if (status === TX_STATUS.canceled) {
+    } else if (status === TX_STATUS.cancelled) {
       return classes.canceledChip
     } else if (status === TX_STATUS.empty) {
       return classes.emptyChip

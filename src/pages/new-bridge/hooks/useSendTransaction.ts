@@ -8,7 +8,7 @@ import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useBridgeStore from "@/stores/bridgeStore"
 import useTxStore, { TxDirection, TxPosition, isValidOffsetTime } from "@/stores/txStore"
-import { amountToBN, isProduction, sentryDebug } from "@/utils"
+import { amountToBN, isSepolia, sentryDebug } from "@/utils"
 
 import useGasFee from "./useGasFee"
 
@@ -88,7 +88,7 @@ export function useSendTransaction(props) {
           sentryDebug(error.message)
           if (isError(error, "TRANSACTION_REPLACED")) {
             if (error.cancelled) {
-              markTransactionAbnormal(tx, TX_STATUS.canceled, "transaction was cancelled")
+              markTransactionAbnormal(tx, TX_STATUS.cancelled, "transaction was cancelled")
               updateOrderedTxs(walletCurrentAddress, tx.hash, TxPosition.Abnormal, txDirection)
               setSendError("cancel")
             } else {
@@ -163,7 +163,7 @@ export function useSendTransaction(props) {
     }
 
     // set maxFeePerGas for testnet
-    if (maxFeePerGas && maxPriorityFeePerGas && !isProduction) {
+    if (maxFeePerGas && maxPriorityFeePerGas && isSepolia) {
       options.maxFeePerGas = maxFeePerGas
       options.maxPriorityFeePerGas = maxPriorityFeePerGas
     }
@@ -177,7 +177,7 @@ export function useSendTransaction(props) {
       value: fee,
     }
 
-    if (maxFeePerGas && maxPriorityFeePerGas && !isProduction) {
+    if (maxFeePerGas && maxPriorityFeePerGas && isSepolia) {
       options.maxFeePerGas = maxFeePerGas
       options.maxPriorityFeePerGas = maxPriorityFeePerGas
     }
