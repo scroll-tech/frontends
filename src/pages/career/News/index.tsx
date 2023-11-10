@@ -1,36 +1,29 @@
 import { makeStyles } from "tss-react/mui"
 
-import { Box, Link, SvgIcon, Typography } from "@mui/material"
+import { Box, Link, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
-import { ReactComponent as SecuritySvg } from "@/assets/svgs/career/news-cover-1.svg"
-import { ReactComponent as YeAvatar } from "@/assets/svgs/members/Ye-avatar.svg"
-import OrientationToView from "@/components/Motion/OrientationToView"
 import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
 import SectionWrapper from "@/components/SectionWrapper"
-import useCheckViewport from "@/hooks/useCheckViewport"
 
 const NEWS = [
   {
-    cover: SecuritySvg,
-    title: <>Scroll 🛠 Scaling Ethereum with Rollups and Zero Knowledge Proofs</>,
-    mobileTitle: "Medical, dental & vision",
-    mobileScale: "0.88",
-    link: "https://ethglobal.com",
+    cover: "/imgs/career/news/news-cover-1.png",
+    title: "Get introduced to zkRollups and zkEVMs",
+    domain: "youtube.com",
+    link: "https://www.youtube.com/watch?v=JdjRcW13LME",
   },
   {
-    cover: SecuritySvg,
-    title: <>Scroll 🛠 Scaling Ethereum with Rollups and Zero Knowledge Proofs</>,
-    mobileTitle: "Medical, dental & vision",
-    mobileScale: "0.88",
-    link: "https://ethglobal.com",
+    cover: "/imgs/career/news/news-cover-2.png",
+    title: "What it means to build in the open on the Zero Knowledge podcast",
+    domain: "zeroknowledge.fm",
+    link: "https://zeroknowledge.fm/275-2/",
   },
   {
-    cover: SecuritySvg,
-    title: <>Scroll 🛠 Scaling Ethereum with Rollups and Zero Knowledge Proofs</>,
-    mobileTitle: "Medical, dental & vision",
-    mobileScale: "0.88",
-    link: "https://ethglobal.com",
+    cover: "/imgs/career/news/news-cover-3.png",
+    title: "Diving Deep into ZK with Scroll’s Co-Founders",
+    domain: "blockworks.co",
+    link: "https://blockworks.co/podcast/empire/dc33c4f8-da5f-11ec-a5ac-27c2459d4600",
   },
 ]
 
@@ -72,36 +65,32 @@ const Newscard = styled(Box)(({ theme }) => ({
   },
 }))
 
+const NewsCover = styled("img")(({ theme }) => ({
+  width: "100%",
+}))
+
 const News = () => {
   const { classes } = useStyles()
-  const { isMobile } = useCheckViewport()
 
   const handleClick = news => {
     window.location.href = news.link
-    // if (blog.externalLink) {
-    //   window.location.href = blog.externalLink
-    // } else {
-    //   navigate("/blog/" + blog.id)
-    // }
   }
 
   return (
     <SectionWrapper>
-      <Typography variant="h1" sx={{ mb: ["3.2rem", "5.6rem"] }}>
-        In the news
-      </Typography>
+      <Typography sx={{ fontSize: ["3.2rem", "4.8rem"], mb: ["3.2rem", "5.6rem"] }}>In the news</Typography>
       <SuccessionToView className={classes.grid}>
         {NEWS.map((item, index) => (
-          <SuccessionItem>
+          <SuccessionItem key={index}>
             <Newscard onClick={() => handleClick(item)}>
-              <SvgIcon sx={{ width: "100%", height: "auto" }} component={item.cover} inheritViewBox></SvgIcon>
+              <NewsCover src={item.cover} />
               <Typography
                 sx={{ fontSize: ["2rem", "2.4rem"], fontWeight: 600, mt: ["1.3rem", "1.8rem", "2.2rem"], mb: ["0.8rem", "1.4rem", "2rem"] }}
               >
-                {isMobile ? item.mobileTitle : item.title}
+                {item.title}
               </Typography>
               <ExternalLink underline="none" href={item.link}>
-                {item.link}
+                {item.domain}
                 <svg style={{ marginLeft: "0.5rem" }} xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none">
                   <path
                     d="M9 1V7.86538L7.83812 6.7035V2.96385C5.46463 5.26924 3.29542 7.77999 0.853849 10L0 9.16344C2.42536 6.94344 4.5762 4.46728 6.93347 2.1781H3.31272L2.13462 1H9Z"
@@ -113,13 +102,6 @@ const News = () => {
           </SuccessionItem>
         ))}
       </SuccessionToView>
-      <OrientationToView>
-        <Typography sx={{ fontSize: ["2rem", "3.2rem"], marginBottom: "1rem", textAlign: "center" }}>“Some inspiring quote from Ye”</Typography>
-        <Typography sx={{ fontSize: ["1.6rem", "2rem"], marginBottom: ["7.2rem", "16rem"], textAlign: "center" }}>
-          Scroll Co-founder
-          <SvgIcon sx={{ width: ["4rem", "5rem"], height: ["4rem", "5rem"], mx: "0.6rem" }} component={YeAvatar} inheritViewBox></SvgIcon> Ye
-        </Typography>
-      </OrientationToView>
     </SectionWrapper>
   )
 }
