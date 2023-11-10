@@ -78,7 +78,7 @@ const News = () => {
 
   return (
     <SectionWrapper>
-      <Typography sx={{ fontSize: ["3.2rem", "4.8rem"], mb: ["3.2rem", "5.6rem"] }}>In the news</Typography>
+      <Typography sx={{ fontSize: ["3.2rem", "4.8rem"], mb: ["3.2rem", "5.6rem"] }}>Learn more</Typography>
       <SuccessionToView className={classes.grid}>
         {NEWS.map((item, index) => (
           <SuccessionItem key={index}>
