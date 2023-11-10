@@ -19,7 +19,7 @@ const Title = styled(Typography)(({ theme }) => ({
   maxWidth: "115.5rem",
   textAlign: "center",
   color: theme.palette.text.primary,
-  // margin: "0 auto 16rem",
+  margin: "0 auto ",
   fontSize: "3.2rem",
   [theme.breakpoints.down("md")]: {
     marginBottom: "6.4rem",
