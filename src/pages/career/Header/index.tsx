@@ -70,7 +70,7 @@ const Header = () => {
               width: "max-content",
             }}
           >
-            Careers at Scroll
+            Join us
           </Typography>
         </OrientationToView>
 
