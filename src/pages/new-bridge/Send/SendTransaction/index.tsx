@@ -3,7 +3,7 @@ import useStorage from "squirrel-gill"
 
 import { Box, Stack, SvgIcon, Typography } from "@mui/material"
 
-import { ReactComponent as InfoSvg } from "@/assets/svgs/refactor/bridge-info.svg"
+import { ReactComponent as WarningSvg } from "@/assets/svgs/refactor/bridge-warning.svg"
 import Button from "@/components/Button"
 import TextButton from "@/components/TextButton"
 import { ETH_SYMBOL } from "@/constants"
@@ -269,7 +269,7 @@ const SendTransaction = props => {
             }}
             color="primary"
           >
-            <SvgIcon sx={{ fontSize: "1.4rem", mr: "0.4rem", verticalAlign: "middle" }} component={InfoSvg} inheritViewBox></SvgIcon>
+            <SvgIcon sx={{ fontSize: "1.6rem", mr: "0.8rem", verticalAlign: "middle" }} component={WarningSvg} inheritViewBox></SvgIcon>
             <Stack direction="row" style={{ display: "inline-flex", verticalAlign: "middle", alignItems: "center", gap: "0.2rem" }}>
               {bridgeWarning}
             </Stack>
