@@ -18,8 +18,8 @@ const useGasFee = (selectedToken, needApproval) => {
   })
 
   const [gasFee, setGasFee] = useState<bigint | null>(null)
-  const [displayedGasFee, setDisplayedGasFee] = useState<bigint | null>(null)
   const [gasLimit, setGasLimit] = useState<bigint | null>(null)
+  const [enlargedGasLimit, setEnlargedGasLimit] = useState<bigint | null>(null)
   const [maxFeePerGas, setMaxFeePerGas] = useState<bigint | null>(null)
   const [maxPriorityFeePerGas, setMaxPriorityFeePerGas] = useState<bigint | null>(null)
   const [error, setError] = useState("")
@@ -38,27 +38,24 @@ const useGasFee = (selectedToken, needApproval) => {
       gasPrice = legacyGasPrice as bigint
       priorityFee = null
     }
-
-    const estimatedGasLimit = await estimateSend()
-    if (estimatedGasLimit === null) {
+    const gasLimit = await estimateSend()
+    if (gasLimit === null) {
       return {
         gasLimit: null,
+        enlargedGasLimit: null,
         gasFee: null,
         gasPrice,
         maxPriorityFeePerGas: priorityFee,
-        displayedGasFee: null,
       }
     }
-    const enlargedGasLimit = (estimatedGasLimit * BigInt(120)) / BigInt(100)
-    const displayedGasPrice = await getPublicClient({ chainId: fromNetwork.chainId }).getGasPrice()
-    const estimatedGasCost = enlargedGasLimit * (gasPrice || BigInt(1e9))
-    const displayedEstimatedGasCost = estimatedGasLimit * (displayedGasPrice || BigInt(1e9))
+    const estimatedGasCost = (gasLimit as bigint) * (gasPrice || BigInt(1e9))
+    const enlargedGasLimit = (gasLimit * BigInt(120)) / BigInt(100)
     return {
-      gasLimit: enlargedGasLimit,
+      gasLimit,
+      enlargedGasLimit,
       gasFee: estimatedGasCost,
       gasPrice,
       maxPriorityFeePerGas: priorityFee,
-      displayedGasFee: displayedEstimatedGasCost,
     }
   }
 
@@ -68,23 +65,23 @@ const useGasFee = (selectedToken, needApproval) => {
       calculateGasFee()
         .then(value => {
           setGasFee(value.gasFee)
-          setDisplayedGasFee(value.displayedGasFee)
           setGasLimit(value.gasLimit)
+          setEnlargedGasLimit(value.enlargedGasLimit)
           setMaxFeePerGas(value.gasPrice)
           setMaxPriorityFeePerGas(value.maxPriorityFeePerGas)
           setError("")
         })
         .catch(error => {
           setGasFee(null)
-          setDisplayedGasFee(null)
           setGasLimit(null)
+          setEnlargedGasLimit(null)
           setMaxFeePerGas(null)
           setMaxPriorityFeePerGas(null)
           setError(trimErrorMessage(error.message))
         })
     },
   })
-  return { gasLimit, gasFee, error, calculateGasFee, maxFeePerGas, maxPriorityFeePerGas, displayedGasFee }
+  return { enlargedGasLimit, gasLimit, gasFee, error, calculateGasFee, maxFeePerGas, maxPriorityFeePerGas }
 }
 
 export default useGasFee

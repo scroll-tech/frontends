@@ -65,13 +65,7 @@ const SendTransaction = props => {
   })
 
   // fee start
-  const {
-    gasFee: estimatedGasCost,
-    gasLimit: txGasLimit,
-    error: gasFeeErrorMessage,
-    calculateGasFee,
-    displayedGasFee: displayedEstimatedGasCost,
-  } = useGasFee(selectedToken, needApproval)
+  const { gasFee: estimatedGasCost, gasLimit: txGasLimit, error: gasFeeErrorMessage, calculateGasFee } = useGasFee(selectedToken, needApproval)
 
   const l1DataFee = useAsyncMemo(
     async () =>
@@ -283,9 +277,8 @@ const SendTransaction = props => {
         feeError={relayFeeErrorMessage || gasFeeErrorMessage}
         // totalFee={displayedEstimatedGasCost}
         l2GasFee={relayFee}
-        l1GasFee={displayedEstimatedGasCost}
+        l1GasFee={estimatedGasCost}
         l1DataFee={l1DataFee}
-        bridgeWarning={bridgeWarning}
         needApproval={needApproval}
       />
 
