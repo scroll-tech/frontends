@@ -57,11 +57,12 @@ const ExternalLink = styled(Link)(({ theme }) => ({
 
 const Newscard = styled(Box)(({ theme }) => ({
   cursor: "pointer",
-  "&:hover": {
-    opacity: 0.7,
-  },
   "& *": {
     cursor: "pointer !important",
+  },
+  transition: "all 0.3s ease-in-out",
+  "&:hover": {
+    transform: "scale(1.01)",
   },
 }))
 
