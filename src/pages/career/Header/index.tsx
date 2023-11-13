@@ -23,9 +23,6 @@ const useStyles = makeStyles()(theme => ({
     columnGap: "4rem",
     paddingBottom: "5.4rem",
     justifyContent: "space-between",
-    [theme.breakpoints.down("xl")]: {
-      gridTemplateColumns: "min-content 1fr",
-    },
     [theme.breakpoints.down("lg")]: {
       gridTemplateColumns: "1fr",
       gap: "2rem",
@@ -43,7 +40,7 @@ const useStyles = makeStyles()(theme => ({
   },
   subTitleWrapper: {
     width: "68rem",
-    [theme.breakpoints.down("xl")]: {
+    [theme.breakpoints.down("md")]: {
       width: "100%",
       maxWidth: "68rem",
     },
@@ -85,7 +82,7 @@ const Header = () => {
             L2 Ethereum ecosystem.
           </Typography>
         </OrientationToView>
-        <OrientationToView delay={0.3} className={classes.actionGroup}>
+        <OrientationToView delay={0.3} target="_blank" className={classes.actionGroup}>
           <Button href="https://jobs.lever.co/ScrollFoundation" color="primary" width={isMobile ? "21rem" : "25rem"}>
             View open positions
           </Button>

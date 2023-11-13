@@ -21,7 +21,7 @@ const SectionHeader = props => {
       alignItems={isPortrait ? "flex-start" : "flex-end"}
       {...rest}
     >
-      <Stack direction="column" sx={{ width: "100%", maxWidth: ["100%", "100%", action ? "60rem" : "100%"] }}>
+      <Stack direction="column" sx={{ maxWidth: ["100%", action ? "60rem" : "100%"] }}>
         <Typography
           sx={{
             fontSize: ["3.2rem", "4.6rem"],

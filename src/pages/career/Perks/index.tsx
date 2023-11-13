@@ -84,10 +84,11 @@ const useStyles = makeStyles()(theme => ({
     gridRowGap: "8rem",
     marginTop: "8rem",
     [theme.breakpoints.down("md")]: {
-      gridTemplateColumns: "repeat(1, 1fr)",
+      gridTemplateColumns: "repeat(1, 1fr 1fr)",
       gridRowGap: "5.6rem",
     },
     [theme.breakpoints.down("sm")]: {
+      gridTemplateColumns: "repeat(1, 1fr)",
       display: "flex",
       flexDirection: "column",
       gap: "3.2rem",
