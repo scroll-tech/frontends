@@ -30,7 +30,9 @@ const useCheckClaimStatus = tx => {
   }, [tx, lastFinalizedBatchIndex, estimatedTimeMap])
 
   const claimTip = useMemo(() => {
-    if (claimStatus === ClaimStatus.CLAIMABLE) {
+    if (claimStatus === ClaimStatus.FAILED) {
+      return "-"
+    } else if (claimStatus === ClaimStatus.CLAIMABLE) {
       return "Ready to be claimed"
     } else if (claimStatus === ClaimStatus.NOT_READY) {
       return "Pending..."
