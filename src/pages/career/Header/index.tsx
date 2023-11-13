@@ -82,8 +82,8 @@ const Header = () => {
             L2 Ethereum ecosystem.
           </Typography>
         </OrientationToView>
-        <OrientationToView delay={0.3} target="_blank" className={classes.actionGroup}>
-          <Button href="https://jobs.lever.co/ScrollFoundation" color="primary" width={isMobile ? "21rem" : "25rem"}>
+        <OrientationToView delay={0.3} className={classes.actionGroup}>
+          <Button href="https://jobs.lever.co/ScrollFoundation" target="_blank" color="primary" width={isMobile ? "21rem" : "25rem"}>
             View open positions
           </Button>
         </OrientationToView>
