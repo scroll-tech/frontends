@@ -22,9 +22,12 @@ const Card = styled(Box)(({ theme }) => ({
   overflow: "hidden",
   cursor: "pointer",
   color: theme.palette.text.primary,
+  transition: "all 0.3s ease-in-out",
+  "&:hover": {
+    transform: "scale(1.01)",
+  },
   "&:hover *": {
     cursor: "pointer !important",
-    opacity: 0.7,
   },
   [theme.breakpoints.down("lg")]: {
     gap: "2rem",

@@ -244,7 +244,9 @@ const TxRow = props => {
   const { claimTip } = useCheckClaimStatus(tx)
 
   const toTip = useMemo(() => {
-    if (tx.isL1) {
+    if (tx.assumedStatus) {
+      return "-"
+    } else if (tx.isL1) {
       return "Pending..."
     }
     return claimTip
@@ -300,7 +302,7 @@ const TxRow = props => {
       </TableCell>
 
       <TableCell>
-        <Typography>{tx.initiatedAt ? formatDate(tx.initiatedAt, { withTime: true }) : "-"}</Typography>
+        <Typography sx={{ minWidth: "9rem" }}>{tx.initiatedAt ? formatDate(tx.initiatedAt, { withTime: true }) : "-"}</Typography>
       </TableCell>
 
       <TableCell sx={{ width: "21rem" }}>

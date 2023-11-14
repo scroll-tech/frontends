@@ -39,9 +39,9 @@ const useStyles = makeStyles()(theme => {
       backgroundColor: "#FFE1DB",
       color: "#FF684B",
     },
-    canceledChip: {
-      color: "#FFF8F3",
-      background: "#5B5B5B",
+    cancelledChip: {
+      color: "#5B5B5B",
+      background: "#EDEDED",
     },
     waitingClaimChip: {
       background: "#FFF8F3",
@@ -118,7 +118,9 @@ const TxStatus = props => {
           label={
             <>
               <span>{tx.assumedStatus}</span>
-              <SvgIcon sx={{ fontSize: "1.6rem", ml: "0.4rem" }} component={InfoSvg} inheritViewBox></SvgIcon>
+              {tx.assumedStatus === TX_STATUS.failed && (
+                <SvgIcon sx={{ fontSize: "1.6rem", ml: "0.4rem" }} component={InfoSvg} inheritViewBox></SvgIcon>
+              )}
             </>
           }
         ></Chip>

@@ -32,7 +32,6 @@ type Props = {
   l1GasFee: TransactionValue
   l2GasFee: bigint
   l1DataFee?: bigint
-  bridgeWarning?: string | JSX.Element | null
   needApproval?: boolean
 }
 

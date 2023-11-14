@@ -1,12 +1,12 @@
-import IframeEmbedding from "@/components/IframeEmbedding"
 import ArchiveTerms from "@/pages/archive/20230308/terms"
 import Blog from "@/pages/blog"
 import BlogDetail from "@/pages/blog/detail"
-import ComingSoon from "@/pages/developer-nft/coming-soon"
-import DeveloperNFT from "@/pages/developer-nft/index"
 // import MintNFT from "@/pages/developer-nft/mint"
 // import MintFlow from "@/pages/developer-nft/mint/flow"
 // import MintedNFT from "@/pages/developer-nft/mint/my"
+import Career from "@/pages/career"
+import ComingSoon from "@/pages/developer-nft/coming-soon"
+import DeveloperNFT from "@/pages/developer-nft/index"
 import Ecosystem from "@/pages/ecosystem"
 import Home from "@/pages/landingpage"
 // import Bridge from "@/pages/bridge"
@@ -63,6 +63,11 @@ const sepoliaRoutes = [
     element: <BridgeFAQ />,
   },
   {
+    name: "Join Us",
+    path: "/join-us",
+    element: <Career />,
+  },
+  {
     name: "Rollup Explorer",
     path: "/rollupscan",
     fullPath: "/rollupscan",
@@ -115,7 +120,7 @@ const mainnetRoutes = [
   {
     name: "Join Us",
     path: "/join-us",
-    element: <IframeEmbedding url="https://jobs.lever.co/ScrollFoundation" DesktopHeight="207rem" MobileHeight="256rem" />,
+    element: <Career />,
   },
   {
     name: "Blog Detail",

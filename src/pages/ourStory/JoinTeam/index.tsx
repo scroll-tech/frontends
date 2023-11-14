@@ -9,7 +9,7 @@ const JoinTeam = () => {
       <Stack direction="column" sx={{ gap: ["2.8rem", "3.2rem", "4.8rem"] }} alignItems="center">
         <Typography sx={{ fontSize: ["3.2rem", "4.8rem"], fontWeight: 500 }}>Join the Scroll team!</Typography>
         <Button href="/join-us" color="primary">
-          Careers
+          Join us
         </Button>
       </Stack>
     </SectionWrapper>

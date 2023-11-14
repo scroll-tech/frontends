@@ -2,7 +2,7 @@ import { Chain, RainbowKitProvider, connectorsForWallets, useConnectModal } from
 import "@rainbow-me/rainbowkit/styles.css"
 import { braveWallet, coinbaseWallet, injectedWallet, metaMaskWallet, walletConnectWallet } from "@rainbow-me/rainbowkit/wallets"
 import { type WalletClient } from "@wagmi/core"
-import { BrowserProvider, ethers } from "ethers"
+import { BrowserProvider, ethers, parseUnits } from "ethers"
 import produce from "immer"
 import { createContext, useCallback, useContext, useMemo } from "react"
 import { WagmiConfig, configureChains, createConfig, mainnet, sepolia, useAccount, useDisconnect, useNetwork, useWalletClient } from "wagmi"
@@ -48,10 +48,25 @@ export const scrollChain: Chain = {
 
 const sepoliaChain = produce(sepolia, draft => {
   draft.rpcUrls.public.http = [RPC_URL.L1 as any]
+  draft.fees = {
+    // adopt MetaMask params
+    baseFeeMultiplier: 1,
+    defaultPriorityFee() {
+      return parseUnits("1.5", "gwei")
+    },
+  }
 })
 
 const mainnetChain = produce(mainnet, draft => {
   draft.rpcUrls.public.http = [RPC_URL.L1 as any]
+  draft.fees = {
+    // adopt MetaMask params
+    baseFeeMultiplier: 1,
+    // defaultPriorityFee: parseUnits("0.05", "gwei"),
+    defaultPriorityFee() {
+      return parseUnits("0.05", "gwei")
+    },
+  }
 })
 
 const projectId = requireEnv("REACT_APP_CONNECT_WALLET_PROJECT_ID")
