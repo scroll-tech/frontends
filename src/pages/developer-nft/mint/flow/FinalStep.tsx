@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
 import { useSwiperSlide } from "swiper/react"
 
 import { Container, Stack, Typography } from "@mui/material"
@@ -14,7 +13,6 @@ import { decodeSVG } from "@/utils"
 import NFTImage from "../../components/NFTCard/NFTImage"
 
 const FinalStep = () => {
-  const navigate = useNavigate()
   const swiperSlide = useSwiperSlide()
   const { walletCurrentAddress } = useRainbowContext()
   const { unsignedNFTInstance } = useNFTContext()
@@ -30,9 +28,7 @@ const FinalStep = () => {
 
   const getTokenURIByAddress = async (instance, address) => {
     const balance = await instance.balanceOf(address)
-    console.log(balance, "balance")
     const tokenId = await instance.tokenOfOwnerByIndex(address, balance - BigInt(1))
-    console.log(tokenId, "tokenId")
     const encodedtTokenURI = await instance.tokenURI(tokenId)
 
     const { tokenURI } = decodeSVG(encodedtTokenURI)
@@ -40,8 +36,8 @@ const FinalStep = () => {
   }
 
   const handleGoShow = () => {
+    // close Modal
     changeIsEligible(0)
-    navigate("/developer-nft/my")
   }
 
   return (

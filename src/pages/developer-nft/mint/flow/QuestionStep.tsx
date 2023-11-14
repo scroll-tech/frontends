@@ -14,6 +14,7 @@ import Button from "@/components/Button"
 import OrientationToView from "@/components/Motion/OrientationToView"
 import { useNFTContext } from "@/contexts/NFTContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useNFTStore from "@/stores/nftStore"
 import { trimErrorMessage } from "@/utils"
 
 import Alert from "../../components/Alert"
@@ -113,11 +114,12 @@ const QuestionStep = props => {
 
   const { NFTInstance } = useNFTContext()
 
+  const { isMinting, changeIsMinting } = useNFTStore()
+
   const { classes } = useStyles()
   const swiper = useSwiper()
 
   const [value, setValue] = useState<Array<string | never>>([])
-  const [loading, setLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState("due to any operation that can cause the transaction or top-level call to revert")
 
   const handleChange = e => {
@@ -130,11 +132,15 @@ const QuestionStep = props => {
 
   const mintNFT = async () => {
     try {
-      setLoading(true)
+      changeIsMinting(true)
       const data = await scrollRequest(fetchParamsByAddressURL(walletCurrentAddress))
       if (data.proof) {
         const { proof, metadata } = data
-        const tx = await NFTInstance.mint(walletCurrentAddress, metadata, proof)
+        const nftMetadata = {
+          ...metadata,
+          rarityData: BigInt(metadata.rarityData),
+        }
+        const tx = await NFTInstance.mint(walletCurrentAddress, nftMetadata, proof)
         const txReceipt = await tx.wait()
         if (txReceipt.status === 1) {
           return true
@@ -148,7 +154,7 @@ const QuestionStep = props => {
       }
       return trimErrorMessage(error.message)
     } finally {
-      setLoading(false)
+      changeIsMinting(false)
     }
   }
 
@@ -186,7 +192,7 @@ const QuestionStep = props => {
                 control={
                   <Checkbox
                     sx={{ padding: 0 }}
-                    disabled={loading}
+                    disabled={isMinting}
                     checked={value.includes(key)}
                     icon={<SvgIcon sx={{ fontSize: "2rem" }} component={UncheckedSvg} inheritViewBox></SvgIcon>}
                     checkedIcon={<SvgIcon sx={{ fontSize: "2rem" }} component={CheckedSvg} inheritViewBox></SvgIcon>}
@@ -209,8 +215,8 @@ const QuestionStep = props => {
             </Fragment>
           ))}
         </FormGroup>
-        <Button color="primary" loading={loading} gloomy={value.sort().toString() !== answer.sort().toString()} onClick={handleContinue}>
-          {loading ? "Minting" : "Continue"}
+        <Button color="primary" loading={isMinting} gloomy={value.sort().toString() !== answer.sort().toString()} onClick={handleContinue}>
+          {isMinting ? "Minting" : "Continue"}
         </Button>
       </FormControl>
       <Snackbar

@@ -7,6 +7,7 @@ import Career from "@/pages/career"
 import ComingSoon from "@/pages/developer-nft/coming-soon"
 import DeveloperNFT from "@/pages/developer-nft/index"
 import MintNFT from "@/pages/developer-nft/mint"
+import MockNFT from "@/pages/developer-nft/mint/mock"
 import Ecosystem from "@/pages/ecosystem"
 import Home from "@/pages/landingpage"
 import OurStory from "@/pages/ourStory"
@@ -222,6 +223,12 @@ const mainnetRoutes = [
     path: "/developer-nft/mint",
     fullPath: "/developer-nft/mint",
     element: <MintNFT />,
+  },
+  {
+    name: "Scroll Origins NFT",
+    path: "/developer-nft/mock",
+    fullPath: "/developer-nft/mock",
+    element: <MockNFT />,
   },
 ]
 

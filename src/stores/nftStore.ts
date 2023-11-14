@@ -8,14 +8,17 @@ type Eligible = -1 | 0 | 1
 interface NFTStore {
   phrase: Phrase
   isEligible: Eligible
+  isMinting: boolean
   checkPhrase: () => void
   changePhrase: (phrase: Phrase) => void
   changeIsEligible: (isEligible: Eligible) => void
+  changeIsMinting: (isMinting: boolean) => void
 }
 
 const useNFTStore = create<NFTStore>()((set, get) => ({
   phrase: "",
   isEligible: 0,
+  isMinting: false,
   changePhrase: value => {
     set({
       phrase: value,
@@ -46,6 +49,12 @@ const useNFTStore = create<NFTStore>()((set, get) => ({
   changeIsEligible: isEligible => {
     set({
       isEligible,
+    })
+  },
+
+  changeIsMinting: isMinting => {
+    set({
+      isMinting,
     })
   },
 }))

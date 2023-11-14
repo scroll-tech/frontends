@@ -1,32 +1,30 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 import { Box, Stack, Typography } from "@mui/material"
 
 import { fetchParamsByAddressURL } from "@/apis/nft"
 import Button from "@/components/Button"
 import RequestWarning from "@/components/RequestWarning"
-import SectionWrapper from "@/components/SectionWrapper"
+import { ContractReleaseDate } from "@/constants"
 import { CHAIN_ID, L2_NAME, SCROLL_ORIGINS_NFT } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useNFTStore from "@/stores/nftStore"
-import { switchNetwork } from "@/utils"
+import { formatDate, switchNetwork } from "@/utils"
 
 import Alert from "../../components/Alert"
 import NFTCard from "../../components/NFTCard"
-import Description from "./Description"
+import Statistic from "../../components/Statistic"
 import MintFlowDialog from "./MintFlowDialog"
 
-const MintEntry = () => {
+const MintHome = props => {
+  const { total } = props
   const { chainId, connect, walletCurrentAddress } = useRainbowContext()
-  const { isMobile, isPortrait, isDesktop } = useCheckViewport()
-  const { isEligible, changeIsEligible } = useNFTStore()
+
+  const { isMobile, isPortrait, isLandscape } = useCheckViewport()
+  const { isEligible, isMinting, changeIsEligible } = useNFTStore()
   const [loading, setLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState("")
-
-  useEffect(() => {
-    changeIsEligible(0)
-  }, [walletCurrentAddress])
 
   const handleCheckEligibility = async () => {
     setLoading(true)
@@ -51,8 +49,8 @@ const MintEntry = () => {
   const renderAction = () => {
     if (chainId === CHAIN_ID.L2) {
       return (
-        <Button color="primary" loading={loading} width={isMobile ? "23rem" : "28.2rem"} onClick={handleCheckEligibility}>
-          {loading ? "Checking" : "Mint now"}
+        <Button color="primary" loading={loading || isMinting} width={isMobile ? "23rem" : "28.2rem"} onClick={handleCheckEligibility}>
+          {isMinting ? "Minting" : loading ? "Checking" : "Mint now"}
         </Button>
       )
     } else if (chainId) {
@@ -73,16 +71,13 @@ const MintEntry = () => {
     changeIsEligible(0)
   }
 
-  const handleClose = () => {
+  const handleCloseWarning = () => {
     setErrorMessage("")
   }
 
   return (
-    <SectionWrapper
-      dark
+    <Box
       sx={{
-        pt: ["2.4rem", "4rem", "8rem"],
-        pb: ["8rem", "16rem"],
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -90,25 +85,28 @@ const MintEntry = () => {
         "& .MuiTypography-root": {
           color: theme => theme.palette.primary.contrastText,
         },
-
         "@media (max-width: 1280px)": {
+          gap: "2rem",
           display: "grid",
-          gridTemplateColumns: "max-content 1fr",
-        },
-        "@media (max-width: 1200px)": {
-          gridTemplateColumns: "1fr",
-          gap: "4.8rem",
+          gridTemplateColumns: "minmax(min-content, 1fr) 1fr",
           justifyItems: "center",
+        },
+
+        "@media (max-width: 900px)": {
+          gridTemplateColumns: "1fr",
         },
         "@media (max-width: 600px)": {
           gap: "2.4rem",
         },
       }}
     >
-      <NFTCard sx={{ width: ["80%", "42.5rem"] }}></NFTCard>
-      <Stack direction="column" spacing={isPortrait ? "2.4rem" : "4.8rem"} alignItems={isDesktop ? "flex-start" : "center"}>
+      <NFTCard sx={{ width: ["80%", "42.5rem", "36rem", "42.5rem"] }}></NFTCard>
+      <Stack direction="column" spacing={isPortrait ? "2.4rem" : "4.8rem"} alignItems={isLandscape ? "flex-start" : "center"}>
         <Typography sx={{ fontSize: ["4rem", "7.8rem"], fontWeight: 600, lineHeight: ["5.6rem", "8.5rem"] }}>{SCROLL_ORIGINS_NFT}</Typography>
-        <Description></Description>
+        <Stack direction="row" spacing={isMobile ? "2.4rem" : "4.8rem"}>
+          <Statistic label="Total NFTs minted">{total ? total.toString() : undefined}</Statistic>
+          <Statistic label="NFTs released on">{formatDate(ContractReleaseDate)}</Statistic>
+        </Stack>
         <Box
           sx={{
             height: "8rem",
@@ -125,12 +123,12 @@ const MintEntry = () => {
           )}
         </Box>
       </Stack>
-      <MintFlowDialog open={isEligible === 1} onClose={handleCloseFlow}></MintFlowDialog>
-      <RequestWarning open={!!errorMessage} onClose={handleClose}>
+      <MintFlowDialog open={isEligible === 1} minting={isMinting} onClose={handleCloseFlow}></MintFlowDialog>
+      <RequestWarning open={!!errorMessage} onClose={handleCloseWarning}>
         {errorMessage}
       </RequestWarning>
-    </SectionWrapper>
+    </Box>
   )
 }
 
-export default MintEntry
+export default MintHome

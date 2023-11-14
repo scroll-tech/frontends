@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
 
 import { Box, Stack, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
@@ -23,47 +22,58 @@ const Grid = styled(Box)(({ theme }) => ({
   },
 }))
 
-const NFTDetail = () => {
-  const navigate = useNavigate()
+const MyNFT = props => {
+  const { total } = props
 
   const { walletCurrentAddress } = useRainbowContext()
   const { unsignedNFTInstance } = useNFTContext()
   const { isLandscape } = useCheckViewport()
   const [loading, setLoading] = useState(false)
-  const [mintedAmount, setMintedAmount] = useState<bigint>()
   const [tokenURI, setTokenURI] = useState()
   const [rarity, setRarity] = useState()
 
   useEffect(() => {
     if (unsignedNFTInstance && walletCurrentAddress) {
       getTokenURIByAddress(unsignedNFTInstance, walletCurrentAddress)
-      getTotalSupply(unsignedNFTInstance)
     }
-  }, [unsignedNFTInstance, walletCurrentAddress])
+  }, [])
 
   const getTokenURIByAddress = async (instance, address) => {
     setLoading(true)
     const balance = await instance.balanceOf(address)
-    if (!balance) {
-      navigate("/developer-nft/mint", { replace: true })
-      return
-    }
     const tokenId = await instance.tokenOfOwnerByIndex(address, balance - BigInt(1))
     const encodedtTokenURI = await instance.tokenURI(tokenId)
-
-    const { tokenURI, rarity } = decodeSVG(encodedtTokenURI)
+    const metadata = decodeSVG(encodedtTokenURI)
+    const { tokenURI, rarity } = metadata
     setTokenURI(tokenURI)
     setRarity(rarity)
     setLoading(false)
   }
 
-  const getTotalSupply = async instance => {
-    const totalSupply = await instance.totalSupply()
-    setMintedAmount(totalSupply)
-  }
-
   return (
-    <>
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: "1.6rem",
+        "& .MuiTypography-root": {
+          color: theme => theme.palette.primary.contrastText,
+        },
+        "@media (max-width: 1280px)": {
+          gap: 0,
+        },
+        "@media (max-width: 1200px)": {
+          display: "grid",
+          gridTemplateColumns: "minmax(min-content, 1fr) 1fr",
+          justifyItems: "center",
+        },
+        "@media (max-width: 900px)": {
+          gridTemplateColumns: "1fr",
+          justifyItems: "center",
+        },
+      }}
+    >
       <NFTImage sx={{ width: ["100%", "44rem", "44rem", "52rem"] }} src={tokenURI}></NFTImage>
       <Stack direction="column" sx={{ gap: ["1.6rem", "2.4rem", "4.8rem"] }} alignItems={isLandscape ? "flex-start" : "center"}>
         <Typography
@@ -85,13 +95,13 @@ const NFTDetail = () => {
             {formatDate(DEVELOPER_NFT_PHRASES.Starts)}
           </Statistic>
           <Statistic label="Total NFTs minted" loading={loading}>
-            {mintedAmount ? mintedAmount.toString() : undefined}
+            {total ? total.toString() : undefined}
           </Statistic>
           <Statistic label="Released on">{formatDate(ContractReleaseDate)}</Statistic>
         </Grid>
       </Stack>
-    </>
+    </Box>
   )
 }
 
-export default NFTDetail
+export default MyNFT

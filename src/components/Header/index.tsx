@@ -26,7 +26,6 @@ interface Props {
 function HideOnScroll(props: Props) {
   const { children } = props
   const trigger = useScrollTrigger()
-  console.log(trigger, "trigger")
   return (
     <Slide appear={false} direction="down" in={!trigger}>
       {children}

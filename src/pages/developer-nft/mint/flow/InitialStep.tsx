@@ -11,7 +11,7 @@ const InitialStep = ({ scrollTarget }) => {
 
   const handleStartFlow = () => {
     swiper.slideNext()
-    scrollTarget.scrollTo({
+    scrollTarget?.scrollTo({
       top: 0,
       behavior: "smooth",
     })

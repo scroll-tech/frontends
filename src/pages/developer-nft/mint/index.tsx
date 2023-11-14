@@ -2,14 +2,14 @@ import GlobalComponents from "@/components/GlobalComponents"
 import BridgeContextProvider from "@/contexts/BridgeContextProvider"
 import NFTContextProvider from "@/contexts/NFTContextProvider"
 
-import MintEntry from "./entry"
+import MintHome from "./home"
 
 const Mint = () => {
   return (
     <BridgeContextProvider>
       <GlobalComponents></GlobalComponents>
       <NFTContextProvider>
-        <MintEntry></MintEntry>
+        <MintHome></MintHome>
       </NFTContextProvider>
     </BridgeContextProvider>
   )
