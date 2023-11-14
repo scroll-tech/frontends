@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 
 import LoadingPage from "@/components/LoadingPage"
 import SectionWrapper from "@/components/SectionWrapper"
+import { CHAIN_ID } from "@/constants"
 import { useNFTContext } from "@/contexts/NFTContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useNFTStore from "@/stores/nftStore"
@@ -9,8 +10,8 @@ import useNFTStore from "@/stores/nftStore"
 import MyNFT from "./MyNFT"
 import ReadyToMint from "./ReadyToMint"
 
-const MintEntry = () => {
-  const { walletCurrentAddress } = useRainbowContext()
+const MintHome = () => {
+  const { walletCurrentAddress, chainId } = useRainbowContext()
   const { unsignedNFTInstance } = useNFTContext()
   const { isEligible, isMinting } = useNFTStore()
 
@@ -19,10 +20,10 @@ const MintEntry = () => {
   const [mintedAmount, setMintedAmount] = useState<bigint>()
 
   useEffect(() => {
-    if (unsignedNFTInstance && walletCurrentAddress && !isEligible && !isMinting) {
+    if (unsignedNFTInstance && walletCurrentAddress && chainId === CHAIN_ID.L2 && !isEligible && !isMinting) {
       checkIsMinted(unsignedNFTInstance, walletCurrentAddress)
     }
-  }, [unsignedNFTInstance, walletCurrentAddress, isEligible, isMinting])
+  }, [unsignedNFTInstance, walletCurrentAddress, chainId, isEligible, isMinting])
 
   const checkIsMinted = async (instance, address) => {
     try {
@@ -66,4 +67,4 @@ const MintEntry = () => {
   )
 }
 
-export default MintEntry
+export default MintHome

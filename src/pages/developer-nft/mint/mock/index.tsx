@@ -26,7 +26,7 @@ const Mock = () => {
   }
 
   const renderAction = () => {
-    if (chainId === CHAIN_ID.L2 && isReady) {
+    if (chainId === CHAIN_ID.L2) {
       return (
         <>
           {isReady ? (
