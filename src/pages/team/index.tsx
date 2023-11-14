@@ -35,7 +35,7 @@ const Team = () => {
           Join our team to work with experts in zero knowledge cryptography and distributed systems on cutting edge technology."
       >
         <Button variant="contained" onClick={() => navigate("/join-us")} sx={{ margin: "3rem auto 6rem" }}>
-          View Open Positions
+          Join us
         </Button>
       </PageHeader>
       <Avatars />
@@ -44,7 +44,7 @@ const Team = () => {
 
       <TitleTypography variant="h1">Sound like a good fit?</TitleTypography>
       <Button variant="contained" onClick={() => navigate("/join-us")} sx={{ display: "table", margin: "0 auto" }}>
-        View Open Positions
+        Join us
       </Button>
     </TeamContainer>
   )

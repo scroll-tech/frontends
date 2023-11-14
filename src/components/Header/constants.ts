@@ -170,6 +170,12 @@ const mainnetNavigations = [
             rootKey: "explore",
           },
           {
+            label: "Join Us ",
+            key: "join our team",
+            href: "/join-us",
+            rootKey: "explore",
+          },
+          {
             label: "User Guide",
             key: "userGuide",
             href: "https://docs.scroll.io/en/user-guide/",
@@ -179,12 +185,6 @@ const mainnetNavigations = [
             label: "Forum",
             key: "forum",
             href: "https://community.scroll.io",
-            isExternal: true,
-          },
-          {
-            label: "Join Us ",
-            key: "join our team",
-            href: "https://jobs.lever.co/ScrollFoundation",
             isExternal: true,
           },
         ],
