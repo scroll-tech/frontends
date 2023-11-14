@@ -1,15 +1,20 @@
+import { isError } from "ethers"
 import { Fragment, useState } from "react"
 import { useSwiper } from "swiper/react"
 import { makeStyles } from "tss-react/mui"
 
-import { Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Stack, SvgIcon } from "@mui/material"
+import { Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Snackbar, Stack, SvgIcon } from "@mui/material"
 
+import { fetchParamsByAddressURL } from "@/apis/nft"
 import { ReactComponent as ErrorSvg } from "@/assets/svgs/refactor/nft-alert-error.svg"
 import { ReactComponent as SuccessSvg } from "@/assets/svgs/refactor/nft-alert-success.svg"
 import { ReactComponent as CheckedSvg } from "@/assets/svgs/refactor/nft-question-checked.svg"
 import { ReactComponent as UncheckedSvg } from "@/assets/svgs/refactor/nft-question-unchecked.svg"
 import Button from "@/components/Button"
 import OrientationToView from "@/components/Motion/OrientationToView"
+import { useNFTContext } from "@/contexts/NFTContextProvider"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
+import { trimErrorMessage } from "@/utils"
 
 import Alert from "../../components/Alert"
 import StepWrapper from "./StepWrapper"
@@ -74,6 +79,16 @@ const useStyles = makeStyles()(theme => ({
       paddingLeft: "0.8rem",
     },
   },
+
+  snackbar: {
+    width: "max-content",
+    maxWidth: "calc(100% - 1.6rem)",
+
+    [theme.breakpoints.down("sm")]: {
+      left: "50%",
+      transform: "translateX(-50%)",
+    },
+  },
 }))
 
 const QuestionLabel = props => {
@@ -93,11 +108,17 @@ const QuestionLabel = props => {
 }
 
 const QuestionStep = props => {
-  const { order, subject, options, answer, image } = props
+  const { order, subject, options, answer, image, scrollTarget } = props
+  const { walletCurrentAddress } = useRainbowContext()
+
+  const { NFTInstance } = useNFTContext()
+
   const { classes } = useStyles()
   const swiper = useSwiper()
 
   const [value, setValue] = useState<Array<string | never>>([])
+  const [loading, setLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState("due to any operation that can cause the transaction or top-level call to revert")
 
   const handleChange = e => {
     if (e.target.checked) {
@@ -107,12 +128,47 @@ const QuestionStep = props => {
     }
   }
 
-  const handleContinue = () => {
+  const mintNFT = async () => {
+    try {
+      setLoading(true)
+      const data = await scrollRequest(fetchParamsByAddressURL(walletCurrentAddress))
+      if (data.proof) {
+        const { proof, metadata } = data
+        const tx = await NFTInstance.mint(walletCurrentAddress, metadata, proof)
+        const txReceipt = await tx.wait()
+        if (txReceipt.status === 1) {
+          return true
+        } else {
+          return "due to any operation that can cause the transaction or top-level call to revert"
+        }
+      }
+    } catch (error) {
+      if (isError(error, "ACTION_REJECTED")) {
+        return ""
+      }
+      return trimErrorMessage(error.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleContinue = async () => {
+    if (order === 2) {
+      const result = await mintNFT()
+      if (result !== true) {
+        setErrorMessage(result)
+        return
+      }
+    }
     swiper.slideNext()
-    window.scrollTo({
+    scrollTarget.scrollTo({
       top: 0,
       behavior: "smooth",
     })
+  }
+
+  const handleClose = () => {
+    setErrorMessage("")
   }
 
   return (
@@ -130,6 +186,7 @@ const QuestionStep = props => {
                 control={
                   <Checkbox
                     sx={{ padding: 0 }}
+                    disabled={loading}
                     checked={value.includes(key)}
                     icon={<SvgIcon sx={{ fontSize: "2rem" }} component={UncheckedSvg} inheritViewBox></SvgIcon>}
                     checkedIcon={<SvgIcon sx={{ fontSize: "2rem" }} component={CheckedSvg} inheritViewBox></SvgIcon>}
@@ -152,10 +209,23 @@ const QuestionStep = props => {
             </Fragment>
           ))}
         </FormGroup>
-        <Button color="primary" gloomy={value.sort().toString() !== answer.sort().toString()} onClick={handleContinue}>
-          Continue
+        <Button color="primary" loading={loading} gloomy={value.sort().toString() !== answer.sort().toString()} onClick={handleContinue}>
+          {loading ? "Minting" : "Continue"}
         </Button>
       </FormControl>
+      <Snackbar
+        open={!!errorMessage}
+        autoHideDuration={6000}
+        classes={{ root: classes.snackbar }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        onClose={handleClose}
+      >
+        <div>
+          <Alert severity="error" sx={{ maxWidth: "49rem" }}>
+            {errorMessage}
+          </Alert>
+        </div>
+      </Snackbar>
     </StepWrapper>
   )
 }

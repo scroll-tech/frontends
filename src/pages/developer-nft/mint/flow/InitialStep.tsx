@@ -6,12 +6,12 @@ import Button from "@/components/Button"
 
 import StepWrapper from "./StepWrapper"
 
-const InitialStep = () => {
+const InitialStep = ({ scrollTarget }) => {
   const swiper = useSwiper()
 
   const handleStartFlow = () => {
     swiper.slideNext()
-    window.scrollTo({
+    scrollTarget.scrollTo({
       top: 0,
       behavior: "smooth",
     })

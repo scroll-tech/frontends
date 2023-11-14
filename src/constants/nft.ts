@@ -26,6 +26,8 @@ export const EndDate = dayjs("2023-11-01T23:00:00Z").subtract(1, "ms")
 
 export const MintableDate = dayjs().add(1, "m")
 
+export const ContractReleaseDate = dayjs("2023-11-10T08:58:37Z")
+
 export const DEVELOPER_NFT_STEPS = [
   { label: "Starts", date: StartDate, title: "Genesis Block" },
   { label: "Ends", date: EndDate, title: "Program Ends" },

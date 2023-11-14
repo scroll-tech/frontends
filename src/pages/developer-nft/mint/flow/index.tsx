@@ -10,7 +10,7 @@ import FinalStep from "./FinalStep"
 import InitialStep from "./InitialStep"
 import QuestionStep from "./QuestionStep"
 
-const MintFlow = () => {
+const MintFlow = ({ scrollTarget }) => {
   return (
     <SectionWrapper dark full sx={{ p: "0 !important", "& .MuiTypography-root": { color: theme => theme.palette.primary.contrastText } }}>
       <Swiper
@@ -21,11 +21,11 @@ const MintFlow = () => {
         modules={[Pagination]}
       >
         <SwiperSlide>
-          <InitialStep></InitialStep>
+          <InitialStep scrollTarget={scrollTarget}></InitialStep>
         </SwiperSlide>
         {FLOW_QUESTIONS.map((item, index) => (
           <SwiperSlide key={index}>
-            <QuestionStep {...item}></QuestionStep>
+            <QuestionStep scrollTarget={scrollTarget} {...item}></QuestionStep>
           </SwiperSlide>
         ))}
         <SwiperSlide>

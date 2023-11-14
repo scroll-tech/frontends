@@ -7,7 +7,7 @@ const NFTImage = props => {
 
   return (
     <Box sx={sx}>
-      <Img src={src}></Img>
+      <Img src={src} placeholder="/imgs/nft/placeholder.svg"></Img>
     </Box>
   )
 }
