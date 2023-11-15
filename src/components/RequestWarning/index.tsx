@@ -2,7 +2,7 @@ import { makeStyles } from "tss-react/mui"
 
 import { Snackbar } from "@mui/material"
 
-import Alert from "@/pages/developer-nft/components/Alert"
+import Alert from "@/components/Alert/NFTAlert"
 
 const useStyles = makeStyles()(theme => ({
   snackbar: {
@@ -17,8 +17,10 @@ const useStyles = makeStyles()(theme => ({
 }))
 
 const RequestWarning = props => {
-  const { open, onClose, children } = props
+  const { open, onClose, severity = "error", children, AlertComponent } = props
   const { classes } = useStyles()
+
+  const CustomAlert = AlertComponent || Alert
   return (
     <Snackbar
       open={open}
@@ -28,9 +30,9 @@ const RequestWarning = props => {
       onClose={onClose}
     >
       <div>
-        <Alert severity="error" sx={{ maxWidth: "49rem" }}>
+        <CustomAlert severity={severity} sx={{ maxWidth: "49rem" }}>
           {children}
-        </Alert>
+        </CustomAlert>
       </div>
     </Snackbar>
   )

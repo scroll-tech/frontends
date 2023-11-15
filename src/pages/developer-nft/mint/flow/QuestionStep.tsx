@@ -3,21 +3,22 @@ import { Fragment, useState } from "react"
 import { useSwiper } from "swiper/react"
 import { makeStyles } from "tss-react/mui"
 
-import { Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Snackbar, Stack, SvgIcon } from "@mui/material"
+import { Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Stack, SvgIcon } from "@mui/material"
 
 import { fetchParamsByAddressURL } from "@/apis/nft"
 import { ReactComponent as ErrorSvg } from "@/assets/svgs/refactor/nft-alert-error.svg"
 import { ReactComponent as SuccessSvg } from "@/assets/svgs/refactor/nft-alert-success.svg"
 import { ReactComponent as CheckedSvg } from "@/assets/svgs/refactor/nft-question-checked.svg"
 import { ReactComponent as UncheckedSvg } from "@/assets/svgs/refactor/nft-question-unchecked.svg"
+import Alert from "@/components/Alert/NFTAlert"
 import Button from "@/components/Button"
 import OrientationToView from "@/components/Motion/OrientationToView"
+import RequestWarning from "@/components/RequestWarning"
 import { useNFTContext } from "@/contexts/NFTContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useNFTStore from "@/stores/nftStore"
 import { trimErrorMessage } from "@/utils"
 
-import Alert from "../../components/Alert"
 import StepWrapper from "./StepWrapper"
 
 const useStyles = makeStyles()(theme => ({
@@ -78,16 +79,6 @@ const useStyles = makeStyles()(theme => ({
       fontSize: "1.6rem",
       lineHeight: "2.4rem",
       paddingLeft: "0.8rem",
-    },
-  },
-
-  snackbar: {
-    width: "max-content",
-    maxWidth: "calc(100% - 1.6rem)",
-
-    [theme.breakpoints.down("sm")]: {
-      left: "50%",
-      transform: "translateX(-50%)",
     },
   },
 }))
@@ -219,19 +210,9 @@ const QuestionStep = props => {
           {isMinting ? "Minting" : "Continue"}
         </Button>
       </FormControl>
-      <Snackbar
-        open={!!errorMessage}
-        autoHideDuration={6000}
-        classes={{ root: classes.snackbar }}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        onClose={handleClose}
-      >
-        <div>
-          <Alert severity="error" sx={{ maxWidth: "49rem" }}>
-            {errorMessage}
-          </Alert>
-        </div>
-      </Snackbar>
+      <RequestWarning open={!!errorMessage} onClose={handleClose}>
+        {errorMessage}
+      </RequestWarning>
     </StepWrapper>
   )
 }

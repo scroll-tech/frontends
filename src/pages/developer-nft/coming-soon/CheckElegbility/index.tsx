@@ -3,14 +3,13 @@ import ReactGA from "react-ga4"
 
 import { Collapse, Stack, Typography } from "@mui/material"
 
+import Alert from "@/components/Alert/NFTAlert"
 import Button from "@/components/Button"
 import Link from "@/components/Link"
 import { MintableDate } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import { formatDate, requireEnv } from "@/utils"
-
-import Alert from "../../components/Alert"
 
 const L2_SCAN_URI = requireEnv("REACT_APP_L2_SCAN_URI")
 const UNIFRA_API_KEY = requireEnv("REACT_APP_UNIFRA_API_KEY")

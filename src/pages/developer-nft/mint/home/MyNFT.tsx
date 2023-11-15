@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { Box, Stack, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
+import RequestWarning from "@/components/RequestWarning"
 import { ContractReleaseDate } from "@/constants"
 import { useNFTContext } from "@/contexts/NFTContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
@@ -32,6 +33,7 @@ const MyNFT = props => {
   const [tokenURI, setTokenURI] = useState()
   const [mintTimestamp, setMintTimestamp] = useState<number>()
   const [rarity, setRarity] = useState()
+  const [errorMessage, setErrorMessage] = useState("")
 
   useEffect(() => {
     getTokenURIByAddress(unsignedNFTInstance, walletCurrentAddress)
@@ -50,9 +52,15 @@ const MyNFT = props => {
       const { tokenURI, rarity } = metadata
       setTokenURI(tokenURI)
       setRarity(rarity)
+    } catch (error) {
+      setErrorMessage(error.message)
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleClose = () => {
+    setErrorMessage("")
   }
 
   return (
@@ -105,6 +113,9 @@ const MyNFT = props => {
           <Statistic label="Released on">{formatDate(ContractReleaseDate)}</Statistic>
         </Grid>
       </Stack>
+      <RequestWarning open={!!errorMessage} onClose={handleClose}>
+        {errorMessage}
+      </RequestWarning>
     </Box>
   )
 }
