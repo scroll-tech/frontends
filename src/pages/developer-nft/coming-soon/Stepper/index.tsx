@@ -4,8 +4,8 @@ import { makeStyles } from "tss-react/mui"
 
 import { Step, StepIcon, StepLabel, Stepper, SvgIcon, Typography } from "@mui/material"
 
-import { ReactComponent as StepCompletedSvg } from "@/assets/svgs/refactor/nft-step-completed-icon.svg"
-import { ReactComponent as StepDefaultSvg } from "@/assets/svgs/refactor/nft-step-default-icon.svg"
+import { ReactComponent as StepCompletedSvg } from "@/assets/svgs/nft/step-completed-icon.svg"
+import { ReactComponent as StepDefaultSvg } from "@/assets/svgs/nft/step-default-icon.svg"
 import { DEVELOPER_NFT_STEPS } from "@/constants"
 import useNFTStore from "@/stores/nftStore"
 import { formatDate } from "@/utils"

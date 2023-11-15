@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material"
 
-import { ReactComponent as CloseSvg } from "@/assets/svgs/refactor/nft-flow-close.svg"
+import { ReactComponent as CloseSvg } from "@/assets/svgs/nft/flow-close.svg"
 import ScrollLogo from "@/components/ScrollLogo"
 import { SCROLL_ORIGINS_NFT } from "@/constants"
 

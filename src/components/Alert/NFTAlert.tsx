@@ -3,8 +3,8 @@ import { makeStyles } from "tss-react/mui"
 
 import { Alert, SvgIcon } from "@mui/material"
 
-import { ReactComponent as ErrorSvg } from "@/assets/svgs/refactor/nft-alert-error.svg"
-import { ReactComponent as SuccessSvg } from "@/assets/svgs/refactor/nft-alert-success.svg"
+import { ReactComponent as ErrorSvg } from "@/assets/svgs/nft/alert-error.svg"
+import { ReactComponent as SuccessSvg } from "@/assets/svgs/nft/alert-success.svg"
 
 const useStyles = makeStyles<any>()((theme, { type }) => ({
   root: {
