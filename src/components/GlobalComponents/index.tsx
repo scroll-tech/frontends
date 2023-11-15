@@ -1,4 +1,4 @@
-import TxHistoryDialog from "@/pages/new-bridge/TxHistoryDialog"
+import TxHistoryDialog from "@/pages/bridge/TxHistoryDialog"
 
 const GlobalComponents = () => {
   return (

@@ -5,12 +5,12 @@ import { makeStyles } from "tss-react/mui"
 
 import { ButtonBase, Fade, ListItemIcon, ListItemText, Menu, MenuItem, SvgIcon } from "@mui/material"
 
-import { ReactComponent as CopySuccessSvg } from "@/assets/svgs/refactor/bridge-copy-success.svg"
-import { ReactComponent as HistorySvg } from "@/assets/svgs/refactor/bridge-history.svg"
-import { ReactComponent as BlockSvg } from "@/assets/svgs/refactor/wallet-connector-block.svg"
-import { ReactComponent as CopySvg } from "@/assets/svgs/refactor/wallet-connector-copy.svg"
-import { ReactComponent as DisconnectSvg } from "@/assets/svgs/refactor/wallet-connector-disconnect.svg"
-import { ReactComponent as DownTriangleSvg } from "@/assets/svgs/refactor/wallet-connector-down-triangle.svg"
+import { ReactComponent as CopySuccessSvg } from "@/assets/svgs/bridge/copy-success.svg"
+import { ReactComponent as HistorySvg } from "@/assets/svgs/bridge/history.svg"
+import { ReactComponent as BlockSvg } from "@/assets/svgs/wallet-connector/block.svg"
+import { ReactComponent as CopySvg } from "@/assets/svgs/wallet-connector/copy.svg"
+import { ReactComponent as DisconnectSvg } from "@/assets/svgs/wallet-connector/disconnect.svg"
+import { ReactComponent as DownTriangleSvg } from "@/assets/svgs/wallet-connector/down-triangle.svg"
 import { CHAIN_ID, EXPLORER_URL } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useBridgeStore from "@/stores/bridgeStore"
@@ -30,7 +30,7 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
   },
 
   connectButton: {
-    fontFamily: "var(--onboard-font-family-normal)",
+    fontFamily: "var(--default-font-family)",
     backgroundColor: "#FF684B",
     color: theme.palette.primary.contrastText,
     border: "none",

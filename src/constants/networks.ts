@@ -1,6 +1,6 @@
-import ETHSvg from "@/assets/svgs/refactor/bridge-network-mainnet.svg"
-import { ReactComponent as MainnetSvg } from "@/assets/svgs/refactor/bridge-network-mainnet.svg"
-import { ReactComponent as ScrollSvg } from "@/assets/svgs/refactor/bridge-network-scroll.svg"
+import ETHSvg from "@/assets/svgs/bridge/network-mainnet.svg"
+import { ReactComponent as MainnetSvg } from "@/assets/svgs/bridge/network-mainnet.svg"
+import { ReactComponent as ScrollSvg } from "@/assets/svgs/bridge/network-scroll.svg"
 
 import { CHAIN_ID, ETH_SYMBOL, EXPLORER_URL, L1_NAME, L2_NAME, RPC_URL } from "./common"
 

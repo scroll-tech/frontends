@@ -43,39 +43,3 @@ export const NAVIGATIONS = [
     subdomainOrPath: DOCUMENTATION_URL[requireEnv("REACT_APP_SCROLL_ENVIRONMENT")],
   },
 ]
-
-export const DOCUMENTATION = [
-  {
-    name: "Architecture Overview",
-    description: "",
-    link: "https://docs.scroll.io/en/technology/",
-  },
-  {
-    name: "User Guide",
-    description: "",
-    link: "https://docs.scroll.io/en/user-guide/",
-  },
-]
-
-export const MEDIAS = [
-  {
-    name: "twitter",
-    imgSrc: "/imgs/media/twitter.png",
-    href: "https://twitter.com/Scroll_ZKP",
-  },
-  {
-    name: "discord",
-    imgSrc: "/imgs/media/discord.png",
-    href: "https://discord.gg/scroll",
-  },
-  {
-    name: "gitHub",
-    imgSrc: "/imgs/media/github.png",
-    href: "https://github.com/scroll-tech",
-  },
-  {
-    name: "YouTube",
-    imgSrc: "/imgs/media/youtube.png",
-    href: "https://www.youtube.com/@Scroll_ZKP",
-  },
-]

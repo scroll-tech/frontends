@@ -2,8 +2,8 @@ import { makeStyles } from "tss-react/mui"
 
 import { Autocomplete, IconButton, SvgIcon, TextField } from "@mui/material"
 
-import { ReactComponent as TriangleDownIcon } from "@/assets/svgs/refactor/triangle-down.svg"
-import { ReactComponent as WidgetsIcon } from "@/assets/svgs/refactor/widgets.svg"
+import { ReactComponent as TriangleDownIcon } from "@/assets/svgs/common/triangle-down.svg"
+import { ReactComponent as WidgetsIcon } from "@/assets/svgs/common/widgets.svg"
 
 const useStyles = makeStyles()(theme => {
   return {

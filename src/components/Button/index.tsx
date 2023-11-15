@@ -3,7 +3,7 @@ import { makeStyles } from "tss-react/mui"
 
 import { ButtonBase, CircularProgress, IconButton, SvgIcon, alpha } from "@mui/material"
 
-import { ReactComponent as ArrowRightIcon } from "@/assets/svgs/refactor/arrow-right.svg"
+import { ReactComponent as ArrowRightIcon } from "@/assets/svgs/common/arrow-right.svg"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
 const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, whiteButton }) => ({

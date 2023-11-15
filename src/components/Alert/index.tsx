@@ -2,8 +2,8 @@ import { makeStyles } from "tss-react/mui"
 
 import { Alert as MuiAlert, SvgIcon } from "@mui/material"
 
-import { ReactComponent as ErrorSvg } from "@/assets/svgs/refactor/bridge-alert-error.svg"
-import { ReactComponent as SuccessSvg } from "@/assets/svgs/refactor/bridge-alert-success.svg"
+import { ReactComponent as ErrorSvg } from "@/assets/svgs/bridge/alert-error.svg"
+import { ReactComponent as SuccessSvg } from "@/assets/svgs/bridge/alert-success.svg"
 
 const useStyles = makeStyles()(theme => ({
   root: {
@@ -24,7 +24,7 @@ const useStyles = makeStyles()(theme => ({
     marginRight: 8,
   },
   message: {
-    fontFamily: "var(--onboard-font-family-normal) !important",
+    fontFamily: "var(--default-font-family) !important",
     lineHeight: 1.5,
     fontWeight: 600,
   },
