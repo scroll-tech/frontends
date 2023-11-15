@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { Box, Stack, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
-import { ContractReleaseDate, DEVELOPER_NFT_PHRASES } from "@/constants"
+import { ContractReleaseDate } from "@/constants"
 import { useNFTContext } from "@/contexts/NFTContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
@@ -25,29 +25,34 @@ const Grid = styled(Box)(({ theme }) => ({
 const MyNFT = props => {
   const { total } = props
 
-  const { walletCurrentAddress } = useRainbowContext()
+  const { walletCurrentAddress, provider } = useRainbowContext()
   const { unsignedNFTInstance } = useNFTContext()
   const { isLandscape } = useCheckViewport()
   const [loading, setLoading] = useState(false)
   const [tokenURI, setTokenURI] = useState()
+  const [mintTimestamp, setMintTimestamp] = useState<number>()
   const [rarity, setRarity] = useState()
 
   useEffect(() => {
-    if (unsignedNFTInstance && walletCurrentAddress) {
-      getTokenURIByAddress(unsignedNFTInstance, walletCurrentAddress)
-    }
+    getTokenURIByAddress(unsignedNFTInstance, walletCurrentAddress)
   }, [])
 
   const getTokenURIByAddress = async (instance, address) => {
-    setLoading(true)
-    const balance = await instance.balanceOf(address)
-    const tokenId = await instance.tokenOfOwnerByIndex(address, balance - BigInt(1))
-    const encodedtTokenURI = await instance.tokenURI(tokenId)
-    const metadata = decodeSVG(encodedtTokenURI)
-    const { tokenURI, rarity } = metadata
-    setTokenURI(tokenURI)
-    setRarity(rarity)
-    setLoading(false)
+    try {
+      setLoading(true)
+      const balance = await instance.balanceOf(address)
+      const tokenId = await instance.tokenOfOwnerByIndex(address, balance - BigInt(1))
+      const mintTxBlockNumber = await instance.mintData(tokenId)
+      const blockDetail = await provider?.getBlock(mintTxBlockNumber)
+      setMintTimestamp(blockDetail ? blockDetail.timestamp * 1e3 : undefined)
+      const encodedtTokenURI = await instance.tokenURI(tokenId)
+      const metadata = decodeSVG(encodedtTokenURI)
+      const { tokenURI, rarity } = metadata
+      setTokenURI(tokenURI)
+      setRarity(rarity)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -89,13 +94,13 @@ const MyNFT = props => {
         </Typography>
         <Grid>
           <Statistic label="NFT rarity" loading={loading}>
-            {rarity}%
+            {rarity ? `${rarity}%` : "-"}
           </Statistic>
           <Statistic label="You minted on" loading={loading}>
-            {formatDate(DEVELOPER_NFT_PHRASES.Starts)}
+            {mintTimestamp ? formatDate(mintTimestamp) : "-"}
           </Statistic>
           <Statistic label="Total NFTs minted" loading={loading}>
-            {total ? total.toString() : undefined}
+            {total ? total.toString() : "-"}
           </Statistic>
           <Statistic label="Released on">{formatDate(ContractReleaseDate)}</Statistic>
         </Grid>
