@@ -13,6 +13,7 @@ const useApprove = (fromNetwork, selectedToken, amount) => {
   const { networksAndSigners } = useBrigeContext()
 
   const [isLoading, setIsLoading] = useState(false)
+  const [isRequested, setIsRequested] = useState(false)
   const [error, setError] = useState(null)
 
   const [isNeeded, setIsNeeded] = useState<boolean>()
@@ -65,13 +66,17 @@ const useApprove = (fromNetwork, selectedToken, amount) => {
     })
   }, [checkApproval])
 
-  const approve = async () => {
+  const approve = async isMaximum => {
     if (!tokenInstance) {
       return
     }
     setIsLoading(true)
+
+    const toApproveAmount = isMaximum ? ethers.MaxUint256 : amountToBN(amount, selectedToken.decimals)
+
     try {
-      const tx = await tokenInstance.approve(approveAddress, ethers.MaxUint256)
+      const tx = await tokenInstance.approve(approveAddress, toApproveAmount)
+      setIsRequested(true)
       await tx?.wait()
       const needApproval = await checkApproval()
       setIsNeeded(needApproval)
@@ -79,6 +84,7 @@ const useApprove = (fromNetwork, selectedToken, amount) => {
       setError(error)
     } finally {
       setIsLoading(false)
+      setIsRequested(false)
     }
   }
 
@@ -90,7 +96,7 @@ const useApprove = (fromNetwork, selectedToken, amount) => {
     setIsNeeded(needApproval)
   }
 
-  return { approve, isNeeded, isLoading, error, cancelApproval }
+  return { approve, isNeeded, isLoading, isRequested, error, cancelApproval }
 }
 
 export default useApprove

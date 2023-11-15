@@ -21,6 +21,7 @@ import useApprove from "../../hooks/useApprove"
 import useGasFee from "../../hooks/useGasFee"
 import { useSendTransaction } from "../../hooks/useSendTransaction"
 import useSufficientBalance from "../../hooks/useSufficientBalance"
+import ApprovalDialog from "./ApprovalDialog"
 import BalanceInput from "./BalanceInput"
 import NetworkDirection from "./NetworkDirection"
 import TransactionSummary from "./TransactionSummary"
@@ -43,6 +44,8 @@ const SendTransaction = props => {
   const [bridgeWarning, setBridgeWarning] = useState()
   const [inputError, setInputError] = useState(false)
 
+  const [approvalVisible, setApprovalVisible] = useState(false)
+
   const validAmount = useMemo(() => (Number(amount) > 0 ? amount : ""), [amount])
 
   const tokenOptions = useMemo(() => {
@@ -54,7 +57,12 @@ const SendTransaction = props => {
   // const { balance, isLoading: balanceLoading } = useBalance(selectedToken.address)
   const { balance, loading: balanceLoading } = useBalance(selectedToken, fromNetwork)
 
-  const { isNeeded: needApproval, approve, isLoading: approveLoading } = useApprove(fromNetwork, selectedToken, validAmount)
+  const {
+    isNeeded: needApproval,
+    approve,
+    isRequested: isRequestedApproval,
+    isLoading: approveLoading,
+  } = useApprove(fromNetwork, selectedToken, validAmount)
   const {
     send: sendTransaction,
     isLoading: sendLoading,
@@ -171,6 +179,12 @@ const SendTransaction = props => {
     setMaxWarning("")
   }, [balance, amount, totalFee])
 
+  useEffect(() => {
+    if (isRequestedApproval) {
+      setApprovalVisible(false)
+    }
+  }, [isRequestedApproval])
+
   const handleChangeTokenSymbol = symbol => {
     setTokenSymbol(symbol)
   }
@@ -179,8 +193,20 @@ const SendTransaction = props => {
     setAmount(value)
   }
 
+  const handleOpenApprovalDialog = () => {
+    setApprovalVisible(true)
+  }
+
+  const handleCloseApprovalDialog = () => {
+    setApprovalVisible(false)
+  }
+
   const handleError = value => {
     setMaxWarning(value)
+  }
+
+  const handleApprove = isMaximum => {
+    approve(isMaximum)
   }
 
   const renderButton = () => {
@@ -208,7 +234,7 @@ const SendTransaction = props => {
           color="primary"
           disabled={!necessaryCondition}
           loading={approveLoading}
-          onClick={approve}
+          onClick={handleOpenApprovalDialog}
           whiteButton
         >
           {approveLoading ? "Approving " : "Approve "}
@@ -263,7 +289,11 @@ const SendTransaction = props => {
             }}
             color="primary"
           >
-            <SvgIcon sx={{ fontSize: "1.6rem", mr: "0.8rem", verticalAlign: "middle" }} component={WarningSvg} inheritViewBox></SvgIcon>
+            <SvgIcon
+              sx={{ fontSize: "1.6rem", mr: "0.8rem", verticalAlign: "middle", color: "#FF684B" }}
+              component={WarningSvg}
+              inheritViewBox
+            ></SvgIcon>
             <Stack direction="row" style={{ display: "inline-flex", verticalAlign: "middle", alignItems: "center", gap: "0.2rem" }}>
               {bridgeWarning}
             </Stack>
@@ -294,6 +324,7 @@ const SendTransaction = props => {
       >
         {renderButton()}
       </Box>
+      <ApprovalDialog open={approvalVisible} token={selectedToken} onApprove={handleApprove} onClose={handleCloseApprovalDialog}></ApprovalDialog>
     </Stack>
   )
 }
