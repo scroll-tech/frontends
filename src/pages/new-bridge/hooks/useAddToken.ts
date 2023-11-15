@@ -24,8 +24,12 @@ const useAddToken = () => {
   const getContract = (address, ABI, provider) => new ethers.Contract(address, ABI, provider)
 
   const getTokenDetails = async contract => {
-    const [name, symbol, decimals] = await Promise.all([contract.name(), contract.symbol(), contract.decimals()])
-    return { name, symbol, decimals: Number(decimals) }
+    try {
+      const [name, symbol, decimals] = await Promise.all([contract.name(), contract.symbol(), contract.decimals()])
+      return { name, symbol, decimals: Number(decimals) }
+    } catch (error) {
+      // console.log(error)
+    }
   }
 
   const addToken = async (address, isL1) => {
@@ -39,9 +43,11 @@ const useAddToken = () => {
     try {
       const l1TokenAddress = isL1 ? address : await l2Erc20Gateway.getL1ERC20Address(address)
       const l2TokenAddress = isL1 ? await l1Erc20Gateway.getL2ERC20Address(address) : address
-
       const l1TokenContract = getContract(l1TokenAddress, L1_erc20ABI, l1Provider)
       const l2TokenContract = getContract(l2TokenAddress, L1_erc20ABI, l2Provider)
+      if (l1TokenAddress === ethers.ZeroAddress || l2TokenAddress === ethers.ZeroAddress) {
+        throw new Error("Token not found")
+      }
 
       const l1TokenDetails = await getTokenDetails(l1TokenContract)
 
@@ -54,8 +60,7 @@ const useAddToken = () => {
         tokenLevel: TOKEN_LEVEL.local,
       }
       const l2Token = {
-        ...l2TokenDetails,
-        name: l1TokenDetails.name,
+        ...(l2TokenDetails ? l2TokenDetails : l1TokenDetails),
         chainId: CHAIN_ID.L2,
         address: l2TokenAddress,
         tokenLevel: TOKEN_LEVEL.local,
