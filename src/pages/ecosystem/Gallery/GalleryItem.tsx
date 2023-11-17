@@ -87,6 +87,26 @@ const useStyles = makeStyles()(theme => ({
       transform: "translateY(-50%)",
     },
   },
+  descriptionBox: {
+    flex: 1,
+    [theme.breakpoints.up("sm")]: {
+      overflowY: "auto",
+      paddingRight: "0.4rem",
+      "&::-webkit-scrollbar-thumb": {
+        backgroundColor: "rgba(209, 205, 204, 0.30)",
+        borderRadius: "3px",
+      },
+      "&::-webkit-scrollbar": {
+        width: "6px",
+      },
+      // Firefox
+      scrollbarWidth: "thin",
+      scrollbarColor: "rgba(209, 205, 204, 0.30) transparent",
+    },
+    [theme.breakpoints.down("sm")]: {
+      paddingTop: "1rem",
+    },
+  },
   tagWrapper: {
     display: "flex",
     justifyContent: "center",
@@ -229,7 +249,7 @@ const GalleryItem = props => {
               >
                 {name}
               </Typography>
-              <Box sx={{ flex: 1 }}>
+              <Box className={classes.descriptionBox}>
                 <Typography
                   sx={{
                     lineHeight: "normal",
@@ -240,7 +260,7 @@ const GalleryItem = props => {
                       WebkitLineClamp: 4,
                       WebkitBoxOrient: "vertical",
                       overflow: "hidden",
-                      height: "9rem",
+                      height: "7.8rem",
                     },
                   }}
                 >
@@ -248,7 +268,7 @@ const GalleryItem = props => {
                 </Typography>
               </Box>
 
-              <Stack direction="row" spacing="1.8rem" justifyContent="flex-end" sx={{ width: "100%" }}>
+              <Stack direction="row" spacing="1.8rem" justifyContent="flex-end" sx={{ width: "100%", mt: [0, "0.8rem"] }}>
                 {ECOSYSTEM_SOCIAL_LIST.map(social => (
                   <motion.span key={social.name} whileHover={{ scale: 1.1 }}>
                     <SvgIcon
