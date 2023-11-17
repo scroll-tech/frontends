@@ -6,7 +6,7 @@ import { makeStyles } from "tss-react/mui"
 import { Box, Stack, SvgIcon, Typography } from "@mui/material"
 
 import { ecosystemListLogoUrl } from "@/apis/ecosystem"
-import { ReactComponent as InfoIcon } from "@/assets/svgs/refactor/info.svg"
+import { ReactComponent as InfoIcon } from "@/assets/svgs/ecosystem/info.svg"
 import RenderIfVisible from "@/components/RenderIfVisible"
 import { ECOSYSTEM_SOCIAL_LIST } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
@@ -85,6 +85,26 @@ const useStyles = makeStyles()(theme => ({
       position: "relative",
       top: "50%",
       transform: "translateY(-50%)",
+    },
+  },
+  descriptionBox: {
+    flex: 1,
+    [theme.breakpoints.up("sm")]: {
+      overflowY: "auto",
+      paddingRight: "0.4rem",
+      "&::-webkit-scrollbar-thumb": {
+        backgroundColor: "rgba(209, 205, 204, 0.30)",
+        borderRadius: "3px",
+      },
+      "&::-webkit-scrollbar": {
+        width: "6px",
+      },
+      // Firefox
+      scrollbarWidth: "thin",
+      scrollbarColor: "rgba(209, 205, 204, 0.30) transparent",
+    },
+    [theme.breakpoints.down("sm")]: {
+      paddingTop: "1rem",
     },
   },
   tagWrapper: {
@@ -229,7 +249,7 @@ const GalleryItem = props => {
               >
                 {name}
               </Typography>
-              <Box sx={{ flex: 1 }}>
+              <Box className={classes.descriptionBox}>
                 <Typography
                   sx={{
                     lineHeight: "normal",
@@ -240,7 +260,7 @@ const GalleryItem = props => {
                       WebkitLineClamp: 4,
                       WebkitBoxOrient: "vertical",
                       overflow: "hidden",
-                      height: "9rem",
+                      height: "7.8rem",
                     },
                   }}
                 >
@@ -248,7 +268,7 @@ const GalleryItem = props => {
                 </Typography>
               </Box>
 
-              <Stack direction="row" spacing="1.8rem" justifyContent="flex-end" sx={{ width: "100%" }}>
+              <Stack direction="row" spacing="1.8rem" justifyContent="flex-end" sx={{ width: "100%", mt: [0, "0.8rem"] }}>
                 {ECOSYSTEM_SOCIAL_LIST.map(social => (
                   <motion.span key={social.name} whileHover={{ scale: 1.1 }}>
                     <SvgIcon

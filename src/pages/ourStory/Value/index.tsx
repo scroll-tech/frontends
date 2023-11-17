@@ -2,9 +2,9 @@ import { useRef } from "react"
 
 import { Box, Stack, SvgIcon, Typography } from "@mui/material"
 
-import { ReactComponent as CommunitySvg } from "@/assets/svgs/refactor/story-value-community.svg"
-import { ReactComponent as NeutralitySvg } from "@/assets/svgs/refactor/story-value-neutrality.svg"
-import { ReactComponent as OpennessSvg } from "@/assets/svgs/refactor/story-value-openness.svg"
+import { ReactComponent as CommunitySvg } from "@/assets/svgs/story/value-community.svg"
+import { ReactComponent as NeutralitySvg } from "@/assets/svgs/story/value-neutrality.svg"
+import { ReactComponent as OpennessSvg } from "@/assets/svgs/story/value-openness.svg"
 import ScrollExpandedBg from "@/components/ScrollExpandedBg"
 import useCheckViewport from "@/hooks/useCheckViewport"
 

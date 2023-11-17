@@ -1,7 +1,7 @@
 import { SvgIcon } from "@mui/material"
 
-import { ReactComponent as ScrollLogoLightIcon } from "@/assets/svgs/refactor/scroll-logo-light.svg"
-import { ReactComponent as ScrollLogoIcon } from "@/assets/svgs/refactor/scroll-logo.svg"
+import { ReactComponent as ScrollLogoLightIcon } from "@/assets/svgs/common/scroll-logo-light.svg"
+import { ReactComponent as ScrollLogoIcon } from "@/assets/svgs/common/scroll-logo.svg"
 
 const ScrollLogo = props => {
   const { light, ...restProps } = props

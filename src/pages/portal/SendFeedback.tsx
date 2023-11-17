@@ -1,8 +1,8 @@
 import { Stack, SvgIcon, Typography } from "@mui/material"
 
-import { ReactComponent as DiscordSvg } from "@/assets/svgs/refactor/portal-discord.svg"
-import { ReactComponent as GithubSvg } from "@/assets/svgs/refactor/portal-github.svg"
-import { ReactComponent as StatusSvg } from "@/assets/svgs/refactor/portal-status.svg"
+import { ReactComponent as DiscordSvg } from "@/assets/svgs/portal/discord.svg"
+import { ReactComponent as GithubSvg } from "@/assets/svgs/portal/github.svg"
+import { ReactComponent as StatusSvg } from "@/assets/svgs/portal/status.svg"
 import Link from "@/components/Link"
 
 import Descriptions, { DescriptionItem } from "./Descriptions"

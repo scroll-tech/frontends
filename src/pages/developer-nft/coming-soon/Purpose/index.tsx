@@ -1,8 +1,8 @@
 import { Box, CardMedia, Divider, Stack, SvgIcon, Typography } from "@mui/material"
 
 import StatementSvg from "@/assets/svgs/refactor/nft-statement.svg"
-import { ReactComponent as CommunitySvg } from "@/assets/svgs/refactor/story-value-community.svg"
-import { ReactComponent as NeutralitySvg } from "@/assets/svgs/refactor/story-value-neutrality.svg"
+import { ReactComponent as CommunitySvg } from "@/assets/svgs/story/value-community.svg"
+import { ReactComponent as NeutralitySvg } from "@/assets/svgs/story/value-neutrality.svg"
 import LineToView from "@/components/Motion/LineToView"
 import useCheckViewport from "@/hooks/useCheckViewport"
 

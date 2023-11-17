@@ -3,8 +3,8 @@ import { makeStyles } from "tss-react/mui"
 
 import { Select as MuiSelect, Stack, SvgIcon, Typography } from "@mui/material"
 
-import { ReactComponent as TriangleDownIcon } from "@/assets/svgs/refactor/triangle-down.svg"
-import { ReactComponent as WidgetsIcon } from "@/assets/svgs/refactor/widgets.svg"
+import { ReactComponent as TriangleDownIcon } from "@/assets/svgs/common/triangle-down.svg"
+import { ReactComponent as WidgetsIcon } from "@/assets/svgs/common/widgets.svg"
 
 const useStyles = makeStyles()(theme => ({
   select: {
