@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react"
 import { makeStyles } from "tss-react/mui"
 
 import {
@@ -18,8 +19,10 @@ import {
 } from "@mui/material"
 
 import { ReactComponent as SuccessSvg } from "@/assets/svgs/refactor/bridge-alert-success.svg"
+import { ReactComponent as SelectedSvg } from "@/assets/svgs/refactor/bridge-approve-token-selected.svg"
 import { ReactComponent as CloseSvg } from "@/assets/svgs/refactor/bridge-close.svg"
 import { ReactComponent as WarningSvg } from "@/assets/svgs/refactor/bridge-warning.svg"
+import Button from "@/components/Button"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
 const APPROVAL_OPTIONS = [
@@ -35,20 +38,25 @@ const APPROVAL_OPTIONS = [
   },
 ]
 
+const APPROVAL_TYPE = Object.fromEntries(APPROVAL_OPTIONS.map(item => [item.type, item.type]))
+
 const useStyles = makeStyles()(theme => ({
   dialogPaper: {
     width: "62.8rem",
     maxWidth: "unset",
     borderRadius: "2rem",
     backgroundColor: theme.palette.themeBackground.light,
+    [theme.breakpoints.down("sm")]: {
+      padding: "2rem 0",
+    },
   },
   dialogContentRoot: {
-    padding: "6.4rem 3.2rem 10rem",
+    padding: "6.4rem 3.2rem 4rem",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     [theme.breakpoints.down("sm")]: {
-      padding: "6.4rem 2rem 6rem",
+      padding: "6.4rem 2rem 2rem",
     },
   },
   cardRoot: {
@@ -69,6 +77,9 @@ const useStyles = makeStyles()(theme => ({
       justifyContent: "center",
     },
   },
+  selectedCard: {
+    outline: `1px solid ${theme.palette.text.primary}`,
+  },
   chipRoot: {
     position: "absolute",
     backgroundColor: "#90F8EA",
@@ -76,6 +87,12 @@ const useStyles = makeStyles()(theme => ({
     top: "-1.7rem",
     left: "50%",
     transform: "translateX(-50%)",
+  },
+  selectedIcon: {
+    fontSize: "2.4rem",
+    position: "absolute",
+    right: "1.2rem",
+    top: "1.2rem",
   },
   chipLabel: {
     fontSize: "1.6rem",
@@ -109,9 +126,25 @@ const useStyles = makeStyles()(theme => ({
 }))
 
 const ApprovalDialog = props => {
-  const { token = {}, open, onClose, onApprove } = props
+  const { token = {}, open, loading, onClose, onApprove } = props
   const { isMobile } = useCheckViewport()
-  const { classes } = useStyles()
+  const { classes, cx } = useStyles()
+
+  const [selectedType, setSelectedType] = useState(APPROVAL_TYPE.Recommended)
+
+  useEffect(() => {
+    if (open) {
+      setSelectedType(APPROVAL_TYPE.Recommended)
+    }
+  }, [open])
+
+  const handleSelect = value => {
+    setSelectedType(value)
+  }
+
+  const handleContinue = () => {
+    onApprove(selectedType === APPROVAL_TYPE.Recommended)
+  }
 
   return (
     <Dialog open={open} onClose={onClose} classes={{ paper: classes.dialogPaper }}>
@@ -140,29 +173,31 @@ const ApprovalDialog = props => {
           direction={isMobile ? "column" : "row"}
           gap={isMobile ? "3rem" : "2rem"}
           justifyContent="center"
-          sx={{ mt: ["2.6rem", "4rem"], width: "100%" }}
+          sx={{ mt: ["2.6rem", "4rem"], mb: ["2.2rem", "3.6rem"], width: "100%" }}
         >
           {APPROVAL_OPTIONS.map(item => (
             <Card
               role="button"
               tabIndex={0}
               variant="outlined"
-              classes={{ root: classes.cardRoot }}
-              onClick={() => onApprove(item.type === "Recommended")}
+              classes={{ root: cx(classes.cardRoot, selectedType === item.type && classes.selectedCard) }}
+              onClick={() => handleSelect(item.type)}
             >
-              {item.type === "Recommended" && <Chip classes={{ root: classes.chipRoot, label: classes.chipLabel }} label={item.type}></Chip>}
+              {item.type === APPROVAL_TYPE.Recommended && (
+                <Chip classes={{ root: classes.chipRoot, label: classes.chipLabel }} label={item.type}></Chip>
+              )}
+              {item.type === selectedType && <SvgIcon classes={{ root: classes.selectedIcon }} component={SelectedSvg} inheritViewBox></SvgIcon>}
               <Box>
                 <Typography sx={{ fontSize: ["2rem", "2.4rem"], lineHeight: "3.6rem", fontWeight: 600, textAlign: "center" }}>
                   {item.title}
                 </Typography>
-
                 <List classes={{ root: classes.listRoot }}>
                   {item.info.map(i => (
                     <ListItem classes={{ root: classes.listItemRoot }}>
                       <ListItemIcon classes={{ root: classes.listItemIconRoot }}>
                         <SvgIcon
                           sx={{ fontSize: ["1.6rem", "2rem"], color: "#8C591A" }}
-                          component={item.type === "Warning" ? WarningSvg : SuccessSvg}
+                          component={item.type === APPROVAL_TYPE.Recommended ? SuccessSvg : WarningSvg}
                           inheritViewBox
                         ></SvgIcon>
                       </ListItemIcon>
@@ -174,6 +209,11 @@ const ApprovalDialog = props => {
             </Card>
           ))}
         </Stack>
+        {/* <Box> */}
+        <Button color="primary" width={isMobile ? "100%" : "22rem"} loading={loading} whiteButton onClick={handleContinue}>
+          Continue
+        </Button>
+        {/* </Box> */}
       </DialogContent>
     </Dialog>
   )

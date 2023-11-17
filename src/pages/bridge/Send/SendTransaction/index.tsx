@@ -324,7 +324,13 @@ const SendTransaction = props => {
       >
         {renderButton()}
       </Box>
-      <ApprovalDialog open={approvalVisible} token={selectedToken} onApprove={handleApprove} onClose={handleCloseApprovalDialog}></ApprovalDialog>
+      <ApprovalDialog
+        open={approvalVisible}
+        token={selectedToken}
+        loading={approveLoading && !isRequestedApproval}
+        onApprove={handleApprove}
+        onClose={handleCloseApprovalDialog}
+      ></ApprovalDialog>
     </Stack>
   )
 }
