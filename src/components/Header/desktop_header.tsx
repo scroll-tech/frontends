@@ -5,7 +5,7 @@ import { useStyles } from "tss-react/mui"
 import { Box, Container, Fade, Link, Popper, Stack, SvgIcon } from "@mui/material"
 import { styled } from "@mui/system"
 
-import { ReactComponent as TriangleDownSvg } from "@/assets/svgs/refactor/header-triangle-down.svg"
+import { ReactComponent as TriangleDownSvg } from "@/assets/svgs/common/header-triangle-down.svg"
 import Logo from "@/components/ScrollLogo"
 import WalletToolkit from "@/components/WalletToolkit"
 import useCheckViewport from "@/hooks/useCheckViewport"

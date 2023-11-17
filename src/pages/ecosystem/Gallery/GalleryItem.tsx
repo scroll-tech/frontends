@@ -6,7 +6,7 @@ import { makeStyles } from "tss-react/mui"
 import { Box, Stack, SvgIcon, Typography } from "@mui/material"
 
 import { ecosystemListLogoUrl } from "@/apis/ecosystem"
-import { ReactComponent as InfoIcon } from "@/assets/svgs/refactor/info.svg"
+import { ReactComponent as InfoIcon } from "@/assets/svgs/ecosystem/info.svg"
 import RenderIfVisible from "@/components/RenderIfVisible"
 import { ECOSYSTEM_SOCIAL_LIST } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"

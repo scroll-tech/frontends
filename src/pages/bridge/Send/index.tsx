@@ -1,359 +1,167 @@
-import { ethers } from "ethers"
-import { ChangeEvent, FC, useEffect, useMemo, useState } from "react"
-import useStorage from "squirrel-gill"
+import { useEffect } from "react"
+import { makeStyles } from "tss-react/mui"
 
-import { Alert, Typography } from "@mui/material"
+import { TabContext, TabList, TabPanel } from "@mui/lab"
+import { Box, Snackbar, Tab } from "@mui/material"
 
-import L1_erc20ABI from "@/assets/abis/L1_erc20ABI.json"
-import LoadingButton from "@/components/LoadingButton"
+import Alert from "@/components/Alert"
 import TextButton from "@/components/TextButton"
-import { CHAIN_ID, ETH_SYMBOL, GATEWAY_ROUTE_PROXY_ADDR, NETWORKS, WETH_GATEWAY_PROXY_ADDR, WETH_SYMBOL } from "@/constants"
-import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
-import { useBrigeContext } from "@/contexts/BridgeContextProvider"
-import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
+import { CHAIN_ID } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { useApprove, useAsyncMemo, useBalance, useSufficientBalance } from "@/hooks"
-import useCheckValidAmount from "@/hooks/useCheckValidAmount"
-import { amountToBN, sanitizeNumericalString, switchNetwork } from "@/utils"
-import { toTokenDisplay } from "@/utils"
+import useBridgeStore from "@/stores/bridgeStore"
 
-import ConfirmDialog from "../ConfirmDialog"
-import DetailRow from "../components/InfoTooltip/DetailRow"
-import FeeDetails from "../components/InfoTooltip/FeeDetails"
-import ApproveLoading from "./ApproveLoading"
-import SendAmountSelectorCard from "./SendAmountSelectorCard"
-import SendLoading from "./SendLoading"
-import SendTranferButton from "./SendTransferButton"
-import { useEstimateSendTransaction } from "./useEstimateSendTransaction"
-import { StyleContext, useSendStyles } from "./useSendStyles"
-import { useSendTransaction } from "./useSendTransaction"
+import Deposit from "./Deposit"
+import Withdraw from "./Withdraw"
 
-const Send: FC = () => {
-  const { checkConnectedChainId, chainId, walletName, connect } = useRainbowContext()
-  const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
-  const { classes: styles, cx } = useSendStyles()
-  const { networksAndSigners, tokenList } = useBrigeContext()
-  const { gasLimit, gasPrice, errorMessage: priceFeeErrorMessage, fetchData: fetchPriceFee } = usePriceFeeContext()
+const useStyles = makeStyles()(theme => ({
+  sendWrapper: {
+    borderRadius: "2rem",
+    overflow: "hidden",
+    maxWidth: "64rem",
+    width: "100%",
+    "& *": {
+      fontFamily: "var(--developer-page-font-family) !important",
+    },
+    position: "relative",
+    [theme.breakpoints.down("sm")]: {
+      maxWidth: "100%",
+    },
+  },
+  tabList: {
+    width: "100%",
+  },
+  tab: {
+    flex: 1,
+    height: "5.6rem",
+    fontSize: "2rem",
+    fontWeight: 500,
+    color: theme.palette.text.primary,
+    padding: 0,
+    backgroundColor: theme.palette.themeBackground.normal,
+    textTransform: "unset",
+    "&.Mui-selected": {
+      color: theme.palette.text.primary,
+      fontWeight: 600,
+      backgroundColor: theme.palette.themeBackground.optionHightlight,
+    },
 
-  const [fromNetwork, setFromNetwork] = useState({} as any)
-  const [ConfirmDialogVisible, setConfirmDialogVisible] = useState(false)
-  const [toNetwork, setToNetwork] = useState({} as any)
-  const [totalBonderFeeDisplay, setTotalBonderFeeDisplay] = useState("-")
-  const [estimatedGasCost, setEstimatedGasCost] = useState<undefined | bigint>(undefined)
-  const [sendingModalOpen, setSendingModalOpen] = useState(false)
+    [theme.breakpoints.down("sm")]: {
+      width: "50%",
+      fontSize: "1.4rem",
+    },
+  },
+  indicator: {
+    display: "none",
+  },
+  tabPanel: {
+    backgroundColor: theme.palette.themeBackground.optionHightlight,
+    padding: "3rem 5.4rem",
 
-  const fromToken = useMemo(
-    () => tokenList.find(item => item.chainId === fromNetwork.chainId && item.symbol === tokenSymbol) ?? ({} as any as Token),
-    [tokenList, tokenSymbol, fromNetwork],
-  )
+    "&.withdraw": {
+      padding: "1rem 3rem 3rem",
+    },
 
-  const toToken = useMemo(
-    () => tokenList.find(item => item.chainId === toNetwork.chainId && item.symbol === tokenSymbol) ?? ({} as any as Token),
-    [tokenList, tokenSymbol, toNetwork],
-  )
+    [theme.breakpoints.down("sm")]: {
+      padding: "3rem 2rem 2rem",
 
-  const [fromTokenAmount, setFromTokenAmount] = useState<string>()
-  const [sendError, setSendError] = useState<any>()
-  const [approving, setApproving] = useState<boolean>(false)
+      "&.withdraw": {
+        padding: "1rem 2rem 2rem",
+      },
+    },
+  },
 
-  const { isValid, message: invalidAmountMessage } = useCheckValidAmount(fromTokenAmount)
+  snackbar: {
+    width: "max-content",
+    maxWidth: "calc(100% - 1.6rem)",
 
-  const fromTokenList = useMemo(() => {
-    return fromNetwork.chainId ? tokenList.filter(item => item.chainId === fromNetwork.chainId) : []
-  }, [tokenList, fromNetwork])
+    [theme.breakpoints.down("sm")]: {
+      left: "50%",
+      transform: "translateX(-50%)",
+    },
+  },
+}))
 
-  // Change the bridge if user selects different token to send
-  const handleChangeToken = (event: ChangeEvent<{ value: Token }>) => {
-    setTokenSymbol(event.target.value.symbol)
-  }
-  const { balance: fromBalance, loading: loadingFromBalance } = useBalance(fromToken, fromNetwork)
+const Send = () => {
+  const { classes, cx } = useStyles()
+  const { chainId } = useRainbowContext()
+  const { txType, txResult, fromNetwork, withDrawStep, changeTxType, changeTxResult, changeHistoryVisible, changeIsNetworkCorrect } = useBridgeStore()
 
-  const { balance: toBalance, loading: loadingToBalance } = useBalance(toToken, toNetwork)
   useEffect(() => {
-    if (chainId && Object.values(CHAIN_ID).includes(chainId)) {
-      const fromNetworkIndex = NETWORKS.findIndex(item => item.chainId === chainId)
-      setFromNetwork(NETWORKS[fromNetworkIndex])
-      setToNetwork(NETWORKS[+!fromNetworkIndex])
+    let networkCorrect
+    if (txType === "Deposit") {
+      networkCorrect = fromNetwork.isL1 && chainId === CHAIN_ID.L1
+    } else if (withDrawStep === "1") {
+      networkCorrect = !fromNetwork.isL1 && chainId === CHAIN_ID.L2
     } else {
-      setFromNetwork(NETWORKS[0])
-      setToNetwork(NETWORKS[1])
+      networkCorrect = chainId === CHAIN_ID.L1
     }
-  }, [chainId, tokenList, tokenSymbol])
+    changeIsNetworkCorrect(networkCorrect)
+  }, [fromNetwork, txType, withDrawStep, chainId])
 
-  const { estimateSend } = useEstimateSendTransaction({
-    fromNetwork,
-    toNetwork,
-    selectedToken: fromToken,
-  })
-
-  const handleEstimateSend = async () => {
-    if (networksAndSigners[fromNetwork.chainId]?.signer) {
-      const { maxFeePerGas: gasPrice } = await networksAndSigners[fromNetwork.chainId].provider.getFeeData()
-      try {
-        const gasLimit = await estimateSend()
-        const estimatedGasCost = BigInt(gasLimit) * BigInt(gasPrice || 1e9)
-        setEstimatedGasCost(estimatedGasCost)
-      } catch (error) {
-        setEstimatedGasCost(undefined)
-      }
-    }
+  const handleChange = (e, newValue) => {
+    changeTxType(newValue)
+    handleClose()
   }
 
-  useEffect(() => {
-    handleEstimateSend()
-  }, [chainId, fromToken, fromTokenAmount])
-
-  const isCorrectNetwork = useMemo(() => !!chainId && fromNetwork.chainId === chainId, [chainId, fromNetwork])
-
-  useEffect(() => {
-    if (estimatedGasCost !== undefined) {
-      handleTotalBonderFeeDisplay()
-    }
-  }, [chainId, fromTokenAmount, fromToken, estimatedGasCost])
-
-  const handleTotalBonderFeeDisplay = async () => {
-    if (networksAndSigners[fromNetwork.chainId]?.signer) {
-      const fee = gasLimit * gasPrice
-      const display = fromTokenAmount ? toTokenDisplay(fee + (estimatedGasCost as bigint)) + " " + ETH_SYMBOL : "-"
-      setTotalBonderFeeDisplay(display)
-    }
+  const handleOpenHistory = () => {
+    changeHistoryVisible(true)
+    handleClose()
   }
 
-  const { warning } = useSufficientBalance(
-    fromToken,
-    networksAndSigners[fromNetwork.chainId],
-    fromTokenAmount ? amountToBN(fromTokenAmount, fromToken.decimals) : undefined,
-    estimatedGasCost,
-    fromBalance ?? undefined,
-    isCorrectNetwork,
-  )
-
-  // network->sufficient->tx error
-  const warningTip = useMemo(() => {
-    if (priceFeeErrorMessage) {
-      return (
-        <>
-          {priceFeeErrorMessage}, <TextButton onClick={() => fetchPriceFee()}>Click here to retry.</TextButton>
-        </>
-      )
-    } else if (!walletName) {
-      return <TextButton onClick={connect}>Click here to connect wallet.</TextButton>
-    } else if (!isCorrectNetwork) {
-      return (
-        <>
-          Your wallet is connected to an unsupported network.{" "}
-          <TextButton onClick={() => handleSwitchNetwork(fromNetwork.chainId)}>Click here to switch to {fromNetwork.name}.</TextButton>
-        </>
-      )
-    } else if (warning) {
-      return warning
-    } else if (!isValid) {
-      return invalidAmountMessage
-    } else if (sendError && sendError !== "cancel" && sendError.code !== 4001) {
-      return (
-        <>
-          The transaction failed. Your {walletName} wallet might not be up to date.{" "}
-          <b>
-            <u
-              onClick={() => window.open("https://docs.scroll.io/en/user-guide/common-errors/")}
-              style={{ textUnderlineOffset: "0.4rem", cursor: "pointer" }}
-            >
-              Reset your {walletName} account
-            </u>
-          </b>
-          {" before using Scroll Bridge."}
-        </>
-      )
-    }
-    return null
-  }, [walletName, connect, isCorrectNetwork, warning, sendError, fromNetwork, isValid, priceFeeErrorMessage])
-
-  // Switch the fromNetwork <--> toNetwork
-  const handleSwitchDirection = () => {
-    setFromNetwork(toNetwork)
-    setToNetwork(fromNetwork)
-    handleSwitchNetwork(toNetwork.chainId)
-  }
-
-  const handleApprove = async () => {
-    try {
-      setApproving(true)
-      await approveFromToken()
-    } catch (error) {}
-    setApproving(false)
-  }
-
-  // ==============================================================================================
-  // Send tokens
-  // ==============================================================================================
-
-  const { send: handleSendTransaction, sending } = useSendTransaction({
-    fromNetwork,
-    fromTokenAmount,
-    setSendError,
-    toNetwork,
-    selectedToken: fromToken,
-  })
-
-  useEffect(() => {
-    //TODO: outermost error
-    if (!sending && sendError !== "cancel") {
-      setFromTokenAmount("")
-    }
-    setSendingModalOpen(sending)
-  }, [sending])
-
-  const txValue = useMemo(() => `${fromTokenAmount} ${tokenSymbol}`, [fromTokenAmount, tokenSymbol])
-
-  const { checkApproval } = useApprove(fromToken)
-
-  const necessaryCondition = useMemo(() => {
-    return fromTokenAmount && !warningTip
-  }, [fromTokenAmount, warningTip])
-
-  const approveAddress = useMemo(() => {
-    if (!fromNetwork.isL1 && fromToken.symbol === WETH_SYMBOL) return WETH_GATEWAY_PROXY_ADDR[fromNetwork.chainId]
-    return GATEWAY_ROUTE_PROXY_ADDR[fromNetwork.chainId]
-  }, [fromNetwork, fromToken])
-
-  const needsApproval = useAsyncMemo(async () => {
-    if (!necessaryCondition || (fromToken as NativeToken).native) {
-      return false
-    }
-
-    try {
-      const parsedAmount = amountToBN(fromTokenAmount, fromToken.decimals)
-      const Token = new ethers.Contract((fromToken as ERC20Token).address, L1_erc20ABI, networksAndSigners[chainId as number].signer)
-      return checkApproval(parsedAmount, Token, approveAddress)
-    } catch (err) {
-      return false
-    }
-  }, [fromNetwork, fromToken, necessaryCondition, checkApproval])
-
-  const approveFromToken = async () => {
-    // eslint-disable-next-line
-    const parsedAmount = amountToBN(fromTokenAmount, fromToken.decimals)
-    const isNetworkConnected = await checkConnectedChainId(fromNetwork.chainId)
-    if (!isNetworkConnected) return
-    const Token = new ethers.Contract((fromToken as ERC20Token).address, L1_erc20ABI, networksAndSigners[chainId as number].signer)
-    const tx = await Token.approve(
-      approveAddress,
-      ethers.MaxUint256,
-      // parsedAmount
-    )
-    await tx?.wait()
-  }
-
-  const sendButtonActive = useMemo(() => {
-    return !needsApproval && necessaryCondition
-  }, [needsApproval, necessaryCondition])
-
-  const handleCloseSendLoading = () => {
-    setSendingModalOpen(false)
-  }
-
-  const handleCloseApproveLoading = () => {
-    setApproving(false)
-  }
-
-  const handleChangeFromAmount = value => {
-    setSendError(undefined)
-    const amountIn = sanitizeNumericalString(value)
-    setFromTokenAmount(amountIn)
-  }
-
-  const handleSwitchNetwork = async (chainId: number) => {
-    try {
-      await switchNetwork(chainId)
-    } catch (error) {
-      // when there is a switch-network popover in MetaMask and refreshing page would throw an error
-    }
-  }
-
-  const handleSend = () => {
-    if (fromNetwork.chainId === CHAIN_ID.L1) {
-      handleSendTransactionWithGasLimit()
-    } else {
-      setConfirmDialogVisible(true)
-    }
-  }
-
-  const handleSendTransactionWithGasLimit = async () => {
-    const gasLimit = await estimateSend()
-    handleSendTransaction((gasLimit * BigInt(120)) / BigInt(100))
+  const handleClose = () => {
+    changeTxResult(null)
   }
 
   return (
-    <StyleContext.Provider value={styles}>
-      <div className={cx("flex", "flex-col", "items-center", "bg-white", styles.sendWrapper)}>
-        <div className={cx("flex", "flex-col", "items-center", styles.sendPanel)}>
-          <SendAmountSelectorCard
-            value={fromTokenAmount}
-            token={fromToken}
-            label={"From"}
-            onChange={handleChangeFromAmount}
-            selectedNetwork={fromNetwork}
-            networkOptions={NETWORKS}
-            balance={fromBalance}
-            loadingBalance={loadingFromBalance}
-            // fromNetwork={fromNetwork}
-            tokenList={fromTokenList}
-            onChangeToken={handleChangeToken}
-          />
-          <SendTranferButton disabled={!toToken.chainId || sending} onClick={handleSwitchDirection} />
-          <SendAmountSelectorCard
-            value="0.1"
-            token={toToken}
-            label={"To"}
-            selectedNetwork={toNetwork}
-            networkOptions={NETWORKS}
-            balance={toBalance}
-            loadingBalance={loadingToBalance}
-            disableInput
-          />
+    <Box className={classes.sendWrapper}>
+      <TabContext value={txType}>
+        <TabList
+          onChange={handleChange}
+          textColor="primary"
+          classes={{ root: classes.tabList, fixed: classes.tabList, flexContainer: classes.tabList, indicator: classes.indicator }}
+        >
+          <Tab label="Deposit to Scroll" value="Deposit" classes={{ root: classes.tab }}></Tab>
+          <Tab label="Withdraw to Ethereum" value="Withdraw" classes={{ root: classes.tab }}></Tab>
+        </TabList>
+        <TabPanel value="Deposit" classes={{ root: classes.tabPanel }}>
+          <Deposit></Deposit>
+        </TabPanel>
+        <TabPanel value="Withdraw" className={withDrawStep === "2" ? "tx" : ""} classes={{ root: cx(classes.tabPanel, "withdraw") }}>
+          <Withdraw></Withdraw>
+        </TabPanel>
+      </TabContext>
 
-          <div className={styles.details}>
-            <div className={styles.destinationTxFeeAndAmount}>
-              <DetailRow
-                title={"Fees"}
-                tooltip={<FeeDetails />}
-                value={
-                  <>
-                    <Typography>{totalBonderFeeDisplay}</Typography>
-                  </>
-                }
-                large
-              />
-            </div>
-          </div>
-
-          {warningTip && (
-            <Alert variant="standard" severity={sendError ? "error" : "warning"} style={{ marginTop: "2.4rem" }}>
-              {warningTip}
+      <Snackbar
+        open={!!txResult}
+        autoHideDuration={6000}
+        classes={{ root: classes.snackbar }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        onClose={handleClose}
+      >
+        <div>
+          {txResult?.code === 1 && (
+            <Alert severity="success">
+              <>
+                Submitted successfully! <br />
+                {txType === "Deposit" ? "Funds take up to 20 mins to be ready" : "Funds take up to 1h to be claimable"}
+                <br />
+                <TextButton underline="always" sx={{ color: "inherit" }} onClick={handleOpenHistory}>
+                  View transaction history
+                </TextButton>
+              </>
             </Alert>
           )}
-
-          {needsApproval ? (
-            <LoadingButton
-              sx={{ mt: "2rem", width: "100%" }}
-              onClick={handleApprove}
-              disabled={!needsApproval}
-              loading={approving}
-              variant="contained"
-            >
-              Approve {tokenSymbol}
-            </LoadingButton>
-          ) : (
-            <LoadingButton sx={{ mt: "2rem", width: "100%" }} onClick={handleSend} disabled={!sendButtonActive} loading={sending} variant="contained">
-              Send {tokenSymbol} to {toNetwork.name}
-            </LoadingButton>
+          {txResult?.code === 0 && (
+            <Alert severity="error" sx={{ maxWidth: "49rem" }}>
+              <>
+                Failed in submission.
+                <br /> {txResult?.message}
+              </>
+            </Alert>
           )}
-          <ApproveLoading open={approving} tokenSymbol={tokenSymbol} onClose={handleCloseApproveLoading} />
-          <SendLoading value={txValue} from={fromNetwork.name} to={toNetwork.name} open={sendingModalOpen} onClose={handleCloseSendLoading} />
         </div>
-      </div>
-      <ConfirmDialog open={ConfirmDialogVisible} setOpen={setConfirmDialogVisible} send={handleSendTransactionWithGasLimit} />
-    </StyleContext.Provider>
+      </Snackbar>
+    </Box>
   )
 }
 

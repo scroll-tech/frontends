@@ -2,7 +2,7 @@ import { makeStyles } from "tss-react/mui"
 
 import { Box, Card, CardContent, CardMedia, SvgIcon, Typography } from "@mui/material"
 
-import { ReactComponent as ExternaLinkIcon } from "@/assets/svgs/refactor/external-link.svg"
+import { ReactComponent as ExternaLinkIcon } from "@/assets/svgs/common/external-link.svg"
 import Link from "@/components/Link"
 import ScrollLogo from "@/components/ScrollLogo"
 import useCheckViewport from "@/hooks/useCheckViewport"

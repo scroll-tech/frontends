@@ -1,7 +1,7 @@
-import { ReactComponent as DoubleEyesIcon } from "@/assets/svgs/refactor/double-eyes.svg"
-import { ReactComponent as SettingsIcon } from "@/assets/svgs/refactor/settings.svg"
-import { ReactComponent as TwitterIcon } from "@/assets/svgs/twitter.svg"
-import { ReactComponent as WebsiteIcon } from "@/assets/svgs/website.svg"
+import { ReactComponent as DoubleEyesIcon } from "@/assets/svgs/ecosystem/double-eyes.svg"
+import { ReactComponent as SettingsIcon } from "@/assets/svgs/ecosystem/settings.svg"
+import { ReactComponent as TwitterIcon } from "@/assets/svgs/ecosystem/twitter.svg"
+import { ReactComponent as WebsiteIcon } from "@/assets/svgs/ecosystem/website.svg"
 
 export const DIVERGENT_CATEGORY_MAP = {
   Community: ["Community", "DAO", "Governance"],

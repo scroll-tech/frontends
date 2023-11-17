@@ -1,15 +1,9 @@
-import { ethers } from "ethers"
-import { useCallback, useMemo, useState } from "react"
-import Countdown from "react-countdown"
+import { useCallback, useMemo } from "react"
 import { makeStyles } from "tss-react/mui"
 
-import InfoIcon from "@mui/icons-material/Info"
 import {
   Box,
-  Button,
-  Chip,
   CircularProgress,
-  LinearProgress,
   Pagination,
   Paper,
   Skeleton,
@@ -20,22 +14,19 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Tooltip,
   Typography,
 } from "@mui/material"
 
-import L1ScrollMessenger from "@/assets/abis/L1ScrollMessenger.json"
 import Link from "@/components/Link"
-import { TX_STATUS } from "@/constants"
-import { CHAIN_ID } from "@/constants/common"
+import { NETWORKS, TX_STATUS } from "@/constants"
 import { useBrigeContext } from "@/contexts/BridgeContextProvider"
-import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useTokenInfo from "@/hooks/useTokenInfo"
-import useTxStore from "@/stores/txStore"
-import { generateExploreLink, switchNetwork, toTokenDisplay, truncateHash } from "@/utils"
-import { requireEnv } from "@/utils"
+import { formatDate, generateExploreLink, toTokenDisplay, truncateHash } from "@/utils"
 
-import StatusChip from "./StatusChip"
+import useCheckClaimStatus from "../../hooks/useCheckClaimStatus"
+import useLastFinalizedBatchIndex from "../../hooks/useLastFinalizedBatchIndex"
+import NoData from "../NoData"
+import TxStatusButton from "./TxStatusButton"
 
 const useStyles = makeStyles()(theme => {
   return {
@@ -43,13 +34,15 @@ const useStyles = makeStyles()(theme => {
       whiteSpace: "nowrap",
       [theme.breakpoints.down("sm")]: {
         paddingBottom: "1.6rem",
-        overflowX: "scroll",
       },
     },
     tableWrapper: {
       boxShadow: "unset",
-      border: `1px solid ${theme.palette.border.main}`,
-      width: "74rem",
+      borderRadius: "20px",
+    },
+    tableMinHeight: {
+      minHeight: "20rem",
+      overflowX: "auto",
     },
     tableTitle: {
       marginTop: "2.8rem",
@@ -60,38 +53,70 @@ const useStyles = makeStyles()(theme => {
       },
     },
     tableHeader: {
-      backgroundColor: theme.palette.scaleBackground.primary,
+      borderBottom: `3px solid ${theme.palette.border.main}`,
       ".MuiTableCell-head": {
         borderBottom: "unset",
+        fontWeight: 600,
+        fontSize: "1.6rem",
+        padding: "0.8rem 1.6rem",
+        color: theme.palette.text.primary,
+        whiteSpace: "nowrap",
+        "&:first-of-type": {
+          paddingLeft: 0,
+        },
       },
     },
-    claimButton: {
-      width: "10.2rem",
+    tableBody: {
+      ".MuiTableCell-root": {
+        padding: "2rem 1.6rem",
+        "*": {
+          fontSize: "1.4rem",
+        },
+        "&:first-of-type": {
+          paddingLeft: 0,
+        },
+        "&:last-of-type": {
+          paddingRight: 0,
+        },
+      },
     },
     chip: {
-      width: "12.6rem",
-      height: "3.8rem",
-      fontSize: "1.6rem",
-      fontWeight: 500,
+      width: "8.6rem",
+      height: "2.8rem",
+      fontSize: "1.4rem",
+      fontWeight: 600,
+      borderRadius: "10rem",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
     },
     pendingChip: {
-      color: theme.palette.tagWarning.main,
-      backgroundColor: theme.palette.tagWarning.light,
+      color: "#FFF8F3",
+      backgroundColor: "#FF684B",
     },
     successChip: {
-      color: theme.palette.tagSuccess.main,
-      backgroundColor: theme.palette.tagSuccess.light,
+      color: "#0F8E7E",
+      backgroundColor: "#DFFCF8",
+    },
+    failedChip: {
+      color: "#FFF8F3",
+      background: "#5B5B5B",
     },
     claimedChip: {
       color: theme.palette.tagSuccess.main,
       backgroundColor: theme.palette.tagSuccess.light,
     },
     pagination: {
+      overflowX: "auto",
+
+      ".MuiPagination-ul": {
+        flexWrap: "nowrap",
+      },
       ".MuiPaginationItem-text": {
         fontSize: "1.6rem",
       },
       ".MuiPaginationItem-root": {
-        color: theme.palette.text.secondary,
+        color: theme.palette.text.primary,
       },
       ".MuiPaginationItem-root.Mui-selected": {
         fontWeight: 700,
@@ -101,12 +126,27 @@ const useStyles = makeStyles()(theme => {
         fontSize: "2.4rem",
       },
     },
+    loadingBox: {
+      position: "absolute",
+      top: "0",
+      left: "0",
+      right: "0",
+      bottom: "0",
+      background: "rgba(255,255,255,0.5)",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    loadingIndicator: {
+      color: "#EB7106",
+    },
   }
 })
 
 const TxTable = (props: any) => {
-  const { data, pagination, loading } = props
+  const { data, loading, pagination } = props
   const { classes } = useStyles()
+  const { lastFinalizedBatchIndex } = useLastFinalizedBatchIndex()
 
   const handleChangePage = (e, newPage) => {
     pagination?.onChange?.(newPage)
@@ -114,57 +154,65 @@ const TxTable = (props: any) => {
 
   return (
     <>
-      <div className={classes.tableContainer}>
-        <TableContainer component={Paper} className={classes.tableWrapper}>
-          <Table aria-label="Tx Table">
-            <TableHead className={classes.tableHeader}>
-              <TableRow>
-                <TableCell>Claimed</TableCell>
-                <TableCell>Amount</TableCell>
-                <TableCell>Status</TableCell>
-                <TableCell>Txn Hash</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {loading ? (
-                <CircularProgress />
-              ) : (
-                <>
-                  {data?.map((tx: any) => (
-                    <TxRow key={tx.hash} tx={tx} />
-                  ))}
-                </>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </div>
-      {pagination && (
-        <div className="flex justify-end mt-[2.8rem]">
-          <Pagination
-            size="small"
-            classes={{
-              root: classes.pagination,
-            }}
-            page={pagination?.page}
-            count={pagination?.count}
-            onChange={handleChangePage}
-          />
-        </div>
-      )}
+      <TableContainer component={Paper} className={classes.tableWrapper}>
+        {data.length ? (
+          <>
+            <Box className={classes.tableMinHeight}>
+              <Table aria-label="Tx Table">
+                <TableHead className={classes.tableHeader}>
+                  <TableRow>
+                    <TableCell align="center">Status</TableCell>
+                    <TableCell>Amount</TableCell>
+                    <TableCell sx={{ width: "16rem" }}>Action</TableCell>
+                    <TableCell sx={{ width: "12rem" }} align="left">
+                      Initiated At
+                    </TableCell>
+                    <TableCell sx={{ width: "32rem" }}>Transaction Hash</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody className={classes.tableBody}>
+                  <>
+                    {data.map((tx: any) => (
+                      <TxRow finalizedIndex={lastFinalizedBatchIndex ?? 0} key={tx.hash} tx={tx} />
+                    ))}
+                  </>
+                </TableBody>
+              </Table>
+            </Box>
+
+            {pagination && (
+              <div className="flex justify-center mt-[2rem]">
+                <Pagination
+                  size="small"
+                  classes={{
+                    root: classes.pagination,
+                  }}
+                  page={pagination?.page}
+                  count={pagination?.count}
+                  onChange={handleChangePage}
+                />
+              </div>
+            )}
+          </>
+        ) : (
+          <NoData
+            sx={{ height: ["20rem", "30rem"] }}
+            title="No transaction hisotry"
+            description="When you bridge assets, your transactions will appear here"
+          ></NoData>
+        )}
+        {loading && (
+          <Box className={classes.loadingBox}>
+            <CircularProgress className={classes.loadingIndicator} />
+          </Box>
+        )}
+      </TableContainer>
     </>
   )
 }
 
 const TxRow = props => {
-  const { tx } = props
-  const { estimatedTimeMap } = useTxStore()
-  const { networksAndSigners } = useBrigeContext()
-  const { chainId } = useRainbowContext()
-  const [claimButtonLabel, setClaimButtonLabel] = useState("Claim")
-  const { classes, cx } = useStyles()
-
-  const [loading, setLoading] = useState(false)
+  const { tx, finalizedIndex } = props
 
   const { blockNumbers } = useBrigeContext()
 
@@ -176,13 +224,33 @@ const TxRow = props => {
       if (assumedStatus && to) {
         return TX_STATUS.empty
       }
-      if (blockNumber && blockNumbers && blockNumbers[+!(isL1 ^ to)] >= blockNumber) {
-        return TX_STATUS.success
+
+      if (blockNumber && blockNumbers) {
+        if (isL1) {
+          if ((!to && blockNumbers[0] >= blockNumber) || (to && blockNumbers[1] >= blockNumber)) {
+            return TX_STATUS.success
+          }
+        } else {
+          if ((!to && blockNumbers[1] >= blockNumber) || to) {
+            return TX_STATUS.success
+          }
+        }
       }
       return TX_STATUS.pending
     },
     [blockNumbers],
   )
+
+  const { claimTip } = useCheckClaimStatus(tx)
+
+  const toTip = useMemo(() => {
+    if (tx.assumedStatus) {
+      return "-"
+    } else if (tx.isL1) {
+      return "Pending..."
+    }
+    return claimTip
+  }, [tx, claimTip])
 
   const fromStatus = useMemo(() => {
     return txStatus(tx.fromBlockNumber, tx.assumedStatus, tx.isL1, false)
@@ -198,162 +266,80 @@ const TxRow = props => {
     return toTokenDisplay(amount, tokenInfo?.decimals ? BigInt(tokenInfo.decimals) : undefined)
   }
 
-  const renderEstimatedWaitingTime = (timestamp, isL1, to) => {
-    if (fromStatus === TX_STATUS.success) {
-      return null
-    } else if (timestamp === 0) {
-      return <Typography variant="body2">Estimating...</Typography>
-    } else if (timestamp) {
+  const actionText = tx => {
+    if (tx.isL1) {
       return (
-        <Typography variant="body2" color="textSecondary">
-          <Countdown date={timestamp} renderer={renderCountDown}></Countdown>
-        </Typography>
+        <>
+          Deposit <span style={{ whiteSpace: "nowrap" }}>to Scroll</span>
+        </>
       )
-    }
-    return null
-  }
-
-  const renderCountDown = ({ total, hours, minutes, seconds, completed }) => {
-    if (completed) {
-      return <LinearProgress />
-    }
-    return (
-      <span>
-        estimated waiting time: {hours}h {minutes}m {seconds}s
-      </span>
-    )
-  }
-
-  const handleSwitchNetwork = async (chainId: number) => {
-    try {
-      // cancel switch network in MetaMask would not throw error and the result is null just like successfully switched
-      await switchNetwork(chainId)
-    } catch (error) {
-      // when there is a switch-network popover in MetaMask and refreshing page would throw an error
-    }
-  }
-
-  const renderClaimButton = tx => {
-    if (tx.isL1 || fromStatus === TX_STATUS.failed) return null
-    if (tx.isClaimed) {
-      return <Chip label="Claimed" className={cx(classes.chip, classes.claimedChip)} />
-    }
-
-    const isOnScrollLayer1 = chainId === CHAIN_ID.L1
-    if (tx.isFinalized) {
-      if (isOnScrollLayer1) {
-        return (
-          <Button className={classes.claimButton} onClick={() => handleClaim(tx.claimInfo)} disabled={loading} color="primary" variant="contained">
-            Claim {loading ? <CircularProgress size={16} sx={{ position: "absolute", right: "0.8rem" }} color="inherit" /> : null}
-          </Button>
-        )
-      } else {
-        return (
-          <Tooltip placement="top" title="Please connect to the L1 network to claim your withdrawal.">
-            <Box>
-              <Button
-                className={classes.claimButton}
-                onMouseEnter={() => setClaimButtonLabel("Switch")}
-                onMouseLeave={() => setClaimButtonLabel("Claim")}
-                onClick={() => handleSwitchNetwork(CHAIN_ID.L1)}
-              >
-                {claimButtonLabel}
-              </Button>
-            </Box>
-          </Tooltip>
-        )
-      }
     } else {
       return (
-        <Tooltip
-          placement="top"
-          title="Scroll provers are still finalizing your transaction, this can take up to 1 hour. Once done, you'll be able to claim it here for use on the target network."
-        >
-          <Box>
-            <Button className={classes.claimButton} disabled>
-              Claim
-            </Button>
-          </Box>
-        </Tooltip>
+        <>
+          Withdraw <span style={{ whiteSpace: "nowrap" }}>to Ethereum</span>
+        </>
       )
-    }
-  }
-
-  const handleClaim = async claimInfo => {
-    const contract = new ethers.Contract(requireEnv("REACT_APP_L1_SCROLL_MESSENGER"), L1ScrollMessenger, networksAndSigners[chainId as number].signer)
-    const { from, to, value, nonce, message, proof, batch_index } = claimInfo
-    try {
-      setLoading(true)
-      const tx = await contract.relayMessageWithProof(from, to, value, nonce, message, {
-        batchIndex: batch_index,
-        merkleProof: proof,
-      })
-
-      await tx.wait()
-    } catch (error) {
-      console.log(error.toString())
-      // alert(error)
-      setLoading(false)
     }
   }
 
   return (
     <TableRow key={tx.hash}>
-      <TableCell>{renderClaimButton(tx)}</TableCell>
-      <TableCell>
-        <Typography>
-          <span>{txAmount(tx.amount)} </span>
-          {tokenInfoLoading ? <Skeleton variant="text" width="5rem" className="inline-block" /> : <span>{tokenInfo.symbol}</span>}
-        </Typography>
-      </TableCell>
       <TableCell>
         <Stack direction="column" spacing="1.4rem">
-          {blockNumbers ? (
-            <>
-              {fromStatus === TX_STATUS.failed ? (
-                <Tooltip title={tx.errMsg}>
-                  <Box>
-                    <StatusChip sx={{ cursor: "pointer" }} status={fromStatus}>
-                      {fromStatus}
-                      <InfoIcon sx={{ fontSize: "inherit" }}></InfoIcon>
-                    </StatusChip>
-                  </Box>
-                </Tooltip>
-              ) : (
-                <StatusChip status={fromStatus}>{fromStatus}</StatusChip>
-              )}
-
-              <StatusChip status={toStatus}>{toStatus}</StatusChip>
-            </>
-          ) : (
-            <>
-              <Skeleton variant="rectangular" width="12.6rem" height="3.8rem" className="rounded-[1.6rem]" />
-              <Skeleton variant="rectangular" width="12.6rem" height="3.8rem" className="rounded-[1.6rem]" />
-            </>
-          )}
+          <TxStatusButton finalizedIndex={finalizedIndex} toStatus={toStatus} fromStatus={fromStatus} tx={tx} />
         </Stack>
       </TableCell>
-      <TableCell sx={{ width: "30rem" }}>
-        <Stack direction="column">
-          <Typography>From {tx.fromName}: </Typography>
-          <Link external href={generateExploreLink(tx.fromExplore, tx.hash)} className="leading-normal flex-1">
-            {truncateHash(tx.hash)}
-          </Link>
 
-          {!tx.fromBlockNumber && !tx.assumedStatus && <LinearProgress />}
-          {renderEstimatedWaitingTime(estimatedTimeMap[`from_${tx.hash}`], tx.isL1, false)}
+      <TableCell>
+        <Typography sx={{ fontWeight: 500 }}>
+          <span>{txAmount(tx.amount)} </span>
+          {tokenInfoLoading ? <Skeleton variant="text" width="5rem" className="inline-block" /> : <span>{tokenInfo?.symbol}</span>}
+        </Typography>
+      </TableCell>
+
+      <TableCell>
+        <Typography sx={{ fontWeight: 500 }}>{actionText(tx)}</Typography>
+      </TableCell>
+
+      <TableCell>
+        <Typography sx={{ minWidth: "9rem" }}>{tx.initiatedAt ? formatDate(tx.initiatedAt, { withTime: true }) : "-"}</Typography>
+      </TableCell>
+
+      <TableCell sx={{ width: "21rem" }}>
+        <Stack direction="column">
+          <Typography sx={{ whiteSpace: "nowrap" }}>
+            {tx.isL1 ? "Ethereum" : "Scroll"}:{" "}
+            <Link
+              external
+              sx={{ color: "#0F8E7E" }}
+              underline="always"
+              href={generateExploreLink(NETWORKS[+!tx.isL1].explorer, tx.hash)}
+              className="leading-normal flex-1"
+            >
+              {truncateHash(tx.hash)}
+            </Link>
+          </Typography>
         </Stack>
 
-        <Stack direction="column" className="mt-[1.2rem]">
-          <Typography>To {tx.toName}: </Typography>
-          {tx.toHash ? (
-            <Link external href={generateExploreLink(tx.toExplore, tx.toHash)} className="leading-normal flex-1">
-              {truncateHash(tx.toHash)}
-            </Link>
-          ) : (
-            <span className="leading-normal flex-1">-</span>
-          )}
-          {renderEstimatedWaitingTime(estimatedTimeMap[`to_${tx.toHash}`], tx.isL1, true)}
+        <Stack direction="column" className="mt-[0.4rem]">
+          <Typography sx={{ whiteSpace: "nowrap" }}>
+            {tx.isL1 ? "Scroll" : "Ethereum"}:{" "}
+            {tx.toHash ? (
+              <Link
+                external
+                sx={{ color: "#0F8E7E" }}
+                underline="always"
+                href={generateExploreLink(NETWORKS[+tx.isL1].explorer, tx.toHash)}
+                className="leading-normal flex-1"
+              >
+                {truncateHash(tx.toHash)}
+              </Link>
+            ) : (
+              <Typography component="span" sx={{ fontSize: "1.4rem", lineHeight: 1.5, whiteSpace: "nowrap" }}>
+                {toTip}
+              </Typography>
+            )}
+          </Typography>
         </Stack>
       </TableCell>
     </TableRow>

@@ -1,8 +1,8 @@
 import { makeStyles } from "tss-react/mui"
 
-import { ReactComponent as AaveSvg } from "@/assets/svgs/refactor/ecosystem-Aave.svg"
-import { ReactComponent as GnosisSafeSvg } from "@/assets/svgs/refactor/ecosystem-GnosisSafe.svg"
-import { ReactComponent as OmniKingdomsSvg } from "@/assets/svgs/refactor/ecosystem-OmniKingdoms.svg"
+import { ReactComponent as AaveSvg } from "@/assets/svgs/ecosystem/Aave.svg"
+import { ReactComponent as GnosisSafeSvg } from "@/assets/svgs/ecosystem/GnosisSafe.svg"
+import { ReactComponent as OmniKingdomsSvg } from "@/assets/svgs/ecosystem/OmniKingdoms.svg"
 import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
 import SectionHeader from "@/components/SectionHeader"
 import SectionWrapper from "@/components/SectionWrapper"

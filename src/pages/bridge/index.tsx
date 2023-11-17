@@ -1,42 +1,75 @@
-import createCache from "@emotion/cache"
-import { QueryClient, QueryClientProvider } from "react-query"
+// import createCache from "@emotion/cache"
+import { useEffect } from "react"
 
+import { Stack, Typography } from "@mui/material"
+
+import GlobalComponents from "@/components/GlobalComponents"
+import SectionWrapper from "@/components/SectionWrapper"
+import { NETWORKS } from "@/constants"
 import BridgeContextProvider from "@/contexts/BridgeContextProvider"
+import { PriceFeeProvider } from "@/contexts/PriceFeeProvider"
+import useBridgeStore from "@/stores/bridgeStore"
+import { isSepolia, requireEnv } from "@/utils"
 
-import Content from "./Content"
-import FAQ from "./FAQ"
-import Header from "./Header"
-
-export const muiCache = createCache({
-  key: "mui",
-  prepend: true,
-})
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 20000,
-      cacheTime: 1000 * 60 * 60,
-      // By default, retries in React Query do not happen immediately after a request fails.
-      // As is standard, a back-off delay is gradually applied to each retry attempt.
-      // The default retryDelay is set to double (starting at 1000ms) with each attempt, but not exceed 30 seconds:
-      retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000),
-      onError: err => {
-        console.log("react-query error:", err)
-      },
-    },
-  },
-})
+import FAQsLink from "./FAQ/link"
+import Send from "./Send"
+import HistoryButton from "./components/HistoryButton"
 
 const Bridge = () => {
+  const { txType, changeFromNetwork, changeToNetwork } = useBridgeStore()
+
+  useEffect(() => {
+    if (txType === "Deposit") {
+      changeFromNetwork(NETWORKS[0])
+      changeToNetwork(NETWORKS[1])
+    } else {
+      changeFromNetwork(NETWORKS[1])
+      changeToNetwork(NETWORKS[0])
+    }
+  }, [txType])
+
   return (
-    <QueryClientProvider client={queryClient}>
-      <BridgeContextProvider>
-        <Header />
-        <Content />
-        <FAQ />
-      </BridgeContextProvider>
-    </QueryClientProvider>
+    <BridgeContextProvider>
+      <PriceFeeProvider>
+        <GlobalComponents></GlobalComponents>
+        <SectionWrapper
+          sx={{
+            pt: ["4.8rem", "8.4rem"],
+            pb: "6rem",
+            minHeight: "calc(100vh - 69.2rem)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: ["flex-start", "center"],
+            maxWidth: ["100% !important"],
+          }}
+        >
+          <Stack
+            direction="row"
+            sx={{ mb: "2.4rem", width: "64rem", maxWidth: "100%" }}
+            spacing="2rem"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Typography
+              sx={{
+                fontSize: ["4rem", "4.8rem"],
+                lineHeight: ["4.8rem", "7.2rem"],
+                fontWeight: 600,
+                width: "100%",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {isSepolia ? `${requireEnv("REACT_APP_SCROLL_ENVIRONMENT")} Testnet` : ""} Bridge
+            </Typography>
+            <HistoryButton></HistoryButton>
+          </Stack>
+          <Send></Send>
+          <FAQsLink />
+        </SectionWrapper>
+      </PriceFeeProvider>
+    </BridgeContextProvider>
   )
 }
 
