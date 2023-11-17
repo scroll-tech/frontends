@@ -18,10 +18,10 @@ import {
   Typography,
 } from "@mui/material"
 
-import { ReactComponent as SuccessSvg } from "@/assets/svgs/refactor/bridge-alert-success.svg"
-import { ReactComponent as SelectedSvg } from "@/assets/svgs/refactor/bridge-approve-token-selected.svg"
-import { ReactComponent as CloseSvg } from "@/assets/svgs/refactor/bridge-close.svg"
-import { ReactComponent as WarningSvg } from "@/assets/svgs/refactor/bridge-warning.svg"
+import { ReactComponent as SuccessSvg } from "@/assets/svgs/bridge/alert-success.svg"
+import { ReactComponent as SelectedSvg } from "@/assets/svgs/bridge/approve-token-selected.svg"
+import { ReactComponent as CloseSvg } from "@/assets/svgs/bridge/close.svg"
+import { ReactComponent as WarningSvg } from "@/assets/svgs/bridge/warning.svg"
 import Button from "@/components/Button"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
