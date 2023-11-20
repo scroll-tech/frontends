@@ -31,24 +31,6 @@
       "last 1 safari version"
     ]
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ],
-    "rules": {
-      "quotes": [
-        2,
-        "double",
-        {
-          "avoidEscape": true
-        }
-      ],
-      "react/self-closing-comp": [
-        1
-      ]
-    }
-  },
   "resolutions": {
     "@sentry/webpack-plugin/**/node-fetch": "^2.6.11",
     "react-scripts/**/minimatch": "^3.0.6"
