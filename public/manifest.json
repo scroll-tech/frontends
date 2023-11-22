@@ -1,6 +1,7 @@
 {
   "short_name": "Enter Scroll",
   "name": "Scroll Developer Portal",
+  "description": "Scroll Developer Portal",
   "icons": [
     {
       "src": "favicon_new.ico",
@@ -9,6 +10,7 @@
     },
     {
       "src": "logo.png",
+      "sizes": "any",
       "type": "image/png"
     }
   ],
