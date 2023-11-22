@@ -44,11 +44,6 @@ const CORE_MEMBERS = [
     desc: "Devrel Lead in Oklahoma City",
   },
   {
-    avatar: MeiAvatar,
-    name: "Mei",
-    desc: "Comms & Outreach Lead in Austin",
-  },
-  {
     avatar: MohammadAvatar,
     name: "Mohammad",
     desc: "Protocol Researcher in Vancouver",

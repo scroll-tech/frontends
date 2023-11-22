@@ -1,6 +1,6 @@
 {
   "name": "scroll.io",
-  "version": "5.0.36",
+  "version": "5.0.37",
   "private": false,
   "license": "MIT",
   "scripts": {
@@ -30,24 +30,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ],
-    "rules": {
-      "quotes": [
-        2,
-        "double",
-        {
-          "avoidEscape": true
-        }
-      ],
-      "react/self-closing-comp": [
-        1
-      ]
-    }
   },
   "resolutions": {
     "@sentry/webpack-plugin/**/node-fetch": "^2.6.11",
