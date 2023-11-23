@@ -9,7 +9,7 @@ export const BRIDGE_TOKEN_SYMBOL = "bridgeTokenSymbol"
 
 export const BRIDGE_TRANSACTIONS = "bridgeTransactions"
 
-export const CLAIM_TRANSACTIONS = "claimTransactions"
+export const WITHDRAW_TRANSACTIONS = "withdrawTransactions"
 
 export const APP_VERSION = "appVersion"
 

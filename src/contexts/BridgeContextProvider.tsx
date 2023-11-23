@@ -12,9 +12,9 @@ import { CHAIN_ID, ETH_SYMBOL, GATEWAY_ROUTE_PROXY_ADDR, NATIVE_TOKEN_LIST, RPC_
 import { BLOCK_NUMBERS, BRIDGE_TOKEN_SYMBOL, USER_TOKEN_LIST } from "@/constants/storageKey"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useBlockNumbers from "@/hooks/useBlockNumbers"
-import useClaim from "@/hooks/useClaim"
 import useTokenPrice from "@/hooks/useTokenPrice"
 import useTxHistory, { TxHistory } from "@/hooks/useTxHistory"
+import useWithdrawHistory from "@/hooks/useWithdrawHistory"
 import { loadState } from "@/utils/localStorage"
 
 export interface Price {
@@ -32,7 +32,7 @@ type BridgeContextProps = {
   txHistory: TxHistory
   blockNumbers: number[]
   tokenList: Token[]
-  claim: any
+  withdrawHistory: TxHistory
   tokenPrice: Prices
   refreshTokenList: () => void
 }
@@ -54,7 +54,7 @@ const BridgeContextProvider = ({ children }: any) => {
   const [fetchTokenListError, setFetchTokenListError] = useState("")
 
   const txHistory = useTxHistory()
-  const claim = useClaim()
+  const withdrawHistory = useWithdrawHistory()
 
   // TODO: need refactoring inspired by publicClient and walletClient
   const update = async (walletProvider: BrowserProvider, address: string) => {
@@ -161,7 +161,7 @@ const BridgeContextProvider = ({ children }: any) => {
         networksAndSigners,
         txHistory,
         blockNumbers,
-        claim,
+        withdrawHistory,
         tokenList: tokenList ?? NATIVE_TOKEN_LIST,
         refreshTokenList,
         tokenPrice,

@@ -1,0 +1,84 @@
+// @ts-ignore
+import { create } from "zustand"
+import { persist } from "zustand/middleware"
+
+import { WITHDRAW_TRANSACTIONS } from "@/constants/storageKey"
+import { TX_TYPE } from "@/constants/transaction"
+import useTxStore from "@/stores/txStore"
+
+import { WithdrawStore, fetchOnChainTransactions, formatBackTxList, updateFrontTransactions } from "./utils"
+
+const useWithdrawStore = create<WithdrawStore>()(
+  persist(
+    (set, get) => ({
+      page: 1,
+      total: 0,
+      loading: false,
+      pageTransactions: [],
+
+      // polling transactions
+      generateTransactions: (walletAddress, historyList) => {
+        const { pageTransactions } = get()
+        const { frontTransactions, estimatedTimeMap: preEstimatedTimeMap, removeFrontTransactions } = useTxStore.getState()
+        const { txList: backendTransactions, estimatedTimeMap } = formatBackTxList(
+          historyList.filter(item => item),
+          preEstimatedTimeMap,
+        )
+
+        const currentFrontTransactions = frontTransactions[walletAddress] ?? []
+
+        const nextFrontTransactions = updateFrontTransactions(currentFrontTransactions, backendTransactions, walletAddress, removeFrontTransactions)
+
+        const refreshPageTransaction = pageTransactions.map(item => {
+          return backendTransactions.find(tx => tx.hash === item.hash) || item
+        })
+
+        set({
+          pageTransactions: refreshPageTransaction,
+        })
+        useTxStore.setState({
+          estimatedTimeMap,
+          frontTransactions: { ...frontTransactions, [walletAddress]: nextFrontTransactions },
+        })
+      },
+
+      // page transactions
+      comboPageTransactions: async (walletAddress, page, rowsPerPage) => {
+        set({ loading: true })
+        try {
+          const { result, total } = await fetchOnChainTransactions(walletAddress, page, rowsPerPage, TX_TYPE.WITHDRAW)
+          const { frontTransactions, estimatedTimeMap: preEstimatedTimeMap, removeFrontTransactions } = useTxStore.getState()
+          const { txList: backendTransactions, estimatedTimeMap } = formatBackTxList(result, preEstimatedTimeMap)
+          const currentFrontTransactions = frontTransactions[walletAddress]?.filter(tx => !tx.isL1) ?? []
+          const nextFrontTransactions = updateFrontTransactions(currentFrontTransactions, backendTransactions, walletAddress, removeFrontTransactions)
+          const pageTransactions = page === 1 ? [...nextFrontTransactions, ...backendTransactions] : backendTransactions
+          set({
+            pageTransactions,
+            page,
+            total,
+            loading: false,
+          })
+          useTxStore.setState({
+            estimatedTimeMap,
+            frontTransactions: { ...frontTransactions, [walletAddress]: nextFrontTransactions },
+          })
+        } catch (error) {
+          console.log(error, "error")
+          set({ loading: false })
+        }
+      },
+      // when connect and disconnect
+      clearTransactions: () => {
+        set({
+          pageTransactions: [],
+          page: 1,
+          total: 0,
+        })
+      },
+    }),
+    {
+      name: WITHDRAW_TRANSACTIONS,
+    },
+  ),
+)
+export default useWithdrawStore

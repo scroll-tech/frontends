@@ -3,14 +3,13 @@ import { makeStyles } from "tss-react/mui"
 
 import { Box } from "@mui/material"
 
-import { CLAIM_TABEL_PAGE_SIZE } from "@/constants"
+import { WITHDRAW_TABEL_PAGE_SIZE } from "@/constants"
 import { useBrigeContext } from "@/contexts/BridgeContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import ClaimTable from "@/pages/bridge/components/ClaimTable"
-import useBridgeStore from "@/stores/bridgeStore"
-import useClaimStore from "@/stores/claimStore"
+import useWithdrawStore from "@/stores/withdrawStore"
 
 import NotConnected from "../components/NoConnected"
+import TxTable from "../components/TxTable"
 
 const useStyles = makeStyles()(theme => ({
   tableBox: {
@@ -43,11 +42,10 @@ const Claim = (props: any) => {
   const { classes } = useStyles()
   const { walletCurrentAddress, chainId } = useRainbowContext()
   const {
-    claim: { refreshPageTransactions },
+    withdrawHistory: { refreshPageTransactions },
   } = useBrigeContext()
 
-  const { page, total, pageTransactions, loading, targetTransaction, orderedTxDB, setTargetTransaction, clearTransactions } = useClaimStore()
-  const { historyVisible } = useBridgeStore()
+  const { page, total, pageTransactions, loading, clearTransactions } = useWithdrawStore()
 
   useEffect(() => {
     handleChangePage(1)
@@ -59,16 +57,6 @@ const Claim = (props: any) => {
     }
   }, [])
 
-  useEffect(() => {
-    // if targetTransaction has value, then we need to move to the target transaction
-    if (targetTransaction) {
-      const index = orderedTxDB.findIndex(tx => tx.hash === targetTransaction)
-      const page = Math.ceil((index + 1) / CLAIM_TABEL_PAGE_SIZE)
-      handleChangePage(page)
-      setTargetTransaction(null)
-    }
-  }, [historyVisible])
-
   const handleChangePage = currentPage => {
     refreshPageTransactions(currentPage)
   }
@@ -76,11 +64,12 @@ const Claim = (props: any) => {
   return (
     <Box className={classes.tableBox}>
       {chainId ? (
-        <ClaimTable
+        <TxTable
           data={pageTransactions}
           loading={loading}
+          type="claim"
           pagination={{
-            count: Math.ceil(total / CLAIM_TABEL_PAGE_SIZE),
+            count: Math.ceil(total / WITHDRAW_TABEL_PAGE_SIZE),
             page,
             onChange: handleChangePage,
           }}

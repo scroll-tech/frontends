@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import useSWR from "swr"
 
 import { fetchTxByHashUrl } from "@/apis/bridge"
-import { BRIDGE_PAGE_SIZE, TX_STATUS } from "@/constants"
+import { TX_STATUS, WITHDRAW_TABEL_PAGE_SIZE } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useBridgeStore from "@/stores/bridgeStore"
-import useTxStore from "@/stores/txStore"
+import useWithdrawHistoryStore from "@/stores/withdrawStore"
 
 export interface TxHistory {
   errorMessage: string
@@ -13,13 +13,17 @@ export interface TxHistory {
   changeErrorMessage: (value) => void
 }
 
-const useTxHistory = () => {
+const useWithdrawHistory = () => {
   const { walletCurrentAddress } = useRainbowContext()
-  const { pageTransactions, generateTransactions, comboPageTransactions, clearTransactions } = useTxStore()
+  const { txType, withDrawStep, historyVisible } = useBridgeStore()
+
+  const { comboPageTransactions, pageTransactions, generateTransactions } = useWithdrawHistoryStore()
+
+  const isOnClaimPage = useMemo(() => {
+    return !historyVisible && txType === "Withdraw" && withDrawStep === "2"
+  }, [historyVisible, txType, withDrawStep])
 
   const [errorMessage, setErrorMessage] = useState("")
-
-  const { historyVisible } = useBridgeStore()
 
   const fetchTxList = useCallback(({ txs }) => {
     return scrollRequest(fetchTxByHashUrl, {
@@ -31,16 +35,10 @@ const useTxHistory = () => {
     }).then(data => data)
   }, [])
 
-  useEffect(() => {
-    clearTransactions()
-  }, [])
-
-  // fetch to hash/blockNumber from backend
   const { data } = useSWR<any>(
     () => {
       const needToRefreshTransactions = pageTransactions.filter(item => item.txStatus !== TX_STATUS.Relayed)
-
-      if (needToRefreshTransactions.length && walletCurrentAddress && historyVisible) {
+      if (needToRefreshTransactions.length && walletCurrentAddress && isOnClaimPage) {
         const txs = needToRefreshTransactions.map(item => item.hash).filter((item, index, arr) => index === arr.indexOf(item))
         return { txs }
       }
@@ -58,7 +56,7 @@ const useTxHistory = () => {
   const refreshPageTransactions = useCallback(
     page => {
       if (walletCurrentAddress) {
-        comboPageTransactions(walletCurrentAddress, page, BRIDGE_PAGE_SIZE).catch(e => {
+        comboPageTransactions(walletCurrentAddress, page, WITHDRAW_TABEL_PAGE_SIZE).catch(e => {
           setErrorMessage(e)
         })
       }
@@ -79,4 +77,4 @@ const useTxHistory = () => {
   }
 }
 
-export default useTxHistory
+export default useWithdrawHistory
