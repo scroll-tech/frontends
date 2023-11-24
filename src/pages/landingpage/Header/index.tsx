@@ -102,11 +102,19 @@ const Header = () => {
             classes={{ tooltip: classes.tooltip, arrow: classes.arrow }}
             PopperProps={{
               container: buttonRef.current,
+              modifiers: [
+                {
+                  name: "flip",
+                  options: {
+                    fallbackPlacements: [],
+                  },
+                },
+              ],
             }}
             title={
-              <Typography sx={{ fontSize: ["1.6rem", "1.8rem"], lineHeight: "2.4rem" }}>
+              <Typography sx={{ fontSize: ["1.6rem", "1.8rem"], lineHeight: "2.4rem", whiteSpace: "nowrap" }}>
                 Mint your{" "}
-                <Link href="/developer-nft" sx={{ fontSize: "inherit", color: "inherit" }} underline="always">
+                <Link href="/developer-nft" sx={{ fontSize: "inherit", color: "inherit", whiteSpace: "nowrap" }} underline="always">
                   {SCROLL_ORIGINS_NFT}
                 </Link>
               </Typography>
