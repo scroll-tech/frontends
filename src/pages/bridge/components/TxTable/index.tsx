@@ -197,7 +197,7 @@ const TxTable = (props: any) => {
         ) : (
           <NoData
             sx={{ height: ["20rem", "30rem"] }}
-            title="No transaction hisotry"
+            title="No transaction history"
             description="When you bridge assets, your transactions will appear here"
           ></NoData>
         )}
