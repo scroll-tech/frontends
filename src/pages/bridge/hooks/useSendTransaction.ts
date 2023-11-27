@@ -29,6 +29,7 @@ export function useSendTransaction(props) {
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [sendError, setSendError] = useState<any>()
+  const [isRequested, setIsRequested] = useState(false)
 
   const parsedAmount = useMemo(() => {
     if (!fromTokenAmount || !selectedToken) return BigInt(0)
@@ -48,10 +49,11 @@ export function useSendTransaction(props) {
         currentBlockNumber = await networksAndSigners[CHAIN_ID.L2].provider.getBlockNumber()
         tx = await sendl2ToL1()
       }
+      setIsRequested(true)
+
       // start to check tx replacement from current block number
       // TODO: shouldn't add it here(by @ricmoo)
       tx = tx.replaceableTransaction(currentBlockNumber)
-
       handleTransaction(tx)
       updateOrderedTxs(walletCurrentAddress, tx.hash, TxPosition.Frontend, txDirection)
       tx.wait()
@@ -116,6 +118,7 @@ export function useSendTransaction(props) {
           }
         })
         .finally(() => {
+          setIsRequested(false)
           setIsLoading(false)
         })
     } catch (error) {
@@ -216,6 +219,7 @@ export function useSendTransaction(props) {
 
   return {
     send,
+    isRequested,
     isLoading,
     error: sendError,
   }

@@ -25,6 +25,7 @@ import ApprovalDialog from "./ApprovalDialog"
 import BalanceInput from "./BalanceInput"
 import NetworkDirection from "./NetworkDirection"
 import TransactionSummary from "./TransactionSummary"
+import WaitingConfirmDialog from "./WaitingConfirmDialog"
 
 const SendTransaction = props => {
   const { chainId, connect } = useRainbowContext()
@@ -45,6 +46,7 @@ const SendTransaction = props => {
   const [inputError, setInputError] = useState(false)
 
   const [approvalVisible, setApprovalVisible] = useState(false)
+  const [confirmVisible, setConfirmVisible] = useState(false)
 
   const validAmount = useMemo(() => (Number(amount) > 0 ? amount : ""), [amount])
 
@@ -62,9 +64,11 @@ const SendTransaction = props => {
     approve,
     isRequested: isRequestedApproval,
     isLoading: approveLoading,
+    checkApproval,
   } = useApprove(fromNetwork, selectedToken, validAmount)
   const {
     send: sendTransaction,
+    isRequested: isRequestedSend,
     isLoading: sendLoading,
     error: sendError,
   } = useSendTransaction({
@@ -150,7 +154,9 @@ const SendTransaction = props => {
   }, [validAmount, bridgeWarning])
 
   const sendText = useMemo(() => {
-    if (txType === "Deposit" && sendLoading) {
+    if (approveLoading) {
+      return `Approving ${tokenSymbol}`
+    } else if (txType === "Deposit" && sendLoading) {
       return "Depositing funds"
     } else if (txType === "Deposit" && !sendLoading) {
       return "Deposit funds"
@@ -158,7 +164,7 @@ const SendTransaction = props => {
       return "Withdrawing funds"
     }
     return "Withdraw funds"
-  }, [txType, sendLoading])
+  }, [txType, sendLoading, approveLoading, tokenSymbol])
 
   useEffect(() => {
     // TODO: refactor
@@ -185,6 +191,12 @@ const SendTransaction = props => {
     }
   }, [isRequestedApproval])
 
+  useEffect(() => {
+    if (isRequestedSend) {
+      setConfirmVisible(false)
+    }
+  }, [isRequestedSend])
+
   const handleChangeTokenSymbol = symbol => {
     setTokenSymbol(symbol)
   }
@@ -193,20 +205,33 @@ const SendTransaction = props => {
     setAmount(value)
   }
 
-  const handleOpenApprovalDialog = () => {
-    setApprovalVisible(true)
-  }
-
   const handleCloseApprovalDialog = () => {
     setApprovalVisible(false)
+  }
+
+  const handleCloseConfirmDialog = () => {
+    setConfirmVisible(false)
   }
 
   const handleError = value => {
     setMaxWarning(value)
   }
 
-  const handleApprove = isMaximum => {
-    approve(isMaximum)
+  const handleApprove = async isMaximum => {
+    await approve(isMaximum)
+    const need = await checkApproval()
+    if (!need) {
+      setConfirmVisible(true)
+      sendTransaction()
+    }
+  }
+
+  const handleSendTransaction = () => {
+    if (needApproval) {
+      setApprovalVisible(true)
+    } else {
+      sendTransaction()
+    }
   }
 
   const renderButton = () => {
@@ -226,31 +251,14 @@ const SendTransaction = props => {
       )
     }
 
-    if (needApproval) {
-      return (
-        <Button
-          key="approve"
-          width={isMobile ? "100%" : "25rem"}
-          color="primary"
-          disabled={!necessaryCondition}
-          loading={approveLoading}
-          onClick={handleOpenApprovalDialog}
-          whiteButton
-        >
-          {approveLoading ? "Approving " : "Approve "}
-          {tokenSymbol}
-        </Button>
-      )
-    }
-
     return (
       <Button
         key="send"
         width={isMobile ? "100%" : "25rem"}
         color="primary"
-        disabled={!necessaryCondition || needApproval === undefined}
-        loading={sendLoading}
-        onClick={sendTransaction}
+        disabled={!necessaryCondition}
+        loading={sendLoading || approveLoading}
+        onClick={handleSendTransaction}
         whiteButton
       >
         {sendText}
@@ -331,6 +339,12 @@ const SendTransaction = props => {
         onApprove={handleApprove}
         onClose={handleCloseApprovalDialog}
       ></ApprovalDialog>
+      <WaitingConfirmDialog
+        open={confirmVisible}
+        token={selectedToken}
+        amount={validAmount}
+        onClose={handleCloseConfirmDialog}
+      ></WaitingConfirmDialog>
     </Stack>
   )
 }

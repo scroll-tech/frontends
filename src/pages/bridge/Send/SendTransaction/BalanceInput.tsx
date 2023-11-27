@@ -70,6 +70,9 @@ const useStyles = makeStyles()(theme => ({
     pointerEvents: "none",
     color: "#EBC28E",
   },
+  readOnlyMaxButton: {
+    pointerEvents: "none",
+  },
 }))
 
 const BalanceInput = props => {
@@ -162,7 +165,11 @@ const BalanceInput = props => {
           <Typography className={classes.fromBalance}>Available: {displayedBalance}</Typography>
         )}
 
-        <TextButton underline="always" className={cx(classes.maxButton, disabled && classes.disabledMaxButton)} onClick={handleMaxAmount}>
+        <TextButton
+          underline="always"
+          className={(cx(classes.maxButton, disabled && classes.disabledMaxButton), readOnly && classes.readOnlyMaxButton)}
+          onClick={handleMaxAmount}
+        >
           Max
         </TextButton>
       </Stack>

@@ -96,7 +96,7 @@ const useApprove = (fromNetwork, selectedToken, amount) => {
     setIsNeeded(needApproval)
   }
 
-  return { approve, isNeeded, isLoading, isRequested, error, cancelApproval }
+  return { approve, checkApproval, isNeeded, isLoading, isRequested, error, cancelApproval }
 }
 
 export default useApprove
