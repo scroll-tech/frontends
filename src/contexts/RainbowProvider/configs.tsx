@@ -97,8 +97,9 @@ const { chains, publicClient } = configureChains(
 )
 
 const walletConfigs: WalletConfig[] = [
-  createWalletConfig("Brave", () => braveWallet({ chains }), window.ethereum?.isBraveWallet === true),
   createWalletConfig("MetaMask", () => metaMaskWallet({ chains, projectId }), window.ethereum?.isMetaMask === true),
+  createWalletConfig("Coinbase", () => coinbaseWallet({ appName: "Scroll", chains }), window.ethereum?.isCoinbaseWallet === true),
+  createWalletConfig("Brave", () => braveWallet({ chains }), window.ethereum?.isBraveWallet === true),
   createWalletConfig("Rainbow", () => rainbowWallet({ chains, projectId }), window.ethereum?.isRainbow === true),
   createWalletConfig("Safe", () => safeWallet({ chains }), window.ethereum?.isSafeWallet === true),
   createWalletConfig("Frame", () => frameWallet({ chains }), window.ethereum?.isFrame === true),
@@ -112,9 +113,8 @@ const activeWallets: Wallet[] = walletConfigs.filter(wallet => wallet.visible).m
 
 const Wallets = [
   // TODO: rainbowkit/injectedWallet.ts "Browser Wallet" and "injectedWallet.svg" -> need to detect automaticlly
-  injectedWallet({ chains }),
-  coinbaseWallet({ appName: "Scroll", chains }),
   ...activeWallets,
+  injectedWallet({ chains }),
   walletConnectWallet({
     projectId,
     chains,
