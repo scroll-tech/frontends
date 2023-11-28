@@ -16,6 +16,10 @@ interface Window {
     removeListener?: (...args: any[]) => void
   }
   web3?: {}
+  okxwallet?: {
+    isOKExWallet?: boolean
+    isOkxWallet?: boolean
+  }
 }
 
 declare module "content-hash" {
