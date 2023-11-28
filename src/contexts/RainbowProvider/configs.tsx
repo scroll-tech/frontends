@@ -6,8 +6,7 @@ import {
   frameWallet,
   imTokenWallet,
   injectedWallet,
-  metaMaskWallet,
-  okxWallet,
+  metaMaskWallet, // okxWallet,
   rabbyWallet,
   rainbowWallet,
   safeWallet,
@@ -26,13 +25,15 @@ interface WalletConfig {
   name: string
   wallet: Wallet
   visible: boolean
+  fixedWallet?: boolean
 }
 
-const createWalletConfig = (name: string, walletFunction: () => Wallet, condition: boolean): WalletConfig => {
+const createWalletConfig = (name: string, walletFunction: () => Wallet, condition: boolean, fixedWallet?: boolean): WalletConfig => {
   return {
     name,
     wallet: walletFunction(),
     visible: condition,
+    fixedWallet,
   }
 }
 
@@ -97,24 +98,33 @@ const { chains, publicClient } = configureChains(
 )
 
 const walletConfigs: WalletConfig[] = [
-  createWalletConfig("MetaMask", () => metaMaskWallet({ chains, projectId }), window.ethereum?.isMetaMask === true),
-  createWalletConfig("Coinbase", () => coinbaseWallet({ appName: "Scroll", chains }), window.ethereum?.isCoinbaseWallet === true),
+  createWalletConfig("MetaMask", () => metaMaskWallet({ chains, projectId }), window.ethereum?.isMetaMask === true, true),
+  createWalletConfig("Coinbase", () => coinbaseWallet({ appName: "Scroll", chains }), window.ethereum?.isCoinbaseWallet === true, true),
   createWalletConfig("Brave", () => braveWallet({ chains }), window.ethereum?.isBraveWallet === true),
   createWalletConfig("Rainbow", () => rainbowWallet({ chains, projectId }), window.ethereum?.isRainbow === true),
   createWalletConfig("Safe", () => safeWallet({ chains }), window.ethereum?.isSafeWallet === true),
   createWalletConfig("Frame", () => frameWallet({ chains }), window.ethereum?.isFrame === true),
   createWalletConfig("imToken", () => imTokenWallet({ chains, projectId }), window.ethereum?.isImToken === true),
-  createWalletConfig("Okx Wallet", () => okxWallet({ chains, projectId }), window.okxwallet?.isOKExWallet || window.okxwallet?.isOkxWallet === true),
+  // createWalletConfig("Okx Wallet", () => okxWallet({ chains, projectId }), window.okxwallet?.isOKExWallet || window.okxwallet?.isOkxWallet === true),
   createWalletConfig("Rabby", () => rabbyWallet({ chains }), window.ethereum?.isRabby && !window.ethereum?.isMetaMask === true),
   // Add any additional wallets here
 ]
 
-const activeWallets: Wallet[] = walletConfigs.filter(wallet => wallet.visible).map(wallet => wallet.wallet)
+const sortWallets = (a, b) => {
+  if (a.visible === b.visible) return 0
+  if (a.visible || a.fixedWallet) return -1
+  return 1
+}
+
+const activeWallets: Wallet[] = walletConfigs
+  .filter(wallet => wallet.visible || wallet.fixedWallet)
+  .sort(sortWallets)
+  .map(wallet => wallet.wallet)
 
 const Wallets = [
   // TODO: rainbowkit/injectedWallet.ts "Browser Wallet" and "injectedWallet.svg" -> need to detect automaticlly
-  ...activeWallets,
   injectedWallet({ chains }),
+  ...activeWallets,
   walletConnectWallet({
     projectId,
     chains,
