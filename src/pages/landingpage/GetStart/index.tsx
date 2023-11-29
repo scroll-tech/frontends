@@ -8,6 +8,7 @@ import SecurityIcon from "@/assets/images/homepage/home/start_link.png"
 import EVMEquivalenceIcon from "@/assets/images/homepage/home/start_setting.png"
 import { FadeInUp } from "@/components/Animation"
 import Button from "@/components/Button"
+import Link from "@/components/Link"
 import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
 import SectionHeader from "@/components/SectionHeader"
 import { NETWORKS } from "@/constants"
@@ -15,21 +16,41 @@ import { isProduction } from "@/utils"
 
 const tokenName = isProduction ? "ETH" : "testnet ETH"
 const l2NetworkName = isProduction ? NETWORKS[1].name : NETWORKS[1].name + " testnet"
-
+const setuplink = <Link href="https://docs.scroll.io/en/user-guide/setup/">setup page.</Link>
+const bridgelink = (
+  <>
+    <Link href="https://scroll.io/bridge">Bridge your ETH</Link>
+  </>
+)
+const rpclink = (
+  <>
+    <Link href="https://docs.scroll.io/en/developers/developer-quickstart/#network-configuration">Change RPC Provider</Link>
+  </>
+)
+const toolslink = (
+  <>
+    <Link href="https://docs.scroll.io/en/developers/developer-quickstart/#configure-your-tooling">Build with your usual dev tools</Link>
+  </>
+)
 const STEPS = [
   {
     icon: ScalabilityIcon,
-    title: "Bridge your ETH",
-    description: `You can bridge your ${tokenName} to ${l2NetworkName} using our native bridge or another ecosystem bridge. For a walkthrough, start with the user guide’s setup page.`,
+    title: bridgelink,
+    description: (
+      <>
+        You can bridge your {tokenName} to {l2NetworkName} using our native bridge or another ecosystem bridge. For a walkthrough, start with the user
+        guide’s {setuplink}
+      </>
+    ),
   },
   {
     icon: SecurityIcon,
-    title: "Change RPC provider",
+    title: rpclink,
     description: `To configure your Ethereum tools to Scroll you’ll just need to point your favorite builder tools to a Scroll RPC Provider.`,
   },
   {
     icon: EVMEquivalenceIcon,
-    title: "Build with your usual dev tools",
+    title: toolslink,
     description: "Start building with your favorite toolkit.",
   },
 ]
@@ -74,6 +95,9 @@ const StepContainer = styled(SuccessionToView)(({ theme }) => ({
   gridTemplateColumns: "repeat(3, 1fr)",
   gap: "2rem",
   marginBottom: "13rem",
+  "& .MuiLink-root": {
+    fontSize: "2rem",
+  },
   "& > div:nth-of-type(1) img": {
     width: "2.3rem",
   },
