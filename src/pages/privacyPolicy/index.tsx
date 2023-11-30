@@ -291,7 +291,9 @@ const PrivacyPolicy = () => {
           reorganization, dissolution, or other sale or transfer of some or all of Our assets, whether as a going concern or as part of bankruptcy,
           liquidation, or similar proceeding, in which Personal Data held by Us about our Service users is among the assets transferred.
         </li>
-        <li>For compliance purposes: such as to prevent fraud and/or money laundering.</li>
+        <li>
+          <strong>For compliance purposes:</strong> such as to prevent fraud and/or money laundering.
+        </li>
         <li>
           <strong>For other purposes</strong>: we may use Your information for other purposes, such as data analysis, identifying usage trends,
           determining the effectiveness of our promotional campaigns and to evaluate and improve our Service, products, functionality, services,
