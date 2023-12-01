@@ -13,8 +13,19 @@ import { BLOCK_NUMBERS, BRIDGE_TOKEN_SYMBOL, USER_TOKEN_LIST } from "@/constants
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useBlockNumbers from "@/hooks/useBlockNumbers"
 import useClaim from "@/hooks/useClaim"
+import useTokenPrice from "@/hooks/useTokenPrice"
 import useTxHistory, { TxHistory } from "@/hooks/useTxHistory"
 import { loadState } from "@/utils/localStorage"
+
+export interface Price {
+  usd: number
+}
+
+export interface Prices {
+  loading: boolean
+  price: { [key: string]: Price }
+  error: any
+}
 
 type BridgeContextProps = {
   networksAndSigners: any
@@ -22,6 +33,7 @@ type BridgeContextProps = {
   blockNumbers: number[]
   tokenList: Token[]
   claim: any
+  tokenPrice: Prices
   refreshTokenList: () => void
 }
 
@@ -120,6 +132,8 @@ const BridgeContextProvider = ({ children }: any) => {
       })
   })
 
+  const tokenPrice = useTokenPrice(tokenList)
+
   const refreshTokenList = () => {
     mutate(tokenListUrl)
   }
@@ -150,6 +164,7 @@ const BridgeContextProvider = ({ children }: any) => {
         claim,
         tokenList: tokenList ?? NATIVE_TOKEN_LIST,
         refreshTokenList,
+        tokenPrice,
       }}
     >
       {children}

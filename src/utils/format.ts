@@ -57,7 +57,7 @@ export const toTokenDisplay = (num, decimals: bigint = BigInt(18), symbol?: stri
   let formatted = commafy(formatUnits(num, decimals), significantDecimals)
 
   // Remove trailing zeros after decimal point
-  // formatted = formatted.replace(/(\.\d*?)0+$/, "$1").replace(/\.$/, "")
+  formatted = formatted.replace(/(\.\d*?)0+$/, "$1").replace(/(\.\d+?)0+$/, "$10")
 
   if (symbol) {
     formatted += ` ${symbol}`
@@ -100,6 +100,14 @@ export function amountToBN(amount: string | number | undefined, decimals: bigint
     return parseUnits(fixedAmount || "0", decimals)
   } catch (e) {
     return BigInt(0)
+  }
+}
+
+export function BNToAmount(value: bigint, decimals: bigint = BigInt(18)): string {
+  try {
+    return formatUnits(value.toString(), decimals)
+  } catch (e) {
+    return "0"
   }
 }
 

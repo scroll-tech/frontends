@@ -14,6 +14,7 @@ export type DetailRowProps = {
   xlarge?: boolean
   bold?: boolean
   contrastText?: boolean
+  price?: string | number
 }
 
 const useStyles = makeStyles()(theme => ({
@@ -32,6 +33,9 @@ const useStyles = makeStyles()(theme => ({
     fontSize: "1.6rem",
     fontWeight: 400,
     lineHeight: 1.5,
+    display: "grid",
+    width: "calc(100% - 16rem)",
+    gridTemplateColumns: "2fr 1fr",
     [theme.breakpoints.down("sm")]: {
       fontSize: "1.4rem",
     },
@@ -46,7 +50,7 @@ const useStyles = makeStyles()(theme => ({
 }))
 
 const DetailRow: FC<DetailRowProps & BoxProps> = props => {
-  const { title, tooltip, value, large = false, xlarge = false, sx } = props
+  const { title, tooltip, value, large = false, xlarge = false, sx, price } = props
   const { classes: styles } = useStyles()
   const variant = xlarge || large ? "h6" : "subtitle2"
 
@@ -56,8 +60,9 @@ const DetailRow: FC<DetailRowProps & BoxProps> = props => {
         <Box>{title}&nbsp;</Box>
         {tooltip ? <InfoTooltip title={tooltip} /> : null}
       </Typography>
-      <Typography align="right" variant={variant} color="textPrimary" className={xlarge ? styles.xlabel : styles.label}>
-        {value || "•"}
+      <Typography align="left" variant={variant} color="textPrimary" className={xlarge ? styles.xlabel : styles.label}>
+        <span>{value || "•"}</span>
+        <span>{price ? ` $${price}` : ""}</span>
       </Typography>
     </Box>
   )
