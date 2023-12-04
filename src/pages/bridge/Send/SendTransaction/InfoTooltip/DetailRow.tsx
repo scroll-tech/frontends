@@ -38,6 +38,7 @@ const useStyles = makeStyles()(theme => ({
     gridTemplateColumns: "2fr 1fr",
     [theme.breakpoints.down("sm")]: {
       fontSize: "1.4rem",
+      gridTemplateColumns: "1fr",
     },
   },
   xlabel: {
@@ -55,7 +56,7 @@ const DetailRow: FC<DetailRowProps & BoxProps> = props => {
   const variant = xlarge || large ? "h6" : "subtitle2"
 
   return (
-    <Box display="flex" alignItems="center" sx={{ width: "100%", fontWeight: "400", margin: "0.6rem 0", ...sx }}>
+    <Box display="flex" sx={{ alignItems: ["flex-start", "center"], width: "100%", fontWeight: "400", margin: "0.6rem 0", ...sx }}>
       <Typography variant={variant} color="textPrimary" className={styles.detailLabel}>
         <Box>{title}&nbsp;</Box>
         {tooltip ? <InfoTooltip title={tooltip} /> : null}

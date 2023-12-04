@@ -13,14 +13,18 @@ const useTokenPrice = tokenList => {
         `https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=${tokenAddresses}&vs_currencies=usd`,
       )
 
-      const [ethPriceResponse, erc20PriceResponse] = await Promise.all([fetchEthPrice, fetchErc20Price])
+      const results = await Promise.allSettled([fetchEthPrice, fetchErc20Price])
 
-      if (!ethPriceResponse.ok || !erc20PriceResponse.ok) {
-        throw new Error("Failed to fetch token prices")
+      let ethPrice = {}
+      let erc20Price = {}
+
+      if (results[0].status === "fulfilled" && results[0].value.ok) {
+        ethPrice = await results[0].value.json()
       }
 
-      const ethPrice = await ethPriceResponse.json()
-      const erc20Price = await erc20PriceResponse.json()
+      if (results[1].status === "fulfilled" && results[1].value.ok) {
+        erc20Price = await results[1].value.json()
+      }
 
       return { ...ethPrice, ...erc20Price }
     } catch (error) {
@@ -28,11 +32,11 @@ const useTokenPrice = tokenList => {
     }
   }
 
-  const { data, error, isValidating } = useSWR(tokenList ? "tokenPrice" : null, fetchPrice, { refreshInterval: 300000 })
+  const { data, error, isValidating } = useSWR(tokenList ? "tokenPrice" : null, fetchPrice, { refreshInterval: 5 * 60 * 1000 })
 
   return {
     loading: isValidating,
-    price: data,
+    price: data || {},
     error,
   }
 }
