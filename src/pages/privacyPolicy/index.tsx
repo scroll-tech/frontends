@@ -295,7 +295,7 @@ const PrivacyPolicy = () => {
           <strong>For compliance purposes:</strong> such as to prevent fraud and/or money laundering.
         </li>
         <li>
-          <strong>For other purposes</strong>: we may use Your information for other purposes, such as data analysis, identifying usage trends,
+          <strong>For other purposes:</strong> we may use Your information for other purposes, such as data analysis, identifying usage trends,
           determining the effectiveness of our promotional campaigns and to evaluate and improve our Service, products, functionality, services,
           marketing and your experience.
         </li>
@@ -326,7 +326,7 @@ const PrivacyPolicy = () => {
           of Your activity. Similarly, other users will be able to view descriptions of Your activity, communicate with You and view Your profile.
         </li>
         <li>
-          <strong>With Your consent</strong>: we may disclose Your personal information for any other purpose with Your consent.
+          <strong>With Your consent:</strong> we may disclose Your personal information for any other purpose with Your consent.
         </li>
       </ul>
       <h2>Retention of Your Personal Data</h2>
