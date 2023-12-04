@@ -73,76 +73,75 @@ const TransactionSummary: FC<Props> = props => {
     [allowDisplayValue, showFeeError, tokenPrice],
   )
 
-  const getDisplayedMultiplexValue = useCallback(() => {
+  const getDisplayedMultiplex = useCallback(() => {
     if (allowDisplayValue) {
-      return (
+      const displayedValue =
         getDisplayedValue(amountToBN(amount, selectedToken.decimals), selectedToken.decimals, selectedToken.symbol) +
         " + " +
         getDisplayedValue((l1GasFee ?? BigInt(0)) + l2GasFee + (l1DataFee ?? BigInt(0)))
-      )
-    }
-    return <CustomTypography isError={showFeeError}>-</CustomTypography>
-  }, [allowDisplayValue, showFeeError, amount, selectedToken, l1GasFee, l2GasFee, l1DataFee])
 
-  const getDisplayedMultiplexPrice = useCallback(() => {
-    if (allowDisplayValue && tokenPrice.price?.[selectedToken.address.toLowerCase()]) {
-      return (
-        Number(getDisplayedPrice(amount, selectedToken.address)) +
-        Number(getDisplayedPrice(BNToAmount((l1GasFee ?? BigInt(0)) + l2GasFee + (l1DataFee ?? BigInt(0)))))
-      ).toFixed(2)
+      let displayedPrice = ""
+      if (tokenPrice.price?.[selectedToken.address.toLowerCase()]) {
+        displayedPrice = (
+          Number(getDisplayedPrice(amount, selectedToken.address)) +
+          Number(getDisplayedPrice(BNToAmount((l1GasFee ?? BigInt(0)) + l2GasFee + (l1DataFee ?? BigInt(0)))))
+        ).toFixed(2)
+      }
+
+      return { value: displayedValue, price: displayedPrice }
     }
-    return ""
-  }, [allowDisplayValue, showFeeError, amount, selectedToken, l1GasFee, l2GasFee, l1DataFee])
+
+    return {
+      value: <CustomTypography isError={showFeeError}>-</CustomTypography>,
+      price: "",
+    }
+  }, [allowDisplayValue, showFeeError, amount, selectedToken, l1GasFee, l2GasFee, l1DataFee, tokenPrice, getDisplayedValue, getDisplayedPrice])
 
   const displayedAmount = useMemo(() => {
-    const value = amountToBN(amount, selectedToken.decimals)
-    return getDisplayedValue(value, selectedToken.decimals, selectedToken.symbol)
-  }, [amount, selectedToken, getDisplayedValue])
+    const valueBN = amountToBN(amount, selectedToken.decimals)
+    const displayedValue = getDisplayedValue(valueBN, selectedToken.decimals, selectedToken.symbol)
+    const displayedPrice = getDisplayedPrice(amount, selectedToken.address)
 
-  const displayedPrice = useMemo(() => {
-    return getDisplayedPrice(amount, selectedToken.address)
-  }, [amount, selectedToken, getDisplayedPrice])
+    return { value: displayedValue, price: displayedPrice }
+  }, [amount, selectedToken, getDisplayedValue, getDisplayedPrice])
 
   const displayedL1Fee = useMemo(() => {
     const fee = txType === "Deposit" ? l1GasFee : l2GasFee
-    return getDisplayedValue(fee)
-  }, [txType, l1GasFee, l2GasFee, getDisplayedValue])
+    const displayedFee = getDisplayedValue(fee)
+    const displayedPrice = getDisplayedPrice(BNToAmount(fee as bigint))
 
-  const displayedL1Price = useMemo(() => {
-    const fee = txType === "Deposit" ? l1GasFee : l2GasFee
-    return getDisplayedPrice(BNToAmount(fee as bigint))
-  }, [txType, l1GasFee, l2GasFee, getDisplayedPrice])
+    return { value: displayedFee, price: displayedPrice }
+  }, [txType, l1GasFee, l2GasFee, getDisplayedValue, getDisplayedPrice])
 
   const displayedL2Fee = useMemo(() => {
     const fee = txType === "Deposit" ? l2GasFee : l1GasFee
-    return getDisplayedValue(fee)
-  }, [txType, l1GasFee, l2GasFee, getDisplayedValue])
+    const displayedFee = getDisplayedValue(fee)
+    const displayedPrice = getDisplayedPrice(BNToAmount(fee as bigint))
 
-  const displayedL2Price = useMemo(() => {
-    const fee = txType === "Deposit" ? l2GasFee : l1GasFee
-    return getDisplayedPrice(BNToAmount(fee as bigint))
-  }, [txType, l1GasFee, l2GasFee, getDisplayedPrice])
+    return { value: displayedFee, price: displayedPrice }
+  }, [txType, l1GasFee, l2GasFee, getDisplayedValue, getDisplayedPrice])
 
   const displayedL1DataFee = useMemo(() => {
-    return getDisplayedValue(l1DataFee)
-  }, [l1DataFee, getDisplayedValue])
+    const displayedFee = getDisplayedValue(l1DataFee)
+    const displayedPrice = getDisplayedPrice(BNToAmount(l1DataFee as bigint))
 
-  const displayedL1DataPrice = useMemo(() => {
-    return getDisplayedPrice(BNToAmount(l1DataFee as bigint))
-  }, [l1DataFee, getDisplayedPrice])
+    return { value: displayedFee, price: displayedPrice }
+  }, [l1DataFee, getDisplayedValue, getDisplayedPrice])
 
   const displayedTotalCost = useMemo(() => {
-    if (selectedToken.symbol === ETH_SYMBOL)
-      return getDisplayedValue((l1GasFee ?? BigInt(0)) + l2GasFee + (l1DataFee ?? BigInt(0)) + amountToBN(amount))
+    if (selectedToken.symbol === ETH_SYMBOL) {
+      const totalCostBN = (l1GasFee ?? BigInt(0)) + l2GasFee + (l1DataFee ?? BigInt(0)) + amountToBN(amount)
+      const displayedTotalCost = getDisplayedValue(totalCostBN)
+      const displayedTotalPrice = getDisplayedPrice(BNToAmount(totalCostBN))
 
-    return getDisplayedMultiplexValue()
-  }, [l1GasFee, l2GasFee, l1DataFee, selectedToken, getDisplayedValue, getDisplayedMultiplexValue])
+      return { value: displayedTotalCost, price: displayedTotalPrice }
+    }
 
-  const displayedTotalPrice = useMemo(() => {
-    if (selectedToken.symbol === ETH_SYMBOL)
-      return getDisplayedPrice(BNToAmount((l1GasFee ?? BigInt(0)) + l2GasFee + (l1DataFee ?? BigInt(0)) + amountToBN(amount)))
-    return getDisplayedMultiplexPrice()
-  }, [l1GasFee, l2GasFee, l1DataFee, selectedToken, getDisplayedPrice, getDisplayedMultiplexPrice])
+    return {
+      value: getDisplayedMultiplex().value,
+      price: getDisplayedMultiplex().price,
+    }
+  }, [l1GasFee, l2GasFee, l1DataFee, amount, selectedToken, getDisplayedValue, getDisplayedPrice, getDisplayedMultiplex])
 
   return (
     <div className={styles.root}>
@@ -157,12 +156,17 @@ const TransactionSummary: FC<Props> = props => {
           padding: "1rem 1.6rem",
         }}
       >
-        <DetailRow title={`You're ${txType === "Deposit" ? "depositing" : "withdrawing"}`} value={displayedAmount} price={displayedPrice} large />
-        {txType === "Deposit" && <DetailRow title="Ethereum gas fee" value={displayedL1Fee} price={displayedL1Price} large />}
-        <DetailRow title="Scroll gas fee" value={displayedL2Fee} price={displayedL2Price} large />
-        {txType === "Withdraw" && <DetailRow title="Ethereum data fee" value={displayedL1DataFee} price={displayedL1DataPrice} large />}
+        <DetailRow
+          title={`You're ${txType === "Deposit" ? "depositing" : "withdrawing"}`}
+          value={displayedAmount.value}
+          price={displayedAmount.price}
+          large
+        />
+        {txType === "Deposit" && <DetailRow title="Ethereum gas fee" value={displayedL1Fee.value} price={displayedL1Fee.price} large />}
+        <DetailRow title="Scroll gas fee" value={displayedL2Fee.value} price={displayedL2Fee.price} large />
+        {txType === "Withdraw" && <DetailRow title="Ethereum data fee" value={displayedL1DataFee.value} price={displayedL1DataFee.price} large />}
         <Divider sx={{ my: "1.2rem" }} />
-        <DetailRow title="Total" value={displayedTotalCost} price={displayedTotalPrice} large />
+        <DetailRow title="Total" value={displayedTotalCost.value} price={displayedTotalCost.price} large />
       </Box>
     </div>
   )
