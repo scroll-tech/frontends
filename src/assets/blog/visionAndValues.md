@@ -14,7 +14,7 @@ We believe that decentralized computing platforms will play such a crucial role 
 
 ### Empowering humanity - starting with blockchain developers and users
 
-Scroll aims to scale blockchains so that it can be assessible for billions of users. This requires making them both scalable and cheap enough to be accessible for all as well as being secure and easy-to-use for the ordinary user.
+Scroll aims to scale blockchains so that it can be accessible for billions of users. This requires making them both scalable and cheap enough to be accessible for all as well as being secure and easy-to-use for the ordinary user.
 
 The current state of the Ethereum fee market means that high-stake applications such as DeFi and NFT trading are crowding out non-financial use cases as well as making Ethereum inaccessible to ordinary users with smaller amounts of capital. By using ZK-powered magic, Scroll will increase transaction throughput and reduce fees dramatically. It will unlock the potential for these new applications and users. We are excited to see new application layer innovations which will result in due course.
 
