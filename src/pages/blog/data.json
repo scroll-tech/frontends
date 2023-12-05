@@ -1,5 +1,15 @@
 [
   {
+    "type": "Technical",
+    "id": "data-availability-4844",
+    "date": "2023-12-04",
+    "title": "Data Availability Post 4844",
+    "posterTitle": "Data Availability Post 4844",
+    "summary": "The one and only feature requested by most rollups is an improvement of Ethereum’s usability as a data availability layer.",
+    "posterImg": "/imgs/homepage/blog/poster_cover_18.png",
+    "ogImg": "/imgs/homepage/blog/poster_cover_18_og.png"
+  },
+  {
     "type": "Announcement",
     "id": "community-update-october",
     "date": "2023-11-01",
