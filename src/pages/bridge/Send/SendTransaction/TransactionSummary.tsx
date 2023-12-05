@@ -1,7 +1,7 @@
 import { FC, useCallback, useMemo } from "react"
 import { makeStyles } from "tss-react/mui"
 
-import { Box, Divider, Typography } from "@mui/material"
+import { Typography } from "@mui/material"
 
 import { ETH_SYMBOL } from "@/constants"
 import { useBrigeContext } from "@/contexts/BridgeContextProvider"
@@ -21,6 +21,21 @@ const useStyles = makeStyles()(theme => ({
     lineHeight: "3.6rem",
     fontWeight: 500,
     marginBottom: "0.4rem",
+  },
+  table: {
+    borderRadius: "1rem",
+    overflow: "hidden",
+    background: theme.palette.themeBackground.normal,
+    width: "100%",
+    border: `1.6rem solid ${theme.palette.themeBackground.normal}`,
+    borderTopWidth: " 1.2rem",
+    borderBottomWidth: "1.2rem",
+  },
+  hr: {
+    "& td": {
+      height: "21px",
+      background: "linear-gradient(transparent 10px, #101010 10px, #101010 11px, transparent 11px)",
+    },
   },
 }))
 
@@ -148,14 +163,7 @@ const TransactionSummary: FC<Props> = props => {
       <Typography className={styles.title} variant="h5">
         Summary
       </Typography>
-      <Box
-        sx={{
-          borderRadius: "1rem",
-          background: theme => theme.palette.themeBackground.normal,
-          width: "100%",
-          padding: "1rem 1.6rem",
-        }}
-      >
+      <table className={styles.table}>
         <DetailRow
           title={`You're ${txType === "Deposit" ? "depositing" : "withdrawing"}`}
           value={displayedAmount.value}
@@ -165,9 +173,13 @@ const TransactionSummary: FC<Props> = props => {
         {txType === "Deposit" && <DetailRow title="Ethereum gas fee" value={displayedL1Fee.value} price={displayedL1Fee.price} large />}
         <DetailRow title="Scroll gas fee" value={displayedL2Fee.value} price={displayedL2Fee.price} large />
         {txType === "Withdraw" && <DetailRow title="Ethereum data fee" value={displayedL1DataFee.value} price={displayedL1DataFee.price} large />}
-        <Divider sx={{ my: "1.2rem" }} />
+        <tr className={styles.hr}>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
         <DetailRow title="Total" value={displayedTotalCost.value} price={displayedTotalCost.price} large />
-      </Box>
+      </table>
     </div>
   )
 }
