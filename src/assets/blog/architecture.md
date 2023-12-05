@@ -61,7 +61,7 @@ Figure 3 illustrates that Scroll blocks will be finalized on L1 in a multi-step 
 
 - `Precommitted` indicates a block has been proposed by a Sequencer and sent to Rollers. Although Precommitted blocks are not yet a canonical part of the Scroll L2 chain because they have not been posted on the Ethereum base layer, users who trust the Sequencer can choose to take action on them in anticipation.
 - `Committed` indicates the transaction data of this block has been posted on the rollup contract on Ethereum. This ensures that the block data is available, but does not prove that it has been executed in a valid way.
-- `Finalized` indicates the correct execution of transactoins in this block has been proven by verifying a validity proof on-chain on Ethereum. Finalized blocks are considered canonical parts of the Scroll L2 chain.
+- `Finalized` indicates the correct execution of transactions in this block has been proven by verifying a validity proof on-chain on Ethereum. Finalized blocks are considered canonical parts of the Scroll L2 chain.
 
 Putting all of these together, Scroll is able to execute native EVM bytecode on L2 while inheriting strong security guarantees from base layer Ethereum. In the next post in this series, we will explain the workflow for developers to deploy dapps on Scroll and how users can interact with them.
 
