@@ -94,10 +94,10 @@ const ClaimButton = props => {
 
   const handleSwitchNetwork = async (chainId: number) => {
     try {
-      // cancel switch network in MetaMask would not throw error and the result is null just like successfully switched
+      // cancel switch network in MetaMask would not throw an error and the result is null just like successfully switched
       await switchNetwork(chainId)
     } catch (error) {
-      // when there is a switch-network popover in MetaMask and refreshing page would throw an error
+      // when there is a switch-network popover in MetaMask and the refreshing page would throw an error
     }
   }
 

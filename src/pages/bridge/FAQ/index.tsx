@@ -28,7 +28,7 @@ const FAQ = () => {
           blockchains.
         </Typography>
         <Typography variant="Body3" color="textSecondary" className={classes.specialParagraph}>
-          A blockchain bridge is a tool which connects two blockchains to enable interactions and move assets between them.
+          A blockchain bridge is a tool that connects two blockchains to enable interactions and move assets between them.
         </Typography>
       </FaqItem>
       <FaqItem title="How to send tokens using the Bridge?" id="3">
@@ -43,7 +43,7 @@ const FAQ = () => {
           3. Select the token (for ex. ETH) you wish to transfer.
         </Typography>
         <Typography variant="Body3" color="textSecondary" className={classes.orderedParagraph}>
-          4. Click on Send. A pop up window from will ask you for the transfer confirmation. If this is your first time transferring ETH, you will be
+          4. Click on Send. A pop up window form will ask you for the transfer confirmation. If this is your first time transferring ETH, you will be
           prompted to approve the Scroll Bridge contract to access your ETH token.
         </Typography>
         <Typography variant="Body3" color="textSecondary" className={classes.orderedParagraph}>
