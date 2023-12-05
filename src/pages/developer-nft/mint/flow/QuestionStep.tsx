@@ -63,7 +63,7 @@ const QuestionStep = props => {
           {subject}
         </FormLabel>
         <RadioGroup classes={{ root: classes.formGroup }} value={value} onChange={handleChange} name="radio-buttons-group">
-          {options.map(({ title, explaination }, index) => (
+          {options.map(({ title, explanation }, index) => (
             <>
               <FormControlLabel
                 classes={{ root: classes.optionLabel, label: classes.optionLabelText }}
@@ -74,7 +74,7 @@ const QuestionStep = props => {
               {Number(value) === index && (
                 <OrientationToView direction="left">
                   <Alert type="multiline" variants="success" sx={{ mt: "0.8rem" }}>
-                    {explaination}
+                    {explanation}
                   </Alert>
                 </OrientationToView>
               )}
