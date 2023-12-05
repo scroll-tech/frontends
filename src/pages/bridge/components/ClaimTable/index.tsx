@@ -19,11 +19,11 @@ import {
 
 import Link from "@/components/Link"
 import { EXPLORER_URL } from "@/constants"
+import useCheckClaimStatus from "@/hooks/useCheckClaimStatus"
 import useTokenInfo from "@/hooks/useTokenInfo"
 import { ClaimStatus } from "@/stores/claimStore"
 import { formatDate, generateExploreLink, toTokenDisplay, truncateHash } from "@/utils"
 
-import useCheckClaimStatus from "../../hooks/useCheckClaimStatus"
 import NoData from "../NoData"
 import ClaimButton from "./ClaimButton"
 

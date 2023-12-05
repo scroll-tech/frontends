@@ -20,11 +20,11 @@ import {
 import Link from "@/components/Link"
 import { NETWORKS, TX_STATUS } from "@/constants"
 import { useBrigeContext } from "@/contexts/BridgeContextProvider"
+import useCheckClaimStatus from "@/hooks/useCheckClaimStatus"
+import useLastFinalizedBatchIndex from "@/hooks/useLastFinalizedBatchIndex"
 import useTokenInfo from "@/hooks/useTokenInfo"
 import { formatDate, generateExploreLink, toTokenDisplay, truncateHash } from "@/utils"
 
-import useCheckClaimStatus from "../../hooks/useCheckClaimStatus"
-import useLastFinalizedBatchIndex from "../../hooks/useLastFinalizedBatchIndex"
 import NoData from "../NoData"
 import TxStatusButton from "./TxStatusButton"
 
