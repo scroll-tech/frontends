@@ -29,10 +29,10 @@ Here’s a glance at who did what:
 In full transparency about our procedures and findings, we proudly present you with our audit reports: 
 
 - zkEVM circuits
-    - Trail of Bits (final reports in progress - we will update once they are ready)
-        - zkEVM wave 1
-        - zkEVM wave 2
-        - zkEVM wave 3
+    - Trail of Bits
+        - [zkEVM wave 1](https://github.com/trailofbits/publications/blob/master/reviews/2023-04-scroll-zkEVM-wave1-securityreview.pdf)
+        - [zkEVM wave 2](https://github.com/trailofbits/publications/blob/master/reviews/2023-08-scroll-zkEVM-wave2-securityreview.pdf)
+        - [zkEVM wave 3](https://github.com/trailofbits/publications/blob/master/reviews/2023-09-scroll-zkEVM-wave3-securityreview.pdf)
     - Zellic x Kalos
         - [zkEVM part 1](https://github.com/Zellic/publications/blob/master/Scroll%20zkEVM%20-%20Part%201%20-%20Audit%20Report.pdf)
         - [zkEVM part 2](https://github.com/Zellic/publications/blob/master/Scroll%20zkEVM%20-%20Part%202%20-%20Audit%20Report.pdf)
