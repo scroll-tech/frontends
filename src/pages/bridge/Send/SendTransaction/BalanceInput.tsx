@@ -6,9 +6,9 @@ import { InputBase, Skeleton, Stack, Typography } from "@mui/material"
 
 import TextButton from "@/components/TextButton"
 import useCheckViewport from "@/hooks/useCheckViewport"
+import useTransactionBuffer from "@/hooks/useTransactionBuffer"
 import { sanitizeNumericalString, toTokenDisplay } from "@/utils"
 
-import useTransactionBuffer from "../../hooks/useTransactionBuffer"
 import TokenSelect from "./TokenSelect"
 
 const useStyles = makeStyles()(theme => ({

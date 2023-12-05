@@ -11,10 +11,9 @@ import ListItemText from "@mui/material/ListItemText"
 
 import { EXPLORER_URL } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useAddToken, { TOKEN_LEVEL } from "@/hooks/useAddToken"
 import useBridgeStore from "@/stores/bridgeStore"
 import { generateExploreLink, truncateHash } from "@/utils"
-
-import useAddToken, { TOKEN_LEVEL } from "../../hooks/useAddToken"
 
 const DialogStyled = styled(Dialog)(({ theme }) => ({
   "& .MuiPaper-root": {

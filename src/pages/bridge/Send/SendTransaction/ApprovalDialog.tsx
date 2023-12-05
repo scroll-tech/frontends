@@ -18,9 +18,9 @@ import {
   Typography,
 } from "@mui/material"
 
-import { ReactComponent as SuccessSvg } from "@/assets/svgs/bridge/alert-success.svg"
 import { ReactComponent as SelectedSvg } from "@/assets/svgs/bridge/approve-token-selected.svg"
 import { ReactComponent as CloseSvg } from "@/assets/svgs/bridge/close.svg"
+import { ReactComponent as PraiseSvg } from "@/assets/svgs/bridge/praise.svg"
 import { ReactComponent as WarningSvg } from "@/assets/svgs/bridge/warning.svg"
 import Button from "@/components/Button"
 import useCheckViewport from "@/hooks/useCheckViewport"
@@ -196,8 +196,8 @@ const ApprovalDialog = props => {
                     <ListItem classes={{ root: classes.listItemRoot }}>
                       <ListItemIcon classes={{ root: classes.listItemIconRoot }}>
                         <SvgIcon
-                          sx={{ fontSize: ["1.6rem", "2rem"], color: "#8C591A" }}
-                          component={item.type === APPROVAL_TYPE.Recommended ? SuccessSvg : WarningSvg}
+                          sx={{ fontSize: ["1.8rem", "2rem"], color: "#8C591A" }}
+                          component={item.type === APPROVAL_TYPE.Recommended ? PraiseSvg : WarningSvg}
                           inheritViewBox
                         ></SvgIcon>
                       </ListItemIcon>
@@ -209,11 +209,11 @@ const ApprovalDialog = props => {
             </Card>
           ))}
         </Stack>
-        {/* <Box> */}
-        <Button color="primary" width={isMobile ? "100%" : "22rem"} loading={loading} whiteButton onClick={handleContinue}>
-          Continue
-        </Button>
-        {/* </Box> */}
+        <Stack direction="row" justifyContent="center" sx={{ width: "100%" }}>
+          <Button color="primary" width={isMobile ? "100%" : "22rem"} loading={loading} whiteButton onClick={handleContinue}>
+            Continue
+          </Button>
+        </Stack>
       </DialogContent>
     </Dialog>
   )

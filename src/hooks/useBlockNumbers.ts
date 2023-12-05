@@ -18,17 +18,6 @@ const useBlockNumbers = () => {
     return blockNumbers.map(item => (item.status === "fulfilled" ? Number(item.value.number) : item.reason))
   }
 
-  // const fetchBlockNumber = useCallback(async () => {
-  //   if (networksAndSigners[`${CHAIN_ID.L1}`].provider && networksAndSigners[CHAIN_ID.L2].provider) {
-  //     const fetchL1BlockNumber = networksAndSigners[`${CHAIN_ID.L1}`].provider.getBlock("safe")
-  //     const fetchL2BlockNumber = networksAndSigners[CHAIN_ID.L2].provider.getBlock("latest")
-
-  //     const blockNumbers = await Promise.allSettled([fetchL1BlockNumber, fetchL2BlockNumber])
-  //     return blockNumbers.map(item => (item.status === "fulfilled" ? item.value.number : -1))
-  //   }
-  //   return null
-  // }, [networksAndSigners])
-
   const { data: blockNumbersRes } = useSWR<any>("eth_blockNumber", fetchBlockNumber, {
     refreshInterval: 6000,
   })
