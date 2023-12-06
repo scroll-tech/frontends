@@ -1,7 +1,8 @@
 import { motion, useCycle } from "framer-motion"
+import { useMemo } from "react"
 import { makeStyles } from "tss-react/mui"
 
-import { ButtonBase, CircularProgress, IconButton, SvgIcon, alpha } from "@mui/material"
+import { ButtonBase, CircularProgress, IconButton, SvgIcon } from "@mui/material"
 
 import { ReactComponent as ArrowRightIcon } from "@/assets/svgs/common/arrow-right.svg"
 import useCheckViewport from "@/hooks/useCheckViewport"
@@ -18,6 +19,9 @@ const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, w
       width: width ?? "18.5rem",
       height: "4.8rem",
     },
+  },
+  wrapperLoading: {
+    opacity: 0.6,
   },
   wrapperGloomy: {
     opacity: 0.5,
@@ -68,7 +72,6 @@ const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, w
   },
   maskLoading: {
     width: "100% !important",
-    backgroundColor: alpha(theme.palette.primary.main, 0.6),
   },
   maskDisabled: {
     backgroundColor: "#EBC28E",
@@ -111,6 +114,11 @@ const Button = props => {
 
   const [isHover, setIsHover] = useCycle(false, true)
 
+  const innerDisabled = useMemo(() => {
+    if (loading) return false
+    return disabled
+  }, [loading, disabled])
+
   const handleHover = () => {
     setIsHover()
   }
@@ -119,7 +127,7 @@ const Button = props => {
     // TODO: allow sx, allow size=small/medium
     // avoid setting both 'disabled' and 'loading' to true.
     <motion.div
-      className={cx(classes.wrapper, disabled && classes.wrapperDisabled, gloomy && classes.wrapperGloomy)}
+      className={cx(classes.wrapper, innerDisabled && classes.wrapperDisabled, loading && classes.wrapperLoading, gloomy && classes.wrapperGloomy)}
       onHoverStart={handleHover}
       onHoverEnd={handleHover}
       animate={isHover ? "expanding" : "normal"}
@@ -130,19 +138,19 @@ const Button = props => {
         </IconButton>
       )}
       <motion.div
-        className={cx(classes.mask, loading && classes.maskLoading, disabled && classes.maskDisabled)}
+        className={cx(classes.mask, loading && classes.maskLoading, innerDisabled && classes.maskDisabled)}
         variants={isMobile ? maskMobile : maskDesktop}
       ></motion.div>
       <ButtonBase
         classes={{
           root: cx(
             classes.button,
-            isHover && !gloomy && !disabled && classes.active,
+            isHover && !gloomy && !innerDisabled && classes.active,
             loading && classes.buttonLoading,
-            disabled && classes.buttonDisabled,
+            innerDisabled && classes.buttonDisabled,
           ),
         }}
-        disabled={disabled || gloomy || loading}
+        disabled={innerDisabled || gloomy || loading}
         {...restProps}
       >
         {children} {loading && <CircularProgress sx={{ color: "inherit" }} size={isMobile ? 18 : 24} thickness={4}></CircularProgress>}

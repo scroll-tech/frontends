@@ -1,6 +1,7 @@
 import GlobalComponents from "@/components/GlobalComponents"
 import SectionWrapper from "@/components/SectionWrapper"
 import BridgeContextProvider from "@/contexts/BridgeContextProvider"
+import useNFTStore from "@/stores/nftStore"
 
 import CheckElegbility from "./CheckElegbility"
 import Header from "./Header"
@@ -9,6 +10,8 @@ import Stage from "./Stage"
 import Stepper from "./Stepper"
 
 const ComingSoon = () => {
+  const { phrase } = useNFTStore()
+
   return (
     <BridgeContextProvider>
       <GlobalComponents></GlobalComponents>
@@ -25,7 +28,7 @@ const ComingSoon = () => {
         }}
       >
         <Header></Header>
-        <Stepper></Stepper>
+        {phrase === "in-progress" && <Stepper></Stepper>}
         <Purpose></Purpose>
         <Stage></Stage>
         <CheckElegbility></CheckElegbility>

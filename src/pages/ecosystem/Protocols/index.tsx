@@ -10,7 +10,7 @@ import { DIVERGENT_CATEGORY_MAP, LOOKING_FOR_A_DAPP_LINK } from "@/constants"
 
 import Gallery from "../Gallery"
 
-const Protocals = props => {
+const Protocols = props => {
   const [category, setCategory] = useState("All categories")
 
   const allCategories = useRef(["All categories", ...Object.keys(DIVERGENT_CATEGORY_MAP)])
@@ -41,4 +41,4 @@ const Protocals = props => {
   )
 }
 
-export default Protocals
+export default Protocols

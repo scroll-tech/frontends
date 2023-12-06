@@ -1,10 +1,11 @@
 import { useEffect } from "react"
 import Countdown, { zeroPad } from "react-countdown"
+import { useNavigate } from "react-router-dom"
 
 import { Stack, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
-import { DEVELOPER_NFT_PHRASES, SCROLL_ORIGINS_NFT } from "@/constants"
+import { DEVELOPER_NFT_PHRASES, MintableDate, SCROLL_ORIGINS_NFT } from "@/constants"
 import useNFTStore from "@/stores/nftStore"
 
 import NFTCard from "../../components/NFTCard"
@@ -19,15 +20,25 @@ const Separator = styled(Typography)(({ theme }) => ({
 }))
 
 const Header = () => {
+  const navigate = useNavigate()
+
   const { phrase, changePhrase, checkPhrase } = useNFTStore()
 
   useEffect(() => {
     checkPhrase()
   }, [])
 
+  useEffect(() => {
+    if (phrase === "end") {
+      navigate("/developer-nft/mint", { replace: true })
+    }
+  }, [phrase])
+
   const renderCountDown = ({ total, days, hours, minutes, seconds, completed }) => {
     if (completed) {
       if (phrase === "in-progress") {
+        changePhrase("waiting")
+      } else if (phrase === "waiting") {
         changePhrase("end")
       }
       return null
@@ -55,8 +66,11 @@ const Header = () => {
         }}
       ></NFTCard>
       <Typography sx={{ fontSize: ["4rem", "7.8rem"], lineHeight: ["5.6rem", "8.5rem"], fontWeight: 600 }}>{SCROLL_ORIGINS_NFT}</Typography>
-      <Typography sx={{ fontSize: ["1.6rem", "2.4rem"], fontWeight: 600 }}>Program ends in</Typography>
-      <Countdown date={DEVELOPER_NFT_PHRASES.Ends} renderer={renderCountDown}></Countdown>
+      <Typography sx={{ fontSize: ["1.6rem", "2.4rem"], fontWeight: 600 }}>
+        {phrase === "in-progress" ? "Program ends in" : "NFT releases in"}
+      </Typography>
+      {phrase === "in-progress" && <Countdown key="in-progress" date={DEVELOPER_NFT_PHRASES.Ends} renderer={renderCountDown}></Countdown>}
+      {phrase === "waiting" && <Countdown key="waiting" date={MintableDate} renderer={renderCountDown}></Countdown>}
     </Stack>
   )
 }

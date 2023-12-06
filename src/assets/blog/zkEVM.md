@@ -92,7 +92,7 @@ Even if the workflow outside remains the same, the underlying processing procedu
 
 Let’s give a more detailed explanation of how things are going differently for transactions on Layer 1 and Layer 2.
 
-<!-- In Layer 1, the bytecode of deployed smart contracts are stored in the EVM storage. If a user wants to interact with some smart constract, he can send a transaction to the address of the smart contract. Then, full node will load the bytecode of the smart constract from the storage and execute it on EVM (transaction will be used as input data). Each full node needs to execute in the same way and thus can lead to the same result. The security and consensus are guaranteed by the re-execution of smart contracts --- Each full node will eventually reach the same updated state. -->
+<!-- In Layer 1, the bytecode of deployed smart contracts are stored in the EVM storage. If a user wants to interact with some smart contract, he can send a transaction to the address of the smart contract. Then, full node will load the bytecode of the smart contract from the storage and execute it on EVM (transaction will be used as input data). Each full node needs to execute in the same way and thus can lead to the same result. The security and consensus are guaranteed by the re-execution of smart contracts --- Each full node will eventually reach the same updated state. -->
 
 In Layer 1, the bytecodes of the deployed smart contracts are stored in the Ethereum storage. Transactions will be broadcasted in a P2P network. For each transaction, each full node needs to load the corresponding bytecode and execute it on EVM to reach the same state (transaction will be used as input data).
 
