@@ -1,12 +1,8 @@
 import ArchiveTerms from "@/pages/archive/20230308/terms"
 import Blog from "@/pages/blog"
 import BlogDetail from "@/pages/blog/detail"
-// import Bridge from "@/pages/bridge"
 import Bridge from "@/pages/bridge"
 import BridgeFAQ from "@/pages/bridge/FAQ"
-// import MintNFT from "@/pages/developer-nft/mint"
-// import MintFlow from "@/pages/developer-nft/mint/flow"
-// import MintedNFT from "@/pages/developer-nft/mint/my"
 import Career from "@/pages/career"
 import ComingSoon from "@/pages/developer-nft/coming-soon"
 import DeveloperNFT from "@/pages/developer-nft/index"
@@ -220,24 +216,6 @@ const mainnetRoutes = [
     fullPath: "/developer-nft/check-eligibility",
     element: <ComingSoon />,
   },
-  // {
-  //   name: "Early Developer NFT",
-  //   path: "/developer-nft/mint",
-  //   fullPath: "/developer-nft/mint",
-  //   element: <MintNFT />,
-  // },
-  // {
-  //   name: "Early Developer NFT",
-  //   path: "/developer-nft/mint/flow",
-  //   fullPath: "/developer-nft/mint/flow",
-  //   element: <MintFlow />,
-  // },
-  // {
-  //   name: "Early Developer NFT",
-  //   path: "/developer-nft/my",
-  //   fullPath: "/developer-nft/my",
-  //   element: <MintedNFT />,
-  // },
 ]
 
 const routes = isSepolia ? sepoliaRoutes : mainnetRoutes

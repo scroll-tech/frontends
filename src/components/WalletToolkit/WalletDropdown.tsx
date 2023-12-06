@@ -50,7 +50,7 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
   paper: {
     borderRadius: "0.5rem",
     border: dark ? `1px solid ${theme.palette.primary.contrastText}` : "none",
-    backgroundColor: dark ? "unset" : theme.palette.themeBackground.normal,
+    backgroundColor: dark ? theme.palette.text.primary : theme.palette.themeBackground.normal,
     marginTop: "0.5rem",
   },
   list: {
