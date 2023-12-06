@@ -41,4 +41,4 @@ const Protocals = props => {
   )
 }
 
-export default Protocals
+export default Protocols
