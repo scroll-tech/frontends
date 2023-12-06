@@ -43,19 +43,19 @@ export const FLOW_QUESTIONS = [
       {
         key: "A",
         title: "Openness",
-        explaination:
+        explanation:
           "Yes! Scroll openly shares work and research with the public, engaging regularly with the community to foster an open Ethereum ecosystem.",
       },
       {
         key: "B",
         title: "Community-Drive",
-        explaination:
+        explanation:
           "Yes! Scroll values shared ownership, so no single entity holds disproportionate power or influence. Scroll is committed to organically scaling an inclusive and fair ecosystem.",
       },
       {
         key: "C",
         title: "Credible Neutrality",
-        explaination:
+        explanation:
           "Yes! Scroll strives to be fair and unbiased, without favoring any specific applications. Scroll’s relationships with partners are policy-based, not relationship-based.",
       },
     ],
@@ -70,18 +70,18 @@ export const FLOW_QUESTIONS = [
         key: "A",
         title:
           "With bytecode-compatible zkEVMs, code works exactly the same as on Ethereum, providing additional security without the need to re-audit code",
-        explaination: "This is true",
+        explanation: "This is true",
       },
       {
         key: "B",
         title:
           "Bytecode-compatible zkEVMs execute and prove the same bytecode as the EVM. This means developer tooling, Solidity, and compilers work exactly like on Ethereum.",
-        explaination: "This is true",
+        explanation: "This is true",
       },
       {
         key: "C",
         title: "Unlike language-compatible ZK-Rollups, bytecode-compatible zkEVMS map opcodes onto custom ZK circuits",
-        explaination: "This is true",
+        explanation: "This is true",
       },
     ],
     answer: ["A", "B", "C"],
