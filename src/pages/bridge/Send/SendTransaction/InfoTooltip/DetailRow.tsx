@@ -22,12 +22,13 @@ const useStyles = makeStyles()(theme => ({
     "& td": {
       width: "auto",
       padding: 0,
-      verticalAlign: "top",
     },
     "& td:last-child": {
       width: "100%",
     },
-    [theme.breakpoints.down("sm")]: {},
+    [theme.breakpoints.down("sm")]: {
+      verticalAlign: "top",
+    },
   },
   detailLabel: {
     fontSize: "1.6rem",
