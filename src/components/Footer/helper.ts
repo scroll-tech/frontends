@@ -5,39 +5,12 @@ import { ReactComponent as YoutubeIcon } from "@/assets/svgs/footer/youtube.svg"
 
 export const aboutList = [
   {
-    name: "Bug Bounty",
-    href: "https://immunefi.com/bounty/scroll/",
-  },
-  {
-    name: "Join Us",
-    href: "/join-us",
-  },
-  {
-    name: "Health Status",
-    href: "https://status.scroll.io/",
+    name: "Terms of Service",
+    href: "/terms-of-service",
   },
   {
     name: "Privacy Policy",
     href: "/privacy-policy",
-  },
-  {
-    name: "Terms of Service",
-    href: "/terms-of-service",
-  },
-]
-
-export const resourceList = [
-  {
-    name: "Blog",
-    to: "/blog",
-  },
-  {
-    name: "User Guide",
-    href: "https://docs.scroll.io/en/user-guide/",
-  },
-  {
-    name: "Brand Kit",
-    href: "https://scrollzkp.notion.site/Scroll-Rebrand-Assets-5bb83465f56f40989c4f772b39ed3a06",
   },
 ]
 
