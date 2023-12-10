@@ -31,7 +31,7 @@ const ComingSoon = () => {
         {phrase === "in-progress" && <Stepper></Stepper>}
         <Purpose></Purpose>
         <Stage></Stage>
-        <CheckElegbility></CheckElegbility>
+        {phrase === "in-progress" && <CheckElegbility></CheckElegbility>}
       </SectionWrapper>
     </BridgeContextProvider>
   )
