@@ -47,7 +47,7 @@ const FinalStep = () => {
         <Typography
           sx={{ fontSize: ["2.4rem", "4.8rem"], fontWeight: 600, lineHeight: ["3.2rem", "7.2rem"], width: ["100%", "61.6rem"], textAlign: "center" }}
         >
-          You have successfully minted {SCROLL_ORIGINS_NFT}!
+          You have successfully minted a {SCROLL_ORIGINS_NFT}!
         </Typography>
         <Button color="primary" onClick={handleGoShow}>
           Done

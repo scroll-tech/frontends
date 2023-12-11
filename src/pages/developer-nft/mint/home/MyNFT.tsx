@@ -4,7 +4,7 @@ import { Box, Stack, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
 import RequestWarning from "@/components/RequestWarning"
-import { ContractReleaseDate } from "@/constants"
+import { ContractReleaseDate, SCROLL_ORIGINS_NFT } from "@/constants"
 import { useNFTContext } from "@/contexts/NFTContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
@@ -98,7 +98,7 @@ const MyNFT = props => {
             textAlign: ["center", "center", "left", "left"],
           }}
         >
-          You have successfully minted a Scroll Origins Detail!
+          You have successfully minted a {SCROLL_ORIGINS_NFT}!
         </Typography>
         <Grid>
           <Statistic label="NFT rarity" loading={loading}>

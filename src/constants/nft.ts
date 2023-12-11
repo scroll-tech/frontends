@@ -14,10 +14,12 @@ export const Stage3StartDate = dayjs("2023-11-24T23:00:00Z")
 
 export const EndDate = dayjs("2023-12-09T23:00:00Z").subtract(1, "ms")
 
-export const MintableDate = dayjs("2023-12-14T23:00:00Z")
+export const MintableDate = dayjs("2023-12-10T23:00:00Z")
+
+// export const MintableDate = dayjs("2023-12-14T23:00:00Z")
 
 // TODO: update
-export const ContractReleaseDate = dayjs("2023-11-10T08:58:37Z")
+export const ContractReleaseDate = dayjs("2023-12-08T05:08:43Z")
 
 export const DEVELOPER_NFT_STEPS = [
   { label: "Starts", date: StartDate, title: "Genesis Block" },
