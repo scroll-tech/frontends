@@ -51,9 +51,7 @@ const MintHome = () => {
   }
 
   const fetchBalance = async (instance, address) => {
-    // return await instance.balanceOf("0x22932C4c628675D995BD451c85B1D2510d35dbC5")
-    // TODO: should release
-    return await instance.balanceOf(walletCurrentAddress)
+    return await instance.balanceOf(address)
   }
 
   return (

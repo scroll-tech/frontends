@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useSwiperSlide } from "swiper/react"
 
 import { Container, Stack, Typography } from "@mui/material"
@@ -7,17 +7,21 @@ import Button from "@/components/Button"
 import { SCROLL_ORIGINS_NFT } from "@/constants"
 import { useNFTContext } from "@/contexts/NFTContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useCheckViewport from "@/hooks/useCheckViewport"
 import useNFTStore from "@/stores/nftStore"
-import { decodeSVG } from "@/utils"
+import { decodeSVG, requireEnv } from "@/utils"
 
 import NFTImage from "../../components/NFTCard/NFTImage"
 
 const FinalStep = () => {
   const swiperSlide = useSwiperSlide()
+
   const { walletCurrentAddress } = useRainbowContext()
   const { unsignedNFTInstance } = useNFTContext()
   const { changeIsEligible } = useNFTStore()
+  const { isMobile } = useCheckViewport()
 
+  const [tokenId, setTokenId] = useState()
   const [tokenURI, setTokenURI] = useState()
 
   useEffect(() => {
@@ -26,9 +30,17 @@ const FinalStep = () => {
     }
   }, [unsignedNFTInstance, walletCurrentAddress, swiperSlide.isActive])
 
+  const shareTwitterURL = useMemo(() => {
+    const viewerUrl = `${requireEnv("REACT_APP_NFT_VIEWER_URL")}/developer-nft/${tokenId}`
+    return `https://twitter.com/intent/tweet?original_referer=${encodeURIComponent(window.location.href)}&url=${encodeURIComponent(
+      viewerUrl,
+    )}&via=Scroll_ZKP`
+  }, [tokenId])
+
   const getTokenURIByAddress = async (instance, address) => {
     const balance = await instance.balanceOf(address)
     const tokenId = await instance.tokenOfOwnerByIndex(address, balance - BigInt(1))
+    setTokenId(tokenId)
     const encodedtTokenURI = await instance.tokenURI(tokenId)
 
     const { tokenURI } = decodeSVG(encodedtTokenURI)
@@ -49,9 +61,14 @@ const FinalStep = () => {
         >
           You have successfully minted a {SCROLL_ORIGINS_NFT}!
         </Typography>
-        <Button color="primary" onClick={handleGoShow}>
-          Done
-        </Button>
+        <Stack direction={isMobile ? "column-reverse" : "row"} gap="2rem">
+          <Button color="primary" onClick={handleGoShow}>
+            Done
+          </Button>
+          <Button color="secondary" href={shareTwitterURL} target="_blank" rel="noopener noreferrer">
+            Share to X
+          </Button>
+        </Stack>
       </Stack>
     </Container>
   )
