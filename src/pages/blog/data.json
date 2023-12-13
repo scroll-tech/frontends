@@ -1,5 +1,15 @@
 [
   {
+    "type": "Announcement",
+    "id": "community-update-november",
+    "date": "2023-12-13",
+    "title": "Community Update: November",
+    "posterTitle": "Community Update: November",
+    "summary": "Dive into our October recap.",
+    "posterImg": "/imgs/homepage/blog/poster_cover_19.png",
+    "ogImg": "/imgs/homepage/blog/poster_cover_19_og.png"
+  },
+  {
     "type": "Technical",
     "id": "data-availability-4844",
     "date": "2023-12-04",
