@@ -2,8 +2,9 @@ import { useEffect, useMemo, useState } from "react"
 import ReactGA from "react-ga4"
 import { useSwiperSlide } from "swiper/react"
 
-import { Container, Stack, Typography } from "@mui/material"
+import { Container, Stack, SvgIcon, Typography } from "@mui/material"
 
+import { ReactComponent as TwitterSvg } from "@/assets/svgs/nft/twitter.svg"
 import Button from "@/components/Button"
 import { SCROLL_ORIGINS_NFT } from "@/constants"
 import { useNFTContext } from "@/contexts/NFTContextProvider"
@@ -73,7 +74,7 @@ const FinalStep = () => {
             Done
           </Button>
           <Button color="secondary" href={shareTwitterURL} target="_blank" rel="noopener noreferrer" onClick={handleShare}>
-            Share to X
+            Share to <SvgIcon sx={{ fontSize: ["1.2rem", "1.6rem"], ml: "6px" }} component={TwitterSvg} inheritViewBox></SvgIcon>
           </Button>
         </Stack>
       </Stack>

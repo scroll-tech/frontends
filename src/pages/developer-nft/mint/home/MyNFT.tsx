@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from "react"
 import ReactGA from "react-ga4"
 
-import { Box, Stack, Typography } from "@mui/material"
+import { Box, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
+import { ReactComponent as TwitterSvg } from "@/assets/svgs/nft/twitter.svg"
 import Button from "@/components/Button"
 import RequestWarning from "@/components/RequestWarning"
 import { ContractReleaseDate, NFT_RARITY_MAP, SCROLL_ORIGINS_NFT } from "@/constants"
@@ -140,7 +141,7 @@ const MyNFT = props => {
             View on Scrollscan
           </Button>
           <Button color="secondary" href={shareTwitterURL} target="_blank" rel="noopener noreferrer" onClick={handleShare}>
-            Share to X
+            Share to <SvgIcon sx={{ fontSize: ["1.2rem", "1.6rem"], ml: "6px" }} component={TwitterSvg} inheritViewBox></SvgIcon>
           </Button>
         </Stack>
       </Stack>
