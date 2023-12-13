@@ -6,7 +6,7 @@ import { styled } from "@mui/material/styles"
 
 import Button from "@/components/Button"
 import RequestWarning from "@/components/RequestWarning"
-import { ContractReleaseDate, SCROLL_ORIGINS_NFT } from "@/constants"
+import { ContractReleaseDate, NFT_RARITY_MAP, SCROLL_ORIGINS_NFT } from "@/constants"
 import { useNFTContext } from "@/contexts/NFTContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
@@ -52,7 +52,7 @@ const MyNFT = props => {
     const viewerUrl = `${requireEnv("REACT_APP_NFT_VIEWER_URL")}/developer-nft/${tokenId}`
     return `https://twitter.com/intent/tweet?original_referer=${encodeURIComponent(window.location.href)}&url=${encodeURIComponent(
       viewerUrl,
-    )}&via=Scroll_ZKP`
+    )}&text=${encodeURIComponent("I have minted a Scroll Origins NFT!")}&via=Scroll_ZKP`
   }, [tokenId])
 
   const getTokenURIByAddress = async (instance, address) => {
@@ -121,11 +121,11 @@ const MyNFT = props => {
             textAlign: ["center", "center", "left", "left"],
           }}
         >
-          You have successfully minted a {SCROLL_ORIGINS_NFT}!
+          You have minted a {SCROLL_ORIGINS_NFT}!
         </Typography>
         <Grid>
           <Statistic label="NFT rarity" loading={loading}>
-            {rarity ? `${rarity}%` : "-"}
+            {rarity ? NFT_RARITY_MAP[rarity] : "-"}
           </Statistic>
           <Statistic label="You minted on" loading={loading}>
             {mintTimestamp ? formatDate(mintTimestamp) : "-"}

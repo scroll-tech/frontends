@@ -21,6 +21,12 @@ export const MintableDate = dayjs("2023-12-10T23:00:00Z")
 // TODO: update
 export const ContractReleaseDate = dayjs("2023-12-08T05:08:43Z")
 
+export const NFT_RARITY_MAP = {
+  10: "Epic",
+  15: "Rare",
+  75: "Common",
+}
+
 export const DEVELOPER_NFT_STEPS = [
   { label: "Starts", date: StartDate, title: "Genesis Block" },
   { label: "Ends", date: EndDate, title: "Program Ends" },
