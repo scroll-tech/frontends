@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react"
+import ReactGA from "react-ga4"
 
 import { Box, Stack, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
@@ -79,6 +80,12 @@ const MyNFT = props => {
     setErrorMessage("")
   }
 
+  const handleShare = () => {
+    ReactGA.event("share_twitter", {
+      tokenId,
+    })
+  }
+
   return (
     <Box
       sx={{
@@ -132,7 +139,7 @@ const MyNFT = props => {
           <Button color="primary" href={scrollscanURL} target="_blank" rel="noopener noreferrer">
             View on Scrollscan
           </Button>
-          <Button color="secondary" href={shareTwitterURL} target="_blank" rel="noopener noreferrer">
+          <Button color="secondary" href={shareTwitterURL} target="_blank" rel="noopener noreferrer" onClick={handleShare}>
             Share to X
           </Button>
         </Stack>

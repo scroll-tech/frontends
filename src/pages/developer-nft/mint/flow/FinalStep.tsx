@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react"
+import ReactGA from "react-ga4"
 import { useSwiperSlide } from "swiper/react"
 
 import { Container, Stack, Typography } from "@mui/material"
@@ -52,6 +53,12 @@ const FinalStep = () => {
     changeIsEligible(0)
   }
 
+  const handleShare = () => {
+    ReactGA.event("share_twitter", {
+      tokenId,
+    })
+  }
+
   return (
     <Container sx={{ pt: ["2.4rem", "4rem"], pb: ["8rem", "14rem"] }}>
       <Stack alignItems="center" spacing="1.6rem">
@@ -65,7 +72,7 @@ const FinalStep = () => {
           <Button color="primary" onClick={handleGoShow}>
             Done
           </Button>
-          <Button color="secondary" href={shareTwitterURL} target="_blank" rel="noopener noreferrer">
+          <Button color="secondary" href={shareTwitterURL} target="_blank" rel="noopener noreferrer" onClick={handleShare}>
             Share to X
           </Button>
         </Stack>
