@@ -9,7 +9,8 @@ const LinkText = props => {
         sx={{
           color: "#FFF8F3",
           fontSize: ["1.6rem", "1.5rem"],
-          lineHeight: ["4rem", "4.5rem"],
+          lineHeight: "normal",
+          marginBottom: ["3rem"],
           cursor: "pointer",
           "&:hover": {
             color: theme => theme.palette.primary.dark,

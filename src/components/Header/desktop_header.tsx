@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { NavLink } from "react-router-dom"
 import { useStyles } from "tss-react/mui"
 
-import { Box, Container, Fade, Link, Popper, Stack, SvgIcon } from "@mui/material"
+import { Box, Container, Fade, Link, Popper, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { ReactComponent as TriangleDownSvg } from "@/assets/svgs/common/header-triangle-down.svg"
@@ -181,6 +181,7 @@ const App = ({ currentMenu }) => {
   const renderSubMenuList = children => {
     return children.map(section => (
       <SectionList key={section.label} dark={dark}>
+        <Typography sx={{ fontSize: "1.4rem", fontWeight: "bold", lineHeight: "3rem" }}>{section.label}</Typography>
         {section.children
           // only show sub menu item when the href is set
           ?.filter(subItem => subItem.href)

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { NavLink } from "react-router-dom"
 
 import { ExpandMore } from "@mui/icons-material"
-import { Box, Collapse, Link, List, ListItemButton, Stack } from "@mui/material"
+import { Box, Collapse, Link, List, ListItemButton, Stack, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import WalletToolkit from "@/components/WalletToolkit"
@@ -187,6 +187,7 @@ const App = ({ currentMenu }) => {
             <List component="div" disablePadding>
               {item.children?.map(section => (
                 <SectionList key={section.label} dark={dark}>
+                  <Typography sx={{ fontSize: "1.4rem", fontWeight: "bold", lineHeight: "3rem" }}>{section.label}</Typography>
                   {section.children
                     // only show sub items with href
                     ?.filter(subItem => subItem.href)

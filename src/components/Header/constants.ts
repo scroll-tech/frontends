@@ -7,7 +7,7 @@ const sepoliaNavigations = [
     key: "develop",
     children: [
       {
-        label: "develop1",
+        label: "",
         children: [
           {
             label: "Mainnet",
@@ -34,10 +34,16 @@ const sepoliaNavigations = [
             href: "https://status.scroll.io/",
             isExternal: true,
           },
+          {
+            label: "Bug Bounty",
+            key: "status",
+            href: "https://immunefi.com/bounty/scroll/",
+            isExternal: true,
+          },
         ],
       },
       {
-        label: "develop2",
+        label: "BLOCK EXPLORERS",
         children: [
           {
             label: "Rollup Explorer",
@@ -85,7 +91,7 @@ const mainnetNavigations = [
     key: "develop",
     children: [
       {
-        label: "develop1",
+        label: "",
         children: [
           {
             label: "Mainnet",
@@ -118,17 +124,17 @@ const mainnetNavigations = [
             href: "https://status.scroll.io/",
             isExternal: true,
           },
+          {
+            label: "Bug Bounty",
+            key: "status",
+            href: "https://immunefi.com/bounty/scroll/",
+            isExternal: true,
+          },
         ],
       },
       {
-        label: "develop2",
+        label: "BLOCK EXPLORERS",
         children: [
-          {
-            label: "Rollup Explorer",
-            key: "rollupscan",
-            href: "/rollupscan",
-            rootKey: "develop",
-          },
           {
             label: "Scrollscan",
             key: "etherscan",
@@ -152,17 +158,16 @@ const mainnetNavigations = [
     ],
   },
   {
-    label: "Explore",
-    key: "explore",
+    label: "Ecosystem",
+    key: "ecosystem",
+    href: "/ecosystem",
+  },
+  {
+    label: "Resources",
+    key: "resources",
     children: [
       {
         children: [
-          {
-            label: "Ecosystem",
-            key: "ecosystem",
-            href: "/ecosystem",
-            rootKey: "explore",
-          },
           {
             label: "Blog",
             key: "blog",
@@ -176,9 +181,9 @@ const mainnetNavigations = [
             rootKey: "explore",
           },
           {
-            label: "User Guide",
-            key: "userGuide",
-            href: "https://docs.scroll.io/en/user-guide/",
+            label: "Brand Kit",
+            key: "brand kit",
+            href: "https://scrollzkp.notion.site/Scroll-Rebrand-Assets-5bb83465f56f40989c4f772b39ed3a06",
             isExternal: true,
           },
           {
