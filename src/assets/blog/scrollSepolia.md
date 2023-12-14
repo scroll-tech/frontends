@@ -54,7 +54,7 @@ Each party operating provers on the Scroll network has unique capacities for pro
 
 The coordinator additionally now supports both zkEVM Provers and Aggregator Provers. The entire system's speed, reliability, and overall capacity relies on properly balancing these critical resources. The upgrades to our coordinator represent a significant advancement for the network.
 
-## \***\*Reflecting on the Past and Embracing the Future\*\***
+## **Reflecting on the Past and Embracing the Future**
 
 As always, the improvements we have made over the past year have resulted from a constant collaborative effort with the Ethereum Foundation’s PSE team and our broader community of researchers and open source contributors. With this release, we inch closer to the vision of a bytecode-compatible zkEVM accessible to all that mirrors Ethereum’s experience.
 
