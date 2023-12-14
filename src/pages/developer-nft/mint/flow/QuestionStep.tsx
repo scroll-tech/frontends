@@ -111,7 +111,7 @@ const QuestionStep = props => {
   const swiper = useSwiper()
 
   const [value, setValue] = useState<Array<string | never>>([])
-  const [errorMessage, setErrorMessage] = useState("due to any operation that can cause the transaction or top-level call to revert")
+  const [errorMessage, setErrorMessage] = useState("")
 
   const handleChange = e => {
     if (e.target.checked) {

@@ -1,14 +1,17 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
+import ReactGA from "react-ga4"
 
-import { Box, Stack, Typography } from "@mui/material"
+import { Box, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
+import { ReactComponent as TwitterSvg } from "@/assets/svgs/nft/twitter.svg"
+import Button from "@/components/Button"
 import RequestWarning from "@/components/RequestWarning"
-import { ContractReleaseDate } from "@/constants"
+import { ContractReleaseDate, NFT_RARITY_MAP, SCROLL_ORIGINS_NFT } from "@/constants"
 import { useNFTContext } from "@/contexts/NFTContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
-import { decodeSVG, formatDate } from "@/utils"
+import { decodeSVG, formatDate, requireEnv } from "@/utils"
 
 import NFTImage from "../../components/NFTCard/NFTImage"
 import Statistic from "../../components/Statistic"
@@ -28,8 +31,10 @@ const MyNFT = props => {
 
   const { walletCurrentAddress, provider } = useRainbowContext()
   const { unsignedNFTInstance } = useNFTContext()
-  const { isLandscape } = useCheckViewport()
+  const { isLandscape, isMobile } = useCheckViewport()
   const [loading, setLoading] = useState(false)
+
+  const [tokenId, setTokenId] = useState()
   const [tokenURI, setTokenURI] = useState()
   const [mintTimestamp, setMintTimestamp] = useState<number>()
   const [rarity, setRarity] = useState()
@@ -39,11 +44,24 @@ const MyNFT = props => {
     getTokenURIByAddress(unsignedNFTInstance, walletCurrentAddress)
   }, [])
 
+  const scrollscanURL = useMemo(
+    () => `${requireEnv("REACT_APP_ETHERSCAN_L2")}/token/${requireEnv("REACT_APP_SCROLL_ORIGINS_NFT")}?a=${tokenId}`,
+    [tokenId],
+  )
+
+  const shareTwitterURL = useMemo(() => {
+    const viewerUrl = `${requireEnv("REACT_APP_NFT_VIEWER_URL")}/developer-nft/${tokenId}`
+    return `https://twitter.com/intent/tweet?original_referer=${encodeURIComponent(window.location.href)}&url=${encodeURIComponent(
+      viewerUrl,
+    )}&text=${encodeURIComponent("I have minted a Scroll Origins NFT!")}&via=Scroll_ZKP`
+  }, [tokenId])
+
   const getTokenURIByAddress = async (instance, address) => {
     try {
       setLoading(true)
       const balance = await instance.balanceOf(address)
       const tokenId = await instance.tokenOfOwnerByIndex(address, balance - BigInt(1))
+      setTokenId(tokenId)
       const mintTxBlockNumber = await instance.mintData(tokenId)
       const blockDetail = await provider?.getBlock(mintTxBlockNumber)
       setMintTimestamp(blockDetail ? blockDetail.timestamp * 1e3 : undefined)
@@ -61,6 +79,12 @@ const MyNFT = props => {
 
   const handleClose = () => {
     setErrorMessage("")
+  }
+
+  const handleShare = () => {
+    ReactGA.event("share_twitter", {
+      tokenId,
+    })
   }
 
   return (
@@ -98,11 +122,11 @@ const MyNFT = props => {
             textAlign: ["center", "center", "left", "left"],
           }}
         >
-          You have successfully minted a Scroll Origins Detail!
+          You have minted a {SCROLL_ORIGINS_NFT}!
         </Typography>
         <Grid>
           <Statistic label="NFT rarity" loading={loading}>
-            {rarity ? `${rarity}%` : "-"}
+            {rarity ? NFT_RARITY_MAP[rarity] : "-"}
           </Statistic>
           <Statistic label="You minted on" loading={loading}>
             {mintTimestamp ? formatDate(mintTimestamp) : "-"}
@@ -112,6 +136,14 @@ const MyNFT = props => {
           </Statistic>
           <Statistic label="Released on">{formatDate(ContractReleaseDate)}</Statistic>
         </Grid>
+        <Stack direction={isMobile ? "column" : "row"} gap="1.6rem">
+          <Button color="primary" href={scrollscanURL} target="_blank" rel="noopener noreferrer">
+            View on Scrollscan
+          </Button>
+          <Button color="secondary" href={shareTwitterURL} target="_blank" rel="noopener noreferrer" onClick={handleShare}>
+            Share to <SvgIcon sx={{ fontSize: ["1.2rem", "1.6rem"], ml: "6px" }} component={TwitterSvg} inheritViewBox></SvgIcon>
+          </Button>
+        </Stack>
       </Stack>
       <RequestWarning open={!!errorMessage} onClose={handleClose}>
         {errorMessage}

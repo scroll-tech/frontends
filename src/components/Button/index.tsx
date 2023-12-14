@@ -2,10 +2,45 @@ import { motion, useCycle } from "framer-motion"
 import { useMemo } from "react"
 import { makeStyles } from "tss-react/mui"
 
-import { ButtonBase, CircularProgress, IconButton, SvgIcon } from "@mui/material"
+import { ButtonBase, ButtonProps, CircularProgress, IconButton, SvgIcon } from "@mui/material"
 
 import { ReactComponent as ArrowRightIcon } from "@/assets/svgs/common/arrow-right.svg"
 import useCheckViewport from "@/hooks/useCheckViewport"
+
+interface ScrollButtonProps extends ButtonProps {
+  width?: string | number
+  color?: "primary" | "secondary"
+  gloomy?: boolean
+  loading?: boolean
+  disabled?: boolean
+  whiteButton?: boolean
+
+  // compatibility
+  target?: string
+  rel?: string
+}
+
+const gColor = (color, theme) => {
+  switch (color) {
+    case "primary":
+      return theme.palette.primary.main
+    case "secondary":
+      return theme.palette.primary.contrastText
+    default:
+      return theme.palette.text.primary
+  }
+}
+
+const cColor = (color, theme) => {
+  switch (color) {
+    case "primary":
+      return theme.palette.primary.contrastText
+    case "secondary":
+      return theme.palette.text.primary
+    default:
+      return theme.palette.primary.contrastText
+  }
+}
 
 const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, whiteButton }) => ({
   wrapper: {
@@ -38,8 +73,10 @@ const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, w
     height: "100%",
     width: "100%",
     paddingLeft: "5.4rem",
-    border: `1px solid ${color === "primary" ? theme.palette.primary.main : theme.palette.text.primary}`,
-    color: color === "primary" ? theme.palette.primary.main : theme.palette.text.primary,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: gColor(color, theme),
+    color: gColor(color, theme),
     borderRadius: "1rem",
     [theme.breakpoints.down("sm")]: {
       fontSize: "1.6rem",
@@ -55,16 +92,16 @@ const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, w
     paddingRight: "2rem",
     border: "unset",
     gap: "0.4em",
-    color: theme.palette.primary.contrastText,
+    color: cColor(color, theme),
   },
   active: {
-    color: theme.palette.primary.contrastText,
+    color: cColor(color, theme),
   },
   mask: {
     width: "5.4rem",
     height: "100%",
     position: "absolute",
-    backgroundColor: color === "primary" ? theme.palette.primary.main : theme.palette.text.primary,
+    backgroundColor: gColor(color, theme),
     borderRadius: "1rem",
     [theme.breakpoints.down("sm")]: {
       width: "4.8rem",
@@ -82,6 +119,7 @@ const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, w
     height: "100%",
     position: "absolute",
     zIndex: 1,
+    color: `${cColor(color, theme)} !important`,
     [theme.breakpoints.down("sm")]: {
       width: "4.8rem",
     },
@@ -105,8 +143,7 @@ const maskMobile = {
     width: "100%",
   },
 }
-// color: "primary" | undefined
-const Button = props => {
+const Button = (props: ScrollButtonProps) => {
   const { width, sx, color, loading, disabled, gloomy, children, whiteButton, ...restProps } = props
   const { classes, cx } = useStyles({ color, width, disabled, loading, whiteButton })
 
