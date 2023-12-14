@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 import LoadingPage from "@/components/LoadingPage"
 import SectionWrapper from "@/components/SectionWrapper"
@@ -13,11 +14,18 @@ import ReadyToMint from "./ReadyToMint"
 const MintHome = () => {
   const { walletCurrentAddress, chainId } = useRainbowContext()
   const { unsignedNFTInstance } = useNFTContext()
-  const { isEligible, isMinting } = useNFTStore()
+  const { isEligible, isMinting, phrase } = useNFTStore()
+  const navigate = useNavigate()
 
   const [loading, setLoading] = useState(false)
   const [isMinted, setIsMinted] = useState(false)
   const [mintedAmount, setMintedAmount] = useState<bigint>()
+
+  useEffect(() => {
+    if (phrase !== "end") {
+      navigate("/developer-nft/check-eligibility", { replace: true })
+    }
+  }, [phrase])
 
   useEffect(() => {
     if (unsignedNFTInstance && walletCurrentAddress && chainId === CHAIN_ID.L2 && !isEligible && !isMinting) {
