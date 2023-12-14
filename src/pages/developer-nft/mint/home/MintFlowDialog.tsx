@@ -20,6 +20,8 @@ import MintFlow from "../flow"
 
 const useStyles = makeStyles()(theme => ({
   paper: {
+    backgroundColor: theme.palette.text.primary,
+
     [theme.breakpoints.down("sm")]: {
       margin: 0,
     },

@@ -1,4 +1,5 @@
 import { useState } from "react"
+import ReactGA from "react-ga4"
 
 import { Box, Stack, Typography } from "@mui/material"
 
@@ -32,8 +33,16 @@ const MintHome = props => {
       .then(data => {
         if (data.proof) {
           changeIsEligible(1)
+          ReactGA.event("mint_now", {
+            walletAddress: walletCurrentAddress,
+            isEligible: 1,
+          })
         } else if (!data.error) {
           changeIsEligible(-1)
+          ReactGA.event("mint_now", {
+            walletAddress: walletCurrentAddress,
+            isEligible: -1,
+          })
         } else {
           throw new Error("Netword error, try again later")
         }
@@ -104,7 +113,7 @@ const MintHome = props => {
       <Stack direction="column" spacing={isPortrait ? "2.4rem" : "4.8rem"} alignItems={isLandscape ? "flex-start" : "center"}>
         <Typography sx={{ fontSize: ["4rem", "7.8rem"], fontWeight: 600, lineHeight: ["5.6rem", "8.5rem"] }}>{SCROLL_ORIGINS_NFT}</Typography>
         <Stack direction="row" spacing={isMobile ? "2.4rem" : "4.8rem"}>
-          <Statistic label="Total NFTs minted">{total ? total.toString() : "-"}</Statistic>
+          <Statistic label="Total NFTs minted">{typeof total === "bigint" ? total.toString() : "-"}</Statistic>
           <Statistic label="NFTs released on">{formatDate(ContractReleaseDate)}</Statistic>
         </Stack>
         <Box

@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom"
 
 const useCheckTheme = () => {
   const { pathname } = useLocation()
-  const dark = useMemo(() => pathname === "/developer-nft/check-eligibility", [pathname])
+  const dark = useMemo(() => ["/developer-nft/check-eligibility", "/developer-nft/mint"].includes(pathname), [pathname])
 
   return dark
 }
