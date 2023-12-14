@@ -32,6 +32,12 @@ const FinalStep = () => {
     }
   }, [unsignedNFTInstance, walletCurrentAddress, swiperSlide.isActive])
 
+  useEffect(() => {
+    if (tokenId) {
+      fetchMetadataImage(tokenId)
+    }
+  }, [tokenId])
+
   const shareTwitterURL = useMemo(() => {
     const viewerUrl = `${requireEnv("REACT_APP_NFT_VIEWER_URL")}/developer-nft/${tokenId}`
     return `https://twitter.com/intent/tweet?original_referer=${encodeURIComponent(window.location.href)}&url=${encodeURIComponent(
@@ -47,6 +53,10 @@ const FinalStep = () => {
 
     const { tokenURI } = decodeSVG(encodedtTokenURI)
     setTokenURI(tokenURI)
+  }
+
+  const fetchMetadataImage = id => {
+    scrollRequest(`${requireEnv("REACT_APP_NFT_VIEWER_URL")}/developer-nft-image/${id}.png`)
   }
 
   const handleGoShow = () => {
