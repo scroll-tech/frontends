@@ -72,7 +72,7 @@ const ArticlePoster = styled(WebpImage)(({ theme }) => ({
   height: "auto",
   borderRadius: "2.5rem",
   justifySelf: "flex-end",
-
+  overflow: "hidden",
   [theme.breakpoints.down("md")]: {
     gridRow: 1,
     borderRadius: "1.5rem",
