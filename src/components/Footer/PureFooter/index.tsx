@@ -8,24 +8,23 @@ import ScrollLogo from "@/components/ScrollLogo"
 import { requireEnv } from "@/utils"
 
 import SectionWrapper from "../../SectionWrapper"
-import { aboutList, mediaList, resourceList } from "../helper"
+import { aboutList, mediaList } from "../helper"
 import RelativeLink from "./RelativeLink"
 
 const useStyles = makeStyles()(theme => ({
   footerLayout: {
     display: "grid",
     width: "100%",
-    gridTemplateColumns: "repeat(5, 1fr)",
+    gridTemplateColumns: " minmax(auto, 24rem) minmax(auto, 24rem) 1fr minmax(auto, 24rem)",
     gridTemplateAreas: ` 
-      "logo about resource follow version"
+      "logo about follow version"
       `,
 
     [theme.breakpoints.down("md")]: {
       gridTemplateColumns: "repeat(2, 1fr)",
       gridTemplateAreas: ` 
-      "logo follow"
-      "about resource"
-      "version version";
+      "logo version"
+      "about follow";
       `,
       gridRowGap: "5rem",
     },
@@ -42,14 +41,6 @@ const useStyles = makeStyles()(theme => ({
       alignSelf: "center",
     },
   },
-  followTitle: {
-    [theme.breakpoints.down("sm")]: {
-      display: "none",
-    },
-  },
-  resource: {
-    gridArea: "resource",
-  },
   version: {
     gridArea: "version",
   },
@@ -58,14 +49,13 @@ const useStyles = makeStyles()(theme => ({
 const Footer = () => {
   const { classes } = useStyles()
   return (
-    <SectionWrapper dark sx={{ pt: "6rem", pb: ["8rem", "12rem"] }}>
+    <SectionWrapper dark sx={{ pt: "6rem", pb: ["3rem"] }}>
       <Box className={classes.footerLayout}>
         <Link href="/" className={classes.logo}>
           <ScrollLogo light></ScrollLogo>
         </Link>
         <Box className={classes.about}>
-          <Typography sx={{ fontSize: ["1.6rem", "1.8rem"], fontWeight: 600, lineHeight: "normal", color: "#FFF8F3" }}>About Scroll</Typography>
-          <List sx={{ pt: ["0.9rem", "1.8rem"], pb: 0 }}>
+          <List sx={{ py: 0 }}>
             {aboutList.map(item => (
               <ListItem key={item.name} disablePadding>
                 <RelativeLink {...item}></RelativeLink>
@@ -73,24 +63,9 @@ const Footer = () => {
             ))}
           </List>
         </Box>
-        <Box className={classes.resource}>
-          <Typography sx={{ fontSize: ["1.6rem", "1.8rem"], fontWeight: 600, lineHeight: "normal", color: "#FFF8F3" }}>Resources</Typography>
-          <List sx={{ pt: ["0.9rem", "1.8rem"], pb: 0 }}>
-            {resourceList.map(item => (
-              <ListItem key={item.name} disablePadding>
-                <RelativeLink {...item}></RelativeLink>
-              </ListItem>
-            ))}
-          </List>
-        </Box>
         <Box className={classes.follow}>
-          <Typography
-            className={classes.followTitle}
-            sx={{ fontSize: "1.8rem", fontWeight: 600, lineHeight: "normal", color: "#FFF8F3", mb: "3rem" }}
-          >
-            Follow Us
-          </Typography>
-          <Stack direction="row" spacing={"2.6rem"} sx={{ lineHeight: 1 }}>
+          <Typography sx={{ fontSize: "1.8rem", fontWeight: 600, lineHeight: "normal", color: "#FFF8F3", mb: "3rem" }}>Follow Us</Typography>
+          <Stack direction="row" spacing={"2.6rem"} sx={{ lineHeight: 1, marginBottom: "3rem" }}>
             {mediaList.map(item => (
               <Link external href={item.href} key={item.name}>
                 <SvgIcon
