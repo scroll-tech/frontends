@@ -15,6 +15,7 @@ export const Stage3StartDate = dayjs("2023-11-24T23:00:00Z")
 export const EndDate = dayjs("2023-12-09T23:00:00Z").subtract(1, "ms")
 
 export const MintableDate = dayjs("2023-12-14T23:00:00Z")
+// 1702594800
 
 export const ContractReleaseDate = dayjs("2023-12-14T11:30:42Z")
 
