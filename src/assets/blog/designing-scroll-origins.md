@@ -10,19 +10,19 @@ A unique polynomial function is created based on the contract deployment date, w
 
 For graphs to be beautifully displayed within the NFT frame, passing through the coordinates of origin with all turning points prominently displayed, we applied a few more math wizardries. Here’s the [Python script](https://file.notion.so/f/f/cc12e519-e01d-4277-9573-3fe8e5bdf9ce/497c4a7e-2e47-43fb-9e8e-6292fcba1680/generate_polynomials.py?id=7920a78e-915f-4f55-b12d-4249de214d45&table=block&spaceId=cc12e519-e01d-4277-9573-3fe8e5bdf9ce&expirationTimestamp=1702771200000&signature=FqEYCOXcL0_qsC0Tlv3oyEV3Ako3i_wcQ6N6bxrtQC8&downloadName=generate_polynomials.py) for generating polynomials for each NFT graph. 
 
-![quintic.svg](../../../public/imgs/homepage/blog/scrollOriginsNFT/quintic.gif)
+![quintic.gif](../../../public/imgs/homepage/blog/scrollOriginsNFT/quintic.gif)
 
-![quartic.svg](../../../public/imgs/homepage/blog/scrollOriginsNFT/quartic.gif)
+![quartic.gif](../../../public/imgs/homepage/blog/scrollOriginsNFT/quartic.gif)
 
-![cubic.svg](../../../public/imgs/homepage/blog/scrollOriginsNFT/cubic.gif)
+![cubic.gif](../../../public/imgs/homepage/blog/scrollOriginsNFT/cubic.gif)
 
 # One more thing
 
 On top of that, we added some extra rarity feature unlocks - epic and rare rainbow patterns for the more active protocols with more user activities. Head over to [https://scroll.io/developer-nft/mint](https://scroll.io/developer-nft/mint) to mint your piece of Scroll’s history and share your NFT with the community to discover which one boasts the most rarity features.
 
-![rainbow-background.svg](../../../public/imgs/homepage/blog/scrollOriginsNFT/rainbow-background.gif)
+![rainbow-background.gif](../../../public/imgs/homepage/blog/scrollOriginsNFT/rainbow-background.gif)
 
-![rainbow-stroke.svg](../../../public/imgs/homepage/blog/scrollOriginsNFT/rainbow-stroke.gif)
+![rainbow-stroke.gif](../../../public/imgs/homepage/blog/scrollOriginsNFT/rainbow-stroke.gif)
 
 # More on Scroll
 
