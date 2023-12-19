@@ -19,18 +19,23 @@ const FinalStep = () => {
   const swiperSlide = useSwiperSlide()
 
   const { walletCurrentAddress } = useRainbowContext()
-  const { unsignedNFTInstance } = useNFTContext()
-  const { changeIsEligible } = useNFTStore()
+  const { unsignedNFTInstance, unsignedNFTV2Instance } = useNFTContext()
+  const { changeIsEligible, nftVersion } = useNFTStore()
   const { isMobile } = useCheckViewport()
 
   const [tokenId, setTokenId] = useState()
   const [tokenURI, setTokenURI] = useState()
 
+  const realNFTInstance = useMemo(
+    () => (nftVersion === 1 ? unsignedNFTInstance : unsignedNFTV2Instance),
+    [unsignedNFTInstance, unsignedNFTV2Instance, nftVersion],
+  )
+
   useEffect(() => {
     if (swiperSlide.isActive) {
-      getTokenURIByAddress(unsignedNFTInstance, walletCurrentAddress)
+      getTokenURIByAddress(realNFTInstance, walletCurrentAddress)
     }
-  }, [unsignedNFTInstance, walletCurrentAddress, swiperSlide.isActive])
+  }, [realNFTInstance, walletCurrentAddress, swiperSlide.isActive])
 
   const shareTwitterURL = useMemo(() => {
     const viewerUrl = `${requireEnv("REACT_APP_NFT_VIEWER_URL")}/developer-nft/${tokenId}`

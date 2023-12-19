@@ -13,8 +13,8 @@ import ReadyToMint from "./ReadyToMint"
 
 const MintHome = () => {
   const { walletCurrentAddress, chainId } = useRainbowContext()
-  const { unsignedNFTInstance } = useNFTContext()
-  const { isEligible, isMinting, phrase } = useNFTStore()
+  const { unsignedNFTInstance, unsignedNFTV2Instance } = useNFTContext()
+  const { isEligible, isMinting, phrase, changeNFTVersion } = useNFTStore()
   const navigate = useNavigate()
 
   const [loading, setLoading] = useState(false)
@@ -28,18 +28,25 @@ const MintHome = () => {
   }, [phrase])
 
   useEffect(() => {
-    if (unsignedNFTInstance && walletCurrentAddress && chainId === CHAIN_ID.L2 && !isEligible && !isMinting) {
-      checkIsMinted(unsignedNFTInstance, walletCurrentAddress)
+    if (unsignedNFTInstance && unsignedNFTV2Instance && walletCurrentAddress && chainId === CHAIN_ID.L2 && !isEligible && !isMinting) {
+      checkIsMinted(unsignedNFTInstance, unsignedNFTV2Instance, walletCurrentAddress)
     }
-  }, [unsignedNFTInstance, walletCurrentAddress, chainId, isEligible, isMinting])
+  }, [unsignedNFTInstance, unsignedNFTV2Instance, walletCurrentAddress, chainId, isEligible, isMinting])
 
-  const checkIsMinted = async (instance, address) => {
+  const checkIsMinted = async (instance, instance2, address) => {
     try {
       setLoading(true)
       const balance = await fetchBalance(instance, address)
-      setIsMinted(!!balance)
+      const balance2 = await fetchBalance(instance2, address)
+      setIsMinted(balance || balance2)
+      if (balance) {
+        changeNFTVersion(1)
+      } else if (balance2) {
+        changeNFTVersion(2)
+      }
       const totalSupply = await fetchTotalSupply(instance)
-      setMintedAmount(totalSupply)
+      const totalSupply2 = await fetchTotalSupply(instance2)
+      setMintedAmount(totalSupply + totalSupply2)
     } catch (e) {
     } finally {
       setLoading(false)

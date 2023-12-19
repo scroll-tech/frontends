@@ -103,9 +103,9 @@ const QuestionStep = props => {
   const { order, subject, options, answer, image, scrollTarget } = props
   const { walletCurrentAddress } = useRainbowContext()
 
-  const { NFTInstance } = useNFTContext()
+  const { NFTInstance, NFTV2Instance } = useNFTContext()
 
-  const { isMinting, changeIsMinting } = useNFTStore()
+  const { isMinting, changeIsMinting, changeNFTVersion } = useNFTStore()
 
   const { classes } = useStyles()
   const swiper = useSwiper()
@@ -131,7 +131,14 @@ const QuestionStep = props => {
           ...metadata,
           rarityData: BigInt(metadata.rarityData),
         }
-        const tx = await NFTInstance.mint(walletCurrentAddress, nftMetadata, proof)
+        let tx
+        if (proof.length) {
+          changeNFTVersion(1)
+          tx = await NFTInstance.mint(walletCurrentAddress, nftMetadata, proof)
+        } else {
+          changeNFTVersion(2)
+          tx = await NFTV2Instance.mint(walletCurrentAddress, nftMetadata)
+        }
         const txReceipt = await tx.wait()
         if (txReceipt.status === 1) {
           return true
