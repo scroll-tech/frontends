@@ -14,7 +14,7 @@ import ReadyToMint from "./ReadyToMint"
 const MintHome = () => {
   const { walletCurrentAddress, chainId } = useRainbowContext()
   const { unsignedNFTInstance, unsignedNFTV2Instance } = useNFTContext()
-  const { isEligible, isMinting, phrase, changeNFTVersion } = useNFTStore()
+  const { isEligible, isMinting, phrase, changeNFTVersion, changeIsEligible } = useNFTStore()
   const navigate = useNavigate()
 
   const [loading, setLoading] = useState(false)
@@ -26,6 +26,12 @@ const MintHome = () => {
       navigate("/developer-nft/check-eligibility", { replace: true })
     }
   }, [phrase])
+
+  useEffect(() => {
+    if (walletCurrentAddress) {
+      changeIsEligible(0)
+    }
+  }, [walletCurrentAddress])
 
   useEffect(() => {
     if (unsignedNFTInstance && unsignedNFTV2Instance && walletCurrentAddress && chainId === CHAIN_ID.L2 && !isEligible && !isMinting) {
