@@ -20,7 +20,7 @@ For graphs to be beautifully displayed within the NFT frame, passing through the
 
 On top of that, we added some extra rarity feature unlocks - epic and rare rainbow patterns for the more active protocols with more user activities. Head over to [https://scroll.io/developer-nft/mint](https://scroll.io/developer-nft/mint) to mint your piece of Scroll’s history and share your NFT with the community to discover which one boasts the most rarity features.
 
-<p align="center">
+<p align="center" style="margin: 20px auto;">
   <img src="/imgs/homepage/blog/scrollOriginsNFT/rainbow-background.svg" alt="rainbow-background.svg" style="width: 45%;"/>
   <img src="/imgs/homepage/blog/scrollOriginsNFT/rainbow-stroke.svg" alt="rainbow-stroke.svg" style="width: 45%;"/>
 </p>
