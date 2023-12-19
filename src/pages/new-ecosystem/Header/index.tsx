@@ -2,31 +2,45 @@ import useSWR from "swr"
 
 import { Box, Stack, Typography } from "@mui/material"
 
+import { ecosystemActivityUrl, ecosystemTVLUrl } from "@/apis/ecosystem"
+import { fetchLastBatchIndexesUrl } from "@/apis/rollupscan"
 import SectionWrapper from "@/components/SectionWrapper"
+import { formatLargeNumber } from "@/utils"
 
 import Statistic from "./Statistic"
 
 const Header = () => {
   const { data: totalTVL, isLoading: isTVLLoading } = useSWR(
     "totalTVL",
-    () => {
-      return "40.17M"
+    async () => {
+      const {
+        hourly: { data },
+      } = await scrollRequest(ecosystemTVLUrl)
+      return formatLargeNumber(data[data.length - 1][1])
     },
-    { refreshInterval: 1e4 },
+    { refreshInterval: 18e4 },
   )
   const { data: totalTxCount, isLoading: isTxCountLoading } = useSWR(
     "totalTxCount",
-    () => {
-      return "6.27M"
+    async () => {
+      const {
+        daily: { data },
+      } = await scrollRequest(ecosystemActivityUrl)
+      const totalTxCount = data
+        // .slice(-30)
+        .map(item => item[1])
+        .reduce((a, b) => a + b)
+      return formatLargeNumber(totalTxCount)
     },
-    { refreshInterval: 1e4 },
+    { refreshInterval: 18e4 },
   )
   const { data: totalBatches, isLoading: isBatchesLoading } = useSWR(
     "totalBatches",
-    () => {
-      return "24354"
+    async () => {
+      const { finalized_index } = await scrollRequest(fetchLastBatchIndexesUrl)
+      return formatLargeNumber(finalized_index)
     },
-    { refreshInterval: 1e4 },
+    { refreshInterval: 18e4 },
   )
 
   return (

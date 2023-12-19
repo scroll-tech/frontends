@@ -6,7 +6,8 @@ import NumberTypography from "@/components/NumberTypography"
 
 const StatisticSkeleton = styled(Skeleton)(({ theme }) => ({
   borderRadius: "1rem",
-  backgroundColor: "rgba(256, 256, 256, 0.15)",
+  width: "50%",
+  display: "inline-block",
 }))
 
 const Statistic = props => {
@@ -16,7 +17,6 @@ const Statistic = props => {
   return (
     <Stack
       direction="column"
-      alignItems="center"
       sx={{
         flex: 1,
         borderRadius: ["0.8rem", "1.6rem"],
@@ -34,12 +34,15 @@ const Statistic = props => {
             flex: 1,
             display: "inline-flex",
             alignItems: "center",
+            alignSelf: "center",
           },
         }}
       >
         {label}
       </Typography>
-      <NumberTypography sx={{ fontSize: ["2rem", "4.8rem"], lineHeight: ["3.2rem", "5.6rem"], fontWeight: 600, whiteSpace: "nowrap" }}>
+      <NumberTypography
+        sx={{ fontSize: ["2rem", "4.8rem"], lineHeight: ["3.2rem", "5.6rem"], fontWeight: 600, textAlign: "center", whiteSpace: "nowrap" }}
+      >
         {loading ? <StatisticSkeleton></StatisticSkeleton> : <>{children}</>}
       </NumberTypography>
     </Stack>
