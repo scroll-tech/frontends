@@ -8,7 +8,7 @@ A visual embodiment of Scroll’s commitment to zero knowledge principles, each 
 
 A unique polynomial function is created based on the contract deployment date, wallet address, and a few other project-specific factors to construct an NFT that's personal to each developer. There are three different NFT patterns with polynomial graphics based on the contract deployment stage. The earliest batch of deployed projects receives a Quintic pattern, followed by Quartic and then Cubic.
 
-For graphs to be beautifully displayed within the NFT frame, passing through the coordinates of origin with all turning points prominently displayed, we applied a few more math wizardries. Here’s the [Python script](https://file.notion.so/f/f/cc12e519-e01d-4277-9573-3fe8e5bdf9ce/497c4a7e-2e47-43fb-9e8e-6292fcba1680/generate_polynomials.py?id=7920a78e-915f-4f55-b12d-4249de214d45&table=block&spaceId=cc12e519-e01d-4277-9573-3fe8e5bdf9ce&expirationTimestamp=1702771200000&signature=FqEYCOXcL0_qsC0Tlv3oyEV3Ako3i_wcQ6N6bxrtQC8&downloadName=generate_polynomials.py) for generating polynomials for each NFT graph.
+For graphs to be beautifully displayed within the NFT frame, passing through the coordinates of origin with all turning points prominently displayed, we applied a few more math wizardries. Here’s the [Python script](https://raw.githubusercontent.com/scroll-tech/frontends/mainnet/public/files/generate_polynomials.py) for generating polynomials for each NFT graph.
 
 <p align="center" style="margin: 20px auto;">
   <img src="/imgs/homepage/blog/scrollOriginsNFT/quintic.svg" alt="quintic" style="width: 30%;"/>
