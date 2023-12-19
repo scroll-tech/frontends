@@ -4,12 +4,7 @@ import { useTheme } from "@mui/material/styles"
 import { ReactComponent as SearchSvg } from "@/assets/svgs/ecosystem/search.svg"
 
 const SearchInput = props => {
-  const { onChange } = props
   const theme = useTheme()
-
-  const handleChangeKeyword = e => {
-    onChange(e.target.value)
-  }
 
   return (
     <Stack
@@ -40,7 +35,7 @@ const SearchInput = props => {
           fontWeight: 500,
         }}
         placeholder="Search"
-        onChange={handleChangeKeyword}
+        {...props}
       ></InputBase>
     </Stack>
   )

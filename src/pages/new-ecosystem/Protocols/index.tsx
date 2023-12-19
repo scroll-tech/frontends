@@ -5,7 +5,7 @@ import { Box, Stack, Typography } from "@mui/material"
 
 import Button from "@/components/Button"
 import SectionWrapper from "@/components/SectionWrapper"
-import { LIST_YOUR_DAPP_LINK } from "@/constants"
+import { ECOSYSTEM_NETWORK_LIST, LIST_YOUR_DAPP_LINK } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
 import Category from "./Category"
@@ -32,14 +32,31 @@ const Grid = withStyles(Box, theme => ({
 
 const Protocols = () => {
   const { isMobile, isTablet } = useCheckViewport()
-  const [category, setCategory] = useState("All categories")
+  const [searchParams, setSearchParams] = useState({
+    category: "All categories",
+    network: ECOSYSTEM_NETWORK_LIST[0],
+    keyword: "",
+  })
 
-  const handleChangeCategory = e => {
-    setCategory(e.target.value)
+  const handleChangeCategory = value => {
+    setSearchParams(pre => ({
+      ...pre,
+      category: value,
+    }))
   }
 
-  const handleChangeKeyword = () => {}
-  const handleChangeNetwork = () => {}
+  const handleChangeKeyword = e => {
+    setSearchParams(pre => ({
+      ...pre,
+      keyword: e.target.value.trim() || "",
+    }))
+  }
+  const handleChangeNetwork = value => {
+    setSearchParams(pre => ({
+      ...pre,
+      network: value,
+    }))
+  }
 
   return (
     <SectionWrapper>
@@ -52,10 +69,10 @@ const Protocols = () => {
         </Button>
       </Stack>
       <Grid>
-        <Category value={category} onChange={handleChangeCategory}></Category>
-        <SearchInput onChange={handleChangeKeyword}></SearchInput>
-        <NetworkSelect onChange={handleChangeNetwork}></NetworkSelect>
-        <ProtocolList category={category}></ProtocolList>
+        <Category value={searchParams.category} onChange={handleChangeCategory}></Category>
+        <SearchInput value={searchParams.keyword} onChange={handleChangeKeyword}></SearchInput>
+        <NetworkSelect value={searchParams.network} onChange={handleChangeNetwork}></NetworkSelect>
+        <ProtocolList searchParams={searchParams}></ProtocolList>
       </Grid>
     </SectionWrapper>
   )

@@ -56,19 +56,19 @@ const useStyles = makeStyles()(theme => ({
   },
 }))
 
-const Contribute = props => {
-  const { value } = props
+const Category = props => {
+  const { value, onChange } = props
   const { classes } = useStyles()
   const allCategories = useRef(["All categories", ...Object.keys(DIVERGENT_CATEGORY_MAP)])
 
   return (
     <MenuList classes={{ root: classes.menuListRoot }}>
       {allCategories.current.map(item => (
-        <MenuItem classes={{ root: classes.menuItemRoot }} selected={value === item}>
+        <MenuItem classes={{ root: classes.menuItemRoot }} selected={value === item} onClick={() => onChange(item)}>
           <Typography sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: ["2.4rem", "3.2rem"], fontWeight: 600, cursor: "inherit" }}>{item}</Typography>
         </MenuItem>
       ))}
     </MenuList>
   )
 }
-export default Contribute
+export default Category

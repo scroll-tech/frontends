@@ -3,11 +3,11 @@ import { makeStyles } from "tss-react/mui"
 
 import { Box, List } from "@mui/material"
 
-import { ecosystemListHashUrl } from "@/apis/ecosystem"
+import { ecosystemListUrl } from "@/apis/ecosystem"
 import Link from "@/components/Link"
 import LoadingPage from "@/components/LoadingPage"
 import RequestWarning from "@/components/RequestWarning"
-import { DIVERGENT_CATEGORY_MAP } from "@/constants"
+import { DIVERGENT_CATEGORY_MAP, ECOSYSTEM_NETWORK_LIST } from "@/constants"
 
 import ProtocolCard from "./ProtocolCard"
 
@@ -48,18 +48,39 @@ const useStyles = makeStyles()(theme => ({
 }))
 
 const ProtocolList = props => {
-  const { category } = props
+  const {
+    searchParams: { category, network, keyword },
+  } = props
   const { classes } = useStyles()
 
   const [loading, setLoading] = useState(false)
   const [page, setPage] = useState(1)
   const [ecosystemList, setEcosystemList] = useState([])
   const [errorMsg, setErrorMsg] = useState("")
+  const [hasMore, setHasMore] = useState(false)
+
+  const queryStr = useMemo(() => {
+    const searchParams = new URLSearchParams({
+      page,
+    } as any)
+    if (network !== ECOSYSTEM_NETWORK_LIST[0]) {
+      searchParams.set("network", network)
+    }
+    if (category !== "All categories") {
+      searchParams.set("category", category)
+    }
+    if (keyword.trim()) {
+      searchParams.set("keyword", keyword)
+    }
+    const searchParamsStr = searchParams.toString()
+    return searchParamsStr ? `?${searchParamsStr}` : ""
+  }, [category, network, keyword, page])
 
   useEffect(() => {
     setLoading(true)
-    scrollRequest(`${ecosystemListHashUrl}ecosystem.hash.p${page}.json`)
-      .then(data => {
+    scrollRequest(`${ecosystemListUrl}${queryStr}`)
+      .then(({ data, hasMore }) => {
+        setHasMore(hasMore)
         setEcosystemList(pre => pre.concat(data))
       })
       .catch(() => {
@@ -69,15 +90,7 @@ const ProtocolList = props => {
       .finally(() => {
         setLoading(false)
       })
-  }, [page])
-
-  const hasMore = useMemo(() => {
-    if (!ecosystemList.length) {
-      return false
-    }
-    const lastOne: any = ecosystemList.slice(-1)[0]
-    return !lastOne.isLastOne
-  }, [ecosystemList])
+  }, [queryStr])
 
   const filteredEcosystemList = useMemo(() => {
     if (category === "All categories") {
