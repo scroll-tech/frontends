@@ -172,13 +172,13 @@ const mainnetNavigations = [
             label: "Blog",
             key: "blog",
             href: "/blog",
-            rootKey: "explore",
+            rootKey: "resources",
           },
           {
             label: "Join Us ",
             key: "join our team",
             href: "/join-us",
-            rootKey: "explore",
+            rootKey: "resources",
           },
           {
             label: "Brand Kit",

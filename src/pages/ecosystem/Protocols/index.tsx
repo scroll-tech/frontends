@@ -6,7 +6,7 @@ import Button from "@/components/Button"
 import SectionHeader from "@/components/SectionHeader"
 import SectionWrapper from "@/components/SectionWrapper"
 import Select from "@/components/Select"
-import { DIVERGENT_CATEGORY_MAP, LOOKING_FOR_A_DAPP_LINK } from "@/constants"
+import { DIVERGENT_CATEGORY_MAP, REQUEST_A_DAPP_LINK } from "@/constants"
 
 import Gallery from "../Gallery"
 
@@ -24,7 +24,7 @@ const Protocols = props => {
         title="Find your purpose with Scroll"
         content="Whatever the use case, we’re building for what’s next. Browse all protocols and discover new inspiration."
         action={
-          <Button href={LOOKING_FOR_A_DAPP_LINK} target="_blank" color="primary">
+          <Button href={REQUEST_A_DAPP_LINK} target="_blank" color="primary">
             Request a dApp
           </Button>
         }
