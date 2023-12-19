@@ -15,9 +15,9 @@ export const DIVERGENT_CATEGORY_MAP = {
   Wallet: ["Wallet", "Hardware Wallet"],
 }
 
-export const LIST_YOUR_DAPP_LINK = "https://scrollzkp.typeform.com/buildwithscroll"
+export const LIST_YOUR_DAPP_LINK = "https://tally.so/r/nGppyZ"
 
-export const LOOKING_FOR_A_DAPP_LINK = "https://scrollzkp.typeform.com/to/mHYILHJx"
+export const REQUEST_A_DAPP_LINK = "https://tally.so/r/3jlj59"
 
 export const LEARN_BUILD_LINK = "https://docs.scroll.io/en/getting-started/overview/"
 
@@ -31,7 +31,7 @@ export const ECOSYSTEM_EXPLORER_LIST = [
   },
   {
     icon: DoubleEyesIcon,
-    href: LOOKING_FOR_A_DAPP_LINK,
+    href: REQUEST_A_DAPP_LINK,
     title: "Request a dApp",
     content:
       "At Scroll, we want to provide the most vibrant ecosystem for our users. Can’t find the application you’re looking for on Scroll? We want to know!",
