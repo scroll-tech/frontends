@@ -2,6 +2,7 @@ import { InputBase, Stack, SvgIcon } from "@mui/material"
 import { useTheme } from "@mui/material/styles"
 
 import { ReactComponent as SearchSvg } from "@/assets/svgs/ecosystem/search.svg"
+import { NORMAL_HEADER_HEIGHT } from "@/constants"
 
 const SearchInput = props => {
   const theme = useTheme()
@@ -12,6 +13,11 @@ const SearchInput = props => {
       alignItems="center"
       gap="1rem"
       sx={{
+        position: "sticky",
+        top: `calc(${NORMAL_HEADER_HEIGHT} + 0.5rem)`,
+
+        zIndex: 1,
+
         maxWidth: "32rem",
         height: "4.8rem",
         borderRadius: "2.4rem",

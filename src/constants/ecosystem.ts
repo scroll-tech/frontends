@@ -3,6 +3,7 @@ import { ReactComponent as HeartIcon } from "@/assets/svgs/ecosystem/heart.svg"
 import { ReactComponent as SettingsIcon } from "@/assets/svgs/ecosystem/settings.svg"
 import { ReactComponent as TwitterIcon } from "@/assets/svgs/ecosystem/twitter.svg"
 import { ReactComponent as WebsiteIcon } from "@/assets/svgs/ecosystem/website.svg"
+import { isProduction } from "@/utils"
 
 export const DIVERGENT_CATEGORY_MAP = {
   Community: ["Community", "DAO", "Governance"],
@@ -59,3 +60,5 @@ export const ECOSYSTEM_SOCIAL_LIST = [
 export const TWITTER_ORIGIN = "https://twitter.com/"
 
 export const ECOSYSTEM_NETWORK_LIST = ["All networks", "Mainnet", "Testnet"]
+
+export const NORMAL_HEADER_HEIGHT = isProduction ? "6.5rem" : "11.5rem"

@@ -17,9 +17,7 @@ const useStyles = makeStyles()(theme => ({
     backgroundColor: theme.palette.themeBackground.normal,
     padding: "2.4rem",
     borderRadius: "2rem",
-    "&:nth-child(n + 2)": {
-      marginTop: "2rem",
-    },
+    position: "relative",
 
     display: "grid",
     gridTemplateColumns: "max-content 1fr max-content",

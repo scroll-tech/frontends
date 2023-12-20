@@ -3,12 +3,16 @@ import { makeStyles } from "tss-react/mui"
 
 import { MenuItem, MenuList, Typography } from "@mui/material"
 
-import { DIVERGENT_CATEGORY_MAP } from "@/constants"
+import { DIVERGENT_CATEGORY_MAP, NORMAL_HEADER_HEIGHT } from "@/constants"
 
 const useStyles = makeStyles()(theme => ({
   menuListRoot: {
+    position: "sticky",
+    top: `calc(${NORMAL_HEADER_HEIGHT} + 0.5rem)`,
+
     padding: 0,
     gridRow: "span 2",
+    height: "max-content",
 
     [theme.breakpoints.down("md")]: {
       gridRow: "span 1",

@@ -2,7 +2,7 @@ import { MenuItem, Typography } from "@mui/material"
 import { useTheme } from "@mui/material/styles"
 
 import Select from "@/components/Select"
-import { ECOSYSTEM_NETWORK_LIST } from "@/constants"
+import { ECOSYSTEM_NETWORK_LIST, NORMAL_HEADER_HEIGHT } from "@/constants"
 
 const NetworkSelect = props => {
   const { value, onChange } = props
@@ -15,6 +15,11 @@ const NetworkSelect = props => {
   return (
     <Select
       sx={{
+        position: "sticky",
+        top: `calc(${NORMAL_HEADER_HEIGHT} + 0.5rem)`,
+
+        zIndex: 1,
+
         [theme.breakpoints.down("md")]: {
           gridRow: "2 / 3",
         },

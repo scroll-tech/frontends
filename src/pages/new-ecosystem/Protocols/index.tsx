@@ -17,6 +17,7 @@ const Grid = withStyles(Box, theme => ({
   root: {
     marginTop: "6.8rem",
     display: "grid",
+    // backgroundColor: theme.palette.themeBackground.light,
     gridTemplateColumns: "max-content 1fr max-content",
     gridTemplateRows: "max-content 1fr",
     rowGap: "3rem",
@@ -36,11 +37,13 @@ const Protocols = () => {
     category: "All categories",
     network: ECOSYSTEM_NETWORK_LIST[0],
     keyword: "",
+    page: 1,
   })
 
   const handleChangeCategory = value => {
     setSearchParams(pre => ({
       ...pre,
+      page: 1,
       category: value,
     }))
   }
@@ -48,20 +51,32 @@ const Protocols = () => {
   const handleChangeKeyword = e => {
     setSearchParams(pre => ({
       ...pre,
+      page: 1,
       keyword: e.target.value.trim() || "",
     }))
   }
   const handleChangeNetwork = value => {
     setSearchParams(pre => ({
       ...pre,
+      page: 1,
       network: value,
+    }))
+  }
+
+  const handleChangePage = () => {
+    setSearchParams(pre => ({
+      ...pre,
+      page: pre.page + 1,
     }))
   }
 
   return (
     <SectionWrapper>
       <Stack direction="row" justifyContent="space-between" alignItems="center" gap="2rem">
-        <Typography sx={{ fontSize: ["2.4rem", "4.4rem"], lineHeight: ["3.6rem", "5.6rem"], fontWeight: [600, 500], flex: 1 }}>
+        <Typography
+          className="ecosystem-protocols-title"
+          sx={{ fontSize: ["2.4rem", "4.4rem"], lineHeight: ["3.6rem", "5.6rem"], fontWeight: [600, 500], flex: 1 }}
+        >
           Browse all protocols
         </Typography>
         <Button width={isMobile ? "15.4rem" : isTablet ? "21.5rem" : "25rem"} href={LIST_YOUR_DAPP_LINK} target="_blank" color="primary">
@@ -72,7 +87,7 @@ const Protocols = () => {
         <Category value={searchParams.category} onChange={handleChangeCategory}></Category>
         <SearchInput value={searchParams.keyword} onChange={handleChangeKeyword}></SearchInput>
         <NetworkSelect value={searchParams.network} onChange={handleChangeNetwork}></NetworkSelect>
-        <ProtocolList searchParams={searchParams}></ProtocolList>
+        <ProtocolList searchParams={searchParams} onAddPage={handleChangePage}></ProtocolList>
       </Grid>
     </SectionWrapper>
   )
