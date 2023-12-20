@@ -9,16 +9,19 @@ interface NFTStore {
   phrase: Phrase
   isEligible: Eligible
   isMinting: boolean
+  nftVersion: number
   checkPhrase: () => void
   changePhrase: (phrase: Phrase) => void
   changeIsEligible: (isEligible: Eligible) => void
   changeIsMinting: (isMinting: boolean) => void
+  changeNFTVersion: (nftVersion: number) => void
 }
 
 const useNFTStore = create<NFTStore>()((set, get) => ({
   phrase: "",
   isEligible: 0,
   isMinting: false,
+  nftVersion: 0,
   changePhrase: value => {
     set({
       phrase: value,
@@ -55,6 +58,12 @@ const useNFTStore = create<NFTStore>()((set, get) => ({
   changeIsMinting: isMinting => {
     set({
       isMinting,
+    })
+  },
+
+  changeNFTVersion: nftVersion => {
+    set({
+      nftVersion,
     })
   },
 }))

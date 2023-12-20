@@ -126,8 +126,9 @@ const MintHome = props => {
         >
           {!isEligible && <>{renderAction()}</>}
           {isEligible === -1 && (
-            <Alert severity="error" sx={{ width: ["100%", "47.5rem"] }}>
-              Selected account is not eligible to mint because you didn’t deploy a project within 60 days of Genesis Block{" "}
+            <Alert severity="error" sx={{ width: ["100%", "42.8rem"] }}>
+              The wallet address is not eligible. Please reach out to Scroll Discord, ‘scroll-origins-support,’ if you have any questions about{" "}
+              {SCROLL_ORIGINS_NFT}.
             </Alert>
           )}
         </Box>

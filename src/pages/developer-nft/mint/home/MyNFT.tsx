@@ -11,6 +11,7 @@ import { ContractReleaseDate, NFT_RARITY_MAP, SCROLL_ORIGINS_NFT } from "@/const
 import { useNFTContext } from "@/contexts/NFTContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
+import useNFTStore from "@/stores/nftStore"
 import { decodeSVG, formatDate, requireEnv } from "@/utils"
 
 import NFTImage from "../../components/NFTCard/NFTImage"
@@ -30,7 +31,8 @@ const MyNFT = props => {
   const { total } = props
 
   const { walletCurrentAddress, provider } = useRainbowContext()
-  const { unsignedNFTInstance } = useNFTContext()
+  const { unsignedNFTInstance, unsignedNFTV2Instance } = useNFTContext()
+  const { nftVersion } = useNFTStore()
   const { isLandscape, isMobile } = useCheckViewport()
   const [loading, setLoading] = useState(false)
 
@@ -41,11 +43,14 @@ const MyNFT = props => {
   const [errorMessage, setErrorMessage] = useState("")
 
   useEffect(() => {
-    getTokenURIByAddress(unsignedNFTInstance, walletCurrentAddress)
-  }, [])
+    getTokenURIByAddress(nftVersion === 1 ? unsignedNFTInstance : unsignedNFTV2Instance, walletCurrentAddress)
+  }, [nftVersion])
 
   const scrollscanURL = useMemo(
-    () => `${requireEnv("REACT_APP_ETHERSCAN_L2")}/token/${requireEnv("REACT_APP_SCROLL_ORIGINS_NFT")}?a=${tokenId}`,
+    () =>
+      `${requireEnv("REACT_APP_ETHERSCAN_L2")}/token/${
+        nftVersion === 1 ? requireEnv("REACT_APP_SCROLL_ORIGINS_NFT") : requireEnv("REACT_APP_SCROLL_ORIGINS_NFT_V2")
+      }?a=${tokenId}`,
     [tokenId],
   )
 

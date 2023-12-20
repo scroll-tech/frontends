@@ -17,7 +17,7 @@ import RequestWarning from "@/components/RequestWarning"
 import { useNFTContext } from "@/contexts/NFTContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useNFTStore from "@/stores/nftStore"
-import { trimErrorMessage } from "@/utils"
+import { sentryDebug, trimErrorMessage } from "@/utils"
 
 import StepWrapper from "./StepWrapper"
 
@@ -103,9 +103,9 @@ const QuestionStep = props => {
   const { order, subject, options, answer, image, scrollTarget } = props
   const { walletCurrentAddress } = useRainbowContext()
 
-  const { NFTInstance } = useNFTContext()
+  const { NFTInstance, NFTV2Instance } = useNFTContext()
 
-  const { isMinting, changeIsMinting } = useNFTStore()
+  const { isMinting, changeIsMinting, changeNFTVersion } = useNFTStore()
 
   const { classes } = useStyles()
   const swiper = useSwiper()
@@ -131,15 +131,24 @@ const QuestionStep = props => {
           ...metadata,
           rarityData: BigInt(metadata.rarityData),
         }
-        const tx = await NFTInstance.mint(walletCurrentAddress, nftMetadata, proof)
+        let tx
+        if (proof.length) {
+          changeNFTVersion(1)
+          tx = await NFTInstance.mint(walletCurrentAddress, nftMetadata, proof)
+        } else {
+          changeNFTVersion(2)
+          tx = await NFTV2Instance.mint(walletCurrentAddress, nftMetadata)
+        }
         const txReceipt = await tx.wait()
         if (txReceipt.status === 1) {
           return true
         } else {
+          sentryDebug(`mint error txHash:${txReceipt.transactionHash}`)
           return "due to any operation that can cause the transaction or top-level call to revert"
         }
       }
     } catch (error) {
+      sentryDebug(`mint error wallet:${walletCurrentAddress} message:${error.message}`)
       if (isError(error, "ACTION_REJECTED")) {
         return ""
       }
