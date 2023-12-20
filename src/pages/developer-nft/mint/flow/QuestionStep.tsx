@@ -17,7 +17,7 @@ import RequestWarning from "@/components/RequestWarning"
 import { useNFTContext } from "@/contexts/NFTContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useNFTStore from "@/stores/nftStore"
-import { trimErrorMessage } from "@/utils"
+import { sentryDebug, trimErrorMessage } from "@/utils"
 
 import StepWrapper from "./StepWrapper"
 
@@ -143,10 +143,12 @@ const QuestionStep = props => {
         if (txReceipt.status === 1) {
           return true
         } else {
+          sentryDebug(`mint error txHash:${txReceipt.transactionHash}`)
           return "due to any operation that can cause the transaction or top-level call to revert"
         }
       }
     } catch (error) {
+      sentryDebug(`mint error wallet:${walletCurrentAddress} message:${error.message}`)
       if (isError(error, "ACTION_REJECTED")) {
         return ""
       }
