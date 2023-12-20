@@ -55,9 +55,7 @@ const MyNFT = props => {
   )
 
   const shareTwitterURL = useMemo(() => {
-    const viewerUrl = `${requireEnv("REACT_APP_NFT_VIEWER_URL")}/developer-nft/${
-      nftVersion === 1 ? tokenId : (tokenId ?? BigInt(0)) + BigInt(1132166)
-    }`
+    const viewerUrl = `${requireEnv("REACT_APP_NFT_VIEWER_URL")}/developer-nft/${tokenId}`
     return `https://twitter.com/intent/tweet?original_referer=${encodeURIComponent(window.location.href)}&url=${encodeURIComponent(
       viewerUrl,
     )}&text=${encodeURIComponent("I have minted a Scroll Origins NFT!")}&via=Scroll_ZKP`
