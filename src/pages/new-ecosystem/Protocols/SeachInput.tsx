@@ -13,10 +13,11 @@ const SearchInput = props => {
       alignItems="center"
       gap="1rem"
       sx={{
-        position: "sticky",
-        top: `calc(${NORMAL_HEADER_HEIGHT} + 0.5rem)`,
-
-        zIndex: 1,
+        [theme.breakpoints.up("md")]: {
+          position: "sticky",
+          top: `calc(${NORMAL_HEADER_HEIGHT} + 0.5rem)`,
+          zIndex: 1,
+        },
 
         maxWidth: "32rem",
         height: "4.8rem",

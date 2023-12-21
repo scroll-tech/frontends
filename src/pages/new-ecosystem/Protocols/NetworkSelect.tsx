@@ -15,10 +15,11 @@ const NetworkSelect = props => {
   return (
     <Select
       sx={{
-        position: "sticky",
-        top: `calc(${NORMAL_HEADER_HEIGHT} + 0.5rem)`,
-
-        zIndex: 1,
+        [theme.breakpoints.up("md")]: {
+          position: "sticky",
+          top: `calc(${NORMAL_HEADER_HEIGHT} + 0.5rem)`,
+          zIndex: 1,
+        },
 
         [theme.breakpoints.down("md")]: {
           gridRow: "2 / 3",

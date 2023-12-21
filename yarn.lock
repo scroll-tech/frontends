@@ -12875,6 +12875,11 @@ react-is@^18.0.0, react-is@^18.2.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.2.0.tgz#199431eeaaa2e09f86427efbb4f1473edb47609b"
   integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
 
+react-lines-ellipsis@^0.15.4:
+  version "0.15.4"
+  resolved "https://registry.yarnpkg.com/react-lines-ellipsis/-/react-lines-ellipsis-0.15.4.tgz#2bff3089d62a354fa4ccf630d9f755562e260386"
+  integrity sha512-bIcoVRulN6RdBb9QByRPan7vDjxJv4jhII9eMs5ZkCK4QYEbPiY+8g+IM7/B0kb8UbRRRgR7KwpPWI9j8d2FYg==
+
 react-mailchimp-subscribe@^2.1.3:
   version "2.1.3"
   resolved "https://registry.yarnpkg.com/react-mailchimp-subscribe/-/react-mailchimp-subscribe-2.1.3.tgz#2f195f20b98c9be9608fac95d1f4f5bcb2d81929"

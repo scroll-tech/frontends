@@ -7,8 +7,10 @@ import { DIVERGENT_CATEGORY_MAP, NORMAL_HEADER_HEIGHT } from "@/constants"
 
 const useStyles = makeStyles()(theme => ({
   menuListRoot: {
-    position: "sticky",
-    top: `calc(${NORMAL_HEADER_HEIGHT} + 0.5rem)`,
+    [theme.breakpoints.up("md")]: {
+      position: "sticky",
+      top: `calc(${NORMAL_HEADER_HEIGHT} + 0.5rem)`,
+    },
 
     padding: 0,
     gridRow: "span 2",

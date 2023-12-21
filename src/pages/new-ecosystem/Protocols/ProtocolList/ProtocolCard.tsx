@@ -1,4 +1,6 @@
+import { useState } from "react"
 import Img from "react-cool-img"
+import LinesEllipsis from "react-lines-ellipsis"
 import { makeStyles } from "tss-react/mui"
 
 import { Box, Button, Stack, SvgIcon, Typography } from "@mui/material"
@@ -7,6 +9,7 @@ import { ecosystemListLogoUrl } from "@/apis/ecosystem"
 import { ReactComponent as ArrowSvg } from "@/assets/svgs/ecosystem/arrow.svg"
 import { ReactComponent as TwitterSvg } from "@/assets/svgs/ecosystem/twitter.svg"
 import Link from "@/components/Link"
+import TextButton from "@/components/TextButton"
 import { TWITTER_ORIGIN } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
@@ -66,15 +69,8 @@ const useStyles = makeStyles()(theme => ({
     lineHeight: "2.4rem",
     color: "#5b5b5b",
     maxWidth: "72rem",
-
-    display: "-webkit-box",
-    WebkitLineClamp: 2,
-    WebkitBoxOrient: "vertical",
-    overflow: "hidden",
-    [theme.breakpoints.down("sm")]: {
-      WebkitLineClamp: 4,
-    },
   },
+
   tagWrapper: {
     display: "flex",
     gridArea: "tag",
@@ -124,6 +120,12 @@ const ProtocolCard = props => {
   const { classes } = useStyles()
   const { isMobile, isDesktop } = useCheckViewport()
 
+  const [isExpended, setIsExpended] = useState(false)
+
+  const handleClickMore = () => {
+    setIsExpended(true)
+  }
+
   return (
     <Box className={classes.grid}>
       <Stack
@@ -163,7 +165,21 @@ const ProtocolCard = props => {
           </Box>
         )}
       </Stack>
-      <Typography className={classes.desc}>{desc}</Typography>
+      <LinesEllipsis
+        className={classes.desc}
+        text={desc}
+        maxLine={isExpended ? 100 : isMobile ? 4 : 2}
+        ellipsis={
+          <>
+            {` ... `}
+            <TextButton sx={{ fontWeight: 400, color: "#5b5b5b" }} underline="always" onClick={handleClickMore}>
+              More
+            </TextButton>
+          </>
+        }
+        basedOn="words"
+      />
+
       {!isDesktop && (
         <Box className={classes.tagWrapper}>
           {tags

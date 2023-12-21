@@ -11,6 +11,7 @@ import SuccessionToView, { SuccessionItem } from "@/components/Motion/Succession
 import RequestWarning from "@/components/RequestWarning"
 import { DIVERGENT_CATEGORY_MAP, ECOSYSTEM_NETWORK_LIST } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
+import { isAboveScreen } from "@/utils"
 
 import ProtocolCard from "./ProtocolCard"
 
@@ -82,8 +83,9 @@ const ProtocolList = props => {
           setEcosystemList(pre => pre.concat(data))
         } else {
           const anchorEl = document.querySelector(".ecosystem-protocols-title")
-          anchorEl?.scrollIntoView({ behavior: "smooth", block: "start" })
-
+          if (isAboveScreen(anchorEl)) {
+            anchorEl?.scrollIntoView({ behavior: "smooth", block: "start" })
+          }
           setEcosystemList(data)
         }
       })
