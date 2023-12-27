@@ -101,7 +101,7 @@ const QuestionLabel = props => {
 
 const QuestionStep = props => {
   const { order, subject, options, answer, image, scrollTarget } = props
-  const { walletCurrentAddress } = useRainbowContext()
+  const { walletCurrentAddress, provider } = useRainbowContext()
 
   const { NFTInstance, NFTV2Instance } = useNFTContext()
 
@@ -124,7 +124,12 @@ const QuestionStep = props => {
   const mintNFT = async () => {
     try {
       changeIsMinting(true)
+      const balance = await provider?.getBalance(walletCurrentAddress as `0x${string}`)
+      if (!balance) {
+        return "No balance for minting."
+      }
       const data = await scrollRequest(fetchParamsByAddressURL(walletCurrentAddress))
+
       if (data.proof) {
         const { proof, metadata } = data
         const nftMetadata = {
@@ -134,10 +139,16 @@ const QuestionStep = props => {
         let tx
         if (proof.length) {
           changeNFTVersion(1)
-          tx = await NFTInstance.mint(walletCurrentAddress, nftMetadata, proof)
+          const gasLimit = await estimateGas(NFTInstance, walletCurrentAddress, nftMetadata, proof)
+          tx = await NFTInstance.mint(walletCurrentAddress, nftMetadata, proof, {
+            gasLimit,
+          })
         } else {
           changeNFTVersion(2)
-          tx = await NFTV2Instance.mint(walletCurrentAddress, nftMetadata)
+          const gasLimit = await estimateGas(NFTV2Instance, walletCurrentAddress, nftMetadata)
+          tx = await NFTV2Instance.mint(walletCurrentAddress, nftMetadata, {
+            gasLimit,
+          })
         }
         const txReceipt = await tx.wait()
         if (txReceipt.status === 1) {
@@ -156,6 +167,11 @@ const QuestionStep = props => {
     } finally {
       changeIsMinting(false)
     }
+  }
+
+  const estimateGas = async (instance, ...params) => {
+    const gasLimit = await instance.mint.estimateGas(...params)
+    return (gasLimit * BigInt(120)) / BigInt(100)
   }
 
   const handleContinue = async () => {
