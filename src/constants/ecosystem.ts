@@ -1,8 +1,6 @@
 import { ReactComponent as DoubleEyesIcon } from "@/assets/svgs/ecosystem/double-eyes.svg"
 import { ReactComponent as HeartIcon } from "@/assets/svgs/ecosystem/heart.svg"
 import { ReactComponent as SettingsIcon } from "@/assets/svgs/ecosystem/settings.svg"
-import { ReactComponent as TwitterIcon } from "@/assets/svgs/ecosystem/twitter.svg"
-import { ReactComponent as WebsiteIcon } from "@/assets/svgs/ecosystem/website.svg"
 import { isProduction } from "@/utils"
 
 export const DIVERGENT_CATEGORY_MAP = {
@@ -41,19 +39,6 @@ export const ECOSYSTEM_EXPLORER_LIST = [
     href: LEARN_BUILD_LINK,
     title: "Learn how to build with Scroll",
     content: "For a walkthrough, start with the User Guide's Setup page.",
-  },
-]
-
-export const ECOSYSTEM_SOCIAL_LIST = [
-  {
-    name: "Website",
-    icon: WebsiteIcon,
-    prefixLink: "",
-  },
-  {
-    name: "Twitter",
-    icon: TwitterIcon,
-    prefixLink: "https://twitter.com/",
   },
 ]
 

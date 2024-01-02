@@ -1,112 +1,80 @@
-import { makeStyles } from "tss-react/mui"
+import useSWR from "swr"
 
 import { Box, Stack, Typography } from "@mui/material"
 
-import Button from "@/components/Button"
-import OrientationToView from "@/components/Motion/OrientationToView"
+import { ecosystemActivityUrl, ecosystemTVLUrl } from "@/apis/ecosystem"
+import { fetchLastBatchIndexesUrl } from "@/apis/rollupscan"
 import SectionWrapper from "@/components/SectionWrapper"
-import { LIST_YOUR_DAPP_LINK } from "@/constants"
-import useCheckViewport from "@/hooks/useCheckViewport"
+import { formatLargeNumber } from "@/utils"
 
-const useStyles = makeStyles()(theme => ({
-  root: {
-    display: "grid",
-    gridTemplateColumns: "repeat(2, min-content)",
-    rowGap: "2.5rem",
-    columnGap: "4rem",
-    paddingBottom: "15.4rem",
-    justifyContent: "space-between",
-    [theme.breakpoints.down("xl")]: {
-      gridTemplateColumns: "min-content 1fr",
-    },
-    [theme.breakpoints.down("lg")]: {
-      gridTemplateColumns: "1fr",
-      gap: "2rem",
-      paddingTop: "7.3rem",
-      paddingBottom: "4rem",
-    },
-    [theme.breakpoints.down("sm")]: {
-      paddingTop: "7.3rem",
-      paddingBottom: "4rem",
-      justifyItems: "center",
-    },
-  },
-  titleWrapper: {
-    gridRow: "span 2",
-  },
-  subTitleWrapper: {
-    width: "68rem",
-    [theme.breakpoints.down("xl")]: {
-      width: "100%",
-      maxWidth: "68rem",
-    },
-  },
-  actionGroup: {
-    display: "flex",
-    [theme.breakpoints.between("sm", "lg")]: {
-      justifyContent: "flex-end",
-      marginTop: "4rem",
-    },
-  },
-}))
+import Statistic from "./Statistic"
 
 const Header = () => {
-  const { classes } = useStyles()
-  const { isPortrait, isMobile } = useCheckViewport()
+  const { data: totalTVL, isLoading: isTVLLoading } = useSWR(
+    "totalTVL",
+    async () => {
+      const {
+        hourly: { data },
+      } = await scrollRequest(ecosystemTVLUrl)
+      return formatLargeNumber(data[data.length - 1][1])
+    },
+    { refreshInterval: 18e4 },
+  )
+  const { data: totalTxCount, isLoading: isTxCountLoading } = useSWR(
+    "totalTxCount",
+    async () => {
+      const {
+        daily: { data },
+      } = await scrollRequest(ecosystemActivityUrl)
+      const totalTxCount = data
+        // .slice(-30)
+        .map(item => item[1])
+        .reduce((a, b) => a + b)
+      return formatLargeNumber(totalTxCount)
+    },
+    { refreshInterval: 18e4 },
+  )
+  const { data: totalBatches, isLoading: isBatchesLoading } = useSWR(
+    "totalBatches",
+    async () => {
+      const { finalized_index } = await scrollRequest(fetchLastBatchIndexesUrl)
+      return formatLargeNumber(finalized_index)
+    },
+    { refreshInterval: 18e4 },
+  )
+
   return (
     <>
-      <SectionWrapper className={classes.root}>
-        <OrientationToView className={classes.titleWrapper}>
-          <Typography
-            sx={{
-              fontSize: ["4rem", "7.8rem"],
-              lineHeight: ["5rem", "8.5rem"],
-              fontWeight: 600,
-              textAlign: ["center", "left"],
-              width: "max-content",
-            }}
-          >
-            An Ecosystem <br></br> Forever in Motion
+      <SectionWrapper sx={{ pt: "6.4rem" }}>
+        <Stack direction="column" alignItems="center">
+          <Typography sx={{ fontSize: ["4rem", "7.8rem"], lineHeight: ["5rem", "8.8rem"], fontWeight: 600, maxWidth: "66rem", textAlign: "center" }}>
+            An Ecosystem Forever in Motion
           </Typography>
-        </OrientationToView>
-
-        <OrientationToView className={classes.subTitleWrapper}>
-          <Typography
-            sx={{
-              fontSize: ["2rem", "2.6rem"],
-              textAlign: ["center", "left"],
-            }}
-          >
-            Join a supportive, collaborative ecosystem with a greater purpose – permissionless, flexible, and dedicated to defining the future of
-            Ethereum.
-          </Typography>
-        </OrientationToView>
-        <OrientationToView delay={0.3} className={classes.actionGroup}>
-          <Stack direction={isMobile ? "column" : "row"} spacing={isPortrait ? "2rem" : "3rem"} alignItems="center">
-            <Button href="/bridge" color="primary" width={isMobile ? "18.4rem" : "25rem"}>
-              Bridge into Scroll
-            </Button>
-            <Button href={LIST_YOUR_DAPP_LINK} target="_blank" width={isMobile ? "18.4rem" : "25rem"}>
-              List your dApp
-            </Button>
+          <Stack direction="row" gap="2.4rem" sx={{ width: "94.8rem", maxWidth: "100%", mt: "4rem", mb: "5.2rem" }}>
+            <Statistic label="Total value locked" loading={isTVLLoading}>
+              {totalTVL}
+            </Statistic>
+            <Statistic label="Transaction count" loading={isTxCountLoading}>
+              {totalTxCount}
+            </Statistic>
+            <Statistic label="Batches settled to L1" loading={isBatchesLoading}>
+              {totalBatches}
+            </Statistic>
           </Stack>
-        </OrientationToView>
+        </Stack>
       </SectionWrapper>
-      <Box sx={{ backgroundColor: theme => theme.palette.themeBackground.light }}>
-        <Box
-          sx={{
-            borderRadius: "4rem 4rem 0 0",
-            height: ["50.8rem", "37rem", "24vw"],
-            background: [
-              "url(/imgs/ecosystem/ecosystem-bg-mobile.svg) center / cover no-repeat",
-              "url(/imgs/ecosystem/ecosystem-bg.svg) center / cover no-repeat",
-            ],
-            backgroundSize: "cover",
-          }}
-        ></Box>
-      </Box>
+      <Box
+        sx={{
+          height: ["42.6rem", "37rem", "24vw"],
+          background: [
+            "url(/imgs/ecosystem/new-ecosystem-bg-mobile.svg) center / cover no-repeat",
+            "url(/imgs/ecosystem/new-ecosystem-bg-tablet.svg) center / cover no-repeat",
+            "url(/imgs/ecosystem/new-ecosystem-bg.svg) center / cover no-repeat",
+          ],
+          backgroundSize: "cover",
+        }}
+      ></Box>
     </>
   )
 }
-
 export default Header
