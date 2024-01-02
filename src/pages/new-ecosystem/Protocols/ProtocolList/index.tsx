@@ -6,13 +6,15 @@ import { Box } from "@mui/material"
 
 import { ecosystemListUrl } from "@/apis/ecosystem"
 import Link from "@/components/Link"
+import LoadingButton from "@/components/LoadingButton"
 import LoadingPage from "@/components/LoadingPage"
 import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
-import RequestWarning from "@/components/RequestWarning"
-import { DIVERGENT_CATEGORY_MAP, ECOSYSTEM_NETWORK_LIST } from "@/constants"
+import { ECOSYSTEM_NETWORK_LIST } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import { isAboveScreen } from "@/utils"
 
+import Error from "./Error"
+import NoData from "./NoData"
 import ProtocolCard from "./ProtocolCard"
 
 const useStyles = makeStyles()(theme => ({
@@ -54,7 +56,7 @@ const ProtocolList = props => {
   const [loading, setLoading] = useState(false)
   const prePage = usePrevious(page)
   const [ecosystemList, setEcosystemList] = useState([])
-  const [errorMsg, setErrorMsg] = useState("")
+  const [isError, setIsError] = useState(false)
   const [hasMore, setHasMore] = useState(false)
 
   const queryStr = useMemo(() => {
@@ -75,8 +77,12 @@ const ProtocolList = props => {
   }, [category, network, keyword, page])
 
   useEffect(() => {
+    fetchEcosystemList(queryStr)
+  }, [queryStr])
+
+  const fetchEcosystemList = value => {
     setLoading(true)
-    scrollRequest(`${ecosystemListUrl}${queryStr}`)
+    scrollRequest(`${ecosystemListUrl}${value}`)
       .then(({ data, hasMore }) => {
         setHasMore(hasMore)
         if (prePage && page - prePage === 1) {
@@ -88,67 +94,77 @@ const ProtocolList = props => {
           }
           setEcosystemList(data)
         }
+        setIsError(false)
       })
       .catch(() => {
-        setErrorMsg("Fail to fetch ecosystem list")
-        return null
+        setIsError(true)
       })
       .finally(() => {
         setLoading(false)
       })
-  }, [queryStr])
-
-  const filteredEcosystemList = useMemo(() => {
-    if (category === "All categories") {
-      return ecosystemList
-    }
-    return ecosystemList.filter((item: any) => item.tags.some(item => DIVERGENT_CATEGORY_MAP[category]?.includes(item)))
-  }, [ecosystemList, category])
-
-  const handleClose = () => {
-    setErrorMsg("")
   }
 
-  return (
-    <>
-      {loading && !ecosystemList.length ? (
-        <LoadingPage></LoadingPage>
-      ) : (
-        <>
-          <SuccessionToView className={classes.listRoot} threshold={isMobile ? 0 : 1} animate="show">
-            {filteredEcosystemList?.map((item: any) => (
-              <SuccessionItem>
-                <ProtocolCard key={item.name} {...item}></ProtocolCard>
-              </SuccessionItem>
-            ))}
-          </SuccessionToView>
+  const handleReQuest = () => {
+    fetchEcosystemList(queryStr)
+  }
 
-          {hasMore && (
-            <Box sx={{ gridColumn: ["1 / 3", "1 / 3", "2 / 4"], textAlign: "center", mt: "1.6rem" }}>
-              <Link
-                underline="always"
-                component="button"
-                sx={{
-                  fontSize: "1.6rem",
-                  fontWeight: 400,
-                  color: "#5b5b5b",
-                  "&:hover": {
-                    color: "#4F4F4F",
-                  },
-                }}
-                onClick={onAddPage}
-              >
-                Load more
-              </Link>
-            </Box>
-          )}
-        </>
-      )}
+  const renderList = () => {
+    if (loading && !ecosystemList.length) {
+      return <LoadingPage height="26rem" sx={{ gridColumn: ["1 / 3", "1 / 3", "2 / 4"] }}></LoadingPage>
+    } else if (isError && !ecosystemList.length) {
+      return (
+        <Error
+          sx={{ height: "26rem", gridColumn: ["1 / 3", "1 / 3", "2 / 4"] }}
+          title="Oops! Something went wrong"
+          action={
+            <LoadingButton loading={loading} onClick={handleReQuest}>
+              Try again
+            </LoadingButton>
+          }
+        ></Error>
+      )
+    } else if (!ecosystemList.length) {
+      return (
+        <NoData
+          sx={{ height: "26rem", gridColumn: ["1 / 3", "1 / 3", "2 / 4"] }}
+          title="No matches found"
+          description="Please change your key words and search again"
+        ></NoData>
+      )
+    }
+    return (
+      <>
+        <SuccessionToView className={classes.listRoot} threshold={isMobile ? 0 : 1} animate="show">
+          {ecosystemList?.map((item: any) => (
+            <SuccessionItem>
+              <ProtocolCard key={item.name} {...item}></ProtocolCard>
+            </SuccessionItem>
+          ))}
+        </SuccessionToView>
 
-      <RequestWarning open={!!errorMsg} onClose={handleClose}>
-        {errorMsg}
-      </RequestWarning>
-    </>
-  )
+        {hasMore && (
+          <Box sx={{ gridColumn: ["1 / 3", "1 / 3", "2 / 4"], textAlign: "center", mt: "1.6rem" }}>
+            <Link
+              underline="always"
+              component="button"
+              sx={{
+                fontSize: "1.6rem",
+                fontWeight: 400,
+                color: "#5b5b5b",
+                "&:hover": {
+                  color: "#4F4F4F",
+                },
+              }}
+              onClick={onAddPage}
+            >
+              Load more
+            </Link>
+          </Box>
+        )}
+      </>
+    )
+  }
+
+  return <>{renderList()}</>
 }
 export default ProtocolList

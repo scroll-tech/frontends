@@ -12,9 +12,6 @@ const useStyles = makeStyles()(theme => ({
     padding: "2.4rem",
     borderRadius: "2.5rem",
     cursor: "pointer",
-    [theme.breakpoints.down("sm")]: {
-      padding: "2rem",
-    },
 
     "&:hover": {
       backgroundColor: theme.palette.themeBackground.highlight,
@@ -41,13 +38,17 @@ const ContributeCard = props => {
       <Card {...restProps} elevation={0} classes={{ root: classes.card }}>
         <Stack direction="column">
           <Box className={classes.header}>
-            <SvgIcon sx={{ fontSize: ["1.3rem", "2rem"], alignSelf: ["center", "flex-end"] }} component={ExternaLinkIcon} inheritViewBox></SvgIcon>
-            <SvgIcon sx={{ fontSize: ["2.8rem", "3.2rem"] }} component={icon} inheritViewBox></SvgIcon>
+            <SvgIcon
+              sx={{ fontSize: ["1.6rem", "2rem"], alignSelf: ["flex-start", "flex-end"] }}
+              component={ExternaLinkIcon}
+              inheritViewBox
+            ></SvgIcon>
+            <SvgIcon sx={{ fontSize: ["3rem", "3.2rem"] }} component={icon} inheritViewBox></SvgIcon>
           </Box>
 
           <Typography
             sx={{
-              fontSize: ["1.6rem", "2.4rem"],
+              fontSize: ["2rem", "2.4rem"],
               fontWeight: 600,
               lineHeight: [1.6, "normal"],
               mt: ["0.4rem", "1.6rem"],

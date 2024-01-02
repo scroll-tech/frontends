@@ -51,7 +51,7 @@ const Header = () => {
             An Ecosystem Forever in Motion
           </Typography>
           <Stack direction="row" gap="2.4rem" sx={{ width: "94.8rem", maxWidth: "100%", mt: "4rem", mb: "5.2rem" }}>
-            <Statistic label="Total TVL" loading={isTVLLoading}>
+            <Statistic label="Total value locked" loading={isTVLLoading}>
               {totalTVL}
             </Statistic>
             <Statistic label="Transaction count" loading={isTxCountLoading}>

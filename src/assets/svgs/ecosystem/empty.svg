@@ -1,0 +1,8 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M5 16.7551V25.9388L16 29L27 25.9388V16.7551M5 16.7551L16 19.7692L19.3846 18.9038M5 16.7551L16 14L27 16.7551M27 16.7551L21.5 18.3269" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<line x1="16" y1="20" x2="16" y2="29" stroke="currentColor" fill="none" stroke-width="2"/>
+<rect x="6" y="6" width="8" height="3" rx="1.5" stroke="currentColor" fill="none" stroke-width="2"/>
+<path d="M9.16795 4.4453L8.13148 6H10H12H13V5C13 4.73591 12.9524 4.32603 12.7682 3.94227C12.5728 3.53526 12.1253 3 11.3333 3C10.6883 3 10.1739 3.37611 9.89274 3.62134C9.57524 3.89823 9.31874 4.21911 9.16795 4.4453Z" stroke="currentColor" fill="none" stroke-width="2"/>
+<path d="M9.16795 10.5547L8.13148 9H10H12H13V10C13 10.2641 12.9524 10.674 12.7682 11.0577C12.5728 11.4647 12.1253 12 11.3333 12C10.6883 12 10.1739 11.6239 9.89274 11.3787C9.57524 11.1018 9.31874 10.7809 9.16795 10.5547Z" stroke="currentColor" fill="none" stroke-width="2"/>
+<path d="M17 6H23.2C24 6 26 6 26 8C26 10 25.5 10 23.2 10C20.9 10 17 9 17 14" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 4"/>
+</svg>

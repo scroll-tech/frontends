@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useDebounce } from "react-use"
 import { withStyles } from "tss-react/mui"
 
 import { Box, Stack, Typography } from "@mui/material"
@@ -33,6 +34,7 @@ const Grid = withStyles(Box, theme => ({
 
 const Protocols = () => {
   const { isMobile, isTablet } = useCheckViewport()
+  const [searchInput, setSearchInput] = useState("")
   const [searchParams, setSearchParams] = useState({
     category: "All categories",
     network: ECOSYSTEM_NETWORK_LIST[0],
@@ -48,12 +50,21 @@ const Protocols = () => {
     }))
   }
 
+  useDebounce(
+    () => {
+      setSearchParams(pre => ({
+        ...pre,
+        page: 1,
+        keyword: searchInput,
+      }))
+    },
+    5e2,
+    [searchInput],
+  )
+
   const handleChangeKeyword = e => {
-    setSearchParams(pre => ({
-      ...pre,
-      page: 1,
-      keyword: e.target.value.trim() || "",
-    }))
+    const nextValue = e.target.value.trim() || ""
+    setSearchInput(nextValue)
   }
   const handleChangeNetwork = value => {
     setSearchParams(pre => ({
@@ -85,7 +96,7 @@ const Protocols = () => {
       </Stack>
       <Grid>
         <Category value={searchParams.category} onChange={handleChangeCategory}></Category>
-        <SearchInput value={searchParams.keyword} onChange={handleChangeKeyword}></SearchInput>
+        <SearchInput value={searchInput} onChange={handleChangeKeyword}></SearchInput>
         <NetworkSelect value={searchParams.network} onChange={handleChangeNetwork}></NetworkSelect>
         <ProtocolList searchParams={searchParams} onAddPage={handleChangePage}></ProtocolList>
       </Grid>
