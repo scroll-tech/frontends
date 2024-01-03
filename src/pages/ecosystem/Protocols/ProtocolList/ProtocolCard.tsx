@@ -49,6 +49,7 @@ const useStyles = makeStyles()(theme => ({
       `,
       columnGap: "0.8rem",
       rowGap: "1.6rem",
+      padding: "2.4rem 1.6rem",
     },
   },
   logo: {

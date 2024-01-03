@@ -21,18 +21,6 @@ const useStyles = makeStyles()(theme => ({
   listRoot: {
     gridRow: "2 / 3",
     gridColumn: "2 / 4",
-    paddingRight: "0.8rem",
-
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "rgba(209, 205, 204, 0.30)",
-      borderRadius: "8px",
-    },
-    "&::-webkit-scrollbar": {
-      width: "8px",
-    },
-    // Firefox
-    scrollbarWidth: "thin",
-    scrollbarColor: "rgba(209, 205, 204, 0.30) transparent",
 
     [theme.breakpoints.down("md")]: {
       gridRow: "3 / 4",

@@ -19,13 +19,13 @@ const useStyles = makeStyles()(theme => ({
     [theme.breakpoints.down("md")]: {
       gridRow: "span 1",
       gridColumn: "1 / 3",
-      paddingBottom: "1.2rem",
+      paddingBottom: "0.4rem",
       display: "flex",
       width: "100%",
       overflowX: "auto",
       "&::-webkit-scrollbar-thumb": {
         backgroundColor: "rgba(209, 205, 204, 0.30)",
-        borderRadius: "8px",
+        borderRadius: "4px",
       },
       "&::-webkit-scrollbar": {
         width: "4px",

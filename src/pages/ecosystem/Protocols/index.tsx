@@ -18,7 +18,6 @@ const Grid = withStyles(Box, theme => ({
   root: {
     marginTop: "6.8rem",
     display: "grid",
-    // backgroundColor: theme.palette.themeBackground.light,
     gridTemplateColumns: "max-content 1fr max-content",
     gridTemplateRows: "max-content 1fr",
     rowGap: "3rem",
@@ -28,6 +27,7 @@ const Grid = withStyles(Box, theme => ({
       gridTemplateRows: "unset",
       rowGap: "2rem",
       columnGap: "0.8rem",
+      marginTop: "2rem",
     },
   },
 }))
@@ -82,7 +82,7 @@ const Protocols = () => {
   }
 
   return (
-    <SectionWrapper>
+    <SectionWrapper sx={{ pt: ["4rem", "5.5rem", "6rem"] }}>
       <Stack direction="row" justifyContent="space-between" alignItems="center" gap="2rem">
         <Typography
           className="ecosystem-protocols-title"
