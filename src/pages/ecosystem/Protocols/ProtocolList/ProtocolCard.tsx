@@ -89,7 +89,7 @@ const useStyles = makeStyles()(theme => ({
     padding: "0.4rem 1.2rem",
     fontSize: "1.6rem",
     lineHeight: 1.5,
-    "&:nth-child(n + 2)": {
+    "&:nth-of-type(n + 2)": {
       marginLeft: "0.8rem",
     },
   },

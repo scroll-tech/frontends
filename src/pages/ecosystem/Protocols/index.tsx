@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useDebounce } from "react-use"
 import { withStyles } from "tss-react/mui"
 
@@ -6,13 +6,15 @@ import { Box, Stack, Typography } from "@mui/material"
 
 import Button from "@/components/Button"
 import SectionWrapper from "@/components/SectionWrapper"
-import { ECOSYSTEM_NETWORK_LIST, LIST_YOUR_DAPP_LINK } from "@/constants"
+import { ECOSYSTEM_NETWORK_LIST, LIST_YOUR_DAPP_LINK, NORMAL_HEADER_HEIGHT } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
 import Category from "./Category"
 import NetworkSelect from "./NetworkSelect"
 import ProtocolList from "./ProtocolList"
 import SearchInput from "./SeachInput"
+
+const fixedMargin = (parseFloat(NORMAL_HEADER_HEIGHT) + 0.5) * 10
 
 const Grid = withStyles(Box, theme => ({
   root: {
@@ -33,7 +35,7 @@ const Grid = withStyles(Box, theme => ({
 }))
 
 const Protocols = () => {
-  const { isMobile, isTablet } = useCheckViewport()
+  const { isMobile, isTablet, isLandscape } = useCheckViewport()
   const [searchInput, setSearchInput] = useState("")
   const [searchParams, setSearchParams] = useState({
     category: "All categories",
@@ -41,6 +43,20 @@ const Protocols = () => {
     keyword: "",
     page: 1,
   })
+  const [isSticky, setIsSticky] = useState(true)
+
+  useEffect(() => {
+    if (isLandscape) {
+      const handleDetectSticky = () => {
+        const categoryEle = document.querySelector(".ecosystem-protocols-category") as HTMLElement
+        setIsSticky(categoryEle.getBoundingClientRect().top >= fixedMargin)
+      }
+      window.addEventListener("scroll", handleDetectSticky, false)
+      return () => {
+        window.removeEventListener("scroll", handleDetectSticky, false)
+      }
+    }
+  }, [isLandscape])
 
   const handleChangeCategory = value => {
     setSearchParams(pre => ({
@@ -96,8 +112,8 @@ const Protocols = () => {
       </Stack>
       <Grid>
         <Category value={searchParams.category} onChange={handleChangeCategory}></Category>
-        <SearchInput value={searchInput} onChange={handleChangeKeyword}></SearchInput>
-        <NetworkSelect value={searchParams.network} onChange={handleChangeNetwork}></NetworkSelect>
+        <SearchInput sticky={isSticky} value={searchInput} onChange={handleChangeKeyword}></SearchInput>
+        <NetworkSelect sticky={isSticky} value={searchParams.network} onChange={handleChangeNetwork}></NetworkSelect>
         <ProtocolList searchParams={searchParams} onAddPage={handleChangePage}></ProtocolList>
       </Grid>
     </SectionWrapper>

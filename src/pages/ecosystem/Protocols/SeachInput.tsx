@@ -5,6 +5,7 @@ import { ReactComponent as SearchSvg } from "@/assets/svgs/ecosystem/search.svg"
 import { NORMAL_HEADER_HEIGHT } from "@/constants"
 
 const SearchInput = props => {
+  const { sticky, ...restProps } = props
   const theme = useTheme()
 
   return (
@@ -14,7 +15,7 @@ const SearchInput = props => {
       gap="1rem"
       sx={{
         [theme.breakpoints.up("md")]: {
-          position: "sticky",
+          position: sticky ? "sticky" : "static",
           top: `calc(${NORMAL_HEADER_HEIGHT} + 0.5rem)`,
           zIndex: 1,
         },
@@ -42,7 +43,7 @@ const SearchInput = props => {
           fontWeight: 500,
         }}
         placeholder="Search"
-        {...props}
+        {...restProps}
       ></InputBase>
     </Stack>
   )

@@ -52,7 +52,7 @@ const useStyles = makeStyles()(theme => ({
         color: theme.palette.primary.contrastText,
       },
     },
-    "&:nth-child(n + 2)": {
+    "&:nth-of-type(n + 2)": {
       marginTop: "1.6rem",
       [theme.breakpoints.down("md")]: {
         marginTop: 0,
@@ -64,11 +64,11 @@ const useStyles = makeStyles()(theme => ({
 
 const Category = props => {
   const { value, onChange } = props
-  const { classes } = useStyles()
+  const { classes, cx } = useStyles()
   const allCategories = useRef(["All categories", ...Object.keys(DIVERGENT_CATEGORY_MAP)])
 
   return (
-    <MenuList classes={{ root: classes.menuListRoot }}>
+    <MenuList classes={{ root: cx(classes.menuListRoot, "ecosystem-protocols-category") }}>
       {allCategories.current.map(item => (
         <MenuItem classes={{ root: classes.menuItemRoot }} selected={value === item} onClick={() => onChange(item)}>
           <Typography sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: ["2.4rem", "3.2rem"], fontWeight: 600, cursor: "inherit" }}>{item}</Typography>

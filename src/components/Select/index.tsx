@@ -64,6 +64,7 @@ const useStyles = makeStyles()(theme => ({
 }))
 
 const Select = props => {
+  const { className, ...restProps } = props
   const { classes, cx } = useStyles()
 
   const [isUnderneath, setIsUnderneath] = useState(true)
@@ -88,7 +89,7 @@ const Select = props => {
       disableUnderline
       displayEmpty
       IconComponent={TriangleDownIcon}
-      className={cx(classes.root, props.className)}
+      className={cx(classes.root, className)}
       classes={{ select: classes.select, icon: classes.icon, iconOpen: classes.iconOpen }}
       onOpen={onOpen}
       MenuProps={{
@@ -107,7 +108,7 @@ const Select = props => {
           </Stack>
         )
       }}
-      {...props}
+      {...restProps}
     ></MuiSelect>
   )
 }

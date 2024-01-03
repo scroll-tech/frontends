@@ -27,7 +27,7 @@ const useStyles = makeStyles()(theme => ({
       gridColumn: "1 / 3",
     },
 
-    "& > *:nth-child(n+2)": {
+    "& > *:nth-of-type(n+2)": {
       marginTop: "2rem",
     },
   },
@@ -124,8 +124,8 @@ const ProtocolList = props => {
       <>
         <SuccessionToView className={classes.listRoot} threshold={isMobile ? 0 : 1} animate="show">
           {ecosystemList?.map((item: any) => (
-            <SuccessionItem>
-              <ProtocolCard key={item.name} {...item}></ProtocolCard>
+            <SuccessionItem key={item.name}>
+              <ProtocolCard {...item}></ProtocolCard>
             </SuccessionItem>
           ))}
         </SuccessionToView>

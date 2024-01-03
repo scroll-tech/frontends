@@ -5,7 +5,7 @@ import Select from "@/components/Select"
 import { ECOSYSTEM_NETWORK_LIST, NORMAL_HEADER_HEIGHT } from "@/constants"
 
 const NetworkSelect = props => {
-  const { value, onChange } = props
+  const { sticky, value, onChange } = props
   const theme = useTheme()
 
   const handleChangeNetwork = e => {
@@ -16,7 +16,7 @@ const NetworkSelect = props => {
     <Select
       sx={{
         [theme.breakpoints.up("md")]: {
-          position: "sticky",
+          position: sticky ? "sticky" : "static",
           top: `calc(${NORMAL_HEADER_HEIGHT} + 0.5rem)`,
           zIndex: 1,
         },
