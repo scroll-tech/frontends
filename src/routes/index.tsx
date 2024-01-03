@@ -4,7 +4,7 @@ import BlogDetail from "@/pages/blog/detail"
 import Bridge from "@/pages/bridge"
 import BridgeFAQ from "@/pages/bridge/FAQ"
 import Career from "@/pages/career"
-import ComingSoon from "@/pages/developer-nft/coming-soon"
+// import ComingSoon from "@/pages/developer-nft/coming-soon"
 import DeveloperNFT from "@/pages/developer-nft/index"
 import MintNFT from "@/pages/developer-nft/mint"
 import Ecosystem from "@/pages/ecosystem"
@@ -210,12 +210,6 @@ const mainnetRoutes = [
     path: "/developer-nft",
     fullPath: "/developer-nft",
     element: <DeveloperNFT />,
-  },
-  {
-    name: "Scroll Origins NFT",
-    path: "/developer-nft/check-eligibility",
-    fullPath: "/developer-nft/check-eligibility",
-    element: <ComingSoon />,
   },
   {
     name: "Scroll Origins NFT",
