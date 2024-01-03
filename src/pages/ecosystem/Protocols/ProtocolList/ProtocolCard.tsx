@@ -55,7 +55,7 @@ const useStyles = makeStyles()(theme => ({
   logo: {
     width: "8.8rem",
     height: "8.8rem",
-    borderRadius: "4.4rem",
+    borderRadius: "0.8rem",
     overflow: "hidden",
     alignSelf: "center",
     backgroundColor: theme.palette.background.default,
