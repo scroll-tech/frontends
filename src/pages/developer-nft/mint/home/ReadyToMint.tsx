@@ -2,12 +2,14 @@ import { useState } from "react"
 import ReactGA from "react-ga4"
 
 import { Box, Stack, Typography } from "@mui/material"
+import { styled } from "@mui/material/styles"
 
 import { fetchParamsByAddressURL } from "@/apis/nft"
 import Alert from "@/components/Alert/NFTAlert"
 import Button from "@/components/Button"
+import Link from "@/components/Link"
 import RequestWarning from "@/components/RequestWarning"
-import { ContractReleaseDate } from "@/constants"
+import { ANNOUNCING_SCROLL_ORIGINS_NFT, ContractReleaseDate, DESIGNING_SCROLL_ORIGINS } from "@/constants"
 import { CHAIN_ID, L2_NAME, SCROLL_ORIGINS_NFT } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
@@ -17,6 +19,14 @@ import { formatDate, switchNetwork } from "@/utils"
 import NFTCard from "../../components/NFTCard"
 import Statistic from "../../components/Statistic"
 import MintFlowDialog from "./MintFlowDialog"
+
+const CustomLink = styled(Link)(({ theme }) => ({
+  color: `${theme.palette.primary.main} !important`,
+  fontSize: "inherit",
+  textUnderlineOffset: "2px",
+  textDecorationThickness: "1px",
+  fontWeight: 700,
+}))
 
 const MintHome = props => {
   const { total } = props
@@ -111,7 +121,20 @@ const MintHome = props => {
     >
       <NFTCard sx={{ width: ["80%", "42.5rem", "36rem", "42.5rem"] }}></NFTCard>
       <Stack direction="column" spacing={isPortrait ? "2.4rem" : "4.8rem"} alignItems={isLandscape ? "flex-start" : "center"}>
-        <Typography sx={{ fontSize: ["4rem", "7.8rem"], fontWeight: 600, lineHeight: ["5.6rem", "8.5rem"] }}>{SCROLL_ORIGINS_NFT}</Typography>
+        <Box sx={{ textAlign: ["center", "center", "left"] }}>
+          <Typography sx={{ fontSize: ["4rem", "7.2rem"], fontWeight: 600, lineHeight: ["5.6rem", "9.6rem"] }}>{SCROLL_ORIGINS_NFT}</Typography>
+          <Typography sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: ["2.4rem", "3.2rem"], maxWidth: ["100%", "56rem"] }}>
+            <CustomLink href={ANNOUNCING_SCROLL_ORIGINS_NFT} underline="always" external>
+              Scroll Origins
+            </CustomLink>{" "}
+            is a{" "}
+            <CustomLink href={DESIGNING_SCROLL_ORIGINS} underline="always" external>
+              specially designed NFT
+            </CustomLink>{" "}
+            program to celebrate alongside early developers building on Scroll within 60 days of Genesis Block (Before December 9, 2023 10:59PM GMT).
+          </Typography>
+        </Box>
+
         <Stack direction="row" spacing={isMobile ? "2.4rem" : "4.8rem"}>
           <Statistic label="Total NFTs minted">{typeof total === "bigint" ? total.toString() : "-"}</Statistic>
           <Statistic label="NFTs released on">{formatDate(ContractReleaseDate)}</Statistic>

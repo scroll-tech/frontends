@@ -84,3 +84,7 @@ export const FLOW_QUESTIONS = [
     image: "/imgs/nft/flow-question-2.svg",
   },
 ]
+
+export const ANNOUNCING_SCROLL_ORIGINS_NFT = "https://scroll.io/blog/scroll-origins-nft"
+
+export const DESIGNING_SCROLL_ORIGINS = "https://scroll.io/blog/designing-scroll-origins"
