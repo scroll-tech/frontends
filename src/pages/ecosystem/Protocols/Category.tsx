@@ -3,13 +3,13 @@ import { makeStyles } from "tss-react/mui"
 
 import { MenuItem, MenuList, Typography } from "@mui/material"
 
-import { DIVERGENT_CATEGORY_MAP, NORMAL_HEADER_HEIGHT } from "@/constants"
+import { DIVERGENT_CATEGORY_MAP } from "@/constants"
 
-const useStyles = makeStyles()(theme => ({
+const useStyles = makeStyles<any>()((theme, { top }) => ({
   menuListRoot: {
     [theme.breakpoints.up("md")]: {
       position: "sticky",
-      top: `calc(${NORMAL_HEADER_HEIGHT} + 0.5rem)`,
+      top,
     },
 
     padding: 0,
@@ -63,8 +63,8 @@ const useStyles = makeStyles()(theme => ({
 }))
 
 const Category = props => {
-  const { value, onChange } = props
-  const { classes, cx } = useStyles()
+  const { top, value, onChange } = props
+  const { classes, cx } = useStyles({ top })
   const allCategories = useRef(["All categories", ...Object.keys(DIVERGENT_CATEGORY_MAP)])
 
   return (

@@ -2,10 +2,10 @@ import { MenuItem, Typography } from "@mui/material"
 import { useTheme } from "@mui/material/styles"
 
 import Select from "@/components/Select"
-import { ECOSYSTEM_NETWORK_LIST, NORMAL_HEADER_HEIGHT } from "@/constants"
+import { ECOSYSTEM_NETWORK_LIST } from "@/constants"
 
 const NetworkSelect = props => {
-  const { sticky, value, onChange } = props
+  const { sticky, top, value, onChange } = props
   const theme = useTheme()
 
   const handleChangeNetwork = e => {
@@ -17,7 +17,7 @@ const NetworkSelect = props => {
       sx={{
         [theme.breakpoints.up("md")]: {
           position: sticky ? "sticky" : "static",
-          top: `calc(${NORMAL_HEADER_HEIGHT} + 0.5rem)`,
+          top,
           zIndex: 1,
         },
 
