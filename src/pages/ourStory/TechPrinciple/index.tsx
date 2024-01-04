@@ -92,7 +92,7 @@ const TechPrinciple = () => {
       ></SectionHeader>
       <SuccessionToView className={classes.grid}>
         {PRINCIPLES.map((item, index) => (
-          <SuccessionItem>
+          <SuccessionItem key={index}>
             <SvgIcon
               sx={{ width: "auto", height: "auto", "@media (max-width: 600px)": { transform: `scale(${item.mobileScale})` } }}
               component={item.icon}

@@ -1,6 +1,7 @@
 import { ReactNode, useState } from "react"
 
 import { Alert, Typography as MuiTypography, Snackbar, Stack } from "@mui/material"
+import { TypographyProps as MuiTypographyProps } from "@mui/material/Typography"
 import { styled } from "@mui/material/styles"
 
 import Link from "@/components/Link"
@@ -10,6 +11,11 @@ import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { isProduction, switchNetwork } from "@/utils"
 
 import Descriptions, { DescriptionItem } from "./Descriptions"
+
+interface TypographyProps extends MuiTypographyProps {
+  bold?: boolean
+  primary?: boolean
+}
 
 const AddNetworkButton = props => {
   const { chainId, onReadd } = props
@@ -27,7 +33,9 @@ const AddNetworkButton = props => {
   return <TextButton onClick={addToWallet}>Add to {walletName}</TextButton>
 }
 
-const Typography = styled<any>(MuiTypography)(({ theme, bold, primary }) => ({
+const Typography = styled(MuiTypography, {
+  shouldForwardProp: prop => prop !== "bold" && prop !== "primary",
+})<TypographyProps>(({ theme, bold, primary }) => ({
   fontWeight: bold ? 600 : 400,
   color: primary ? theme.palette.primary.main : theme.palette.text.primary,
 }))
