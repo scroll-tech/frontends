@@ -63,9 +63,9 @@ const Web3ContextProvider = props => {
   const { chain } = useNetwork()
 
   const provider = useMemo(() => {
-    if (walletClient) return walletClientToSigner(walletClient)
+    if (walletClient && chain && chain.id === walletClient.chain.id) return walletClientToSigner(walletClient)
     return null
-  }, [walletClient])
+  }, [walletClient, chain])
 
   const checkConnectedChainId = useCallback(
     chainId => {
