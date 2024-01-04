@@ -11,7 +11,7 @@ import LoadingPage from "@/components/LoadingPage"
 import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
 import { ECOSYSTEM_NETWORK_LIST } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
-import { isAboveScreen } from "@/utils"
+import { isAboveScreen } from "@/utils/dom"
 
 import Error from "./Error"
 import NoData from "./NoData"

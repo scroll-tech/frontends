@@ -9,6 +9,7 @@ import { ecosystemListLogoUrl } from "@/apis/ecosystem"
 import { ReactComponent as ArrowSvg } from "@/assets/svgs/ecosystem/arrow.svg"
 import { ReactComponent as TwitterSvg } from "@/assets/svgs/ecosystem/twitter.svg"
 import Link from "@/components/Link"
+import RenderIfVisible from "@/components/RenderIfVisible"
 import TextButton from "@/components/TextButton"
 import { TWITTER_ORIGIN } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
@@ -128,33 +129,67 @@ const ProtocolCard = props => {
   }
 
   return (
-    <Box className={classes.grid}>
-      <Stack
-        direction="row"
-        justifyContent="center"
-        alignItems="center"
-        className={classes.logo}
-        sx={{
-          gridArea: "logo",
-        }}
-      >
-        <Img alt={name} src={`${ecosystemListLogoUrl}${name}${ext}`} placeholder={hash} width={isMobile ? 48 : 88} height={isMobile ? 48 : 88}></Img>
-      </Stack>
-      <Stack direction="row" alignItems="center" gap="0.8rem" sx={{ gridArea: "name" }}>
-        <Typography sx={{ fontSize: ["2rem", "2.4rem"], lineHeight: ["2.8rem", "3.2rem"], fontWeight: 600 }}>{name}</Typography>
-        <Link
-          external
-          href={TWITTER_ORIGIN + twitterHandle}
+    <RenderIfVisible defaultHeight={isMobile ? 0 : isDesktop ? 136 : 176}>
+      <Box className={classes.grid}>
+        <Stack
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          className={classes.logo}
           sx={{
-            color: "inherit",
-            "&:hover": {
-              color: theme => theme.palette.primary.main,
-            },
+            gridArea: "logo",
           }}
         >
-          <SvgIcon sx={{ fontSize: "1.4rem" }} component={TwitterSvg} inheritViewBox></SvgIcon>
-        </Link>
-        {isDesktop && (
+          <Img
+            alt={name}
+            src={`${ecosystemListLogoUrl}${name}${ext}`}
+            placeholder={hash}
+            width={isMobile ? 48 : 88}
+            height={isMobile ? 48 : 88}
+          ></Img>
+        </Stack>
+        <Stack direction="row" alignItems="center" gap="0.8rem" sx={{ gridArea: "name" }}>
+          <Typography sx={{ fontSize: ["2rem", "2.4rem"], lineHeight: ["2.8rem", "3.2rem"], fontWeight: 600 }}>{name}</Typography>
+          <Link
+            external
+            href={TWITTER_ORIGIN + twitterHandle}
+            sx={{
+              color: "inherit",
+              "&:hover": {
+                color: theme => theme.palette.primary.main,
+              },
+            }}
+          >
+            <SvgIcon sx={{ fontSize: "1.4rem" }} component={TwitterSvg} inheritViewBox></SvgIcon>
+          </Link>
+          {isDesktop && (
+            <Box className={classes.tagWrapper}>
+              {tags
+                ? (tags as string[]).map(value => (
+                    <span className={classes.tag} key={value}>
+                      {value.trim()}
+                    </span>
+                  ))
+                : null}
+            </Box>
+          )}
+        </Stack>
+        <LinesEllipsis
+          className={classes.desc}
+          text={desc}
+          maxLine={isExpended ? 100 : isMobile ? 4 : 2}
+          ellipsis={
+            <>
+              {` ... `}
+              <TextButton sx={{ fontWeight: 400, color: "#5b5b5b" }} underline="always" onClick={handleClickMore}>
+                More
+              </TextButton>
+            </>
+          }
+          basedOn="words"
+        />
+
+        {!isDesktop && (
           <Box className={classes.tagWrapper}>
             {tags
               ? (tags as string[]).map(value => (
@@ -165,43 +200,17 @@ const ProtocolCard = props => {
               : null}
           </Box>
         )}
-      </Stack>
-      <LinesEllipsis
-        className={classes.desc}
-        text={desc}
-        maxLine={isExpended ? 100 : isMobile ? 4 : 2}
-        ellipsis={
-          <>
-            {` ... `}
-            <TextButton sx={{ fontWeight: 400, color: "#5b5b5b" }} underline="always" onClick={handleClickMore}>
-              More
-            </TextButton>
-          </>
-        }
-        basedOn="words"
-      />
-
-      {!isDesktop && (
-        <Box className={classes.tagWrapper}>
-          {tags
-            ? (tags as string[]).map(value => (
-                <span className={classes.tag} key={value}>
-                  {value.trim()}
-                </span>
-              ))
-            : null}
-        </Box>
-      )}
-      <Button
-        href={website}
-        target="_blank"
-        classes={{ root: classes.action }}
-        endIcon={<SvgIcon sx={{ fontSize: ["1.2rem !important", "1.4rem !important"] }} component={ArrowSvg} inheritViewBox></SvgIcon>}
-      >
-        Visit
-      </Button>
-      {networkLabel !== "Mainnet" && <NetworkLabel className={classes.networkLabel}>{networkLabel}</NetworkLabel>}
-    </Box>
+        <Button
+          href={website}
+          target="_blank"
+          classes={{ root: classes.action }}
+          endIcon={<SvgIcon sx={{ fontSize: ["1.2rem !important", "1.4rem !important"] }} component={ArrowSvg} inheritViewBox></SvgIcon>}
+        >
+          Visit
+        </Button>
+        {networkLabel !== "Mainnet" && <NetworkLabel className={classes.networkLabel}>{networkLabel}</NetworkLabel>}
+      </Box>
+    </RenderIfVisible>
   )
 }
 export default ProtocolCard
