@@ -78,38 +78,12 @@ export const convertDateToTimestamp = (dateString: string, isMilliseconds: boole
   return Math.floor(timestamp)
 }
 
-const units = ["", "K", "M", "B", "T"]
-
-const HAIR_SPACE = "\u200a"
-
 export const formatLargeNumber = (value: number): string => {
-  if (value === 0) {
-    return "0.00"
-  } else if (value < 0) {
-    return `-${formatLargeNumber(-value)}`
+  if (value.toString().length <= 6) {
+    return new Intl.NumberFormat("en-US").format(value)
   }
-  const str = Math.floor(value * 100).toString()
-  for (let i = 0; i < units.length; i++) {
-    const unit = units[i]
-    if (str.length <= 4 + i * 3) {
-      const offset = str.length - 2 - i * 3
-      if (unit === "K") {
-        return str.slice(0, offset) + "," + str.slice(offset, -2)
-      }
-      return str.slice(0, offset) + "." + str.slice(offset, offset + 2) + withSpace(unit)
-    } else if (str.length === 5 + i * 3) {
-      if (unit === "K") {
-        return str.slice(0, 3) + "," + str.slice(3, -2)
-      }
-      return str.slice(0, 3) + withSpace(unit)
-    }
-  }
-  return str.slice(0, 1 - units.length * 3) + withSpace(units[units.length - 1])
-}
-
-const withSpace = (unit: string) => {
-  if (unit) {
-    return HAIR_SPACE + unit
-  }
-  return unit
+  return new Intl.NumberFormat("en-US", {
+    maximumFractionDigits: 1,
+    notation: "compact",
+  }).format(value)
 }
