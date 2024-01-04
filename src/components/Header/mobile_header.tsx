@@ -114,7 +114,7 @@ const SectionList = styled<any>("div")(({ theme, dark }) => ({
   "&:last-of-type": {
     paddingBottom: "2.5rem",
   },
-  "&:nth-last-child(-n+2)": {
+  "&:nth-last-of-type(-n+2)": {
     paddingBottom: "1.6rem",
   },
   "&:nth-of-type(n+2)": {
@@ -183,10 +183,10 @@ const App = ({ currentMenu }) => {
             </ListItem>
           )}
 
-          <Collapse in={activeCollapse === item.key} timeout="auto" unmountOnExit>
+          <Collapse key={item.key} in={activeCollapse === item.key} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              {item.children?.map(section => (
-                <SectionList key={section.label} dark={dark}>
+              {item.children?.map((section, idx) => (
+                <SectionList key={idx} dark={dark}>
                   <Typography sx={{ fontSize: "1.4rem", fontWeight: "bold", lineHeight: "3rem" }}>{section.label}</Typography>
                   {section.children
                     // only show sub items with href
