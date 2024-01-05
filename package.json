@@ -45,7 +45,7 @@
     "@sentry/react": "^7.43.0",
     "@sentry/tracing": "^7.43.0",
     "@types/jest": "^27.5.2",
-    "@types/node": "^16.11.43",
+    "@types/node": "^20.10.6",
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
     "@web3-onboard/injected-wallets": "^2.2.4",
@@ -112,7 +112,7 @@
     "postcss": "^8.4.17",
     "prettier": "^2.8.1",
     "process": "^0.11.10",
-    "react-device-detect": "^1.6.2",
+    "react-device-detect": "^2.2.3",
     "react-redux": "^7.2.0",
     "react-router-dom": "^6.3.0",
     "stream": "^0.0.2",
@@ -127,5 +127,8 @@
       "@typescript-eslint/eslint-plugin": "^6.5.0",
       "@typescript-eslint/parser": "^6.5.0"
     }
+  },
+  "engines": {
+    "node": ">=20.10.0"
   }
 }
