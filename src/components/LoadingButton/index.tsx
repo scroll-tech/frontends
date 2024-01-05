@@ -3,8 +3,9 @@ import { makeStyles } from "tss-react/mui"
 import { LoadingButton } from "@mui/lab"
 import { CircularProgress, Stack } from "@mui/material"
 
-const useStyles = makeStyles()(() => ({
+const useStyles = makeStyles()(theme => ({
   loadingIndicator: {
+    color: theme.palette.primary.contrastText,
     width: "max-content",
   },
 }))
@@ -27,7 +28,7 @@ const ScrollLoadingButton = props => {
     <LoadingButton
       classes={{ loadingIndicator: classes.loadingIndicator }}
       loadingIndicator={
-        <Stack direction="row" spacing={2}>
+        <Stack direction="row" alignItems="center" spacing={1}>
           <span>{renderLoadingText()}</span>
           <CircularProgress color="inherit" size={18} thickness={4}></CircularProgress>
         </Stack>

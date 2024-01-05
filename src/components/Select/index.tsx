@@ -1,85 +1,83 @@
 import { useState } from "react"
 import { makeStyles } from "tss-react/mui"
 
-import { Select as MuiSelect, Stack, SvgIcon, Typography } from "@mui/material"
+import { Select as MuiSelect, Stack, Typography } from "@mui/material"
 
 import { ReactComponent as TriangleDownIcon } from "@/assets/svgs/common/triangle-down.svg"
-import { ReactComponent as WidgetsIcon } from "@/assets/svgs/common/widgets.svg"
 
 const useStyles = makeStyles()(theme => ({
-  select: {
-    width: "44rem",
+  root: {
+    width: "19rem",
     [theme.breakpoints.down("sm")]: {
       width: "100%",
     },
-    ".MuiSelect-select": {
-      padding: "1.3rem 3.2rem 1.3rem 1.8rem",
-
-      [theme.breakpoints.down("sm")]: {
-        padding: "1.2rem 3.2rem 1.1rem 1.8rem",
-      },
-      backgroundColor: `${theme.palette.background.default} !important`,
-      "&[aria-expanded='true']": {
-        borderRadius: "2.6rem 2.6rem 0 0",
-        border: `1px solid ${theme.palette.text.primary}`,
-        borderBottom: "none",
-      },
-      "&[aria-expanded='false']": {
-        borderRadius: "2.6rem",
-        border: `1px solid ${theme.palette.text.primary}`,
-      },
-      "&:focus": {
-        backgroundColor: "unset",
-      },
+  },
+  // TODO: why first insert
+  select: {
+    padding: "0.6rem 2.4rem 0.6rem 2.4rem !important",
+    [theme.breakpoints.down("sm")]: {
+      padding: "1.1rem 3.6rem 1.1rem 1.6rem !important",
     },
-    ".MuiSelect-icon": {
-      top: "50%",
-      transform: "translateY(-50%)",
-      right: "1.8rem",
+    backgroundColor: `${theme.palette.background.default} !important`,
+    "&[aria-expanded='true']": {
+      borderRadius: "2.4rem 2.4rem 0 0",
+      border: `1px solid ${theme.palette.text.primary}`,
+      borderBottomColor: "transparent",
     },
-    ".MuiSelect-iconOpen": {
-      transform: "translateY(-50%) rotate(180deg)",
+    "&[aria-expanded='false']": {
+      borderRadius: "2.4rem",
+      border: `1px solid ${theme.palette.text.primary}`,
     },
+    "&:focus": {
+      backgroundColor: "unset",
+    },
+  },
+  icon: {
+    top: "50%",
+    transform: "translateY(-50%)",
+    right: "2.4rem",
+    willChange: "transform",
+    transition: "transform .3s ease-in-out",
+    [theme.breakpoints.down("sm")]: {
+      right: "2rem",
+    },
+  },
+  iconOpen: {
+    transform: "translateY(-50%) rotate(180deg)",
   },
   popover: {
     boxShadow: "none",
-    borderRadius: "0 0 2.6rem 2.6rem",
+    borderRadius: "0 0 2.4rem 2.4rem",
     border: `1px solid ${theme.palette.text.primary}`,
     borderTop: "none",
-    marginTop: "-1px",
+    marginTop: "-2px",
     transform: "translateX(0) !important",
     transition: "transform 227ms cubic-bezier(0.4, 0, 0.2, 1) 0ms !important",
-    // TODO: why
-    // "@media (min-width: 1500px) and (max-width: 1700px)": {
-    //   marginLeft: "-0.5px",
-    // },
   },
   suspend: {
     borderRadius: "2.6rem",
     borderTop: `1px solid ${theme.palette.text.primary}`,
   },
   menuList: {
-    paddingTop: "1.2rem",
-    paddingBottom: "2rem",
-    [theme.breakpoints.down("sm")]: {
-      paddingTop: "0.4rem",
-      paddingBottom: "3rem",
-      paddingLeft: "3.4rem",
-      display: "grid",
-      gridTemplateColumns: "repeat(2, 1fr)",
-    },
+    padding: 0,
   },
 }))
 
 const Select = props => {
+  const { className, ...restProps } = props
   const { classes, cx } = useStyles()
 
   const [isUnderneath, setIsUnderneath] = useState(true)
 
   const onOpen = () => {
     setTimeout(() => {
-      const popoverEl = document.querySelector(".select-popover-paper-under")
+      const popoverEl = document.querySelector(".select-popover-paper-under") as HTMLElement
+
       if (popoverEl) {
+        const { left } = popoverEl.getBoundingClientRect()
+        if (left > 1200 && left % 2) {
+          popoverEl.style.left = `${left - 0.5}px`
+        }
         const isUnderneath = window.getComputedStyle(popoverEl)["transform-origin"].split(" ")[1] === "0px"
         setIsUnderneath(isUnderneath)
       }
@@ -91,21 +89,26 @@ const Select = props => {
       disableUnderline
       displayEmpty
       IconComponent={TriangleDownIcon}
-      className={classes.select}
+      className={cx(classes.root, className)}
+      classes={{ select: classes.select, icon: classes.icon, iconOpen: classes.iconOpen }}
       onOpen={onOpen}
       MenuProps={{
-        PopoverClasses: { paper: cx(classes.popover, "select-popover-paper-under", !isUnderneath && classes.suspend) },
+        PopoverClasses: {
+          paper: cx(classes.popover, "select-popover-paper-under", !isUnderneath && classes.suspend),
+        },
         MenuListProps: { classes: { root: classes.menuList } },
+        disableAutoFocusItem: true,
       }}
       renderValue={selected => {
         return (
           <Stack direction="row" alignItems="center" spacing={1.5}>
-            <SvgIcon sx={{ fontSize: "2rem" }} component={WidgetsIcon} inheritViewBox></SvgIcon>
-            <Typography sx={{ fontSize: ["1.6rem", "2rem"], fontWeight: [500, 600], lineHeight: "normal" }}>{selected as string}</Typography>
+            <Typography sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: ["2.4rem", "3.6rem"], fontWeight: 600, cursor: "inherit" }}>
+              {selected as string}
+            </Typography>
           </Stack>
         )
       }}
-      {...props}
+      {...restProps}
     ></MuiSelect>
   )
 }
