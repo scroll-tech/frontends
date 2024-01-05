@@ -77,3 +77,13 @@ export const convertDateToTimestamp = (dateString: string, isMilliseconds: boole
   }
   return Math.floor(timestamp)
 }
+
+export const formatLargeNumber = (value: number): string => {
+  if (value.toString().length <= 6) {
+    return new Intl.NumberFormat("en-US").format(value)
+  }
+  return new Intl.NumberFormat("en-US", {
+    maximumFractionDigits: 1,
+    notation: "compact",
+  }).format(value)
+}

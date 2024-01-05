@@ -5,19 +5,16 @@ import { Chip } from "@mui/material"
 const useStyles = makeStyles<any>()((theme, { primary }) => ({
   root: {
     height: "auto",
-    padding: "0.5rem",
-    backgroundColor: theme.palette.themeBackground.normal,
-    borderRadius: "2rem 2rem 0 0",
+    padding: "0.4rem 1.2rem",
+    borderRadius: "1.6rem",
+    backgroundColor: theme.palette.themeBackground.light,
   },
   label: {
-    height: "3.4rem",
-    width: "13rem",
-    lineHeight: "3.4rem",
-    textAlign: "center",
-    fontSize: "1.7rem",
+    fontSize: "1.6rem",
+    lineHeight: 1.5,
     fontWeight: 600,
-    borderRadius: "1.7rem",
-    backgroundColor: primary ? theme.palette.themeBackground.highlight : "#93FBED",
+    padding: 0,
+    color: "#84623A",
   },
 }))
 

@@ -1,5 +1,4 @@
-import Explorer from "./Explorer"
-// import FeaturedProjects from "./FeaturedProjects"
+import Contribute from "./Contribute"
 import Header from "./Header"
 import Protocols from "./Protocols"
 
@@ -7,9 +6,8 @@ const Ecosystem = () => {
   return (
     <>
       <Header></Header>
-      {/* <FeaturedProjects></FeaturedProjects> */}
       <Protocols></Protocols>
-      <Explorer></Explorer>
+      <Contribute></Contribute>
     </>
   )
 }
