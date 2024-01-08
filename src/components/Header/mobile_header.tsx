@@ -33,7 +33,7 @@ const Menu = styled("div")(({ theme }) => ({
   },
 }))
 
-const Bar = styled<any>("div")(({ theme, dark }) => ({
+const Bar = styled<any>("div", { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   width: "2rem",
   height: ".2rem",
   backgroundColor: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
@@ -41,12 +41,12 @@ const Bar = styled<any>("div")(({ theme, dark }) => ({
   transition: "0.4s",
 }))
 
-const MenuContent = styled<any>(Box)(({ theme, dark }) => ({
+const MenuContent = styled<any>(Box, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   margin: "0.5rem 1.6rem 0",
   background: dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.light,
 }))
 
-const ListItem = styled<any>(ListItemButton)(({ theme, dark }) => ({
+const ListItem = styled<any>(ListItemButton, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   fontWeight: 600,
   fontSize: "2rem",
   height: "5.5rem",
@@ -65,7 +65,7 @@ const ListItem = styled<any>(ListItemButton)(({ theme, dark }) => ({
   },
 }))
 
-const MenuLinkStyledButton = styled<any>(NavLink)(({ theme, dark }) => ({
+const MenuLinkStyledButton = styled<any>(NavLink, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   fontWeight: 600,
   fontSize: "2rem",
   height: "5.5rem",
@@ -86,7 +86,7 @@ const SubListItem = styled(ListItemButton)(({ theme }) => ({
   padding: "0  !important",
 }))
 
-const LinkStyledButton = styled<any>(NavLink)(({ theme, dark }) => ({
+const LinkStyledButton = styled<any>(NavLink, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   fontWeight: 500,
   fontSize: "1.8rem",
   height: "4rem",
@@ -99,7 +99,7 @@ const LinkStyledButton = styled<any>(NavLink)(({ theme, dark }) => ({
   },
 }))
 
-const ExternalLink = styled<any>(Link)(({ theme, dark }) => ({
+const ExternalLink = styled<any>(Link, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   fontWeight: 500,
   fontSize: "1.8rem",
   height: "4rem",
@@ -110,7 +110,7 @@ const ExternalLink = styled<any>(Link)(({ theme, dark }) => ({
   width: "100%",
 }))
 
-const SectionList = styled<any>("div")(({ theme, dark }) => ({
+const SectionList = styled<any>("div", { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   "&:last-of-type": {
     paddingBottom: "2.5rem",
   },
@@ -193,7 +193,7 @@ const App = ({ currentMenu }) => {
                     ?.filter(subItem => subItem.href)
                     .map(subItem =>
                       subItem.isExternal ? (
-                        <SubListItem onClick={() => toggleDrawer(false)} sx={{ mx: 4 }} key={subItem.key}>
+                        <SubListItem onClick={() => toggleDrawer(false)} sx={{ mx: 4 }} key={subItem.key + idx}>
                           <ExternalLink underline="none" href={subItem.href} dark={dark}>
                             {subItem.label}
                             <svg
