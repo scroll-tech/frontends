@@ -21,12 +21,6 @@ const AnnouncementStack = styled<any>(Stack, { shouldForwardProp: prop => prop !
   },
 }))
 
-const ReadMoreLink = styled("span")(
-  ({ theme }) => `
-  font-weight: 700;
-  `,
-)
-
 const Announcement = () => {
   const isHome = useMatch("/")
   const isPortal = useMatch("/portal")
@@ -35,7 +29,7 @@ const Announcement = () => {
     if (isProduction && (isHome || isPortal)) {
       return (
         <>
-          Scroll {requireEnv("REACT_APP_SCROLL_ENVIRONMENT")} is now live. <ReadMoreLink>Try it!</ReadMoreLink>
+          Scroll {requireEnv("REACT_APP_SCROLL_ENVIRONMENT")} is now live. <strong>Try it!</strong>
         </>
       )
     } else if (!isProduction) {
