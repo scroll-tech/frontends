@@ -16,7 +16,7 @@ If you encounter bugs or have feature ideas, feel free to [create an issue](/../
 
 ## Node Version
 
-Tested with v16.20.1 (npm v8.19.4).
+Tested with v20.10.0 (npm v10.2.3).
 
 ## Available Scripts
 
