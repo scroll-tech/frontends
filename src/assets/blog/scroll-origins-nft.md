@@ -31,6 +31,7 @@ No two NFTs will be identical, and they all encapsulate both Scroll’s technolo
 We look forward to sharing the underlying details of the function generation on claim day. Stay tuned.
 
 ### Eligibility
+![A photo I took last year in Squamish, BC  OC 1170x1538](https://github.com/scroll-tech/frontends/assets/15090582/72bd867a-5b80-438a-ac58-55114028efe0)
 
 Everyone who deploys a smart contract to Scroll Mainnet within 60 days of Genesis Block (October 10, 2023 6AM GMT) will be eligible for one of the three types of NFTs offered in the three stages of deployment:
 
