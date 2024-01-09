@@ -4,7 +4,6 @@ import { useMatch } from "react-router-dom"
 import { Stack } from "@mui/material"
 import { styled } from "@mui/system"
 
-import Link from "@/components/Link"
 import { isProduction, requireEnv } from "@/utils"
 
 const AnnouncementStack = styled<any>(Stack, { shouldForwardProp: prop => prop !== "production" })(({ theme, production }) => ({
@@ -35,10 +34,7 @@ const Announcement = () => {
     } else if (!isProduction) {
       return (
         <>
-          You are on the Scroll {requireEnv("REACT_APP_SCROLL_ENVIRONMENT")} Testnet website. Return to{" "}
-          <Link style={{ color: "inherit" }} href="https://scroll.io/" external>
-            Mainnet
-          </Link>
+          You are on the Scroll {requireEnv("REACT_APP_SCROLL_ENVIRONMENT")} Testnet website. Return to <strong>Mainnet</strong>
         </>
       )
     }
