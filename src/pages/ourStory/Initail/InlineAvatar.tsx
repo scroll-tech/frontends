@@ -25,8 +25,8 @@ const InlineAvater = props => {
   const { fontSize, size = "middle", ...restProps } = props
   const { classes } = useStyles({ size })
   return (
-    <Box className={classes.placeholder}>
-      <Avatar classes={{ root: classes.avatar }} {...restProps}></Avatar>
+    <Box component="span" className={classes.placeholder}>
+      <Avatar classes={{ root: classes.avatar }} {...restProps} component="span"></Avatar>
     </Box>
   )
 }

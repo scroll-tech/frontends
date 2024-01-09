@@ -106,7 +106,7 @@ const Perks = () => {
       <Typography sx={{ fontSize: ["3.2rem", "4.8rem"], mb: ["3.2rem", "5.6rem"] }}>Perks & benefits</Typography>
       <SuccessionToView className={classes.grid}>
         {PERKS.map((item, index) => (
-          <SuccessionItem>
+          <SuccessionItem key={index}>
             <SvgIcon sx={{ width: item.width, height: "3.4rem" }} component={item.icon} inheritViewBox></SvgIcon>
             <Typography sx={{ fontSize: ["2rem", "2.4rem"], fontWeight: 600, mt: ["1.3rem", "1.8rem", "2.2rem"], mb: ["0.8rem", "1.4rem", "2rem"] }}>
               {item.title}

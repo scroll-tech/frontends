@@ -36,7 +36,7 @@ const sepoliaNavigations = [
           },
           {
             label: "Bug Bounty",
-            key: "status",
+            key: "bug-bounty",
             href: "https://immunefi.com/bounty/scroll/",
             isExternal: true,
           },
@@ -126,7 +126,7 @@ const mainnetNavigations = [
           },
           {
             label: "Bug Bounty",
-            key: "status",
+            key: "bug-bounty",
             href: "https://immunefi.com/bounty/scroll/",
             isExternal: true,
           },

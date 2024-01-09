@@ -12,7 +12,6 @@ export type DetailRowProps = {
   highlighted?: boolean
   large?: boolean
   xlarge?: boolean
-  bold?: boolean
   contrastText?: boolean
   price?: string | number
 }

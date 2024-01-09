@@ -10,13 +10,13 @@
         .st45{fill:#EBC28E;stroke:#050308;stroke-width:3;stroke-miterlimit:10;}
         .row{margin:0;}
         .row span{display:inline-block;height:14px;line-height:14px;background:#050308;padding:0 3px;border:1px solid #EBC28E;}
-        .row span:nth-child(even){
+        .row span:nth-of-type(even){
           border-left:none;
         }
-        .row:nth-child(n+2) span{
+        .row:nth-of-type(n+2) span{
           margin-top: -0.9px
         }
-        .row:nth-child(n+2) span:nth-child(1){
+        .row:nth-of-type(n+2) span:nth-of-type(1){
           width: 55.8px
         }
         .st61{

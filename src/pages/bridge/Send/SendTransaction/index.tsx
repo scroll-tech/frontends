@@ -37,7 +37,7 @@ const SendTransaction = props => {
 
   const { txType, isNetworkCorrect, fromNetwork, changeTxResult } = useBridgeStore()
 
-  const [amount, setAmount] = useState<string>()
+  const [amount, setAmount] = useState<string>("")
 
   const [maxWarning, setMaxWarning] = useState<string>()
 
@@ -294,7 +294,7 @@ const SendTransaction = props => {
               component={WarningSvg}
               inheritViewBox
             ></SvgIcon>
-            <Stack direction="row" style={{ display: "inline-flex", verticalAlign: "middle", alignItems: "center", gap: "0.2rem" }}>
+            <Stack component="span" direction="row" style={{ display: "inline-flex", verticalAlign: "middle", alignItems: "center", gap: "0.2rem" }}>
               {bridgeWarning}
             </Stack>
           </Typography>

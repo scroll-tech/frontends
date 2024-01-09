@@ -179,8 +179,8 @@ const App = ({ currentMenu }) => {
   }
 
   const renderSubMenuList = children => {
-    return children.map(section => (
-      <SectionList key={section.label} dark={dark}>
+    return children.map((section, idx) => (
+      <SectionList key={idx} dark={dark}>
         <Typography sx={{ fontSize: "1.4rem", fontWeight: "bold", lineHeight: "3rem" }}>{section.label}</Typography>
         {section.children
           // only show sub menu item when the href is set

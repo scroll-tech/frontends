@@ -105,7 +105,7 @@ const useStyles = makeStyles()(theme => ({
   listItemRoot: {
     padding: 0,
     gap: 8,
-    "&:nth-child(n + 2)": {
+    "&:nth-of-type(n + 2)": {
       paddingTop: 8,
     },
   },
@@ -177,6 +177,7 @@ const ApprovalDialog = props => {
         >
           {APPROVAL_OPTIONS.map(item => (
             <Card
+              key={item.type}
               role="button"
               tabIndex={0}
               variant="outlined"
@@ -193,7 +194,7 @@ const ApprovalDialog = props => {
                 </Typography>
                 <List classes={{ root: classes.listRoot }}>
                   {item.info.map(i => (
-                    <ListItem classes={{ root: classes.listItemRoot }}>
+                    <ListItem key={i} classes={{ root: classes.listItemRoot }}>
                       <ListItemIcon classes={{ root: classes.listItemIconRoot }}>
                         <SvgIcon
                           sx={{ fontSize: ["1.8rem", "2rem"], color: "#8C591A" }}
