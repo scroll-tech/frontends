@@ -6,7 +6,7 @@ import { Box } from "@mui/material"
 import { WITHDRAW_TABEL_PAGE_SIZE } from "@/constants"
 import { useBrigeContext } from "@/contexts/BridgeContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import useWithdrawStore from "@/stores/withdrawStore"
+import useClaimStore from "@/stores/claimStore"
 
 import NotConnected from "../components/NoConnected"
 import TxTable from "../components/TxTable"
@@ -45,7 +45,7 @@ const Claim = (props: any) => {
     withdrawHistory: { refreshPageTransactions },
   } = useBrigeContext()
 
-  const { page, total, pageTransactions, loading, clearTransactions } = useWithdrawStore()
+  const { page, total, pageTransactions, loading, clearTransactions } = useClaimStore()
 
   useEffect(() => {
     handleChangePage(1)

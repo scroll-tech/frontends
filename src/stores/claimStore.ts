@@ -6,9 +6,9 @@ import { WITHDRAW_TRANSACTIONS } from "@/constants/storageKey"
 import { TX_TYPE } from "@/constants/transaction"
 import useTxStore from "@/stores/txStore"
 
-import { WithdrawStore, fetchOnChainTransactions, formatBackTxList, updateFrontTransactions } from "./utils"
+import { ClaimStore, fetchOnChainTransactions, formatBackTxList, updateFrontTransactions } from "./utils"
 
-const useWithdrawStore = create<WithdrawStore>()(
+const useClaimStore = create<ClaimStore>()(
   persist(
     (set, get) => ({
       page: 1,
@@ -81,4 +81,4 @@ const useWithdrawStore = create<WithdrawStore>()(
     },
   ),
 )
-export default useWithdrawStore
+export default useClaimStore

@@ -1,7 +1,7 @@
 //  @ts-ignore
 import { readItem } from "squirrel-gill/lib/storage"
 
-import { fetchTxListUrl, fetchWithdrawalListUrl } from "@/apis/bridge"
+import { fetchClaimableTxListUrl, fetchTxListUrl } from "@/apis/bridge"
 import { BLOCK_NUMBERS } from "@/constants/storageKey"
 import { TX_TYPE } from "@/constants/transaction"
 import { sentryDebug } from "@/utils"
@@ -26,7 +26,7 @@ export interface TxStore {
   clearTransactions: () => void
 }
 
-export interface WithdrawStore {
+export interface ClaimStore {
   page: number
   total: number
   loading: boolean
@@ -113,7 +113,7 @@ export const formatBackTxList = (backList, estimatedTimeMap) => {
 export const fetchOnChainTransactions = async (address, page, rowsPerPage, type) => {
   const requsetUrl = {
     [TX_TYPE.ALL]: `${fetchTxListUrl}?address=${address}&page=${page}&page_size=${rowsPerPage}`,
-    [TX_TYPE.WITHDRAW]: `${fetchWithdrawalListUrl}?address=${address}&page=${page}&page_size=${rowsPerPage}`,
+    [TX_TYPE.WITHDRAW]: `${fetchClaimableTxListUrl}?address=${address}&page=${page}&page_size=${rowsPerPage}`,
   }
   const response = await scrollRequest(requsetUrl[type])
   return response.data

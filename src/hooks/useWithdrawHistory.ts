@@ -5,7 +5,7 @@ import { fetchTxByHashUrl } from "@/apis/bridge"
 import { TX_STATUS, WITHDRAW_TABEL_PAGE_SIZE } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useBridgeStore from "@/stores/bridgeStore"
-import useWithdrawHistoryStore from "@/stores/withdrawStore"
+import useWithdrawHistoryStore from "@/stores/claimStore"
 
 export interface TxHistory {
   errorMessage: string
