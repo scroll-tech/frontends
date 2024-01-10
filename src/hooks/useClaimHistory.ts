@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react"
 import useSWR from "swr"
 
 import { fetchTxByHashUrl } from "@/apis/bridge"
-import { CLAIM_TABEL_PAGE_SIZE, TX_STATUS } from "@/constants"
+import { CLAIM_TABLE_PAGE_SIZE, TX_STATUS } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useBridgeStore from "@/stores/bridgeStore"
 import useClaimHistoryStore from "@/stores/claimStore"
@@ -56,7 +56,7 @@ const useClaimHistory = () => {
   const refreshPageTransactions = useCallback(
     page => {
       if (walletCurrentAddress) {
-        comboPageTransactions(walletCurrentAddress, page, CLAIM_TABEL_PAGE_SIZE).catch(e => {
+        comboPageTransactions(walletCurrentAddress, page, CLAIM_TABLE_PAGE_SIZE).catch(e => {
           setErrorMessage(e)
         })
       }
