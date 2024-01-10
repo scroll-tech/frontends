@@ -3,7 +3,7 @@ import { makeStyles } from "tss-react/mui"
 
 import { Box } from "@mui/material"
 
-import { WITHDRAW_TABEL_PAGE_SIZE } from "@/constants"
+import { CLAIM_TABEL_PAGE_SIZE } from "@/constants"
 import { useBrigeContext } from "@/contexts/BridgeContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useClaimStore from "@/stores/claimStore"
@@ -42,7 +42,7 @@ const Claim = (props: any) => {
   const { classes } = useStyles()
   const { walletCurrentAddress, chainId } = useRainbowContext()
   const {
-    withdrawHistory: { refreshPageTransactions },
+    claimHistory: { refreshPageTransactions },
   } = useBrigeContext()
 
   const { page, total, pageTransactions, loading, clearTransactions } = useClaimStore()
@@ -69,7 +69,7 @@ const Claim = (props: any) => {
           loading={loading}
           type="claim"
           pagination={{
-            count: Math.ceil(total / WITHDRAW_TABEL_PAGE_SIZE),
+            count: Math.ceil(total / CLAIM_TABEL_PAGE_SIZE),
             page,
             onChange: handleChangePage,
           }}
