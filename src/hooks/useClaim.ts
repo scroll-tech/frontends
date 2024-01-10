@@ -1,84 +1,51 @@
-import { useCallback, useEffect, useMemo, useState } from "react"
-import useSWR from "swr"
+import { ethers } from "ethers"
+import { useState } from "react"
 
-import { fetchTxByHashUrl } from "@/apis/bridge"
-import { CLAIM_TABEL_PAGE_SIZE } from "@/constants"
+import L1ScrollMessenger from "@/assets/abis/L1ScrollMessenger.json"
+import { useBrigeContext } from "@/contexts/BridgeContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import useBridgeStore from "@/stores/bridgeStore"
-import useClaimStore from "@/stores/claimStore"
+import useTxStore from "@/stores/txStore"
+import { CLAIM_OFFSET_TIME } from "@/stores/utils"
+import { requireEnv } from "@/utils"
 
-export interface TxHistory {
-  errorMessage: string
-  refreshPageTransactions: (page) => void
-  changeErrorMessage: (value) => void
-}
+export function useClaim(props) {
+  const { tx } = props
+  const { networksAndSigners } = useBrigeContext()
+  const [loading, setLoading] = useState(false)
+  const { addEstimatedTimeMap } = useTxStore()
+  const { chainId } = useRainbowContext()
 
-const useClaim = () => {
-  const { walletCurrentAddress } = useRainbowContext()
-  const { txType, withDrawStep, historyVisible } = useBridgeStore()
+  const relayMessageWithProof = async () => {
+    const contract = new ethers.Contract(requireEnv("REACT_APP_L1_SCROLL_MESSENGER"), L1ScrollMessenger, networksAndSigners[chainId as number].signer)
+    const { from, to, value, nonce, message, proof, batch_index } = tx.claimInfo
 
-  const { comboPageTransactions, pageTransactions, generateTransactions } = useClaimStore()
-
-  const isOnClaimPage = useMemo(() => {
-    return !historyVisible && txType === "Withdraw" && withDrawStep === "2"
-  }, [historyVisible, txType, withDrawStep])
-
-  const [errorMessage, setErrorMessage] = useState("")
-
-  const fetchTxList = useCallback(({ txs }) => {
-    return scrollRequest(fetchTxByHashUrl, {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ txs }),
-    }).then(data => data)
-  }, [])
-
-  const { data } = useSWR<any>(
-    () => {
-      const needToRefreshTransactions = pageTransactions.filter(item => !item.toHash)
-      if (needToRefreshTransactions.length && walletCurrentAddress && isOnClaimPage) {
-        const txs = needToRefreshTransactions.map(item => item.hash).filter((item, index, arr) => index === arr.indexOf(item))
-        return { txs }
-      }
-      return null
-    },
-    fetchTxList,
-    {
-      onError: (error, key) => {
-        setErrorMessage(`${error.status}:${error.message}`)
-      },
-      refreshInterval: 2000,
-    },
-  )
-
-  const refreshPageTransactions = useCallback(
-    page => {
-      if (walletCurrentAddress) {
-        comboPageTransactions(walletCurrentAddress, page, CLAIM_TABEL_PAGE_SIZE).catch(e => {
-          setErrorMessage(e)
+    try {
+      setLoading(true)
+      addEstimatedTimeMap(`progress_${tx.hash}`, Date.now() + CLAIM_OFFSET_TIME)
+      const result = await contract.relayMessageWithProof(from, to, value, nonce, message, {
+        batchIndex: batch_index,
+        merkleProof: proof,
+      })
+      result
+        .wait()
+        .then(() => {
+          addEstimatedTimeMap(`progress_${tx.hash}`, Date.now() + CLAIM_OFFSET_TIME)
         })
-      }
-    },
-    [walletCurrentAddress],
-  )
-
-  useEffect(() => {
-    refreshPageTransactions(1)
-  }, [refreshPageTransactions])
-
-  useEffect(() => {
-    if (data?.data?.result.length) {
-      generateTransactions(data.data.result)
+        .catch(error => {
+          // TRANSACTION_REPLACED or TIMEOUT
+          addEstimatedTimeMap(`progress_${tx.hash}`, 0)
+        })
+        .finally(() => {
+          setLoading(false)
+        })
+    } catch (error) {
+      addEstimatedTimeMap(`progress_${tx.hash}`, 0)
+      setLoading(false)
     }
-  }, [data])
+  }
 
   return {
-    errorMessage,
-    refreshPageTransactions,
-    changeErrorMessage: setErrorMessage,
+    relayMessageWithProof,
+    loading,
   }
 }
-
-export default useClaim

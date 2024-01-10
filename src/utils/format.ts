@@ -43,7 +43,7 @@ export const toHexadecimal = (value: number): string => {
 
 export const toTokenDisplay = (num, decimals: bigint = BigInt(18), symbol?: string) => {
   // TODO: should be pure
-  if (_.isNil(num) || !decimals) {
+  if (_.isNil(num) || !decimals || num === "") {
     return "-"
   }
 
@@ -132,9 +132,9 @@ export const formatUTCDate = (date, needSub?: boolean) => {
   return `${finalDate.utc().format("MMM D,YYYY h:mmA")} GMT`
 }
 
-export const formatDate = (date, options: { needSub?: boolean; withTime?: boolean } = {}) => {
-  const { needSub, withTime } = options
-  let finalDate = dayjs.isDayjs(date) ? date : dayjs(date)
+export const formatDate = (date, options: { needSub?: boolean; withTime?: boolean; isUnix?: boolean } = {}) => {
+  const { needSub, withTime, isUnix } = options
+  let finalDate = dayjs.isDayjs(date) ? date : isUnix ? dayjs.unix(date) : dayjs(date)
   if (needSub) {
     finalDate = date.subtract(1, "ms")
   }

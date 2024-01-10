@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react"
+import { useMemo } from "react"
 import { makeStyles } from "tss-react/mui"
 
 import {
@@ -19,19 +19,18 @@ import {
 
 import Link from "@/components/Link"
 import { NETWORKS, TX_STATUS } from "@/constants"
-import { useBrigeContext } from "@/contexts/BridgeContextProvider"
-import useCheckClaimStatus from "@/hooks/useCheckClaimStatus"
-import useLastFinalizedBatchIndex from "@/hooks/useLastFinalizedBatchIndex"
 import useTokenInfo from "@/hooks/useTokenInfo"
+import useTxStore from "@/stores/txStore"
 import { formatDate, generateExploreLink, toTokenDisplay, truncateHash } from "@/utils"
 
 import NoData from "../NoData"
 import TxStatusButton from "./TxStatusButton"
 
-const useStyles = makeStyles()(theme => {
+const useStyles = makeStyles<any>()((theme, { type }) => {
   return {
     tableContainer: {
       whiteSpace: "nowrap",
+      minHeight: "30rem",
       [theme.breakpoints.down("sm")]: {
         paddingBottom: "1.6rem",
       },
@@ -39,9 +38,10 @@ const useStyles = makeStyles()(theme => {
     tableWrapper: {
       boxShadow: "unset",
       borderRadius: "20px",
+      background: "transparent",
     },
     tableMinHeight: {
-      minHeight: "20rem",
+      minHeight: type === "claim" ? "40rem" : "20rem",
       overflowX: "auto",
     },
     tableTitle: {
@@ -68,7 +68,7 @@ const useStyles = makeStyles()(theme => {
     },
     tableBody: {
       ".MuiTableCell-root": {
-        padding: "2rem 1.6rem",
+        padding: type === "claim" ? "1.6rem 0.8rem" : "2rem 1.6rem",
         "*": {
           fontSize: "1.4rem",
         },
@@ -144,9 +144,8 @@ const useStyles = makeStyles()(theme => {
 })
 
 const TxTable = (props: any) => {
-  const { data, loading, pagination } = props
-  const { classes } = useStyles()
-  const { lastFinalizedBatchIndex } = useLastFinalizedBatchIndex()
+  const { data, loading, pagination, type } = props
+  const { classes } = useStyles({ type })
 
   const handleChangePage = (e, newPage) => {
     pagination?.onChange?.(newPage)
@@ -163,17 +162,15 @@ const TxTable = (props: any) => {
                   <TableRow>
                     <TableCell align="center">Status</TableCell>
                     <TableCell>Amount</TableCell>
-                    <TableCell sx={{ width: "16rem" }}>Action</TableCell>
-                    <TableCell sx={{ width: "12rem" }} align="left">
-                      Initiated At
-                    </TableCell>
+                    {type !== "claim" && <TableCell>Action</TableCell>}
+                    <TableCell align="left">Initiated At</TableCell>
                     <TableCell sx={{ width: "32rem" }}>Transaction Hash</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody className={classes.tableBody}>
                   <>
                     {data.map((tx: any) => (
-                      <TxRow finalizedIndex={lastFinalizedBatchIndex ?? 0} key={tx.hash} tx={tx} />
+                      <TxRow key={tx.hash} tx={tx} type={type} />
                     ))}
                   </>
                 </TableBody>
@@ -181,7 +178,7 @@ const TxTable = (props: any) => {
             </Box>
 
             {pagination && (
-              <div className="flex justify-center mt-[2rem]">
+              <div className={`flex justify-center mt-[${type === "claim" ? "1.4rem" : "2rem"}]`}>
                 <Pagination
                   size="small"
                   classes={{
@@ -212,53 +209,27 @@ const TxTable = (props: any) => {
 }
 
 const TxRow = props => {
-  const { tx, finalizedIndex } = props
+  const { tx, type } = props
 
-  const { blockNumbers } = useBrigeContext()
-
-  const txStatus = useCallback(
-    (blockNumber, assumedStatus, isL1, to) => {
-      if (assumedStatus && !to) {
-        return assumedStatus
-      }
-      if (assumedStatus && to) {
-        return TX_STATUS.empty
-      }
-
-      if (blockNumber && blockNumbers) {
-        if (isL1) {
-          if ((!to && blockNumbers[0] >= blockNumber) || (to && blockNumbers[1] >= blockNumber)) {
-            return TX_STATUS.success
-          }
-        } else {
-          if ((!to && blockNumbers[1] >= blockNumber) || to) {
-            return TX_STATUS.success
-          }
-        }
-      }
-      return TX_STATUS.pending
-    },
-    [blockNumbers],
-  )
-
-  const { claimTip } = useCheckClaimStatus(tx)
+  const { estimatedTimeMap } = useTxStore()
 
   const toTip = useMemo(() => {
-    if (tx.assumedStatus) {
+    if ([TX_STATUS.Dropped, TX_STATUS.FailedRelayed, TX_STATUS.SentFailed, TX_STATUS.Skipped].includes(tx.txStatus)) {
       return "-"
-    } else if (tx.isL1) {
-      return "Pending..."
     }
-    return claimTip
-  }, [tx, claimTip])
 
-  const fromStatus = useMemo(() => {
-    return txStatus(tx.fromBlockNumber, tx.assumedStatus, tx.isL1, false)
-  }, [tx, txStatus])
+    if (!tx.isL1) {
+      if (estimatedTimeMap[`progress_${tx.hash}`] > Date.now()) {
+        return "Claiming in progress..."
+      }
 
-  const toStatus = useMemo(() => {
-    return txStatus(tx.toBlockNumber, tx.assumedStatus, tx.isL1, true)
-  }, [tx, txStatus])
+      if (tx.txStatus === TX_STATUS.Sent && tx.claimInfo?.claimable) {
+        return "Ready to be claimed"
+      }
+    }
+
+    return "Pending..."
+  }, [tx, estimatedTimeMap])
 
   const { loading: tokenInfoLoading, tokenInfo } = useTokenInfo(tx.symbolToken, tx.isL1)
 
@@ -286,7 +257,7 @@ const TxRow = props => {
     <TableRow key={tx.hash}>
       <TableCell>
         <Stack direction="column" spacing="1.4rem">
-          <TxStatusButton finalizedIndex={finalizedIndex} toStatus={toStatus} fromStatus={fromStatus} tx={tx} />
+          <TxStatusButton tx={tx} />
         </Stack>
       </TableCell>
 
@@ -297,12 +268,14 @@ const TxRow = props => {
         </Typography>
       </TableCell>
 
-      <TableCell>
-        <Typography sx={{ fontWeight: 500 }}>{actionText(tx)}</Typography>
-      </TableCell>
+      {type !== "claim" && (
+        <TableCell>
+          <Typography sx={{ fontWeight: 500 }}>{actionText(tx)}</Typography>
+        </TableCell>
+      )}
 
       <TableCell>
-        <Typography sx={{ minWidth: "9rem" }}>{tx.initiatedAt ? formatDate(tx.initiatedAt, { withTime: true }) : "-"}</Typography>
+        <Typography sx={{ minWidth: "9rem" }}>{tx.initiatedAt ? formatDate(tx.initiatedAt, { withTime: true, isUnix: true }) : "-"}</Typography>
       </TableCell>
 
       <TableCell sx={{ width: "21rem" }}>
@@ -321,7 +294,7 @@ const TxRow = props => {
           </Typography>
         </Stack>
 
-        <Stack direction="column" className="mt-[0.4rem]">
+        <Stack direction="column">
           <Typography sx={{ whiteSpace: "nowrap" }}>
             {tx.isL1 ? "Scroll" : "Ethereum"}:{" "}
             {tx.toHash ? (
