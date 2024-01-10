@@ -4,7 +4,7 @@ import produce from "immer"
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
 
-import { BRIDGE_TRANSACTIONS } from "@/constants/storageKey"
+import { BRIDGE_TRANSACTIONS_V2 } from "@/constants/storageKey"
 import { TX_TYPE } from "@/constants/transaction"
 
 import { TxStore, fetchOnChainTransactions, formatBackTxList, updateFrontTransactions } from "./utils"
@@ -122,7 +122,7 @@ const useTxStore = create<TxStore>()(
         ),
     }),
     {
-      name: BRIDGE_TRANSACTIONS,
+      name: BRIDGE_TRANSACTIONS_V2,
     },
   ),
 )
