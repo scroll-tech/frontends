@@ -2,7 +2,7 @@
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
 
-import { WITHDRAW_TRANSACTIONS } from "@/constants/storageKey"
+import { CLAIM_TRANSACTIONS } from "@/constants/storageKey"
 import { TX_TYPE } from "@/constants/transaction"
 import useTxStore from "@/stores/txStore"
 
@@ -77,7 +77,7 @@ const useClaimStore = create<ClaimStore>()(
       },
     }),
     {
-      name: WITHDRAW_TRANSACTIONS,
+      name: CLAIM_TRANSACTIONS,
     },
   ),
 )
