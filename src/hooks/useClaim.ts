@@ -17,12 +17,22 @@ export function useClaim(props) {
 
   const relayMessageWithProof = async () => {
     const contract = new ethers.Contract(requireEnv("REACT_APP_L1_SCROLL_MESSENGER"), L1ScrollMessenger, networksAndSigners[chainId as number].signer)
-    const { from, to, value, nonce, message, proof } = tx.claimInfo
+    const {
+      from,
+      to,
+      value,
+      nonce,
+      message,
+      proof: { batch_index, merkle_proof },
+    } = tx.claimInfo
 
     try {
       setLoading(true)
       addEstimatedTimeMap(`progress_${tx.hash}`, Date.now() + CLAIM_OFFSET_TIME)
-      const result = await contract.relayMessageWithProof(from, to, value, nonce, message, proof)
+      const result = await contract.relayMessageWithProof(from, to, value, nonce, message, {
+        batchIndex: batch_index,
+        merkleProof: merkle_proof,
+      })
       result
         .wait()
         .then(() => {

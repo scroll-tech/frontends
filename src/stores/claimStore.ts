@@ -46,9 +46,9 @@ const useClaimStore = create<ClaimStore>()(
       comboPageTransactions: async (walletAddress, page, rowsPerPage) => {
         set({ loading: true })
         try {
-          const { result, total } = await fetchOnChainTransactions(walletAddress, page, rowsPerPage, TX_TYPE.CLAIM)
+          const { results, total } = await fetchOnChainTransactions(walletAddress, page, rowsPerPage, TX_TYPE.CLAIM)
           const { frontTransactions, estimatedTimeMap: preEstimatedTimeMap, removeFrontTransactions } = useTxStore.getState()
-          const { txList: backendTransactions, estimatedTimeMap } = formatBackTxList(result, preEstimatedTimeMap)
+          const { txList: backendTransactions, estimatedTimeMap } = formatBackTxList(results, preEstimatedTimeMap)
           const currentFrontTransactions = frontTransactions[walletAddress]?.filter(tx => !tx.isL1) ?? []
           const nextFrontTransactions = updateFrontTransactions(currentFrontTransactions, backendTransactions, walletAddress, removeFrontTransactions)
           const pageTransactions = page === 1 ? [...nextFrontTransactions, ...backendTransactions] : backendTransactions
