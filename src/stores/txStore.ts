@@ -80,8 +80,8 @@ const useTxStore = create<TxStore>()(
       comboPageTransactions: async (walletAddress, page, rowsPerPage) => {
         set({ loading: true })
         try {
-          const { result, total } = await fetchOnChainTransactions(walletAddress, page, rowsPerPage, TX_TYPE.ALL)
-          const { txList: backendTransactions, estimatedTimeMap } = formatBackTxList(result, get().estimatedTimeMap)
+          const { results, total } = await fetchOnChainTransactions(walletAddress, page, rowsPerPage, TX_TYPE.ALL)
+          const { txList: backendTransactions, estimatedTimeMap } = formatBackTxList(results, get().estimatedTimeMap)
           const currentFrontTransactions = get().frontTransactions[walletAddress] ?? []
           const nextFrontTransactions = updateFrontTransactions(
             currentFrontTransactions,

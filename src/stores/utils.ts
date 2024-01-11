@@ -64,9 +64,9 @@ export const formatBackTxList = (backList, estimatedTimeMap) => {
     return { txList: [], estimatedTimeMap: nextEstimatedTimeMap }
   }
   const txList = backList.map(tx => {
-    const amount = tx.amount
-    const toHash = tx.finalizeTx?.hash
-    const initiatedAt = tx.blockTimestamp
+    const amount = tx.token_amounts[0]
+    const toHash = tx.counterpart_chain_tx?.hash
+    const initiatedAt = tx.block_timestamp
 
     // 1. have no time to compute fromEstimatedEndTime
     // 2. compute toEstimatedEndTime from backend data
@@ -75,12 +75,12 @@ export const formatBackTxList = (backList, estimatedTimeMap) => {
     // 5. if the second deal succeeded, then the first should succeed too.
 
     // deposit
-    if (tx.isL1) {
-      if (tx.blockNumber > blockNumbers[0] && blockNumbers[0] !== -1 && !nextEstimatedTimeMap[`from_${tx.hash}`]) {
-        const estimatedOffsetTime = (tx.blockNumber - blockNumbers[0]) * 12 * 1000
+    if (tx.message_type === 1) {
+      if (tx.block_number > blockNumbers[0] && blockNumbers[0] !== -1 && !nextEstimatedTimeMap[`from_${tx.hash}`]) {
+        const estimatedOffsetTime = (tx.block_number - blockNumbers[0]) * 12 * 1000
         if (isValidOffsetTime(estimatedOffsetTime)) {
           nextEstimatedTimeMap[`from_${tx.hash}`] = Date.now() + estimatedOffsetTime
-        } else if (!tx.finalizeTx?.blockNumber || tx.finalizeTx.blockNumber > blockNumbers[1]) {
+        } else if (!tx.counterpart_chain_tx?.block_number || tx.counterpart_chain_tx.block_number > blockNumbers[1]) {
           nextEstimatedTimeMap[`from_${tx.hash}`] = 0
           sentryDebug(`safe block number: ${blockNumbers[0]}`)
         }
@@ -91,16 +91,16 @@ export const formatBackTxList = (backList, estimatedTimeMap) => {
 
     return {
       hash: tx.hash,
-      fromBlockNumber: tx.blockNumber,
+      fromBlockNumber: tx.block_number,
       toHash,
-      toBlockNumber: tx.finalizeTx?.blockNumber,
+      toBlockNumber: tx.counterpart_chain_tx?.block_number,
       amount,
-      isL1: tx.isL1,
-      symbolToken: tx.isL1 ? tx.l1Token : tx.l2Token,
-      claimInfo: tx.claimInfo,
+      isL1: tx.message_type === 1,
+      symbolToken: tx.message_type === 1 ? tx.l1_token_address : tx.l2_token_address,
+      claimInfo: tx.claim_info,
       initiatedAt,
-      txStatus: tx.txStatus,
-      msgHash: tx.msgHash,
+      txStatus: tx.tx_status,
+      msgHash: tx.message_hash,
     }
   })
 
