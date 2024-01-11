@@ -65,8 +65,8 @@ const useClaimHistory = () => {
   )
 
   useEffect(() => {
-    if (data?.data?.result.length) {
-      generateTransactions(walletCurrentAddress, data.data.result)
+    if (data?.data?.results.length) {
+      generateTransactions(walletCurrentAddress, data.data.results)
     }
   }, [data])
 
