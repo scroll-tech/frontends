@@ -1,21 +1,31 @@
 import { useEffect, useMemo, useState } from "react"
 import { usePrevious } from "react-use"
+import { CellMeasurer, CellMeasurerCache, List, WindowScroller } from "react-virtualized"
+import "react-virtualized/styles.css"
 import { makeStyles } from "tss-react/mui"
 
 import { Box } from "@mui/material"
+import { keyframes } from "@mui/system"
 
 import { ecosystemListUrl } from "@/apis/ecosystem"
 import Link from "@/components/Link"
 import LoadingButton from "@/components/LoadingButton"
 import LoadingPage from "@/components/LoadingPage"
-import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
 import { ECOSYSTEM_NETWORK_LIST } from "@/constants"
-import useCheckViewport from "@/hooks/useCheckViewport"
 import { isAboveScreen } from "@/utils/dom"
 
 import Error from "./Error"
 import NoData from "./NoData"
 import ProtocolCard from "./ProtocolCard"
+
+const Fade = keyframes`
+  to {opacity:1;transform: translateY(0);}
+`
+
+const cache = new CellMeasurerCache({
+  fixedWidth: true,
+  defaultHeight: 100,
+})
 
 const useStyles = makeStyles()(theme => ({
   listRoot: {
@@ -26,10 +36,9 @@ const useStyles = makeStyles()(theme => ({
       gridRow: "3 / 4",
       gridColumn: "1 / 3",
     },
-
-    "& > *:nth-of-type(n+2)": {
-      marginTop: "2rem",
-    },
+  },
+  listItem: {
+    animation: `${Fade} 0.2s forwards`,
   },
 }))
 
@@ -39,7 +48,6 @@ const ProtocolList = props => {
     onAddPage,
   } = props
   const { classes } = useStyles()
-  const { isMobile } = useCheckViewport()
 
   const [loading, setLoading] = useState(false)
   const prePage = usePrevious(page)
@@ -96,6 +104,27 @@ const ProtocolList = props => {
     fetchEcosystemList(queryStr)
   }
 
+  const rowRenderer = ({ index, isVisible, key, style, parent }) => {
+    const uniqueKey = (ecosystemList[index] as any).name
+    return (
+      <CellMeasurer key={uniqueKey} cache={cache} parent={parent} columnIndex={0} rowIndex={index}>
+        {({ measure, registerChild }) => (
+          <div
+            ref={registerChild}
+            style={{
+              ...style,
+              opacity: 0,
+              transform: "translateY(20px)",
+            }}
+            className={classes.listItem}
+          >
+            <ProtocolCard {...(ecosystemList[index] as object)} onResize={measure}></ProtocolCard>
+          </div>
+        )}
+      </CellMeasurer>
+    )
+  }
+
   const renderList = () => {
     if (loading && !ecosystemList.length) {
       return <LoadingPage height="26rem" sx={{ gridColumn: ["1 / 3", "1 / 3", "2 / 4"] }}></LoadingPage>
@@ -122,13 +151,25 @@ const ProtocolList = props => {
     }
     return (
       <>
-        <SuccessionToView className={classes.listRoot} threshold={isMobile ? 0 : 1} animate="show">
-          {ecosystemList?.map((item: any) => (
-            <SuccessionItem key={item.name}>
-              <ProtocolCard {...item}></ProtocolCard>
-            </SuccessionItem>
-          ))}
-        </SuccessionToView>
+        <WindowScroller>
+          {({ height, isScrolling, onChildScroll, scrollTop }) => (
+            <List
+              autoHeight
+              height={height}
+              isScrolling={isScrolling}
+              onScroll={onChildScroll}
+              rowCount={ecosystemList.length}
+              rowHeight={cache.rowHeight}
+              rowRenderer={rowRenderer}
+              scrollTop={scrollTop}
+              width={100}
+              containerStyle={{ width: "100%", maxWidth: "100%" }}
+              style={{ width: "100%" }}
+              className={classes.listRoot}
+              deferredMeasurementCache={cache}
+            />
+          )}
+        </WindowScroller>
 
         {hasMore && (
           <Box sx={{ gridColumn: ["1 / 3", "1 / 3", "2 / 4"], textAlign: "center", mt: "1.6rem" }}>
