@@ -4,13 +4,13 @@
   "private": false,
   "license": "MIT",
   "scripts": {
-    "build": "craco build",
+    "build": "cross-env REACT_APP_VERSION=$npm_package_version craco build",
     "convert:webp": "cwebp -q 100 $1 -o $2",
     "eject": "craco eject",
     "generate:sitemap": "npx sitemap --index-base-url https://scroll.io/sitemap < ./public/sitemap.txt > ./public/sitemap.xml",
     "lint": "eslint --fix --max-warnings=0 \"**/*.{ts,tsx}\"",
     "prepare": "husky install",
-    "start": "BROWSER=none craco start",
+    "start": "REACT_APP_VERSION=$npm_package_version BROWSER=none craco start",
     "test": "npx lint-staged"
   },
   "lint-staged": {
@@ -120,7 +120,8 @@
     "stream-http": "^3.2.0",
     "tailwindcss": "^3.1.8",
     "typescript": "^5.1.6",
-    "util": "^0.12.5"
+    "util": "^0.12.5",
+    "cross-env": "^7.0.3"
   },
   "overrides": {
     "eslint-config-react-app": {
@@ -129,6 +130,6 @@
     }
   },
   "engines": {
-    "node": ">=20.10.0"
+    "node": ">=20.0.0"
   }
 }
