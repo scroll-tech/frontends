@@ -1,6 +1,7 @@
 import ArchiveTerms from "@/pages/archive/20230308/terms"
 import Blog from "@/pages/blog"
 import BlogDetail from "@/pages/blog/detail"
+import BrandKit from "@/pages/brand-kit"
 import Bridge from "@/pages/bridge"
 import BridgeFAQ from "@/pages/bridge/FAQ"
 import Career from "@/pages/career"
@@ -118,6 +119,12 @@ const mainnetRoutes = [
     name: "Join Us",
     path: "/join-us",
     element: <Career />,
+  },
+  {
+    name: "Brand Kit",
+    path: "/brand-kit",
+    element: <BrandKit />,
+    description: "Explore and download Scroll brand assets and media kit, including logos, banners, and brand guidelines.",
   },
   {
     name: "Blog Detail",
