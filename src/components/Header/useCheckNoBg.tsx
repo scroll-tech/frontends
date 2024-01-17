@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom"
 
 const useCheckNoBg = () => {
   const { pathname } = useLocation()
-  const isNoBgPage = useMemo(() => ["/story", "/join-us"].includes(pathname), [pathname])
+  const isNoBgPage = useMemo(() => ["/story", "/join-us", "/brand-kit"].includes(pathname), [pathname])
   const [isNoBgSection, setIsNoBgSection] = useState(isNoBgPage)
 
   useEffect(() => {
