@@ -183,8 +183,7 @@ const mainnetNavigations = [
           {
             label: "Brand Kit",
             key: "brand kit",
-            href: "https://scrollzkp.notion.site/Scroll-Rebrand-Assets-5bb83465f56f40989c4f772b39ed3a06",
-            isExternal: true,
+            href: "/brand-kit",
           },
           {
             label: "Forum",

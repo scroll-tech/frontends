@@ -14,6 +14,7 @@ interface ScrollButtonProps extends ButtonProps {
   loading?: boolean
   disabled?: boolean
   whiteButton?: boolean
+  download?: boolean
 
   // compatibility
   target?: string
