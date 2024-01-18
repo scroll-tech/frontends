@@ -70,7 +70,7 @@ const Category = props => {
   return (
     <MenuList classes={{ root: cx(classes.menuListRoot, "ecosystem-protocols-category") }}>
       {allCategories.current.map(item => (
-        <MenuItem classes={{ root: classes.menuItemRoot }} selected={value === item} onClick={() => onChange(item)}>
+        <MenuItem classes={{ root: classes.menuItemRoot }} key={item} selected={value === item} onClick={() => onChange(item)}>
           <Typography sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: ["2.4rem", "3.2rem"], fontWeight: 600, cursor: "inherit" }}>{item}</Typography>
         </MenuItem>
       ))}
