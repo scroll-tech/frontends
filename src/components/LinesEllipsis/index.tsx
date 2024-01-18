@@ -111,7 +111,6 @@ const LinesEllipsis = props => {
         indexes.push(index)
         offsetTop = spanNode.offsetTop
       }
-      // spanNode = spanNode.nextElementSibling
       index++
       if (line > maxLine) {
         break

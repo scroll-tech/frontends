@@ -5,6 +5,7 @@ import "react-virtualized/styles.css"
 import { makeStyles } from "tss-react/mui"
 
 import { Box } from "@mui/material"
+import useScrollTrigger from "@mui/material/useScrollTrigger"
 import { keyframes } from "@mui/system"
 
 import { ecosystemListUrl } from "@/apis/ecosystem"
@@ -24,7 +25,7 @@ const Fade = keyframes`
 
 const cache = new CellMeasurerCache({
   fixedWidth: true,
-  defaultHeight: 100,
+  defaultHeight: 156,
 })
 
 const useStyles = makeStyles()(theme => ({
@@ -38,6 +39,8 @@ const useStyles = makeStyles()(theme => ({
     },
   },
   listItem: {
+    opacity: 0,
+    transform: "translateY(20px)",
     animation: `${Fade} 0.2s forwards`,
   },
 }))
@@ -47,8 +50,8 @@ const ProtocolList = props => {
     searchParams: { category, network, keyword, page },
     onAddPage,
   } = props
-  const { classes } = useStyles()
-
+  const { classes, cx } = useStyles()
+  const isScrollDown = useScrollTrigger()
   const [loading, setLoading] = useState(false)
   const prePage = usePrevious(page)
   const [ecosystemList, setEcosystemList] = useState([])
@@ -109,15 +112,7 @@ const ProtocolList = props => {
     return (
       <CellMeasurer key={uniqueKey} cache={cache} parent={parent} columnIndex={0} rowIndex={index}>
         {({ measure, registerChild }) => (
-          <div
-            ref={registerChild}
-            style={{
-              ...style,
-              opacity: 0,
-              transform: "translateY(20px)",
-            }}
-            className={classes.listItem}
-          >
+          <div ref={registerChild} style={style} className={cx(isScrollDown && classes.listItem)}>
             <ProtocolCard {...(ecosystemList[index] as object)} onResize={measure}></ProtocolCard>
           </div>
         )}

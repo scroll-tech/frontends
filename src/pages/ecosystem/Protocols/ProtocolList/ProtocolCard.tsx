@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import Img from "react-cool-img"
 import { makeStyles } from "tss-react/mui"
 
@@ -130,15 +130,22 @@ const ProtocolCard = props => {
 
   const [isExpended, setIsExpended] = useState(false)
 
+  const cardRef = useRef<HTMLElement>()
+
   const handleClickMore = () => {
     setIsExpended(true)
   }
 
-  const handleReflow = () => {
+  const handleReflow = value => {
+    // don't trigger measure when the height exceeds the standard height by default
+    const standardHeight = isDesktop ? 156 : isMobile ? 324 : 196
+    if (!isExpended && cardRef.current!.clientHeight > standardHeight) {
+      return
+    }
     onResize()
   }
   return (
-    <Box className={cx(classes.grid, className)} {...restProps}>
+    <Box className={cx(classes.grid, className)} ref={cardRef} {...restProps}>
       <Stack
         direction="row"
         justifyContent="center"
