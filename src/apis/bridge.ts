@@ -1,6 +1,4 @@
-import { requireEnv } from "@/utils"
-
-const baseUrl = requireEnv("REACT_APP_BRIDGE_API_URI")
+const baseUrl = process.env.NEXT_PUBLIC_BRIDGE_API_URI
 
 export const fetchTxByHashUrl = `${baseUrl}/txsbyhashes`
 

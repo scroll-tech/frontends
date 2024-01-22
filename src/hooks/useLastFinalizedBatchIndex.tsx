@@ -4,7 +4,6 @@ import useSWR from "swr"
 import ScrollChain from "@/assets/abis/ScrollChain.json"
 import { CHAIN_ID } from "@/constants"
 import { useBrigeContext } from "@/contexts/BridgeContextProvider"
-import { requireEnv } from "@/utils"
 
 const useLastFinalizedBatchIndex = () => {
   const { networksAndSigners } = useBrigeContext()
@@ -15,7 +14,7 @@ const useLastFinalizedBatchIndex = () => {
       if (!provider) {
         return null
       }
-      const scrollChain = new ethers.Contract(requireEnv("REACT_APP_SCROLL_CHAIN"), ScrollChain, provider)
+      const scrollChain = new ethers.Contract(process.env.NEXT_PUBLIC_SCROLL_CHAIN, ScrollChain, provider)
       return await scrollChain.lastFinalizedBatchIndex()
     } catch (error) {}
   }

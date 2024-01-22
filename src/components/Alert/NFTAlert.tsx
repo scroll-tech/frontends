@@ -3,8 +3,8 @@ import { makeStyles } from "tss-react/mui"
 
 import { Alert, SvgIcon } from "@mui/material"
 
-import { ReactComponent as ErrorSvg } from "@/assets/svgs/nft/alert-error.svg"
-import { ReactComponent as SuccessSvg } from "@/assets/svgs/nft/alert-success.svg"
+import ErrorSvg from "@/assets/svgs/nft/alert-error.svg"
+import SuccessSvg from "@/assets/svgs/nft/alert-success.svg"
 
 const useStyles = makeStyles<any>()((theme, { type }) => ({
   root: {
@@ -43,9 +43,27 @@ const CheckAlert = props => {
   return (
     <Alert
       iconMapping={{
-        success: <SvgIcon sx={{ fontSize: "2.4rem", color: theme => theme.palette.text.primary }} component={SuccessSvg} inheritViewBox></SvgIcon>,
+        success: (
+          <SvgIcon
+            sx={{
+              fontSize: "2.4rem",
+              color: theme => theme.palette.text.primary,
+            }}
+            component={SuccessSvg}
+            inheritViewBox
+          ></SvgIcon>
+        ),
         error: <SvgIcon sx={{ fontSize: "2.4rem", color: "#FFEBD7" }} component={ErrorSvg} inheritViewBox></SvgIcon>,
-        info: <SvgIcon sx={{ fontSize: "2.4rem", color: theme => theme.palette.text.primary }} component={ErrorSvg} inheritViewBox></SvgIcon>,
+        info: (
+          <SvgIcon
+            sx={{
+              fontSize: "2.4rem",
+              color: theme => theme.palette.text.primary,
+            }}
+            component={ErrorSvg}
+            inheritViewBox
+          ></SvgIcon>
+        ),
       }}
       classes={{
         root: classes.root,

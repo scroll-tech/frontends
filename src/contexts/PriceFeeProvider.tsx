@@ -7,7 +7,7 @@ import { CHAIN_ID, ETH_SYMBOL } from "@/constants"
 import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
 import { useBrigeContext } from "@/contexts/BridgeContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { requireEnv, trimErrorMessage } from "@/utils"
+import { trimErrorMessage } from "@/utils"
 
 const OFFSET = "0x1111000000000000000000000000000000001111"
 const amount = BigInt(1)
@@ -42,48 +42,66 @@ enum GatewayType {
 
 // For USDC, Lido, and DAI, can use the STANDARD_ERC20_GATEWAY
 const Address2GatewayType = {
-  [requireEnv("REACT_APP_L1_ETH_GATEWAY_PROXY_ADDR")]: GatewayType.ETH_GATEWAY,
-  [requireEnv("REACT_APP_L1_WETH_GATEWAY_PROXY_ADDR")]: GatewayType.WETH_GATEWAY,
-  [requireEnv("REACT_APP_L1_CUSTOM_ERC20_GATEWAY_PROXY_ADDR")]: GatewayType.CUSTOM_ERC20_GATEWAY,
-  [requireEnv("REACT_APP_L1_STANDARD_ERC20_GATEWAY_PROXY_ADDR")]: GatewayType.STANDARD_ERC20_GATEWAY,
-  [requireEnv("REACT_APP_L1_USDC_GATEWAY_PROXY_ADDR")]: GatewayType.USDC_GATEWAY,
-  [requireEnv("REACT_APP_L1_DAI_GATEWAY_PROXY_ADDR")]: GatewayType.DAI_GATEWAY,
-  [requireEnv("REACT_APP_L1_LIDO_GATEWAY_PROXY_ADDR")]: GatewayType.LIDO_GATEWAY,
+  [process.env.NEXT_PUBLIC_L1_ETH_GATEWAY_PROXY_ADDR]: GatewayType.ETH_GATEWAY,
+  [process.env.NEXT_PUBLIC_L1_WETH_GATEWAY_PROXY_ADDR]: GatewayType.WETH_GATEWAY,
+  [process.env.NEXT_PUBLIC_L1_CUSTOM_ERC20_GATEWAY_PROXY_ADDR]: GatewayType.CUSTOM_ERC20_GATEWAY,
+  [process.env.NEXT_PUBLIC_L1_STANDARD_ERC20_GATEWAY_PROXY_ADDR]: GatewayType.STANDARD_ERC20_GATEWAY,
+  [process.env.NEXT_PUBLIC_L1_USDC_GATEWAY_PROXY_ADDR]: GatewayType.USDC_GATEWAY,
+  [process.env.NEXT_PUBLIC_L1_DAI_GATEWAY_PROXY_ADDR]: GatewayType.DAI_GATEWAY,
+  [process.env.NEXT_PUBLIC_L1_LIDO_GATEWAY_PROXY_ADDR]: GatewayType.LIDO_GATEWAY,
 }
 
 // Contracts
 const Contracts = {
-  [GatewayType.ETH_GATEWAY]: { abi: require("@/assets/abis/L2ETHGateway.json"), env: "REACT_APP_L2_ETH_GATEWAY_PROXY_ADDR" },
-  [GatewayType.WETH_GATEWAY]: { abi: require("@/assets/abis/L2WETHGateway.json"), env: "REACT_APP_L2_WETH_GATEWAY_PROXY_ADDR" },
+  [GatewayType.ETH_GATEWAY]: {
+    abi: require("@/assets/abis/L2ETHGateway.json"),
+    env: process.env.NEXT_PUBLIC_L2_ETH_GATEWAY_PROXY_ADDR,
+  },
+  [GatewayType.WETH_GATEWAY]: {
+    abi: require("@/assets/abis/L2WETHGateway.json"),
+    env: process.env.NEXT_PUBLIC_L2_WETH_GATEWAY_PROXY_ADDR,
+  },
   [GatewayType.STANDARD_ERC20_GATEWAY]: {
     abi: require("@/assets/abis/L2StandardERC20Gateway.json"),
-    env: "REACT_APP_L2_STANDARD_ERC20_GATEWAY_PROXY_ADDR",
+    env: process.env.NEXT_PUBLIC_L2_STANDARD_ERC20_GATEWAY_PROXY_ADDR,
   },
   [GatewayType.CUSTOM_ERC20_GATEWAY]: {
     abi: require("@/assets/abis/L2StandardERC20Gateway.json"),
-    env: "REACT_APP_L2_CUSTOM_ERC20_GATEWAY_PROXY_ADDR",
+    env: process.env.NEXT_PUBLIC_L2_CUSTOM_ERC20_GATEWAY_PROXY_ADDR,
   },
   [GatewayType.USDC_GATEWAY]: {
     abi: require("@/assets/abis/L2StandardERC20Gateway.json"),
-    env: "REACT_APP_L2_USDC_GATEWAY_PROXY_ADDR",
+    env: process.env.NEXT_PUBLIC_L2_USDC_GATEWAY_PROXY_ADDR,
   },
   [GatewayType.DAI_GATEWAY]: {
     abi: require("@/assets/abis/L2StandardERC20Gateway.json"),
-    env: "REACT_APP_L2_DAI_GATEWAY_PROXY_ADDR",
+    env: process.env.NEXT_PUBLIC_L2_DAI_GATEWAY_PROXY_ADDR,
   },
   [GatewayType.LIDO_GATEWAY]: {
     abi: require("@/assets/abis/L2StandardERC20Gateway.json"),
-    env: "REACT_APP_L2_LIDO_GATEWAY_PROXY_ADDR",
+    env: process.env.NEXT_PUBLIC_L2_LIDO_GATEWAY_PROXY_ADDR,
   },
-  SCROLL_MESSENGER: { abi: require("@/assets/abis/L2ScrollMessenger.json"), env: "REACT_APP_L2_SCROLL_MESSENGER" },
-  L1_GAS_PRICE_ORACLE: { abi: require("@/assets/abis/L1GasPriceOracle.json"), env: "REACT_APP_L1_GAS_PRICE_ORACLE" },
-  L2_GAS_PRICE_ORACLE: { abi: require("@/assets/abis/L2GasPriceOracle.json"), env: "REACT_APP_L2_GAS_PRICE_ORACLE" },
+  SCROLL_MESSENGER: {
+    abi: require("@/assets/abis/L2ScrollMessenger.json"),
+    env: process.env.NEXT_PUBLIC_L2_SCROLL_MESSENGER,
+  },
+  L1_GAS_PRICE_ORACLE: {
+    abi: require("@/assets/abis/L1GasPriceOracle.json"),
+    env: process.env.NEXT_PUBLIC_L1_GAS_PRICE_ORACLE,
+  },
+  L2_GAS_PRICE_ORACLE: {
+    abi: require("@/assets/abis/L2GasPriceOracle.json"),
+    env: process.env.NEXT_PUBLIC_L2_GAS_PRICE_ORACLE,
+  },
 
-  L1_GATEWAY_ROUTER_PROXY: { abi: require("@/assets/abis/L1_GATEWAY_ROUTER_PROXY_ADDR.json"), env: "REACT_APP_L1_GATEWAY_ROUTER_PROXY_ADDR" },
+  L1_GATEWAY_ROUTER_PROXY: {
+    abi: require("@/assets/abis/L1_GATEWAY_ROUTER_PROXY_ADDR.json"),
+    env: process.env.NEXT_PUBLIC_L1_GATEWAY_ROUTER_PROXY_ADDR,
+  },
 }
 
 const getContract = (contractName, providerOrSigner) =>
-  new ethers.Contract(requireEnv(Contracts[contractName].env), Contracts[contractName].abi, providerOrSigner)
+  new ethers.Contract(Contracts[contractName].env, Contracts[contractName].abi, providerOrSigner)
 
 const PriceFeeContext = createContext<Props | undefined>(undefined)
 
@@ -153,14 +171,13 @@ export const PriceFeeProvider = ({ children }) => {
       const gasPrice = await L2GasPriceOracleContract.l2BaseFee()
       return (gasPrice * BigInt(120)) / BigInt(100)
     } catch (err) {
-      // console.log(err)
       throw new Error("Failed to get gas price")
     }
   }
 
   const getGasLimit = async () => {
     if (l2Token.symbol === ETH_SYMBOL) {
-      return await getGasLimitGeneric(requireEnv(`REACT_APP_L1_ETH_GATEWAY_PROXY_ADDR`))
+      return await getGasLimitGeneric(process.env.NEXT_PUBLIC_L1_ETH_GATEWAY_PROXY_ADDR)
     }
 
     const { provider } = networksAndSigners[CHAIN_ID.L2]
@@ -240,8 +257,8 @@ export const PriceFeeProvider = ({ children }) => {
     ])
     try {
       const gaslimit = await l2Provider.estimateGas({
-        from: "0x" + (BigInt(requireEnv("REACT_APP_L1_SCROLL_MESSENGER")) + (BigInt(OFFSET) % BigInt(Math.pow(2, 160)))).toString(16),
-        to: requireEnv(Contracts.SCROLL_MESSENGER.env),
+        from: "0x" + (BigInt(process.env.NEXT_PUBLIC_L1_SCROLL_MESSENGER) + (BigInt(OFFSET) % BigInt(Math.pow(2, 160)))).toString(16),
+        to: Contracts.SCROLL_MESSENGER.env,
         data: calldata,
       })
 

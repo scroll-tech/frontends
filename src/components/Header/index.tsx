@@ -1,5 +1,7 @@
+"use client"
+
+import { usePathname } from "next/navigation"
 import React, { useEffect, useState } from "react"
-import { useLocation } from "react-router-dom"
 
 import { AppBar, Slide } from "@mui/material"
 import useScrollTrigger from "@mui/material/useScrollTrigger"
@@ -35,9 +37,9 @@ function HideOnScroll(props: Props) {
 
 export default function Header() {
   const { isLandscape } = useCheckViewport()
+  const pathname = usePathname()
 
   const [currentMenu, setCurrentMenu] = useState("")
-  const { pathname } = useLocation()
 
   useEffect(() => {
     const rootMenu = findRootMenu(pathname, navigations)

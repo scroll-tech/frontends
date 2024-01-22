@@ -1,3 +1,5 @@
+"use client"
+
 import { RainbowKitProvider, connectorsForWallets, useConnectModal } from "@rainbow-me/rainbowkit"
 import "@rainbow-me/rainbowkit/styles.css"
 import { type WalletClient } from "@wagmi/core"

@@ -3,8 +3,8 @@ import { makeStyles } from "tss-react/mui"
 
 import { ButtonBase, Fade, ListItemIcon, ListItemText, Menu, MenuItem, SvgIcon, Tooltip } from "@mui/material"
 
-import { ReactComponent as DownTriangleSvg } from "@/assets/svgs/wallet-connector/down-triangle.svg"
-import { ReactComponent as WrongNetworkSvg } from "@/assets/svgs/wallet-connector/wrong-network.svg"
+import DownTriangleSvg from "@/assets/svgs/wallet-connector/down-triangle.svg"
+import WrongNetworkSvg from "@/assets/svgs/wallet-connector/wrong-network.svg"
 import { NETWORKS } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { switchNetwork } from "@/utils"

@@ -1,5 +1,5 @@
 import { SCROLL_ORIGINS_NFT } from "@/constants"
-import { isSepolia, requireEnv } from "@/utils"
+import { isSepolia } from "@/utils"
 
 const sepoliaNavigations = [
   {
@@ -54,19 +54,19 @@ const sepoliaNavigations = [
           {
             label: "Scrollscan",
             key: "etherscan",
-            href: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2"),
+            href: process.env.NEXT_PUBLIC_EXTERNAL_EXPLORER_URI_L2,
             isExternal: true,
           },
           {
             label: "L2 Scan",
             key: "l2-scan",
-            href: requireEnv("REACT_APP_L2_SCAN_URI"),
+            href: process.env.NEXT_PUBLIC_L2_SCAN_URI,
             isExternal: true,
           },
           {
             label: "Dora Explorer",
             key: "dora",
-            href: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_DORA"),
+            href: process.env.NEXT_PUBLIC_EXTERNAL_EXPLORER_URI_DORA,
             isExternal: true,
           },
         ],
@@ -138,19 +138,19 @@ const mainnetNavigations = [
           {
             label: "Scrollscan",
             key: "etherscan",
-            href: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2"),
+            href: process.env.NEXT_PUBLIC_EXTERNAL_EXPLORER_URI_L2,
             isExternal: true,
           },
           {
             label: "L2 Scan",
             key: "l2-scan",
-            href: requireEnv("REACT_APP_L2_SCAN_URI"),
+            href: process.env.NEXT_PUBLIC_L2_SCAN_URI,
             isExternal: true,
           },
           {
             label: "Dora Explorer",
             key: "dora",
-            href: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_DORA"),
+            href: process.env.NEXT_PUBLIC_EXTERNAL_EXPLORER_URI_DORA,
             isExternal: true,
           },
         ],
@@ -183,7 +183,8 @@ const mainnetNavigations = [
           {
             label: "Brand Kit",
             key: "brand kit",
-            href: "/brand-kit",
+            href: "https://scrollzkp.notion.site/Scroll-Rebrand-Assets-5bb83465f56f40989c4f772b39ed3a06",
+            isExternal: true,
           },
           {
             label: "Forum",

@@ -19,7 +19,7 @@ import { jsonRpcProvider } from "wagmi/providers/jsonRpc"
 import { publicProvider } from "wagmi/providers/public"
 
 import { CHAIN_ID, ETH_SYMBOL, L2_NAME, RPC_URL } from "@/constants"
-import { networkType, requireEnv } from "@/utils"
+import { networkType } from "@/utils"
 
 interface WalletConfig {
   name: string
@@ -57,7 +57,10 @@ export const scrollChain: Chain = {
     },
   },
   blockExplorers: {
-    default: { name: "Scrollscan", url: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2") },
+    default: {
+      name: "Scrollscan",
+      url: process.env.NEXT_PUBLIC_EXTERNAL_EXPLORER_URI_L2,
+    },
   },
 }
 
@@ -84,7 +87,7 @@ const mainnetChain = produce(mainnet, draft => {
   }
 })
 
-const projectId = requireEnv("REACT_APP_CONNECT_WALLET_PROJECT_ID")
+const projectId = process.env.NEXT_PUBLIC_CONNECT_WALLET_PROJECT_ID
 
 const { chains, publicClient } = configureChains(
   // ankr
@@ -98,15 +101,15 @@ const { chains, publicClient } = configureChains(
 )
 
 const walletConfigs: WalletConfig[] = [
-  createWalletConfig("MetaMask", () => metaMaskWallet({ chains, projectId }), window.ethereum?.isMetaMask === true, true),
-  createWalletConfig("Coinbase", () => coinbaseWallet({ appName: "Scroll", chains }), window.ethereum?.isCoinbaseWallet === true, true),
-  createWalletConfig("Brave", () => braveWallet({ chains }), window.ethereum?.isBraveWallet === true),
-  createWalletConfig("Rainbow", () => rainbowWallet({ chains, projectId }), window.ethereum?.isRainbow === true),
-  createWalletConfig("Safe", () => safeWallet({ chains }), window.ethereum?.isSafeWallet === true),
-  createWalletConfig("Frame", () => frameWallet({ chains }), window.ethereum?.isFrame === true),
-  createWalletConfig("imToken", () => imTokenWallet({ chains, projectId }), window.ethereum?.isImToken === true),
-  // createWalletConfig("Okx Wallet", () => okxWallet({ chains, projectId }), window.okxwallet?.isOKExWallet || window.okxwallet?.isOkxWallet === true),
-  createWalletConfig("Rabby", () => rabbyWallet({ chains }), window.ethereum?.isRabby && !window.ethereum?.isMetaMask === true),
+  createWalletConfig("MetaMask", () => metaMaskWallet({ chains, projectId }), globalThis.ethereum?.isMetaMask === true, true),
+  createWalletConfig("Coinbase", () => coinbaseWallet({ appName: "Scroll", chains }), globalThis.ethereum?.isCoinbaseWallet === true, true),
+  createWalletConfig("Brave", () => braveWallet({ chains }), globalThis.ethereum?.isBraveWallet === true),
+  createWalletConfig("Rainbow", () => rainbowWallet({ chains, projectId }), globalThis.ethereum?.isRainbow === true),
+  createWalletConfig("Safe", () => safeWallet({ chains }), globalThis.ethereum?.isSafeWallet === true),
+  createWalletConfig("Frame", () => frameWallet({ chains }), globalThis.ethereum?.isFrame === true),
+  createWalletConfig("imToken", () => imTokenWallet({ chains, projectId }), globalThis.ethereum?.isImToken === true),
+  // createWalletConfig("Okx Wallet", () => okxWallet({ chains, projectId }), globalThis.okxwallet?.isOKExWallet || globalThis.okxwallet?.isOkxWallet === true),
+  createWalletConfig("Rabby", () => rabbyWallet({ chains }), globalThis.ethereum?.isRabby && !globalThis.ethereum?.isMetaMask === true),
   // Add any additional wallets here
 ]
 

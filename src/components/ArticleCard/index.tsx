@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom"
+import { useRouter } from "next/navigation"
 
 import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
@@ -80,12 +80,12 @@ const ArticlePoster = styled(WebpImage)(({ theme }) => ({
 }))
 
 const ArticleCard = ({ blog, small = false }) => {
-  const navigate = useNavigate()
+  const router = useRouter()
   const handleClick = () => {
     if (blog.externalLink) {
       window.location.href = blog.externalLink
     } else {
-      navigate("/blog/" + blog.id)
+      router.push("/blog/" + blog.id)
     }
   }
 

@@ -1,3 +1,5 @@
+"use client"
+
 import { useMemo } from "react"
 
 import { ThemeProvider, createTheme } from "@mui/material/styles"

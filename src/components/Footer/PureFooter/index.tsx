@@ -5,7 +5,6 @@ import { Box, List, ListItem, Stack, SvgIcon, Typography } from "@mui/material"
 
 import Link from "@/components/Link"
 import ScrollLogo from "@/components/ScrollLogo"
-import { requireEnv } from "@/utils"
 
 import SectionWrapper from "../../SectionWrapper"
 import { aboutList, mediaList } from "../helper"
@@ -64,7 +63,17 @@ const Footer = () => {
           </List>
         </Box>
         <Box className={classes.follow}>
-          <Typography sx={{ fontSize: "1.8rem", fontWeight: 600, lineHeight: "normal", color: "#FFF8F3", mb: "3rem" }}>Follow Us</Typography>
+          <Typography
+            sx={{
+              fontSize: "1.8rem",
+              fontWeight: 600,
+              lineHeight: "normal",
+              color: "#FFF8F3",
+              mb: "3rem",
+            }}
+          >
+            Follow Us
+          </Typography>
           <Stack direction="row" spacing={"2.6rem"} sx={{ lineHeight: 1, marginBottom: "3rem" }}>
             {mediaList.map(item => (
               <Link external href={item.href} key={item.name}>
@@ -88,9 +97,14 @@ const Footer = () => {
         </Box>
         <Typography
           className={classes.version}
-          sx={{ color: "#FFF8F3", fontSize: "1.5rem", lineHeight: "2.5rem", textAlign: ["left", "left", "right"] }}
+          sx={{
+            color: "#FFF8F3",
+            fontSize: "1.5rem",
+            lineHeight: "2.5rem",
+            textAlign: ["left", "left", "right"],
+          }}
         >
-          © Version {requireEnv("REACT_APP_VERSION")} Scroll Ltd {dayjs().year()}
+          © Version {process.env.NEXT_PUBLIC_VERSION} Scroll Ltd {dayjs().year()}
         </Typography>
       </Box>
     </SectionWrapper>

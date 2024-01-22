@@ -1,10 +1,12 @@
+"use client"
+
 import { useEffect, useState } from "react"
 import MailchimpSubscribe from "react-mailchimp-subscribe"
 
 import { Box, Container, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
-import { ReactComponent as SubscribeIcon } from "@/assets/svgs/footer/subscribe.svg"
+import SubscribeIcon from "@/assets/svgs/footer/subscribe.svg"
 import { isValidEmail } from "@/utils"
 
 import EmailInput from "./EmailInput"
@@ -66,7 +68,13 @@ const Subscribe = () => {
           <MailchimpSubscribe
             url={url}
             render={({ subscribe, status, message }: any) => (
-              <Box sx={{ position: "relative", width: ["100%", "auto"], textAlign: "right" }}>
+              <Box
+                sx={{
+                  position: "relative",
+                  width: ["100%", "auto"],
+                  textAlign: "right",
+                }}
+              >
                 <EmailInput
                   value={email}
                   end={status === "success"}
@@ -76,12 +84,30 @@ const Subscribe = () => {
                 ></EmailInput>
 
                 {customMessage && (
-                  <Typography sx={{ position: "absolute", fontSize: "1.6rem", textAlign: "center", mt: "1rem", width: "100%" }}>
+                  <Typography
+                    sx={{
+                      position: "absolute",
+                      fontSize: "1.6rem",
+                      textAlign: "center",
+                      mt: "1rem",
+                      width: "100%",
+                    }}
+                  >
                     {customMessage}
                   </Typography>
                 )}
                 {status === "error" && (
-                  <Typography sx={{ position: "absolute", fontSize: "1.6rem", textAlign: "center", mt: "1rem", width: "100%" }}>{message}</Typography>
+                  <Typography
+                    sx={{
+                      position: "absolute",
+                      fontSize: "1.6rem",
+                      textAlign: "center",
+                      mt: "1rem",
+                      width: "100%",
+                    }}
+                  >
+                    {message}
+                  </Typography>
                 )}
               </Box>
             )}

@@ -1,0 +1,175 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: inline;
+  vertical-align: middle;
+}
+
+html {
+  scroll-padding-top: 140px;
+  font-size: 62.5%;
+}
+
+body {
+  margin: 0;
+  /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif; */
+  font-family: "TransSansPremium";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-variant-ligatures: no-contextual;
+  background-color: #fff8f3;
+}
+
+body.mobile-top-nav-open {
+  overflow: hidden !important;
+}
+
+@font-face {
+  font-family: "TransSansPremium";
+  src: url("../assets/fonts/TransSansPremium-Light.woff2") format("woff2"),
+    url("../assets/fonts/TransSansPremium-Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: "TransSansPremium";
+  src: url("../assets/fonts/TransSansPremium-Regular.woff2") format("woff2"),
+    url("../assets/fonts/TransSansPremium-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "TransSansPremium";
+  src: url("../assets/fonts/TransSansPremium-Medium.woff2") format("woff2"),
+    url("../assets/fonts/TransSansPremium-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: "TransSansPremium";
+  src: url("../assets/fonts/TransSansPremium-SemiBold.woff2") format("woff2"),
+    url("../assets/fonts/TransSansPremium-SemiBold.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: "TransSansPremium";
+  src: url("../assets/fonts/TransSansPremium-Bold.woff2") format("woff2"),
+    url("../assets/fonts/TransSansPremium-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+}
+
+:root {
+  --swiper-theme-color: #62e6d4 !important;
+  --swiper-pagination-progressbar-bg-color: #ffffff70;
+  /* --swiper-pagination-bullet-inactive-color: #595959; */
+
+  /* semibold/light never been used  */
+  --default-font-family: "TransSansPremium", "system-ui", "BlinkMacSystemFont",
+    "Roboto", "Helvetica Neue", "Segoe UI", "Arial", "sans-serif",
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+  /* same as scroll documnet */
+  --developer-page-font-family: "Roboto Flex", "trans-sans", "circular", Arial,
+    "Helvetica Neue", Helvetica, sans-serif;
+}
+
+onboard-v2 .outer-container icon {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+@media screen and (min-width: 900px) {
+  .swiper-slide {
+    display: flex;
+    flex-direction: column;
+  }
+  .swiper-slide:nth-of-type(1) {
+    align-items: flex-start;
+  }
+  .swiper-slide:nth-of-type(2) {
+    align-items: center;
+  }
+  .swiper-slide:nth-last-of-type(1) {
+    align-items: flex-end;
+  }
+}
+
+div.markdown-body h1,
+div.markdown-body h2,
+div.markdown-body h3 {
+  border-bottom: 0;
+}
+
+.markdown-body ol {
+  list-style-type: decimal;
+}
+
+div.markdown-body img {
+  background-color: transparent;
+}
+
+.markdown-body ul {
+  list-style-type: disc;
+}
+
+.header-link {
+  font-size: 1.6rem;
+  font-weight: 400;
+  padding-left: 1em;
+  cursor: pointer;
+  display: block;
+  line-height: normal;
+  margin: 0.5rem 0;
+  padding-right: 1.8em;
+  transition: all 0.2s;
+}
+
+.header-link.active,
+.header-link:hover,
+.header-link:focus {
+  font-weight: 500;
+}
+
+.header-link a {
+  display: inline-flex;
+  gap: 0.5em;
+  width: 100%;
+  padding: 0.15em 0 0.15em 0;
+}
+
+.header-link.depth-3 {
+  padding-left: 2rem;
+}
+.header-link.depth-4 {
+  padding-left: 3rem;
+}
+
+.header-link a {
+  font: inherit;
+  color: inherit;
+  text-decoration: none;
+}
+
+.wrapper {
+  @apply max-w-7xl p-6 mx-auto w-full overflow-hidden;
+  padding-top: 3rem;
+}
+
+@media screen and (max-width: 900px) {
+  .wrapper {
+    @apply p-4;
+  }
+}

@@ -1,6 +1,4 @@
-import { requireEnv } from "@/utils"
-
-const baseUrl = requireEnv("REACT_APP_ROLLUPSCAN_API_URI")
+const baseUrl = process.env.NEXT_PUBLIC_ROLLUPSCAN_API_URI
 
 export const fetchLastBatchIndexesUrl = `${baseUrl}/last_batch_indexes`
 

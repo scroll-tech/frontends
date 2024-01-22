@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import Link from "next/link"
 
 import { Stack, Typography } from "@mui/material"
 
@@ -32,7 +32,7 @@ const RelativeLink = props => {
     )
   }
   return (
-    <Link to={props.to}>
+    <Link href={props.to}>
       <LinkText>{props.name}</LinkText>
     </Link>
   )

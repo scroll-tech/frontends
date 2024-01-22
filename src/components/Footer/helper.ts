@@ -1,7 +1,7 @@
-import { ReactComponent as DiscordIcon } from "@/assets/svgs/footer/discord.svg"
-import { ReactComponent as GithubIcon } from "@/assets/svgs/footer/github.svg"
-import { ReactComponent as TwitterIcon } from "@/assets/svgs/footer/twitter.svg"
-import { ReactComponent as YoutubeIcon } from "@/assets/svgs/footer/youtube.svg"
+import DiscordIcon from "@/assets/svgs/footer/discord.svg"
+import GithubIcon from "@/assets/svgs/footer/github.svg"
+import TwitterIcon from "@/assets/svgs/footer/twitter.svg"
+import YoutubeIcon from "@/assets/svgs/footer/youtube.svg"
 
 export const aboutList = [
   {

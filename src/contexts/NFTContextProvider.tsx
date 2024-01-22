@@ -5,10 +5,9 @@ import ScrollOriginsNFTABI from "@/assets/abis/ScrollOriginsNFT.json"
 import ScrollOriginsNFTV2ABI from "@/assets/abis/ScrollOriginsNFTV2.json"
 import { CHAIN_ID } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { requireEnv } from "@/utils"
 
-const SCROLL_ORIGINS_NFT_ADDRESS = requireEnv("REACT_APP_SCROLL_ORIGINS_NFT")
-const SCROLL_ORIGINS_NFT_V2_ADDRESS = requireEnv("REACT_APP_SCROLL_ORIGINS_NFT_V2")
+const SCROLL_ORIGINS_NFT_ADDRESS = process.env.NEXT_PUBLIC_SCROLL_ORIGINS_NFT
+const SCROLL_ORIGINS_NFT_V2_ADDRESS = process.env.NEXT_PUBLIC_SCROLL_ORIGINS_NFT_V2
 
 type NFTContextProps = {
   NFTInstance: any

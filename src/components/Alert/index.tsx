@@ -2,8 +2,8 @@ import { makeStyles } from "tss-react/mui"
 
 import { Alert as MuiAlert, SvgIcon } from "@mui/material"
 
-import { ReactComponent as ErrorSvg } from "@/assets/svgs/bridge/alert-error.svg"
-import { ReactComponent as SuccessSvg } from "@/assets/svgs/bridge/alert-success.svg"
+import ErrorSvg from "@/assets/svgs/bridge/alert-error.svg"
+import SuccessSvg from "@/assets/svgs/bridge/alert-success.svg"
 
 const useStyles = makeStyles()(theme => ({
   root: {

@@ -1,16 +1,16 @@
 import copy from "copy-to-clipboard"
+import { usePathname } from "next/navigation"
 import { useCallback, useMemo, useState } from "react"
-import { useLocation } from "react-router-dom"
 import { makeStyles } from "tss-react/mui"
 
 import { ButtonBase, Fade, ListItemIcon, ListItemText, Menu, MenuItem, SvgIcon } from "@mui/material"
 
-import { ReactComponent as CopySuccessSvg } from "@/assets/svgs/bridge/copy-success.svg"
-import { ReactComponent as HistorySvg } from "@/assets/svgs/bridge/history.svg"
-import { ReactComponent as BlockSvg } from "@/assets/svgs/wallet-connector/block.svg"
-import { ReactComponent as CopySvg } from "@/assets/svgs/wallet-connector/copy.svg"
-import { ReactComponent as DisconnectSvg } from "@/assets/svgs/wallet-connector/disconnect.svg"
-import { ReactComponent as DownTriangleSvg } from "@/assets/svgs/wallet-connector/down-triangle.svg"
+import CopySuccessSvg from "@/assets/svgs/bridge/copy-success.svg"
+import HistorySvg from "@/assets/svgs/bridge/history.svg"
+import BlockSvg from "@/assets/svgs/wallet-connector/block.svg"
+import CopySvg from "@/assets/svgs/wallet-connector/copy.svg"
+import DisconnectSvg from "@/assets/svgs/wallet-connector/disconnect.svg"
+import DownTriangleSvg from "@/assets/svgs/wallet-connector/down-triangle.svg"
 import { CHAIN_ID, EXPLORER_URL } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useBridgeStore from "@/stores/bridgeStore"
@@ -77,7 +77,7 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
 const WalletDropdown = props => {
   const { sx, dark } = props
   const { classes, cx } = useStyles({ dark })
-  const { pathname } = useLocation()
+  const pathname = usePathname()
 
   const { walletCurrentAddress, connect, disconnect, chainId } = useRainbowContext()
   const { changeHistoryVisible } = useBridgeStore()
@@ -120,7 +120,11 @@ const WalletDropdown = props => {
         label: "Block explorer",
         action: viewScan,
       },
-      { icon: copied ? CopySuccessSvg : CopySvg, label: "Copy address", action: copyAddress },
+      {
+        icon: copied ? CopySuccessSvg : CopySvg,
+        label: "Copy address",
+        action: copyAddress,
+      },
       {
         icon: DisconnectSvg,
         label: "Disconnect",

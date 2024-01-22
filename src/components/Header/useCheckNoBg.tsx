@@ -1,9 +1,9 @@
+import { usePathname } from "next/navigation"
 import { useEffect, useMemo, useState } from "react"
-import { useLocation } from "react-router-dom"
 
 const useCheckNoBg = () => {
-  const { pathname } = useLocation()
-  const isNoBgPage = useMemo(() => ["/story", "/join-us", "/brand-kit"].includes(pathname), [pathname])
+  const pathname = usePathname()
+  const isNoBgPage = useMemo(() => ["/story", "/join-us"].includes(pathname), [pathname])
   const [isNoBgSection, setIsNoBgSection] = useState(isNoBgPage)
 
   useEffect(() => {

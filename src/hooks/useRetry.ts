@@ -8,7 +8,6 @@ import { CHAIN_ID } from "@/constants"
 import { useBrigeContext } from "@/contexts/BridgeContextProvider"
 import useTxStore from "@/stores/txStore"
 import { MAX_OFFSET_TIME } from "@/stores/utils"
-import { requireEnv } from "@/utils"
 
 export function useRetry(props) {
   const { hash } = props
@@ -19,9 +18,9 @@ export function useRetry(props) {
   const replayMessage = async () => {
     const l2provider = networksAndSigners[CHAIN_ID.L2].provider
     const deployer = networksAndSigners[CHAIN_ID.L1].signer
-    const queue = new ethers.Contract(requireEnv("REACT_APP_L1_MESSAGE_QUEUE"), L1MessageQueue, deployer)
-    const messenger = new ethers.Contract(requireEnv("REACT_APP_L1_SCROLL_MESSENGER"), L1ScrollMessenger, deployer)
-    const oracle = new ethers.Contract(requireEnv("REACT_APP_L2_GAS_PRICE_ORACLE"), L2GasPriceOracle, deployer)
+    const queue = new ethers.Contract(process.env.NEXT_PUBLIC_L1_MESSAGE_QUEUE, L1MessageQueue, deployer)
+    const messenger = new ethers.Contract(process.env.NEXT_PUBLIC_L1_SCROLL_MESSENGER, L1ScrollMessenger, deployer)
+    const oracle = new ethers.Contract(process.env.NEXT_PUBLIC_L2_GAS_PRICE_ORACLE, L2GasPriceOracle, deployer)
 
     setLoading(true)
     try {

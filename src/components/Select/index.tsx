@@ -3,7 +3,7 @@ import { makeStyles } from "tss-react/mui"
 
 import { Select as MuiSelect, Stack, Typography } from "@mui/material"
 
-import { ReactComponent as TriangleDownIcon } from "@/assets/svgs/common/triangle-down.svg"
+import TriangleDownIcon from "@/assets/svgs/common/triangle-down.svg"
 
 const useStyles = makeStyles()(theme => ({
   root: {
@@ -90,7 +90,11 @@ const Select = props => {
       displayEmpty
       IconComponent={TriangleDownIcon}
       className={cx(classes.root, className)}
-      classes={{ select: classes.select, icon: classes.icon, iconOpen: classes.iconOpen }}
+      classes={{
+        select: classes.select,
+        icon: classes.icon,
+        iconOpen: classes.iconOpen,
+      }}
       onOpen={onOpen}
       MenuProps={{
         PopoverClasses: {
@@ -102,7 +106,14 @@ const Select = props => {
       renderValue={selected => {
         return (
           <Stack direction="row" alignItems="center" spacing={1.5}>
-            <Typography sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: ["2.4rem", "3.6rem"], fontWeight: 600, cursor: "inherit" }}>
+            <Typography
+              sx={{
+                fontSize: ["1.6rem", "2rem"],
+                lineHeight: ["2.4rem", "3.6rem"],
+                fontWeight: 600,
+                cursor: "inherit",
+              }}
+            >
               {selected as string}
             </Typography>
           </Stack>

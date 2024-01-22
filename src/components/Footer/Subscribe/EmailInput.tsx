@@ -2,7 +2,7 @@ import { makeStyles } from "tss-react/mui"
 
 import { Box, IconButton, InputBase, SvgIcon, Typography } from "@mui/material"
 
-import { ReactComponent as ArrowRightIcon } from "@/assets/svgs/common/arrow-right.svg"
+import ArrowRightIcon from "@/assets/svgs/common/arrow-right.svg"
 
 const useStyles = makeStyles()(theme => ({
   wrapper: {

@@ -1,7 +1,7 @@
 export {}
 
 declare global {
-  interface Window {
+  interface globalThis {
     scrollRequest: (url: string, options?: object) => Promise<T>
   }
 

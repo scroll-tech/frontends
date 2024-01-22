@@ -1,5 +1,5 @@
 {
-  "extends": ["react-app", "prettier"],
+  "extends": ["next/core-web-vitals", "prettier"],
   "plugins": ["prettier"],
   "rules": {
     "prettier/prettier": "error",
@@ -9,6 +9,12 @@
     "no-extend-native": "off",
     "no-sequences": "off",
     "react-hooks/exhaustive-deps": "off",
-    "react/jsx-pascal-case": "off"
+    "react/jsx-pascal-case": "off",
+
+    // TODO:
+    "react/no-unescaped-entities":"off",
+    "@next/next/no-img-element":"off",
+    "@next/next/no-page-custom-font":"off",
+    "react/no-children-prop":"off"
   }
 }

@@ -1,5 +1,5 @@
+import { useRouter } from "next/navigation"
 import { useEffect } from "react"
-import { useLocation } from "react-router-dom"
 import { makeStyles } from "tss-react/mui"
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
@@ -66,8 +66,8 @@ const Faq = props => {
   const { backUrl, backText, children } = props
 
   const { classes } = useStyles()
-
-  const { hash } = useLocation()
+  const router = useRouter()
+  const hash = router.asPath.split("#")[1]
 
   useEffect(() => {
     if (hash) {
@@ -86,7 +86,14 @@ const Faq = props => {
         <Typography variant="H1">FAQs</Typography>
       </div>
       <Link
-        sx={{ fontSize: ["1.6rem", "2rem"], fontWeight: 500, color: "text.primary", lineHeight: 1, mb: ["1rem", "3.6rem"], display: "inline-block" }}
+        sx={{
+          fontSize: ["1.6rem", "2rem"],
+          fontWeight: 500,
+          color: "text.primary",
+          lineHeight: 1,
+          mb: ["1rem", "3.6rem"],
+          display: "inline-block",
+        }}
         underline="always"
         href={backUrl}
       >

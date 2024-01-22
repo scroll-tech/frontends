@@ -1,6 +1,6 @@
-import { ReactComponent as DoubleEyesIcon } from "@/assets/svgs/ecosystem/double-eyes.svg"
-import { ReactComponent as HeartIcon } from "@/assets/svgs/ecosystem/heart.svg"
-import { ReactComponent as SettingsIcon } from "@/assets/svgs/ecosystem/settings.svg"
+import DoubleEyesIcon from "@/assets/svgs/ecosystem/double-eyes.svg"
+import HeartIcon from "@/assets/svgs/ecosystem/heart.svg"
+import SettingsIcon from "@/assets/svgs/ecosystem/settings.svg"
 import { isProduction } from "@/utils"
 
 export const DIVERGENT_CATEGORY_MAP = {

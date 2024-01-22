@@ -1,11 +1,11 @@
+import { default as NavLink } from "next/link"
 import React, { useState } from "react"
-import { NavLink } from "react-router-dom"
 import { useStyles } from "tss-react/mui"
 
 import { Box, Container, Fade, Link, Popper, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
-import { ReactComponent as TriangleDownSvg } from "@/assets/svgs/common/header-triangle-down.svg"
+import TriangleDownSvg from "@/assets/svgs/common/header-triangle-down.svg"
 import Logo from "@/components/ScrollLogo"
 import WalletToolkit from "@/components/WalletToolkit"
 import useCheckViewport from "@/hooks/useCheckViewport"
@@ -16,7 +16,9 @@ import { navigations } from "./constants"
 import useCheckNoBg from "./useCheckNoBg"
 import useCheckTheme from "./useCheckTheme"
 
-const StyledBox = styled<any>(Stack, { shouldForwardProp: prop => prop !== "dark" })(({ theme, transparent, dark }) => ({
+const StyledBox = styled<any>(Stack, {
+  shouldForwardProp: prop => prop !== "dark",
+})(({ theme, transparent, dark }) => ({
   position: "sticky",
   top: 0,
   width: "100%",
@@ -24,7 +26,9 @@ const StyledBox = styled<any>(Stack, { shouldForwardProp: prop => prop !== "dark
   backgroundColor: transparent ? "transparent" : dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.light,
 }))
 
-const StyledPopper = styled<any>(Popper, { shouldForwardProp: prop => prop !== "dark" })(({ theme, transparent, dark }) => ({
+const StyledPopper = styled<any>(Popper, {
+  shouldForwardProp: prop => prop !== "dark",
+})(({ theme, transparent, dark }) => ({
   backgroundColor: transparent ? "transparent" : dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.light,
   padding: "0 2rem 1rem",
   marginLeft: "-2rem !important",
@@ -36,7 +40,9 @@ const HeaderContainer = styled(Box)(({ theme }) => ({
   alignItems: "center",
 }))
 
-const MenuLinkButton = styled<any>(Link, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
+const MenuLinkButton = styled<any>(Link, {
+  shouldForwardProp: prop => prop !== "dark",
+})(({ theme, dark }) => ({
   fontSize: "1.8rem",
   fontWeight: 400,
   paddingLeft: "25px",
@@ -51,7 +57,9 @@ const MenuLinkButton = styled<any>(Link, { shouldForwardProp: prop => prop !== "
   },
 }))
 
-const ExternalLink = styled<any>("p", { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
+const ExternalLink = styled<any>("p", {
+  shouldForwardProp: prop => prop !== "dark",
+})(({ theme, dark }) => ({
   fontWeight: 400,
   fontSize: "1.8rem",
   height: "2.1rem",
@@ -65,7 +73,9 @@ const ExternalLink = styled<any>("p", { shouldForwardProp: prop => prop !== "dar
   },
 }))
 
-const LinkStyledButton = styled<any>(NavLink, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
+const LinkStyledButton = styled<any>(NavLink, {
+  shouldForwardProp: prop => prop !== "dark",
+})(({ theme, dark }) => ({
   fontSize: "1.8rem",
   fontWeight: 400,
   marginLeft: "0.5rem",
@@ -82,7 +92,9 @@ const LinkStyledButton = styled<any>(NavLink, { shouldForwardProp: prop => prop 
   },
 }))
 
-const SubMenuButton = styled<any>(Stack, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
+const SubMenuButton = styled<any>(Stack, {
+  shouldForwardProp: prop => prop !== "dark",
+})(({ theme, dark }) => ({
   fontSize: "1.8rem",
   fontWeight: 400,
   marginLeft: "0.5rem",
@@ -110,7 +122,9 @@ const SubMenuList = styled(Box)(({ theme }) => ({
   overflow: "hidden",
 }))
 
-const SectionList = styled<any>(Box, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
+const SectionList = styled<any>(Box, {
+  shouldForwardProp: prop => prop !== "dark",
+})(({ theme, dark }) => ({
   display: "flex",
   flexDirection: "column",
   width: "100%",
@@ -126,7 +140,9 @@ const SectionList = styled<any>(Box, { shouldForwardProp: prop => prop !== "dark
   },
 }))
 
-const LinkButton = styled<any>(Link, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
+const LinkButton = styled<any>(Link, {
+  shouldForwardProp: prop => prop !== "dark",
+})(({ theme, dark }) => ({
   "& p": {
     lineHeight: "2.9rem",
     height: "2.9rem",
@@ -140,7 +156,9 @@ const LinkButton = styled<any>(Link, { shouldForwardProp: prop => prop !== "dark
   },
 }))
 
-const LinkStyledSubButton = styled<any>(NavLink, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
+const LinkStyledSubButton = styled<any>(NavLink, {
+  shouldForwardProp: prop => prop !== "dark",
+})(({ theme, dark }) => ({
   lineHeight: "2.9rem",
   height: "2.9rem",
   fontSize: "1.8rem",
@@ -201,7 +219,7 @@ const App = ({ currentMenu }) => {
                 </Stack>
               </LinkButton>
             ) : (
-              <LinkStyledSubButton key={subItem.label} to={subItem.href} dark={dark}>
+              <LinkStyledSubButton key={subItem.label} href={subItem.href} dark={dark}>
                 {subItem.label}
               </LinkStyledSubButton>
             ),
@@ -229,6 +247,12 @@ const App = ({ currentMenu }) => {
             component={TriangleDownSvg}
             inheritViewBox
           ></SvgIcon>
+          {/* <TriangleDownSvg
+            className={cx(
+              "expand-more",
+              item.key === checked && "expand-more-reverse"
+            )}
+          ></TriangleDownSvg> */}
           {item.key === checked && (
             <StyledPopper open={true} placement="bottom-start" anchorEl={anchorEl} transition transparent={noBg} dark={dark}>
               {({ TransitionProps }) => (
@@ -248,7 +272,7 @@ const App = ({ currentMenu }) => {
       )
     } else {
       return (
-        <LinkStyledButton className={currentMenu === item.key ? "active" : ""} dark={dark} to={item.href} end={item.end} key={item.key}>
+        <LinkStyledButton className={currentMenu === item.key ? "active" : ""} dark={dark} href={item.href} end={item.end} key={item.key}>
           {item.label}
         </LinkStyledButton>
       )
@@ -270,7 +294,7 @@ const App = ({ currentMenu }) => {
       <Announcement />
       <Container>
         <HeaderContainer>
-          <NavLink to="/" className="flex">
+          <NavLink href="/" className="flex">
             <Logo light={dark} />
           </NavLink>
           <Stack direction="row" spacing={isDesktop ? "4.4rem" : "2rem"} alignItems="center">

@@ -24,7 +24,7 @@ Before running locally, make sure to duplicate `.env.template` to a new file cal
 
 In the project directory, you can run:
 
-### `yarn start`
+### `yarn run dev`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -67,8 +67,7 @@ Generate webp format image
 
 ## Deployment
 
-Using Scroll's team Netlify: https://app.netlify.com/sites/scroll-io/overview
+Using Scroll's team Netlify: https://vercel.com/scroll-tech/frontends
 
 - Production (SCROLL_ENVIRONMENT=MAINNET): https://scroll.io
-- Sepolia (SCROLL_ENVIRONMENT=SEPOLIA): https://sepolia.env.scroll.io
-- Staging (SCROLL_ENVIRONMENT=STAGING): https://staging.env.scroll.io
+- Sepolia (SCROLL_ENVIRONMENT=SEPOLIA): frontends-git-sepolia-scroll-tech.vercel.app

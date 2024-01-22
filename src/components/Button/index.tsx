@@ -4,7 +4,7 @@ import { makeStyles } from "tss-react/mui"
 
 import { ButtonBase, ButtonProps, CircularProgress, IconButton, SvgIcon } from "@mui/material"
 
-import { ReactComponent as ArrowRightIcon } from "@/assets/svgs/common/arrow-right.svg"
+import ArrowRightIcon from "@/assets/svgs/common/arrow-right.svg"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
 interface ScrollButtonProps extends ButtonProps {
@@ -14,7 +14,6 @@ interface ScrollButtonProps extends ButtonProps {
   loading?: boolean
   disabled?: boolean
   whiteButton?: boolean
-  download?: boolean
 
   // compatibility
   target?: string
@@ -146,7 +145,13 @@ const maskMobile = {
 }
 const Button = (props: ScrollButtonProps) => {
   const { width, sx, color, loading, disabled, gloomy, children, whiteButton, ...restProps } = props
-  const { classes, cx } = useStyles({ color, width, disabled, loading, whiteButton })
+  const { classes, cx } = useStyles({
+    color,
+    width,
+    disabled,
+    loading,
+    whiteButton,
+  })
 
   const { isMobile } = useCheckViewport()
 

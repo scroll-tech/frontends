@@ -1,12 +1,14 @@
+import { usePathname } from "next/navigation"
 import { useMemo } from "react"
-import { useMatch } from "react-router-dom"
 
 import { Stack } from "@mui/material"
 import { styled } from "@mui/system"
 
-import { isProduction, requireEnv } from "@/utils"
+import { isProduction } from "@/utils"
 
-const AnnouncementStack = styled<any>(Stack, { shouldForwardProp: prop => prop !== "production" })(({ theme, production }) => ({
+const AnnouncementStack = styled<any>(Stack, {
+  shouldForwardProp: prop => prop !== "production",
+})(({ theme, production }) => ({
   lineHeight: "2.6rem",
   background: production ? "#62e6d4" : theme.palette.primary.main,
   textAlign: "center",
@@ -21,20 +23,22 @@ const AnnouncementStack = styled<any>(Stack, { shouldForwardProp: prop => prop !
 }))
 
 const Announcement = () => {
-  const isHome = useMatch("/")
-  const isPortal = useMatch("/portal")
+  const pathname = usePathname()
+
+  const isHome = pathname === "/"
+  const isPortal = pathname === "/portal"
 
   const announcementContent = useMemo(() => {
     if (isProduction && (isHome || isPortal)) {
       return (
         <>
-          Scroll {requireEnv("REACT_APP_SCROLL_ENVIRONMENT")} is now live. <strong>Try it!</strong>
+          Scroll {process.env.NEXT_PUBLIC_SCROLL_ENVIRONMENT} is now live. <strong>Try it!</strong>
         </>
       )
     } else if (!isProduction) {
       return (
         <>
-          You are on the Scroll {requireEnv("REACT_APP_SCROLL_ENVIRONMENT")} Testnet website. Return to <strong>Mainnet</strong>
+          You are on the Scroll {process.env.NEXT_PUBLIC_SCROLL_ENVIRONMENT} Testnet website. Return to <strong>Mainnet</strong>
         </>
       )
     }

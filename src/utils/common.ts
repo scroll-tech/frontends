@@ -21,22 +21,13 @@ export function findNetworkBySlug(slug: string, networks: any[]) {
   return find(networks, ["slug", slug])
 }
 
-export function requireEnv(entry) {
-  if (isNil(process.env[entry])) {
-    throw new Error(`${entry} not defined in .env`)
-  } else {
-    return process.env[entry]!
-  }
-}
-
 export const generateExploreLink = (explorer, hash, type = "tx") => {
   return `${explorer}/${type}/${hash}`
 }
 
-export const isProduction = requireEnv("REACT_APP_SCROLL_ENVIRONMENT") === requireEnv("REACT_APP_MAIN_ENVIRONMENT")
-export const isSepolia = requireEnv("REACT_APP_SCROLL_ENVIRONMENT") === "Sepolia"
+export const isProduction = process.env.NEXT_PUBLIC_SCROLL_ENVIRONMENT === process.env.NEXT_PUBLIC_MAIN_ENVIRONMENT
+export const isSepolia = process.env.NEXT_PUBLIC_SCROLL_ENVIRONMENT === "Sepolia"
 export const networkType = isProduction ? "mainnet" : "testnet"
-
 export const isValidEmail = (email: string): boolean => {
   const emailRegex: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
   return emailRegex.test(email)
