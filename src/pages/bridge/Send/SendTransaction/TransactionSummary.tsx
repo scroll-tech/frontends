@@ -4,7 +4,7 @@ import { makeStyles } from "tss-react/mui"
 import { Typography } from "@mui/material"
 
 import { ETH_SYMBOL } from "@/constants"
-import { useBrigeContext } from "@/contexts/BridgeContextProvider"
+import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import useBridgeStore from "@/stores/bridgeStore"
 import { BNToAmount, amountToBN, toTokenDisplay } from "@/utils"
 
@@ -56,7 +56,7 @@ const CustomTypography = ({ isError, ...props }) => <Typography sx={{ color: isE
 const TransactionSummary: FC<Props> = props => {
   const { classes: styles } = useStyles()
   const { txType, isNetworkCorrect } = useBridgeStore()
-  const { tokenPrice } = useBrigeContext()
+  const { tokenPrice } = useBridgeContext()
 
   const { amount, feeError, selectedToken, l1GasFee, l2GasFee, l1DataFee, needApproval } = props
 

@@ -2,7 +2,7 @@ import { isError } from "ethers"
 import { useMemo, useState } from "react"
 
 import { CHAIN_ID, NETWORKS, TX_STATUS } from "@/constants"
-import { useBrigeContext } from "@/contexts/BridgeContextProvider"
+import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useBridgeStore from "@/stores/bridgeStore"
@@ -21,7 +21,7 @@ type TxOptions = {
 export function useSendTransaction(props) {
   const { amount: fromTokenAmount, selectedToken } = props
   const { walletCurrentAddress } = useRainbowContext()
-  const { networksAndSigners, blockNumbers } = useBrigeContext()
+  const { networksAndSigners, blockNumbers } = useBridgeContext()
   const { enlargedGasLimit: txGasLimit, maxFeePerGas, maxPriorityFeePerGas } = useGasFee(selectedToken, false)
   const { addTransaction, addEstimatedTimeMap, removeFrontTransactions, updateTransaction } = useTxStore()
   const { fromNetwork, toNetwork, changeTxResult, changeWithdrawStep } = useBridgeStore()

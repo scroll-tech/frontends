@@ -192,10 +192,10 @@ const BridgeContextProvider = ({ children }: any) => {
   )
 }
 
-export function useBrigeContext() {
+export function useBridgeContext() {
   const ctx = useContext(BridgeContext)
   if (!ctx) {
-    throw new Error("useBrigeContext must be used within BridgeContextProvider")
+    throw new Error("useBridgeContext must be used within BridgeContextProvider")
   }
   return ctx
 }

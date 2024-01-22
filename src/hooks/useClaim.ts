@@ -2,7 +2,7 @@ import { ethers } from "ethers"
 import { useState } from "react"
 
 import L1ScrollMessenger from "@/assets/abis/L1ScrollMessenger.json"
-import { useBrigeContext } from "@/contexts/BridgeContextProvider"
+import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useTxStore from "@/stores/txStore"
 import { CLAIM_OFFSET_TIME } from "@/stores/utils"
@@ -10,7 +10,7 @@ import { requireEnv } from "@/utils"
 
 export function useClaim(props) {
   const { tx } = props
-  const { networksAndSigners } = useBrigeContext()
+  const { networksAndSigners } = useBridgeContext()
   const [loading, setLoading] = useState(false)
   const { addEstimatedTimeMap } = useTxStore()
   const { chainId } = useRainbowContext()
