@@ -133,7 +133,7 @@ const Feature = () => {
     return FEATURES.map((feature, featureIdx) => {
       return (
         <FeatureBox key={featureIdx}>
-          {ComponentToRender(featureIdx, 0, <FeatureIcon src={feature.icon} />)}
+          {ComponentToRender(featureIdx, 0, <FeatureIcon src={feature.icon} alt={feature.title} />)}
           {ComponentToRender(
             featureIdx,
             1,

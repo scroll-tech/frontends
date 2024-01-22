@@ -121,7 +121,7 @@ const RollupTable = forwardRef<any, any>(function RollupTable(props, ref) {
   const { data, total, emptyBatch, searchLoading, batchLoading, currentClickedBatch } = useRollupStore()
   const router = useRouter()
   const pathname = usePathname()
-  const searchParams = useSearchParams()
+  const searchParams: any = useSearchParams()
 
   const page = useMemo(() => +searchParams.get("page"), [searchParams])
   const pageSize = useMemo(() => +searchParams.get("per_page"), [searchParams])
@@ -151,9 +151,7 @@ const RollupTable = forwardRef<any, any>(function RollupTable(props, ref) {
   }
 
   const formatDate = (hash: string) => {
-    return dayjs(new Date(+hash * 1000))
-      .fromNow()
-      .toString()
+    return (dayjs(new Date(+hash * 1000)) as any).fromNow().toString()
   }
 
   const handleChangePage = (e, newPage) => {

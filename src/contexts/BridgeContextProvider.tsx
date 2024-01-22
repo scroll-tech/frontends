@@ -64,13 +64,13 @@ const BridgeContextProvider = ({ children }: any) => {
       l2Provider = await new JsonRpcProvider(RPC_URL.L2)
       l1signer = await walletProvider.getSigner(0)
       l2signer = new JsonRpcSigner(l2Provider, address)
-      l1Gateway = new ethers.Contract(GATEWAY_ROUTE_PROXY_ADDR[CHAIN_ID.L1], L1_GATEWAY_ROUTER_PROXY_ABI, l1signer)
+      l1Gateway = new ethers.Contract(GATEWAY_ROUTE_PROXY_ADDR[CHAIN_ID.L1] as string, L1_GATEWAY_ROUTER_PROXY_ABI, l1signer)
     } else if (chainId === CHAIN_ID.L2) {
       l1Provider = await new JsonRpcProvider(RPC_URL.L1)
       l2Provider = walletProvider
       l1signer = new JsonRpcSigner(l1Provider, address)
       l2signer = await walletProvider.getSigner(0)
-      l2Gateway = new ethers.Contract(GATEWAY_ROUTE_PROXY_ADDR[CHAIN_ID.L2], L2_GATEWAY_ROUTER_PROXY_ABI, l2signer)
+      l2Gateway = new ethers.Contract(GATEWAY_ROUTE_PROXY_ADDR[CHAIN_ID.L2] as string, L2_GATEWAY_ROUTER_PROXY_ABI, l2signer)
     } else {
       l1Provider = await new JsonRpcProvider(RPC_URL.L1)
       l2Provider = await new JsonRpcProvider(RPC_URL.L2)

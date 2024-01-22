@@ -1503,6 +1503,11 @@
     clsx "^2.1.0"
     prop-types "^15.8.1"
 
+"@mui/material-nextjs@^5.15.5":
+  version "5.15.5"
+  resolved "https://registry.yarnpkg.com/@mui/material-nextjs/-/material-nextjs-5.15.5.tgz#b6da49fe99601eb3cd41303e40e8aa45d61ed446"
+  integrity sha512-YNgqCB4Agz37jf1CBuktvQifKjXfcBtrM4BGaYPqbg8mDmvzXwMMYlSTHdJhzE4ORKzImiCpHV5MSJHpHVMVRA==
+
 "@mui/material@^5.13.5":
   version "5.15.5"
   resolved "https://registry.yarnpkg.com/@mui/material/-/material-5.15.5.tgz#5c672ddf17fbe1a1d6a8854ddbb8502cc83feec0"

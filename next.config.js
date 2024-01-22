@@ -24,19 +24,6 @@ const nextConfig = {
         return warning.module && warning.module.resource.includes("node_modules") && warning.details && warning.details.includes("source-map-loader")
       },
     ]
-    config.optimization = {
-      ...config.optimization,
-      splitChunks: {
-        cacheGroups: {
-          styles: {
-            name: "styles",
-            type: "css/mini-extract",
-            chunks: "all",
-            enforce: true,
-          },
-        },
-      },
-    }
     // Grab the existing rule that handles SVG imports
     const fileLoaderRule = config.module.rules.find(rule => rule.test?.test?.(".svg"))
     config.module.rules.push(
@@ -88,15 +75,15 @@ const nextConfig = {
 
     fileLoaderRule.exclude = /\.svg$/i
 
-    if (!dev) {
-      const sentryPlugin = new SentryWebpackPlugin({
-        org: "scroll-zkp",
-        project: "scroll-io",
-        include: "./build",
-        release: packageJson.version,
-      })
-      config.plugins.push(sentryPlugin)
-    }
+    // if (!dev) {
+    //   const sentryPlugin = new SentryWebpackPlugin({
+    //     org: "scroll-zkp",
+    //     project: "scroll-io",
+    //     include: "./build",
+    //     release: packageJson.version,
+    //   })
+    //   config.plugins.push(sentryPlugin)
+    // }
 
     return config
   },

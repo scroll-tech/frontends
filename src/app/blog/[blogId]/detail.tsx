@@ -1,7 +1,6 @@
 "use client"
 
 import { shuffle } from "lodash"
-import type { Metadata, ResolvingMetadata } from "next"
 import { useParams, useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import ReactMarkdown from "react-markdown"

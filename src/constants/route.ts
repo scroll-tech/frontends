@@ -82,6 +82,11 @@ const mainnetRoutes = [
     path: "/join-us",
   },
   {
+    name: "Brand Kit",
+    path: "/brand-kit",
+    description: "Explore and download Scroll brand assets and media kit, including logos, banners, and brand guidelines.",
+  },
+  {
     name: "Blog Detail",
     path: "/blog/:blogId",
   },

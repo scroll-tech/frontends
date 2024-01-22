@@ -38,6 +38,6 @@ export const NAVIGATIONS = [
     name: "Documentation",
     description: `See the full ${L2_NAME} User Guide here.`,
     isExternal: true,
-    subdomainOrPath: DOCUMENTATION_URL[process.env.NEXT_PUBLIC_SCROLL_ENVIRONMENT],
+    subdomainOrPath: DOCUMENTATION_URL[process.env.NEXT_PUBLIC_SCROLL_ENVIRONMENT as string],
   },
 ]

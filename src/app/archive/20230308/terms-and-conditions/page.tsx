@@ -1,3 +1,5 @@
+"use client"
+
 import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 

@@ -1,4 +1,4 @@
-import { useRouter } from "next/navigation"
+import { usePathname } from "next/navigation"
 import { useEffect } from "react"
 import { makeStyles } from "tss-react/mui"
 
@@ -66,8 +66,8 @@ const Faq = props => {
   const { backUrl, backText, children } = props
 
   const { classes } = useStyles()
-  const router = useRouter()
-  const hash = router.asPath.split("#")[1]
+  const pathname = usePathname()
+  const hash = pathname.split("#")[1]
 
   useEffect(() => {
     if (hash) {

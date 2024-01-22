@@ -31,7 +31,7 @@ const InfoBox = styled(Box)(({ theme }) => ({
 const Rollup = () => {
   const router = useRouter()
   const pathname = usePathname()
-  const searchParams = useSearchParams()
+  const searchParams: any = useSearchParams()
 
   const { lastBlockNums } = useLastBlockNums()
   const { errorMessage, changeErrorMessage, changeEmptyBatch, changeBatchLoading, changeData, changeTotal, changeCurrentClickedBatch } =

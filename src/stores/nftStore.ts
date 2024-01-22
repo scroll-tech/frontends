@@ -38,7 +38,7 @@ const useNFTStore = create<NFTStore>()((set, get) => ({
       set({
         phrase: "in-progress",
       })
-    } else if (current > DEVELOPER_NFT_PHRASES.Ends && current < MintableDate) {
+    } else if (current > DEVELOPER_NFT_PHRASES.Ends && current < MintableDate.valueOf()) {
       set({
         phrase: "waiting",
       })

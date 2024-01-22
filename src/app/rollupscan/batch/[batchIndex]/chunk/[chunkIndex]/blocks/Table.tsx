@@ -30,9 +30,7 @@ const BlockTable: React.FC<BlockTableProps> = (props: { blocks: any }) => {
   }
 
   const formatDate = (hash: string) => {
-    return dayjs(new Date(+hash * 1000))
-      .fromNow()
-      .toString()
+    return (dayjs(new Date(+hash * 1000)) as any).fromNow().toString()
   }
 
   return (

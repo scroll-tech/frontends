@@ -31,9 +31,7 @@ const ChunkTable: React.FC<ChunkTableProps> = (props: { chunks: any; batchIndex:
   }
 
   const formatDate = (hash: string) => {
-    return dayjs(new Date(+hash * 1000))
-      .fromNow()
-      .toString()
+    return (dayjs(new Date(+hash * 1000)) as any).fromNow().toString()
   }
 
   return (

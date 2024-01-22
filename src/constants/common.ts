@@ -48,4 +48,4 @@ export const DOCUMENTATION_URL = {
   Sepolia: "https://docs.scroll.io/en/user-guide/",
 }
 
-export const BRANCH_NAME = process.env.NEXT_PUBLIC_SCROLL_ENVIRONMENT.toLocaleLowerCase()
+export const BRANCH_NAME = process.env.NEXT_PUBLIC_SCROLL_ENVIRONMENT!.toLocaleLowerCase()

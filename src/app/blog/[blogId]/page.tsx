@@ -1,17 +1,17 @@
-import type { Metadata, ResolvingMetadata } from "next"
-import Head from "next/head"
+import type { Metadata } from "next"
 import { headers } from "next/headers"
 
 import blogSource from "./data.json"
 import Detail from "./detail"
 
-export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
+export async function generateMetadata({ params }): Promise<Metadata> {
   const { origin } = new URL(headers().get("x-url")!)
   const currentBlog = blogSource.find(blog => blog.id === params.blogId)
 
-  const title = `${currentBlog.title} - Scroll`
-  const description = currentBlog.summary
-  const imgUrl = currentBlog.ogImg || currentBlog.posterImg
+  const title = `${currentBlog?.title} - Scroll`
+  const description = currentBlog?.summary
+  const imgUrl = currentBlog?.ogImg || currentBlog?.posterImg || ""
+  const url = currentBlog?.canonical || `https://scroll.io/blog/${currentBlog?.id}`
 
   return {
     metadataBase: new URL(origin),
@@ -20,7 +20,7 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
     openGraph: {
       title,
       description,
-      url: currentBlog.canonical || `https://scroll.io/blog/${currentBlog.id}`,
+      url,
       images: [imgUrl],
     },
     twitter: {
@@ -29,18 +29,13 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
       images: [imgUrl],
     },
     alternates: {
-      canonical: currentBlog.canonical,
+      canonical: currentBlog?.canonical,
     },
   }
 }
 
 const BlogDetail = () => {
-  return (
-    <>
-      <Head></Head>
-      <Detail></Detail>
-    </>
-  )
+  return <Detail></Detail>
 }
 
 export default BlogDetail

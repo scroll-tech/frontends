@@ -1,6 +1,6 @@
 import { Skeleton, Stack, Typography } from "@mui/material"
-import { styled } from "@mui/material/styles"
 import { useTheme } from "@mui/material/styles"
+import { styled } from "@mui/material/styles"
 
 import NumberTypography from "@/components/NumberTypography"
 

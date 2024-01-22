@@ -5,6 +5,7 @@
     "prettier/prettier": "error",
     "no-template-curly-in-string": "off",
     "no-useless-escape": "off",
+    "no-unused-vars":"warn",
     "jsx-a11y/anchor-is-valid": "off",
     "no-extend-native": "off",
     "no-sequences": "off",

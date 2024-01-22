@@ -83,7 +83,7 @@ const Batch = ({ params }) => {
   const renderTimestamp = timestamp => {
     if (!timestamp) return "-"
     const date = new Date(timestamp * 1000)
-    return `${dayjs(date).fromNow().toString()} (${dayjs(date).utc().local().format("MMM-DD-YYYY hh:mm:ss A Z UTC")})`
+    return `${(dayjs(date) as any).fromNow().toString()} (${dayjs(date).utc().local().format("MMM-DD-YYYY hh:mm:ss A Z UTC")})`
   }
 
   const truncatedHash = (hash: string) => {

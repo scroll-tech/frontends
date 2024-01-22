@@ -1,24 +1,17 @@
-import type { Metadata, ResolvingMetadata } from "next"
+import type { Metadata } from "next"
 import { headers } from "next/headers"
-import Router from "next/router"
 import React from "react"
-import { TssCacheProvider } from "tss-react"
 import { NextAppDirEmotionCacheProvider } from "tss-react/next/appDir"
 
-import Footer from "@/components/Footer"
-import Header from "@/components/Header"
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter"
+
 import { default as ScrollToTop } from "@/components/ScrollToTop"
 import RainbowProvider from "@/contexts/RainbowProvider"
-import { checkMatchPath, findCurrentRoute } from "@/hooks/useMatchedRoute"
+import { findCurrentRoute } from "@/hooks/useMatchedRoute"
 import { VersionChecker } from "@/hooks/useVersionCheck"
 import ScrollThemeProvider from "@/theme"
 
 import "./globals.css"
-
-type Props = {
-  params: { id: string }
-  searchParams: { [key: string]: string | string[] | undefined }
-}
 
 const getImageUrl = (pathname, type = "") => {
   if (pathname.startsWith("/developer-nft")) {
@@ -29,11 +22,11 @@ const getImageUrl = (pathname, type = "") => {
   return "/og_scroll.png"
 }
 
-export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
+export async function generateMetadata(): Promise<Metadata> {
   const { pathname, origin } = new URL(headers().get("x-url")!)
   const route = findCurrentRoute(pathname)
   const title = `Scroll${route ? " – " + route.name : null}`
-  const description = route.description || "Native zkEVM Layer 2 for Ethereum"
+  const description = (route as any).description || "Native zkEVM Layer 2 for Ethereum"
 
   return {
     metadataBase: new URL(origin),
@@ -86,14 +79,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        <NextAppDirEmotionCacheProvider options={{ key: "css" }}>
-          <ScrollThemeProvider>
-            <VersionChecker>
-              <RainbowProvider>{children}</RainbowProvider>
-            </VersionChecker>
-            <ScrollToTop />
-          </ScrollThemeProvider>
-        </NextAppDirEmotionCacheProvider>
+        <AppRouterCacheProvider>
+          <NextAppDirEmotionCacheProvider options={{ key: "css" }}>
+            <ScrollThemeProvider>
+              <VersionChecker>
+                <RainbowProvider>{children}</RainbowProvider>
+              </VersionChecker>
+              <ScrollToTop />
+            </ScrollThemeProvider>
+          </NextAppDirEmotionCacheProvider>
+        </AppRouterCacheProvider>
       </body>
     </html>
   )

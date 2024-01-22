@@ -42,7 +42,7 @@ const Blocks = () => {
           <>
             {chunks ? (
               <>
-                <Table chunks={chunks} batchIndex={index} />
+                <Table chunks={chunks} batchIndex={+index} />
               </>
             ) : null}
           </>

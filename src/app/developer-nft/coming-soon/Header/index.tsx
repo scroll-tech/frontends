@@ -78,7 +78,7 @@ const Header = () => {
         {phrase === "in-progress" ? "Program ends in" : "NFT releases in"}
       </Typography>
       {phrase === "in-progress" && <Countdown key="in-progress" date={DEVELOPER_NFT_PHRASES.Ends} renderer={renderCountDown}></Countdown>}
-      {phrase === "waiting" && <Countdown key="waiting" date={MintableDate} renderer={renderCountDown}></Countdown>}
+      {phrase === "waiting" && <Countdown key="waiting" date={MintableDate.valueOf()} renderer={renderCountDown}></Countdown>}
     </Stack>
   )
 }

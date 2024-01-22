@@ -12,4 +12,4 @@ const scrollRequest = (url: string, options?: object) => {
     })
     .then(data => data)
 }
-globalThis.scrollRequest = scrollRequest
+window.scrollRequest = scrollRequest
