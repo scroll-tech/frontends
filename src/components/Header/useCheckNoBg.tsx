@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react"
 
 const useCheckNoBg = () => {
   const pathname = usePathname()
-  const isNoBgPage = useMemo(() => ["/story", "/join-us"].includes(pathname), [pathname])
+  const isNoBgPage = useMemo(() => ["/story", "/join-us", "/brand-kit"].includes(pathname), [pathname])
   const [isNoBgSection, setIsNoBgSection] = useState(isNoBgPage)
 
   useEffect(() => {

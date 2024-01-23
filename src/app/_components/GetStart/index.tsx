@@ -6,9 +6,9 @@ import React, { useEffect, useRef, useState } from "react"
 import { Box, Container as MuiContainer, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
-import ScalabilityIcon from "@/assets/images/homepage/home/start_bridge.png"
-import SecurityIcon from "@/assets/images/homepage/home/start_link.png"
-import EVMEquivalenceIcon from "@/assets/images/homepage/home/start_setting.png"
+import ScalabilityIcon from "@/assets/images/home/start_bridge.png"
+import SecurityIcon from "@/assets/images/home/start_link.png"
+import EVMEquivalenceIcon from "@/assets/images/home/start_setting.png"
 import { FadeInUp } from "@/components/Animation"
 import Button from "@/components/Button"
 import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
@@ -57,12 +57,12 @@ const Container = styled(Box)(({ theme }) => ({
   },
 }))
 
-const InnerBox = styled(MuiContainer)(({ theme }) => ({
+const InnerBox = styled(MuiContainer)(() => ({
   position: "relative",
   width: "100%",
 }))
 
-const Background = styled(Box)(({ theme }) => ({
+const Background = styled(Box)(() => ({
   position: "absolute",
   top: "0",
   bottom: "0",
@@ -106,7 +106,7 @@ const StepContainer = styled(SuccessionToView)(({ theme }) => ({
   },
 }))
 
-const StepBox = styled(Box)(({ theme }) => ({
+const StepBox = styled(Box)(() => ({
   display: "flex",
   flexDirection: "column",
   flex: 1,

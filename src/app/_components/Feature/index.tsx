@@ -3,10 +3,10 @@ import Image from "next/image"
 import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
-import FeatureIcon1 from "@/assets/images/homepage/home/feature_icon_1.png"
-import FeatureIcon2 from "@/assets/images/homepage/home/feature_icon_2.png"
-import FeatureIcon3 from "@/assets/images/homepage/home/feature_icon_3.png"
-import FeatureIcon4 from "@/assets/images/homepage/home/feature_icon_4.png"
+import FeatureIcon1 from "@/assets/images/home/feature_icon_1.png"
+import FeatureIcon2 from "@/assets/images/home/feature_icon_2.png"
+import FeatureIcon3 from "@/assets/images/home/feature_icon_3.png"
+import FeatureIcon4 from "@/assets/images/home/feature_icon_4.png"
 import { FadeInUp, SlideInLeft, SlideInRight } from "@/components/Animation"
 import Button from "@/components/Button"
 import SectionHeader from "@/components/SectionHeader"
@@ -100,7 +100,7 @@ const FeatureTextBox = styled(Box)(({ theme }) => ({
   },
 }))
 
-const Spacer = styled(Box)(({ theme }) => ({
+const Spacer = styled(Box)(() => ({
   height: "6.6vw",
   minHeight: "10rem",
 }))

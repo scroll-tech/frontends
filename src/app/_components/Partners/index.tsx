@@ -3,23 +3,23 @@ import Image from "next/image"
 import { Box } from "@mui/material"
 import { keyframes, styled } from "@mui/system"
 
-import Logo_1 from "@/assets/images/homepage/home/partner_logo_1.svg?url"
-import Logo_2 from "@/assets/images/homepage/home/partner_logo_2.svg?url"
-import Logo_3 from "@/assets/images/homepage/home/partner_logo_3.svg?url"
-import Logo_4 from "@/assets/images/homepage/home/partner_logo_4.svg?url"
-import Logo_5 from "@/assets/images/homepage/home/partner_logo_5.svg?url"
-import Logo_6 from "@/assets/images/homepage/home/partner_logo_6.svg?url"
-import Logo_7 from "@/assets/images/homepage/home/partner_logo_7.svg?url"
-import Logo_8 from "@/assets/images/homepage/home/partner_logo_8.svg?url"
-import Logo_9 from "@/assets/images/homepage/home/partner_logo_9.svg?url"
-import Logo_10 from "@/assets/images/homepage/home/partner_logo_10.svg?url"
-import Logo_11 from "@/assets/images/homepage/home/partner_logo_11.svg?url"
-import Logo_12 from "@/assets/images/homepage/home/partner_logo_12.svg?url"
-import Logo_13 from "@/assets/images/homepage/home/partner_logo_13.svg?url"
-import Logo_14 from "@/assets/images/homepage/home/partner_logo_14.svg?url"
-import Logo_15 from "@/assets/images/homepage/home/partner_logo_15.svg?url"
-import Logo_16 from "@/assets/images/homepage/home/partner_logo_16.svg?url"
-import Logo_17 from "@/assets/images/homepage/home/partner_logo_17.svg?url"
+import Logo_1 from "@/assets/images/home/partner_logo_1.svg?url"
+import Logo_2 from "@/assets/images/home/partner_logo_2.svg?url"
+import Logo_3 from "@/assets/images/home/partner_logo_3.svg?url"
+import Logo_4 from "@/assets/images/home/partner_logo_4.svg?url"
+import Logo_5 from "@/assets/images/home/partner_logo_5.svg?url"
+import Logo_6 from "@/assets/images/home/partner_logo_6.svg?url"
+import Logo_7 from "@/assets/images/home/partner_logo_7.svg?url"
+import Logo_8 from "@/assets/images/home/partner_logo_8.svg?url"
+import Logo_9 from "@/assets/images/home/partner_logo_9.svg?url"
+import Logo_10 from "@/assets/images/home/partner_logo_10.svg?url"
+import Logo_11 from "@/assets/images/home/partner_logo_11.svg?url"
+import Logo_12 from "@/assets/images/home/partner_logo_12.svg?url"
+import Logo_13 from "@/assets/images/home/partner_logo_13.svg?url"
+import Logo_14 from "@/assets/images/home/partner_logo_14.svg?url"
+import Logo_15 from "@/assets/images/home/partner_logo_15.svg?url"
+import Logo_16 from "@/assets/images/home/partner_logo_16.svg?url"
+import Logo_17 from "@/assets/images/home/partner_logo_17.svg?url"
 import { FadeInUp } from "@/components/Animation"
 import Button from "@/components/Button"
 import SectionHeader from "@/components/SectionHeader"
@@ -123,7 +123,7 @@ const PARTNER_LIST = [
 const MarqueeLeft: Partner[] = [].concat(...Array(2).fill(PARTNER_LIST))
 const MarqueeRight: Partner[] = [].concat(...Array(2).fill(PARTNER_LIST)).reverse()
 
-const PartnersContainer = styled(Box)(({ theme }) => ({}))
+const PartnersContainer = styled(Box)(() => ({}))
 
 const MarqueeAnimationLeft = keyframes`
   0% { transform: translateX(0); }
@@ -135,13 +135,13 @@ const MarqueeAnimationRight = keyframes`
   100% { transform: translateX(0); }
 `
 
-const Marquee = styled(Box)(({ theme }) => ({
+const Marquee = styled(Box)(() => ({
   overflow: "hidden",
   position: "relative",
   width: "100%",
 }))
 
-const CarouselBox = styled(Box)(({ theme }) => ({
+const CarouselBox = styled(Box)(() => ({
   position: "relative",
   "@media (min-width:1900px)": {
     "&::before, &::after": {
@@ -173,7 +173,7 @@ const TrackLeft = styled("div")(({ theme }) => ({
   },
 }))
 
-const TrackRight = styled("div")(({ theme }) => ({
+const TrackRight = styled("div")(() => ({
   display: "flex",
   animation: `${MarqueeAnimationRight} 60s linear infinite`,
   width: "max-content",

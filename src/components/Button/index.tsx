@@ -14,6 +14,7 @@ interface ScrollButtonProps extends ButtonProps {
   loading?: boolean
   disabled?: boolean
   whiteButton?: boolean
+  download?: boolean
 
   // compatibility
   target?: string
@@ -42,7 +43,7 @@ const cColor = (color, theme) => {
   }
 }
 
-const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, whiteButton }) => ({
+const useStyles = makeStyles<any>()((theme, { width, color, whiteButton }) => ({
   wrapper: {
     position: "relative",
     height: "5.4rem",
@@ -144,7 +145,7 @@ const maskMobile = {
   },
 }
 const Button = (props: ScrollButtonProps) => {
-  const { width, sx, color, loading, disabled, gloomy, children, whiteButton, ...restProps } = props
+  const { width, color, loading, disabled, gloomy, children, whiteButton, ...restProps } = props
   const { classes, cx } = useStyles({
     color,
     width,
