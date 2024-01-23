@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-import { useBrigeContext } from "@/contexts/BridgeContextProvider"
+import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useIsSmartContractWallet } from "@/hooks"
 import useBridgeStore from "@/stores/bridgeStore"
@@ -10,7 +10,7 @@ import useTransactionBuffer from "./useTransactionBuffer"
 
 function useSufficientBalance(selectedToken: any, amount?: bigint, fee?: bigint | null, tokenBalance: bigint = BigInt(0)) {
   const { walletCurrentAddress, chainId } = useRainbowContext()
-  const { networksAndSigners } = useBrigeContext()
+  const { networksAndSigners } = useBridgeContext()
   const networksAndSigner = networksAndSigners[chainId as number]
   const transactionBuffer = useTransactionBuffer(selectedToken)
 
