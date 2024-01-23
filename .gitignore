@@ -25,3 +25,7 @@ yarn-error.log*
 .vscode
 .env
 .tool-versions
+
+
+.next
+next-env.d.ts

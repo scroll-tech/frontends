@@ -29,6 +29,7 @@ export const brandAssets = [
     versions: [
       {
         title: "Full coloured logo on light background",
+        type: "light",
         cover: FullColouredLogoSvg,
         coverClass: "LogoDemo",
         formats: {
@@ -39,6 +40,7 @@ export const brandAssets = [
       },
       {
         title: "White logo on dark background",
+        type: "dark",
         cover: InvertedLogoSvg,
         coverClass: "LogoDemo",
         formats: {
