@@ -1,6 +1,16 @@
 [
   {
     "type": "Announcement",
+    "id": "scalingSecurity",
+    "date": "2024-01-23",
+    "title": "Scaling Security: Multi-Prover Implementation on Scroll",
+    "posterTitle": "Scaling Security: Multi-Prover Implementation on Scroll",
+    "summary": "We explore a multi-proof system and the incorporation of a TEE prover as a secondary prover to Scroll.",
+    "posterImg": "/imgs/homepage/blog/poster_cover_21.png",
+    "ogImg": "/imgs/homepage/blog/poster_cover_21_og.png"
+  },
+  {
+    "type": "Announcement",
     "id": "designing-scroll-origins",
     "date": "2023-12-18",
     "title": "Designing Scroll Origins",
