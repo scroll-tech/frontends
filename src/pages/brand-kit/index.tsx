@@ -7,10 +7,8 @@ import Header from "./Header"
 
 const useStyles = makeStyles()(theme => ({
   container: {
-    marginTop: "-6.5rem",
-    paddingTop: "6.5rem",
     overflow: "hidden",
-    background: "#FFEEDA",
+    background: theme.palette.themeBackground.brand,
   },
 }))
 

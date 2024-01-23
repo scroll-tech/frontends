@@ -61,6 +61,8 @@ declare module "@mui/material/styles" {
       highlight: string
       optionHightlight: string
       tag: string
+      transparent: string
+      brand: string
     }
     link: {
       main: string
@@ -116,6 +118,8 @@ declare module "@mui/material/styles" {
       highlight: string
       optionHightlight: string
       tag: string
+      transparent: string
+      brand: string
     }
     link?: {
       main?: string

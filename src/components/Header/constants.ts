@@ -184,6 +184,7 @@ const mainnetNavigations = [
             label: "Brand Kit",
             key: "brand kit",
             href: "/brand-kit",
+            rootKey: "resources",
           },
           {
             label: "Forum",

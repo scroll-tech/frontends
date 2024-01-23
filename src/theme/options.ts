@@ -59,6 +59,8 @@ export const paletteOptions = {
     highlight: "#FFDEB5",
     optionHightlight: "#FFE6C8",
     tag: "#262626",
+    transparent: "transparent",
+    brand: "#FFEEDA",
   },
   border: {
     main: "#000",
