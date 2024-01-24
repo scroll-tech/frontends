@@ -11,6 +11,7 @@ const WebVitals = () => {
       non_interaction: true, // avoids affecting bounce rate.
     })
   })
+  return null
 }
 
 export default WebVitals

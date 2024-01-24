@@ -7,6 +7,7 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter"
 
 import GoogleAnalytics from "@/components/GoogleAnalytics"
 import { default as ScrollToTop } from "@/components/ScrollToTop"
+import SentrySetting from "@/components/SentrySetting"
 import WebVitals from "@/components/WebVitals"
 import RainbowProvider from "@/contexts/RainbowProvider"
 import { findCurrentRoute } from "@/hooks/useMatchedRoute"
@@ -85,9 +86,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <>
             <GoogleAnalytics></GoogleAnalytics>
             <WebVitals></WebVitals>
+            <SentrySetting></SentrySetting>
           </>
         )}
-
         <AppRouterCacheProvider>
           <NextAppDirEmotionCacheProvider options={{ key: "css" }}>
             <ScrollThemeProvider>

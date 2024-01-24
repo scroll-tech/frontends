@@ -1,10 +1,14 @@
+"use client"
+
 import * as Sentry from "@sentry/react"
+import { usePathname } from "next/navigation"
 import { useEffect } from "react"
 
-const useSentryPageTag = (tagName: string): void => {
+const SentrySetting = () => {
+  const pathname = usePathname()
   useEffect(() => {
     Sentry.configureScope(scope => {
-      scope.setTag("page", tagName)
+      scope.setTag("page", pathname)
     })
 
     return () => {
@@ -13,7 +17,8 @@ const useSentryPageTag = (tagName: string): void => {
         scope.setTag("page", "")
       })
     }
-  }, [tagName])
+  }, [pathname])
+  return null
 }
 
-export default useSentryPageTag
+export default SentrySetting

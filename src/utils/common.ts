@@ -1,5 +1,4 @@
 import { isHexString } from "ethers"
-import { isNil } from "lodash"
 import find from "lodash/find"
 import { DependencyList } from "react"
 
@@ -25,6 +24,7 @@ export const generateExploreLink = (explorer, hash, type = "tx") => {
   return `${explorer}/${type}/${hash}`
 }
 
+// TODO: should be isMainnet
 export const isProduction = process.env.NEXT_PUBLIC_SCROLL_ENVIRONMENT === process.env.NEXT_PUBLIC_MAIN_ENVIRONMENT
 export const isSepolia = process.env.NEXT_PUBLIC_SCROLL_ENVIRONMENT === "Sepolia"
 export const networkType = isProduction ? "mainnet" : "testnet"
