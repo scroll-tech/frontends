@@ -1,6 +1,6 @@
 [
   {
-    "type": "Announcement",
+    "type": "Technical",
     "id": "scalingSecurity",
     "date": "2024-01-23",
     "title": "Scaling Security: Multi-Prover Implementation on Scroll",
