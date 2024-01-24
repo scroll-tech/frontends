@@ -5,7 +5,9 @@ import { NextAppDirEmotionCacheProvider } from "tss-react/next/appDir"
 
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter"
 
+import GoogleAnalytics from "@/components/GoogleAnalytics"
 import { default as ScrollToTop } from "@/components/ScrollToTop"
+import WebVitals from "@/components/WebVitals"
 import RainbowProvider from "@/contexts/RainbowProvider"
 import { findCurrentRoute } from "@/hooks/useMatchedRoute"
 import { VersionChecker } from "@/hooks/useVersionCheck"
@@ -79,6 +81,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
+        {process.env.NODE_ENV === "production" && (
+          <>
+            <GoogleAnalytics></GoogleAnalytics>
+            <WebVitals></WebVitals>
+          </>
+        )}
+
         <AppRouterCacheProvider>
           <NextAppDirEmotionCacheProvider options={{ key: "css" }}>
             <ScrollThemeProvider>
