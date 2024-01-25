@@ -1,4 +1,72 @@
 [[redirects]]
+from = "/blog/scalingSecurity"
+to = "/blog/scaling-security"
+status = 301
+
+[[redirects]]
+from = "/blog/founderLetter"
+to = "/blog/founder-letter"
+status = 301
+
+[[redirects]]
+from = "/blog/scrollSepolia"
+to = "/blog/scroll-sepolia"
+status = 301
+
+[[redirects]]
+from = "/blog/contributeToScroll"
+to = "/blog/contribute-to-scroll"
+status = 301
+
+[[redirects]]
+from = "/blog/alphaTestnet"
+to = "/blog/alpha-testnet"
+status = 301
+
+[[redirects]]
+from = "/blog/releaseNote0109"
+to = "/blog/release-note-0109"
+status = 301
+
+[[redirects]]
+from = "/blog/proofGeneration"
+to = "/blog/proof-generation"
+status = 301
+
+[[redirects]]
+from = "/blog/upgradingPreAlphaTestnet"
+to = "/blog/upgrading-pre-alpha-testnet"
+status = 301
+
+[[redirects]]
+from = "/blog/technicalPrinciples"
+to = "/blog/technical-principles"
+status = 301
+
+[[redirects]]
+from = "/blog/preAlphaTestnet"
+to = "/blog/pre-alpha-testnet"
+status = 301
+
+[[redirects]]
+from = "/blog/visionAndValues"
+to = "/blog/vision-and-values"
+status = 301
+
+[[redirects]]
+from = "/blog/zkEVM"
+to = "/blog/zkevm"
+status = 301
+
+[[redirects]]
+from = "/blog/scrollsFreshCoat"
+to = "/blog/scrolls-fresh-coat"
+status = 301
+
+
+
+
+[[redirects]]
 from = "/*"
 to = "/"
 status = 200
