@@ -58,6 +58,13 @@ from = "/blog/zkEVM"
 to = "/blog/zkevm"
 status = 301
 
+[[redirects]]
+from = "/blog/scrollsFreshCoat"
+to = "/blog/scrolls-fresh-coat"
+status = 301
+
+
+
 
 [[redirects]]
 from = "/*"
