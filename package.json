@@ -7,7 +7,7 @@
     "build": "craco build",
     "convert:webp": "cwebp -q 100 $1 -o $2",
     "eject": "craco eject",
-    "generate:sitemap": "npx sitemap --index-base-url https://scroll.io/sitemap < ./public/sitemap.txt > ./public/sitemap.xml",
+    "generate:sitemap": "cd scripts && node generate_sitemap.js",
     "lint": "eslint --fix --max-warnings=0 \"**/*.{ts,tsx}\"",
     "prepare": "husky install",
     "start": "BROWSER=none craco start",
