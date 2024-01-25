@@ -1,7 +1,7 @@
 [
   {
     "type": "Technical",
-    "id": "scalingSecurity",
+    "id": "scaling-security",
     "date": "2024-01-23",
     "title": "Scaling Security: Multi-Prover Implementation on Scroll",
     "posterTitle": "Scaling Security: Multi-Prover Implementation on Scroll",
@@ -71,7 +71,7 @@
   },
   {
     "type": "Announcement",
-    "id": "founderLetter",
+    "id": "founder-letter",
     "date": "2023-10-17",
     "title": "A Letter from Scroll: Mainnet is Here!",
     "posterTitle": "Founder Letter",
@@ -91,7 +91,7 @@
   },
   {
     "type": "Announcement",
-    "id": "scrollSepolia",
+    "id": "scroll-sepolia",
     "date": "2023-08-17",
     "title": "Announcing the Scroll Beta Testnet on Sepolia",
     "posterTitle": "Scroll Beta on Sepolia",
@@ -100,7 +100,7 @@
   },
   {
     "type": "Announcement",
-    "id": "contributeToScroll",
+    "id": "contribute-to-scroll",
     "date": "2023-07-13",
     "title": "Announcing the 'Contribute to Scroll' Initiative",
     "posterTitle": "Contribute to Scroll",
@@ -109,7 +109,7 @@
   },
   {
     "type": "Announcement",
-    "id": "alphaTestnet",
+    "id": "alpha-testnet",
     "date": "2023-02-27",
     "title": "Announcing the Scroll Alpha Testnet on Goerli",
     "posterTitle": "Alpha Testnet on Goerli",
@@ -118,7 +118,7 @@
   },
   {
     "type": "Announcement",
-    "id": "releaseNote0109",
+    "id": "release-note-0109",
     "date": "2023-01-13",
     "title": "Release Note for 0109 Upgrade",
     "posterTitle": "Release Note 0109",
@@ -127,7 +127,7 @@
   },
   {
     "type": "Technical",
-    "id": "proofGeneration",
+    "id": "proof-generation",
     "date": "2022-12-14",
     "title": "The Anatomy of Proof Generation",
     "posterTitle": "Proof Generation",
@@ -145,7 +145,7 @@
   },
   {
     "type": "Announcement",
-    "id": "upgradingPreAlphaTestnet",
+    "id": "upgrading-pre-alpha-testnet",
     "date": "2022-10-09",
     "title": "Upgrading the Scroll Pre-Alpha Testnet",
     "posterTitle": "Scroll Pre-Alpha Testnet",
@@ -165,7 +165,7 @@
   },
   {
     "type": "General",
-    "id": "technicalPrinciples",
+    "id": "technical-principles",
     "date": "2022-07-21",
     "title": "Technical Principles",
     "posterTitle": "Technical Principles",
@@ -175,7 +175,7 @@
   },
   {
     "type": "General",
-    "id": "preAlphaTestnet",
+    "id": "pre-alpha-testnet",
     "date": "2022-07-19",
     "title": "Scroll Pre-Alpha Testnet",
     "posterTitle": "Scroll Pre-Alpha Testnet",
@@ -185,7 +185,7 @@
   },
   {
     "type": "General",
-    "id": "visionAndValues",
+    "id": "vision-and-values",
     "date": "2022-06-13",
     "title": "Vision and Values",
     "posterTitle": "Vision and Values",
@@ -195,7 +195,7 @@
   },
   {
     "type": "General",
-    "id": "zkEVM",
+    "id": "zkevm",
     "date": "2021-09-28",
     "title": "zkEVM",
     "posterTitle": "zkEVM",
