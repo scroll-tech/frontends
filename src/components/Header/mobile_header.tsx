@@ -11,7 +11,7 @@ import useShowWalletConnector from "@/hooks/useShowWalletToolkit"
 import Logo from "../ScrollLogo"
 import Announcement from "./announcement"
 import { navigations } from "./constants"
-import useCheckNoBg from "./useCheckNoBg"
+import useCheckCustomNavBarBg from "./useCheckCustomNavBarBg"
 import useCheckTheme from "./useCheckTheme"
 
 const NavStack = styled(Stack)(({ theme }) => ({
@@ -33,7 +33,7 @@ const Menu = styled("div")(({ theme }) => ({
   },
 }))
 
-const Bar = styled<any>("div")(({ theme, dark }) => ({
+const Bar = styled<any>("div", { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   width: "2rem",
   height: ".2rem",
   backgroundColor: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
@@ -41,12 +41,12 @@ const Bar = styled<any>("div")(({ theme, dark }) => ({
   transition: "0.4s",
 }))
 
-const MenuContent = styled<any>(Box)(({ theme, dark }) => ({
+const MenuContent = styled<any>(Box, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   margin: "0.5rem 1.6rem 0",
   background: dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.light,
 }))
 
-const ListItem = styled<any>(ListItemButton)(({ theme, dark }) => ({
+const ListItem = styled<any>(ListItemButton, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   fontWeight: 600,
   fontSize: "2rem",
   height: "5.5rem",
@@ -65,7 +65,7 @@ const ListItem = styled<any>(ListItemButton)(({ theme, dark }) => ({
   },
 }))
 
-const MenuLinkStyledButton = styled<any>(NavLink)(({ theme, dark }) => ({
+const MenuLinkStyledButton = styled<any>(NavLink, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   fontWeight: 600,
   fontSize: "2rem",
   height: "5.5rem",
@@ -86,7 +86,7 @@ const SubListItem = styled(ListItemButton)(({ theme }) => ({
   padding: "0  !important",
 }))
 
-const LinkStyledButton = styled<any>(NavLink)(({ theme, dark }) => ({
+const LinkStyledButton = styled<any>(NavLink, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   fontWeight: 500,
   fontSize: "1.8rem",
   height: "4rem",
@@ -99,7 +99,7 @@ const LinkStyledButton = styled<any>(NavLink)(({ theme, dark }) => ({
   },
 }))
 
-const ExternalLink = styled<any>(Link)(({ theme, dark }) => ({
+const ExternalLink = styled<any>(Link, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   fontWeight: 500,
   fontSize: "1.8rem",
   height: "4rem",
@@ -110,11 +110,11 @@ const ExternalLink = styled<any>(Link)(({ theme, dark }) => ({
   width: "100%",
 }))
 
-const SectionList = styled<any>("div")(({ theme, dark }) => ({
+const SectionList = styled<any>("div", { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   "&:last-of-type": {
     paddingBottom: "2.5rem",
   },
-  "&:nth-last-child(-n+2)": {
+  "&:nth-last-of-type(-n+2)": {
     paddingBottom: "1.6rem",
   },
   "&:nth-of-type(n+2)": {
@@ -131,7 +131,7 @@ const ExpandMoreIcon = styled(ExpandMore)(({ theme }) => ({
 }))
 
 const App = ({ currentMenu }) => {
-  const noBg = useCheckNoBg()
+  const navbarBg = useCheckCustomNavBarBg()
   const showWalletConnector = useShowWalletConnector()
 
   const dark = useCheckTheme()
@@ -183,17 +183,17 @@ const App = ({ currentMenu }) => {
             </ListItem>
           )}
 
-          <Collapse in={activeCollapse === item.key} timeout="auto" unmountOnExit>
+          <Collapse key={item.key} in={activeCollapse === item.key} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              {item.children?.map(section => (
-                <SectionList key={section.label} dark={dark}>
+              {item.children?.map((section, idx) => (
+                <SectionList key={idx} dark={dark}>
                   <Typography sx={{ fontSize: "1.4rem", fontWeight: "bold", lineHeight: "3rem" }}>{section.label}</Typography>
                   {section.children
                     // only show sub items with href
                     ?.filter(subItem => subItem.href)
                     .map(subItem =>
                       subItem.isExternal ? (
-                        <SubListItem onClick={() => toggleDrawer(false)} sx={{ mx: 4 }} key={subItem.key}>
+                        <SubListItem onClick={() => toggleDrawer(false)} sx={{ mx: 4 }} key={subItem.key + idx}>
                           <ExternalLink underline="none" href={subItem.href} dark={dark}>
                             {subItem.label}
                             <svg
@@ -231,7 +231,7 @@ const App = ({ currentMenu }) => {
   return (
     <Box
       className={open ? "active" : ""}
-      sx={{ backgroundColor: noBg && !open ? "transparent" : dark ? "themeBackground.dark" : "themeBackground.light" }}
+      sx={{ backgroundColor: navbarBg && !open ? `themeBackground[${navbarBg}]` : dark ? "themeBackground.dark" : "themeBackground.light" }}
     >
       <Announcement />
       <NavStack direction="row" justifyContent="space-between" alignItems="center">

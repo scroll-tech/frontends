@@ -4,7 +4,6 @@ import { useMatch } from "react-router-dom"
 import { Stack } from "@mui/material"
 import { styled } from "@mui/system"
 
-import Link from "@/components/Link"
 import { isProduction, requireEnv } from "@/utils"
 
 const AnnouncementStack = styled<any>(Stack, { shouldForwardProp: prop => prop !== "production" })(({ theme, production }) => ({
@@ -21,12 +20,6 @@ const AnnouncementStack = styled<any>(Stack, { shouldForwardProp: prop => prop !
   },
 }))
 
-const ReadMoreLink = styled("a")(
-  ({ theme }) => `
-  font-weight: 700;
-  `,
-)
-
 const Announcement = () => {
   const isHome = useMatch("/")
   const isPortal = useMatch("/portal")
@@ -35,16 +28,13 @@ const Announcement = () => {
     if (isProduction && (isHome || isPortal)) {
       return (
         <>
-          Scroll {requireEnv("REACT_APP_SCROLL_ENVIRONMENT")} is now live. <ReadMoreLink href="/portal">Try it!</ReadMoreLink>
+          Scroll {requireEnv("REACT_APP_SCROLL_ENVIRONMENT")} is now live. <strong>Try it!</strong>
         </>
       )
     } else if (!isProduction) {
       return (
         <>
-          You are on the Scroll {requireEnv("REACT_APP_SCROLL_ENVIRONMENT")} Testnet website. Return to{" "}
-          <Link style={{ color: "inherit" }} href="https://scroll.io/" external>
-            Mainnet
-          </Link>
+          You are on the Scroll {requireEnv("REACT_APP_SCROLL_ENVIRONMENT")} Testnet website. Return to <strong>Mainnet</strong>
         </>
       )
     }

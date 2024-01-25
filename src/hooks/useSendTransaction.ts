@@ -1,13 +1,13 @@
 import { isError } from "ethers"
 import { useMemo, useState } from "react"
 
-import { CHAIN_ID, NETWORKS } from "@/constants"
-import { TX_STATUS } from "@/constants"
-import { useBrigeContext } from "@/contexts/BridgeContextProvider"
+import { CHAIN_ID, NETWORKS, TX_STATUS } from "@/constants"
+import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useBridgeStore from "@/stores/bridgeStore"
-import useTxStore, { TxDirection, TxPosition, isValidOffsetTime } from "@/stores/txStore"
+import useTxStore from "@/stores/txStore"
+import { isValidOffsetTime } from "@/stores/utils"
 import { amountToBN, isSepolia, sentryDebug } from "@/utils"
 
 import useGasFee from "./useGasFee"
@@ -21,9 +21,9 @@ type TxOptions = {
 export function useSendTransaction(props) {
   const { amount: fromTokenAmount, selectedToken } = props
   const { walletCurrentAddress } = useRainbowContext()
-  const { networksAndSigners, blockNumbers } = useBrigeContext()
+  const { networksAndSigners, blockNumbers } = useBridgeContext()
   const { enlargedGasLimit: txGasLimit, maxFeePerGas, maxPriorityFeePerGas } = useGasFee(selectedToken, false)
-  const { addTransaction, updateTransaction, addEstimatedTimeMap, updateOrderedTxs, addAbnormalTransactions, removeFrontTransactions } = useTxStore()
+  const { addTransaction, addEstimatedTimeMap, removeFrontTransactions, updateTransaction } = useTxStore()
   const { fromNetwork, toNetwork, changeTxResult, changeWithdrawStep } = useBridgeStore()
   const { gasLimit, gasPrice } = usePriceFeeContext()
 
@@ -37,7 +37,6 @@ export function useSendTransaction(props) {
 
   const send = async () => {
     setIsLoading(true)
-    const txDirection = fromNetwork.isL1 ? TxDirection.Deposit : TxDirection.Withdraw
     let tx
     let currentBlockNumber
     try {
@@ -53,7 +52,6 @@ export function useSendTransaction(props) {
       tx = tx.replaceableTransaction(currentBlockNumber)
 
       handleTransaction(tx)
-      updateOrderedTxs(walletCurrentAddress, tx.hash, TxPosition.Frontend, txDirection)
       tx.wait()
         .then(receipt => {
           if (receipt?.status === 1) {
@@ -78,9 +76,8 @@ export function useSendTransaction(props) {
             setSendError({ code: 0, message: errorMessage })
 
             // Something failed in the EVM
-            updateOrderedTxs(walletCurrentAddress, tx.hash, TxPosition.Abnormal, txDirection)
             // EIP-658
-            markTransactionAbnormal(tx, TX_STATUS.failed, errorMessage)
+            removeFrontTransactions(tx.hash)
           }
         })
         .catch(error => {
@@ -88,8 +85,7 @@ export function useSendTransaction(props) {
           sentryDebug(error.message)
           if (isError(error, "TRANSACTION_REPLACED")) {
             if (error.cancelled) {
-              markTransactionAbnormal(tx, TX_STATUS.cancelled, "transaction was cancelled")
-              updateOrderedTxs(walletCurrentAddress, tx.hash, TxPosition.Abnormal, txDirection)
+              removeFrontTransactions(tx.hash)
               setSendError("cancel")
             } else {
               const { blockNumber, hash: transactionHash } = error.receipt
@@ -97,7 +93,6 @@ export function useSendTransaction(props) {
                 fromBlockNumber: blockNumber,
                 hash: transactionHash,
               })
-              updateOrderedTxs(walletCurrentAddress, tx.hash, transactionHash, txDirection)
               if (fromNetwork.isL1) {
                 const estimatedOffsetTime = (blockNumber - blockNumbers[0]) * 12 * 1000
                 if (isValidOffsetTime(estimatedOffsetTime)) {
@@ -111,8 +106,7 @@ export function useSendTransaction(props) {
           } else {
             setSendError(error)
             // when the transaction execution failed (status is 0)
-            updateOrderedTxs(walletCurrentAddress, tx.hash, TxPosition.Abnormal, txDirection)
-            markTransactionAbnormal(tx, TX_STATUS.failed, error.message)
+            removeFrontTransactions(tx.hash)
           }
         })
         .finally(() => {
@@ -131,29 +125,18 @@ export function useSendTransaction(props) {
 
   const handleTransaction = (tx, updateOpts?) => {
     if (updateOpts) {
-      updateTransaction(tx.hash, updateOpts)
+      updateTransaction(walletCurrentAddress, tx.hash, updateOpts)
       return
     }
-    addTransaction({
+    addTransaction(walletCurrentAddress, {
       hash: tx.hash,
       amount: parsedAmount.toString(),
       isL1: fromNetwork.name === NETWORKS[0].name,
       symbolToken: selectedToken.address,
       timestamp: Date.now(),
+      initiatedAt: Math.floor(new Date().getTime() / 1000),
+      txStatus: TX_STATUS.Unknown,
     })
-  }
-
-  const markTransactionAbnormal = (tx, assumedStatus, errMsg) => {
-    addAbnormalTransactions(walletCurrentAddress, {
-      hash: tx.hash,
-      amount: parsedAmount.toString(),
-      isL1: fromNetwork.name === NETWORKS[0].name,
-      symbolToken: selectedToken.address,
-      assumedStatus,
-      errMsg,
-    })
-    removeFrontTransactions(tx.hash)
-    updateTransaction(tx.hash, { assumedStatus })
   }
 
   const depositETH = async () => {

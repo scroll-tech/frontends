@@ -146,6 +146,10 @@ const useStyles = makeStyles<any>()((theme, { type, name }) => ({
     gridArea: "cover",
   },
 
+  coverdark: {
+    backgroundColor: theme.palette.themeBackground.dark,
+  },
+
   sampleImage0: {
     gridArea: "sample1",
     width: "100%",
@@ -249,9 +253,9 @@ const AssetCard = props => {
       <Typography className={classes.name}>{name}</Typography>
       <Box className={classes.content}>
         {versions.map((version, index) => (
-          <Box className={cx(classes.detail, classes[type])} sx={{ marginTop: !index || type !== "largeImage" ? 0 : ["4rem", "8rem"] }}>
+          <Box key={index} className={cx(classes.detail, classes[type])} sx={{ marginTop: !index || type !== "largeImage" ? 0 : ["4rem", "8rem"] }}>
             {version.title ? <Typography className={classes.versionTitle}>{version.title}</Typography> : null}
-            <Box className={cx(classes.cover, classes[version.coverClass])}>
+            <Box className={cx(classes.cover, classes[version.coverClass], classes[`cover${version.type}`])}>
               <img alt="" src={version.cover} />
             </Box>
             <Box className={classes.downloadBox}>

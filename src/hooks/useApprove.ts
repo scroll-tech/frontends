@@ -4,13 +4,13 @@ import { useCallback, useEffect, useMemo, useState } from "react"
 import L1_erc20ABI from "@/assets/abis/L1_erc20ABI.json"
 import { GATEWAY_ROUTE_PROXY_ADDR, USDC_GATEWAY_PROXY_ADDR, USDC_SYMBOL, WETH_GATEWAY_PROXY_ADDR, WETH_SYMBOL } from "@/constants"
 import { CHAIN_ID } from "@/constants"
-import { useBrigeContext } from "@/contexts/BridgeContextProvider"
+import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { amountToBN } from "@/utils"
 
 const useApprove = (fromNetwork, selectedToken, amount) => {
   const { walletCurrentAddress, chainId } = useRainbowContext()
-  const { networksAndSigners } = useBrigeContext()
+  const { networksAndSigners } = useBridgeContext()
 
   const [isLoading, setIsLoading] = useState(false)
   const [isRequested, setIsRequested] = useState(false)

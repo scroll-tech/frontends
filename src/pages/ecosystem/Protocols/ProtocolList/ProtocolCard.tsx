@@ -1,6 +1,5 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import Img from "react-cool-img"
-import LinesEllipsis from "react-lines-ellipsis"
 import { makeStyles } from "tss-react/mui"
 
 import { Box, Button, Stack, SvgIcon, Typography } from "@mui/material"
@@ -8,8 +7,8 @@ import { Box, Button, Stack, SvgIcon, Typography } from "@mui/material"
 import { ecosystemListLogoUrl } from "@/apis/ecosystem"
 import { ReactComponent as ArrowSvg } from "@/assets/svgs/ecosystem/arrow.svg"
 import { ReactComponent as TwitterSvg } from "@/assets/svgs/ecosystem/twitter.svg"
+import LinesEllipsis from "@/components/LinesEllipsis"
 import Link from "@/components/Link"
-// import RenderIfVisible from "@/components/RenderIfVisible"
 import TextButton from "@/components/TextButton"
 import { TWITTER_ORIGIN } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
@@ -18,6 +17,7 @@ import NetworkLabel from "./NetworkLabel"
 
 const useStyles = makeStyles()(theme => ({
   grid: {
+    marginTop: "2rem",
     backgroundColor: theme.palette.themeBackground.normal,
     padding: "2.4rem",
     borderRadius: "2rem",
@@ -63,6 +63,12 @@ const useStyles = makeStyles()(theme => ({
     [theme.breakpoints.down("sm")]: {
       width: "4.8rem",
       height: "4.8rem",
+    },
+  },
+  name: {
+    gridArea: "name",
+    [theme.breakpoints.up("sm")]: {
+      alignSelf: "flex-end",
     },
   },
   desc: {
@@ -118,18 +124,28 @@ const useStyles = makeStyles()(theme => ({
 }))
 
 const ProtocolCard = props => {
-  const { name, hash, ext, tags, desc, website, twitterHandle, networkLabel } = props
-  const { classes } = useStyles()
+  const { name, hash, ext, tags, desc, website, twitterHandle, networkLabel, onResize, className, ...restProps } = props
+  const { classes, cx } = useStyles()
   const { isMobile, isDesktop } = useCheckViewport()
 
   const [isExpended, setIsExpended] = useState(false)
+
+  const cardRef = useRef<HTMLElement>()
 
   const handleClickMore = () => {
     setIsExpended(true)
   }
 
+  const handleReflow = value => {
+    // don't trigger measure when the height exceeds the standard height by default
+    const standardHeight = isDesktop ? 156 : isMobile ? 324 : 196
+    if (!isExpended && cardRef.current!.clientHeight > standardHeight) {
+      return
+    }
+    onResize()
+  }
   return (
-    <Box className={classes.grid}>
+    <Box className={cx(classes.grid, className)} ref={cardRef} {...restProps}>
       <Stack
         direction="row"
         justifyContent="center"
@@ -141,7 +157,7 @@ const ProtocolCard = props => {
       >
         <Img alt={name} src={`${ecosystemListLogoUrl}${name}${ext}`} placeholder={hash} width={isMobile ? 48 : 88} height={isMobile ? 48 : 88}></Img>
       </Stack>
-      <Stack direction="row" alignItems="center" gap="0.8rem" sx={{ gridArea: "name" }}>
+      <Stack direction="row" alignItems="center" gap="0.8rem" className={classes.name}>
         <Typography sx={{ fontSize: ["2rem", "2.4rem"], lineHeight: ["2.8rem", "3.2rem"], fontWeight: 600 }}>{name}</Typography>
         <Link
           external
@@ -173,13 +189,14 @@ const ProtocolCard = props => {
         maxLine={isExpended ? 100 : isMobile ? 4 : 2}
         ellipsis={
           <>
-            {` ... `}
+            &thinsp;...&thinsp;
             <TextButton sx={{ fontWeight: 400, color: "#5b5b5b" }} underline="always" onClick={handleClickMore}>
               More
             </TextButton>
           </>
         }
         basedOn="words"
+        onReflow={handleReflow}
       />
 
       {!isDesktop && (

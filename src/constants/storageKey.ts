@@ -11,6 +11,10 @@ export const BRIDGE_TRANSACTIONS = "bridgeTransactions"
 
 export const CLAIM_TRANSACTIONS = "claimTransactions"
 
+export const BRIDGE_TRANSACTIONS_V2 = "bridgeTransactionsV2"
+
+export const CLAIM_TRANSACTIONS_V2 = "claimTransactions2"
+
 export const APP_VERSION = "appVersion"
 
 export const BLOCK_NUMBERS = "blockNumbers"

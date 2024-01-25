@@ -13,21 +13,22 @@ import useShowWalletConnector from "@/hooks/useShowWalletToolkit"
 
 import Announcement from "./announcement"
 import { navigations } from "./constants"
-import useCheckNoBg from "./useCheckNoBg"
+import useCheckCustomNavBarBg from "./useCheckCustomNavBarBg"
 import useCheckTheme from "./useCheckTheme"
 
-const StyledBox = styled<any>(Stack, { shouldForwardProp: prop => prop !== "dark" })(({ theme, transparent, dark }) => ({
+const StyledBox = styled<any>(Stack, { shouldForwardProp: prop => prop !== "dark" && prop !== "bgColor" })(({ theme, bgColor, dark }) => ({
   position: "sticky",
   top: 0,
   width: "100%",
   zIndex: 10,
-  backgroundColor: transparent ? "transparent" : dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.light,
+  backgroundColor: bgColor ? theme.palette.themeBackground[bgColor] : dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.light,
 }))
 
-const StyledPopper = styled<any>(Popper, { shouldForwardProp: prop => prop !== "dark" })(({ theme, transparent, dark }) => ({
-  backgroundColor: transparent ? "transparent" : dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.light,
+const StyledPopper = styled<any>(Popper, { shouldForwardProp: prop => prop !== "dark" && prop !== "bgColor" })(({ theme, bgColor, dark }) => ({
+  backgroundColor: bgColor ? theme.palette.themeBackground[bgColor] : dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.light,
   padding: "0 2rem 1rem",
   marginLeft: "-2rem !important",
+  zIndex: theme.zIndex.appBar,
 }))
 
 const HeaderContainer = styled(Box)(({ theme }) => ({
@@ -157,9 +158,8 @@ const LinkStyledSubButton = styled<any>(NavLink, { shouldForwardProp: prop => pr
 
 const App = ({ currentMenu }) => {
   const { cx } = useStyles()
-  const noBg = useCheckNoBg()
+  const navbarBg = useCheckCustomNavBarBg()
   const { isDesktop } = useCheckViewport()
-
   const dark = useCheckTheme()
 
   const [checked, setChecked] = useState("")
@@ -179,9 +179,11 @@ const App = ({ currentMenu }) => {
   }
 
   const renderSubMenuList = children => {
-    return children.map(section => (
-      <SectionList key={section.label} dark={dark}>
-        <Typography sx={{ fontSize: "1.4rem", fontWeight: "bold", lineHeight: "3rem" }}>{section.label}</Typography>
+    return children.map((section, idx) => (
+      <SectionList key={idx} dark={dark}>
+        <Typography sx={{ fontSize: "1.4rem", fontWeight: "bold", lineHeight: "3rem", color: dark ? "primary.contrastText" : "text.primary" }}>
+          {section.label}
+        </Typography>
         {section.children
           // only show sub menu item when the href is set
           ?.filter(subItem => subItem.href)
@@ -230,7 +232,7 @@ const App = ({ currentMenu }) => {
             inheritViewBox
           ></SvgIcon>
           {item.key === checked && (
-            <StyledPopper open={true} placement="bottom-start" anchorEl={anchorEl} transition transparent={noBg} dark={dark}>
+            <StyledPopper open={true} placement="bottom-start" anchorEl={anchorEl} transition bgColor={navbarBg} dark={dark}>
               {({ TransitionProps }) => (
                 <Fade {...TransitionProps}>
                   <SubMenuList onClick={handleMouseLeave}>{renderSubMenuList(item.children)}</SubMenuList>
@@ -266,7 +268,7 @@ const App = ({ currentMenu }) => {
   }
 
   return (
-    <StyledBox transparent={noBg} dark={dark}>
+    <StyledBox bgColor={navbarBg} dark={dark}>
       <Announcement />
       <Container>
         <HeaderContainer>

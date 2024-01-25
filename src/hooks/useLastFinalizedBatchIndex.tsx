@@ -3,11 +3,11 @@ import useSWR from "swr"
 
 import ScrollChain from "@/assets/abis/ScrollChain.json"
 import { CHAIN_ID } from "@/constants"
-import { useBrigeContext } from "@/contexts/BridgeContextProvider"
+import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import { requireEnv } from "@/utils"
 
 const useLastFinalizedBatchIndex = () => {
-  const { networksAndSigners } = useBrigeContext()
+  const { networksAndSigners } = useBridgeContext()
 
   async function fetchLastFinalizedBatchIndex() {
     const provider = networksAndSigners[CHAIN_ID.L1].provider

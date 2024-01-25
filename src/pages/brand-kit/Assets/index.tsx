@@ -10,7 +10,7 @@ const useStyles = makeStyles()(theme => ({
   float: {
     width: "calc(50% - 1.5rem)",
     float: "right",
-    "&:nth-child(2n)": {
+    "&:nth-of-type(2n)": {
       float: "left",
     },
     [theme.breakpoints.down("md")]: {
@@ -25,8 +25,8 @@ const Assets = props => {
   return (
     <SectionWrapper transparent sx={{ pt: ["0"] }}>
       {brandAssets.map((item, index) => (
-        <SuccessionToView threshold={0.1} className={item.type === "onlyOneImage" ? classes.float : ""}>
-          <SuccessionItem key={index}>
+        <SuccessionToView key={index} threshold={0.1} className={item.type === "onlyOneImage" ? classes.float : ""}>
+          <SuccessionItem>
             <AssetCard data={item}></AssetCard>
           </SuccessionItem>
         </SuccessionToView>
