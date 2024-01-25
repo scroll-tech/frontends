@@ -59,10 +59,6 @@ const BlogDetail = () => {
   const params = useParams()
 
   useEffect(() => {
-    if (params.blogId === "scrollsFreshCoat") {
-      navigate("/blog/scrolls-fresh-coat")
-      return
-    }
     getCurrentBlog()
     // @ts-ignore
     let anchors = [...document.querySelectorAll("a")]
@@ -73,7 +69,7 @@ const BlogDetail = () => {
       return anchor
     })
     try {
-      const blogPath = require(`../../assets/blog/${params.blogId}.md`)
+      const blogPath = require(`../../assets/blog/${params.blogId.toLowerCase()}.md`)
       fetch(blogPath)
         .then(response => response.text())
         .then(text => {
@@ -87,12 +83,12 @@ const BlogDetail = () => {
   }, [params.blogId])
 
   const getMoreBlog = () => {
-    const blogs = shuffle(blogSource.filter(blog => blog.id !== params.blogId)).slice(0, 3)
+    const blogs = shuffle(blogSource.filter(blog => blog.id !== params.blogId.toLowerCase())).slice(0, 3)
     setMoreBlog(blogs)
   }
 
   const getCurrentBlog = () => {
-    const blog = blogSource.find(blog => blog.id === params.blogId)
+    const blog = blogSource.find(blog => blog.id === params.blogId.toLowerCase())
     setCurrentBlog(blog)
   }
 
