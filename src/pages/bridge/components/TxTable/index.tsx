@@ -289,7 +289,7 @@ const TxRow = props => {
               href={generateExploreLink(NETWORKS[+!tx.isL1].explorer, tx.hash)}
               className="leading-normal flex-1"
             >
-              {truncateHash(tx.hash)}
+              {truncateHash(tx.replayTxHash || tx.hash)}
             </Link>
           </Typography>
         </Stack>

@@ -50,6 +50,7 @@ export interface Transaction {
   initiatedAt?: string
   txStatus?: number
   msgHash?: string
+  replayTxHash?: string
 }
 
 export const MAX_OFFSET_TIME = 30 * 60 * 1000
@@ -91,6 +92,7 @@ export const formatBackTxList = (backList, estimatedTimeMap) => {
 
     return {
       hash: tx.hash,
+      replayTxHash: tx.replay_tx_hash,
       fromBlockNumber: tx.block_number,
       toHash,
       toBlockNumber: tx.counterpart_chain_tx?.block_number,

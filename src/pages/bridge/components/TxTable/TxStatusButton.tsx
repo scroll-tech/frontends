@@ -111,7 +111,7 @@ const TxStatus = props => {
     }
   }
 
-  if ([TX_STATUS.Dropped, TX_STATUS.FailedRelayed, TX_STATUS.SentFailed, TX_STATUS.Skipped].includes(tx.txStatus)) {
+  if ([TX_STATUS.Dropped, TX_STATUS.SentFailed, TX_STATUS.Skipped].includes(tx.txStatus)) {
     return (
       <Tooltip placement="top" title="Please click on the transaction hash to view the error reason.">
         <Chip
@@ -130,7 +130,7 @@ const TxStatus = props => {
     return <Chip className={cx(classes.chip, classes.successChip)} label="Success"></Chip>
   }
 
-  if (tx.txStatus === TX_STATUS.RelayedReverted) {
+  if (tx.txStatus === TX_STATUS.RelayedReverted || tx.txStatus === TX_STATUS.FailedRelayed) {
     return <ActiveButton type="Retry" tx={tx} />
   }
 
