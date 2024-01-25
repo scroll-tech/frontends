@@ -151,13 +151,7 @@ export function useSendTransaction(props) {
       options.maxPriorityFeePerGas = maxPriorityFeePerGas
     }
 
-    return networksAndSigners[CHAIN_ID.L1].scrollMessenger["sendMessage(address,uint256,bytes,uint256)"](
-      walletCurrentAddress,
-      parsedAmount,
-      "0x",
-      gasLimit,
-      options,
-    )
+    return networksAndSigners[CHAIN_ID.L1].gateway["depositETH(uint256,uint256)"](parsedAmount, gasLimit, options)
   }
 
   const depositERC20 = async () => {
@@ -175,16 +169,10 @@ export function useSendTransaction(props) {
   }
 
   const withdrawETH = async () => {
-    return networksAndSigners[CHAIN_ID.L2].scrollMessenger["sendMessage(address,uint256,bytes,uint256)"](
-      walletCurrentAddress,
-      parsedAmount,
-      "0x",
-      0,
-      {
-        value: parsedAmount,
-        gasLimit: txGasLimit,
-      },
-    )
+    return networksAndSigners[CHAIN_ID.L2].gateway["withdrawETH(uint256,uint256)"](parsedAmount, 0, {
+      value: parsedAmount,
+      gasLimit: txGasLimit,
+    })
   }
 
   const withdrawERC20 = async () => {

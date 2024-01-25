@@ -6,11 +6,9 @@ import useSWR, { mutate } from "swr"
 import { Alert, Snackbar } from "@mui/material"
 
 import { tokenListUrl } from "@/apis/dynamic"
-import L1_SCROLL_MESSENGER_ABI from "@/assets/abis/L1ScrollMessenger.json"
 import L1_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L1_GATEWAY_ROUTER_PROXY_ADDR.json"
-import L2_SCROLL_MESSENGER_ABI from "@/assets/abis/L2ScrollMessenger.json"
 import L2_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L2_GATEWAY_ROUTER_PROXY_ADDR.json"
-import { CHAIN_ID, ETH_SYMBOL, GATEWAY_ROUTE_PROXY_ADDR, NATIVE_TOKEN_LIST, RPC_URL, SCROLL_MESSENGER_ADDR } from "@/constants"
+import { CHAIN_ID, ETH_SYMBOL, GATEWAY_ROUTE_PROXY_ADDR, NATIVE_TOKEN_LIST, RPC_URL } from "@/constants"
 import { BLOCK_NUMBERS, BRIDGE_TOKEN_SYMBOL, USER_TOKEN_LIST } from "@/constants/storageKey"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useBlockNumbers from "@/hooks/useBlockNumbers"
@@ -60,7 +58,7 @@ const BridgeContextProvider = ({ children }: any) => {
 
   // TODO: need refactoring inspired by publicClient and walletClient
   const update = async (walletProvider: BrowserProvider, address: string) => {
-    let l1signer, l2signer, l1Gateway, l2Gateway, l1Provider, l2Provider, l1ProviderForSafeBlock, l1ScrollMessenger, l2ScrollMessenger
+    let l1signer, l2signer, l1Gateway, l2Gateway, l1Provider, l2Provider, l1ProviderForSafeBlock
     if (chainId === CHAIN_ID.L1) {
       l1Provider = walletProvider
       l2Provider = await new JsonRpcProvider(RPC_URL.L2)
@@ -79,15 +77,12 @@ const BridgeContextProvider = ({ children }: any) => {
     }
     // TODO: publicProvider
     l1ProviderForSafeBlock = await new JsonRpcProvider(RPC_URL.L1)
-    l1ScrollMessenger = new ethers.Contract(SCROLL_MESSENGER_ADDR[CHAIN_ID.L1], L1_SCROLL_MESSENGER_ABI, l1signer)
-    l2ScrollMessenger = new ethers.Contract(SCROLL_MESSENGER_ADDR[CHAIN_ID.L2], L2_SCROLL_MESSENGER_ABI, l2signer)
 
     setNetworksAndSigners({
       [CHAIN_ID.L1]: {
         provider: l1Provider,
         signer: l1signer,
         gateway: l1Gateway,
-        scrollMessenger: l1ScrollMessenger,
       },
       [`${CHAIN_ID.L1}ForSafeBlock`]: {
         provider: l1ProviderForSafeBlock,
@@ -96,7 +91,6 @@ const BridgeContextProvider = ({ children }: any) => {
         provider: l2Provider,
         signer: l2signer,
         gateway: l2Gateway,
-        scrollMessenger: l2ScrollMessenger,
       },
     })
   }
