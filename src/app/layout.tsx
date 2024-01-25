@@ -82,13 +82,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        {process.env.NODE_ENV === "production" && (
-          <>
-            <GoogleAnalytics></GoogleAnalytics>
-            <WebVitals></WebVitals>
-            <SentrySetting></SentrySetting>
-          </>
-        )}
         <AppRouterCacheProvider>
           <NextAppDirEmotionCacheProvider options={{ key: "css" }}>
             <ScrollThemeProvider>
@@ -99,6 +92,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </ScrollThemeProvider>
           </NextAppDirEmotionCacheProvider>
         </AppRouterCacheProvider>
+        {process.env.NODE_ENV === "production" && (
+          <>
+            <GoogleAnalytics></GoogleAnalytics>
+            <WebVitals></WebVitals>
+            <SentrySetting></SentrySetting>
+          </>
+        )}
       </body>
     </html>
   )
