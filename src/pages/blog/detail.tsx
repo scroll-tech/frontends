@@ -73,7 +73,7 @@ const BlogDetail = () => {
       return anchor
     })
     try {
-      const blogPath = require(`../../assets/blog/${params.blogId}.md`)
+      const blogPath = require(`../../assets/blog/${params.blogId.toLowerCase()}.md`)
       fetch(blogPath)
         .then(response => response.text())
         .then(text => {
