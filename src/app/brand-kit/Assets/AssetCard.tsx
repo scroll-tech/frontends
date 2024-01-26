@@ -256,12 +256,12 @@ const AssetCard = props => {
           <Box key={index} className={cx(classes.detail, classes[type])} sx={{ marginTop: !index || type !== "largeImage" ? 0 : ["4rem", "8rem"] }}>
             {version.title ? <Typography className={classes.versionTitle}>{version.title}</Typography> : null}
             <Box className={cx(classes.cover, classes[version.coverClass], classes[version.coverClass + index])}>
-              <Image alt="" src={version.cover} />
+              <Image alt={version.title} src={version.cover} />
             </Box>
             <Box className={classes.downloadBox}>
               <Typography className={classes.downloadButtons}>
                 {Object.keys(version.formats).map((format, index) => (
-                  <a key={index} href={version.formats[format]} download style={{ textTransform: "uppercase" }}>
+                  <a key={index} href={version.formats[format].src} download style={{ textTransform: "uppercase", cursor: "pointer" }}>
                     {format} <SvgIcon sx={{ fontSize: "1.7rem" }} component={DownloadIcon} inheritViewBox />
                   </a>
                 ))}

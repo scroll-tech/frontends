@@ -1,14 +1,16 @@
 import { isAddress } from "ethers"
 import _ from "lodash"
+import Image from "next/image"
 import React, { useEffect, useMemo, useState } from "react"
 
-import { Link, Typography, styled } from "@mui/material"
+import { Link, SvgIcon, Typography, styled } from "@mui/material"
 import { Box, CircularProgress, DialogContent, InputBase, ListItemIcon, MenuItem } from "@mui/material"
-import Avatar from "@mui/material/Avatar"
 import Dialog from "@mui/material/Dialog"
 import DialogTitle from "@mui/material/DialogTitle"
 import ListItemText from "@mui/material/ListItemText"
 
+import CloseSvg from "@/assets/svgs/bridge/token-list-close.svg"
+import SearchSvg from "@/assets/svgs/bridge/token-list-search.svg"
 import { EXPLORER_URL } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useAddToken, { TOKEN_LEVEL } from "@/hooks/useAddToken"
@@ -166,7 +168,7 @@ export interface TokenListProps {
 const MenuItemComponent = ({ token, isSelected, selectToken, txType }) => (
   <MenuItemStyled value={token} key={token.symbol} onClick={() => selectToken(token.symbol)}>
     <ListItemIconStyled>
-      <Avatar sx={{ width: "4.2rem", height: "4.2rem" }} src={token.logoURI}></Avatar>
+      <Image width={42} height={42} style={{ borderRadius: "50%" }} src={token.logoURI} alt="Token Logo"></Image>
     </ListItemIconStyled>
     <ListItemTextStyled
       primary={
@@ -269,40 +271,21 @@ function List(props: TokenListProps) {
       <DialogTitle sx={{ marginBottom: ["0.8rem", "2.8rem"], padding: ["1.6rem 2rem", "1.6rem 2.4rem"] }}>
         <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <Box sx={{ fontSize: "2.4rem", fontWeight: 600 }}>Select a token</Box>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
+          <SvgIcon
+            sx={{ pointer: "cursor", fontSize: "1.8rem" }}
             onClick={() => {
               setNewToken("")
               handleClose()
             }}
-            width="18"
-            height="18"
-            viewBox="0 0 18 18"
-            fill="none"
-            style={{ cursor: "pointer" }}
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M17.5307 1.56775C17.8853 1.20911 17.8853 0.627628 17.5307 0.268984C17.1761 -0.0896612 16.6012 -0.0896612 16.2466 0.268984L8.89835 7.70119L1.55012 0.268984C1.19553 -0.0896611 0.62062 -0.0896611 0.266027 0.268984C-0.0885651 0.627628 -0.0885651 1.20911 0.266027 1.56775L7.61425 8.99996L0.265944 16.4323C-0.0886481 16.7909 -0.0886481 17.3724 0.265944 17.731C0.620536 18.0897 1.19544 18.0897 1.55004 17.731L17.5307 1.56775ZM11.8709 10.7078C11.5164 10.3491 10.9414 10.3491 10.5869 10.7078C10.2323 11.0664 10.2323 11.6479 10.5869 12.0065L16.2467 17.731C16.6012 18.0897 17.1762 18.0897 17.5307 17.731C17.8853 17.3724 17.8853 16.7909 17.5307 16.4322L11.8709 10.7078Z"
-              fill="#101010"
-            />
-          </svg>
+            component={CloseSvg}
+            inheritViewBox
+          ></SvgIcon>
         </Box>
       </DialogTitle>
       <DialogContentStyled>
         <Box sx={{ display: "flex", alignItems: "center", padding: ["0 2rem", "0 2.4rem"] }}>
           <InputBaseStyled
-            startAdornment={
-              <svg style={{ margin: "0 1rem 0 1.4rem" }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M0 6.66199C0 2.98506 2.97711 0 6.65591 0C10.3338 0 13.3179 2.98413 13.3179 6.66199C13.3179 8.24418 12.7664 9.70161 11.8426 10.8447L15.7948 14.8024C16.0687 15.0766 16.0684 15.5209 15.7941 15.7948C15.5199 16.0687 15.0756 16.0684 14.8017 15.7941L10.3802 11.3665C10.1064 11.0924 10.1066 10.6483 10.3805 10.3744C11.3299 9.42503 11.9144 8.11169 11.9144 6.66199C11.9144 3.75926 9.55863 1.40351 6.65591 1.40351C3.75412 1.40351 1.40351 3.75833 1.40351 6.66199C1.40351 9.56471 3.75926 11.9205 6.66199 11.9205C7.0142 11.9205 7.36472 11.8831 7.70244 11.8177C8.08295 11.7441 8.45111 11.9928 8.52476 12.3733C8.5984 12.7538 8.34964 13.122 7.96914 13.1956C7.55271 13.2762 7.11259 13.324 6.66199 13.324C2.98413 13.324 0 10.3398 0 6.66199Z"
-                  fill="#473835"
-                />
-              </svg>
-            }
+            startAdornment={<SvgIcon sx={{ m: "0 1rem 0 1.4rem", fontSize: "1.5rem" }} component={SearchSvg} inheritViewBox></SvgIcon>}
             value={newToken}
             onChange={v => setNewToken(v.target.value)}
             placeholder="Search by token name, symbol or address"

@@ -39,6 +39,8 @@ const MintHome = props => {
 
   const handleCheckEligibility = async () => {
     setLoading(true)
+    changeIsEligible(1)
+    return
     scrollRequest(fetchParamsByAddressURL(walletCurrentAddress))
       .then(data => {
         if (data.proof) {

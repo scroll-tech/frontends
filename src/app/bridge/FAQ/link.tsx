@@ -20,7 +20,7 @@ const FAQsLink = styled(Link)(({ theme }) => ({
 const BridgeLinks = () => {
   return (
     <Stack direction="row" justifyContent="center" alignItems="center" spacing="2rem" sx={{ width: "100%", marginTop: "1rem" }}>
-      <FAQsLink href="faq">
+      <FAQsLink href="/bridge/faq">
         FAQs
         <SvgIcon component={LinkSvg} inheritViewBox></SvgIcon>
       </FAQsLink>

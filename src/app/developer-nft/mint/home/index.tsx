@@ -65,13 +65,15 @@ const MintHome = () => {
       sx={{
         pt: ["2.4rem", isMinted ? "3.2rem" : "4rem", "8rem"],
         pb: ["8rem", "16rem"],
+        minHeight: ["unset", "calc(100vh - 6.5rem - 31.4rem)"],
       }}
     >
       <>
         {loading ? (
           <LoadingPage height="30rem"></LoadingPage>
         ) : (
-          <>{isMinted ? <MyNFT total={mintedAmount}></MyNFT> : <ReadyToMint total={mintedAmount}></ReadyToMint>}</>
+          <ReadyToMint total={mintedAmount}></ReadyToMint>
+          // <>{isMinted ? <MyNFT total={mintedAmount}></MyNFT> : <ReadyToMint total={mintedAmount}></ReadyToMint>}</>
         )}
       </>
     </SectionWrapper>

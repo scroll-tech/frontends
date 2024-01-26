@@ -58,6 +58,7 @@ export const FLOW_QUESTIONS = [
     ],
     answer: ["A", "B", "C"],
     image: "/imgs/nft/flow-question-1.svg",
+    // imageSize: [561, 323],
   },
   {
     order: 2,
@@ -83,6 +84,7 @@ export const FLOW_QUESTIONS = [
     ],
     answer: ["A", "B", "C"],
     image: "/imgs/nft/flow-question-2.svg",
+    // imageSize: [487, 367],
   },
 ]
 

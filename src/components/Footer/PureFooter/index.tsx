@@ -68,7 +68,7 @@ const Footer = () => {
               fontSize: "1.8rem",
               fontWeight: 600,
               lineHeight: "normal",
-              color: "#FFF8F3",
+              color: theme => theme.palette.primary.contrastText,
               mb: "3rem",
             }}
           >

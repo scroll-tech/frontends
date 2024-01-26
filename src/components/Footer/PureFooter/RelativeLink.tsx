@@ -1,25 +1,23 @@
 import Link from "next/link"
 
-import { Stack, Typography } from "@mui/material"
+import { Typography } from "@mui/material"
 
 const LinkText = props => {
   return (
-    <Stack direction="row" alignItems="center" spacing={0.5}>
-      <Typography
-        sx={{
-          color: "#FFF8F3",
-          fontSize: ["1.6rem", "1.5rem"],
-          lineHeight: "normal",
-          marginBottom: ["3rem"],
-          cursor: "pointer",
-          "&:hover": {
-            color: theme => theme.palette.primary.dark,
-          },
-        }}
-      >
-        {props.children}
-      </Typography>
-    </Stack>
+    <Typography
+      sx={{
+        color: theme => theme.palette.primary.contrastText,
+        fontSize: ["1.6rem", "1.5rem"],
+        lineHeight: "normal",
+        marginBottom: ["3rem"],
+        cursor: "pointer",
+        "&:hover": {
+          color: theme => theme.palette.primary.dark,
+        },
+      }}
+    >
+      {props.children}
+    </Typography>
   )
 }
 

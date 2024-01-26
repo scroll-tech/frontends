@@ -16,8 +16,15 @@ const nextConfig = {
       },
     ]
   },
-  compiler: {
-    // emotion: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "scroll-tech.github.io",
+        port: "",
+        pathname: "/token-list/data/**",
+      },
+    ],
   },
   webpack: (config, { buildId, dev, isServer, defaultLoaders, nextRuntime, webpack }) => {
     config.ignoreWarnings = [
@@ -75,16 +82,6 @@ const nextConfig = {
     )
 
     fileLoaderRule.exclude = /\.svg$/i
-
-    // if (!dev) {
-    //   const sentryPlugin = new SentryWebpackPlugin({
-    //     org: "scroll-zkp",
-    //     project: "scroll-io",
-    //     include: "./build",
-    //     release: packageJson.version,
-    //   })
-    //   config.plugins.push(sentryPlugin)
-    // }
 
     return config
   },

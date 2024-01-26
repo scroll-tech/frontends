@@ -1,5 +1,5 @@
-import ETHSvg from "@/assets/svgs/bridge/network-mainnet.svg"
 import MainnetSvg from "@/assets/svgs/bridge/network-mainnet.svg"
+import ETHSvg from "@/assets/svgs/bridge/network-mainnet.svg?url"
 import ScrollSvg from "@/assets/svgs/bridge/network-scroll.svg"
 
 import { CHAIN_ID, ETH_SYMBOL, EXPLORER_URL, L1_NAME, L2_NAME, RPC_URL } from "./common"
@@ -34,7 +34,7 @@ export const NATIVE_TOKEN_LIST: Token[] = [
     symbol: ETH_SYMBOL,
     decimals: BigInt(18),
     native: true,
-    logoURI: ETHSvg,
+    logoURI: ETHSvg.src,
   },
   {
     chainId: CHAIN_ID.L2,
@@ -42,6 +42,6 @@ export const NATIVE_TOKEN_LIST: Token[] = [
     symbol: ETH_SYMBOL,
     decimals: BigInt(18),
     native: true,
-    logoURI: ETHSvg,
+    logoURI: ETHSvg.src,
   },
 ]

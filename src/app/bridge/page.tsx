@@ -12,9 +12,9 @@ import { PriceFeeProvider } from "@/contexts/PriceFeeProvider"
 import useBridgeStore from "@/stores/bridgeStore"
 import { isSepolia } from "@/utils"
 
-import FAQsLink from "./FAQ/link"
 import Send from "./Send"
 import HistoryButton from "./components/HistoryButton"
+import FAQsLink from "./faq/link"
 
 const Bridge = () => {
   const { txType, changeFromNetwork, changeToNetwork } = useBridgeStore()

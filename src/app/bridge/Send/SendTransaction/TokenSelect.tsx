@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { useState } from "react"
 import { makeStyles } from "tss-react/mui"
 
