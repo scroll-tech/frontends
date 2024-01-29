@@ -8,7 +8,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint --fix",
-    "test": "npx lint-staged"
+    "test": "npx lint-staged",
+    "prepare": "husky install",
+    "generate:sitemap": "cd scripts && node generate_sitemap.js"
   },
   "dependencies": {
     "@emotion/cache": "^11.11.0",
@@ -74,6 +76,7 @@
     "postcss": "^8.4.17",
     "prettier": "^3.2.4",
     "raw-loader": "^4.0.2",
+    "sitemap": "^7.1.1",
     "tailwindcss": "^3.3.0",
     "typescript": "^5.1.6"
   },

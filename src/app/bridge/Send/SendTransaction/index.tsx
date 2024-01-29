@@ -8,7 +8,7 @@ import Button from "@/components/Button"
 import TextButton from "@/components/TextButton"
 import { ETH_SYMBOL } from "@/constants"
 import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
-import { useBrigeContext } from "@/contexts/BridgeContextProvider"
+import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useAsyncMemo, useBalance } from "@/hooks"
@@ -29,7 +29,7 @@ import TransactionSummary from "./TransactionSummary"
 const SendTransaction = props => {
   const { chainId, connect } = useRainbowContext()
   // TODO: extract tokenList
-  const { tokenList } = useBrigeContext()
+  const { tokenList } = useBridgeContext()
   const { isMobile } = useCheckViewport()
   const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
 

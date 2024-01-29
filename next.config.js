@@ -14,6 +14,20 @@ const nextConfig = {
         destination: "/developer-nft/mint",
         permanent: true,
       },
+      // blog
+      { source: "/blog/scalingSecurity", destination: "/blog/scaling-security", permanent: true },
+      { source: "/blog/founderLetter", destination: "/blog/founder-letter", permanent: true },
+      { source: "/blog/scrollSepolia", destination: "/blog/scroll-sepolia", permanent: true },
+      { source: "/blog/contributeToScroll", destination: "/blog/contribute-to-scroll", permanent: true },
+      { source: "/blog/alphaTestnet", destination: "/blog/alpha-testnet", permanent: true },
+      { source: "/blog/releaseNote0109", destination: "/blog/release-note-0109", permanent: true },
+      { source: "/blog/proofGeneration", destination: "/blog/proof-generation", permanent: true },
+      { source: "/blog/upgradingPreAlphaTestnet", destination: "/blog/upgrading-pre-alpha-testnet", permanent: true },
+      { source: "/blog/technicalPrinciples", destination: "/blog/technical-principles", permanent: true },
+      { source: "/blog/preAlphaTestnet", destination: "/blog/pre-alpha-testnet", permanent: true },
+      { source: "/blog/visionAndValues", destination: "/blog/vision-and-values", permanent: true },
+      { source: "/blog/zkEVM", destination: "/blog/zkevm", permanent: true },
+      { source: "/blog/scrollsFreshCoat", destination: "/blog/scrolls-fresh-coat", permanent: true },
     ]
   },
   images: {

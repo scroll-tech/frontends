@@ -48,7 +48,7 @@ const BlogNavbar = styled(Box)(({ theme }) => ({
 
 const BlogDetail = () => {
   const router = useRouter()
-  const { blogId } = useParams()
+  const { blogId } = useParams<{ blogId: string }>()
 
   const [blog, setBlog] = useState<null | string>(null)
   const [moreBlog, setMoreBlog] = useState<any>([])
@@ -61,10 +61,6 @@ const BlogDetail = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (blogId === "scrollsFreshCoat") {
-      router.push("/blog/scrolls-fresh-coat")
-      return
-    }
     getCurrentBlog()
     // @ts-ignore
     let anchors = [...document.querySelectorAll("a")]
@@ -75,7 +71,7 @@ const BlogDetail = () => {
       return anchor
     })
     try {
-      import(`../../../assets/blog/${blogId}.md`).then(res => {
+      import(`../../../assets/blog/${blogId.toLowerCase()}.md`).then(res => {
         setLoading(false)
         setBlog(res.default)
       })
@@ -86,12 +82,12 @@ const BlogDetail = () => {
   }, [blogId])
 
   const getMoreBlog = () => {
-    const blogs = shuffle(blogSource.filter(blog => blog.id !== blogId)).slice(0, 3)
+    const blogs = shuffle(blogSource.filter(blog => blog.id !== blogId.toLowerCase())).slice(0, 3)
     setMoreBlog(blogs)
   }
 
   const getCurrentBlog = () => {
-    const blog = blogSource.find(blog => blog.id === blogId)
+    const blog = blogSource.find(blog => blog.id === blogId.toLowerCase())
     setCurrentBlog(blog)
   }
 

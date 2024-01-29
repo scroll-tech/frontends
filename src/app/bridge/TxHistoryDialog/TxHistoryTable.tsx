@@ -2,7 +2,7 @@ import { Box } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { BRIDGE_PAGE_SIZE } from "@/constants"
-import { useBrigeContext } from "@/contexts/BridgeContextProvider"
+import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useTxStore from "@/stores/txStore"
 
@@ -23,7 +23,7 @@ const TableBox = styled(Box)(({ theme }) => ({
 const TransactionsList = (props: any) => {
   const {
     txHistory: { refreshPageTransactions },
-  } = useBrigeContext()
+  } = useBridgeContext()
   const { chainId } = useRainbowContext()
 
   const { page, total, pageTransactions, loading } = useTxStore()

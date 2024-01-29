@@ -4,7 +4,7 @@ import { makeStyles } from "tss-react/mui"
 import { Dialog, DialogTitle, IconButton, SvgIcon, Typography } from "@mui/material"
 
 import CloseSvg from "@/assets/svgs/bridge/close.svg"
-import { useBrigeContext } from "@/contexts/BridgeContextProvider"
+import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useBridgeStore from "@/stores/bridgeStore"
 
@@ -30,7 +30,7 @@ const TxHistoryDialog = (props: any) => {
   }
   const {
     txHistory: { refreshPageTransactions },
-  } = useBrigeContext()
+  } = useBridgeContext()
 
   useEffect(() => {
     if (historyVisible && walletCurrentAddress) {

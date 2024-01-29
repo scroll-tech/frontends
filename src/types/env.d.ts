@@ -50,6 +50,7 @@ declare global {
       NEXT_PUBLIC_SCROLL_ORIGINS_NFT: string
       NEXT_PUBLIC_SCROLL_ORIGINS_NFT_V2: string
       NEXT_PUBLIC_VERSION: string
+      NEXT_PUBLIC_L1_MESSAGE_QUEUE_WITH_GAS_PRICE_ORACLE: string
     }
   }
 }

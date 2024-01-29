@@ -5,7 +5,7 @@ import { useBlockNumber } from "wagmi"
 
 import { CHAIN_ID, ETH_SYMBOL } from "@/constants"
 import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
-import { useBrigeContext } from "@/contexts/BridgeContextProvider"
+import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { trimErrorMessage } from "@/utils"
 
@@ -42,7 +42,7 @@ enum GatewayType {
 
 // For USDC, Lido, and DAI, can use the STANDARD_ERC20_GATEWAY
 const Address2GatewayType = {
-  [process.env.NEXT_PUBLIC_L1_ETH_GATEWAY_PROXY_ADDR]: GatewayType.ETH_GATEWAY,
+  ETH_GATEWAY: GatewayType.ETH_GATEWAY,
   [process.env.NEXT_PUBLIC_L1_WETH_GATEWAY_PROXY_ADDR]: GatewayType.WETH_GATEWAY,
   [process.env.NEXT_PUBLIC_L1_CUSTOM_ERC20_GATEWAY_PROXY_ADDR]: GatewayType.CUSTOM_ERC20_GATEWAY,
   [process.env.NEXT_PUBLIC_L1_STANDARD_ERC20_GATEWAY_PROXY_ADDR]: GatewayType.STANDARD_ERC20_GATEWAY,
@@ -89,9 +89,9 @@ const Contracts = {
     abi: require("@/assets/abis/L1GasPriceOracle.json"),
     env: process.env.NEXT_PUBLIC_L1_GAS_PRICE_ORACLE,
   },
-  L2_GAS_PRICE_ORACLE: {
-    abi: require("@/assets/abis/L2GasPriceOracle.json"),
-    env: process.env.NEXT_PUBLIC_L2_GAS_PRICE_ORACLE,
+  L1_MESSAGE_QUEUE_WITH_GAS_PRICE_ORACLE: {
+    abi: require("@/assets/abis/L1_MESSAGE_QUEUE_WITH_GAS_PRICE_ORACLE.json"),
+    env: process.env.NEXT_PUBLIC_L1_MESSAGE_QUEUE_WITH_GAS_PRICE_ORACLE,
   },
 
   L1_GATEWAY_ROUTER_PROXY: {
@@ -116,7 +116,7 @@ export const usePriceFeeContext = () => {
 export const PriceFeeProvider = ({ children }) => {
   const { walletCurrentAddress, chainId } = useRainbowContext()
   const [tokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
-  const { networksAndSigners, tokenList } = useBrigeContext()
+  const { networksAndSigners, tokenList } = useBridgeContext()
   const [gasLimit, setGasLimit] = useState(BigInt(0))
   const [gasPrice, setGasPrice] = useState(BigInt(0))
   const [errorMessage, setErrorMessage] = useState("")
@@ -167,8 +167,8 @@ export const PriceFeeProvider = ({ children }) => {
 
   const getGasPrice = async () => {
     try {
-      const L2GasPriceOracleContract = getContract("L2_GAS_PRICE_ORACLE", networksAndSigners[CHAIN_ID.L1].provider)
-      const gasPrice = await L2GasPriceOracleContract.l2BaseFee()
+      const L1MessageQueueWithGasPriceOracleContract = getContract("L1_MESSAGE_QUEUE_WITH_GAS_PRICE_ORACLE", networksAndSigners[CHAIN_ID.L1].provider)
+      const gasPrice = await L1MessageQueueWithGasPriceOracleContract.l2BaseFee()
       return (gasPrice * BigInt(120)) / BigInt(100)
     } catch (err) {
       throw new Error("Failed to get gas price")
@@ -177,7 +177,7 @@ export const PriceFeeProvider = ({ children }) => {
 
   const getGasLimit = async () => {
     if (l2Token.symbol === ETH_SYMBOL) {
-      return await getGasLimitGeneric(process.env.NEXT_PUBLIC_L1_ETH_GATEWAY_PROXY_ADDR)
+      return await getGasLimitGeneric("ETH_GATEWAY")
     }
 
     const { provider } = networksAndSigners[CHAIN_ID.L2]
@@ -239,22 +239,32 @@ export const PriceFeeProvider = ({ children }) => {
     const { provider: l2Provider } = networksAndSigners[CHAIN_ID.L2]
     const gatewayType = Address2GatewayType[l1GatewayAddress]
 
-    const gateway = getContract(gatewayType, l2Provider)
+    let accountOrAddress1, accountOrAddress2, message
 
     const l2messenger = getContract("SCROLL_MESSENGER", l2Provider)
 
     const { finalizeDepositMethod, finalizeDepositParams } = messageDataGeneric(l1GatewayAddress)
-    const message = gateway.interface.encodeFunctionData(finalizeDepositMethod, finalizeDepositParams)
-    const l1Gateway = new ethers.Contract(l1GatewayAddress, Contracts[gatewayType].abi, l1Provider)
-    const l2GatewayAddress = await l1Gateway.counterpart()
+
+    if ([GatewayType.ETH_GATEWAY].includes(gatewayType)) {
+      accountOrAddress1 = walletCurrentAddress
+      accountOrAddress2 = walletCurrentAddress
+      message = "0x"
+    } else {
+      const l1Gateway = new ethers.Contract(l1GatewayAddress, Contracts[gatewayType].abi, l1Provider)
+      const l2GatewayAddress = await l1Gateway.counterpart()
+      accountOrAddress1 = l1GatewayAddress
+      accountOrAddress2 = l2GatewayAddress
+      message = getContract(gatewayType, l2Provider).interface.encodeFunctionData(finalizeDepositMethod, finalizeDepositParams)
+    }
 
     const calldata = l2messenger.interface.encodeFunctionData("relayMessage", [
-      l1GatewayAddress, // l1 gateway
-      l2GatewayAddress, // l2 gateway
+      accountOrAddress1,
+      accountOrAddress2,
       [GatewayType.ETH_GATEWAY, GatewayType.WETH_GATEWAY].includes(gatewayType) ? amount : 0,
       ethers.MaxUint256,
       message,
     ])
+
     try {
       const gaslimit = await l2Provider.estimateGas({
         from: "0x" + (BigInt(process.env.NEXT_PUBLIC_L1_SCROLL_MESSENGER) + (BigInt(OFFSET) % BigInt(Math.pow(2, 160)))).toString(16),

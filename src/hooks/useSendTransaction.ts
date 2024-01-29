@@ -2,7 +2,7 @@ import { isError } from "ethers"
 import { useMemo, useState } from "react"
 
 import { CHAIN_ID, NETWORKS, TX_STATUS } from "@/constants"
-import { useBrigeContext } from "@/contexts/BridgeContextProvider"
+import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useBridgeStore from "@/stores/bridgeStore"
@@ -21,7 +21,7 @@ type TxOptions = {
 export function useSendTransaction(props) {
   const { amount: fromTokenAmount, selectedToken } = props
   const { walletCurrentAddress } = useRainbowContext()
-  const { networksAndSigners, blockNumbers } = useBrigeContext()
+  const { networksAndSigners, blockNumbers } = useBridgeContext()
   const { enlargedGasLimit: txGasLimit, maxFeePerGas, maxPriorityFeePerGas } = useGasFee(selectedToken, false)
   const { addTransaction, addEstimatedTimeMap, removeFrontTransactions, updateTransaction } = useTxStore()
   const { fromNetwork, toNetwork, changeTxResult, changeWithdrawStep } = useBridgeStore()
@@ -151,7 +151,13 @@ export function useSendTransaction(props) {
       options.maxPriorityFeePerGas = maxPriorityFeePerGas
     }
 
-    return networksAndSigners[CHAIN_ID.L1].gateway["depositETH(uint256,uint256)"](parsedAmount, gasLimit, options)
+    return networksAndSigners[CHAIN_ID.L1].scrollMessenger["sendMessage(address,uint256,bytes,uint256)"](
+      walletCurrentAddress,
+      parsedAmount,
+      "0x",
+      gasLimit,
+      options,
+    )
   }
 
   const depositERC20 = async () => {
@@ -169,10 +175,16 @@ export function useSendTransaction(props) {
   }
 
   const withdrawETH = async () => {
-    return networksAndSigners[CHAIN_ID.L2].gateway["withdrawETH(uint256,uint256)"](parsedAmount, 0, {
-      value: parsedAmount,
-      gasLimit: txGasLimit,
-    })
+    return networksAndSigners[CHAIN_ID.L2].scrollMessenger["sendMessage(address,uint256,bytes,uint256)"](
+      walletCurrentAddress,
+      parsedAmount,
+      "0x",
+      0,
+      {
+        value: parsedAmount,
+        gasLimit: txGasLimit,
+      },
+    )
   }
 
   const withdrawERC20 = async () => {

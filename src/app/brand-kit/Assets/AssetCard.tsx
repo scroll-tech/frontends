@@ -147,6 +147,10 @@ const useStyles = makeStyles<any>()((theme, { type }) => ({
     gridArea: "cover",
   },
 
+  coverdark: {
+    backgroundColor: theme.palette.themeBackground.dark,
+  },
+
   sampleImage0: {
     gridArea: "sample1",
     width: "100%",
@@ -167,9 +171,6 @@ const useStyles = makeStyles<any>()((theme, { type }) => ({
         height: "3.4rem",
       },
     },
-  },
-  LogoDemo1: {
-    backgroundColor: theme.palette.text.primary,
   },
   downloadBox: {
     display: "flex",
@@ -255,7 +256,7 @@ const AssetCard = props => {
         {versions.map((version, index) => (
           <Box key={index} className={cx(classes.detail, classes[type])} sx={{ marginTop: !index || type !== "largeImage" ? 0 : ["4rem", "8rem"] }}>
             {version.title ? <Typography className={classes.versionTitle}>{version.title}</Typography> : null}
-            <Box className={cx(classes.cover, classes[version.coverClass], classes[version.coverClass + index])}>
+            <Box className={cx(classes.cover, classes[version.coverClass], classes[`cover${version.type}`])}>
               <Image alt={version.title} src={version.cover} />
             </Box>
             <Box className={classes.downloadBox}>

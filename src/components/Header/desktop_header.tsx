@@ -13,25 +13,22 @@ import useShowWalletConnector from "@/hooks/useShowWalletToolkit"
 
 import Announcement from "./announcement"
 import { navigations } from "./constants"
-import useCheckNoBg from "./useCheckNoBg"
+import useCheckCustomNavBarBg from "./useCheckCustomNavBarBg"
 import useCheckTheme from "./useCheckTheme"
 
-const StyledBox = styled<any>(Stack, {
-  shouldForwardProp: prop => prop !== "dark",
-})(({ theme, transparent, dark }) => ({
+const StyledBox = styled<any>(Stack, { shouldForwardProp: prop => prop !== "dark" && prop !== "bgColor" })(({ theme, bgColor, dark }) => ({
   position: "sticky",
   top: 0,
   width: "100%",
   zIndex: 10,
-  backgroundColor: transparent ? "transparent" : dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.light,
+  backgroundColor: bgColor ? theme.palette.themeBackground[bgColor] : dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.light,
 }))
 
-const StyledPopper = styled<any>(Popper, {
-  shouldForwardProp: prop => prop !== "dark",
-})(({ theme, transparent, dark }) => ({
-  backgroundColor: transparent ? "transparent" : dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.light,
+const StyledPopper = styled<any>(Popper, { shouldForwardProp: prop => prop !== "dark" && prop !== "bgColor" })(({ theme, bgColor, dark }) => ({
+  backgroundColor: bgColor ? theme.palette.themeBackground[bgColor] : dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.light,
   padding: "0 2rem 1rem",
   marginLeft: "-2rem !important",
+  zIndex: theme.zIndex.appBar,
 }))
 
 const HeaderContainer = styled(Box)(({ theme }) => ({
@@ -40,9 +37,7 @@ const HeaderContainer = styled(Box)(({ theme }) => ({
   alignItems: "center",
 }))
 
-const MenuLinkButton = styled<any>(Link, {
-  shouldForwardProp: prop => prop !== "dark",
-})(({ theme, dark }) => ({
+const MenuLinkButton = styled<any>(Link, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   fontSize: "1.8rem",
   fontWeight: 400,
   paddingLeft: "25px",
@@ -57,9 +52,7 @@ const MenuLinkButton = styled<any>(Link, {
   },
 }))
 
-const ExternalLink = styled<any>("p", {
-  shouldForwardProp: prop => prop !== "dark",
-})(({ theme, dark }) => ({
+const ExternalLink = styled<any>("p", { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   fontWeight: 400,
   fontSize: "1.8rem",
   height: "2.1rem",
@@ -73,9 +66,7 @@ const ExternalLink = styled<any>("p", {
   },
 }))
 
-const LinkStyledButton = styled<any>(NavLink, {
-  shouldForwardProp: prop => prop !== "dark",
-})(({ theme, dark }) => ({
+const LinkStyledButton = styled<any>(NavLink, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   fontSize: "1.8rem",
   fontWeight: 400,
   marginLeft: "0.5rem",
@@ -92,9 +83,7 @@ const LinkStyledButton = styled<any>(NavLink, {
   },
 }))
 
-const SubMenuButton = styled<any>(Stack, {
-  shouldForwardProp: prop => prop !== "dark",
-})(({ theme, dark }) => ({
+const SubMenuButton = styled<any>(Stack, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   fontSize: "1.8rem",
   fontWeight: 400,
   marginLeft: "0.5rem",
@@ -122,9 +111,7 @@ const SubMenuList = styled(Box)(({ theme }) => ({
   overflow: "hidden",
 }))
 
-const SectionList = styled<any>(Box, {
-  shouldForwardProp: prop => prop !== "dark",
-})(({ theme, dark }) => ({
+const SectionList = styled<any>(Box, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   display: "flex",
   flexDirection: "column",
   width: "100%",
@@ -140,9 +127,7 @@ const SectionList = styled<any>(Box, {
   },
 }))
 
-const LinkButton = styled<any>(Link, {
-  shouldForwardProp: prop => prop !== "dark",
-})(({ theme, dark }) => ({
+const LinkButton = styled<any>(Link, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   "& p": {
     lineHeight: "2.9rem",
     height: "2.9rem",
@@ -156,9 +141,7 @@ const LinkButton = styled<any>(Link, {
   },
 }))
 
-const LinkStyledSubButton = styled<any>(NavLink, {
-  shouldForwardProp: prop => prop !== "dark",
-})(({ theme, dark }) => ({
+const LinkStyledSubButton = styled<any>(NavLink, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   lineHeight: "2.9rem",
   height: "2.9rem",
   fontSize: "1.8rem",
@@ -175,9 +158,8 @@ const LinkStyledSubButton = styled<any>(NavLink, {
 
 const App = ({ currentMenu }) => {
   const { cx } = useStyles()
-  const noBg = useCheckNoBg()
+  const navbarBg = useCheckCustomNavBarBg()
   const { isDesktop } = useCheckViewport()
-
   const dark = useCheckTheme()
 
   const [checked, setChecked] = useState("")
@@ -199,7 +181,9 @@ const App = ({ currentMenu }) => {
   const renderSubMenuList = children => {
     return children.map((section, idx) => (
       <SectionList key={idx} dark={dark}>
-        <Typography sx={{ fontSize: "1.4rem", fontWeight: "bold", lineHeight: "3rem" }}>{section.label}</Typography>
+        <Typography sx={{ fontSize: "1.4rem", fontWeight: "bold", lineHeight: "3rem", color: dark ? "primary.contrastText" : "text.primary" }}>
+          {section.label}
+        </Typography>
         {section.children
           // only show sub menu item when the href is set
           ?.filter(subItem => subItem.href)
@@ -247,14 +231,8 @@ const App = ({ currentMenu }) => {
             component={TriangleDownSvg}
             inheritViewBox
           ></SvgIcon>
-          {/* <TriangleDownSvg
-            className={cx(
-              "expand-more",
-              item.key === checked && "expand-more-reverse"
-            )}
-          ></TriangleDownSvg> */}
           {item.key === checked && (
-            <StyledPopper open={true} placement="bottom-start" anchorEl={anchorEl} transition transparent={noBg} dark={dark}>
+            <StyledPopper open={true} placement="bottom-start" anchorEl={anchorEl} transition bgColor={navbarBg} dark={dark}>
               {({ TransitionProps }) => (
                 <Fade {...TransitionProps}>
                   <SubMenuList onClick={handleMouseLeave}>{renderSubMenuList(item.children)}</SubMenuList>
@@ -290,7 +268,7 @@ const App = ({ currentMenu }) => {
   }
 
   return (
-    <StyledBox transparent={noBg} dark={dark}>
+    <StyledBox bgColor={navbarBg} dark={dark}>
       <Announcement />
       <Container>
         <HeaderContainer>
