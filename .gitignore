@@ -29,3 +29,5 @@ yarn-error.log*
 
 .next
 next-env.d.ts
+
+/src/pages/blog/data.json

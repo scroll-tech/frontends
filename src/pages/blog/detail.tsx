@@ -69,7 +69,7 @@ const BlogDetail = () => {
       return anchor
     })
     try {
-      const blogPath = require(`../../assets/blog/${params.blogId.toLowerCase()}.md`)
+      const blogPath = `https://misc-pages-ghost-relay.vercel.app/api/post/${params.blogId.toLowerCase()}.md?title=1`
       fetch(blogPath)
         .then(response => response.text())
         .then(text => {
@@ -95,7 +95,7 @@ const BlogDetail = () => {
   const { isPortrait } = useCheckViewport()
 
   const getPosterUri = () => {
-    return window.location.origin + (currentBlog.ogImg || currentBlog.posterImg)
+    return currentBlog.ogImg || currentBlog.posterImg
   }
 
   return (
