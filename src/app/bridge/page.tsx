@@ -14,7 +14,7 @@ import { isSepolia } from "@/utils"
 
 import Send from "./Send"
 import HistoryButton from "./components/HistoryButton"
-import FAQsLink from "./faq/link"
+import FAQsLink from "./faqqqq/link"
 
 const Bridge = () => {
   const { txType, changeFromNetwork, changeToNetwork } = useBridgeStore()
