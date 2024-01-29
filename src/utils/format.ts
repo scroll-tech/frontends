@@ -58,7 +58,6 @@ export const toTokenDisplay = (num, decimals: bigint = BigInt(18), symbol?: stri
 
   // Remove trailing zeros after decimal point
   formatted = formatted.replace(/(\.\d*?)0+$/, "$1").replace(/(\.\d+?)0+$/, "$10")
-
   if (symbol) {
     formatted += ` ${symbol}`
   }
@@ -67,7 +66,7 @@ export const toTokenDisplay = (num, decimals: bigint = BigInt(18), symbol?: stri
 }
 
 export function sanitizeNumericalString(numStr: string) {
-  return numStr.replace(/[^0-9.]|\.(?=.*\.)/g, "")
+  return numStr.replace(/[^0-9.,]|[.,](?=.*[.,])/g, "").replace(/,/g, ".")
 }
 
 export function maxDecimals(amount: string, decimals: bigint = BigInt(18)) {
