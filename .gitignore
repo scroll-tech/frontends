@@ -39,3 +39,5 @@ next-env.d.ts
 .vscode/
 # Sentry Config File
 .sentryclirc
+
+.turbo
