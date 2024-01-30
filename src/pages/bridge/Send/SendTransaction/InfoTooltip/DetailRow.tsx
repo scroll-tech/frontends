@@ -4,6 +4,7 @@ import { makeStyles } from "tss-react/mui"
 import { BoxProps, Typography } from "@mui/material"
 
 import useCheckViewport from "@/hooks/useCheckViewport"
+import { formatAmount } from "@/utils"
 
 export type DetailRowProps = {
   title: string
@@ -83,14 +84,14 @@ const DetailRow: FC<DetailRowProps & BoxProps> = props => {
         </Typography>
         {isMobile ? (
           <Typography variant={variant} color="textPrimary" className={styles.price}>
-            {price ? ` $${price}` : ""}
+            {price ? ` $${formatAmount(price)}` : ""}
           </Typography>
         ) : null}
       </td>
       {isMobile ? null : (
         <td>
           <Typography variant={variant} color="textPrimary" className={styles.price}>
-            {price ? ` $${price}` : ""}
+            {price ? ` $${formatAmount(price)}` : ""}
           </Typography>
         </td>
       )}

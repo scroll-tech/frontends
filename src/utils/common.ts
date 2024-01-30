@@ -89,6 +89,10 @@ export const formatLargeNumber = (value: number): string => {
   }).format(value)
 }
 
+export const formatAmount = (value: number | string): string => {
+  return new Intl.NumberFormat("en-US").format(+value)
+}
+
 export function isValidTransactionHash(txHash: string): boolean {
   // A valid transaction hash is a hex string of length 66 characters (including the '0x' prefix)
   const isValidLength = txHash.length === 66
