@@ -2,8 +2,8 @@
   {
     "name": "Finalist A",
     "author": "Elissa",
-    "images": ["/imgs/sticker/1.gif", "/imgs/sticker/1.jpeg"],
-    "bg": ["#FAECE5", "#FDF3E8"]
+    "images": ["/imgs/sticker/1.gif", "/imgs/sticker/1.jpg"],
+    "bg": ["#FAECE5", "#D4D9A1"]
   },
   {
     "name": "Finalist B",

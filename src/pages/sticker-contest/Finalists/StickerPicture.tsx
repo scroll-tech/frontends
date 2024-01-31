@@ -16,7 +16,7 @@ const Frame = styled<any>(Box, { shouldForwardProp: prop => prop !== "bgColor" }
 }))
 
 const StickerPicture = props => {
-  const { className, src, bgColor, ...restProps } = props
+  const { className, src, alt, bgColor, onClick, ...restProps } = props
   const [loaded, setLoaded] = useState(false)
   const [style, setStyle] = useState({})
 
@@ -28,14 +28,15 @@ const StickerPicture = props => {
       setStyle({
         width: isWide ? "100%" : "auto",
         height: isWide ? "auto" : "100%",
+        aspectRatio: img.width / img.height,
       })
     }
     img.src = src
   }, [src])
 
   return (
-    <Frame className={className} bgColor={bgColor}>
-      {loaded && <Img style={style} src={src} {...restProps}></Img>}
+    <Frame className={className} bgColor={bgColor} onClick={() => onClick({ src, alt, style })}>
+      {loaded && <Img style={style} src={src} alt={alt} {...restProps}></Img>}
     </Frame>
   )
 }
