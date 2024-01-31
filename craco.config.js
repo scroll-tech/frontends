@@ -3,6 +3,7 @@ const webpack = require("webpack")
 const path = require("path")
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const SentryWebpackPlugin = require("@sentry/webpack-plugin")
+require("./scripts/download-blog-posts.data.json.js")
 
 module.exports = {
   babel: {
@@ -73,7 +74,7 @@ module.exports = {
           fullySpecified: false,
         },
       })
-      if (env === "production") {
+      if (env === "production" && process.env.CI) {
         const sentryPlugin = new SentryWebpackPlugin({
           org: "scroll-zkp",
           project: "scroll-io",
