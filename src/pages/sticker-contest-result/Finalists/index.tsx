@@ -34,7 +34,7 @@ const StickerContest = () => {
       >
         <Typography sx={{ fontSize: ["1.6rem", "2.4rem"], lineHeight: ["2.4rem", "3.2rem"], textAlign: "center", maxWidth: "100rem" }}>
           Thank you all creators! Here are the result of our contest which are voted by our community. Check out{" "}
-          <Link sx={{ fontSize: "inherit" }} underline="always" href={STICKER_CONTEST_NOTION_URL} external>
+          <Link sx={{ fontSize: "inherit", whiteSpace: "nowrap" }} underline="always" href={STICKER_CONTEST_NOTION_URL} external>
             the contest details
           </Link>{" "}
           here.

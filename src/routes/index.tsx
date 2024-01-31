@@ -206,13 +206,13 @@ const mainnetRoutes = [
     element: <MintNFT />,
   },
   {
-    name: "Scroll Sticker Contest",
-    path: "/sticker-contest",
+    name: "Scroll Sticker Vote",
+    path: "/sticker-vote",
     element: <StickerContest />,
   },
   {
-    name: "Scroll Sticker Contest Result",
-    path: "/sticker-contest-result",
+    name: "Scroll Sticker Winners",
+    path: "/sticker-winners",
     element: <StickerResult />,
   },
 ]
