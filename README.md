@@ -20,7 +20,7 @@ Tested with v20.10.0 (npm v10.2.3).
 
 ## Available Scripts
 
-Before running locally, make sure to duplicate `.env.template` to a new file called `.env`, and update its values if necessary.
+Before running locally, make sure to duplicate `.env.local.template` to a new file called `.env.local`, and update its values if necessary.
 
 In the project directory, you can run:
 
