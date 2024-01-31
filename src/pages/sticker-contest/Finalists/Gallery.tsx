@@ -8,32 +8,34 @@ import SuccessionToView, { SuccessionItem } from "@/components/Motion/Succession
 import useCheckViewport from "@/hooks/useCheckViewport"
 
 import StickerPicture from "./StickerPicture"
-import data from "./data.json"
 
 const useStyles = makeStyles()(theme => ({
   gird: {
-    paddingTop: "4.8rem",
-    paddingBottom: "7.2rem",
     display: "grid",
     gridTemplateColumns: "repeat(2, 1fr)",
     gridColumnGap: "4.8rem",
     gridRowGap: "7.2rem",
     width: "100%",
 
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("md")]: {
       gridTemplateColumns: "1fr",
+      gridColumnGap: "3.6rem",
+      gridRowGap: "4.8rem",
+    },
+
+    [theme.breakpoints.down("sm")]: {
       gridRowGap: "3.2rem",
-      paddingTop: "3.6rem",
-      paddingBottom: "3.2rem",
     },
   },
 }))
 
-const Gallery = () => {
-  const { classes } = useStyles()
+const Gallery = props => {
+  const { data, className } = props
+  const { classes, cx } = useStyles()
   const { isMobile } = useCheckViewport()
+
   return (
-    <SuccessionToView className={classes.gird}>
+    <SuccessionToView className={cx(classes.gird, className)} threshold={isMobile ? 0 : 0.1}>
       {data.map(({ name, author, images, bg }) => (
         <SuccessionItem key={name}>
           <Box>
@@ -42,7 +44,12 @@ const Gallery = () => {
             </Typography>
             <Stack direction={isMobile ? "column" : "row"} gap={isMobile ? "1.6rem" : "2rem"}>
               {images.map((src, index) => (
-                <StickerPicture src={src} alt={`${name}-${author}-${index}`} bgColor={Array.isArray(bg) ? bg[index] : bg}></StickerPicture>
+                <StickerPicture
+                  key={index}
+                  src={src}
+                  alt={`${name}-${author}-${index}`}
+                  bgColor={Array.isArray(bg) ? bg[index] : bg}
+                ></StickerPicture>
               ))}
             </Stack>
           </Box>

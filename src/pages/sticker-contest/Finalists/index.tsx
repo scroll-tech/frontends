@@ -2,6 +2,7 @@ import { useRef } from "react"
 
 import { Box, Typography } from "@mui/material"
 
+import { ReactComponent as FinalistsSvg } from "@/assets/svgs/sticker-contest/finalists.svg"
 import Button from "@/components/Button"
 import Link from "@/components/Link"
 import ScrollExpandedBg from "@/components/ScrollExpandedBg"
@@ -10,13 +11,14 @@ import useCheckViewport from "@/hooks/useCheckViewport"
 
 import Gallery from "./Gallery"
 import Title from "./Title"
+import data from "./data.json"
 
 const StickerContest = () => {
   const { isMobile } = useCheckViewport()
   const contentRef = useRef<HTMLElement>()
 
   return (
-    <ScrollExpandedBg anchorEl={contentRef} bottomColor="brand">
+    <ScrollExpandedBg sx={{ pt: 0 }} anchorEl={contentRef} bottomColor="brand">
       <Box
         ref={contentRef}
         sx={{
@@ -30,7 +32,7 @@ const StickerContest = () => {
           "& p.MuiTypography-root": { color: theme => `${theme.palette.primary.contrastText} !important` },
         }}
       >
-        <Title></Title>
+        <Title content={FinalistsSvg}></Title>
         <Typography sx={{ fontSize: ["1.6rem", "2.4rem"], lineHeight: ["2.4rem", "3.2rem"], textAlign: "center", maxWidth: "100rem", mb: "2.4rem" }}>
           Thank you all creators! Here are the 10 finalists that are the most creative and fun with great craft. Now, it's time to cast your votes for
           the top 5 on Discord! Check out{" "}
@@ -42,7 +44,9 @@ const StickerContest = () => {
         <Button color="primary" width={isMobile ? "22.4rem" : "28.5rem"} href={STICKER_CONTEST_DISCORD_VOTE_URL} target="_blank">
           Vote on Discord Now
         </Button>
-        <Gallery></Gallery>
+        <Box sx={{ width: "100%", pt: ["3.6rem", "4.8rem"], pb: ["3.2rem", "7.2rem"] }}>
+          <Gallery data={data}></Gallery>
+        </Box>
         <Button color="primary" width={isMobile ? "22.4rem" : "28.5rem"} href={STICKER_CONTEST_DISCORD_VOTE_URL} target="_blank">
           Vote on Discord Now
         </Button>

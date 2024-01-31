@@ -9,6 +9,7 @@ const CUSTOM_BG_PAGE_MAP = {
   "/brand-kit": "brand",
   "/join-us": "normal",
   "/sticker-contest": "brand",
+  "/sticker-contest-result": "brand",
 }
 
 const useCheckCustomNavBarBg = () => {

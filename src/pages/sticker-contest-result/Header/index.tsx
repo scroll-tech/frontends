@@ -2,12 +2,9 @@ import { makeStyles } from "tss-react/mui"
 
 import { Box, Container, Stack, SvgIcon, Typography } from "@mui/material"
 
-import { ReactComponent as CalenderSvg } from "@/assets/svgs/sticker-contest/calender.svg"
-import Button from "@/components/Button"
-import { STICKER_CONTEST_DISCORD_VOTE_URL } from "@/constants"
+import { ReactComponent as TadaSvg } from "@/assets/svgs/sticker-contest-result/tada.svg"
 import useCheckViewport from "@/hooks/useCheckViewport"
-
-import GridBackground from "./GridBackground"
+import GridBackground from "@/pages/sticker-contest/Header/GridBackground"
 
 const useStyles = makeStyles()(theme => ({
   announcement: {
@@ -19,13 +16,9 @@ const useStyles = makeStyles()(theme => ({
     borderRadius: "1rem",
     backgroundColor: "#FFE1DC",
     padding: "0.7rem 2rem",
-    [theme.breakpoints.down("md")]: {
-      top: "-4rem",
-    },
     [theme.breakpoints.down("sm")]: {
       padding: "0.6rem 2rem",
       borderWidth: "2px",
-      top: "-3rem",
     },
   },
 
@@ -41,6 +34,7 @@ const useStyles = makeStyles()(theme => ({
   award: {
     padding: "0.8rem 2rem",
     border: `3px solid ${theme.palette.text.primary}`,
+    height: "8rem",
     backgroundColor: theme.palette.themeBackground.light,
     borderRadius: "1.6rem",
     textAlign: "center",
@@ -50,24 +44,16 @@ const useStyles = makeStyles()(theme => ({
   },
 }))
 
-const StickerContest = () => {
-  const { classes } = useStyles()
-  const { isMobile } = useCheckViewport()
-
+const StickerContestResult = () => {
   return (
-    <Box sx={{ backgroundColor: "themeBackground.brand", pt: ["3rem", "4rem", "2rem"] }}>
+    <Box sx={{ backgroundColor: "themeBackground.brand", pt: ["3rem", "2rem"] }}>
       <Container
         sx={{
           position: "relative",
         }}
       >
-        <GridBackground></GridBackground>
+        <GridBackground sx={{ pt: ["1rem", "2.6rem"] }}></GridBackground>
         <Announcement></Announcement>
-        <Box className={classes.vote}>
-          <Button color="primary" width={isMobile ? "22.4rem" : "28.5rem"} href={STICKER_CONTEST_DISCORD_VOTE_URL} target="_blank" whiteButton>
-            Vote on Discord Now
-          </Button>
-        </Box>
       </Container>
       <Award></Award>
     </Box>
@@ -76,11 +62,10 @@ const StickerContest = () => {
 
 const Announcement = () => {
   const { classes } = useStyles()
-  const { isPortrait } = useCheckViewport()
 
   return (
     <Stack direction="row" alignItems="center" gap={1} className={classes.announcement}>
-      <SvgIcon sx={{ fontSize: ["2.4rem", "4rem"] }} component={CalenderSvg} inheritViewBox></SvgIcon>
+      <SvgIcon sx={{ fontSize: ["2.4rem", "4rem"] }} component={TadaSvg} inheritViewBox></SvgIcon>
       <Typography
         sx={{
           fontSize: ["1.6rem", "3.2rem"],
@@ -90,7 +75,7 @@ const Announcement = () => {
           whiteSpace: "nowrap",
         }}
       >
-        Voting ends:{isPortrait && <br></br>} Sun, Feb 11, 2024 23:59 UTC
+        The winners are here!!!
       </Typography>
     </Stack>
   )
@@ -113,4 +98,4 @@ const Award = () => {
   )
 }
 
-export default StickerContest
+export default StickerContestResult

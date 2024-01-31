@@ -38,7 +38,7 @@ const Background = styled(Box)(({ theme }) => ({
   },
 }))
 const ScrollExpandedBg = props => {
-  const { anchorEl, children, bottomColor } = props
+  const { anchorEl, children, bottomColor, ...restProps } = props
   const [, setScrollPosition] = useState(0)
 
   useEffect(() => {
@@ -72,7 +72,7 @@ const ScrollExpandedBg = props => {
   return (
     <Wrapper bgColor={bottomColor}>
       <Background sx={{ width: calculateWidth() }} />
-      <Container>{children}</Container>
+      <Container {...restProps}>{children}</Container>
     </Wrapper>
   )
 }

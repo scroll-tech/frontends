@@ -5,8 +5,7 @@ import { Box } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
 const Frame = styled<any>(Box, { shouldForwardProp: prop => prop !== "bgColor" })(({ theme, bgColor }) => ({
-  aspectRatio: "1 / 1",
-  flex: 1,
+  aspectRatio: "1/1",
   borderRadius: "1rem",
   overflow: "hidden",
   display: "flex",

@@ -19,6 +19,7 @@ import RollupScanChunk from "@/pages/rollup/chunk"
 import RollupScanChunkDetail from "@/pages/rollup/chunk/detail"
 import RollupScan from "@/pages/rollup/index"
 import StickerContest from "@/pages/sticker-contest"
+import StickerResult from "@/pages/sticker-contest-result"
 import Terms from "@/pages/terms"
 import { isSepolia } from "@/utils"
 
@@ -208,6 +209,11 @@ const mainnetRoutes = [
     name: "Scroll Sticker Contest",
     path: "/sticker-contest",
     element: <StickerContest />,
+  },
+  {
+    name: "Scroll Sticker Contest Result",
+    path: "/sticker-contest-result",
+    element: <StickerResult />,
   },
 ]
 

@@ -1,0 +1,64 @@
+{
+  "winner": {
+    "name": "Finalist A",
+    "author": "Elissa",
+    "images": ["/imgs/sticker/1.gif", "/imgs/sticker/1.jpeg"],
+    "bg": ["#FAECE5", "#FDF3E8"]
+  },
+  "top2-5": [
+    {
+      "name": "Finalist A",
+      "author": "Elissa",
+      "images": ["/imgs/sticker/1.gif", "/imgs/sticker/1.jpeg"],
+      "bg": ["#FAECE5", "#FDF3E8"]
+    },
+    {
+      "name": "Finalist B",
+      "author": "Elissa",
+      "images": ["/imgs/sticker/2.gif", "/imgs/sticker/22.gif"],
+      "bg": "#FAECE5"
+    },
+    {
+      "name": "Finalist C",
+      "author": "Elissa",
+      "images": ["/imgs/sticker/3.png", "/imgs/sticker/33.png"],
+      "bg": "#FAECE5"
+    },
+    {
+      "name": "Finalist D",
+      "author": "Elissa",
+      "images": ["/imgs/sticker/4.png", "/imgs/sticker/44.png"]
+    }
+  ],
+  "remaining": [
+    {
+      "name": "Finalist A",
+      "author": "Elissa",
+      "images": ["/imgs/sticker/1.gif", "/imgs/sticker/1.jpeg"],
+      "bg": ["#FAECE5", "#FDF3E8"]
+    },
+    {
+      "name": "Finalist B",
+      "author": "Elissa",
+      "images": ["/imgs/sticker/2.gif", "/imgs/sticker/22.gif"],
+      "bg": "#FAECE5"
+    },
+    {
+      "name": "Finalist C",
+      "author": "Elissa",
+      "images": ["/imgs/sticker/3.png", "/imgs/sticker/33.png"],
+      "bg": "#FAECE5"
+    },
+    {
+      "name": "Finalist D",
+      "author": "Elissa",
+      "images": ["/imgs/sticker/4.png", "/imgs/sticker/44.png"]
+    },
+    {
+      "name": "Finalist E",
+      "author": "Elissa",
+      "images": ["/imgs/sticker/1.gif", "/imgs/sticker/1.jpeg"],
+      "bg": ["#FAECE5", "#FDF3E8"]
+    }
+  ]
+}
