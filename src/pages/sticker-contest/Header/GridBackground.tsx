@@ -35,23 +35,23 @@ const useStyles = makeStyles()(theme => ({
     marginTop: "6rem",
     gridColumnGap: "3rem",
 
-    gridTemplateColumns: "repeat(2, min-content)",
-    gridTemplateRows: "13rem repeat(2, min-content)",
+    gridTemplateColumns: "repeat(2, max-content)",
+    gridTemplateRows: "13rem repeat(2, max-content)",
 
     "@media (max-width: 1324px)": {
-      gridTemplateRows: "15rem repeat(2, min-content)",
+      gridTemplateRows: "15rem repeat(2, max-content)",
     },
     [theme.breakpoints.down("lg")]: {
-      gridTemplateRows: "13rem repeat(2, min-content)",
+      gridTemplateRows: "13rem repeat(2, max-content)",
       marginTop: "8rem",
       gridColumnGap: "1rem",
     },
     [theme.breakpoints.down("md")]: {
-      gridTemplateRows: "9.8rem repeat(2, min-content)",
+      gridTemplateRows: "9.8rem repeat(2, max-content)",
     },
     [theme.breakpoints.down("sm")]: {
       marginTop: "5rem",
-      gridTemplateRows: "7rem repeat(2, min-content)",
+      gridTemplateRows: "7rem repeat(2, max-content)",
       gridColumnGap: 0,
       gridRowGap: "1rem",
     },
