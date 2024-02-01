@@ -9,8 +9,8 @@ import ScrollExpandedBg from "@/components/ScrollExpandedBg"
 import { STICKER_CONTEST_DISCORD_VOTE_URL, STICKER_CONTEST_NOTION_URL } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
-import Gallery from "./Gallery"
-import Title from "./Title"
+import Gallery from "../components/Gallery"
+import Title from "../components/Title"
 import data from "./data.json"
 
 const StickerContest = () => {

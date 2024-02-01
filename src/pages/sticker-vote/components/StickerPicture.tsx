@@ -13,6 +13,12 @@ const Frame = styled<any>(Box, { shouldForwardProp: prop => prop !== "bgColor" }
   justifyContent: "center",
   alignItems: "center",
   backgroundColor: bgColor,
+  transition: "transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)",
+  willChange: "transform",
+  cursor: "pointer",
+  "&:hover": {
+    transform: "scale(1.05)",
+  },
 }))
 
 const StickerPicture = props => {

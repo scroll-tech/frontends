@@ -8,8 +8,8 @@ import { ReactComponent as FinalistsSvg } from "@/assets/svgs/sticker-contest/fi
 import Link from "@/components/Link"
 import ScrollExpandedBg from "@/components/ScrollExpandedBg"
 import { STICKER_CONTEST_NOTION_URL } from "@/constants"
-import Gallery from "@/pages/sticker-contest/Finalists/Gallery"
-import Title from "@/pages/sticker-contest/Finalists/Title"
+import Gallery from "@/pages/sticker-vote/components/Gallery"
+import Title from "@/pages/sticker-vote/components/Title"
 
 import Winner from "./Winner"
 import data from "./data.json"
