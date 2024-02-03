@@ -49,18 +49,18 @@ const Gallery = props => {
   return (
     <>
       <SuccessionToView className={cx(classes.gird, className)} threshold={isMobile ? 0 : 0.1}>
-        {data.map(({ name, author, images, bg }) => (
-          <SuccessionItem key={name}>
+        {data.map(({ author, images, bg }) => (
+          <SuccessionItem key={author}>
             <Box>
               <Typography sx={{ fontSize: ["2rem", "3.2rem"], lineHeight: ["3.2rem", "4rem"], fontWeight: 600, mb: "1.6rem", textAlign: "center" }}>
-                {name} - {author}
+                Finalist - {author}
               </Typography>
               <Stack direction={isMobile ? "column" : "row"} gap={isMobile ? "1.6rem" : "2rem"}>
                 {images.map((src, index) => (
                   <StickerPicture
                     key={index}
                     src={src}
-                    alt={`${name}-${author}-${index}`}
+                    alt={`${author}-${index}`}
                     bgColor={Array.isArray(bg) ? bg[index] : bg}
                     onClick={handleViewImage}
                   ></StickerPicture>

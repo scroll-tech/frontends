@@ -54,6 +54,7 @@ const useStyles = makeStyles()(theme => ({
       gridTemplateRows: "7rem repeat(2, max-content)",
       gridColumnGap: 0,
       gridRowGap: "1rem",
+      paddingLeft: "1rem",
     },
   },
   sticker: {
@@ -125,19 +126,19 @@ const GridBackground = props => {
         ></SvgIcon>
         <SvgIcon
           className={classes.sticker}
-          sx={{ width: ["19.2rem", "32rem", "44rem", "auto"], height: "auto" }}
+          sx={{ width: ["18.6rem", "32rem", "44rem", "auto"], height: "auto" }}
           component={StickerSvg}
           inheritViewBox
         ></SvgIcon>
         <SvgIcon
           className={classes.sticker}
-          sx={{ width: ["16.4rem", "26rem", "35.5rem", "auto"], height: "auto" }}
+          sx={{ width: ["15.9rem", "26rem", "35.5rem", "auto"], height: "auto" }}
           component={ContestSvg}
           inheritViewBox
         ></SvgIcon>
         <SvgIcon
           className={cx(classes.sticker, classes.character)}
-          sx={{ width: ["15rem", "24rem", "34rem", "38.8rem"], height: "auto" }}
+          sx={{ width: ["14.6rem", "24rem", "34rem", "38.8rem"], height: "auto" }}
           component={CharacterSvg}
           inheritViewBox
         ></SvgIcon>

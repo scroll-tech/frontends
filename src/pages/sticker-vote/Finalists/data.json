@@ -1,60 +1,45 @@
 [
   {
-    "name": "Finalist A",
-    "author": "Elissa",
-    "images": ["/imgs/sticker/1.gif", "/imgs/sticker/1.jpg"],
-    "bg": ["#FAECE5", "#D4D9A1"]
+    "author": "afifridwan",
+    "images": ["/imgs/sticker/afifridwan1.gif", "/imgs/sticker/afifridwan2.gif"]
   },
   {
-    "name": "Finalist B",
-    "author": "Elissa",
-    "images": ["/imgs/sticker/2.gif", "/imgs/sticker/22.gif"],
-    "bg": "#FAECE5"
+    "author": "Andre",
+    "images": ["/imgs/sticker/Andre1.jpg", "/imgs/sticker/Andre2.jpg"]
   },
   {
-    "name": "Finalist C",
-    "author": "Elissa",
-    "images": ["/imgs/sticker/3.png", "/imgs/sticker/33.png"],
-    "bg": "#FAECE5"
+    "author": "Coincuddle",
+    "images": ["/imgs/sticker/Coincuddle1.png", "/imgs/sticker/Coincuddle2.png"]
   },
   {
-    "name": "Finalist D",
-    "author": "Elissa",
-    "images": ["/imgs/sticker/4.png", "/imgs/sticker/44.png"]
+    "author": "Cozy",
+    "images": ["/imgs/sticker/Cozy1.png", "/imgs/sticker/Cozy2.png"],
+    "bg": "#FFF8F3"
   },
   {
-    "name": "Finalist E",
-    "author": "Elissa",
-    "images": ["/imgs/sticker/1.gif", "/imgs/sticker/1.jpeg"],
-    "bg": ["#FAECE5", "#FDF3E8"]
+    "author": "EssisW.eth",
+    "images": ["/imgs/sticker/EssisW.eth1.gif", "/imgs/sticker/EssisW.eth2.jpg"],
+    "bg": ["#FAECE5", "#FFF3E7"]
   },
   {
-    "name": "Finalist F",
-    "author": "Elissa",
-    "images": ["/imgs/sticker/2.gif", "/imgs/sticker/22.gif"],
-    "bg": "#FAECE5"
+    "author": "fomomonstr",
+    "images": ["/imgs/sticker/fomomonstr1.png", "/imgs/sticker/fomomonstr2.png"],
+    "bg": "#FFEEDA"
   },
   {
-    "name": "Finalist G",
-    "author": "Elissa",
-    "images": ["/imgs/sticker/3.png", "/imgs/sticker/33.png"],
-    "bg": "#FAECE5"
+    "author": "Magda",
+    "images": ["/imgs/sticker/Magda1.png", "/imgs/sticker/Magda2.png"]
   },
   {
-    "name": "Finalist H",
-    "author": "Elissa",
-    "images": ["/imgs/sticker/4.png", "/imgs/sticker/44.png"]
+    "author": "MillionDollars",
+    "images": ["/imgs/sticker/MillionDollars1.png", "/imgs/sticker/MillionDollars2.png"]
   },
   {
-    "name": "Finalist I",
-    "author": "Elissa",
-    "images": ["/imgs/sticker/1.gif", "/imgs/sticker/1.jpeg"],
-    "bg": ["#FAECE5", "#FDF3E8"]
+    "author": "Shallot",
+    "images": ["/imgs/sticker/Shallot1.png", "/imgs/sticker/Shallot2.png"]
   },
   {
-    "name": "Finalist J",
-    "author": "Elissa",
-    "images": ["/imgs/sticker/1.gif", "/imgs/sticker/1.jpeg"],
-    "bg": ["#FAECE5", "#FDF3E8"]
+    "author": "Yol",
+    "images": ["/imgs/sticker/Yol1.png", "/imgs/sticker/Yol2.png"]
   }
 ]

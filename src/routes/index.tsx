@@ -209,11 +209,13 @@ const mainnetRoutes = [
     name: "Scroll Sticker Vote",
     path: "/sticker-vote",
     element: <StickerContest />,
+    description: "Vote for your favourite sticker designs.",
   },
   {
     name: "Scroll Sticker Winners",
     path: "/sticker-winners",
     element: <StickerResult />,
+    description: "Congratulations to the winners of the sticker contest.",
   },
 ]
 
