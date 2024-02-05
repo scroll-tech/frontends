@@ -18,8 +18,8 @@ import RollupScanBlock from "@/pages/rollup/block"
 import RollupScanChunk from "@/pages/rollup/chunk"
 import RollupScanChunkDetail from "@/pages/rollup/chunk/detail"
 import RollupScan from "@/pages/rollup/index"
-import StickerContest from "@/pages/sticker-vote"
-import StickerResult from "@/pages/sticker-winners"
+import StickerVote from "@/pages/sticker-vote"
+// import StickerWinners from "@/pages/sticker-winners"
 import Terms from "@/pages/terms"
 import { isSepolia } from "@/utils"
 
@@ -208,15 +208,15 @@ const mainnetRoutes = [
   {
     name: "Scroll Sticker Vote",
     path: "/sticker-vote",
-    element: <StickerContest />,
+    element: <StickerVote />,
     description: "Vote for your favourite sticker designs.",
   },
-  {
-    name: "Scroll Sticker Winners",
-    path: "/sticker-winners",
-    element: <StickerResult />,
-    description: "Congratulations to the winners of the sticker contest.",
-  },
+  // {
+  //   name: "Scroll Sticker Winners",
+  //   path: "/sticker-winners",
+  //   element: <StickerWinners />,
+  //   description: "Congratulations to the winners of the sticker contest.",
+  // },
 ]
 
 const routes = isSepolia ? sepoliaRoutes : mainnetRoutes
