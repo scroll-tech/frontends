@@ -231,7 +231,7 @@ const App = ({ currentMenu }) => {
   return (
     <Box
       className={open ? "active" : ""}
-      sx={{ backgroundColor: navbarBg && !open ? `themeBackground[${navbarBg}]` : dark ? "themeBackground.dark" : "themeBackground.light" }}
+      sx={{ backgroundColor: navbarBg && !open ? `themeBackground.${navbarBg}` : dark ? "themeBackground.dark" : "themeBackground.light" }}
     >
       <Announcement />
       <NavStack direction="row" justifyContent="space-between" alignItems="center">

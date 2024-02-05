@@ -26,11 +26,13 @@ function Homepage() {
     return window.location.href
   }
 
-  const getImageUrl = (type = "") => {
+  const getImageUrl = (type = "og") => {
     if (window.location.pathname.startsWith("/developer-nft")) {
-      return window.location.origin + `/${type || "og"}_scroll_origins_nft.png`
+      return window.location.origin + `/${type}_scroll_origins_nft.png`
     } else if (window.location.pathname.startsWith("/brand-kit")) {
       return window.location.origin + `/og_scroll_brand.png`
+    } else if (window.location.pathname.startsWith("/sticker-vote")) {
+      return window.location.origin + `/${type}_sticker_vote.png`
     }
     return window.location.origin + "/og_scroll.png"
   }

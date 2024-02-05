@@ -1,0 +1,45 @@
+[
+  {
+    "author": "afifridwan",
+    "images": ["/imgs/sticker/afifridwan1.gif", "/imgs/sticker/afifridwan2.gif"]
+  },
+  {
+    "author": "Andre",
+    "images": ["/imgs/sticker/Andre1.jpg", "/imgs/sticker/Andre2.jpg"]
+  },
+  {
+    "author": "Coincuddle",
+    "images": ["/imgs/sticker/Coincuddle1.png", "/imgs/sticker/Coincuddle2.png"]
+  },
+  {
+    "author": "Cozy",
+    "images": ["/imgs/sticker/Cozy1.png", "/imgs/sticker/Cozy2.png"],
+    "bg": "#FFF8F3"
+  },
+  {
+    "author": "EssisW.eth",
+    "images": ["/imgs/sticker/EssisW.eth1.gif", "/imgs/sticker/EssisW.eth2.jpg"],
+    "bg": ["#FAECE5", "#FFF3E7"]
+  },
+  {
+    "author": "fomomonstr",
+    "images": ["/imgs/sticker/fomomonstr1.png", "/imgs/sticker/fomomonstr2.png"],
+    "bg": "#FFEEDA"
+  },
+  {
+    "author": "Magda",
+    "images": ["/imgs/sticker/Magda1.png", "/imgs/sticker/Magda2.png"]
+  },
+  {
+    "author": "MillionDollars",
+    "images": ["/imgs/sticker/MillionDollars1.png", "/imgs/sticker/MillionDollars2.png"]
+  },
+  {
+    "author": "Shallot",
+    "images": ["/imgs/sticker/Shallot1.png", "/imgs/sticker/Shallot2.png"]
+  },
+  {
+    "author": "Yol",
+    "images": ["/imgs/sticker/Yol1.png", "/imgs/sticker/Yol2.png"]
+  }
+]
