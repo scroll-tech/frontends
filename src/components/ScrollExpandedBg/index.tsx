@@ -3,8 +3,9 @@ import { useEffect, useState } from "react"
 import { Box } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
-const Wrapper = styled(Box)(({ theme }) => ({
+const Wrapper = styled<any>(Box, { shouldForwardProp: prop => prop !== "bgColor" })(({ theme, bgColor }) => ({
   position: "relative",
+  backgroundColor: bgColor ? theme.palette.themeBackground[bgColor] : "transparent",
 }))
 
 const Container = styled(Box)(({ theme }) => ({
@@ -37,7 +38,7 @@ const Background = styled(Box)(({ theme }) => ({
   },
 }))
 const ScrollExpandedBg = props => {
-  const { anchorEl, children } = props
+  const { anchorEl, children, bottomColor, ...restProps } = props
   const [, setScrollPosition] = useState(0)
 
   useEffect(() => {
@@ -61,17 +62,17 @@ const ScrollExpandedBg = props => {
         const percentageScrolled = Math.min(scrolledDistance / viewTop, 1)
 
         const widthIncrease = 0.5 * percentageScrolled
-        const targetWidthPercentage = 60 + widthIncrease * 120
+        const targetWidthPercentage = 40 + widthIncrease * 180
 
         return `${targetWidthPercentage}%`
       }
     }
-    return "60%" //default value
+    return "40%" //default value
   }
   return (
-    <Wrapper>
+    <Wrapper bgColor={bottomColor}>
       <Background sx={{ width: calculateWidth() }} />
-      <Container>{children}</Container>
+      <Container {...restProps}>{children}</Container>
     </Wrapper>
   )
 }

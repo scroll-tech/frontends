@@ -18,6 +18,8 @@ import RollupScanBlock from "@/pages/rollup/block"
 import RollupScanChunk from "@/pages/rollup/chunk"
 import RollupScanChunkDetail from "@/pages/rollup/chunk/detail"
 import RollupScan from "@/pages/rollup/index"
+import StickerVote from "@/pages/sticker-vote"
+// import StickerWinners from "@/pages/sticker-winners"
 import Terms from "@/pages/terms"
 import { isSepolia } from "@/utils"
 
@@ -45,19 +47,16 @@ const sepoliaRoutes = [
   {
     name: "Resources",
     path: "portal",
-    fullPath: "/portal",
     element: <Portal />,
   },
   {
     name: "Bridge",
     path: "/bridge",
-    fullPath: "/bridge",
     element: <Bridge />,
   },
   {
     name: "Bridge FAQ",
     path: "/bridge/faq",
-    fullPath: "/bridge/faq",
     element: <BridgeFAQ />,
   },
   {
@@ -68,37 +67,31 @@ const sepoliaRoutes = [
   {
     name: "Rollup Explorer",
     path: "/rollupscan",
-    fullPath: "/rollupscan",
     element: <RollupScan />,
   },
   {
     name: "Rollup Explorer: Batch Details",
     path: "/rollupscan/batch/:batchIndex",
-    fullPath: "/rollupscan/batch/:batchIndex",
     element: <RollupScanBatch />,
   },
   {
     name: "Rollup Explorer: Chunk List",
     path: "/rollupscan/batch/:batchIndex/chunks",
-    fullPath: "/rollupscan/batch/:batchIndex/chunks",
     element: <RollupScanChunk />,
   },
   {
     name: "Rollup Explorer: Chunk Details",
     path: "/rollupscan/batch/:batchIndex/chunk/:chunkIndex",
-    fullPath: "/rollupscan/batch/:batchIndex/chunk/:chunkIndex",
     element: <RollupScanChunkDetail />,
   },
   {
     name: "Rollup Explorer: Block Details",
     path: "/rollupscan/batch/:batchIndex/blocks",
-    fullPath: "/rollupscan/batch/:batchIndex/blocks",
     element: <RollupScanBlock />,
   },
   {
     name: "Rollup Explorer: Block Details",
     path: "/rollupscan/batch/:batchIndex/chunk/:chunkIndex/blocks",
-    fullPath: "/rollupscan/batch/:batchIndex/chunk/:chunkIndex/blocks",
     element: <RollupScanBlock />,
   },
 ]
@@ -155,75 +148,75 @@ const mainnetRoutes = [
   {
     name: "Resources",
     path: "portal",
-    fullPath: "/portal",
     element: <Portal />,
   },
   {
     name: "Bridge",
     path: "/bridge",
-    fullPath: "/bridge",
     element: <Bridge />,
   },
   {
     name: "Bridge FAQ",
     path: "/bridge/faq",
-    fullPath: "/bridge/faq",
     element: <BridgeFAQ />,
   },
   {
     name: "Ecosystem",
     path: "/ecosystem",
-    fullPath: "/ecosystem",
     element: <Ecosystem />,
   },
   {
     name: "Rollup Explorer",
     path: "/rollupscan",
-    fullPath: "/rollupscan",
     element: <RollupScan />,
   },
   {
     name: "Rollup Explorer: Batch Details",
     path: "/rollupscan/batch/:batchIndex",
-    fullPath: "/rollupscan/batch/:batchIndex",
     element: <RollupScanBatch />,
   },
   {
     name: "Rollup Explorer: Chunk List",
     path: "/rollupscan/batch/:batchIndex/chunks",
-    fullPath: "/rollupscan/batch/:batchIndex/chunks",
     element: <RollupScanChunk />,
   },
   {
     name: "Rollup Explorer: Chunk Details",
     path: "/rollupscan/batch/:batchIndex/chunk/:chunkIndex",
-    fullPath: "/rollupscan/batch/:batchIndex/chunk/:chunkIndex",
     element: <RollupScanChunkDetail />,
   },
   {
     name: "Rollup Explorer: Block Details",
     path: "/rollupscan/batch/:batchIndex/blocks",
-    fullPath: "/rollupscan/batch/:batchIndex/blocks",
     element: <RollupScanBlock />,
   },
   {
     name: "Rollup Explorer: Block Details",
     path: "/rollupscan/batch/:batchIndex/chunk/:chunkIndex/blocks",
-    fullPath: "/rollupscan/batch/:batchIndex/chunk/:chunkIndex/blocks",
     element: <RollupScanBlock />,
   },
   {
     name: "Scroll Origins NFT",
     path: "/developer-nft",
-    fullPath: "/developer-nft",
     element: <DeveloperNFT />,
   },
   {
     name: "Scroll Origins NFT",
     path: "/developer-nft/mint",
-    fullPath: "/developer-nft/mint",
     element: <MintNFT />,
   },
+  {
+    name: "Scroll Sticker Vote",
+    path: "/sticker-vote",
+    element: <StickerVote />,
+    description: "Vote for your favourite sticker designs.",
+  },
+  // {
+  //   name: "Scroll Sticker Winners",
+  //   path: "/sticker-winners",
+  //   element: <StickerWinners />,
+  //   description: "Congratulations to the winners of the sticker contest.",
+  // },
 ]
 
 const routes = isSepolia ? sepoliaRoutes : mainnetRoutes
