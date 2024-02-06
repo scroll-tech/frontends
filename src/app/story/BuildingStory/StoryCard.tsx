@@ -1,3 +1,5 @@
+"use client"
+
 import { makeStyles } from "tss-react/mui"
 
 import { Box, Card, CardContent, CardMedia, SvgIcon, Typography } from "@mui/material"
@@ -105,7 +107,7 @@ const useStyles = makeStyles<any>()((theme, { cover }) => ({
 }))
 
 const StoryCard = props => {
-  const { title, imageTitle, cover, content, icon, href, ...restProps } = props
+  const { title, imageTitle, cover, content, href, ...restProps } = props
 
   const { classes, cx } = useStyles({ cover })
 

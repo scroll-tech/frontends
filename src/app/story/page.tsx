@@ -1,5 +1,3 @@
-"use client"
-
 import BuildingStory from "./BuildingStory"
 import Header from "./Header"
 import Initail from "./Initail"

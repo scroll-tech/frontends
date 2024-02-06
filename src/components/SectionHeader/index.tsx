@@ -1,9 +1,11 @@
+"use client"
+
 import { Box, Stack, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
 import useCheckViewport from "@/hooks/useCheckViewport"
 
-const ActionWrapper = styled(Box)(({ theme }) => ({
+const ActionWrapper = styled(Box)(() => ({
   display: "flex",
   width: "100%",
   justifyContent: "flex-end",

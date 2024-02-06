@@ -1,11 +1,10 @@
-import type {} from "@mui/lab/themeAugmentation"
-import { createTheme, lighten } from "@mui/material/styles"
+import { lighten } from "@mui/material/styles"
 
 import { boxShadowOptions, paletteOptions, typographyOptions } from "./options"
 
 const defaultTransition = "all 0.15s ease-out"
 
-const lightTheme = createTheme({
+const lightTheme = {
   // check in bridge
   singleLineEllipsis: {
     overflow: "hidden",
@@ -260,7 +259,7 @@ const lightTheme = createTheme({
     // end
     MuiAlert: {
       styleOverrides: {
-        root: ({ theme, ownerState }) => ({
+        root: ({ ownerState }) => ({
           borderRadius: "1rem",
           fontSize: "1.6rem",
           lineHeight: "normal",
@@ -271,7 +270,7 @@ const lightTheme = createTheme({
           backgroundColor: ownerState.severity && paletteOptions[ownerState.severity].light,
           alignItems: "center",
         }),
-        icon: ({ theme, ownerState }) => ({
+        icon: ({ ownerState }) => ({
           display: "flex",
           alignItems: "center",
           fontSize: "2.4rem",
@@ -346,6 +345,6 @@ const lightTheme = createTheme({
       },
     },
   },
-})
+}
 
 export default lightTheme

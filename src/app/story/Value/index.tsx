@@ -1,3 +1,5 @@
+"use client"
+
 import { useRef } from "react"
 
 import { Box, Stack, SvgIcon, Typography } from "@mui/material"

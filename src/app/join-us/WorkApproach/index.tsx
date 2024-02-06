@@ -1,3 +1,5 @@
+"use client"
+
 import { useEffect, useRef, useState } from "react"
 
 import { Box, Container as MuiContainer } from "@mui/material"
@@ -53,12 +55,12 @@ const Container = styled(Box)(({ theme }) => ({
   },
 }))
 
-const InnerBox = styled(MuiContainer)(({ theme }) => ({
+const InnerBox = styled(MuiContainer)(() => ({
   position: "relative",
   width: "100%",
 }))
 
-const Background = styled(Box)(({ theme }) => ({
+const Background = styled(Box)(() => ({
   position: "absolute",
   top: "0",
   bottom: "0",
@@ -68,7 +70,7 @@ const Background = styled(Box)(({ theme }) => ({
   borderRadius: "40px 40px 0px 0px",
 }))
 
-const PhotoContainer = styled("div")(({ theme }) => ({
+const PhotoContainer = styled("div")(() => ({
   display: "grid",
   margin: "0 auto",
   maxWidth: "115.4rem",

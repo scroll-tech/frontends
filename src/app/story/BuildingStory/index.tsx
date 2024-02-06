@@ -1,3 +1,5 @@
+"use client"
+
 import { makeStyles } from "tss-react/mui"
 
 import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"

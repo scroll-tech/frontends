@@ -1,6 +1,6 @@
-import { createTheme } from "@mui/material/styles"
+import { experimental_extendTheme as extendTheme } from "@mui/material/styles"
 
-const theme = createTheme()
+const theme = extendTheme()
 
 export const paletteOptions = {
   primary: {

@@ -1,12 +1,15 @@
-import MuiLink from "@mui/material/Link"
-import { styled } from "@mui/material/styles"
+import Link from "@mui/material/Link"
 
-const StyledLink = styled(MuiLink)(({ theme }) => ({
-  textDecorationColor: "unset",
-}))
-
-const Link = props => {
-  const { external, underline = "none", ...restProps } = props
-  return <StyledLink rel="noopener noreferrer" target={external ? "_blank" : ""} underline={underline} {...restProps} />
+const ScrollLink = props => {
+  const { external, underline = "none", sx, ...restProps } = props
+  return (
+    <Link
+      sx={{ textDecorationColor: "unset", ...sx }}
+      rel="noopener noreferrer"
+      target={external ? "_blank" : ""}
+      underline={underline}
+      {...restProps}
+    />
+  )
 }
-export default Link
+export default ScrollLink

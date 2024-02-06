@@ -1,3 +1,5 @@
+"use client"
+
 import { Stack, SvgIcon, Typography } from "@mui/material"
 
 import DiscordSvg from "@/assets/svgs/portal/discord.svg"

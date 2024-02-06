@@ -1,28 +1,15 @@
-"use client"
-
-import { makeStyles } from "tss-react/mui"
-
-import { Box } from "@mui/system"
+import { Box } from "@mui/material"
 
 import Assets from "./Assets"
 import Header from "./Header"
 
-const useStyles = makeStyles()(theme => ({
-  container: {
-    overflow: "hidden",
-    background: theme.palette.themeBackground.brand,
-  },
-}))
-
-const Ecosystem = () => {
-  const { classes } = useStyles()
-
+const BrandKit = () => {
   return (
-    <Box className={classes.container}>
+    <Box sx={{ overflow: "hidden", backgroundColor: "themeBackground.brand" }}>
       <Header />
       <Assets />
     </Box>
   )
 }
 
-export default Ecosystem
+export default BrandKit

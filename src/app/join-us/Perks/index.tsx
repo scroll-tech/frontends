@@ -1,4 +1,5 @@
-// import { Fragment } from "react"
+"use client"
+
 import { makeStyles } from "tss-react/mui"
 
 import { SvgIcon, Typography } from "@mui/material"
@@ -13,6 +14,28 @@ import IconSVG7 from "@/assets/svgs/career/perks/icon-7.svg"
 import IconSVG8 from "@/assets/svgs/career/perks/icon-8.svg"
 import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
 import SectionWrapper from "@/components/SectionWrapper"
+
+// import { Fragment } from "react"
+
+// import { Fragment } from "react"
+
+// import { Fragment } from "react"
+
+// import { Fragment } from "react"
+
+// import { Fragment } from "react"
+
+// import { Fragment } from "react"
+
+// import { Fragment } from "react"
+
+// import { Fragment } from "react"
+
+// import { Fragment } from "react"
+
+// import { Fragment } from "react"
+
+// import { Fragment } from "react"
 
 // import useCheckViewport from "@/hooks/useCheckViewport"
 

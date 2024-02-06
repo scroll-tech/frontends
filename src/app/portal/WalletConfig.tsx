@@ -1,3 +1,5 @@
+"use client"
+
 import { ReactNode, useState } from "react"
 
 import { Alert, Typography as MuiTypography, Snackbar, Stack } from "@mui/material"

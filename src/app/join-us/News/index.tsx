@@ -1,3 +1,5 @@
+"use client"
+
 import { makeStyles } from "tss-react/mui"
 
 import { Box, Link, Typography } from "@mui/material"
@@ -55,7 +57,7 @@ const ExternalLink = styled(Link)(({ theme }) => ({
   },
 }))
 
-const Newscard = styled(Box)(({ theme }) => ({
+const Newscard = styled(Box)(() => ({
   cursor: "pointer",
   "& *": {
     cursor: "pointer !important",
@@ -66,7 +68,7 @@ const Newscard = styled(Box)(({ theme }) => ({
   },
 }))
 
-const NewsCover = styled("img")(({ theme }) => ({
+const NewsCover = styled("img")(() => ({
   width: "100%",
 }))
 

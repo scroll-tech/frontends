@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
 import { headers } from "next/headers"
 import React from "react"
-import { NextAppDirEmotionCacheProvider } from "tss-react/next/appDir"
 
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter"
 
@@ -82,15 +81,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        <AppRouterCacheProvider>
-          <NextAppDirEmotionCacheProvider options={{ key: "css" }}>
-            <ScrollThemeProvider>
-              <VersionChecker>
-                <RainbowProvider>{children}</RainbowProvider>
-              </VersionChecker>
-              <ScrollToTop />
-            </ScrollThemeProvider>
-          </NextAppDirEmotionCacheProvider>
+        <AppRouterCacheProvider options={{ key: "css" }}>
+          {/* <NextAppDirEmotionCacheProvider > */}
+          <ScrollThemeProvider>
+            <VersionChecker>
+              <RainbowProvider>{children}</RainbowProvider>
+            </VersionChecker>
+            <ScrollToTop />
+          </ScrollThemeProvider>
+          {/* </NextAppDirEmotionCacheProvider> */}
         </AppRouterCacheProvider>
         {process.env.NODE_ENV === "production" && (
           <>

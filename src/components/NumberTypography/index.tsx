@@ -1,8 +1,7 @@
 import { Typography } from "@mui/material"
-import { styled } from "@mui/material/styles"
 
-const NumberTypography = styled(Typography)(() => ({
-  fontFamily: "var(--developer-page-font-family)",
-}))
+const NumberTypography = ({ sx, ...restProps }) => {
+  return <Typography sx={{ fontFamily: "var(--developer-page-font-family)", ...sx }} {...restProps}></Typography>
+}
 
 export default NumberTypography

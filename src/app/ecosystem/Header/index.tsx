@@ -1,3 +1,5 @@
+"use client"
+
 import useSWR from "swr"
 
 import { Box, Stack, Typography } from "@mui/material"

@@ -1,3 +1,5 @@
+"use client"
+
 import { makeStyles } from "tss-react/mui"
 
 import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
@@ -20,7 +22,7 @@ const useStyles = makeStyles()(theme => ({
   },
 }))
 
-const Assets = props => {
+const Assets = () => {
   const { classes } = useStyles()
   return (
     <SectionWrapper transparent sx={{ pt: ["0"] }}>

@@ -1,3 +1,5 @@
+"use client"
+
 import { makeStyles } from "tss-react/mui"
 
 import { Box, Card, CardContent, CardHeader } from "@mui/material"

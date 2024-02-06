@@ -1,3 +1,5 @@
+"use client"
+
 import { Fragment } from "react"
 import { makeStyles } from "tss-react/mui"
 

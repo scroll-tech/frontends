@@ -1,3 +1,5 @@
+"use client"
+
 import { useEffect, useMemo, useState } from "react"
 import { useDebounce } from "react-use"
 import { withStyles } from "tss-react/mui"

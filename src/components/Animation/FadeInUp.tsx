@@ -1,3 +1,5 @@
+"use client"
+
 import { keyframes } from "@emotion/react"
 import Reveal from "react-awesome-reveal"
 

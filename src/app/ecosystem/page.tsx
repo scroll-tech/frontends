@@ -1,5 +1,3 @@
-"use client"
-
 import Contribute from "./Contribute"
 import Header from "./Header"
 import Protocols from "./Protocols"

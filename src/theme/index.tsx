@@ -1,23 +1,24 @@
 "use client"
 
-import { useMemo } from "react"
+import { Experimental_CssVarsProvider as CssVarsProvider, experimental_extendTheme as extendTheme } from "@mui/material/styles"
 
-import { ThemeProvider, createTheme } from "@mui/material/styles"
-
-// import useMediaQuery from "@mui/material/useMediaQuery"
 import darkTheme from "./dark"
 import lightTheme from "./light"
 
-const prefersDarkMode = false
-
 const ScrollThemeProvider = ({ children }) => {
-  // TODO: need support dark mode
-  // const aa = useMediaQuery("(prefers-color-scheme: dark)")
-
-  const theme = useMemo(() => createTheme(prefersDarkMode ? darkTheme : lightTheme), [prefersDarkMode])
+  const theme = extendTheme({
+    colorSchemes: {
+      light: lightTheme,
+      dark: darkTheme,
+    },
+  })
 
   // not use StyledEngineProvider, so mui style > tailwind style
-  return <ThemeProvider theme={theme}>{children}</ThemeProvider>
+  return (
+    <CssVarsProvider theme={theme} defaultMode="dark">
+      {children}
+    </CssVarsProvider>
+  )
 }
 
 export default ScrollThemeProvider

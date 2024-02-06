@@ -52,16 +52,10 @@ const BlogDetail = () => {
 
   const [blog, setBlog] = useState<null | string>(null)
   const [moreBlog, setMoreBlog] = useState<any>([])
-  const [currentBlog, setCurrentBlog] = useState<any>({
-    title: "",
-    content: "",
-    posterImg: "",
-  })
 
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    getCurrentBlog()
     // @ts-ignore
     let anchors = [...document.querySelectorAll("a")]
     anchors.map(anchor => {
@@ -86,16 +80,7 @@ const BlogDetail = () => {
     setMoreBlog(blogs)
   }
 
-  const getCurrentBlog = () => {
-    const blog = blogSource.find(blog => blog.id === blogId.toLowerCase())
-    setCurrentBlog(blog)
-  }
-
   const { isPortrait } = useCheckViewport()
-
-  const getPosterUri = () => {
-    return window.location.origin + (currentBlog.ogImg || currentBlog.posterImg)
-  }
 
   return (
     <Box>

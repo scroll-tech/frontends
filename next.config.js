@@ -6,6 +6,9 @@ const nextConfig = {
   env: {
     NEXT_PUBLIC_VERSION: packageJson.version,
   },
+  images: {
+    deviceSizes: [600, 900, 1200, 1536],
+  },
   // trailingSlash: true,
   async redirects() {
     return [
@@ -40,6 +43,7 @@ const nextConfig = {
       },
     ],
   },
+  // eslint-disable-next-line
   webpack: (config, { buildId, dev, isServer, defaultLoaders, nextRuntime, webpack }) => {
     config.ignoreWarnings = [
       function ignoreSourcemapsloaderWarnings(warning) {

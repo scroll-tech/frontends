@@ -1,3 +1,5 @@
+"use client"
+
 import { motion, useCycle } from "framer-motion"
 import { useMemo } from "react"
 import { makeStyles } from "tss-react/mui"
