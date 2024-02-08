@@ -8,6 +8,8 @@ const TRANSPARENT_BG_PAGE_LIST = ["/story"]
 const CUSTOM_BG_PAGE_MAP = {
   "/brand-kit": "brand",
   "/join-us": "normal",
+  "/sticker-vote": "brand",
+  "/sticker-winners": "brand",
 }
 
 const useCheckCustomNavBarBg = () => {

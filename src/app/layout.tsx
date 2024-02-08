@@ -5,30 +5,24 @@ import React from "react"
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter"
 
 import GoogleAnalytics from "@/components/GoogleAnalytics"
-import { default as ScrollToTop } from "@/components/ScrollToTop"
+import ScrollToTop from "@/components/ScrollToTop"
 import SentrySetting from "@/components/SentrySetting"
 import WebVitals from "@/components/WebVitals"
+import { DEFAULT_METADATA } from "@/constants/route"
 import RainbowProvider from "@/contexts/RainbowProvider"
-import { findCurrentRoute } from "@/hooks/useMatchedRoute"
 import { VersionChecker } from "@/hooks/useVersionCheck"
 import ScrollThemeProvider from "@/theme"
+import { findCurrentRoute } from "@/utils/route"
 
 import "./globals.css"
-
-const getImageUrl = (pathname, type = "") => {
-  if (pathname.startsWith("/developer-nft")) {
-    return `/${type || "og"}_scroll_origins_nft.png`
-  } else if (pathname.startsWith("/brand-kit")) {
-    return `/og_scroll_brand.png`
-  }
-  return "/og_scroll.png"
-}
 
 export async function generateMetadata(): Promise<Metadata> {
   const { pathname, origin } = new URL(headers().get("x-url")!)
   const route = findCurrentRoute(pathname)
   const title = `Scroll${route ? " – " + route.name : null}`
-  const description = (route as any).description || "Native zkEVM Layer 2 for Ethereum"
+  const description = (route as any).description || DEFAULT_METADATA.description
+  const ogImg = route.ogImg || DEFAULT_METADATA.ogImg
+  const twitterImg = route.twitterImg || route.ogImg || DEFAULT_METADATA.ogImg
 
   return {
     metadataBase: new URL(origin),
@@ -40,14 +34,14 @@ export async function generateMetadata(): Promise<Metadata> {
       description,
       siteName: title,
       url: pathname,
-      images: [getImageUrl(pathname)],
+      images: [ogImg],
       locale: "en_US",
       type: "website",
     },
     twitter: {
       title,
       description,
-      images: [getImageUrl(pathname, "twitter")],
+      images: [twitterImg],
     },
     icons: {
       apple: "/logo.png",

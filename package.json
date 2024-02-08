@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint --fix",
-    "test": "npx lint-staged",
+    "test": "next lint",
     "prepare": "husky install",
     "generate:sitemap": "cd scripts && node generate_sitemap.js"
   },

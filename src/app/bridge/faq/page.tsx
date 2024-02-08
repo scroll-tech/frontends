@@ -45,8 +45,8 @@ const FAQ = () => {
           3. Select the token (for ex. ETH) you wish to transfer.
         </Typography>
         <Typography variant="Body3" color="textSecondary" className={classes.orderedParagraph}>
-          4. Click on Send. A pop up window form will ask you for the transfer confirmation. If this is your first time transferring ETH, you will be
-          prompted to approve the Scroll Bridge contract to access your ETH token.
+          4. Click on Deposit funds/Withdraw funds. A pop up window form will ask you for the transfer confirmation. If this is your first time
+          transferring ETH, you will be prompted to approve the Scroll Bridge contract to access your ETH token.
         </Typography>
         <Typography variant="Body3" color="textSecondary" className={classes.orderedParagraph}>
           5. Once the transaction is confirmed, the token will be deducted from your wallet.

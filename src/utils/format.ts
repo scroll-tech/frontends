@@ -67,7 +67,7 @@ export const toTokenDisplay = (num, decimals: bigint = BigInt(18), symbol?: stri
 }
 
 export function sanitizeNumericalString(numStr: string) {
-  return numStr.replace(/[^0-9.]|\.(?=.*\.)/g, "")
+  return numStr.replace(/[^0-9.,]|[.,](?=.*[.,])/g, "").replace(/,/g, ".")
 }
 
 export function maxDecimals(amount: string, decimals: bigint = BigInt(18)) {
