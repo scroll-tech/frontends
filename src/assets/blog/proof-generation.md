@@ -84,7 +84,7 @@ The efficiency of the transforms can be improved by imposing some additional str
 
 This additional structure imposed over the evaluation domain enables some nice mathematical symmetries that can be leveraged to make the transforms more efficient. The **fast Fourier transform (FFT)** algorithm takes advantage of these symmetries to achieve a Fourier transform in $O(n \log n)$. The **inverse fast Fourier transform (iFFT)** algorithm similarly achieves an inverse Fourier transform in $O(n \log n)$.
 
-For a more in depth account of the fast Fourier transform, check out this [blog post](https://vitalik.ca/general/2019/05/12/fft.html) by Vitalik.
+For a more in depth account of the fast Fourier transform, check out this [blog post](https://vitalik.eth.limo/general/2019/05/12/fft.html) by Vitalik.
 
 With these preliminaries out of the way, we can proceed with our description of phase 1.
 
@@ -347,7 +347,7 @@ $$
 
 If the property in step 2 holds at $\alpha$, then (with near certainty) it holds everywhere, since $\alpha$ is sampled at random.[^8]
 
-Each evaluation proof verification requires computing an [elliptic curve pairing](https://vitalik.ca/general/2017/01/14/exploring_ecp.html). Verifying the quotient polynomial formula requires some finite field arithmetic (to compute the right-hand side of the equation). In sum, the computation required for verification is lightweight in comparison to the computation required for proof generation, and is generally able to be performed efficiently on-chain.
+Each evaluation proof verification requires computing an [elliptic curve pairing](https://vitalik.eth.limo/general/2017/01/14/exploring_ecp.html). Verifying the quotient polynomial formula requires some finite field arithmetic (to compute the right-hand side of the equation). In sum, the computation required for verification is lightweight in comparison to the computation required for proof generation, and is generally able to be performed efficiently on-chain.
 
 ### Phase 3 cost summary
 
@@ -412,7 +412,7 @@ This article covered the computational requirements of a single particular proof
 
 [^1]: The Square-Fibonacci example is inspired by this [wonderful tutorial](https://starkware.co/stark-101/) from StarkWare.
 [^2]: For example, if our trace table elements were modulo $p$, rather than the same modulo $q$ as in the Square-Fibonacci problem, then each computation step would involve [non-native field arithmetic](https://hackmd.io/@arielg/B13JoihA8) (i.e. computing $\mathbb{F}_q$ arithmetic in $\mathbb{F}_p$, with $q \neq p$). The representation of each computation would fan out to multiple rows and constraints.
-[^3]: To understand wire constraints in Plonk more deeply, I recommend the following resources: Vitalik’s [post](https://vitalik.ca/general/2019/09/22/plonk.html) on Plonk (see "Copy constraints" section), Aztec’s [notes](https://hackmd.io/@aztec-network/plonk-arithmetiization-air) on arithmetization, and Ariel Gabizon’s [notes](https://hackmd.io/@arielg/ByFgSDA7D) on multiset checks.
+[^3]: To understand wire constraints in Plonk more deeply, I recommend the following resources: Vitalik’s [post](https://vitalik.eth.limo/general/2019/09/22/plonk.html) on Plonk (see "Copy constraints" section), Aztec’s [notes](https://hackmd.io/@aztec-network/plonk-arithmetiization-air) on arithmetization, and Ariel Gabizon’s [notes](https://hackmd.io/@arielg/ByFgSDA7D) on multiset checks.
 [^4]: This follows from the [Schwartz-Zippel Lemma](https://en.wikipedia.org/wiki/Schwartz%E2%80%93Zippel_lemma).
 [^5]: The second line follows from the [polynomial remainder theorem](https://en.wikipedia.org/wiki/Polynomial_remainder_theorem). The fourth line follows from the fact that $\prod_{i=0}^{n-1} (x-\omega^i) = (x^n -1)$.
 [^6]: Technically the statements are not logically equivalent. They are probabilistically equivalent (which we denote as "$\iff \hspace{-2mm}{_p}$"), since the first step relies on the Schwartz-Zippel Lemma.
