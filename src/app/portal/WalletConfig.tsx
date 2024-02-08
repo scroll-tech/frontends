@@ -39,7 +39,7 @@ const Typography = styled(MuiTypography, {
   shouldForwardProp: prop => prop !== "bold" && prop !== "primary",
 })<TypographyProps>(({ theme, bold, primary }) => ({
   fontWeight: bold ? 600 : 400,
-  color: primary ? theme.palette.primary.main : theme.palette.text.primary,
+  color: primary ? (theme as any).vars.palette.primary.main : (theme as any).vars.palette.text.primary,
 }))
 
 const WalletConfig = () => {

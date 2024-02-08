@@ -51,7 +51,7 @@ const ExternalLink = styled(Link)(({ theme }) => ({
   lineHeight: "2.1rem",
   display: "flex",
   alignItems: "center",
-  color: theme.palette.text.primary,
+  color: (theme as any).vars.palette.text.primary,
   [theme.breakpoints.down("sm")]: {
     fontSize: "1.6rem",
   },

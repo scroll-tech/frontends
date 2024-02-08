@@ -85,7 +85,7 @@ const Chunk = ({ params }) => {
               <Box
                 sx={{
                   width: "100%",
-                  border: theme => `1px solid ${theme.palette.border.main}`,
+                  border: theme => `1px solid ${(theme as any).vars.palette.border.main}`,
                   borderRadius: "10px",
                   marginTop: "2.2rem",
                 }}

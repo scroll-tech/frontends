@@ -10,9 +10,9 @@ const AnnouncementStack = styled<any>(Stack, {
   shouldForwardProp: prop => prop !== "production",
 })(({ theme, production }) => ({
   lineHeight: "2.6rem",
-  background: production ? "#62e6d4" : theme.palette.primary.main,
+  background: production ? "#62e6d4" : (theme as any).vars.palette.primary.main,
   textAlign: "center",
-  color: production ? theme.palette.text.primary : theme.palette.primary.contrastText,
+  color: production ? (theme as any).vars.palette.text.primary : (theme as any).vars.palette.primary.contrastText,
   fontSize: "1.6rem",
   padding: "1.2rem",
   display: "inline-block",

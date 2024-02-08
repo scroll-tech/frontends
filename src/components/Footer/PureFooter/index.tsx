@@ -68,7 +68,7 @@ const Footer = () => {
               fontSize: "1.8rem",
               fontWeight: 600,
               lineHeight: "normal",
-              color: theme => theme.palette.primary.contrastText,
+              color: theme => (theme as any).vars.palette.primary.contrastText,
               mb: "3rem",
             }}
           >
@@ -83,9 +83,9 @@ const Footer = () => {
                     width: "auto",
                     height: "auto",
                     verticalAlign: "middle",
-                    color: theme => theme.palette.primary.contrastText,
+                    color: theme => (theme as any).vars.palette.primary.contrastText,
                     "&:hover": {
-                      color: theme => theme.palette.primary.dark,
+                      color: theme => (theme as any).vars.palette.primary.dark,
                     },
                   }}
                   titleAccess={item.name}

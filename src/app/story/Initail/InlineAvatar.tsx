@@ -14,7 +14,7 @@ const useStyles = makeStyles<any>()((theme, { size }) => ({
     position: "absolute",
     width: size === "small" ? "4rem" : "5rem",
     height: size === "small" ? "4rem" : "5rem",
-    backgroundColor: theme.palette.themeBackground.highlight,
+    backgroundColor: (theme as any).vars.palette.themeBackground.highlight,
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",

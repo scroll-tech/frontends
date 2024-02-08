@@ -53,13 +53,13 @@ const useStyles = makeStyles<any>()((theme, { type }) => {
       },
     },
     tableHeader: {
-      borderBottom: `3px solid ${theme.palette.border.main}`,
+      borderBottom: `3px solid ${(theme as any).vars.palette.border.main}`,
       ".MuiTableCell-head": {
         borderBottom: "unset",
         fontWeight: 600,
         fontSize: "1.6rem",
         padding: "0.8rem 1.6rem",
-        color: theme.palette.text.primary,
+        color: (theme as any).vars.palette.text.primary,
         whiteSpace: "nowrap",
         "&:first-of-type": {
           paddingLeft: 0,
@@ -103,8 +103,8 @@ const useStyles = makeStyles<any>()((theme, { type }) => {
       background: "#5B5B5B",
     },
     claimedChip: {
-      color: theme.palette.tagSuccess.main,
-      backgroundColor: theme.palette.tagSuccess.light,
+      color: (theme as any).vars.palette.tagSuccess.main,
+      backgroundColor: (theme as any).vars.palette.tagSuccess.light,
     },
     pagination: {
       overflowX: "auto",
@@ -116,7 +116,7 @@ const useStyles = makeStyles<any>()((theme, { type }) => {
         fontSize: "1.6rem",
       },
       ".MuiPaginationItem-root": {
-        color: theme.palette.text.primary,
+        color: (theme as any).vars.palette.text.primary,
       },
       ".MuiPaginationItem-root.Mui-selected": {
         fontWeight: 700,

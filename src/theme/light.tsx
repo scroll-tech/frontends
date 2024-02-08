@@ -6,24 +6,24 @@ const defaultTransition = "all 0.15s ease-out"
 
 const lightTheme = {
   // check in bridge
-  singleLineEllipsis: {
-    overflow: "hidden",
-    whiteSpace: "nowrap",
-    textOverflow: "ellipsis",
-  },
-  multilineEllipsis: {
-    display: "-webkit-box",
-    WebkitBoxOrient: "vertical",
-    WebkitLineClamp: "4",
-    overflow: "hidden",
-  },
+  // singleLineEllipsis: {
+  //   overflow: "hidden",
+  //   whiteSpace: "nowrap",
+  //   textOverflow: "ellipsis",
+  // },
+  // multilineEllipsis: {
+  //   display: "-webkit-box",
+  //   WebkitBoxOrient: "vertical",
+  //   WebkitLineClamp: "4",
+  //   overflow: "hidden",
+  // },
   shape: {
     borderRadius: 27,
   },
   palette: paletteOptions,
   typography: typographyOptions,
   // diferrent from raw shadows
-  boxShadows: boxShadowOptions,
+  // boxShadows: boxShadowOptions,
   components: {
     MuiContainer: {
       styleOverrides: {
@@ -286,7 +286,7 @@ const lightTheme = {
     MuiAccordion: {
       styleOverrides: {
         root: ({ theme }) => ({
-          borderBottom: `1px solid ${theme.palette.border.main}`,
+          borderBottom: `1px solid ${(theme as any).vars.palette.border.main}`,
           "&:before": {
             backgroundColor: "unset",
           },
@@ -337,7 +337,7 @@ const lightTheme = {
     MuiLink: {
       styleOverrides: {
         root: ({ theme }) => ({
-          color: theme.palette.link.main,
+          color: (theme as any).vars.palette.link.main,
           fontSize: "1.6rem",
           fontWeight: 600,
           cursor: "pointer",

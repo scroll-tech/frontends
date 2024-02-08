@@ -94,7 +94,7 @@ const Purpose = () => {
             width: "50%",
             mt: ["4.8rem", "3.2rem", "4.8rem"],
             mb: ["4.8rem", "3.2rem", "8rem"],
-            borderColor: theme => theme.palette.primary.contrastText,
+            borderColor: theme => (theme as any).vars.palette.primary.contrastText,
           }}
           textAlign="center"
         />

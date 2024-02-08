@@ -21,7 +21,7 @@ const Card = styled(Box)(({ theme }) => ({
   margin: "0 auto",
   overflow: "hidden",
   cursor: "pointer",
-  color: theme.palette.text.primary,
+  color: (theme as any).vars.palette.text.primary,
   transition: "all 0.3s ease-in-out",
   "&:hover": {
     transform: "scale(1.01)",

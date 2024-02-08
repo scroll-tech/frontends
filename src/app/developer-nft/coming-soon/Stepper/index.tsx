@@ -38,7 +38,7 @@ const useStyles = makeStyles()(theme => ({
     paddingRight: 0,
   },
   stepLabelText: {
-    color: theme.palette.primary.contrastText,
+    color: (theme as any).vars.palette.primary.contrastText,
     fontSize: "2rem",
     fontWeight: "600 !important",
     lineHeight: "normal",

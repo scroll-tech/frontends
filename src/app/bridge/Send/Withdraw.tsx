@@ -24,11 +24,11 @@ const useStyles = makeStyles()(theme => ({
     fontSize: "1.6rem",
     fontWeight: 600,
     textTransform: "unset",
-    color: theme.palette.text.primary,
+    color: (theme as any).vars.palette.text.primary,
     padding: 0,
     flex: 1,
     "&.Mui-selected": {
-      color: theme.palette.text.primary,
+      color: (theme as any).vars.palette.text.primary,
     },
     [theme.breakpoints.down("sm")]: {
       fontSize: "1.4rem",
@@ -41,7 +41,7 @@ const useStyles = makeStyles()(theme => ({
     backgroundColor: "#FF684B",
   },
   tabPanel: {
-    backgroundColor: theme.palette.themeBackground.optionHightlight,
+    backgroundColor: (theme as any).vars.palette.themeBackground.optionHightlight,
     flex: 1,
     padding: "1.6rem 0 0",
   },

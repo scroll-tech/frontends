@@ -14,7 +14,7 @@ const Statistic = props => {
         flex: 1,
         borderRadius: ["0.8rem", "1.6rem"],
         p: ["0.8rem 1.2rem", "1.6rem 2.4rem"],
-        backgroundColor: theme => theme.palette.themeBackground.normal,
+        backgroundColor: theme => (theme as any).vars.palette.themeBackground.normal,
       }}
     >
       <Typography

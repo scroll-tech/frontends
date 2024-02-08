@@ -35,14 +35,14 @@ const useStyles = makeStyles()(theme => ({
     height: "5.6rem",
     fontSize: "2rem",
     fontWeight: 500,
-    color: theme.palette.text.primary,
+    color: (theme as any).vars.palette.text.primary,
     padding: 0,
-    backgroundColor: theme.palette.themeBackground.normal,
+    backgroundColor: (theme as any).vars.palette.themeBackground.normal,
     textTransform: "unset",
     "&.Mui-selected": {
-      color: theme.palette.text.primary,
+      color: (theme as any).vars.palette.text.primary,
       fontWeight: 600,
-      backgroundColor: theme.palette.themeBackground.optionHightlight,
+      backgroundColor: (theme as any).vars.palette.themeBackground.optionHightlight,
     },
 
     [theme.breakpoints.down("sm")]: {
@@ -54,7 +54,7 @@ const useStyles = makeStyles()(theme => ({
     display: "none",
   },
   tabPanel: {
-    backgroundColor: theme.palette.themeBackground.optionHightlight,
+    backgroundColor: (theme as any).vars.palette.themeBackground.optionHightlight,
     padding: "3rem 5.4rem",
 
     "&.withdraw": {

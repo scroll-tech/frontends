@@ -40,7 +40,7 @@ const BlogNavbar = styled(Box)(({ theme }) => ({
   marginLeft: "4rem",
   maxWidth: "30vw",
   paddingLeft: "2rem",
-  borderLeft: `1px solid ${theme.palette.border.main}`,
+  borderLeft: `1px solid ${(theme as any).vars.palette.border.main}`,
   [theme.breakpoints.down("md")]: {
     display: "none",
   },

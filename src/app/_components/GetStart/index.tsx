@@ -4,6 +4,7 @@ import Image from "next/image"
 import React, { useEffect, useRef, useState } from "react"
 
 import { Box, Container as MuiContainer, Typography } from "@mui/material"
+import type {} from "@mui/material/themeCssVarsAugmentation"
 import { styled } from "@mui/system"
 
 import ScalabilityIcon from "@/assets/images/home/start_bridge.png"
@@ -127,7 +128,7 @@ const StepIcon = styled(Image)(({ theme }) => ({
 
 const StepTitle = styled(Typography)(({ theme }) => ({
   textAlign: "left",
-  color: theme.palette.primary.contrastText,
+  color: (theme as any).vars.palette.primary.contrastText,
   marginBottom: "2rem",
   [theme.breakpoints.down("md")]: {
     marginBottom: "1.4rem",
@@ -139,7 +140,7 @@ const StepTitle = styled(Typography)(({ theme }) => ({
 
 const StepDescription = styled(Typography)(({ theme }) => ({
   textAlign: "left",
-  color: theme.palette.primary.contrastText,
+  color: (theme as any).vars.palette.primary.contrastText,
   maxWidth: "32.6rem",
   [theme.breakpoints.down("sm")]: {
     fontSize: "1.6rem",

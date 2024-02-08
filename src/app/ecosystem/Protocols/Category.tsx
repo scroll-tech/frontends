@@ -43,13 +43,13 @@ const useStyles = makeStyles<any>()((theme, { top }) => ({
       padding: "0.8rem",
     },
     "&.Mui-selected": {
-      backgroundColor: theme.palette.text.primary,
+      backgroundColor: (theme as any).vars.palette.text.primary,
       borderRadius: "4px",
       "&:hover": {
-        backgroundColor: theme.palette.text.primary,
+        backgroundColor: (theme as any).vars.palette.text.primary,
       },
       ".MuiTypography-root": {
-        color: theme.palette.primary.contrastText,
+        color: (theme as any).vars.palette.primary.contrastText,
       },
     },
     "&:nth-of-type(n + 2)": {

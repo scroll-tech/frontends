@@ -13,46 +13,50 @@ declare global {
 }
 
 declare module "@mui/material/styles" {
-  interface Theme {
-    boxShadows: {
-      none: string
-      sharp: string
-      buttonHover: string
-      select: string
-      tile: string
-    }
-    singleLineEllipsis: {
-      overflow: string
-      whiteSpace: string
-      textOverflow: string
-    }
-    multilineEllipsis: {
-      display: string
-      WebkitBoxOrient: BoxOrient
-      WebkitLineClamp: string
-      overflow: string
-    }
-  }
-  interface ThemeOptions {
-    boxShadows?: {
-      none: string
-      sharp: string
-      buttonHover: string
-      select: string
-      tile: string
-    }
-    singleLineEllipsis?: {
-      overflow: string
-      whiteSpace: string
-      textOverflow: string
-    }
-    multilineEllipsis?: {
-      display: string
-      WebkitBoxOrient: BoxOrient
-      WebkitLineClamp: string
-      overflow: string
-    }
-  }
+  // interface Theme {
+  //   vars: {
+  //     boxShadows: {
+  //       none: string
+  //       sharp: string
+  //       buttonHover: string
+  //       select: string
+  //       tile: string
+  //     }
+  //     singleLineEllipsis: {
+  //       overflow: string
+  //       whiteSpace: string
+  //       textOverflow: string
+  //     }
+  //     multilineEllipsis: {
+  //       display: string
+  //       WebkitBoxOrient: BoxOrient
+  //       WebkitLineClamp: string
+  //       overflow: string
+  //     }
+  //   }
+  // }
+  // interface ThemeOptions {
+  //   vars: {
+  //     boxShadows?: {
+  //       none: string
+  //       sharp: string
+  //       buttonHover: string
+  //       select: string
+  //       tile: string
+  //     }
+  //     singleLineEllipsis?: {
+  //       overflow: string
+  //       whiteSpace: string
+  //       textOverflow: string
+  //     }
+  //     multilineEllipsis?: {
+  //       display: string
+  //       WebkitBoxOrient: BoxOrient
+  //       WebkitLineClamp: string
+  //       overflow: string
+  //     }
+  //   }
+  // }
   interface Palette {
     themeBackground: {
       light: string

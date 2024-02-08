@@ -14,7 +14,7 @@ const useStyles = makeStyles()(theme => ({
     top: "-2rem",
     left: "50%",
     transform: "translateX(-50%)",
-    border: `3px solid ${theme.palette.text.primary}`,
+    border: `3px solid ${(theme as any).vars.palette.text.primary}`,
     borderRadius: "1rem",
     backgroundColor: "#FFE1DC",
     padding: "0.7rem 2rem",
@@ -35,9 +35,9 @@ const useStyles = makeStyles()(theme => ({
   },
   award: {
     padding: "0.8rem 2rem",
-    border: `3px solid ${theme.palette.text.primary}`,
+    border: `3px solid ${(theme as any).vars.palette.text.primary}`,
     height: "8rem",
-    backgroundColor: theme.palette.themeBackground.light,
+    backgroundColor: (theme as any).vars.palette.themeBackground.light,
     borderRadius: "1.6rem",
     textAlign: "center",
     [theme.breakpoints.down("sm")]: {

@@ -3,7 +3,7 @@ import React, { useState } from "react"
 import { useStyles } from "tss-react/mui"
 
 import { Box, Container, Fade, Link, Popper, Stack, SvgIcon, Typography } from "@mui/material"
-import { styled } from "@mui/system"
+import { styled } from "@mui/material/styles"
 
 import TriangleDownSvg from "@/assets/svgs/common/header-triangle-down.svg"
 import Logo from "@/components/ScrollLogo"
@@ -21,11 +21,19 @@ const StyledBox = styled<any>(Stack, { shouldForwardProp: prop => prop !== "dark
   top: 0,
   width: "100%",
   zIndex: 10,
-  backgroundColor: bgColor ? theme.palette.themeBackground[bgColor] : dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.light,
+  backgroundColor: bgColor
+    ? (theme as any).vars.palette.themeBackground[bgColor]
+    : dark
+      ? (theme as any).vars.palette.themeBackground.dark
+      : (theme as any).vars.palette.themeBackground.light,
 }))
 
 const StyledPopper = styled<any>(Popper, { shouldForwardProp: prop => prop !== "dark" && prop !== "bgColor" })(({ theme, bgColor, dark }) => ({
-  backgroundColor: bgColor ? theme.palette.themeBackground[bgColor] : dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.light,
+  backgroundColor: bgColor
+    ? (theme as any).vars.palette.themeBackground[bgColor]
+    : dark
+      ? (theme as any).vars.palette.themeBackground.dark
+      : (theme as any).vars.palette.themeBackground.light,
   padding: "0 2rem 1rem",
   marginLeft: "-2rem !important",
   zIndex: theme.zIndex.appBar,
@@ -46,7 +54,7 @@ const MenuLinkButton = styled<any>(Link, { shouldForwardProp: prop => prop !== "
   marginRight: "4px",
   lineHeight: "65px",
   position: "relative",
-  color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
+  color: dark ? (theme as any).vars.palette.primary.contrastText : (theme as any).vars.palette.text.primary,
   "&:hover": {
     fontWeight: 500,
   },
@@ -57,7 +65,7 @@ const ExternalLink = styled<any>("p", { shouldForwardProp: prop => prop !== "dar
   fontSize: "1.8rem",
   height: "2.1rem",
   lineHeight: "2.1rem",
-  color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
+  color: dark ? (theme as any).vars.palette.primary.contrastText : (theme as any).vars.palette.text.primary,
   display: "flex",
   alignItems: "center",
   width: "100%",
@@ -73,7 +81,7 @@ const LinkStyledButton = styled<any>(NavLink, { shouldForwardProp: prop => prop 
   marginRight: "0.5rem",
   lineHeight: "65px",
   position: "relative",
-  color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
+  color: dark ? (theme as any).vars.palette.primary.contrastText : (theme as any).vars.palette.text.primary,
   whiteSpace: "nowrap",
   "&:hover": {
     fontWeight: 500,
@@ -91,7 +99,7 @@ const SubMenuButton = styled<any>(Stack, { shouldForwardProp: prop => prop !== "
   lineHeight: "65px",
   position: "relative",
   cursor: "pointer",
-  color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
+  color: dark ? (theme as any).vars.palette.primary.contrastText : (theme as any).vars.palette.text.primary,
   "&.active": {
     fontWeight: 600,
   },
@@ -120,7 +128,7 @@ const SectionList = styled<any>(Box, { shouldForwardProp: prop => prop !== "dark
     paddingTop: 0,
   },
   "&:nth-of-type(n+2)": {
-    borderTop: `1px solid ${dark ? theme.palette.primary.contrastText : theme.palette.text.primary}`,
+    borderTop: `1px solid ${dark ? (theme as any).vars.palette.primary.contrastText : (theme as any).vars.palette.text.primary}`,
   },
   "&:nth-last-of-type(1)": {
     paddingBottom: "0.8rem",
@@ -132,11 +140,11 @@ const LinkButton = styled<any>(Link, { shouldForwardProp: prop => prop !== "dark
     lineHeight: "2.9rem",
     height: "2.9rem",
     fontSize: "1.8rem",
-    color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
+    color: dark ? (theme as any).vars.palette.primary.contrastText : (theme as any).vars.palette.text.primary,
     fontWeight: 400,
     cursor: "pointer",
     "&:hover": {
-      color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
+      color: dark ? (theme as any).vars.palette.primary.contrastText : (theme as any).vars.palette.text.primary,
     },
   },
 }))
@@ -147,7 +155,7 @@ const LinkStyledSubButton = styled<any>(NavLink, { shouldForwardProp: prop => pr
   fontSize: "1.8rem",
   fontWeight: 400,
   cursor: "pointer",
-  color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
+  color: dark ? (theme as any).vars.palette.primary.contrastText : (theme as any).vars.palette.text.primary,
   "&:hover": {
     fontWeight: 500,
   },

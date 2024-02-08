@@ -34,7 +34,7 @@ const Card = styled(Paper)(({ theme }) => ({
 const CardTitle = styled(Typography)(({ theme }) => ({
   fontWeight: 600,
   marginRight: "0.6rem",
-  color: theme.palette.text.primary,
+  color: (theme as any).vars.palette.text.primary,
   [theme.breakpoints.down("sm")]: {
     fontSize: "1.4rem",
     lineHeight: "2rem",

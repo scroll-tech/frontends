@@ -48,15 +48,15 @@ const useStyles = makeStyles()(theme => {
     },
     claimButton: {
       borderRadius: "0.5rem",
-      backgroundColor: theme.palette.primary.main,
-      color: theme.palette.primary.contrastText,
+      backgroundColor: (theme as any).vars.palette.primary.main,
+      color: (theme as any).vars.palette.primary.contrastText,
     },
     pagination: {
       ".MuiPaginationItem-text": {
         fontSize: "1.6rem",
       },
       ".MuiPaginationItem-root": {
-        color: theme.palette.text.primary,
+        color: (theme as any).vars.palette.text.primary,
       },
       ".MuiPaginationItem-root.Mui-selected": {
         fontWeight: 700,

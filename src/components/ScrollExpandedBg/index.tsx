@@ -7,7 +7,7 @@ import { styled } from "@mui/material/styles"
 
 const Wrapper = styled<any>(Box, { shouldForwardProp: prop => prop !== "bgColor" })(({ theme, bgColor }) => ({
   position: "relative",
-  backgroundColor: bgColor ? theme.palette.themeBackground[bgColor] : "transparent",
+  backgroundColor: bgColor ? (theme as any).vars.palette.themeBackground[bgColor] : "transparent",
 }))
 
 const Container = styled(Box)(({ theme }) => ({
@@ -27,7 +27,7 @@ const Background = styled(Box)(({ theme }) => ({
   bottom: "0",
   width: "60%",
   minWidth: "152rem",
-  background: theme.palette.themeBackground.dark,
+  background: (theme as any).vars.palette.themeBackground.dark,
   willChange: "width, height",
   borderRadius: "40px 40px 0px 0px",
   left: "50%",

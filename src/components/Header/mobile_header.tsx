@@ -38,7 +38,7 @@ const Bar = styled<any>("div", {
 })(({ theme, dark }) => ({
   width: "2rem",
   height: ".2rem",
-  backgroundColor: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
+  backgroundColor: dark ? (theme as any).vars.palette.primary.contrastText : (theme as any).vars.palette.text.primary,
   margin: " 5px 0",
   transition: "0.4s",
 }))
@@ -47,7 +47,7 @@ const MenuContent = styled<any>(Box, {
   shouldForwardProp: prop => prop !== "dark",
 })(({ theme, dark }) => ({
   margin: "0.5rem 1.6rem 0",
-  background: dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.light,
+  background: dark ? (theme as any).vars.palette.themeBackground.dark : (theme as any).vars.palette.themeBackground.light,
 }))
 
 const ListItem = styled<any>(ListItemButton, {
@@ -57,7 +57,7 @@ const ListItem = styled<any>(ListItemButton, {
   fontSize: "2rem",
   height: "5.5rem",
   lineHeight: "5.5rem",
-  color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
+  color: dark ? (theme as any).vars.palette.primary.contrastText : (theme as any).vars.palette.text.primary,
   margin: "0",
   display: "flex",
   justifyContent: "space-between",
@@ -67,7 +67,7 @@ const ListItem = styled<any>(ListItemButton, {
     background: "transparent",
   },
   "&:not(:first-of-type)": {
-    borderTop: `1px solid ${dark ? theme.palette.primary.contrastText : theme.palette.text.primary}`,
+    borderTop: `1px solid ${dark ? (theme as any).vars.palette.primary.contrastText : (theme as any).vars.palette.text.primary}`,
   },
 }))
 
@@ -78,10 +78,10 @@ const MenuLinkStyledButton = styled<any>(NavLink, {
   fontSize: "2rem",
   height: "5.5rem",
   lineHeight: "5.5rem",
-  color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
+  color: dark ? (theme as any).vars.palette.primary.contrastText : (theme as any).vars.palette.text.primary,
   width: "100%",
   "&.active": {
-    color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
+    color: dark ? (theme as any).vars.palette.primary.contrastText : (theme as any).vars.palette.text.primary,
   },
 }))
 
@@ -101,10 +101,10 @@ const LinkStyledButton = styled<any>(NavLink, {
   fontSize: "1.8rem",
   height: "4rem",
   lineHeight: "4rem",
-  color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
+  color: dark ? (theme as any).vars.palette.primary.contrastText : (theme as any).vars.palette.text.primary,
   width: "100%",
   "&.active": {
-    color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
+    color: dark ? (theme as any).vars.palette.primary.contrastText : (theme as any).vars.palette.text.primary,
     fontWeight: 500,
   },
 }))
@@ -116,7 +116,7 @@ const ExternalLink = styled<any>(Link, {
   fontSize: "1.8rem",
   height: "4rem",
   lineHeight: "4rem",
-  color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
+  color: dark ? (theme as any).vars.palette.primary.contrastText : (theme as any).vars.palette.text.primary,
   display: "flex",
   alignItems: "center",
   width: "100%",
@@ -132,7 +132,7 @@ const SectionList = styled<any>("div", {
     paddingBottom: "1.6rem",
   },
   "&:nth-of-type(n+2)": {
-    borderTop: `1px solid ${dark ? theme.palette.primary.contrastText : theme.palette.text.primary}`,
+    borderTop: `1px solid ${dark ? (theme as any).vars.palette.primary.contrastText : (theme as any).vars.palette.text.primary}`,
     paddingTop: "1.6rem",
   },
 }))
@@ -274,7 +274,7 @@ const App = ({ currentMenu }) => {
       {open && (
         <Box
           sx={{
-            background: theme => (dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.light),
+            background: theme => (dark ? (theme as any).vars.palette.themeBackground.dark : (theme as any).vars.palette.themeBackground.light),
             paddingTop: "5rem",
             height: "calc(100vh - 6.2rem)",
             overflowY: "auto",

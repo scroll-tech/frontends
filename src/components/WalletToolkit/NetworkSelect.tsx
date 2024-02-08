@@ -13,9 +13,9 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
   button: {
     height: "3.6rem",
     padding: "0 1.2rem",
-    border: dark ? `1px solid ${theme.palette.primary.contrastText}` : "none",
-    backgroundColor: dark ? "unset" : theme.palette.themeBackground.normal,
-    color: dark ? theme.palette.primary.contrastText : "#473835",
+    border: dark ? `1px solid ${(theme as any).vars.palette.primary.contrastText}` : "none",
+    backgroundColor: dark ? "unset" : (theme as any).vars.palette.themeBackground.normal,
+    color: dark ? (theme as any).vars.palette.primary.contrastText : "#473835",
     borderRadius: "0.5rem",
   },
   endIcon: {
@@ -41,8 +41,8 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
   paper: {
     marginTop: "0.5rem",
     borderRadius: "0.5rem",
-    border: dark ? `1px solid ${theme.palette.primary.contrastText}` : "none",
-    backgroundColor: dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.normal,
+    border: dark ? `1px solid ${(theme as any).vars.palette.primary.contrastText}` : "none",
+    backgroundColor: dark ? (theme as any).vars.palette.themeBackground.dark : (theme as any).vars.palette.themeBackground.normal,
   },
   list: {
     padding: 0,
@@ -59,7 +59,7 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
     fontSize: "1.6rem",
     fontFamily: "var(--developer-page-font-family)",
     cursor: "pointer",
-    color: dark ? theme.palette.primary.contrastText : "#473835",
+    color: dark ? (theme as any).vars.palette.primary.contrastText : "#473835",
   },
 }))
 

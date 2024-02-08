@@ -31,7 +31,7 @@ const StickerContest = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          "& p.MuiTypography-root": { color: theme => `${theme.palette.primary.contrastText} !important` },
+          "& p.MuiTypography-root": { color: theme => `${(theme as any).vars.palette.primary.contrastText} !important` },
         }}
       >
         <Title content={FinalistsSvg}></Title>

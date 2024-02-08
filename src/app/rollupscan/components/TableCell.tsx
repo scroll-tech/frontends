@@ -3,7 +3,7 @@ import { styled } from "@mui/material/styles"
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   fontWeight: "500",
-  color: theme.palette.text.primary,
+  color: (theme as any).vars.palette.text.primary,
   [`&.${tableCellClasses.head}`]: {
     fontSize: 16,
     height: "6rem",

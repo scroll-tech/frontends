@@ -5,7 +5,7 @@ const StyledTable = styled(Table)(({ theme }) => ({
   marginTop: "3rem",
   minWidth: 700,
   borderRadius: theme.shape.borderRadius,
-  border: `1px solid ${theme.palette.divider}`,
+  border: `1px solid ${(theme as any).vars.palette.divider}`,
   borderCollapse: "separate",
   overflow: "hidden",
   [theme.breakpoints.down("sm")]: {

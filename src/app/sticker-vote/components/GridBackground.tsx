@@ -12,11 +12,11 @@ import StickerSvg from "@/assets/svgs/sticker-vote/sticker.svg"
 const useStyles = makeStyles()(theme => ({
   bg: {
     height: "63.4rem",
-    border: `3px solid ${theme.palette.text.primary}`,
+    border: `3px solid ${(theme as any).vars.palette.text.primary}`,
     borderRadius: "1.6rem",
     backgroundSize: "4rem 4rem",
     backgroundOrigin: "border-box",
-    backgroundColor: theme.palette.themeBackground.light,
+    backgroundColor: (theme as any).vars.palette.themeBackground.light,
     backgroundImage:
       "linear-gradient(to right, rgba(16, 16, 16, 0.05) 1px, transparent 1px),linear-gradient(to bottom, rgba(16, 16, 16, 0.05) 1px, transparent 1px)",
     [theme.breakpoints.down("md")]: {

@@ -42,13 +42,13 @@ const useStyles = makeStyles()(theme => ({
     top: "50%",
     transform: "translateY(-50%)",
     margin: "0 auto",
-    background: `radial-gradient(50% 50% at 50% 50%, ${theme.palette.primary.contrastText} 44%, transparent 100%)`,
+    background: `radial-gradient(50% 50% at 50% 50%, ${(theme as any).vars.palette.primary.contrastText} 44%, transparent 100%)`,
 
     [theme.breakpoints.down("sm")]: {
       width: "calc(100vw - 1.6rem)",
       height: "unset",
       aspectRatio: "1 / 1",
-      background: `radial-gradient(50% 50% at 50% 50%, ${theme.palette.themeBackground.light} 56%, transparent 100%)`,
+      background: `radial-gradient(50% 50% at 50% 50%, ${(theme as any).vars.palette.themeBackground.light} 56%, transparent 100%)`,
     },
   },
 }))

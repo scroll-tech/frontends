@@ -35,7 +35,7 @@ const DialogStyled = styled(Dialog)(({ theme }) => ({
 const InputBaseStyled = styled(InputBase)(({ theme }) => ({
   width: "100%",
   borderRadius: "1rem",
-  border: `1px solid ${theme.palette.text.primary}`,
+  border: `1px solid ${(theme as any).vars.palette.text.primary}`,
   fontFamily: "var(--developer-page-font-family)",
   height: "4.8rem",
   [theme.breakpoints.down("sm")]: {

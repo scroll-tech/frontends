@@ -45,7 +45,7 @@ const useStyles = makeStyles()(theme => ({
     width: "62.8rem",
     maxWidth: "unset",
     borderRadius: "2rem",
-    backgroundColor: theme.palette.themeBackground.light,
+    backgroundColor: (theme as any).vars.palette.themeBackground.light,
     [theme.breakpoints.down("sm")]: {
       padding: "2rem 0",
     },
@@ -78,7 +78,7 @@ const useStyles = makeStyles()(theme => ({
     },
   },
   selectedCard: {
-    outline: `1px solid ${theme.palette.text.primary}`,
+    outline: `1px solid ${(theme as any).vars.palette.text.primary}`,
   },
   chipRoot: {
     position: "absolute",

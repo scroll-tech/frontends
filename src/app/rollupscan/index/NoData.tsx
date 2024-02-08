@@ -14,7 +14,7 @@ const NoResultsTypography = styled(Typography)(({ theme }) => ({
   lineHeight: "2.4rem",
   marginTop: "1rem",
   marginBottom: "1rem",
-  color: theme.palette.text.primary,
+  color: (theme as any).vars.palette.text.primary,
 }))
 
 const NoData = () => {

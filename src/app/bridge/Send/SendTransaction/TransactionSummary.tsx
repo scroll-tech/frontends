@@ -25,9 +25,9 @@ const useStyles = makeStyles()(theme => ({
   table: {
     borderRadius: "1rem",
     overflow: "hidden",
-    background: theme.palette.themeBackground.normal,
+    background: (theme as any).vars.palette.themeBackground.normal,
     width: "100%",
-    border: `1.6rem solid ${theme.palette.themeBackground.normal}`,
+    border: `1.6rem solid ${(theme as any).vars.palette.themeBackground.normal}`,
     borderTopWidth: " 1.2rem",
     borderBottomWidth: "1.2rem",
   },

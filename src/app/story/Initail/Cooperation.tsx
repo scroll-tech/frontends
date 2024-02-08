@@ -21,14 +21,14 @@ const useStyles = makeStyles()(theme => ({
     position: "relative",
     borderRadius: "2.5rem",
     padding: "4.4rem 6rem 5.4rem",
-    backgroundColor: theme.palette.themeBackground.normal,
+    backgroundColor: (theme as any).vars.palette.themeBackground.normal,
     [theme.breakpoints.down("sm")]: {
       padding: "5.4rem 2rem 6rem",
       margin: "0 -2rem",
     },
   },
   logo: {
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: (theme as any).vars.palette.background.default,
     width: "6rem",
     height: "6rem",
     [theme.breakpoints.up("sm")]: {

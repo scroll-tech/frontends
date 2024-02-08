@@ -26,22 +26,22 @@ interface ScrollButtonProps extends ButtonProps {
 const gColor = (color, theme) => {
   switch (color) {
     case "primary":
-      return theme.palette.primary.main
+      return (theme as any).vars.palette.primary.main
     case "secondary":
-      return theme.palette.primary.contrastText
+      return (theme as any).vars.palette.primary.contrastText
     default:
-      return theme.palette.text.primary
+      return (theme as any).vars.palette.text.primary
   }
 }
 
 const cColor = (color, theme) => {
   switch (color) {
     case "primary":
-      return theme.palette.primary.contrastText
+      return (theme as any).vars.palette.primary.contrastText
     case "secondary":
-      return theme.palette.text.primary
+      return (theme as any).vars.palette.text.primary
     default:
-      return theme.palette.primary.contrastText
+      return (theme as any).vars.palette.primary.contrastText
   }
 }
 

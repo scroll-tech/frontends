@@ -31,48 +31,48 @@ const StyledTablePagination: any = styled(TablePagination)(({ theme }) => ({
     fontWeight: "500 ",
   },
   ".MuiTablePagination-selectLabel": {
-    color: `${theme.palette.text.primary}`,
+    color: `${(theme as any).vars.palette.text.primary}`,
     fontSize: "1.6rem",
     fontWeight: "500 ",
   },
   ".MuiTablePagination-selectIcon": {
     fontSize: "1.6rem",
-    color: `${theme.palette.text.primary}`,
+    color: `${(theme as any).vars.palette.text.primary}`,
   },
   ".MuiTablePagination-displayedRows": {
     fontSize: "1.6rem",
     fontWeight: "500 ",
-    color: `${theme.palette.text.primary}`,
+    color: `${(theme as any).vars.palette.text.primary}`,
   },
   // "*": {
   //   fontSize: "1.6rem !important",
   //   fontWeight: "500 !important",
-  //   color: `${theme.palette.text.primary} !important`,
+  //   color: `${(theme as any).vars.palette.text.primary} !important`,
   // },
 }))
 
 const StatusChip = styled(Chip)(({ theme }) => ({
-  color: theme.palette.primary.contrastText,
+  color: (theme as any).vars.palette.primary.contrastText,
   textTransform: "capitalize",
   "&.precommitted": {
-    backgroundColor: theme.palette.tagWarning.light,
-    color: theme.palette.tagWarning.main,
+    backgroundColor: (theme as any).vars.palette.tagWarning.light,
+    color: (theme as any).vars.palette.tagWarning.main,
   },
   "&.committed": {
-    backgroundColor: theme.palette.tagCommitted.light,
-    color: theme.palette.tagCommitted.main,
+    backgroundColor: (theme as any).vars.palette.tagCommitted.light,
+    color: (theme as any).vars.palette.tagCommitted.main,
   },
   "&.finalized": {
     backgroundColor: "#DFFCF8",
     color: "#0F8E7E",
   },
   "&.skipped": {
-    backgroundColor: theme.palette.tagCommitted.light,
-    color: theme.palette.tagCommitted.main,
+    backgroundColor: (theme as any).vars.palette.tagCommitted.light,
+    color: (theme as any).vars.palette.tagCommitted.main,
   },
   "&.unknown": {
-    backgroundColor: theme.palette.tagUnknown.light,
-    color: theme.palette.tagUnknown.main,
+    backgroundColor: (theme as any).vars.palette.tagUnknown.light,
+    color: (theme as any).vars.palette.tagUnknown.main,
   },
   "& > .MuiChip-label": {
     fontWeight: 500,
@@ -84,7 +84,7 @@ const CustomPagination = styled(Pagination)(({ theme }) => ({
     fontSize: "1.6rem",
   },
   ".MuiPaginationItem-root": {
-    color: theme.palette.text.primary,
+    color: (theme as any).vars.palette.text.primary,
   },
   ".MuiPaginationItem-root.Mui-selected": {
     fontWeight: 700,
@@ -108,9 +108,9 @@ const CustomTableRow = styled(TableRow)(({ theme }) => ({
     transition: "all 0.5s ease",
   },
   "&.rowActive": {
-    backgroundColor: `${theme.palette.primary.main}10`,
+    backgroundColor: `${(theme as any).vars.palette.primary.main}10`,
     "&:after": {
-      backgroundColor: theme.palette.primary.main,
+      backgroundColor: (theme as any).vars.palette.primary.main,
     },
   },
 }))

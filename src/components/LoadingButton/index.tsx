@@ -5,7 +5,7 @@ import { CircularProgress, Stack } from "@mui/material"
 
 const useStyles = makeStyles()(theme => ({
   loadingIndicator: {
-    color: theme.palette.primary.contrastText,
+    color: (theme as any).vars.palette.primary.contrastText,
     width: "max-content",
   },
 }))

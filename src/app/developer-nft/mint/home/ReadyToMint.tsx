@@ -21,7 +21,7 @@ import Statistic from "../../components/Statistic"
 import MintFlowDialog from "./MintFlowDialog"
 
 const CustomLink = styled(Link)(({ theme }) => ({
-  color: `${theme.palette.primary.main} !important`,
+  color: `${(theme as any).vars.palette.primary.main} !important`,
   fontSize: "inherit",
   textUnderlineOffset: "2px",
   textDecorationThickness: "1px",
@@ -104,7 +104,7 @@ const MintHome = props => {
         alignItems: "center",
         gap: "8rem",
         "& .MuiTypography-root": {
-          color: theme => theme.palette.primary.contrastText,
+          color: theme => (theme as any).vars.palette.primary.contrastText,
         },
         "@media (max-width: 1280px)": {
           gap: "2rem",

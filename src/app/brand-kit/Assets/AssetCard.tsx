@@ -148,7 +148,7 @@ const useStyles = makeStyles<any>()((theme, { type }) => ({
   },
 
   coverdark: {
-    backgroundColor: theme.palette.themeBackground.dark,
+    backgroundColor: (theme as any).vars.palette.themeBackground.dark,
   },
 
   sampleImage0: {

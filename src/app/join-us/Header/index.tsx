@@ -13,9 +13,9 @@ const useStyles = makeStyles()(theme => ({
   container: {
     marginTop: "-6.5rem",
     paddingTop: "6.5rem",
-    background: theme.palette.themeBackground.normal,
+    background: (theme as any).vars.palette.themeBackground.normal,
     "& > .MuiBox-root": {
-      background: theme.palette.themeBackground.normal,
+      background: (theme as any).vars.palette.themeBackground.normal,
     },
   },
   root: {

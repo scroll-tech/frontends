@@ -55,7 +55,7 @@ const Subscribe = () => {
   return (
     <Box
       sx={{
-        backgroundColor: theme => theme.palette.themeBackground.highlight,
+        backgroundColor: theme => (theme as any).vars.palette.themeBackground.highlight,
         py: ["6rem", "6rem", "3.2rem"],
       }}
     >

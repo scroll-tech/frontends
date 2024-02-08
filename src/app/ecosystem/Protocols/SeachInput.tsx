@@ -22,8 +22,8 @@ const SearchInput = props => {
         maxWidth: "32rem",
         height: "4.8rem",
         borderRadius: "2.4rem",
-        border: theme => `1px solid ${theme.palette.text.primary}`,
-        backgroundColor: theme => theme.palette.background.default,
+        border: theme => `1px solid ${(theme as any).vars.palette.text.primary}`,
+        backgroundColor: theme => (theme as any).vars.palette.background.default,
         padding: "0.8rem 2.4rem",
         [theme.breakpoints.down("md")]: {
           gridRow: "2 / 3",

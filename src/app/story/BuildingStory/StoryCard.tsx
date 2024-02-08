@@ -11,12 +11,12 @@ import useCheckViewport from "@/hooks/useCheckViewport"
 
 const useStyles = makeStyles<any>()((theme, { cover }) => ({
   card: {
-    backgroundColor: theme.palette.themeBackground.normal,
+    backgroundColor: (theme as any).vars.palette.themeBackground.normal,
     borderRadius: "2.5rem",
     cursor: "pointer",
     height: "100%",
     "&:hover": {
-      backgroundColor: theme.palette.themeBackground.highlight,
+      backgroundColor: (theme as any).vars.palette.themeBackground.highlight,
     },
   },
   cardMediaWrapper: {
@@ -27,7 +27,7 @@ const useStyles = makeStyles<any>()((theme, { cover }) => ({
     position: "absolute",
     top: "2.4rem",
     left: "3rem",
-    color: theme.palette.primary.contrastText,
+    color: (theme as any).vars.palette.primary.contrastText,
     fontWeight: 600,
     fontSize: "5rem",
     lineHeight: 1,
@@ -50,7 +50,7 @@ const useStyles = makeStyles<any>()((theme, { cover }) => ({
   },
   cardMedia: {
     borderRadius: "2.5rem",
-    backgroundColor: theme.palette.text.primary,
+    backgroundColor: (theme as any).vars.palette.text.primary,
     position: "relative",
     [theme.breakpoints.between("md", "lg")]: {
       backgroundPosition: "right",

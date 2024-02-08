@@ -100,7 +100,7 @@ const MyNFT = props => {
         alignItems: "center",
         gap: "1.6rem",
         "& .MuiTypography-root": {
-          color: theme => theme.palette.primary.contrastText,
+          color: theme => (theme as any).vars.palette.primary.contrastText,
         },
         "@media (max-width: 1280px)": {
           gap: 0,

@@ -24,10 +24,10 @@ const useStyles = makeStyles()(theme => ({
     fontWeight: 600,
     height: "100%",
     width: "100%",
-    color: theme.palette.text.primary,
-    backgroundColor: theme.palette.background.default,
+    color: (theme as any).vars.palette.text.primary,
+    backgroundColor: (theme as any).vars.palette.background.default,
     borderRadius: "1rem",
-    border: `1px solid ${theme.palette.text.primary}`,
+    border: `1px solid ${(theme as any).vars.palette.text.primary}`,
     borderLeft: "none",
 
     [theme.breakpoints.down("sm")]: {
@@ -46,7 +46,7 @@ const useStyles = makeStyles()(theme => ({
     width: "5.4rem",
     height: "100%",
     position: "absolute",
-    backgroundColor: theme.palette.themeBackground.dark,
+    backgroundColor: (theme as any).vars.palette.themeBackground.dark,
     borderRadius: "1rem",
     zIndex: 1,
     top: 0,
@@ -62,7 +62,7 @@ const useStyles = makeStyles()(theme => ({
   icon: {
     width: "5.4rem",
     height: "100%",
-    color: theme.palette.primary.contrastText,
+    color: (theme as any).vars.palette.primary.contrastText,
     [theme.breakpoints.down("sm")]: {
       width: "4.8rem",
     },
@@ -99,7 +99,7 @@ const EmailInput = props => {
             fontWeight: 600,
             flex: 1,
             textAlign: "center",
-            color: theme => theme.palette.primary.contrastText,
+            color: theme => (theme as any).vars.palette.primary.contrastText,
             overflow: "hidden",
           }}
           className={cx(end && classes.successTip)}

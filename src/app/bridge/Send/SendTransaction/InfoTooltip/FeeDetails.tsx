@@ -8,7 +8,7 @@ const useStyles = makeStyles()(theme => ({
     width: "32.0rem",
   },
   text: {
-    color: theme.palette.primary.contrastText,
+    color: (theme as any).vars.palette.primary.contrastText,
   },
 }))
 

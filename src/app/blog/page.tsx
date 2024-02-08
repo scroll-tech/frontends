@@ -26,7 +26,7 @@ const BlogBox = styled(Box)(({ theme }) => ({
     marginBottom: "0",
     padding: "3rem 0",
     "&:not(:last-of-type)": {
-      borderBottom: `1px solid ${theme.palette.themeBackground.highlight}`,
+      borderBottom: `1px solid ${(theme as any).vars.palette.themeBackground.highlight}`,
     },
     "&:first-of-type": {
       padding: "0 0 3rem",
@@ -73,10 +73,10 @@ const MobileFilter = styled(Box)(({ theme }) => ({
   marginBottom: "1.7rem",
   fontSize: "1.6rem",
   fontWeight: 500,
-  color: theme.palette.text.primary,
+  color: (theme as any).vars.palette.text.primary,
   cursor: "pointer",
   borderRadius: "20px",
-  border: `1px solid ${theme.palette.text.primary}`,
+  border: `1px solid ${(theme as any).vars.palette.text.primary}`,
   width: "fit-content",
   padding: "0.5rem 1.2rem",
   [theme.breakpoints.between("sm", "lg")]: {
@@ -92,7 +92,7 @@ const FilterModal = styled(Box)({
 })
 
 const FilterModalContent = styled(Box)(({ theme }) => ({
-  background: theme.palette.background.default,
+  background: (theme as any).vars.palette.background.default,
   borderRadius: "2rem",
   width: "35.8rem",
   padding: "1.4rem 1.8rem",
@@ -109,7 +109,7 @@ const BlogBody = styled(Box)(({ theme }) => ({
 }))
 
 const FilterTypeName = styled(Typography)(({ theme }) => ({
-  color: theme.palette.text.primary,
+  color: (theme as any).vars.palette.text.primary,
   fontSize: "1.6rem",
   fontWeight: 600,
   marginBottom: "2rem",
@@ -128,7 +128,7 @@ const FilterTypeName = styled(Typography)(({ theme }) => ({
 }))
 
 const FilterItem = styled(Typography)(({ theme }) => ({
-  color: theme.palette.text.primary,
+  color: (theme as any).vars.palette.text.primary,
   cursor: "pointer",
   fontSize: "1.6rem",
   marginBottom: "1.2rem",

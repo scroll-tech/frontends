@@ -30,7 +30,7 @@ const useStyles = makeStyles()(theme => ({
     lineHeight: "6.4rem",
     fontWeight: 600,
 
-    color: theme.palette.primary.contrastText,
+    color: (theme as any).vars.palette.primary.contrastText,
     [theme.breakpoints.down("sm")]: {
       fontSize: "2.4rem",
       lineHeight: "3.2rem",
@@ -54,7 +54,7 @@ const useStyles = makeStyles()(theme => ({
   optionLabel: {
     padding: "1.2rem 1.6rem",
     borderRadius: "1rem",
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: (theme as any).vars.palette.background.default,
     margin: 0,
     "&:nth-of-type(n + 2)": {
       marginTop: "2.4rem",
@@ -73,7 +73,7 @@ const useStyles = makeStyles()(theme => ({
     fontWeight: 600,
     flex: 1,
     paddingLeft: "1rem",
-    color: `${theme.palette.text.primary} !important`,
+    color: `${(theme as any).vars.palette.text.primary} !important`,
     cursor: "pointer",
     [theme.breakpoints.down("sm")]: {
       fontSize: "1.6rem",

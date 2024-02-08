@@ -23,8 +23,8 @@ const useStyles = makeStyles()(theme => ({
   inputWrapper: {
     "&.Mui-error": {
       ".MuiInputBase-input": {
-        border: `1px solid ${theme.palette.primary.main}`,
-        outline: `1px solid ${theme.palette.primary.main}`,
+        border: `1px solid ${(theme as any).vars.palette.primary.main}`,
+        outline: `1px solid ${(theme as any).vars.palette.primary.main}`,
       },
     },
   },

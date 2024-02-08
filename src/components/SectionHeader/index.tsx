@@ -29,7 +29,7 @@ const SectionHeader = props => {
             fontSize: ["3.2rem", "4.6rem"],
             fontWeight: 500,
             mb: ["0.8rem", "1.4rem"],
-            color: theme => (dark ? theme.palette.primary.contrastText : "unset"),
+            color: theme => (dark ? (theme as any).vars.palette.primary.contrastText : "unset"),
           }}
         >
           {title}
@@ -37,7 +37,7 @@ const SectionHeader = props => {
         <Typography
           sx={{
             fontSize: ["1.8rem", "2.4rem"],
-            color: theme => (dark ? theme.palette.primary.contrastText : "unset"),
+            color: theme => (dark ? (theme as any).vars.palette.primary.contrastText : "unset"),
           }}
         >
           {content}

@@ -31,7 +31,7 @@ const StickerContest = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          "& p.MuiTypography-root": { color: theme => `${theme.palette.primary.contrastText} !important` },
+          "& p.MuiTypography-root": { color: theme => `${(theme as any).vars.palette.primary.contrastText} !important` },
         }}
       >
         <Typography sx={{ fontSize: ["1.6rem", "2.4rem"], lineHeight: ["2.4rem", "3.2rem"], textAlign: "center", maxWidth: "100rem" }}>

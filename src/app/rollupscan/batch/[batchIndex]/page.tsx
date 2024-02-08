@@ -22,27 +22,27 @@ dayjs.extend(relativeTime)
 dayjs.extend(utc)
 
 const StatusChip = styled(Chip)(({ theme }) => ({
-  color: theme.palette.primary.contrastText,
+  color: (theme as any).vars.palette.primary.contrastText,
   textTransform: "capitalize",
   "&.precommitted": {
-    backgroundColor: theme.palette.tagWarning.light,
-    color: theme.palette.tagWarning.main,
+    backgroundColor: (theme as any).vars.palette.tagWarning.light,
+    color: (theme as any).vars.palette.tagWarning.main,
   },
   "&.committed": {
-    backgroundColor: theme.palette.tagCommitted.light,
-    color: theme.palette.tagCommitted.main,
+    backgroundColor: (theme as any).vars.palette.tagCommitted.light,
+    color: (theme as any).vars.palette.tagCommitted.main,
   },
   "&.finalized": {
     backgroundColor: "#DFFCF8",
     color: "#0F8E7E",
   },
   "&.skipped": {
-    backgroundColor: theme.palette.tagCommitted.light,
-    color: theme.palette.tagCommitted.main,
+    backgroundColor: (theme as any).vars.palette.tagCommitted.light,
+    color: (theme as any).vars.palette.tagCommitted.main,
   },
   "&.unknown": {
-    backgroundColor: theme.palette.tagUnknown.light,
-    color: theme.palette.tagUnknown.main,
+    backgroundColor: (theme as any).vars.palette.tagUnknown.light,
+    color: (theme as any).vars.palette.tagUnknown.main,
   },
   "& > .MuiChip-label": {
     fontWeight: 500,
@@ -148,7 +148,7 @@ const Batch = ({ params }) => {
               <Box
                 sx={{
                   width: "100%",
-                  border: theme => `1px solid ${theme.palette.border.main}`,
+                  border: theme => `1px solid ${(theme as any).vars.palette.border.main}`,
                   borderRadius: "27px",
                   marginTop: "2.2rem",
                 }}

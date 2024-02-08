@@ -52,7 +52,7 @@ const Value = () => {
                   fontSize: ["3.2rem", "4.6rem"],
                   fontWeight: 500,
                   mb: ["1rem", "2rem"],
-                  color: theme => theme.palette.primary.contrastText,
+                  color: theme => (theme as any).vars.palette.primary.contrastText,
                 }}
               >
                 Our values
@@ -60,7 +60,7 @@ const Value = () => {
               <Typography
                 sx={{
                   fontSize: ["1.8rem", "2.4rem"],
-                  color: theme => theme.palette.primary.contrastText,
+                  color: theme => (theme as any).vars.palette.primary.contrastText,
                 }}
               >
                 At Scroll, we have a shared mission to uphold neutrality, openness, and be community-first as we strive to preserve Ethereum's core

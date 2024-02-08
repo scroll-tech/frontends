@@ -20,7 +20,7 @@ import MintFlow from "../flow"
 
 const useStyles = makeStyles()(theme => ({
   paper: {
-    backgroundColor: theme.palette.text.primary,
+    backgroundColor: (theme as any).vars.palette.text.primary,
 
     [theme.breakpoints.down("sm")]: {
       margin: 0,
@@ -41,7 +41,7 @@ const MintFlowDialog = props => {
         sx={{
           position: "sticky",
           top: 0,
-          backgroundColor: theme => theme.palette.text.primary,
+          backgroundColor: theme => (theme as any).vars.palette.text.primary,
           paddingRight: "0 !important",
         }}
       >
@@ -51,7 +51,7 @@ const MintFlowDialog = props => {
             sx={{
               fontSize: ["1.6rem", "1.8rem"],
               fontWeight: 600,
-              color: theme => theme.palette.primary.contrastText,
+              color: theme => (theme as any).vars.palette.primary.contrastText,
             }}
           >
             Mint {SCROLL_ORIGINS_NFT}

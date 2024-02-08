@@ -23,16 +23,16 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
     height: "3.6rem",
     padding: "0 1.2rem",
     borderRadius: "0.5rem",
-    border: dark ? `1px solid ${theme.palette.primary.contrastText}` : "none",
-    backgroundColor: dark ? "unset" : theme.palette.themeBackground.normal,
-    color: dark ? theme.palette.primary.contrastText : "#473835",
+    border: dark ? `1px solid ${(theme as any).vars.palette.primary.contrastText}` : "none",
+    backgroundColor: dark ? "unset" : (theme as any).vars.palette.themeBackground.normal,
+    color: dark ? (theme as any).vars.palette.primary.contrastText : "#473835",
     whiteSpace: "nowrap",
   },
 
   connectButton: {
     fontFamily: "var(--default-font-family)",
     backgroundColor: "#FF684B",
-    color: theme.palette.primary.contrastText,
+    color: (theme as any).vars.palette.primary.contrastText,
     border: "none",
     fontSize: "1.8rem",
     fontWeight: 500,
@@ -40,7 +40,7 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
   endIcon: {
     fontSize: "1.6rem",
     marginLeft: "0.8rem",
-    color: dark ? theme.palette.primary.contrastText : "#473835",
+    color: dark ? (theme as any).vars.palette.primary.contrastText : "#473835",
     willChange: "transform",
     transition: "transform .3s ease-in-out",
   },
@@ -49,8 +49,8 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
   },
   paper: {
     borderRadius: "0.5rem",
-    border: dark ? `1px solid ${theme.palette.primary.contrastText}` : "none",
-    backgroundColor: dark ? theme.palette.text.primary : theme.palette.themeBackground.normal,
+    border: dark ? `1px solid ${(theme as any).vars.palette.primary.contrastText}` : "none",
+    backgroundColor: dark ? (theme as any).vars.palette.text.primary : (theme as any).vars.palette.themeBackground.normal,
     marginTop: "0.5rem",
   },
   list: {
@@ -63,14 +63,14 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
   },
   listItemIcon: {
     minWidth: "unset !important",
-    color: dark ? theme.palette.primary.contrastText : "#473835",
+    color: dark ? (theme as any).vars.palette.primary.contrastText : "#473835",
   },
 
   listItemText: {
     fontSize: "1.6rem",
     fontFamily: "var(--developer-page-font-family)",
     cursor: "pointer",
-    color: dark ? theme.palette.primary.contrastText : "#473835",
+    color: dark ? (theme as any).vars.palette.primary.contrastText : "#473835",
   },
 }))
 

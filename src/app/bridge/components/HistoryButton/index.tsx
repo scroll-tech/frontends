@@ -10,7 +10,7 @@ const useStyles = makeStyles()(theme => ({
   button: {
     height: "4.8rem",
     padding: "0 1.2rem",
-    backgroundColor: theme.palette.themeBackground.normal,
+    backgroundColor: (theme as any).vars.palette.themeBackground.normal,
     color: "#473835",
     fontSize: "1.8rem",
     fontWeight: 500,

@@ -20,7 +20,7 @@ const Container = styled(SectionWrapper)(({ theme }) => ({
 const Title = styled(Typography)(({ theme }) => ({
   maxWidth: "115.5rem",
   textAlign: "center",
-  color: theme.palette.text.primary,
+  color: (theme as any).vars.palette.text.primary,
   margin: "0 auto ",
   fontSize: "3.2rem",
   [theme.breakpoints.down("md")]: {
@@ -54,7 +54,7 @@ const MissionItem = styled(SuccessionItem)(({ theme }) => ({
 
 const MissionTitle = styled(Typography)(({ theme }) => ({
   textAlign: "left",
-  color: theme.palette.text.primary,
+  color: (theme as any).vars.palette.text.primary,
   marginBottom: "3.2rem",
   [theme.breakpoints.down("md")]: {
     marginBottom: "2.4rem",
@@ -68,7 +68,7 @@ const MissionTitle = styled(Typography)(({ theme }) => ({
 
 const MissionDescription = styled(Typography)(({ theme }) => ({
   textAlign: "left",
-  color: theme.palette.text.primary,
+  color: (theme as any).vars.palette.text.primary,
   marginBottom: "2rem",
   fontSize: "2.4rem",
   [theme.breakpoints.down("md")]: {

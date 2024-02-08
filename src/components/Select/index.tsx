@@ -18,15 +18,15 @@ const useStyles = makeStyles()(theme => ({
     [theme.breakpoints.down("sm")]: {
       padding: "1.1rem 3.6rem 1.1rem 1.6rem !important",
     },
-    backgroundColor: `${theme.palette.background.default} !important`,
+    backgroundColor: `${(theme as any).vars.palette.background.default} !important`,
     "&[aria-expanded='true']": {
       borderRadius: "2.4rem 2.4rem 0 0",
-      border: `1px solid ${theme.palette.text.primary}`,
+      border: `1px solid ${(theme as any).vars.palette.text.primary}`,
       borderBottomColor: "transparent",
     },
     "&[aria-expanded='false']": {
       borderRadius: "2.4rem",
-      border: `1px solid ${theme.palette.text.primary}`,
+      border: `1px solid ${(theme as any).vars.palette.text.primary}`,
     },
     "&:focus": {
       backgroundColor: "unset",
@@ -48,7 +48,7 @@ const useStyles = makeStyles()(theme => ({
   popover: {
     boxShadow: "none",
     borderRadius: "0 0 2.4rem 2.4rem",
-    border: `1px solid ${theme.palette.text.primary}`,
+    border: `1px solid ${(theme as any).vars.palette.text.primary}`,
     borderTop: "none",
     marginTop: "-2px",
     transform: "translateX(0) !important",
@@ -56,7 +56,7 @@ const useStyles = makeStyles()(theme => ({
   },
   suspend: {
     borderRadius: "2.6rem",
-    borderTop: `1px solid ${theme.palette.text.primary}`,
+    borderTop: `1px solid ${(theme as any).vars.palette.text.primary}`,
   },
   menuList: {
     padding: 0,
