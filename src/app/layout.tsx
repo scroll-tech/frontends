@@ -20,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const { pathname, origin } = new URL(headers().get("x-url")!)
   const route = findCurrentRoute(pathname)
   const title = `Scroll${route ? " – " + route.name : null}`
-  const description = (route as any).description || DEFAULT_METADATA.description
+  const description = route.description || DEFAULT_METADATA.description
   const ogImg = route.ogImg || DEFAULT_METADATA.ogImg
   const twitterImg = route.twitterImg || route.ogImg || DEFAULT_METADATA.ogImg
 

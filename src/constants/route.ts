@@ -1,6 +1,6 @@
 import { isSepolia } from "@/utils"
 
-interface PageMetadata {
+export interface PageMetadata {
   name: string
   path: string
   description?: string

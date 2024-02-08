@@ -1,6 +1,6 @@
 import { match } from "path-to-regexp"
 
-import allRoutes from "@/constants/route"
+import allRoutes, { DEFAULT_METADATA, PageMetadata } from "@/constants/route"
 
 export const findCurrentRoute = pathname => {
   for (const route of allRoutes) {
@@ -9,8 +9,9 @@ export const findCurrentRoute = pathname => {
     }
   }
   return {
+    ...DEFAULT_METADATA,
     name: "NotFound",
-  }
+  } as PageMetadata
 }
 
 export const checkMatchPath = (routePath, currentPath) => {
