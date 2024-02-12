@@ -36,7 +36,7 @@ const useStyles = makeStyles()(theme => ({
 
 const Winner = props => {
   const {
-    data: { name, author, images, bg },
+    data: { author, images, bg },
   } = props
   const { classes } = useStyles()
   const { isMobile } = useCheckViewport()
@@ -53,14 +53,14 @@ const Winner = props => {
     <>
       <Stack direction="column" alignItems="center">
         <Typography sx={{ fontSize: ["2rem", "3.2rem"], lineHeight: ["3.2rem", "4rem"], fontWeight: 600, mb: "1.6rem", textAlign: "center" }}>
-          {name} - {author}
+          Finalist - {author}
         </Typography>
         <SuccessionToView className={classes.flex} threshold={isMobile ? 0 : 0.1}>
           {images.map((src, index) => (
             <SuccessionItem key={index}>
               <StickerPicture
                 src={src}
-                alt={`${name}-${author}-${index}`}
+                alt={`${author}-${index}`}
                 bgColor={Array.isArray(bg) ? bg[index] : bg}
                 onClick={handleViewImage}
               ></StickerPicture>
