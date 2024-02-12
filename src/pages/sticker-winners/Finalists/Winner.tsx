@@ -28,6 +28,7 @@ const useStyles = makeStyles()(theme => ({
     },
 
     [theme.breakpoints.down("sm")]: {
+      width: "100%",
       flexDirection: "column",
       gap: "1.6rem",
     },
@@ -51,7 +52,7 @@ const Winner = props => {
 
   return (
     <>
-      <Stack direction="column" alignItems="center">
+      <Stack direction="column" sx={{ width: "100%" }} alignItems="center">
         <Typography sx={{ fontSize: ["2rem", "3.2rem"], lineHeight: ["3.2rem", "4rem"], fontWeight: 600, mb: "1.6rem", textAlign: "center" }}>
           Finalist - {author}
         </Typography>
