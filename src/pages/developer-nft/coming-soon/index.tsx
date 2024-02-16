@@ -8,7 +8,7 @@ import BridgeContextProvider from "@/contexts/BridgeContextProvider"
 import useNFTStore from "@/stores/nftStore"
 import { formatDate } from "@/utils"
 
-import CheckElegbility from "./CheckElegbility"
+import CheckEligibility from "./CheckEligibility"
 import Header from "./Header"
 import Purpose from "./Purpose"
 import Stage from "./Stage"
@@ -37,7 +37,7 @@ const ComingSoon = () => {
         <Purpose></Purpose>
         <Stage></Stage>
         {phrase === "in-progress" ? (
-          <CheckElegbility></CheckElegbility>
+          <CheckEligibility></CheckEligibility>
         ) : (
           <Stack sx={{ mt: ["3.2rem", "4.8rem"] }}>
             <Alert>
