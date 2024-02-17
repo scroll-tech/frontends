@@ -1,8 +1,8 @@
 // TODO: merge with squirrel-gill
 
 export const getItem = (key: string) => localStorage.getItem(key)
-export const setItem = (key, value) => localStorage.setItem(key, value)
-export const removeItem = key => localStorage.removeItem(key)
+export const setItem = (key: string, value) => localStorage.setItem(key, value)
+export const removeItem = (key: string) => localStorage.removeItem(key)
 
 export const loadState = (item: string = "state") => {
   try {
