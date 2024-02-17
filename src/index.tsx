@@ -1,5 +1,5 @@
+import { browserTracingIntegration } from "@sentry/browser"
 import * as Sentry from "@sentry/react"
-import { BrowserTracing } from "@sentry/tracing"
 import React from "react"
 import { isMobile } from "react-device-detect"
 import ReactDOM from "react-dom/client"
@@ -22,7 +22,7 @@ if (requireEnv("NODE_ENV") === "production") {
   Sentry.init({
     environment: requireEnv("REACT_APP_SCROLL_ENVIRONMENT"),
     dsn: requireEnv("REACT_APP_SENTRY_DSN"),
-    integrations: [new BrowserTracing()],
+    integrations: [browserTracingIntegration()],
     tracesSampleRate: 1.0,
     beforeSend(event) {
       const exception = event?.exception?.values?.[0]
