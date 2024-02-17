@@ -8,7 +8,8 @@
     "convert:webp": "cwebp -q 100 $1 -o $2",
     "eject": "craco eject",
     "generate:sitemap": "cd scripts && node generate_sitemap.js",
-    "lint": "eslint --fix --max-warnings=0 \"**/*.{ts,tsx}\"",
+    "lint": "eslint . --max-warnings=0 \"**/*.{ts,tsx}\"",
+    "lint:fix": "eslint --fix --max-warnings=0 \"**/*.{ts,tsx}\"",
     "prepare": "husky install",
     "start": "BROWSER=none craco start",
     "test": "npx lint-staged"
