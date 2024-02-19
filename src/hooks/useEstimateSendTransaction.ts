@@ -17,11 +17,13 @@ export function useEstimateSendTransaction(props) {
   const minimumAmount = BigInt(1)
 
   useEffect(() => {
-    const scrollMessenger = networksAndSigners[fromNetwork.isL1 ? CHAIN_ID.L1 : CHAIN_ID.L2].scrollMessenger
-    if (scrollMessenger) {
-      setInstance(scrollMessenger)
+    const instance = selectedToken.native
+      ? networksAndSigners[fromNetwork.isL1 ? CHAIN_ID.L1 : CHAIN_ID.L2].scrollMessenger
+      : networksAndSigners[fromNetwork.isL1 ? CHAIN_ID.L1 : CHAIN_ID.L2].gateway
+    if (instance) {
+      setInstance(instance)
     }
-  }, [networksAndSigners, fromNetwork])
+  }, [networksAndSigners, fromNetwork, selectedToken.native])
 
   const depositETH = async () => {
     const fee = gasPrice * gasLimit
@@ -32,6 +34,7 @@ export function useEstimateSendTransaction(props) {
 
   const depositERC20 = async () => {
     const fee = gasPrice * gasLimit
+
     return instance["depositERC20(address,uint256,uint256)"].estimateGas(selectedToken.address, minimumAmount, gasLimit, {
       value: fee,
     })
