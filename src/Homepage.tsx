@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom"
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
 import RainbowProvider from "@/contexts/RainbowProvider"
+import SkellyContextProvider from "@/contexts/SkellyContextProvider"
 import ScrollToTop from "@/hooks/useScrollToTop"
 import NotFound from "@/pages/404"
 import { isSepolia, requireEnv } from "@/utils"
@@ -17,6 +18,7 @@ interface RouteItem {
   fullPath?: string
   element: JSX.Element
   description?: string
+  isHiddenFooter?: boolean
 }
 
 const baseUrl = requireEnv("REACT_APP_API_BASE_URI")
@@ -57,16 +59,18 @@ function Homepage() {
         <meta name="twitter:image" content={getImageUrl("twitter")} />
       </Helmet>
       <RainbowProvider>
-        <ScrollToTop>
-          <Header />
-          <Routes>
-            {routes.map((route, key) => (
-              <Route key={key} path={route.path} element={route.element} />
-            ))}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          {isSepolia ? null : <Footer />}
-        </ScrollToTop>
+        <SkellyContextProvider>
+          <ScrollToTop>
+            <Header />
+            <Routes>
+              {routes.map((route, key) => (
+                <Route key={key} path={route.path} element={route.element} />
+              ))}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            {isSepolia || route.isHiddenFooter ? null : <Footer />}
+          </ScrollToTop>
+        </SkellyContextProvider>
       </RainbowProvider>
     </div>
   )

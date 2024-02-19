@@ -1,18 +1,21 @@
 import copy from "copy-to-clipboard"
 import { useCallback, useMemo, useState } from "react"
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { makeStyles } from "tss-react/mui"
 
-import { ButtonBase, Fade, ListItemIcon, ListItemText, Menu, MenuItem, SvgIcon } from "@mui/material"
+import { Box, ButtonBase, Fade, ListItemIcon, ListItemText, Menu, MenuItem, SvgIcon } from "@mui/material"
 
 import { ReactComponent as CopySuccessSvg } from "@/assets/svgs/bridge/copy-success.svg"
 import { ReactComponent as HistorySvg } from "@/assets/svgs/bridge/history.svg"
+import { ReactComponent as ScrollSvg } from "@/assets/svgs/bridge/network-scroll.svg"
 import { ReactComponent as BlockSvg } from "@/assets/svgs/wallet-connector/block.svg"
 import { ReactComponent as CopySvg } from "@/assets/svgs/wallet-connector/copy.svg"
 import { ReactComponent as DisconnectSvg } from "@/assets/svgs/wallet-connector/disconnect.svg"
 import { ReactComponent as DownTriangleSvg } from "@/assets/svgs/wallet-connector/down-triangle.svg"
+import { ReactComponent as ProfileSvg } from "@/assets/svgs/wallet-connector/profile.svg"
 import { CHAIN_ID, EXPLORER_URL } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useBridgeStore from "@/stores/bridgeStore"
 import { generateExploreLink, truncateAddress } from "@/utils"
 
@@ -78,9 +81,11 @@ const WalletDropdown = props => {
   const { sx, dark } = props
   const { classes, cx } = useStyles({ dark })
   const { pathname } = useLocation()
+  const navigate = useNavigate()
 
   const { walletCurrentAddress, connect, disconnect, chainId } = useRainbowContext()
   const { changeHistoryVisible } = useBridgeStore()
+  const { profileInstance } = useSkellyContext()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [copied, setCopied] = useState(false)
@@ -107,6 +112,13 @@ const WalletDropdown = props => {
 
   const operations = useMemo(
     () => [
+      {
+        icon: ProfileSvg,
+        label: "Scroll Skelly",
+        action: () => {
+          navigate("/scroll-skelly")
+        },
+      },
       {
         icon: HistorySvg,
         label: "Transaction history",
@@ -135,14 +147,27 @@ const WalletDropdown = props => {
 
   return (
     <>
-      {chainId ? (
+      {!chainId && (
+        <ButtonBase classes={{ root: cx(classes.button, classes.connectButton) }} sx={sx} onClick={connect}>
+          Connect Wallet
+        </ButtonBase>
+      )}
+
+      {chainId && !profileInstance && (
         <ButtonBase classes={{ root: classes.button }} sx={sx} onClick={handleClick}>
           {truncateAddress(walletCurrentAddress as string)}
           <SvgIcon className={cx(classes.endIcon, open && classes.reverseEndIcon)} component={DownTriangleSvg} inheritViewBox></SvgIcon>
         </ButtonBase>
-      ) : (
-        <ButtonBase classes={{ root: cx(classes.button, classes.connectButton) }} sx={sx} onClick={connect}>
-          Connect Wallet
+      )}
+
+      {chainId && profileInstance && (
+        <ButtonBase classes={{ root: classes.button }} sx={sx} onClick={handleClick}>
+          <SvgIcon sx={{ fontSize: "2.4rem", marginRight: "0.4rem" }} component={ScrollSvg} inheritViewBox></SvgIcon>
+          <Box sx={{ lineHeight: "1.6rem", textAlign: "left" }}>
+            <strong style={{ fontSize: "1.2rem" }}>{profileInstance.name}</strong>
+            <p style={{ fontSize: "1.2rem" }}>{truncateAddress(walletCurrentAddress as string)}</p>
+          </Box>
+          <SvgIcon className={cx(classes.endIcon, open && classes.reverseEndIcon)} component={DownTriangleSvg} inheritViewBox></SvgIcon>
         </ButtonBase>
       )}
 

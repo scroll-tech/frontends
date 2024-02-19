@@ -4,6 +4,7 @@ import { useEffect } from "react"
 import { Stack, Typography } from "@mui/material"
 
 import GlobalComponents from "@/components/GlobalComponents"
+import MintBadge from "@/components/MintBadge"
 import SectionWrapper from "@/components/SectionWrapper"
 import { NETWORKS } from "@/constants"
 import BridgeContextProvider from "@/contexts/BridgeContextProvider"
@@ -68,6 +69,7 @@ const Bridge = () => {
           <Send></Send>
           <FAQsLink />
         </SectionWrapper>
+        <MintBadge />
       </PriceFeeProvider>
     </BridgeContextProvider>
   )

@@ -180,3 +180,9 @@ declare module "@mui/material/Typography" {
     Body3: true
   }
 }
+
+declare module "@mui/material/Button" {
+  interface ButtonPropsColorOverrides {
+    dark?: boolean
+  }
+}

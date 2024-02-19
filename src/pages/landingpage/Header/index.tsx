@@ -58,8 +58,8 @@ const Header = () => {
           for Ethereum devs.
         </SubTitle>
         <ButtonContainer>
-          <Button href="/bridge" color="primary">
-            Bridge into Scroll
+          <Button href="/ecosystem" color="primary">
+            Explore projects
           </Button>
           <Button target="_blank" href="https://docs.scroll.io/en/home/">
             Start building
