@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { Alert, Snackbar, Stack, Typography } from "@mui/material"
 
 import GlobalComponents from "@/components/GlobalComponents"
+import MintBadge from "@/components/MintBadge"
 import SectionWrapper from "@/components/SectionWrapper"
 import { NETWORKS } from "@/constants"
 import BridgeContextProvider from "@/contexts/BridgeContextProvider"
@@ -86,6 +87,7 @@ const Bridge = () => {
             </Alert>
           </Snackbar>
         </SectionWrapper>
+        <MintBadge />
       </PriceFeeProvider>
     </BridgeContextProvider>
   )

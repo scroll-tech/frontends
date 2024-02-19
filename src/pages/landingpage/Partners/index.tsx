@@ -215,12 +215,15 @@ const Partners = () => {
         <FadeInUp>
           <SectionHeader
             sx={{ mb: "10rem" }}
-            title="Build with the best in web3"
-            content="We’re part of an ecosystem with a greater purpose – permissionless, flexible, and dedicated to improving the future of Ethereum."
+            title="Level up your Scroll Profile"
+            content="Explore Scroll’s ecosystem and earn points to set up your unique profile on Scroll."
             action={
-              <Button href="/ecosystem" color="primary">
-                Explore projects
-              </Button>
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: "3rem" }}>
+                <Button href="/scroll-skelly">Scroll profile</Button>
+                <Button href="/ecosystem" color="primary">
+                  Explore projects
+                </Button>
+              </Box>
             }
           ></SectionHeader>
         </FadeInUp>
