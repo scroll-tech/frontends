@@ -5,7 +5,7 @@ import L1_erc20ABI from "@/assets/abis/L1_erc20ABI.json"
 import { useApp } from "@/contexts/AppContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 
-const useBalance = (token: any, network?: any) => {
+const useBalance = (token: Token, network?: Network) => {
   const { walletCurrentAddress } = useRainbowContext()
   const { networksAndSigners } = useApp()
 
