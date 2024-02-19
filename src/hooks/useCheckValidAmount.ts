@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 
 import { checkAmountOverflow } from "@/utils"
 
-const useCheckValidAmount = amount => {
+const useCheckValidAmount = (amount: string | undefined) => {
   const [isValid, setIsValid] = useState(true)
   const [message, setMessage] = useState("")
   useEffect(() => {
