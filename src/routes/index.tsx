@@ -20,6 +20,10 @@ import RollupScan from "@/pages/rollup/index"
 import Sessions from "@/pages/sessions"
 import SessionsRestricted from "@/pages/sessions-restricted"
 import SessionsTerms from "@/pages/sessions-terms"
+import ScrollSkelly from "@/pages/skelly"
+import SkellyDashboard from "@/pages/skelly/Dashboard"
+import SkellyBadge from "@/pages/skelly/badge"
+import MintProfile from "@/pages/skelly/mint"
 import StickerVote from "@/pages/sticker-vote"
 import StickerWinners from "@/pages/sticker-winners"
 import Terms from "@/pages/terms"
@@ -224,6 +228,28 @@ const mainnetRoutes = [
     name: "Scroll Sessions Terms of Use",
     path: "/sessions-terms-of-use",
     element: <SessionsTerms />,
+    name: "Scroll Skelly",
+    path: "/scroll-skelly",
+    element: <ScrollSkelly />,
+    isHiddenFooter: true,
+  },
+  {
+    name: "Scroll Skelly",
+    path: "/scroll-skelly/mint",
+    element: <MintProfile />,
+    isHiddenFooter: true,
+  },
+  {
+    name: "Scroll Skelly",
+    path: "/scroll-skelly/dashboard",
+    element: <SkellyDashboard />,
+    isHiddenFooter: true,
+  },
+  {
+    name: "Scroll Skelly",
+    path: "/scroll-skelly/badge",
+    element: <SkellyBadge />,
+    isHiddenFooter: true,
   },
   {
     name: "Scroll Sessions Restricted",

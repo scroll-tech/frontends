@@ -2,7 +2,8 @@ import { Box } from "@mui/material"
 import { styled } from "@mui/system"
 
 import Blog from "./Blog"
-import Feature from "./Feature"
+import Ecosystem from "./Ecosystem"
+// import Feature from "./Feature"
 import GetStart from "./GetStart"
 import Header from "./Header"
 import Partners from "./Partners"
@@ -31,7 +32,8 @@ const LandingPage = () => {
     <Container>
       <Header />
       <StyledBox />
-      <Feature />
+      <Ecosystem />
+      {/* <Feature /> */}
       <GetStart />
       <Partners />
       <Blog />

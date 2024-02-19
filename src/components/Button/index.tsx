@@ -9,7 +9,7 @@ import useCheckViewport from "@/hooks/useCheckViewport"
 
 interface ScrollButtonProps extends ButtonProps {
   width?: string | number
-  color?: "primary" | "secondary"
+  color?: "primary" | "secondary" | "dark"
   gloomy?: boolean
   loading?: boolean
   disabled?: boolean
@@ -27,6 +27,8 @@ const gColor = (color, theme) => {
       return theme.palette.primary.main
     case "secondary":
       return theme.palette.primary.contrastText
+    case "dark":
+      return "#ffffff"
     default:
       return theme.palette.text.primary
   }
@@ -38,6 +40,8 @@ const cColor = (color, theme) => {
       return theme.palette.primary.contrastText
     case "secondary":
       return theme.palette.text.primary
+    case "dark":
+      return "#000000"
     default:
       return theme.palette.primary.contrastText
   }

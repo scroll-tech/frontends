@@ -1,46 +1,40 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useState } from "react"
 
-import { Box, Container as MuiContainer, Typography } from "@mui/material"
+import { Box, Container as MuiContainer, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
-import ScalabilityIcon from "@/assets/images/home/start_bridge.png"
-import SecurityIcon from "@/assets/images/home/start_link.png"
-import EVMEquivalenceIcon from "@/assets/images/home/start_setting.png"
+import { ReactComponent as BuildSvg } from "@/assets/svgs/landingpage/build.svg"
+import { ReactComponent as BuildCoverSvg } from "@/assets/svgs/landingpage/build_cover.svg"
+import { ReactComponent as ChangeRPCSvg } from "@/assets/svgs/landingpage/change-rpc.svg"
+import { ReactComponent as ETHSvg } from "@/assets/svgs/landingpage/eth.svg"
 import { FadeInUp } from "@/components/Animation"
 import Button from "@/components/Button"
 import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
 import SectionHeader from "@/components/SectionHeader"
-import { NETWORKS } from "@/constants"
-import { isProduction } from "@/utils"
-
-const tokenName = isProduction ? "ETH" : "testnet ETH"
-const l2NetworkName = isProduction ? NETWORKS[1].name : NETWORKS[1].name + " testnet"
 
 const STEPS = [
   {
-    icon: ScalabilityIcon,
+    icon: ETHSvg,
     title: "Bridge your ETH",
-    description: `You can bridge your ${tokenName} to ${l2NetworkName} using our native bridge or another ecosystem bridge. For a walkthrough, start with the user guide’s setup page.`,
+    description: "Bridge your ETH to Scroll using our native bridge or another ecosystem bridge.",
   },
   {
-    icon: SecurityIcon,
+    icon: ChangeRPCSvg,
     title: "Change RPC provider",
-    description: `To configure your Ethereum tools to Scroll you’ll just need to point your favorite builder tools to a Scroll RPC Provider.`,
+    description: "Point your favorite builder tools to a Scroll RPC Provider to configure.",
   },
   {
-    icon: EVMEquivalenceIcon,
+    icon: BuildSvg,
     title: "Build with your usual dev tools",
     description: "Start building with your favorite toolkit.",
   },
 ]
 
 const Container = styled(Box)(({ theme }) => ({
-  borderRadius: "40px 40px 0px 0px",
   paddingTop: "15.4rem",
   maxWidth: "152rem",
   paddingBottom: "16rem",
   background: "transparent",
-  display: "flex !important",
   justifyContent: "center",
   position: "relative",
   margin: "0 auto",
@@ -54,26 +48,16 @@ const Container = styled(Box)(({ theme }) => ({
   },
 }))
 
-const InnerBox = styled(MuiContainer)(({ theme }) => ({
-  position: "relative",
-  width: "100%",
-}))
-
-const Background = styled(Box)(({ theme }) => ({
-  position: "absolute",
-  top: "0",
-  bottom: "0",
-  width: "100%",
-  background: "#101010",
-  willChange: "width, height",
-  borderRadius: "40px 40px 0px 0px",
+const StyledBox = styled(Box)(({ theme }) => ({
+  display: "grid",
+  gridTemplateColumns: "1fr 1fr",
 }))
 
 const StepContainer = styled(SuccessionToView)(({ theme }) => ({
   display: "grid",
-  gridTemplateColumns: "repeat(3, 1fr)",
-  gap: "2rem",
-  marginBottom: "13rem",
+  gridTemplateColumns: "1fr",
+  gap: "4.8rem",
+  // marginBottom: "13rem",
   "& > div:nth-of-type(1) img": {
     width: "2.3rem",
   },
@@ -109,22 +93,9 @@ const StepBox = styled(Box)(({ theme }) => ({
   flex: 1,
 }))
 
-const StepIcon = styled("img")(({ theme }) => ({
-  height: "4rem",
-  objectFit: "contain",
-  marginBottom: "2.2rem",
-  [theme.breakpoints.down("md")]: {
-    marginBottom: "1.8rem",
-  },
-  [theme.breakpoints.down("sm")]: {
-    height: "3rem",
-    marginBottom: "1.2rem",
-  },
-}))
-
 const StepTitle = styled(Typography)(({ theme }) => ({
   textAlign: "left",
-  color: theme.palette.primary.contrastText,
+  color: theme.palette.text.primary,
   marginBottom: "2rem",
   [theme.breakpoints.down("md")]: {
     marginBottom: "1.4rem",
@@ -136,8 +107,7 @@ const StepTitle = styled(Typography)(({ theme }) => ({
 
 const StepDescription = styled(Typography)(({ theme }) => ({
   textAlign: "left",
-  color: theme.palette.primary.contrastText,
-  maxWidth: "32.6rem",
+  color: theme.palette.text.primary,
   [theme.breakpoints.down("sm")]: {
     fontSize: "1.6rem",
   },
@@ -145,7 +115,6 @@ const StepDescription = styled(Typography)(({ theme }) => ({
 
 const GetStart = () => {
   const [, setScrollPosition] = useState(0)
-  const sectionRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -159,60 +128,44 @@ const GetStart = () => {
     }
   }, [])
 
-  const calculateWidth = () => {
-    if (sectionRef.current) {
-      const rect = sectionRef.current.getBoundingClientRect()
-      const viewTop = window.innerHeight
-
-      if (rect.top <= viewTop) {
-        const scrolledDistance = viewTop - rect.top
-        const percentageScrolled = Math.min(scrolledDistance / viewTop, 1)
-        let ratio = 0.5
-        if (window.innerWidth <= 1920 && window.innerWidth > 1680) {
-          ratio = 1
-        }
-        if (window.innerWidth > 1920) {
-          ratio = 2
-        }
-        const widthIncrease = ratio * percentageScrolled
-        const targetWidthPercentage = 100 + widthIncrease * 100
-
-        return `${targetWidthPercentage}%`
-      }
-    }
-    return "100%" //default value
-  }
-
   return (
     <Container>
-      <Background sx={{ width: calculateWidth() }} />
-      <InnerBox ref={sectionRef}>
-        <FadeInUp>
-          <SectionHeader
-            dark
-            sx={{ mb: ["10rem", "12.5rem"] }}
-            title="Getting started with Scroll"
-            content="Scroll is compatible with Ethereum at the bytecode-level, meaning everything works right out of the box."
-            action={
-              <Button href="https://docs.scroll.io/en/home/" target="_blank" color="primary">
-                Start building
-              </Button>
-            }
-          ></SectionHeader>
-        </FadeInUp>
+      {/* <Background sx={{ width: calculateWidth() }} /> */}
+      <FadeInUp>
+        <SectionHeader
+          sx={{ mb: ["10rem", "12.5rem"] }}
+          title="Build with Scroll"
+          content="Scroll is compatible with Ethereum at the bytecode-level, meaning everything works right out of the box."
+          action={
+            <Button href="https://docs.scroll.io/en/home/" target="_blank" color="primary">
+              Start building
+            </Button>
+          }
+        ></SectionHeader>
+      </FadeInUp>
 
+      <StyledBox>
         <StepContainer>
           {STEPS.map((feature, idx) => (
             <SuccessionItem key={idx}>
               <StepBox className="step-box">
-                <StepIcon src={feature.icon} />
+                <SvgIcon
+                  sx={{ height: "3.2rem", width: "3.2rem", marginBottom: "0.8rem", objectFit: "contain" }}
+                  component={feature.icon}
+                  inheritViewBox
+                ></SvgIcon>
                 <StepTitle variant="H4">{feature.title}</StepTitle>
                 <StepDescription variant="Body3">{feature.description}</StepDescription>
               </StepBox>
             </SuccessionItem>
           ))}
         </StepContainer>
-      </InnerBox>
+        <SvgIcon
+          sx={{ objectFit: "contain", height: "100%", width: "auto", textAlign: "right", justifySelf: "end" }}
+          component={BuildCoverSvg}
+          inheritViewBox
+        ></SvgIcon>
+      </StyledBox>
     </Container>
   )
 }
