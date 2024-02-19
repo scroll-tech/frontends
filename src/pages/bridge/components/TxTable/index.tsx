@@ -154,7 +154,7 @@ const TxTable = (props: any) => {
   return (
     <>
       <TableContainer component={Paper} className={classes.tableWrapper}>
-        {data.length ? (
+        {data.length && !loading && (
           <>
             <Box className={classes.tableMinHeight}>
               <Table aria-label="Tx Table">
@@ -191,7 +191,8 @@ const TxTable = (props: any) => {
               </div>
             )}
           </>
-        ) : (
+        )} 
+        {!data.length && !loading && (
           <NoData
             sx={{ height: ["20rem", "30rem"] }}
             title="No transaction history"
