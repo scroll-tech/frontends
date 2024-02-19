@@ -232,7 +232,14 @@ const App = ({ currentMenu }) => {
             inheritViewBox
           ></SvgIcon>
           {item.key === checked && (
-            <StyledPopper open={true} placement="bottom-start" anchorEl={anchorEl} transition bgColor={navbarBg} dark={dark}>
+            <StyledPopper
+              open={true}
+              placement="bottom-start"
+              anchorEl={anchorEl}
+              transition
+              bgColor={navbarBg === "transparent" ? "" : navbarBg}
+              dark={dark}
+            >
               {({ TransitionProps }) => (
                 <Fade {...TransitionProps}>
                   <SubMenuList onClick={handleMouseLeave}>{renderSubMenuList(item.children)}</SubMenuList>
