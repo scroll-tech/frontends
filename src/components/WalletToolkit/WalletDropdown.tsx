@@ -8,6 +8,7 @@ import { Box, ButtonBase, Fade, ListItemIcon, ListItemText, Menu, MenuItem, SvgI
 import { ReactComponent as CopySuccessSvg } from "@/assets/svgs/bridge/copy-success.svg"
 import { ReactComponent as HistorySvg } from "@/assets/svgs/bridge/history.svg"
 import { ReactComponent as ScrollSvg } from "@/assets/svgs/bridge/network-scroll.svg"
+import { ReactComponent as DefaultAvatarSvg } from "@/assets/svgs/skelly/default-avatar.svg"
 import { ReactComponent as BlockSvg } from "@/assets/svgs/wallet-connector/block.svg"
 import { ReactComponent as CopySvg } from "@/assets/svgs/wallet-connector/copy.svg"
 import { ReactComponent as DisconnectSvg } from "@/assets/svgs/wallet-connector/disconnect.svg"
@@ -162,7 +163,7 @@ const WalletDropdown = props => {
 
       {chainId && profileInstance && (
         <ButtonBase classes={{ root: classes.button }} sx={sx} onClick={handleClick}>
-          <SvgIcon sx={{ fontSize: "2.4rem", marginRight: "0.4rem" }} component={ScrollSvg} inheritViewBox></SvgIcon>
+          <SvgIcon sx={{ fontSize: "2.4rem", marginRight: "0.4rem" }} component={DefaultAvatarSvg} inheritViewBox></SvgIcon>
           <Box sx={{ lineHeight: "1.6rem", textAlign: "left" }}>
             <strong style={{ fontSize: "1.2rem" }}>{profileInstance.name}</strong>
             <p style={{ fontSize: "1.2rem" }}>{truncateAddress(walletCurrentAddress as string)}</p>

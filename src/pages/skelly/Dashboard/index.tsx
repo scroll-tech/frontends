@@ -1,10 +1,11 @@
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
-import { Box, Tooltip, Typography } from "@mui/material"
+import { Box, SvgIcon, Tooltip, Typography } from "@mui/material"
 import { tooltipClasses } from "@mui/material/Tooltip"
 import { styled } from "@mui/system"
 
+import { ReactComponent as DefaultAvatarSvg } from "@/assets/svgs/skelly/default-avatar.svg"
 import { BADGES_VISIBLE_TYPE } from "@/constants"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useSkellyStore, { BadgeDetailDialogTpye } from "@/stores/skellyStore"
@@ -32,7 +33,7 @@ const Container = styled(Box)(({ theme }) => ({
     height: "100%",
     position: "absolute",
     top: 0,
-    width: "32% !important",
+    width: "25% !important",
     zIndex: 42,
   },
   "&::before": {
@@ -55,14 +56,7 @@ const Profile = styled(Box)(({ theme }) => ({
   flexDirection: "column",
   justifyContent: "space-between",
   alignItems: "center",
-}))
-
-const Avatar = styled("img")(({ theme }) => ({
-  borderRadius: "50%",
-  flexGrow: 1,
-  width: "fit-content",
-  height: "auto",
-  objectFit: "cover",
+  paddingTop: "4rem",
 }))
 
 const Name = styled(Typography)(({ theme }) => ({
@@ -181,7 +175,7 @@ const Dashboard = () => {
           height: `${(badgeWidth * gridNum) / 2}px`,
         }}
       >
-        <Avatar src="https://avatars.githubusercontent.com/u/387775?s=200&v=4" />
+        <SvgIcon sx={{ flex: 1, width: "100%" }} component={DefaultAvatarSvg} inheritViewBox />
         <Name>{profileInstance.name}</Name>
       </Profile>
       {(badges as any).map((badge, index) => {

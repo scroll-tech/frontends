@@ -22,7 +22,7 @@ import { styled } from "@mui/system"
 
 import { ReactComponent as BackSvg } from "@/assets/svgs/skelly/back.svg"
 import { ReactComponent as CloseSvg } from "@/assets/svgs/skelly/close.svg"
-import { ReactComponent as DefaultBadgeSvg } from "@/assets/svgs/skelly/default_badge.svg"
+import { ReactComponent as DefaultBadgeSvg } from "@/assets/svgs/skelly/default-badge.svg"
 import { ReactComponent as ShareSvg } from "@/assets/svgs/skelly/share.svg"
 import ScrollButton from "@/components/Button"
 import useSkellyStore from "@/stores/skellyStore"
