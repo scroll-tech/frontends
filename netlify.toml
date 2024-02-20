@@ -146,7 +146,7 @@ REACT_APP_L1_MESSAGE_QUEUE_WITH_GAS_PRICE_ORACLE="0xF0B2293F5D834eAe920c6974D509
 REACT_APP_L1_BATCH_BRIDGE_GATEWAY_PROXY_ADDR = "0xE86ad3312FA693aDeD34dEc3899176d97ac883B2"
 
 
-[context.staging.environment]
+[context.scroll-skelly.environment]
 REACT_APP_SCROLL_ENVIRONMENT = "Staging"
 REACT_APP_API_BASE_URI = "https://sepolia-api.scroll.io"
 REACT_APP_BRIDGE_API_URI = "https://sepolia-api-bridge-v2.scroll.io/api"
