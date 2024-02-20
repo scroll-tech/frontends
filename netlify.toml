@@ -193,7 +193,7 @@ REACT_APP_L1_BATCH_BRIDGE_GATEWAY_PROXY_ADDR = "0xE86ad3312FA693aDeD34dEc3899176
 REACT_APP_OPEN_BLOCK_URI = "https://5x6x869ic0.execute-api.us-east-1.amazonaws.com"
 
 
-[context.staging.environment]
+[context.scroll-skelly.environment]
 REACT_APP_SCROLL_ENVIRONMENT = "Staging"
 REACT_APP_API_BASE_URI = "https://sepolia-api.scroll.io"
 REACT_APP_BRIDGE_API_URI = "https://sepolia-api-bridge-v2.scroll.io/api"
