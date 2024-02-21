@@ -58,14 +58,14 @@ const Ecosystem = () => {
   )
 
   return (
-    <Stack direction="row" gap="2.4rem" sx={{ width: "100%", backgroundColor: "#ffffff" }}>
+    <Stack direction="row" gap="10rem" sx={{ width: "100%", backgroundColor: "#fff", justifyContent: "center" }}>
       <Statistic label="Total value locked" loading={isTVLLoading}>
         {totalTVL}
       </Statistic>
       <Statistic label="Active accounts" loading={isUniqueWalletCountLoading}>
         {totalUniqueWalletCount}
       </Statistic>
-      <Statistic label="Transaction count" loading={isTxCountLoading}>
+      <Statistic label="Transaction counts" loading={isTxCountLoading}>
         {totalTxCount}
       </Statistic>
       <Statistic label="Batches settled to L1" loading={isBatchesLoading}>

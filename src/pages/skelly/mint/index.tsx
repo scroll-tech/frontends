@@ -1,10 +1,9 @@
-import { useState } from "react"
+import { useMemo, useState } from "react"
 
-import { Box, InputBase, Typography } from "@mui/material"
+import { Box, InputBase } from "@mui/material"
 import { styled } from "@mui/system"
 
 import Button from "@/components/Button"
-import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useSkellyStore, { MintStep } from "@/stores/skellyStore"
@@ -24,16 +23,6 @@ const Container = styled(Box)(({ theme }) => ({
   },
 }))
 
-const StyledTypography = styled(Typography)(({ theme }) => ({
-  color: "#FFFFFF",
-  textAlign: "center",
-  fontSize: "4rem",
-  fontStyle: "normal",
-  fontWeight: 500,
-  lineHeight: "5.6rem",
-  marginBottom: "18rem",
-}))
-
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "#FFFFFF",
   textAlign: "center",
@@ -48,27 +37,30 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const Mint = () => {
   const { isMobile } = useCheckViewport()
-  const { chainId, connect, walletCurrentAddress } = useRainbowContext()
   const [isMinting, setIsMinting] = useState(false)
   const [name, setName] = useState("")
 
   const { mintProfileNFT } = useSkellyContext()
 
-  const { referralCode } = useSkellyStore()
+  const { referralCode, changeMintStep } = useSkellyStore()
 
   const handleMint = async () => {
     setIsMinting(true)
     await mintProfileNFT(name, referralCode)
     setIsMinting(false)
+    changeMintStep(MintStep.REFERRAL_CODE)
   }
 
   const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value)
   }
 
+  const isInvalidName = useMemo(() => {
+    return !name
+  }, [name])
+
   return (
     <Container>
-      <StyledTypography>Mint Your Scroll Skelly</StyledTypography>
       <StyledInputBase
         inputProps={{
           maxLength: 15,
@@ -78,7 +70,7 @@ const Mint = () => {
         autoFocus
         placeholder="Enter your name"
       />
-      <Button color="primary" loading={isMinting} width={isMobile ? "23rem" : "28.2rem"} onClick={handleMint}>
+      <Button gloomy={isInvalidName} color="primary" loading={isMinting} width={isMobile ? "23rem" : "28.2rem"} onClick={handleMint}>
         {isMinting ? "Minting" : "Mint now"}
       </Button>
     </Container>
