@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-import { Box, Button, Dialog, DialogContent, DialogTitle, IconButton, InputBase, Stack, SvgIcon, Typography } from "@mui/material"
+import { Box, Button, Dialog, DialogContent, DialogTitle, IconButton, InputBase, Stack, SvgIcon } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { ReactComponent as CloseSvg } from "@/assets/svgs/skelly/close.svg"
@@ -8,9 +8,6 @@ import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useSkellyStore from "@/stores/skellyStore"
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
-  //   border-radius: 16px;
-  // background: linear-gradient(114deg, #2A2A2A 0%, rgba(27, 27, 27, 0.60) 100%);
-  // backdrop-filter: blur(50px);
   borderRadius: "1.6rem",
   backgroundColor: "rgba(0, 0, 0, 0.5)",
   backdropFilter: "blur(50px)",
@@ -76,7 +73,7 @@ const NameDialog = () => {
   }
 
   return (
-    <StyledDialog maxWidth={false} open={profileDialogVisible}>
+    <StyledDialog maxWidth={false} onClose={handleClose} open={profileDialogVisible}>
       <DialogTitle
         sx={{
           m: 0,

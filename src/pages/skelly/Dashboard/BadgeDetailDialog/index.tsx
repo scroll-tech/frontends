@@ -20,17 +20,13 @@ import {
 import { styled } from "@mui/system"
 
 import { ReactComponent as LogoSvg } from "@/assets/svgs/common/scroll-logo-icon.svg"
-import { ReactComponent as BackSvg } from "@/assets/svgs/skelly/back.svg"
 import { ReactComponent as CloseSvg } from "@/assets/svgs/skelly/close.svg"
 import { ReactComponent as DefaultBadgeSvg } from "@/assets/svgs/skelly/default-badge.svg"
 import { ReactComponent as ShareSvg } from "@/assets/svgs/skelly/share.svg"
 import ScrollButton from "@/components/Button"
-import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useSkellyStore, { BadgeDetailDialogTpye } from "@/stores/skellyStore"
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
-  //   border-radius: 16px;
-  // background: linear-gradient(114deg, #2A2A2A 0%, rgba(27, 27, 27, 0.60) 100%);
   borderRadius: "1.6rem",
   background: "rgba(16, 16, 16, 0.60)",
   // backdropFilter: "unset",
@@ -119,7 +115,7 @@ const BadgeDetailDialog = () => {
   }))
 
   return (
-    <StyledDialog maxWidth={false} open={badgeDetailDialogVisible !== BadgeDetailDialogTpye.HIDDEN}>
+    <StyledDialog onClose={handleClose} maxWidth={false} open={badgeDetailDialogVisible !== BadgeDetailDialogTpye.HIDDEN}>
       <DialogTitle
         sx={{
           m: 0,

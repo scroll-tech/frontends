@@ -116,7 +116,6 @@ const ActionBox = () => {
         Name & Avatar
       </ActionButton>
       <StyledTooltip
-        sx={{ "& .MuiTooltip-tooltip": { display: "none" } }}
         slotProps={{
           popper: {
             sx: {
