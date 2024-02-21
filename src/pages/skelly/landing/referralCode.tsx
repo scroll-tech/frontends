@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import { useLocation } from "react-router-dom"
 
 import { Box, InputBase, SvgIcon, Typography } from "@mui/material"
@@ -6,7 +6,16 @@ import { styled } from "@mui/system"
 
 import { ReactComponent as CheckSvg } from "@/assets/svgs/skelly/check.svg"
 import { ReactComponent as ErrorSvg } from "@/assets/svgs/skelly/error.svg"
-import useSkellyStore, { MintStep } from "@/stores/skellyStore"
+import { ReactComponent as LoadingSvg } from "@/assets/svgs/skelly/loading.svg"
+import useSkellyStore from "@/stores/skellyStore"
+
+const INVITE_CODE_LENGTH = 5
+
+enum CodeStatus {
+  VALID = "Valid",
+  INVALID = "Invalid",
+  UNKNOWN = "Unknown",
+}
 
 const Container = styled(Box)(({ theme }) => ({
   marginBottom: "4rem",
@@ -59,14 +68,13 @@ const StatusContent = styled(Typography)(({ theme }) => ({
   lineHeight: "2.8rem",
   letterSpacing: "0.18px",
   textAlign: "center",
-  color: "#ffffff",
+  color: "#A5A5A5",
 }))
 
-const ReferralCode = () => {
-  const [codes, setCodes] = useState(Array(5).fill(""))
-  const [codeStatus, setCodeStatus] = useState("")
-  const [isCheckingCode, setIsCheckingCode] = useState(false)
-  const inputRefs = useRef<Array<HTMLInputElement | null>>(new Array(5).fill(null))
+const ReferralCode = ({ isChecking, setIsChecking }) => {
+  const [codes, setCodes] = useState(Array(INVITE_CODE_LENGTH).fill(""))
+  const [codeStatus, setCodeStatus] = useState(CodeStatus.UNKNOWN)
+  const inputRefs = useRef<Array<HTMLInputElement | null>>(new Array(INVITE_CODE_LENGTH).fill(null))
   const { changeReferralCode } = useSkellyStore()
   const location = useLocation()
 
@@ -78,38 +86,40 @@ const ReferralCode = () => {
     }
   }, [location])
 
+  const referralCode = useMemo(() => {
+    return codes.join("")
+  }, [codes])
+
   useEffect(() => {
     // Check if all codes are filled and then validate
     if (codes.every(code => code.length === 1)) {
-      validateCode(codes.join(""))
-      const fullCode = codes.join("")
-      changeReferralCode(fullCode)
+      validateCode(referralCode)
     }
-  }, [codes]) // Dependency on codes to re-run validation when they change
+  }, [codes])
 
   const validateCode = (code: string) => {
-    // Placeholder for your validation logic
-    setIsCheckingCode(true)
+    setIsChecking(true)
     setTimeout(() => {
-      setIsCheckingCode(false)
+      setIsChecking(false)
       if (code === "KAZ1R") {
-        setCodeStatus("Valid")
+        setCodeStatus(CodeStatus.VALID)
+        changeReferralCode(referralCode)
       } else {
-        setCodeStatus("Invalid")
+        setCodeStatus(CodeStatus.INVALID)
         inputRefs.current[0]?.focus()
-        setCodes(Array(5).fill(""))
+        setCodes(Array(INVITE_CODE_LENGTH).fill(""))
       }
     }, 1500)
   }
 
   const handleInputChange = (index: number, event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setCodeStatus("")
+    setCodeStatus(CodeStatus.UNKNOWN)
+    changeReferralCode("")
     const newCodes = [...codes]
-    // Use type assertion to treat the target as an HTMLInputElement
     newCodes[index] = (event.target as HTMLInputElement).value
     setCodes(newCodes)
 
-    if (event.target.value && index < 4) {
+    if (event.target.value && index < INVITE_CODE_LENGTH - 1) {
       inputRefs.current[index + 1]?.focus()
     }
   }
@@ -124,7 +134,7 @@ const ReferralCode = () => {
     event.preventDefault()
     const paste = event.clipboardData.getData("text")
     if (paste.length) {
-      const pasteArray = paste.split("").slice(0, 5)
+      const pasteArray = paste.split("").slice(0, INVITE_CODE_LENGTH)
       setCodes(prevCodes => pasteArray.map((char, index) => pasteArray[index] || prevCodes[index]))
     }
   }
@@ -146,14 +156,18 @@ const ReferralCode = () => {
         ))}
       </ReferralCodeBox>
       <StatusBox>
-        {isCheckingCode && <StatusContent>In the process of verification...</StatusContent>}
-        {codeStatus === "Invalid" && (
+        {isChecking && (
+          <StatusContent>
+            <SvgIcon sx={{ fontSize: "2.4rem", marginRight: "0.5rem" }} component={LoadingSvg} inheritViewBox></SvgIcon>Checking...
+          </StatusContent>
+        )}
+        {codeStatus === CodeStatus.INVALID && (
           <StatusContent sx={{ color: "#FF684B" }}>
             <SvgIcon sx={{ fontSize: "2.4rem", marginRight: "0.5rem" }} component={ErrorSvg} inheritViewBox></SvgIcon>
             Invalid code. Please try another one
           </StatusContent>
         )}
-        {codeStatus === "Valid" && (
+        {codeStatus === CodeStatus.VALID && (
           <StatusContent sx={{ color: "#85E0D1" }}>
             <SvgIcon sx={{ fontSize: "2.4rem", marginRight: "0.5rem" }} component={CheckSvg} inheritViewBox></SvgIcon>
             Valid code. You get 50% off mint fee

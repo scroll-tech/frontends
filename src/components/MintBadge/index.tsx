@@ -7,7 +7,7 @@ import { ReactComponent as CloseSvg } from "@/assets/svgs/skelly/close.svg"
 import { ReactComponent as StickerSvg } from "@/assets/svgs/skelly/sticker.svg"
 import TriangleSvg from "@/assets/svgs/skelly/triangle.svg"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import BadgeDetailDialog from "@/pages/skelly/Dashboard/BadgeDetailDialog"
+import BadgeDetailDialog from "@/pages/skelly/dashboard/BadgeDetailDialog"
 import useSkellyStore, { BadgeDetailDialogTpye } from "@/stores/skellyStore"
 
 const Container = styled(Box)(({ theme }) => ({

@@ -11,6 +11,7 @@ import { FadeInUp } from "@/components/Animation"
 import Button from "@/components/Button"
 import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
 import SectionHeader from "@/components/SectionHeader"
+import SectionWrapper from "@/components/SectionWrapper"
 
 const STEPS = [
   {
@@ -91,23 +92,25 @@ const StepBox = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   flex: 1,
+  gap: "0.8rem",
 }))
 
 const StepTitle = styled(Typography)(({ theme }) => ({
   textAlign: "left",
   color: theme.palette.text.primary,
-  marginBottom: "2rem",
+  lineHeight: "3.4rem",
   [theme.breakpoints.down("md")]: {
-    marginBottom: "1.4rem",
+    // marginBottom: "1.4rem",
   },
   [theme.breakpoints.down("sm")]: {
-    marginBottom: "0.8rem",
+    // marginBottom: "0.8rem",
   },
 }))
 
 const StepDescription = styled(Typography)(({ theme }) => ({
   textAlign: "left",
   color: theme.palette.text.primary,
+  lineHeight: "2.8rem",
   [theme.breakpoints.down("sm")]: {
     fontSize: "1.6rem",
   },
@@ -129,11 +132,10 @@ const GetStart = () => {
   }, [])
 
   return (
-    <Container>
-      {/* <Background sx={{ width: calculateWidth() }} /> */}
+    <SectionWrapper sx={{ pt: ["9.6rem"], pb: [0] }}>
       <FadeInUp>
         <SectionHeader
-          sx={{ mb: ["10rem", "12.5rem"] }}
+          sx={{ mb: ["5.4", "5.4rem"] }}
           title="Build with Scroll"
           content="Scroll is compatible with Ethereum at the bytecode-level, meaning everything works right out of the box."
           action={
@@ -148,12 +150,8 @@ const GetStart = () => {
         <StepContainer>
           {STEPS.map((feature, idx) => (
             <SuccessionItem key={idx}>
-              <StepBox className="step-box">
-                <SvgIcon
-                  sx={{ height: "3.2rem", width: "3.2rem", marginBottom: "0.8rem", objectFit: "contain" }}
-                  component={feature.icon}
-                  inheritViewBox
-                ></SvgIcon>
+              <StepBox>
+                <SvgIcon sx={{ height: "3.2rem", width: "3.2rem", objectFit: "contain" }} component={feature.icon} inheritViewBox></SvgIcon>
                 <StepTitle variant="H4">{feature.title}</StepTitle>
                 <StepDescription variant="Body3">{feature.description}</StepDescription>
               </StepBox>
@@ -166,7 +164,7 @@ const GetStart = () => {
           inheritViewBox
         ></SvgIcon>
       </StyledBox>
-    </Container>
+    </SectionWrapper>
   )
 }
 

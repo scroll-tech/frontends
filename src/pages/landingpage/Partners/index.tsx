@@ -211,7 +211,7 @@ const Carousel = () => (
 const Partners = () => {
   return (
     <PartnersContainer>
-      <SectionWrapper>
+      <SectionWrapper sx={{ pt: "12.8rem" }}>
         <FadeInUp>
           <SectionHeader
             sx={{ mb: "10rem" }}
@@ -219,7 +219,7 @@ const Partners = () => {
             content="Explore Scroll’s ecosystem and earn points to set up your unique profile on Scroll."
             action={
               <Box sx={{ display: "flex", flexWrap: "wrap", gap: "3rem" }}>
-                <Button href="/scroll-skelly">Scroll profile</Button>
+                <Button href="/scroll-skelly">Scroll skelly</Button>
                 <Button href="/ecosystem" color="primary">
                   Explore projects
                 </Button>

@@ -1,19 +1,13 @@
-import { useEffect, useState } from "react"
-
-import { Box, Button, Dialog, DialogContent, DialogTitle, IconButton, InputBase, Stack, SvgIcon, Typography } from "@mui/material"
+import { Dialog, DialogContent, DialogTitle, IconButton, InputBase, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { ReactComponent as CloseSvg } from "@/assets/svgs/skelly/close.svg"
-import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useSkellyStore from "@/stores/skellyStore"
 
 import Coupon from "./coupon"
 import Record from "./record"
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
-  //   border-radius: 16px;
-  // background: linear-gradient(114deg, #2A2A2A 0%, rgba(27, 27, 27, 0.60) 100%);
-  // backdrop-filter: blur(50px);
   borderRadius: "1.6rem",
   backgroundColor: "rgba(0, 0, 0, 0.5)",
   backdropFilter: "blur(50px)",
@@ -31,13 +25,6 @@ const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
 }))
 
 const Title = styled(Typography)(({ theme }) => ({
-  // color: #FFF;
-  // text-align: center;
-  // font-family: "Trans Sans Premium";
-  // font-size: 40px;
-  // font-style: normal;
-  // font-weight: 600;
-  // line-height: 56px; /* 140% */
   color: "#FFFFFF",
   textAlign: "center",
   fontSize: "4rem",
@@ -65,7 +52,7 @@ const ReferDialog = () => {
   }
 
   return (
-    <StyledDialog maxWidth={false} open={referDialogVisible}>
+    <StyledDialog maxWidth={false} open={referDialogVisible} onClose={handleClose}>
       <DialogTitle
         sx={{
           m: 0,
