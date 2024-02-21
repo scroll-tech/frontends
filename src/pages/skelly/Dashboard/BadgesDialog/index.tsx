@@ -1,5 +1,3 @@
-import { useEffect } from "react"
-
 import { Box, Button, Dialog, DialogContent, DialogTitle, IconButton, InputBase, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
@@ -10,16 +8,11 @@ import useSkellyStore from "@/stores/skellyStore"
 import GridDragDrop from "./GridDragDrop"
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
-  //   width: "64rem",
-  //   border-radius: 16px;
-  // background: linear-gradient(114deg, #2A2A2A 0%, rgba(27, 27, 27, 0.60) 100%);
-  // backdrop-filter: blur(50px);
   borderRadius: "1.6rem",
   backgroundColor: "rgba(0, 0, 0, 0.5)",
   backdropFilter: "blur(50px)",
   zIndex: 998,
   "& .MuiDialog-paper": {
-    // backgroundColor: "transparent",
     background: "linear-gradient(114deg, #2A2A2A 0%, rgba(27, 27, 27, 0.60) 100%)",
     maxWidth: "120rem",
     width: "100%",
@@ -32,31 +25,6 @@ const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "center",
-}))
-
-const Avatar = styled(Box)(({ theme }) => ({
-  width: "30rem",
-  height: "30rem",
-  borderRadius: "50%",
-  margin: "0 14rem",
-  backgroundImage:
-    "linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('https://avatars.githubusercontent.com/u/387772?s=200&v=4')",
-  backgroundBlendMode: "multiply",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}))
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "#FFFFFF",
-  fontSize: "3.2rem",
-  fontWeight: 600,
-  lineHeight: "4.4rem",
-  marginBottom: "4.8rem",
-  marginTop: "3rem",
-  "& .MuiInputBase-input": {
-    textAlign: "center",
-  },
 }))
 
 const BadgesDialog = () => {
@@ -72,24 +40,9 @@ const BadgesDialog = () => {
     changeBadgesDialog(false)
     setBadgesInstance(sortedBadges)
   }
-  //   const { classes } = useStyles()
-  //   const { hisisible, changeHistoryVisible } = useBridgeStore()
-  //   const { walletCurrentAddress } = useRainbowContext()
-  //   const handleClose = () => {
-  //     changeHistoryVisible(false)
-  //   }
-  //   const {
-  //     txHistory: { refreshPageTransactions },
-  //   } = useBridgeContext()
-
-  //   useEffect(() => {
-  //     if (historyVisible && walletCurrentAddress) {
-  //       refreshPageTransactions(1)
-  //     }
-  //   }, [historyVisible, walletCurrentAddress])
 
   return (
-    <StyledDialog maxWidth={false} open={badgesDialogVisible}>
+    <StyledDialog maxWidth={false} onClose={handleClose} open={badgesDialogVisible}>
       <DialogTitle
         sx={{
           m: 0,
@@ -98,7 +51,6 @@ const BadgesDialog = () => {
           justifyContent: "flex-end",
           alignItems: "center",
         }}
-        id="customized-dialog-title"
       >
         <Typography variant="h3" sx={{ flexGrow: 1, color: "#ffffff", textAlign: "center" }}>
           Drag badges to cutomize{" "}
