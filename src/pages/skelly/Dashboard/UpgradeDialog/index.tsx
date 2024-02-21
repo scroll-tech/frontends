@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
-import BeachAccessIcon from "@mui/icons-material/BeachAccess"
 import ImageIcon from "@mui/icons-material/Image"
-import WorkIcon from "@mui/icons-material/Work"
 import {
   Avatar,
   Box,
@@ -28,9 +26,6 @@ import ScrollButton from "@/components/Button"
 import useSkellyStore from "@/stores/skellyStore"
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
-  //   border-radius: 16px;
-  // background: linear-gradient(114deg, #2A2A2A 0%, rgba(27, 27, 27, 0.60) 100%);
-  // backdrop-filter: blur(50px);
   borderRadius: "1.6rem",
   backgroundColor: "rgba(0, 0, 0, 0.5)",
   backdropFilter: "blur(50px)",
@@ -55,11 +50,7 @@ const StyledList = styled(List)(({ theme }) => ({
   },
 }))
 
-const StyledListItem = styled(ListItem)(({ theme }) => ({
-  "&:hover": {
-    // backgroundColor: "rgba(255, 255, 255, 0.1)",
-  },
-}))
+const StyledListItem = styled(ListItem)(({ theme }) => ({}))
 
 const StyledListItemAvatar = styled(ListItemAvatar)(({ theme }) => ({
   "& .MuiAvatar-root": {
@@ -128,7 +119,7 @@ const UpgradeDialog = () => {
   }
 
   return (
-    <StyledDialog maxWidth={false} open={upgradeDialogVisible}>
+    <StyledDialog maxWidth={false} onClose={handleClose} open={upgradeDialogVisible}>
       {step === 0 ? (
         <>
           <DialogTitle
