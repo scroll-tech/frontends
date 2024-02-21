@@ -6,7 +6,7 @@ import NumberTypography from "@/components/NumberTypography"
 
 const StatisticSkeleton = styled(Skeleton)(({ theme }) => ({
   borderRadius: "1rem",
-  width: "50%",
+  width: "12rem",
   display: "inline-block",
 }))
 
@@ -17,11 +17,10 @@ const Statistic = props => {
   return (
     <Stack
       direction="row"
-      justifyContent={["center"]}
+      justifyContent="center"
       alignItems="center"
       sx={{
-        flex: 1,
-        p: ["0.8rem 1.2rem", "3.6rem 2.4rem"],
+        p: ["0.8rem 1.2rem", "3.6rem 0"],
         gap: "0.8rem",
       }}
     >

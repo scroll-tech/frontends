@@ -1,24 +1,20 @@
-import React, { useEffect, useMemo, useRef, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
 
-import { Box, SvgIcon, Tooltip, Typography } from "@mui/material"
-import { tooltipClasses } from "@mui/material/Tooltip"
+import { Box } from "@mui/material"
 import { styled } from "@mui/system"
 
-import { ReactComponent as DefaultAvatarSvg } from "@/assets/svgs/skelly/default-avatar.svg"
 import { BADGES_VISIBLE_TYPE } from "@/constants"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
-import useSkellyStore, { BadgeDetailDialogTpye } from "@/stores/skellyStore"
 
-import NameTip from "../components/NameTip"
+import ActionBox from "./ActionBox"
 import BadgeDetailDialog from "./BadgeDetailDialog"
+import BadgeWall from "./BadgeWall"
 import BadgesDialog from "./BadgesDialog"
 import NameDialog from "./NameDialog"
 import ReferDialog from "./ReferDialog"
 import UpgradeDialog from "./UpgradeDialog"
-import ActionBox from "./actionBox"
 
-const Container = styled(Box)(({ theme }) => ({
+const Container: any = styled(Box)(({ theme, badgeWidth }: any) => ({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -28,12 +24,14 @@ const Container = styled(Box)(({ theme }) => ({
   backgroundColor: "#101010",
   backgroundImage:
     "linear-gradient(90deg, rgba(255,255,255, 0.3) 1px, transparent 1px), linear-gradient( rgba(255,255,255, 0.3) 1px, transparent 1px)",
+  backgroundSize: `${badgeWidth}px ${badgeWidth}px`,
+  backgroundPosition: `calc(50% - ${badgeWidth / 2}px) calc(50% - ${badgeWidth / 2}px)`,
   "&::before, &::after": {
     content: "''",
     height: "100%",
     position: "absolute",
     top: 0,
-    width: "25% !important",
+    width: "calc((100vw - 100vh + 14rem)/ 2) ",
     zIndex: 42,
   },
   "&::before": {
@@ -49,180 +47,40 @@ const Container = styled(Box)(({ theme }) => ({
   },
 }))
 
-const Profile = styled(Box)(({ theme }) => ({
-  backgroundColor: "#101010",
-  border: "1px solid rgba(255,255,255, 0.3)",
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "space-between",
-  alignItems: "center",
-  paddingTop: "4rem",
-}))
-
-const Name = styled(Typography)(({ theme }) => ({
-  color: "#FFFFFF",
-  textAlign: "center",
-  fontSize: "3.2rem",
-  fontStyle: "normal",
-  fontWeight: 600,
-  lineHeight: "3.2rem",
-  marginBottom: "2.4rem",
-  marginTop: "3rem",
-  alignSelf: "center",
-  flexShrink: 0,
-}))
-
-const Badge = styled(Box)(({ theme }) => ({
-  // padding: "2.5rem",
-}))
-
 const Dashboard = () => {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const divRef = useRef<HTMLDivElement>(null)
+  const { badgesInstance } = useSkellyContext()
 
-  const { profileInstance, badgesInstance } = useSkellyContext()
-  const navigate = useNavigate()
-  const [badges, setBadges] = useState([])
-  const { changeBadgeDetailDialog } = useSkellyStore()
+  const [windowDimensions, setWindowDimensions] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  })
 
-  const [gridNum, setGridNum] = useState(badgesInstance[BADGES_VISIBLE_TYPE.VISIBLE].length > 12 ? 8 : 4)
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
-  const [windowHeight, setWindowHeight] = useState(window.innerHeight)
-  const badgeWidth = useMemo(() => {
-    if (windowWidth < windowHeight - 62) {
-      return (windowWidth - 62) / gridNum // 65 is the height of the navbar, 80 is the width of the action box
-    } else {
-      return (windowHeight - 65 - 80) / gridNum
-    }
-  }, [windowWidth, windowHeight, gridNum, badgesInstance])
+  const handleResize = useCallback(() => {
+    setWindowDimensions({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    })
+  }, [])
 
   useEffect(() => {
-    function handleResize() {
-      setWindowWidth(window.innerWidth)
-      setWindowHeight(window.innerHeight)
-      setBadges(generatedBadges())
-    }
-
     window.addEventListener("resize", handleResize)
-    setGridNum(badgesInstance[BADGES_VISIBLE_TYPE.VISIBLE].length > 12 ? 8 : 4)
-    setBadges(generatedBadges())
     return () => window.removeEventListener("resize", handleResize)
-  }, [badgeWidth, badgesInstance])
+  }, [handleResize])
 
-  const generatedBadges = () => {
-    if (containerRef.current && divRef.current) {
-      const divRect = divRef.current.getBoundingClientRect()
-      let cursor = [divRect.top, divRect.left + badgeWidth, divRect.top + badgeWidth, divRect.left]
-      let range = [divRect.top, divRect.right, divRect.bottom, divRect.left]
+  const gridNum = useMemo(() => (badgesInstance[BADGES_VISIBLE_TYPE.VISIBLE].length > 12 ? 8 : 4), [badgesInstance])
 
-      let direction = 0
-      return badgesInstance[BADGES_VISIBLE_TYPE.VISIBLE].map((image, index) => {
-        let badge = {
-          image,
-          left: 0,
-          top: 0,
-        }
-        if (direction === 0) {
-          // direction is top
-          if (cursor[direction] === range[direction]) {
-            direction++
-            range[0] = cursor[0] - badgeWidth
-          }
-          cursor = [cursor[0] - badgeWidth, cursor[1], cursor[2] - badgeWidth, cursor[3]]
-        } else if (direction === 1) {
-          // direction is right
-          if (cursor[direction] === range[direction]) {
-            direction++
-            range[1] = cursor[1] + badgeWidth
-          }
-          cursor = [cursor[0], cursor[1] + badgeWidth, cursor[2], cursor[3] + badgeWidth]
-        } else if (direction === 2) {
-          // direction is bottom
-          if (cursor[direction] === range[direction]) {
-            direction++
-            range[2] = cursor[2] + badgeWidth
-          }
-          cursor = [cursor[0] + badgeWidth, cursor[1], cursor[2] + badgeWidth, cursor[3]]
-        } else if (direction === 3) {
-          // direction is left
-          if (cursor[direction] === range[direction]) {
-            direction = 0
-            range[3] = cursor[3] - badgeWidth
-          }
-          cursor = [cursor[0], cursor[1] - badgeWidth, cursor[2], cursor[3] - badgeWidth]
-        }
-
-        badge.left = cursor[3]
-        badge.top = cursor[0]
-        return badge
-      })
+  const badgeWidth = useMemo(() => {
+    const { width, height } = windowDimensions
+    if (width < height - 62) {
+      return (width - 62) / gridNum
+    } else {
+      return (height - 65 - 80) / gridNum
     }
-    return []
-  }
+  }, [windowDimensions, gridNum])
 
   return (
-    <Container
-      ref={containerRef}
-      sx={{
-        backgroundSize: `${badgeWidth}px ${badgeWidth}px`,
-        backgroundPosition: `calc(50% - ${badgeWidth / 2}px) calc(50% - ${badgeWidth / 2}px)`,
-      }}
-    >
-      <Profile
-        ref={divRef}
-        sx={{
-          width: `${(badgeWidth * gridNum) / 2}px`,
-          height: `${(badgeWidth * gridNum) / 2}px`,
-        }}
-      >
-        <SvgIcon sx={{ flex: 1, width: "100%" }} component={DefaultAvatarSvg} inheritViewBox />
-        <Name>{profileInstance.name}</Name>
-      </Profile>
-      {(badges as any).map((badge, index) => {
-        return (
-          <Tooltip
-            title={<NameTip />}
-            slotProps={{
-              popper: {
-                sx: {
-                  [`&.${tooltipClasses.popper}[data-popper-placement*="bottom"] .${tooltipClasses.tooltip}`]: {
-                    marginTop: "-6px",
-                    background: "transparent",
-                  },
-                  [`&.${tooltipClasses.popper}[data-popper-placement*="top"] .${tooltipClasses.tooltip}`]: {
-                    marginBottom: "-6px",
-                    background: "transparent",
-                  },
-                  [`&.${tooltipClasses.popper}[data-popper-placement*="right"] .${tooltipClasses.tooltip}`]: {
-                    marginLeft: "-6px",
-                    background: "transparent",
-                  },
-                  [`&.${tooltipClasses.popper}[data-popper-placement*="left"] .${tooltipClasses.tooltip}`]: {
-                    marginRight: "-6px",
-                    background: "transparent",
-                  },
-                },
-              },
-            }}
-          >
-            <Badge
-              key={index}
-              style={{
-                position: "absolute",
-                top: `${badge.top}px`,
-                left: `${badge.left}px`,
-                cursor: "pointer",
-                width: `${badgeWidth}px`,
-                height: `${badgeWidth}px`,
-                padding: `${badgeWidth / 10}px`,
-              }}
-              onClick={() => changeBadgeDetailDialog(BadgeDetailDialogTpye.UPGRADE)}
-            >
-              <img style={{ borderRadius: "50%" }} src={badge.image} />
-            </Badge>
-          </Tooltip>
-        )
-      })}
+    <Container badgeWidth={badgeWidth}>
+      <BadgeWall badgeWidth={badgeWidth} gridNum={gridNum} windowDimensions={windowDimensions} />
       <ActionBox />
       <NameDialog />
       <BadgesDialog />

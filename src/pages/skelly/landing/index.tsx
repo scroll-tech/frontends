@@ -1,17 +1,15 @@
 import { useState } from "react"
-import { useLocation, useNavigate } from "react-router-dom"
 
-import { Box, Container as MuiContainer, Stack, SvgIcon, Typography } from "@mui/material"
+import { Box, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { ReactComponent as BackgroundSvg } from "@/assets/svgs/skelly/landing.svg"
 import Button from "@/components/Button"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useSkellyStore, { MintStep } from "@/stores/skellyStore"
 
-import ReferralCode from "./referralCode"
+import ReferralCode from "./ReferralCode"
 
 const Container = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -51,19 +49,9 @@ const Mint = () => {
   const { isMobile } = useCheckViewport()
   const { connect, walletCurrentAddress } = useRainbowContext()
   const { changeMintStep } = useSkellyStore()
-  const navigate = useNavigate()
+  const [isChecking, setIsChecking] = useState(false)
 
   const handleContinue = async () => {
-    // setIsMinting(true)
-    // setLoading(true)
-    // try {
-    //   await mintProfileNFT("Vitalik", "https://avatars.dicebear.com/api/avataaars/1.svg", referralCode)
-
-    // } catch (error) {
-    //   console.error("Error minting profile NFT:", error)
-    // }
-    // setLoading(false)
-    // navigate("/scroll-skelly?type=mint")
     changeMintStep(MintStep.PROFILE)
   }
 
@@ -72,10 +60,10 @@ const Mint = () => {
       <Title>Mint your Scroll Skelly</Title>
       <SubTitle>Get a scroll profile and earn badges across the ecosystem. </SubTitle>
       <SvgIcon sx={{ objectFit: "contain", height: "28rem", width: "auto", margin: "3rem auto" }} component={BackgroundSvg} inheritViewBox></SvgIcon>
-      <ReferralCode />
+      <ReferralCode isChecking={isChecking} setIsChecking={setIsChecking} />
 
       {walletCurrentAddress ? (
-        <Button color="primary" width={isMobile ? "23rem" : "28.2rem"} onClick={handleContinue}>
+        <Button color="primary" gloomy={isChecking} width={isMobile ? "23rem" : "28.2rem"} onClick={handleContinue}>
           Continue
         </Button>
       ) : (

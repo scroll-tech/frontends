@@ -1,13 +1,14 @@
 import copy from "copy-to-clipboard"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useState } from "react"
 
-import { Box, Button, Dialog, DialogContent, DialogTitle, IconButton, InputBase, Stack, SvgIcon, Typography } from "@mui/material"
+import { Box, Button, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { ReactComponent as CheckSvg } from "@/assets/svgs/skelly/check.svg"
 import { ReactComponent as CopySvg } from "@/assets/svgs/skelly/copy.svg"
 import couponBackground from "@/assets/svgs/skelly/coupon.svg"
 import { ReactComponent as LogoSvg } from "@/assets/svgs/skelly/logo.svg"
+import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 
 const CouponBox = styled(Box)(({ theme }) => ({
   background: `url(${couponBackground}) no-repeat center center`,
@@ -68,6 +69,7 @@ const CopyButton = styled(Button)(({ theme }) => ({
 
 const Coupon = () => {
   const [copied, setCopied] = useState(false)
+  const { profileInstance } = useSkellyContext()
 
   const copyAddress = useCallback(() => {
     copy(window.location.href + "?referral=KAZ1R")
@@ -77,7 +79,7 @@ const Coupon = () => {
   return (
     <CouponBox>
       <DescriptionBox>
-        <Typography sx={{ fontSize: "1.8rem", lineHeight: "2.4rem" }}>From: flash</Typography>
+        <Typography sx={{ fontSize: "1.8rem", lineHeight: "2.4rem" }}>From: {profileInstance.name}</Typography>
         <Typography sx={{ fontSize: "4.8rem", lineHeight: "1", fontWeight: 500, margin: "0.8rem 0" }}>50% OFF</Typography>
         <Typography sx={{ fontSize: "1.8rem", marginBottom: "2.3rem", lineHeight: "2.4rem" }}>Mint Fee</Typography>
         <SvgIcon sx={{ width: "8rem" }} component={LogoSvg} inheritViewBox />
