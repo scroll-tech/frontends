@@ -1,12 +1,10 @@
-import { useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 
 import { Box, Button, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { ReactComponent as CloseSvg } from "@/assets/svgs/skelly/close.svg"
-import { ReactComponent as StickerSvg } from "@/assets/svgs/skelly/sticker.svg"
 import TriangleSvg from "@/assets/svgs/skelly/triangle.svg"
-import { useRainbowContext } from "@/contexts/RainbowProvider"
 import BadgeDetailDialog from "@/pages/skelly/dashboard/BadgeDetailDialog"
 import useSkellyStore, { BadgeDetailDialogTpye } from "@/stores/skellyStore"
 
@@ -31,7 +29,7 @@ const Tooltip = styled(Box)(({ theme }) => ({
   border: "solid 2px transparent",
   borderRadius: "1rem",
   marginBottom: "2rem",
-
+  display: "none", // Initially hide Tooltip
   "&:before": {
     content: '""',
     position: "absolute",
@@ -67,11 +65,63 @@ const MintButton = styled(Button)(({ theme }) => ({
 }))
 
 const MintBadge = props => {
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(false)
+  const [tooltipVisible, setTooltipVisible] = useState(false)
   const { changeBadgeDetailDialog } = useSkellyStore()
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const initialPlayRef = useRef(true)
+  const tooltipVisibleRef = useRef(false)
+
+  useEffect(() => {
+    setTimeout(() => {
+      setOpen(true)
+      setTimeout(() => {
+        playVideo()
+      }, 0)
+    }, 1500)
+  }, [])
+
+  const playVideo = () => {
+    const video = videoRef.current
+    if (!video) return
+
+    video
+      .play()
+      .then(() => {
+        const checkTime = () => {
+          if (initialPlayRef.current && video.currentTime >= 2) {
+            setTooltipVisible(true)
+            video.currentTime = 1.3
+            tooltipVisibleRef.current = true
+            console.log(tooltipVisibleRef.current, "tooltipVisibleRef.current")
+            // setInitialPlay(false)
+            initialPlayRef.current = false
+          } else if (!initialPlayRef.current && !tooltipVisibleRef.current) {
+          } else if (!initialPlayRef.current && tooltipVisibleRef.current && video.currentTime >= 2) {
+            video.currentTime = 1.3
+          }
+          video.onended = () => {
+            setOpen(false)
+          }
+        }
+
+        video.addEventListener("timeupdate", checkTime)
+
+        return () => {
+          video.removeEventListener("timeupdate", checkTime)
+        }
+      })
+      .catch(error => {
+        console.error("Video play failed", error)
+      })
+  }
+
+  const handleCloseTooltip = () => {
+    setTooltipVisible(false)
+    tooltipVisibleRef.current = false
+  }
 
   const handleMintBadge = () => {
-    setOpen(false)
     changeBadgeDetailDialog(BadgeDetailDialogTpye.MINT)
   }
 
@@ -79,21 +129,22 @@ const MintBadge = props => {
     <Container>
       {open && (
         <>
-          <Tooltip>
-            <Typography sx={{ textAlign: "right" }}>
-              <SvgIcon sx={{ fontSize: "1.3rem" }} onClick={() => setOpen(false)} component={CloseSvg} inheritViewBox></SvgIcon>
-            </Typography>
-            <Typography sx={{ fontSize: "1.6rem", fontWeight: 500, marginBottom: "1.2rem" }}>
-              Heya! Congratulations! You can mint "Scroll native badge Scroll" on Scroll Skelly.
-            </Typography>
-            <MintButton variant="contained" color="primary" sx={{ width: "100%" }} onClick={handleMintBadge}>
-              Mint badge
-            </MintButton>
-          </Tooltip>
-          <SvgIcon sx={{ fontSize: "13rem" }} component={StickerSvg} inheritViewBox></SvgIcon>
+          {tooltipVisible && (
+            <Tooltip style={{ display: "block" }}>
+              <Typography sx={{ textAlign: "right" }}>
+                <SvgIcon sx={{ fontSize: "1.3rem" }} onClick={handleCloseTooltip} component={CloseSvg} inheritViewBox />
+              </Typography>
+              <Typography sx={{ fontSize: "1.6rem", fontWeight: 500, marginBottom: "1.2rem" }}>
+                Heya! Congratulations! You can mint "Scroll native badge Scroll" on Scroll Skelly.
+              </Typography>
+              <MintButton variant="contained" color="primary" sx={{ width: "100%" }} onClick={handleMintBadge}>
+                Mint badge
+              </MintButton>
+            </Tooltip>
+          )}
+          <video ref={videoRef} controls={false} muted src="/imgs/skelly/scroll.mp4" />
         </>
       )}
-
       <BadgeDetailDialog />
     </Container>
   )

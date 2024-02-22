@@ -28,3 +28,8 @@ declare module "content-hash" {
 }
 
 declare module "dayjs"
+
+declare module "*.mp4" {
+  const src: string
+  export default src
+}
