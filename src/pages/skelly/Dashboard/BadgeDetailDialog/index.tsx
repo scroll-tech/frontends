@@ -12,21 +12,31 @@ import useSkellyStore, { BadgeDetailDialogTpye } from "@/stores/skellyStore"
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
   borderRadius: "1.6rem",
-  background: "rgba(16, 16, 16, 0.60)",
-  // backdropFilter: "unset",
+  backgroundColor: "rgba(0, 0, 0, 0.5)",
+  backdropFilter: "blur(50px)",
   "& .MuiDialog-paper": {
+    // background: "linear-gradient(114deg, #2A2A2A 0%, rgba(27, 27, 27, 0.60) 100%)",
     backgroundColor: "#101010",
     width: "64rem",
     height: "67.4rem",
+    padding: "3.2rem",
   },
 }))
 
+const StyledDialogTitle = styled(DialogTitle)(({ theme }) => ({
+  padding: 0,
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  marginBottom: "2.4rem",
+}))
+
 const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
-  padding: "0 3rem",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "center",
+  padding: "0",
 }))
 
 const StyledScrollButton = styled(ScrollButton)(({ theme }) => ({
@@ -47,9 +57,12 @@ const ButtonContainer = styled(Box)(({ theme }) => ({
 }))
 
 const UpgradedBox = styled(Box)(({ theme }) => ({
+  position: "absolute",
+  top: 0,
+  left: 0,
+  right: 0,
   display: "flex",
   backgroundColor: "#FF6F43",
-  width: "100%",
   height: "4.8rem",
   justifyContent: "center",
   alignItems: "center",
@@ -82,9 +95,14 @@ const BadgeDetailDialog = () => {
     changeBadgeDetailDialog(BadgeDetailDialogTpye.MINTED)
   }
 
-  const hangleViewSkelly = () => {
+  const handleViewSkelly = () => {
     changeBadgeDetailDialog(BadgeDetailDialogTpye.HIDDEN)
     navigate("/scroll-skelly")
+  }
+
+  const handleViewEAS = () => {
+    changeBadgeDetailDialog(BadgeDetailDialogTpye.HIDDEN)
+    navigate("/scroll-skelly/eas")
   }
 
   const handleViewBadge = () => {
@@ -92,20 +110,9 @@ const BadgeDetailDialog = () => {
     navigate("/scroll-skelly/badge")
   }
 
-  const BackButton = styled(IconButton)(({ theme }) => ({
-    position: "absolute",
-    top: "1.6rem",
-    right: "1.6rem",
-  }))
-
   return (
     <StyledDialog onClose={handleClose} maxWidth={false} open={badgeDetailDialogVisible !== BadgeDetailDialogTpye.HIDDEN}>
-      <DialogTitle
-        sx={{
-          m: 0,
-          p: [0],
-        }}
-      >
+      <StyledDialogTitle>
         {badgeDetailDialogVisible === BadgeDetailDialogTpye.UPGRADE && (
           <UpgradedBox>
             UPGRADE AVAILABLE
@@ -114,16 +121,21 @@ const BadgeDetailDialog = () => {
             </UpgradedButton>
           </UpgradedBox>
         )}
-
-        <BackButton
-          onClick={handleClose}
+        <Box
           sx={{
-            top: badgeDetailDialogVisible === BadgeDetailDialogTpye.UPGRADE ? "6.4rem" : "1.6rem",
+            display: "flex",
+            justifyContent: "space-between",
+            direction: "rtl",
+            width: "100%",
+            position: "relative",
+            top: badgeDetailDialogVisible === BadgeDetailDialogTpye.UPGRADE ? "4.8rem" : 0,
           }}
         >
-          <SvgIcon sx={{ fontSize: ["1.6rem", "1.8rem"], color: "#fff" }} component={CloseSvg} inheritViewBox></SvgIcon>
-        </BackButton>
-      </DialogTitle>
+          <IconButton sx={{ p: 0, "&:hover": { backgroundColor: "unset" } }} onClick={handleClose}>
+            <SvgIcon sx={{ fontSize: ["1.6rem", "1.8rem"], color: "#fff" }} component={CloseSvg} inheritViewBox></SvgIcon>
+          </IconButton>
+        </Box>
+      </StyledDialogTitle>
       <StyledDialogContent>
         <SvgIcon sx={{ width: "20rem", height: "20rem", marginBottom: "4rem" }} component={DefaultBadgeSvg} inheritViewBox></SvgIcon>
         {badgeDetailDialogVisible !== BadgeDetailDialogTpye.MINTED ? (
@@ -133,7 +145,7 @@ const BadgeDetailDialog = () => {
             >
               Scroll Power Badge
             </Typography>
-            <Typography sx={{ fontSize: "2rem", fontWeight: 600, lineHeight: "2.4rem", color: "#fff", textAlign: "center", marginBottom: "1.2rem" }}>
+            <Typography sx={{ fontSize: "2rem", fontWeight: 400, lineHeight: "2.4rem", color: "#fff", textAlign: "center", marginBottom: "1.2rem" }}>
               This is some explanation of the badge and how to earn the badge. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed interdum
               arcu sit amet enim ullamcorper fringilla. Sed vel mauris consectetur, congue enim et, congue felis. Fusce.
             </Typography>
@@ -164,8 +176,14 @@ const BadgeDetailDialog = () => {
             </StyledScrollButton>
           )}
 
+          {badgeDetailDialogVisible === BadgeDetailDialogTpye.UPGRADE && (
+            <StyledScrollButton color="primary" onClick={handleViewEAS}>
+              View on EAS
+            </StyledScrollButton>
+          )}
+
           {badgeDetailDialogVisible === BadgeDetailDialogTpye.MINTED && (
-            <StyledScrollButton color="primary" onClick={hangleViewSkelly}>
+            <StyledScrollButton color="primary" onClick={handleViewSkelly}>
               View Scroll Skelly
             </StyledScrollButton>
           )}
