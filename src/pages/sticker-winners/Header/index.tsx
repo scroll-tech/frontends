@@ -32,12 +32,14 @@ const useStyles = makeStyles()(theme => ({
     },
   },
   award: {
-    padding: "0.8rem 2rem",
+    padding: "1.5rem 2rem",
     border: `3px solid ${theme.palette.text.primary}`,
-    height: "8rem",
     backgroundColor: theme.palette.themeBackground.light,
     borderRadius: "1.6rem",
     textAlign: "center",
+    [theme.breakpoints.down("md")]: {
+      padding: "0.6rem 2rem",
+    },
     [theme.breakpoints.down("sm")]: {
       borderWidth: "2px",
     },
@@ -89,7 +91,7 @@ const Award = () => {
     <Container sx={{ mt: "2rem", pb: ["3.6rem", "4.2rem"] }}>
       <Stack direction="row" justifyContent="center" alignItems="center" className={classes.award}>
         <Typography
-          sx={{ fontSize: ["1.8rem", "3.2rem"], lineHeight: ["2.4rem", "4rem"], fontWeight: 500, fontFamily: "var(--developer-page-font-family)" }}
+          sx={{ fontSize: ["1.8rem", "3.2rem"], lineHeight: ["2.4rem", "4.4rem"], fontWeight: 500, fontFamily: "var(--developer-page-font-family)" }}
         >
           Top 1 prize: <strong>1000 USD</strong> {isPortrait ? <br></br> : "|"} Top 2-5 prize: <strong>200 USD</strong> each
         </Typography>
