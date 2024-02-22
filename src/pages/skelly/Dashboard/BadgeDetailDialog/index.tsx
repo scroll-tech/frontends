@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom"
 
-import { Button, Dialog, DialogContent, DialogTitle, IconButton, SvgIcon, Typography } from "@mui/material"
+import { Box, Button, Dialog, DialogContent, DialogTitle, IconButton, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { ReactComponent as LogoSvg } from "@/assets/svgs/common/scroll-logo-icon.svg"
