@@ -1,9 +1,9 @@
-export const isAboveScreen = element => {
+export const isAboveScreen = (element: Element): boolean => {
   const rect = element.getBoundingClientRect()
   return rect.bottom < 0
 }
 
-export const isBelowScreen = element => {
+export const isBelowScreen = (element: Element): boolean => {
   const rect = element.getBoundingClientRect()
   return rect.top > window.innerHeight
 }
