@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react"
-
-import { Box, Button, Dialog, DialogContent, DialogTitle, IconButton, InputBase, Stack, SvgIcon, Typography } from "@mui/material"
+import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 const RecordBox = styled(Box)(({ theme }) => ({
