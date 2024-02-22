@@ -44,6 +44,10 @@ export const ECOSYSTEM_EXPLORER_LIST = [
 
 export const TWITTER_ORIGIN = "https://twitter.com/"
 
+export const DISCORD_ORIGIN = "https://discord.gg/"
+
+export const MEDIUM_ORIGIN = "https://medium.com/"
+
 export const ECOSYSTEM_NETWORK_LIST = ["All networks", "Mainnet", "Testnet"]
 
 export const NORMAL_HEADER_HEIGHT = isProduction ? "6.5rem" : "11.5rem"

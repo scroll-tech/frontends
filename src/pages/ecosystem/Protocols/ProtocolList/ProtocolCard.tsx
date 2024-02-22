@@ -6,11 +6,13 @@ import { Box, Button, Stack, SvgIcon, Typography } from "@mui/material"
 
 import { ecosystemListLogoUrl } from "@/apis/ecosystem"
 import { ReactComponent as ArrowSvg } from "@/assets/svgs/ecosystem/arrow.svg"
+import { ReactComponent as DiscordSvg } from "@/assets/svgs/ecosystem/discord.svg"
+import { ReactComponent as MediumSvg } from "@/assets/svgs/ecosystem/medium.svg"
 import { ReactComponent as TwitterSvg } from "@/assets/svgs/ecosystem/twitter.svg"
 import LinesEllipsis from "@/components/LinesEllipsis"
 import Link from "@/components/Link"
 import TextButton from "@/components/TextButton"
-import { TWITTER_ORIGIN } from "@/constants"
+import { DISCORD_ORIGIN, MEDIUM_ORIGIN, TWITTER_ORIGIN } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
 import NetworkLabel from "./NetworkLabel"
@@ -170,6 +172,30 @@ const ProtocolCard = props => {
           }}
         >
           <SvgIcon sx={{ fontSize: "1.4rem" }} component={TwitterSvg} inheritViewBox></SvgIcon>
+        </Link>
+        <Link
+          external
+          href={DISCORD_ORIGIN + twitterHandle}
+          sx={{
+            color: "inherit",
+            "&:hover": {
+              color: theme => theme.palette.primary.main,
+            },
+          }}
+        >
+          <SvgIcon sx={{ fontSize: "1.4rem" }} component={DiscordSvg} inheritViewBox></SvgIcon>
+        </Link>
+        <Link
+          external
+          href={MEDIUM_ORIGIN + twitterHandle}
+          sx={{
+            color: "inherit",
+            "&:hover": {
+              color: theme => theme.palette.primary.main,
+            },
+          }}
+        >
+          <SvgIcon sx={{ fontSize: "1.4rem" }} component={MediumSvg} inheritViewBox></SvgIcon>
         </Link>
         {isDesktop && (
           <Box className={classes.tagWrapper}>
