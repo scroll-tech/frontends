@@ -7,7 +7,6 @@ import { Box, ButtonBase, Fade, ListItemIcon, ListItemText, Menu, MenuItem, SvgI
 
 import { ReactComponent as CopySuccessSvg } from "@/assets/svgs/bridge/copy-success.svg"
 import { ReactComponent as HistorySvg } from "@/assets/svgs/bridge/history.svg"
-import { ReactComponent as ScrollSvg } from "@/assets/svgs/bridge/network-scroll.svg"
 import { ReactComponent as DefaultAvatarSvg } from "@/assets/svgs/skelly/default-avatar.svg"
 import { ReactComponent as BlockSvg } from "@/assets/svgs/wallet-connector/block.svg"
 import { ReactComponent as CopySvg } from "@/assets/svgs/wallet-connector/copy.svg"
