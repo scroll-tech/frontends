@@ -17,28 +17,31 @@ export function useEstimateSendTransaction(props) {
   const minimumAmount = BigInt(1)
 
   useEffect(() => {
-    const gateway = networksAndSigners[fromNetwork.isL1 ? CHAIN_ID.L1 : CHAIN_ID.L2].gateway
-    if (gateway) {
-      setInstance(gateway)
+    const instance = selectedToken.native
+      ? networksAndSigners[fromNetwork.isL1 ? CHAIN_ID.L1 : CHAIN_ID.L2].scrollMessenger
+      : networksAndSigners[fromNetwork.isL1 ? CHAIN_ID.L1 : CHAIN_ID.L2].gateway
+    if (instance) {
+      setInstance(instance)
     }
-  }, [networksAndSigners, fromNetwork])
+  }, [networksAndSigners, fromNetwork, selectedToken.native])
 
   const depositETH = async () => {
     const fee = gasPrice * gasLimit
-    return instance["depositETH(uint256,uint256)"].estimateGas(minimumAmount, gasLimit, {
+    return instance["sendMessage(address,uint256,bytes,uint256)"].estimateGas(walletCurrentAddress, minimumAmount, "0x", gasLimit, {
       value: minimumAmount + fee,
     })
   }
 
   const depositERC20 = async () => {
     const fee = gasPrice * gasLimit
+
     return instance["depositERC20(address,uint256,uint256)"].estimateGas(selectedToken.address, minimumAmount, gasLimit, {
       value: fee,
     })
   }
 
   const withdrawETH = async () => {
-    return instance["withdrawETH(uint256,uint256)"].estimateGas(minimumAmount, 0, {
+    return instance["sendMessage(address,uint256,bytes,uint256)"].estimateGas(walletCurrentAddress, minimumAmount, "0x", 0, {
       value: minimumAmount,
     })
   }
