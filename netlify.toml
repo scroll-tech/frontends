@@ -63,6 +63,10 @@ from = "/blog/scrollsFreshCoat"
 to = "/blog/scrolls-fresh-coat"
 status = 301
 
+[[redirects]]
+from = "/sticker-vote"
+to = "/sticker-winners"
+status = 301
 
 
 
