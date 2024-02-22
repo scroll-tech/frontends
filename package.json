@@ -4,11 +4,11 @@
   "private": false,
   "license": "MIT",
   "scripts": {
-    "build": "CI=false craco build",
+    "build": "craco build",
     "convert:webp": "cwebp -q 100 $1 -o $2",
     "eject": "craco eject",
     "generate:sitemap": "cd scripts && node generate_sitemap.js",
-    "lint": "eslint ",
+    "lint": "eslint --fix --max-warnings=0 \"**/*.{ts,tsx}\"",
     "prepare": "husky install",
     "start": "BROWSER=none craco start",
     "test": "npx lint-staged"

@@ -128,7 +128,7 @@ const ActionBox = () => {
         title={
           <CustomiseList>
             <CustomiseItem>
-              <a target="_blank" href={shareTwitterURL}>
+              <a target="_blank" rel="noreferrer" href={shareTwitterURL}>
                 Share to X
               </a>
             </CustomiseItem>

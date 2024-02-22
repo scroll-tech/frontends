@@ -1,22 +1,6 @@
-import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
-import {
-  Avatar,
-  Box,
-  Button,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Stack,
-  SvgIcon,
-  Typography,
-} from "@mui/material"
+import { Button, Dialog, DialogContent, DialogTitle, IconButton, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { ReactComponent as LogoSvg } from "@/assets/svgs/common/scroll-logo-icon.svg"

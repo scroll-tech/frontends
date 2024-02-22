@@ -1,10 +1,9 @@
 import useSWR from "swr"
 
-import { Box, Stack, Typography } from "@mui/material"
+import { Stack } from "@mui/material"
 
 import { ecosystemActivityUrl, ecosystemTVLUrl, ecosystemUniqueWalletCountUrl } from "@/apis/ecosystem"
 import { fetchLastBatchIndexesUrl } from "@/apis/rollupscan"
-import SectionWrapper from "@/components/SectionWrapper"
 import { formatLargeNumber } from "@/utils"
 
 import Statistic from "./Statistic"
