@@ -11,19 +11,11 @@
   border-radius: 5px;
   min-height: 200px;
   transition: background-color 350ms ease;
-  /* background-color: rgba(246, 246, 246, 1); */
   border: 1px solid rgba(0, 0, 0, 0.05);
   font-size: 1em;
   background: transparent;
 
   ul {
-    /* display: grid;
-    grid-gap: 10px;
-    grid-template-columns: repeat(var(--columns, 1), 1fr);
-    list-style: none;
-    margin: 0; */
-    /* display: flex; */
-    /* flex-wrap: wrap; */
     padding: 24px;
     grid-template-columns: repeat(auto-fill, 100px);
     grid-template-rows: repeat(auto-fill, 100px);
@@ -34,7 +26,6 @@
     max-width: 52rem;
     border: 1px solid rgba(255, 255, 255, 0.4);
     border-radius: 16px;
-    /* min-height: 36.2rem; */
   }
 
   &.scrollable {
@@ -55,10 +46,6 @@
     &:hover {
       border-color: rgba(0, 0, 0, 0.15);
     }
-  }
-
-  &.hover {
-    /* background-color: rgb(235, 235, 235, 1); */
   }
 
   &.unstyled {

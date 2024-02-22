@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 
-import { Box, Container as MuiContainer, Stack, SvgIcon, Typography } from "@mui/material"
+import { Box, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { ReactComponent as BuildSvg } from "@/assets/svgs/landingpage/build.svg"
@@ -30,24 +30,6 @@ const STEPS = [
     description: "Start building with your favorite toolkit.",
   },
 ]
-
-const Container = styled(Box)(({ theme }) => ({
-  paddingTop: "15.4rem",
-  maxWidth: "152rem",
-  paddingBottom: "16rem",
-  background: "transparent",
-  justifyContent: "center",
-  position: "relative",
-  margin: "0 auto",
-  "& .MuiContainer-root": {
-    position: "relative",
-    maxWidth: "152rem",
-  },
-  [theme.breakpoints.down("md")]: {
-    paddingTop: "5.4rem",
-    paddingBottom: "0",
-  },
-}))
 
 const StyledBox = styled(Box)(({ theme }) => ({
   display: "grid",

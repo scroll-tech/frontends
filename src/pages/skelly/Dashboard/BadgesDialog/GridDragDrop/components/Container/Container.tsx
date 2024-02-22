@@ -1,11 +1,9 @@
-import classNames from "classnames"
 import React, { Ref, forwardRef } from "react"
 
 import { Box } from "@mui/material"
 import { styled } from "@mui/system"
 
-import { Handle, Remove } from "../Item"
-import styles from "./Container.module.css"
+// import styles from "./Container.module.css"
 
 export interface Props {
   children: React.ReactNode
@@ -23,7 +21,9 @@ export interface Props {
   onRemove?(): void
 }
 
-const StyledBox = styled(Box)(({ theme }) => ({
+const StyledBox = styled<any>(Box, {
+  shouldForwardProp: prop => prop !== "scrollable" && prop !== "placeholder" && prop !== "unstyled" && prop !== "horizontal" && prop !== "shadow",
+})(({ theme, scrollable, placeholder, unstyled, horizontal, shadow }) => ({
   display: "flex",
   flexDirection: "column",
   gridAutoRows: "max-content",
@@ -31,16 +31,82 @@ const StyledBox = styled(Box)(({ theme }) => ({
   boxSizing: "border-box",
   appearance: "none",
   outline: "none",
-  minWidth: "35rem",
-  margin: "1rem",
-  borderRadius: "0.5rem",
-  minHeight: "20rem",
+  minWidth: "350px",
+  margin: "10px",
+  borderRadius: "5px",
+  minHeight: "200px",
   transition: "background-color 350ms ease",
-  // backgroundColor: "rgba(246, 246, 246, 1)",
   border: "1px solid rgba(0, 0, 0, 0.05)",
   fontSize: "1em",
+  background: "transparent",
+  ...(scrollable && {
+    overflowY: "auto",
+  }),
+  ...(placeholder && {
+    justifyContent: "center",
+    alignItems: "center",
+    cursor: "pointer",
+    color: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: "transparent",
+    borderStyle: "dashed",
+    borderColor: "rgba(0, 0, 0, 0.08)",
+    "&:hover": {
+      borderColor: "rgba(0, 0, 0, 0.15)",
+    },
+  }),
+  ...(unstyled && {
+    overflow: "visible",
+    backgroundColor: "transparent !important",
+    border: "none !important",
+  }),
+  ...(horizontal && {
+    width: "100%",
+    "& ul": {
+      gridAutoFlow: "column",
+    },
+  }),
+  ...(shadow && {
+    boxShadow: "0 1px 10px 0 rgba(34, 33, 81, 0.1)",
+  }),
+  "&:focus-visible": {
+    borderColor: "transparent",
+    boxShadow: "0 0 0 2px rgba(255, 255, 255, 0), 0 0px 0px 2px #4c9ffe",
+  },
+  "& ul": {
+    padding: "24px",
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fill, minmax(100px, 1fr))",
+    gridTemplateRows: "repeat(auto-fill, 100px)",
+    gap: "22px",
+    width: "100%",
+    maxWidth: "52rem",
+    minHeight: "48rem",
+    border: "1px solid rgba(255, 255, 255, 0.4)",
+    borderRadius: "16px",
+  },
 }))
 
+const Header = styled("div")(({ theme }) => ({
+  display: "flex",
+  padding: "5px 20px",
+  paddingRight: "8px",
+  alignItems: "center",
+  justifyContent: "center",
+  borderTopLeftRadius: "5px",
+  borderTopRightRadius: "5px",
+  color: "#fff",
+  fontSize: "24px",
+  fontStyle: "normal",
+  fontWeight: 600,
+  lineHeight: "normal",
+  letterSpacing: "0.24px",
+  marginBottom: "1.6rem",
+  "&:hover": {
+    ".Actions > *": {
+      opacity: "1 !important",
+    },
+  },
+}))
 export const Container = forwardRef<HTMLDivElement, Props>(
   (
     {
@@ -71,19 +137,10 @@ export const Container = forwardRef<HTMLDivElement, Props>(
             "--columns": columns,
           } as React.CSSProperties
         }
-        className={classNames(
-          styles.Container,
-          unstyled && styles.unstyled,
-          horizontal && styles.horizontal,
-          hover && styles.hover,
-          placeholder && styles.placeholder,
-          scrollable && styles.scrollable,
-          shadow && styles.shadow,
-        )}
         onClick={onClick}
         tabIndex={onClick ? 0 : undefined}
       >
-        {label ? <div className={styles.Header}>{label}</div> : null}
+        {label ? <Header>{label}</Header> : null}
         {placeholder ? children : <ul>{children}</ul>}
       </StyledBox>
     )

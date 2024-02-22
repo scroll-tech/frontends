@@ -60,11 +60,11 @@ const UpgradedButton = styled(Button)(({ theme }) => ({
 }))
 
 const MintHome = props => {
-  const { chainId, connect, walletCurrentAddress } = useRainbowContext()
+  const { chainId, connect } = useRainbowContext()
 
   const { isMobile, isPortrait, isLandscape } = useCheckViewport()
-  const { isEligible, isMinting, changeIsEligible } = useNFTStore()
-  const [loading, setLoading] = useState(false)
+  const { isEligible, isMinting } = useNFTStore()
+  const [loading] = useState(false)
   const [errorMessage, setErrorMessage] = useState("")
   const { changeBadgeDetailDialog } = useSkellyStore()
 

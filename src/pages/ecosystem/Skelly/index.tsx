@@ -1,6 +1,4 @@
-import { withStyles } from "tss-react/mui"
-
-import { Box, Stack, Typography } from "@mui/material"
+import { Stack, Typography } from "@mui/material"
 
 import Button from "@/components/Button"
 import SectionWrapper from "@/components/SectionWrapper"
@@ -9,7 +7,7 @@ import useCheckViewport from "@/hooks/useCheckViewport"
 import BadgeList from "./BadgeList"
 
 const Skelly = () => {
-  const { isMobile, isTablet, isLandscape } = useCheckViewport()
+  const { isMobile, isTablet } = useCheckViewport()
 
   return (
     <SectionWrapper dark sx={{ pt: ["4rem", "5.5rem", "6rem"], background: "#101010" }}>
