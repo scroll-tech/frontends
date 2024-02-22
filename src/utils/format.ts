@@ -3,7 +3,7 @@ import { formatUnits, parseUnits } from "ethers"
 import _ from "lodash"
 import numbro from "numbro"
 
-export const commafy = (value: string | number | undefined, decimals: number = 2) => {
+export const commafy = (value: string | number | undefined, decimals: number = 2): string => {
   if (value === undefined) {
     return ""
   }
@@ -29,7 +29,7 @@ export const truncateAddress = (address: string): string => {
   return address ? `${address.slice(0, 6)}…${address.slice(38, 42)}` : "-"
 }
 
-export const truncateHash = (hash: string) => {
+export const truncateHash = (hash: string): string => {
   return hash ? `${hash.slice(0, 6)}…${hash.slice(-4)}` : "-"
 }
 
@@ -65,11 +65,11 @@ export const toTokenDisplay = (num, decimals: bigint = BigInt(18), symbol?: stri
   return formatted
 }
 
-export function sanitizeNumericalString(numStr: string) {
+export function sanitizeNumericalString(numStr: string): string {
   return numStr.replace(/[^0-9.,]|[.,](?=.*[.,])/g, "").replace(/,/g, ".")
 }
 
-export function maxDecimals(amount: string, decimals: bigint = BigInt(18)) {
+export function maxDecimals(amount: string, decimals: bigint = BigInt(18)): string {
   const sanitizedAmount = sanitizeNumericalString(amount)
   const indexOfDecimal = sanitizedAmount.indexOf(".")
   if (indexOfDecimal === -1) {
@@ -85,7 +85,7 @@ export function maxDecimals(amount: string, decimals: bigint = BigInt(18)) {
   return `${wholeAmount}${decimalAmount}`
 }
 
-export function fixedDecimals(amount: string, decimals: bigint = BigInt(18)) {
+export function fixedDecimals(amount: string, decimals: bigint = BigInt(18)): string {
   if (amount === "") {
     return amount
   }
@@ -110,7 +110,7 @@ export function BNToAmount(value: bigint, decimals: bigint = BigInt(18)): string
   }
 }
 
-export const checkAmountOverflow = (inputAmount, decimals: bigint = BigInt(18)) => {
+export const checkAmountOverflow = (inputAmount, decimals: bigint = BigInt(18)): boolean => {
   try {
     if (!inputAmount) {
       return true
@@ -123,7 +123,7 @@ export const checkAmountOverflow = (inputAmount, decimals: bigint = BigInt(18)) 
   }
 }
 
-export const formatUTCDate = (date, needSub?: boolean) => {
+export const formatUTCDate = (date, needSub?: boolean): string => {
   let finalDate = date
   if (needSub) {
     finalDate = date.subtract(1, "ms")
@@ -131,7 +131,7 @@ export const formatUTCDate = (date, needSub?: boolean) => {
   return `${finalDate.utc().format("MMM D,YYYY h:mmA")} GMT`
 }
 
-export const formatDate = (date, options: { needSub?: boolean; withTime?: boolean; isUnix?: boolean } = {}) => {
+export const formatDate = (date, options: { needSub?: boolean; withTime?: boolean; isUnix?: boolean } = {}): string => {
   const { needSub, withTime, isUnix } = options
   let finalDate = dayjs.isDayjs(date) ? date : isUnix ? dayjs.unix(date) : dayjs(date)
   if (needSub) {
@@ -143,6 +143,6 @@ export const formatDate = (date, options: { needSub?: boolean; withTime?: boolea
   return finalDate.format("MMM D, YYYY")
 }
 
-export const trimErrorMessage = message => {
+export const trimErrorMessage = (message: string): string => {
   return message.split("(")[0].trim()
 }
