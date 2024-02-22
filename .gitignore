@@ -41,3 +41,5 @@ next-env.d.ts
 .sentryclirc
 
 .turbo
+
+/src/pages/blog/data.json

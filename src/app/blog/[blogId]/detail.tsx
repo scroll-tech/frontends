@@ -3,11 +3,6 @@
 import { shuffle } from "lodash"
 import { useParams, useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
-import ReactMarkdown from "react-markdown"
-import rehypeKatex from "rehype-katex"
-import rehypeRaw from "rehype-raw"
-import remarkGfm from "remark-gfm"
-import remarkMath from "remark-math"
 
 import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
@@ -16,6 +11,7 @@ import LoadingPage from "@/components/LoadingPage"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
 import Articles from "./articles"
+import { Markdown } from "./components/Markdown"
 import TOC from "./components/tableOfContents"
 import blogSource from "./data.json"
 
@@ -65,10 +61,12 @@ const BlogDetail = () => {
       return anchor
     })
     try {
-      import(`../../../assets/blog/${blogId.toLowerCase()}.md`).then(res => {
-        setLoading(false)
-        setBlog(res.default)
-      })
+      fetch(`https://misc-pages-ghost-relay.vercel.app/api/post/${blogId.toLowerCase()}.md?title=1`)
+        .then(res => res.text())
+        .then(text => {
+          setLoading(false)
+          setBlog(text)
+        })
     } catch (error) {
       router.push("/404")
     }
@@ -89,12 +87,7 @@ const BlogDetail = () => {
       ) : (
         <Box>
           <BlogContainer className="wrapper">
-            <ReactMarkdown
-              children={blog as string}
-              remarkPlugins={[remarkMath, remarkGfm]}
-              rehypePlugins={[rehypeKatex, rehypeRaw]}
-              className="markdown-body"
-            />
+            <Markdown markdownString={blog as string} />
             <Box sx={{ width: "32rem", flexShrink: 0, position: "relative" }}>
               <BlogNavbar>
                 <TOC />

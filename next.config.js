@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+require("./scripts/download-blog-posts.data.json.js")
 const { withSentryConfig } = require("@sentry/nextjs")
 
 const packageJson = require("./package.json")
