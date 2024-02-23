@@ -63,7 +63,7 @@ const UpgradeDialog = () => {
       <StyledDialogContent>
         <StyledList>
           {[1, 2, 3].map((item, index) => (
-            <BadgeItem />
+            <BadgeItem key={index} />
           ))}
         </StyledList>
       </StyledDialogContent>
