@@ -247,7 +247,7 @@ const mainnetRoutes = [
   },
   {
     name: "Scroll Skelly",
-    path: "/scroll-skelly/badge",
+    path: "/scroll-skelly/badge/:badgeAddress",
     element: <SkellyBadge />,
     isHiddenFooter: true,
   },

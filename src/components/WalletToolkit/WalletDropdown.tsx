@@ -84,7 +84,7 @@ const WalletDropdown = props => {
 
   const { walletCurrentAddress, connect, disconnect, chainId } = useRainbowContext()
   const { changeHistoryVisible } = useBridgeStore()
-  const { profileInstance } = useSkellyContext()
+  const { username, hasMintedProfile } = useSkellyContext()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [copied, setCopied] = useState(false)
@@ -154,18 +154,18 @@ const WalletDropdown = props => {
         </ButtonBase>
       )}
 
-      {chainId && !profileInstance && (
+      {chainId && !hasMintedProfile && (
         <ButtonBase classes={{ root: classes.button }} sx={sx} onClick={handleClick}>
           {truncateAddress(walletCurrentAddress as string)}
           <SvgIcon className={cx(classes.endIcon, open && classes.reverseEndIcon)} component={DownTriangleSvg} inheritViewBox></SvgIcon>
         </ButtonBase>
       )}
 
-      {chainId && profileInstance && (
+      {chainId && hasMintedProfile && (
         <ButtonBase classes={{ root: classes.button }} sx={sx} onClick={handleClick}>
           <Avatar src={avatarSvgURL} sx={{ width: 24, height: 24, marginRight: "0.8rem" }}></Avatar>
           <Box sx={{ lineHeight: "1.6rem", textAlign: "left" }}>
-            <strong style={{ fontSize: "1.2rem" }}>{profileInstance.name}</strong>
+            <strong style={{ fontSize: "1.2rem" }}>{username}</strong>
             <p style={{ fontSize: "1.2rem" }}>{truncateAddress(walletCurrentAddress as string)}</p>
           </Box>
           <SvgIcon className={cx(classes.endIcon, open && classes.reverseEndIcon)} component={DownTriangleSvg} inheritViewBox></SvgIcon>

@@ -23,6 +23,7 @@ const BadgeCard = styled(Card)(({ theme }) => ({
   borderRadius: "2rem",
   background: "#FFF8F3",
   textAlign: "center",
+  transition: "transform 0.5s ease", // Add transition for smooth scroll
 }))
 
 const ArrorButton = styled(IconButton)(({ theme }) => ({
@@ -35,6 +36,10 @@ const ArrorButton = styled(IconButton)(({ theme }) => ({
   alignItems: "center",
   "&:hover": {
     background: "#FFF8F3",
+  },
+  "&.Mui-disabled": {
+    color: "#ccc",
+    background: "#F0F0F0",
   },
 }))
 
@@ -49,10 +54,19 @@ const Carousel: React.FC<CarouselProps> = ({ items }) => {
     setCurrentIndex(prevIndex => (prevIndex < items.length - 3 ? prevIndex + 1 : 0))
   }
 
+  const isPrevDisabled = currentIndex === 0
+  const isNextDisabled = currentIndex >= items.length - 3
+
   return (
-    <Box>
-      <Stack direction="row" justifyContent="space-between" spacing={2} sx={{ margin: "5rem 0" }}>
-        {items.slice(currentIndex, currentIndex + 3).map((item, index) => (
+    <Box sx={{ overflow: "hidden" }}>
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        spacing={2}
+        sx={{ margin: "5rem 0" }}
+        style={{ transform: `translateX(-${currentIndex * (100 / 3)}%)`, transition: "transform 0.5s ease" }}
+      >
+        {items.map((item, index) => (
           <BadgeCard key={index} sx={{ minWidth: 200 }}>
             <CardContent>
               <SvgIcon component={LogoSvg} sx={{ fontSize: "8.8rem" }} inheritViewBox />
@@ -70,10 +84,10 @@ const Carousel: React.FC<CarouselProps> = ({ items }) => {
         ))}
       </Stack>
       <Box display="flex" justifyContent="flex-end" gap={"1.6rem"} marginTop={2} paddingBottom="9.5rem">
-        <ArrorButton onClick={handlePrev} sx={{ background: "#FFF8F3" }} aria-label="previous">
-          <SvgIcon component={LeftSvg} sx={{}} inheritViewBox />
+        <ArrorButton onClick={handlePrev} disabled={isPrevDisabled} aria-label="previous">
+          <SvgIcon component={LeftSvg} inheritViewBox />
         </ArrorButton>
-        <ArrorButton onClick={handleNext} sx={{ background: "#FFF8F3" }} aria-label="next">
+        <ArrorButton onClick={handleNext} disabled={isNextDisabled} aria-label="next">
           <SvgIcon component={RightSvg} sx={{ fontSize: "2.2rem" }} inheritViewBox />
         </ArrorButton>
       </Box>
