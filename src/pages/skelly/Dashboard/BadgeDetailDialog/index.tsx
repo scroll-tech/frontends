@@ -1,11 +1,10 @@
+import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
 import { Box, Button, Dialog, DialogContent, DialogTitle, IconButton, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
-import { ReactComponent as LogoSvg } from "@/assets/svgs/common/scroll-logo-icon.svg"
 import { ReactComponent as CloseSvg } from "@/assets/svgs/skelly/close.svg"
-import { ReactComponent as DefaultBadgeSvg } from "@/assets/svgs/skelly/default-badge.svg"
 import { ReactComponent as ShareSvg } from "@/assets/svgs/skelly/share.svg"
 import ScrollButton from "@/components/Button"
 import useSkellyStore, { BadgeDetailDialogTpye } from "@/stores/skellyStore"
@@ -84,7 +83,7 @@ const UpgradedButton = styled(Button)(({ theme }) => ({
 }))
 
 const BadgeDetailDialog = () => {
-  const { badgeDetailDialogVisible, changeBadgeDetailDialog } = useSkellyStore()
+  const { badgeDetailDialogVisible, changeBadgeDetailDialog, selectedBadge } = useSkellyStore()
   const navigate = useNavigate()
 
   const handleClose = () => {
@@ -107,8 +106,14 @@ const BadgeDetailDialog = () => {
 
   const handleViewBadge = () => {
     changeBadgeDetailDialog(BadgeDetailDialogTpye.HIDDEN)
-    navigate("/scroll-skelly/badge")
+    navigate("/scroll-skelly/badge/" + selectedBadge?.badgeAddress)
   }
+
+  useEffect(() => {
+    if (selectedBadge) {
+      // console.log("Selected Badge:", selectedBadge)
+    }
+  }, [selectedBadge])
 
   return (
     <StyledDialog onClose={handleClose} maxWidth={false} open={badgeDetailDialogVisible !== BadgeDetailDialogTpye.HIDDEN}>
@@ -137,13 +142,14 @@ const BadgeDetailDialog = () => {
         </Box>
       </StyledDialogTitle>
       <StyledDialogContent>
-        <SvgIcon sx={{ width: "20rem", height: "20rem", marginBottom: "4rem" }} component={DefaultBadgeSvg} inheritViewBox></SvgIcon>
+        {/* <SvgIcon sx={{ width: "20rem", height: "20rem", marginBottom: "4rem"  }} component={DefaultBadgeSvg} inheritViewBox></SvgIcon> */}
+        <img alt="img" src={selectedBadge.badgeImageURI} style={{ width: "20rem", height: "20rem", marginBottom: "4rem", borderRadius: "50%" }} />
         {badgeDetailDialogVisible !== BadgeDetailDialogTpye.MINTED ? (
           <>
             <Typography
               sx={{ fontSize: "3.2rem", fontWeight: 600, lineHeight: "0.8rem", marginBottom: "3.2rem", color: "#fff", textAlign: "center" }}
             >
-              Scroll Power Badge
+              {selectedBadge?.name}
             </Typography>
             <Typography sx={{ fontSize: "2rem", fontWeight: 400, lineHeight: "2.4rem", color: "#fff", textAlign: "center", marginBottom: "1.2rem" }}>
               This is some explanation of the badge and how to earn the badge. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed interdum
@@ -159,7 +165,8 @@ const BadgeDetailDialog = () => {
                 marginBottom: "3.2rem",
               }}
             >
-              <SvgIcon sx={{ marginRight: "0.8rem", width: "3.2rem", height: "3.2rem" }} component={LogoSvg} inheritViewBox></SvgIcon>
+              {/* <SvgIcon sx={{ marginRight: "0.8rem", width: "3.2rem", height: "3.2rem" }} component={LogoSvg} inheritViewBox></SvgIcon> */}
+              <img alt="img" src={selectedBadge.badgeImageURI} style={{ marginRight: "0.8rem", width: "3.2rem", height: "3.2rem" }} />
               Scroll
             </Typography>
           </>

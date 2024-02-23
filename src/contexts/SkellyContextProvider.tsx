@@ -1,24 +1,28 @@
-import { Contract, ethers } from "ethers"
+import { AbiCoder, Contract, ethers } from "ethers"
 import { createContext, useContext, useEffect, useState } from "react"
 
 import ScrollOriginsNFTABI from "@/assets/abis/ScrollOriginsNFT.json"
-import ScrollOriginsNFTV2ABI from "@/assets/abis/ScrollOriginsNFTV2.json"
-import { BADGES_VISIBLE_TYPE, CHAIN_ID } from "@/constants"
+import ScrollSkellyABI from "@/assets/abis/ScrollSkelly.json"
+import { CHAIN_ID } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import { getBadgeImageURI, initializeInstance, queryUserBadges } from "@/services/skellyService"
 import { requireEnv } from "@/utils"
 
-const SCROLL_ORIGINS_NFT_ADDRESS = requireEnv("REACT_APP_SCROLL_ORIGINS_NFT")
-const SCROLL_ORIGINS_NFT_V2_ADDRESS = requireEnv("REACT_APP_SCROLL_ORIGINS_NFT_V2")
+const UNISWAP_NFT_ADDRESS = "0xbbAd0e891922A8A4a7e9c39d4cc0559117016fec"
+const SCROLL_SEPOLIA_ORIGINS_BADGE_ADDRESS = "0xb05837704cc99F7f30c8693F05c7CfEc9CFA88FE"
+const SCROLL_SEPOLIA_EAS_ADDRESS = requireEnv("REACT_APP_EAS_ADDRESS")
+const SCROLL_SEPOLIA_BADGE_SCHEMA = requireEnv("REACT_APP_BADGE_SCHEMA")
 
 type SkellyContextProps = {
-  NFTInstance: any
-  NFTV2Instance: any
-  unsignedNFTInstance: any
-  unsignedNFTV2Instance: any
-  profileInstance: any
-  mintProfileNFT: (name: string, referralCode?: string) => void
-  badgesInstance: any
-  setBadgesInstance: any
+  checkIfProfileMinted: (userAddress?: `0x${string}`) => void
+  hasMintedProfile: boolean
+  unsignedProfileRegistryContract: any
+  profileRegistryContract: any
+  profileContract: any
+  username: string
+  queryUsername: () => void
+  userBadges: any
+  attachBadges: any
 }
 
 const SkellyContext = createContext<SkellyContextProps | null>(null)
@@ -26,154 +30,186 @@ const SkellyContext = createContext<SkellyContextProps | null>(null)
 const SkellyContextProvider = ({ children }: any) => {
   const { provider, chainId, walletCurrentAddress } = useRainbowContext()
 
-  const [NFTInstance, setNFTInstance] = useState<Contract>()
-  const [NFTV2Instance, setNFTV2Instance] = useState<Contract>()
-  const [unsignedNFTInstance, setUnsignedNFTInstance] = useState<Contract>()
-  const [unsignedNFTV2Instance, setUnsignedNFTV2Instance] = useState<Contract>()
-  const [profileInstance, setProfileInstance] = useState<any>()
-  const [badgesInstance, setBadgesInstance] = useState<any>()
+  const [profileRegistryContract, setProfileRegistryContract] = useState<Contract>()
+  const [unsignedProfileRegistryContract, setUnsignedProfileRegistryContract] = useState<Contract>()
+  const [profileContract, setProfileContract] = useState<Contract>()
+
+  const [userBadges, setUserBadges] = useState<any>([])
+  const [attachBadges, setAttachBadges] = useState<any>([])
+
+  const [profileAddress, setProfileAddress] = useState("")
+
+  const [hasMintedProfile, setHasMintedProfile] = useState(false)
+  const [username, setUsername] = useState("")
+  const [, setLoading] = useState(false)
+
+  const initializeInstanceWrapped = async provider => {
+    const { profileRegistryContract, unsignedProfileRegistryContract } = await initializeInstance(provider)
+    setProfileRegistryContract(profileRegistryContract)
+    setUnsignedProfileRegistryContract(unsignedProfileRegistryContract)
+  }
 
   useEffect(() => {
     if (provider && chainId === CHAIN_ID.L2) {
-      initializeInstance(provider)
+      initializeInstanceWrapped(provider)
     }
-  }, [provider, chainId])
+  }, [provider, chainId, walletCurrentAddress])
 
   useEffect(() => {
-    if (walletCurrentAddress === "0xCa266224613396A0e8D4C2497DBc4F33dD6CDEFf") {
-      setProfileInstance({ name: "Vitalik", avatar: "https://avatars.dicebear.com/api/avataaars/1.svg" })
-      setBadgesInstance({
-        [BADGES_VISIBLE_TYPE.VISIBLE]: [
-          "https://avatars.githubusercontent.com/u/1?s=200&v=4",
-          "https://avatars.githubusercontent.com/u/2?s=200&v=4",
-          "https://avatars.githubusercontent.com/u/3?s=200&v=4",
-          "https://avatars.githubusercontent.com/u/4?s=200&v=4",
-          "https://avatars.githubusercontent.com/u/5?s=200&v=4",
-          "https://avatars.githubusercontent.com/u/6?s=200&v=4",
-          "https://avatars.githubusercontent.com/u/7?s=200&v=4",
-          "https://avatars.githubusercontent.com/u/8?s=200&v=4",
-          "https://avatars.githubusercontent.com/u/9?s=200&v=4",
-          "https://avatars.githubusercontent.com/u/10?s=200&v=4",
-          "https://avatars.githubusercontent.com/u/11?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/12?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/13?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/14?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/15?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/16?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/17?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/18?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/19?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/20?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/21?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/22?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/23?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/24?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/25?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/26?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/27?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/28?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/29?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/30?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/31?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/32?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/33?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/34?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/35?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/36?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/37?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/38?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/39?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/40?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/41?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/42?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/43?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/44?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/45?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/46?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/47?s=200&v=4",
-          // "https://avatars.githubusercontent.com/u/48?s=200&v=4",
-        ],
-        [BADGES_VISIBLE_TYPE.INVISIBLE]: [
-          "https://avatars.githubusercontent.com/u/387782?s=200&v=4",
-          "https://avatars.githubusercontent.com/u/387783?s=200&v=4",
-          "https://avatars.githubusercontent.com/u/387784?s=200&v=4",
-          "https://avatars.githubusercontent.com/u/387785?s=200&v=4",
-          "https://avatars.githubusercontent.com/u/387786?s=200&v=4",
-          "https://avatars.githubusercontent.com/u/387787?s=200&v=4",
-          "https://avatars.githubusercontent.com/u/387788?s=200&v=4",
-          "https://avatars.githubusercontent.com/u/387789?s=200&v=4",
-          "https://avatars.githubusercontent.com/u/387790?s=200&v=4",
-          "https://avatars.githubusercontent.com/u/387791?s=200&v=4",
-        ],
-      })
-    } else {
-      setProfileInstance(null)
+    if (unsignedProfileRegistryContract && walletCurrentAddress && provider) {
+      checkIfProfileMinted(walletCurrentAddress)
     }
-  }, [walletCurrentAddress])
+  }, [unsignedProfileRegistryContract, walletCurrentAddress, provider])
 
-  const initializeInstance = async provider => {
-    const signer = await provider.getSigner(0)
-    const instance = new ethers.Contract(SCROLL_ORIGINS_NFT_ADDRESS, ScrollOriginsNFTABI, signer)
-    const instanceV2 = new ethers.Contract(SCROLL_ORIGINS_NFT_V2_ADDRESS, ScrollOriginsNFTV2ABI, signer)
-    const unsignedInstance = new ethers.Contract(SCROLL_ORIGINS_NFT_ADDRESS, ScrollOriginsNFTABI, provider)
-    const unsignedV2Instance = new ethers.Contract(SCROLL_ORIGINS_NFT_V2_ADDRESS, ScrollOriginsNFTV2ABI, provider)
-    setNFTInstance(instance)
-    setNFTV2Instance(instanceV2)
-    setUnsignedNFTInstance(unsignedInstance)
-    setUnsignedNFTV2Instance(unsignedV2Instance)
+  const checkIfProfileMinted = async (userAddress = walletCurrentAddress) => {
+    try {
+      const profileAddress = await unsignedProfileRegistryContract!.getProfile(userAddress)
+      setProfileAddress(profileAddress)
+      const minted = await unsignedProfileRegistryContract!.isProfileMinted(profileAddress)
+      setHasMintedProfile(minted)
+      console.log("Profile minted:", minted)
+    } catch (error) {
+      console.log("Failed to check if profile minted:", error)
+    } finally {
+      // setLoading(false)
+    }
   }
 
-  const mintProfileNFT = async (name: string, referralCode?: string) => {
-    // setTimeout(() => {
-    if (referralCode) {
-      //   const tx = await NFTV2Instance.mintProfileNFT(name, avatar)
-      //   await tx.wait()
-      setProfileInstance({ name, avatar: "https://avatars.dicebear.com/api/avataaars/1.svg" })
-    } else {
-      //   const tx = await NFTInstance.mintProfileNFT(name, avatar)
-      //   await tx.wait()
-      setProfileInstance({ name, avatar: "https://avatars.dicebear.com/api/avataaars/1.svg" })
+  useEffect(() => {
+    const fetchProfileContract = async () => {
+      if (profileAddress) {
+        try {
+          const signer = await provider!.getSigner(0)
+          // test profileAddress
+          const profileContract = new ethers.Contract("0x984f0481E246E94B3524C8875Dfa5163FbaBa5c6", ScrollSkellyABI, signer)
+          setProfileContract(profileContract)
+        } catch (error) {
+          console.error("Error fetching profile contract:", error)
+        }
+      }
     }
-    setBadgesInstance({
-      [BADGES_VISIBLE_TYPE.VISIBLE]: [
-        "https://avatars.githubusercontent.com/u/387772?s=200&v=4",
-        "https://nft.scroll.io/developer-nft-image/1.svg",
-        "https://avatars.githubusercontent.com/u/387774?s=200&v=4",
-        "https://avatars.githubusercontent.com/u/387775?s=200&v=4",
-        "https://avatars.githubusercontent.com/u/387776?s=200&v=4",
-        "https://avatars.githubusercontent.com/u/387777?s=200&v=4",
-        "https://avatars.githubusercontent.com/u/387778?s=200&v=4",
-        "https://avatars.githubusercontent.com/u/387779?s=200&v=4",
-        "https://avatars.githubusercontent.com/u/387780?s=200&v=4",
-        "https://avatars.githubusercontent.com/u/387771?s=200&v=4",
-      ],
-      [BADGES_VISIBLE_TYPE.INVISIBLE]: [
-        "https://avatars.githubusercontent.com/u/387782?s=200&v=4",
-        "https://avatars.githubusercontent.com/u/387783?s=200&v=4",
-        "https://avatars.githubusercontent.com/u/387784?s=200&v=4",
-        "https://avatars.githubusercontent.com/u/387785?s=200&v=4",
-        "https://avatars.githubusercontent.com/u/387786?s=200&v=4",
-        "https://avatars.githubusercontent.com/u/387787?s=200&v=4",
-        "https://avatars.githubusercontent.com/u/387788?s=200&v=4",
-        "https://avatars.githubusercontent.com/u/387789?s=200&v=4",
-        "https://avatars.githubusercontent.com/u/387790?s=200&v=4",
-        "https://avatars.githubusercontent.com/u/387791?s=200&v=4",
-      ],
-    })
-    // }, 3000)
+
+    fetchProfileContract()
+  }, [profileAddress])
+
+  useEffect(() => {
+    if (profileContract && hasMintedProfile) {
+      queryUsername()
+      queryUserBadgesWrapped("0xF138EdC6038C237e94450bcc9a7085a7b213cAf0")
+      getAttachedBadges("0x97218b8fEDfB8980a4505901185f4757129F032B")
+      mintScrollOriginsBadge(walletCurrentAddress!)
+      getBadgeOrder(walletCurrentAddress!)
+    }
+  }, [profileContract, hasMintedProfile])
+
+  const queryUsername = async () => {
+    try {
+      const currentUsername = await profileContract!.username()
+      setUsername(currentUsername)
+    } catch (error) {
+      console.log("Failed to query username:", error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const decodeBadgePayload = async (encodedData, badgeUID) => {
+    const abiCoder = new AbiCoder()
+    try {
+      const decoded = abiCoder.decode(["address", "bytes"], encodedData)
+      const [badgeAddress] = decoded
+
+      // 0x6346f8fd2ba17fb5540589cf4ba88ce1c5a5c3af01f3b807c28abd0ea4f80737
+      const badgeImageURI = await getBadgeImageURI(badgeAddress, "0x6346f8fd2ba17fb5540589cf4ba88ce1c5a5c3af01f3b807c28abd0ea4f80737", provider)
+      return badgeImageURI
+    } catch (error) {
+      console.error("Failed to decode badge payload:", error)
+    }
+  }
+
+  const queryUserBadgesWrapped = async userAddress => {
+    try {
+      const attestations = await queryUserBadges(userAddress)
+      console.log("attestations", attestations)
+      const formattedBadgesPromises = attestations.map(attestation => {
+        const { data, id } = attestation
+        return decodeBadgePayload(data, id)
+      })
+      const formattedBadges = await Promise.all(formattedBadgesPromises)
+      setUserBadges(formattedBadges)
+      console.log("formatedBadges", formattedBadges)
+    } catch (error) {
+      console.log("Failed to query user badges:", error)
+      return []
+    }
+  }
+
+  const getAttachedBadges = async profileAddress => {
+    try {
+      const badges = await profileContract!.getAttachedBadges()
+      const badgesArray = Array.from(badges)
+      setAttachBadges(badgesArray)
+      return badgesArray
+    } catch (error) {
+      console.error("Failed to query attached badges:", error)
+      return []
+    }
+  }
+
+  const getBadgeOrder = async profileAddress => {
+    try {
+      const badgeOrder = await profileContract!.getBadgeOrder()
+      const badgeOrderArray = Array.from(badgeOrder)
+      console.log("badgeOrderArray", badgeOrder, badgeOrderArray)
+    } catch (error) {
+      console.error("Failed to query attached badges:", error)
+      return []
+    }
+  }
+
+  const mintScrollOriginsBadge = async (userAddress: string) => {
+    const signer = await provider!.getSigner(0)
+
+    const originsV1Contract = new ethers.Contract(UNISWAP_NFT_ADDRESS, ScrollOriginsNFTABI, signer)
+    const tokenId = await originsV1Contract.tokenOfOwnerByIndex(userAddress, 0)
+    console.log("tokenId", tokenId)
+    const abiCoder = new AbiCoder()
+
+    const originsBadgePayload = abiCoder.encode(["address", "uint256"], [UNISWAP_NFT_ADDRESS, tokenId])
+    console.log("originsBadgePayload", originsBadgePayload)
+
+    const badgePayload = abiCoder.encode(["address", "bytes"], [SCROLL_SEPOLIA_ORIGINS_BADGE_ADDRESS, originsBadgePayload])
+
+    const easContract = new ethers.Contract(SCROLL_SEPOLIA_EAS_ADDRESS, ScrollSkellyABI, signer)
+    try {
+      const tx = await easContract.attest(SCROLL_SEPOLIA_BADGE_SCHEMA, [
+        userAddress,
+        0,
+        false,
+        "0x0000000000000000000000000000000000000000000000000000000000000000",
+        badgePayload,
+        0,
+      ])
+
+      await tx.wait()
+      console.log("Badge minted successfully!")
+    } catch (error) {
+      console.log("Badge minted error!", error)
+    }
   }
 
   return (
     <SkellyContext.Provider
       value={{
-        NFTInstance,
-        NFTV2Instance,
-        unsignedNFTInstance,
-        unsignedNFTV2Instance,
-        profileInstance,
-        mintProfileNFT,
-        badgesInstance,
-        setBadgesInstance,
+        hasMintedProfile,
+        unsignedProfileRegistryContract,
+        profileRegistryContract,
+        profileContract,
+        checkIfProfileMinted,
+        username,
+        queryUsername,
+        userBadges,
+        attachBadges,
       }}
     >
       {children}

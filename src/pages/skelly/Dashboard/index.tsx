@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { Box } from "@mui/material"
 import { styled } from "@mui/system"
 
-import { BADGES_VISIBLE_TYPE } from "@/constants"
+// import { BADGES_VISIBLE_TYPE } from "@/constants"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 
 import ActionBox from "./ActionBox"
@@ -14,7 +14,7 @@ import NameDialog from "./NameDialog"
 import ReferDialog from "./ReferDialog"
 import UpgradeDialog from "./UpgradeDialog"
 
-const Container: any = styled(Box)(({ theme, badgeWidth }: any) => ({
+const Container: any = styled(Box)(({ theme, badgewidth }: any) => ({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -24,8 +24,8 @@ const Container: any = styled(Box)(({ theme, badgeWidth }: any) => ({
   backgroundColor: "#101010",
   backgroundImage:
     "linear-gradient(90deg, rgba(255,255,255, 0.3) 1px, transparent 1px), linear-gradient( rgba(255,255,255, 0.3) 1px, transparent 1px)",
-  backgroundSize: `${badgeWidth}px ${badgeWidth}px`,
-  backgroundPosition: `calc(50% - ${badgeWidth / 2}px) calc(50% - ${badgeWidth / 2}px)`,
+  backgroundSize: `${badgewidth}px ${badgewidth}px`,
+  backgroundPosition: `calc(50% - ${badgewidth / 2}px) calc(50% - ${badgewidth / 2}px)`,
   "&::before, &::after": {
     content: "''",
     height: "100%",
@@ -48,7 +48,7 @@ const Container: any = styled(Box)(({ theme, badgeWidth }: any) => ({
 }))
 
 const Dashboard = () => {
-  const { badgesInstance } = useSkellyContext()
+  const { attachBadges } = useSkellyContext()
 
   const [windowDimensions, setWindowDimensions] = useState({
     width: window.innerWidth,
@@ -67,9 +67,9 @@ const Dashboard = () => {
     return () => window.removeEventListener("resize", handleResize)
   }, [handleResize])
 
-  const gridNum = useMemo(() => (badgesInstance[BADGES_VISIBLE_TYPE.VISIBLE].length > 12 ? 8 : 4), [badgesInstance])
+  const gridNum = useMemo(() => (attachBadges.length > 12 ? 8 : 4), [attachBadges])
 
-  const badgeWidth = useMemo(() => {
+  const badgewidth = useMemo(() => {
     const { width, height } = windowDimensions
     if (width < height - 62) {
       return (width - 62) / gridNum
@@ -79,8 +79,8 @@ const Dashboard = () => {
   }, [windowDimensions, gridNum])
 
   return (
-    <Container badgeWidth={badgeWidth}>
-      <BadgeWall badgeWidth={badgeWidth} gridNum={gridNum} windowDimensions={windowDimensions} />
+    <Container badgewidth={badgewidth}>
+      <BadgeWall badgewidth={badgewidth} gridNum={gridNum} windowDimensions={windowDimensions} />
       <ActionBox />
       <NameDialog />
       <BadgesDialog />

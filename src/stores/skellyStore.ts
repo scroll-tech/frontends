@@ -22,6 +22,7 @@ interface SkellyStore {
   badgeDetailDialogVisible: BadgeDetailDialogTpye
   mintStep: MintStep
   sortedBadges: any
+  selectedBadge: any
   changeReferralCode: (code: string) => void
   changeMintStep: (step: MintStep) => void
   changeProfileDialog: (visible: boolean) => void
@@ -30,6 +31,7 @@ interface SkellyStore {
   changeSortedBadges: (badges: any) => void
   changeUpgradeDialog: (visible: boolean) => void
   changeBadgeDetailDialog: (visible: BadgeDetailDialogTpye) => void
+  selectBadge: (badge: any) => void
 }
 
 const useSkellyStore = create<SkellyStore>()((set, get) => ({
@@ -41,6 +43,7 @@ const useSkellyStore = create<SkellyStore>()((set, get) => ({
   badgeDetailDialogVisible: BadgeDetailDialogTpye.HIDDEN,
   mintStep: MintStep.REFERRAL_CODE,
   sortedBadges: {},
+  selectedBadge: {},
 
   changeSortedBadges: (badges: any) => {
     set({
@@ -86,6 +89,12 @@ const useSkellyStore = create<SkellyStore>()((set, get) => ({
   changeBadgeDetailDialog: visible => {
     set({
       badgeDetailDialogVisible: visible,
+    })
+  },
+
+  selectBadge: badge => {
+    set({
+      selectedBadge: badge,
     })
   },
 }))

@@ -21,10 +21,10 @@ const StyledButton = styled(Button)(({ theme }) => ({
   },
 }))
 
-const NameTip = ({ index }) => {
+const NameTip = ({ metadata }) => {
   const { changeBadgeDetailDialog } = useSkellyStore()
 
-  return <StyledButton onClick={() => changeBadgeDetailDialog(BadgeDetailDialogTpye.VIEW)}>Scroll Origins NFT Badge #{index}</StyledButton>
+  return <StyledButton onClick={() => changeBadgeDetailDialog(BadgeDetailDialogTpye.VIEW)}>{metadata.name}</StyledButton>
 }
 
 export default NameTip

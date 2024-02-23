@@ -69,7 +69,7 @@ const CopyButton = styled(Button)(({ theme }) => ({
 
 const Coupon = () => {
   const [copied, setCopied] = useState(false)
-  const { profileInstance } = useSkellyContext()
+  const { username } = useSkellyContext()
 
   const copyAddress = useCallback(() => {
     copy(window.location.href + "?referral=KAZ1R")
@@ -79,7 +79,7 @@ const Coupon = () => {
   return (
     <CouponBox>
       <DescriptionBox>
-        <Typography sx={{ fontSize: "1.8rem", lineHeight: "2.4rem" }}>From: {profileInstance.name}</Typography>
+        <Typography sx={{ fontSize: "1.8rem", lineHeight: "2.4rem" }}>From: {username}</Typography>
         <Typography sx={{ fontSize: "4.8rem", lineHeight: "1", fontWeight: 500, margin: "0.8rem 0" }}>50% OFF</Typography>
         <Typography sx={{ fontSize: "1.8rem", marginBottom: "2.3rem", lineHeight: "2.4rem" }}>Mint Fee</Typography>
         <SvgIcon sx={{ width: "8rem" }} component={LogoSvg} inheritViewBox />

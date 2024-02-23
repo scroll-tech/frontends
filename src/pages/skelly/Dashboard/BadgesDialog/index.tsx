@@ -2,7 +2,7 @@ import { Button, Dialog, DialogContent, DialogTitle, IconButton, Stack, SvgIcon,
 import { styled } from "@mui/system"
 
 import { ReactComponent as CloseSvg } from "@/assets/svgs/bridge/close.svg"
-import { useSkellyContext } from "@/contexts/SkellyContextProvider"
+// import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useSkellyStore from "@/stores/skellyStore"
 
 import GridDragDrop from "./GridDragDrop"
@@ -28,17 +28,16 @@ const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
 }))
 
 const BadgesDialog = () => {
-  const { badgesDialogVisible, changeBadgesDialog, sortedBadges } = useSkellyStore()
-  const { setBadgesInstance, badgesInstance } = useSkellyContext()
+  const { badgesDialogVisible, changeBadgesDialog } = useSkellyStore()
+  // const { setBadgesInstance, badgesInstance } = useSkellyContext()
 
   const handleClose = () => {
     changeBadgesDialog(false)
   }
 
   const handleSave = () => {
-    console.log(badgesInstance)
     changeBadgesDialog(false)
-    setBadgesInstance(sortedBadges)
+    // setBadgesInstance(sortedBadges)
   }
 
   return (

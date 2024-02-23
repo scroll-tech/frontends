@@ -1,0 +1,12 @@
+[
+  "function getAttachedBadges() external view returns (bytes32[])",
+  "function getProfile(address) view returns (address)",
+  "function isProfileMinted(address) view returns (bool)",
+  "function mintProfile(string)",
+  "function mint(string username, string referrer) payable",
+  "function changeUsername(string)",
+  "function username() view returns (string)",
+  "function changeUsername(string)",
+  "function isUsernameUsed(string calldata username) external view returns (bool)",
+  "function getBadgeOrder() external view returns (uint256[])"
+]

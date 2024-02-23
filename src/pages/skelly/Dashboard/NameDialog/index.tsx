@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { Box, Button, Dialog, DialogContent, DialogTitle, IconButton, InputBase, Stack, SvgIcon } from "@mui/material"
 import { styled } from "@mui/system"
@@ -50,9 +50,14 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const NameDialog = () => {
   const { profileDialogVisible, changeProfileDialog } = useSkellyStore()
-  const { profileInstance, mintProfileNFT } = useSkellyContext()
-  const { name } = profileInstance
-  const [profileName, setProfileName] = useState(name)
+  const { username, checkIfProfileMinted, profileContract, queryUsername } = useSkellyContext()
+  const [, setLoading] = useState(false)
+
+  const [profileName, setProfileName] = useState(username)
+
+  useEffect(() => {
+    setProfileName(username)
+  }, [username])
 
   const handleClose = () => {
     changeProfileDialog(false)
@@ -62,14 +67,19 @@ const NameDialog = () => {
     setProfileName(e.target.value)
   }
 
-  const handleMint = async () => {
-    // setIsMinting(true)
-    await mintProfileNFT(profileName)
-
-    // setTimeout(() => {
-    handleClose()
-    // }, 1500)
-    // setIsMinting(false)
+  const changeUsername = async () => {
+    setLoading(true)
+    try {
+      const tx = await profileContract!.changeUsername(profileName)
+      await tx.wait()
+      await checkIfProfileMinted()
+      queryUsername()
+      handleClose()
+    } catch (error) {
+      console.error("Failed to change username:", error)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -94,7 +104,12 @@ const NameDialog = () => {
           <Button sx={{ borderRadius: "0.8rem", width: "16.5rem", fontSize: "1.6rem", padding: "0" }} onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant="contained" sx={{ borderRadius: "0.8rem", width: "16.5rem", fontSize: "1.6rem", padding: "0" }} onClick={handleMint}>
+          <Button
+            variant="contained"
+            // loading={loading}
+            sx={{ borderRadius: "0.8rem", width: "16.5rem", fontSize: "1.6rem", padding: "0" }}
+            onClick={() => changeUsername()}
+          >
             Save Changes
           </Button>
         </Stack>

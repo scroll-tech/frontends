@@ -25,17 +25,32 @@ const Skelly = () => {
       <BadgeList
         items={[
           {
-            title: "Scroll Skelly",
+            title: "Scroll Skelly1",
             description: `Lorem ipsum dolor sit amet,  adipiscing elit. Donec dictum auctor sem et mauris, ac viverra risus tellus eget diam.
             mauris, ac viverra risus tellus eget diam.`,
           },
           {
-            title: "Scroll Skelly",
+            title: "Scroll Skelly2",
             description: `Lorem ipsum dolor sit amet,  adipiscing elit. Donec dictum auctor sem et mauris, ac viverra risus tellus eget diam.
             mauris, ac viverra risus tellus eget diam.`,
           },
           {
-            title: "Scroll Skelly",
+            title: "Scroll Skelly3",
+            description: `Lorem ipsum dolor sit amet,  adipiscing elit. Donec dictum auctor sem et mauris, ac viverra risus tellus eget diam.
+            mauris, ac viverra risus tellus eget diam.`,
+          },
+          {
+            title: "Scroll Skelly4",
+            description: `Lorem ipsum dolor sit amet,  adipiscing elit. Donec dictum auctor sem et mauris, ac viverra risus tellus eget diam.
+            mauris, ac viverra risus tellus eget diam.`,
+          },
+          {
+            title: "Scroll Skelly5",
+            description: `Lorem ipsum dolor sit amet,  adipiscing elit. Donec dictum auctor sem et mauris, ac viverra risus tellus eget diam.
+            mauris, ac viverra risus tellus eget diam.`,
+          },
+          {
+            title: "Scroll Skelly6",
             description: `Lorem ipsum dolor sit amet,  adipiscing elit. Donec dictum auctor sem et mauris, ac viverra risus tellus eget diam.
             mauris, ac viverra risus tellus eget diam.`,
           },
