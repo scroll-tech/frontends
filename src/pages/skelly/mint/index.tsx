@@ -1,3 +1,4 @@
+import { ethers } from "ethers"
 import { useMemo, useState } from "react"
 
 import { Box, InputBase } from "@mui/material"
@@ -43,15 +44,34 @@ const Mint = () => {
   const [isMinting, setIsMinting] = useState(false)
   const [name, setName] = useState("")
 
-  const { mintProfileNFT } = useSkellyContext()
+  const { profileRegistryContract, checkIfProfileMinted } = useSkellyContext()
 
-  const { referralCode, changeMintStep } = useSkellyStore()
+  const { changeMintStep } = useSkellyStore()
 
   const handleMint = async () => {
     setIsMinting(true)
-    await mintProfileNFT(name, referralCode)
-    setIsMinting(false)
-    changeMintStep(MintStep.REFERRAL_CODE)
+    try {
+      const tx = await profileRegistryContract.mint(name, ethers.encodeBytes32String(""), { value: ethers.parseEther("0.001") })
+      // const tx = await profileRegistryContract.mintProfile(name)
+      await tx.wait()
+      const isMinted = await checkIfProfileMinted()
+      console.log("checkIfProfileMinted", isMinted)
+      changeMintStep(MintStep.REFERRAL_CODE)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsMinting(false)
+    }
+  }
+
+  const checkIfUsernameUsed = async () => {
+    const isUsernameUsed = await profileRegistryContract.isUsernameUsed(name)
+    console.log("isUsernameUsed", isUsernameUsed)
+    if (isUsernameUsed) {
+      alert("Username already used")
+    } else {
+      handleMint()
+    }
   }
 
   const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,7 +100,7 @@ const Mint = () => {
         placeholder="Enter your name"
         onKeyDown={handleKeydown}
       />
-      <Button gloomy={isInvalidName} color="primary" loading={isMinting} width={isMobile ? "23rem" : "28.2rem"} onClick={handleMint}>
+      <Button gloomy={isInvalidName} color="primary" loading={isMinting} width={isMobile ? "23rem" : "28.2rem"} onClick={checkIfUsernameUsed}>
         {isMinting ? "Minting" : "Mint now"}
       </Button>
     </Container>

@@ -11,7 +11,7 @@ import LandingPage from "./landing"
 import MintPage from "./mint"
 
 const Skelly = () => {
-  const { profileInstance } = useSkellyContext()
+  const { hasMintedProfile } = useSkellyContext()
   const { mintStep } = useSkellyStore()
   const location = useLocation()
 
@@ -26,9 +26,9 @@ const Skelly = () => {
   return (
     <BridgeContextProvider>
       <GlobalComponents></GlobalComponents>
-      {profileInstance && <Dashboard />}
-      {!profileInstance && mintStep === MintStep.REFERRAL_CODE && <LandingPage />}
-      {!profileInstance && mintStep === MintStep.PROFILE && <MintPage />}
+      {hasMintedProfile && <Dashboard />}
+      {!hasMintedProfile && mintStep === MintStep.REFERRAL_CODE && <LandingPage />}
+      {!hasMintedProfile && mintStep === MintStep.PROFILE && <MintPage />}
     </BridgeContextProvider>
   )
 }

@@ -93,7 +93,6 @@ const MintBadge = props => {
             setTooltipVisible(true)
             video.currentTime = 1.3
             tooltipVisibleRef.current = true
-            console.log(tooltipVisibleRef.current, "tooltipVisibleRef.current")
             // setInitialPlay(false)
             initialPlayRef.current = false
           } else if (!initialPlayRef.current && !tooltipVisibleRef.current) {

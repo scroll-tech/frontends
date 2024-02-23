@@ -1,3 +1,5 @@
+import { useMemo } from "react"
+
 import { Box, Tooltip } from "@mui/material"
 import { tooltipClasses } from "@mui/material/Tooltip"
 import { styled } from "@mui/system"
@@ -13,12 +15,20 @@ const BadgeBox = styled(Box)(({ theme }) => ({
 
 const CustomTooltip = styled(Tooltip)(({ theme }) => ({}))
 
-const Badge = ({ badge, index, badgeWidth }) => {
+const Badge = ({ badge, index, badgewidth }) => {
   const { changeBadgeDetailDialog } = useSkellyStore()
+
+  const badgeImageURI = useMemo(() => {
+    return badge.metadata.image.replace(/^ipfs:\/\/(.*)/, "https://cloudflare-ipfs.com/ipfs/$1")
+  }, [badge.metadata])
+
+  const handleShowBadgeDetailDialog = () => {
+    changeBadgeDetailDialog(BadgeDetailDialogTpye.UPGRADE)
+  }
 
   return (
     <CustomTooltip
-      title={<NameTip index={index}></NameTip>}
+      title={<NameTip metadata={badge.metadata}></NameTip>}
       followCursor
       PopperProps={{
         popperOptions: {
@@ -66,13 +76,13 @@ const Badge = ({ badge, index, badgeWidth }) => {
         style={{
           top: `${badge.top}px`,
           left: `${badge.left}px`,
-          width: `${badgeWidth}px`,
-          height: `${badgeWidth}px`,
-          padding: `${badgeWidth / 10}px`,
+          width: `${badgewidth}px`,
+          height: `${badgewidth}px`,
+          padding: `${badgewidth / 10}px`,
         }}
-        onClick={() => changeBadgeDetailDialog(BadgeDetailDialogTpye.UPGRADE)}
+        onClick={handleShowBadgeDetailDialog}
       >
-        <img alt="" style={{ width: "100%" }} src={badge.image} />
+        <img alt="" style={{ width: "100%", borderRadius: "50%" }} src={badgeImageURI} />
       </BadgeBox>
     </CustomTooltip>
   )

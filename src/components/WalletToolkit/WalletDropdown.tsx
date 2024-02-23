@@ -1,9 +1,10 @@
 import copy from "copy-to-clipboard"
 import { useCallback, useMemo, useState } from "react"
+import Img from "react-cool-img"
 import { useLocation, useNavigate } from "react-router-dom"
 import { makeStyles } from "tss-react/mui"
 
-import { Avatar, Box, ButtonBase, Fade, ListItemIcon, ListItemText, Menu, MenuItem, SvgIcon } from "@mui/material"
+import { Box, ButtonBase, Fade, LinearProgress, ListItemIcon, ListItemText, Menu, MenuItem, SvgIcon } from "@mui/material"
 
 import { ReactComponent as CopySuccessSvg } from "@/assets/svgs/bridge/copy-success.svg"
 import { ReactComponent as HistorySvg } from "@/assets/svgs/bridge/history.svg"
@@ -84,12 +85,10 @@ const WalletDropdown = props => {
 
   const { walletCurrentAddress, connect, disconnect, chainId } = useRainbowContext()
   const { changeHistoryVisible } = useBridgeStore()
-  const { profileInstance } = useSkellyContext()
+  const { username } = useSkellyContext()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [copied, setCopied] = useState(false)
-
-  const avatarSvgURL = useMemo(() => `${requireEnv("REACT_APP_SKELLY_URI")}/skelly/${walletCurrentAddress}.svg`, [walletCurrentAddress])
 
   const open = useMemo(() => Boolean(anchorEl), [anchorEl])
 
@@ -146,29 +145,46 @@ const WalletDropdown = props => {
     [pathname, viewScan, copyAddress, copied, disconnect],
   )
 
-  return (
-    <>
-      {!walletCurrentAddress && (
-        <ButtonBase classes={{ root: cx(classes.button, classes.connectButton) }} sx={sx} onClick={connect}>
-          Connect Wallet
-        </ButtonBase>
-      )}
-
-      {walletCurrentAddress && !profileInstance && (
-        <ButtonBase classes={{ root: classes.button }} sx={sx} onClick={handleClick}>
+  const renderCurrentWallet = () => {
+    if (walletDetailLoading) {
+      return (
+        <ButtonBase classes={{ root: classes.button }} sx={{ position: "relative", overflow: "hidden", ...sx }} onClick={handleClick}>
           {truncateAddress(walletCurrentAddress as string)}
           <SvgIcon className={cx(classes.endIcon, open && classes.reverseEndIcon)} component={DownTriangleSvg} inheritViewBox></SvgIcon>
+          {<LinearProgress sx={{ position: "absolute", width: "100%", bottom: 0, height: "2px" }} />}
         </ButtonBase>
-      )}
-
-      {walletCurrentAddress && profileInstance && (
+      )
+    } else if (profileMinted) {
+      return (
         <ButtonBase classes={{ root: classes.button }} sx={sx} onClick={handleClick}>
-          <Avatar src={avatarSvgURL} sx={{ width: 24, height: 24, marginRight: "0.8rem" }}></Avatar>
+          <Img
+            src={getSmallAvatarURL(walletCurrentAddress)}
+            style={{ width: 24, height: 24, marginRight: "0.8rem" }}
+            placeholder="/imgs/canvas/avatarPlaceholder.svg"
+          ></Img>
           <Box sx={{ lineHeight: "1.6rem", textAlign: "left" }}>
-            <strong style={{ fontSize: "1.2rem" }}>{profileInstance.name}</strong>
-            <p style={{ fontSize: "1.2rem" }}>{truncateAddress(walletCurrentAddress as string)}</p>
+            <strong style={{ fontSize: "1.2rem", lineHeight: "1.6rem" }}>{username}</strong>
+            <p style={{ fontSize: "1.2rem", lineHeight: "1.6rem" }}>{truncateAddress(walletCurrentAddress as string)}</p>
           </Box>
           <SvgIcon className={cx(classes.endIcon, open && classes.reverseEndIcon)} component={DownTriangleSvg} inheritViewBox></SvgIcon>
+        </ButtonBase>
+      )
+    }
+    return (
+      <ButtonBase classes={{ root: classes.button }} sx={sx} onClick={handleClick}>
+        {truncateAddress(walletCurrentAddress as string)}
+        <SvgIcon className={cx(classes.endIcon, open && classes.reverseEndIcon)} component={DownTriangleSvg} inheritViewBox></SvgIcon>
+      </ButtonBase>
+    )
+  }
+
+  return (
+    <>
+      {walletCurrentAddress ? (
+        <>{renderCurrentWallet()}</>
+      ) : (
+        <ButtonBase classes={{ root: cx(classes.button, classes.connectButton) }} sx={sx} onClick={connect}>
+          Connect Wallet
         </ButtonBase>
       )}
 
