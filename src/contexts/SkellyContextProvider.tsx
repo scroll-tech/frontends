@@ -137,7 +137,7 @@ const SkellyContextProvider = ({ children }: any) => {
     setBadgesInstance({
       [BADGES_VISIBLE_TYPE.VISIBLE]: [
         "https://avatars.githubusercontent.com/u/387772?s=200&v=4",
-        "https://avatars.githubusercontent.com/u/387773?s=200&v=4",
+        "https://nft.scroll.io/developer-nft-image/1.svg",
         "https://avatars.githubusercontent.com/u/387774?s=200&v=4",
         "https://avatars.githubusercontent.com/u/387775?s=200&v=4",
         "https://avatars.githubusercontent.com/u/387776?s=200&v=4",
