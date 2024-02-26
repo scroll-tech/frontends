@@ -6,7 +6,7 @@ import BridgeContextProvider from "@/contexts/BridgeContextProvider"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useSkellyStore, { MintStep } from "@/stores/skellyStore"
 
-import Dashboard from "./dashboard"
+import Dashboard from "./Dashboard"
 import LandingPage from "./landing"
 import MintPage from "./mint"
 

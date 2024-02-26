@@ -25,7 +25,6 @@ const Container = styled(Box)(({ theme }) => ({
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "#FFFFFF",
-  textAlign: "center",
   fontSize: "7.2rem",
   fontStyle: "normal",
   fontWeight: 600,
@@ -33,6 +32,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   maxWidth: "51rem",
   width: "100%",
   marginBottom: "17rem",
+  ".MuiInputBase-input": {
+    textAlign: "center",
+  },
 }))
 
 const Mint = () => {
@@ -59,6 +61,12 @@ const Mint = () => {
     return !name
   }, [name])
 
+  const handleKeydown = e => {
+    if (e.keyCode === 13) {
+      handleMint()
+    }
+  }
+
   return (
     <Container>
       <StyledInputBase
@@ -69,6 +77,7 @@ const Mint = () => {
         onChange={handleChangeName}
         autoFocus
         placeholder="Enter your name"
+        onKeyDown={handleKeydown}
       />
       <Button gloomy={isInvalidName} color="primary" loading={isMinting} width={isMobile ? "23rem" : "28.2rem"} onClick={handleMint}>
         {isMinting ? "Minting" : "Mint now"}

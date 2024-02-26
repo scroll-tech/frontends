@@ -11,7 +11,7 @@ import { ANNOUNCING_SCROLL_ORIGINS_NFT, ContractReleaseDate, DESIGNING_SCROLL_OR
 import { CHAIN_ID, L2_NAME, SCROLL_ORIGINS_NFT } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
-import BadgeDetailDialog from "@/pages/skelly/dashboard/BadgeDetailDialog"
+import BadgeDetailDialog from "@/pages/skelly/Dashboard/BadgeDetailDialog"
 import useNFTStore from "@/stores/nftStore"
 import useSkellyStore, { BadgeDetailDialogTpye } from "@/stores/skellyStore"
 import { formatDate, switchNetwork } from "@/utils"
