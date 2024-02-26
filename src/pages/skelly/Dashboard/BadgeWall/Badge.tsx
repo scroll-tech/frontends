@@ -18,7 +18,26 @@ const Badge = ({ badge, index, badgeWidth }) => {
 
   return (
     <CustomTooltip
-      title={<NameTip />}
+      title={<NameTip index={index}></NameTip>}
+      followCursor
+      PopperProps={{
+        popperOptions: {
+          modifiers: [
+            {
+              name: "offset",
+              options: {
+                offset: ({ placement, reference, popper }) => {
+                  if (placement === "bottom") {
+                    return [popper.width / 4, 27]
+                  } else {
+                    return [popper.width / 4, 12]
+                  }
+                },
+              },
+            },
+          ],
+        },
+      }}
       slotProps={{
         popper: {
           sx: {
@@ -53,7 +72,7 @@ const Badge = ({ badge, index, badgeWidth }) => {
         }}
         onClick={() => changeBadgeDetailDialog(BadgeDetailDialogTpye.UPGRADE)}
       >
-        <img alt="" style={{ borderRadius: "50%" }} src={badge.image} />
+        <img alt="" style={{ width: "100%" }} src={badge.image} />
       </BadgeBox>
     </CustomTooltip>
   )
