@@ -1,15 +1,14 @@
 import { useState } from "react"
 
-import { Box, SvgIcon, Typography } from "@mui/material"
+import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
-import { ReactComponent as BackgroundSvg } from "@/assets/svgs/skelly/landing.svg"
 import Button from "@/components/Button"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useSkellyStore, { MintStep } from "@/stores/skellyStore"
 
-import ReferralCode from "./ReferralCode"
+import ReferralCode from "./referralCode"
 
 const Container = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -59,7 +58,9 @@ const Mint = () => {
     <Container>
       <Title>Mint your Scroll Skelly</Title>
       <SubTitle>Get a scroll profile and earn badges across the ecosystem. </SubTitle>
-      <SvgIcon sx={{ objectFit: "contain", height: "28rem", width: "auto", margin: "3rem auto" }} component={BackgroundSvg} inheritViewBox></SvgIcon>
+      <Box sx={{ maxWidth: "66.5rem" }}>
+        <img src="/imgs/skelly/heartbeat_mixed.webp" alt="heartbeat"></img>
+      </Box>
       <ReferralCode isChecking={isChecking} setIsChecking={setIsChecking} />
 
       {walletCurrentAddress ? (

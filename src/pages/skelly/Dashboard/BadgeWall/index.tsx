@@ -1,11 +1,12 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 
-import { Box, SvgIcon, Typography } from "@mui/material"
+import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
-import { ReactComponent as DefaultAvatarSvg } from "@/assets/svgs/skelly/default-avatar.svg"
 import { BADGES_VISIBLE_TYPE } from "@/constants"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
+import { requireEnv } from "@/utils"
 
 import Badge from "./Badge"
 
@@ -34,7 +35,6 @@ const Profile = styled(Box)(({ theme }) => ({
   flexDirection: "column",
   justifyContent: "space-between",
   alignItems: "center",
-  paddingTop: "4rem",
 }))
 
 const Name = styled(Typography)(({ theme }) => ({
@@ -44,17 +44,20 @@ const Name = styled(Typography)(({ theme }) => ({
   fontStyle: "normal",
   fontWeight: 600,
   lineHeight: "3.2rem",
-  marginBottom: "2.4rem",
+  marginBottom: "6%",
   marginTop: "3rem",
   alignSelf: "center",
   flexShrink: 0,
 }))
 
 const BadgeWall: React.FC<BadgeWallProps> = ({ badgeWidth, gridNum, windowDimensions }) => {
+  const { walletCurrentAddress } = useRainbowContext()
   const divRef = useRef<HTMLDivElement>(null)
 
   const { profileInstance, badgesInstance } = useSkellyContext()
   const [badges, setBadges] = useState<BadgeType[]>([])
+
+  const avatarSvgURL = useMemo(() => `${requireEnv("REACT_APP_SKELLY_URI")}/skelly/${walletCurrentAddress}.svg`, [walletCurrentAddress])
 
   useEffect(() => {
     setBadges(generatedBadges())
@@ -121,7 +124,9 @@ const BadgeWall: React.FC<BadgeWallProps> = ({ badgeWidth, gridNum, windowDimens
           height: `${(badgeWidth * gridNum) / 2}px`,
         }}
       >
-        <SvgIcon sx={{ flex: 1, width: "100%" }} component={DefaultAvatarSvg} inheritViewBox />
+        <Box sx={{ width: "66.67%", paddingTop: "12%" }}>
+          <img src={avatarSvgURL} alt="avatar" width="100%"></img>
+        </Box>
         <Name>{profileInstance.name}</Name>
       </Profile>
       {badges.map((badge, index) => (
