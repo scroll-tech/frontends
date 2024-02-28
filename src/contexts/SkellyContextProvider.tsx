@@ -120,8 +120,7 @@ const SkellyContextProvider = ({ children }: any) => {
       const decoded = abiCoder.decode(["address", "bytes"], encodedData)
       const [badgeAddress] = decoded
 
-      // 0x6346f8fd2ba17fb5540589cf4ba88ce1c5a5c3af01f3b807c28abd0ea4f80737
-      const badgeImageURI = await getBadgeImageURI(badgeAddress, "0x6346f8fd2ba17fb5540589cf4ba88ce1c5a5c3af01f3b807c28abd0ea4f80737", provider)
+      const badgeImageURI = await getBadgeImageURI(badgeAddress, badgeUID, provider)
       return badgeImageURI
     } catch (error) {
       console.error("Failed to decode badge payload:", error)
@@ -131,7 +130,6 @@ const SkellyContextProvider = ({ children }: any) => {
   const queryUserBadgesWrapped = async userAddress => {
     try {
       const attestations = await queryUserBadges(userAddress)
-      console.log("attestations", attestations)
       const formattedBadgesPromises = attestations.map(attestation => {
         const { data, id } = attestation
         return decodeBadgePayload(data, id)
@@ -202,26 +200,25 @@ const SkellyContextProvider = ({ children }: any) => {
   const mintScrollOriginsBadge = async (userAddress: string) => {
     const signer = await provider!.getSigner(0)
 
-    const originsV1Contract = new ethers.Contract(SCROLL_ORIGINS_NFT_V2, ScrollOriginsNFTABI, signer)
-    const tokenId = await originsV1Contract.tokenOfOwnerByIndex(userAddress, 0)
-    console.log("tokenId", tokenId)
+    const originsV2Contract = new ethers.Contract(SCROLL_ORIGINS_NFT_V2, ScrollOriginsNFTABI, signer)
+    const tokenId = await originsV2Contract.tokenOfOwnerByIndex(userAddress, 0)
     const abiCoder = new AbiCoder()
-
     const originsBadgePayload = abiCoder.encode(["address", "uint256"], [SCROLL_ORIGINS_NFT_V2, tokenId])
-    console.log("originsBadgePayload", originsBadgePayload)
-
     const badgePayload = abiCoder.encode(["address", "bytes"], [SCROLL_SEPOLIA_ORIGINS_BADGE_ADDRESS, originsBadgePayload])
-
     const easContract = new ethers.Contract(SCROLL_SEPOLIA_EAS_ADDRESS, AttestProxyABI, signer)
+    const attestParams = {
+      schema: SCROLL_SEPOLIA_BADGE_SCHEMA,
+      data: {
+        recipient: userAddress,
+        expirationTime: 0,
+        revocable: false,
+        refUID: "0x0000000000000000000000000000000000000000000000000000000000000000",
+        data: badgePayload,
+        value: 0,
+      },
+    }
     try {
-      const tx = await easContract.attest(SCROLL_SEPOLIA_BADGE_SCHEMA, [
-        userAddress,
-        0,
-        false,
-        "0x0000000000000000000000000000000000000000000000000000000000000000",
-        badgePayload,
-        0,
-      ])
+      const tx = await easContract.attest(attestParams)
 
       await tx.wait()
       console.log("Badge minted successfully!")
