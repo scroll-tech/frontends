@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useRef, useState } from "react"
-import { useSearchParams } from "react-router-dom"
 
 import { Box, InputBase, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
@@ -71,20 +70,18 @@ const StatusContent = styled(Typography)(({ theme }) => ({
   color: "#A5A5A5",
 }))
 
-const ReferralCode = ({ isChecking, setIsChecking }) => {
-  const [searchParams] = useSearchParams()
+const ReferralCode = ({ isChecking, setIsChecking, code }) => {
   const [codes, setCodes] = useState(Array(INVITE_CODE_LENGTH).fill(""))
   const [codeStatus, setCodeStatus] = useState(CodeStatus.UNKNOWN)
   const inputRefs = useRef<Array<HTMLInputElement | null>>(new Array(INVITE_CODE_LENGTH).fill(null))
   const { changeReferralCode } = useSkellyStore()
 
   useEffect(() => {
-    const referral = searchParams.get("code")
-    if (referral) {
-      setCodes(referral.split(""))
+    if (code) {
+      setCodes(code.split(""))
       inputRefs.current[INVITE_CODE_LENGTH - 1]?.focus()
     }
-  }, [searchParams])
+  }, [code])
 
   const referralCode = useMemo(() => {
     return codes.join("")
