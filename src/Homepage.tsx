@@ -1,6 +1,8 @@
 import { Helmet } from "react-helmet-async"
 import { Route, Routes } from "react-router-dom"
 
+import { Box } from "@mui/material"
+
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
 import RainbowProvider from "@/contexts/RainbowProvider"
@@ -9,6 +11,7 @@ import ScrollToTop from "@/hooks/useScrollToTop"
 import NotFound from "@/pages/404"
 import { isSepolia, requireEnv } from "@/utils"
 
+import useCheckTheme from "./components/Header/useCheckTheme"
 import useMatchedRoute from "./hooks/useMatchedRoute"
 import routes from "./routes"
 
@@ -23,6 +26,7 @@ interface RouteItem {
 
 const baseUrl = requireEnv("REACT_APP_API_BASE_URI")
 function Homepage() {
+  const dark = useCheckTheme()
   const route = useMatchedRoute() as RouteItem
   const getUrl = () => {
     return window.location.href
@@ -44,7 +48,7 @@ function Homepage() {
   }
 
   return (
-    <div className="App min-h-[100vh] bg-[#FFF8F3]">
+    <Box sx={{ minHeight: "100vh", backgroundColor: dark ? "themeBackground.dark" : "themeBackground.light" }}>
       <Helmet>
         <title>Scroll{route ? " – " + route.name : null}</title>
         <meta name="description" content={route.description || "Native zkEVM Layer 2 for Ethereum"} />
@@ -72,7 +76,7 @@ function Homepage() {
           </ScrollToTop>
         </SkellyContextProvider>
       </RainbowProvider>
-    </div>
+    </Box>
   )
 }
 
