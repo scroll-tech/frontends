@@ -2,7 +2,8 @@ import { AbiCoder, Contract, ethers } from "ethers"
 import { createContext, useContext, useEffect, useState } from "react"
 
 import ScrollOriginsNFTABI from "@/assets/abis/ScrollOriginsNFT.json"
-import ScrollSkellyABI from "@/assets/abis/ScrollSkelly.json"
+import AttestProxyABI from "@/assets/abis/SkellyAttestProxy.json"
+import ProfileABI from "@/assets/abis/SkellyProfile.json"
 import { CHAIN_ID } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { getBadgeImageURI, initializeInstance, queryUserBadges } from "@/services/skellyService"
@@ -81,7 +82,7 @@ const SkellyContextProvider = ({ children }: any) => {
         try {
           const signer = await provider!.getSigner(0)
           // test profileAddress
-          const profileContract = new ethers.Contract("0x984f0481E246E94B3524C8875Dfa5163FbaBa5c6", ScrollSkellyABI, signer)
+          const profileContract = new ethers.Contract("0x984f0481E246E94B3524C8875Dfa5163FbaBa5c6", ProfileABI, signer)
           setProfileContract(profileContract)
         } catch (error) {
           console.error("Error fetching profile contract:", error)
@@ -180,7 +181,7 @@ const SkellyContextProvider = ({ children }: any) => {
 
     const badgePayload = abiCoder.encode(["address", "bytes"], [SCROLL_SEPOLIA_ORIGINS_BADGE_ADDRESS, originsBadgePayload])
 
-    const easContract = new ethers.Contract(SCROLL_SEPOLIA_EAS_ADDRESS, ScrollSkellyABI, signer)
+    const easContract = new ethers.Contract(SCROLL_SEPOLIA_EAS_ADDRESS, AttestProxyABI, signer)
     try {
       const tx = await easContract.attest(SCROLL_SEPOLIA_BADGE_SCHEMA, [
         userAddress,
