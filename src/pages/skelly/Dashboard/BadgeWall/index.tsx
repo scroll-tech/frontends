@@ -54,7 +54,7 @@ const Name = styled(Typography)(({ theme }) => ({
 const BadgeWall: React.FC<BadgeWallProps> = ({ badgewidth, gridNum, windowDimensions }) => {
   const divRef = useRef<HTMLDivElement>(null)
 
-  const { hasMintedProfile, username, userBadges, attachBadges } = useSkellyContext()
+  const { hasMintedProfile, username, userBadges, attachedBadges } = useSkellyContext()
   const [badges, setBadges] = useState<BadgeType[]>([])
   const { walletCurrentAddress } = useRainbowContext()
 
@@ -68,7 +68,7 @@ const BadgeWall: React.FC<BadgeWallProps> = ({ badgewidth, gridNum, windowDimens
 
   const visibleBadges = useMemo(() => {
     return userBadges
-  }, [userBadges, attachBadges])
+  }, [userBadges, attachedBadges])
 
   useEffect(() => {
     console.log("visibleBadges", generatedBadges())
