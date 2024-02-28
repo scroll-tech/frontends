@@ -255,7 +255,7 @@ const mainnetRoutes = [
   },
   {
     name: "Scroll Skelly Coupon",
-    path: "/invite/:code",
+    path: "/scroll-skelly/invite/:code",
     element: <SkellyInvite />,
     isHiddenFooter: true,
   },

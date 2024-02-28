@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
@@ -45,13 +46,18 @@ const SubTitle = styled(Typography)(({ theme }) => ({
   lineHeight: "3.2rem",
 }))
 
-const Mint = () => {
+const Mint = props => {
+  const { code } = props
+  const navigate = useNavigate()
   const { isMobile } = useCheckViewport()
   const { connect, walletCurrentAddress } = useRainbowContext()
   const { changeMintStep } = useSkellyStore()
   const [isChecking, setIsChecking] = useState(false)
 
   const handleContinue = async () => {
+    if (code) {
+      navigate("/scroll-skelly")
+    }
     changeMintStep(MintStep.PROFILE)
   }
 
@@ -62,7 +68,7 @@ const Mint = () => {
       <Box sx={{ maxWidth: "66.5rem" }}>
         <img src="/imgs/skelly/heartbeat_mixed.webp" alt="heartbeat"></img>
       </Box>
-      <ReferralCode isChecking={isChecking} setIsChecking={setIsChecking} />
+      <ReferralCode code={code} isChecking={isChecking} setIsChecking={setIsChecking} />
 
       {walletCurrentAddress ? (
         <Button color="primary" gloomy={isChecking} width={isMobile ? "23rem" : "28.2rem"} onClick={handleContinue}>

@@ -3,7 +3,7 @@ import { useLocation, useMatch } from "react-router-dom"
 
 const useCheckTheme = () => {
   const { pathname } = useLocation()
-  const isInvite = useMatch("/invite/:code")
+  const isInvite = useMatch("/scroll-skelly/invite/:code")
   const dark = useMemo(() => {
     return (
       [
