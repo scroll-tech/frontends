@@ -51,7 +51,7 @@ const Mint = () => {
   const handleMint = async () => {
     setIsMinting(true)
     try {
-      const tx = await profileRegistryContract.mint(name, ethers.encodeBytes32String(""), { value: ethers.parseEther("0.001") })
+      const tx = await profileRegistryContract.mint(name, "0x", { value: ethers.parseEther("0.001") })
       // const tx = await profileRegistryContract.mintProfile(name)
       await tx.wait()
       const isMinted = await checkIfProfileMinted()
