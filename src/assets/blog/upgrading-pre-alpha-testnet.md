@@ -44,4 +44,4 @@ To become an early tester or contributor, sign up to try out our Pre-Alpha Testn
 
 - If you love nurturing and growing ecosystems or communities, we are looking for developer advocates and community organizers to build with us in a community-aligned and user-friendly way.
 
-To learn more about these roles, check out our [jobs page](https://jobs.lever.co/ScrollFoundation). If you want to get straight to the code and build with us, you can find our repos at [github.com/scroll-tech](http://github.com/scroll-tech) and [github.com/privacy-scaling-explorations/zkevm-circuits](http://github.com/privacy-scaling-explorations/zkevm-circuits).
+To learn more about these roles, check out our [jobs page](https://boards.greenhouse.io/scrollio). If you want to get straight to the code and build with us, you can find our repos at [github.com/scroll-tech](http://github.com/scroll-tech) and [github.com/privacy-scaling-explorations/zkevm-circuits](http://github.com/privacy-scaling-explorations/zkevm-circuits).
