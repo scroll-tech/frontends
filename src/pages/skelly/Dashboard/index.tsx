@@ -48,7 +48,7 @@ const Container: any = styled(Box)(({ theme, badgewidth }: any) => ({
 }))
 
 const Dashboard = () => {
-  const { attachBadges } = useSkellyContext()
+  const { attachedBadges } = useSkellyContext()
 
   const [windowDimensions, setWindowDimensions] = useState({
     width: window.innerWidth,
@@ -67,7 +67,7 @@ const Dashboard = () => {
     return () => window.removeEventListener("resize", handleResize)
   }, [handleResize])
 
-  const gridNum = useMemo(() => (attachBadges.length > 12 ? 8 : 4), [attachBadges])
+  const gridNum = useMemo(() => (attachedBadges.length > 12 ? 8 : 4), [attachedBadges])
 
   const badgewidth = useMemo(() => {
     const { width, height } = windowDimensions

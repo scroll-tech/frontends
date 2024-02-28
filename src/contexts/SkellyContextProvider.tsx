@@ -9,7 +9,7 @@ import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { getBadgeImageURI, initializeInstance, queryUserBadges } from "@/services/skellyService"
 import { requireEnv } from "@/utils"
 
-const UNISWAP_NFT_ADDRESS = "0xbbAd0e891922A8A4a7e9c39d4cc0559117016fec"
+const SCROLL_ORIGINS_NFT_V2 = requireEnv("REACT_APP_SCROLL_ORIGINS_NFT_V2")
 const SCROLL_SEPOLIA_ORIGINS_BADGE_ADDRESS = "0xb05837704cc99F7f30c8693F05c7CfEc9CFA88FE"
 const SCROLL_SEPOLIA_EAS_ADDRESS = requireEnv("REACT_APP_EAS_ADDRESS")
 const SCROLL_SEPOLIA_BADGE_SCHEMA = requireEnv("REACT_APP_BADGE_SCHEMA")
@@ -23,7 +23,7 @@ type SkellyContextProps = {
   username: string
   queryUsername: () => void
   userBadges: any
-  attachBadges: any
+  attachedBadges: any
 }
 
 const SkellyContext = createContext<SkellyContextProps | null>(null)
@@ -36,7 +36,7 @@ const SkellyContextProvider = ({ children }: any) => {
   const [profileContract, setProfileContract] = useState<Contract>()
 
   const [userBadges, setUserBadges] = useState<any>([])
-  const [attachBadges, setAttachBadges] = useState<any>([])
+  const [attachedBadges, setAttachedBadges] = useState<any>([])
 
   const [profileAddress, setProfileAddress] = useState("")
 
@@ -96,8 +96,8 @@ const SkellyContextProvider = ({ children }: any) => {
   useEffect(() => {
     if (profileContract && hasMintedProfile) {
       queryUsername()
-      queryUserBadgesWrapped("0xF138EdC6038C237e94450bcc9a7085a7b213cAf0")
-      getAttachedBadges("0x97218b8fEDfB8980a4505901185f4757129F032B")
+      queryUserBadgesWrapped(walletCurrentAddress)
+      getAttachedBadges(profileAddress)
       mintScrollOriginsBadge(walletCurrentAddress!)
       getBadgeOrder(walletCurrentAddress!)
     }
@@ -149,7 +149,7 @@ const SkellyContextProvider = ({ children }: any) => {
     try {
       const badges = await profileContract!.getAttachedBadges()
       const badgesArray = Array.from(badges)
-      setAttachBadges(badgesArray)
+      setAttachedBadges(badgesArray)
       return badgesArray
     } catch (error) {
       console.error("Failed to query attached badges:", error)
@@ -168,15 +168,46 @@ const SkellyContextProvider = ({ children }: any) => {
     }
   }
 
+  // const attachOneBadge = async badgeAddress => {
+  //   try {
+  //     const tx = await profileContract!.attachOne(badgeAddress)
+  //     await tx.wait()
+  //     console.log("Badge attached successfully!")
+  //   } catch (error) {
+  //     console.log("Badge attached error!", error)
+  //   }
+  // }
+
+  // const attachBadges = async badgeAddresses => {
+  //   try {
+  //     // TODO: Fix this
+  //     const tx = await profileContract!.attachOne(badgeAddresses)
+  //     await tx.wait()
+  //     console.log("Badges attached successfully!")
+  //   } catch (error) {
+  //     console.log("Badges attached error!", error)
+  //   }
+  // }
+
+  // const detachBadges = async badgeAddresses => {
+  //   try {
+  //     const tx = await profileContract!.detach(badgeAddresses)
+  //     await tx.wait()
+  //     console.log("Badge detached successfully!")
+  //   } catch (error) {
+  //     console.log("Badge detached error!", error)
+  //   }
+  // }
+
   const mintScrollOriginsBadge = async (userAddress: string) => {
     const signer = await provider!.getSigner(0)
 
-    const originsV1Contract = new ethers.Contract(UNISWAP_NFT_ADDRESS, ScrollOriginsNFTABI, signer)
+    const originsV1Contract = new ethers.Contract(SCROLL_ORIGINS_NFT_V2, ScrollOriginsNFTABI, signer)
     const tokenId = await originsV1Contract.tokenOfOwnerByIndex(userAddress, 0)
     console.log("tokenId", tokenId)
     const abiCoder = new AbiCoder()
 
-    const originsBadgePayload = abiCoder.encode(["address", "uint256"], [UNISWAP_NFT_ADDRESS, tokenId])
+    const originsBadgePayload = abiCoder.encode(["address", "uint256"], [SCROLL_ORIGINS_NFT_V2, tokenId])
     console.log("originsBadgePayload", originsBadgePayload)
 
     const badgePayload = abiCoder.encode(["address", "bytes"], [SCROLL_SEPOLIA_ORIGINS_BADGE_ADDRESS, originsBadgePayload])
@@ -210,7 +241,7 @@ const SkellyContextProvider = ({ children }: any) => {
         username,
         queryUsername,
         userBadges,
-        attachBadges,
+        attachedBadges,
       }}
     >
       {children}
