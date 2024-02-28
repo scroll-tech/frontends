@@ -1,9 +1,11 @@
 import { useMemo } from "react"
 import { Helmet } from "react-helmet-async"
 import { useParams } from "react-router-dom"
-import { Navigate } from "react-router-dom"
 
-// import { Container, Stack } from "@mui/material"
+// import { Navigate } from "react-router-dom"
+import { Container, Stack } from "@mui/material"
+
+// import Button from "@/components/Button"
 import { requireEnv } from "@/utils"
 
 // TODO: if currentWallectAddress has minted Skelly then display Skelly profile
@@ -12,7 +14,7 @@ import { requireEnv } from "@/utils"
 const SkellyCoupon = () => {
   const { code } = useParams()
   const metaImgURI = useMemo(() => `${requireEnv("REACT_APP_SKELLY_URI")}/code/${code}.png`, [code])
-  // const couponImgURI = useMemo(() => `https://svg-to-png-eta.vercel.app/api/skelly/ref-code?code=${code}&transparent=1`, [code])
+  const couponImgURI = useMemo(() => `https://svg-to-png-eta.vercel.app/api/skelly/ref-code?code=${code}&transparent=1`, [code])
 
   const title = `Scroll - Skelly Coupon #${code}`
   const description = `Hi, welcome to use my coupon #${code} to mint Skelly!`
@@ -32,12 +34,13 @@ const SkellyCoupon = () => {
         <meta name="twitter:url" content={url} />
       </Helmet>
 
-      <Navigate to={`/scroll-skelly?code=${code}`}></Navigate>
-      {/* <Container>
-        <Stack direction="row" justifyContent="center">
+      {/* <Navigate to={`/scroll-skelly?code=${code}`}></Navigate> */}
+      <Container>
+        <Stack direction="column" alignItems="center">
           <img src={couponImgURI} alt="Coupon"></img>
+          {/* <Button color="primary">Mint now</Button> */}
         </Stack>
-      </Container> */}
+      </Container>
     </>
   )
 }
