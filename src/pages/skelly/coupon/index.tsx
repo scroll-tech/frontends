@@ -1,8 +1,8 @@
 import { useMemo } from "react"
 import { Helmet } from "react-helmet-async"
 import { useParams } from "react-router-dom"
+import { Navigate } from "react-router-dom"
 
-// import { Navigate } from "react-router-dom"
 import { Container, Stack } from "@mui/material"
 
 // import Button from "@/components/Button"
@@ -19,6 +19,22 @@ const SkellyCoupon = () => {
   const title = `Scroll - Skelly Coupon #${code}`
   const description = `Hi, welcome to use my coupon #${code} to mint Skelly!`
   const url = `https://scroll-skelly.env.scroll.io/scroll-skelly?code=${code}`
+
+  // TODO: should be placed in backend
+  const renderContent = () => {
+    const userAgent = window.navigator.userAgent.toLowerCase()
+    if (userAgent.includes("googlebot") || userAgent.includes("twitterbot") || userAgent.includes("slackbot")) {
+      return (
+        <Container>
+          <Stack direction="column" alignItems="center">
+            <img src={couponImgURI} alt="Coupon"></img>
+          </Stack>
+        </Container>
+      )
+    }
+    return <Navigate to={`/scroll-skelly?code=${code}`}></Navigate>
+  }
+
   return (
     <>
       <Helmet>
@@ -33,14 +49,7 @@ const SkellyCoupon = () => {
         <meta name="twitter:image" content={metaImgURI} />
         <meta name="twitter:url" content={url} />
       </Helmet>
-
-      {/* <Navigate to={`/scroll-skelly?code=${code}`}></Navigate> */}
-      <Container>
-        <Stack direction="column" alignItems="center">
-          <img src={couponImgURI} alt="Coupon"></img>
-          {/* <Button color="primary">Mint now</Button> */}
-        </Stack>
-      </Container>
+      {renderContent()}
     </>
   )
 }
