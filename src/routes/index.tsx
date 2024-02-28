@@ -21,6 +21,7 @@ import RollupScan from "@/pages/rollup/index"
 import ScrollSkelly from "@/pages/skelly"
 import SkellyDashboard from "@/pages/skelly/Dashboard"
 import SkellyBadge from "@/pages/skelly/badge"
+import SkellyInvite from "@/pages/skelly/coupon"
 import MintProfile from "@/pages/skelly/mint"
 import Terms from "@/pages/terms"
 import { isSepolia } from "@/utils"
@@ -250,6 +251,12 @@ const mainnetRoutes = [
     name: "Scroll Skelly",
     path: "/scroll-skelly/badge",
     element: <SkellyBadge />,
+    isHiddenFooter: true,
+  },
+  {
+    name: "Scroll Skelly Coupon",
+    path: "/invite/:code",
+    element: <SkellyInvite />,
     isHiddenFooter: true,
   },
 ]
