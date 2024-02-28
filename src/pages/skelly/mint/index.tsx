@@ -15,10 +15,11 @@ const Container = styled(Box)(({ theme }) => ({
   justifyContent: "center",
   width: "100%",
   height: "100%",
-  minHeight: "calc(100vh - 6.2rem)", // "100vh" - "header height"
+  minHeight: "calc(100vh - 6.5rem)", // "100vh" - "header height"
   padding: "15rem 0",
   backgroundColor: "#101010",
   [theme.breakpoints.down("sm")]: {
+    minHeight: "calc(100vh - 6.2rem)",
     padding: "0 1rem",
   },
 }))
