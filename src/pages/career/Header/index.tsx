@@ -83,7 +83,7 @@ const Header = () => {
           </Typography>
         </OrientationToView>
         <OrientationToView delay={0.3} className={classes.actionGroup}>
-          <Button href="https://jobs.lever.co/ScrollFoundation" target="_blank" color="primary" width={isMobile ? "21rem" : "25rem"}>
+          <Button href="https://boards.greenhouse.io/scrollio" target="_blank" color="primary" width={isMobile ? "21rem" : "25rem"}>
             View open positions
           </Button>
         </OrientationToView>
