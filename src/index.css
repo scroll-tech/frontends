@@ -83,10 +83,6 @@ body.mobile-top-nav-open {
   --developer-page-font-family: "Roboto", "trans-sans", "circular", Arial, "Helvetica Neue", Helvetica, sans-serif;
 }
 
-.App {
-  background: #fff8f3;
-}
-
 onboard-v2 .outer-container icon {
   width: 1.6rem;
   height: 1.6rem;

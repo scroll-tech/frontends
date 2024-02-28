@@ -22,6 +22,7 @@ import SessionsTerms from "@/pages/sessions-terms"
 import ScrollSkelly from "@/pages/skelly"
 import SkellyDashboard from "@/pages/skelly/Dashboard"
 import SkellyBadge from "@/pages/skelly/badge"
+import SkellyInvite from "@/pages/skelly/coupon"
 import MintProfile from "@/pages/skelly/mint"
 import StickerVote from "@/pages/sticker-vote"
 import StickerWinners from "@/pages/sticker-winners"
@@ -248,6 +249,12 @@ const mainnetRoutes = [
     name: "Scroll Skelly",
     path: "/scroll-skelly/badge",
     element: <SkellyBadge />,
+    isHiddenFooter: true,
+  },
+  {
+    name: "Scroll Skelly Coupon",
+    path: "/invite/:code",
+    element: <SkellyInvite />,
     isHiddenFooter: true,
   },
 ]
