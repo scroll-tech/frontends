@@ -65,7 +65,7 @@ const BadgeWall: React.FC<BadgeWallProps> = ({ badgewidth, gridNum, windowDimens
   }, [hasMintedProfile])
 
   const visibleBadges = useMemo(() => {
-    return userBadges
+    return userBadges.filter(badge => attachedBadges.includes(badge.id))
   }, [userBadges, attachedBadges])
 
   useEffect(() => {

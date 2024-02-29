@@ -103,7 +103,7 @@ const ActionBox = () => {
         title={
           <CustomiseList>
             <CustomiseItem onClick={() => changeBadgesDialog(true)}>Customise display</CustomiseItem>
-            <CustomiseItem onClick={() => changeUpgradeDialog(true)}>Upgrade badges</CustomiseItem>
+            <CustomiseItem onClick={() => changeUpgradeDialog(true)}>Mint badges</CustomiseItem>
           </CustomiseList>
         }
       >

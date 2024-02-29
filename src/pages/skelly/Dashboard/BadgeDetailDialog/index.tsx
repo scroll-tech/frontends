@@ -1,7 +1,6 @@
-import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
-import { Avatar, Box, Button, Dialog, DialogContent, DialogTitle, IconButton, Stack, SvgIcon, Typography } from "@mui/material"
+import { Avatar, Box, Dialog, DialogContent, DialogTitle, IconButton, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { ReactComponent as CloseSvg } from "@/assets/svgs/skelly/close.svg"
@@ -57,32 +56,32 @@ const ButtonContainer = styled(Box)(({ theme }) => ({
   },
 }))
 
-const UpgradedBox = styled(Box)(({ theme }) => ({
-  position: "absolute",
-  top: 0,
-  left: 0,
-  right: 0,
-  display: "flex",
-  backgroundColor: "#FF6F43",
-  height: "4.8rem",
-  justifyContent: "center",
-  alignItems: "center",
-  color: "#fff",
-  fontSize: "1.6rem",
-  fontWeight: 600,
-}))
+// const UpgradedBox = styled(Box)(({ theme }) => ({
+//   position: "absolute",
+//   top: 0,
+//   left: 0,
+//   right: 0,
+//   display: "flex",
+//   backgroundColor: "#FF6F43",
+//   height: "4.8rem",
+//   justifyContent: "center",
+//   alignItems: "center",
+//   color: "#fff",
+//   fontSize: "1.6rem",
+//   fontWeight: 600,
+// }))
 
-const UpgradedButton = styled(Button)(({ theme }) => ({
-  borderRadius: "0.8rem",
-  fontSize: "1.6rem",
-  fontWeight: 600,
-  lineHeight: "2.4rem",
-  height: "3.2rem",
-  width: "12.4rem",
-  border: "1px solid #Fff",
-  padding: "0",
-  marginLeft: "1.6rem",
-}))
+// const UpgradedButton = styled(Button)(({ theme }) => ({
+//   borderRadius: "0.8rem",
+//   fontSize: "1.6rem",
+//   fontWeight: 600,
+//   lineHeight: "2.4rem",
+//   height: "3.2rem",
+//   width: "12.4rem",
+//   border: "1px solid #Fff",
+//   padding: "0",
+//   marginLeft: "1.6rem",
+// }))
 
 const BadgeDetailDialog = () => {
   const { badgeDetailDialogVisible, changeBadgeDetailDialog, selectedBadge } = useSkellyStore()
@@ -111,23 +110,17 @@ const BadgeDetailDialog = () => {
     navigate(`/scroll-skelly/badge/${selectedBadge.badgeContract}/${selectedBadge.id}`)
   }
 
-  useEffect(() => {
-    if (selectedBadge) {
-      // console.log("Selected Badge:", selectedBadge)
-    }
-  }, [selectedBadge])
-
   return (
     <StyledDialog onClose={handleClose} maxWidth={false} open={badgeDetailDialogVisible !== BadgeDetailDialogTpye.HIDDEN}>
       <StyledDialogTitle>
-        {badgeDetailDialogVisible === BadgeDetailDialogTpye.UPGRADE && (
+        {/* {badgeDetailDialogVisible === BadgeDetailDialogTpye.UPGRADE && (
           <UpgradedBox>
             UPGRADE AVAILABLE
             <UpgradedButton variant="contained" color="primary" onClick={handleMint}>
               Upgrade now
             </UpgradedButton>
           </UpgradedBox>
-        )}
+        )} */}
         <Box
           sx={{
             display: "flex",
