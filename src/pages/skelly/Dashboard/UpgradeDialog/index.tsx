@@ -6,6 +6,7 @@ import { ReactComponent as CloseSvg } from "@/assets/svgs/skelly/close.svg"
 import useSkellyStore from "@/stores/skellyStore"
 
 import BadgeItem from "./BadgeItem"
+import Badges from "./Badges"
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
   borderRadius: "1.6rem",
@@ -62,8 +63,8 @@ const UpgradeDialog = () => {
       </StyledDialogTitle>
       <StyledDialogContent>
         <StyledList>
-          {[1, 2, 3].map((item, index) => (
-            <BadgeItem key={index} />
+          {Badges.map((badge, index) => (
+            <BadgeItem key={index} badge={badge} />
           ))}
         </StyledList>
       </StyledDialogContent>

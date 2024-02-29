@@ -1,13 +1,13 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 
 import { Avatar, Button, Dialog, DialogContent, DialogTitle, IconButton, InputBase, Stack, SvgIcon } from "@mui/material"
 import { styled } from "@mui/system"
 
+import { getAvatarURL } from "@/apis/skelly"
 import { ReactComponent as CloseSvg } from "@/assets/svgs/skelly/close.svg"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useSkellyStore from "@/stores/skellyStore"
-import { requireEnv } from "@/utils"
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
   borderRadius: "1.6rem",
@@ -31,7 +31,6 @@ const StyledAvatar = styled(Avatar)(({ theme }) => ({
   height: "30rem",
   borderRadius: "50%",
   margin: "0 14rem",
-  backgroundImage: " url('https://avatars.githubusercontent.com/u/387772?s=200&v=4')",
   backgroundBlendMode: "multiply",
   display: "flex",
   alignItems: "center",
@@ -57,8 +56,6 @@ const NameDialog = () => {
   const { walletCurrentAddress } = useRainbowContext()
 
   const [profileName, setProfileName] = useState(username)
-
-  const avatarSvgURL = useMemo(() => `${requireEnv("REACT_APP_SKELLY_URI")}/skelly/${walletCurrentAddress}.svg`, [walletCurrentAddress])
 
   useEffect(() => {
     setProfileName(username)
@@ -103,8 +100,7 @@ const NameDialog = () => {
         </IconButton>
       </DialogTitle>
       <StyledDialogContent>
-        <StyledAvatar src={avatarSvgURL}></StyledAvatar>
-
+        <StyledAvatar src={getAvatarURL(walletCurrentAddress)}></StyledAvatar>
         <StyledInputBase autoFocus onChange={handleChange} placeholder="Enter your name" value={profileName} />
         <Stack direction="row" justifyContent="center" gap="1.6rem">
           <Button sx={{ borderRadius: "0.8rem", width: "16.5rem", fontSize: "1.6rem", padding: "0" }} onClick={handleClose}>
