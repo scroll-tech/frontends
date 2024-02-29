@@ -14,7 +14,7 @@ import { formatDate, requireEnv } from "@/utils"
 const L2_SCAN_URI = requireEnv("REACT_APP_L2_SCAN_URI")
 const UNIFRA_API_KEY = requireEnv("REACT_APP_UNIFRA_API_KEY")
 
-const CheckElegbility = () => {
+const CheckEligibility = () => {
   const { connect, chainId, walletCurrentAddress } = useRainbowContext()
 
   const { isMobile } = useCheckViewport()
@@ -97,4 +97,4 @@ const CheckElegbility = () => {
   )
 }
 
-export default CheckElegbility
+export default CheckEligibility
