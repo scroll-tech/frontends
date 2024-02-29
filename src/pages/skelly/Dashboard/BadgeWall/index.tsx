@@ -71,7 +71,6 @@ const BadgeWall: React.FC<BadgeWallProps> = ({ badgewidth, gridNum, windowDimens
   }, [userBadges, attachedBadges])
 
   useEffect(() => {
-    console.log("visibleBadges", generatedBadges())
     setBadges(generatedBadges())
   }, [badgewidth, windowDimensions, visibleBadges])
 
