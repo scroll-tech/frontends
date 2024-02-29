@@ -1,10 +1,9 @@
-import { useMemo } from "react"
-
 import { Box, Tooltip } from "@mui/material"
 import { tooltipClasses } from "@mui/material/Tooltip"
 import { styled } from "@mui/system"
 
 import useSkellyStore, { BadgeDetailDialogTpye } from "@/stores/skellyStore"
+import { getBadgeImgURL } from "@/utils"
 
 import NameTip from "../../components/NameTip"
 
@@ -16,14 +15,11 @@ const BadgeBox = styled(Box)(({ theme }) => ({
 const CustomTooltip = styled(Tooltip)(({ theme }) => ({}))
 
 const Badge = ({ badge, index, badgewidth }) => {
-  const { changeBadgeDetailDialog } = useSkellyStore()
-
-  const badgeImageURI = useMemo(() => {
-    return badge.metadata.image.replace(/^ipfs:\/\/(.*)/, "https://cloudflare-ipfs.com/ipfs/$1")
-  }, [badge.metadata])
+  const { changeBadgeDetailDialog, changeSelectedBadge } = useSkellyStore()
 
   const handleShowBadgeDetailDialog = () => {
-    changeBadgeDetailDialog(BadgeDetailDialogTpye.UPGRADE)
+    changeSelectedBadge(badge.metadata)
+    changeBadgeDetailDialog(BadgeDetailDialogTpye.VIEW)
   }
 
   return (
@@ -82,7 +78,7 @@ const Badge = ({ badge, index, badgewidth }) => {
         }}
         onClick={handleShowBadgeDetailDialog}
       >
-        <img alt="" style={{ width: "100%", borderRadius: "50%" }} src={badgeImageURI} />
+        <img alt={badge.metadata.name} style={{ width: "100%" }} src={getBadgeImgURL(badge.metadata.image)} />
       </BadgeBox>
     </CustomTooltip>
   )

@@ -1,13 +1,14 @@
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
-import { Box, Button, Dialog, DialogContent, DialogTitle, IconButton, SvgIcon, Typography } from "@mui/material"
+import { Avatar, Box, Button, Dialog, DialogContent, DialogTitle, IconButton, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { ReactComponent as CloseSvg } from "@/assets/svgs/skelly/close.svg"
 import { ReactComponent as ShareSvg } from "@/assets/svgs/skelly/share.svg"
 import ScrollButton from "@/components/Button"
 import useSkellyStore, { BadgeDetailDialogTpye } from "@/stores/skellyStore"
+import { getBadgeImgURL } from "@/utils"
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
   borderRadius: "1.6rem",
@@ -39,7 +40,7 @@ const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
 }))
 
 const StyledScrollButton = styled(ScrollButton)(({ theme }) => ({
-  width: "24rem",
+  // width: "24rem",
   height: "5.4rem",
   fontSize: "2rem",
   fontWeight: 600,
@@ -49,6 +50,7 @@ const ButtonContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   gap: "1.6rem",
   alignItems: "center",
+  marginTop: "3.2rem",
   [theme.breakpoints.down("sm")]: {
     flexDirection: "column",
     gap: "2rem",
@@ -106,7 +108,7 @@ const BadgeDetailDialog = () => {
 
   const handleViewBadge = () => {
     changeBadgeDetailDialog(BadgeDetailDialogTpye.HIDDEN)
-    navigate("/scroll-skelly/badge/" + selectedBadge?.badgeAddress)
+    navigate(`/scroll-skelly/badge/${selectedBadge.badgeContract}/${selectedBadge.id}`)
   }
 
   useEffect(() => {
@@ -143,32 +145,22 @@ const BadgeDetailDialog = () => {
       </StyledDialogTitle>
       <StyledDialogContent>
         {/* <SvgIcon sx={{ width: "20rem", height: "20rem", marginBottom: "4rem"  }} component={DefaultBadgeSvg} inheritViewBox></SvgIcon> */}
-        <img alt="img" src={selectedBadge.badgeImageURI} style={{ width: "20rem", height: "20rem", marginBottom: "4rem", borderRadius: "50%" }} />
+        <img alt="img" src={getBadgeImgURL(selectedBadge.image)} style={{ width: "20rem", height: "20rem", marginBottom: "4rem" }} />
         {badgeDetailDialogVisible !== BadgeDetailDialogTpye.MINTED ? (
           <>
             <Typography
               sx={{ fontSize: "3.2rem", fontWeight: 600, lineHeight: "0.8rem", marginBottom: "3.2rem", color: "#fff", textAlign: "center" }}
             >
-              {selectedBadge?.name}
+              {selectedBadge.name}
             </Typography>
-            <Typography sx={{ fontSize: "2rem", fontWeight: 400, lineHeight: "2.4rem", color: "#fff", textAlign: "center", marginBottom: "1.2rem" }}>
-              This is some explanation of the badge and how to earn the badge. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed interdum
-              arcu sit amet enim ullamcorper fringilla. Sed vel mauris consectetur, congue enim et, congue felis. Fusce.
+            <Typography sx={{ fontSize: "1.8rem", lineHeight: "2.8rem", color: "primary.contrastText", textAlign: "center", marginBottom: "1.2rem" }}>
+              {selectedBadge.description}
             </Typography>
-            <Typography
-              sx={{
-                fontSize: "1.8rem",
-                fontWeight: 600,
-                lineHeight: "2.4rem",
-                color: "#fff",
-                textAlign: "center",
-                marginBottom: "3.2rem",
-              }}
-            >
-              {/* <SvgIcon sx={{ marginRight: "0.8rem", width: "3.2rem", height: "3.2rem" }} component={LogoSvg} inheritViewBox></SvgIcon> */}
-              <img alt="img" src={selectedBadge.badgeImageURI} style={{ marginRight: "0.8rem", width: "3.2rem", height: "3.2rem" }} />
-              Scroll
-            </Typography>
+            {/* TODO: how to get badge contract address from a user's badge */}
+            <Stack direction="row" gap="0.8rem">
+              <Avatar variant="square" src="/imgs/skelly/Scroll.png" sx={{ width: "3.2rem", height: "3.2rem" }}></Avatar>
+              <Typography sx={{ fontSize: "2.4rem", fontWeight: 600, color: "primary.contrastText" }}>Scroll</Typography>
+            </Stack>
           </>
         ) : (
           <Typography sx={{ fontSize: "2.4rem", fontWeight: 600, color: "#fff", marginBottom: "2.4rem", textAlign: "center" }}>
@@ -194,7 +186,7 @@ const BadgeDetailDialog = () => {
               View Scroll Skelly
             </StyledScrollButton>
           )}
-          <StyledScrollButton color="dark" onClick={handleViewBadge}>
+          <StyledScrollButton width="24rem" color="dark" onClick={handleViewBadge}>
             View badge details
           </StyledScrollButton>
           {badgeDetailDialogVisible !== BadgeDetailDialogTpye.MINT && (

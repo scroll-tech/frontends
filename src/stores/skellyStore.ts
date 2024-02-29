@@ -32,7 +32,7 @@ interface SkellyStore {
   changeSortedBadges: (badges: any) => void
   changeUpgradeDialog: (visible: boolean) => void
   changeBadgeDetailDialog: (visible: BadgeDetailDialogTpye) => void
-  selectBadge: (badge: any) => void
+  changeSelectedBadge: (badge: any) => void
   changeCodeSignature: (codeSignature: string) => void
 }
 
@@ -95,7 +95,7 @@ const useSkellyStore = create<SkellyStore>()((set, get) => ({
     })
   },
 
-  selectBadge: badge => {
+  changeSelectedBadge: badge => {
     set({
       selectedBadge: badge,
     })

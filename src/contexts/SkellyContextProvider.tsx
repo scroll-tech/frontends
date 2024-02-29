@@ -11,7 +11,7 @@ import { getBadgeImageURI, initializeInstance, queryUserBadges } from "@/service
 // import { requireEnv } from "@/utils"
 
 // const SCROLL_ORIGINS_NFT_V2 = requireEnv("REACT_APP_SCROLL_ORIGINS_NFT_V2")
-// const SCROLL_SEPOLIA_ORIGINS_BADGE_ADDRESS = "0xE207971d5B1332f267d00f4a75D9949AE69b03a4"
+// const SCROLL_SEPOLIA_ORIGINS_BADGE_ADDRESS = "0x2aa883c6EaB368d1C86452127bc0Dd6c887a1F44"
 // const SCROLL_SEPOLIA_EAS_ADDRESS = requireEnv("REACT_APP_EAS_ADDRESS")
 // const SCROLL_SEPOLIA_BADGE_SCHEMA = requireEnv("REACT_APP_BADGE_SCHEMA")
 
@@ -127,12 +127,13 @@ const SkellyContextProvider = ({ children }: any) => {
     const abiCoder = new AbiCoder()
     try {
       const decoded = abiCoder.decode(["address", "bytes"], encodedData)
-      const [badgeAddress] = decoded
+      const [badgeContract] = decoded
 
-      const badgeImageURI = await getBadgeImageURI(provider, badgeAddress, badgeUID)
+      const badgeImageURI = await getBadgeImageURI(provider, badgeContract, badgeUID)
 
       return {
         ...attestation,
+        badgeContract,
         ...badgeImageURI,
       }
     } catch (error) {
