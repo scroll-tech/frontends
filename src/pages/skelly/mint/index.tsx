@@ -46,14 +46,15 @@ const Mint = () => {
 
   const { profileRegistryContract, checkIfProfileMinted } = useSkellyContext()
 
-  const { changeMintStep } = useSkellyStore()
+  const { changeMintStep, codeSignature, changeCodeSignature } = useSkellyStore()
 
   const handleMint = async () => {
     setIsMinting(true)
     try {
-      const tx = await profileRegistryContract.mint(name, "0x", { value: ethers.parseEther("0.001") })
-      // const tx = await profileRegistryContract.mintProfile(name)
+      console.log(codeSignature, "codeSignature")
+      const tx = await profileRegistryContract.mint(name, codeSignature, { value: ethers.parseEther(codeSignature === "0x" ? "0.001" : "0.0005") })
       await tx.wait()
+      changeCodeSignature("0x")
       const isMinted = await checkIfProfileMinted()
       console.log("checkIfProfileMinted", isMinted)
       changeMintStep(MintStep.REFERRAL_CODE)
