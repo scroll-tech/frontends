@@ -197,7 +197,7 @@ export const Item = React.memo(
             {...props}
             tabIndex={!handle ? 0 : undefined}
           >
-            {typeof value === "string" ? <img alt="item" src={value} style={{ borderRadius: "50%" }} /> : value}
+            <img alt="item" src={(value as any).image.replace(/^ipfs:\/\/(.*)/, "https://ipfs.io/ipfs/$1")} />
           </StyledItem>
         </StyledWrapper>
       )
