@@ -101,7 +101,7 @@ const SkellyContextProvider = ({ children }: any) => {
       getAttachedBadges(profileAddress)
       // mintScrollOriginsBadge(walletCurrentAddress!)
       getBadgeOrder(walletCurrentAddress!)
-      reorderBadges([2, 1])
+      // reorderBadges([2, 1])
       // attachOneBadge("0x2aed6377b6e822be2cd0bbb883f8406cd36f8504eda0b8a1fe2ddc203ccb9ab4")
       // detachBadges(["0x2aed6377b6e822be2cd0bbb883f8406cd36f8504eda0b8a1fe2ddc203ccb9ab4"])
       // attachBadges([
@@ -179,15 +179,15 @@ const SkellyContextProvider = ({ children }: any) => {
     }
   }
 
-  const reorderBadges = async badgeOrder => {
-    try {
-      const tx = await profileContract!.reorderBadges(badgeOrder)
-      await tx.wait()
-      console.log("Badges reordered successfully!")
-    } catch (error) {
-      console.log("Badges reordered error!", error)
-    }
-  }
+  // const reorderBadges = async badgeOrder => {
+  //   try {
+  //     const tx = await profileContract!.reorderBadges(badgeOrder)
+  //     await tx.wait()
+  //     console.log("Badges reordered successfully!")
+  //   } catch (error) {
+  //     console.log("Badges reordered error!", error)
+  //   }
+  // }
 
   // const attachOneBadge = async badgeAddress => {
   //   try {
