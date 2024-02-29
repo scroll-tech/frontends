@@ -4,6 +4,8 @@ import { useLocation, useMatch } from "react-router-dom"
 const useCheckTheme = () => {
   const { pathname } = useLocation()
   const isInvite = useMatch("/scroll-skelly/invite/:code")
+
+  const isBadgeDetail = useMatch("/scroll-skelly/badge/:badgeContract/:id")
   const dark = useMemo(() => {
     return (
       [
@@ -13,7 +15,9 @@ const useCheckTheme = () => {
         "/scroll-skelly/mint",
         "/scroll-skelly/dashboard",
         "/scroll-skelly/badge",
-      ].includes(pathname) || isInvite
+      ].includes(pathname) ||
+      isInvite ||
+      isBadgeDetail
     )
   }, [pathname])
 

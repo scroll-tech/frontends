@@ -1,26 +1,26 @@
-import { useState } from "react"
+import { Contract } from "ethers"
+import { useEffect, useMemo, useState } from "react"
+import Img from "react-cool-img"
+import { useParams } from "react-router-dom"
 
-// import { useParams } from "react-router-dom"
-import { Box, Button, Stack, Typography } from "@mui/material"
+import { Avatar, Box, IconButton, Skeleton, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
-import Alert from "@/components/Alert/NFTAlert"
+import { getAvatarURL, viewEASScanURL } from "@/apis/skelly"
+import ProfileABI from "@/assets/abis/SkellyProfile.json"
+import { ReactComponent as ShareSvg } from "@/assets/svgs/skelly/share.svg"
 import ScrollButton from "@/components/Button"
 import Link from "@/components/Link"
 import RequestWarning from "@/components/RequestWarning"
-import { ANNOUNCING_SCROLL_ORIGINS_NFT, ContractReleaseDate, DESIGNING_SCROLL_ORIGINS } from "@/constants"
-import { CHAIN_ID, L2_NAME, SCROLL_ORIGINS_NFT } from "@/constants"
+import { ANNOUNCING_SCROLL_ORIGINS_NFT, DESIGNING_SCROLL_ORIGINS, NFT_RARITY_MAP } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
-import BadgeDetailDialog from "@/pages/skelly/Dashboard/BadgeDetailDialog"
-import useNFTStore from "@/stores/nftStore"
-import useSkellyStore, { BadgeDetailDialogTpye } from "@/stores/skellyStore"
-import { formatDate, switchNetwork } from "@/utils"
+import { getBadgeImageURI } from "@/services/skellyService"
+import { queryBadgeDetailById } from "@/services/skellyService"
+import { formatDate, getBadgeImgURL } from "@/utils"
 
-import NFTCard from "../components/NFTCard"
 import Statistic from "../components/Statistic"
-
-// import MintFlowDialog from "./MintFlowDialog"
 
 const CustomLink = styled(Link)(({ theme }) => ({
   color: `${theme.palette.primary.main} !important`,
@@ -35,81 +35,94 @@ const InfoBox = styled(Box)(({ theme }) => ({
   gridTemplateColumns: "1fr 1fr 1fr",
 }))
 
-const UpgradedBox = styled(Box)(({ theme }) => ({
-  display: "flex",
-  backgroundColor: "#FF6F43",
-  width: "33.8rem",
-  height: "4.8rem",
-  justifyContent: "center",
-  alignItems: "center",
-  color: "#fff",
-  fontSize: "1.6rem",
-  fontWeight: 600,
-  borderRadius: "0.8rem",
-}))
+// const UpgradedBox = styled(Box)(({ theme }) => ({
+//   display: "flex",
+//   backgroundColor: "#FF6F43",
+//   width: "33.8rem",
+//   height: "4.8rem",
+//   justifyContent: "center",
+//   alignItems: "center",
+//   color: "#fff",
+//   fontSize: "1.6rem",
+//   fontWeight: 600,
+//   borderRadius: "0.8rem",
+// }))
 
-const UpgradedButton = styled(Button)(({ theme }) => ({
-  borderRadius: "0.8rem",
-  fontSize: "1.6rem",
-  fontWeight: 600,
-  lineHeight: "2.4rem",
-  height: "3.2rem",
-  width: "12.4rem",
-  border: "1px solid #Fff",
-  padding: "0",
-  marginLeft: "1.6rem",
-}))
+// const UpgradedButton = styled(Button)(({ theme }) => ({
+//   borderRadius: "0.8rem",
+//   fontSize: "1.6rem",
+//   fontWeight: 600,
+//   lineHeight: "2.4rem",
+//   height: "3.2rem",
+//   width: "12.4rem",
+//   border: "1px solid #Fff",
+//   padding: "0",
+//   marginLeft: "1.6rem",
+// }))
 
-const MintHome = props => {
-  const { chainId, connect } = useRainbowContext()
-  // const params = useParams()
+const Detail = props => {
+  const { badgeContract, id } = useParams()
+  const { provider } = useRainbowContext()
+  const { unsignedProfileRegistryContract } = useSkellyContext()
 
-  // params.badgeAddress
+  const [detail, setDetail] = useState<any>({})
+  const [loading, setLoading] = useState(false)
+
+  const isOriginsNFTBadge = useMemo(() => badgeContract === "0x2aa883c6EaB368d1C86452127bc0Dd6c887a1F44", [badgeContract])
+
+  const fetchSkellyName = async (provider, walletAddress) => {
+    try {
+      const profileAddress = await unsignedProfileRegistryContract.getProfile(walletAddress)
+      const profileInstance = new Contract(profileAddress, ProfileABI, provider)
+      const name = await profileInstance.username()
+      return name
+    } catch (error) {
+      console.log("Failed to query username:", error)
+    }
+  }
+  // TODO: chainId must be L2
+  useEffect(() => {
+    if (unsignedProfileRegistryContract) {
+      setLoading(true)
+      getBadgeImageURI(provider, badgeContract, id)
+        .then(data => {
+          let badgeDetail = { ...data }
+          return queryBadgeDetailById(id).then(async data => {
+            const [{ attester, time }] = data
+            const name = await fetchSkellyName(provider, attester)
+
+            // mintedOn -> the badge minted time
+            badgeDetail = { ...badgeDetail, owner: name, ownerLogo: getAvatarURL(attester), mintedOn: formatDate(time * 1000) }
+            // origins nft badge
+            if (isOriginsNFTBadge) {
+              const rarityNum = badgeDetail.attributes.find(item => item.trait_type === "Rarity").value
+              badgeDetail.rarity = NFT_RARITY_MAP[rarityNum]
+            }
+            setDetail(badgeDetail)
+          })
+        })
+        .finally(() => {
+          setLoading(false)
+        })
+    }
+  }, [isOriginsNFTBadge, id, unsignedProfileRegistryContract])
 
   const { isMobile, isPortrait, isLandscape } = useCheckViewport()
-  const { isEligible, isMinting } = useNFTStore()
-  const [loading] = useState(false)
   const [errorMessage, setErrorMessage] = useState("")
-  const { changeBadgeDetailDialog } = useSkellyStore()
-
-  const renderAction = () => {
-    if (chainId === CHAIN_ID.L2) {
-      return (
-        <ScrollButton color="primary" loading={loading || isMinting} width={isMobile ? "23rem" : "28.2rem"}>
-          View on Scrollscan
-        </ScrollButton>
-      )
-    } else if (chainId) {
-      return (
-        <ScrollButton color="primary" width={isMobile ? "23rem" : "28.2rem"} onClick={() => switchNetwork(CHAIN_ID.L2)}>
-          Switch to {L2_NAME}
-        </ScrollButton>
-      )
-    }
-    return (
-      <ScrollButton color="primary" width={isMobile ? "23rem" : "28.2rem"} onClick={connect}>
-        Connect wallet to upgrade
-      </ScrollButton>
-    )
-  }
 
   const handleCloseWarning = () => {
     setErrorMessage("")
-  }
-
-  const handleMint = () => {
-    changeBadgeDetailDialog(BadgeDetailDialogTpye.MINTED)
   }
 
   return (
     <Box
       sx={{
         display: "flex",
+        height: "100%",
         justifyContent: "center",
         alignItems: "center",
         background: "#101010",
         gap: "8rem",
-        minHeight: "92vh",
         "& .MuiTypography-root": {
           color: theme => theme.palette.primary.contrastText,
         },
@@ -128,58 +141,73 @@ const MintHome = props => {
         },
       }}
     >
-      <NFTCard sx={{ width: ["80%", "42.5rem", "36rem", "42.5rem"] }}></NFTCard>
+      <Box sx={{ width: "48rem", aspectRatio: "1/1" }}>
+        {loading ? (
+          <Skeleton variant="rectangular" sx={{ backgroundColor: "rgba(256, 256, 256, 0.15)", height: "100%", borderRadius: "1rem" }}></Skeleton>
+        ) : (
+          <Img src={getBadgeImgURL(detail.image)} alt="badge image" />
+        )}
+      </Box>
       <Stack direction="column" spacing={isPortrait ? "2.4rem" : "4.8rem"} alignItems={isLandscape ? "flex-start" : "center"}>
         <Box sx={{ textAlign: ["center", "center", "left"] }}>
-          <UpgradedBox>
+          {/* <UpgradedBox>
             UPGRADE AVAILABLE
             <UpgradedButton variant="contained" color="primary" onClick={handleMint}>
               Upgrade now
             </UpgradedButton>
-          </UpgradedBox>
-          <Typography sx={{ fontSize: ["4rem", "5.6rem"], fontWeight: 600, lineHeight: ["5.6rem", "9.6rem"] }}>Scroll Origins NFT Badge</Typography>
+          </UpgradedBox> */}
+          <Typography sx={{ fontSize: ["4rem", "5.6rem"], fontWeight: 600, lineHeight: ["5.6rem", "9.6rem"] }}>{detail.name}</Typography>
+
           <Typography sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: ["2.4rem", "3.2rem"], maxWidth: ["100%", "56rem"] }}>
-            <CustomLink href={ANNOUNCING_SCROLL_ORIGINS_NFT} underline="always" external>
-              Scroll Origins
-            </CustomLink>{" "}
-            is a{" "}
-            <CustomLink href={DESIGNING_SCROLL_ORIGINS} underline="always" external>
-              specially designed NFT
-            </CustomLink>{" "}
-            program to celebrate alongside early developers building on Scroll within 60 days of Genesis Block (Before December 9, 2023 10:59PM GMT).
+            {isOriginsNFTBadge ? (
+              <>
+                <CustomLink href={ANNOUNCING_SCROLL_ORIGINS_NFT} underline="always" external>
+                  Scroll Origins
+                </CustomLink>{" "}
+                is a{" "}
+                <CustomLink href={DESIGNING_SCROLL_ORIGINS} underline="always" external>
+                  specially designed NFT
+                </CustomLink>{" "}
+                program to celebrate alongside early developers building on Scroll within 60 days of Genesis Block (Before December 9, 2023 10:59PM
+                GMT).
+              </>
+            ) : (
+              <>{detail.description}</>
+            )}
           </Typography>
         </Box>
 
         <InfoBox gap={isMobile ? "2.4rem" : "4.8rem"}>
-          <Statistic label="Owner">@vitalik</Statistic>
-          <Statistic label="Issued by">Scroll</Statistic>
-          <Statistic label="Minted on">{formatDate(ContractReleaseDate)}</Statistic>
-          <Statistic label="Badge Rarity">Epic</Statistic>
+          <Statistic label="Owner" loading={loading}>
+            <Avatar src={detail.ownerLogo}></Avatar>
+            {detail.owner}
+          </Statistic>
+          <Statistic label="Issued by" loading={loading}>
+            <Avatar src="/imgs/skelly/scroll.png"></Avatar>
+            Scroll
+          </Statistic>
+          <Statistic label="Minted on" loading={loading}>
+            {detail.mintedOn}
+          </Statistic>
+          <Statistic label="Badge Rarity" loading={loading}>
+            {detail.rarity}
+          </Statistic>
         </InfoBox>
-        <Box
-          sx={{
-            height: "8rem",
-            "@media (max-width: 1200px) and (min-width: 600px)": {
-              marginTop: "4.8rem !important",
-            },
-          }}
-        >
-          {!isEligible && <>{renderAction()}</>}
-          {isEligible === -1 && (
-            <Alert severity="error" sx={{ width: ["100%", "42.8rem"] }}>
-              The wallet address is not eligible. Please reach out to Scroll Discord, ‘scroll-origins-support,’ if you have any questions about{" "}
-              {SCROLL_ORIGINS_NFT}.
-            </Alert>
-          )}
-        </Box>
+        <Stack direction="row" gap="1.6rem">
+          <ScrollButton color="primary" href={viewEASScanURL(id)} target="_blank">
+            View on EAS
+          </ScrollButton>
+          <ScrollButton color="secondary">Visit Scroll</ScrollButton>
+          <IconButton>
+            <SvgIcon sx={{ color: "primary.contrastText" }} component={ShareSvg} inheritViewBox></SvgIcon>
+          </IconButton>
+        </Stack>
       </Stack>
-      {/* <MintFlowDialog open={isEligible === 1} minting={isMinting} onClose={handleCloseFlow}></MintFlowDialog> */}
       <RequestWarning open={!!errorMessage} onClose={handleCloseWarning}>
         {errorMessage}
       </RequestWarning>
-      <BadgeDetailDialog />
     </Box>
   )
 }
 
-export default MintHome
+export default Detail

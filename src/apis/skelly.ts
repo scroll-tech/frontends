@@ -11,3 +11,5 @@ export const fetchSignByCode = code => `${baseUrl}/code/${code}`
 export const fetchCodeByAdd = add => `${baseUrl}/acc/${add}/code`
 
 export const getInviteUrlByCode = code => `${requireEnv("REACT_APP_FFRONTENDS_URL")}/scroll-skelly/invite/${code}`
+
+export const viewEASScanURL = id => `${requireEnv("REACT_APP_EAS_EXPLORER_URL")}/attestation/view/${id}`

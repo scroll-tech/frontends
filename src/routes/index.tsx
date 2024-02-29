@@ -249,7 +249,7 @@ const mainnetRoutes = [
   },
   {
     name: "Scroll Skelly",
-    path: "/scroll-skelly/badge/:badgeAddress",
+    path: "/scroll-skelly/badge/:badgeContract/:id",
     element: <SkellyBadge />,
     isHiddenFooter: true,
   },
