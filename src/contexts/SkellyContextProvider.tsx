@@ -1,18 +1,19 @@
 import { AbiCoder, Contract, ethers } from "ethers"
 import { createContext, useContext, useEffect, useState } from "react"
 
-import ScrollOriginsNFTABI from "@/assets/abis/ScrollOriginsNFT.json"
-import AttestProxyABI from "@/assets/abis/SkellyAttestProxy.json"
+// import ScrollOriginsNFTABI from "@/assets/abis/ScrollOriginsNFT.json"
+// import AttestProxyABI from "@/assets/abis/SkellyAttestProxy.json"
 import ProfileABI from "@/assets/abis/SkellyProfile.json"
 import { CHAIN_ID } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { getBadgeImageURI, initializeInstance, queryUserBadges } from "@/services/skellyService"
-import { requireEnv } from "@/utils"
 
-const SCROLL_ORIGINS_NFT_V2 = requireEnv("REACT_APP_SCROLL_ORIGINS_NFT_V2")
-const SCROLL_SEPOLIA_ORIGINS_BADGE_ADDRESS = "0xb05837704cc99F7f30c8693F05c7CfEc9CFA88FE"
-const SCROLL_SEPOLIA_EAS_ADDRESS = requireEnv("REACT_APP_EAS_ADDRESS")
-const SCROLL_SEPOLIA_BADGE_SCHEMA = requireEnv("REACT_APP_BADGE_SCHEMA")
+// import { requireEnv } from "@/utils"
+
+// const SCROLL_ORIGINS_NFT_V2 = requireEnv("REACT_APP_SCROLL_ORIGINS_NFT_V2")
+// const SCROLL_SEPOLIA_ORIGINS_BADGE_ADDRESS = "0xE207971d5B1332f267d00f4a75D9949AE69b03a4"
+// const SCROLL_SEPOLIA_EAS_ADDRESS = requireEnv("REACT_APP_EAS_ADDRESS")
+// const SCROLL_SEPOLIA_BADGE_SCHEMA = requireEnv("REACT_APP_BADGE_SCHEMA")
 
 type SkellyContextProps = {
   checkIfProfileMinted: (userAddress?: `0x${string}`) => void
@@ -65,6 +66,7 @@ const SkellyContextProvider = ({ children }: any) => {
   const checkIfProfileMinted = async (userAddress = walletCurrentAddress) => {
     try {
       const profileAddress = await unsignedProfileRegistryContract!.getProfile(userAddress)
+      console.log("Profile address:", profileAddress)
       setProfileAddress(profileAddress)
       const minted = await unsignedProfileRegistryContract!.isProfileMinted(profileAddress)
       setHasMintedProfile(minted)
@@ -81,8 +83,7 @@ const SkellyContextProvider = ({ children }: any) => {
       if (profileAddress) {
         try {
           const signer = await provider!.getSigner(0)
-          // test profileAddress
-          const profileContract = new ethers.Contract("0x984f0481E246E94B3524C8875Dfa5163FbaBa5c6", ProfileABI, signer)
+          const profileContract = new ethers.Contract(profileAddress, ProfileABI, signer)
           setProfileContract(profileContract)
         } catch (error) {
           console.error("Error fetching profile contract:", error)
@@ -98,8 +99,15 @@ const SkellyContextProvider = ({ children }: any) => {
       queryUsername()
       queryUserBadgesWrapped(walletCurrentAddress)
       getAttachedBadges(profileAddress)
-      mintScrollOriginsBadge(walletCurrentAddress!)
+      // mintScrollOriginsBadge(walletCurrentAddress!)
       getBadgeOrder(walletCurrentAddress!)
+      reorderBadges([2, 1])
+      // attachOneBadge("0x2aed6377b6e822be2cd0bbb883f8406cd36f8504eda0b8a1fe2ddc203ccb9ab4")
+      // detachBadges(["0x2aed6377b6e822be2cd0bbb883f8406cd36f8504eda0b8a1fe2ddc203ccb9ab4"])
+      // attachBadges([
+      //   "0x2aed6377b6e822be2cd0bbb883f8406cd36f8504eda0b8a1fe2ddc203ccb9ab4",
+      //   "0xff4f10891e956b0bb600bef5a0dd0c1ff9205a2dfb9743c722e20fa68a7a760f",
+      // ])
     }
   }, [profileContract, hasMintedProfile])
 
@@ -114,14 +122,19 @@ const SkellyContextProvider = ({ children }: any) => {
     }
   }
 
-  const decodeBadgePayload = async (encodedData, badgeUID) => {
+  const decodeBadgePayload = async attestation => {
+    const { data: encodedData, id: badgeUID } = attestation
     const abiCoder = new AbiCoder()
     try {
       const decoded = abiCoder.decode(["address", "bytes"], encodedData)
       const [badgeAddress] = decoded
 
       const badgeImageURI = await getBadgeImageURI(badgeAddress, badgeUID, provider)
-      return badgeImageURI
+
+      return {
+        ...attestation,
+        ...badgeImageURI,
+      }
     } catch (error) {
       console.error("Failed to decode badge payload:", error)
     }
@@ -131,12 +144,11 @@ const SkellyContextProvider = ({ children }: any) => {
     try {
       const attestations = await queryUserBadges(userAddress)
       const formattedBadgesPromises = attestations.map(attestation => {
-        const { data, id } = attestation
-        return decodeBadgePayload(data, id)
+        return decodeBadgePayload(attestation)
       })
       const formattedBadges = await Promise.all(formattedBadgesPromises)
+      console.log("formattedBadges", formattedBadges)
       setUserBadges(formattedBadges)
-      console.log("formatedBadges", formattedBadges)
     } catch (error) {
       console.log("Failed to query user badges:", error)
       return []
@@ -148,6 +160,7 @@ const SkellyContextProvider = ({ children }: any) => {
       const badges = await profileContract!.getAttachedBadges()
       const badgesArray = Array.from(badges)
       setAttachedBadges(badgesArray)
+      console.log("attachedBadges", badgesArray)
       return badgesArray
     } catch (error) {
       console.error("Failed to query attached badges:", error)
@@ -159,10 +172,20 @@ const SkellyContextProvider = ({ children }: any) => {
     try {
       const badgeOrder = await profileContract!.getBadgeOrder()
       const badgeOrderArray = Array.from(badgeOrder)
-      console.log("badgeOrderArray", badgeOrder, badgeOrderArray)
+      console.log("badgeOrder", badgeOrderArray)
     } catch (error) {
       console.error("Failed to query attached badges:", error)
       return []
+    }
+  }
+
+  const reorderBadges = async badgeOrder => {
+    try {
+      const tx = await profileContract!.reorderBadges(badgeOrder)
+      await tx.wait()
+      console.log("Badges reordered successfully!")
+    } catch (error) {
+      console.log("Badges reordered error!", error)
     }
   }
 
@@ -178,17 +201,18 @@ const SkellyContextProvider = ({ children }: any) => {
 
   // const attachBadges = async badgeAddresses => {
   //   try {
-  //     // TODO: Fix this
-  //     const tx = await profileContract!.attachOne(badgeAddresses)
+  //     const tx = await profileContract!["attach(bytes32[])"](badgeAddresses)
   //     await tx.wait()
   //     console.log("Badges attached successfully!")
   //   } catch (error) {
-  //     console.log("Badges attached error!", error)
+  //     console.log("Badges attached error!", error, badgeAddresses)
   //   }
   // }
 
   // const detachBadges = async badgeAddresses => {
   //   try {
+  //     // badgeAddresses  = ["0xcb8c7fd835c350f56738d13b7cb765c8089f7b2a08ebbd14093fa6e4cf515cf0"]
+  //     console.log("profileContract!.detach", profileContract!.detach)
   //     const tx = await profileContract!.detach(badgeAddresses)
   //     await tx.wait()
   //     console.log("Badge detached successfully!")
@@ -197,35 +221,34 @@ const SkellyContextProvider = ({ children }: any) => {
   //   }
   // }
 
-  const mintScrollOriginsBadge = async (userAddress: string) => {
-    const signer = await provider!.getSigner(0)
+  // const mintScrollOriginsBadge = async (userAddress: string) => {
+  //   const signer = await provider!.getSigner(0)
 
-    const originsV2Contract = new ethers.Contract(SCROLL_ORIGINS_NFT_V2, ScrollOriginsNFTABI, signer)
-    const tokenId = await originsV2Contract.tokenOfOwnerByIndex(userAddress, 0)
-    const abiCoder = new AbiCoder()
-    const originsBadgePayload = abiCoder.encode(["address", "uint256"], [SCROLL_ORIGINS_NFT_V2, tokenId])
-    const badgePayload = abiCoder.encode(["address", "bytes"], [SCROLL_SEPOLIA_ORIGINS_BADGE_ADDRESS, originsBadgePayload])
-    const easContract = new ethers.Contract(SCROLL_SEPOLIA_EAS_ADDRESS, AttestProxyABI, signer)
-    const attestParams = {
-      schema: SCROLL_SEPOLIA_BADGE_SCHEMA,
-      data: {
-        recipient: userAddress,
-        expirationTime: 0,
-        revocable: false,
-        refUID: "0x0000000000000000000000000000000000000000000000000000000000000000",
-        data: badgePayload,
-        value: 0,
-      },
-    }
-    try {
-      const tx = await easContract.attest(attestParams)
-
-      await tx.wait()
-      console.log("Badge minted successfully!")
-    } catch (error) {
-      console.log("Badge minted error!", error)
-    }
-  }
+  //   const originsV2Contract = new ethers.Contract(SCROLL_ORIGINS_NFT_V2, ScrollOriginsNFTABI, signer)
+  //   const tokenId = await originsV2Contract.tokenOfOwnerByIndex(userAddress, 0)
+  //   const abiCoder = new AbiCoder()
+  //   const originsBadgePayload = abiCoder.encode(["address", "uint256"], [SCROLL_ORIGINS_NFT_V2, tokenId])
+  //   const badgePayload = abiCoder.encode(["address", "bytes"], [SCROLL_SEPOLIA_ORIGINS_BADGE_ADDRESS, originsBadgePayload])
+  //   const easContract = new ethers.Contract(SCROLL_SEPOLIA_EAS_ADDRESS, AttestProxyABI, signer)
+  //   const attestParams = {
+  //     schema: SCROLL_SEPOLIA_BADGE_SCHEMA,
+  //     data: {
+  //       recipient: userAddress,
+  //       expirationTime: 0,
+  //       revocable: false,
+  //       refUID: "0x0000000000000000000000000000000000000000000000000000000000000000",
+  //       data: badgePayload,
+  //       value: 0,
+  //     },
+  //   }
+  //   try {
+  //     const tx = await easContract.attest(attestParams)
+  //     await tx.wait()
+  //     console.log("Badge minted successfully!")
+  //   } catch (error) {
+  //     console.log("Badge minted error!", error)
+  //   }
+  // }
 
   return (
     <SkellyContext.Provider

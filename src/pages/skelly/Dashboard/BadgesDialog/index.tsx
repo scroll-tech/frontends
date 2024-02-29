@@ -1,7 +1,11 @@
+import { useEffect, useMemo } from "react"
+
 import { Button, Dialog, DialogContent, DialogTitle, IconButton, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { ReactComponent as CloseSvg } from "@/assets/svgs/bridge/close.svg"
+import { BADGES_VISIBLE_TYPE } from "@/constants"
+import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 // import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useSkellyStore from "@/stores/skellyStore"
 
@@ -28,8 +32,20 @@ const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
 }))
 
 const BadgesDialog = () => {
-  const { badgesDialogVisible, changeBadgesDialog } = useSkellyStore()
-  // const { setBadgesInstance, badgesInstance } = useSkellyContext()
+  const { userBadges, attachedBadges } = useSkellyContext()
+
+  const badgesInstance = useMemo(() => {
+    return {
+      [BADGES_VISIBLE_TYPE.VISIBLE]: userBadges.filter(badge => attachedBadges.includes(badge.id)),
+      [BADGES_VISIBLE_TYPE.INVISIBLE]: userBadges.filter(badge => !attachedBadges.includes(badge.id)),
+    }
+  }, [userBadges, attachedBadges])
+
+  const { badgesDialogVisible, changeBadgesDialog, sortedBadges } = useSkellyStore()
+
+  useEffect(() => {
+    console.log("sortedBadges", sortedBadges)
+  }, [sortedBadges])
 
   const handleClose = () => {
     changeBadgesDialog(false)
@@ -37,7 +53,6 @@ const BadgesDialog = () => {
 
   const handleSave = () => {
     changeBadgesDialog(false)
-    // setBadgesInstance(sortedBadges)
   }
 
   return (
@@ -52,14 +67,14 @@ const BadgesDialog = () => {
         }}
       >
         <Typography variant="h3" sx={{ flexGrow: 1, color: "#ffffff", textAlign: "center" }}>
-          Drag badges to cutomize{" "}
+          Drag badges to cutomize
         </Typography>
         <IconButton sx={{ p: 0, "&:hover": { backgroundColor: "unset" } }}>
           <SvgIcon sx={{ fontSize: ["1.6rem", "1.8rem"] }} component={CloseSvg} inheritViewBox></SvgIcon>
         </IconButton>
       </DialogTitle>
       <StyledDialogContent>
-        <GridDragDrop />
+        <GridDragDrop badgesInstance={badgesInstance} />
         <Stack direction="row" justifyContent="center" gap="1.6rem">
           <Button sx={{ borderRadius: "0.8rem", width: "16.5rem", fontSize: "1.6rem", padding: "0" }} onClick={handleClose}>
             Cancel
