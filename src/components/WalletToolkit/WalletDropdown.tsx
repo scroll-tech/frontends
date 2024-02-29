@@ -17,7 +17,7 @@ import { CHAIN_ID, EXPLORER_URL } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useBridgeStore from "@/stores/bridgeStore"
-import { generateExploreLink, requireEnv, truncateAddress } from "@/utils"
+import { generateExploreLink, truncateAddress } from "@/utils"
 
 const useStyles = makeStyles<any>()((theme, { dark }) => ({
   button: {
