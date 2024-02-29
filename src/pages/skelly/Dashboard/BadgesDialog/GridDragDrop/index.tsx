@@ -1,15 +1,8 @@
 import { rectSortingStrategy } from "@dnd-kit/sortable"
 
-import { BADGES_VISIBLE_TYPE } from "@/constants"
-
 import { MultipleContainers } from "./MultipleContainers"
 
-const Grid = () => {
-  const badgesInstance = {
-    [BADGES_VISIBLE_TYPE.VISIBLE]: [],
-    [BADGES_VISIBLE_TYPE.INVISIBLE]: [],
-  }
-
+const Grid = ({ badgesInstance }) => {
   return (
     <MultipleContainers
       columns={4}
