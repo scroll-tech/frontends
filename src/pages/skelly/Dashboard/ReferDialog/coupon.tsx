@@ -1,13 +1,18 @@
 import copy from "copy-to-clipboard"
-import { useCallback, useState } from "react"
+import { useState } from "react"
+import useSWR from "swr"
+import { makeStyles } from "tss-react/mui"
 
-import { Box, Button, SvgIcon, Typography } from "@mui/material"
+import { Box, Button, Menu, MenuItem, Skeleton, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
-import { ReactComponent as CheckSvg } from "@/assets/svgs/skelly/check.svg"
-import { ReactComponent as CopySvg } from "@/assets/svgs/skelly/copy.svg"
+import { fetchCodeByAdd, getInviteUrlByCode } from "@/apis/skelly"
+import { ReactComponent as CopySuccessSvg } from "@/assets/svgs/bridge/copy-success.svg"
+import { ReactComponent as TwitterSvg } from "@/assets/svgs/nft/twitter.svg"
 import couponBackground from "@/assets/svgs/skelly/coupon.svg"
 import { ReactComponent as LogoSvg } from "@/assets/svgs/skelly/logo.svg"
+import { ReactComponent as ShareSvg } from "@/assets/svgs/skelly/share.svg"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 
 const CouponBox = styled(Box)(({ theme }) => ({
@@ -21,13 +26,6 @@ const CouponBox = styled(Box)(({ theme }) => ({
   padding: "2.4rem 1.6rem",
 }))
 
-const CopyBox = styled(Box)(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  flexDirection: "column",
-}))
-
 const DescriptionBox = styled(Typography)(({ theme }) => ({
   border: "1px solid #000",
   background: "#FDE9D5",
@@ -39,42 +37,92 @@ const DescriptionBox = styled(Typography)(({ theme }) => ({
   flexDirection: "column",
 }))
 
-const ReferralLink = styled(Typography)(({ theme }) => ({
-  borderRadius: "0.6rem",
-  border: "0.15rem solid #000",
-  background: "#FFF",
-  fontSize: "4rem",
-  textAlign: "center",
-  width: "34rem",
-  margin: "1.5rem 0",
-  height: "7.2rem",
-  lineHeight: "7.2rem",
-  fontWeight: 500,
-}))
+// const ReferralLink = styled(Typography)(({ theme }) => ({
+//   borderRadius: "0.6rem",
+//   border: "0.15rem solid #000",
+//   background: "#FFF",
+//   fontSize: "4rem",
+//   textAlign: "center",
+//   width: "34rem",
+//   height: "7.2rem",
+//   lineHeight: "7.2rem",
+//   fontWeight: 500,
+// }))
 
-const CopyButton = styled(Button)(({ theme }) => ({
-  borderRadius: "0.6rem",
-  border: "0.15rem solid #000",
-  fontSize: "2rem",
-  width: "34rem",
-  height: "5.6rem",
-  fontWeight: 600,
-  color: "#FFF",
-  backgroundColor: "#000",
-  "&:hover": {
-    backgroundColor: "#000",
-    color: "#FFF",
+const useStyles = makeStyles()(theme => ({
+  paper: {
+    borderRadius: "0.5rem",
+    marginTop: "0.5rem",
+    transformOrigin: "50% 0px !important",
+  },
+  list: {
+    padding: 0,
+    width: "34rem",
+  },
+  item: {
+    width: "100%",
+    padding: "0.8rem 1.6rem",
+    fontSize: "1.6rem",
+    fontWeight: 600,
+    lineHeight: "2.4rem",
+    justifyContent: "center",
+  },
+  codeWrapper: {
+    borderRadius: "0.6rem",
+    border: `0.15rem solid ${theme.palette.text.primary}`,
+    background: theme.palette.background.default,
+    width: "34rem",
+    height: "7.2rem",
   },
 }))
 
 const Coupon = () => {
-  const [copied, setCopied] = useState(false)
+  const { classes } = useStyles()
+  const { walletCurrentAddress } = useRainbowContext()
+  const [codeCopied, setCodeCopied] = useState(false)
+  const [linkCopied, setLinkCopied] = useState(false)
+
   const { username } = useSkellyContext()
 
-  const copyAddress = useCallback(() => {
-    copy(window.location.href + "?referral=KAZ1R")
-    setCopied(true)
-  }, [])
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+
+  const fetchCode = url => scrollRequest(url)
+  const { data: { code } = {}, isLoading } = useSWR(() => fetchCodeByAdd(walletCurrentAddress), fetchCode, {
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+    shouldRetryOnError: false,
+  })
+
+  const handleDropdown = e => {
+    setAnchorEl(e.currentTarget)
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)
+    setCodeCopied(false)
+    setLinkCopied(false)
+  }
+
+  const handleShareToX = () => {
+    const inviteUrl = getInviteUrlByCode(code)
+
+    const shareUrl = `https://twitter.com/intent/tweet?original_referer=${encodeURIComponent(window.location.href)}&url=${encodeURIComponent(
+      inviteUrl,
+    )}&via=Scroll_ZKP`
+    window.open(shareUrl)
+    handleClose()
+  }
+  const handleCopyLink = () => {
+    const inviteUrl = getInviteUrlByCode(code)
+    copy(inviteUrl)
+    setLinkCopied(true)
+  }
+
+  const handleCopyCode = () => {
+    copy(code)
+    setCodeCopied(true)
+  }
 
   return (
     <CouponBox>
@@ -84,16 +132,40 @@ const Coupon = () => {
         <Typography sx={{ fontSize: "1.8rem", marginBottom: "2.3rem", lineHeight: "2.4rem" }}>Mint Fee</Typography>
         <SvgIcon sx={{ width: "8rem" }} component={LogoSvg} inheritViewBox />
       </DescriptionBox>
-      <CopyBox>
+      <Stack direction="column" alignItems="center" gap="1.5rem">
         <Typography sx={{ fontSize: "2.8rem", lineHeight: "normal", fontWeight: 500 }}>Scroll Skelly Coupon</Typography>
-        <ReferralLink>KAZ1R</ReferralLink>
-        <CopyButton
-          startIcon={<SvgIcon sx={{ fontSize: "3rem" }} component={copied ? CheckSvg : CopySvg} inheritViewBox></SvgIcon>}
-          onClick={copyAddress}
+        <Stack direction="row" justifyContent="center" alignItems="center" className={classes.codeWrapper}>
+          {isLoading ? (
+            <Skeleton sx={{ width: "60%", height: "5rem", borderRadius: "4px" }}></Skeleton>
+          ) : (
+            <Typography sx={{ fontSize: "4rem", fontWeight: 500, lineHeight: "7.2rem" }}>{code}</Typography>
+          )}
+        </Stack>
+
+        <Button
+          sx={{ width: "100%" }}
+          disabled={isLoading}
+          variant="contained"
+          color="secondary"
+          startIcon={<SvgIcon component={ShareSvg} inheritViewBox></SvgIcon>}
+          onClick={handleDropdown}
         >
-          {copied ? "Copied" : "Copy"}
-        </CopyButton>
-      </CopyBox>
+          Share
+        </Button>
+        <Menu classes={{ paper: classes.paper, list: classes.list }} anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
+          <MenuItem classes={{ root: classes.item }} onClick={handleShareToX}>
+            Share to <SvgIcon sx={{ fontSize: ["1.2rem", "1.3rem"], ml: "6px" }} component={TwitterSvg} inheritViewBox></SvgIcon>
+          </MenuItem>
+          <MenuItem classes={{ root: classes.item }} onClick={handleCopyLink}>
+            <>Copy link</>
+            {linkCopied && <SvgIcon sx={{ ml: "0.6rem" }} component={CopySuccessSvg} inheritViewBox></SvgIcon>}
+          </MenuItem>
+          <MenuItem classes={{ root: classes.item }} onClick={handleCopyCode}>
+            <>Copy coupon code</>
+            {codeCopied && <SvgIcon sx={{ ml: "0.6rem" }} component={CopySuccessSvg} inheritViewBox></SvgIcon>}
+          </MenuItem>
+        </Menu>
+      </Stack>
     </CouponBox>
   )
 }
