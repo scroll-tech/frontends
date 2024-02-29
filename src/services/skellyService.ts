@@ -56,6 +56,42 @@ export const queryUserBadges = async userAddress => {
   }
 }
 
+export const queryBadgeDetailById = async badgeId => {
+  const query = `
+      query Attestation {
+        attestations(
+          where: {
+            schemaId: { equals: "${BADGE_SCHEMA}" },
+            id: { equals: "${badgeId}" },
+            revoked: { equals: false }
+          }
+        ) {
+          attester
+          time
+        }
+      }
+    `
+
+  try {
+    const response = await fetch(EAS_GRAPHQL_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ query }),
+    })
+
+    const {
+      data: { attestations },
+    } = await response.json()
+
+    return attestations
+  } catch (error) {
+    console.log("Failed to query user badges:", error)
+    return []
+  }
+}
+
 export const getBadgeImageURI = async (
   provider,
   badgeContractAddress,
