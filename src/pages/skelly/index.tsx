@@ -1,5 +1,4 @@
-import { useEffect } from "react"
-import { useLocation } from "react-router-dom"
+import { Navigate } from "react-router-dom"
 
 import GlobalComponents from "@/components/GlobalComponents"
 import BridgeContextProvider from "@/contexts/BridgeContextProvider"
@@ -10,24 +9,20 @@ import Dashboard from "./Dashboard"
 import LandingPage from "./landing"
 import MintPage from "./mint"
 
-const Skelly = () => {
+const Skelly = props => {
+  const { code } = props
   const { hasMintedProfile } = useSkellyContext()
   const { mintStep } = useSkellyStore()
-  const location = useLocation()
 
-  useEffect(() => {
-    // const searchParams = new URLSearchParams(location.search)
-    // const referral = searchParams.get("referral")
-    // if (referral) {
-    //   // setCodes(referral.split(""))
-    // }
-  }, [location])
+  if (code && hasMintedProfile) {
+    return <Navigate to="/scroll-skelly"></Navigate>
+  }
 
   return (
     <BridgeContextProvider>
       <GlobalComponents></GlobalComponents>
       {hasMintedProfile && <Dashboard />}
-      {!hasMintedProfile && mintStep === MintStep.REFERRAL_CODE && <LandingPage />}
+      {!hasMintedProfile && mintStep === MintStep.REFERRAL_CODE && <LandingPage code={code} />}
       {!hasMintedProfile && mintStep === MintStep.PROFILE && <MintPage />}
     </BridgeContextProvider>
   )

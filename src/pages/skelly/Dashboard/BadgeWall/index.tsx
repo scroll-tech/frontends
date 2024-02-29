@@ -3,11 +3,11 @@ import React, { useEffect, useMemo, useRef, useState } from "react"
 import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
+import { getAvatarURL } from "@/apis/skelly"
 // import { ReactComponent as DefaultAvatarSvg } from "@/assets/svgs/skelly/default-avatar.svg"
 // import { BADGES_VISIBLE_TYPE } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
-import { requireEnv } from "@/utils"
 
 import Badge from "./Badge"
 
@@ -57,8 +57,6 @@ const BadgeWall: React.FC<BadgeWallProps> = ({ badgewidth, gridNum, windowDimens
   const { hasMintedProfile, username, userBadges, attachedBadges } = useSkellyContext()
   const [badges, setBadges] = useState<BadgeType[]>([])
   const { walletCurrentAddress } = useRainbowContext()
-
-  const avatarSvgURL = useMemo(() => `${requireEnv("REACT_APP_SKELLY_URI")}/skelly/${walletCurrentAddress}.svg`, [walletCurrentAddress])
 
   useEffect(() => {
     if (hasMintedProfile) {
@@ -136,7 +134,7 @@ const BadgeWall: React.FC<BadgeWallProps> = ({ badgewidth, gridNum, windowDimens
         }}
       >
         <Box sx={{ width: "66.67%", paddingTop: "12%" }}>
-          <img src={avatarSvgURL} alt="avatar" width="100%"></img>
+          <img src={getAvatarURL(walletCurrentAddress)} alt="avatar" width="100%"></img>
         </Box>
         <Name>{username}</Name>
       </Profile>

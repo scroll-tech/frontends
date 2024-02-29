@@ -1,0 +1,13 @@
+import { requireEnv } from "@/utils"
+
+const baseUrl = requireEnv("REACT_APP_SKELLY_URI")
+
+export const getAvatarURL = add => `${baseUrl}/heartbeat/${add}.svg`
+
+export const getImgByCode = code => `${baseUrl}/code/${code}.png`
+
+export const fetchSignByCode = code => `${baseUrl}/code/${code}`
+
+export const fetchCodeByAdd = add => `${baseUrl}/acc/${add}/code`
+
+export const getInviteUrlByCode = code => `${requireEnv("REACT_APP_FFRONTENDS_URL")}/scroll-skelly/invite/${code}`

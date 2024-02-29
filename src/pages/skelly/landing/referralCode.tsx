@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react"
 import { Box, InputBase, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
+import { fetchSignByCode } from "@/apis/skelly"
 import { ReactComponent as CheckSvg } from "@/assets/svgs/skelly/check.svg"
 import { ReactComponent as ErrorSvg } from "@/assets/svgs/skelly/error.svg"
 import { ReactComponent as LoadingSvg } from "@/assets/svgs/skelly/loading.svg"
@@ -74,7 +75,7 @@ const ReferralCode = ({ isChecking, setIsChecking, code }) => {
   const [codes, setCodes] = useState(Array(INVITE_CODE_LENGTH).fill(""))
   const [codeStatus, setCodeStatus] = useState(CodeStatus.UNKNOWN)
   const inputRefs = useRef<Array<HTMLInputElement | null>>(new Array(INVITE_CODE_LENGTH).fill(null))
-  const { changeReferralCode } = useSkellyStore()
+  const { changeReferralCode, changeCodeSignature } = useSkellyStore()
 
   useEffect(() => {
     if (code) {
@@ -94,19 +95,16 @@ const ReferralCode = ({ isChecking, setIsChecking, code }) => {
     }
   }, [codes])
 
-  const validateCode = (code: string) => {
+  const validateCode = async (code: string) => {
     setIsChecking(true)
-    setTimeout(() => {
-      setIsChecking(false)
-      if (code === "KAZ1R") {
-        setCodeStatus(CodeStatus.VALID)
-        changeReferralCode(referralCode)
-      } else {
-        setCodeStatus(CodeStatus.INVALID)
-        inputRefs.current[0]?.focus()
-        setCodes(Array(INVITE_CODE_LENGTH).fill(""))
-      }
-    }, 1500)
+    const { signature } = await scrollRequest(fetchSignByCode(code))
+    if (signature) {
+      setCodeStatus(CodeStatus.VALID)
+      changeCodeSignature(signature)
+    } else {
+      setCodeStatus(CodeStatus.INVALID)
+    }
+    setIsChecking(false)
   }
 
   const handleInputChange = (index: number, event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

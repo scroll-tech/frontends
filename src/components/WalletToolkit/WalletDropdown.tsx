@@ -5,6 +5,7 @@ import { makeStyles } from "tss-react/mui"
 
 import { Avatar, Box, ButtonBase, Fade, ListItemIcon, ListItemText, Menu, MenuItem, SvgIcon } from "@mui/material"
 
+import { getAvatarURL } from "@/apis/skelly"
 import { ReactComponent as CopySuccessSvg } from "@/assets/svgs/bridge/copy-success.svg"
 import { ReactComponent as HistorySvg } from "@/assets/svgs/bridge/history.svg"
 import { ReactComponent as BlockSvg } from "@/assets/svgs/wallet-connector/block.svg"
@@ -16,7 +17,7 @@ import { CHAIN_ID, EXPLORER_URL } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useBridgeStore from "@/stores/bridgeStore"
-import { generateExploreLink, requireEnv, truncateAddress } from "@/utils"
+import { generateExploreLink, truncateAddress } from "@/utils"
 
 const useStyles = makeStyles<any>()((theme, { dark }) => ({
   button: {
@@ -88,8 +89,6 @@ const WalletDropdown = props => {
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [copied, setCopied] = useState(false)
-
-  const avatarSvgURL = useMemo(() => `${requireEnv("REACT_APP_SKELLY_URI")}/skelly/${walletCurrentAddress}.svg`, [walletCurrentAddress])
 
   const open = useMemo(() => Boolean(anchorEl), [anchorEl])
 
@@ -163,7 +162,7 @@ const WalletDropdown = props => {
 
       {chainId && hasMintedProfile && (
         <ButtonBase classes={{ root: classes.button }} sx={sx} onClick={handleClick}>
-          <Avatar src={avatarSvgURL} sx={{ width: 24, height: 24, marginRight: "0.8rem" }}></Avatar>
+          <Avatar src={getAvatarURL(walletCurrentAddress)} sx={{ width: 24, height: 24, marginRight: "0.8rem" }}></Avatar>
           <Box sx={{ lineHeight: "1.6rem", textAlign: "left" }}>
             <strong style={{ fontSize: "1.2rem" }}>{username}</strong>
             <p style={{ fontSize: "1.2rem" }}>{truncateAddress(walletCurrentAddress as string)}</p>
