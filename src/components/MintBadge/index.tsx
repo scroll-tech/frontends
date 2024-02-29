@@ -5,7 +5,7 @@ import { styled } from "@mui/system"
 
 import { ReactComponent as CloseSvg } from "@/assets/svgs/skelly/close.svg"
 import TriangleSvg from "@/assets/svgs/skelly/triangle.svg"
-import BadgeDetailDialog from "@/pages/skelly/Dashboard/BadgeDetailDialog"
+import BadgeDetailDialog from "@/pages/skelly/dashboard/BadgeDetailDialog"
 import useSkellyStore, { BadgeDetailDialogTpye } from "@/stores/skellyStore"
 
 const Container = styled(Box)(({ theme }) => ({
