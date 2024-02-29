@@ -129,7 +129,7 @@ const SkellyContextProvider = ({ children }: any) => {
       const decoded = abiCoder.decode(["address", "bytes"], encodedData)
       const [badgeAddress] = decoded
 
-      const badgeImageURI = await getBadgeImageURI(badgeAddress, badgeUID, provider)
+      const badgeImageURI = await getBadgeImageURI(provider, badgeAddress, badgeUID)
 
       return {
         ...attestation,

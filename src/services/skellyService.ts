@@ -56,7 +56,11 @@ export const queryUserBadges = async userAddress => {
   }
 }
 
-export const getBadgeImageURI = async (badgeContractAddress, badgeUID, provider) => {
+export const getBadgeImageURI = async (
+  provider,
+  badgeContractAddress,
+  badgeUID = "0x0000000000000000000000000000000000000000000000000000000000000000",
+) => {
   try {
     const contract = new ethers.Contract(badgeContractAddress, BadgeABI, provider)
     const badgeMetadataURI = await contract.badgeTokenURI(badgeUID)
