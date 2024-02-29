@@ -32,7 +32,7 @@ const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
 }))
 
 const BadgesDialog = () => {
-  const { userBadges, attachedBadges } = useSkellyContext()
+  const { userBadges, attachedBadges, detachBadges, attachBadges } = useSkellyContext()
 
   const badgesInstance = useMemo(() => {
     return {
@@ -52,7 +52,46 @@ const BadgesDialog = () => {
   }
 
   const handleSave = () => {
-    changeBadgesDialog(false)
+    updateDataAndOrder()
+    // changeBadgesDialog(false)
+  }
+
+  const updateDataAndOrder = () => {
+    const displayedIds = badgesInstance[BADGES_VISIBLE_TYPE.VISIBLE].map(item => item.id)
+    const currentDisplayedIds = sortedBadges[BADGES_VISIBLE_TYPE.VISIBLE].map(item => item.id)
+    const displayedSet = new Set(displayedIds)
+    const currentDisplayedSet = new Set(currentDisplayedIds)
+    const hiddenToDisplayed: any = []
+    const displayedToHidden: any = []
+
+    displayedIds.forEach(id => {
+      if (!currentDisplayedSet.has(id)) {
+        displayedToHidden.push(id)
+      }
+    })
+
+    currentDisplayedIds.forEach(id => {
+      if (!displayedSet.has(id)) {
+        hiddenToDisplayed.push(id)
+      }
+    })
+
+    // const newOrder = displayedIds.map(id => data.Displayed.findIndex(item => item.id === id)).filter(index => index !== -1);
+
+    console.log("hiddle -> visible:", hiddenToDisplayed)
+    console.log("visible -> hidden:", displayedToHidden)
+    // console.log('item order:', newOrder);
+
+    // setData(updatedData);
+    // setOrder(newOrder);
+    if (hiddenToDisplayed.length > 0) {
+      attachBadges(hiddenToDisplayed)
+      // customiseDisplay(hiddenToDisplayed, displayedToHidden)
+    }
+
+    if (displayedToHidden.length > 0) {
+      detachBadges(displayedToHidden)
+    }
   }
 
   return (
