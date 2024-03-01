@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react"
+import { useParams } from "react-router-dom"
 
 import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
@@ -51,12 +52,16 @@ const Name = styled(Typography)(({ theme }) => ({
   flexShrink: 0,
 }))
 
-const BadgeWall: React.FC<BadgeWallProps> = ({ badgewidth, gridNum, windowDimensions }) => {
+const BadgeWall: React.FC<BadgeWallProps> = props => {
+  const { address: othersWalletAddress } = useParams()
+  const { badgewidth, gridNum, windowDimensions } = props
   const divRef = useRef<HTMLDivElement>(null)
 
-  const { hasMintedProfile, username, userBadges, attachedBadges } = useSkellyContext()
+  const { hasMintedProfile, skellyUsername, userBadges, attachedBadges } = useSkellyContext()
   const [badges, setBadges] = useState<BadgeType[]>([])
   const { walletCurrentAddress } = useRainbowContext()
+
+  const realWalletAddress = useMemo(() => othersWalletAddress || walletCurrentAddress, [othersWalletAddress, walletCurrentAddress])
 
   useEffect(() => {
     if (hasMintedProfile) {
@@ -134,9 +139,9 @@ const BadgeWall: React.FC<BadgeWallProps> = ({ badgewidth, gridNum, windowDimens
         }}
       >
         <Box sx={{ width: "66.67%", paddingTop: "12%" }}>
-          <img src={getAvatarURL(walletCurrentAddress)} alt="avatar" width="100%"></img>
+          <img src={getAvatarURL(realWalletAddress)} alt="avatar" width="100%"></img>
         </Box>
-        <Name>{username}</Name>
+        <Name>{skellyUsername}</Name>
       </Profile>
       {badges.map((badge, index) => (
         <Badge key={index} badge={badge} index={index} badgewidth={badgewidth} />
