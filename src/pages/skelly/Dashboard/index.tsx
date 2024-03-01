@@ -1,10 +1,14 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react"
+import { Helmet } from "react-helmet-async"
+import { useParams } from "react-router-dom"
 
 import { Box } from "@mui/material"
 import { styled } from "@mui/system"
 
+import { useRainbowContext } from "@/contexts/RainbowProvider"
 // import { BADGES_VISIBLE_TYPE } from "@/constants"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
+import { requireEnv } from "@/utils"
 
 import ActionBox from "./ActionBox"
 import BadgeDetailDialog from "./BadgeDetailDialog"
@@ -47,8 +51,17 @@ const Container: any = styled(Box)(({ theme, badgewidth }: any) => ({
   },
 }))
 
-const Dashboard = () => {
-  const { attachedBadges } = useSkellyContext()
+const Dashboard = props => {
+  const { address: othersWalletAddress } = useParams()
+
+  const { walletCurrentAddress } = useRainbowContext()
+  const { username, attachedBadges } = useSkellyContext()
+
+  const metadata = {
+    title: `Scroll - Skelly @${username}`,
+    description: "Hi, I've minted Scroll Skelly!",
+    image: `${requireEnv("REACT_APP_SKELLY_URI")}/skelly/${othersWalletAddress || walletCurrentAddress}.png`,
+  }
 
   const [windowDimensions, setWindowDimensions] = useState({
     width: window.innerWidth,
@@ -79,15 +92,37 @@ const Dashboard = () => {
   }, [windowDimensions, gridNum])
 
   return (
-    <Container badgewidth={badgewidth}>
-      <BadgeWall badgewidth={badgewidth} gridNum={gridNum} windowDimensions={windowDimensions} />
-      <ActionBox />
-      <NameDialog />
-      <BadgesDialog />
-      <ReferDialog />
-      <UpgradeDialog />
-      <BadgeDetailDialog />
-    </Container>
+    <>
+      <Helmet>
+        <title>{metadata.title}</title>
+        <meta name="description" content={metadata.description} />
+        <meta property="og:title" content={metadata.title} />
+        <meta property="og:description" content={metadata.description} />
+        <meta property="og:image" content={metadata.image} />
+        <meta name="twitter:title" content={metadata.title} />
+        <meta name="twitter:description" content={metadata.description} />
+        <meta name="twitter:image" content={metadata.image} />
+      </Helmet>
+
+      <Container badgewidth={badgewidth}>
+        <BadgeWall badgewidth={badgewidth} gridNum={gridNum} windowDimensions={windowDimensions} />
+        {othersWalletAddress ? (
+          <>
+            <ActionBox></ActionBox>
+            <BadgeDetailDialog />
+          </>
+        ) : (
+          <>
+            <ActionBox />
+            <NameDialog />
+            <BadgesDialog />
+            <ReferDialog />
+            <UpgradeDialog />
+            <BadgeDetailDialog />
+          </>
+        )}
+      </Container>
+    </>
   )
 }
 
