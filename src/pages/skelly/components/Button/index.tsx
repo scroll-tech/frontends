@@ -1,8 +1,6 @@
-import { useCycle } from "framer-motion"
-import { useMemo } from "react"
 import { makeStyles } from "tss-react/mui"
 
-import { ButtonBase, ButtonProps, CircularProgress } from "@mui/material"
+import { ButtonProps, CircularProgress, Button as ScrollButton } from "@mui/material"
 
 import useCheckViewport from "@/hooks/useCheckViewport"
 
@@ -25,7 +23,7 @@ const gColor = (color, theme) => {
     case "primary":
       return theme.palette.primary.main
     case "secondary":
-      return theme.palette.primary.contrastText
+      return "#ffffff"
     case "dark":
       return "#ffffff"
     default:
@@ -47,47 +45,22 @@ const cColor = (color, theme) => {
 }
 
 const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, whiteButton }) => ({
-  wrapper: {
-    position: "relative",
-    height: "5.4rem",
-    overflow: "hidden",
-    borderRadius: "1rem",
-    backgroundColor: whiteButton ? "#ffffff" : "transparent",
-    width: width ?? "25rem",
-    [theme.breakpoints.down("sm")]: {
-      width: width ?? "18.5rem",
-      height: "4.8rem",
-    },
-  },
-  wrapperLoading: {
-    opacity: 0.6,
-  },
-  wrapperGloomy: {
-    opacity: 0.5,
-    pointerEvents: "none",
-  },
-  wrapperDisabled: {
-    backgroundColor: "#FFF0DD80",
-    borderRadius: "1rem",
-    pointerEvents: "none",
-  },
   button: {
+    padding: "0",
     width: width ?? "16rem",
     height: "4.8rem",
-
-    fontSize: "2rem",
+    fontSize: "1.8rem",
     fontWeight: 600,
-    // height: "100%",
-    // width: "100%",
-    // paddingLeft: "5.4rem",
-    borderWidth: 1,
-    borderStyle: "solid",
-    borderColor: gColor(color, theme),
-    color: gColor(color, theme),
+    background: gColor(color, theme),
+    color: cColor(color, theme),
     borderRadius: "1rem",
     [theme.breakpoints.down("sm")]: {
       fontSize: "1.6rem",
       paddingLeft: "4.8rem",
+    },
+    "&:hover": {
+      backgroundColor: gColor(color, theme),
+      color: cColor(color, theme),
     },
   },
   buttonDisabled: {
@@ -95,30 +68,9 @@ const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, w
     color: "#EBC28E",
   },
   buttonLoading: {
-    paddingLeft: "2rem",
-    paddingRight: "2rem",
-    // border: "unset",
     gap: "0.4em",
-    // color: cColor(color, theme),
-  },
-  active: {
     color: cColor(color, theme),
-  },
-  mask: {
-    width: "5.4rem",
-    height: "100%",
-    position: "absolute",
     backgroundColor: gColor(color, theme),
-    borderRadius: "1rem",
-    [theme.breakpoints.down("sm")]: {
-      width: "4.8rem",
-    },
-  },
-  maskLoading: {
-    width: "100% !important",
-  },
-  maskDisabled: {
-    backgroundColor: "#EBC28E",
   },
 
   icon: {
@@ -139,30 +91,18 @@ const Button = (props: ScrollButtonProps) => {
 
   const { isMobile } = useCheckViewport()
 
-  const [isHover] = useCycle(false, true)
-
-  const innerDisabled = useMemo(() => {
-    if (loading) return false
-    return disabled
-  }, [loading, disabled])
-
   return (
     // TODO: allow sx, allow size=small/medium
     // avoid setting both 'disabled' and 'loading' to true.
-    <ButtonBase
+    <ScrollButton
       classes={{
-        root: cx(
-          classes.button,
-          isHover && !gloomy && !innerDisabled && classes.active,
-          loading && classes.buttonLoading,
-          innerDisabled && classes.buttonDisabled,
-        ),
+        root: cx(classes.button, loading && classes.buttonLoading),
       }}
-      disabled={innerDisabled || gloomy || loading}
+      disabled={loading}
       {...restProps}
     >
       {children} {loading && <CircularProgress sx={{ color: "inherit" }} size={isMobile ? 18 : 24} thickness={4}></CircularProgress>}
-    </ButtonBase>
+    </ScrollButton>
   )
 }
 

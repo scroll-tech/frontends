@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react"
 
-import { Avatar, Button, Dialog, DialogContent, DialogTitle, IconButton, InputBase, Stack, SvgIcon } from "@mui/material"
+import { Avatar, Dialog, DialogContent, DialogTitle, IconButton, InputBase, Stack, SvgIcon } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { getAvatarURL } from "@/apis/skelly"
 import { ReactComponent as CloseSvg } from "@/assets/svgs/skelly/close.svg"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
+import Button from "@/pages/skelly/components/Button"
 import useSkellyStore from "@/stores/skellyStore"
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
@@ -52,7 +53,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const NameDialog = () => {
   const { profileDialogVisible, changeProfileDialog } = useSkellyStore()
   const { username, checkIfProfileMinted, profileContract, queryUsername } = useSkellyContext()
-  const [, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
   const { walletCurrentAddress } = useRainbowContext()
 
   const [profileName, setProfileName] = useState(username)
@@ -103,12 +104,18 @@ const NameDialog = () => {
         <StyledAvatar src={getAvatarURL(walletCurrentAddress)}></StyledAvatar>
         <StyledInputBase autoFocus onChange={handleChange} placeholder="Enter your name" value={profileName} />
         <Stack direction="row" justifyContent="center" gap="1.6rem">
-          <Button sx={{ borderRadius: "0.8rem", width: "16.5rem", fontSize: "1.6rem", padding: "0" }} onClick={handleClose}>
+          <Button
+            color="secondary"
+            variant="contained"
+            sx={{ borderRadius: "0.8rem", width: "16.5rem", fontSize: "1.6rem", padding: "0" }}
+            onClick={handleClose}
+          >
             Cancel
           </Button>
           <Button
+            color="primary"
             variant="contained"
-            // loading={loading}
+            loading={loading}
             sx={{ borderRadius: "0.8rem", width: "16.5rem", fontSize: "1.6rem", padding: "0" }}
             onClick={() => changeUsername()}
           >
