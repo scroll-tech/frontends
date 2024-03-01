@@ -1,10 +1,11 @@
-import { useMemo } from "react"
+import { useEffect, useState } from "react"
 
 import { Dialog, DialogContent, DialogTitle, IconButton, List, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 // import { ReactComponent as BackSvg } from "@/assets/svgs/skelly/back.svg"
 import { ReactComponent as CloseSvg } from "@/assets/svgs/skelly/close.svg"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useSkellyStore from "@/stores/skellyStore"
 
@@ -52,14 +53,32 @@ const StyledList = styled(List)(({ theme }) => ({
 const UpgradeDialog = () => {
   const { upgradeDialogVisible, changeUpgradeDialog } = useSkellyStore()
   const { userBadges } = useSkellyContext()
+  const { walletCurrentAddress, provider } = useRainbowContext()
 
   const handleClose = () => {
     changeUpgradeDialog(false)
   }
 
-  const visibleBadges = useMemo(() => {
-    return Badges.filter(badge => userBadges.every(userBadge => userBadge.badgeContract !== badge.badgeAddress))
-  }, [userBadges])
+  const [visibleBadges, setVisibleBadges] = useState([])
+
+  useEffect(() => {
+    const fetchVisibleBadges = async () => {
+      const filteredBadges = await Promise.all(
+        Badges.map(async badge => {
+          const isUserBadge = userBadges.some(userBadge => userBadge.badgeContract === badge.badgeAddress)
+          const isValidBadge = await badge.validator(walletCurrentAddress, provider)
+          return {
+            ...badge,
+            isValid: !isUserBadge && isValidBadge,
+          }
+        }),
+      )
+
+      setVisibleBadges(filteredBadges.filter(badge => badge.isValid) as any)
+    }
+
+    fetchVisibleBadges()
+  }, [userBadges, walletCurrentAddress, provider])
 
   return (
     <StyledDialog maxWidth={false} onClose={handleClose} open={upgradeDialogVisible}>
