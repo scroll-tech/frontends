@@ -1,3 +1,5 @@
+import { ethers } from "ethers"
+
 import ScrollOriginsNFTABI from "@/assets/abis/ScrollOriginsNFT.json"
 import { requireEnv } from "@/utils"
 
@@ -21,6 +23,22 @@ const Badges = [
       name: "Scroll",
       logo: "https://scroll.io/static/media/Scroll_Logomark.673577c8260b63ae56867bc9af6af514.svg",
     },
+    validator: async (address, provider) => {
+      const nftContract = new ethers.Contract(SCROLL_ORIGINS_NFT, ScrollOriginsNFTABI, provider)
+      const nftV2Contract = new ethers.Contract(SCROLL_ORIGINS_NFT_V2, ScrollOriginsNFTABI, provider)
+
+      try {
+        await nftContract.tokenOfOwnerByIndex(address, 0)
+        return true
+      } catch (error) {
+        try {
+          await nftV2Contract.tokenOfOwnerByIndex(address, 0)
+          return true
+        } catch (error) {
+          return false
+        }
+      }
+    },
   },
   {
     name: "Simple Badge A",
@@ -33,6 +51,7 @@ const Badges = [
       name: "Issuer1",
       logo: "https://scroll.io/static/media/Scroll_Logomark.673577c8260b63ae56867bc9af6af514.svg",
     },
+    validator: (walletCurrentAddress, provider) => true,
   },
   {
     name: "Simple Badge B",
@@ -45,6 +64,7 @@ const Badges = [
       name: "Issuer2",
       logo: "https://scroll.io/static/media/Scroll_Logomark.673577c8260b63ae56867bc9af6af514.svg",
     },
+    validator: (walletCurrentAddress, provider) => true,
   },
   {
     name: "Simple Badge C",
@@ -57,6 +77,7 @@ const Badges = [
       name: "Issuer3",
       logo: "https://scroll.io/static/media/Scroll_Logomark.673577c8260b63ae56867bc9af6af514.svg",
     },
+    validator: (walletCurrentAddress, provider) => true,
   },
 ]
 
