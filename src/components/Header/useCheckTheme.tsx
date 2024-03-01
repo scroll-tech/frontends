@@ -5,7 +5,7 @@ const useCheckTheme = () => {
   const { pathname } = useLocation()
   const isInvite = useMatch("/scroll-skelly/invite/:code")
 
-  const isBadgeDetail = useMatch("/scroll-skelly/badge/:badgeContract/:id")
+  const isBadgeDetail = useMatch("/scroll-skelly/badge/:id")
   const dark = useMemo(() => {
     return (
       [

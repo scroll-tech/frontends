@@ -1,5 +1,5 @@
 import { Contract } from "ethers"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import Img from "react-cool-img"
 import { useParams } from "react-router-dom"
 
@@ -16,9 +16,9 @@ import { ANNOUNCING_SCROLL_ORIGINS_NFT, DESIGNING_SCROLL_ORIGINS, NFT_RARITY_MAP
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
-import { getBadgeImageURI } from "@/services/skellyService"
+import { getBadgeMetadata } from "@/services/skellyService"
 import { queryBadgeDetailById } from "@/services/skellyService"
-import { formatDate, getBadgeImgURL } from "@/utils"
+import { decodeBadgePayload, formatDate, getBadgeImgURL } from "@/utils"
 
 import Statistic from "../components/Statistic"
 
@@ -61,14 +61,16 @@ const InfoBox = styled(Box)(({ theme }) => ({
 // }))
 
 const Detail = props => {
-  const { badgeContract, id } = useParams()
+  const { id } = useParams()
   const { provider } = useRainbowContext()
   const { unsignedProfileRegistryContract } = useSkellyContext()
 
   const [detail, setDetail] = useState<any>({})
   const [loading, setLoading] = useState(false)
 
-  const isOriginsNFTBadge = useMemo(() => badgeContract === "0x2aa883c6EaB368d1C86452127bc0Dd6c887a1F44", [badgeContract])
+  const isOriginsNFTBadge = badgeContract => {
+    return badgeContract === "0x2aa883c6EaB368d1C86452127bc0Dd6c887a1F44"
+  }
 
   const fetchSkellyName = async (provider, walletAddress) => {
     try {
@@ -83,29 +85,36 @@ const Detail = props => {
   // TODO: chainId must be L2
   useEffect(() => {
     if (unsignedProfileRegistryContract) {
-      setLoading(true)
-      getBadgeImageURI(provider, badgeContract, id)
-        .then(data => {
-          let badgeDetail = { ...data }
-          return queryBadgeDetailById(id).then(async data => {
-            const [{ attester, time }] = data
-            const name = await fetchSkellyName(provider, attester)
-
-            // mintedOn -> the badge minted time
-            badgeDetail = { ...badgeDetail, owner: name, ownerLogo: getAvatarURL(attester), mintedOn: formatDate(time * 1000) }
-            // origins nft badge
-            if (isOriginsNFTBadge) {
-              const rarityNum = badgeDetail.attributes.find(item => item.trait_type === "Rarity").value
-              badgeDetail.rarity = NFT_RARITY_MAP[rarityNum]
-            }
-            setDetail(badgeDetail)
-          })
-        })
-        .finally(() => {
-          setLoading(false)
-        })
+      fetchBadgeDetailById(id)
     }
-  }, [isOriginsNFTBadge, id, unsignedProfileRegistryContract])
+  }, [unsignedProfileRegistryContract, id])
+
+  const fetchBadgeDetailById = async id => {
+    setLoading(true)
+    try {
+      const [{ attester, time, data }] = await queryBadgeDetailById(id)
+      const name = await fetchSkellyName(provider, attester)
+      const [badgeContract] = decodeBadgePayload(data)
+      const badgeMetadata = await getBadgeMetadata(provider, badgeContract, id)
+      const badgeDetail = {
+        ...badgeMetadata,
+        owner: name,
+        ownerLogo: getAvatarURL(attester),
+        mintedOn: formatDate(time * 1000),
+        badgeContract,
+      }
+
+      if (isOriginsNFTBadge(badgeContract)) {
+        const rarityNum = badgeMetadata.attributes.find(item => item.trait_type === "Rarity").value
+        badgeDetail.rarity = NFT_RARITY_MAP[rarityNum]
+      }
+      setDetail(badgeDetail)
+    } catch (e) {
+      setErrorMessage("Error")
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const { isMobile, isPortrait, isLandscape } = useCheckViewport()
   const [errorMessage, setErrorMessage] = useState("")
@@ -159,7 +168,7 @@ const Detail = props => {
           <Typography sx={{ fontSize: ["4rem", "5.6rem"], fontWeight: 600, lineHeight: ["5.6rem", "9.6rem"] }}>{detail.name}</Typography>
 
           <Typography sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: ["2.4rem", "3.2rem"], maxWidth: ["100%", "56rem"] }}>
-            {isOriginsNFTBadge ? (
+            {isOriginsNFTBadge(detail.badgeContract) ? (
               <>
                 <CustomLink href={ANNOUNCING_SCROLL_ORIGINS_NFT} underline="always" external>
                   Scroll Origins
@@ -189,9 +198,11 @@ const Detail = props => {
           <Statistic label="Minted on" loading={loading}>
             {detail.mintedOn}
           </Statistic>
-          <Statistic label="Badge Rarity" loading={loading}>
-            {detail.rarity}
-          </Statistic>
+          {detail.rarity && (
+            <Statistic label="Badge Rarity" loading={loading}>
+              {detail.rarity}
+            </Statistic>
+          )}
         </InfoBox>
         <Stack direction="row" gap="1.6rem">
           <ScrollButton color="primary" href={viewEASScanURL(id)} target="_blank">

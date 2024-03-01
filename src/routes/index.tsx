@@ -19,8 +19,8 @@ import RollupScanChunk from "@/pages/rollup/chunk"
 import RollupScanChunkDetail from "@/pages/rollup/chunk/detail"
 import RollupScan from "@/pages/rollup/index"
 import ScrollSkelly from "@/pages/skelly"
+import SkellyDashboard from "@/pages/skelly/Dashboard"
 import SkellyBadge from "@/pages/skelly/badge"
-import SkellyDashboard from "@/pages/skelly/dashboard"
 import SkellyInvite from "@/pages/skelly/invite"
 import MintProfile from "@/pages/skelly/mint"
 import Terms from "@/pages/terms"
@@ -249,7 +249,7 @@ const mainnetRoutes = [
   },
   {
     name: "Scroll Skelly",
-    path: "/scroll-skelly/badge/:badgeContract/:id",
+    path: "/scroll-skelly/badge/:id",
     element: <SkellyBadge />,
     isHiddenFooter: true,
   },
