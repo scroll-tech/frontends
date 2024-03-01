@@ -257,6 +257,12 @@ const mainnetRoutes = [
     element: <SkellyInvite />,
     isHiddenFooter: true,
   },
+  {
+    name: "Scroll Skelly",
+    path: "/scroll-skelly/:address",
+    element: <SkellyDashboard />,
+    isHiddenFooter: true,
+  },
 ]
 
 const routes = isSepolia ? sepoliaRoutes : mainnetRoutes
