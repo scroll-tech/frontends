@@ -153,7 +153,7 @@ REACT_APP_PROFILE_REGISTRY_ADDRESS="0xAC93c5CfDA1F2f86D7eA607EB7C1864f22312dDe"
 REACT_APP_SIMPLE_BADGE_ADDRESS="0xB5a278028866bB619601B58B032B02d31A9Fa539"
 REACT_APP_TEST_PROFILE_ADDRESS="0x487C1f4AD3eB56F61BC049108410d6E9F1EFb3F9"
 REACT_APP_EAS_GRAPHQL_URL="https://scroll-sepolia.easscan.org/graphql"
-REACT_APP_SKELLY_URI="https://skelly-backend.vercel.app"
+REACT_APP_SKELLY_URI="https://skelly-backend-git-sepolia-scroll-tech.vercel.app"
 REACT_APP_EAS_EXPLORER_URL="https://skelly-backend.vercel.app"
 
 [context.scroll-skelly.environment]
