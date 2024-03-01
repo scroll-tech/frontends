@@ -26,6 +26,7 @@ type SkellyContextProps = {
   detachBadges: (badgeAddresses: string[]) => void
   customiseDisplay: (attachBadges: string[], detachBadges: string[], order?: number[]) => void
   mintBadge: (nftAddress: string | null, nftAbi: [] | null, badgeAddress: string) => void
+  queryUserBadgesWrapped: (userAddress?: string) => void
 }
 
 const SkellyContext = createContext<SkellyContextProps | null>(null)
@@ -139,7 +140,7 @@ const SkellyContextProvider = ({ children }: any) => {
 
   const queryUserBadgesWrapped = async userAddress => {
     try {
-      const attestations = await queryUserBadges(userAddress)
+      const attestations = await queryUserBadges(userAddress || walletCurrentAddress)
       const formattedBadgesPromises = attestations.map(attestation => {
         return fillBadgeDetailWithPayload(attestation)
       })
@@ -275,10 +276,16 @@ const SkellyContextProvider = ({ children }: any) => {
       }
       try {
         const tx = await easContract.attest(attestParams)
-        await tx.wait()
-        console.log("Badge minted successfully!")
+        const txReceipt = await tx.wait()
+        if (txReceipt.status === 1) {
+          return true
+        } else {
+          return "due to any operation that can cause the transaction or top-level call to revert"
+        }
+        // console.log("Badge minted successfully!")
       } catch (error) {
-        console.log("Badge minted error!", error)
+        return "due to any operation that can cause the transaction or top-level call to revert"
+        // console.log("Badge minted error!", error)
       }
     } else {
       const nftContract = new ethers.Contract(nftAddress, nftAbi, signer)
@@ -300,10 +307,16 @@ const SkellyContextProvider = ({ children }: any) => {
       }
       try {
         const tx = await easContract.attest(attestParams)
-        await tx.wait()
-        console.log("Badge minted successfully!")
+        const txReceipt = await tx.wait()
+        if (txReceipt.status === 1) {
+          return true
+        } else {
+          return "due to any operation that can cause the transaction or top-level call to revert"
+        }
+        // console.log("Badge minted successfully!")
       } catch (error) {
-        console.log("Badge minted error!", error)
+        return "due to any operation that can cause the transaction or top-level call to revert"
+        // console.log("Badge minted error!", error)
       }
     }
   }
@@ -324,6 +337,7 @@ const SkellyContextProvider = ({ children }: any) => {
         detachBadges,
         customiseDisplay,
         mintBadge,
+        queryUserBadgesWrapped,
       }}
     >
       {children}
