@@ -1,11 +1,13 @@
 import { useEffect, useMemo } from "react"
+import { useState } from "react"
 
-import { Button, Dialog, DialogContent, DialogTitle, IconButton, Stack, SvgIcon, Typography } from "@mui/material"
+import { Dialog, DialogContent, DialogTitle, IconButton, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { ReactComponent as CloseSvg } from "@/assets/svgs/bridge/close.svg"
 import { BADGES_VISIBLE_TYPE } from "@/constants"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
+import Button from "@/pages/skelly/components/Button"
 // import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useSkellyStore from "@/stores/skellyStore"
 
@@ -32,7 +34,8 @@ const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
 }))
 
 const BadgesDialog = () => {
-  const { userBadges, attachedBadges, detachBadges, attachBadges } = useSkellyContext()
+  const { userBadges, attachedBadges, detachBadges, attachBadges, getAttachedBadges } = useSkellyContext()
+  const [loading, setLoading] = useState(false)
 
   const badgesInstance = useMemo(() => {
     return {
@@ -52,11 +55,12 @@ const BadgesDialog = () => {
   }
 
   const handleSave = () => {
+    setLoading(true)
     updateDataAndOrder()
     // changeBadgesDialog(false)
   }
 
-  const updateDataAndOrder = () => {
+  const updateDataAndOrder = async () => {
     const displayedIds = badgesInstance[BADGES_VISIBLE_TYPE.VISIBLE].map(item => item.id)
     const currentDisplayedIds = sortedBadges[BADGES_VISIBLE_TYPE.VISIBLE].map(item => item.id)
     const displayedSet = new Set(displayedIds)
@@ -85,12 +89,26 @@ const BadgesDialog = () => {
     // setData(updatedData);
     // setOrder(newOrder);
     if (hiddenToDisplayed.length > 0) {
-      attachBadges(hiddenToDisplayed)
+      const result = await attachBadges(hiddenToDisplayed)
+      if (result! !== true) {
+        console.log("mintBadge failed", result)
+      } else {
+        getAttachedBadges()
+        handleClose()
+      }
+      setLoading(false)
       // customiseDisplay(hiddenToDisplayed, displayedToHidden)
     }
 
     if (displayedToHidden.length > 0) {
-      detachBadges(displayedToHidden)
+      const result = await detachBadges(displayedToHidden)
+      if (result! !== true) {
+        console.log("mintBadge failed", result)
+      } else {
+        getAttachedBadges()
+        handleClose()
+      }
+      setLoading(false)
     }
   }
 
@@ -115,10 +133,10 @@ const BadgesDialog = () => {
       <StyledDialogContent>
         <GridDragDrop badgesInstance={badgesInstance} />
         <Stack direction="row" justifyContent="center" gap="1.6rem">
-          <Button sx={{ borderRadius: "0.8rem", width: "16.5rem", fontSize: "1.6rem", padding: "0" }} onClick={handleClose}>
+          <Button color="secondary" onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant="contained" sx={{ borderRadius: "0.8rem", width: "16.5rem", fontSize: "1.6rem", padding: "0" }} onClick={handleSave}>
+          <Button loading={loading} color="primary" variant="contained" onClick={handleSave}>
             Save Changes
           </Button>
         </Stack>

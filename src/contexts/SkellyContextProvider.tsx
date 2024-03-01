@@ -27,6 +27,7 @@ type SkellyContextProps = {
   customiseDisplay: (attachBadges: string[], detachBadges: string[], order?: number[]) => void
   mintBadge: (nftAddress: string | null | [], nftAbi: [] | null, badgeAddress: string) => void
   queryUserBadgesWrapped: (userAddress?: string) => void
+  getAttachedBadges: (profileAddress?: string) => void
 }
 
 const SkellyContext = createContext<SkellyContextProps | null>(null)
@@ -237,8 +238,12 @@ const SkellyContextProvider = ({ children }: any) => {
   const attachBadges = async badgeAddresses => {
     try {
       const tx = await profileContract!["attach(bytes32[])"](badgeAddresses)
-      await tx.wait()
-      console.log("Badges attached successfully!")
+      const txReceipt = await tx.wait()
+      if (txReceipt.status === 1) {
+        return true
+      } else {
+        return "due to any operation that can cause the transaction or top-level call to revert"
+      }
     } catch (error) {
       console.log("Badges attached error!", error, badgeAddresses)
     }
@@ -247,10 +252,13 @@ const SkellyContextProvider = ({ children }: any) => {
   const detachBadges = async badgeAddresses => {
     try {
       // badgeAddresses  = ["0xcb8c7fd835c350f56738d13b7cb765c8089f7b2a08ebbd14093fa6e4cf515cf0"]
-      console.log("profileContract!.detach", profileContract!.detach)
       const tx = await profileContract!.detach(badgeAddresses)
-      await tx.wait()
-      console.log("Badge detached successfully!")
+      const txReceipt = await tx.wait()
+      if (txReceipt.status === 1) {
+        return true
+      } else {
+        return "due to any operation that can cause the transaction or top-level call to revert"
+      }
     } catch (error) {
       console.log("Badge detached error!", error)
     }
@@ -350,6 +358,7 @@ const SkellyContextProvider = ({ children }: any) => {
         customiseDisplay,
         mintBadge,
         queryUserBadgesWrapped,
+        getAttachedBadges,
       }}
     >
       {children}
