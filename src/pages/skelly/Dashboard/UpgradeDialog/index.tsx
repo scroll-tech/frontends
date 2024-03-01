@@ -1,8 +1,11 @@
+import { useMemo } from "react"
+
 import { Dialog, DialogContent, DialogTitle, IconButton, List, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 // import { ReactComponent as BackSvg } from "@/assets/svgs/skelly/back.svg"
 import { ReactComponent as CloseSvg } from "@/assets/svgs/skelly/close.svg"
+import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useSkellyStore from "@/stores/skellyStore"
 
 import BadgeItem from "./BadgeItem"
@@ -48,10 +51,15 @@ const StyledList = styled(List)(({ theme }) => ({
 
 const UpgradeDialog = () => {
   const { upgradeDialogVisible, changeUpgradeDialog } = useSkellyStore()
+  const { userBadges } = useSkellyContext()
 
   const handleClose = () => {
     changeUpgradeDialog(false)
   }
+
+  const visibleBadges = useMemo(() => {
+    return Badges.filter(badge => userBadges.every(userBadge => userBadge.badgeContract !== badge.badgeAddress))
+  }, [userBadges])
 
   return (
     <StyledDialog maxWidth={false} onClose={handleClose} open={upgradeDialogVisible}>
@@ -63,7 +71,7 @@ const UpgradeDialog = () => {
       </StyledDialogTitle>
       <StyledDialogContent>
         <StyledList>
-          {Badges.map((badge, index) => (
+          {visibleBadges.map((badge, index) => (
             <BadgeItem key={index} badge={badge} />
           ))}
         </StyledList>
