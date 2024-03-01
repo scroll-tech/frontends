@@ -133,6 +133,7 @@ const SkellyContextProvider = ({ children }: any) => {
       return {
         ...attestation,
         ...badgeImageURI,
+        badgeContract,
       }
     } catch (error) {
       console.error("Failed to decode badge payload:", error)
@@ -304,6 +305,7 @@ const SkellyContextProvider = ({ children }: any) => {
 
       try {
         tokenId = await nftContract.tokenOfOwnerByIndex(walletCurrentAddress, 0)
+        console.log("tokenId", tokenId)
         nftVersion = 0
       } catch (error) {
         console.log("nftContract.tokenOfOwnerByIndex error", error)
