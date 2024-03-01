@@ -25,7 +25,7 @@ type SkellyContextProps = {
   attachBadges: (badgeAddresses: string[]) => void
   detachBadges: (badgeAddresses: string[]) => void
   customiseDisplay: (attachBadges: string[], detachBadges: string[], order?: number[]) => void
-  mintBadge: (nftAddress: string | null, nftAbi: [] | null, badgeAddress: string) => void
+  mintBadge: (nftAddress: string | null | [], nftAbi: [] | null, badgeAddress: string) => void
   queryUserBadgesWrapped: (userAddress?: string) => void
 }
 
@@ -140,6 +140,7 @@ const SkellyContextProvider = ({ children }: any) => {
 
   const queryUserBadgesWrapped = async userAddress => {
     try {
+      await getAttachedBadges()
       const attestations = await queryUserBadges(userAddress || walletCurrentAddress)
       const formattedBadgesPromises = attestations.map(attestation => {
         return fillBadgeDetailWithPayload(attestation)
@@ -153,7 +154,7 @@ const SkellyContextProvider = ({ children }: any) => {
     }
   }
 
-  const getAttachedBadges = async profileAddress => {
+  const getAttachedBadges = async (profileAddress?) => {
     try {
       const badges = await profileContract!.getAttachedBadges()
       const badgesArray = Array.from(badges)
@@ -287,11 +288,22 @@ const SkellyContextProvider = ({ children }: any) => {
         return "due to any operation that can cause the transaction or top-level call to revert"
         // console.log("Badge minted error!", error)
       }
-    } else {
-      const nftContract = new ethers.Contract(nftAddress, nftAbi, signer)
-      const tokenId = await nftContract.tokenOfOwnerByIndex(walletCurrentAddress, 0)
+    } else if (Array.isArray(nftAddress)) {
+      // scroll origin nft
+      const nftContract = new ethers.Contract(nftAddress[0], nftAbi, signer)
+      const nftV2Contract = new ethers.Contract(nftAddress[1], nftAbi, signer)
+      let tokenId, nftVersion
+
+      try {
+        tokenId = await nftContract.tokenOfOwnerByIndex(walletCurrentAddress, 0)
+        nftVersion = 0
+      } catch (error) {
+        console.log("nftContract.tokenOfOwnerByIndex error", error)
+        tokenId = await nftV2Contract.tokenOfOwnerByIndex(walletCurrentAddress, 0)
+        nftVersion = 1
+      }
       const abiCoder = new AbiCoder()
-      const originsBadgePayload = abiCoder.encode(["address", "uint256"], [nftAddress, tokenId])
+      const originsBadgePayload = abiCoder.encode(["address", "uint256"], [nftAddress[nftVersion], tokenId])
       const badgePayload = abiCoder.encode(["address", "bytes"], [badgeAddress, originsBadgePayload])
       const easContract = new ethers.Contract(SCROLL_SEPOLIA_EAS_ADDRESS, AttestProxyABI, signer)
       const attestParams = {
