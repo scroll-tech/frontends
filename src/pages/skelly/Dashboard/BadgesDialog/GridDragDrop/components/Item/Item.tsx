@@ -51,7 +51,6 @@ const StyledItem = styled<any>("div")(({ theme, dragging, handle, dragOverlay, d
   backgroundColor: "#fff",
   boxShadow: "0 0 0 1px rgba(63, 63, 68, 0.05), 0 1px 3px 0 rgba(34, 33, 81, 0.15)",
   outline: "none",
-  borderRadius: "50%",
   boxSizing: "border-box",
   listStyle: "none",
   transformOrigin: "50% 50%",

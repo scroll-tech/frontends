@@ -17,7 +17,7 @@ const Badges = [
     issuer: {
       origin: "https://scroll.io",
       name: "Scroll",
-      logo: "Example Badge Org",
+      logo: "https://scroll.io/static/media/Scroll_Logomark.673577c8260b63ae56867bc9af6af514.svg",
     },
   },
   {
@@ -28,7 +28,7 @@ const Badges = [
     issuer: {
       origin: "https://example.org",
       name: "Issuer1",
-      logo: "Example Badge Org",
+      logo: "https://scroll.io/static/media/Scroll_Logomark.673577c8260b63ae56867bc9af6af514.svg",
     },
   },
   {
@@ -39,7 +39,7 @@ const Badges = [
     issuer: {
       origin: "https://example.org",
       name: "Issuer2",
-      logo: "Example Badge Org",
+      logo: "https://scroll.io/static/media/Scroll_Logomark.673577c8260b63ae56867bc9af6af514.svg",
     },
   },
   {
@@ -50,7 +50,7 @@ const Badges = [
     issuer: {
       origin: "https://example.org",
       name: "Issuer3",
-      logo: "Example Badge Org",
+      logo: "https://scroll.io/static/media/Scroll_Logomark.673577c8260b63ae56867bc9af6af514.svg",
     },
   },
 ]

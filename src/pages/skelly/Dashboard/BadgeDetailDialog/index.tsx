@@ -158,7 +158,7 @@ const BadgeDetailDialog = () => {
         ) : (
           <Typography sx={{ fontSize: "2.4rem", fontWeight: 600, color: "#fff", marginBottom: "2.4rem", textAlign: "center" }}>
             You have successfully minted <br />
-            Scroll native badge!
+            {selectedBadge.name}!
           </Typography>
         )}
         <ButtonContainer>
