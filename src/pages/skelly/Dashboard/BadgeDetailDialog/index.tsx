@@ -107,7 +107,7 @@ const BadgeDetailDialog = () => {
 
   const handleViewBadge = () => {
     changeBadgeDetailDialog(BadgeDetailDialogTpye.HIDDEN)
-    navigate(`/scroll-skelly/badge/${selectedBadge.badgeContract}/${selectedBadge.id}`)
+    navigate(`/scroll-skelly/badge/${selectedBadge.id}`)
   }
 
   return (

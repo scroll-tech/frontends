@@ -67,6 +67,7 @@ export const queryBadgeDetailById = async badgeId => {
           }
         ) {
           attester
+          data
           time
         }
       }
@@ -92,7 +93,7 @@ export const queryBadgeDetailById = async badgeId => {
   }
 }
 
-export const getBadgeImageURI = async (
+export const getBadgeMetadata = async (
   provider,
   badgeContractAddress,
   badgeUID = "0x0000000000000000000000000000000000000000000000000000000000000000",
