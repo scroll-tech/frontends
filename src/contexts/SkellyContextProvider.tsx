@@ -6,8 +6,8 @@ import AttestProxyABI from "@/assets/abis/SkellyAttestProxy.json"
 import ProfileABI from "@/assets/abis/SkellyProfile.json"
 import { CHAIN_ID } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { getBadgeImageURI, initializeInstance, queryUserBadges } from "@/services/skellyService"
-import { requireEnv } from "@/utils"
+import { getBadgeMetadata, initializeInstance, queryUserBadges } from "@/services/skellyService"
+import { decodeBadgePayload, requireEnv } from "@/utils"
 
 const SCROLL_SEPOLIA_EAS_ADDRESS = requireEnv("REACT_APP_EAS_ADDRESS")
 const SCROLL_SEPOLIA_BADGE_SCHEMA = requireEnv("REACT_APP_BADGE_SCHEMA")
@@ -122,18 +122,14 @@ const SkellyContextProvider = ({ children }: any) => {
     }
   }
 
-  const decodeBadgePayload = async attestation => {
+  const fillBadgeDetailWithPayload = async attestation => {
     const { data: encodedData, id: badgeUID } = attestation
-    const abiCoder = new AbiCoder()
     try {
-      const decoded = abiCoder.decode(["address", "bytes"], encodedData)
-      const [badgeContract] = decoded
-
-      const badgeImageURI = await getBadgeImageURI(provider, badgeContract, badgeUID)
+      const [badgeContract] = decodeBadgePayload(encodedData)
+      const badgeImageURI = await getBadgeMetadata(provider, badgeContract, badgeUID)
 
       return {
         ...attestation,
-        badgeContract,
         ...badgeImageURI,
       }
     } catch (error) {
@@ -145,7 +141,7 @@ const SkellyContextProvider = ({ children }: any) => {
     try {
       const attestations = await queryUserBadges(userAddress)
       const formattedBadgesPromises = attestations.map(attestation => {
-        return decodeBadgePayload(attestation)
+        return fillBadgeDetailWithPayload(attestation)
       })
       const formattedBadges = await Promise.all(formattedBadgesPromises)
       console.log("formattedBadges", formattedBadges)
