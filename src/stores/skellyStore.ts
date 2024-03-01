@@ -14,6 +14,7 @@ export enum BadgeDetailDialogTpye {
 }
 
 interface SkellyStore {
+  // /invite/referralCode
   referralCode: string
   profileDialogVisible: boolean
   referDialogVisible: boolean
@@ -23,7 +24,6 @@ interface SkellyStore {
   mintStep: MintStep
   sortedBadges: any
   selectedBadge: any
-  codeSignature: string
   changeReferralCode: (code: string) => void
   changeMintStep: (step: MintStep) => void
   changeProfileDialog: (visible: boolean) => void
@@ -33,12 +33,10 @@ interface SkellyStore {
   changeUpgradeDialog: (visible: boolean) => void
   changeBadgeDetailDialog: (visible: BadgeDetailDialogTpye) => void
   changeSelectedBadge: (badge: any) => void
-  changeCodeSignature: (codeSignature: string) => void
 }
 
 const useSkellyStore = create<SkellyStore>()((set, get) => ({
   referralCode: "",
-  codeSignature: "0x",
   profileDialogVisible: false,
   referDialogVisible: false,
   badgesDialogVisible: false,
@@ -98,11 +96,6 @@ const useSkellyStore = create<SkellyStore>()((set, get) => ({
   changeSelectedBadge: badge => {
     set({
       selectedBadge: badge,
-    })
-  },
-  changeCodeSignature: codeSignature => {
-    set({
-      codeSignature,
     })
   },
 }))

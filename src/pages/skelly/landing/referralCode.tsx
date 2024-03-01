@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react"
 import { Box, InputBase, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
-import { fetchSignByCode } from "@/apis/skelly"
+import { checkCodeValidation } from "@/apis/skelly"
 import { ReactComponent as CheckSvg } from "@/assets/svgs/skelly/check.svg"
 import { ReactComponent as ErrorSvg } from "@/assets/svgs/skelly/error.svg"
 import { ReactComponent as LoadingSvg } from "@/assets/svgs/skelly/loading.svg"
@@ -75,7 +75,7 @@ const ReferralCode = ({ isChecking, setIsChecking, code }) => {
   const [codes, setCodes] = useState(Array(INVITE_CODE_LENGTH).fill(""))
   const [codeStatus, setCodeStatus] = useState(CodeStatus.UNKNOWN)
   const inputRefs = useRef<Array<HTMLInputElement | null>>(new Array(INVITE_CODE_LENGTH).fill(null))
-  const { changeReferralCode, changeCodeSignature } = useSkellyStore()
+  const { changeReferralCode } = useSkellyStore()
 
   useEffect(() => {
     if (code) {
@@ -96,20 +96,24 @@ const ReferralCode = ({ isChecking, setIsChecking, code }) => {
   }, [codes])
 
   const validateCode = async (code: string) => {
-    setIsChecking(true)
-    const { signature } = await scrollRequest(fetchSignByCode(code))
-    if (signature) {
-      setCodeStatus(CodeStatus.VALID)
-      changeCodeSignature(signature)
-    } else {
+    try {
+      setIsChecking(true)
+      const { active } = await scrollRequest(checkCodeValidation(code))
+      if (active) {
+        changeReferralCode(code)
+        setCodeStatus(CodeStatus.VALID)
+      } else {
+      }
+    } catch (e) {
       setCodeStatus(CodeStatus.INVALID)
+    } finally {
+      setIsChecking(false)
     }
-    setIsChecking(false)
   }
 
   const handleInputChange = (index: number, event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setCodeStatus(CodeStatus.UNKNOWN)
-    changeReferralCode("")
+    // changeReferralCode("")
     const newCodes = [...codes]
     newCodes[index] = (event.target as HTMLInputElement).value
     setCodes(newCodes)

@@ -4,7 +4,9 @@ import { useMemo, useState } from "react"
 import { Box, InputBase } from "@mui/material"
 import { styled } from "@mui/system"
 
+import { fetchSignByCode } from "@/apis/skelly"
 import Button from "@/components/Button"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useSkellyStore, { MintStep } from "@/stores/skellyStore"
@@ -46,15 +48,22 @@ const Mint = () => {
 
   const { profileRegistryContract, checkIfProfileMinted } = useSkellyContext()
 
-  const { changeMintStep, codeSignature, changeCodeSignature } = useSkellyStore()
+  const { walletCurrentAddress } = useRainbowContext()
+
+  const { changeMintStep, referralCode, changeReferralCode } = useSkellyStore()
 
   const handleMint = async () => {
     setIsMinting(true)
     try {
+      let codeSignature = "0x"
+      if (referralCode) {
+        const { signature } = await scrollRequest(fetchSignByCode(referralCode, walletCurrentAddress))
+        codeSignature = signature
+      }
       console.log(codeSignature, "codeSignature")
       const tx = await profileRegistryContract.mint(name, codeSignature, { value: ethers.parseEther(codeSignature === "0x" ? "0.001" : "0.0005") })
       await tx.wait()
-      changeCodeSignature("0x")
+      changeReferralCode("")
       const isMinted = await checkIfProfileMinted()
       console.log("checkIfProfileMinted", isMinted)
       changeMintStep(MintStep.REFERRAL_CODE)
