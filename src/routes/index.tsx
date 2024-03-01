@@ -260,16 +260,19 @@ const mainnetRoutes = [
     name: "Scroll Canvas",
     path: "/scroll-canvas/badge-contract/:address",
     element: <CanvasBadgeContract />,
+    isHiddenFooter: true,
   },
   {
     name: "Canvas Invite",
     path: "/scroll-canvas/invite/:code",
     element: <CanvasInvite />,
+    isHiddenFooter: true,
   },
   {
     name: "Scroll Canvas",
     path: "/scroll-canvas/:address",
     element: <CanvasDashboard />,
+    isHiddenFooter: true,
   },
 ]
 
