@@ -56,9 +56,9 @@ const BadgeItem = ({ badge }) => {
   const handleBadge = async () => {
     setLoading(true)
     const result = await mintBadge(badge.nftAddress, badge.nftAbi, badge.badgeAddress)
-    setLoading(false)
     if (result! !== true) {
       console.log("mintBadge failed")
+      setLoading(false)
     } else {
       queryUserBadgesWrapped()
     }
@@ -81,7 +81,7 @@ const BadgeItem = ({ badge }) => {
       }
     >
       <StyledListItemAvatar>
-        <Avatar sx={{ fontSize: "8rem" }}></Avatar>
+        <Avatar src={badge.nftDefaultURI} sx={{ fontSize: "8rem" }}></Avatar>
       </StyledListItemAvatar>
       <StyledListItemText
         primary={badge.name}

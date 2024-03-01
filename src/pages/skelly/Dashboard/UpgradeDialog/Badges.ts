@@ -1,6 +1,7 @@
 import ScrollOriginsNFTABI from "@/assets/abis/ScrollOriginsNFT.json"
 import { requireEnv } from "@/utils"
 
+const SCROLL_ORIGINS_NFT = requireEnv("REACT_APP_SCROLL_ORIGINS_NFT")
 const SCROLL_ORIGINS_NFT_V2 = requireEnv("REACT_APP_SCROLL_ORIGINS_NFT_V2")
 const SCROLL_SEPOLIA_ORIGINS_BADGE_ADDRESS = "0xd9892Bb7579becC9343C9a2c94eF21bc1e08d6d1"
 
@@ -11,9 +12,10 @@ const SCROLL_SEPOLIA_SIMPLE_BADGE_C_ADDRESS = "0x6697Df63b2951aa3167Db26E293772D
 const Badges = [
   {
     name: "Scroll Origins NFT",
-    nftAddress: SCROLL_ORIGINS_NFT_V2,
+    nftAddress: [SCROLL_ORIGINS_NFT, SCROLL_ORIGINS_NFT_V2],
     nftAbi: ScrollOriginsNFTABI,
     badgeAddress: SCROLL_SEPOLIA_ORIGINS_BADGE_ADDRESS,
+    nftDefaultURI: "/imgs/nft/placeholder.svg",
     issuer: {
       origin: "https://scroll.io",
       name: "Scroll",
@@ -25,6 +27,7 @@ const Badges = [
     nftAddress: null,
     nftAbi: null,
     badgeAddress: SCROLL_SEPOLIA_SIMPLE_BADGE_A_ADDRESS,
+    nftDefaultURI: "https://cloudflare-ipfs.com/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/1.png",
     issuer: {
       origin: "https://example.org",
       name: "Issuer1",
@@ -36,6 +39,7 @@ const Badges = [
     nftAddress: null,
     nftAbi: null,
     badgeAddress: SCROLL_SEPOLIA_SIMPLE_BADGE_B_ADDRESS,
+    nftDefaultURI: "https://cloudflare-ipfs.com/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/2.png",
     issuer: {
       origin: "https://example.org",
       name: "Issuer2",
@@ -47,6 +51,7 @@ const Badges = [
     nftAddress: null,
     nftAbi: null,
     badgeAddress: SCROLL_SEPOLIA_SIMPLE_BADGE_C_ADDRESS,
+    nftDefaultURI: "https://cloudflare-ipfs.com/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/3.png",
     issuer: {
       origin: "https://example.org",
       name: "Issuer3",
