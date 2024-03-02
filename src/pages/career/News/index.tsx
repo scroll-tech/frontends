@@ -74,7 +74,7 @@ const News = () => {
   const { classes } = useStyles()
 
   const handleClick = news => {
-    window.location.href = news.link
+    window.open(news.link, "_blank")
   }
 
   return (
