@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from "react"
 
-import { Box, Button, SvgIcon, Typography } from "@mui/material"
+import { Box, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { ReactComponent as CloseSvg } from "@/assets/svgs/skelly/close.svg"
 import TriangleSvg from "@/assets/svgs/skelly/triangle.svg"
 import BadgeDetailDialog from "@/pages/skelly/Dashboard/BadgeDetailDialog"
+import Badges from "@/pages/skelly/Dashboard/UpgradeDialog/Badges"
+import Button from "@/pages/skelly/components/Button"
 import useSkellyStore, { BadgeDetailDialogTpye } from "@/stores/skellyStore"
 
 const Container = styled(Box)(({ theme }) => ({
@@ -67,19 +69,24 @@ const MintButton = styled(Button)(({ theme }) => ({
 const MintBadge = props => {
   const [open, setOpen] = useState(false)
   const [tooltipVisible, setTooltipVisible] = useState(false)
-  const { changeBadgeDetailDialog } = useSkellyStore()
+  const { changeBadgeDetailDialog, changeSelectedBadge } = useSkellyStore()
   const videoRef = useRef<HTMLVideoElement>(null)
   const initialPlayRef = useRef(true)
   const tooltipVisibleRef = useRef(false)
+  const [loading] = useState(false)
+  const badge: any = Badges[3]
+  const [canBeMinted] = useState(false)
 
   useEffect(() => {
-    setTimeout(() => {
-      setOpen(true)
+    if (canBeMinted) {
       setTimeout(() => {
-        playVideo()
-      }, 0)
-    }, 1500)
-  }, [])
+        setOpen(true)
+        setTimeout(() => {
+          playVideo()
+        }, 0)
+      }, 1500)
+    }
+  }, [canBeMinted])
 
   const playVideo = () => {
     const video = videoRef.current
@@ -120,7 +127,8 @@ const MintBadge = props => {
     tooltipVisibleRef.current = false
   }
 
-  const handleMintBadge = () => {
+  const handleMintBadge = async () => {
+    changeSelectedBadge(Badges[1])
     changeBadgeDetailDialog(BadgeDetailDialogTpye.MINT)
   }
 
@@ -134,9 +142,9 @@ const MintBadge = props => {
                 <SvgIcon sx={{ fontSize: "1.3rem" }} onClick={handleCloseTooltip} component={CloseSvg} inheritViewBox />
               </Typography>
               <Typography sx={{ fontSize: "1.6rem", fontWeight: 500, marginBottom: "1.2rem" }}>
-                Heya! Congratulations! You can mint "Scroll native badge Scroll" on Scroll Skelly.
+                Heya! Congratulations! You can mint {badge.name} on Scroll Skelly.
               </Typography>
-              <MintButton variant="contained" color="primary" sx={{ width: "100%" }} onClick={handleMintBadge}>
+              <MintButton variant="contained" color="primary" sx={{ width: "100%" }} loading={loading} onClick={handleMintBadge}>
                 Mint badge
               </MintButton>
             </Tooltip>
