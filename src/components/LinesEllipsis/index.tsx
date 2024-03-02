@@ -74,8 +74,8 @@ const LinesEllipsis = props => {
     /* eslint-disable no-control-regex */
     const basedOn = props.basedOn || (/^[\x00-\x7F]+$/.test(props.text) ? "words" : "letters")
 
+    // Handle the case where props.text is not a string to avoid error
     if (typeof props.text !== "string") {
-      // Handle the case where props.text is not a string
       return
     }
 

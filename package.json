@@ -10,7 +10,7 @@
     "generate:sitemap": "cd scripts && node generate_sitemap.js",
     "lint": "eslint --fix --max-warnings=0 \"**/*.{ts,tsx}\"",
     "prepare": "husky install",
-    "start": "BROWSER=none craco start",
+    "start": "set BROWSER=none && craco start",
     "test": "npx lint-staged"
   },
   "lint-staged": {
