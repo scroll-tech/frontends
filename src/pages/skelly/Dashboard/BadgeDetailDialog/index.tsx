@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 import { Avatar, Box, Dialog, DialogContent, DialogTitle, IconButton, Stack, SvgIcon, Typography } from "@mui/material"
@@ -6,6 +7,7 @@ import { styled } from "@mui/system"
 import { ReactComponent as CloseSvg } from "@/assets/svgs/skelly/close.svg"
 import { ReactComponent as ShareSvg } from "@/assets/svgs/skelly/share.svg"
 import ScrollButton from "@/components/Button"
+import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useSkellyStore, { BadgeDetailDialogTpye } from "@/stores/skellyStore"
 import { getBadgeImgURL } from "@/utils"
 
@@ -86,13 +88,23 @@ const ButtonContainer = styled(Box)(({ theme }) => ({
 const BadgeDetailDialog = () => {
   const { badgeDetailDialogVisible, changeBadgeDetailDialog, selectedBadge } = useSkellyStore()
   const navigate = useNavigate()
+  const [loading, setLoading] = useState(false)
+  const { mintBadge, queryUserBadgesWrapped } = useSkellyContext()
 
   const handleClose = () => {
     changeBadgeDetailDialog(BadgeDetailDialogTpye.HIDDEN)
   }
 
-  const handleMint = () => {
-    changeBadgeDetailDialog(BadgeDetailDialogTpye.MINTED)
+  const handleMint = async () => {
+    setLoading(true)
+    const result = await mintBadge(selectedBadge.nftAddress, selectedBadge.nftAbi, selectedBadge.badgeAddress)
+    if (result! !== true) {
+      console.log("mintBadge failed")
+    } else {
+      changeBadgeDetailDialog(BadgeDetailDialogTpye.MINTED)
+      queryUserBadgesWrapped()
+    }
+    setLoading(false)
   }
 
   const handleViewSkelly = () => {
@@ -163,7 +175,7 @@ const BadgeDetailDialog = () => {
         )}
         <ButtonContainer>
           {badgeDetailDialogVisible === BadgeDetailDialogTpye.MINT && (
-            <StyledScrollButton color="primary" onClick={handleMint}>
+            <StyledScrollButton loading={loading} color="primary" onClick={handleMint}>
               Mint badge
             </StyledScrollButton>
           )}

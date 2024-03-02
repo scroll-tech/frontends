@@ -81,7 +81,7 @@ const BadgeItem = ({ badge }) => {
       }
     >
       <StyledListItemAvatar>
-        <Avatar src={badge.nftDefaultURI} sx={{ fontSize: "8rem" }}></Avatar>
+        <Avatar src={badge.image} sx={{ fontSize: "8rem" }}></Avatar>
       </StyledListItemAvatar>
       <StyledListItemText
         primary={badge.name}
