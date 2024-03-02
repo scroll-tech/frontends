@@ -74,6 +74,11 @@ const LinesEllipsis = props => {
     /* eslint-disable no-control-regex */
     const basedOn = props.basedOn || (/^[\x00-\x7F]+$/.test(props.text) ? "words" : "letters")
 
+    if (typeof props.text !== "string") {
+      // Handle the case where props.text is not a string
+      return
+    }
+
     if (basedOn === "words") {
       units.current = props.text.split(/\b|(?=\W)/)
     } else if (basedOn === "letters") {
@@ -151,7 +156,7 @@ const LinesEllipsis = props => {
   return (
     <>
       <Component className={`LinesEllipsis ${clamped ? "LinesEllipsis--clamped" : ""} ${className}`} ref={targetRef} {...rest}>
-        {trimRight ? displayedText.trimRight() : displayedText}
+        {trimRight && displayedText ? displayedText.trimRight() : displayedText}
         {clamped && <span className="LinesEllipsis-ellipsis">{ellipsis}</span>}
       </Component>
       <div style={agentStyle} ref={shadowRef} className={`LinesEllipsis-shadow ${className}`}></div>
