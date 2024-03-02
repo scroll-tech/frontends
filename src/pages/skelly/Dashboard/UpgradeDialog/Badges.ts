@@ -45,7 +45,7 @@ const Badges = [
     nftAddress: null,
     nftAbi: null,
     badgeAddress: SCROLL_SEPOLIA_SIMPLE_BADGE_A_ADDRESS,
-    nftDefaultURI: "https://cloudflare-ipfs.com/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/1.png",
+    image: "https://cloudflare-ipfs.com/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/1.png",
     issuer: {
       origin: "https://example.org",
       name: "Issuer1",
@@ -58,7 +58,7 @@ const Badges = [
     nftAddress: null,
     nftAbi: null,
     badgeAddress: SCROLL_SEPOLIA_SIMPLE_BADGE_B_ADDRESS,
-    nftDefaultURI: "https://cloudflare-ipfs.com/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/2.png",
+    image: "https://cloudflare-ipfs.com/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/2.png",
     issuer: {
       origin: "https://example.org",
       name: "Issuer2",
@@ -71,7 +71,7 @@ const Badges = [
     nftAddress: null,
     nftAbi: null,
     badgeAddress: SCROLL_SEPOLIA_SIMPLE_BADGE_C_ADDRESS,
-    nftDefaultURI: "https://cloudflare-ipfs.com/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/3.png",
+    image: "https://cloudflare-ipfs.com/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/3.png",
     issuer: {
       origin: "https://example.org",
       name: "Issuer3",
