@@ -23,7 +23,7 @@ const gColor = (color, theme) => {
     case "primary":
       return theme.palette.primary.main
     case "secondary":
-      return "#ffffff"
+      return "#262626"
     case "dark":
       return "#ffffff"
     default:
@@ -36,7 +36,7 @@ const cColor = (color, theme) => {
     case "primary":
       return theme.palette.primary.contrastText
     case "secondary":
-      return theme.palette.text.primary
+      return "#ffffff"
     case "dark":
       return "#000000"
     default:
@@ -61,6 +61,7 @@ const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, w
     "&:hover": {
       backgroundColor: gColor(color, theme),
       color: cColor(color, theme),
+      borderColor: gColor(color, theme),
     },
   },
   buttonDisabled: {
@@ -92,8 +93,6 @@ const Button = (props: ScrollButtonProps) => {
   const { isMobile } = useCheckViewport()
 
   return (
-    // TODO: allow sx, allow size=small/medium
-    // avoid setting both 'disabled' and 'loading' to true.
     <ScrollButton
       classes={{
         root: cx(classes.button, loading && classes.buttonLoading),
