@@ -11,10 +11,9 @@ import TextButton from "@/components/TextButton"
 
 const useStyles = makeStyles()(theme => ({
   title: {
-    fontSize: "1.6rem",
-    lineHeight: "2.4rem",
+    fontSize: "1.8rem",
+    lineHeight: "3.6rem",
     fontWeight: 500,
-    marginBottom: "0.4rem",
     textAlign: "left",
     cursor: "pointer",
     color: "#101010",
@@ -107,7 +106,7 @@ const CustomiseRecipient = props => {
         </TextButton>
       )}
       {showErrorMessage ? (
-        <>
+        <Box sx={{ mt: "0.4rem" }}>
           <SvgIcon
             sx={{ fontSize: "1.6rem", mr: "0.8rem", verticalAlign: "middle", color: "#FF684B" }}
             component={WarningSvg}
@@ -120,7 +119,7 @@ const CustomiseRecipient = props => {
           >
             Invalid wallet address
           </Stack>
-        </>
+        </Box>
       ) : null}
     </Box>
   )
