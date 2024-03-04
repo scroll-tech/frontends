@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react"
 
-import { Avatar, Dialog, DialogContent, DialogTitle, IconButton, InputBase, Stack, SvgIcon } from "@mui/material"
+import { Box, Dialog, DialogContent, DialogTitle, IconButton, InputBase, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
-import { getAvatarURL } from "@/apis/skelly"
 import { ReactComponent as CloseSvg } from "@/assets/svgs/skelly/close.svg"
-import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
+import useValidateSkellyName from "@/hooks/useValidateSkellyName"
 import Button from "@/pages/skelly/components/Button"
 import useSkellyStore from "@/stores/skellyStore"
 
@@ -20,33 +19,21 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
 }))
 
 const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
-  padding: "3rem",
+  padding: "0 3.2rem 4.8rem",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "center",
-}))
-
-const StyledAvatar = styled(Avatar)(({ theme }) => ({
-  width: "30rem",
-  height: "30rem",
-  borderRadius: "50%",
-  margin: "0 14rem",
-  backgroundBlendMode: "multiply",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
+  maxWidth: "64rem",
 }))
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "#FFFFFF",
-  fontSize: "3.2rem",
-  fontWeight: 600,
-  lineHeight: "4.4rem",
-  marginBottom: "4.8rem",
-  marginTop: "3rem",
   "& .MuiInputBase-input": {
     textAlign: "center",
+    fontSize: "8.8rem",
+    height: "8.8rem",
+    fontWeight: 600,
+    color: theme.palette.primary.contrastText,
   },
 }))
 
@@ -54,13 +41,17 @@ const NameDialog = () => {
   const { profileDialogVisible, changeProfileDialog } = useSkellyStore()
   const { username, checkIfProfileMinted, profileContract, queryUsername } = useSkellyContext()
   const [loading, setLoading] = useState(false)
-  const { walletCurrentAddress } = useRainbowContext()
 
   const [profileName, setProfileName] = useState(username)
 
+  const { helpText, clearHelpText, validating, handleValidateName, renderValidation } = useValidateSkellyName(profileName)
+
   useEffect(() => {
-    setProfileName(username)
-  }, [username])
+    if (profileDialogVisible) {
+      clearHelpText()
+      setProfileName(username)
+    }
+  }, [profileDialogVisible, username])
 
   const handleClose = () => {
     changeProfileDialog(false)
@@ -85,29 +76,62 @@ const NameDialog = () => {
     }
   }
 
+  const handleKeydown = async e => {
+    if (e.keyCode === 13) {
+      const nextHelpText = await handleValidateName()
+      if (!nextHelpText) {
+        changeUsername()
+      }
+    }
+  }
+
   return (
     <StyledDialog maxWidth={false} onClose={handleClose} open={profileDialogVisible}>
       <DialogTitle
         sx={{
           m: 0,
-          p: ["2rem", "3rem"],
+          p: ["2rem", "2.4rem"],
+          pb: 0,
           display: "flex",
           justifyContent: "flex-end",
           alignItems: "center",
         }}
       >
-        <IconButton sx={{ p: 0, "&:hover": { backgroundColor: "unset" } }} onClick={handleClose}>
-          <SvgIcon sx={{ fontSize: ["1.6rem", "1.8rem"], color: "#fff" }} component={CloseSvg} inheritViewBox></SvgIcon>
+        <IconButton onClick={handleClose}>
+          <SvgIcon sx={{ fontSize: ["1.6rem", "2.4rem"], color: "primary.contrastText" }} component={CloseSvg} inheritViewBox></SvgIcon>
         </IconButton>
       </DialogTitle>
       <StyledDialogContent>
-        <StyledAvatar src={getAvatarURL(walletCurrentAddress)}></StyledAvatar>
-        <StyledInputBase autoFocus onChange={handleChange} placeholder="Enter your name" value={profileName} />
+        <Typography sx={{ mt: "-1.6rem", fontSize: "3.2rem", fontWeight: 600, lineHeight: "5.6rem", color: "primary.contrastText" }}>
+          Change name
+        </Typography>
+        <Box sx={{ position: "relative", marginBottom: "13.6rem", marginTop: "14.4rem" }}>
+          <StyledInputBase
+            autoFocus
+            placeholder="Enter your name"
+            value={profileName}
+            onChange={handleChange}
+            onBlur={handleValidateName}
+            onKeyDown={handleKeydown}
+          />
+          <Stack
+            direction="row"
+            gap="0.5rem"
+            sx={{
+              position: "absolute",
+              top: "11.2rem",
+              left: "50%",
+              transform: "translateX(-50%)",
+            }}
+          >
+            {renderValidation()}
+          </Stack>
+        </Box>
         <Stack direction="row" justifyContent="center" gap="1.6rem">
           <Button
             color="secondary"
             variant="contained"
-            sx={{ borderRadius: "0.8rem", width: "16.5rem", fontSize: "1.6rem", padding: "0" }}
+            sx={{ borderRadius: "0.8rem", width: "18.5rem", fontSize: "1.8rem", padding: "0" }}
             onClick={handleClose}
           >
             Cancel
@@ -116,10 +140,11 @@ const NameDialog = () => {
             color="primary"
             variant="contained"
             loading={loading}
-            sx={{ borderRadius: "0.8rem", width: "16.5rem", fontSize: "1.6rem", padding: "0" }}
-            onClick={() => changeUsername()}
+            gloomy={!!helpText || validating || username === profileName}
+            sx={{ borderRadius: "0.8rem", width: "18.5rem", fontSize: "1.6rem", padding: "0" }}
+            onClick={changeUsername}
           >
-            Save Changes
+            {loading ? "Saving Changes" : "Save Changes"}
           </Button>
         </Stack>
       </StyledDialogContent>
