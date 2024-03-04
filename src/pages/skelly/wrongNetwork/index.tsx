@@ -51,7 +51,7 @@ const ButtonContainer = styled(Box)(({ theme }) => ({
 }))
 
 const WrongNetwork = () => {
-  const { chainId } = useRainbowContext()
+  const { chainId, connect } = useRainbowContext()
 
   const isWrongNetwork = useMemo(() => {
     return chainId !== CHAIN_ID.L2
@@ -68,9 +68,15 @@ const WrongNetwork = () => {
           You can only view your Skelly on Scroll Network.
         </Typography>
         <ButtonContainer>
-          <StyledScrollButton color="primary" onClick={() => switchNetwork(CHAIN_ID.L2)}>
-            Switch to Scroll
-          </StyledScrollButton>
+          {chainId ? (
+            <StyledScrollButton color="primary" onClick={() => switchNetwork(CHAIN_ID.L2)}>
+              Switch to Scroll
+            </StyledScrollButton>
+          ) : (
+            <StyledScrollButton color="primary" onClick={connect}>
+              Connect Wallet
+            </StyledScrollButton>
+          )}
         </ButtonContainer>
       </StyledDialogContent>
     </StyledDialog>
