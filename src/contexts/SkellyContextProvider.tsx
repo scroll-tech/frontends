@@ -183,7 +183,13 @@ const SkellyContextProvider = ({ children }: any) => {
   // work with publicProvider
   const querySkellyUsername = async profile => {
     try {
-      const profileContract = new ethers.Contract(profile, ProfileABI, isL2 ? provider : publicProvider)
+      let signerOrProvider
+      if (isL2) {
+        signerOrProvider = await provider?.getSigner(0)
+      } else {
+        signerOrProvider = publicProvider
+      }
+      const profileContract = new ethers.Contract(profile, ProfileABI, signerOrProvider)
       const name = await profileContract.username()
       return { profileContract, name }
     } catch (error) {

@@ -64,6 +64,8 @@ const CustomiseItem = styled(MenuItem)(({ theme }) => ({
   padding: "0.8rem",
   backgroundColor: "#FFFFFF",
   color: "#000000",
+  fontSize: "1.6rem",
+  fontWeight: 600,
   "&:hover": {
     backgroundColor: "#FFFFFF",
   },
@@ -181,7 +183,12 @@ const ActionBox = props => {
               },
             },
             {
-              label: () => <>Copy link {copied && <SvgIcon sx={{ ml: "0.6rem" }} component={CopySuccessSvg} inheritViewBox></SvgIcon>} </>,
+              label: () => (
+                <>
+                  {copied ? "Link copied" : "Copy link"}
+                  {copied && <SvgIcon sx={{ ml: "0.6rem" }} component={CopySuccessSvg} inheritViewBox></SvgIcon>}{" "}
+                </>
+              ),
               onClick: handleCopyLink,
             },
           ],
