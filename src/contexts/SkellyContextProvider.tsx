@@ -1,13 +1,15 @@
-import { AbiCoder, Contract, ethers } from "ethers"
-import { createContext, useContext, useEffect, useState } from "react"
+import { AbiCoder, Contract, JsonRpcProvider, ethers } from "ethers"
+import { createContext, useContext, useEffect, useMemo, useState } from "react"
 import { useMatch } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 import MulticallAbi from "@/assets/abis/Multicall3.json"
 import AttestProxyABI from "@/assets/abis/SkellyAttestProxy.json"
 import ProfileABI from "@/assets/abis/SkellyProfile.json"
-import { CHAIN_ID } from "@/constants"
+import { CHAIN_ID, RPC_URL } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { getBadgeMetadata, initializeInstance, queryUserBadges } from "@/services/skellyService"
+import { getBadgeMetadata, initializeInstance, initializePublicInstance, queryUserBadges } from "@/services/skellyService"
+import useSkellyStore, { MintStep } from "@/stores/skellyStore"
 import { decodeBadgePayload, requireEnv } from "@/utils"
 
 const SCROLL_SEPOLIA_EAS_ADDRESS = requireEnv("REACT_APP_EAS_ADDRESS")
@@ -34,17 +36,25 @@ type SkellyContextProps = {
 
 const SkellyContext = createContext<SkellyContextProps | null>(null)
 
+// TODO: only store contract instance && public provider
 const SkellyContextProvider = ({ children }: any) => {
+  const navigate = useNavigate()
   //  TODO: not work
   // const { address: othersWalletAddress } = useParams()
   const matches = useMatch("/scroll-skelly/:address")
   const othersWalletAddress = matches?.params?.address
   const { provider, chainId, walletCurrentAddress } = useRainbowContext()
+  const { changeMintStep } = useSkellyStore()
+
+  const isL2 = useMemo(() => chainId === CHAIN_ID.L2, [chainId])
+
+  const [publicProvider, setPublicProvider] = useState<JsonRpcProvider | null>(null)
 
   const [profileRegistryContract, setProfileRegistryContract] = useState<Contract>()
   const [unsignedProfileRegistryContract, setUnsignedProfileRegistryContract] = useState<Contract>()
-  const [profileContract, setProfileContract] = useState<Contract>()
+  const [profileContract, setProfileContract] = useState<Contract | null>(null)
 
+  // TODO: for customize
   const [userBadges, setUserBadges] = useState<any>([])
   const [attachedBadges, setAttachedBadges] = useState<any>([])
 
@@ -61,27 +71,28 @@ const SkellyContextProvider = ({ children }: any) => {
     setUnsignedProfileRegistryContract(unsignedProfileRegistryContract)
   }
 
-  useEffect(() => {
-    if (provider && chainId === CHAIN_ID.L2) {
-      initializeInstanceWrapped(provider)
-    }
-  }, [provider, chainId, walletCurrentAddress])
+  const initializeRPCInstance = async provider => {
+    const instance = await initializePublicInstance(provider)
+    setUnsignedProfileRegistryContract(instance)
+  }
 
   useEffect(() => {
-    if (unsignedProfileRegistryContract && walletCurrentAddress && provider) {
-      checkIfProfileMinted(walletCurrentAddress)
+    if (provider && isL2) {
+      initializeInstanceWrapped(provider)
+    } else {
+      const instance = new JsonRpcProvider(RPC_URL.L2)
+      setPublicProvider(instance)
+      initializeRPCInstance(instance)
     }
-  }, [unsignedProfileRegistryContract, walletCurrentAddress, provider])
+  }, [provider, isL2, walletCurrentAddress])
 
   const checkIfProfileMinted = async userAddress => {
     try {
       const profileAddress = await unsignedProfileRegistryContract!.getProfile(userAddress)
       const minted = await unsignedProfileRegistryContract!.isProfileMinted(profileAddress)
       return { profileAddress, minted }
-      // console.log("Profile minted:", minted)
     } catch (error) {
       console.log("Failed to check if profile minted:", error)
-
       return { profileAddress: null, minted: null }
     }
   }
@@ -91,39 +102,48 @@ const SkellyContextProvider = ({ children }: any) => {
       fetchOthersSkellyDetail(othersWalletAddress, walletCurrentAddress)
     } else if (unsignedProfileRegistryContract && walletCurrentAddress) {
       fetchCurrentSkellyDetail(walletCurrentAddress)
-    } else {
-      // TODO: unconnected: use JSONRpcProvider
+    } else if (unsignedProfileRegistryContract && othersWalletAddress) {
+      fetchOthersSkellyDetail(othersWalletAddress)
     }
   }, [unsignedProfileRegistryContract, walletCurrentAddress, othersWalletAddress])
 
-  const fetchOthersSkellyDetail = async (othersAddress, walletAddress) => {
-    const { profileContract, name } = await querySkellyUsername(othersAddress)
-    const userBadges = await queryUserBadgesWrapped(othersAddress)
-    const attachedBadges = await getAttachedBadges(profileContract)
-    // const badgeOrder = await getBadgeOrder(profileContract)
-    setSkellyUsername(name)
-    setUserBadges(userBadges)
-    setAttachedBadges(attachedBadges)
+  const fetchOthersSkellyDetail = async (othersAddress, walletAddress?) => {
+    const { minted, profileAddress } = await checkIfProfileMinted(othersAddress)
+    if (minted) {
+      const { profileContract, name } = await querySkellyUsername(profileAddress)
+      const userBadges = await queryUserBadgesWrapped(othersAddress)
+      const attachedBadges = await getAttachedBadges(profileContract)
+      // const badgeOrder = await getBadgeOrder(profileContract)
+      setSkellyUsername(name)
+      setUserBadges(userBadges)
+      setAttachedBadges(attachedBadges)
+    } else {
+      // TODO: not minted address
+      navigate("/404")
+      return
+    }
+
     if (walletAddress) {
-      const {
-        name: currentName,
-        profileContract: currentProfileContract,
-        profileAddress: currentProfileAddress,
-      } = await fetchCurrentUserDetail(walletAddress)
-      setUsername(currentName || "")
-      setHasMintedProfile(Boolean(currentName))
-      if (currentProfileContract) {
+      const { profileAddress: currentProfileAddress, minted } = await checkIfProfileMinted(walletAddress)
+      if (minted) {
+        const { profileContract: currentProfileContract, name: currentName } = await querySkellyUsername(currentProfileAddress)
+        setUsername(currentName)
+        setHasMintedProfile(Boolean(currentName))
         setProfileAddress(currentProfileAddress)
-        setProfileContract(currentProfileContract)
+        setProfileContract(currentProfileContract!)
+      } else {
+        setUsername("")
+        setHasMintedProfile(false)
+        setProfileAddress("")
+        setProfileContract(null)
       }
     }
   }
 
-  // TODO: integration
   const fetchCurrentUserDetail = async walletAddress => {
-    const { minted } = await checkIfProfileMinted(walletAddress)
+    const { minted, profileAddress } = await checkIfProfileMinted(walletAddress)
     if (minted) {
-      const { name, profileContract, profileAddress } = await querySkellyUsername(walletAddress)
+      const { name, profileContract } = await querySkellyUsername(profileAddress)
       return { name, profileContract, profileAddress }
     }
     return { name: null, profileContract: null, profileAddress: null }
@@ -131,7 +151,7 @@ const SkellyContextProvider = ({ children }: any) => {
 
   const fetchCurrentSkellyDetail = async walletAddress => {
     const { name, profileContract, profileAddress } = await fetchCurrentUserDetail(walletAddress)
-    if (profileContract) {
+    if (name) {
       setProfileAddress(profileAddress)
       const userBadges = await queryUserBadgesWrapped(walletAddress)
       const attachedBadges = await getAttachedBadges(profileContract)
@@ -142,6 +162,9 @@ const SkellyContextProvider = ({ children }: any) => {
       setUserBadges(userBadges)
       setAttachedBadges(attachedBadges)
       setProfileContract(profileContract)
+    } else {
+      setHasMintedProfile(false)
+      changeMintStep(MintStep.REFERRAL_CODE)
     }
   }
 
@@ -157,28 +180,24 @@ const SkellyContextProvider = ({ children }: any) => {
     }
   }
 
-  const querySkellyUsername = async walletAddress => {
+  // work with publicProvider
+  const querySkellyUsername = async profile => {
     try {
-      const profile = await unsignedProfileRegistryContract!.getProfile(walletAddress)
-      const signer = await provider!.getSigner(0)
-      const profileContract = new ethers.Contract(profile, ProfileABI, signer)
-      const name = await profileContract!.username()
-      return { profileAddress: profile, profileContract, name }
+      const profileContract = new ethers.Contract(profile, ProfileABI, isL2 ? provider : publicProvider)
+      const name = await profileContract.username()
+      return { profileContract, name }
     } catch (error) {
-      console.log("Failed to query username:", error)
-
-      return { profileAddress: null, profileContract: null, name: null }
-    } finally {
-      setLoading(false)
+      return { profileContract: null, name: null }
     }
   }
 
+  // work with publicProvider
   const fillBadgeDetailWithPayload = async attestation => {
-    const { data: encodedData, id: badgeUID } = attestation
+    const { data, id } = attestation
     try {
-      const [badgeContract] = decodeBadgePayload(encodedData)
-      const badgeImageURI = await getBadgeMetadata(provider, badgeContract, badgeUID)
-
+      const [badgeContract] = decodeBadgePayload(data)
+      // TODO: provide works well
+      const badgeImageURI = await getBadgeMetadata(isL2 ? provider : publicProvider, badgeContract, id)
       return {
         ...attestation,
         ...badgeImageURI,
@@ -191,14 +210,11 @@ const SkellyContextProvider = ({ children }: any) => {
 
   const queryUserBadgesWrapped = async userAddress => {
     try {
-      await getAttachedBadges(profileContract)
-      const attestations = await queryUserBadges(userAddress || walletCurrentAddress)
+      const attestations = await queryUserBadges(userAddress)
       const formattedBadgesPromises = attestations.map(attestation => {
         return fillBadgeDetailWithPayload(attestation)
       })
       const formattedBadges = await Promise.all(formattedBadgesPromises)
-      console.log("formattedBadges", formattedBadges)
-      // setUserBadges(formattedBadges)
       return formattedBadges
     } catch (error) {
       console.log("Failed to query user badges:", error)
@@ -215,7 +231,6 @@ const SkellyContextProvider = ({ children }: any) => {
     try {
       const badges = await profileContract!.getAttachedBadges()
       const badgesArray = Array.from(badges)
-      console.log("attachedBadges", badgesArray)
       return badgesArray
     } catch (error) {
       console.error("Failed to query attached badges:", error)

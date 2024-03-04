@@ -8,7 +8,8 @@ import useSkellyStore, { MintStep } from "@/stores/skellyStore"
 import Dashboard from "./Dashboard"
 import LandingPage from "./landing"
 import MintPage from "./mint"
-import WrongNetwork from "./wrongNetwork"
+
+// import WrongNetwork from "./wrongNetwork"
 
 const Skelly = props => {
   const { code } = props
@@ -25,7 +26,7 @@ const Skelly = props => {
       {hasMintedProfile && <Dashboard />}
       {!hasMintedProfile && mintStep === MintStep.REFERRAL_CODE && <LandingPage code={code} />}
       {!hasMintedProfile && mintStep === MintStep.PROFILE && <MintPage />}
-      <WrongNetwork />
+      {/* <WrongNetwork /> */}
     </BridgeContextProvider>
   )
 }

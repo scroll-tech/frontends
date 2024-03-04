@@ -17,6 +17,11 @@ export const initializeInstance = async provider => {
   return { profileRegistryContract, unsignedProfileRegistryContract }
 }
 
+export const initializePublicInstance = async provider => {
+  const unsignedProfileRegistryContract = new ethers.Contract(PROFILE_REGISTRY_ADDRESS, ProfileRegistryABI, provider)
+  return unsignedProfileRegistryContract
+}
+
 export const queryUserBadges = async userAddress => {
   const query = `
       query Attestation {
