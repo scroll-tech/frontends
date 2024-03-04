@@ -19,13 +19,16 @@ import useSkellyStore from "@/stores/skellyStore"
 import { requireEnv } from "@/utils"
 
 const Container = styled(Box)(({ theme }) => ({
-  display: "flex",
+  display: "grid",
   width: "100%",
+  gridTemplateColumns: "repeat(4, 15.6rem)",
   justifyContent: "center",
-  alignItems: "center",
   gap: "0.8rem",
   position: "absolute",
   bottom: "0",
+  [theme.breakpoints.down("md")]: {
+    gridTemplateColumns: "repeat(2, 15.6rem)",
+  },
 }))
 
 const ActionButton = styled(Button)(({ theme }) => ({
