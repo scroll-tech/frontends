@@ -17,6 +17,7 @@ const useStyles = makeStyles()(theme => ({
     marginBottom: "0.4rem",
     textAlign: "left",
     cursor: "pointer",
+    color: "#101010",
     [theme.breakpoints.down("md")]: {
       lineHeight: "1",
     },
@@ -63,16 +64,16 @@ const CustomiseRecipient = props => {
     return recipient && !isValidate && !(!!bridgeWarning && bridgeWarning !== ">0")
   }, [isValidate, recipient, bridgeWarning])
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: "100%", opacity: !!bridgeWarning && bridgeWarning !== ">0" ? "0.3" : 1 }}>
       {isEditing ? (
         <Box>
           <Stack direction="row" justifyContent="space-between" sx={{ mb: "0.4rem" }}>
             <Typography className={classes.title} variant="h5">
               Customise recipient
             </Typography>
-            <Typography onClick={() => setIsEditing(false)} className={classes.title} sx={{ color: "#FF684B" }}>
+            <Typography onClick={() => setIsEditing(false)} className={classes.title}>
               <SvgIcon sx={{ fontSize: "1.6rem", marginRight: "0.4rem" }} component={RemoveSvg} inheritViewBox />
-              Remove
+              <span style={{ color: "#FF684B" }}>Remove</span>
             </Typography>
           </Stack>
           <Stack spacing={2}>
@@ -84,7 +85,7 @@ const CustomiseRecipient = props => {
                 lineHeight: "2.4rem",
                 fontWeight: 500,
                 background: "#ffffff",
-                border: "1px solid #473835",
+                border: showErrorMessage ? "2px solid #FF684B" : "1px solid #473835",
                 borderRadius: "1rem",
               }}
               disabled={disabled}
@@ -101,8 +102,8 @@ const CustomiseRecipient = props => {
           readOnly={readOnly}
           onClick={() => setIsEditing(true)}
         >
-          <SvgIcon sx={{ fontSize: "1.6rem", marginRight: "0.4rem" }} component={EditSvg} inheritViewBox></SvgIcon>
           Customise recipient
+          <SvgIcon sx={{ fontSize: "1.6rem", marginLeft: "0.4rem" }} component={EditSvg} inheritViewBox></SvgIcon>
         </TextButton>
       )}
       {showErrorMessage ? (
@@ -117,7 +118,7 @@ const CustomiseRecipient = props => {
             direction="row"
             style={{ fontSize: "1.6rem", display: "inline-flex", verticalAlign: "middle", alignItems: "center", color: "#FF684B" }}
           >
-            Please enter correct address.
+            Invalid wallet address
           </Stack>
         </>
       ) : null}
