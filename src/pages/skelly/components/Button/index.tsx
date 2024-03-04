@@ -47,7 +47,6 @@ const cColor = (color, theme) => {
 const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, whiteButton }) => ({
   button: {
     padding: "0",
-    width: width ?? "16rem",
     height: "4.8rem",
     fontSize: "1.8rem",
     fontWeight: 600,
@@ -69,25 +68,19 @@ const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, w
     color: "#EBC28E",
   },
   buttonLoading: {
+    opacity: 0.6,
     gap: "0.4em",
     color: cColor(color, theme),
     backgroundColor: gColor(color, theme),
   },
-
-  icon: {
-    width: "5.4rem",
-    height: "100%",
-    position: "absolute",
-    zIndex: 1,
-    color: `${cColor(color, theme)} !important`,
-    [theme.breakpoints.down("sm")]: {
-      width: "4.8rem",
-    },
+  buttonGloomy: {
+    opacity: 0.5,
+    pointerEvents: "none",
   },
 }))
 
 const Button = (props: ScrollButtonProps) => {
-  const { width, sx, color, loading, disabled, gloomy, children, whiteButton, ...restProps } = props
+  const { width, color, loading, disabled, gloomy, children, whiteButton, ...restProps } = props
   const { classes, cx } = useStyles({ color, width, disabled, loading, whiteButton })
 
   const { isMobile } = useCheckViewport()
@@ -95,7 +88,7 @@ const Button = (props: ScrollButtonProps) => {
   return (
     <ScrollButton
       classes={{
-        root: cx(classes.button, loading && classes.buttonLoading),
+        root: cx(classes.button, loading && classes.buttonLoading, gloomy && classes.buttonGloomy),
       }}
       disabled={loading}
       {...restProps}
