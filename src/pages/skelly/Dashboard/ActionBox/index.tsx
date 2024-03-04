@@ -16,6 +16,23 @@ import Button from "@/pages/skelly/components/Button"
 import useSkellyStore from "@/stores/skellyStore"
 import { requireEnv } from "@/utils"
 
+interface Action {
+  label: string | (() => React.ReactNode)
+  icon: React.ComponentType
+  color: "primary" | "secondary"
+  onClick: (event?) => void
+  visible: boolean
+  menu?: {
+    anchorEl: HTMLElement | null
+    open: boolean
+    onClose: () => void
+    items: Array<{
+      label: string | (() => React.ReactNode)
+      onClick: () => void
+    }>
+  }
+}
+
 const Container = styled(Box)(({ theme }) => ({
   display: "grid",
   width: "100%",
@@ -79,111 +96,135 @@ const ActionBox = props => {
 
   const handleCloseShare = () => {
     setShareAnchorEl(null)
+    setCopied(false)
   }
 
   const [badgesAnchorEl, setBadgesAnchorEl] = useState<null | HTMLElement>(null)
   const badgesOpen = Boolean(badgesAnchorEl)
-  const handleClickBadges = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setBadgesAnchorEl(event.currentTarget)
-  }
+
   const handleCloseBadges = () => {
     setBadgesAnchorEl(null)
   }
 
   const [shareAnchorEl, setShareAnchorEl] = useState<null | HTMLElement>(null)
   const shareOpen = Boolean(shareAnchorEl)
-  const handleClickShare = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setShareAnchorEl(event.currentTarget)
-  }
+
+  const actions: Action[] = useMemo(() => {
+    return [
+      {
+        label: "Refer & Earn",
+        icon: EthSvg,
+        color: "primary",
+        onClick: () => changeReferDialog(true),
+        visible: !othersWalletAddress,
+      },
+      {
+        label: "Badges",
+        icon: BadgesSvg,
+        color: "secondary",
+        onClick: event => {
+          setBadgesAnchorEl(event.currentTarget)
+        },
+        visible: !othersWalletAddress,
+        menu: {
+          anchorEl: badgesAnchorEl,
+          open: badgesOpen,
+          onClose: handleCloseBadges,
+          items: [
+            {
+              label: "Customise display",
+              onClick: () => {
+                handleCloseBadges()
+                changeBadgesDialog(true)
+              },
+            },
+            {
+              label: "Mint badges",
+              onClick: () => {
+                handleCloseBadges()
+                changeUpgradeDialog(true)
+              },
+            },
+          ],
+        },
+      },
+      {
+        label: "Name",
+        icon: EditSvg,
+        color: "secondary",
+        onClick: () => changeProfileDialog(true),
+        visible: !othersWalletAddress,
+      },
+
+      {
+        label: "Share Skelly",
+        icon: ShareSvg,
+        color: "secondary",
+        onClick: event => {
+          setShareAnchorEl(event.currentTarget)
+        },
+        visible: true,
+        menu: {
+          anchorEl: shareAnchorEl,
+          open: shareOpen,
+          onClose: handleCloseShare,
+          items: [
+            {
+              label: () => (
+                <>
+                  Share to <SvgIcon sx={{ fontSize: ["1.2rem", "1.3rem"], ml: "6px" }} component={TwitterSvg} inheritViewBox></SvgIcon>
+                </>
+              ),
+              onClick: () => {
+                handleCloseShare()
+                window.open(shareTwitterURL)
+              },
+            },
+            {
+              label: () => <>Copy link {copied && <SvgIcon sx={{ ml: "0.6rem" }} component={CopySuccessSvg} inheritViewBox></SvgIcon>} </>,
+              onClick: handleCopyLink,
+            },
+          ],
+        },
+      },
+    ]
+  }, [othersWalletAddress, shareTwitterURL, badgesAnchorEl, badgesOpen, shareAnchorEl, shareOpen, handleCopyLink, copied])
 
   return (
     <Container>
-      {!othersWalletAddress && (
+      {actions.map((action, index) => (
         <>
           <ActionButton
-            variant="contained"
-            color="primary"
-            onClick={() => changeReferDialog(true)}
-            startIcon={<SvgIcon sx={{ fontSize: "1.6rem" }} component={EthSvg} inheritViewBox></SvgIcon>}
+            key={index}
+            color={action.color as any}
+            onClick={action.onClick}
+            startIcon={<SvgIcon sx={{ fontSize: "1.6rem" }} component={action.icon} inheritViewBox></SvgIcon>}
           >
-            Refer & Earn
+            {typeof action.label === "function" ? action.label() : action.label}
           </ActionButton>
-          <ActionButton
-            onClick={handleClickBadges}
-            color="secondary"
-            startIcon={<SvgIcon sx={{ fontSize: "1.6rem" }} component={BadgesSvg} inheritViewBox></SvgIcon>}
-          >
-            Badges
-          </ActionButton>
-          <CustomMenu
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "left",
-            }}
-            transformOrigin={{
-              vertical: "bottom",
-              horizontal: "left",
-            }}
-            anchorEl={badgesAnchorEl}
-            open={badgesOpen}
-            onClose={handleCloseBadges}
-          >
-            <CustomiseItem
-              onClick={() => {
-                handleCloseBadges()
-                changeBadgesDialog(true)
+          {action.menu && (
+            <CustomMenu
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "left",
               }}
-            >
-              Customise display
-            </CustomiseItem>
-            <CustomiseItem
-              onClick={() => {
-                handleCloseBadges()
-                changeUpgradeDialog(true)
+              transformOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
               }}
+              anchorEl={action.menu.anchorEl}
+              open={action.menu.open}
+              onClose={action.menu.onClose}
             >
-              Mint badges
-            </CustomiseItem>
-          </CustomMenu>
-          <ActionButton
-            color="secondary"
-            onClick={() => changeProfileDialog(true)}
-            startIcon={<SvgIcon sx={{ fontSize: "1.6rem" }} component={EditSvg} inheritViewBox></SvgIcon>}
-          >
-            Name
-          </ActionButton>
+              {action.menu.items.map((item, index) => (
+                <CustomiseItem key={index} onClick={item.onClick}>
+                  {typeof item.label === "function" ? item.label() : item.label}
+                </CustomiseItem>
+              ))}
+            </CustomMenu>
+          )}
         </>
-      )}
-      <ActionButton
-        onClick={handleClickShare}
-        color="secondary"
-        startIcon={<SvgIcon sx={{ fontSize: "1.6rem" }} component={ShareSvg} inheritViewBox></SvgIcon>}
-      >
-        Share Skelly
-      </ActionButton>
-      <CustomMenu
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
-        transformOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
-        anchorEl={shareAnchorEl}
-        open={shareOpen}
-        onClose={handleCloseShare}
-      >
-        <CustomiseItem onClick={handleCloseShare}>
-          <a target="_blank" rel="noreferrer" href={shareTwitterURL}>
-            Share to <SvgIcon sx={{ fontSize: ["1.2rem", "1.3rem"], ml: "6px" }} component={TwitterSvg} inheritViewBox></SvgIcon>
-          </a>
-        </CustomiseItem>
-        <CustomiseItem onClick={handleCopyLink}>
-          <>Copy link</>
-          {copied && <SvgIcon sx={{ ml: "0.6rem" }} component={CopySuccessSvg} inheritViewBox></SvgIcon>}
-        </CustomiseItem>
-      </CustomMenu>
+      ))}
     </Container>
   )
 }
