@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 import { Avatar, Box, Dialog, DialogContent, DialogTitle, IconButton, Stack, SvgIcon, Typography } from "@mui/material"
@@ -7,9 +7,12 @@ import { styled } from "@mui/system"
 import { ReactComponent as CloseSvg } from "@/assets/svgs/skelly/close.svg"
 import { ReactComponent as ShareSvg } from "@/assets/svgs/skelly/share.svg"
 import ScrollButton from "@/components/Button"
+import Link from "@/components/Link"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useSkellyStore, { BadgeDetailDialogTpye } from "@/stores/skellyStore"
-import { getBadgeImgURL } from "@/utils"
+import { generateShareTwitterURL, getBadgeImgURL, requireEnv } from "@/utils"
+
+import { badgeMap } from "../UpgradeDialog/Badges"
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
   borderRadius: "1.6rem",
@@ -122,6 +125,13 @@ const BadgeDetailDialog = () => {
     navigate(`/scroll-skelly/badge/${selectedBadge.id}`)
   }
 
+  const badgeIssuer = useMemo(() => badgeMap[selectedBadge.badgeContract]?.issuer || {}, [selectedBadge])
+
+  const shareBadgeURL = useMemo(() => {
+    const viewURL = `${requireEnv("REACT_APP_FFRONTENDS_URL")}/scroll-skelly/badge/${selectedBadge.id}`
+    return generateShareTwitterURL(viewURL, `Here is my badge ${selectedBadge.name}`)
+  }, [selectedBadge])
+
   return (
     <StyledDialog onClose={handleClose} maxWidth={false} open={badgeDetailDialogVisible !== BadgeDetailDialogTpye.HIDDEN}>
       <StyledDialogTitle>
@@ -149,7 +159,6 @@ const BadgeDetailDialog = () => {
         </Box>
       </StyledDialogTitle>
       <StyledDialogContent>
-        {/* <SvgIcon sx={{ width: "20rem", height: "20rem", marginBottom: "4rem"  }} component={DefaultBadgeSvg} inheritViewBox></SvgIcon> */}
         <img alt="img" src={getBadgeImgURL(selectedBadge.image)} style={{ width: "20rem", height: "20rem", marginBottom: "4rem" }} />
         {badgeDetailDialogVisible !== BadgeDetailDialogTpye.MINTED ? (
           <>
@@ -163,8 +172,8 @@ const BadgeDetailDialog = () => {
             </Typography>
             {/* TODO: how to get badge contract address from a user's badge */}
             <Stack direction="row" gap="0.8rem">
-              <Avatar variant="square" src="/imgs/skelly/Scroll.png" sx={{ width: "3.2rem", height: "3.2rem" }}></Avatar>
-              <Typography sx={{ fontSize: "2.4rem", fontWeight: 600, color: "primary.contrastText" }}>Scroll</Typography>
+              <Avatar variant="square" src={badgeIssuer.logo} sx={{ width: "3.2rem", height: "3.2rem", borderRadius: "0.4rem" }}></Avatar>
+              <Typography sx={{ fontSize: "2.4rem", fontWeight: 600, color: "primary.contrastText" }}>{badgeIssuer.name}</Typography>
             </Stack>
           </>
         ) : (
@@ -195,7 +204,9 @@ const BadgeDetailDialog = () => {
             View badge details
           </StyledScrollButton>
           {badgeDetailDialogVisible !== BadgeDetailDialogTpye.MINT && (
-            <SvgIcon sx={{ width: "3.2rem", height: "3.2rem", color: "#fff" }} component={ShareSvg} inheritViewBox></SvgIcon>
+            <Link external href={shareBadgeURL}>
+              <SvgIcon sx={{ width: "3.2rem", height: "3.2rem", color: "primary.contrastText" }} component={ShareSvg} inheritViewBox></SvgIcon>
+            </Link>
           )}
         </ButtonContainer>
       </StyledDialogContent>
