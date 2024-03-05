@@ -26,6 +26,7 @@ type SkellyContextProps = {
   queryUsername: () => void
   userBadges: any
   attachedBadges: any
+  publicProvider: any
   attachBadges: (badgeAddresses: string[]) => void
   detachBadges: (badgeAddresses: string[]) => void
   customiseDisplay: (attachBadges: string[], detachBadges: string[], order?: number[]) => void
@@ -438,6 +439,7 @@ const SkellyContextProvider = ({ children }: any) => {
         mintBadge,
         queryUserBadgesWrapped: exposedQueryUserBadgesWrapped,
         getAttachedBadges,
+        publicProvider: isL2 ? provider : publicProvider,
       }}
     >
       {children}

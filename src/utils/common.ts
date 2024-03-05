@@ -94,3 +94,9 @@ export function isValidTransactionHash(txHash: string): boolean {
   const isValidLength = txHash.length === 66
   return isValidLength && isHexString(txHash)
 }
+
+export function generateShareTwitterURL(url, text, via = "Scroll_ZKP") {
+  return `https://twitter.com/intent/tweet?original_referer=${encodeURIComponent(window.location.href)}&url=${encodeURIComponent(
+    url,
+  )}&text=${encodeURIComponent(text)}&via=${via}`
+}

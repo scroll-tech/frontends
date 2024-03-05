@@ -80,7 +80,7 @@ const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, w
 }))
 
 const Button = (props: ScrollButtonProps) => {
-  const { width, color, loading, disabled, gloomy, children, whiteButton, ...restProps } = props
+  const { width, sx, color, loading, disabled, gloomy, children, whiteButton, ...restProps } = props
   const { classes, cx } = useStyles({ color, width, disabled, loading, whiteButton })
 
   const { isMobile } = useCheckViewport()
@@ -90,6 +90,7 @@ const Button = (props: ScrollButtonProps) => {
       classes={{
         root: cx(classes.button, loading && classes.buttonLoading, gloomy && classes.buttonGloomy),
       }}
+      sx={{ width: "16rem", ...sx }}
       disabled={loading}
       {...restProps}
     >

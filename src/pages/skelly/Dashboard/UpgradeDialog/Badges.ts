@@ -17,7 +17,9 @@ const Badges = [
     nftAddress: [SCROLL_ORIGINS_NFT, SCROLL_ORIGINS_NFT_V2],
     nftAbi: ScrollOriginsNFTABI,
     badgeAddress: SCROLL_SEPOLIA_ORIGINS_BADGE_ADDRESS,
-    nftDefaultURI: "/imgs/nft/placeholder.svg",
+    nftDefaultURI: "/imgs/skelly/OriginsNFT.svg",
+    native: true,
+    originsNFT: true,
     issuer: {
       origin: "https://scroll.io",
       name: "Scroll",
@@ -45,7 +47,8 @@ const Badges = [
     nftAddress: null,
     nftAbi: null,
     badgeAddress: SCROLL_SEPOLIA_SIMPLE_BADGE_A_ADDRESS,
-    image: "https://cloudflare-ipfs.com/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/1.png",
+    nftDefaultURI: "https://cloudflare-ipfs.com/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/1.png",
+    native: false,
     issuer: {
       origin: "https://example.org",
       name: "Issuer1",
@@ -58,7 +61,8 @@ const Badges = [
     nftAddress: null,
     nftAbi: null,
     badgeAddress: SCROLL_SEPOLIA_SIMPLE_BADGE_B_ADDRESS,
-    image: "https://cloudflare-ipfs.com/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/2.png",
+    nftDefaultURI: "https://cloudflare-ipfs.com/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/2.png",
+    native: false,
     issuer: {
       origin: "https://example.org",
       name: "Issuer2",
@@ -71,7 +75,8 @@ const Badges = [
     nftAddress: null,
     nftAbi: null,
     badgeAddress: SCROLL_SEPOLIA_SIMPLE_BADGE_C_ADDRESS,
-    image: "https://cloudflare-ipfs.com/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/3.png",
+    nftDefaultURI: "https://cloudflare-ipfs.com/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/3.png",
+    native: false,
     issuer: {
       origin: "https://example.org",
       name: "Issuer3",
@@ -80,5 +85,9 @@ const Badges = [
     validator: (walletCurrentAddress, provider) => true,
   },
 ]
+
+export const badgeMap = Object.fromEntries(
+  Badges.map(({ badgeAddress, native, originsNFT, issuer, nftDefaultURI }) => [badgeAddress, { native, originsNFT, issuer, nftDefaultURI }]),
+)
 
 export default Badges
