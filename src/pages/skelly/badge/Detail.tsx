@@ -1,9 +1,9 @@
 import { Contract } from "ethers"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import Img from "react-cool-img"
 import { useParams } from "react-router-dom"
 
-import { Avatar, Box, IconButton, Skeleton, Stack, SvgIcon, Typography } from "@mui/material"
+import { Avatar, Box, Skeleton, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
 import { getAvatarURL, viewEASScanURL } from "@/apis/skelly"
@@ -13,14 +13,21 @@ import ScrollButton from "@/components/Button"
 import Link from "@/components/Link"
 import RequestWarning from "@/components/RequestWarning"
 import { ANNOUNCING_SCROLL_ORIGINS_NFT, DESIGNING_SCROLL_ORIGINS, NFT_RARITY_MAP } from "@/constants"
-import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import { getBadgeMetadata } from "@/services/skellyService"
 import { queryBadgeDetailById } from "@/services/skellyService"
-import { decodeBadgePayload, formatDate, getBadgeImgURL } from "@/utils"
+import { decodeBadgePayload, formatDate, generateShareTwitterURL, getBadgeImgURL, requireEnv } from "@/utils"
 
+import { badgeMap } from "../Dashboard/UpgradeDialog/Badges"
 import Statistic from "../components/Statistic"
+
+const isOriginsNFTBadge = badgeContract => {
+  return badgeMap[badgeContract]?.originsNFT
+}
+const isNativeBadge = badgeContract => {
+  return badgeMap[badgeContract]?.native
+}
 
 const CustomLink = styled(Link)(({ theme }) => ({
   color: `${theme.palette.primary.main} !important`,
@@ -62,17 +69,17 @@ const InfoBox = styled(Box)(({ theme }) => ({
 
 const Detail = props => {
   const { id } = useParams()
-  const { provider } = useRainbowContext()
-  const { unsignedProfileRegistryContract } = useSkellyContext()
+  const { unsignedProfileRegistryContract, publicProvider } = useSkellyContext()
 
   const [detail, setDetail] = useState<any>({})
   const [loading, setLoading] = useState(false)
 
-  const isOriginsNFTBadge = badgeContract => {
-    return badgeContract === "0x2aa883c6EaB368d1C86452127bc0Dd6c887a1F44"
-  }
+  const shareBadgeURL = useMemo(() => {
+    const viewURL = `${requireEnv("REACT_APP_FFRONTENDS_URL")}/scroll-skelly/badge/${id}`
+    return generateShareTwitterURL(viewURL, `Here is my badge ${detail.name}`)
+  }, [id, detail])
 
-  const fetchSkellyName = async (provider, walletAddress) => {
+  const fetchBadgeOwnerName = async (provider, walletAddress) => {
     try {
       const profileAddress = await unsignedProfileRegistryContract.getProfile(walletAddress)
       const profileInstance = new Contract(profileAddress, ProfileABI, provider)
@@ -82,28 +89,27 @@ const Detail = props => {
       console.log("Failed to query username:", error)
     }
   }
-  // TODO: chainId must be L2
   useEffect(() => {
-    if (unsignedProfileRegistryContract) {
+    if (publicProvider && unsignedProfileRegistryContract) {
       fetchBadgeDetailById(id)
     }
-  }, [unsignedProfileRegistryContract, id])
+  }, [unsignedProfileRegistryContract, publicProvider, id])
 
   const fetchBadgeDetailById = async id => {
     setLoading(true)
     try {
       const [{ attester, time, data }] = await queryBadgeDetailById(id)
-      const name = await fetchSkellyName(provider, attester)
+      const name = await fetchBadgeOwnerName(publicProvider, attester)
       const [badgeContract] = decodeBadgePayload(data)
-      const badgeMetadata = await getBadgeMetadata(provider, badgeContract, id)
+      const badgeMetadata = await getBadgeMetadata(publicProvider, badgeContract, id)
       const badgeDetail = {
         ...badgeMetadata,
         owner: name,
         ownerLogo: getAvatarURL(attester),
         mintedOn: formatDate(time * 1000),
         badgeContract,
+        issuer: badgeMap[badgeContract]?.issuer,
       }
-
       if (isOriginsNFTBadge(badgeContract)) {
         const rarityNum = badgeMetadata.attributes.find(item => item.trait_type === "Rarity").value
         badgeDetail.rarity = NFT_RARITY_MAP[rarityNum]
@@ -192,8 +198,8 @@ const Detail = props => {
             {detail.owner}
           </Statistic>
           <Statistic label="Issued by" loading={loading}>
-            <Avatar src="/imgs/skelly/scroll.png"></Avatar>
-            Scroll
+            <Avatar src={detail.issuer?.logo}></Avatar>
+            {detail.issuer?.name}
           </Statistic>
           <Statistic label="Minted on" loading={loading}>
             {detail.mintedOn}
@@ -204,14 +210,22 @@ const Detail = props => {
             </Statistic>
           )}
         </InfoBox>
-        <Stack direction="row" gap="1.6rem">
+        <Stack direction="row" gap="1.6rem" alignItems="center">
           <ScrollButton color="primary" href={viewEASScanURL(id)} target="_blank">
             View on EAS
           </ScrollButton>
-          <ScrollButton color="secondary">Visit Scroll</ScrollButton>
-          <IconButton>
-            <SvgIcon sx={{ color: "primary.contrastText" }} component={ShareSvg} inheritViewBox></SvgIcon>
-          </IconButton>
+          {isNativeBadge(detail.badgeContract) ? (
+            <ScrollButton color="secondary" href="/scroll-skelly">
+              Visit Scroll Skelly
+            </ScrollButton>
+          ) : (
+            <ScrollButton color="secondary" href={detail.issuer?.origin} target="_blank">
+              Visit {detail.issuer?.name}
+            </ScrollButton>
+          )}
+          <Link external href={shareBadgeURL}>
+            <SvgIcon sx={{ fontSize: "3.2rem", color: "primary.contrastText" }} component={ShareSvg} inheritViewBox></SvgIcon>
+          </Link>
         </Stack>
       </Stack>
       <RequestWarning open={!!errorMessage} onClose={handleCloseWarning}>

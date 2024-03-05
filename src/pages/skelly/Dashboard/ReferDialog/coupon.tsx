@@ -157,11 +157,11 @@ const Coupon = () => {
             Share to <SvgIcon sx={{ fontSize: ["1.2rem", "1.3rem"], ml: "6px" }} component={TwitterSvg} inheritViewBox></SvgIcon>
           </MenuItem>
           <MenuItem classes={{ root: classes.item }} onClick={handleCopyLink}>
-            <>Copy link</>
+            <>{linkCopied ? "Link copied" : "Copy link"}</>
             {linkCopied && <SvgIcon sx={{ ml: "0.6rem" }} component={CopySuccessSvg} inheritViewBox></SvgIcon>}
           </MenuItem>
           <MenuItem classes={{ root: classes.item }} onClick={handleCopyCode}>
-            <>Copy coupon code</>
+            <>{codeCopied ? "Coupon code copied" : "Copy coupon code"}</>
             {codeCopied && <SvgIcon sx={{ ml: "0.6rem" }} component={CopySuccessSvg} inheritViewBox></SvgIcon>}
           </MenuItem>
         </Menu>
