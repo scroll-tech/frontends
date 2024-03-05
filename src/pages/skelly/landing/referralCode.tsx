@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from "react"
 
-import { Box, InputBase, SvgIcon, Typography } from "@mui/material"
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined"
+import { Box, InputBase, SvgIcon, Tooltip, Typography } from "@mui/material"
+import { TooltipProps, tooltipClasses } from "@mui/material/Tooltip"
 import { styled } from "@mui/system"
 
 import { checkCodeValidation } from "@/apis/skelly"
@@ -71,6 +73,18 @@ const StatusContent = styled(Typography)(({ theme }) => ({
   color: "#A5A5A5",
 }))
 
+const ReferralTooltip = styled(({ className, ...props }: TooltipProps) => <Tooltip {...props} arrow classes={{ popper: className }} />)(
+  ({ theme }) => ({
+    [`& .${tooltipClasses.arrow}`]: {
+      color: "#262626",
+    },
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: "#262626",
+      maxWidth: 338,
+    },
+  }),
+)
+
 const ReferralCode = ({ isChecking, setIsChecking, code }) => {
   const [codes, setCodes] = useState(Array(INVITE_CODE_LENGTH).fill(""))
   const [codeStatus, setCodeStatus] = useState(CodeStatus.UNKNOWN)
@@ -139,7 +153,22 @@ const ReferralCode = ({ isChecking, setIsChecking, code }) => {
   }
   return (
     <Container>
-      <Title>Enter a referral code to get 50% off mint fee (0.001ETH)</Title>
+      <Title>
+        Enter a referral code to get 50% off mint fee (0.001ETH)
+        <ReferralTooltip
+          placement="top"
+          title={
+            <Box sx={{ p: "1.2rem 2rem" }}>
+              <Typography sx={{ fontSize: "2rem", fontWeight: "bold", mb: "0.8rem", color: "#fff" }}>what's the mint fee is for?</Typography>
+              <Typography sx={{ fontSize: "1.8rem", color: "#fff" }}>
+                The mint fee is used to cover the gas fee for the transaction, and it's a small amount of ETH.
+              </Typography>
+            </Box>
+          }
+        >
+          <InfoOutlinedIcon sx={{ fontSize: "2.4rem", marginLeft: "0.4rem", verticalAlign: "middle" }} />
+        </ReferralTooltip>
+      </Title>
       <ReferralCodeBox>
         {codes.map((code, index) => (
           <ReferralCodeInput

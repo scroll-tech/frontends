@@ -1,5 +1,5 @@
 import { ethers } from "ethers"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { Box, InputBase, Stack, Typography } from "@mui/material"
 import { styled } from "@mui/system"
@@ -11,6 +11,8 @@ import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useValidateSkellyName from "@/hooks/useValidateSkellyName"
 import useSkellyStore, { MintStep } from "@/stores/skellyStore"
+
+import InsufficientDialog from "./InsufficientDialog"
 
 const Container = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -46,8 +48,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const Mint = () => {
   const { isMobile } = useCheckViewport()
 
-  const { walletCurrentAddress } = useRainbowContext()
+  const { walletCurrentAddress, provider } = useRainbowContext()
   const { profileRegistryContract, checkIfProfileMinted } = useSkellyContext()
+  const [insufficientDialogOpen, setInsufficientDialogOpen] = useState(false)
 
   const { changeMintStep, referralCode, changeReferralCode } = useSkellyStore()
 
@@ -56,7 +59,16 @@ const Mint = () => {
 
   const { helpText, validating, handleValidateName, renderValidation } = useValidateSkellyName(name)
 
+  const checkBalance = async () => {
+    const balance = await provider?.getBalance(walletCurrentAddress as `0x${string}`)
+    if (!balance) {
+      setInsufficientDialogOpen(true)
+      return
+    }
+  }
+
   const handleMint = async () => {
+    checkBalance()
     setIsMinting(true)
     try {
       let codeSignature = "0x"
@@ -124,6 +136,7 @@ const Mint = () => {
       <Button gloomy={!!helpText || validating} color="primary" loading={isMinting} width={isMobile ? "23rem" : "28.2rem"} onClick={handleMint}>
         {isMinting ? "Minting" : "Mint now"}
       </Button>
+      <InsufficientDialog open={insufficientDialogOpen} onClose={() => setInsufficientDialogOpen(false)} />
     </Container>
   )
 }
