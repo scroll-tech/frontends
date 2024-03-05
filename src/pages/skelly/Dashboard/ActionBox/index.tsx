@@ -33,16 +33,16 @@ interface Action {
   }
 }
 
-const Container = styled(Box)(({ theme }) => ({
+const Container = styled(Box as any)(({ theme, othersWalletAddress }) => ({
   display: "grid",
+  gridTemplateColumns: `repeat(${othersWalletAddress ? 1 : 4}, 15.6rem)`,
   width: "100%",
-  gridTemplateColumns: "repeat(4, 15.6rem)",
   justifyContent: "center",
   gap: "0.8rem",
   position: "absolute",
   bottom: "0",
   [theme.breakpoints.down("md")]: {
-    gridTemplateColumns: "repeat(2, 15.6rem)",
+    gridTemplateColumns: `repeat(${othersWalletAddress ? 1 : 2}, 15.6rem)`,
   },
 }))
 
@@ -198,40 +198,42 @@ const ActionBox = props => {
   }, [othersWalletAddress, shareTwitterURL, badgesAnchorEl, badgesOpen, shareAnchorEl, shareOpen, handleCopyLink, copied])
 
   return (
-    <Container>
-      {actions.map((action, index) => (
-        <>
-          <ActionButton
-            key={index}
-            color={action.color as any}
-            onClick={action.onClick}
-            startIcon={<SvgIcon sx={{ fontSize: "1.6rem" }} component={action.icon} inheritViewBox></SvgIcon>}
-          >
-            {typeof action.label === "function" ? action.label() : action.label}
-          </ActionButton>
-          {action.menu && (
-            <CustomMenu
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              transformOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              anchorEl={action.menu.anchorEl}
-              open={action.menu.open}
-              onClose={action.menu.onClose}
+    <Container othersWalletAddress={othersWalletAddress}>
+      {actions
+        .filter(action => action.visible)
+        .map((action, index) => (
+          <>
+            <ActionButton
+              key={index}
+              color={action.color as any}
+              onClick={action.onClick}
+              startIcon={<SvgIcon sx={{ fontSize: "1.6rem" }} component={action.icon} inheritViewBox></SvgIcon>}
             >
-              {action.menu.items.map((item, index) => (
-                <CustomiseItem key={index} onClick={item.onClick}>
-                  {typeof item.label === "function" ? item.label() : item.label}
-                </CustomiseItem>
-              ))}
-            </CustomMenu>
-          )}
-        </>
-      ))}
+              {typeof action.label === "function" ? action.label() : action.label}
+            </ActionButton>
+            {action.menu && (
+              <CustomMenu
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "left",
+                }}
+                transformOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
+                }}
+                anchorEl={action.menu.anchorEl}
+                open={action.menu.open}
+                onClose={action.menu.onClose}
+              >
+                {action.menu.items.map((item, index) => (
+                  <CustomiseItem key={index} onClick={item.onClick}>
+                    {typeof item.label === "function" ? item.label() : item.label}
+                  </CustomiseItem>
+                ))}
+              </CustomMenu>
+            )}
+          </>
+        ))}
     </Container>
   )
 }
