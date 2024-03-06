@@ -1,9 +1,10 @@
 import copy from "copy-to-clipboard"
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
+import Img from "react-cool-img"
 import { useLocation, useNavigate } from "react-router-dom"
 import { makeStyles } from "tss-react/mui"
 
-import { Avatar, Box, ButtonBase, Fade, ListItemIcon, ListItemText, Menu, MenuItem, SvgIcon } from "@mui/material"
+import { Box, ButtonBase, Fade, ListItemIcon, ListItemText, Menu, MenuItem, Skeleton, SvgIcon } from "@mui/material"
 
 import { getSmallAvatarURL } from "@/apis/skelly"
 import { ReactComponent as CopySuccessSvg } from "@/assets/svgs/bridge/copy-success.svg"
@@ -15,6 +16,7 @@ import { ReactComponent as DownTriangleSvg } from "@/assets/svgs/wallet-connecto
 import { ReactComponent as ProfileSvg } from "@/assets/svgs/wallet-connector/profile.svg"
 import { CHAIN_ID, EXPLORER_URL } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useBridgeStore from "@/stores/bridgeStore"
 import useSkellyStore, { MintStep } from "@/stores/skellyStore"
 import { generateExploreLink, truncateAddress } from "@/utils"
@@ -84,15 +86,22 @@ const WalletDropdown = props => {
   const { pathname } = useLocation()
   const navigate = useNavigate()
 
-  const { walletCurrentAddress, connect, disconnect, chainId } = useRainbowContext()
+  const { walletCurrentAddress, provider, connect, disconnect, chainId } = useRainbowContext()
   const { changeHistoryVisible } = useBridgeStore()
 
-  const { username, profileMinted, changeMintStep } = useSkellyStore()
+  const { unsignedProfileRegistryContract } = useSkellyContext()
+  const { username, profileMinted, changeMintStep, walletDetailLoading, checkAndFetchCurrentWalletSkelly } = useSkellyStore()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [copied, setCopied] = useState(false)
 
   const open = useMemo(() => Boolean(anchorEl), [anchorEl])
+
+  useEffect(() => {
+    if (provider && unsignedProfileRegistryContract && walletCurrentAddress) {
+      checkAndFetchCurrentWalletSkelly(provider, unsignedProfileRegistryContract, walletCurrentAddress)
+    }
+  }, [provider, unsignedProfileRegistryContract, walletCurrentAddress])
 
   const handleClick = e => {
     setAnchorEl(e.currentTarget)
@@ -149,29 +158,44 @@ const WalletDropdown = props => {
     [pathname, viewScan, copyAddress, copied, disconnect],
   )
 
-  return (
-    <>
-      {!chainId && (
-        <ButtonBase classes={{ root: cx(classes.button, classes.connectButton) }} sx={sx} onClick={connect}>
-          Connect Wallet
+  const renderCurrentWallet = () => {
+    if (walletDetailLoading) {
+      return (
+        <ButtonBase classes={{ root: cx(classes.button) }} sx={{ width: "16rem", ...sx }}>
+          <Skeleton sx={{ backgroundColor: "rgba(256, 256, 256, 0.15)", width: "100%", borderRadius: "0.4rem" }}></Skeleton>
         </ButtonBase>
-      )}
-
-      {chainId && !profileMinted && (
+      )
+    } else if (profileMinted) {
+      return (
         <ButtonBase classes={{ root: classes.button }} sx={sx} onClick={handleClick}>
-          {truncateAddress(walletCurrentAddress as string)}
-          <SvgIcon className={cx(classes.endIcon, open && classes.reverseEndIcon)} component={DownTriangleSvg} inheritViewBox></SvgIcon>
-        </ButtonBase>
-      )}
-
-      {chainId && profileMinted && (
-        <ButtonBase classes={{ root: classes.button }} sx={sx} onClick={handleClick}>
-          <Avatar src={getSmallAvatarURL(walletCurrentAddress)} sx={{ width: 24, height: 24, marginRight: "0.8rem" }}></Avatar>
+          <Img
+            src={getSmallAvatarURL(walletCurrentAddress)}
+            style={{ width: 24, height: 24, marginRight: "0.8rem" }}
+            placeholder="/imgs/skelly/avatarPlaceholder.svg"
+          ></Img>
           <Box sx={{ lineHeight: "1.6rem", textAlign: "left" }}>
             <strong style={{ fontSize: "1.2rem" }}>{username}</strong>
             <p style={{ fontSize: "1.2rem" }}>{truncateAddress(walletCurrentAddress as string)}</p>
           </Box>
           <SvgIcon className={cx(classes.endIcon, open && classes.reverseEndIcon)} component={DownTriangleSvg} inheritViewBox></SvgIcon>
+        </ButtonBase>
+      )
+    }
+    return (
+      <ButtonBase classes={{ root: classes.button }} sx={sx} onClick={handleClick}>
+        {truncateAddress(walletCurrentAddress as string)}
+        <SvgIcon className={cx(classes.endIcon, open && classes.reverseEndIcon)} component={DownTriangleSvg} inheritViewBox></SvgIcon>
+      </ButtonBase>
+    )
+  }
+
+  return (
+    <>
+      {walletCurrentAddress ? (
+        <>{renderCurrentWallet()}</>
+      ) : (
+        <ButtonBase classes={{ root: cx(classes.button, classes.connectButton) }} sx={sx} onClick={connect}>
+          Connect Wallet
         </ButtonBase>
       )}
 

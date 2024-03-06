@@ -1,7 +1,7 @@
 import { Contract } from "ethers"
 import { create } from "zustand"
 
-import { fetchSkellyDetail as fetchSkelly, getAttachedBadges, querySkellyUsername } from "@/services/skellyService"
+import { fetchSkellyDetail, getAttachedBadges, querySkellyUsername } from "@/services/skellyService"
 
 export enum MintStep {
   REFERRAL_CODE = "referralCode",
@@ -47,6 +47,7 @@ interface SkellyStore {
 
   profileMintedLoading: boolean
   profileDetailLoading: boolean
+  walletDetailLoading: boolean
   queryUsernameLoading: boolean
   profileAddress: string | null
   profileMinted: boolean | null
@@ -87,6 +88,7 @@ const useSkellyStore = create<SkellyStore>()((set, get) => ({
   profileMintedLoading: false,
   profileDetailLoading: false,
   queryUsernameLoading: false,
+  walletDetailLoading: false,
   networkErrorVisible: false,
   username: "",
   skellyUsername: "",
@@ -118,8 +120,8 @@ const useSkellyStore = create<SkellyStore>()((set, get) => ({
       return { profileAddress: null, minted: null }
     }
   },
-  fetchOthersSkellyDetail: async (prividerOrSigner, othersAddress, profileAddress) => {
-    const { name, userBadges, attachedBadges, badgeOrder } = await fetchSkelly(prividerOrSigner, othersAddress, profileAddress)
+  fetchOthersSkellyDetail: async (privider, othersAddress, profileAddress) => {
+    const { name, userBadges, attachedBadges, badgeOrder } = await fetchSkellyDetail(privider, othersAddress, profileAddress)
     set({
       skellyUsername: name,
       userBadges,
@@ -130,28 +132,29 @@ const useSkellyStore = create<SkellyStore>()((set, get) => ({
 
   // fetch wallet profile when viewing others skelly
   checkAndFetchCurrentWalletSkelly: async (prividerOrSigner, unsignedProfileRegistryContract, walletAddress) => {
+    set({
+      walletDetailLoading: true,
+    })
     const { minted, profileAddress } = await get().checkIfProfileMinted(unsignedProfileRegistryContract, walletAddress)
+
     if (minted) {
       const { profileContract, name } = await querySkellyUsername(prividerOrSigner, profileAddress)
       set({
         username: name,
-        profileMinted: true,
         profileContract,
-        profileAddress,
+        walletDetailLoading: false,
       })
     } else {
       set({
         username: "",
-        profileMinted: false,
         profileContract: null,
-        profileAddress: "",
+        walletDetailLoading: false,
       })
     }
   },
 
   fetchCurrentSkellyDetail: async (signer, walletAddress, profileAddress) => {
-    const { name, profileContract, userBadges, attachedBadges, badgeOrder } = await fetchSkelly(signer, walletAddress, profileAddress)
-
+    const { name, profileContract, userBadges, attachedBadges, badgeOrder } = await fetchSkellyDetail(signer, walletAddress, profileAddress)
     set({
       username: name,
       skellyUsername: name,

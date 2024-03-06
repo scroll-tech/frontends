@@ -1,3 +1,5 @@
+import Img from "react-cool-img"
+
 import { Box, Tooltip } from "@mui/material"
 import { tooltipClasses } from "@mui/material/Tooltip"
 import { styled } from "@mui/system"
@@ -78,7 +80,12 @@ const Badge = ({ badge, index, badgewidth }) => {
         }}
         onClick={handleShowBadgeDetailDialog}
       >
-        <img alt={badge.metadata?.name} style={{ width: "100%", borderRadius: "0.8rem" }} src={getBadgeImgURL(badge.metadata?.image)} />
+        <Img
+          alt={badge.metadata?.name}
+          style={{ width: "100%", borderRadius: "0.8rem" }}
+          src={getBadgeImgURL(badge.metadata?.image)}
+          placeholder="/imgs/skelly/badgePlaceholder.svg"
+        />
       </BadgeBox>
     </CustomTooltip>
   )
