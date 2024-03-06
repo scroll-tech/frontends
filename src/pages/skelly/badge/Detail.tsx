@@ -1,4 +1,4 @@
-import { Contract } from "ethers"
+import { Contract, isAddress } from "ethers"
 import { useEffect, useMemo, useState } from "react"
 import Img from "react-cool-img"
 import { useParams } from "react-router-dom"
@@ -82,8 +82,12 @@ const Detail = props => {
     return generateShareTwitterURL(viewURL, `Here is my badge ${detail.name}`)
   }, [id, detail])
 
+  const isBadgeDefaultInfo = useMemo(() => {
+    return isAddress(id)
+  }, [id])
+
   const viewSkellyURL = useMemo(() => {
-    if (walletCurrentAddress === detail.walletAddress) {
+    if (walletCurrentAddress === detail.walletAddress || !detail.walletAddress) {
       return "/scroll-skelly"
     }
     return `/scroll-skelly/${detail.walletAddress}`
@@ -101,23 +105,53 @@ const Detail = props => {
   }
   useEffect(() => {
     if (publicProvider && unsignedProfileRegistryContract) {
-      fetchBadgeDetailById(id)
+      if (isBadgeDefaultInfo) {
+        fetchBadgeDetailByBadgeContract(id)
+      } else {
+        fetchBadgeDetailByBadgeId(id)
+      }
     }
   }, [unsignedProfileRegistryContract, publicProvider, id])
 
-  const fetchBadgeDetailById = async id => {
+  const fetchBadgeDetailByBadgeId = async id => {
     setLoading(true)
     try {
       const [{ attester, time, data }] = await queryBadgeDetailById(id)
       const name = await fetchBadgeOwnerName(publicProvider, attester)
       const [badgeContract] = decodeBadgePayload(data)
       const badgeMetadata = await getBadgeMetadata(publicProvider, badgeContract, id)
+
       const badgeDetail = {
         ...badgeMetadata,
         walletAddress: attester,
         owner: name,
         ownerLogo: getSmallAvatarURL(attester),
         mintedOn: formatDate(time * 1000),
+        badgeContract,
+        issuer: badgeMap[badgeContract]?.issuer,
+      }
+      if (isOriginsNFTBadge(badgeContract)) {
+        const rarityNum = badgeMetadata.attributes.find(item => item.trait_type === "Rarity").value
+        badgeDetail.rarity = NFT_RARITY_MAP[rarityNum]
+      }
+      setDetail(badgeDetail)
+    } catch (e) {
+      setErrorMessage("Error")
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const fetchBadgeDetailByBadgeContract = async badgeContract => {
+    if (isOriginsNFTBadge(badgeContract)) {
+      return setDetail(badgeMap[badgeContract])
+    }
+    setLoading(true)
+    try {
+      const badgeMetadata = await getBadgeMetadata(publicProvider, badgeContract)
+
+      const badgeDetail = {
+        ...badgeMetadata,
         badgeContract,
         issuer: badgeMap[badgeContract]?.issuer,
       }
@@ -203,26 +237,36 @@ const Detail = props => {
           </Typography>
         </Box>
 
-        <InfoBox gap={isMobile ? "2.4rem" : "4.8rem"}>
-          <RouterLink to={`/scroll-skelly/${detail.walletAddress}`}>
-            <Statistic label="Owner" loading={loading} sx={{ "& *": { cursor: "pointer !important" } }}>
-              <Avatar src={detail.ownerLogo}></Avatar>
-              {detail.owner}
+        {isBadgeDefaultInfo ? (
+          <InfoBox gap={isMobile ? "2.4rem" : "4.8rem"}>
+            <Statistic label="Issued by" loading={loading}>
+              <Avatar src={detail.issuer?.logo}></Avatar>
+              {detail.issuer?.name}
             </Statistic>
-          </RouterLink>
-          <Statistic label="Issued by" loading={loading}>
-            <Avatar src={detail.issuer?.logo}></Avatar>
-            {detail.issuer?.name}
-          </Statistic>
-          <Statistic label="Minted on" loading={loading}>
-            {detail.mintedOn}
-          </Statistic>
-          {detail.rarity && (
-            <Statistic label="Badge Rarity" loading={loading}>
-              {detail.rarity}
+          </InfoBox>
+        ) : (
+          <InfoBox gap={isMobile ? "2.4rem" : "4.8rem"}>
+            <RouterLink to={`/scroll-skelly/${detail.walletAddress}`}>
+              <Statistic label="Owner" loading={loading} sx={{ "& *": { cursor: "pointer !important" } }}>
+                <Avatar src={detail.ownerLogo}></Avatar>
+                {detail.owner}
+              </Statistic>
+            </RouterLink>
+            <Statistic label="Issued by" loading={loading}>
+              <Avatar src={detail.issuer?.logo}></Avatar>
+              {detail.issuer?.name}
             </Statistic>
-          )}
-        </InfoBox>
+            <Statistic label="Minted on" loading={loading}>
+              {detail.mintedOn}
+            </Statistic>
+            {detail.rarity && (
+              <Statistic label="Badge Rarity" loading={loading}>
+                {detail.rarity}
+              </Statistic>
+            )}
+          </InfoBox>
+        )}
+
         <Stack direction="row" gap="1.6rem" alignItems="center">
           <ScrollButton color="primary" href={viewEASScanURL(id)} target="_blank">
             View on EAS

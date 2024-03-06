@@ -17,6 +17,8 @@ import { CHAIN_ID, EXPLORER_URL } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useBridgeStore from "@/stores/bridgeStore"
+import { MintStep } from "@/stores/skellyStore"
+import useSkellyStore from "@/stores/skellyStore"
 import { generateExploreLink, truncateAddress } from "@/utils"
 
 const useStyles = makeStyles<any>()((theme, { dark }) => ({
@@ -86,6 +88,7 @@ const WalletDropdown = props => {
   const { walletCurrentAddress, connect, disconnect, chainId } = useRainbowContext()
   const { changeHistoryVisible } = useBridgeStore()
   const { username, hasMintedProfile } = useSkellyContext()
+  const { changeMintStep } = useSkellyStore()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [copied, setCopied] = useState(false)
@@ -117,6 +120,8 @@ const WalletDropdown = props => {
         label: "Scroll Skelly",
         action: () => {
           navigate("/scroll-skelly")
+          changeMintStep(MintStep.REFERRAL_CODE)
+          handleClose()
         },
       },
       {
