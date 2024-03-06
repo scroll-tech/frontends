@@ -80,11 +80,6 @@ const sepoliaNavigations = [
 ]
 
 const mainnetNavigations = [
-  // {
-  //   label: "Our Story",
-  //   key: "story",
-  //   href: "/story",
-  // },
   {
     label: "Develop",
     key: "develop",
@@ -184,6 +179,11 @@ const mainnetNavigations = [
             key: "brand kit",
             href: "/brand-kit",
             rootKey: "resources",
+          },
+          {
+            label: "Our Story",
+            key: "story",
+            href: "/story",
           },
           {
             label: "Forum",
