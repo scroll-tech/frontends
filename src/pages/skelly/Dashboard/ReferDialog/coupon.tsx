@@ -7,13 +7,13 @@ import { Box, Button, Menu, MenuItem, Skeleton, Stack, SvgIcon, Typography } fro
 import { styled } from "@mui/system"
 
 import { fetchCodeByAdd, getInviteUrlByCode } from "@/apis/skelly"
-import { ReactComponent as CopySuccessSvg } from "@/assets/svgs/bridge/copy-success.svg"
 import { ReactComponent as TwitterSvg } from "@/assets/svgs/nft/twitter.svg"
+import { ReactComponent as CopySuccessSvg } from "@/assets/svgs/skelly/copy-success.svg"
 import couponBackground from "@/assets/svgs/skelly/coupon.svg"
 import { ReactComponent as LogoSvg } from "@/assets/svgs/skelly/logo.svg"
 import { ReactComponent as ShareSvg } from "@/assets/svgs/skelly/share.svg"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { useSkellyContext } from "@/contexts/SkellyContextProvider"
+import useSkellyStore from "@/stores/skellyStore"
 
 const CouponBox = styled(Box)(({ theme }) => ({
   background: `url(${couponBackground}) no-repeat center center`,
@@ -82,7 +82,7 @@ const Coupon = () => {
   const [codeCopied, setCodeCopied] = useState(false)
   const [linkCopied, setLinkCopied] = useState(false)
 
-  const { username } = useSkellyContext()
+  const { username } = useSkellyStore()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
