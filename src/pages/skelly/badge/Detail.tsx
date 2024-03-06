@@ -171,7 +171,7 @@ const Detail = props => {
         {loading ? (
           <Skeleton variant="rectangular" sx={{ backgroundColor: "rgba(256, 256, 256, 0.15)", height: "100%", borderRadius: "1rem" }}></Skeleton>
         ) : (
-          <Img src={getBadgeImgURL(detail.image)} alt="badge image" />
+          <Img src={getBadgeImgURL(detail.image)} style={{ borderRadius: "0.8rem" }} alt="badge image" />
         )}
       </Box>
       <Stack direction="column" spacing={isPortrait ? "2.4rem" : "4.8rem"} alignItems={isLandscape ? "flex-start" : "center"}>

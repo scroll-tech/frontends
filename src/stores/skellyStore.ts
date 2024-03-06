@@ -8,6 +8,7 @@ export enum MintStep {
 export enum BadgeDetailDialogTpye {
   HIDDEN = "",
   MINT = "mint",
+  MINT_WITH_BACK = "mintWithBack",
   MINTED = "minted",
   UPGRADE = "upgrade",
   VIEW = "view",
