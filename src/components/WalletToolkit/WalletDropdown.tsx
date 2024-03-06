@@ -15,6 +15,7 @@ import { ReactComponent as DownTriangleSvg } from "@/assets/svgs/wallet-connecto
 import { ReactComponent as ProfileSvg } from "@/assets/svgs/wallet-connector/profile.svg"
 import { CHAIN_ID, EXPLORER_URL } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useBridgeStore from "@/stores/bridgeStore"
 import useSkellyStore, { MintStep } from "@/stores/skellyStore"
 import { generateExploreLink, truncateAddress } from "@/utils"
@@ -84,14 +85,22 @@ const WalletDropdown = props => {
   const { pathname } = useLocation()
   const navigate = useNavigate()
 
-  const { walletCurrentAddress, connect, disconnect, chainId } = useRainbowContext()
+  const { walletCurrentAddress, provider, connect, disconnect, chainId } = useRainbowContext()
   const { changeHistoryVisible } = useBridgeStore()
-  const { username } = useSkellyContext()
+
+  const { unsignedProfileRegistryContract } = useSkellyContext()
+  const { username, profileMinted, changeMintStep, walletDetailLoading, checkAndFetchCurrentWalletSkelly } = useSkellyStore()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [copied, setCopied] = useState(false)
 
   const open = useMemo(() => Boolean(anchorEl), [anchorEl])
+
+  useEffect(() => {
+    if (provider && unsignedProfileRegistryContract && walletCurrentAddress) {
+      checkAndFetchCurrentWalletSkelly(provider, unsignedProfileRegistryContract, walletCurrentAddress)
+    }
+  }, [provider, unsignedProfileRegistryContract, walletCurrentAddress])
 
   const handleClick = e => {
     setAnchorEl(e.currentTarget)
