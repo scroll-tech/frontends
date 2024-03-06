@@ -9,7 +9,7 @@ import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useSkellyStore, { MintStep } from "@/stores/skellyStore"
 
-import ReferralCode from "./referralCode"
+import ReferralCodeInput from "./ReferralCodeInput"
 
 const Container = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -46,7 +46,7 @@ const SubTitle = styled(Typography)(({ theme }) => ({
   lineHeight: "3.2rem",
 }))
 
-const Mint = props => {
+const ReferralCode = props => {
   const { code } = props
   const navigate = useNavigate()
   const { isMobile } = useCheckViewport()
@@ -56,9 +56,9 @@ const Mint = props => {
 
   const handleContinue = async () => {
     if (code) {
-      navigate("/scroll-skelly")
+      navigate("/scroll-skelly/mint")
     }
-    changeMintStep(MintStep.PROFILE)
+    changeMintStep(MintStep.NAME)
   }
 
   return (
@@ -68,7 +68,7 @@ const Mint = props => {
       <Box sx={{ width: "66.5rem", height: "29.8rem", mt: "4.8rem", mb: "3rem" }}>
         <img src="/imgs/skelly/heartbeat.webp" alt="heartbeat"></img>
       </Box>
-      <ReferralCode code={code} isChecking={isChecking} setIsChecking={setIsChecking} />
+      <ReferralCodeInput code={code} isChecking={isChecking} setIsChecking={setIsChecking} />
 
       {walletCurrentAddress ? (
         <Button color="primary" gloomy={isChecking} width={isMobile ? "23rem" : "28.2rem"} onClick={handleContinue}>
@@ -83,4 +83,4 @@ const Mint = props => {
   )
 }
 
-export default Mint
+export default ReferralCode

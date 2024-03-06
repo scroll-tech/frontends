@@ -9,7 +9,6 @@ import { ReactComponent as CloseSvg } from "@/assets/svgs/skelly/close.svg"
 import { ReactComponent as EmptySvg } from "@/assets/svgs/skelly/empty.svg"
 import Button from "@/components/Button"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useSkellyStore from "@/stores/skellyStore"
 
 import BadgeItem from "./BadgeItem"
@@ -53,8 +52,7 @@ const StyledList = styled(List)(({ theme }) => ({
 }))
 
 const UpgradeDialog = () => {
-  const { upgradeDialogVisible, changeUpgradeDialog } = useSkellyStore()
-  const { userBadges } = useSkellyContext()
+  const { upgradeDialogVisible, changeUpgradeDialog, userBadges } = useSkellyStore()
   const { walletCurrentAddress, provider } = useRainbowContext()
   const navigate = useNavigate()
 

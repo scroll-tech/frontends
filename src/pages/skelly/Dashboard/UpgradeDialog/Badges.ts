@@ -31,17 +31,11 @@ const Badges = [
       const nftContract = new ethers.Contract(SCROLL_ORIGINS_NFT, ScrollOriginsNFTABI, provider)
       const nftV2Contract = new ethers.Contract(SCROLL_ORIGINS_NFT_V2, ScrollOriginsNFTABI, provider)
 
-      try {
-        await nftContract.tokenOfOwnerByIndex(address, 0)
-        return true
-      } catch (error) {
-        try {
-          await nftV2Contract.tokenOfOwnerByIndex(address, 0)
-          return true
-        } catch (error) {
-          return false
-        }
+      let balance = await nftContract.balanceOf(address)
+      if (!balance) {
+        balance = await nftV2Contract.balanceOf(address)
       }
+      return !!balance
     },
   },
   {

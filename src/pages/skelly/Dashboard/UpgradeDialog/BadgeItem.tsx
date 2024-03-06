@@ -3,7 +3,6 @@ import { useEffect } from "react"
 import { Avatar, ListItem, ListItemAvatar, ListItemText, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
-import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import Button from "@/pages/skelly/components/Button"
 import useSkellyStore, { BadgeDetailDialogTpye } from "@/stores/skellyStore"
 
@@ -44,8 +43,8 @@ const StyledListItemText = styled(ListItemText)(({ theme }) => ({
 const StyledButton = styled(Button)(({ theme }) => ({}))
 
 const BadgeItem = ({ badge }) => {
-  const { changeBadgeDetailDialog, changeSelectedBadge } = useSkellyStore()
-  const { userBadges } = useSkellyContext()
+  const { changeBadgeDetailDialog, changeSelectedBadge, userBadges } = useSkellyStore()
+  // const [loading, setLoading] = useState(false)
   // const userBadgesLength = userBadges.length
 
   // const checkEligibility = async () => {
