@@ -183,6 +183,6 @@ declare module "@mui/material/Typography" {
 
 declare module "@mui/material/Button" {
   interface ButtonPropsColorOverrides {
-    dark?: boolean
+    tertiary?: boolean
   }
 }

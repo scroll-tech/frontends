@@ -37,7 +37,7 @@ type SkellyContextProps = {
   attachBadges: (badgeAddresses: string[]) => void
   detachBadges: (badgeAddresses: string[]) => void
   customiseDisplay: (attachBadges: string[], detachBadges: string[], order?: number[]) => void
-  mintBadge: (nftAddress: string | null | [], nftAbi: [] | null, badgeAddress: string) => void
+  mintBadge: (nftAddress: string | null | [], nftAbi: [] | null, badgeContract: string) => void
   queryUserBadgesWrapped: (userAddress?: string) => void
   getAttachedBadges: (profileAddress?: string) => void
   reorderBadges: (badgeOrder: number[]) => void
@@ -294,9 +294,9 @@ const SkellyContextProvider = ({ children }: any) => {
     }
   }
 
-  // const attachOneBadge = async badgeAddress => {
+  // const attachOneBadge = async badgeContract => {
   //   try {
-  //     const tx = await profileContract!.attachOne(badgeAddress)
+  //     const tx = await profileContract!.attachOne(badgeContract)
   //     await tx.wait()
   //     console.log("Badge attached successfully!")
   //   } catch (error) {
@@ -369,13 +369,13 @@ const SkellyContextProvider = ({ children }: any) => {
     }
   }
 
-  const mintBadge = async (nftAddress, nftAbi, badgeAddress) => {
+  const mintBadge = async (nftAddress, nftAbi, badgeContract) => {
     const signer = await provider!.getSigner(0)
     // for testing
 
     if (!nftAddress || !nftAbi) {
       const abiCoder = new AbiCoder()
-      const badgePayload = abiCoder.encode(["address", "bytes"], [badgeAddress, "0x"])
+      const badgePayload = abiCoder.encode(["address", "bytes"], [badgeContract, "0x"])
       const easContract = new ethers.Contract(SCROLL_SEPOLIA_EAS_ADDRESS, AttestProxyABI, signer)
       const attestParams = {
         schema: SCROLL_SEPOLIA_BADGE_SCHEMA,
@@ -418,7 +418,7 @@ const SkellyContextProvider = ({ children }: any) => {
       }
       const abiCoder = new AbiCoder()
       const originsBadgePayload = abiCoder.encode(["address", "uint256"], [nftAddress[nftVersion], tokenId])
-      const badgePayload = abiCoder.encode(["address", "bytes"], [badgeAddress, originsBadgePayload])
+      const badgePayload = abiCoder.encode(["address", "bytes"], [badgeContract, originsBadgePayload])
       const easContract = new ethers.Contract(SCROLL_SEPOLIA_EAS_ADDRESS, AttestProxyABI, signer)
       const attestParams = {
         schema: SCROLL_SEPOLIA_BADGE_SCHEMA,

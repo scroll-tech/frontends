@@ -139,7 +139,7 @@ const Mint = () => {
       </Box>
 
       <Button gloomy={!!helpText || validating} color="primary" loading={isMinting} width={isMobile ? "23rem" : "28.2rem"} onClick={handleMint}>
-        {isMinting ? "Minting" : "Minting now"}
+        {isMinting ? "Minting" : "Mint now"}
       </Button>
       <InsufficientDialog open={insufficientDialogOpen} onClose={() => setInsufficientDialogOpen(false)} />
     </Container>

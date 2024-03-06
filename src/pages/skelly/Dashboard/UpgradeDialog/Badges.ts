@@ -16,8 +16,8 @@ const Badges = [
     name: "Scroll Origins NFT",
     nftAddress: [SCROLL_ORIGINS_NFT, SCROLL_ORIGINS_NFT_V2],
     nftAbi: ScrollOriginsNFTABI,
-    badgeAddress: SCROLL_SEPOLIA_ORIGINS_BADGE_ADDRESS,
-    nftDefaultURI: "/imgs/skelly/OriginsNFT.svg",
+    badgeContract: SCROLL_SEPOLIA_ORIGINS_BADGE_ADDRESS,
+    image: "/imgs/skelly/OriginsNFT.svg",
     native: true,
     originsNFT: true,
     issuer: {
@@ -46,8 +46,8 @@ const Badges = [
     name: "Simple Badge A",
     nftAddress: null,
     nftAbi: null,
-    badgeAddress: SCROLL_SEPOLIA_SIMPLE_BADGE_A_ADDRESS,
-    nftDefaultURI: "https://cloudflare-ipfs.com/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/1.png",
+    badgeContract: SCROLL_SEPOLIA_SIMPLE_BADGE_A_ADDRESS,
+    image: "https://cloudflare-ipfs.com/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/1.png",
     native: false,
     issuer: {
       origin: "https://example.org",
@@ -60,8 +60,8 @@ const Badges = [
     name: "Simple Badge B",
     nftAddress: null,
     nftAbi: null,
-    badgeAddress: SCROLL_SEPOLIA_SIMPLE_BADGE_B_ADDRESS,
-    nftDefaultURI: "https://cloudflare-ipfs.com/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/2.png",
+    badgeContract: SCROLL_SEPOLIA_SIMPLE_BADGE_B_ADDRESS,
+    image: "https://cloudflare-ipfs.com/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/2.png",
     native: false,
     issuer: {
       origin: "https://example.org",
@@ -74,8 +74,8 @@ const Badges = [
     name: "Simple Badge C",
     nftAddress: null,
     nftAbi: null,
-    badgeAddress: SCROLL_SEPOLIA_SIMPLE_BADGE_C_ADDRESS,
-    nftDefaultURI: "https://cloudflare-ipfs.com/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/3.png",
+    badgeContract: SCROLL_SEPOLIA_SIMPLE_BADGE_C_ADDRESS,
+    image: "https://cloudflare-ipfs.com/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/3.png",
     native: false,
     issuer: {
       origin: "https://example.org",
@@ -87,7 +87,7 @@ const Badges = [
 ]
 
 export const badgeMap = Object.fromEntries(
-  Badges.map(({ badgeAddress, native, originsNFT, issuer, nftDefaultURI }) => [badgeAddress, { native, originsNFT, issuer, nftDefaultURI }]),
+  Badges.map(({ badgeContract, native, originsNFT, issuer, image }) => [badgeContract, { native, originsNFT, issuer, image }]),
 )
 
 export default Badges

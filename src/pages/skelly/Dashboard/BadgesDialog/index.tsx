@@ -5,30 +5,27 @@ import { useState } from "react"
 import { Dialog, DialogContent, DialogTitle, IconButton, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
-import { ReactComponent as CloseSvg } from "@/assets/svgs/bridge/close.svg"
+import { ReactComponent as CloseSvg } from "@/assets/svgs/skelly/close.svg"
 import { BADGES_VISIBLE_TYPE } from "@/constants"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import Button from "@/pages/skelly/components/Button"
 // import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useSkellyStore from "@/stores/skellyStore"
 
+import Empty from "../../components/Empty"
 import GridDragDrop from "./GridDragDrop"
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
   borderRadius: "1.6rem",
   backgroundColor: "rgba(16, 16, 16, 0.60)",
-  // backdropFilter: "blur(50px)",
   "& .MuiDialog-paper": {
-    // background: "linear-gradient(114deg, #2A2A2A 0%, rgba(27, 27, 27, 0.60) 100%)",
-    // backdropFilter: "blur(50px)",
     backgroundColor: "#101010",
-    maxWidth: "120rem",
     width: "100%",
   },
 }))
 
 const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
-  padding: "3rem",
+  padding: "0 3.2rem 4.8rem",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -91,16 +88,8 @@ const BadgesDialog = () => {
       }
     })
 
-    // const newOrder = displayedIds.map(id => data.Displayed.findIndex(item => item.id === id)).filter(index => index !== -1);
     const newArrayOrder: number[] = calculateRelativeOrder(originalIds, currentDisplayedIds)
 
-    console.log("hiddle -> visible:", hiddenToDisplayed)
-    console.log("visible -> hidden:", displayedToHidden)
-    console.log("newArrayOrder:", newArrayOrder)
-    // console.log('item order:', newOrder);
-
-    // setData(updatedData)
-    // setOrder(newOrder)
     if (hiddenToDisplayed.length > 0) {
       const result = await attachBadges(hiddenToDisplayed)
       if (result! !== true) {
@@ -137,7 +126,16 @@ const BadgesDialog = () => {
   }
 
   return (
-    <StyledDialog maxWidth={false} onClose={handleClose} open={badgesDialogVisible}>
+    <StyledDialog
+      sx={{
+        [`& .MuiDialog-paper`]: {
+          width: userBadges.length ? "120rem" : "64rem",
+        },
+      }}
+      maxWidth={false}
+      onClose={handleClose}
+      open={badgesDialogVisible}
+    >
       <DialogTitle
         sx={{
           m: 0,
@@ -147,23 +145,29 @@ const BadgesDialog = () => {
           alignItems: "center",
         }}
       >
-        <Typography variant="h3" sx={{ flexGrow: 1, color: "#ffffff", textAlign: "center" }}>
-          Drag badges to cutomize
-        </Typography>
-        <IconButton sx={{ p: 0, "&:hover": { backgroundColor: "unset" } }}>
-          <SvgIcon sx={{ fontSize: ["1.6rem", "1.8rem"] }} component={CloseSvg} inheritViewBox></SvgIcon>
+        <IconButton onClick={handleClose}>
+          <SvgIcon sx={{ fontSize: ["1.6rem", "2.4rem"], color: "primary.contrastText" }} component={CloseSvg} inheritViewBox></SvgIcon>
         </IconButton>
       </DialogTitle>
       <StyledDialogContent>
-        <GridDragDrop badgesInstance={badgesInstance} />
-        <Stack direction="row" justifyContent="center" gap="1.6rem">
-          <Button color="secondary" onClick={handleClose}>
-            Cancel
-          </Button>
-          <Button loading={loading} color="primary" variant="contained" onClick={handleSave}>
-            {loading ? "Saving" : "Save Changes"}
-          </Button>
-        </Stack>
+        <Typography variant="h3" sx={{ flexGrow: 1, color: "#ffffff", textAlign: "center" }}>
+          Drag badges to cutomize
+        </Typography>
+        {userBadges.length ? (
+          <>
+            <GridDragDrop badgesInstance={badgesInstance} />
+            <Stack direction="row" justifyContent="center" gap="1.6rem">
+              <Button color="secondary" onClick={handleClose}>
+                Cancel
+              </Button>
+              <Button loading={loading} color="primary" variant="contained" onClick={handleSave}>
+                {loading ? "Saving" : "Save Changes"}
+              </Button>
+            </Stack>
+          </>
+        ) : (
+          <Empty title="No eligible badges for customize" />
+        )}
       </StyledDialogContent>
     </StyledDialog>
   )
