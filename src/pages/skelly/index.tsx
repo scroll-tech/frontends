@@ -1,8 +1,9 @@
+import { useEffect } from "react"
 import { Navigate } from "react-router-dom"
 
 import GlobalComponents from "@/components/GlobalComponents"
 import BridgeContextProvider from "@/contexts/BridgeContextProvider"
-import { useSkellyContext } from "@/contexts/SkellyContextProvider"
+import { MintedStatus, useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useSkellyStore, { MintStep } from "@/stores/skellyStore"
 
 import Dashboard from "./Dashboard"
@@ -16,6 +17,10 @@ const Skelly = props => {
   const { hasMintedProfile } = useSkellyContext()
   const { mintStep } = useSkellyStore()
 
+  useEffect(() => {
+    console.log("hasMintedProfile", hasMintedProfile)
+  }, [hasMintedProfile])
+
   if (code && hasMintedProfile) {
     return <Navigate to="/scroll-skelly"></Navigate>
   }
@@ -23,9 +28,9 @@ const Skelly = props => {
   return (
     <BridgeContextProvider>
       <GlobalComponents></GlobalComponents>
-      {hasMintedProfile && <Dashboard />}
-      {!hasMintedProfile && mintStep === MintStep.REFERRAL_CODE && <LandingPage code={code} />}
-      {!hasMintedProfile && mintStep === MintStep.PROFILE && <MintPage />}
+      {hasMintedProfile !== MintedStatus.NOT_MINTED && <Dashboard />}
+      {hasMintedProfile === MintedStatus.NOT_MINTED && mintStep === MintStep.REFERRAL_CODE && <LandingPage code={code} />}
+      {hasMintedProfile === MintedStatus.NOT_MINTED && mintStep === MintStep.PROFILE && <MintPage />}
       {/* <WrongNetwork /> */}
     </BridgeContextProvider>
   )

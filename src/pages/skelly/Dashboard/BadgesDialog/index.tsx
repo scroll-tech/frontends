@@ -1,3 +1,4 @@
+import { isEqual } from "lodash"
 import { useEffect, useMemo } from "react"
 import { useState } from "react"
 
@@ -34,12 +35,12 @@ const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
 }))
 
 const BadgesDialog = () => {
-  const { userBadges, attachedBadges, detachBadges, attachBadges, getAttachedBadges } = useSkellyContext()
+  const { userBadges, attachedBadges, detachBadges, attachBadges, getAttachedBadges, badgeOrder, reorderBadges } = useSkellyContext()
   const [loading, setLoading] = useState(false)
 
   const badgesInstance = useMemo(() => {
     return {
-      [BADGES_VISIBLE_TYPE.VISIBLE]: userBadges.filter(badge => attachedBadges.includes(badge.id)),
+      [BADGES_VISIBLE_TYPE.VISIBLE]: attachedBadges.map(badgeId => userBadges.find(badge => badge.id === badgeId)),
       [BADGES_VISIBLE_TYPE.INVISIBLE]: userBadges.filter(badge => !attachedBadges.includes(badge.id)),
     }
   }, [userBadges, attachedBadges])
@@ -47,7 +48,8 @@ const BadgesDialog = () => {
   const { badgesDialogVisible, changeBadgesDialog, sortedBadges } = useSkellyStore()
 
   useEffect(() => {
-    console.log("sortedBadges", sortedBadges)
+    // console.log("sortedBadges", sortedBadges)
+    // console.log("badgeOrder", badgeOrder)
   }, [sortedBadges])
 
   const handleClose = () => {
@@ -60,7 +62,15 @@ const BadgesDialog = () => {
     // changeBadgesDialog(false)
   }
 
+  const calculateRelativeOrder = (original, frontend) => {
+    const indexesInOriginal = frontend.map(element => original.indexOf(element))
+    const sortedIndexes = [...indexesInOriginal].sort((a, b) => a - b)
+    const relativeOrder = indexesInOriginal.map(index => BigInt(sortedIndexes.indexOf(index) + 1))
+    return relativeOrder
+  }
+
   const updateDataAndOrder = async () => {
+    const originalIds = userBadges.map(item => item.id)
     const displayedIds = badgesInstance[BADGES_VISIBLE_TYPE.VISIBLE].map(item => item.id)
     const currentDisplayedIds = sortedBadges[BADGES_VISIBLE_TYPE.VISIBLE].map(item => item.id)
     const displayedSet = new Set(displayedIds)
@@ -81,13 +91,15 @@ const BadgesDialog = () => {
     })
 
     // const newOrder = displayedIds.map(id => data.Displayed.findIndex(item => item.id === id)).filter(index => index !== -1);
+    const newArrayOrder: number[] = calculateRelativeOrder(originalIds, currentDisplayedIds)
 
     console.log("hiddle -> visible:", hiddenToDisplayed)
     console.log("visible -> hidden:", displayedToHidden)
+    console.log("newArrayOrder:", newArrayOrder)
     // console.log('item order:', newOrder);
 
-    // setData(updatedData);
-    // setOrder(newOrder);
+    // setData(updatedData)
+    // setOrder(newOrder)
     if (hiddenToDisplayed.length > 0) {
       const result = await attachBadges(hiddenToDisplayed)
       if (result! !== true) {
@@ -110,6 +122,17 @@ const BadgesDialog = () => {
       }
       setLoading(false)
     }
+
+    if (!isEqual(badgeOrder, newArrayOrder)) {
+      const result = await reorderBadges(newArrayOrder)
+      if (result! !== true) {
+        console.log("mintBadge failed", result)
+      } else {
+        getAttachedBadges()
+        handleClose()
+      }
+    }
+    setLoading(false)
   }
 
   return (
@@ -137,7 +160,7 @@ const BadgesDialog = () => {
             Cancel
           </Button>
           <Button loading={loading} color="primary" variant="contained" onClick={handleSave}>
-            Save Changes
+            {loading ? "Saving" : "Save Changes"}
           </Button>
         </Stack>
       </StyledDialogContent>

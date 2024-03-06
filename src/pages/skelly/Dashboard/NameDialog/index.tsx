@@ -39,7 +39,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const NameDialog = () => {
   const { profileDialogVisible, changeProfileDialog } = useSkellyStore()
-  const { username, checkIfProfileMinted, profileContract, queryUsername } = useSkellyContext()
+  const { username, profileContract, queryUsername } = useSkellyContext()
   const [loading, setLoading] = useState(false)
 
   const [profileName, setProfileName] = useState(username)
@@ -65,10 +65,13 @@ const NameDialog = () => {
     setLoading(true)
     try {
       const tx = await profileContract!.changeUsername(profileName)
-      await tx.wait()
-      await checkIfProfileMinted()
-      queryUsername()
-      handleClose()
+      const txReceipt = await tx.wait()
+      if (txReceipt.status === 1) {
+        queryUsername()
+        handleClose()
+      } else {
+        return "due to any operation that can cause the transaction or top-level call to revert"
+      }
     } catch (error) {
       console.error("Failed to change username:", error)
     } finally {
@@ -144,7 +147,7 @@ const NameDialog = () => {
             sx={{ borderRadius: "0.8rem", width: "18.5rem", fontSize: "1.6rem", padding: "0" }}
             onClick={changeUsername}
           >
-            {loading ? "Saving Changes" : "Save Changes"}
+            {loading ? "Saving" : "Save Changes"}
           </Button>
         </Stack>
       </StyledDialogContent>

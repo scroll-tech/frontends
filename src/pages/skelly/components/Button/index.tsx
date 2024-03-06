@@ -94,7 +94,7 @@ const Button = (props: ScrollButtonProps) => {
       disabled={loading}
       {...restProps}
     >
-      {children} {loading && <CircularProgress sx={{ color: "inherit" }} size={isMobile ? 18 : 24} thickness={4}></CircularProgress>}
+      {children} {loading && <CircularProgress sx={{ color: "inherit" }} size={isMobile ? 16 : 16} thickness={4}></CircularProgress>}
     </ScrollButton>
   )
 }
