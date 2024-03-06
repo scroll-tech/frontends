@@ -5,10 +5,11 @@ import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { getAvatarURL } from "@/apis/skelly"
+import DefaultAvatar from "@/assets/images/skelly/Scrolly_Coding.png"
 // import { ReactComponent as DefaultAvatarSvg } from "@/assets/svgs/skelly/default-avatar.svg"
 // import { BADGES_VISIBLE_TYPE } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { useSkellyContext } from "@/contexts/SkellyContextProvider"
+import { MintedStatus, useSkellyContext } from "@/contexts/SkellyContextProvider"
 
 import Badge from "./Badge"
 
@@ -70,12 +71,12 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
   }, [hasMintedProfile])
 
   const visibleBadges = useMemo(() => {
-    return userBadges.filter(badge => attachedBadges.includes(badge.id))
+    return attachedBadges.map(badgeId => userBadges.find(badge => badge.id === badgeId))
   }, [userBadges, attachedBadges])
 
   useEffect(() => {
     setBadges(generatedBadges())
-  }, [badgewidth, windowDimensions, visibleBadges])
+  }, [badgewidth, windowDimensions, visibleBadges, userBadges])
 
   const generateBadgePositions = (divRect: DOMRect, badgewidth: number, badges: string[]): BadgePosition[] => {
     const positions: BadgePosition[] = []
@@ -129,6 +130,19 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
     return []
   }
 
+  const userInfo = useMemo(() => {
+    if (hasMintedProfile === MintedStatus.UNKNOWN) {
+      return {
+        name: "Loading...",
+        avatar: DefaultAvatar,
+      }
+    }
+    return {
+      name: skellyUsername,
+      avatar: getAvatarURL(realWalletAddress),
+    }
+  }, [realWalletAddress, skellyUsername, hasMintedProfile])
+
   return (
     <>
       <Profile
@@ -139,9 +153,9 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
         }}
       >
         <Box sx={{ width: "66.67%", paddingTop: "12%" }}>
-          <img src={getAvatarURL(realWalletAddress)} alt="avatar" width="100%"></img>
+          <img src={userInfo.avatar} alt="avatar" width="100%"></img>
         </Box>
-        <Name>{skellyUsername}</Name>
+        <Name>{userInfo.name}</Name>
       </Profile>
       {badges.map((badge, index) => (
         <Badge key={index} badge={badge} index={index} badgewidth={badgewidth} />
