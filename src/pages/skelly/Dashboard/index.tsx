@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { Helmet } from "react-helmet-async"
 import { useParams } from "react-router-dom"
+import { Navigate } from "react-router-dom"
 
 import { Box } from "@mui/material"
 import { styled } from "@mui/system"
@@ -91,6 +92,9 @@ const Dashboard = props => {
     }
   }, [windowDimensions, gridNum])
 
+  if (othersWalletAddress === walletCurrentAddress) {
+    return <Navigate to="/scroll-skelly" replace></Navigate>
+  }
   return (
     <>
       <Helmet>
