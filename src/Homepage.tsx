@@ -4,7 +4,9 @@ import { Route, Routes } from "react-router-dom"
 import { Box } from "@mui/material"
 
 import Footer from "@/components/Footer"
+import GlobalComponents from "@/components/GlobalComponents"
 import Header from "@/components/Header"
+import BridgeContextProvider from "@/contexts/BridgeContextProvider"
 import RainbowProvider from "@/contexts/RainbowProvider"
 import SkellyContextProvider from "@/contexts/SkellyContextProvider"
 import ScrollToTop from "@/hooks/useScrollToTop"
@@ -63,18 +65,21 @@ function Homepage() {
         <meta name="twitter:image" content={getImageUrl("twitter")} />
       </Helmet>
       <RainbowProvider>
-        <SkellyContextProvider>
-          <ScrollToTop>
-            <Header />
-            <Routes>
-              {routes.map((route, key) => (
-                <Route key={key} path={route.path} element={route.element} />
-              ))}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-            {isSepolia || route.isHiddenFooter ? null : <Footer />}
-          </ScrollToTop>
-        </SkellyContextProvider>
+        <BridgeContextProvider>
+          <SkellyContextProvider>
+            <ScrollToTop>
+              <Header />
+              <Routes>
+                {routes.map((route, key) => (
+                  <Route key={key} path={route.path} element={route.element} />
+                ))}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+              {isSepolia || route.isHiddenFooter ? null : <Footer />}
+            </ScrollToTop>
+          </SkellyContextProvider>
+          <GlobalComponents />
+        </BridgeContextProvider>
       </RainbowProvider>
     </Box>
   )
