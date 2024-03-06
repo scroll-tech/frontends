@@ -160,15 +160,9 @@ const queryUserBadgesWrapped = async (provider, userAddress) => {
   }
 }
 
-const querySkellyUsername = async (signerOrProvider, profile) => {
+const querySkellyUsername = async (provider, profileAddress) => {
   try {
-    // let signerOrProvider
-    // if (isL2) {
-    //   signerOrProvider = await provider?.getSigner(0)
-    // } else {
-    //   signerOrProvider = publicProvider
-    // }
-    const profileContract = new ethers.Contract(profile, ProfileABI, signerOrProvider)
+    const profileContract = new ethers.Contract(profileAddress, ProfileABI, provider)
     const name = await profileContract.username()
     return { profileContract, name }
   } catch (error) {
@@ -203,9 +197,9 @@ const getBadgeOrder = async profileContract => {
   }
 }
 
-const fetchSkellyDetail = async (prividerOrSigner, othersAddress, profileAddress) => {
-  const { profileContract, name } = await querySkellyUsername(prividerOrSigner, profileAddress)
-  const userBadges = await queryUserBadgesWrapped(prividerOrSigner, othersAddress)
+const fetchSkellyDetail = async (privider, othersAddress, profileAddress) => {
+  const { profileContract, name } = await querySkellyUsername(privider, profileAddress)
+  const userBadges = await queryUserBadgesWrapped(privider, othersAddress)
   const attachedBadges = await getAttachedBadges(profileContract)
   const badgeOrder = await getBadgeOrder(profileContract)
   return { name, profileContract, userBadges, attachedBadges, badgeOrder }
@@ -287,6 +281,7 @@ const mintBadge = async (provider, walletCurrentAddress, nftAddress, nftAbi, bad
       tokenId = await nftV2Contract.tokenOfOwnerByIndex(walletCurrentAddress, 0)
       nftVersion = 1
     }
+    console.log(walletCurrentAddress, tokenId, "tokenId")
     const abiCoder = new AbiCoder()
     const originsBadgePayload = abiCoder.encode(["address", "uint256"], [nftAddress[nftVersion], tokenId])
     const badgePayload = abiCoder.encode(["address", "bytes"], [badgeAddress, originsBadgePayload])

@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react"
+import Img from "react-cool-img"
 import { useParams } from "react-router-dom"
 
 import { Box, Typography } from "@mui/material"
@@ -146,7 +147,7 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
         }}
       >
         <Box sx={{ width: "66.67%", paddingTop: "12%" }}>
-          <img src={userInfo.avatar} alt="avatar" width="100%"></img>
+          <Img src={userInfo.avatar} placeholder="/imgs/skelly/avatarPlaceholder.svg" alt="avatar" width="100%"></Img>
         </Box>
         <Name>{userInfo.name}</Name>
       </Profile>
