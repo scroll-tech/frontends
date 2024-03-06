@@ -1,7 +1,6 @@
 import { Stack } from "@mui/material"
 
 import Alert from "@/components/Alert/NFTAlert"
-import GlobalComponents from "@/components/GlobalComponents"
 import SectionWrapper from "@/components/SectionWrapper"
 import { MintableDate, SCROLL_ORIGINS_NFT } from "@/constants"
 import BridgeContextProvider from "@/contexts/BridgeContextProvider"
@@ -19,7 +18,6 @@ const ComingSoon = () => {
 
   return (
     <BridgeContextProvider>
-      <GlobalComponents></GlobalComponents>
       <SectionWrapper
         dark
         maxWidth="108rem"

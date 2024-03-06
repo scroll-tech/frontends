@@ -3,7 +3,6 @@ import { useEffect } from "react"
 
 import { Stack, Typography } from "@mui/material"
 
-import GlobalComponents from "@/components/GlobalComponents"
 import MintBadge from "@/components/MintBadge"
 import SectionWrapper from "@/components/SectionWrapper"
 import { NETWORKS } from "@/constants"
@@ -32,7 +31,6 @@ const Bridge = () => {
   return (
     <BridgeContextProvider>
       <PriceFeeProvider>
-        <GlobalComponents></GlobalComponents>
         <SectionWrapper
           sx={{
             pt: ["4.8rem", "8.4rem"],
