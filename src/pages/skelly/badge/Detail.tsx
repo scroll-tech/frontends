@@ -6,13 +6,14 @@ import { useParams } from "react-router-dom"
 import { Avatar, Box, Skeleton, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
-import { getAvatarURL, viewEASScanURL } from "@/apis/skelly"
+import { getSmallAvatarURL, viewEASScanURL } from "@/apis/skelly"
 import ProfileABI from "@/assets/abis/SkellyProfile.json"
 import { ReactComponent as ShareSvg } from "@/assets/svgs/skelly/share.svg"
 import ScrollButton from "@/components/Button"
 import Link from "@/components/Link"
 import RequestWarning from "@/components/RequestWarning"
 import { ANNOUNCING_SCROLL_ORIGINS_NFT, DESIGNING_SCROLL_ORIGINS, NFT_RARITY_MAP } from "@/constants"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import { getBadgeMetadata } from "@/services/skellyService"
@@ -69,6 +70,7 @@ const InfoBox = styled(Box)(({ theme }) => ({
 
 const Detail = props => {
   const { id } = useParams()
+  const { walletCurrentAddress } = useRainbowContext()
   const { unsignedProfileRegistryContract, publicProvider } = useSkellyContext()
 
   const [detail, setDetail] = useState<any>({})
@@ -78,6 +80,13 @@ const Detail = props => {
     const viewURL = `${requireEnv("REACT_APP_FFRONTENDS_URL")}/scroll-skelly/badge/${id}`
     return generateShareTwitterURL(viewURL, `Here is my badge ${detail.name}`)
   }, [id, detail])
+
+  const viewSkellyURL = useMemo(() => {
+    if (walletCurrentAddress === detail.walletAddress) {
+      return "/scroll-skelly"
+    }
+    return `/scroll-skelly/${detail.walletAddress}`
+  }, [walletCurrentAddress, detail])
 
   const fetchBadgeOwnerName = async (provider, walletAddress) => {
     try {
@@ -104,8 +113,9 @@ const Detail = props => {
       const badgeMetadata = await getBadgeMetadata(publicProvider, badgeContract, id)
       const badgeDetail = {
         ...badgeMetadata,
+        walletAddress: attester,
         owner: name,
-        ownerLogo: getAvatarURL(attester),
+        ownerLogo: getSmallAvatarURL(attester),
         mintedOn: formatDate(time * 1000),
         badgeContract,
         issuer: badgeMap[badgeContract]?.issuer,
@@ -193,10 +203,12 @@ const Detail = props => {
         </Box>
 
         <InfoBox gap={isMobile ? "2.4rem" : "4.8rem"}>
-          <Statistic label="Owner" loading={loading}>
-            <Avatar src={detail.ownerLogo}></Avatar>
-            {detail.owner}
-          </Statistic>
+          <Link href={`/scroll-skelly/${detail.walletAddress}`}>
+            <Statistic label="Owner" loading={loading} sx={{ "& *": { cursor: "pointer" } }}>
+              <Avatar src={detail.ownerLogo}></Avatar>
+              {detail.owner}
+            </Statistic>
+          </Link>
           <Statistic label="Issued by" loading={loading}>
             <Avatar src={detail.issuer?.logo}></Avatar>
             {detail.issuer?.name}
@@ -215,7 +227,7 @@ const Detail = props => {
             View on EAS
           </ScrollButton>
           {isNativeBadge(detail.badgeContract) ? (
-            <ScrollButton color="secondary" href="/scroll-skelly">
+            <ScrollButton color="secondary" href={viewSkellyURL}>
               Visit Scroll Skelly
             </ScrollButton>
           ) : (

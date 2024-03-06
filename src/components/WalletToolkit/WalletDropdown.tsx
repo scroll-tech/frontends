@@ -5,7 +5,7 @@ import { makeStyles } from "tss-react/mui"
 
 import { Avatar, Box, ButtonBase, Fade, ListItemIcon, ListItemText, Menu, MenuItem, SvgIcon } from "@mui/material"
 
-import { getAvatarURL } from "@/apis/skelly"
+import { getSmallAvatarURL } from "@/apis/skelly"
 import { ReactComponent as CopySuccessSvg } from "@/assets/svgs/bridge/copy-success.svg"
 import { ReactComponent as HistorySvg } from "@/assets/svgs/bridge/history.svg"
 import { ReactComponent as BlockSvg } from "@/assets/svgs/wallet-connector/block.svg"
@@ -162,7 +162,7 @@ const WalletDropdown = props => {
 
       {chainId && hasMintedProfile && (
         <ButtonBase classes={{ root: classes.button }} sx={sx} onClick={handleClick}>
-          <Avatar src={getAvatarURL(walletCurrentAddress)} sx={{ width: 24, height: 24, marginRight: "0.8rem" }}></Avatar>
+          <Avatar src={getSmallAvatarURL(walletCurrentAddress)} sx={{ width: 24, height: 24, marginRight: "0.8rem" }}></Avatar>
           <Box sx={{ lineHeight: "1.6rem", textAlign: "left" }}>
             <strong style={{ fontSize: "1.2rem" }}>{username}</strong>
             <p style={{ fontSize: "1.2rem" }}>{truncateAddress(walletCurrentAddress as string)}</p>

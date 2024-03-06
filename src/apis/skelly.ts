@@ -4,6 +4,8 @@ const baseUrl = requireEnv("REACT_APP_SKELLY_URI")
 
 export const getAvatarURL = add => `${baseUrl}/heartbeat/${add}.svg`
 
+export const getSmallAvatarURL = add => `${baseUrl}/heartbeat/${add}/mobile.svg`
+
 export const getImgByCode = code => `${baseUrl}/code/${code}.png`
 
 export const fetchSignByCode = (code, add) => `${baseUrl}/code/${code}/sig/${add}`

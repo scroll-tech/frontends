@@ -1,5 +1,5 @@
 import { ethers } from "ethers"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 import { Box, InputBase, Stack, Typography } from "@mui/material"
 import { styled } from "@mui/system"

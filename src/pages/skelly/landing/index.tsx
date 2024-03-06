@@ -64,9 +64,9 @@ const Mint = props => {
   return (
     <Container>
       <Title>Mint your Scroll Skelly</Title>
-      <SubTitle>Get a scroll profile and earn badges across the ecosystem. </SubTitle>
-      <Box sx={{ maxWidth: "66.5rem" }}>
-        <img src="/imgs/skelly/heartbeat_mixed.webp" alt="heartbeat"></img>
+      <SubTitle>Earn badges of attestations across the ecosystem.</SubTitle>
+      <Box sx={{ width: "66.5rem", height: "29.8rem", mt: "4.8rem", mb: "3rem" }}>
+        <img src="/imgs/skelly/heartbeat.webp" alt="heartbeat"></img>
       </Box>
       <ReferralCode code={code} isChecking={isChecking} setIsChecking={setIsChecking} />
 
