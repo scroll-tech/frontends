@@ -33,7 +33,8 @@ const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
 }))
 
 const BadgesDialog = () => {
-  const { userBadges, attachedBadges, detachBadges, attachBadges, getAttachedBadges, badgeOrder, reorderBadges } = useSkellyContext()
+  const { userBadges, attachedBadges, detachBadges, attachBadges, getAttachedBadges, badgeOrder, reorderBadges, customiseDisplay } =
+    useSkellyContext()
   const [loading, setLoading] = useState(false)
 
   const badgesInstance = useMemo(() => {
@@ -99,7 +100,6 @@ const BadgesDialog = () => {
         handleClose()
       }
       setLoading(false)
-      // customiseDisplay(hiddenToDisplayed, displayedToHidden)
     }
 
     if (displayedToHidden.length > 0) {
@@ -122,6 +122,12 @@ const BadgesDialog = () => {
         handleClose()
       }
     }
+    customiseDisplay({
+      attachBadges: hiddenToDisplayed.length > 0 ? hiddenToDisplayed : null,
+      detachBadges: displayedToHidden.length > 0 ? displayedToHidden : null,
+      order: isEqual(badgeOrder, newArrayOrder) ? null : newArrayOrder,
+    })
+
     setLoading(false)
   }
 
