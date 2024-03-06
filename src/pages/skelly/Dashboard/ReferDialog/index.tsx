@@ -11,7 +11,7 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
   borderRadius: "1.6rem",
   backgroundColor: "rgba(16, 16, 16, 0.60)",
   "& .MuiDialog-paper": {
-    background: "linear-gradient(114deg, #2A2A2A 0%, rgba(27, 27, 27, 0.60) 100%)",
+    backgroundColor: "#101010",
   },
 }))
 
