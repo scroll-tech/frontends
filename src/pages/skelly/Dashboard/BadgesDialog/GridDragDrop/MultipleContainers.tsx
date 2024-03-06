@@ -34,10 +34,19 @@ import { CSS } from "@dnd-kit/utilities"
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import { createPortal, unstable_batchedUpdates } from "react-dom"
 
+import { Box } from "@mui/material"
+import { styled } from "@mui/system"
+
 import useSkellyStore from "@/stores/skellyStore"
 
 import { Container, ContainerProps, Item } from "./components"
 import { coordinateGetter as multipleContainersCoordinateGetter } from "./multipleContainersKeyboardCoordinates"
+
+const DragContainer = styled(Box)(({ theme }) => ({
+  "& > div:nth-of-type(1) img": {
+    filter: "grayscale(1)",
+  },
+}))
 
 const animateLayoutChanges: AnimateLayoutChanges = args => defaultAnimateLayoutChanges({ ...args, wasDragging: true })
 
@@ -395,7 +404,7 @@ export function MultipleContainers({
       onDragCancel={onDragCancel}
       modifiers={modifiers}
     >
-      <div
+      <DragContainer
         style={{
           display: "inline-grid",
           maxWidth: "120rem",
@@ -406,7 +415,7 @@ export function MultipleContainers({
         }}
       >
         <SortableContext items={[...containers, PLACEHOLDER_ID]} strategy={vertical ? verticalListSortingStrategy : horizontalListSortingStrategy}>
-          {containers.map(containerId => (
+          {containers.map((containerId, idx) => (
             <DroppableContainer
               key={containerId}
               id={containerId}
@@ -439,9 +448,9 @@ export function MultipleContainers({
             </DroppableContainer>
           ))}
         </SortableContext>
-      </div>
+      </DragContainer>
       {createPortal(
-        <DragOverlay adjustScale={adjustScale} dropAnimation={dropAnimation}>
+        <DragOverlay zIndex={1500} adjustScale={adjustScale} dropAnimation={dropAnimation}>
           {activeId ? (containers.includes(activeId) ? renderContainerDragOverlay(activeId) : renderSortableItemDragOverlay(activeId)) : null}
         </DragOverlay>,
         document.body,
@@ -479,6 +488,7 @@ export function MultipleContainers({
         columns={columns}
         style={{
           height: "100%",
+          position: "relative",
         }}
         shadow
         unstyled={false}
