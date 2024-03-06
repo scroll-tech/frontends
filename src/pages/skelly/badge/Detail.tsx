@@ -2,6 +2,7 @@ import { Contract } from "ethers"
 import { useEffect, useMemo, useState } from "react"
 import Img from "react-cool-img"
 import { useParams } from "react-router-dom"
+import { Link as RouterLink } from "react-router-dom"
 
 import { Avatar, Box, Skeleton, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
@@ -203,12 +204,12 @@ const Detail = props => {
         </Box>
 
         <InfoBox gap={isMobile ? "2.4rem" : "4.8rem"}>
-          <Link href={`/scroll-skelly/${detail.walletAddress}`}>
-            <Statistic label="Owner" loading={loading} sx={{ "& *": { cursor: "pointer" } }}>
+          <RouterLink to={`/scroll-skelly/${detail.walletAddress}`}>
+            <Statistic label="Owner" loading={loading} sx={{ "& *": { cursor: "pointer !important" } }}>
               <Avatar src={detail.ownerLogo}></Avatar>
               {detail.owner}
             </Statistic>
-          </Link>
+          </RouterLink>
           <Statistic label="Issued by" loading={loading}>
             <Avatar src={detail.issuer?.logo}></Avatar>
             {detail.issuer?.name}

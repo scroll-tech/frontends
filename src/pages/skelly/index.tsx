@@ -1,7 +1,6 @@
 import { useEffect } from "react"
 import { Navigate } from "react-router-dom"
 
-import GlobalComponents from "@/components/GlobalComponents"
 import BridgeContextProvider from "@/contexts/BridgeContextProvider"
 import { MintedStatus, useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useSkellyStore, { MintStep } from "@/stores/skellyStore"
@@ -27,7 +26,6 @@ const Skelly = props => {
 
   return (
     <BridgeContextProvider>
-      <GlobalComponents></GlobalComponents>
       {hasMintedProfile !== MintedStatus.NOT_MINTED && <Dashboard />}
       {hasMintedProfile === MintedStatus.NOT_MINTED && mintStep === MintStep.REFERRAL_CODE && <LandingPage code={code} />}
       {hasMintedProfile === MintedStatus.NOT_MINTED && mintStep === MintStep.PROFILE && <MintPage />}

@@ -16,11 +16,12 @@ import GridDragDrop from "./GridDragDrop"
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
   borderRadius: "1.6rem",
-  backgroundColor: "rgba(0, 0, 0, 0.5)",
-  backdropFilter: "blur(50px)",
-  zIndex: 998,
+  backgroundColor: "rgba(16, 16, 16, 0.60)",
+  // backdropFilter: "blur(50px)",
   "& .MuiDialog-paper": {
-    background: "linear-gradient(114deg, #2A2A2A 0%, rgba(27, 27, 27, 0.60) 100%)",
+    // background: "linear-gradient(114deg, #2A2A2A 0%, rgba(27, 27, 27, 0.60) 100%)",
+    // backdropFilter: "blur(50px)",
+    backgroundColor: "#101010",
     maxWidth: "120rem",
     width: "100%",
   },
@@ -40,8 +41,8 @@ const BadgesDialog = () => {
 
   const badgesInstance = useMemo(() => {
     return {
-      [BADGES_VISIBLE_TYPE.VISIBLE]: attachedBadges.map(badgeId => userBadges.find(badge => badge.id === badgeId)),
       [BADGES_VISIBLE_TYPE.INVISIBLE]: userBadges.filter(badge => !attachedBadges.includes(badge.id)),
+      [BADGES_VISIBLE_TYPE.VISIBLE]: attachedBadges.map(badgeId => userBadges.find(badge => badge.id === badgeId)),
     }
   }, [userBadges, attachedBadges])
 

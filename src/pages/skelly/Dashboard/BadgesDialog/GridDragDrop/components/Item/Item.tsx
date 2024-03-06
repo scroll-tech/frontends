@@ -36,7 +36,6 @@ const StyledWrapper = styled<any>("li")(({ theme, dragOverlay, fadeIn, sorting, 
     animation: `${fadeInAnimation} 500ms ease`,
   }),
   ...(dragOverlay && {
-    zIndex: 999,
     animation: `${pop} 200ms cubic-bezier(0.18, 0.67, 0.6, 1.22)`,
   }),
 }))
