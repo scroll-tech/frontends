@@ -1,4 +1,5 @@
 import { useEffect } from "react"
+import Img from "react-cool-img"
 
 import { Avatar, ListItem, ListItemAvatar, ListItemText, Typography } from "@mui/material"
 import { styled } from "@mui/system"
@@ -15,7 +16,7 @@ const StyledListItem = styled(ListItem)(({ theme }) => ({
 }))
 
 const StyledListItemAvatar = styled(ListItemAvatar)(({ theme }) => ({
-  "& .MuiAvatar-root": {
+  "& img": {
     width: "8rem",
     height: "8rem",
     backgroundColor: "#000",
@@ -76,7 +77,7 @@ const BadgeItem = ({ badge }) => {
       }
     >
       <StyledListItemAvatar>
-        <Avatar src={badge.image} variant="rounded" sx={{ fontSize: "8rem", borderRadius: "0.8rem" }}></Avatar>
+        <Img src={badge.image} placeholder="/imgs/skelly/badgePlaceholder.svg" style={{ fontSize: "8rem", borderRadius: "0.8rem" }}></Img>
       </StyledListItemAvatar>
       <StyledListItemText
         primary={badge.name}

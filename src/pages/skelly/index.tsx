@@ -1,6 +1,7 @@
-import { useEffect } from "react"
-import { Navigate, useNavigate } from "react-router-dom"
+import { useEffect, useMemo } from "react"
+import { Navigate, useMatch, useNavigate } from "react-router-dom"
 
+import { CHAIN_ID } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useSkellyStore from "@/stores/skellyStore"
@@ -12,28 +13,42 @@ import WrongNetwork from "./wrongNetwork"
 const SkellyIndex = props => {
   const { code } = props
   const navigate = useNavigate()
-  const { walletCurrentAddress } = useRainbowContext()
+  const isOthersSkelly = useMatch("/scroll-skelly/:address")
+  const isBadgeDetail = useMatch("/scroll-skelly/badge/:id")
+
+  const { walletCurrentAddress, chainId } = useRainbowContext()
   const { unsignedProfileRegistryContract } = useSkellyContext()
   const { profileMintedLoading, profileMinted, checkIfProfileMinted } = useSkellyStore()
 
+  const isWrongNetwork = useMemo(() => {
+    return !isOthersSkelly && !isBadgeDetail && chainId !== CHAIN_ID.L2
+  }, [chainId, isOthersSkelly, isBadgeDetail])
+
   useEffect(() => {
-    if (unsignedProfileRegistryContract && walletCurrentAddress) {
+    if (!isWrongNetwork && unsignedProfileRegistryContract && walletCurrentAddress) {
       checkIfProfileMinted(unsignedProfileRegistryContract, walletCurrentAddress)
-    } else if (!walletCurrentAddress) {
+    } else if (!isWrongNetwork && !walletCurrentAddress) {
       navigate("/scroll-skelly/mint")
     }
-  }, [unsignedProfileRegistryContract, walletCurrentAddress])
+  }, [isWrongNetwork, unsignedProfileRegistryContract, walletCurrentAddress])
+
+  // cons
 
   // if connected user views the invite link, then redirect to skelly
   return (
     <>
-      {profileMintedLoading ? (
-        <LoadingPage></LoadingPage>
+      {isWrongNetwork ? (
+        <WrongNetwork></WrongNetwork>
       ) : (
         <>
-          {profileMinted === null && <WrongNetwork></WrongNetwork>}
-          {profileMinted === true && <>{code ? <Navigate to="/scroll-skelly" replace={true}></Navigate> : <Dashboard />}</>}
-          {profileMinted === false && <Navigate to="/scroll-skelly/mint" replace={true}></Navigate>}
+          {profileMintedLoading ? (
+            <LoadingPage></LoadingPage>
+          ) : (
+            <>
+              {profileMinted === true && <>{code ? <Navigate to="/scroll-skelly" replace={true}></Navigate> : <Dashboard />}</>}
+              {profileMinted === false && <Navigate to="/scroll-skelly/mint" replace={true}></Navigate>}
+            </>
+          )}
         </>
       )}
     </>

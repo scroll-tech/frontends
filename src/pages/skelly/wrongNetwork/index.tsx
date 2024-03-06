@@ -1,5 +1,3 @@
-import { useMemo } from "react"
-
 import { Box, Dialog, DialogContent, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
@@ -53,12 +51,8 @@ const ButtonContainer = styled(Box)(({ theme }) => ({
 const WrongNetwork = () => {
   const { chainId, connect } = useRainbowContext()
 
-  const isWrongNetwork = useMemo(() => {
-    return chainId !== CHAIN_ID.L2
-  }, [chainId])
-
   return (
-    <StyledDialog maxWidth={false} open={isWrongNetwork}>
+    <StyledDialog maxWidth={false} open>
       <StyledDialogContent>
         <SvgIcon sx={{ fontSize: ["1.6rem", "18rem"], marginBottom: "4rem" }} component={ConnectStickerSvg} inheritViewBox></SvgIcon>
         <Typography sx={{ fontSize: "3.2rem", fontWeight: 600, lineHeight: "0.8rem", marginBottom: "3.2rem", color: "#fff", textAlign: "center" }}>

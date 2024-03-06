@@ -1,5 +1,5 @@
 import copy from "copy-to-clipboard"
-import { useCallback, useMemo, useState } from "react"
+import { Fragment, useCallback, useMemo, useState } from "react"
 import { useParams } from "react-router-dom"
 
 import { Box, Menu, MenuItem, SvgIcon } from "@mui/material"
@@ -33,7 +33,7 @@ interface Action {
   }
 }
 
-const Container = styled(Box as any)(({ theme, othersWalletAddress }) => ({
+const Container = styled<any>(Box, { shouldForwardProp: prop => prop !== "othersWalletAddress" })(({ theme, othersWalletAddress }) => ({
   display: "grid",
   gridTemplateColumns: `repeat(${othersWalletAddress ? 1 : 4}, 15.6rem)`,
   width: "100%",
@@ -202,7 +202,7 @@ const ActionBox = props => {
       {actions
         .filter(action => action.visible)
         .map((action, index) => (
-          <>
+          <Fragment key={index}>
             <ActionButton
               key={index}
               color={action.color as any}
@@ -232,7 +232,7 @@ const ActionBox = props => {
                 ))}
               </CustomMenu>
             )}
-          </>
+          </Fragment>
         ))}
     </Container>
   )

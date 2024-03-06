@@ -59,48 +59,31 @@ const Dashboard = props => {
   const { walletCurrentAddress, provider } = useRainbowContext()
 
   const { address: othersWalletAddress } = useParams()
-  // const { username, attachedBadges, profileMinted } = useSkellyStore()
   const navigate = useNavigate()
-  const { unsignedProfileRegistryContract } = useSkellyContext()
+  const { unsignedProfileRegistryContract, publicProvider } = useSkellyContext()
   const {
     username,
     attachedBadges,
     checkIfProfileMinted,
     fetchCurrentSkellyDetail,
     fetchOthersSkellyDetail,
-    checkAndFetchCurrentWalletSkelly,
     profileAddress,
     changeProfileDetailLoading,
     profileDetailLoading,
   } = useSkellyStore()
 
   useEffect(() => {
-    if (provider && unsignedProfileRegistryContract && othersWalletAddress && walletCurrentAddress) {
-      fetchOthersWithCurrent(provider, unsignedProfileRegistryContract, othersWalletAddress, walletCurrentAddress)
-    } else if (provider && unsignedProfileRegistryContract && othersWalletAddress) {
-      fetchOthers(provider, unsignedProfileRegistryContract, othersWalletAddress)
+    if (publicProvider && unsignedProfileRegistryContract && othersWalletAddress) {
+      fetchOthers(publicProvider, unsignedProfileRegistryContract, othersWalletAddress)
     }
-  }, [provider, unsignedProfileRegistryContract, othersWalletAddress, walletCurrentAddress])
+  }, [publicProvider, unsignedProfileRegistryContract, othersWalletAddress])
 
+  // must have minted
   useEffect(() => {
-    if (provider && walletCurrentAddress && profileAddress) {
+    if (provider && walletCurrentAddress && !othersWalletAddress && profileAddress) {
       fetchCurrent(provider, walletCurrentAddress, profileAddress)
     }
-  }, [provider, walletCurrentAddress, profileAddress])
-
-  const fetchOthersWithCurrent = async (provider, unsignedProfileRegistryContract, othersWalletAddress, walletCurrentAddress) => {
-    try {
-      changeProfileDetailLoading(true)
-      const fetchOthersReq = fetchOthersSkellyDetail(provider, unsignedProfileRegistryContract, othersWalletAddress)
-      // TODO: 测试： 切换回自己的skelly后profileContract有没有更新
-      const fetchCurrentWalletReq = checkAndFetchCurrentWalletSkelly(provider, unsignedProfileRegistryContract, walletCurrentAddress)
-      await Promise.all([fetchOthersReq, fetchCurrentWalletReq])
-    } catch (e) {
-      console.log("fetch skelly error", e)
-    } finally {
-      changeProfileDetailLoading(false)
-    }
-  }
+  }, [provider, walletCurrentAddress, othersWalletAddress, profileAddress])
 
   const fetchCurrent = async (provider, walletAddress, profileAddress) => {
     try {
@@ -117,13 +100,13 @@ const Dashboard = props => {
   const fetchOthers = async (provider, unsignedProfileRegistryContract, othersWalletAddress) => {
     try {
       changeProfileDetailLoading(true)
-      await checkAndfetchOthersSkellyDetail(provider, unsignedProfileRegistryContract, othersWalletAddress)
+      await checkAndFetchOthersSkellyDetail(provider, unsignedProfileRegistryContract, othersWalletAddress)
     } catch (e) {
     } finally {
       changeProfileDetailLoading(false)
     }
   }
-  const checkAndfetchOthersSkellyDetail = async (provider, unsignedProfileRegistryContract, othersWalletAddress) => {
+  const checkAndFetchOthersSkellyDetail = async (provider, unsignedProfileRegistryContract, othersWalletAddress) => {
     const { minted, profileAddress } = await checkIfProfileMinted(unsignedProfileRegistryContract, othersWalletAddress)
     if (!minted) {
       navigate("/404")
@@ -181,12 +164,12 @@ const Dashboard = props => {
         <meta name="twitter:description" content={metadata.description} />
         <meta name="twitter:image" content={metadata.image} />
       </Helmet>
-      {profileDetailLoading ? (
+      {!!profileDetailLoading ? (
         <LoadingPage></LoadingPage>
       ) : (
         <Container badgewidth={badgewidth}>
           <BadgeWall badgewidth={badgewidth} gridNum={gridNum} windowDimensions={windowDimensions} />
-          {othersWalletAddress ? (
+          {!!othersWalletAddress ? (
             <>
               <ActionBox></ActionBox>
               <BadgeDetailDialog />
