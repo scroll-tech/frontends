@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
-import { Dialog, DialogContent, DialogTitle, IconButton, List, SvgIcon, Typography } from "@mui/material"
+import { Dialog, DialogContent, DialogTitle, IconButton, List, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 // import { ReactComponent as BackSvg } from "@/assets/svgs/skelly/back.svg"
@@ -73,7 +73,7 @@ const UpgradeDialog = () => {
     const fetchVisibleBadges = async () => {
       const filteredBadges = await Promise.all(
         Badges.map(async badge => {
-          const isUserBadge = userBadges.some(userBadge => userBadge.badgeContract === badge.badgeAddress)
+          const isUserBadge = userBadges.some(userBadge => userBadge.badgeContract === badge.badgeContract)
           const isValidBadge = await badge.validator(walletCurrentAddress, provider)
           return {
             ...badge,
@@ -97,14 +97,14 @@ const UpgradeDialog = () => {
         </IconButton>
       </StyledDialogTitle>
       <StyledDialogContent>
-        {!visibleBadges.length ? (
+        {visibleBadges.length ? (
           <StyledList>
             {visibleBadges.map((badge, index) => (
               <BadgeItem key={index} badge={badge} />
             ))}
           </StyledList>
         ) : (
-          <>
+          <Stack justifyContent="center" alignItems="center" height="100%">
             <SvgIcon sx={{ width: "20rem", height: "20rem" }} component={EmptySvg} inheritViewBox></SvgIcon>
             <Typography sx={{ fontSize: "3.2rem", lineHeight: "4.8rem", fontWeight: 600, mb: "0.8rem", color: "#fff" }}>
               No eligible badges for minting
@@ -115,7 +115,7 @@ const UpgradeDialog = () => {
             <Button sx={{ width: "15.6rem", height: "4rem", fontSize: "1.6rem" }} color="primary" onClick={moveToEcosystem}>
               Go to ecosystem
             </Button>
-          </>
+          </Stack>
         )}
       </StyledDialogContent>
     </StyledDialog>

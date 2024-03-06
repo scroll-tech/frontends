@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom"
 import { Avatar, Box, Dialog, DialogContent, DialogTitle, IconButton, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
+import { ReactComponent as BackSvg } from "@/assets/svgs/skelly/back.svg"
 import { ReactComponent as CloseSvg } from "@/assets/svgs/skelly/close.svg"
 import { ReactComponent as ShareSvg } from "@/assets/svgs/skelly/share.svg"
 import ScrollButton from "@/components/Button"
@@ -18,8 +19,7 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
   borderRadius: "1.6rem",
   backgroundColor: "rgba(16, 16, 16, 0.60)",
   "& .MuiDialog-paper": {
-    background: "linear-gradient(114deg, #2A2A2A 0%, rgba(27, 27, 27, 0.60) 100%)",
-    // backgroundColor: "#101010",
+    backgroundColor: "#101010",
     width: "64rem",
     height: "67.4rem",
     padding: "3.2rem",
@@ -88,18 +88,19 @@ const ButtonContainer = styled(Box)(({ theme }) => ({
 // }))
 
 const BadgeDetailDialog = () => {
-  const { badgeDetailDialogVisible, changeBadgeDetailDialog, selectedBadge } = useSkellyStore()
+  const { badgeDetailDialogVisible, changeBadgeDetailDialog, selectedBadge, changeUpgradeDialog } = useSkellyStore()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
   const { mintBadge, queryUserBadgesWrapped } = useSkellyContext()
 
   const handleClose = () => {
     changeBadgeDetailDialog(BadgeDetailDialogTpye.HIDDEN)
+    changeUpgradeDialog(false)
   }
 
   const handleMint = async () => {
     setLoading(true)
-    const result = await mintBadge(selectedBadge.nftAddress, selectedBadge.nftAbi, selectedBadge.badgeAddress)
+    const result = await mintBadge(selectedBadge.nftAddress, selectedBadge.nftAbi, selectedBadge.badgeContract)
     if (result! !== true) {
       console.log("mintBadge failed")
     } else {
@@ -131,6 +132,8 @@ const BadgeDetailDialog = () => {
     return generateShareTwitterURL(viewURL, `Here is my badge ${selectedBadge.name}`)
   }, [selectedBadge])
 
+  console.log("badgeIssuer", selectedBadge.badgeContract)
+
   return (
     <StyledDialog onClose={handleClose} maxWidth={false} open={badgeDetailDialogVisible !== BadgeDetailDialogTpye.HIDDEN}>
       <StyledDialogTitle>
@@ -152,13 +155,25 @@ const BadgeDetailDialog = () => {
             top: badgeDetailDialogVisible === BadgeDetailDialogTpye.UPGRADE ? "4.8rem" : 0,
           }}
         >
-          <IconButton sx={{ p: 0, "&:hover": { backgroundColor: "unset" } }} onClick={handleClose}>
+          <Box sx={{ p: 0, "&:hover": { backgroundColor: "unset" } }} onClick={handleClose}>
             <SvgIcon sx={{ fontSize: ["1.6rem", "1.8rem"], color: "#fff" }} component={CloseSvg} inheritViewBox></SvgIcon>
-          </IconButton>
+          </Box>
+          {badgeDetailDialogVisible === BadgeDetailDialogTpye.MINT_WITH_BACK && (
+            <IconButton sx={{ p: 0, "&:hover": { backgroundColor: "unset" } }} onClick={() => changeBadgeDetailDialog(BadgeDetailDialogTpye.HIDDEN)}>
+              <Box component="span" sx={{ fontSize: "1.8rem", color: "#fff" }}>
+                Back
+              </Box>
+              <SvgIcon sx={{ fontSize: ["1.6rem", "1.8rem"], color: "#fff", marginRight: "1.2rem" }} component={BackSvg} inheritViewBox></SvgIcon>
+            </IconButton>
+          )}
         </Box>
       </StyledDialogTitle>
       <StyledDialogContent>
-        <img alt="img" src={getBadgeImgURL(selectedBadge.image)} style={{ width: "20rem", height: "20rem", marginBottom: "4rem" }} />
+        <img
+          alt="img"
+          src={getBadgeImgURL(selectedBadge.image)}
+          style={{ width: "20rem", height: "20rem", marginBottom: "4rem", borderRadius: "0.8rem" }}
+        />
         {badgeDetailDialogVisible !== BadgeDetailDialogTpye.MINTED ? (
           <>
             <Typography
@@ -182,7 +197,7 @@ const BadgeDetailDialog = () => {
           </Typography>
         )}
         <ButtonContainer>
-          {badgeDetailDialogVisible === BadgeDetailDialogTpye.MINT && (
+          {(badgeDetailDialogVisible === BadgeDetailDialogTpye.MINT || badgeDetailDialogVisible === BadgeDetailDialogTpye.MINT_WITH_BACK) && (
             <StyledScrollButton loading={loading} color="primary" onClick={handleMint}>
               Mint badge
             </StyledScrollButton>
@@ -199,10 +214,10 @@ const BadgeDetailDialog = () => {
               View Scroll Skelly
             </StyledScrollButton>
           )}
-          <StyledScrollButton width="24rem" color="dark" onClick={handleViewBadge}>
+          <StyledScrollButton width="24rem" color="tertiary" onClick={handleViewBadge}>
             View badge details
           </StyledScrollButton>
-          {badgeDetailDialogVisible !== BadgeDetailDialogTpye.MINT && (
+          {badgeDetailDialogVisible !== BadgeDetailDialogTpye.MINT && badgeDetailDialogVisible !== BadgeDetailDialogTpye.MINT_WITH_BACK && (
             <Link external href={shareBadgeURL}>
               <SvgIcon sx={{ width: "3.2rem", height: "3.2rem", color: "primary.contrastText" }} component={ShareSvg} inheritViewBox></SvgIcon>
             </Link>
