@@ -17,6 +17,8 @@ const Badges = [
     nftAddress: [SCROLL_ORIGINS_NFT, SCROLL_ORIGINS_NFT_V2],
     nftAbi: ScrollOriginsNFTABI,
     badgeContract: SCROLL_SEPOLIA_ORIGINS_BADGE_ADDRESS,
+    description:
+      "The Scroll Origins NFT is a soulbound NFT that serves to recognize the early builders of Scroll. Eligible minters have deployed a smart contract to Scroll Mainnetwithin 60 days of the Genesis Block. Higher levels of rarity are are rewarded to smart contracts that have contributed significant levels of interaction or value to the network.",
     image: "/imgs/skelly/OriginsNFT.svg",
     native: true,
     originsNFT: true,
@@ -43,43 +45,46 @@ const Badges = [
     },
   },
   {
-    name: "Simple Badge A",
+    name: "Pudgy Penguin #1",
     nftAddress: null,
     nftAbi: null,
     badgeContract: SCROLL_SEPOLIA_SIMPLE_BADGE_A_ADDRESS,
+    description: "A collection 8888 Cute Chubby Pudgy Penquins sliding around on the freezing ETH blockchain.",
     image: "https://cloudflare-ipfs.com/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/1.png",
     native: false,
     issuer: {
       origin: "https://example.org",
-      name: "Issuer1",
+      name: "Scroll",
       logo: "https://scroll.io/static/media/Scroll_Logomark.673577c8260b63ae56867bc9af6af514.svg",
     },
     validator: (walletCurrentAddress, provider) => true,
   },
   {
-    name: "Simple Badge B",
+    name: "Pudgy Penguin #2",
     nftAddress: null,
     nftAbi: null,
     badgeContract: SCROLL_SEPOLIA_SIMPLE_BADGE_B_ADDRESS,
+    description: "A collection 8888 Cute Chubby Pudgy Penquins sliding around on the freezing ETH blockchain.",
     image: "https://cloudflare-ipfs.com/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/2.png",
     native: false,
     issuer: {
       origin: "https://example.org",
-      name: "Issuer2",
+      name: "Scroll",
       logo: "https://scroll.io/static/media/Scroll_Logomark.673577c8260b63ae56867bc9af6af514.svg",
     },
     validator: (walletCurrentAddress, provider) => true,
   },
   {
-    name: "Simple Badge C",
+    name: "Pudgy Penguin #3",
     nftAddress: null,
     nftAbi: null,
     badgeContract: SCROLL_SEPOLIA_SIMPLE_BADGE_C_ADDRESS,
+    description: "A collection 8888 Cute Chubby Pudgy Penquins sliding around on the freezing ETH blockchain.",
     image: "https://cloudflare-ipfs.com/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/3.png",
     native: false,
     issuer: {
       origin: "https://example.org",
-      name: "Issuer3",
+      name: "Scroll",
       logo: "https://scroll.io/static/media/Scroll_Logomark.673577c8260b63ae56867bc9af6af514.svg",
     },
     validator: (walletCurrentAddress, provider) => true,
@@ -87,7 +92,10 @@ const Badges = [
 ]
 
 export const badgeMap = Object.fromEntries(
-  Badges.map(({ badgeContract, native, originsNFT, issuer, image }) => [badgeContract, { native, originsNFT, issuer, image }]),
+  Badges.map(({ badgeContract, native, originsNFT, issuer, image, name }) => [
+    badgeContract,
+    { native, originsNFT, issuer, image, badgeContract, name },
+  ]),
 )
 
 export default Badges

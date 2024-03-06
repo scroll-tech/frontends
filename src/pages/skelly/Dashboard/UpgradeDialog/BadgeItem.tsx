@@ -21,6 +21,9 @@ const StyledListItemAvatar = styled(ListItemAvatar)(({ theme }) => ({
     height: "8rem",
     backgroundColor: "#000",
   },
+  "& .MuiAvatar-img": {
+    objectFit: "contain !important",
+  },
 }))
 
 const StyledListItemText = styled(ListItemText)(({ theme }) => ({
@@ -74,7 +77,7 @@ const BadgeItem = ({ badge }) => {
       }
     >
       <StyledListItemAvatar>
-        <Avatar src={badge.image} sx={{ fontSize: "8rem" }}></Avatar>
+        <Avatar src={badge.image} variant="rounded" sx={{ fontSize: "8rem", borderRadius: "0.8rem" }}></Avatar>
       </StyledListItemAvatar>
       <StyledListItemText
         primary={badge.name}

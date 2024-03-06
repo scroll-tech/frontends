@@ -122,7 +122,8 @@ const BadgeDetailDialog = () => {
 
   const handleViewBadge = () => {
     changeBadgeDetailDialog(BadgeDetailDialogTpye.HIDDEN)
-    navigate(`/scroll-skelly/badge/${selectedBadge.id}`)
+    changeUpgradeDialog(false)
+    navigate(`/scroll-skelly/badge/${selectedBadge.id || selectedBadge.badgeContract}`)
   }
 
   const badgeIssuer = useMemo(() => badgeMap[selectedBadge.badgeContract]?.issuer || {}, [selectedBadge])
@@ -131,8 +132,6 @@ const BadgeDetailDialog = () => {
     const viewURL = `${requireEnv("REACT_APP_FFRONTENDS_URL")}/scroll-skelly/badge/${selectedBadge.id}`
     return generateShareTwitterURL(viewURL, `Here is my badge ${selectedBadge.name}`)
   }, [selectedBadge])
-
-  console.log("badgeIssuer", selectedBadge.badgeContract)
 
   return (
     <StyledDialog onClose={handleClose} maxWidth={false} open={badgeDetailDialogVisible !== BadgeDetailDialogTpye.HIDDEN}>

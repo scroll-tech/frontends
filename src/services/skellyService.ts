@@ -98,11 +98,7 @@ export const queryBadgeDetailById = async badgeId => {
   }
 }
 
-export const getBadgeMetadata = async (
-  provider,
-  badgeContractAddress,
-  badgeUID = "0x0000000000000000000000000000000000000000000000000000000000000000",
-) => {
+export const getBadgeMetadata = async (provider, badgeContractAddress, badgeUID = ethers.encodeBytes32String("0x0")) => {
   try {
     const contract = new ethers.Contract(badgeContractAddress, BadgeABI, provider)
     const badgeMetadataURI = await contract.badgeTokenURI(badgeUID)
@@ -111,7 +107,7 @@ export const getBadgeMetadata = async (
     const metadata = await response.json()
     return metadata
   } catch (error) {
-    console.error("Failed to get badge image URI:", error)
+    console.log("Failed to get badge image URI:", error)
     return ""
   }
 }
