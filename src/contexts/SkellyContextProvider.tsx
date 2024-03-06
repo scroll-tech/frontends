@@ -36,11 +36,11 @@ type SkellyContextProps = {
   badgeOrder: any
   attachBadges: (badgeAddresses: string[]) => void
   detachBadges: (badgeAddresses: string[]) => void
-  customiseDisplay: (attachBadges: string[], detachBadges: string[], order?: number[]) => void
   mintBadge: (nftAddress: string | null | [], nftAbi: [] | null, badgeContract: string) => void
   queryUserBadgesWrapped: (userAddress?: string) => void
   getAttachedBadges: (profileAddress?: string) => void
   reorderBadges: (badgeOrder: number[]) => void
+  customiseDisplay: (payload: { attachBadges: string[] | null; detachBadges: string[] | null; order: number[] | null }) => void
 }
 
 const SkellyContext = createContext<SkellyContextProps | null>(null)
@@ -304,37 +304,53 @@ const SkellyContextProvider = ({ children }: any) => {
   //   }
   // }
 
-  const customiseDisplay = async (attachBadges, detachBadges, order?) => {
+  const customiseDisplay = async ({
+    attachBadges,
+    detachBadges,
+    order,
+  }: {
+    attachBadges: string[] | null
+    detachBadges: string[] | null
+    order: number[] | null
+  }) => {
     const signer = await provider!.getSigner(0)
 
     const multicallContract = new ethers.Contract("0xca11bde05977b3631167028862be2a173976ca11", MulticallAbi, signer)
 
     try {
-      const attachCallData = profileContract!.interface.encodeFunctionData("attach(bytes32[])", [attachBadges])
-      const detachCallData = profileContract!.interface.encodeFunctionData("detach", [detachBadges])
-
-      const calls = [
-        {
+      const calls: { target: string; callData: string; allowFailure: boolean }[] = []
+      if (attachBadges) {
+        const attachCallData = profileContract!.interface.encodeFunctionData("attach(bytes32[])", [attachBadges])
+        calls.push({
           target: profileAddress,
-          allowFailure: false,
           callData: attachCallData,
-        },
-        {
+          allowFailure: true,
+        })
+      }
+
+      if (detachBadges) {
+        const detachCallData = profileContract!.interface.encodeFunctionData("detach", [detachBadges])
+        calls.push({
           target: profileAddress,
-          allowFailure: false,
           callData: detachCallData,
-        },
-      ]
+          allowFailure: true,
+        })
+      }
+
+      if (order) {
+        const reorderCallData = profileContract!.interface.encodeFunctionData("reorderBadges", [order])
+        calls.push({
+          target: profileAddress,
+          callData: reorderCallData,
+          allowFailure: true,
+        })
+      }
 
       const txResponse = await multicallContract.aggregate3(calls)
       const txReceipt = await txResponse.wait()
-      if (txReceipt && txReceipt.returnData && Array.isArray(txReceipt.returnData)) {
-        txReceipt.returnData.forEach((result, index) => {
-          console.log(`Call ${index}: Success=${result.success}, ReturnData=${result.returnData}`)
-        })
-      } else {
-        console.log("No returnData or returnData is not an array.", txReceipt)
-      }
+      txReceipt.returnData.forEach((result, index) => {
+        console.log(`Call ${index}: Success=${result.success}, ReturnData=${result.returnData}`)
+      })
     } catch (error) {
       console.error("Multicall transaction failed!", error)
     }
