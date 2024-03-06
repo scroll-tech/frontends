@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 
 import { Avatar, ListItem, ListItemAvatar, ListItemText, Typography } from "@mui/material"
 import { styled } from "@mui/system"
@@ -42,8 +42,7 @@ const StyledButton = styled(Button)(({ theme }) => ({}))
 
 const BadgeItem = ({ badge }) => {
   const { changeBadgeDetailDialog, changeSelectedBadge } = useSkellyStore()
-  const { mintBadge, queryUserBadgesWrapped, userBadges } = useSkellyContext()
-  const [loading, setLoading] = useState(false)
+  const { userBadges } = useSkellyContext()
   // const userBadgesLength = userBadges.length
 
   // const checkEligibility = async () => {
@@ -54,28 +53,22 @@ const BadgeItem = ({ badge }) => {
   // }
 
   const handleBadge = async () => {
-    setLoading(true)
-    const result = await mintBadge(badge.nftAddress, badge.nftAbi, badge.badgeAddress)
-    if (result! !== true) {
-      console.log("mintBadge failed")
-      setLoading(false)
-    } else {
-      queryUserBadgesWrapped()
-    }
+    changeSelectedBadge(badge)
+    changeBadgeDetailDialog(BadgeDetailDialogTpye.MINT_WITH_BACK)
   }
 
   useEffect(() => {
-    if (userBadges.length && loading) {
-      changeSelectedBadge(userBadges[userBadges.length - 1])
-      changeBadgeDetailDialog(BadgeDetailDialogTpye.MINTED)
-      setLoading(false)
-    }
+    // if (userBadges.length && loading) {
+    //   changeSelectedBadge(userBadges[userBadges.length - 1])
+    //   changeBadgeDetailDialog(BadgeDetailDialogTpye.MINTED)
+    //   setLoading(false)
+    // }
   }, [userBadges])
 
   return (
     <StyledListItem
       secondaryAction={
-        <StyledButton loading={loading} color="dark" onClick={handleBadge}>
+        <StyledButton variant="outlined" color="tertiary" onClick={handleBadge}>
           Mint now
         </StyledButton>
       }

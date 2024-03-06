@@ -6,7 +6,7 @@ import useCheckViewport from "@/hooks/useCheckViewport"
 
 interface ScrollButtonProps extends ButtonProps {
   width?: string | number
-  color?: "primary" | "secondary" | "dark"
+  color?: "primary" | "secondary" | "tertiary"
   gloomy?: boolean
   loading?: boolean
   disabled?: boolean
@@ -18,14 +18,14 @@ interface ScrollButtonProps extends ButtonProps {
   rel?: string
 }
 
-const gColor = (color, theme) => {
+const backgroundColor = (color, theme) => {
   switch (color) {
     case "primary":
       return theme.palette.primary.main
     case "secondary":
       return "#262626"
-    case "dark":
-      return "#ffffff"
+    case "tertiary":
+      return "transparent"
     default:
       return theme.palette.text.primary
   }
@@ -37,8 +37,21 @@ const cColor = (color, theme) => {
       return theme.palette.primary.contrastText
     case "secondary":
       return "#ffffff"
-    case "dark":
-      return "#000000"
+    case "tertiary":
+      return "#ffffff"
+    default:
+      return theme.palette.primary.contrastText
+  }
+}
+
+const borderColor = (color, theme) => {
+  switch (color) {
+    case "primary":
+      return theme.palette.primary.main
+    case "secondary":
+      return "#262626"
+    case "tertiary":
+      return "#ffffff"
     default:
       return theme.palette.primary.contrastText
   }
@@ -50,17 +63,18 @@ const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, w
     height: "4.8rem",
     fontSize: "1.8rem",
     fontWeight: 600,
-    background: gColor(color, theme),
+    background: backgroundColor(color, theme),
     color: cColor(color, theme),
+    borderColor: borderColor(color, theme),
     borderRadius: "1rem",
     [theme.breakpoints.down("sm")]: {
       fontSize: "1.6rem",
       paddingLeft: "4.8rem",
     },
     "&:hover": {
-      backgroundColor: gColor(color, theme),
+      backgroundColor: backgroundColor(color, theme),
       color: cColor(color, theme),
-      borderColor: gColor(color, theme),
+      borderColor: borderColor(color, theme),
     },
   },
   buttonDisabled: {
@@ -71,7 +85,8 @@ const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, w
     opacity: 0.6,
     gap: "0.4em",
     color: cColor(color, theme),
-    backgroundColor: gColor(color, theme),
+    backgroundColor: backgroundColor(color, theme),
+    border: `1px solid ${borderColor(color, theme)} !important`,
   },
   buttonGloomy: {
     opacity: 0.5,
@@ -93,6 +108,7 @@ const Button = (props: ScrollButtonProps) => {
       sx={{ width: "16rem", ...sx }}
       disabled={loading}
       {...restProps}
+      variant="outlined"
     >
       {children} {loading && <CircularProgress sx={{ color: "inherit" }} size={isMobile ? 16 : 16} thickness={4}></CircularProgress>}
     </ScrollButton>
