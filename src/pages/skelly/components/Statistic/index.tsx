@@ -10,9 +10,9 @@ const StatisticSkeleton = styled(Skeleton)(({ theme }) => ({
 }))
 
 const Statistic = props => {
-  const { label, children, loading } = props
+  const { label, children, loading, ...restProps } = props
   return (
-    <Stack direction="column">
+    <Stack direction="column" {...restProps}>
       <Typography sx={{ fontSize: ["1.6rem", "2.4rem"], lineHeight: ["2.4rem", 1.2], fontWeight: 500, whiteSpace: "nowrap" }}>{label}</Typography>
       <NumberTypography
         sx={{
