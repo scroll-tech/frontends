@@ -1,37 +1,43 @@
 import { useEffect } from "react"
-import { Navigate } from "react-router-dom"
+import { Navigate, useNavigate } from "react-router-dom"
 
-import BridgeContextProvider from "@/contexts/BridgeContextProvider"
-import { MintedStatus, useSkellyContext } from "@/contexts/SkellyContextProvider"
-import useSkellyStore, { MintStep } from "@/stores/skellyStore"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
+import { useSkellyContext } from "@/contexts/SkellyContextProvider"
+import useSkellyStore from "@/stores/skellyStore"
 
 import Dashboard from "./Dashboard"
-import LandingPage from "./landing"
-import MintPage from "./mint"
+import LoadingPage from "./loading"
+import WrongNetwork from "./wrongNetwork"
 
-// import WrongNetwork from "./wrongNetwork"
-
-const Skelly = props => {
+const SkellyIndex = props => {
   const { code } = props
-  const { hasMintedProfile } = useSkellyContext()
-  const { mintStep } = useSkellyStore()
+  const navigate = useNavigate()
+  const { walletCurrentAddress } = useRainbowContext()
+  const { unsignedProfileRegistryContract } = useSkellyContext()
+  const { profileMintedLoading, profileMinted, checkIfProfileMinted } = useSkellyStore()
 
   useEffect(() => {
-    console.log("hasMintedProfile", hasMintedProfile)
-  }, [hasMintedProfile])
+    if (unsignedProfileRegistryContract && walletCurrentAddress) {
+      checkIfProfileMinted(unsignedProfileRegistryContract, walletCurrentAddress)
+    } else if (!walletCurrentAddress) {
+      navigate("/scroll-skelly/mint")
+    }
+  }, [unsignedProfileRegistryContract, walletCurrentAddress])
 
-  if (code && hasMintedProfile) {
-    return <Navigate to="/scroll-skelly"></Navigate>
-  }
-
+  // if connected user views the invite link, then redirect to skelly
   return (
-    <BridgeContextProvider>
-      {hasMintedProfile !== MintedStatus.NOT_MINTED && <Dashboard />}
-      {hasMintedProfile === MintedStatus.NOT_MINTED && mintStep === MintStep.REFERRAL_CODE && <LandingPage code={code} />}
-      {hasMintedProfile === MintedStatus.NOT_MINTED && mintStep === MintStep.PROFILE && <MintPage />}
-      {/* <WrongNetwork /> */}
-    </BridgeContextProvider>
+    <>
+      {profileMintedLoading ? (
+        <LoadingPage></LoadingPage>
+      ) : (
+        <>
+          {profileMinted === null && <WrongNetwork></WrongNetwork>}
+          {profileMinted === true && <>{code ? <Navigate to="/scroll-skelly" replace={true}></Navigate> : <Dashboard />}</>}
+          {profileMinted === false && <Navigate to="/scroll-skelly/mint" replace={true}></Navigate>}
+        </>
+      )}
+    </>
   )
 }
 
-export default Skelly
+export default SkellyIndex

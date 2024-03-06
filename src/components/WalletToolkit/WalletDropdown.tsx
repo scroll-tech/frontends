@@ -15,10 +15,8 @@ import { ReactComponent as DownTriangleSvg } from "@/assets/svgs/wallet-connecto
 import { ReactComponent as ProfileSvg } from "@/assets/svgs/wallet-connector/profile.svg"
 import { CHAIN_ID, EXPLORER_URL } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useBridgeStore from "@/stores/bridgeStore"
-import { MintStep } from "@/stores/skellyStore"
-import useSkellyStore from "@/stores/skellyStore"
+import useSkellyStore, { MintStep } from "@/stores/skellyStore"
 import { generateExploreLink, truncateAddress } from "@/utils"
 
 const useStyles = makeStyles<any>()((theme, { dark }) => ({
@@ -28,6 +26,7 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
     height: "3.6rem",
     padding: "0 1.2rem",
     borderRadius: "0.5rem",
+    // width: "16rem",
     border: dark ? `1px solid ${theme.palette.primary.contrastText}` : "none",
     backgroundColor: dark ? "unset" : theme.palette.themeBackground.normal,
     color: dark ? theme.palette.primary.contrastText : "#473835",
@@ -87,8 +86,8 @@ const WalletDropdown = props => {
 
   const { walletCurrentAddress, connect, disconnect, chainId } = useRainbowContext()
   const { changeHistoryVisible } = useBridgeStore()
-  const { username, hasMintedProfile } = useSkellyContext()
-  const { changeMintStep } = useSkellyStore()
+
+  const { username, profileMinted, changeMintStep } = useSkellyStore()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [copied, setCopied] = useState(false)
@@ -158,14 +157,14 @@ const WalletDropdown = props => {
         </ButtonBase>
       )}
 
-      {chainId && !hasMintedProfile && (
+      {chainId && !profileMinted && (
         <ButtonBase classes={{ root: classes.button }} sx={sx} onClick={handleClick}>
           {truncateAddress(walletCurrentAddress as string)}
           <SvgIcon className={cx(classes.endIcon, open && classes.reverseEndIcon)} component={DownTriangleSvg} inheritViewBox></SvgIcon>
         </ButtonBase>
       )}
 
-      {chainId && hasMintedProfile && (
+      {chainId && profileMinted && (
         <ButtonBase classes={{ root: classes.button }} sx={sx} onClick={handleClick}>
           <Avatar src={getSmallAvatarURL(walletCurrentAddress)} sx={{ width: 24, height: 24, marginRight: "0.8rem" }}></Avatar>
           <Box sx={{ lineHeight: "1.6rem", textAlign: "left" }}>
