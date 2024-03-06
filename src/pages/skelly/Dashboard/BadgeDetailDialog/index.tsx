@@ -9,7 +9,8 @@ import { ReactComponent as CloseSvg } from "@/assets/svgs/skelly/close.svg"
 import { ReactComponent as ShareSvg } from "@/assets/svgs/skelly/share.svg"
 import ScrollButton from "@/components/Button"
 import Link from "@/components/Link"
-import { useSkellyContext } from "@/contexts/SkellyContextProvider"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
+import { mintBadge, queryUserBadgesWrapped } from "@/services/skellyService"
 import useSkellyStore, { BadgeDetailDialogTpye } from "@/stores/skellyStore"
 import { generateShareTwitterURL, getBadgeImgURL, requireEnv } from "@/utils"
 
@@ -88,10 +89,10 @@ const ButtonContainer = styled(Box)(({ theme }) => ({
 // }))
 
 const BadgeDetailDialog = () => {
+  const { walletCurrentAddress, provider } = useRainbowContext()
   const { badgeDetailDialogVisible, changeBadgeDetailDialog, selectedBadge, changeUpgradeDialog } = useSkellyStore()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
-  const { mintBadge, queryUserBadgesWrapped } = useSkellyContext()
 
   const handleClose = () => {
     changeBadgeDetailDialog(BadgeDetailDialogTpye.HIDDEN)
@@ -100,12 +101,13 @@ const BadgeDetailDialog = () => {
 
   const handleMint = async () => {
     setLoading(true)
-    const result = await mintBadge(selectedBadge.nftAddress, selectedBadge.nftAbi, selectedBadge.badgeContract)
+
+    const result = await mintBadge(provider, walletCurrentAddress, selectedBadge.nftAddress, selectedBadge.nftAbi, selectedBadge.badgeAddress)
     if (result! !== true) {
       console.log("mintBadge failed")
     } else {
       changeBadgeDetailDialog(BadgeDetailDialogTpye.MINTED)
-      queryUserBadgesWrapped()
+      queryUserBadgesWrapped(provider, walletCurrentAddress)
     }
     setLoading(false)
   }

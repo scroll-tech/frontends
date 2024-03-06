@@ -15,10 +15,8 @@ import { ReactComponent as DownTriangleSvg } from "@/assets/svgs/wallet-connecto
 import { ReactComponent as ProfileSvg } from "@/assets/svgs/wallet-connector/profile.svg"
 import { CHAIN_ID, EXPLORER_URL } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useBridgeStore from "@/stores/bridgeStore"
-import { MintStep } from "@/stores/skellyStore"
-import useSkellyStore from "@/stores/skellyStore"
+import useSkellyStore, { MintStep } from "@/stores/skellyStore"
 import { generateExploreLink, truncateAddress } from "@/utils"
 
 const useStyles = makeStyles<any>()((theme, { dark }) => ({
@@ -28,6 +26,7 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
     height: "3.6rem",
     padding: "0 1.2rem",
     borderRadius: "0.5rem",
+    // width: "16rem",
     border: dark ? `1px solid ${theme.palette.primary.contrastText}` : "none",
     backgroundColor: dark ? "unset" : theme.palette.themeBackground.normal,
     color: dark ? theme.palette.primary.contrastText : "#473835",

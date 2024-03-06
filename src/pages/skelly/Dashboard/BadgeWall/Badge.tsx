@@ -78,7 +78,7 @@ const Badge = ({ badge, index, badgewidth }) => {
         }}
         onClick={handleShowBadgeDetailDialog}
       >
-        <img alt={badge.metadata.name} style={{ width: "100%", borderRadius: "0.8rem" }} src={getBadgeImgURL(badge.metadata.image)} />
+        <img alt={badge.metadata?.name} style={{ width: "100%", borderRadius: "0.8rem" }} src={getBadgeImgURL(badge.metadata?.image)} />
       </BadgeBox>
     </CustomTooltip>
   )

@@ -2,15 +2,18 @@ import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { Helmet } from "react-helmet-async"
 import { useParams } from "react-router-dom"
 import { Navigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 import { Box } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 // import { BADGES_VISIBLE_TYPE } from "@/constants"
-import { MintedStatus, useSkellyContext } from "@/contexts/SkellyContextProvider"
+import { useSkellyContext } from "@/contexts/SkellyContextProvider"
+import useSkellyStore from "@/stores/skellyStore"
 import { requireEnv } from "@/utils"
 
+import LoadingPage from "../loading"
 import ActionBox from "./ActionBox"
 import BadgeDetailDialog from "./BadgeDetailDialog"
 import BadgeWall from "./BadgeWall"
@@ -53,10 +56,81 @@ const Container: any = styled(Box)(({ theme, badgewidth }: any) => ({
 }))
 
 const Dashboard = props => {
-  const { address: othersWalletAddress } = useParams()
+  const { walletCurrentAddress, provider } = useRainbowContext()
 
-  const { walletCurrentAddress } = useRainbowContext()
-  const { username, attachedBadges, hasMintedProfile } = useSkellyContext()
+  const { address: othersWalletAddress } = useParams()
+  // const { username, attachedBadges, profileMinted } = useSkellyStore()
+  const navigate = useNavigate()
+  const { unsignedProfileRegistryContract } = useSkellyContext()
+  const {
+    username,
+    attachedBadges,
+    checkIfProfileMinted,
+    fetchCurrentSkellyDetail,
+    fetchOthersSkellyDetail,
+    checkAndFetchCurrentWalletSkelly,
+    profileAddress,
+    changeProfileDetailLoading,
+    profileDetailLoading,
+  } = useSkellyStore()
+
+  useEffect(() => {
+    if (provider && unsignedProfileRegistryContract && othersWalletAddress && walletCurrentAddress) {
+      fetchOthersWithCurrent(provider, unsignedProfileRegistryContract, othersWalletAddress, walletCurrentAddress)
+    } else if (provider && unsignedProfileRegistryContract && othersWalletAddress) {
+      fetchOthers(provider, unsignedProfileRegistryContract, othersWalletAddress)
+    }
+  }, [provider, unsignedProfileRegistryContract, othersWalletAddress, walletCurrentAddress])
+
+  useEffect(() => {
+    if (provider && walletCurrentAddress && profileAddress) {
+      fetchCurrent(provider, walletCurrentAddress, profileAddress)
+    }
+  }, [provider, walletCurrentAddress, profileAddress])
+
+  const fetchOthersWithCurrent = async (provider, unsignedProfileRegistryContract, othersWalletAddress, walletCurrentAddress) => {
+    try {
+      changeProfileDetailLoading(true)
+      const fetchOthersReq = fetchOthersSkellyDetail(provider, unsignedProfileRegistryContract, othersWalletAddress)
+      // TODO: 测试： 切换回自己的skelly后profileContract有没有更新
+      const fetchCurrentWalletReq = checkAndFetchCurrentWalletSkelly(provider, unsignedProfileRegistryContract, walletCurrentAddress)
+      await Promise.all([fetchOthersReq, fetchCurrentWalletReq])
+    } catch (e) {
+      console.log("fetch skelly error", e)
+    } finally {
+      changeProfileDetailLoading(false)
+    }
+  }
+
+  const fetchCurrent = async (provider, walletAddress, profileAddress) => {
+    try {
+      changeProfileDetailLoading(true)
+      const signer = await provider?.getSigner(0)
+      await fetchCurrentSkellyDetail(signer, walletAddress, profileAddress)
+    } catch (e) {
+      console.log("fetch others skelly error", e)
+    } finally {
+      changeProfileDetailLoading(false)
+    }
+  }
+
+  const fetchOthers = async (provider, unsignedProfileRegistryContract, othersWalletAddress) => {
+    try {
+      changeProfileDetailLoading(true)
+      await checkAndfetchOthersSkellyDetail(provider, unsignedProfileRegistryContract, othersWalletAddress)
+    } catch (e) {
+    } finally {
+      changeProfileDetailLoading(false)
+    }
+  }
+  const checkAndfetchOthersSkellyDetail = async (provider, unsignedProfileRegistryContract, othersWalletAddress) => {
+    const { minted, profileAddress } = await checkIfProfileMinted(unsignedProfileRegistryContract, othersWalletAddress)
+    if (!minted) {
+      navigate("/404")
+      return
+    }
+    await fetchOthersSkellyDetail(provider, othersWalletAddress, profileAddress)
+  }
 
   const metadata = {
     title: `Scroll - Skelly @${username}`,
@@ -107,27 +181,28 @@ const Dashboard = props => {
         <meta name="twitter:description" content={metadata.description} />
         <meta name="twitter:image" content={metadata.image} />
       </Helmet>
-
-      <Container badgewidth={badgewidth}>
-        <BadgeWall badgewidth={badgewidth} gridNum={gridNum} windowDimensions={windowDimensions} />
-        {hasMintedProfile !== MintedStatus.UNKNOWN && othersWalletAddress && (
-          <>
-            <ActionBox></ActionBox>
-            <BadgeDetailDialog />
-          </>
-        )}
-
-        {hasMintedProfile !== MintedStatus.UNKNOWN && !othersWalletAddress && (
-          <>
-            <ActionBox />
-            <NameDialog />
-            <BadgesDialog />
-            <ReferDialog />
-            <UpgradeDialog />
-            <BadgeDetailDialog />
-          </>
-        )}
-      </Container>
+      {profileDetailLoading ? (
+        <LoadingPage></LoadingPage>
+      ) : (
+        <Container badgewidth={badgewidth}>
+          <BadgeWall badgewidth={badgewidth} gridNum={gridNum} windowDimensions={windowDimensions} />
+          {othersWalletAddress ? (
+            <>
+              <ActionBox></ActionBox>
+              <BadgeDetailDialog />
+            </>
+          ) : (
+            <>
+              <ActionBox />
+              <NameDialog />
+              <BadgesDialog />
+              <ReferDialog />
+              <UpgradeDialog />
+              <BadgeDetailDialog />
+            </>
+          )}
+        </Container>
+      )}
     </>
   )
 }

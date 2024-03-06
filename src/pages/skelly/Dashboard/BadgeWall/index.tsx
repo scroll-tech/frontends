@@ -5,11 +5,10 @@ import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { getAvatarURL } from "@/apis/skelly"
-import DefaultAvatar from "@/assets/images/skelly/Scrolly_Coding.png"
 // import { ReactComponent as DefaultAvatarSvg } from "@/assets/svgs/skelly/default-avatar.svg"
 // import { BADGES_VISIBLE_TYPE } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { MintedStatus, useSkellyContext } from "@/contexts/SkellyContextProvider"
+import useSkellyStore from "@/stores/skellyStore"
 
 import Badge from "./Badge"
 
@@ -58,17 +57,17 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
   const { badgewidth, gridNum, windowDimensions } = props
   const divRef = useRef<HTMLDivElement>(null)
 
-  const { hasMintedProfile, skellyUsername, userBadges, attachedBadges } = useSkellyContext()
+  const { profileMinted, skellyUsername, userBadges, attachedBadges } = useSkellyStore()
   const [badges, setBadges] = useState<BadgeType[]>([])
   const { walletCurrentAddress } = useRainbowContext()
 
   const realWalletAddress = useMemo(() => othersWalletAddress || walletCurrentAddress, [othersWalletAddress, walletCurrentAddress])
 
   useEffect(() => {
-    if (hasMintedProfile) {
+    if (profileMinted) {
       // queryUserBadges()
     }
-  }, [hasMintedProfile])
+  }, [profileMinted])
 
   const visibleBadges = useMemo(() => {
     return attachedBadges.map(badgeId => userBadges.find(badge => badge.id === badgeId))
@@ -131,17 +130,11 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
   }
 
   const userInfo = useMemo(() => {
-    if (hasMintedProfile === MintedStatus.UNKNOWN) {
-      return {
-        name: "Loading...",
-        avatar: DefaultAvatar,
-      }
-    }
     return {
       name: skellyUsername,
       avatar: getAvatarURL(realWalletAddress),
     }
-  }, [realWalletAddress, skellyUsername, hasMintedProfile])
+  }, [realWalletAddress, skellyUsername, profileMinted])
 
   return (
     <>

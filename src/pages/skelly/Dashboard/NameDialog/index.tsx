@@ -4,7 +4,6 @@ import { Box, Dialog, DialogContent, DialogTitle, IconButton, InputBase, Stack, 
 import { styled } from "@mui/system"
 
 import { ReactComponent as CloseSvg } from "@/assets/svgs/skelly/close.svg"
-import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useValidateSkellyName from "@/hooks/useValidateSkellyName"
 import Button from "@/pages/skelly/components/Button"
 import useSkellyStore from "@/stores/skellyStore"
@@ -37,8 +36,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }))
 
 const NameDialog = () => {
-  const { profileDialogVisible, changeProfileDialog } = useSkellyStore()
-  const { username, profileContract, queryUsername } = useSkellyContext()
+  const { profileDialogVisible, changeProfileDialog, username, profileContract, queryUsername } = useSkellyStore()
+
   const [loading, setLoading] = useState(false)
 
   const [profileName, setProfileName] = useState(username)
