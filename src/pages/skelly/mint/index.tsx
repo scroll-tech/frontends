@@ -77,11 +77,16 @@ const Mint = () => {
         codeSignature = signature
       }
       const tx = await profileRegistryContract.mint(name, codeSignature, { value: ethers.parseEther(codeSignature === "0x" ? "0.001" : "0.0005") })
-      await tx.wait()
-      changeReferralCode("")
-      const isMinted = await checkIfProfileMinted()
-      console.log("checkIfProfileMinted", isMinted)
-      changeMintStep(MintStep.REFERRAL_CODE)
+      const txReceipt = await tx.wait()
+      if (txReceipt.status === 1) {
+        changeReferralCode("")
+        console.log("txReceipt", txReceipt)
+        const isMinted = await checkIfProfileMinted(walletCurrentAddress)
+        changeMintStep(MintStep.REFERRAL_CODE)
+        console.log("checkIfProfileMinted", isMinted)
+      } else {
+        return "due to any operation that can cause the transaction or top-level call to revert"
+      }
     } catch (error) {
       console.log(error)
     } finally {
@@ -134,7 +139,7 @@ const Mint = () => {
       </Box>
 
       <Button gloomy={!!helpText || validating} color="primary" loading={isMinting} width={isMobile ? "23rem" : "28.2rem"} onClick={handleMint}>
-        {isMinting ? "Minting" : "Mint now"}
+        {isMinting ? "Minting" : "Minting now"}
       </Button>
       <InsufficientDialog open={insufficientDialogOpen} onClose={() => setInsufficientDialogOpen(false)} />
     </Container>

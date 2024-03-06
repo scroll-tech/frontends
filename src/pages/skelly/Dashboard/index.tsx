@@ -8,7 +8,7 @@ import { styled } from "@mui/system"
 
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 // import { BADGES_VISIBLE_TYPE } from "@/constants"
-import { useSkellyContext } from "@/contexts/SkellyContextProvider"
+import { MintedStatus, useSkellyContext } from "@/contexts/SkellyContextProvider"
 import { requireEnv } from "@/utils"
 
 import ActionBox from "./ActionBox"
@@ -56,7 +56,7 @@ const Dashboard = props => {
   const { address: othersWalletAddress } = useParams()
 
   const { walletCurrentAddress } = useRainbowContext()
-  const { username, attachedBadges } = useSkellyContext()
+  const { username, attachedBadges, hasMintedProfile } = useSkellyContext()
 
   const metadata = {
     title: `Scroll - Skelly @${username}`,
@@ -110,12 +110,14 @@ const Dashboard = props => {
 
       <Container badgewidth={badgewidth}>
         <BadgeWall badgewidth={badgewidth} gridNum={gridNum} windowDimensions={windowDimensions} />
-        {othersWalletAddress ? (
+        {hasMintedProfile !== MintedStatus.UNKNOWN && othersWalletAddress && (
           <>
             <ActionBox></ActionBox>
             <BadgeDetailDialog />
           </>
-        ) : (
+        )}
+
+        {hasMintedProfile !== MintedStatus.UNKNOWN && !othersWalletAddress && (
           <>
             <ActionBox />
             <NameDialog />
