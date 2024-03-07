@@ -3,6 +3,7 @@ import { useDebouncedCallback } from "use-debounce"
 
 import { CircularProgress, SvgIcon, Typography } from "@mui/material"
 
+import SensitiveWord from "@/assets/files/sensitive-word.json"
 import { ReactComponent as CheckSvg } from "@/assets/svgs/skelly/check.svg"
 import { ReactComponent as WarningSvg } from "@/assets/svgs/skelly/warning.svg"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
@@ -35,7 +36,9 @@ const useValidateName = value => {
 
   const validateName = async name => {
     let nextHelpText
-    if (!name) {
+    if (SensitiveWord.some(word => name.includes(word))) {
+      nextHelpText = "This name is not allowed"
+    } else if (!name) {
       nextHelpText = "Please enter your name"
     } else if (!/^[\dA-Za-z_]{4,15}$/g.test(name)) {
       nextHelpText = "Must consist of 4-15 characters, including A-Z/a-z/0-9/_"
