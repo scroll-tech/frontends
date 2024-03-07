@@ -207,7 +207,7 @@ const BadgeDetailDialog = () => {
         <ButtonContainer>
           {[BadgeDetailDialogTpye.MINT, BadgeDetailDialogTpye.MINT_WITH_BACK].includes(badgeDetailDialogVisible) && (
             <StyledScrollButton loading={loading} color="primary" onClick={handleMint}>
-              Mint badge
+              {loading ? "Minting" : "Mint badge"}
             </StyledScrollButton>
           )}
 
