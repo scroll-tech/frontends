@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react"
+import Img from "react-cool-img"
 import { useNavigate } from "react-router-dom"
 
 import { Avatar, Box, Dialog, DialogContent, DialogTitle, IconButton, Stack, SvgIcon, Typography } from "@mui/material"
@@ -170,9 +171,10 @@ const BadgeDetailDialog = () => {
         </Box>
       </StyledDialogTitle>
       <StyledDialogContent>
-        <img
+        <Img
           alt="img"
           src={getBadgeImgURL(selectedBadge.image)}
+          placeholder="/imgs/skelly/badgePlaceholder.svg"
           style={{ width: "20rem", height: "20rem", marginBottom: "4rem", borderRadius: "0.8rem" }}
         />
         {badgeDetailDialogVisible !== BadgeDetailDialogTpye.MINTED ? (

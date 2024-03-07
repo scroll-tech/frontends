@@ -149,7 +149,7 @@ const maskMobile = {
   },
 }
 const Button = (props: ScrollButtonProps) => {
-  const { width, sx, color, loading, disabled, gloomy, children, whiteButton, ...restProps } = props
+  const { id, width, sx, color, loading, disabled, gloomy, children, whiteButton, ...restProps } = props
   const { classes, cx } = useStyles({ color, width, disabled, loading, whiteButton })
 
   const { isMobile } = useCheckViewport()
@@ -169,6 +169,7 @@ const Button = (props: ScrollButtonProps) => {
     // TODO: allow sx, allow size=small/medium
     // avoid setting both 'disabled' and 'loading' to true.
     <motion.div
+      id={id}
       className={cx(classes.wrapper, innerDisabled && classes.wrapperDisabled, loading && classes.wrapperLoading, gloomy && classes.wrapperGloomy)}
       onHoverStart={handleHover}
       onHoverEnd={handleHover}

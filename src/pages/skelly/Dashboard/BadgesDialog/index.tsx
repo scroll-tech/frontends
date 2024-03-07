@@ -7,6 +7,7 @@ import { styled } from "@mui/system"
 
 import { ReactComponent as CloseSvg } from "@/assets/svgs/skelly/close.svg"
 import { BADGES_VISIBLE_TYPE } from "@/constants"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
 // import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import Button from "@/pages/skelly/components/Button"
 import { attachBadges, detachBadges, reorderBadges } from "@/services/skellyService"
@@ -34,8 +35,18 @@ const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
 }))
 
 const BadgesDialog = () => {
-  const { userBadges, attachedBadges, badgeOrder, badgesDialogVisible, changeBadgesDialog, sortedBadges, profileContract, queryAttachedBadges } =
-    useSkellyStore()
+  const { provider } = useRainbowContext()
+  const {
+    userBadges,
+    attachedBadges,
+    badgeOrder,
+    badgesDialogVisible,
+    changeBadgesDialog,
+    sortedBadges,
+    profileContract,
+    profileAddress,
+    queryAttachedBadges,
+  } = useSkellyStore()
   const [loading, setLoading] = useState(false)
 
   const badgesInstance = useMemo(() => {
@@ -121,7 +132,10 @@ const BadgesDialog = () => {
         handleClose()
       }
     }
-    customiseDisplay(provider, profileContract, {
+    customiseDisplay({
+      provider: provider!,
+      profileContract: profileContract!,
+      profileAddress: profileAddress!,
       attachBadges: hiddenToDisplayed.length > 0 ? hiddenToDisplayed : null,
       detachBadges: displayedToHidden.length > 0 ? displayedToHidden : null,
       order: isEqual(badgeOrder, newArrayOrder) ? null : newArrayOrder,
