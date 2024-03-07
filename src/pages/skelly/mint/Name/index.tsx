@@ -11,7 +11,7 @@ import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useValidateSkellyName from "@/hooks/useValidateSkellyName"
-import useSkellyStore, { MintStep } from "@/stores/skellyStore"
+import useSkellyStore from "@/stores/skellyStore"
 
 import InsufficientDialog from "./InsufficientDialog"
 
@@ -54,12 +54,12 @@ const Name = () => {
   const { profileRegistryContract } = useSkellyContext()
   const [insufficientDialogOpen, setInsufficientDialogOpen] = useState(false)
 
-  const { referralCode, changeReferralCode, changeMintStep } = useSkellyStore()
+  const { referralCode, changeReferralCode } = useSkellyStore()
 
   const [isMinting, setIsMinting] = useState(false)
   const [name, setName] = useState("")
 
-  const { helpText, validating, handleValidateName, renderValidation } = useValidateSkellyName(name)
+  const { helpText, validating, renderValidation } = useValidateSkellyName(name)
 
   const checkBalance = async () => {
     const balance = await provider?.getBalance(walletCurrentAddress as `0x${string}`)
@@ -72,10 +72,6 @@ const Name = () => {
   const handleMint = async e => {
     setIsMinting(true)
     try {
-      const nextHelpText = await handleValidateName()
-      if (nextHelpText) {
-        return
-      }
       const isValidBalance = await checkBalance()
       if (!isValidBalance) {
         setInsufficientDialogOpen(true)
@@ -115,7 +111,6 @@ const Name = () => {
     const txReceipt = await tx.wait()
     if (txReceipt.status === 1) {
       changeReferralCode("")
-      changeMintStep(MintStep.REFERRAL_CODE)
       console.log("txReceipt", txReceipt)
       navigate("/scroll-skelly")
     } else {
@@ -129,17 +124,7 @@ const Name = () => {
 
   const handleKeydown = async e => {
     if (e.keyCode === 13) {
-      const nextHelpText = await handleValidateName()
-      if (!nextHelpText) {
-        mintSkelly()
-      }
-    }
-  }
-
-  const handleBlur = e => {
-    const mintBtn = document.querySelector("#mint-btn")
-    if (!mintBtn?.contains(e.relatedTarget)) {
-      handleValidateName()
+      mintSkelly()
     }
   }
 
@@ -158,7 +143,6 @@ const Name = () => {
           onChange={handleChangeName}
           autoFocus
           onKeyDown={handleKeydown}
-          onBlur={handleBlur}
         />
         <Stack
           direction="row"

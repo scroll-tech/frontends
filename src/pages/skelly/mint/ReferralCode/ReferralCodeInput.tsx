@@ -117,8 +117,11 @@ const ReferralCode = ({ isChecking, setIsChecking, code }) => {
         changeReferralCode(code)
         setCodeStatus(CodeStatus.VALID)
       } else {
+        changeReferralCode("")
+        setCodeStatus(CodeStatus.INVALID)
       }
     } catch (e) {
+      changeReferralCode("")
       setCodeStatus(CodeStatus.INVALID)
     } finally {
       setIsChecking(false)

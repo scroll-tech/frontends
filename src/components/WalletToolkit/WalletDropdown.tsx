@@ -4,7 +4,7 @@ import Img from "react-cool-img"
 import { useLocation, useNavigate } from "react-router-dom"
 import { makeStyles } from "tss-react/mui"
 
-import { Box, ButtonBase, Fade, ListItemIcon, ListItemText, Menu, MenuItem, Skeleton, SvgIcon } from "@mui/material"
+import { Box, ButtonBase, Fade, LinearProgress, ListItemIcon, ListItemText, Menu, MenuItem, SvgIcon } from "@mui/material"
 
 import { getSmallAvatarURL } from "@/apis/skelly"
 import { ReactComponent as CopySuccessSvg } from "@/assets/svgs/bridge/copy-success.svg"
@@ -161,8 +161,10 @@ const WalletDropdown = props => {
   const renderCurrentWallet = () => {
     if (walletDetailLoading) {
       return (
-        <ButtonBase classes={{ root: cx(classes.button) }} sx={{ width: "16rem", ...sx }}>
-          <Skeleton sx={{ backgroundColor: "rgba(256, 256, 256, 0.15)", width: "100%", borderRadius: "0.4rem" }}></Skeleton>
+        <ButtonBase classes={{ root: classes.button }} sx={{ position: "relative", overflow: "hidden", ...sx }} onClick={handleClick}>
+          {truncateAddress(walletCurrentAddress as string)}
+          <SvgIcon className={cx(classes.endIcon, open && classes.reverseEndIcon)} component={DownTriangleSvg} inheritViewBox></SvgIcon>
+          {<LinearProgress sx={{ position: "absolute", width: "100%", bottom: 0, height: "2px" }} />}
         </ButtonBase>
       )
     } else if (profileMinted) {
