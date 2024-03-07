@@ -1,5 +1,5 @@
 // skellyService.js
-import { AbiCoder, ethers } from "ethers"
+import { AbiCoder, BrowserProvider, Contract, ethers } from "ethers"
 
 import MulticallAbi from "@/assets/abis/Multicall3.json"
 import AttestProxyABI from "@/assets/abis/SkellyAttestProxy.json"
@@ -281,7 +281,6 @@ const mintBadge = async (provider, walletCurrentAddress, nftAddress, nftAbi, bad
       tokenId = await nftV2Contract.tokenOfOwnerByIndex(walletCurrentAddress, 0)
       nftVersion = 1
     }
-    console.log(walletCurrentAddress, tokenId, "tokenId")
     const abiCoder = new AbiCoder()
     const originsBadgePayload = abiCoder.encode(["address", "uint256"], [nftAddress[nftVersion], tokenId])
     const badgePayload = abiCoder.encode(["address", "bytes"], [badgeAddress, originsBadgePayload])
@@ -313,19 +312,21 @@ const mintBadge = async (provider, walletCurrentAddress, nftAddress, nftAbi, bad
   }
 }
 
-const customiseDisplay = async (
+const customiseDisplay = async ({
   provider,
   profileContract,
-  {
-    attachBadges,
-    detachBadges,
-    order,
-  }: {
-    attachBadges: string[] | null
-    detachBadges: string[] | null
-    order: number[] | null
-  },
-) => {
+  profileAddress,
+  attachBadges,
+  detachBadges,
+  order,
+}: {
+  provider: BrowserProvider
+  profileContract: Contract
+  profileAddress: string
+  attachBadges: string[] | null
+  detachBadges: string[] | null
+  order: number[] | null
+}) => {
   const signer = await provider!.getSigner(0)
 
   const multicallContract = new ethers.Contract("0xca11bde05977b3631167028862be2a173976ca11", MulticallAbi, signer)
