@@ -44,7 +44,7 @@ import { coordinateGetter as multipleContainersCoordinateGetter } from "./multip
 
 const DragContainer = styled(Box)(({ theme }) => ({
   "& > div:nth-of-type(1) img": {
-    filter: "grayscale(1)",
+    filter: "brightness(60%)",
   },
 }))
 
