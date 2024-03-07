@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom"
 
 import { getImgByCode } from "@/apis/skelly"
 
-import SkellyIndex from "../index"
+import SkellyMint from "../mint/ReferralCode"
 
 // TODO: if currentWallectAddress has minted Skelly then display Skelly profile
 // else display input referral code page (the default unminted page)
@@ -31,7 +31,7 @@ const SkellyCoupon = () => {
         <meta name="twitter:image" content={metaImgURI} />
         <meta name="twitter:url" content={url} />
       </Helmet>
-      <SkellyIndex code={code}></SkellyIndex>
+      <SkellyMint code={code}></SkellyMint>
     </>
   )
 }
