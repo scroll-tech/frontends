@@ -9,7 +9,7 @@ import { checkIfHasBadgeByAddress } from "@/services/skellyService"
 import useSkellyStore, { BadgeDetailDialogTpye } from "@/stores/skellyStore"
 
 const MintBadge = () => {
-  const { changeBadgeDetailDialog, changeSelectedBadge } = useSkellyStore()
+  const { changeBadgeDetailDialog, changeSelectedBadge, profileMinted } = useSkellyStore()
   const badge: any = Badges[3]
   const [canBeMint, setCanBeMint] = useState(false)
   const { chainId, provider, walletCurrentAddress } = useRainbowContext()
@@ -37,7 +37,7 @@ const MintBadge = () => {
 
   const handleMintBadge = async () => {
     changeSelectedBadge(Badges[3])
-    if (isL2) {
+    if (profileMinted) {
       changeBadgeDetailDialog(BadgeDetailDialogTpye.MINT)
     } else {
       changeBadgeDetailDialog(BadgeDetailDialogTpye.NO_PROFILE)
