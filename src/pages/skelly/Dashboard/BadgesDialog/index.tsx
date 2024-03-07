@@ -7,6 +7,7 @@ import { styled } from "@mui/system"
 
 import { ReactComponent as CloseSvg } from "@/assets/svgs/skelly/close.svg"
 import { BADGES_VISIBLE_TYPE } from "@/constants"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
 // import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import Button from "@/pages/skelly/components/Button"
 import { customiseDisplay } from "@/services/skellyService"
@@ -33,7 +34,9 @@ const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
 }))
 
 const BadgesDialog = () => {
-  const { userBadges, attachedBadges, badgeOrder, badgesDialogVisible, changeBadgesDialog, sortedBadges, profileContract } = useSkellyStore()
+  const { provider, walletCurrentAddress } = useRainbowContext()
+  const { userBadges, attachedBadges, badgeOrder, badgesDialogVisible, changeBadgesDialog, sortedBadges, profileContract, queryVisibleBadges } =
+    useSkellyStore()
   const [loading, setLoading] = useState(false)
 
   const badgesInstance = useMemo(() => {
@@ -53,9 +56,7 @@ const BadgesDialog = () => {
   }
 
   const handleSave = () => {
-    setLoading(true)
     updateDataAndOrder()
-    // changeBadgesDialog(false)
   }
 
   const calculateRelativeOrder = (original, frontend) => {
@@ -119,14 +120,17 @@ const BadgesDialog = () => {
     //     handleClose()
     //   }
     // }
-    customiseDisplay({
+
+    setLoading(true)
+    await customiseDisplay({
       profileContract: profileContract!,
       attachBadges: hiddenToDisplayed.length > 0 ? hiddenToDisplayed : null,
       detachBadges: displayedToHidden.length > 0 ? displayedToHidden : null,
       order: isEqual(badgeOrder, newArrayOrder) ? null : newArrayOrder,
     })
-
     setLoading(false)
+    changeBadgesDialog(false)
+    queryVisibleBadges(provider, walletCurrentAddress)
   }
 
   return (

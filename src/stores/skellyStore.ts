@@ -101,7 +101,6 @@ const useSkellyStore = create<SkellyStore>()((set, get) => ({
     try {
       set({
         profileMintedLoading: true,
-        profileAddress: "",
       })
       const profileAddress = await registryInstance!.getProfile(userAddress)
       const profileMinted = await registryInstance!.isProfileMinted(profileAddress)
