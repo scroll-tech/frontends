@@ -1,7 +1,6 @@
 // skellyService.js
-import { AbiCoder, BrowserProvider, Contract, ethers } from "ethers"
+import { AbiCoder, ethers } from "ethers"
 
-import MulticallAbi from "@/assets/abis/Multicall3.json"
 import AttestProxyABI from "@/assets/abis/SkellyAttestProxy.json"
 import BadgeABI from "@/assets/abis/SkellyBadge.json"
 import ProfileABI from "@/assets/abis/SkellyProfile.json"
@@ -312,58 +311,30 @@ const mintBadge = async (provider, walletCurrentAddress, nftAddress, nftAbi, bad
   }
 }
 
-const customiseDisplay = async ({
-  provider,
-  profileContract,
-  profileAddress,
-  attachBadges,
-  detachBadges,
-  order,
-}: {
-  provider: BrowserProvider
-  profileContract: Contract
-  profileAddress: string
-  attachBadges: string[] | null
-  detachBadges: string[] | null
-  order: number[] | null
-}) => {
-  const signer = await provider!.getSigner(0)
-
-  const multicallContract = new ethers.Contract("0xca11bde05977b3631167028862be2a173976ca11", MulticallAbi, signer)
-
+const customiseDisplay = async ({ profileContract, attachBadges, detachBadges, order }) => {
   try {
-    const calls: { target: string; callData: string; allowFailure: boolean }[] = []
+    const calls: any = []
     if (attachBadges) {
-      const attachCallData = profileContract!.interface.encodeFunctionData("attach(bytes32[])", [attachBadges])
-      calls.push({
-        target: profileAddress,
-        callData: attachCallData,
-        allowFailure: true,
-      })
+      const attachCallData = profileContract.interface.encodeFunctionData("attach(bytes32[])", [attachBadges])
+      calls.push(attachCallData)
     }
 
     if (detachBadges) {
-      const detachCallData = profileContract!.interface.encodeFunctionData("detach", [detachBadges])
-      calls.push({
-        target: profileAddress,
-        callData: detachCallData,
-        allowFailure: true,
-      })
+      const detachCallData = profileContract.interface.encodeFunctionData("detach", [detachBadges])
+      calls.push(detachCallData)
     }
 
     if (order) {
-      const reorderCallData = profileContract!.interface.encodeFunctionData("reorderBadges", [order])
-      calls.push({
-        target: profileAddress,
-        callData: reorderCallData,
-        allowFailure: true,
-      })
+      const reorderCallData = profileContract.interface.encodeFunctionData("reorderBadges", [order])
+      calls.push(reorderCallData)
     }
 
-    const txResponse = await multicallContract.aggregate3(calls)
+    const txResponse = await profileContract.multicall(calls)
     const txReceipt = await txResponse.wait()
-    txReceipt.returnData.forEach((result, index) => {
-      console.log(`Call ${index}: Success=${result.success}, ReturnData=${result.returnData}`)
+    txReceipt.events.forEach(event => {
+      if (event.event === "CallExecuted") {
+        console.log(`Call ${event.args.callId}: Success`)
+      }
     })
   } catch (error) {
     console.error("Multicall transaction failed!", error)
