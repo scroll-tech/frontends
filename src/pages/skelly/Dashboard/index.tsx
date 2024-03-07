@@ -80,11 +80,10 @@ const Dashboard = props => {
 
   // must have minted
   useEffect(() => {
-    if (provider && walletCurrentAddress && !othersWalletAddress && profileAddress) {
-      console.log(walletCurrentAddress, profileAddress)
+    if (provider && !othersWalletAddress && profileAddress) {
       fetchCurrent(provider, walletCurrentAddress, profileAddress)
     }
-  }, [provider, walletCurrentAddress, othersWalletAddress, profileAddress])
+  }, [provider, othersWalletAddress, profileAddress])
 
   const fetchCurrent = async (provider, walletAddress, profileAddress) => {
     try {
