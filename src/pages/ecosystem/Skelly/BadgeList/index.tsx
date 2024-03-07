@@ -1,11 +1,12 @@
 import React, { useState } from "react"
 
-import { Box, Card, CardContent, IconButton, Stack, SvgIcon, Typography } from "@mui/material"
+import { Box, Card, CardContent, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { ReactComponent as LogoSvg } from "@/assets/svgs/common/scroll-logo-icon.svg"
-import { ReactComponent as LeftSvg } from "@/assets/svgs/skelly/arrow-left.svg"
-import { ReactComponent as RightSvg } from "@/assets/svgs/skelly/arrow-right.svg"
+
+// import { ReactComponent as LeftSvg } from "@/assets/svgs/skelly/arrow-left.svg"
+// import { ReactComponent as RightSvg } from "@/assets/svgs/skelly/arrow-right.svg"
 
 interface CarouselItem {
   title: string
@@ -26,36 +27,36 @@ const BadgeCard = styled(Card)(({ theme }) => ({
   transition: "transform 0.5s ease", // Add transition for smooth scroll
 }))
 
-const ArrorButton = styled(IconButton)(({ theme }) => ({
-  background: "#FFF8F3",
-  width: "4.8rem",
-  height: "4.8rem",
-  borderRadius: "0.8rem",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  "&:hover": {
-    background: "#FFF8F3",
-  },
-  "&.Mui-disabled": {
-    color: "#ccc",
-    background: "#F0F0F0",
-  },
-}))
+// const ArrorButton = styled(IconButton)(({ theme }) => ({
+//   background: "#FFF8F3",
+//   width: "4.8rem",
+//   height: "4.8rem",
+//   borderRadius: "0.8rem",
+//   display: "flex",
+//   justifyContent: "center",
+//   alignItems: "center",
+//   "&:hover": {
+//     background: "#FFF8F3",
+//   },
+//   "&.Mui-disabled": {
+//     color: "#ccc",
+//     background: "#F0F0F0",
+//   },
+// }))
 
 const Carousel: React.FC<CarouselProps> = ({ items }) => {
-  const [currentIndex, setCurrentIndex] = useState(0)
+  const [currentIndex] = useState(0)
 
-  const handlePrev = () => {
-    setCurrentIndex(prevIndex => (prevIndex > 0 ? prevIndex - 1 : items.length - 3))
-  }
+  // const handlePrev = () => {
+  //   setCurrentIndex(prevIndex => (prevIndex > 0 ? prevIndex - 1 : items.length - 3))
+  // }
 
-  const handleNext = () => {
-    setCurrentIndex(prevIndex => (prevIndex < items.length - 3 ? prevIndex + 1 : 0))
-  }
+  // const handleNext = () => {
+  //   setCurrentIndex(prevIndex => (prevIndex < items.length - 3 ? prevIndex + 1 : 0))
+  // }
 
-  const isPrevDisabled = currentIndex === 0
-  const isNextDisabled = currentIndex >= items.length - 3
+  // const isPrevDisabled = currentIndex === 0
+  // const isNextDisabled = currentIndex >= items.length - 3
 
   return (
     <Box sx={{ overflow: "hidden" }}>
@@ -83,14 +84,14 @@ const Carousel: React.FC<CarouselProps> = ({ items }) => {
           </BadgeCard>
         ))}
       </Stack>
-      <Box display="flex" justifyContent="flex-end" gap={"1.6rem"} marginTop={2} paddingBottom="9.5rem">
+      {/* <Box display="flex" justifyContent="flex-end" gap={"1.6rem"} marginTop={2} paddingBottom="9.5rem">
         <ArrorButton onClick={handlePrev} disabled={isPrevDisabled} aria-label="previous">
           <SvgIcon component={LeftSvg} inheritViewBox />
         </ArrorButton>
         <ArrorButton onClick={handleNext} disabled={isNextDisabled} aria-label="next">
           <SvgIcon component={RightSvg} sx={{ fontSize: "2.2rem" }} inheritViewBox />
         </ArrorButton>
-      </Box>
+      </Box> */}
     </Box>
   )
 }

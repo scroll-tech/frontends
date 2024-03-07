@@ -3,11 +3,11 @@ import { useEffect, useState } from "react"
 
 import { Alert, Snackbar, Stack, Typography } from "@mui/material"
 
-import MintBadge from "@/components/MintBadge"
 import SectionWrapper from "@/components/SectionWrapper"
 import { NETWORKS } from "@/constants"
 import BridgeContextProvider from "@/contexts/BridgeContextProvider"
 import { PriceFeeProvider } from "@/contexts/PriceFeeProvider"
+import MintBadge from "@/pages/bridge/components/MintBadge"
 import useBridgeStore from "@/stores/bridgeStore"
 import { isSepolia, requireEnv, sentryDebug } from "@/utils"
 
