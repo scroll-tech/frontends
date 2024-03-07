@@ -51,7 +51,7 @@ const ReferralCode = props => {
   const navigate = useNavigate()
   const { isMobile } = useCheckViewport()
   const { connect, walletCurrentAddress } = useRainbowContext()
-  const { changeMintStep } = useSkellyStore()
+  const { changeMintStep, referralCode } = useSkellyStore()
   const [isChecking, setIsChecking] = useState(false)
 
   const handleContinue = async () => {
@@ -71,7 +71,7 @@ const ReferralCode = props => {
       <ReferralCodeInput code={code} isChecking={isChecking} setIsChecking={setIsChecking} />
 
       {walletCurrentAddress ? (
-        <Button color="primary" gloomy={isChecking} width={isMobile ? "23rem" : "28.2rem"} onClick={handleContinue}>
+        <Button color="primary" gloomy={isChecking || (code && !referralCode)} width={isMobile ? "23rem" : "28.2rem"} onClick={handleContinue}>
           Continue
         </Button>
       ) : (

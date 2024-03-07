@@ -62,7 +62,7 @@ const Dashboard = props => {
   const navigate = useNavigate()
   const { unsignedProfileRegistryContract, publicProvider } = useSkellyContext()
   const {
-    username,
+    skellyUsername,
     attachedBadges,
     checkIfProfileMinted,
     fetchCurrentSkellyDetail,
@@ -81,6 +81,7 @@ const Dashboard = props => {
   // must have minted
   useEffect(() => {
     if (provider && walletCurrentAddress && !othersWalletAddress && profileAddress) {
+      console.log(walletCurrentAddress, profileAddress)
       fetchCurrent(provider, walletCurrentAddress, profileAddress)
     }
   }, [provider, walletCurrentAddress, othersWalletAddress, profileAddress])
@@ -116,7 +117,7 @@ const Dashboard = props => {
   }
 
   const metadata = {
-    title: `Scroll - Skelly @${username}`,
+    title: `Scroll -  ${skellyUsername}'s Skelly`,
     description: "Hi, I've minted Scroll Skelly!",
     image: `${requireEnv("REACT_APP_SKELLY_URI")}/skelly/${othersWalletAddress || walletCurrentAddress}.png`,
   }

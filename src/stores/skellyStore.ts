@@ -1,7 +1,7 @@
 import { Contract } from "ethers"
 import { create } from "zustand"
 
-import { fetchSkellyDetail, getAttachedBadges, querySkellyUsername } from "@/services/skellyService"
+import { fetchSkellyDetail, getAttachedBadges, querySkellyUsername, queryUserBadgesWrapped } from "@/services/skellyService"
 
 export enum MintStep {
   REFERRAL_CODE = "referralCode",
@@ -50,9 +50,9 @@ interface SkellyStore {
   profileDetailLoading: boolean
   walletDetailLoading: boolean
   queryUsernameLoading: boolean
+  queryUserBadgesLoading: boolean
   profileAddress: string | null
   profileMinted: boolean | null
-  networkErrorVisible: boolean
   username: string
   skellyUsername: string
   userBadges: Array<any>
@@ -61,7 +61,6 @@ interface SkellyStore {
   profileContract: Contract | null
 
   checkIfProfileMinted: (instance: Contract, address: string) => Promise<any>
-  changeNetworkErrorVisible: (visible: boolean) => void
   fetchCurrentSkellyDetail: (signer, walletAddress, profileAddress) => void
   checkAndFetchCurrentWalletSkelly: (prividerOrSigner, unsignedProfileRegistryContract, walletAddress) => void
   fetchOthersSkellyDetail: (prividerOrSigner, othersAddress, profileAddress) => void
@@ -69,6 +68,7 @@ interface SkellyStore {
   changeProfileDetailLoading: (loading: boolean) => void
   queryUsername: () => void
   queryAttachedBadges: () => void
+  queryVisibleBadges: (provider, address) => void
 }
 
 const useSkellyStore = create<SkellyStore>()((set, get) => ({
@@ -90,7 +90,7 @@ const useSkellyStore = create<SkellyStore>()((set, get) => ({
   profileDetailLoading: false,
   queryUsernameLoading: false,
   walletDetailLoading: false,
-  networkErrorVisible: false,
+  queryUserBadgesLoading: false,
   username: "",
   skellyUsername: "",
   userBadges: [],
@@ -101,6 +101,7 @@ const useSkellyStore = create<SkellyStore>()((set, get) => ({
     try {
       set({
         profileMintedLoading: true,
+        profileAddress: "",
       })
       const profileAddress = await registryInstance!.getProfile(userAddress)
       const profileMinted = await registryInstance!.isProfileMinted(profileAddress)
@@ -211,10 +212,16 @@ const useSkellyStore = create<SkellyStore>()((set, get) => ({
     })
   },
 
-  // not needed
-  changeNetworkErrorVisible: networkErrorVisible => {
+  queryVisibleBadges: async (provider, walletAddress) => {
     set({
-      networkErrorVisible,
+      queryUserBadgesLoading: true,
+    })
+    const userBadges = await queryUserBadgesWrapped(provider, walletAddress)
+    const attachedBadges = await getAttachedBadges(get().profileContract)
+    set({
+      userBadges,
+      attachedBadges,
+      queryUserBadgesLoading: false,
     })
   },
 
