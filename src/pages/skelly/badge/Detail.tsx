@@ -82,7 +82,7 @@ const Detail = props => {
     return generateShareTwitterURL(viewURL, `Here is my badge ${detail.name}`)
   }, [id, detail])
 
-  const isBadgeDefaultInfo = useMemo(() => {
+  const isViewingBadgeContract = useMemo(() => {
     return isAddress(id)
   }, [id])
 
@@ -105,7 +105,7 @@ const Detail = props => {
   }
   useEffect(() => {
     if (publicProvider && unsignedProfileRegistryContract) {
-      if (isBadgeDefaultInfo) {
+      if (isViewingBadgeContract) {
         fetchBadgeDetailByBadgeContract(id)
       } else {
         fetchBadgeDetailByBadgeId(id)
@@ -237,7 +237,7 @@ const Detail = props => {
           </Typography>
         </Box>
 
-        {isBadgeDefaultInfo ? (
+        {isViewingBadgeContract ? (
           <InfoBox gap={isMobile ? "2.4rem" : "4.8rem"}>
             <Statistic label="Issued by" loading={loading}>
               <Avatar src={detail.issuer?.logo}></Avatar>
@@ -268,9 +268,12 @@ const Detail = props => {
         )}
 
         <Stack direction="row" gap="1.6rem" alignItems="center">
-          <ScrollButton color="primary" href={viewEASScanURL(id)} target="_blank">
-            View on EAS
-          </ScrollButton>
+          {!isViewingBadgeContract && (
+            <ScrollButton color="primary" href={viewEASScanURL(id)} target="_blank">
+              View on EAS
+            </ScrollButton>
+          )}
+
           {isNativeBadge(detail.badgeContract) ? (
             <ScrollButton color="secondary" href={viewSkellyURL}>
               Visit Scroll Skelly
