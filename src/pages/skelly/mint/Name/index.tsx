@@ -63,35 +63,64 @@ const Name = () => {
 
   const checkBalance = async () => {
     const balance = await provider?.getBalance(walletCurrentAddress as `0x${string}`)
-    if (!balance) {
-      setInsufficientDialogOpen(true)
-      return
+    if (balance) {
+      return true
+    }
+    return false
+  }
+
+  const handleMint = async e => {
+    setIsMinting(true)
+    try {
+      const nextHelpText = await handleValidateName()
+      if (nextHelpText) {
+        return
+      }
+      const isValidBalance = await checkBalance()
+
+      if (!isValidBalance) {
+        setInsufficientDialogOpen(true)
+        return
+      }
+      await mintSkelly()
+    } catch (e) {
+      console.log("mint skelly error", e)
+    } finally {
+      setIsMinting(false)
     }
   }
 
-  const handleMint = async () => {
-    checkBalance()
-    setIsMinting(true)
-    try {
-      let codeSignature = "0x"
-      if (referralCode) {
-        const { signature } = await scrollRequest(fetchSignByCode(referralCode, walletCurrentAddress))
-        codeSignature = signature
-      }
-      const tx = await profileRegistryContract.mint(name, codeSignature, { value: ethers.parseEther(codeSignature === "0x" ? "0.001" : "0.0005") })
-      const txReceipt = await tx.wait()
-      if (txReceipt.status === 1) {
-        changeReferralCode("")
-        changeMintStep(MintStep.REFERRAL_CODE)
-        console.log("txReceipt", txReceipt)
-        navigate("/scroll-skelly")
-      } else {
-        return "due to any operation that can cause the transaction or top-level call to revert"
-      }
-    } catch (error) {
-      console.log(error)
-    } finally {
-      setIsMinting(false)
+  const mintSkelly = async () => {
+    // setIsMinting(true)
+
+    // const nextHelpText = await handleValidateName()
+    // console.log(nextHelpText, "nextHelpText")
+    // if (nextHelpText) {
+    //   return
+    // }
+
+    // const isValidBalance = await checkBalance()
+    // console.log(isValidBalance, "isValidBalance")
+
+    // if (!isValidBalance) {
+    //   setInsufficientDialogOpen(true)
+    //   return
+    // }
+    let codeSignature = "0x"
+    if (referralCode) {
+      const { signature } = await scrollRequest(fetchSignByCode(referralCode, walletCurrentAddress))
+      codeSignature = signature
+    }
+    console.log(codeSignature, "signature")
+    const tx = await profileRegistryContract.mint(name, codeSignature, { value: ethers.parseEther(codeSignature === "0x" ? "0.001" : "0.0005") })
+    const txReceipt = await tx.wait()
+    if (txReceipt.status === 1) {
+      changeReferralCode("")
+      changeMintStep(MintStep.REFERRAL_CODE)
+      console.log("txReceipt", txReceipt)
+      navigate("/scroll-skelly")
+    } else {
+      return "due to any operation that can cause the transaction or top-level call to revert"
     }
   }
 
@@ -103,8 +132,15 @@ const Name = () => {
     if (e.keyCode === 13) {
       const nextHelpText = await handleValidateName()
       if (!nextHelpText) {
-        handleMint()
+        mintSkelly()
       }
+    }
+  }
+
+  const handleBlur = e => {
+    const mintBtn = document.querySelector("#mint-btn")
+    if (!mintBtn?.contains(e.relatedTarget)) {
+      handleValidateName()
     }
   }
 
@@ -123,7 +159,7 @@ const Name = () => {
           onChange={handleChangeName}
           autoFocus
           onKeyDown={handleKeydown}
-          onBlur={handleValidateName}
+          onBlur={handleBlur}
         />
         <Stack
           direction="row"
@@ -139,8 +175,15 @@ const Name = () => {
         </Stack>
       </Box>
 
-      <Button gloomy={!!helpText || validating} color="primary" loading={isMinting} width={isMobile ? "23rem" : "28.2rem"} onClick={handleMint}>
-        {isMinting ? "Minting" : "Minting now"}
+      <Button
+        id="mint-btn"
+        gloomy={!!helpText || validating}
+        color="primary"
+        loading={isMinting}
+        width={isMobile ? "23rem" : "28.2rem"}
+        onClick={handleMint}
+      >
+        {isMinting ? "Minting" : "Mint now"}
       </Button>
       <InsufficientDialog open={insufficientDialogOpen} onClose={() => setInsufficientDialogOpen(false)} />
     </Container>
