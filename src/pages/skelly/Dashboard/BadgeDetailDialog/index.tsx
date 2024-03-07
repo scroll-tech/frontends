@@ -12,7 +12,7 @@ import { ReactComponent as ShareSvg } from "@/assets/svgs/skelly/share.svg"
 import ScrollButton from "@/components/Button"
 import Link from "@/components/Link"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { mintBadge, queryUserBadgesWrapped } from "@/services/skellyService"
+import { mintBadge } from "@/services/skellyService"
 import useSkellyStore, { BadgeDetailDialogTpye } from "@/stores/skellyStore"
 import { generateShareTwitterURL, getBadgeImgURL, requireEnv } from "@/utils"
 
@@ -92,7 +92,7 @@ const ButtonContainer = styled(Box)(({ theme }) => ({
 
 const BadgeDetailDialog = () => {
   const { walletCurrentAddress, provider } = useRainbowContext()
-  const { badgeDetailDialogVisible, changeBadgeDetailDialog, selectedBadge, changeUpgradeDialog } = useSkellyStore()
+  const { badgeDetailDialogVisible, changeBadgeDetailDialog, selectedBadge, changeUpgradeDialog, queryVisibleBadges } = useSkellyStore()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
 
@@ -109,7 +109,7 @@ const BadgeDetailDialog = () => {
       console.log("mintBadge failed", result)
     } else {
       changeBadgeDetailDialog(BadgeDetailDialogTpye.MINTED)
-      queryUserBadgesWrapped(provider, walletCurrentAddress)
+      queryVisibleBadges(provider, walletCurrentAddress)
     }
     setLoading(false)
   }

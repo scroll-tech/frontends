@@ -4,7 +4,7 @@ import { Navigate, useMatch, useNavigate } from "react-router-dom"
 import { CHAIN_ID } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
-import useSkellyStore from "@/stores/skellyStore"
+import useSkellyStore, { MintStep } from "@/stores/skellyStore"
 
 import Dashboard from "./Dashboard"
 import LoadingPage from "./loading"
@@ -18,7 +18,7 @@ const SkellyIndex = props => {
 
   const { walletCurrentAddress, chainId } = useRainbowContext()
   const { unsignedProfileRegistryContract } = useSkellyContext()
-  const { profileMintedLoading, profileMinted, checkIfProfileMinted } = useSkellyStore()
+  const { profileMintedLoading, profileMinted, checkIfProfileMinted, changeMintStep } = useSkellyStore()
 
   const isWrongNetwork = useMemo(() => {
     return !isOthersSkelly && !isBadgeDetail && chainId !== CHAIN_ID.L2
@@ -29,6 +29,7 @@ const SkellyIndex = props => {
       checkIfProfileMinted(unsignedProfileRegistryContract, walletCurrentAddress)
     } else if (!isWrongNetwork && !walletCurrentAddress) {
       navigate("/scroll-skelly/mint")
+      changeMintStep(MintStep.REFERRAL_CODE)
     }
   }, [isWrongNetwork, unsignedProfileRegistryContract, walletCurrentAddress])
 

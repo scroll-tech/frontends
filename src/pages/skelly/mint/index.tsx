@@ -8,7 +8,8 @@ import useSkellyStore, { MintStep } from "@/stores/skellyStore"
 import Name from "./Name"
 import ReferralCode from "./ReferralCode"
 
-const SkellyMint = () => {
+const SkellyMint = props => {
+  const { code } = props
   const navigate = useNavigate()
 
   const { walletCurrentAddress } = useRainbowContext()
@@ -25,7 +26,7 @@ const SkellyMint = () => {
     }
   }, [unsignedProfileRegistryContract, walletCurrentAddress])
 
-  return <>{mintStep === MintStep.NAME ? <Name></Name> : <ReferralCode></ReferralCode>}</>
+  return <>{mintStep === MintStep.NAME ? <Name></Name> : <ReferralCode code={code}></ReferralCode>}</>
 }
 
 export default SkellyMint
