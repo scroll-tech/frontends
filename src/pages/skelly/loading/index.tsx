@@ -1,9 +1,8 @@
 import { useEffect, useMemo, useState } from "react"
+import Img from "react-cool-img"
 
 import { Box, Stack, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
-
-import CodingScrolly from "@/assets/images/skelly/Scrolly_Coding.png"
 
 const defaultGridNum = 4
 
@@ -70,7 +69,7 @@ const LoadingPage = () => {
     <Container badgewidth={badgewidth}>
       <Stack direction="column" alignItems="center" sx={{ width: `${badgewidth * 2 - 1}px`, aspectRatio: "1/1", backgroundColor: "text.primary" }}>
         <Box sx={{ width: "66.67%", paddingTop: "12%" }}>
-          <img src={CodingScrolly} alt="Coding Scrolly" width="100%"></img>
+          <Img src="/imgs/skelly/Scrolly_Coding.webp" placeholder="/imgs/skelly/avatarPlaceholder.svg" alt="Coding Scrolly" width="100%" />
         </Box>
         <Typography
           sx={{
