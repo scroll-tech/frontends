@@ -7,10 +7,8 @@ import { styled } from "@mui/system"
 
 import { ReactComponent as CloseSvg } from "@/assets/svgs/skelly/close.svg"
 import { BADGES_VISIBLE_TYPE } from "@/constants"
-import { useRainbowContext } from "@/contexts/RainbowProvider"
 // import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import Button from "@/pages/skelly/components/Button"
-import { attachBadges, detachBadges, reorderBadges } from "@/services/skellyService"
 import { customiseDisplay } from "@/services/skellyService"
 import useSkellyStore from "@/stores/skellyStore"
 
@@ -35,18 +33,7 @@ const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
 }))
 
 const BadgesDialog = () => {
-  const { provider } = useRainbowContext()
-  const {
-    userBadges,
-    attachedBadges,
-    badgeOrder,
-    badgesDialogVisible,
-    changeBadgesDialog,
-    sortedBadges,
-    profileContract,
-    profileAddress,
-    queryAttachedBadges,
-  } = useSkellyStore()
+  const { userBadges, attachedBadges, badgeOrder, badgesDialogVisible, changeBadgesDialog, sortedBadges, profileContract } = useSkellyStore()
   const [loading, setLoading] = useState(false)
 
   const badgesInstance = useMemo(() => {
@@ -101,41 +88,39 @@ const BadgesDialog = () => {
 
     const newArrayOrder: number[] = calculateRelativeOrder(originalIds, currentDisplayedIds)
 
-    if (hiddenToDisplayed.length > 0) {
-      const result = await attachBadges(profileContract, hiddenToDisplayed)
-      if (result! !== true) {
-        console.log("mintBadge failed", result)
-      } else {
-        queryAttachedBadges()
-        handleClose()
-      }
-      setLoading(false)
-    }
+    // if (hiddenToDisplayed.length > 0) {
+    //   const result = await attachBadges(profileContract, hiddenToDisplayed)
+    //   if (result! !== true) {
+    //     console.log("mintBadge failed", result)
+    //   } else {
+    //     queryAttachedBadges()
+    //     handleClose()
+    //   }
+    //   setLoading(false)
+    // }
 
-    if (displayedToHidden.length > 0) {
-      const result = await detachBadges(profileContract, displayedToHidden)
-      if (result! !== true) {
-        console.log("mintBadge failed", result)
-      } else {
-        queryAttachedBadges()
-        handleClose()
-      }
-      setLoading(false)
-    }
+    // if (displayedToHidden.length > 0) {
+    //   const result = await detachBadges(profileContract, displayedToHidden)
+    //   if (result! !== true) {
+    //     console.log("mintBadge failed", result)
+    //   } else {
+    //     queryAttachedBadges()
+    //     handleClose()
+    //   }
+    //   setLoading(false)
+    // }
 
-    if (!isEqual(badgeOrder, newArrayOrder)) {
-      const result = await reorderBadges(profileContract, newArrayOrder)
-      if (result! !== true) {
-        console.log("mintBadge failed", result)
-      } else {
-        queryAttachedBadges()
-        handleClose()
-      }
-    }
+    // if (!isEqual(badgeOrder, newArrayOrder)) {
+    //   const result = await reorderBadges(profileContract, newArrayOrder)
+    //   if (result! !== true) {
+    //     console.log("mintBadge failed", result)
+    //   } else {
+    //     queryAttachedBadges()
+    //     handleClose()
+    //   }
+    // }
     customiseDisplay({
-      provider: provider!,
       profileContract: profileContract!,
-      profileAddress: profileAddress!,
       attachBadges: hiddenToDisplayed.length > 0 ? hiddenToDisplayed : null,
       detachBadges: displayedToHidden.length > 0 ? displayedToHidden : null,
       order: isEqual(badgeOrder, newArrayOrder) ? null : newArrayOrder,
