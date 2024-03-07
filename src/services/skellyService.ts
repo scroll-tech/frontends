@@ -384,6 +384,16 @@ const reorderBadges = async (profileContract, badgeOrder) => {
   }
 }
 
+const checkIfHasBadgeByAddress = async (provider, userAddress, badgeAddress) => {
+  try {
+    const badgeContract = new ethers.Contract(badgeAddress, BadgeABI, provider)
+    const hasBadge = await badgeContract.hasBadge(userAddress)
+    return hasBadge
+  } catch (error) {
+    console.log("Failed to check if has badge by address:", error)
+  }
+}
+
 export {
   initializeInstance,
   initializePublicInstance,
@@ -401,4 +411,5 @@ export {
   mintBadge,
   customiseDisplay,
   reorderBadges,
+  checkIfHasBadgeByAddress,
 }
