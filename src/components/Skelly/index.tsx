@@ -5,10 +5,7 @@ import { styled } from "@mui/system"
 
 import { ReactComponent as CloseSvg } from "@/assets/svgs/skelly/close.svg"
 import TriangleSvg from "@/assets/svgs/skelly/triangle.svg"
-import BadgeDetailDialog from "@/pages/skelly/Dashboard/BadgeDetailDialog"
-import Badges from "@/pages/skelly/Dashboard/UpgradeDialog/Badges"
 import Button from "@/pages/skelly/components/Button"
-import useSkellyStore, { BadgeDetailDialogTpye } from "@/stores/skellyStore"
 
 const Container = styled(Box)(({ theme }) => ({
   position: "absolute",
@@ -66,27 +63,27 @@ const MintButton = styled(Button)(({ theme }) => ({
   height: "4rem",
 }))
 
-const MintBadge = props => {
+const Skelly = props => {
+  const { title, buttonText, onClick, visible } = props
   const [open, setOpen] = useState(false)
   const [tooltipVisible, setTooltipVisible] = useState(false)
-  const { changeBadgeDetailDialog, changeSelectedBadge } = useSkellyStore()
   const videoRef = useRef<HTMLVideoElement>(null)
   const initialPlayRef = useRef(true)
   const tooltipVisibleRef = useRef(false)
   const [loading] = useState(false)
-  const badge: any = Badges[3]
-  const [canBeMinted] = useState(false)
 
   useEffect(() => {
-    if (canBeMinted) {
+    if (visible) {
       setTimeout(() => {
         setOpen(true)
         setTimeout(() => {
           playVideo()
         }, 0)
       }, 1500)
+    } else {
+      handleCloseTooltip()
     }
-  }, [canBeMinted])
+  }, [visible])
 
   const playVideo = () => {
     const video = videoRef.current
@@ -127,11 +124,6 @@ const MintBadge = props => {
     tooltipVisibleRef.current = false
   }
 
-  const handleMintBadge = async () => {
-    changeSelectedBadge(Badges[1])
-    changeBadgeDetailDialog(BadgeDetailDialogTpye.MINT)
-  }
-
   return (
     <Container>
       {open && (
@@ -141,20 +133,17 @@ const MintBadge = props => {
               <Typography sx={{ textAlign: "right" }}>
                 <SvgIcon sx={{ fontSize: "1.3rem" }} onClick={handleCloseTooltip} component={CloseSvg} inheritViewBox />
               </Typography>
-              <Typography sx={{ fontSize: "1.6rem", fontWeight: 500, marginBottom: "1.2rem" }}>
-                Heya! Congratulations! You can mint {badge.name} on Scroll Skelly.
-              </Typography>
-              <MintButton variant="contained" color="primary" sx={{ width: "100%" }} loading={loading} onClick={handleMintBadge}>
-                Mint badge
+              <Typography sx={{ fontSize: "1.6rem", fontWeight: 500, marginBottom: "1.2rem" }}>{title}</Typography>
+              <MintButton variant="contained" color="primary" sx={{ width: "100%" }} loading={loading} onClick={onClick}>
+                {buttonText}
               </MintButton>
             </Tooltip>
           )}
           <video ref={videoRef} controls={false} muted src="/imgs/skelly/scroll.mp4" />
         </>
       )}
-      <BadgeDetailDialog />
     </Container>
   )
 }
 
-export default MintBadge
+export default Skelly

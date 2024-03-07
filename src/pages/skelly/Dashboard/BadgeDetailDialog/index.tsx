@@ -2,6 +2,7 @@ import { useMemo, useState } from "react"
 import Img from "react-cool-img"
 import { useNavigate } from "react-router-dom"
 
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined"
 import { Avatar, Box, Dialog, DialogContent, DialogTitle, IconButton, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
@@ -55,7 +56,7 @@ const ButtonContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   gap: "1.6rem",
   alignItems: "center",
-  marginTop: "3.2rem",
+  // marginTop: "3.2rem",
   [theme.breakpoints.down("sm")]: {
     flexDirection: "column",
     gap: "2rem",
@@ -105,7 +106,7 @@ const BadgeDetailDialog = () => {
 
     const result = await mintBadge(provider, walletCurrentAddress, selectedBadge.nftAddress, selectedBadge.nftAbi, selectedBadge.badgeContract)
     if (result! !== true) {
-      console.log("mintBadge failed")
+      console.log("mintBadge failed", result)
     } else {
       changeBadgeDetailDialog(BadgeDetailDialogTpye.MINTED)
       queryUserBadgesWrapped(provider, walletCurrentAddress)
@@ -139,14 +140,6 @@ const BadgeDetailDialog = () => {
   return (
     <StyledDialog onClose={handleClose} maxWidth={false} open={badgeDetailDialogVisible !== BadgeDetailDialogTpye.HIDDEN}>
       <StyledDialogTitle>
-        {/* {badgeDetailDialogVisible === BadgeDetailDialogTpye.UPGRADE && (
-          <UpgradedBox>
-            UPGRADE AVAILABLE
-            <UpgradedButton variant="contained" color="primary" onClick={handleMint}>
-              Upgrade now
-            </UpgradedButton>
-          </UpgradedBox>
-        )} */}
         <Box
           sx={{
             display: "flex",
@@ -160,7 +153,7 @@ const BadgeDetailDialog = () => {
           <Box sx={{ p: 0, "&:hover": { backgroundColor: "unset" } }} onClick={handleClose}>
             <SvgIcon sx={{ fontSize: ["1.6rem", "1.8rem"], color: "#fff" }} component={CloseSvg} inheritViewBox></SvgIcon>
           </Box>
-          {badgeDetailDialogVisible === BadgeDetailDialogTpye.MINT_WITH_BACK && (
+          {[BadgeDetailDialogTpye.MINT_WITH_BACK].includes(badgeDetailDialogVisible) && (
             <IconButton sx={{ p: 0, "&:hover": { backgroundColor: "unset" } }} onClick={() => changeBadgeDetailDialog(BadgeDetailDialogTpye.HIDDEN)}>
               <Box component="span" sx={{ fontSize: "1.8rem", color: "#fff" }}>
                 Back
@@ -177,7 +170,9 @@ const BadgeDetailDialog = () => {
           placeholder="/imgs/skelly/badgePlaceholder.svg"
           style={{ width: "20rem", height: "20rem", marginBottom: "4rem", borderRadius: "0.8rem" }}
         />
-        {badgeDetailDialogVisible !== BadgeDetailDialogTpye.MINTED ? (
+        {[BadgeDetailDialogTpye.MINT, BadgeDetailDialogTpye.MINT_WITH_BACK, BadgeDetailDialogTpye.VIEW, BadgeDetailDialogTpye.NO_PROFILE].includes(
+          badgeDetailDialogVisible,
+        ) && (
           <>
             <Typography
               sx={{ fontSize: "3.2rem", fontWeight: 600, lineHeight: "0.8rem", marginBottom: "3.2rem", color: "#fff", textAlign: "center" }}
@@ -188,39 +183,55 @@ const BadgeDetailDialog = () => {
               {selectedBadge.description}
             </Typography>
             {/* TODO: how to get badge contract address from a user's badge */}
-            <Stack direction="row" gap="0.8rem">
+            <Stack direction="row" gap="0.8rem" mb="3.2rem">
               <Avatar variant="square" src={badgeIssuer.logo} sx={{ width: "3.2rem", height: "3.2rem", borderRadius: "0.4rem" }}></Avatar>
               <Typography sx={{ fontSize: "2.4rem", fontWeight: 600, color: "primary.contrastText" }}>{badgeIssuer.name}</Typography>
             </Stack>
           </>
-        ) : (
+        )}
+
+        {[BadgeDetailDialogTpye.MINTED].includes(badgeDetailDialogVisible) && (
           <Typography sx={{ fontSize: "2.4rem", fontWeight: 600, color: "#fff", marginBottom: "2.4rem", textAlign: "center" }}>
             You have successfully minted <br />
             {selectedBadge.name}!
           </Typography>
         )}
+
+        {[BadgeDetailDialogTpye.NO_PROFILE].includes(badgeDetailDialogVisible) && (
+          <Typography sx={{ color: "#FAD880", fontSize: "1.8rem", mb: "3.2rem" }}>
+            <InfoOutlinedIcon sx={{ fontSize: "2.4rem", marginRight: "0.8rem", verticalAlign: "middle" }} />
+            You need a Scroll Skelly in order to mint your {selectedBadge.name} Badge.
+          </Typography>
+        )}
+
         <ButtonContainer>
-          {(badgeDetailDialogVisible === BadgeDetailDialogTpye.MINT || badgeDetailDialogVisible === BadgeDetailDialogTpye.MINT_WITH_BACK) && (
+          {[BadgeDetailDialogTpye.MINT, BadgeDetailDialogTpye.MINT_WITH_BACK].includes(badgeDetailDialogVisible) && (
             <StyledScrollButton loading={loading} color="primary" onClick={handleMint}>
               Mint badge
             </StyledScrollButton>
           )}
 
-          {badgeDetailDialogVisible === BadgeDetailDialogTpye.UPGRADE && (
+          {[BadgeDetailDialogTpye.UPGRADE].includes(badgeDetailDialogVisible) && (
             <StyledScrollButton color="primary" onClick={handleViewEAS}>
               View on EAS
             </StyledScrollButton>
           )}
 
-          {badgeDetailDialogVisible === BadgeDetailDialogTpye.MINTED && (
+          {[BadgeDetailDialogTpye.MINTED, BadgeDetailDialogTpye.NO_PROFILE].includes(badgeDetailDialogVisible) && (
             <StyledScrollButton color="primary" onClick={handleViewSkelly}>
               View Scroll Skelly
             </StyledScrollButton>
           )}
-          <StyledScrollButton width="24rem" color="tertiary" onClick={handleViewBadge}>
-            View badge details
-          </StyledScrollButton>
-          {badgeDetailDialogVisible !== BadgeDetailDialogTpye.MINT && badgeDetailDialogVisible !== BadgeDetailDialogTpye.MINT_WITH_BACK && (
+
+          {![BadgeDetailDialogTpye.NO_PROFILE].includes(badgeDetailDialogVisible) && (
+            <StyledScrollButton width="24rem" color="tertiary" onClick={handleViewBadge}>
+              View badge details
+            </StyledScrollButton>
+          )}
+
+          {[BadgeDetailDialogTpye.VIEW, BadgeDetailDialogTpye.MINTED, BadgeDetailDialogTpye.MINT, BadgeDetailDialogTpye.MINT_WITH_BACK].includes(
+            badgeDetailDialogVisible,
+          ) && (
             <Link external href={shareBadgeURL}>
               <SvgIcon sx={{ width: "3.2rem", height: "3.2rem", color: "primary.contrastText" }} component={ShareSvg} inheritViewBox></SvgIcon>
             </Link>

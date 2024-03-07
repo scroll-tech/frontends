@@ -1,5 +1,5 @@
 import copy from "copy-to-clipboard"
-import { Fragment, useCallback, useMemo, useState } from "react"
+import { Fragment, useCallback, useEffect, useMemo, useState } from "react"
 import { useParams } from "react-router-dom"
 
 import { Box, Menu, MenuItem, SvgIcon } from "@mui/material"
@@ -12,6 +12,7 @@ import { ReactComponent as EditSvg } from "@/assets/svgs/skelly/edit.svg"
 import { ReactComponent as EthSvg } from "@/assets/svgs/skelly/eth.svg"
 import { ReactComponent as ShareSvg } from "@/assets/svgs/skelly/share.svg"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import Badges from "@/pages/skelly/Dashboard/UpgradeDialog/Badges"
 import Button from "@/pages/skelly/components/Button"
 import useSkellyStore from "@/stores/skellyStore"
 import { requireEnv } from "@/utils"
@@ -73,7 +74,7 @@ const CustomiseItem = styled(MenuItem)(({ theme }) => ({
 
 const ActionBox = props => {
   const { address: othersWalletAddress } = useParams()
-  const { walletCurrentAddress } = useRainbowContext()
+  const { walletCurrentAddress, provider } = useRainbowContext()
 
   const [copied, setCopied] = useState(false)
 
@@ -89,7 +90,7 @@ const ActionBox = props => {
     )}&text=${encodeURIComponent(text)}&via=Scroll_ZKP`
   }, [skellyUrl])
 
-  const { changeBadgesDialog, changeProfileDialog, changeReferDialog, changeUpgradeDialog } = useSkellyStore()
+  const { changeBadgesDialog, changeProfileDialog, changeReferDialog, changeUpgradeDialog, userBadges } = useSkellyStore()
 
   const handleCopyLink = useCallback(() => {
     copy(skellyUrl)
@@ -103,6 +104,27 @@ const ActionBox = props => {
 
   const [badgesAnchorEl, setBadgesAnchorEl] = useState<null | HTMLElement>(null)
   const badgesOpen = Boolean(badgesAnchorEl)
+
+  const [mintableBadgeCount, setMintableBadgeCount] = useState(0)
+
+  useEffect(() => {
+    const fetchVisibleBadges = async () => {
+      const filteredBadges = await Promise.all(
+        Badges.map(async badge => {
+          const isUserBadge = userBadges.some(userBadge => userBadge.badgeContract === badge.badgeContract)
+          const isValidBadge = await badge.validator(walletCurrentAddress, provider)
+          return {
+            ...badge,
+            isValid: !isUserBadge && isValidBadge,
+          }
+        }),
+      )
+
+      setMintableBadgeCount(filteredBadges.filter(badge => badge.isValid).length)
+    }
+
+    fetchVisibleBadges()
+  }, [userBadges, walletCurrentAddress, provider])
 
   const handleCloseBadges = () => {
     setBadgesAnchorEl(null)
@@ -141,7 +163,7 @@ const ActionBox = props => {
               },
             },
             {
-              label: "Mint badges",
+              label: `Mint badges${mintableBadgeCount ? "(" + mintableBadgeCount + ")" : ""}`,
               onClick: () => {
                 handleCloseBadges()
                 changeUpgradeDialog(true)
@@ -195,7 +217,7 @@ const ActionBox = props => {
         },
       },
     ]
-  }, [othersWalletAddress, shareTwitterURL, badgesAnchorEl, badgesOpen, shareAnchorEl, shareOpen, handleCopyLink, copied])
+  }, [othersWalletAddress, shareTwitterURL, badgesAnchorEl, badgesOpen, shareAnchorEl, shareOpen, handleCopyLink, copied, mintableBadgeCount])
 
   return (
     <Container othersWalletAddress={othersWalletAddress}>

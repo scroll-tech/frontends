@@ -21,6 +21,7 @@ export enum BadgeDetailDialogTpye {
   MINTED = "minted",
   UPGRADE = "upgrade",
   VIEW = "view",
+  NO_PROFILE = "noProfile",
 }
 
 interface SkellyStore {
