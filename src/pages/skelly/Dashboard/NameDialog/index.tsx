@@ -42,7 +42,7 @@ const NameDialog = () => {
 
   const [profileName, setProfileName] = useState(username)
 
-  const { helpText, clearHelpText, validating, handleValidateName, renderValidation } = useValidateSkellyName(profileName)
+  const { helpText, clearHelpText, validating, renderValidation } = useValidateSkellyName(profileName)
 
   useEffect(() => {
     if (profileDialogVisible) {
@@ -79,10 +79,7 @@ const NameDialog = () => {
 
   const handleKeydown = async e => {
     if (e.keyCode === 13) {
-      const nextHelpText = await handleValidateName()
-      if (!nextHelpText) {
-        changeUsername()
-      }
+      changeUsername()
     }
   }
 
@@ -108,11 +105,14 @@ const NameDialog = () => {
         </Typography>
         <Box sx={{ position: "relative", marginBottom: "13.6rem", marginTop: "14.4rem" }}>
           <StyledInputBase
+            inputProps={{
+              maxLength: 15,
+              minLength: 4,
+            }}
             autoFocus
             placeholder="Enter your name"
             value={profileName}
             onChange={handleChange}
-            onBlur={handleValidateName}
             onKeyDown={handleKeydown}
           />
           <Stack

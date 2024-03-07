@@ -80,6 +80,7 @@
     "tss-react": "^4.4.1",
     "viem": "2.9.31",
     "wagmi": "^2.9.2",
+    "use-debounce": "^10.0.0",
     "web-vitals": "^2.1.4",
     "zustand": "^4.1.3"
   },

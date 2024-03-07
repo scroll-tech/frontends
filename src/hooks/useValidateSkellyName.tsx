@@ -1,24 +1,33 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useDebouncedCallback } from "use-debounce"
 
 import { CircularProgress, SvgIcon, Typography } from "@mui/material"
 
 import { ReactComponent as CheckSvg } from "@/assets/svgs/skelly/check.svg"
 import { ReactComponent as WarningSvg } from "@/assets/svgs/skelly/warning.svg"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
+import useSkellyStore from "@/stores/skellyStore"
 
 const useValidateName = value => {
   const { profileRegistryContract } = useSkellyContext()
+  const { username } = useSkellyStore()
 
   const [helpText, setHelpText] = useState<string | null>(null)
   const [validating, setValidating] = useState(false)
 
-  const handleValidateName = async () => {
+  useEffect(() => {
+    if (value !== username) {
+      handleValidateName(value)
+    }
+  }, [value, username])
+
+  const handleValidateName = useDebouncedCallback(async value => {
     setValidating(true)
     const nextHelpText = await validateName(value)
     setHelpText(nextHelpText)
     setValidating(false)
     return nextHelpText
-  }
+  }, 300)
 
   const clearHelpText = () => {
     setHelpText(null)
