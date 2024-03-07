@@ -77,7 +77,6 @@ const Name = () => {
         return
       }
       const isValidBalance = await checkBalance()
-
       if (!isValidBalance) {
         setInsufficientDialogOpen(true)
         return

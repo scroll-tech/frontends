@@ -26,7 +26,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
 const NameTip = ({ metadata }) => {
   const { changeBadgeDetailDialog } = useSkellyStore()
 
-  return <StyledButton onClick={() => changeBadgeDetailDialog(BadgeDetailDialogTpye.VIEW)}>{metadata.name}</StyledButton>
+  return <StyledButton onClick={() => changeBadgeDetailDialog(BadgeDetailDialogTpye.VIEW)}>{metadata?.name}</StyledButton>
 }
 
 export default NameTip

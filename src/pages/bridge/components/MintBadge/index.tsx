@@ -5,28 +5,35 @@ import { CHAIN_ID } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import BadgeDetailDialog from "@/pages/skelly/Dashboard/BadgeDetailDialog"
 import Badges from "@/pages/skelly/Dashboard/UpgradeDialog/Badges"
+import { checkIfHasBadgeByAddress } from "@/services/skellyService"
 import useSkellyStore, { BadgeDetailDialogTpye } from "@/stores/skellyStore"
 
 const MintBadge = () => {
-  const { changeBadgeDetailDialog, changeSelectedBadge, userBadges } = useSkellyStore()
+  const { changeBadgeDetailDialog, changeSelectedBadge } = useSkellyStore()
   const badge: any = Badges[3]
   const [canBeMint, setCanBeMint] = useState(false)
-  const { chainId } = useRainbowContext()
+  const { chainId, provider, walletCurrentAddress } = useRainbowContext()
   //   const { hasMintedProfile } = useSkellyContext()
 
   const isL2 = useMemo(() => chainId === CHAIN_ID.L2, [chainId])
 
   useEffect(() => {
-    if (isL2 && !userHasBadge) {
-      setCanBeMint(true)
+    if (isL2 && provider) {
+      handleVisible()
     } else {
       setCanBeMint(false)
     }
-  }, [isL2])
+  }, [isL2, provider])
 
-  const userHasBadge = useMemo(() => {
-    return userBadges.some(b => b.badgeContract === badge.badgeContract)
-  }, [userBadges])
+  const handleVisible = async () => {
+    const signer = await provider!.getSigner(0)
+    const hasBadge = await checkIfHasBadgeByAddress(signer, walletCurrentAddress, badge.badgeContract)
+    if (hasBadge) {
+      setCanBeMint(false)
+    } else {
+      setCanBeMint(true)
+    }
+  }
 
   const handleMintBadge = async () => {
     changeSelectedBadge(Badges[3])
