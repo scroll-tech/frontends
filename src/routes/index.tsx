@@ -45,8 +45,8 @@ const sepoliaRoutes = [
     element: <PrivacyPolicy />,
   },
   {
-    name: "Resources",
-    path: "portal",
+    name: "Portal",
+    path: "/portal",
     element: <Portal />,
   },
   {
@@ -146,8 +146,8 @@ const mainnetRoutes = [
     element: <PrivacyPolicy />,
   },
   {
-    name: "Resources",
-    path: "portal",
+    name: "Portal",
+    path: "/portal",
     element: <Portal />,
   },
   {
