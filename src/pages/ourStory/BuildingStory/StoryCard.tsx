@@ -116,7 +116,7 @@ const StoryCard = props => {
       <Card {...restProps} elevation={0} className={classes.card}>
         {cover && (
           <Box className={classes.cardMediaWrapper}>
-            <CardMedia sx={{ height: ["13rem", "23rem"] }} classes={{ root: classes.cardMedia }} image={cover} />
+            <CardMedia sx={{ height: ["16rem", "23rem"] }} classes={{ root: classes.cardMedia }} image={cover} />
             <Typography className={classes.cardMediaTitle}>{imageTitle}</Typography>
             <ScrollLogo light className={classes.cardMediaLogo}></ScrollLogo>
           </Box>
