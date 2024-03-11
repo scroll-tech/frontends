@@ -95,6 +95,9 @@ const ActionBox = props => {
   const handleCopyLink = useCallback(() => {
     copy(skellyUrl)
     setCopied(true)
+    setTimeout(() => {
+      setCopied(false)
+    }, 3e3)
   }, [])
 
   const handleCloseShare = () => {
