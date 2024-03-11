@@ -2,7 +2,7 @@ import copy from "copy-to-clipboard"
 import { Fragment, useCallback, useEffect, useMemo, useState } from "react"
 import { useParams } from "react-router-dom"
 
-import { Box, Menu, MenuItem, SvgIcon } from "@mui/material"
+import { Box, Menu, MenuItem, Slide, SvgIcon } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { ReactComponent as TwitterSvg } from "@/assets/svgs/nft/twitter.svg"
@@ -223,43 +223,45 @@ const ActionBox = props => {
   }, [othersWalletAddress, shareTwitterURL, badgesAnchorEl, badgesOpen, shareAnchorEl, shareOpen, handleCopyLink, copied, mintableBadgeCount])
 
   return (
-    <Container othersWalletAddress={othersWalletAddress}>
-      {actions
-        .filter(action => action.visible)
-        .map((action, index) => (
-          <Fragment key={index}>
-            <ActionButton
-              key={index}
-              color={action.color as any}
-              onClick={action.onClick}
-              startIcon={<SvgIcon sx={{ fontSize: "1.6rem" }} component={action.icon} inheritViewBox></SvgIcon>}
-            >
-              {typeof action.label === "function" ? action.label() : action.label}
-            </ActionButton>
-            {action.menu && (
-              <CustomMenu
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "left",
-                }}
-                transformOrigin={{
-                  vertical: "bottom",
-                  horizontal: "left",
-                }}
-                anchorEl={action.menu.anchorEl}
-                open={action.menu.open}
-                onClose={action.menu.onClose}
+    <Slide in direction="up">
+      <Container othersWalletAddress={othersWalletAddress}>
+        {actions
+          .filter(action => action.visible)
+          .map((action, index) => (
+            <Fragment key={index}>
+              <ActionButton
+                key={index}
+                color={action.color as any}
+                onClick={action.onClick}
+                startIcon={<SvgIcon sx={{ fontSize: "1.6rem" }} component={action.icon} inheritViewBox></SvgIcon>}
               >
-                {action.menu.items.map((item, index) => (
-                  <CustomiseItem key={index} onClick={item.onClick}>
-                    {typeof item.label === "function" ? item.label() : item.label}
-                  </CustomiseItem>
-                ))}
-              </CustomMenu>
-            )}
-          </Fragment>
-        ))}
-    </Container>
+                {typeof action.label === "function" ? action.label() : action.label}
+              </ActionButton>
+              {action.menu && (
+                <CustomMenu
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "left",
+                  }}
+                  transformOrigin={{
+                    vertical: "bottom",
+                    horizontal: "left",
+                  }}
+                  anchorEl={action.menu.anchorEl}
+                  open={action.menu.open}
+                  onClose={action.menu.onClose}
+                >
+                  {action.menu.items.map((item, index) => (
+                    <CustomiseItem key={index} onClick={item.onClick}>
+                      {typeof item.label === "function" ? item.label() : item.label}
+                    </CustomiseItem>
+                  ))}
+                </CustomMenu>
+              )}
+            </Fragment>
+          ))}
+      </Container>
+    </Slide>
   )
 }
 

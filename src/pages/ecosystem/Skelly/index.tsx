@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom"
+
 import { Stack, Typography } from "@mui/material"
 
 import Button from "@/components/Button"
@@ -8,6 +10,7 @@ import BadgeList from "./BadgeList"
 
 const Skelly = () => {
   const { isMobile, isTablet } = useCheckViewport()
+  const navigate = useNavigate()
 
   return (
     <SectionWrapper dark sx={{ pt: ["4rem", "5.5rem", "6rem"], background: "#101010" }}>
@@ -18,7 +21,7 @@ const Skelly = () => {
         >
           Earn badges for Scroll Skelly
         </Typography>
-        <Button width={isMobile ? "15.4rem" : isTablet ? "21.5rem" : "25rem"} href="/skelly" target="_blank" color="primary">
+        <Button width={isMobile ? "15.4rem" : isTablet ? "21.5rem" : "25rem"} onClick={() => navigate("/scroll-skelly")} color="primary">
           Go to Scroll Skelly
         </Button>
       </Stack>

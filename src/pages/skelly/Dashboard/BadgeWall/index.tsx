@@ -36,7 +36,7 @@ const Profile = styled(Box)(({ theme }) => ({
   border: "1px solid rgba(255,255,255, 0.3)",
   display: "flex",
   flexDirection: "column",
-  justifyContent: "space-between",
+  justifyContent: "space-evenly",
   alignItems: "center",
 }))
 
@@ -47,8 +47,6 @@ const Name = styled(Typography)(({ theme }) => ({
   fontStyle: "normal",
   fontWeight: 600,
   lineHeight: "3.2rem",
-  marginBottom: "6%",
-  marginTop: "3rem",
   alignSelf: "center",
   flexShrink: 0,
 }))
@@ -146,7 +144,7 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
           height: `${(badgewidth * gridNum) / 2}px`,
         }}
       >
-        <Box sx={{ width: "66.67%", paddingTop: "12%" }}>
+        <Box sx={{ width: "66.67%" }}>
           <Img src={userInfo.avatar} placeholder="/imgs/skelly/avatarPlaceholder.svg" alt="avatar" width="100%"></Img>
         </Box>
         <Name>{userInfo.name}</Name>

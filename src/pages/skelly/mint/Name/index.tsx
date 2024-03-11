@@ -7,11 +7,13 @@ import { styled } from "@mui/system"
 
 import { fetchSignByCode } from "@/apis/skelly"
 import Button from "@/components/Button"
+import { CHAIN_ID, L2_NAME } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useValidateSkellyName from "@/hooks/useValidateSkellyName"
 import useSkellyStore from "@/stores/skellyStore"
+import { switchNetwork } from "@/utils"
 
 import InsufficientDialog from "./InsufficientDialog"
 
@@ -50,7 +52,7 @@ const Name = () => {
   const navigate = useNavigate()
   const { isMobile } = useCheckViewport()
 
-  const { walletCurrentAddress, provider } = useRainbowContext()
+  const { walletCurrentAddress, provider, chainId, connect } = useRainbowContext()
   const { profileRegistryContract } = useSkellyContext()
   const [insufficientDialogOpen, setInsufficientDialogOpen] = useState(false)
 
@@ -128,6 +130,34 @@ const Name = () => {
     }
   }
 
+  const renderAction = () => {
+    if (chainId === CHAIN_ID.L2) {
+      return (
+        <Button
+          id="mint-btn"
+          gloomy={!!helpText || validating}
+          color="primary"
+          loading={isMinting}
+          width={isMobile ? "23rem" : "28.2rem"}
+          onClick={handleMint}
+        >
+          {isMinting ? "Minting" : "Mint now"}
+        </Button>
+      )
+    } else if (chainId) {
+      return (
+        <Button color="primary" width={isMobile ? "23rem" : "28.2rem"} onClick={() => switchNetwork(CHAIN_ID.L2)}>
+          Switch to {L2_NAME}
+        </Button>
+      )
+    }
+    return (
+      <Button color="primary" width={isMobile ? "23rem" : "28.2rem"} onClick={connect}>
+        Connect wallet to mint
+      </Button>
+    )
+  }
+
   return (
     <Container>
       <Typography sx={{ fontSize: "3.2rem", lineHeight: "5.6rem", fontWeight: 600, color: "primary.contrastText", mb: "13rem" }}>
@@ -157,17 +187,7 @@ const Name = () => {
           {renderValidation()}
         </Stack>
       </Box>
-
-      <Button
-        id="mint-btn"
-        gloomy={!!helpText || validating}
-        color="primary"
-        loading={isMinting}
-        width={isMobile ? "23rem" : "28.2rem"}
-        onClick={handleMint}
-      >
-        {isMinting ? "Minting" : "Mint now"}
-      </Button>
+      {renderAction()}
       <InsufficientDialog open={insufficientDialogOpen} onClose={() => setInsufficientDialogOpen(false)} />
     </Container>
   )

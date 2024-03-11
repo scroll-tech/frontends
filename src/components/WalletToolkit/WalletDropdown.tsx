@@ -127,7 +127,11 @@ const WalletDropdown = props => {
         icon: ProfileSvg,
         label: "Scroll Skelly",
         action: () => {
-          navigate("/scroll-skelly")
+          if (profileMinted) {
+            navigate("/scroll-skelly")
+          } else {
+            navigate("/scroll-skelly/mint")
+          }
           changeMintStep(MintStep.REFERRAL_CODE)
           handleClose()
         },
@@ -155,7 +159,7 @@ const WalletDropdown = props => {
         },
       },
     ],
-    [pathname, viewScan, copyAddress, copied, disconnect],
+    [pathname, viewScan, copyAddress, copied, disconnect, profileMinted],
   )
 
   const renderCurrentWallet = () => {
