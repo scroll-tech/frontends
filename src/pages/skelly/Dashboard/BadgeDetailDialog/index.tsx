@@ -136,6 +136,11 @@ const BadgeDetailDialog = () => {
     navigate(`/scroll-skelly/badge-contract/${selectedBadge.badgeContract}`)
   }
 
+  const handleBack = () => {
+    changeBadgeDetailDialog(BadgeDetailDialogTpye.HIDDEN)
+    changeUpgradeDialog(true)
+  }
+
   const badgeIssuer = useMemo(() => badgeMap[selectedBadge.badgeContract]?.issuer || {}, [selectedBadge])
 
   const shareBadgeURL = useMemo(() => {
@@ -165,7 +170,7 @@ const BadgeDetailDialog = () => {
             <SvgIcon sx={{ fontSize: ["1.6rem", "1.8rem"], color: "#fff" }} component={CloseSvg} inheritViewBox></SvgIcon>
           </Box>
           {[BadgeDetailDialogTpye.MINT_WITH_BACK].includes(badgeDetailDialogVisible) && (
-            <IconButton sx={{ p: 0, "&:hover": { backgroundColor: "unset" } }} onClick={() => changeBadgeDetailDialog(BadgeDetailDialogTpye.HIDDEN)}>
+            <IconButton sx={{ p: 0, "&:hover": { backgroundColor: "unset" } }} onClick={handleBack}>
               <Box component="span" sx={{ fontSize: "1.8rem", color: "#fff" }}>
                 Back
               </Box>

@@ -44,7 +44,7 @@ const StyledListItemText = styled(ListItemText)(({ theme }) => ({
 const StyledButton = styled(Button)(({ theme }) => ({}))
 
 const BadgeItem = ({ badge }) => {
-  const { changeBadgeDetailDialog, changeSelectedBadge, userBadges } = useSkellyStore()
+  const { changeBadgeDetailDialog, changeSelectedBadge, userBadges, changeUpgradeDialog } = useSkellyStore()
   // const [loading, setLoading] = useState(false)
   // const userBadgesLength = userBadges.length
 
@@ -58,6 +58,7 @@ const BadgeItem = ({ badge }) => {
   const handleBadge = async () => {
     changeSelectedBadge(badge)
     changeBadgeDetailDialog(BadgeDetailDialogTpye.MINT_WITH_BACK)
+    changeUpgradeDialog(false)
   }
 
   useEffect(() => {
