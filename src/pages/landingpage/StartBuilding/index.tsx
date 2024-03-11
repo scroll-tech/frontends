@@ -52,8 +52,8 @@ const StartBuilding = () => {
       <FadeInUp>
         <Title>Scroll into the future of Ethereum</Title>
         <ButtonContainer>
-          <Button href="/ecosystem" color="primary">
-            Explore projects
+          <Button href="/bridge" color="primary">
+            Bridge into Scroll
           </Button>
           <Button target="_blank" href="https://docs.scroll.io/en/home/">
             Start building

@@ -1,7 +1,5 @@
 import { makeStyles } from "tss-react/mui"
 
-import { Box } from "@mui/material"
-
 import Button from "@/components/Button"
 import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
 import SectionHeader from "@/components/SectionHeader"
@@ -106,17 +104,14 @@ const BuildingStory = () => {
   const { classes, cx } = useStyles()
 
   return (
-    <SectionWrapper sx={{ pt: ["11rem", "18rem", "14.4rem"], pb: ["12rem", "13rem"] }}>
+    <SectionWrapper sx={{ pt: ["11rem", "18rem", "26rem"], pb: ["12rem", "13rem"] }}>
       <SectionHeader
-        title="Learn more about Scroll"
-        content="Learn more about zero knowledge proofs, zkEVMs and the future of scaling Ethereum."
+        title="Begin your journey with Scroll"
+        content="Learn more about zero knowledge proofs, zkEVMs, and the future of scaling Ethereum."
         action={
-          <Box sx={{ display: "flex", flexWrap: "wrap", gap: "3rem" }}>
-            <Button href="/story">Read our story</Button>
-            <Button href="/blog" color="primary">
-              View more
-            </Button>
-          </Box>
+          <Button href="/blog" color="primary">
+            Read more
+          </Button>
         }
       ></SectionHeader>
       <SuccessionToView className={classes.grid}>
