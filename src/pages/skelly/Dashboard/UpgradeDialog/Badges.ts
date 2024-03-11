@@ -45,7 +45,7 @@ const Badges = [
     badgeContract: SCROLL_SEPOLIA_SIMPLE_BADGE_A_ADDRESS,
     description: "A collection 8888 Cute Chubby Pudgy Penquins sliding around on the freezing ETH blockchain.",
     image: "https://cloudflare-ipfs.com/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/1.png",
-    native: false,
+    native: true,
     issuer: {
       origin: "https://example.org",
       name: "Scroll",
@@ -60,7 +60,7 @@ const Badges = [
     badgeContract: SCROLL_SEPOLIA_SIMPLE_BADGE_B_ADDRESS,
     description: "A collection 8888 Cute Chubby Pudgy Penquins sliding around on the freezing ETH blockchain.",
     image: "https://cloudflare-ipfs.com/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/2.png",
-    native: false,
+    native: true,
     issuer: {
       origin: "https://example.org",
       name: "Scroll",
@@ -73,22 +73,23 @@ const Badges = [
     nftAddress: null,
     nftAbi: null,
     badgeContract: SCROLL_SEPOLIA_SIMPLE_BADGE_C_ADDRESS,
-    description: "A collection 8888 Cute Chubby Pudgy Penquins sliding around on the freezing ETH blockchain.",
+    description:
+      "AlienSwap is a multi-chain NFT marketplace and aggregator aimed to build the leading trading layer for the community, now we have integrated Scroll not only with the marketplace, but also our CreateX NFT creation platform, so that any one can create, list or trade NFT on Scroll.",
     image: "https://cloudflare-ipfs.com/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/3.png",
     native: false,
     issuer: {
-      origin: "https://example.org",
-      name: "Scroll",
-      logo: "https://scroll.io/static/media/Scroll_Logomark.673577c8260b63ae56867bc9af6af514.svg",
+      origin: "https://alienswap.xyz/",
+      name: "AlienSwap",
+      logo: "https://scroll-eco-list.netlify.app/logos/AlienSwap.png",
     },
     validator: (walletCurrentAddress, provider) => true,
   },
 ]
 
 export const badgeMap = Object.fromEntries(
-  Badges.map(({ badgeContract, native, originsNFT, issuer, image, name }) => [
+  Badges.map(({ badgeContract, native, originsNFT, issuer, image, name, description }) => [
     badgeContract,
-    { native, originsNFT, issuer, image, badgeContract, name },
+    { native, originsNFT, issuer, image, badgeContract, name, description },
   ]),
 )
 

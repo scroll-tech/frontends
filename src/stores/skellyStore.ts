@@ -16,12 +16,12 @@ export enum MintedStatus {
 
 export enum BadgeDetailDialogTpye {
   HIDDEN = "",
-  MINT = "mint",
-  MINT_WITH_BACK = "mintWithBack",
+  MINT = "mint", // no badge
+  MINT_WITH_BACK = "mintWithBack", // no badge
   MINTED = "minted",
   UPGRADE = "upgrade",
   VIEW = "view",
-  NO_PROFILE = "noProfile",
+  NO_PROFILE = "noProfile", // no badge
 }
 
 interface SkellyStore {

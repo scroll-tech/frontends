@@ -127,7 +127,13 @@ const BadgeDetailDialog = () => {
   const handleViewBadge = () => {
     changeBadgeDetailDialog(BadgeDetailDialogTpye.HIDDEN)
     changeUpgradeDialog(false)
-    navigate(`/scroll-skelly/badge/${selectedBadge.id || selectedBadge.badgeContract}`)
+    navigate(`/scroll-skelly/badge/${selectedBadge.id}`)
+  }
+
+  const handleViewBadgeContract = () => {
+    changeBadgeDetailDialog(BadgeDetailDialogTpye.HIDDEN)
+    changeUpgradeDialog(false)
+    navigate(`/scroll-skelly/badge-contract/${selectedBadge.badgeContract}`)
   }
 
   const badgeIssuer = useMemo(() => badgeMap[selectedBadge.badgeContract]?.issuer || {}, [selectedBadge])
@@ -135,6 +141,11 @@ const BadgeDetailDialog = () => {
   const shareBadgeURL = useMemo(() => {
     const viewURL = `${requireEnv("REACT_APP_FFRONTENDS_URL")}/scroll-skelly/badge/${selectedBadge.id}`
     return generateShareTwitterURL(viewURL, `Here is my badge ${selectedBadge.name}`)
+  }, [selectedBadge])
+
+  const shareBadgeContractURL = useMemo(() => {
+    const viewURL = `${requireEnv("REACT_APP_FFRONTENDS_URL")}/scroll-skelly/badge-contract/${selectedBadge.badgeContract}`
+    return generateShareTwitterURL(viewURL, `I found badge ${selectedBadge.name}`)
   }, [selectedBadge])
 
   return (
@@ -223,16 +234,23 @@ const BadgeDetailDialog = () => {
             </StyledScrollButton>
           )}
 
-          {![BadgeDetailDialogTpye.NO_PROFILE].includes(badgeDetailDialogVisible) && (
+          {[BadgeDetailDialogTpye.NO_PROFILE, BadgeDetailDialogTpye.MINT, BadgeDetailDialogTpye.MINT_WITH_BACK].includes(badgeDetailDialogVisible) ? (
+            <StyledScrollButton width="24rem" color="tertiary" onClick={handleViewBadgeContract}>
+              View badge contract
+            </StyledScrollButton>
+          ) : (
             <StyledScrollButton width="24rem" color="tertiary" onClick={handleViewBadge}>
               View badge details
             </StyledScrollButton>
           )}
 
-          {[BadgeDetailDialogTpye.VIEW, BadgeDetailDialogTpye.MINTED, BadgeDetailDialogTpye.MINT, BadgeDetailDialogTpye.MINT_WITH_BACK].includes(
-            badgeDetailDialogVisible,
-          ) && (
+          {[BadgeDetailDialogTpye.VIEW, BadgeDetailDialogTpye.MINTED].includes(badgeDetailDialogVisible) && (
             <Link external href={shareBadgeURL}>
+              <SvgIcon sx={{ width: "3.2rem", height: "3.2rem", color: "primary.contrastText" }} component={ShareSvg} inheritViewBox></SvgIcon>
+            </Link>
+          )}
+          {[BadgeDetailDialogTpye.MINT, BadgeDetailDialogTpye.MINT_WITH_BACK].includes(badgeDetailDialogVisible) && (
+            <Link external href={shareBadgeContractURL}>
               <SvgIcon sx={{ width: "3.2rem", height: "3.2rem", color: "primary.contrastText" }} component={ShareSvg} inheritViewBox></SvgIcon>
             </Link>
           )}
