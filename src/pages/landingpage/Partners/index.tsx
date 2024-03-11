@@ -211,19 +211,16 @@ const Carousel = () => (
 const Partners = () => {
   return (
     <PartnersContainer>
-      <SectionWrapper sx={{ pt: "12.8rem" }}>
+      <SectionWrapper>
         <FadeInUp>
           <SectionHeader
             sx={{ mb: "10rem" }}
-            title="Level up your Scroll Profile"
-            content="Explore Scroll’s ecosystem and earn points to set up your unique profile on Scroll."
+            title="Build with the best in web3"
+            content="We’re part of an ecosystem with a greater purpose – permissionless, flexible, and dedicated to improving the future of Ethereum."
             action={
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: "3rem" }}>
-                <Button href="/scroll-skelly">Scroll skelly</Button>
-                <Button href="/ecosystem" color="primary">
-                  Explore projects
-                </Button>
-              </Box>
+              <Button href="/ecosystem" color="primary">
+                Explore projects
+              </Button>
             }
           ></SectionHeader>
         </FadeInUp>
