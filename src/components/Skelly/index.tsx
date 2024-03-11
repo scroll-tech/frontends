@@ -7,6 +7,8 @@ import { ReactComponent as CloseSvg } from "@/assets/svgs/skelly/close.svg"
 import TriangleSvg from "@/assets/svgs/skelly/triangle.svg"
 import Button from "@/pages/skelly/components/Button"
 
+import SuperGif from "./libgif.js"
+
 const Container = styled(Box)(({ theme }) => ({
   position: "absolute",
   bottom: "5rem",
@@ -17,6 +19,12 @@ const Container = styled(Box)(({ theme }) => ({
   justifyContent: "center",
   zIndex: 100,
   width: "30rem",
+  "& canvas": {
+    width: "12rem",
+    height: "12rem",
+    margin: "0 auto",
+    display: "block",
+  },
 }))
 
 const Tooltip = styled(Box)(({ theme }) => ({
@@ -64,16 +72,19 @@ const MintButton = styled(Button)(({ theme }) => ({
   height: "4rem",
 }))
 
-const SkellyMedia = styled("video")(({ theme }) => ({
-  width: "12rem",
-  height: "12rem",
-}))
-
 const Skelly = props => {
-  const { title, buttonText, onClick, visible } = props
+  const {
+    title,
+    buttonText,
+    onClick,
+    visible,
+    skellyId = "skellyId",
+    skellyUrl = "/imgs/skelly/scrolly.gif",
+    startFrame = 22,
+    targetFrame = 37,
+  } = props
   const [open, setOpen] = useState(false)
   const [tooltipVisible, setTooltipVisible] = useState(false)
-  const videoRef = useRef<HTMLVideoElement>(null)
   const initialPlayRef = useRef(true)
   const tooltipVisibleRef = useRef(false)
   const [loading] = useState(false)
@@ -83,7 +94,7 @@ const Skelly = props => {
       setTimeout(() => {
         setOpen(true)
         setTimeout(() => {
-          playVideo()
+          playGif()
         }, 0)
       }, 1500)
     } else {
@@ -91,38 +102,32 @@ const Skelly = props => {
     }
   }, [visible])
 
-  const playVideo = () => {
-    const video = videoRef.current
-    if (!video) return
+  const playGif = () => {
+    const gif = document.getElementById(skellyId)
 
-    video
-      .play()
-      .then(() => {
-        const checkTime = () => {
-          if (initialPlayRef.current && video.currentTime >= 2) {
-            setTooltipVisible(true)
-            video.currentTime = 1.3
-            tooltipVisibleRef.current = true
-            // setInitialPlay(false)
-            initialPlayRef.current = false
-          } else if (!initialPlayRef.current && !tooltipVisibleRef.current) {
-          } else if (!initialPlayRef.current && tooltipVisibleRef.current && video.currentTime >= 2) {
-            video.currentTime = 1.3
-          }
-          video.onended = () => {
-            setOpen(false)
-          }
+    if (!gif) return
+    var instance = SuperGif({
+      gif,
+      progressbar_height: "0",
+      auto_play: false,
+      on_end: () => {
+        setOpen(false)
+      },
+    })
+    instance.load(() => {
+      instance.play()
+      setInterval(() => {
+        const get_current_frame = instance.get_current_frame()
+        if (initialPlayRef.current && get_current_frame >= targetFrame) {
+          setTooltipVisible(true)
+          instance.move_to(startFrame)
+          tooltipVisibleRef.current = true
+          initialPlayRef.current = false
+        } else if (!initialPlayRef.current && tooltipVisibleRef.current && get_current_frame >= targetFrame) {
+          instance.move_to(startFrame)
         }
-
-        video.addEventListener("timeupdate", checkTime)
-
-        return () => {
-          video.removeEventListener("timeupdate", checkTime)
-        }
-      })
-      .catch(error => {
-        console.error("Video play failed", error)
-      })
+      }, 100)
+    })
   }
 
   const handleCloseTooltip = () => {
@@ -145,7 +150,9 @@ const Skelly = props => {
               </MintButton>
             </Tooltip>
           )}
-          <SkellyMedia ref={videoRef} controls={false} muted src="/imgs/skelly/scroll.mp4" />
+          <div>
+            <img alt="skelly" id={skellyId} src={skellyUrl} />
+          </div>
         </>
       )}
     </Container>
