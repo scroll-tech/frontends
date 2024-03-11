@@ -47,7 +47,7 @@ const Badges = [
     image: "https://cloudflare-ipfs.com/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/1.png",
     native: true,
     issuer: {
-      origin: "https://example.org",
+      origin: "https://scroll.io",
       name: "Scroll",
       logo: "https://scroll.io/static/media/Scroll_Logomark.673577c8260b63ae56867bc9af6af514.svg",
     },
@@ -62,7 +62,7 @@ const Badges = [
     image: "https://cloudflare-ipfs.com/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/2.png",
     native: true,
     issuer: {
-      origin: "https://example.org",
+      origin: "https://scroll.io",
       name: "Scroll",
       logo: "https://scroll.io/static/media/Scroll_Logomark.673577c8260b63ae56867bc9af6af514.svg",
     },
