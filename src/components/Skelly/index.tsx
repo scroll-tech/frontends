@@ -16,11 +16,12 @@ const Container = styled(Box)(({ theme }) => ({
   alignItems: "center",
   justifyContent: "center",
   zIndex: 100,
+  width: "30rem",
 }))
 
 const Tooltip = styled(Box)(({ theme }) => ({
   padding: "1rem 1.4rem 1.4rem",
-  width: "30rem",
+  width: "100%",
   position: "relative",
   boxSizing: "border-box",
   background: "#fff",
@@ -61,6 +62,11 @@ const MintButton = styled(Button)(({ theme }) => ({
   fontWeight: 600,
   lineHeight: "2.4rem",
   height: "4rem",
+}))
+
+const SkellyMedia = styled("video")(({ theme }) => ({
+  width: "12rem",
+  height: "12rem",
 }))
 
 const Skelly = props => {
@@ -139,7 +145,7 @@ const Skelly = props => {
               </MintButton>
             </Tooltip>
           )}
-          <video ref={videoRef} controls={false} muted src="/imgs/skelly/scroll.mp4" />
+          <SkellyMedia ref={videoRef} controls={false} muted src="/imgs/skelly/scroll.mp4" />
         </>
       )}
     </Container>

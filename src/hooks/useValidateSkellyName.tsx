@@ -10,7 +10,7 @@ import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useSkellyStore from "@/stores/skellyStore"
 
 const useValidateName = value => {
-  const { profileRegistryContract } = useSkellyContext()
+  const { unsignedProfileRegistryContract } = useSkellyContext()
   const { username } = useSkellyStore()
 
   const [helpText, setHelpText] = useState<string | null>(null)
@@ -36,14 +36,14 @@ const useValidateName = value => {
 
   const validateName = async name => {
     let nextHelpText
-    if (SensitiveWord.some(word => name.includes(word))) {
+    if (SensitiveWord.some(word => name.toLowerCase().includes(word.toLowerCase()))) {
       nextHelpText = "This name is not allowed"
     } else if (!name) {
       nextHelpText = "Please enter your name"
     } else if (!/^[\dA-Za-z_]{4,15}$/g.test(name)) {
       nextHelpText = "Must consist of 4-15 characters, including A-Z/a-z/0-9/_"
     } else {
-      const isUsernameUsed = await profileRegistryContract.isUsernameUsed(name)
+      const isUsernameUsed = await unsignedProfileRegistryContract.isUsernameUsed(name)
       if (isUsernameUsed) {
         nextHelpText = "This name is already taken"
       } else {

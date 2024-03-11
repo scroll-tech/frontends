@@ -39,12 +39,26 @@ const Container: any = styled(Box)(({ theme, badgewidth }: any) => ({
   },
 }))
 
+const LoadingText: any = styled(Typography)(({ theme }) => ({
+  color: theme.palette.primary.contrastText,
+  fontSize: "3.2rem",
+  fontWeight: 600,
+}))
+
 const LoadingPage = () => {
   const [windowDimensions, setWindowDimensions] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
   })
 
+  const [dots, setDots] = useState("")
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDots(prevDots => (prevDots.length < 3 ? prevDots + "." : ""))
+    }, 500)
+
+    return () => clearInterval(interval)
+  }, [])
   useEffect(() => {
     const handleResize = () => {
       setWindowDimensions({
@@ -67,21 +81,16 @@ const LoadingPage = () => {
   }, [windowDimensions, defaultGridNum])
   return (
     <Container badgewidth={badgewidth}>
-      <Stack direction="column" alignItems="center" sx={{ width: `${badgewidth * 2 - 1}px`, aspectRatio: "1/1", backgroundColor: "text.primary" }}>
+      <Stack
+        direction="column"
+        alignItems="center"
+        justifyContent="space-evenly"
+        sx={{ width: `${badgewidth * 2 - 1}px`, aspectRatio: "1/1", backgroundColor: "text.primary" }}
+      >
         <Box sx={{ width: "66.67%", paddingTop: "12%" }}>
           <Img src="/imgs/skelly/Scrolly_Coding.webp" placeholder="/imgs/skelly/avatarPlaceholder.svg" alt="Coding Scrolly" width="100%" />
         </Box>
-        <Typography
-          sx={{
-            color: "primary.contrastText",
-            fontSize: "3.2rem",
-            fontWeight: 600,
-            marginTop: "3rem",
-            marginBottom: "6%",
-          }}
-        >
-          Loading...
-        </Typography>
+        <LoadingText>Loading{dots}</LoadingText>
       </Stack>
     </Container>
   )

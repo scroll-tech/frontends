@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import Img from "react-cool-img"
 import { useNavigate } from "react-router-dom"
 
 import { Dialog, DialogContent, DialogTitle, IconButton, List, Stack, SvgIcon, Typography } from "@mui/material"
@@ -6,7 +7,6 @@ import { styled } from "@mui/system"
 
 // import { ReactComponent as BackSvg } from "@/assets/svgs/skelly/back.svg"
 import { ReactComponent as CloseSvg } from "@/assets/svgs/skelly/close.svg"
-import { ReactComponent as EmptySvg } from "@/assets/svgs/skelly/empty.svg"
 import Button from "@/components/Button"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useSkellyStore from "@/stores/skellyStore"
@@ -103,7 +103,7 @@ const UpgradeDialog = () => {
           </StyledList>
         ) : (
           <Stack justifyContent="center" alignItems="center" height="100%">
-            <SvgIcon sx={{ width: "20rem", height: "20rem" }} component={EmptySvg} inheritViewBox></SvgIcon>
+            <Img style={{ width: "20rem", height: "20rem" }} src="/imgs/skelly/Scrolly_Wen.png" alt="Coding Scrolly" />
             <Typography sx={{ fontSize: "3.2rem", lineHeight: "4.8rem", fontWeight: 600, mb: "0.8rem", color: "#fff" }}>
               No eligible badges for minting
             </Typography>

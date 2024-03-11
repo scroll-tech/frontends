@@ -15,13 +15,14 @@ const SkellyIndex = props => {
   const navigate = useNavigate()
   const isOthersSkelly = useMatch("/scroll-skelly/:address")
   const isBadgeDetail = useMatch("/scroll-skelly/badge/:id")
+  const isMintFlow = useMatch("/scroll-skelly/mint")
 
   const { walletCurrentAddress, chainId } = useRainbowContext()
   const { unsignedProfileRegistryContract } = useSkellyContext()
   const { profileMintedLoading, profileMinted, checkIfProfileMinted, changeMintStep } = useSkellyStore()
 
   const isWrongNetwork = useMemo(() => {
-    return !isOthersSkelly && !isBadgeDetail && chainId !== CHAIN_ID.L2
+    return !isOthersSkelly && !isBadgeDetail && chainId !== CHAIN_ID.L2 && !isMintFlow
   }, [chainId, isOthersSkelly, isBadgeDetail])
 
   useEffect(() => {
