@@ -76,11 +76,12 @@ const useStyles = makeStyles()(theme => ({
   },
 }))
 
+let copyTimer: any
+
 const Coupon = () => {
   const { classes } = useStyles()
   const { walletCurrentAddress } = useRainbowContext()
-  const [codeCopied, setCodeCopied] = useState(false)
-  const [linkCopied, setLinkCopied] = useState(false)
+  const [copied, setCopied] = useState(0)
 
   const { username } = useSkellyStore()
 
@@ -100,8 +101,7 @@ const Coupon = () => {
 
   const handleClose = () => {
     setAnchorEl(null)
-    setCodeCopied(false)
-    setLinkCopied(false)
+    setCopied(0)
   }
 
   const handleShareToX = () => {
@@ -116,12 +116,20 @@ const Coupon = () => {
   const handleCopyLink = () => {
     const inviteUrl = getInviteUrlByCode(code)
     copy(inviteUrl)
-    setLinkCopied(true)
+    setCopied(1)
+    clearTimeout(copyTimer)
+    copyTimer = setTimeout(() => {
+      setCopied(0)
+    }, 3e3)
   }
 
   const handleCopyCode = () => {
     copy(code)
-    setCodeCopied(true)
+    setCopied(2)
+    clearTimeout(copyTimer)
+    copyTimer = setTimeout(() => {
+      setCopied(0)
+    }, 3e3)
   }
 
   return (
@@ -157,12 +165,12 @@ const Coupon = () => {
             Share to <SvgIcon sx={{ fontSize: ["1.2rem", "1.3rem"], ml: "6px" }} component={TwitterSvg} inheritViewBox></SvgIcon>
           </MenuItem>
           <MenuItem classes={{ root: classes.item }} onClick={handleCopyLink}>
-            <>{linkCopied ? "Link copied" : "Copy link"}</>
-            {linkCopied && <SvgIcon sx={{ ml: "0.6rem" }} component={CopySuccessSvg} inheritViewBox></SvgIcon>}
+            <>{copied === 1 ? "Link copied" : "Copy link"}</>
+            {copied === 1 && <SvgIcon sx={{ ml: "0.6rem" }} component={CopySuccessSvg} inheritViewBox></SvgIcon>}
           </MenuItem>
           <MenuItem classes={{ root: classes.item }} onClick={handleCopyCode}>
-            <>{codeCopied ? "Coupon code copied" : "Copy coupon code"}</>
-            {codeCopied && <SvgIcon sx={{ ml: "0.6rem" }} component={CopySuccessSvg} inheritViewBox></SvgIcon>}
+            <>{copied === 2 ? "Coupon code copied" : "Copy coupon code"}</>
+            {copied === 2 && <SvgIcon sx={{ ml: "0.6rem" }} component={CopySuccessSvg} inheritViewBox></SvgIcon>}
           </MenuItem>
         </Menu>
       </Stack>
