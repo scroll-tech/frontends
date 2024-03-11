@@ -1,10 +1,11 @@
-import { Contract, isAddress } from "ethers"
+import { Contract } from "ethers"
 import { useEffect, useMemo, useState } from "react"
 import Img from "react-cool-img"
+import { Helmet } from "react-helmet-async"
 import { useParams } from "react-router-dom"
 import { Link as RouterLink } from "react-router-dom"
 
-import { Avatar, Box, Skeleton, Stack, SvgIcon, Typography } from "@mui/material"
+import { Box, Skeleton, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
 import { getSmallAvatarURL, viewEASScanURL } from "@/apis/skelly"
@@ -82,16 +83,22 @@ const Detail = props => {
     return generateShareTwitterURL(viewURL, `Here is my badge ${detail.name}`)
   }, [id, detail])
 
-  const isViewingBadgeContract = useMemo(() => {
-    return isAddress(id)
-  }, [id])
-
   const viewSkellyURL = useMemo(() => {
-    if (walletCurrentAddress === detail.walletAddress || !detail.walletAddress) {
+    if (walletCurrentAddress === detail.walletAddress) {
       return "/scroll-skelly"
     }
     return `/scroll-skelly/${detail.walletAddress}`
   }, [walletCurrentAddress, detail])
+
+  const metadata = useMemo(
+    () => ({
+      title: `I have minted the ${detail.name}`,
+      description: detail.description,
+      // TODO:
+      image: "",
+    }),
+    [detail],
+  )
 
   const fetchBadgeOwnerName = async (provider, walletAddress) => {
     try {
@@ -105,11 +112,7 @@ const Detail = props => {
   }
   useEffect(() => {
     if (publicProvider && unsignedProfileRegistryContract) {
-      if (isViewingBadgeContract) {
-        fetchBadgeDetailByBadgeContract(id)
-      } else {
-        fetchBadgeDetailByBadgeId(id)
-      }
+      fetchBadgeDetailByBadgeId(id)
     }
   }, [unsignedProfileRegistryContract, publicProvider, id])
 
@@ -142,31 +145,6 @@ const Detail = props => {
     }
   }
 
-  const fetchBadgeDetailByBadgeContract = async badgeContract => {
-    if (isOriginsNFTBadge(badgeContract)) {
-      return setDetail(badgeMap[badgeContract])
-    }
-    setLoading(true)
-    try {
-      const badgeMetadata = await getBadgeMetadata(publicProvider, badgeContract)
-
-      const badgeDetail = {
-        ...badgeMetadata,
-        badgeContract,
-        issuer: badgeMap[badgeContract]?.issuer,
-      }
-      if (isOriginsNFTBadge(badgeContract)) {
-        const rarityNum = badgeMetadata.attributes.find(item => item.trait_type === "Rarity").value
-        badgeDetail.rarity = NFT_RARITY_MAP[rarityNum]
-      }
-      setDetail(badgeDetail)
-    } catch (e) {
-      setErrorMessage("Error")
-    } finally {
-      setLoading(false)
-    }
-  }
-
   const { isMobile, isPortrait, isLandscape } = useCheckViewport()
   const [errorMessage, setErrorMessage] = useState("")
 
@@ -175,85 +153,94 @@ const Detail = props => {
   }
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        height: "100%",
-        justifyContent: "center",
-        alignItems: "center",
-        background: "#101010",
-        gap: "8rem",
-        "& .MuiTypography-root": {
-          color: theme => theme.palette.primary.contrastText,
-        },
-        "@media (max-width: 1280px)": {
-          gap: "2rem",
-          display: "grid",
-          gridTemplateColumns: "minmax(min-content, 1fr) 1fr",
-          justifyItems: "center",
-        },
+    <>
+      <Helmet>
+        <title>{metadata.title}</title>
+        <meta name="description" content={metadata.description} />
+        <meta property="og:title" content={metadata.title} />
+        <meta property="og:description" content={metadata.description} />
+        <meta property="og:image" content={metadata.image} />
+        <meta name="twitter:title" content={metadata.title} />
+        <meta name="twitter:description" content={metadata.description} />
+        <meta name="twitter:image" content={metadata.image} />
+      </Helmet>
+      <Box
+        sx={{
+          display: "flex",
+          height: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+          background: "#101010",
+          gap: "8rem",
+          "& .MuiTypography-root": {
+            color: theme => theme.palette.primary.contrastText,
+          },
+          "@media (max-width: 1280px)": {
+            gap: "2rem",
+            display: "grid",
+            gridTemplateColumns: "minmax(min-content, 1fr) 1fr",
+            justifyItems: "center",
+          },
 
-        "@media (max-width: 900px)": {
-          gridTemplateColumns: "1fr",
-        },
-        "@media (max-width: 600px)": {
-          gap: "2.4rem",
-        },
-      }}
-    >
-      <Box sx={{ width: "48rem", aspectRatio: "1/1" }}>
-        {loading ? (
-          <Skeleton variant="rectangular" sx={{ backgroundColor: "rgba(256, 256, 256, 0.15)", height: "100%", borderRadius: "1rem" }}></Skeleton>
-        ) : (
-          <Img src={getBadgeImgURL(detail.image)} style={{ borderRadius: "0.8rem" }} alt="badge image" />
-        )}
-      </Box>
-      <Stack direction="column" spacing={isPortrait ? "2.4rem" : "4.8rem"} alignItems={isLandscape ? "flex-start" : "center"}>
-        <Box sx={{ textAlign: ["center", "center", "left"] }}>
-          {/* <UpgradedBox>
+          "@media (max-width: 900px)": {
+            gridTemplateColumns: "1fr",
+          },
+          "@media (max-width: 600px)": {
+            gap: "2.4rem",
+          },
+        }}
+      >
+        <Box sx={{ width: "48rem", aspectRatio: "1/1" }}>
+          {loading ? (
+            <Skeleton variant="rectangular" sx={{ backgroundColor: "rgba(256, 256, 256, 0.15)", height: "100%", borderRadius: "1rem" }}></Skeleton>
+          ) : (
+            <Img src={getBadgeImgURL(detail.image)} style={{ borderRadius: "0.8rem" }} alt="badge image" />
+          )}
+        </Box>
+        <Stack direction="column" spacing={isPortrait ? "2.4rem" : "4.8rem"} alignItems={isLandscape ? "flex-start" : "center"}>
+          <Box sx={{ textAlign: ["center", "center", "left"] }}>
+            {/* <UpgradedBox>
             UPGRADE AVAILABLE
             <UpgradedButton variant="contained" color="primary" onClick={handleMint}>
               Upgrade now
             </UpgradedButton>
           </UpgradedBox> */}
-          <Typography sx={{ fontSize: ["4rem", "5.6rem"], fontWeight: 600, lineHeight: ["5.6rem", "9.6rem"] }}>{detail.name}</Typography>
+            <Typography sx={{ fontSize: ["4rem", "5.6rem"], fontWeight: 600, lineHeight: ["5.6rem", "9.6rem"] }}>{detail.name}</Typography>
 
-          <Typography sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: ["2.4rem", "3.2rem"], maxWidth: ["100%", "56rem"] }}>
-            {isOriginsNFTBadge(detail.badgeContract) ? (
-              <>
-                <CustomLink href={ANNOUNCING_SCROLL_ORIGINS_NFT} underline="always" external>
-                  Scroll Origins
-                </CustomLink>{" "}
-                is a{" "}
-                <CustomLink href={DESIGNING_SCROLL_ORIGINS} underline="always" external>
-                  specially designed NFT
-                </CustomLink>{" "}
-                program to celebrate alongside early developers building on Scroll within 60 days of Genesis Block (Before December 9, 2023 10:59PM
-                GMT).
-              </>
-            ) : (
-              <>{detail.description}</>
-            )}
-          </Typography>
-        </Box>
+            <Typography sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: ["2.4rem", "3.2rem"], maxWidth: ["100%", "56rem"] }}>
+              {isOriginsNFTBadge(detail.badgeContract) ? (
+                <>
+                  <CustomLink href={ANNOUNCING_SCROLL_ORIGINS_NFT} underline="always" external>
+                    Scroll Origins
+                  </CustomLink>{" "}
+                  is a{" "}
+                  <CustomLink href={DESIGNING_SCROLL_ORIGINS} underline="always" external>
+                    specially designed NFT
+                  </CustomLink>{" "}
+                  program to celebrate alongside early developers building on Scroll within 60 days of Genesis Block (Before December 9, 2023 10:59PM
+                  GMT).
+                </>
+              ) : (
+                <>{detail.description}</>
+              )}
+            </Typography>
+          </Box>
 
-        {isViewingBadgeContract ? (
           <InfoBox gap={isMobile ? "2.4rem" : "4.8rem"}>
-            <Statistic label="Issued by" loading={loading}>
-              <Avatar src={detail.issuer?.logo}></Avatar>
-              {detail.issuer?.name}
-            </Statistic>
-          </InfoBox>
-        ) : (
-          <InfoBox gap={isMobile ? "2.4rem" : "4.8rem"}>
-            <RouterLink to={`/scroll-skelly/${detail.walletAddress}`}>
+            <RouterLink to={viewSkellyURL}>
               <Statistic label="Owner" loading={loading} sx={{ "& *": { cursor: "pointer !important" } }}>
-                <Avatar src={detail.ownerLogo}></Avatar>
+                <Img width={40} height={40} placeholder="/imgs/skelly/avatarPlaceholder.svg" src={detail.ownerLogo}></Img>
                 {detail.owner}
               </Statistic>
             </RouterLink>
             <Statistic label="Issued by" loading={loading}>
-              <Avatar src={detail.issuer?.logo}></Avatar>
+              <Img
+                width={40}
+                height={40}
+                style={{ borderRadius: "0.8rem" }}
+                placeholder="/imgs/skelly/avatarPlaceholder.svg"
+                src={detail.issuer?.logo}
+              ></Img>
               {detail.issuer?.name}
             </Statistic>
             <Statistic label="Minted on" loading={loading}>
@@ -265,33 +252,27 @@ const Detail = props => {
               </Statistic>
             )}
           </InfoBox>
-        )}
 
-        <Stack direction="row" gap="1.6rem" alignItems="center">
-          {!isViewingBadgeContract && (
+          <Stack direction="row" gap="1.6rem" alignItems="center">
             <ScrollButton color="primary" href={viewEASScanURL(id)} target="_blank">
               View on EAS
             </ScrollButton>
-          )}
 
-          {isNativeBadge(detail.badgeContract) ? (
-            <ScrollButton color="secondary" href={viewSkellyURL}>
-              Visit Scroll Skelly
-            </ScrollButton>
-          ) : (
-            <ScrollButton color="secondary" href={detail.issuer?.origin} target="_blank">
-              Visit {detail.issuer?.name}
-            </ScrollButton>
-          )}
-          <Link external href={shareBadgeURL}>
-            <SvgIcon sx={{ fontSize: "3.2rem", color: "primary.contrastText" }} component={ShareSvg} inheritViewBox></SvgIcon>
-          </Link>
+            {detail.badgeContract && !isNativeBadge(detail.badgeContract) && (
+              <ScrollButton color="secondary" href={detail.issuer?.origin} target="_blank">
+                Visit {detail.issuer?.name}
+              </ScrollButton>
+            )}
+            <Link external href={shareBadgeURL}>
+              <SvgIcon sx={{ fontSize: "3.2rem", color: "primary.contrastText" }} component={ShareSvg} inheritViewBox></SvgIcon>
+            </Link>
+          </Stack>
         </Stack>
-      </Stack>
-      <RequestWarning open={!!errorMessage} onClose={handleCloseWarning}>
-        {errorMessage}
-      </RequestWarning>
-    </Box>
+        <RequestWarning open={!!errorMessage} onClose={handleCloseWarning}>
+          {errorMessage}
+        </RequestWarning>
+      </Box>
+    </>
   )
 }
 
