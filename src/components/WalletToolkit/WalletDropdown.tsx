@@ -86,11 +86,11 @@ const WalletDropdown = props => {
   const { pathname } = useLocation()
   const navigate = useNavigate()
 
-  const { walletCurrentAddress, provider, connect, disconnect, chainId } = useRainbowContext()
+  const { walletCurrentAddress, connect, disconnect, chainId } = useRainbowContext()
   const { changeHistoryVisible } = useBridgeStore()
 
-  const { unsignedProfileRegistryContract } = useSkellyContext()
-  const { username, profileMinted, changeMintStep, walletDetailLoading, checkAndFetchCurrentWalletSkelly } = useSkellyStore()
+  const { unsignedProfileRegistryContract, publicProvider } = useSkellyContext()
+  const { username, profileMinted, changeMintStep, walletDetailLoading, checkAndFetchCurrentWalletSkelly, clearSkelly } = useSkellyStore()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [copied, setCopied] = useState(false)
@@ -98,10 +98,11 @@ const WalletDropdown = props => {
   const open = useMemo(() => Boolean(anchorEl), [anchorEl])
 
   useEffect(() => {
-    if (provider && unsignedProfileRegistryContract && walletCurrentAddress) {
-      checkAndFetchCurrentWalletSkelly(provider, unsignedProfileRegistryContract, walletCurrentAddress)
+    // re check&&fetch walletCurrentAddress's skelly when switching address on Wallet
+    if (publicProvider && unsignedProfileRegistryContract && walletCurrentAddress) {
+      checkAndFetchCurrentWalletSkelly(publicProvider, unsignedProfileRegistryContract, walletCurrentAddress)
     }
-  }, [provider, unsignedProfileRegistryContract, walletCurrentAddress])
+  }, [publicProvider, unsignedProfileRegistryContract, walletCurrentAddress])
 
   const handleClick = e => {
     setAnchorEl(e.currentTarget)
@@ -155,6 +156,8 @@ const WalletDropdown = props => {
         label: "Disconnect",
         action: () => {
           disconnect()
+          // clear Skelly states
+          clearSkelly()
           handleClose()
         },
       },
