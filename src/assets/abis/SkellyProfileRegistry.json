@@ -79,5 +79,29 @@
     ],
     "stateMutability": "view",
     "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "referrerData",
+    "outputs": [
+      {
+        "internalType": "uint128",
+        "name": "referred",
+        "type": "uint128"
+      },
+      {
+        "internalType": "uint128",
+        "name": "earned",
+        "type": "uint128"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
   }
 ]

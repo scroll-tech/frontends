@@ -24,7 +24,7 @@ const SkellyMint = props => {
         }
       })
     }
-  }, [unsignedProfileRegistryContract, walletCurrentAddress])
+  }, [unsignedProfileRegistryContract, walletCurrentAddress, mintStep])
 
   return <>{mintStep === MintStep.NAME ? <Name></Name> : <ReferralCode code={code}></ReferralCode>}</>
 }
