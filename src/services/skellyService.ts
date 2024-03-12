@@ -365,6 +365,15 @@ const checkIfHasBadgeByAddress = async (provider, userAddress, badgeAddress) => 
   }
 }
 
+const getReferrerData = async (registryInstance, userAddress) => {
+  try {
+    const referrerData = await registryInstance.referrerData(userAddress)
+    return referrerData
+  } catch (error) {
+    console.log("Failed to check if has badge by address:", error)
+  }
+}
+
 export {
   initializeInstance,
   initializePublicInstance,
@@ -383,4 +392,5 @@ export {
   customiseDisplay,
   reorderBadges,
   checkIfHasBadgeByAddress,
+  getReferrerData,
 }
