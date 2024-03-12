@@ -12,6 +12,7 @@ import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useValidateSkellyName from "@/hooks/useValidateSkellyName"
+import { checkIfProfileMinted } from "@/services/skellyService"
 import useSkellyStore from "@/stores/skellyStore"
 import { switchNetwork } from "@/utils"
 
@@ -71,7 +72,18 @@ const Name = () => {
     return false
   }
 
-  const handleMint = async e => {
+  // const handleMint = async e => {
+  //   setIsMinting(true)
+  //   try {
+  //     await mintSkelly()
+  //   } catch (e) {
+  //     console.log("mint skelly error", e)
+  //   } finally {
+  //     setIsMinting(false)
+  //   }
+  // }
+
+  const handleMint = async () => {
     setIsMinting(true)
     try {
       const isValidBalance = await checkBalance()
@@ -79,44 +91,26 @@ const Name = () => {
         setInsufficientDialogOpen(true)
         return
       }
-      await mintSkelly()
+      let codeSignature = "0x"
+      if (referralCode) {
+        const { signature } = await scrollRequest(fetchSignByCode(referralCode, walletCurrentAddress))
+        codeSignature = signature
+      }
+      console.log(codeSignature, "signature")
+      const tx = await profileRegistryContract.mint(name, codeSignature, { value: ethers.parseEther(codeSignature === "0x" ? "0.001" : "0.0005") })
+      const txReceipt = await tx.wait()
+      if (txReceipt.status === 1) {
+        // console.log("txReceipt", txReceipt)
+        changeReferralCode("")
+        await checkIfProfileMinted(profileRegistryContract, walletCurrentAddress)
+        navigate("/scroll-skelly")
+      } else {
+        return "due to any operation that can cause the transaction or top-level call to revert"
+      }
     } catch (e) {
       console.log("mint skelly error", e)
     } finally {
       setIsMinting(false)
-    }
-  }
-
-  const mintSkelly = async () => {
-    // setIsMinting(true)
-
-    // const nextHelpText = await handleValidateName()
-    // console.log(nextHelpText, "nextHelpText")
-    // if (nextHelpText) {
-    //   return
-    // }
-
-    // const isValidBalance = await checkBalance()
-    // console.log(isValidBalance, "isValidBalance")
-
-    // if (!isValidBalance) {
-    //   setInsufficientDialogOpen(true)
-    //   return
-    // }
-    let codeSignature = "0x"
-    if (referralCode) {
-      const { signature } = await scrollRequest(fetchSignByCode(referralCode, walletCurrentAddress))
-      codeSignature = signature
-    }
-    console.log(codeSignature, "signature")
-    const tx = await profileRegistryContract.mint(name, codeSignature, { value: ethers.parseEther(codeSignature === "0x" ? "0.001" : "0.0005") })
-    const txReceipt = await tx.wait()
-    if (txReceipt.status === 1) {
-      changeReferralCode("")
-      console.log("txReceipt", txReceipt)
-      navigate("/scroll-skelly")
-    } else {
-      return "due to any operation that can cause the transaction or top-level call to revert"
     }
   }
 
@@ -126,7 +120,7 @@ const Name = () => {
 
   const handleKeydown = async e => {
     if (e.keyCode === 13) {
-      mintSkelly()
+      handleMint()
     }
   }
 

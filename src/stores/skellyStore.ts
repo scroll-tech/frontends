@@ -224,6 +224,10 @@ const useSkellyStore = create<SkellyStore>()((set, get) => ({
     })
   },
 
+  // getReferrerData: async ()=>{
+  //   ge
+  // },
+
   changeSortedBadges: (badges: any) => {
     set({
       sortedBadges: badges,

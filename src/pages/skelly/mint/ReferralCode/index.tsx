@@ -5,9 +5,11 @@ import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import Button from "@/components/Button"
+import { CHAIN_ID } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useSkellyStore, { MintStep } from "@/stores/skellyStore"
+import { switchNetwork } from "@/utils"
 
 import ReferralCodeInput from "./ReferralCodeInput"
 
@@ -50,15 +52,37 @@ const ReferralCode = props => {
   const { code } = props
   const navigate = useNavigate()
   const { isMobile } = useCheckViewport()
-  const { connect, walletCurrentAddress } = useRainbowContext()
+  const { connect, walletCurrentAddress, chainId } = useRainbowContext()
   const { changeMintStep, referralCode } = useSkellyStore()
   const [isChecking, setIsChecking] = useState(false)
 
   const handleContinue = async () => {
+    changeMintStep(MintStep.NAME)
+
     if (code) {
       navigate("/scroll-skelly/mint")
     }
-    changeMintStep(MintStep.NAME)
+  }
+
+  const renderAction = () => {
+    if (!walletCurrentAddress) {
+      return (
+        <Button color="primary" width={isMobile ? "23rem" : "28.2rem"} onClick={connect}>
+          Connect wallet
+        </Button>
+      )
+    } else if (chainId !== CHAIN_ID.L2) {
+      return (
+        <Button color="primary" width={isMobile ? "23rem" : "28.2rem"} onClick={() => switchNetwork(CHAIN_ID.L2)}>
+          Switch to Scroll
+        </Button>
+      )
+    }
+    return (
+      <Button color="primary" gloomy={isChecking || (code && !referralCode)} width={isMobile ? "23rem" : "28.2rem"} onClick={handleContinue}>
+        Continue
+      </Button>
+    )
   }
 
   return (
@@ -70,15 +94,7 @@ const ReferralCode = props => {
       </Box>
       <ReferralCodeInput code={code} isChecking={isChecking} setIsChecking={setIsChecking} />
 
-      {walletCurrentAddress ? (
-        <Button color="primary" gloomy={isChecking || (code && !referralCode)} width={isMobile ? "23rem" : "28.2rem"} onClick={handleContinue}>
-          Continue
-        </Button>
-      ) : (
-        <Button color="primary" width={isMobile ? "23rem" : "28.2rem"} onClick={connect}>
-          Connect wallet
-        </Button>
-      )}
+      {renderAction()}
     </Container>
   )
 }

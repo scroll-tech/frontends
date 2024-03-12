@@ -1,5 +1,12 @@
-import { Box, Typography } from "@mui/material"
+import { formatEther } from "ethers"
+import { useEffect, useState } from "react"
+
+import { Box, Skeleton, Typography } from "@mui/material"
 import { styled } from "@mui/system"
+
+import { useRainbowContext } from "@/contexts/RainbowProvider"
+import { useSkellyContext } from "@/contexts/SkellyContextProvider"
+import { getReferrerData } from "@/services/skellyService"
 
 const RecordBox = styled(Box)(({ theme }) => ({
   borderRadius: "0.8rem",
@@ -19,6 +26,7 @@ const Item = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
+  flex: 1,
 }))
 
 const Description = styled(Typography)(({ theme }) => ({
@@ -37,6 +45,28 @@ const Value = styled(Typography)(({ theme }) => ({
 }))
 
 const Record = () => {
+  const { walletCurrentAddress } = useRainbowContext()
+
+  const { profileRegistryContract } = useSkellyContext()
+
+  const [loading, setLoading] = useState(false)
+  const [count, setCount] = useState(0)
+  const [earnedETH, setEarnedETH] = useState("0")
+
+  useEffect(() => {
+    if (profileRegistryContract && walletCurrentAddress) {
+      setLoading(true)
+      getReferrerData(profileRegistryContract, walletCurrentAddress)
+        .then(data => {
+          setCount(Number(data[0]))
+          setEarnedETH(formatEther(data[1]))
+        })
+        .finally(() => {
+          setLoading(false)
+        })
+    }
+  }, [profileRegistryContract, walletCurrentAddress])
+
   return (
     <RecordBox>
       <Item>
@@ -44,9 +74,16 @@ const Record = () => {
           Friends <br />
           Referred
         </Description>
-        <Value variant="body1" color="#FFFFFF">
-          10
-        </Value>
+        {loading ? (
+          <Skeleton
+            variant="rectangular"
+            sx={{ my: "2.2rem", height: "2rem", flex: 1, backgroundColor: "rgba(255, 255, 255, 0.45)", borderRadius: "1rem" }}
+          ></Skeleton>
+        ) : (
+          <Value variant="body1" color="#FFFFFF">
+            {count}
+          </Value>
+        )}
       </Item>
       <Item>
         <Description variant="body1" color="#FFFFFF">
@@ -54,9 +91,16 @@ const Record = () => {
           <br />
           Earned
         </Description>
-        <Value variant="body1" color="#FFFFFF">
-          0.005
-        </Value>
+        {loading ? (
+          <Skeleton
+            variant="rectangular"
+            sx={{ my: "2.2rem", height: "2rem", flex: 1, backgroundColor: "rgba(255, 255, 255, 0.45)", borderRadius: "1rem" }}
+          ></Skeleton>
+        ) : (
+          <Value variant="body1" color="#FFFFFF">
+            {earnedETH}
+          </Value>
+        )}
       </Item>
     </RecordBox>
   )
