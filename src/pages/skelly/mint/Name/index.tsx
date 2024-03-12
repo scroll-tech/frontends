@@ -64,10 +64,10 @@ const Name = () => {
 
   const { helpText, validating, renderValidation } = useValidateSkellyName(name)
 
-  const checkBalance = async (hasCode: boolean) => {
+  const checkBalance = async (withoutCode: boolean) => {
     const balance = await provider?.getBalance(walletCurrentAddress as `0x${string}`)
     if (balance) {
-      const mintFee = BigInt(ethers.parseEther(hasCode ? "0.001" : "0.0005"))
+      const mintFee = BigInt(ethers.parseEther(withoutCode ? "0.001" : "0.0005"))
       if (mintFee < balance) {
         return true
       }
