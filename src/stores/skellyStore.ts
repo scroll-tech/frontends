@@ -60,7 +60,7 @@ interface SkellyStore {
   badgeOrder: Array<any>
   profileContract: Contract | null
 
-  checkIfProfileMinted: (instance: Contract, address: string) => Promise<any>
+  checkIfProfileMinted: (instance: Contract, address: string, test?: boolean) => Promise<any>
   fetchCurrentSkellyDetail: (signer, walletAddress, profileAddress) => void
   checkAndFetchCurrentWalletSkelly: (prividerOrSigner, unsignedProfileRegistryContract, walletAddress) => void
   fetchOthersSkellyDetail: (prividerOrSigner, othersAddress, profileAddress) => void
@@ -69,6 +69,7 @@ interface SkellyStore {
   queryUsername: () => void
   queryAttachedBadges: () => void
   queryVisibleBadges: (provider, address) => void
+  clearSkelly: () => void
 }
 
 const useSkellyStore = create<SkellyStore>()((set, get) => ({
@@ -178,7 +179,7 @@ const useSkellyStore = create<SkellyStore>()((set, get) => ({
     })
   },
 
-  clearStates: () => {
+  clearSkelly: () => {
     set({
       referralCode: "",
       mintStep: MintStep.REFERRAL_CODE,
