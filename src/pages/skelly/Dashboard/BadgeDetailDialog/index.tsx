@@ -24,7 +24,8 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialog-paper": {
     backgroundColor: "#101010",
     width: "64rem",
-    height: "67.4rem",
+    // height: "67.4rem",
+    minHeight: "67.4rem",
     padding: "3.2rem",
   },
 }))
