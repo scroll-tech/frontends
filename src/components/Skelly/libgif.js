@@ -241,6 +241,7 @@
 
     var parseExt = function (block) {
       var parseGCExt = function (block) {
+        // eslint-disable-next-line no-unused-vars
         var blockSize = st.readByte() // Always 4
         var bits = byteToBitArr(st.readByte())
         block.reserved = bits.splice(0, 3) // Reserved; should be 000.
@@ -264,6 +265,7 @@
 
       var parsePTExt = function (block) {
         // No one *ever* uses this. If you use it, deal with parsing it yourself.
+        // eslint-disable-next-line no-unused-vars
         var blockSize = st.readByte() // Always 12
         block.ptHeader = st.readBytes(12)
         block.ptData = readSubBlocks()
@@ -272,6 +274,7 @@
 
       var parseAppExt = function (block) {
         var parseNetscapeExt = function (block) {
+          // eslint-disable-next-line no-unused-vars
           var blockSize = st.readByte() // Always 3
           block.unknown = st.readByte() // ??? Always 1? What is this?
           block.iterations = st.readUnsigned()
@@ -284,7 +287,7 @@
           // FIXME: This won't work if a handler wants to match on any identifier.
           handler.app && handler.app[block.identifier] && handler.app[block.identifier](block)
         }
-
+        // eslint-disable-next-line no-unused-vars
         var blockSize = st.readByte() // Always 11
         block.identifier = st.read(8)
         block.authCode = st.read(3)
@@ -457,8 +460,8 @@
     var frameOffsets = [] // elements have .x and .y properties
 
     var gif = options.gif
-    console.log("options", options)
-    if (typeof options.auto_play == "undefined") options.auto_play = !gif.getAttribute("rel:auto_play") || gif.getAttribute("rel:auto_play") == "1"
+    // eslint-disable-next-line no-unused-vars
+    if (typeof options.auto_play === "undefined") options.auto_play = !gif.getAttribute("rel:auto_play") || gif.getAttribute("rel:auto_play") === "1"
 
     var onEndListener = options.hasOwnProperty("on_end") ? options.on_end : null
     var loopDelay = options.hasOwnProperty("loop_delay") ? options.loop_delay : 0
@@ -490,7 +493,7 @@
         doLoadError("parse")
       }
     }
-
+    // eslint-disable-next-line no-unused-vars
     var doText = function (text) {
       toolbar.innerHTML = text // innerText? Escaping? Whatever.
       toolbar.style.visibility = "visible"
@@ -528,6 +531,7 @@
         if (options.is_vp) {
           if (!ctx_scaled) {
             top = options.vp_t + options.vp_h - height
+            // eslint-disable-next-line
             height = height
             left = options.vp_l
             mid = left + (pos / length) * options.vp_w
@@ -682,8 +686,9 @@
     var player = (function () {
       var i = -1
       var iterationCount = 0
-
+      // eslint-disable-next-line no-unused-vars
       var showingInfo = false
+      // eslint-disable-next-line no-unused-vars
       var pinned = false
 
       /**
@@ -954,7 +959,7 @@
           if (!initialized) init()
         }
         h.onload = function (e) {
-          if (this.status != 200) {
+          if (this.status !== 200) {
             doLoadError("xhr - response")
           }
           var data = this.response
