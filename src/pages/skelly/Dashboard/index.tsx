@@ -10,6 +10,7 @@ import { styled } from "@mui/system"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 // import { BADGES_VISIBLE_TYPE } from "@/constants"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
+import { checkIfProfileMinted } from "@/services/skellyService"
 import useSkellyStore from "@/stores/skellyStore"
 import { requireEnv } from "@/utils"
 
@@ -64,7 +65,6 @@ const Dashboard = props => {
   const {
     skellyUsername,
     attachedBadges,
-    checkIfProfileMinted,
     fetchCurrentSkellyDetail,
     fetchOthersSkellyDetail,
     profileAddress,
