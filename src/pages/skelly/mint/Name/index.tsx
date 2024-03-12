@@ -64,10 +64,13 @@ const Name = () => {
 
   const { helpText, validating, renderValidation } = useValidateSkellyName(name)
 
-  const checkBalance = async () => {
+  const checkBalance = async (hasCode: boolean) => {
     const balance = await provider?.getBalance(walletCurrentAddress as `0x${string}`)
     if (balance) {
-      return true
+      const mintFee = BigInt(ethers.parseEther(hasCode ? "0.001" : "0.0005"))
+      if (mintFee < balance) {
+        return true
+      }
     }
     return false
   }
@@ -86,17 +89,17 @@ const Name = () => {
   const handleMint = async () => {
     setIsMinting(true)
     try {
-      const isValidBalance = await checkBalance()
-      if (!isValidBalance) {
-        setInsufficientDialogOpen(true)
-        return
-      }
       let codeSignature = "0x"
       if (referralCode) {
         const { signature } = await scrollRequest(fetchSignByCode(referralCode, walletCurrentAddress))
         codeSignature = signature
       }
       console.log(codeSignature, "signature")
+      const isValidBalance = await checkBalance(codeSignature === "0x")
+      if (!isValidBalance) {
+        setInsufficientDialogOpen(true)
+        return
+      }
       const tx = await profileRegistryContract.mint(name, codeSignature, { value: ethers.parseEther(codeSignature === "0x" ? "0.001" : "0.0005") })
       const txReceipt = await tx.wait()
       if (txReceipt.status === 1) {
