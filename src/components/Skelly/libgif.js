@@ -62,6 +62,7 @@
 			http://humpy77.deviantart.com/journal/Frame-Delay-Times-for-Animated-GIFs-214150546
 
 */
+/* eslint-disable */
 ;(function (root, factory) {
   if (typeof exports === "object") {
     module.exports = factory()
