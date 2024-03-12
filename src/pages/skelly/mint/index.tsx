@@ -1,32 +1,28 @@
-import { useEffect } from "react"
-import { useNavigate } from "react-router-dom"
+import { Navigate } from "react-router-dom"
 
-import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useSkellyStore, { MintStep } from "@/stores/skellyStore"
 
+import LoadingPage from "../loading"
 import Name from "./Name"
 import ReferralCode from "./ReferralCode"
 
 const SkellyMint = props => {
   const { code } = props
-  const navigate = useNavigate()
 
-  const { walletCurrentAddress } = useRainbowContext()
-  const { unsignedProfileRegistryContract } = useSkellyContext()
-  const { checkIfProfileMinted, mintStep } = useSkellyStore()
+  const { mintStep, profileMinted, profileMintedLoading } = useSkellyStore()
 
-  useEffect(() => {
-    if (unsignedProfileRegistryContract && walletCurrentAddress) {
-      checkIfProfileMinted(unsignedProfileRegistryContract, walletCurrentAddress).then(({ minted }) => {
-        if (minted) {
-          navigate("/scroll-skelly")
-        }
-      })
+  const renderMint = () => {
+    if (profileMintedLoading) {
+      return <LoadingPage></LoadingPage>
+    } else if (profileMinted) {
+      return <Navigate to="/scroll-skelly" replace></Navigate>
+    } else if (mintStep === MintStep.NAME) {
+      return <Name></Name>
     }
-  }, [unsignedProfileRegistryContract, walletCurrentAddress, mintStep])
+    return <ReferralCode code={code}></ReferralCode>
+  }
 
-  return <>{mintStep === MintStep.NAME ? <Name></Name> : <ReferralCode code={code}></ReferralCode>}</>
+  return <>{renderMint()}</>
 }
 
 export default SkellyMint

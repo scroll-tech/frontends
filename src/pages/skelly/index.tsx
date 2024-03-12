@@ -3,7 +3,6 @@ import { Navigate, useMatch, useNavigate } from "react-router-dom"
 
 import { CHAIN_ID } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useSkellyStore, { MintStep } from "@/stores/skellyStore"
 
 import Dashboard from "./Dashboard"
@@ -16,21 +15,18 @@ const SkellyIndex = props => {
   const isBadgeDetail = useMatch("/scroll-skelly/badge/:id")
 
   const { walletCurrentAddress, chainId } = useRainbowContext()
-  const { unsignedProfileRegistryContract } = useSkellyContext()
-  const { profileMintedLoading, profileMinted, checkIfProfileMinted, changeMintStep } = useSkellyStore()
+  const { profileMintedLoading, profileMinted, changeMintStep } = useSkellyStore()
   console.log(profileMinted, "profileMinted skelly homepage")
   const isWrongNetwork = useMemo(() => {
     return !isOthersSkelly && !isBadgeDetail && chainId !== CHAIN_ID.L2
   }, [chainId, isOthersSkelly, isBadgeDetail])
 
   useEffect(() => {
-    if (!isWrongNetwork && unsignedProfileRegistryContract && walletCurrentAddress) {
-      checkIfProfileMinted(unsignedProfileRegistryContract, walletCurrentAddress)
-    } else if (!isWrongNetwork && !walletCurrentAddress) {
+    if (!walletCurrentAddress) {
       navigate("/scroll-skelly/mint")
       changeMintStep(MintStep.REFERRAL_CODE)
     }
-  }, [isWrongNetwork, unsignedProfileRegistryContract, walletCurrentAddress])
+  }, [walletCurrentAddress])
 
   const renderSkelly = () => {
     if (!walletCurrentAddress) {

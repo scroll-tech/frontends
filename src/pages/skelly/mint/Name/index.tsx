@@ -1,6 +1,5 @@
 import { ethers } from "ethers"
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
 
 import { Box, InputBase, Stack, Typography } from "@mui/material"
 import { styled } from "@mui/system"
@@ -12,7 +11,6 @@ import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useValidateSkellyName from "@/hooks/useValidateSkellyName"
-import { checkIfProfileMinted } from "@/services/skellyService"
 import useSkellyStore from "@/stores/skellyStore"
 import { switchNetwork } from "@/utils"
 
@@ -50,14 +48,13 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }))
 
 const Name = () => {
-  const navigate = useNavigate()
   const { isMobile } = useCheckViewport()
 
   const { walletCurrentAddress, provider, chainId, connect } = useRainbowContext()
   const { profileRegistryContract } = useSkellyContext()
   const [insufficientDialogOpen, setInsufficientDialogOpen] = useState(false)
 
-  const { referralCode, changeReferralCode } = useSkellyStore()
+  const { referralCode, changeReferralCode, checkIfProfileMinted } = useSkellyStore()
 
   const [isMinting, setIsMinting] = useState(false)
   const [name, setName] = useState("")
@@ -105,8 +102,7 @@ const Name = () => {
       if (txReceipt.status === 1) {
         // console.log("txReceipt", txReceipt)
         changeReferralCode("")
-        await checkIfProfileMinted(profileRegistryContract, walletCurrentAddress)
-        navigate("/scroll-skelly")
+        await checkIfProfileMinted(profileRegistryContract, walletCurrentAddress!)
       } else {
         return "due to any operation that can cause the transaction or top-level call to revert"
       }
@@ -132,7 +128,7 @@ const Name = () => {
       return (
         <Button
           id="mint-btn"
-          gloomy={!!helpText || validating}
+          gloomy={!!helpText || validating || !name}
           color="primary"
           loading={isMinting}
           width={isMobile ? "23rem" : "28.2rem"}
