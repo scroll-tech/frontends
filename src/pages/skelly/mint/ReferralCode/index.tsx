@@ -48,6 +48,13 @@ const SubTitle = styled(Typography)(({ theme }) => ({
   lineHeight: "3.2rem",
 }))
 
+const StickyBox = styled(Box)(({ theme }) => ({
+  position: "sticky",
+  bottom: "0.8rem",
+  zIndex: 1,
+  backgroundColor: "#101010",
+}))
+
 const ReferralCode = props => {
   const { code } = props
   const navigate = useNavigate()
@@ -89,12 +96,11 @@ const ReferralCode = props => {
     <Container>
       <Title>Mint your Scroll Skelly</Title>
       <SubTitle>Earn badges of attestations across the ecosystem.</SubTitle>
-      <Box sx={{ width: "66.5rem", height: "29.8rem", mt: "4.8rem", mb: "3rem" }}>
+      <Box sx={{ width: "66.5rem", height: "29.8rem", mt: "1.8rem", mb: "2rem" }}>
         <img src="/imgs/skelly/heartbeat.webp" alt="heartbeat"></img>
       </Box>
       <ReferralCodeInput code={code} isChecking={isChecking} setIsChecking={setIsChecking} />
-
-      {renderAction()}
+      <StickyBox>{renderAction()}</StickyBox>
     </Container>
   )
 }

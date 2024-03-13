@@ -2,6 +2,7 @@ import { useMemo, useState } from "react"
 import Img from "react-cool-img"
 import { Helmet } from "react-helmet-async"
 import { useParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 import { Avatar, Box, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
@@ -46,6 +47,7 @@ const BadgeContractDetail = props => {
   const { profileMinted, userBadges } = useSkellyStore()
   const [loading, setLoading] = useState(false)
   const [badgeMinted, setBadgeMinted] = useState(false)
+  const navigate = useNavigate()
 
   const detail = useMemo(() => {
     return badgeMap[address]
@@ -72,12 +74,12 @@ const BadgeContractDetail = props => {
     setLoading(true)
     const badgeForMint = Badges.find(item => item.badgeContract === address)
     const result = await mintBadge(provider, walletCurrentAddress, badgeForMint!.nftAddress, badgeForMint!.nftAbi, badgeForMint!.badgeContract)
-
-    if (result! !== true) {
+    if (result === false) {
       setBadgeMinted(false)
       console.log("mintBadge failed", result)
     } else {
       setBadgeMinted(true)
+      navigate(`/scroll-skelly/badge/${result}`, { replace: true })
     }
     setLoading(false)
   }
