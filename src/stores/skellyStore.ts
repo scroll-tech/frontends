@@ -87,7 +87,7 @@ const useSkellyStore = create<SkellyStore>()((set, get) => ({
   profileAddress: null,
   profileContract: null,
   profileMinted: null,
-  profileMintedLoading: true,
+  profileMintedLoading: false,
   profileDetailLoading: false,
   queryUsernameLoading: false,
   walletDetailLoading: false,
