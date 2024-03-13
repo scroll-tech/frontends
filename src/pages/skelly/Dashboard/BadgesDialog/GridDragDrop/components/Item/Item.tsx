@@ -1,8 +1,11 @@
 import type { DraggableSyntheticListeners } from "@dnd-kit/core"
 import type { Transform } from "@dnd-kit/utilities"
 import React, { useEffect } from "react"
+import Img from "react-cool-img"
 
 import { keyframes, styled } from "@mui/system"
+
+import { getBadgeImgURL } from "@/utils"
 
 // import styles from "./Item.module.css"
 
@@ -195,7 +198,12 @@ export const Item = React.memo(
             {...props}
             tabIndex={!handle ? 0 : undefined}
           >
-            <img alt="item" style={{ borderRadius: "0.8rem" }} src={(value as any)?.image.replace(/^ipfs:\/\/(.*)/, "https://ipfs.io/ipfs/$1")} />
+            <Img
+              alt={(value as any)?.name}
+              style={{ borderRadius: "0.8rem" }}
+              src={getBadgeImgURL((value as any)?.image)}
+              placeholder="/imgs/skelly/badgePlaceholder.svg"
+            />
           </StyledItem>
         </StyledWrapper>
       )

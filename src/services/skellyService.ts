@@ -256,13 +256,13 @@ const mintBadge = async (provider, walletCurrentAddress, nftAddress, nftAbi, bad
       const tx = await easContract.attest(attestParams)
       const txReceipt = await tx.wait()
       if (txReceipt.status === 1) {
-        return true
+        return txReceipt.logs[0].data
       } else {
-        return "due to any operation that can cause the transaction or top-level call to revert"
+        return false
       }
       // console.log("Badge minted successfully!")
     } catch (error) {
-      return "due to any operation that can cause the transaction or top-level call to revert"
+      return false
       // console.log("Badge minted error!", error)
     }
   } else if (Array.isArray(nftAddress)) {

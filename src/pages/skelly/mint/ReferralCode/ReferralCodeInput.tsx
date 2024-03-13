@@ -20,7 +20,7 @@ enum CodeStatus {
 }
 
 const Container = styled(Box)(({ theme }) => ({
-  marginBottom: "4rem",
+  marginBottom: "1.6rem",
 }))
 
 const Title = styled(Typography)(({ theme }) => ({

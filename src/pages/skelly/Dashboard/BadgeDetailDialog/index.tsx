@@ -93,7 +93,8 @@ const ButtonContainer = styled(Box)(({ theme }) => ({
 
 const BadgeDetailDialog = () => {
   const { walletCurrentAddress, provider } = useRainbowContext()
-  const { badgeDetailDialogVisible, changeBadgeDetailDialog, selectedBadge, changeUpgradeDialog, queryVisibleBadges } = useSkellyStore()
+  const { badgeDetailDialogVisible, changeBadgeDetailDialog, selectedBadge, changeUpgradeDialog, queryVisibleBadges, changeSelectedBadge } =
+    useSkellyStore()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
 
@@ -106,9 +107,10 @@ const BadgeDetailDialog = () => {
     setLoading(true)
 
     const result = await mintBadge(provider, walletCurrentAddress, selectedBadge.nftAddress, selectedBadge.nftAbi, selectedBadge.badgeContract)
-    if (result! !== true) {
+    if (result === false) {
       console.log("mintBadge failed", result)
     } else {
+      changeSelectedBadge({ ...selectedBadge, id: result })
       changeBadgeDetailDialog(BadgeDetailDialogTpye.MINTED)
       queryVisibleBadges(provider, walletCurrentAddress)
     }

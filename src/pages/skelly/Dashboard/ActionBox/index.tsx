@@ -166,7 +166,7 @@ const ActionBox = props => {
               },
             },
             {
-              label: `Mint badges${mintableBadgeCount ? "(" + mintableBadgeCount + ")" : ""}`,
+              label: `Mint badges${mintableBadgeCount ? " (" + mintableBadgeCount + ")" : ""}`,
               onClick: () => {
                 handleCloseBadges()
                 changeUpgradeDialog(true)
