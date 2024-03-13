@@ -67,13 +67,14 @@ const MintHome = props => {
   }
 
   const renderAction = (end = false) => {
-    if (end) {
-      return (
-        <Button color="primary" width={isMobile ? "23rem" : "28.2rem"} gloomy>
-          Mint ended
-        </Button>
-      )
-    } else if (chainId === CHAIN_ID.L2) {
+    if (chainId === CHAIN_ID.L2) {
+      if (end) {
+        return (
+          <Button color="primary" width={isMobile ? "23rem" : "28.2rem"} gloomy>
+            Mint ended
+          </Button>
+        )
+      }
       return (
         <Button color="primary" loading={loading || isMinting} width={isMobile ? "23rem" : "28.2rem"} onClick={handleCheckEligibility}>
           {isMinting ? "Minting" : loading ? "Checking" : "Mint now"}
