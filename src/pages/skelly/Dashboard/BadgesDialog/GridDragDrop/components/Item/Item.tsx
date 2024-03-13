@@ -3,11 +3,15 @@ import type { Transform } from "@dnd-kit/utilities"
 import React, { useEffect } from "react"
 import Img from "react-cool-img"
 
+import { Tooltip } from "@mui/material"
+import { tooltipClasses } from "@mui/material/Tooltip"
 import { keyframes, styled } from "@mui/system"
 
+import NameTip from "@/pages/skelly/components/NameTip"
 import { getBadgeImgURL } from "@/utils"
 
 // import styles from "./Item.module.css"
+const CustomTooltip = styled(Tooltip)(({ theme }) => ({}))
 
 // Define keyframes for animations
 const pop = keyframes`
@@ -187,24 +191,69 @@ export const Item = React.memo(
           transform={transform}
           style={{ ...wrapperStyle, transition }}
         >
-          <StyledItem
-            dragging={dragging}
-            handle={handle}
-            dragOverlay={dragOverlay}
-            disabled={disabled}
-            color={color}
-            style={style}
-            {...listeners}
-            {...props}
-            tabIndex={!handle ? 0 : undefined}
+          <CustomTooltip
+            title={<NameTip metadata={value}></NameTip>}
+            followCursor
+            PopperProps={{
+              popperOptions: {
+                modifiers: [
+                  {
+                    name: "offset",
+                    options: {
+                      offset: ({ placement, reference, popper }) => {
+                        if (placement === "bottom") {
+                          return [popper.width / 4, 27]
+                        } else {
+                          return [popper.width / 4, 12]
+                        }
+                      },
+                    },
+                  },
+                ],
+              },
+            }}
+            slotProps={{
+              popper: {
+                sx: {
+                  [`&.${tooltipClasses.popper}[data-popper-placement*="bottom"] .${tooltipClasses.tooltip}`]: {
+                    marginTop: "-6px",
+                    background: "transparent",
+                  },
+                  [`&.${tooltipClasses.popper}[data-popper-placement*="top"] .${tooltipClasses.tooltip}`]: {
+                    marginBottom: "-6px",
+                    background: "transparent",
+                  },
+                  [`&.${tooltipClasses.popper}[data-popper-placement*="right"] .${tooltipClasses.tooltip}`]: {
+                    marginLeft: "-6px",
+                    background: "transparent",
+                  },
+                  [`&.${tooltipClasses.popper}[data-popper-placement*="left"] .${tooltipClasses.tooltip}`]: {
+                    marginRight: "-6px",
+                    background: "transparent",
+                  },
+                },
+              },
+            }}
           >
-            <Img
-              alt={(value as any)?.name}
-              style={{ borderRadius: "0.8rem" }}
-              src={getBadgeImgURL((value as any)?.image)}
-              placeholder="/imgs/skelly/badgePlaceholder.svg"
-            />
-          </StyledItem>
+            <StyledItem
+              dragging={dragging}
+              handle={handle}
+              dragOverlay={dragOverlay}
+              disabled={disabled}
+              color={color}
+              style={style}
+              {...listeners}
+              {...props}
+              tabIndex={!handle ? 0 : undefined}
+            >
+              <Img
+                alt={(value as any)?.name}
+                style={{ borderRadius: "0.8rem" }}
+                src={getBadgeImgURL((value as any)?.image)}
+                placeholder="/imgs/skelly/badgePlaceholder.svg"
+              />
+            </StyledItem>
+          </CustomTooltip>
         </StyledWrapper>
       )
     },
