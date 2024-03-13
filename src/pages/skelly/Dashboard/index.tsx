@@ -35,6 +35,9 @@ const Container: any = styled(Box)(({ theme, badgewidth }: any) => ({
     "linear-gradient(90deg, rgba(255,255,255, 0.3) 1px, transparent 1px), linear-gradient( rgba(255,255,255, 0.3) 1px, transparent 1px)",
   backgroundSize: `${badgewidth}px ${badgewidth}px`,
   backgroundPosition: `calc(50% - ${badgewidth / 2}px) calc(50% - ${badgewidth / 2}px)`,
+  "&::-webkit-scrollbar": {
+    display: "none",
+  },
   "&::before, &::after": {
     content: "''",
     height: "100%",
