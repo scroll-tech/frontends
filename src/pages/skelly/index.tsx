@@ -33,7 +33,7 @@ const SkellyIndex = props => {
       return <Navigate to="/scroll-skelly/mint" replace={true}></Navigate>
     } else if (isWrongNetwork) {
       return <WrongNetwork></WrongNetwork>
-    } else if (profileMintedLoading) {
+    } else if (profileMintedLoading || profileMinted === null) {
       return <LoadingPage></LoadingPage>
     } else if (profileMinted) {
       // if connected user views the invite link, then redirect to skelly
