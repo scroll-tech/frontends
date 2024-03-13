@@ -10,17 +10,14 @@ const SkellyInvite = props => {
 
   const { profileMintedLoading, profileMinted } = useSkellyStore()
 
-  return (
-    <>
-      <>
-        {profileMintedLoading ? (
-          <LoadingPage></LoadingPage>
-        ) : (
-          <>{profileMinted ? <Navigate to="/scroll-skelly"></Navigate> : <ReferralCode code={code}></ReferralCode>}</>
-        )}
-      </>
-    </>
-  )
+  if (profileMintedLoading || profileMinted === null) {
+    return <LoadingPage></LoadingPage>
+  }
+  if (profileMinted) {
+    return <Navigate to="/scroll-skelly"></Navigate>
+  }
+
+  return <ReferralCode code={code}></ReferralCode>
 }
 
 export default SkellyInvite
