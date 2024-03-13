@@ -1,15 +1,13 @@
 // TODO: to be unified, prefer this
-import { makeStyles } from "tss-react/mui"
+import { makeStyles } from "tss-react/mui";
+import { Alert, SvgIcon } from "@mui/material";
+import { ReactComponent as ErrorSvg } from "@/assets/svgs/nft/alert-error.svg";
+import { ReactComponent as SuccessSvg } from "@/assets/svgs/nft/alert-success.svg";
 
-import { Alert, SvgIcon } from "@mui/material"
-
-import { ReactComponent as ErrorSvg } from "@/assets/svgs/nft/alert-error.svg"
-import { ReactComponent as SuccessSvg } from "@/assets/svgs/nft/alert-success.svg"
-
-const useStyles = makeStyles<any>()((theme, { type }) => ({
+const useStyles = makeStyles()((theme) => ({
   root: {
-    borderRadius: type === "compact" ? 10 : 5,
-    padding: type === "compact" ? "0.8rem 1.6rem" : "1.6rem",
+    borderRadius: theme => theme.type === "compact" ? 10 : 5,
+    padding: theme => theme.type === "compact" ? "0.8rem 1.6rem" : "1.6rem",
     [theme.breakpoints.down("sm")]: {
       padding: "1.2rem 1.6rem",
     },
@@ -31,21 +29,19 @@ const useStyles = makeStyles<any>()((theme, { type }) => ({
   },
   message: {
     lineHeight: 1.5,
-    fontWeight: type === "compact" ? 500 : 600,
+    fontWeight: theme => theme.type === "compact" ? 500 : 600,
   },
-}))
+}));
 
-const CheckAlert = props => {
-  const { type, children, ...restProps } = props
-
-  const { classes } = useStyles({ type })
+const CheckAlert = ({ type, children, ...restProps }) => {
+  const classes = useStyles({ type });
 
   return (
     <Alert
       iconMapping={{
-        success: <SvgIcon sx={{ fontSize: "2.4rem", color: theme => theme.palette.text.primary }} component={SuccessSvg} inheritViewBox></SvgIcon>,
-        error: <SvgIcon sx={{ fontSize: "2.4rem", color: "#FFEBD7" }} component={ErrorSvg} inheritViewBox></SvgIcon>,
-        info: <SvgIcon sx={{ fontSize: "2.4rem", color: theme => theme.palette.text.primary }} component={ErrorSvg} inheritViewBox></SvgIcon>,
+        success: <SvgIcon sx={{ fontSize: "2.4rem", color: theme => theme.palette.text.primary }} component={SuccessSvg} />,
+        error: <SvgIcon sx={{ fontSize: "2.4rem", color: "#FFEBD7" }} component={ErrorSvg} />,
+        info: <SvgIcon sx={{ fontSize: "2.4rem", color: theme => theme.palette.text.primary }} component={ErrorSvg} />,
       }}
       classes={{
         root: classes.root,
@@ -59,7 +55,7 @@ const CheckAlert = props => {
     >
       {children}
     </Alert>
-  )
-}
+  );
+};
 
-export default CheckAlert
+export default CheckAlert;
