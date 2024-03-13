@@ -7,16 +7,19 @@ import { useNavigate } from "react-router-dom"
 import { Avatar, Box, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
+import { ReactComponent as ValidSvg } from "@/assets/svgs/skelly/check.svg"
+import { ReactComponent as WarningSvg } from "@/assets/svgs/skelly/circle-warning.svg"
 import { ReactComponent as ShareSvg } from "@/assets/svgs/skelly/share.svg"
 import ScrollButton from "@/components/Button"
 import Link from "@/components/Link"
 import SectionWrapper from "@/components/SectionWrapper"
 import { ANNOUNCING_SCROLL_ORIGINS_NFT, DESIGNING_SCROLL_ORIGINS } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import { useAsyncMemo } from "@/hooks"
 import useCheckViewport from "@/hooks/useCheckViewport"
-import { mintBadge } from "@/services/skellyService"
+import { mintBadge, queryUserBadges } from "@/services/skellyService"
 import useSkellyStore from "@/stores/skellyStore"
-import { generateShareTwitterURL, getBadgeImgURL, requireEnv } from "@/utils"
+import { decodeBadgePayload, generateShareTwitterURL, getBadgeImgURL, requireEnv } from "@/utils"
 
 import Badges, { badgeMap } from "../Dashboard/UpgradeDialog/Badges"
 import Statistic from "../components/Statistic"
@@ -44,14 +47,29 @@ const InfoBox = styled(Box)(({ theme }) => ({
 const BadgeContractDetail = props => {
   const { address } = useParams()
   const { walletCurrentAddress, connect, provider } = useRainbowContext()
-  const { profileMinted, userBadges } = useSkellyStore()
+  const { profileMinted } = useSkellyStore()
   const [loading, setLoading] = useState(false)
-  const [badgeMinted, setBadgeMinted] = useState(false)
+  // const [badgeMinted, setBadgeMinted] = useState(false)
   const navigate = useNavigate()
 
   const detail = useMemo(() => {
     return badgeMap[address]
   }, [address])
+
+  // TODO: pre fetch?
+  const isOwned = useAsyncMemo(async () => {
+    const userBadges = await queryUserBadges(walletCurrentAddress)
+
+    const userBadgeContracts = userBadges.map(item => decodeBadgePayload(item.data)[0])
+
+    return userBadgeContracts.includes(address)
+  }, [address, walletCurrentAddress])
+
+  const isValid = useAsyncMemo(async () => {
+    const badgeForMint = Badges.find(item => item.badgeContract === address)
+    const valid = await badgeForMint!.validator(walletCurrentAddress, provider)
+    return valid
+  }, [address, walletCurrentAddress, provider])
 
   const shareBadgeURL = useMemo(() => {
     const viewURL = `${requireEnv("REACT_APP_FFRONTENDS_URL")}/scroll-skelly/badge-contract/${address}`
@@ -75,15 +93,49 @@ const BadgeContractDetail = props => {
     const badgeForMint = Badges.find(item => item.badgeContract === address)
     const result = await mintBadge(provider, walletCurrentAddress, badgeForMint!.nftAddress, badgeForMint!.nftAbi, badgeForMint!.badgeContract)
     if (result === false) {
-      setBadgeMinted(false)
+      // setBadgeMinted(false)
       console.log("mintBadge failed", result)
     } else {
-      setBadgeMinted(true)
+      // TODO:
+      // setBadgeMinted(true)
       navigate(`/scroll-skelly/badge/${result}`, { replace: true })
     }
     setLoading(false)
   }
 
+  const renderTip = () => {
+    if (profileMinted === false) {
+      return (
+        <>
+          <SvgIcon sx={{ color: "#FAD880", fontSize: "2.4rem" }} component={WarningSvg} inheritViewBox></SvgIcon>
+          <Typography sx={{ color: "#FAD880 !important", fontSize: "1.8rem", lineHeight: "2.8rem", fontWeight: 500 }}>
+            You need a Scroll Skelly in order to mint your Zebra Badge.
+          </Typography>
+        </>
+      )
+    } else if (profileMinted && !isOwned && isValid) {
+      return (
+        <>
+          <SvgIcon sx={{ color: "#85E0D1", fontSize: "2.4rem" }} component={ValidSvg} inheritViewBox></SvgIcon>
+          <Typography sx={{ color: "#85E0D1 !important", fontSize: "1.8rem", lineHeight: "2.8rem", fontWeight: 500 }}>
+            You are eligible to mint the badge
+          </Typography>
+        </>
+      )
+    } else if (profileMinted && !isOwned && !isValid) {
+      return (
+        <>
+          <SvgIcon sx={{ color: "primary.main", fontSize: "2.4rem" }} component={WarningSvg} inheritViewBox></SvgIcon>
+          <Typography sx={{ color: "#FF684B !important", fontSize: "1.8rem", lineHeight: "2.8rem", fontWeight: 500 }}>
+            Selected account is not eligible to mint the badge yet.
+          </Typography>
+        </>
+      )
+    }
+    return null
+  }
+
+  // TODO: async need loading?
   const renderAction = () => {
     if (!walletCurrentAddress) {
       return (
@@ -93,26 +145,22 @@ const BadgeContractDetail = props => {
       )
     } else if (!profileMinted) {
       return (
-        <ScrollButton color="primary" href="/scroll-skelly">
+        <ScrollButton color="primary" href="/scroll-skelly/mint">
           Mint Scroll Skelly
         </ScrollButton>
       )
-    } else {
-      const hasBadge = userBadges.find(item => item.badgeContract === address)
-      if (hasBadge || badgeMinted) {
-        return (
-          <ScrollButton color="primary" href="/scroll-skelly">
-            Visit Scroll Skelly
-          </ScrollButton>
-        )
-      } else {
-        return (
-          <ScrollButton color="primary" onClick={handleMint} loading={loading}>
-            Mint now
-          </ScrollButton>
-        )
-      }
+    } else if (isOwned) {
+      return (
+        <ScrollButton color="primary" href="/scroll-skelly">
+          Visit Scroll Skelly
+        </ScrollButton>
+      )
     }
+    return (
+      <ScrollButton color="primary" onClick={handleMint} loading={loading} gloomy={!isValid}>
+        Mint now
+      </ScrollButton>
+    )
   }
 
   return (
@@ -167,7 +215,7 @@ const BadgeContractDetail = props => {
           <Box sx={{ width: "48rem", aspectRatio: "1/1" }}>
             <Img src={getBadgeImgURL(detail.image)} style={{ borderRadius: "0.8rem" }} alt="badge image" />
           </Box>
-          <Stack direction="column" spacing={isPortrait ? "2.4rem" : "4.8rem"} alignItems={isLandscape ? "flex-start" : "center"}>
+          <Stack direction="column" spacing={isPortrait ? "2.4rem" : "3.6rem"} alignItems={isLandscape ? "flex-start" : "center"}>
             <Box sx={{ textAlign: ["center", "center", "left"] }}>
               <Typography sx={{ fontSize: ["4rem", "5.6rem"], fontWeight: 600, lineHeight: ["5.6rem", "9.6rem"] }}>{detail.name}</Typography>
 
@@ -208,6 +256,9 @@ const BadgeContractDetail = props => {
               <Link external href={shareBadgeURL}>
                 <SvgIcon sx={{ fontSize: "3.2rem", color: "primary.contrastText" }} component={ShareSvg} inheritViewBox></SvgIcon>
               </Link>
+            </Stack>
+            <Stack direction="row" gap="0.8rem" alignItems="center">
+              {renderTip()}
             </Stack>
           </Stack>
         </Box>
