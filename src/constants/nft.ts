@@ -17,6 +17,8 @@ export const EndDate = dayjs("2023-12-09T23:00:00Z").subtract(1, "ms")
 export const MintableDate = dayjs("2023-12-14T23:00:00Z")
 // 1702594800
 
+export const MintableEndDate = dayjs("2024-03-29T23:59:59Z")
+
 export const ContractReleaseDate = dayjs("2023-12-14T11:30:42Z")
 
 export const NFT_RARITY_MAP = {
