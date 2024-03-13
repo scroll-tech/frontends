@@ -43,9 +43,6 @@ const StyledInputBase = styled(InputBase)(({ theme, value }) => ({
     fontWeight: 600,
     padding: 0,
     color: theme.palette.primary.contrastText,
-    "&:not(:focus)": {
-      borderBottom: !value && "1px solid #FFFFFF",
-    },
   },
 }))
 
@@ -60,6 +57,7 @@ const Name = () => {
 
   const [isMinting, setIsMinting] = useState(false)
   const [name, setName] = useState("")
+  const [placeholder, setPlaceholder] = useState("name")
 
   const { helpText, validating, renderValidation } = useValidateSkellyName(name)
 
@@ -168,6 +166,9 @@ const Name = () => {
           onChange={handleChangeName}
           autoFocus
           onKeyDown={handleKeydown}
+          placeholder={placeholder}
+          onFocus={() => setPlaceholder("")}
+          onBlur={() => setPlaceholder("name")}
         />
         <Stack
           direction="row"

@@ -26,6 +26,7 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
     fontFamily: "var(--developer-page-font-family)",
     fontSize: "1.6rem",
     height: "3.6rem",
+    width: "16rem",
     padding: "0 1.2rem",
     borderRadius: "0.5rem",
     // width: "16rem",
