@@ -35,7 +35,6 @@ const Container = styled(Box)(({ theme }) => ({
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   maxWidth: "51rem",
   width: "100%",
-
   ".MuiInputBase-input": {
     textAlign: "center",
     height: "8.8rem",
@@ -44,6 +43,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     fontWeight: 600,
     padding: 0,
     color: theme.palette.primary.contrastText,
+    "&:not(:focus)": {
+      borderBottom: "1px solid #FFFFFF",
+    },
   },
 }))
 
