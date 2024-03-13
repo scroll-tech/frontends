@@ -273,10 +273,8 @@ const mintBadge = async (provider, walletCurrentAddress, nftAddress, nftAbi, bad
 
     try {
       tokenId = await nftContract.tokenOfOwnerByIndex(walletCurrentAddress, 0)
-      console.log("tokenId", tokenId)
       nftVersion = 0
     } catch (error) {
-      console.log("nftContract.tokenOfOwnerByIndex error", error)
       tokenId = await nftV2Contract.tokenOfOwnerByIndex(walletCurrentAddress, 0)
       nftVersion = 1
     }
@@ -299,7 +297,7 @@ const mintBadge = async (provider, walletCurrentAddress, nftAddress, nftAbi, bad
       const tx = await easContract.attest(attestParams)
       const txReceipt = await tx.wait()
       if (txReceipt.status === 1) {
-        return true
+        return txReceipt.logs[0].data
       } else {
         return "due to any operation that can cause the transaction or top-level call to revert"
       }

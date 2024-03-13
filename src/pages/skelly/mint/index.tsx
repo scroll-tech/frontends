@@ -12,7 +12,7 @@ const SkellyMint = props => {
   const { mintStep, profileMinted, profileMintedLoading } = useSkellyStore()
 
   const renderMint = () => {
-    if (profileMintedLoading) {
+    if (profileMintedLoading || profileMinted === null) {
       return <LoadingPage></LoadingPage>
     } else if (profileMinted) {
       return <Navigate to="/scroll-skelly" replace></Navigate>
