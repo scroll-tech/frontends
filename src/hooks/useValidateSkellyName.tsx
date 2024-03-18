@@ -58,14 +58,22 @@ const useValidateName = value => {
       return (
         <>
           <CircularProgress sx={{ color: "#A5A5A5" }} size={18}></CircularProgress>
-          <Typography sx={{ font: "500 1.8rem/2.8rem", color: "#A5A5A5" }}>Checking...</Typography>
+          <Typography sx={{ fontSize: "1.8rem", lineHeight: "2.8rem", fontWeight: 500, color: "#A5A5A5 !important" }}>Checking...</Typography>
         </>
       )
     } else if (helpText !== null) {
       return (
         <>
           <SvgIcon component={helpText ? WarningSvg : CheckSvg} inheritViewBox></SvgIcon>
-          <Typography sx={{ font: "600 1.8rem/2.8rem", color: helpText ? "primary.main" : "#85E0D1", whiteSpace: "nowrap" }}>
+          <Typography
+            sx={{
+              fontSize: "1.8rem",
+              lineHeight: "2.8rem",
+              fontWeight: 500,
+              color: helpText ? "#FF684B !important" : "#85E0D1 !important",
+              whiteSpace: "nowrap",
+            }}
+          >
             {helpText || "This name is available"}
           </Typography>
         </>

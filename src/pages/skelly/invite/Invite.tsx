@@ -4,16 +4,16 @@ import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useSkellyStore from "@/stores/skellyStore"
 
 import LoadingPage from "../loading"
-import ReferralCode from "../mint/ReferralCode"
+import ReferralCode from "../mint/home"
 
 const SkellyInvite = props => {
   const { code } = props
 
   const { walletCurrentAddress } = useRainbowContext()
 
-  const { profileMintedLoading, profileMinted } = useSkellyStore()
+  const { profileMintedChecking, profileMinted } = useSkellyStore()
 
-  if ((profileMintedLoading || profileMinted === null) && walletCurrentAddress) {
+  if ((profileMintedChecking || profileMinted === null) && walletCurrentAddress) {
     return <LoadingPage></LoadingPage>
   }
   if (profileMinted) {

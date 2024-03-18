@@ -3,11 +3,6 @@ import { create } from "zustand"
 
 import { fetchSkellyDetail, getAttachedBadges, querySkellyUsername, queryUserBadgesWrapped } from "@/services/skellyService"
 
-export enum MintStep {
-  REFERRAL_CODE = "referralCode",
-  NAME = "name",
-}
-
 export enum MintedStatus {
   MINTED = "MINTED",
   NOT_MINTED = "NOT_MINTED",
@@ -32,12 +27,12 @@ interface SkellyStore {
   badgesDialogVisible: boolean
   upgradeDialogVisible: boolean
   badgeDetailDialogVisible: BadgeDetailDialogTpye
-  mintStep: MintStep
+  mintFlowVisible: boolean
   sortedBadges: any
   selectedBadge: any
 
   changeReferralCode: (code: string) => void
-  changeMintStep: (step: MintStep) => void
+  changeMintFlowVisible: (visible: boolean) => void
   changeProfileDialog: (visible: boolean) => void
   changeReferDialog: (visible: boolean) => void
   changeBadgesDialog: (visible: boolean) => void
@@ -46,7 +41,10 @@ interface SkellyStore {
   changeBadgeDetailDialog: (visible: BadgeDetailDialogTpye) => void
   changeSelectedBadge: (badge: any) => void
 
-  profileMintedLoading: boolean
+  profileName: string
+  isProfileMinting: boolean
+  isFirstBadgeMinting: boolean
+  profileMintedChecking: boolean
   profileDetailLoading: boolean
   walletDetailLoading: boolean
   queryUsernameLoading: boolean
@@ -60,6 +58,9 @@ interface SkellyStore {
   badgeOrder: Array<any>
   profileContract: Contract | null
 
+  changeProfileName: (name: string) => void
+  changeIsProfileMinting: (isProfileMinting: boolean) => void
+  changeIsFirstBadgeMinting: (isFirstBadgeMinting: boolean) => void
   checkIfProfileMinted: (instance: Contract, address: string, test?: boolean) => Promise<any>
   fetchCurrentSkellyDetail: (signer, walletAddress, profileAddress) => void
   checkAndFetchCurrentWalletSkelly: (prividerOrSigner, unsignedProfileRegistryContract, walletAddress) => void
@@ -79,7 +80,6 @@ const useSkellyStore = create<SkellyStore>()((set, get) => ({
   badgesDialogVisible: false,
   upgradeDialogVisible: false,
   badgeDetailDialogVisible: BadgeDetailDialogTpye.HIDDEN,
-  mintStep: MintStep.REFERRAL_CODE,
   sortedBadges: {},
   selectedBadge: {},
 
@@ -87,7 +87,12 @@ const useSkellyStore = create<SkellyStore>()((set, get) => ({
   profileAddress: null,
   profileContract: null,
   profileMinted: null,
-  profileMintedLoading: false,
+
+  mintFlowVisible: false,
+  profileName: "",
+  isProfileMinting: false,
+  isFirstBadgeMinting: false,
+  profileMintedChecking: false,
   profileDetailLoading: false,
   queryUsernameLoading: false,
   walletDetailLoading: false,
@@ -98,17 +103,25 @@ const useSkellyStore = create<SkellyStore>()((set, get) => ({
   attachedBadges: [],
   badgeOrder: [],
 
-  checkIfProfileMinted: async (registryInstance, userAddress) => {
+  checkIfProfileMinted: async (registryInstance, userAddress, test) => {
     try {
       set({
-        profileMintedLoading: true,
+        profileMintedChecking: true,
       })
       const profileAddress = await registryInstance!.getProfile(userAddress)
       const profileMinted = await registryInstance!.isProfileMinted(profileAddress)
+      if (test) {
+        set({
+          profileAddress,
+          profileMinted: true,
+          profileMintedChecking: false,
+        })
+        return { profileAddress, minted: true }
+      }
       set({
         profileAddress,
         profileMinted,
-        profileMintedLoading: false,
+        profileMintedChecking: false,
       })
       return { profileAddress, minted: profileMinted }
     } catch (error) {
@@ -117,7 +130,7 @@ const useSkellyStore = create<SkellyStore>()((set, get) => ({
       set({
         profileAddress: "",
         profileMinted: false,
-        profileMintedLoading: false,
+        profileMintedChecking: false,
       })
       return { profileAddress: null, minted: null }
     }
@@ -167,9 +180,24 @@ const useSkellyStore = create<SkellyStore>()((set, get) => ({
     })
   },
 
-  changeProfileMintedLoading: profileMintedLoading => {
+  changeProfileName: profileName => {
     set({
-      profileMintedLoading,
+      profileName,
+    })
+  },
+  changeIsProfileMinting: isProfileMinting => {
+    set({
+      isProfileMinting,
+    })
+  },
+  changeIsFirstBadgeMinting: isFirstBadgeMinting => {
+    set({
+      isFirstBadgeMinting,
+    })
+  },
+  changeProfileMintedLoading: profileMintedChecking => {
+    set({
+      profileMintedChecking,
     })
   },
 
@@ -182,9 +210,10 @@ const useSkellyStore = create<SkellyStore>()((set, get) => ({
   clearSkelly: () => {
     set({
       referralCode: "",
-      mintStep: MintStep.REFERRAL_CODE,
+      mintFlowVisible: false,
       // not sure
       profileMinted: null,
+      profileName: "",
       username: "",
       skellyUsername: "",
       userBadges: [],
@@ -240,9 +269,9 @@ const useSkellyStore = create<SkellyStore>()((set, get) => ({
     })
   },
 
-  changeMintStep: step => {
+  changeMintFlowVisible: mintFlowVisible => {
     set({
-      mintStep: step,
+      mintFlowVisible,
     })
   },
 
