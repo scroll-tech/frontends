@@ -21,7 +21,7 @@ const useStyles = makeStyles<any>()(theme => ({
   },
 }))
 
-const Connector = props => {
+const Connector = () => {
   const { phrase } = useNFTStore()
   const [progress, setProgress] = useState(0)
 

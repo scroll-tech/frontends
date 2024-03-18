@@ -16,7 +16,7 @@ import Link from "@/components/Link"
 const relativeTime = require("dayjs/plugin/relativeTime")
 dayjs.extend(relativeTime)
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({}))
+const StyledTableRow = styled(TableRow)(() => ({}))
 const TxnTooltip = "Number of transactions in the chunk"
 const HashTooltip = "Hash of the chunk's header"
 

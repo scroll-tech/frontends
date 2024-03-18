@@ -200,7 +200,7 @@ const QuestionStep = props => {
           {subject}
         </FormLabel>
         <FormGroup classes={{ root: classes.formGroup }} sx={{ maxWidth: order === 1 ? "56rem" : "64rem" }}>
-          {options.map(({ title, explanation, key }, index) => (
+          {options.map(({ title, explanation, key }) => (
             <Fragment key={key}>
               <FormControlLabel
                 classes={{

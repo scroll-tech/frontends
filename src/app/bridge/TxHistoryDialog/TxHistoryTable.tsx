@@ -20,7 +20,7 @@ const TableBox = styled(Box)(({ theme }) => ({
   },
 }))
 
-const TransactionsList = (props: any) => {
+const TransactionsList = () => {
   const {
     txHistory: { refreshPageTransactions },
   } = useBridgeContext()

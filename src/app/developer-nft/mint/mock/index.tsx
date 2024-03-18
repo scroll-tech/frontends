@@ -17,7 +17,7 @@ const Mock = () => {
   const handleGenerateProof = () => {
     setLoading(true)
     scrollRequest(generateParamsByAddressURL(walletCurrentAddress))
-      .then(data => {
+      .then(() => {
         setIsReady(true)
       })
       .finally(() => {

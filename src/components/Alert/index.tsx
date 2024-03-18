@@ -5,7 +5,7 @@ import { Alert as MuiAlert, SvgIcon } from "@mui/material"
 import ErrorSvg from "@/assets/svgs/bridge/alert-error.svg"
 import SuccessSvg from "@/assets/svgs/bridge/alert-success.svg"
 
-const useStyles = makeStyles()(theme => ({
+const useStyles = makeStyles()(() => ({
   root: {
     borderRadius: "1rem",
     padding: "1.2rem 1.6rem",

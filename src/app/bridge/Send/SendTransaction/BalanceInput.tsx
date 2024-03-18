@@ -79,7 +79,6 @@ const BalanceInput = props => {
   const {
     value,
     onChange,
-    onMaxAmount,
     balance,
     balanceLoading,
     token: selectedToken,

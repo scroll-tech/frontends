@@ -136,7 +136,7 @@ const ProtocolCard = props => {
     setIsExpended(true)
   }
 
-  const handleReflow = value => {
+  const handleReflow = () => {
     // don't trigger measure when the height exceeds the standard height by default
     const standardHeight = isDesktop ? 156 : isMobile ? 324 : 196
     if (!isExpended && cardRef.current!.clientHeight > standardHeight) {

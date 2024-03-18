@@ -1,7 +1,7 @@
 import { Container, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
-const HeaderContainer = styled(Container)(({ theme }) => ({
+const HeaderContainer = styled(Container)(() => ({
   textAlign: "center",
 }))
 

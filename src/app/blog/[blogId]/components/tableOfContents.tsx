@@ -22,7 +22,6 @@ export interface Heading {
 }
 
 const TableOfContents: FC = () => {
-  const router = useRouter()
   const pathname = usePathname()
 
   const [headings, setHeadings] = useState<Heading[]>([])
@@ -30,7 +29,7 @@ const TableOfContents: FC = () => {
   const [currentID, setCurrentID] = useState("")
   const scrolledRef = useRef(false)
 
-  const hash = pathname.split("#")[1]
+  const hash = pathname!.split("#")[1]
   const hashRef = useRef(hash)
 
   useEffect(() => {

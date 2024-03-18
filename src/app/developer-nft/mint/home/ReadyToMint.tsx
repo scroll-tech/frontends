@@ -1,4 +1,5 @@
 import { useState } from "react"
+import Countdown, { zeroPad } from "react-countdown"
 import ReactGA from "react-ga4"
 
 import { Box, Stack, Typography } from "@mui/material"
@@ -10,7 +11,7 @@ import Button from "@/components/Button"
 import Link from "@/components/Link"
 import RequestWarning from "@/components/RequestWarning"
 import { ANNOUNCING_SCROLL_ORIGINS_NFT, ContractReleaseDate, DESIGNING_SCROLL_ORIGINS } from "@/constants"
-import { CHAIN_ID, L2_NAME, SCROLL_ORIGINS_NFT } from "@/constants"
+import { CHAIN_ID, L2_NAME, MintableEndDate, SCROLL_ORIGINS_NFT } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useNFTStore from "@/stores/nftStore"
@@ -21,7 +22,7 @@ import Statistic from "../../components/Statistic"
 import MintFlowDialog from "./MintFlowDialog"
 
 const CustomLink = styled(Link)(({ theme }) => ({
-  color: `${(theme as any).vars.palette.primary.main} !important`,
+  color: `${theme.palette.primary.main} !important`,
   fontSize: "inherit",
   textUnderlineOffset: "2px",
   textDecorationThickness: "1px",
@@ -39,8 +40,6 @@ const MintHome = props => {
 
   const handleCheckEligibility = async () => {
     setLoading(true)
-    changeIsEligible(1)
-    return
     scrollRequest(fetchParamsByAddressURL(walletCurrentAddress))
       .then(data => {
         if (data.proof) {
@@ -67,8 +66,15 @@ const MintHome = props => {
       })
   }
 
-  const renderAction = () => {
+  const renderAction = (end = false) => {
     if (chainId === CHAIN_ID.L2) {
+      if (end) {
+        return (
+          <Button color="primary" width={isMobile ? "23rem" : "28.2rem"} gloomy>
+            Mint ended
+          </Button>
+        )
+      }
       return (
         <Button color="primary" loading={loading || isMinting} width={isMobile ? "23rem" : "28.2rem"} onClick={handleCheckEligibility}>
           {isMinting ? "Minting" : loading ? "Checking" : "Mint now"}
@@ -96,6 +102,30 @@ const MintHome = props => {
     setErrorMessage("")
   }
 
+  const renderCountDown = ({ hours, days, minutes, seconds, completed }) => {
+    return (
+      <>
+        <Typography sx={{ fontSize: "2.4rem", lineHeight: "3.5rem", fontWeight: 500 }}>
+          {completed ? "" : ` Mint ends in ${zeroPad(days)}:${zeroPad(hours)}:${zeroPad(minutes)}:${zeroPad(seconds)}`}
+        </Typography>
+        <Box
+          sx={{
+            height: "8rem",
+            marginTop: "0.8rem !important",
+          }}
+        >
+          {!isEligible && <>{renderAction(completed)}</>}
+          {isEligible === -1 && (
+            <Alert severity="error" sx={{ width: ["100%", "42.8rem"] }}>
+              The wallet address is not eligible. Please reach out to Scroll Discord, ‘scroll-origins-support,’ if you have any questions about{" "}
+              {SCROLL_ORIGINS_NFT}.
+            </Alert>
+          )}
+        </Box>
+      </>
+    )
+  }
+
   return (
     <Box
       sx={{
@@ -104,7 +134,7 @@ const MintHome = props => {
         alignItems: "center",
         gap: "8rem",
         "& .MuiTypography-root": {
-          color: theme => (theme as any).vars.palette.primary.contrastText,
+          color: theme => theme.palette.primary.contrastText,
         },
         "@media (max-width: 1280px)": {
           gap: "2rem",
@@ -136,27 +166,11 @@ const MintHome = props => {
             program to celebrate alongside early developers building on Scroll within 60 days of Genesis Block (Before December 9, 2023 10:59PM GMT).
           </Typography>
         </Box>
-
         <Stack direction="row" spacing={isMobile ? "2.4rem" : "4.8rem"}>
           <Statistic label="Total NFTs minted">{typeof total === "bigint" ? total.toString() : "-"}</Statistic>
           <Statistic label="NFTs released on">{formatDate(ContractReleaseDate)}</Statistic>
         </Stack>
-        <Box
-          sx={{
-            height: "8rem",
-            "@media (max-width: 1200px) and (min-width: 600px)": {
-              marginTop: "4.8rem !important",
-            },
-          }}
-        >
-          {!isEligible && <>{renderAction()}</>}
-          {isEligible === -1 && (
-            <Alert severity="error" sx={{ width: ["100%", "42.8rem"] }}>
-              The wallet address is not eligible. Please reach out to Scroll Discord, ‘scroll-origins-support,’ if you have any questions about{" "}
-              {SCROLL_ORIGINS_NFT}.
-            </Alert>
-          )}
-        </Box>
+        <Countdown date={MintableEndDate} renderer={renderCountDown}></Countdown>
       </Stack>
       <MintFlowDialog open={isEligible === 1} minting={isMinting} onClose={handleCloseFlow}></MintFlowDialog>
       <RequestWarning open={!!errorMessage} onClose={handleCloseWarning}>

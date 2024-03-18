@@ -7,7 +7,7 @@ import { useStyles } from "tss-react/mui"
 import { Box } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
-const Frame = styled<any>(Box, { shouldForwardProp: prop => prop !== "bgColor" })(({ theme, bgColor }) => ({
+const Frame = styled<any>(Box, { shouldForwardProp: prop => prop !== "bgColor" })(({ bgColor }) => ({
   aspectRatio: "1 / 1",
   flex: 1,
   borderRadius: "1rem",

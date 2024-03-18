@@ -16,7 +16,7 @@ import { EXPLORER_URL } from "@/constants"
 const relativeTime = require("dayjs/plugin/relativeTime")
 dayjs.extend(relativeTime)
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({}))
+const StyledTableRow = styled(TableRow)(() => ({}))
 const TxnTooltip = "Number of transactions in the block"
 const HashTooltip = "Hash of the block's header"
 

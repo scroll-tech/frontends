@@ -14,13 +14,13 @@ import { navigations } from "./constants"
 import useCheckCustomNavBarBg from "./useCheckCustomNavBarBg"
 import useCheckTheme from "./useCheckTheme"
 
-const NavStack = styled(Stack)(({ theme }) => ({
+const NavStack = styled(Stack)(() => ({
   height: "3rem",
   lineHeight: "3rem",
   margin: "1.6rem",
 }))
 
-const Menu = styled("div")(({ theme }) => ({
+const Menu = styled("div")(() => ({
   display: "inline-block",
   [`&.active ${Bar}:nth-of-type(1)`]: {
     transform: "rotate(45deg) translate(5px, 5px)",
@@ -85,7 +85,7 @@ const MenuLinkStyledButton = styled<any>(NavLink, {
   },
 }))
 
-const SubListItem = styled(ListItemButton)(({ theme }) => ({
+const SubListItem = styled(ListItemButton)(() => ({
   height: "4rem",
   lineHeight: "4rem",
   margin: "0 !important",
@@ -137,7 +137,7 @@ const SectionList = styled<any>("div", {
   },
 }))
 
-const ExpandMoreIcon = styled(ExpandMore)(({ theme }) => ({
+const ExpandMoreIcon = styled(ExpandMore)(() => ({
   transition: "transform 0.3s ease",
   "&.active": {
     transform: "rotate(180deg)",

@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
-const Container = styled(Box)(({ theme }) => ({
+const Container = styled(Box)(() => ({
   marginTop: "12rem",
   marginBottom: "60rem",
   textAlign: "center",

@@ -39,7 +39,7 @@ const StyledPopper = styled<any>(Popper, { shouldForwardProp: prop => prop !== "
   zIndex: theme.zIndex.appBar,
 }))
 
-const HeaderContainer = styled(Box)(({ theme }) => ({
+const HeaderContainer = styled(Box)(() => ({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
@@ -113,7 +113,7 @@ const SubMenuButton = styled<any>(Stack, { shouldForwardProp: prop => prop !== "
   },
 }))
 
-const SubMenuList = styled(Box)(({ theme }) => ({
+const SubMenuList = styled(Box)(() => ({
   display: "flex",
   flexDirection: "column",
   overflow: "hidden",

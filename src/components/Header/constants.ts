@@ -192,6 +192,12 @@ const mainnetNavigations = [
             href: "https://community.scroll.io",
             isExternal: true,
           },
+          {
+            label: "Audits",
+            key: "audits",
+            href: "https://github.com/scroll-tech/scroll-audits",
+            isExternal: true,
+          },
         ],
       },
     ],

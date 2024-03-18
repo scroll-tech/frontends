@@ -47,7 +47,7 @@ const LinesEllipsis = props => {
   const ellipsisRef = useRef()
 
   useEffect(() => {
-    const handleSizeChanged = entries => {
+    const handleSizeChanged = () => {
       if (targetRef.current) {
         copyStyleToShadow()
         reflow({ basedOn, text, maxLine })
@@ -129,7 +129,7 @@ const LinesEllipsis = props => {
     const maxOffsetTop = shadowRef.current.children[lastIndex].offsetTop
     shadowRef.current.innerHTML =
       truncatedUnits
-        .map((c, i) => {
+        .map(c => {
           return `<span class='LinesEllipsis-unit'>${c}</span>`
         })
         .join("") + `<span class='LinesEllipsis-ellipsis'>${ellipsisRef.current.innerHTML}</span>`

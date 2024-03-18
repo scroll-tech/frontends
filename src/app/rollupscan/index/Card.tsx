@@ -52,7 +52,7 @@ const BatchIndex = styled(Typography)(({ theme }) => ({
   },
 }))
 
-const InfoCard = ({ title, value, total, description, onClickCard }: any) => {
+const InfoCard = ({ title, value, description, onClickCard }: any) => {
   const router = useRouter()
 
   const moveToBatchDetail = e => {

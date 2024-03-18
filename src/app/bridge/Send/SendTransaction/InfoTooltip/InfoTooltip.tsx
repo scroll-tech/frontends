@@ -9,7 +9,7 @@ type Props = {
   children?: any
 } & Partial<TooltipProps>
 
-const useStyles = makeStyles()(theme => ({
+const useStyles = makeStyles()(() => ({
   tooltip: {
     maxWidth: "100rem",
   },

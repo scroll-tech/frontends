@@ -93,6 +93,10 @@ const mainnetRoutes: PageMetadata[] = [
     ogImg: "/og_scroll_brand.png",
   },
   {
+    name: "Blog",
+    path: "/blog",
+  },
+  {
     name: "Blog Detail",
     path: "/blog/:blogId",
   },
@@ -114,8 +118,8 @@ const mainnetRoutes: PageMetadata[] = [
     path: "/privacy-policy",
   },
   {
-    name: "Resources",
-    path: "portal",
+    name: "Portal",
+    path: "/portal",
   },
   {
     name: "Bridge",

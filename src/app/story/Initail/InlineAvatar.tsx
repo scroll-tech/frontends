@@ -22,7 +22,7 @@ const useStyles = makeStyles<any>()((theme, { size }) => ({
 }))
 
 const InlineAvater = props => {
-  const { fontSize, size = "middle", ...restProps } = props
+  const { size = "middle", ...restProps } = props
   const { classes } = useStyles({ size })
   return (
     <Box component="span" className={classes.placeholder}>

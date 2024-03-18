@@ -34,7 +34,7 @@ const Header = () => {
     }
   }, [phrase])
 
-  const renderCountDown = ({ total, days, hours, minutes, seconds, completed }) => {
+  const renderCountDown = ({ days, hours, minutes, seconds, completed }) => {
     if (completed) {
       if (phrase === "in-progress") {
         changePhrase("waiting")

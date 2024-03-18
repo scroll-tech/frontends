@@ -6,7 +6,8 @@ import {
   frameWallet,
   imTokenWallet,
   injectedWallet,
-  metaMaskWallet, // okxWallet,
+  metaMaskWallet,
+  okxWallet,
   rabbyWallet,
   rainbowWallet,
   safeWallet,
@@ -108,7 +109,11 @@ const walletConfigs: WalletConfig[] = [
   createWalletConfig("Safe", () => safeWallet({ chains }), globalThis.ethereum?.isSafeWallet === true),
   createWalletConfig("Frame", () => frameWallet({ chains }), globalThis.ethereum?.isFrame === true),
   createWalletConfig("imToken", () => imTokenWallet({ chains, projectId }), globalThis.ethereum?.isImToken === true),
-  // createWalletConfig("Okx Wallet", () => okxWallet({ chains, projectId }), globalThis.okxwallet?.isOKExWallet || globalThis.okxwallet?.isOkxWallet === true),
+  createWalletConfig(
+    "Okx Wallet",
+    () => okxWallet({ chains, projectId }),
+    globalThis.okxwallet?.isOKExWallet || globalThis.okxwallet?.isOkxWallet === true,
+  ),
   createWalletConfig("Rabby", () => rabbyWallet({ chains }), globalThis.ethereum?.isRabby && !globalThis.ethereum?.isMetaMask === true),
   // Add any additional wallets here
 ]

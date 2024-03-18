@@ -107,7 +107,7 @@ const ProtocolList = props => {
     fetchEcosystemList(queryStr)
   }
 
-  const rowRenderer = ({ index, isVisible, key, style, parent }) => {
+  const rowRenderer = ({ index, style, parent }) => {
     const uniqueKey = (ecosystemList[index] as any).name
     return (
       <CellMeasurer key={uniqueKey} cache={cache} parent={parent} columnIndex={0} rowIndex={index}>

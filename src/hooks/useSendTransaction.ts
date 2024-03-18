@@ -19,7 +19,7 @@ type TxOptions = {
 }
 
 export function useSendTransaction(props) {
-  const { amount: fromTokenAmount, selectedToken } = props
+  const { amount: fromTokenAmount, selectedToken, receiver } = props
   const { walletCurrentAddress } = useRainbowContext()
   const { networksAndSigners, blockNumbers } = useBridgeContext()
   const { enlargedGasLimit: txGasLimit, maxFeePerGas, maxPriorityFeePerGas } = useGasFee(selectedToken, false)
@@ -152,7 +152,7 @@ export function useSendTransaction(props) {
     }
 
     return networksAndSigners[CHAIN_ID.L1].scrollMessenger["sendMessage(address,uint256,bytes,uint256)"](
-      walletCurrentAddress,
+      receiver || walletCurrentAddress,
       parsedAmount,
       "0x",
       gasLimit,
@@ -171,12 +171,22 @@ export function useSendTransaction(props) {
       options.maxPriorityFeePerGas = maxPriorityFeePerGas
     }
 
+    if (receiver) {
+      return networksAndSigners[CHAIN_ID.L1].gateway["depositERC20(address,address,uint256,uint256)"](
+        selectedToken.address,
+        receiver,
+        parsedAmount,
+        gasLimit,
+        options,
+      )
+    }
+
     return networksAndSigners[CHAIN_ID.L1].gateway["depositERC20(address,uint256,uint256)"](selectedToken.address, parsedAmount, gasLimit, options)
   }
 
   const withdrawETH = async () => {
     return networksAndSigners[CHAIN_ID.L2].scrollMessenger["sendMessage(address,uint256,bytes,uint256)"](
-      walletCurrentAddress,
+      receiver || walletCurrentAddress,
       parsedAmount,
       "0x",
       0,
@@ -188,6 +198,17 @@ export function useSendTransaction(props) {
   }
 
   const withdrawERC20 = async () => {
+    if (receiver) {
+      return networksAndSigners[CHAIN_ID.L2].gateway["withdrawERC20(address,address,uint256,uint256)"](
+        selectedToken.address,
+        receiver,
+        parsedAmount,
+        0,
+        {
+          gasLimit: txGasLimit,
+        },
+      )
+    }
     return networksAndSigners[CHAIN_ID.L2].gateway["withdrawERC20(address,uint256,uint256)"](selectedToken.address, parsedAmount, 0, {
       gasLimit: txGasLimit,
     })

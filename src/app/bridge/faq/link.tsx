@@ -6,7 +6,7 @@ import { styled } from "@mui/system"
 import LinkSvg from "@/assets/svgs/bridge/external-link.svg"
 import { isProduction } from "@/utils"
 
-const FAQsLink = styled(Link)(({ theme }) => ({
+const FAQsLink = styled(Link)(() => ({
   color: "#6D6D6D",
   fontSize: "1.4rem",
   fontWeight: 600,

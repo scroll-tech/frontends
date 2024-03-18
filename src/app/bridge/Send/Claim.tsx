@@ -38,7 +38,7 @@ const useStyles = makeStyles()(theme => ({
   },
 }))
 
-const Claim = (props: any) => {
+const Claim = () => {
   const { classes } = useStyles()
   const { walletCurrentAddress, chainId } = useRainbowContext()
   const {

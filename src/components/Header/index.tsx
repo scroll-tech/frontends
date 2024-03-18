@@ -13,7 +13,7 @@ import { navigations } from "./constants"
 import DesktopNav from "./desktop_header"
 import MobileNav from "./mobile_header"
 
-const AppBarStyled = styled(AppBar)(({ theme }) => ({
+const AppBarStyled = styled(AppBar)(() => ({
   boxShadow: "none",
   position: "sticky",
   backgroundColor: "transparent",

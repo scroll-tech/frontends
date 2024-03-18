@@ -45,7 +45,7 @@ const InputBaseStyled = styled(InputBase)(({ theme }) => ({
   },
 }))
 
-const DialogContentStyled = styled(DialogContent)(({ theme }) => ({
+const DialogContentStyled = styled(DialogContent)(() => ({
   minHeight: "30rem",
   padding: "0 0 1.6rem",
 }))
@@ -76,11 +76,11 @@ const ListTitleStyled = styled(Typography)(({ theme }) => ({
   },
 }))
 
-const ListItemIconStyled = styled(ListItemIcon)(({ theme }) => ({
+const ListItemIconStyled = styled(ListItemIcon)(() => ({
   minWidth: "unset !important",
 }))
 
-const ListSymbolStyled = styled(Typography)(({ theme }) => ({
+const ListSymbolStyled = styled(Typography)(() => ({
   display: "inline",
   color: "#473835",
   fontFamily: "var(--developer-page-font-family)",
@@ -91,7 +91,7 @@ const ListSymbolStyled = styled(Typography)(({ theme }) => ({
   letterSpacing: "0.17px",
   marginRight: "0.5rem",
 }))
-const ListNameStyled = styled(Typography)(({ theme }) => ({
+const ListNameStyled = styled(Typography)(() => ({
   display: "inline",
   color: "#756A67",
   fontFamily: "var(--developer-page-font-family)",
@@ -101,7 +101,7 @@ const ListNameStyled = styled(Typography)(({ theme }) => ({
   lineHeight: "2.2rem",
   letterSpacing: "0.15px",
 }))
-const ListAddressStyled = styled(Link)(({ theme }) => ({
+const ListAddressStyled = styled(Link)(() => ({
   color: "#756A67",
   fontFamily: "var(--developer-page-font-family)",
   fontSize: "1.5rem",
@@ -142,7 +142,7 @@ const ErrorBoxStyled = styled(Box)(({ theme }) => ({
   },
 }))
 
-const TokenListWrapper = styled(Box)(({ theme }) => ({
+const TokenListWrapper = styled(Box)(() => ({
   maxHeight: "50rem",
   overflow: "auto",
   "&::-webkit-scrollbar-thumb": {

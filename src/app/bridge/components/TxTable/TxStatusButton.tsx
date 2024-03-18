@@ -81,7 +81,7 @@ const TxStatus = props => {
     return <>Pending</>
   }
 
-  const renderCountDown = ({ total, hours, minutes, seconds, completed }) => {
+  const renderCountDown = ({ minutes, seconds, completed }) => {
     if (completed) {
       return <>Pending</>
     }

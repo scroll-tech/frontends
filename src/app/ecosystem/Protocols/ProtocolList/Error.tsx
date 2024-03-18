@@ -4,7 +4,7 @@ import ErrorSvg from "@/assets/svgs/ecosystem/error.svg"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
 const Error = props => {
-  const { title, description, action, ...restProps } = props
+  const { title, action, ...restProps } = props
   const { isMobile } = useCheckViewport()
   return (
     <Stack direction="column" alignItems="center" justifyContent="center" spacing={isMobile ? "0.4rem" : "0.8rem"} {...restProps}>

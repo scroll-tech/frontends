@@ -65,7 +65,7 @@ const Positions = () => {
           building the best L2 product in the web3 world.
         </Typography>
       </FadeInUp>
-      <Button href="https://jobs.lever.co/ScrollFoundation" target="_blank" color="primary" width={isMobile ? "21rem" : "25rem"}>
+      <Button href="https://boards.greenhouse.io/scrollio" target="_blank" color="primary" width={isMobile ? "21rem" : "25rem"}>
         View open positions
       </Button>
     </Box>

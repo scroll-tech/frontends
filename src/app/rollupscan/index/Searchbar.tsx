@@ -24,7 +24,7 @@ const SearchbarContainer = styled(Paper)(({ theme }) => ({
   },
 }))
 
-export default function Searchbar(props) {
+export default function Searchbar() {
   const { changeEmptyBatch, changeSearchLoading, changeErrorMessage } = useRollupStore()
   const [value, setValue] = useState("")
   const router = useRouter()

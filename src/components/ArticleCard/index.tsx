@@ -5,7 +5,7 @@ import { styled } from "@mui/system"
 
 import WebpImage from "@/components/WebpImage"
 
-const ArticleTitle = styled(Typography)(({ theme }) => ({
+const ArticleTitle = styled(Typography)(() => ({
   fontWeight: 700,
   lineHeight: "2.8rem",
   display: "table-cell",
@@ -79,7 +79,7 @@ const ArticlePoster = styled(WebpImage)(({ theme }) => ({
   },
 }))
 
-const ArticleCard = ({ blog, small = false }) => {
+const ArticleCard = ({ blog }) => {
   const router = useRouter()
   const handleClick = () => {
     if (blog.externalLink) {

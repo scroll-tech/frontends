@@ -45,7 +45,7 @@ const CheckElegbility = () => {
           contractsNumber: items.length,
         })
       })
-      .catch(e => {
+      .catch(() => {
         setIsEligible(-2)
       })
       .finally(() => {

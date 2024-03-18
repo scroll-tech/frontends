@@ -3,7 +3,7 @@ import { styled } from "@mui/material/styles"
 
 import NumberTypography from "@/components/NumberTypography"
 
-const StatisticSkeleton = styled(Skeleton)(({ theme }) => ({
+const StatisticSkeleton = styled(Skeleton)(() => ({
   borderRadius: "1rem",
   backgroundColor: "rgba(256, 256, 256, 0.15)",
 }))

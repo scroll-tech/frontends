@@ -54,7 +54,7 @@ const Container = styled(Box)(({ theme }) => ({
   // },
 }))
 
-const TitleTypography = styled(Typography)(({ theme }) => ({
+const TitleTypography = styled(Typography)(() => ({
   textAlign: "center",
 }))
 

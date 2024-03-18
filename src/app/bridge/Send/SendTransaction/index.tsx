@@ -23,10 +23,11 @@ import { amountToBN, switchNetwork, trimErrorMessage } from "@/utils"
 
 import ApprovalDialog from "./ApprovalDialog"
 import BalanceInput from "./BalanceInput"
+import CustomiseRecipient from "./CustomiseRecipient"
 import NetworkDirection from "./NetworkDirection"
 import TransactionSummary from "./TransactionSummary"
 
-const SendTransaction = props => {
+const SendTransaction = () => {
   const { chainId, connect } = useRainbowContext()
   // TODO: extract tokenList
   const { tokenList } = useBridgeContext()
@@ -45,6 +46,7 @@ const SendTransaction = props => {
   const [inputError, setInputError] = useState(false)
 
   const [approvalVisible, setApprovalVisible] = useState(false)
+  const [recipient, setRecipient] = useState(null)
 
   const validAmount = useMemo(() => (Number(amount) > 0 ? amount : ""), [amount])
 
@@ -70,6 +72,7 @@ const SendTransaction = props => {
   } = useSendTransaction({
     amount: validAmount,
     selectedToken,
+    receiver: recipient,
   })
 
   // fee start
@@ -209,6 +212,10 @@ const SendTransaction = props => {
     approve(isMaximum)
   }
 
+  const handleChangeRecipient = recipient => {
+    setRecipient(recipient)
+  }
+
   const renderButton = () => {
     if (!chainId) {
       return (
@@ -314,6 +321,13 @@ const SendTransaction = props => {
           </Typography>
         )}
       </Box>
+
+      <CustomiseRecipient
+        readOnly={approveLoading || sendLoading}
+        disabled={fromNetwork.chainId !== chainId}
+        bridgeWarning={bridgeWarning}
+        handleChangeRecipient={handleChangeRecipient}
+      />
 
       <TransactionSummary
         selectedToken={selectedToken}

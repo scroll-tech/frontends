@@ -21,7 +21,7 @@ const useStyles = makeStyles()(theme => ({
   },
 }))
 
-const TxHistoryDialog = (props: any) => {
+const TxHistoryDialog = () => {
   const { classes } = useStyles()
   const { historyVisible, changeHistoryVisible } = useBridgeStore()
   const { walletCurrentAddress } = useRainbowContext()
