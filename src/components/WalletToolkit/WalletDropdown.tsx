@@ -17,7 +17,7 @@ import { CHAIN_ID, EXPLORER_URL } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useBridgeStore from "@/stores/bridgeStore"
-import useSkellyStore, { MintStep } from "@/stores/skellyStore"
+import useSkellyStore from "@/stores/skellyStore"
 import { generateExploreLink, truncateAddress } from "@/utils"
 
 const useStyles = makeStyles<any>()((theme, { dark }) => ({
@@ -90,12 +90,16 @@ const WalletDropdown = props => {
   const { changeHistoryVisible } = useBridgeStore()
 
   const { unsignedProfileRegistryContract, publicProvider } = useSkellyContext()
-  const { username, profileMinted, changeMintStep, walletDetailLoading, checkAndFetchCurrentWalletSkelly, clearSkelly } = useSkellyStore()
+  const { username, profileMinted, walletDetailLoading, checkAndFetchCurrentWalletSkelly, clearSkelly } = useSkellyStore()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [copied, setCopied] = useState(false)
 
   const open = useMemo(() => Boolean(anchorEl), [anchorEl])
+
+  useEffect(() => {
+    clearSkelly()
+  }, [walletCurrentAddress])
 
   useEffect(() => {
     // re check&&fetch walletCurrentAddress's skelly when switching address on Wallet
@@ -133,7 +137,6 @@ const WalletDropdown = props => {
           } else {
             navigate("/scroll-skelly/mint")
           }
-          changeMintStep(MintStep.REFERRAL_CODE)
           handleClose()
         },
       },

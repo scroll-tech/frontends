@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
 
 import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
@@ -8,10 +7,11 @@ import Button from "@/components/Button"
 import { CHAIN_ID } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
-import useSkellyStore, { MintStep } from "@/stores/skellyStore"
+import useSkellyStore from "@/stores/skellyStore"
 import { switchNetwork } from "@/utils"
 
-import ReferralCodeInput from "./ReferralCodeInput"
+import MintFlowDialog from "./MintFlowDialog"
+import ReferralCodeInput, { CodeStatus } from "./ReferralCodeInput"
 
 const Container = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -21,7 +21,8 @@ const Container = styled(Box)(({ theme }) => ({
   width: "100%",
   height: "100%",
   minHeight: "calc(100vh - 6.5rem)",
-  padding: "7.8rem 0",
+  paddingTop: "6.4rem",
+  paddingBottom: "7.2rem",
   backgroundColor: "#101010",
   [theme.breakpoints.down("sm")]: {
     minHeight: "calc(100vh - 6.2rem)",
@@ -30,17 +31,17 @@ const Container = styled(Box)(({ theme }) => ({
 }))
 
 const Title = styled(Typography)(({ theme }) => ({
-  color: "#FFFFFF",
+  color: theme.palette.primary.contrastText,
   textAlign: "center",
   fontSize: "5.6rem",
   fontStyle: "normal",
   fontWeight: 600,
   lineHeight: "7.2rem",
-  marginBottom: "1.2rem",
+  marginBottom: "0.8rem",
 }))
 
 const SubTitle = styled(Typography)(({ theme }) => ({
-  color: "#FFFFFF",
+  color: theme.palette.primary.contrastText,
   textAlign: "center",
   fontSize: "2rem",
   fontStyle: "normal",
@@ -55,20 +56,23 @@ const StickyBox = styled(Box)(({ theme }) => ({
   backgroundColor: "#101010",
 }))
 
-const ReferralCode = props => {
+const MintHome = props => {
   const { code } = props
-  const navigate = useNavigate()
   const { isMobile } = useCheckViewport()
   const { connect, walletCurrentAddress, chainId } = useRainbowContext()
-  const { changeMintStep, referralCode } = useSkellyStore()
+  const { changeProfileName, mintFlowVisible, changeMintFlowVisible } = useSkellyStore()
+  // const [mintFlowVisible, setMintFlowVisible] = useState(false)
+  // TODO: optimize
   const [isChecking, setIsChecking] = useState(false)
+  const [codeStatus, setCodeStatus] = useState(CodeStatus.UNKNOWN)
 
-  const handleContinue = async () => {
-    changeMintStep(MintStep.NAME)
+  const handleOpenMintFlow = () => {
+    changeMintFlowVisible(true)
+  }
 
-    if (code) {
-      navigate("/scroll-skelly/mint")
-    }
+  const handleCloseFlow = () => {
+    changeProfileName("")
+    changeMintFlowVisible(false)
   }
 
   const renderAction = () => {
@@ -86,7 +90,12 @@ const ReferralCode = props => {
       )
     }
     return (
-      <Button color="primary" gloomy={isChecking || (code && !referralCode)} width={isMobile ? "23rem" : "28.2rem"} onClick={handleContinue}>
+      <Button
+        color="primary"
+        gloomy={isChecking || (code && codeStatus !== CodeStatus.VALID)}
+        width={isMobile ? "23rem" : "28.2rem"}
+        onClick={handleOpenMintFlow}
+      >
         Continue
       </Button>
     )
@@ -99,10 +108,11 @@ const ReferralCode = props => {
       <Box sx={{ width: "66.5rem", height: "29.8rem", mt: "1.8rem", mb: "2rem" }}>
         <img src="/imgs/skelly/heartbeat.webp" alt="heartbeat"></img>
       </Box>
-      <ReferralCodeInput code={code} isChecking={isChecking} setIsChecking={setIsChecking} />
+      <ReferralCodeInput code={code} isChecking={isChecking} setIsChecking={setIsChecking} codeStatus={codeStatus} setCodeStatus={setCodeStatus} />
       <StickyBox>{renderAction()}</StickyBox>
+      <MintFlowDialog open={mintFlowVisible} onClose={handleCloseFlow}></MintFlowDialog>
     </Container>
   )
 }
 
-export default ReferralCode
+export default MintHome
