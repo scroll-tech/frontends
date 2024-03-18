@@ -1,5 +1,6 @@
 import { Navigate } from "react-router-dom"
 
+import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useSkellyStore, { MintStep } from "@/stores/skellyStore"
 
 import LoadingPage from "../loading"
@@ -9,10 +10,11 @@ import ReferralCode from "./ReferralCode"
 const SkellyMint = props => {
   const { code } = props
 
+  const { walletCurrentAddress } = useRainbowContext()
   const { mintStep, profileMinted, profileMintedLoading } = useSkellyStore()
 
   const renderMint = () => {
-    if (profileMintedLoading || profileMinted === null) {
+    if ((profileMintedLoading || profileMinted === null) && walletCurrentAddress) {
       return <LoadingPage></LoadingPage>
     } else if (profileMinted) {
       return <Navigate to="/scroll-skelly" replace></Navigate>
