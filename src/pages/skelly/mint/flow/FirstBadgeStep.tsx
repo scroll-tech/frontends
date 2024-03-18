@@ -29,8 +29,12 @@ const FirstBadgeStep = props => {
   return (
     <StepWrapper
       title="Mint your first badge"
-      description="A badge is an attestation of status or achievement, permanently recorded on your Canvas. 
-    Mint your first badge, showing off the age of your Ethereum address."
+      description={
+        <>
+          A badge is an attestation of status or achievement, permanently recorded on your Canvas.<br></br>
+          Mint your first badge, showing off the age of your Ethereum address.
+        </>
+      }
       action={
         <Stack direction="row" gap="1.6rem">
           <Button color="secondary" href="/scroll-skelly">
