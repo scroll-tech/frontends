@@ -2,11 +2,12 @@ import { ethers } from "ethers"
 import { useMemo, useState } from "react"
 import Img from "react-cool-img"
 import { useSwiper } from "swiper/react"
+import useSWR from "swr"
 
-import { Box } from "@mui/material"
+import { Box, Skeleton } from "@mui/material"
 
 import { getAvatarURL } from "@/apis/skelly"
-import { fetchSignByCode } from "@/apis/skelly"
+import { fetchSignByCode, getHeartrate } from "@/apis/skelly"
 import Button from "@/components/Button"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
@@ -18,7 +19,6 @@ import StepWrapper from "./StepWrapper"
 const MintStep = props => {
   const { scrollTarget } = props
   const swiper = useSwiper()
-  const heartbeat = 120
   const { walletCurrentAddress, provider } = useRainbowContext()
   const { profileRegistryContract } = useSkellyContext()
 
@@ -26,6 +26,8 @@ const MintStep = props => {
   const [insufficientDialogOpen, setInsufficientDialogOpen] = useState(false)
 
   const heartbeatURL = useMemo(() => getAvatarURL(walletCurrentAddress), [walletCurrentAddress])
+
+  const { data, isLoading } = useSWR(getHeartrate(walletCurrentAddress), (url: string) => scrollRequest(url))
 
   const checkBalance = async mintFee => {
     const balance = await provider?.getBalance(walletCurrentAddress as `0x${string}`)
@@ -78,9 +80,26 @@ const MintStep = props => {
 
   return (
     <StepWrapper
-      title={`Your Pulse is ${heartbeat}`}
-      description="Everyone who uses Scroll has a unique heartbeat. 
-    It beats faster when you are more active onchain."
+      title={
+        <>
+          Your Pulse is{" "}
+          {isLoading ? (
+            <Skeleton
+              variant="rectangular"
+              sx={{ display: "inline-block", width: "1.5em", backgroundColor: "rgba(256, 256, 256, 0.15)", borderRadius: "0.4rem", height: "3rem" }}
+            ></Skeleton>
+          ) : (
+            <>{data?.heartrate}</>
+          )}
+        </>
+      }
+      description={
+        <>
+          Everyone who uses Scroll has a unique heartbeat.
+          <br></br>
+          It beats faster when you are more active onchain.
+        </>
+      }
       sx={{ mt: "6rem", mb: "9.6rem" }}
       action={
         <Button color="primary" loading={isProfileMinting} onClick={handleMintCanvas}>
