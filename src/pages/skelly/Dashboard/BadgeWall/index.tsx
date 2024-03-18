@@ -11,6 +11,7 @@ import { getAvatarURL } from "@/apis/skelly"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useSkellyStore from "@/stores/skellyStore"
 
+import Tooltip from "../../components/Tooltip"
 import Badge from "./Badge"
 
 interface BadgeType {
@@ -144,9 +145,19 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
           height: `${(badgewidth * gridNum) / 2}px`,
         }}
       >
-        <Box sx={{ width: "66.67%" }}>
-          <Img src={userInfo.avatar} placeholder="/imgs/skelly/avatarPlaceholder.svg" alt="avatar" width="100%"></Img>
-        </Box>
+        <Tooltip
+          title={
+            <Box sx={{ width: "21.4rem" }}>
+              <b>Activity Heartbeat:</b>
+              <br></br>
+              Heart beats faster when you are more active on Scroll
+            </Box>
+          }
+        >
+          <Box sx={{ width: "66.67%" }}>
+            <Img src={userInfo.avatar} placeholder="/imgs/skelly/avatarPlaceholder.svg" alt="avatar" width="100%"></Img>
+          </Box>
+        </Tooltip>
         <Name>{userInfo.name}</Name>
       </Profile>
       {badges.map((badge, index) => (
