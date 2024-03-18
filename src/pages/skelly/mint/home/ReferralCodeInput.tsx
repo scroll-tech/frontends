@@ -1,32 +1,28 @@
 import React, { useEffect, useMemo, useRef, useState } from "react"
 
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined"
-import { Box, InputBase, SvgIcon, Tooltip, Typography } from "@mui/material"
+import { Box, InputBase, Stack, SvgIcon, Tooltip, Typography } from "@mui/material"
 import { TooltipProps, tooltipClasses } from "@mui/material/Tooltip"
 import { styled } from "@mui/system"
 
 import { checkCodeValidation } from "@/apis/skelly"
 import { ReactComponent as CheckSvg } from "@/assets/svgs/skelly/check.svg"
 import { ReactComponent as ErrorSvg } from "@/assets/svgs/skelly/error.svg"
+import { ReactComponent as InfoSvg } from "@/assets/svgs/skelly/info.svg"
 import { ReactComponent as LoadingSvg } from "@/assets/svgs/skelly/loading.svg"
 import useSkellyStore from "@/stores/skellyStore"
 
 const INVITE_CODE_LENGTH = 5
 
-enum CodeStatus {
+export enum CodeStatus {
   VALID = "Valid",
   INVALID = "Invalid",
   UNKNOWN = "Unknown",
 }
 
-const Container = styled(Box)(({ theme }) => ({
-  marginBottom: "1.6rem",
-}))
-
 const Title = styled(Typography)(({ theme }) => ({
-  color: "#FFFFFF",
+  color: theme.palette.primary.contrastText,
   textAlign: "center",
-  fontSize: "2.4rem",
+  fontSize: "2rem",
   fontStyle: "normal",
   fontWeight: 600,
   lineHeight: "3.2rem",
@@ -36,14 +32,14 @@ const ReferralCodeBox = styled(Box)(({ theme }) => ({
   display: "flex",
   justifyContent: "center",
   marginTop: "1.6rem",
-  marginBottom: "1.6rem",
+  marginBottom: "4rem",
   gap: "0.8rem",
 }))
 
 const ReferralCodeInput = styled(InputBase)(({ theme }) => ({
   backgroundColor: "#101010",
-  color: "#FFFFFF",
-  border: "1px solid #FFFFFF",
+  color: theme.palette.primary.contrastText,
+  border: "1px solid #5b5b5b",
   borderRadius: "1rem",
   width: "7.2rem",
   height: "7.2rem",
@@ -53,6 +49,9 @@ const ReferralCodeInput = styled(InputBase)(({ theme }) => ({
   "& input": {
     textAlign: "center",
   },
+  "&.Mui-focused": {
+    borderColor: theme.palette.primary.contrastText,
+  },
   "&::placeholder": {
     color: "#DCDCDC",
     opacity: 1,
@@ -60,16 +59,16 @@ const ReferralCodeInput = styled(InputBase)(({ theme }) => ({
 }))
 
 const StatusBox = styled(Box)(({ theme }) => ({
-  height: "3.2rem",
+  position: "absolute",
+  bottom: "1rem",
+  left: "50%",
+  transform: "translateX(-50%)",
 }))
 
 const StatusContent = styled(Typography)(({ theme }) => ({
-  fontSize: "1.8rem",
-  fontStyle: "normal",
+  fontSize: "1.6rem",
   fontWeight: 500,
   lineHeight: "2.8rem",
-  letterSpacing: "0.18px",
-  textAlign: "center",
   color: "#A5A5A5",
 }))
 
@@ -80,14 +79,15 @@ const ReferralTooltip = styled(({ className, ...props }: TooltipProps) => <Toolt
     },
     [`& .${tooltipClasses.tooltip}`]: {
       backgroundColor: "#262626",
-      maxWidth: 338,
+      maxWidth: 388,
+      padding: "1.6rem 2.4rem",
     },
   }),
 )
 
-const ReferralCode = ({ isChecking, setIsChecking, code }) => {
+const ReferralCode = ({ isChecking, setIsChecking, code, codeStatus, setCodeStatus }) => {
   const [codes, setCodes] = useState(Array(INVITE_CODE_LENGTH).fill(""))
-  const [codeStatus, setCodeStatus] = useState(CodeStatus.UNKNOWN)
+  // const [codeStatus, setCodeStatus] = useState(CodeStatus.UNKNOWN)
   const inputRefs = useRef<Array<HTMLInputElement | null>>(new Array(INVITE_CODE_LENGTH).fill(null))
   const { changeReferralCode } = useSkellyStore()
 
@@ -155,30 +155,31 @@ const ReferralCode = ({ isChecking, setIsChecking, code }) => {
     }
   }
   return (
-    <Container>
-      <Title>
-        Enter a referral code to get 50% off mint fee (0.001ETH)
+    <Box sx={{ position: "relative" }}>
+      <Stack direction="row" gap="0.8rem" alignItems="center">
+        <Title>Have an invite code? Enter it here for 50% off of the mint cost.</Title>
         <ReferralTooltip
           placement="top"
           title={
-            <Box sx={{ p: "1.2rem 2rem" }}>
+            <Box>
               <Typography sx={{ fontSize: "2rem", fontWeight: "bold", mb: "0.8rem", color: "#fff" }}>what's the mint fee is for?</Typography>
               <Typography sx={{ fontSize: "1.8rem", color: "#fff" }}>
-                The mint fee is used to cover the gas fee for the transaction, and it's a small amount of ETH.
+                To fight spamming bots, we implemented a small fee to mint Scroll Canvas
               </Typography>
             </Box>
           }
         >
-          <InfoOutlinedIcon sx={{ fontSize: "2.4rem", marginLeft: "0.4rem", verticalAlign: "middle" }} />
+          <SvgIcon sx={{ fontSize: "2rem" }} component={InfoSvg} inheritViewBox></SvgIcon>
         </ReferralTooltip>
-      </Title>
+      </Stack>
+
       <ReferralCodeBox>
         {codes.map((code, index) => (
           <ReferralCodeInput
             key={index}
             value={code}
             onPaste={handlePaste}
-            autoFocus={index === 0}
+            // autoFocus={index === 0}
             onChange={(e: any) => handleInputChange(index, e)}
             onKeyDown={(e: any) => handleBackspace(index, e)}
             inputProps={{ maxLength: 1 }}
@@ -188,24 +189,25 @@ const ReferralCode = ({ isChecking, setIsChecking, code }) => {
       </ReferralCodeBox>
       <StatusBox>
         {isChecking && (
-          <StatusContent>
-            <SvgIcon sx={{ fontSize: "2.4rem", marginRight: "0.5rem" }} component={LoadingSvg} inheritViewBox></SvgIcon>Checking...
-          </StatusContent>
+          <Stack direction="row" gap="0.5rem" alignItems="center">
+            <SvgIcon component={LoadingSvg} inheritViewBox></SvgIcon>
+            <StatusContent>Checking...</StatusContent>
+          </Stack>
         )}
         {codeStatus === CodeStatus.INVALID && (
-          <StatusContent sx={{ color: "#FF684B" }}>
-            <SvgIcon sx={{ fontSize: "2.4rem", marginRight: "0.5rem" }} component={ErrorSvg} inheritViewBox></SvgIcon>
-            Invalid code. Please try another one
-          </StatusContent>
+          <Stack direction="row" gap="0.5rem" alignItems="center">
+            <SvgIcon sx={{ fontSize: "2.4rem" }} component={ErrorSvg} inheritViewBox></SvgIcon>
+            <StatusContent sx={{ color: "#FF684B" }}>Invalid code. Please try another one</StatusContent>
+          </Stack>
         )}
         {codeStatus === CodeStatus.VALID && (
-          <StatusContent sx={{ color: "#85E0D1" }}>
-            <SvgIcon sx={{ fontSize: "2.4rem", marginRight: "0.5rem" }} component={CheckSvg} inheritViewBox></SvgIcon>
-            Valid code. You get 50% off mint fee
-          </StatusContent>
+          <Stack direction="row" gap="0.5rem" alignItems="center">
+            <SvgIcon sx={{ fontSize: "2.4rem" }} component={CheckSvg} inheritViewBox></SvgIcon>
+            <StatusContent sx={{ color: "#85E0D1" }}>Valid code. You get 50% off mint fee</StatusContent>
+          </Stack>
         )}
       </StatusBox>
-    </Container>
+    </Box>
   )
 }
 
