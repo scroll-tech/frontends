@@ -195,7 +195,7 @@ const Blog = () => {
       <BlogList>
         {blogs.map(blog => (
           <BlogBox key={blog.title}>
-            <ArticleCard small={!isDesktop} blog={blog} />
+            <ArticleCard blog={blog} />
           </BlogBox>
         ))}
       </BlogList>

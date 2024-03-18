@@ -170,7 +170,7 @@ const MintHome = props => {
           <Statistic label="Total NFTs minted">{typeof total === "bigint" ? total.toString() : "-"}</Statistic>
           <Statistic label="NFTs released on">{formatDate(ContractReleaseDate)}</Statistic>
         </Stack>
-        <Countdown date={MintableEndDate} renderer={renderCountDown}></Countdown>
+        <Countdown date={MintableEndDate.valueOf()} renderer={renderCountDown}></Countdown>
       </Stack>
       <MintFlowDialog open={isEligible === 1} minting={isMinting} onClose={handleCloseFlow}></MintFlowDialog>
       <RequestWarning open={!!errorMessage} onClose={handleCloseWarning}>

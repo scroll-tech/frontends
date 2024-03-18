@@ -79,7 +79,7 @@ const ArticlePoster = styled(WebpImage)(({ theme }) => ({
   },
 }))
 
-const ArticleCard = ({ blog }) => {
+const ArticleCard = ({ blog, small = false }) => {
   const router = useRouter()
   const handleClick = () => {
     if (blog.externalLink) {

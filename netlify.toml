@@ -12,8 +12,8 @@ for = "/static/*"
 [headers.values]
 Cache-Control = "max-age=31536000"
 
-[[plugins]]
-package = "/plugins/netlify/env"
+# [[plugins]]
+#  package = "/plugins/netlify/env"
 
 [build.environment]
 # Settings in the [build] context are global and are applied to

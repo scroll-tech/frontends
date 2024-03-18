@@ -72,7 +72,7 @@ const NotFound = () => {
   const router = useRouter()
 
   const handleReturnHome = () => {
-    if (pathname.startsWith("/alpha")) {
+    if (pathname!.startsWith("/alpha")) {
       router.push("/alpha/")
       return
     }

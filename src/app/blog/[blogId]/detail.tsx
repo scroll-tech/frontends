@@ -44,7 +44,7 @@ const BlogNavbar = styled(Box)(({ theme }) => ({
 
 const BlogDetail = () => {
   const router = useRouter()
-  const { blogId } = useParams<{ blogId: string }>()
+  const { blogId } = useParams<{ blogId: string }>()!
 
   const [blog, setBlog] = useState<null | string>(null)
   const [moreBlog, setMoreBlog] = useState<any>([])

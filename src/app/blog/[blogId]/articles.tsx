@@ -39,7 +39,7 @@ const Articles = props => {
       {props.blogs.map(blog => (
         <SwiperSlide key={blog.title}>
           <ArticleBox className="wrapper">
-            <ArticleCard small={true} blog={blog} />
+            <ArticleCard blog={blog} />
           </ArticleBox>
         </SwiperSlide>
       ))}

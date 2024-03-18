@@ -14,7 +14,7 @@ import Table from "./Table"
 
 const Blocks = () => {
   const params = useParams()
-  const index = params.batchIndex
+  const index = params!.batchIndex
   const { chunks, isLoading } = useChunkList(index)
 
   return (

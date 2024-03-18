@@ -67,7 +67,7 @@ const Faq = props => {
 
   const { classes } = useStyles()
   const pathname = usePathname()
-  const hash = pathname.split("#")[1]
+  const hash = pathname!.split("#")[1]
 
   useEffect(() => {
     if (hash) {

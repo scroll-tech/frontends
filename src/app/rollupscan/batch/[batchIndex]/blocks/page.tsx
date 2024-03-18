@@ -14,8 +14,8 @@ import Table from "./Table"
 
 const Blocks = () => {
   const params = useParams()
-  const blocksType = !!params.chunkIndex ? BLOCK_LIST_TYPE.CHUNK : BLOCK_LIST_TYPE.BATCH
-  const index = params.chunkIndex || params.batchIndex
+  const blocksType = !!params!.chunkIndex ? BLOCK_LIST_TYPE.CHUNK : BLOCK_LIST_TYPE.BATCH
+  const index = params!.chunkIndex || params!.batchIndex
   const fn = blocksType === BLOCK_LIST_TYPE.CHUNK ? useChunkBlocks : useBatchBlocks
   const { blocks, isLoading } = fn(index)
 
@@ -33,10 +33,10 @@ const Blocks = () => {
       >
         <Breadcrumbs aria-label="breadcrumb" sx={{ fontWeight: 600 }} separator={<NavigateNextIcon fontSize="large" />}>
           <Link href="/rollupscan?page=1&per_page=10">Batches</Link>
-          <Link href={`/rollupscan/batch/${params.batchIndex}`}> Batch {params.batchIndex}</Link>
-          {blocksType === BLOCK_LIST_TYPE.CHUNK && <Link href={`/rollupscan/batch/${params.batchIndex}/chunks`}>Chunks</Link>}
+          <Link href={`/rollupscan/batch/${params!.batchIndex}`}> Batch {params!.batchIndex}</Link>
+          {blocksType === BLOCK_LIST_TYPE.CHUNK && <Link href={`/rollupscan/batch/${params!.batchIndex}/chunks`}>Chunks</Link>}
           {blocksType === BLOCK_LIST_TYPE.CHUNK && (
-            <Link href={`/rollupscan/batch/${params.batchIndex}/chunk/${params.chunkIndex}`}>Chunk {params.chunkIndex}</Link>
+            <Link href={`/rollupscan/batch/${params!.batchIndex}/chunk/${params!.chunkIndex}`}>Chunk {params!.chunkIndex}</Link>
           )}
 
           <Typography color="text.primary" sx={{ fontWeight: 600 }}>
