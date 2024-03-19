@@ -9,6 +9,7 @@ import { ReactComponent as InsufficientSvg } from "@/assets/svgs/skelly/insuffic
 import ScrollButton from "@/components/Button"
 import { CHAIN_ID } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useSkellyStore from "@/stores/skellyStore"
 import { switchNetwork } from "@/utils"
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
@@ -54,10 +55,17 @@ const ButtonContainer = styled(Box)(({ theme }) => ({
 const InsufficientDialog = ({ open, onClose }) => {
   const { chainId, connect } = useRainbowContext()
   const navigate = useNavigate()
+  const { changeProfileName, changeMintFlowVisible } = useSkellyStore()
 
   const isWrongNetwork = useMemo(() => {
     return chainId !== CHAIN_ID.L2
   }, [chainId])
+
+  const handleGoToBridge = () => {
+    changeProfileName("")
+    changeMintFlowVisible(false)
+    navigate("/bridge")
+  }
 
   return (
     <StyledDialog maxWidth={false} open={open}>
@@ -89,7 +97,7 @@ const InsufficientDialog = ({ open, onClose }) => {
                 Switch to Scroll
               </StyledScrollButton>
             ) : (
-              <StyledScrollButton color="primary" onClick={() => navigate("/bridge")}>
+              <StyledScrollButton color="primary" onClick={handleGoToBridge}>
                 Bridge into Scroll
               </StyledScrollButton>
             )

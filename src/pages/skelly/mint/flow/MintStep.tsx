@@ -11,6 +11,7 @@ import { fetchSignByCode, getHeartrate } from "@/apis/skelly"
 import Button from "@/components/Button"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
+// import { testAsyncFunc } from "@/services/skellyService"
 import useSkellyStore from "@/stores/skellyStore"
 
 import InsufficientDialog from "./InsufficientDialog"
@@ -54,11 +55,14 @@ const MintStep = props => {
         setInsufficientDialogOpen(true)
         return
       }
+
       const tx = await profileRegistryContract.mint(profileName, codeSignature, { value: mintFee })
       const txReceipt = await tx.wait()
+
+      // const txReceipt: any = await testAsyncFunc({ status: 1 })
       if (txReceipt.status === 1) {
         changeReferralCode("")
-        await checkIfProfileMinted(profileRegistryContract, walletCurrentAddress!)
+        await checkIfProfileMinted(profileRegistryContract, walletCurrentAddress!, true)
         swiper.slideNext(300)
         scrollTarget?.scrollTo({
           top: 0,

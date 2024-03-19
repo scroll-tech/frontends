@@ -120,7 +120,7 @@ const Coupon = () => {
     clearTimeout(copyTimer)
     copyTimer = setTimeout(() => {
       setCopied(0)
-    }, 3e3)
+    }, 15e2)
   }
 
   const handleCopyCode = () => {
@@ -129,7 +129,7 @@ const Coupon = () => {
     clearTimeout(copyTimer)
     copyTimer = setTimeout(() => {
       setCopied(0)
-    }, 3e3)
+    }, 15e2)
   }
 
   return (

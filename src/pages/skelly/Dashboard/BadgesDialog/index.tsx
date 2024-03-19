@@ -30,7 +30,7 @@ const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  justifyContent: "center",
+  // justifyContent: "center",
 }))
 
 const BadgesDialog = () => {
@@ -133,11 +133,43 @@ const BadgesDialog = () => {
     queryVisibleBadges(provider, walletCurrentAddress)
   }
 
+  if (!userBadges.length) {
+    return (
+      <StyledDialog
+        sx={{
+          [`& .MuiDialog-paper`]: {
+            width: "64rem",
+          },
+        }}
+        maxWidth={false}
+        onClose={handleClose}
+        open={badgesDialogVisible}
+      >
+        <DialogTitle
+          sx={{
+            m: 0,
+            p: ["2rem", "3rem"],
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+          }}
+        >
+          <IconButton onClick={handleClose}>
+            <SvgIcon sx={{ fontSize: ["1.6rem", "2.4rem"], color: "primary.contrastText" }} component={CloseSvg} inheritViewBox></SvgIcon>
+          </IconButton>
+        </DialogTitle>
+        <DialogContent sx={{ pt: "7.6rem", pb: "16rem" }}>
+          <Empty title="No badges for customisation" />
+        </DialogContent>
+      </StyledDialog>
+    )
+  }
+
   return (
     <StyledDialog
       sx={{
         [`& .MuiDialog-paper`]: {
-          width: userBadges.length ? "120rem" : "64rem",
+          width: "120rem",
         },
       }}
       maxWidth={false}
@@ -148,34 +180,30 @@ const BadgesDialog = () => {
         sx={{
           m: 0,
           p: ["2rem", "3rem"],
+          pt: ["3.2rem", "6.4rem"],
+          pb: ["3rem", "4rem"],
           display: "flex",
-          justifyContent: "flex-end",
+          justifyContent: "space-between",
           alignItems: "center",
         }}
       >
+        <Typography sx={{ flex: 1, fontSize: "4rem", fontWeight: 600, color: "primary.contrastText", textAlign: "center" }}>
+          Drag badges to cutomize
+        </Typography>
         <IconButton onClick={handleClose}>
           <SvgIcon sx={{ fontSize: ["1.6rem", "2.4rem"], color: "primary.contrastText" }} component={CloseSvg} inheritViewBox></SvgIcon>
         </IconButton>
       </DialogTitle>
       <StyledDialogContent>
-        <Typography variant="h3" sx={{ flexGrow: 1, color: "#ffffff", textAlign: "center" }}>
-          Drag badges to cutomize
-        </Typography>
-        {userBadges.length ? (
-          <>
-            <GridDragDrop badgesInstance={badgesInstance} />
-            <Stack direction="row" justifyContent="center" gap="1.6rem">
-              <Button color="secondary" onClick={handleClose}>
-                Cancel
-              </Button>
-              <Button loading={loading} color="primary" variant="contained" onClick={handleSave}>
-                {loading ? "Saving" : "Save Changes"}
-              </Button>
-            </Stack>
-          </>
-        ) : (
-          <Empty title="No eligible badges for customize" />
-        )}
+        <GridDragDrop badgesInstance={badgesInstance} />
+        <Stack direction="row" justifyContent="center" gap="1.6rem">
+          <Button color="secondary" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button loading={loading} color="primary" variant="contained" onClick={handleSave}>
+            {loading ? "Saving" : "Save Changes"}
+          </Button>
+        </Stack>
       </StyledDialogContent>
     </StyledDialog>
   )

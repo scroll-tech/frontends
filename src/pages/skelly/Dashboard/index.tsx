@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom"
 import { Box } from "@mui/material"
 import { styled } from "@mui/system"
 
+import Skelly from "@/components/Skelly"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 // import { BADGES_VISIBLE_TYPE } from "@/constants"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
@@ -152,6 +153,10 @@ const Dashboard = props => {
     }
   }, [windowDimensions, gridNum])
 
+  const handleClickSkelly = () => {
+    navigate("/ecosystem")
+  }
+
   if (othersWalletAddress === walletCurrentAddress) {
     return <Navigate to="/scroll-skelly" replace></Navigate>
   }
@@ -172,6 +177,12 @@ const Dashboard = props => {
       ) : (
         <Container badgewidth={badgewidth}>
           <BadgeWall badgewidth={badgewidth} gridNum={gridNum} windowDimensions={windowDimensions} />
+          <Skelly
+            visible
+            buttonText="Go to ecosystem"
+            title="Welcome to Scroll Skelly where you can earn badges across the ecosystem. Explore protocols offering badges now!"
+            onClick={handleClickSkelly}
+          />
           {!!othersWalletAddress ? (
             <>
               <ActionBox></ActionBox>

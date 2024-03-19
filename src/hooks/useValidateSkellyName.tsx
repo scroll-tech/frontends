@@ -41,7 +41,12 @@ const useValidateName = value => {
     } else if (!name) {
       nextHelpText = "Please enter your name"
     } else if (!/^[\dA-Za-z_]{4,15}$/g.test(name)) {
-      nextHelpText = "Must consist of 4-15 characters, including A-Z/a-z/0-9/_"
+      // nextHelpText = "Must consist of 4-15 characters, including A-Z/a-z/0-9/_"
+      nextHelpText = (
+        <>
+          Your name must consist of 4 to 15 characters,<br></br>comprising only letters, numbers or underline.
+        </>
+      )
     } else {
       const isUsernameUsed = await unsignedProfileRegistryContract.isUsernameUsed(name)
       if (isUsernameUsed) {

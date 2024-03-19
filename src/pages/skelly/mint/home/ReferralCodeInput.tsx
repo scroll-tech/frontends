@@ -70,6 +70,7 @@ const StatusContent = styled(Typography)(({ theme }) => ({
   fontWeight: 500,
   lineHeight: "2.8rem",
   color: "#A5A5A5",
+  whiteSpace: "nowrap",
 }))
 
 const ReferralTooltip = styled(({ className, ...props }: TooltipProps) => <Tooltip {...props} arrow classes={{ popper: className }} />)(
