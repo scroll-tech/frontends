@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react"
-import Img from "react-cool-img"
-import { useNavigate } from "react-router-dom"
 
-import { Dialog, DialogContent, DialogTitle, IconButton, List, Stack, SvgIcon, Typography } from "@mui/material"
+// import Img from "react-cool-img"
+// import { useNavigate } from "react-router-dom"
+import { Dialog, DialogContent, DialogTitle, IconButton, List, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 // import { ReactComponent as BackSvg } from "@/assets/svgs/skelly/back.svg"
 import { ReactComponent as CloseSvg } from "@/assets/svgs/skelly/close.svg"
-import Button from "@/components/Button"
+// import Button from "@/components/Button"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useSkellyStore from "@/stores/skellyStore"
 
+import Empty from "../../components/Empty"
 import BadgeItem from "./BadgeItem"
 import Badges from "./Badges"
 
@@ -22,7 +23,7 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
     backgroundColor: "#101010",
     width: "64rem",
     height: "67.4rem",
-    padding: "3.2rem",
+    padding: "3rem",
   },
 }))
 
@@ -54,16 +55,16 @@ const StyledList = styled(List)(({ theme }) => ({
 const UpgradeDialog = () => {
   const { upgradeDialogVisible, changeUpgradeDialog, userBadges } = useSkellyStore()
   const { walletCurrentAddress, provider } = useRainbowContext()
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
 
   const handleClose = () => {
     changeUpgradeDialog(false)
   }
 
-  const moveToEcosystem = () => {
-    navigate("/ecosystem")
-    changeUpgradeDialog(false)
-  }
+  // const moveToEcosystem = () => {
+  //   navigate("/ecosystem")
+  //   changeUpgradeDialog(false)
+  // }
 
   const [visibleBadges, setVisibleBadges] = useState([])
 
@@ -86,35 +87,43 @@ const UpgradeDialog = () => {
     fetchVisibleBadges()
   }, [userBadges, walletCurrentAddress, provider])
 
+  if (!visibleBadges.length) {
+    return (
+      <StyledDialog maxWidth={false} onClose={handleClose} open={upgradeDialogVisible}>
+        <StyledDialogTitle
+          sx={{
+            // m: 0,
+            // p: ["2rem", "3rem"],
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+          }}
+        >
+          <IconButton sx={{ "&:hover": { backgroundColor: "unset" } }} onClick={handleClose}>
+            <SvgIcon sx={{ fontSize: ["1.6rem", "1.8rem"], color: "#fff" }} component={CloseSvg} inheritViewBox></SvgIcon>
+          </IconButton>
+        </StyledDialogTitle>
+        <DialogContent>
+          <Empty title="No eligible badges for minting"></Empty>
+        </DialogContent>
+      </StyledDialog>
+    )
+  }
+
   return (
     <StyledDialog maxWidth={false} onClose={handleClose} open={upgradeDialogVisible}>
       <StyledDialogTitle>
         <Typography sx={{ fontSize: "3.2rem", lineHeight: 1, color: "#ffffff", fontWeight: 600 }}>Badges for mint</Typography>
-        <IconButton sx={{ p: 0, "&:hover": { backgroundColor: "unset" } }} onClick={handleClose}>
+        <IconButton sx={{ "&:hover": { backgroundColor: "unset" } }} onClick={handleClose}>
           <SvgIcon sx={{ fontSize: ["1.6rem", "1.8rem"], color: "#fff" }} component={CloseSvg} inheritViewBox></SvgIcon>
         </IconButton>
       </StyledDialogTitle>
       <StyledDialogContent>
-        {visibleBadges.length ? (
-          <StyledList>
-            {visibleBadges.map((badge, index) => (
-              <BadgeItem key={index} badge={badge} />
-            ))}
-          </StyledList>
-        ) : (
-          <Stack justifyContent="center" alignItems="center" height="100%">
-            <Img style={{ width: "20rem", height: "20rem" }} src="/imgs/skelly/Scrolly_Wen.png" alt="Coding Scrolly" />
-            <Typography sx={{ fontSize: "3.2rem", lineHeight: "4.8rem", fontWeight: 600, mb: "0.8rem", color: "#fff" }}>
-              No eligible badges for minting
-            </Typography>
-            <Typography sx={{ fontSize: "1.8rem", lineHeight: "2.8rem", mb: "4rem", color: "#fff" }}>
-              Explore protocols offering badges on the ecosystem page.
-            </Typography>
-            <Button sx={{ width: "15.6rem", height: "4rem", fontSize: "1.6rem" }} color="primary" onClick={moveToEcosystem}>
-              Go to ecosystem
-            </Button>
-          </Stack>
-        )}
+        <StyledList>
+          {visibleBadges.map((badge, index) => (
+            <BadgeItem key={index} badge={badge} />
+          ))}
+        </StyledList>
       </StyledDialogContent>
     </StyledDialog>
   )

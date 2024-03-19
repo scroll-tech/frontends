@@ -118,6 +118,7 @@ const NameDialog = () => {
           <Stack
             direction="row"
             gap="0.5rem"
+            alignItems="center"
             sx={{
               position: "absolute",
               top: "11.2rem",

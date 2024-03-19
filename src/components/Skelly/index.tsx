@@ -10,7 +10,7 @@ import Button from "@/pages/skelly/components/Button"
 import SuperGif from "./libgif.js"
 
 const Container = styled(Box)(({ theme }) => ({
-  position: "absolute",
+  position: "fixed",
   bottom: "5rem",
   right: "2.7rem",
   display: "flex",
@@ -48,19 +48,20 @@ const Tooltip = styled(Box)(({ theme }) => ({
     zIndex: -1,
     margin: "-2px",
     borderRadius: "inherit",
-    background: "linear-gradient(90deg, #F0C86F, #FF684B, #FAD880, #90F7EB)",
+    //TODO:
+    background: "linear-gradient(70deg, #FAD880 0%, #FF684B 38%, #FAD880 75%, #90F7EB 100%)",
   },
   "&:after": {
     content: '""',
     position: "absolute",
     top: "100%",
-    right: "1.5rem",
     left: "40%",
-    height: "2rem",
-    width: "2rem",
+    height: "2.2rem",
+    width: "3.4rem",
     background: `url(${TriangleSvg})`,
     backgroundSize: "cover",
-    transform: "rotate(270deg)",
+    zIndex: -1,
+    marginTop: "-0.6rem",
   },
 }))
 
