@@ -33,7 +33,8 @@ const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
   // justifyContent: "center",
 }))
 
-const BadgesDialog = () => {
+const BadgesDialog = props => {
+  const { mintableBadgeCount } = props
   const { provider, walletCurrentAddress } = useRainbowContext()
   const { userBadges, attachedBadges, badgeOrder, badgesDialogVisible, changeBadgesDialog, sortedBadges, profileContract, queryVisibleBadges } =
     useSkellyStore()
@@ -159,7 +160,7 @@ const BadgesDialog = () => {
           </IconButton>
         </DialogTitle>
         <DialogContent sx={{ pt: "7.6rem", pb: "16rem" }}>
-          <Empty title="No badges for customisation" />
+          <Empty title="No badges for customisation" mintableBadgeCount={mintableBadgeCount} />
         </DialogContent>
       </StyledDialog>
     )

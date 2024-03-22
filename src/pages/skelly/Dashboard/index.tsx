@@ -11,6 +11,8 @@ import Skelly from "@/components/Skelly"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 // import { BADGES_VISIBLE_TYPE } from "@/constants"
 import { useSkellyContext } from "@/contexts/SkellyContextProvider"
+import { useAsyncMemo } from "@/hooks"
+import Badges from "@/pages/skelly/Dashboard/UpgradeDialog/Badges"
 import { checkIfProfileMinted } from "@/services/skellyService"
 import useSkellyStore from "@/stores/skellyStore"
 import { requireEnv } from "@/utils"
@@ -74,6 +76,7 @@ const Dashboard = props => {
     profileAddress,
     changeProfileDetailLoading,
     profileDetailLoading,
+    userBadges,
   } = useSkellyStore()
 
   useEffect(() => {
@@ -129,6 +132,22 @@ const Dashboard = props => {
     width: window.innerWidth,
     height: window.innerHeight,
   })
+
+  const mintableBadgeCount = useAsyncMemo(async () => {
+    if (provider) {
+      const filteredBadges = await Promise.all(
+        Badges.map(async badge => {
+          const isUserBadge = userBadges.some(userBadge => userBadge.badgeContract === badge.badgeContract)
+          const isValidBadge = await badge.validator(walletCurrentAddress, provider)
+          return {
+            ...badge,
+            isValid: !isUserBadge && isValidBadge,
+          }
+        }),
+      )
+      return filteredBadges.filter(badge => badge.isValid).length
+    }
+  }, [provider, walletCurrentAddress, userBadges])
 
   const handleResize = useCallback(() => {
     setWindowDimensions({
@@ -190,9 +209,9 @@ const Dashboard = props => {
             </>
           ) : (
             <>
-              <ActionBox />
+              <ActionBox mintableBadgeCount={mintableBadgeCount} />
               <NameDialog />
-              <BadgesDialog />
+              <BadgesDialog mintableBadgeCount={mintableBadgeCount} />
               <ReferDialog />
               <UpgradeDialog />
               <BadgeDetailDialog />

@@ -6,13 +6,19 @@ import { Stack, Typography } from "@mui/material"
 import Button from "@/components/Button"
 import useSkellyStore from "@/stores/skellyStore"
 
-const Empty = ({ title }) => {
+const Empty = props => {
+  const { title, mintableBadgeCount } = props
   const navigate = useNavigate()
   const { changeUpgradeDialog, changeBadgesDialog } = useSkellyStore()
 
   const moveToEcosystem = () => {
     navigate("/ecosystem")
     changeUpgradeDialog(false)
+    changeBadgesDialog(false)
+  }
+
+  const handleOpenMintBadge = () => {
+    changeUpgradeDialog(true)
     changeBadgesDialog(false)
   }
   return (
@@ -22,9 +28,16 @@ const Empty = ({ title }) => {
       <Typography sx={{ fontSize: "1.8rem", lineHeight: "2.8rem", mb: "3.2rem", color: "primary.contrastText" }}>
         Explore protocols offering badges on the ecosystem page.
       </Typography>
-      <Button color="primary" onClick={moveToEcosystem}>
-        Go to ecosystem
-      </Button>
+      <Stack direction="row" gap="1.6rem">
+        <Button color="primary" onClick={moveToEcosystem}>
+          Explore badges
+        </Button>
+        {!!mintableBadgeCount && (
+          <Button color="secondary" onClick={handleOpenMintBadge}>
+            Mint badges ({mintableBadgeCount})
+          </Button>
+        )}
+      </Stack>
     </Stack>
   )
 }

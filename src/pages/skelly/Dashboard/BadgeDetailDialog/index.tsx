@@ -244,11 +244,11 @@ const BadgeDetailDialog = () => {
 
           {[BadgeDetailDialogTpye.NO_PROFILE, BadgeDetailDialogTpye.MINT, BadgeDetailDialogTpye.MINT_WITH_BACK].includes(badgeDetailDialogVisible) ? (
             <StyledScrollButton width="24rem" color="tertiary" onClick={handleViewBadgeContract}>
-              View badge contract
+              View details
             </StyledScrollButton>
           ) : (
             <StyledScrollButton width="24rem" color="tertiary" onClick={handleViewBadge}>
-              View badge details
+              View details
             </StyledScrollButton>
           )}
 
