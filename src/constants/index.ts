@@ -8,4 +8,5 @@ export * from "./brandKit"
 export * from "./sticker"
 export * from "./sessions"
 export * from "./blog"
-export * from "./skelly"
+
+export * from "./canvas"
