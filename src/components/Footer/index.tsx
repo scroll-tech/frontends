@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <>
       <Subscribe />
-      <PureFooter></PureFooter>
+      <PureFooter />
     </>
   )
 }

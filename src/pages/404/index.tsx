@@ -7,7 +7,7 @@ const useStyles = makeStyles()(theme => {
   return {
     wrapper: {
       width: "100%",
-      height: "calc(100vh - 44.6rem)",
+      height: "calc(100dvh - 44.6rem)",
       minHeight: "30rem",
       display: "flex",
       justifyContent: "center",

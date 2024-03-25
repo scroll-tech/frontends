@@ -8,7 +8,7 @@ import useCheckViewport from "@/hooks/useCheckViewport"
 const useStyles = makeStyles()(theme => ({
   bg: {
     width: "100%",
-    height: "100vh",
+    height: "100dvh",
     marginTop: "-6.5rem",
     paddingTop: "16.4rem",
     background: "url(/imgs/story/story-hero-bg-desktop.svg) no-repeat center",
