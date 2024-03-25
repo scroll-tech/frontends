@@ -7,11 +7,11 @@ import { styled } from "@mui/system"
 
 import { ReactComponent as CloseSvg } from "@/assets/svgs/canvas/close.svg"
 // import { BADGES_VISIBLE_TYPE } from "@/constants"
-import { useRainbowContext } from "@/contexts/RainbowProvider"
-// import { useSkellyContext } from "@/contexts/SkellyContextProvider"
+// import { useCanvasContext } from "@/contexts/CanvasContextProvider"
 import Button from "@/pages/canvas/components/Button"
 import { customiseDisplay } from "@/services/canvasService"
-import useSkellyStore from "@/stores/canvasStore"
+// import { attachBadges,  detachBadges, reorderBadges } from "@/services/canvasService"
+import useCanvasStore from "@/stores/canvasStore"
 
 import Empty from "../../components/Empty"
 // import GridDragDrop from "./GridDragDrop"
@@ -36,7 +36,6 @@ const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
 
 const BadgesDialog = props => {
   const { mintableBadgeCount } = props
-  const { provider, walletCurrentAddress } = useRainbowContext()
   const {
     userBadges,
     attachedBadges,
@@ -45,11 +44,15 @@ const BadgesDialog = props => {
     changeBadgesDialog,
     sortedBadges,
     profileContract,
-    queryVisibleBadges,
+    queryAttachedBadges,
     changeSortedBadges,
-  } = useSkellyStore()
+  } = useCanvasStore()
   const [loading, setLoading] = useState(false)
+  // console.log(attachedBadges, badgeOrder, "badgeOrder")
+  console.log(badgeOrder, "badgeOrder")
 
+  // const displayedIdsMap = Object.fromEntries(attachedBadges.map((id, index) => [id, Number(badgeOrder[index])]))
+  // console.log(displayedIdsMap, "displayedIdsMapdisplayedIdsMap")
   // const badgesInstance = useMemo(() => {
   //   return {
   //     [BADGES_VISIBLE_TYPE.INVISIBLE]: userBadges.filter(badge => !attachedBadges.includes(badge.id)),
@@ -71,11 +74,35 @@ const BadgesDialog = props => {
     updateDataAndOrder()
   }
 
-  const calculateRelativeOrder = (original, frontend) => {
-    const indexesInOriginal = frontend.map(element => original.indexOf(element))
-    const sortedIndexes = [...indexesInOriginal].sort((a, b) => a - b)
-    const relativeOrder = indexesInOriginal.map(index => BigInt(sortedIndexes.indexOf(index) + 1))
-    return relativeOrder
+  // const calculateRelativeOrder = (original, frontend) => {
+  //   const indexesInOriginal = frontend.map(element => original.indexOf(element))
+  //   const sortedIndexes = [...indexesInOriginal].sort((a, b) => a - b)
+  //   const relativeOrder = indexesInOriginal.map(index => BigInt(sortedIndexes.indexOf(index) + 1))
+  //   return relativeOrder
+  // }
+
+  const continuousOrder = (order: number[]) => {
+    const orderWithIndex = order.map((o, index) => ({ index, value: o }))
+    const aesOrderWithIndex = orderWithIndex.sort((a, b) => a.value - b.value).map(({ index, value }, i) => ({ value: i + 1, index }))
+    const result = aesOrderWithIndex.sort((a, b) => a.index - b.index).map(item => BigInt(item.value))
+    return result
+  }
+
+  const calculateRelativeOrder = (currentDisplayedIds, hiddenToDisplayed, displayedIdsMap) => {
+    let preCount = Object.keys(displayedIdsMap).length
+    const curDisplayedOrder: number[] = []
+
+    for (let i = 0; i < currentDisplayedIds.length; i++) {
+      const dId = currentDisplayedIds[i]
+      // new attach
+      if (hiddenToDisplayed.includes(dId)) {
+        curDisplayedOrder.splice(i, 0, ++preCount)
+      } else {
+        curDisplayedOrder.push(displayedIdsMap[dId])
+      }
+    }
+    const formattedOrder = continuousOrder(curDisplayedOrder)
+    return formattedOrder
   }
 
   const handleTransferChange = value => {
@@ -83,7 +110,7 @@ const BadgesDialog = props => {
   }
 
   const updateDataAndOrder = async () => {
-    const originalIds = userBadges.map(item => item.id)
+    // const originalIds = userBadges.map(item => item.id)
     // const displayedIds = badgesInstance[BADGES_VISIBLE_TYPE.VISIBLE].map(item => item.id)
     const displayedIds = attachedBadges
     // const currentDisplayedIds = sortedBadges[BADGES_VISIBLE_TYPE.VISIBLE].map(item => item.id)
@@ -108,15 +135,22 @@ const BadgesDialog = props => {
       }
     })
 
-    const newArrayOrder: number[] = calculateRelativeOrder(originalIds, currentDisplayedIds)
+    const displayedIdsMap = Object.fromEntries(displayedIds.map((id, index) => [id, Number(badgeOrder[index])]))
+    const newArrayOrder = calculateRelativeOrder(currentDisplayedIds, hiddenToDisplayed, displayedIdsMap)
+    // const newArrayOrder: number[] = calculateRelativeOrder(originalIds, currentDisplayedIds)
+
+    console.log(newArrayOrder, "newArrayOrder")
+    // return
 
     // if (hiddenToDisplayed.length > 0) {
+    //   setLoading(true)
+
     //   const result = await attachBadges(profileContract, hiddenToDisplayed)
     //   if (result! !== true) {
     //     console.log("mintBadge failed", result)
     //   } else {
     //     queryAttachedBadges()
-    //     handleClose()
+    //     // handleClose()
     //   }
     //   setLoading(false)
     // }
@@ -127,7 +161,7 @@ const BadgesDialog = props => {
     //     console.log("mintBadge failed", result)
     //   } else {
     //     queryAttachedBadges()
-    //     handleClose()
+    //     // handleClose()
     //   }
     //   setLoading(false)
     // }
@@ -138,7 +172,7 @@ const BadgesDialog = props => {
     //     console.log("mintBadge failed", result)
     //   } else {
     //     queryAttachedBadges()
-    //     handleClose()
+    //     // handleClose()
     //   }
     // }
 
@@ -151,7 +185,7 @@ const BadgesDialog = props => {
     })
     setLoading(false)
     changeBadgesDialog(false)
-    queryVisibleBadges(provider, walletCurrentAddress)
+    queryAttachedBadges()
   }
 
   if (!userBadges.length) {
