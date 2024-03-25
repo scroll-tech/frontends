@@ -19,7 +19,7 @@ const DialogStyled = styled(Dialog)(({ theme }) => ({
   "& .MuiPaper-root": {
     maxWidth: "47rem !important",
     borderRadius: "2rem",
-    maxHeight: "100vh",
+    maxHeight: "100dvh",
     position: "absolute",
     top: "10rem",
     [theme.breakpoints.down("sm")]: {

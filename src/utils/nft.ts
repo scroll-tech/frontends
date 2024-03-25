@@ -5,7 +5,7 @@
 // stroke: 0 | 1
 // rarity: 0~100
 
-export const genetateRarityData = (month, day, order, background, stroke, rarity) => {
+export const generateRarityData = (month, day, order, background, stroke, rarity) => {
   const value =
     BigInt(month) |
     (BigInt(day) << BigInt(4)) |

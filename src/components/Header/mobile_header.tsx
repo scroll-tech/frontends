@@ -254,7 +254,7 @@ const App = ({ currentMenu }) => {
           sx={{
             background: theme => (dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.light),
             paddingTop: "5rem",
-            height: "calc(100vh - 6.2rem)",
+            height: "calc(100dvh - 6.2rem)",
             overflowY: "auto",
           }}
         >

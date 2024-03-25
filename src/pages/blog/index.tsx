@@ -86,7 +86,7 @@ const FilterModal = styled(Box)({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  height: "100vh",
+  height: "100dvh",
 })
 
 const FilterModalContent = styled(Box)(({ theme }) => ({

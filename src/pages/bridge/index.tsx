@@ -36,7 +36,7 @@ const Bridge = () => {
           sx={{
             pt: ["4.8rem", "8.4rem"],
             pb: "6rem",
-            minHeight: "calc(100vh - 69.2rem)",
+            minHeight: "calc(100dvh - 69.2rem)",
             display: "flex",
             flexDirection: "column",
             alignItems: ["flex-start", "center"],
