@@ -7,4 +7,5 @@ export * from "./nft"
 export * from "./brandKit"
 export * from "./sticker"
 export * from "./sessions"
-export * from "./skelly"
+
+export * from "./canvas"

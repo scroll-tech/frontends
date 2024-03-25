@@ -22,8 +22,6 @@ import SessionsTerms from "@/pages/sessions-terms"
 import ScrollSkelly from "@/pages/skelly"
 import SkellyDashboard from "@/pages/skelly/Dashboard"
 import SkellyBadge from "@/pages/skelly/badge"
-import SkellyBadgeContract from "@/pages/skelly/badgeContract"
-import SkellyInvite from "@/pages/skelly/invite"
 import MintProfile from "@/pages/skelly/mint"
 import StickerVote from "@/pages/sticker-vote"
 import StickerWinners from "@/pages/sticker-winners"
@@ -229,6 +227,8 @@ const mainnetRoutes = [
     name: "Scroll Sessions Terms of Use",
     path: "/sessions-terms-of-use",
     element: <SessionsTerms />,
+  },
+  {
     name: "Scroll Skelly",
     path: "/scroll-skelly",
     element: <ScrollSkelly />,
@@ -248,26 +248,8 @@ const mainnetRoutes = [
   },
   {
     name: "Scroll Skelly",
-    path: "/scroll-skelly/badge/:id",
+    path: "/scroll-skelly/badge",
     element: <SkellyBadge />,
-    isHiddenFooter: true,
-  },
-  {
-    name: "Scroll Skelly",
-    path: "/scroll-skelly/badge-contract/:address",
-    element: <SkellyBadgeContract />,
-    isHiddenFooter: true,
-  },
-  {
-    name: "Scroll Skelly Coupon",
-    path: "/scroll-skelly/invite/:code",
-    element: <SkellyInvite />,
-    isHiddenFooter: true,
-  },
-  {
-    name: "Scroll Skelly",
-    path: "/scroll-skelly/:address",
-    element: <SkellyDashboard />,
     isHiddenFooter: true,
   },
 ]

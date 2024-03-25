@@ -7,8 +7,8 @@ import Footer from "@/components/Footer"
 import GlobalComponents from "@/components/GlobalComponents"
 import Header from "@/components/Header"
 import BridgeContextProvider from "@/contexts/BridgeContextProvider"
+import CanvasContextProvider from "@/contexts/CanvasContextProvider"
 import RainbowProvider from "@/contexts/RainbowProvider"
-import SkellyContextProvider from "@/contexts/SkellyContextProvider"
 import ScrollToTop from "@/hooks/useScrollToTop"
 import NotFound from "@/pages/404"
 import { isSepolia, requireEnv } from "@/utils"
@@ -66,7 +66,7 @@ function Homepage() {
       </Helmet>
       <RainbowProvider>
         <BridgeContextProvider>
-          <SkellyContextProvider>
+          <CanvasContextProvider>
             <ScrollToTop>
               <Header />
               <Routes>
@@ -77,7 +77,7 @@ function Homepage() {
               </Routes>
               {isSepolia || route.isHiddenFooter ? null : <Footer />}
             </ScrollToTop>
-          </SkellyContextProvider>
+          </CanvasContextProvider>
           <GlobalComponents />
         </BridgeContextProvider>
       </RainbowProvider>
