@@ -14,16 +14,24 @@ import StepWrapper from "./StepWrapper"
 const FirstBadgeStep = props => {
   const navigate = useNavigate()
   const { provider, walletCurrentAddress } = useRainbowContext()
-  const { isFirstBadgeMinting, changeIsFirstBadgeMinting } = useCanvasStore()
+  const { isFirstBadgeMinting, changeIsFirstBadgeMinting, changeMintFlowVisible } = useCanvasStore()
   const handleMintBadge = async () => {
     changeIsFirstBadgeMinting(true)
+    // const result = await testAsyncFunc("0x11cfb299dda2ae8b1fccf9a055394de9a7f953e8b8f115295dc0f2325e8b2130")
     const result = await mintBadge(provider, walletCurrentAddress, FIRST_BADGE.nftAddress, FIRST_BADGE.nftAbi, FIRST_BADGE.badgeContract)
     if (result === false) {
       console.log("mint Ethereum Year Badge failed", result)
     } else {
       navigate(`/scroll-canvas/badge/${result}`)
+      setTimeout(() => {
+        changeMintFlowVisible(false)
+      }, 3e2)
     }
     changeIsFirstBadgeMinting(false)
+  }
+
+  const handleViewMyCanvas = () => {
+    changeMintFlowVisible(false)
   }
 
   return (
@@ -37,7 +45,7 @@ const FirstBadgeStep = props => {
       }
       action={
         <Stack direction="row" gap="1.6rem">
-          <Button color="secondary" href="/scroll-canvas">
+          <Button color="secondary" onClick={handleViewMyCanvas}>
             View my Canvas
           </Button>
           <Button color="primary" loading={isFirstBadgeMinting} onClick={handleMintBadge}>
