@@ -80,7 +80,7 @@ const Skelly = props => {
     onClick,
     visible,
     skellyId = "skellyId",
-    skellyUrl = "/imgs/skelly/scrolly.gif",
+    skellyUrl = "/imgs/skelly/canvas.gif",
     startFrame = 16,
     targetFrame = 54,
   } = props
