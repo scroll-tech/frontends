@@ -6,7 +6,7 @@ import { makeStyles } from "tss-react/mui"
 
 import { Box, ButtonBase, Fade, LinearProgress, ListItemIcon, ListItemText, Menu, MenuItem, SvgIcon } from "@mui/material"
 
-import { getSmallAvatarURL } from "@/apis/skelly"
+import { getSmallAvatarURL } from "@/apis/canvas"
 import { ReactComponent as CopySuccessSvg } from "@/assets/svgs/bridge/copy-success.svg"
 import { ReactComponent as HistorySvg } from "@/assets/svgs/bridge/history.svg"
 import { ReactComponent as BlockSvg } from "@/assets/svgs/wallet-connector/block.svg"
@@ -15,10 +15,10 @@ import { ReactComponent as DisconnectSvg } from "@/assets/svgs/wallet-connector/
 import { ReactComponent as DownTriangleSvg } from "@/assets/svgs/wallet-connector/down-triangle.svg"
 import { ReactComponent as ProfileSvg } from "@/assets/svgs/wallet-connector/profile.svg"
 import { CHAIN_ID, EXPLORER_URL } from "@/constants"
+import { useCanvasContext } from "@/contexts/CanvasContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import useBridgeStore from "@/stores/bridgeStore"
-import useSkellyStore from "@/stores/skellyStore"
+import useCanvasStore from "@/stores/canvasStore"
 import { generateExploreLink, truncateAddress } from "@/utils"
 
 const useStyles = makeStyles<any>()((theme, { dark }) => ({
@@ -90,8 +90,8 @@ const WalletDropdown = props => {
   const { walletCurrentAddress, connect, disconnect, chainId } = useRainbowContext()
   const { changeHistoryVisible } = useBridgeStore()
 
-  const { unsignedProfileRegistryContract, publicProvider } = useSkellyContext()
-  const { username, profileMinted, walletDetailLoading, checkAndFetchCurrentWalletSkelly, clearSkelly } = useSkellyStore()
+  const { unsignedProfileRegistryContract, publicProvider } = useCanvasContext()
+  const { username, profileMinted, walletDetailLoading, checkAndFetchCurrentWalletCanvas, clearCanvas } = useCanvasStore()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [copied, setCopied] = useState(false)
@@ -99,13 +99,13 @@ const WalletDropdown = props => {
   const open = useMemo(() => Boolean(anchorEl), [anchorEl])
 
   useEffect(() => {
-    clearSkelly()
+    clearCanvas()
   }, [walletCurrentAddress])
 
   useEffect(() => {
-    // re check&&fetch walletCurrentAddress's skelly when switching address on Wallet
+    // re check&&fetch walletCurrentAddress's canvas when switching address on Wallet
     if (publicProvider && unsignedProfileRegistryContract && walletCurrentAddress) {
-      checkAndFetchCurrentWalletSkelly(publicProvider, unsignedProfileRegistryContract, walletCurrentAddress)
+      checkAndFetchCurrentWalletCanvas(publicProvider, unsignedProfileRegistryContract, walletCurrentAddress)
     }
   }, [publicProvider, unsignedProfileRegistryContract, walletCurrentAddress])
 
@@ -131,12 +131,12 @@ const WalletDropdown = props => {
     () => [
       {
         icon: ProfileSvg,
-        label: "Scroll Skelly",
+        label: "Scroll Canvas",
         action: () => {
           if (profileMinted) {
-            navigate("/scroll-skelly")
+            navigate("/scroll-canvas")
           } else {
-            navigate("/scroll-skelly/mint")
+            navigate("/scroll-canvas/mint")
           }
           handleClose()
         },
@@ -160,8 +160,8 @@ const WalletDropdown = props => {
         label: "Disconnect",
         action: () => {
           disconnect()
-          // clear Skelly states
-          clearSkelly()
+          // clear Canvas states
+          clearCanvas()
           handleClose()
         },
       },
@@ -184,7 +184,7 @@ const WalletDropdown = props => {
           <Img
             src={getSmallAvatarURL(walletCurrentAddress)}
             style={{ width: 24, height: 24, marginRight: "0.8rem" }}
-            placeholder="/imgs/skelly/avatarPlaceholder.svg"
+            placeholder="/imgs/canvas/avatarPlaceholder.svg"
           ></Img>
           <Box sx={{ lineHeight: "1.6rem", textAlign: "left" }}>
             <strong style={{ fontSize: "1.2rem" }}>{username}</strong>

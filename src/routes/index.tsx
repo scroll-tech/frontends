@@ -4,6 +4,12 @@ import BlogDetail from "@/pages/blog/detail"
 import BrandKit from "@/pages/brand-kit"
 import Bridge from "@/pages/bridge"
 import BridgeFAQ from "@/pages/bridge/FAQ"
+import ScrollCanvas from "@/pages/canvas"
+import CanvasDashboard from "@/pages/canvas/Dashboard"
+import CanvasBadge from "@/pages/canvas/badge"
+import CanvasBadgeContract from "@/pages/canvas/badgeContract"
+import CanvasInvite from "@/pages/canvas/invite"
+import MintProfile from "@/pages/canvas/mint"
 import Career from "@/pages/career"
 // import ComingSoon from "@/pages/developer-nft/coming-soon"
 import DeveloperNFT from "@/pages/developer-nft/index"
@@ -18,12 +24,6 @@ import RollupScanBlock from "@/pages/rollup/block"
 import RollupScanChunk from "@/pages/rollup/chunk"
 import RollupScanChunkDetail from "@/pages/rollup/chunk/detail"
 import RollupScan from "@/pages/rollup/index"
-import ScrollSkelly from "@/pages/skelly"
-import SkellyDashboard from "@/pages/skelly/Dashboard"
-import SkellyBadge from "@/pages/skelly/badge"
-import SkellyBadgeContract from "@/pages/skelly/badgeContract"
-import SkellyInvite from "@/pages/skelly/invite"
-import MintProfile from "@/pages/skelly/mint"
 import Terms from "@/pages/terms"
 import { isSepolia } from "@/utils"
 
@@ -231,45 +231,45 @@ const mainnetRoutes = [
     element: <MintNFT />,
   },
   {
-    name: "Scroll Skelly",
-    path: "/scroll-skelly",
-    element: <ScrollSkelly />,
+    name: "Scroll Canvas",
+    path: "/scroll-canvas",
+    element: <ScrollCanvas />,
     isHiddenFooter: true,
   },
   {
-    name: "Scroll Skelly",
-    path: "/scroll-skelly/mint",
+    name: "Scroll Canvas",
+    path: "/scroll-canvas/mint",
     element: <MintProfile />,
     isHiddenFooter: true,
   },
   {
-    name: "Scroll Skelly",
-    path: "/scroll-skelly/dashboard",
-    element: <SkellyDashboard />,
+    name: "Scroll Canvas",
+    path: "/scroll-canvas/dashboard",
+    element: <CanvasDashboard />,
     isHiddenFooter: true,
   },
   {
-    name: "Scroll Skelly",
-    path: "/scroll-skelly/badge/:id",
-    element: <SkellyBadge />,
+    name: "Scroll Canvas",
+    path: "/scroll-canvas/badge/:id",
+    element: <CanvasBadge />,
     isHiddenFooter: true,
   },
   {
-    name: "Scroll Skelly",
-    path: "/scroll-skelly/badge-contract/:address",
-    element: <SkellyBadgeContract />,
+    name: "Scroll Canvas",
+    path: "/scroll-canvas/badge-contract/:address",
+    element: <CanvasBadgeContract />,
     isHiddenFooter: true,
   },
   {
-    name: "Scroll Skelly Coupon",
-    path: "/scroll-skelly/invite/:code",
-    element: <SkellyInvite />,
+    name: "Scroll Canvas Coupon",
+    path: "/scroll-canvas/invite/:code",
+    element: <CanvasInvite />,
     isHiddenFooter: true,
   },
   {
-    name: "Scroll Skelly",
-    path: "/scroll-skelly/:address",
-    element: <SkellyDashboard />,
+    name: "Scroll Canvas",
+    path: "/scroll-canvas/:address",
+    element: <CanvasDashboard />,
     isHiddenFooter: true,
   },
 ]

@@ -1,19 +1,19 @@
 import React, { useEffect, useMemo, useState } from "react"
 
-import Skelly from "@/components/Skelly"
+import Canvas from "@/components/Canvas"
 import { CHAIN_ID } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import BadgeDetailDialog from "@/pages/skelly/Dashboard/BadgeDetailDialog"
-import Badges from "@/pages/skelly/Dashboard/UpgradeDialog/Badges"
-import { checkIfHasBadgeByAddress } from "@/services/skellyService"
-import useSkellyStore, { BadgeDetailDialogTpye } from "@/stores/skellyStore"
+import BadgeDetailDialog from "@/pages/canvas/Dashboard/BadgeDetailDialog"
+import Badges from "@/pages/canvas/Dashboard/UpgradeDialog/Badges"
+import { checkIfHasBadgeByAddress } from "@/services/canvasService"
+import useCanvasStore, { BadgeDetailDialogTpye } from "@/stores/canvasStore"
 
 const MintBadge = () => {
-  const { changeBadgeDetailDialog, changeSelectedBadge, profileMinted } = useSkellyStore()
+  const { changeBadgeDetailDialog, changeSelectedBadge, profileMinted } = useCanvasStore()
   const badge: any = Badges[3]
   const [canBeMint, setCanBeMint] = useState(false)
   const { chainId, provider, walletCurrentAddress } = useRainbowContext()
-  //   const { hasMintedProfile } = useSkellyContext()
+  //   const { hasMintedProfile } = useCanvasContext()
 
   const isL2 = useMemo(() => chainId === CHAIN_ID.L2, [chainId])
 
@@ -46,10 +46,10 @@ const MintBadge = () => {
 
   return (
     <>
-      <Skelly
+      <Canvas
         visible={canBeMint}
         buttonText="Mint badge"
-        title={`Heya! Congratulations! You can mint ${badge.name} on Scroll Skelly.`}
+        title={`Heya! Congratulations! You can mint ${badge.name} on Scroll Canvas.`}
         onClick={handleMintBadge}
       />
       <BadgeDetailDialog />

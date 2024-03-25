@@ -1,13 +1,13 @@
+import Canvas from "./Canvas"
 import Contribute from "./Contribute"
 import Header from "./Header"
 import Protocols from "./Protocols"
-import Skelly from "./Skelly"
 
 const Ecosystem = () => {
   return (
     <>
       <Header></Header>
-      <Skelly />
+      <Canvas />
       <Protocols></Protocols>
       <Contribute></Contribute>
     </>

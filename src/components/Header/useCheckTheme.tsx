@@ -4,18 +4,18 @@ import { useLocation, useMatch } from "react-router-dom"
 const useCheckTheme = () => {
   const { pathname } = useLocation()
   // TODO:
-  const isSkelly = useMatch("/scroll-skelly/*")
-  // const isBadgeDetail = useMatch("/scroll-skelly/badge/:id")
+  const isCanvas = useMatch("/scroll-canvas/*")
+  // const isBadgeDetail = useMatch("/scroll-canvas/badge/:id")
   const dark = useMemo(() => {
     return (
       [
         "/developer-nft/check-eligibility",
         "/developer-nft/mint",
-        "/scroll-skelly",
-        "/scroll-skelly/mint",
-        "/scroll-skelly/dashboard",
-        "/scroll-skelly/badge",
-      ].includes(pathname) || isSkelly
+        "/scroll-canvas",
+        "/scroll-canvas/mint",
+        "/scroll-canvas/dashboard",
+        "/scroll-canvas/badge",
+      ].includes(pathname) || isCanvas
     )
   }, [pathname])
 
