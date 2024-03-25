@@ -1,12 +1,12 @@
 import { isEqual } from "lodash"
-import { useEffect, useMemo } from "react"
+import { useEffect } from "react"
 import { useState } from "react"
 
 import { Dialog, DialogContent, DialogTitle, IconButton, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { ReactComponent as CloseSvg } from "@/assets/svgs/skelly/close.svg"
-import { BADGES_VISIBLE_TYPE } from "@/constants"
+// import { BADGES_VISIBLE_TYPE } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 // import { useSkellyContext } from "@/contexts/SkellyContextProvider"
 import Button from "@/pages/skelly/components/Button"
@@ -14,7 +14,8 @@ import { customiseDisplay } from "@/services/skellyService"
 import useSkellyStore from "@/stores/skellyStore"
 
 import Empty from "../../components/Empty"
-import GridDragDrop from "./GridDragDrop"
+// import GridDragDrop from "./GridDragDrop"
+import Transfer from "./Transfer"
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
   borderRadius: "1.6rem",
@@ -36,21 +37,31 @@ const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
 const BadgesDialog = props => {
   const { mintableBadgeCount } = props
   const { provider, walletCurrentAddress } = useRainbowContext()
-  const { userBadges, attachedBadges, badgeOrder, badgesDialogVisible, changeBadgesDialog, sortedBadges, profileContract, queryVisibleBadges } =
-    useSkellyStore()
+  const {
+    userBadges,
+    attachedBadges,
+    badgeOrder,
+    badgesDialogVisible,
+    changeBadgesDialog,
+    sortedBadges,
+    profileContract,
+    queryVisibleBadges,
+    changeSortedBadges,
+  } = useSkellyStore()
   const [loading, setLoading] = useState(false)
 
-  const badgesInstance = useMemo(() => {
-    return {
-      [BADGES_VISIBLE_TYPE.INVISIBLE]: userBadges.filter(badge => !attachedBadges.includes(badge.id)),
-      [BADGES_VISIBLE_TYPE.VISIBLE]: attachedBadges.map(badgeId => userBadges.find(badge => badge.id === badgeId)),
-    }
-  }, [userBadges, attachedBadges])
+  // const badgesInstance = useMemo(() => {
+  //   return {
+  //     [BADGES_VISIBLE_TYPE.INVISIBLE]: userBadges.filter(badge => !attachedBadges.includes(badge.id)),
+  //     [BADGES_VISIBLE_TYPE.VISIBLE]: attachedBadges.map(badgeId => userBadges.find(badge => badge.id === badgeId)),
+  //   }
+  // }, [userBadges, attachedBadges])
 
   useEffect(() => {
-    // console.log("sortedBadges", sortedBadges)
-    // console.log("badgeOrder", badgeOrder)
-  }, [sortedBadges])
+    if (badgesDialogVisible) {
+      changeSortedBadges(attachedBadges)
+    }
+  }, [badgesDialogVisible])
 
   const handleClose = () => {
     changeBadgesDialog(false)
@@ -67,10 +78,19 @@ const BadgesDialog = props => {
     return relativeOrder
   }
 
+  const handleTransferChange = value => {
+    changeSortedBadges(value)
+  }
+
   const updateDataAndOrder = async () => {
     const originalIds = userBadges.map(item => item.id)
-    const displayedIds = badgesInstance[BADGES_VISIBLE_TYPE.VISIBLE].map(item => item.id)
-    const currentDisplayedIds = sortedBadges[BADGES_VISIBLE_TYPE.VISIBLE].map(item => item.id)
+    // const displayedIds = badgesInstance[BADGES_VISIBLE_TYPE.VISIBLE].map(item => item.id)
+    const displayedIds = attachedBadges
+    // const currentDisplayedIds = sortedBadges[BADGES_VISIBLE_TYPE.VISIBLE].map(item => item.id)
+    const currentDisplayedIds = sortedBadges
+    // console.log(displayedIds, "pre displayedIds")
+    // console.log(currentDisplayedIds, "cur displayedIds")
+    // return
     const displayedSet = new Set(displayedIds)
     const currentDisplayedSet = new Set(currentDisplayedIds)
     const hiddenToDisplayed: any = []
@@ -181,7 +201,7 @@ const BadgesDialog = props => {
         sx={{
           m: 0,
           p: ["2rem", "3rem"],
-          pt: ["3.2rem", "6.4rem"],
+          pt: ["3.2rem", "4.8rem"],
           pb: ["3rem", "4rem"],
           display: "flex",
           justifyContent: "space-between",
@@ -196,7 +216,7 @@ const BadgesDialog = props => {
         </IconButton>
       </DialogTitle>
       <StyledDialogContent>
-        <GridDragDrop badgesInstance={badgesInstance} />
+        <Transfer titles={["Not displayed", "Dispalyed"]} data={userBadges} value={sortedBadges} onChange={handleTransferChange}></Transfer>
         <Stack direction="row" justifyContent="center" gap="1.6rem">
           <Button color="secondary" onClick={handleClose}>
             Cancel
