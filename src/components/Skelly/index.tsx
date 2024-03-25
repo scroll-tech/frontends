@@ -119,8 +119,9 @@ const Skelly = props => {
       instance.play()
       setInterval(() => {
         const get_current_frame = instance.get_current_frame()
-        if (initialPlayRef.current && get_current_frame >= targetFrame) {
+        if (initialPlayRef.current && get_current_frame === startFrame) {
           setTooltipVisible(true)
+        } else if (initialPlayRef.current && get_current_frame >= targetFrame) {
           instance.move_to(startFrame)
           tooltipVisibleRef.current = true
           initialPlayRef.current = false
