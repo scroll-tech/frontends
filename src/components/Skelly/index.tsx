@@ -81,8 +81,8 @@ const Skelly = props => {
     visible,
     skellyId = "skellyId",
     skellyUrl = "/imgs/skelly/scrolly.gif",
-    startFrame = 22,
-    targetFrame = 37,
+    startFrame = 16,
+    targetFrame = 54,
   } = props
   const [open, setOpen] = useState(false)
   const [tooltipVisible, setTooltipVisible] = useState(false)
