@@ -20,6 +20,7 @@ const MintFlow = props => {
           type: "progressbar",
         }}
         modules={[Pagination]}
+        allowTouchMove={false}
       >
         <SwiperSlide>
           <NameStep scrollTarget={scrollTarget}></NameStep>
