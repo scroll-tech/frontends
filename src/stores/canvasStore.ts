@@ -43,6 +43,7 @@ interface CanvasStore {
 
   profileName: string
   isProfileMinting: boolean
+  isBadgeMinting: Map<string, boolean>
   isFirstBadgeMinting: boolean
   profileMintedChecking: boolean
   profileDetailLoading: boolean
@@ -61,6 +62,7 @@ interface CanvasStore {
   changeProfileName: (name: string) => void
   changeIsProfileMinting: (isProfileMinting: boolean) => void
   changeIsFirstBadgeMinting: (isFirstBadgeMinting: boolean) => void
+  changeIsBadgeMinting: (id, loading) => void
   checkIfProfileMinted: (instance: Contract, address: string, test?: boolean) => Promise<any>
   fetchCurrentCanvasDetail: (signer, walletAddress, profileAddress) => void
   checkAndFetchCurrentWalletCanvas: (prividerOrSigner, unsignedProfileRegistryContract, walletAddress) => void
@@ -91,6 +93,7 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
   mintFlowVisible: false,
   profileName: "",
   isProfileMinting: false,
+  isBadgeMinting: new Map(),
   isFirstBadgeMinting: false,
   profileMintedChecking: false,
   profileDetailLoading: false,
@@ -188,6 +191,17 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
   changeIsProfileMinting: isProfileMinting => {
     set({
       isProfileMinting,
+    })
+  },
+  changeIsBadgeMinting: (badgeContract, loading) => {
+    const newIsBadgeMinting = new Map(get().isBadgeMinting)
+    if (loading) {
+      newIsBadgeMinting.set(badgeContract, true)
+    } else {
+      newIsBadgeMinting.delete(badgeContract)
+    }
+    set({
+      isBadgeMinting: newIsBadgeMinting,
     })
   },
   changeIsFirstBadgeMinting: isFirstBadgeMinting => {
