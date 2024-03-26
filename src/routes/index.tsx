@@ -240,12 +240,12 @@ const mainnetRoutes = [
     element: <MintProfile />,
     isHiddenFooter: true,
   },
-  {
-    name: "Scroll Skelly",
-    path: "/scroll-skelly/dashboard",
-    element: <SkellyDashboard />,
-    isHiddenFooter: true,
-  },
+  // {
+  //   name: "Scroll Canvas",
+  //   path: "/scroll-canvas/dashboard",
+  //   element: <CanvasDashboard />,
+  //   isHiddenFooter: true,
+  // },
   {
     name: "Scroll Skelly",
     path: "/scroll-skelly/badge",

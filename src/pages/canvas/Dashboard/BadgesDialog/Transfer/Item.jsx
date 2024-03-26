@@ -110,7 +110,7 @@ const useStyles = makeStyles()((theme, { transform }) => ({
 }))
 
 const Item = forwardRef((props: any, ref) => {
-  const { fadeIn, dragging, transition, transform, listeners, name, image, dragOverlay } = props
+  const { sx, className, fadeIn, dragging, transition, transform, listeners, name, image, dragOverlay } = props
 
   const { cx, classes } = useStyles({ transform })
   useEffect(() => {
@@ -127,7 +127,8 @@ const Item = forwardRef((props: any, ref) => {
   return (
     <Box
       ref={ref}
-      className={cx(classes.wrapper, fadeIn && classes.fadeIn, dragOverlay && "dragOverlay")}
+      sx={sx}
+      className={cx(classes.wrapper, className, fadeIn && classes.fadeIn, dragOverlay && "dragOverlay")}
       style={{
         transition: [transition].filter(Boolean).join(", "),
       }}
