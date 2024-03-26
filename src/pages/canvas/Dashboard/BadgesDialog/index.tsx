@@ -10,7 +10,7 @@ import { ReactComponent as CloseSvg } from "@/assets/svgs/canvas/close.svg"
 // import { useCanvasContext } from "@/contexts/CanvasContextProvider"
 import Button from "@/pages/canvas/components/Button"
 import { customiseDisplay } from "@/services/canvasService"
-// import { attachBadges,  detachBadges, reorderBadges } from "@/services/canvasService"
+// import { attachBadges, detachBadges, reorderBadges } from "@/services/canvasService"
 import useCanvasStore from "@/stores/canvasStore"
 
 import Empty from "../../components/Empty"
@@ -49,7 +49,7 @@ const BadgesDialog = props => {
   } = useCanvasStore()
   const [loading, setLoading] = useState(false)
   // console.log(attachedBadges, badgeOrder, "badgeOrder")
-  console.log(badgeOrder, "badgeOrder")
+  // console.log(badgeOrder, "badgeOrder")
 
   // const displayedIdsMap = Object.fromEntries(attachedBadges.map((id, index) => [id, Number(badgeOrder[index])]))
   // console.log(displayedIdsMap, "displayedIdsMapdisplayedIdsMap")

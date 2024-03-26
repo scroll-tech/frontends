@@ -39,11 +39,6 @@ const CustomLink = styled(Link)(({ theme }) => ({
   fontWeight: 700,
 }))
 
-const InfoBox = styled(Box)(({ theme }) => ({
-  display: "grid",
-  gridTemplateColumns: "1fr 1fr 1fr",
-}))
-
 const BadgeContractDetail = props => {
   const { address } = useParams()
   const { walletCurrentAddress, connect, provider } = useRainbowContext()
@@ -86,7 +81,7 @@ const BadgeContractDetail = props => {
     [detail],
   )
 
-  const { isMobile, isPortrait, isLandscape } = useCheckViewport()
+  const { isPortrait, isLandscape } = useCheckViewport()
 
   const handleMint = async () => {
     setLoading(true)
@@ -181,30 +176,33 @@ const BadgeContractDetail = props => {
           pt: ["2.4rem", "4rem", "8rem"],
           pb: ["8rem", "16rem"],
           minHeight: "calc(100vh - 6.5rem)",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+          // display: "flex",
+          // justifyContent: "center",
+          // alignItems: "center",
         }}
       >
         <Box
           sx={{
-            display: "flex",
             height: "100%",
+            display: "grid",
+            gridTemplateColumns: "min-content max-content",
             justifyContent: "center",
             alignItems: "center",
             background: "#101010",
-            gap: "8rem",
+            columnGap: "4rem",
+            rowGap: "7.2rem",
             "& .MuiTypography-root": {
               color: theme => theme.palette.primary.contrastText,
             },
             "@media (max-width: 1280px)": {
-              gap: "2rem",
-              display: "grid",
-              gridTemplateColumns: "minmax(min-content, 1fr) 1fr",
+              gap: "4rem",
+              // gridTemplateColumns: "minmax(min-content, 1fr) 1fr",
+              gridTemplateColumns: "min-content 1fr",
               justifyItems: "center",
             },
 
             "@media (max-width: 900px)": {
+              gap: "2rem",
               gridTemplateColumns: "1fr",
             },
             "@media (max-width: 600px)": {
@@ -238,12 +236,12 @@ const BadgeContractDetail = props => {
               </Typography>
             </Box>
 
-            <InfoBox gap={isMobile ? "2.4rem" : "4.8rem"}>
+            <Box>
               <Statistic label="Issued by">
                 <Avatar src={detail.issuer?.logo}></Avatar>
                 {detail.issuer?.name}
               </Statistic>
-            </InfoBox>
+            </Box>
 
             <Stack direction="row" gap="1.6rem" alignItems="center">
               {renderAction()}
