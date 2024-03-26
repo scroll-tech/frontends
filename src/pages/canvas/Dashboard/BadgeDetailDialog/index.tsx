@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react"
+import { useMemo } from "react"
 import Img from "react-cool-img"
 import { useNavigate } from "react-router-dom"
 
@@ -93,10 +93,17 @@ const ButtonContainer = styled(Box)(({ theme }) => ({
 
 const BadgeDetailDialog = () => {
   const { walletCurrentAddress, provider } = useRainbowContext()
-  const { badgeDetailDialogVisible, changeBadgeDetailDialog, selectedBadge, changeUpgradeDialog, queryVisibleBadges, changeSelectedBadge } =
-    useCanvasStore()
+  const {
+    badgeDetailDialogVisible,
+    changeBadgeDetailDialog,
+    selectedBadge,
+    changeUpgradeDialog,
+    queryVisibleBadges,
+    changeSelectedBadge,
+    isBadgeMinting,
+    changeIsBadgeMinting,
+  } = useCanvasStore()
   const navigate = useNavigate()
-  const [loading, setLoading] = useState(false)
 
   const handleClose = () => {
     changeBadgeDetailDialog(BadgeDetailDialogTpye.HIDDEN)
@@ -104,7 +111,7 @@ const BadgeDetailDialog = () => {
   }
 
   const handleMint = async () => {
-    setLoading(true)
+    changeIsBadgeMinting(selectedBadge.badgeContract, true)
 
     const result = await mintBadge(provider, walletCurrentAddress, selectedBadge.nftAddress, selectedBadge.nftAbi, selectedBadge.badgeContract)
     if (result === false) {
@@ -114,7 +121,7 @@ const BadgeDetailDialog = () => {
       changeBadgeDetailDialog(BadgeDetailDialogTpye.MINTED)
       queryVisibleBadges(provider, walletCurrentAddress)
     }
-    setLoading(false)
+    changeIsBadgeMinting(selectedBadge.badgeContract, false)
   }
 
   const handleViewCanvas = () => {
@@ -225,8 +232,8 @@ const BadgeDetailDialog = () => {
 
         <ButtonContainer>
           {[BadgeDetailDialogTpye.MINT, BadgeDetailDialogTpye.MINT_WITH_BACK].includes(badgeDetailDialogVisible) && (
-            <StyledScrollButton loading={loading} color="primary" onClick={handleMint}>
-              {loading ? "Minting" : "Mint badge"}
+            <StyledScrollButton loading={isBadgeMinting.get(selectedBadge.badgeContract)} color="primary" onClick={handleMint}>
+              {isBadgeMinting.get(selectedBadge.badgeContract) ? "Minting" : "Mint badge"}
             </StyledScrollButton>
           )}
 
