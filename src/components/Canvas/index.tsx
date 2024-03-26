@@ -1,10 +1,12 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
+import useStorage from "squirrel-gill"
 
 import { Box, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { ReactComponent as CloseSvg } from "@/assets/svgs/canvas/close.svg"
 import TriangleSvg from "@/assets/svgs/canvas/triangle.svg"
+import { DISPLAYED_CANVAS } from "@/constants/storageKey"
 import Button from "@/pages/canvas/components/Button"
 
 import SuperGif from "./libgif.js"
@@ -86,12 +88,16 @@ const Canvas = props => {
   } = props
   const [open, setOpen] = useState(false)
   const [tooltipVisible, setTooltipVisible] = useState(false)
-  const initialPlayRef = useRef(true)
   const tooltipVisibleRef = useRef(false)
   const [loading] = useState(false)
+  const [displayedCanvas, setDisplayedCanvas] = useStorage(localStorage, DISPLAYED_CANVAS, [])
+
+  const canvasVisible = useMemo(() => {
+    return !displayedCanvas.includes(canvasId) && visible
+  }, [displayedCanvas, visible])
 
   useEffect(() => {
-    if (visible) {
+    if (canvasVisible) {
       setTimeout(() => {
         setOpen(true)
         setTimeout(() => {
@@ -101,7 +107,7 @@ const Canvas = props => {
     } else {
       handleCloseTooltip()
     }
-  }, [visible])
+  }, [canvasVisible])
 
   const playGif = () => {
     const gif = document.getElementById(canvasId)
@@ -119,13 +125,10 @@ const Canvas = props => {
       instance.play()
       setInterval(() => {
         const get_current_frame = instance.get_current_frame()
-        if (initialPlayRef.current && get_current_frame === startFrame) {
+        if (get_current_frame === startFrame) {
           setTooltipVisible(true)
-        } else if (initialPlayRef.current && get_current_frame >= targetFrame) {
-          instance.move_to(startFrame)
           tooltipVisibleRef.current = true
-          initialPlayRef.current = false
-        } else if (!initialPlayRef.current && tooltipVisibleRef.current && get_current_frame >= targetFrame) {
+        } else if (tooltipVisibleRef.current && get_current_frame >= targetFrame) {
           instance.move_to(startFrame)
         }
       }, 100)
@@ -137,6 +140,16 @@ const Canvas = props => {
     tooltipVisibleRef.current = false
   }
 
+  const handleCanvasClick = () => {
+    setDisplayedCanvas([...displayedCanvas, canvasId])
+    onClick()
+  }
+
+  const handleCloseClick = () => {
+    setDisplayedCanvas([...displayedCanvas, canvasId])
+    handleCloseTooltip()
+  }
+
   return (
     <Container>
       {open && (
@@ -144,10 +157,10 @@ const Canvas = props => {
           {tooltipVisible && (
             <Tooltip style={{ display: "block" }}>
               <Typography sx={{ textAlign: "right" }}>
-                <SvgIcon sx={{ fontSize: "1.3rem" }} onClick={handleCloseTooltip} component={CloseSvg} inheritViewBox />
+                <SvgIcon sx={{ fontSize: "1.3rem" }} onClick={handleCloseClick} component={CloseSvg} inheritViewBox />
               </Typography>
               <Typography sx={{ fontSize: "1.6rem", fontWeight: 500, marginBottom: "1.2rem" }}>{title}</Typography>
-              <MintButton variant="contained" color="primary" sx={{ width: "100%" }} loading={loading} onClick={onClick}>
+              <MintButton variant="contained" color="primary" sx={{ width: "100%" }} loading={loading} onClick={handleCanvasClick}>
                 {buttonText}
               </MintButton>
             </Tooltip>
