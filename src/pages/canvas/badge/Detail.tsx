@@ -4,6 +4,7 @@ import Img from "react-cool-img"
 import { Helmet } from "react-helmet-async"
 import { useParams } from "react-router-dom"
 import { Link as RouterLink } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 import { Box, Skeleton, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
@@ -24,6 +25,7 @@ import { decodeBadgePayload, formatDate, generateShareTwitterURL, getBadgeImgURL
 
 import { badgeMap } from "../Dashboard/UpgradeDialog/Badges"
 import Statistic from "../components/Statistic"
+import BackToCanvas from "./BackToCanvas"
 
 const isOriginsNFTBadge = badgeContract => {
   return badgeMap[badgeContract]?.originsNFT
@@ -72,6 +74,7 @@ const InfoBox = styled(Box)(({ theme }) => ({
 
 const Detail = props => {
   const { id } = useParams()
+  const navigate = useNavigate()
   const { walletCurrentAddress } = useRainbowContext()
   const { unsignedProfileRegistryContract, publicProvider } = useCanvasContext()
 
@@ -152,6 +155,14 @@ const Detail = props => {
     setErrorMessage("")
   }
 
+  const handleClickBackToCanvas = () => {
+    if (detail.walletAddress === walletCurrentAddress) {
+      navigate("/scroll-canvas")
+    } else {
+      navigate(`/scroll-canvas/${detail.walletAddress}`)
+    }
+  }
+
   return (
     <>
       <Helmet>
@@ -166,23 +177,26 @@ const Detail = props => {
       </Helmet>
       <Box
         sx={{
-          display: "flex",
           height: "100%",
+          display: "grid",
+          gridTemplateColumns: "min-content max-content",
           justifyContent: "center",
           alignItems: "center",
           background: "#101010",
-          gap: "8rem",
+          columnGap: "4rem",
+          rowGap: "7.2rem",
           "& .MuiTypography-root": {
             color: theme => theme.palette.primary.contrastText,
           },
           "@media (max-width: 1280px)": {
-            gap: "2rem",
-            display: "grid",
-            gridTemplateColumns: "minmax(min-content, 1fr) 1fr",
+            gap: "4rem",
+            // gridTemplateColumns: "minmax(min-content, 1fr) 1fr",
+            gridTemplateColumns: "min-content 1fr",
             justifyItems: "center",
           },
 
           "@media (max-width: 900px)": {
+            gap: "2rem",
             gridTemplateColumns: "1fr",
           },
           "@media (max-width: 600px)": {
@@ -190,6 +204,27 @@ const Detail = props => {
           },
         }}
       >
+        <BackToCanvas
+          sx={{ width: "100%", gridColumn: ["span 1", "span 1", "span 2"], justifySelf: "flex-start" }}
+          username={
+            loading ? (
+              <Skeleton
+                variant="rectangular"
+                sx={{
+                  display: "inline-block",
+                  backgroundColor: "rgba(256, 256, 256, 0.15)",
+                  width: "2em",
+                  height: "100%",
+                  verticalAlign: "middle",
+                  borderRadius: "0.4rem",
+                }}
+              ></Skeleton>
+            ) : (
+              <>{detail.owner}</>
+            )
+          }
+          onClick={handleClickBackToCanvas}
+        ></BackToCanvas>
         <Box sx={{ width: "48rem", aspectRatio: "1/1" }}>
           {loading ? (
             <Skeleton variant="rectangular" sx={{ backgroundColor: "rgba(256, 256, 256, 0.15)", height: "100%", borderRadius: "1rem" }}></Skeleton>

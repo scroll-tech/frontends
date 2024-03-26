@@ -8,7 +8,7 @@ import ToolTip from "@/pages/canvas/components/Tooltip"
 import Item from "./Item"
 
 const TransferItem = props => {
-  const { id, name, image, dragOverlay } = props
+  const { id, name, image, dragOverlay, containerId } = props
 
   const { setNodeRef, listeners, isDragging, transform, transition } = useSortable({
     id,
@@ -33,6 +33,7 @@ const TransferItem = props => {
     <ToolTip title={<Box sx={{ fontWeight: 600 }}>{name}</Box>}>
       <Box sx={{ cursor: "grab" }}>
         <Item
+          sx={{ opacity: containerId === "left" ? 0.6 : 1 }}
           ref={setNodeRef}
           fadeIn={mountedWhileDragging}
           dragging={isDragging}

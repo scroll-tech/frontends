@@ -4,12 +4,16 @@ import Img from "react-cool-img"
 import { Avatar, ListItem, ListItemAvatar, ListItemText, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
-import Button from "@/pages/canvas/components/Button"
+// import Button from "@/pages/canvas/components/Button"
 import useCanvasStore, { BadgeDetailDialogTpye } from "@/stores/canvasStore"
 
 const StyledListItem = styled(ListItem)(({ theme }) => ({
   width: "100%",
   padding: "0",
+  cursor: "pointer",
+  "& *": {
+    cursor: "pointer !important",
+  },
   "& .MuiListItemSecondaryAction-root": {
     right: "0",
   },
@@ -41,7 +45,7 @@ const StyledListItemText = styled(ListItemText)(({ theme }) => ({
   },
 }))
 
-const StyledButton = styled(Button)(({ theme }) => ({}))
+// const StyledButton = styled(Button)(({ theme }) => ({}))
 
 const BadgeItem = ({ badge }) => {
   const { changeBadgeDetailDialog, changeSelectedBadge, userBadges, changeUpgradeDialog } = useCanvasStore()
@@ -71,11 +75,12 @@ const BadgeItem = ({ badge }) => {
 
   return (
     <StyledListItem
-      secondaryAction={
-        <StyledButton variant="outlined" color="tertiary" onClick={handleBadge}>
-          Mint now
-        </StyledButton>
-      }
+      onClick={handleBadge}
+      // secondaryAction={
+      //   <StyledButton variant="outlined" color="tertiary" onClick={handleBadge}>
+      //     Mint now
+      //   </StyledButton>
+      // }
     >
       <StyledListItemAvatar>
         <Img src={badge.image} placeholder="/imgs/canvas/badgePlaceholder.svg" style={{ fontSize: "8rem", borderRadius: "0.8rem" }}></Img>
