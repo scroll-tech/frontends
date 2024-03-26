@@ -159,7 +159,7 @@ const ActionBox = props => {
           onClose: handleCloseBadges,
           items: [
             {
-              label: "Customise display",
+              label: "Customize display",
               onClick: () => {
                 handleCloseBadges()
                 changeBadgesDialog(true)

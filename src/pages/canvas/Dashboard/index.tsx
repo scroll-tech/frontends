@@ -201,6 +201,7 @@ const Dashboard = props => {
             buttonText="Go to ecosystem"
             title="Welcome to Scroll Canvas where you can earn badges across the ecosystem. Explore protocols offering badges now!"
             onClick={handleClickCanvas}
+            canvasId="dashboardCanvas"
           />
           {!!othersWalletAddress ? (
             <>

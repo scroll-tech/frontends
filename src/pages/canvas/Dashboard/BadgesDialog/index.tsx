@@ -243,7 +243,7 @@ const BadgesDialog = props => {
         }}
       >
         <Typography sx={{ flex: 1, fontSize: "4rem", fontWeight: 600, color: "primary.contrastText", textAlign: "center" }}>
-          Drag badges to cutomize
+          Drag badges to customize
         </Typography>
         <IconButton onClick={handleClose}>
           <SvgIcon sx={{ fontSize: ["1.6rem", "2.4rem"], color: "primary.contrastText" }} component={CloseSvg} inheritViewBox></SvgIcon>

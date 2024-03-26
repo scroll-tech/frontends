@@ -51,6 +51,7 @@ const MintBadge = () => {
         buttonText="Mint badge"
         title={`Heya! Congratulations! You can mint ${badge.name} on Scroll Canvas.`}
         onClick={handleMintBadge}
+        canvasId={`bridgeBadge_${walletCurrentAddress}`}
       />
       <BadgeDetailDialog />
     </>
