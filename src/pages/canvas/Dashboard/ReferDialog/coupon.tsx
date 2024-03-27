@@ -3,7 +3,7 @@ import { useState } from "react"
 import useSWR from "swr"
 import { makeStyles } from "tss-react/mui"
 
-import { Box, Button, Menu, MenuItem, Skeleton, Stack, SvgIcon, Typography } from "@mui/material"
+import { Box, Button, Menu, MenuItem, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { fetchCodeByAdd, getInviteUrlByCode } from "@/apis/canvas"
@@ -12,6 +12,7 @@ import couponBackground from "@/assets/svgs/canvas/coupon.svg"
 import { ReactComponent as LogoSvg } from "@/assets/svgs/canvas/logo.svg"
 import { ReactComponent as ShareSvg } from "@/assets/svgs/canvas/share.svg"
 import { ReactComponent as TwitterSvg } from "@/assets/svgs/nft/twitter.svg"
+import Skeleton from "@/components/Skeleton"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCanvasStore from "@/stores/canvasStore"
 
@@ -19,7 +20,7 @@ const CouponBox = styled(Box)(({ theme }) => ({
   background: `url(${couponBackground}) no-repeat center center`,
   width: "65.2rem",
   height: "26.2rem",
-  margin: "0 15.4rem 12.6rem",
+  margin: "0 15.4rem 9.6rem",
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
@@ -144,7 +145,7 @@ const Coupon = () => {
         <Typography sx={{ fontSize: "2.8rem", lineHeight: "normal", fontWeight: 500 }}>Scroll Canvas Coupon</Typography>
         <Stack direction="row" justifyContent="center" alignItems="center" className={classes.codeWrapper}>
           {isLoading ? (
-            <Skeleton sx={{ width: "60%", height: "5rem", borderRadius: "4px" }}></Skeleton>
+            <Skeleton size="small" white sx={{ width: "60%", height: "3rem" }}></Skeleton>
           ) : (
             <Typography sx={{ fontSize: "4rem", fontWeight: 500, lineHeight: "7.2rem" }}>{code}</Typography>
           )}
