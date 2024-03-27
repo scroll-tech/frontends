@@ -12,7 +12,7 @@ import { ReactComponent as ShareSvg } from "@/assets/svgs/canvas/share.svg"
 import ScrollButton from "@/components/Button"
 import Link from "@/components/Link"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { mintBadge } from "@/services/canvasService"
+import { getBadgeMetadata, mintBadge } from "@/services/canvasService"
 import useCanvasStore, { BadgeDetailDialogTpye } from "@/stores/canvasStore"
 import { generateShareTwitterURL, getBadgeImgURL, requireEnv } from "@/utils"
 
@@ -117,7 +117,8 @@ const BadgeDetailDialog = () => {
     if (result === false) {
       console.log("mintBadge failed", result)
     } else {
-      changeSelectedBadge({ ...selectedBadge, id: result })
+      const { image } = await getBadgeMetadata(provider, selectedBadge.badgeContract, result)
+      changeSelectedBadge({ ...selectedBadge, id: result, image })
       changeBadgeDetailDialog(BadgeDetailDialogTpye.MINTED)
       queryVisibleBadges(provider, walletCurrentAddress)
     }
