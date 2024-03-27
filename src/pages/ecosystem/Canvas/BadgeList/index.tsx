@@ -11,7 +11,8 @@ interface CarouselItem {
   nftAddress: string[] | null
   nftAbi: object | null
   badgeContract: string
-  description: string
+  description: any
+  metaDescription?: string
   image: string
   native: boolean
   originsNFT?: boolean

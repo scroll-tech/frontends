@@ -398,5 +398,6 @@ export {
   reorderBadges,
   checkIfHasBadgeByAddress,
   getReferrerData,
+  fillBadgeDetailWithPayload,
   testAsyncFunc,
 }
