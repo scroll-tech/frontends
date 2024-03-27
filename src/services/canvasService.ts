@@ -108,8 +108,7 @@ const getBadgeMetadata = async (provider, badgeContractAddress, badgeUID = ether
     const contract = new ethers.Contract(badgeContractAddress, BadgeABI, provider)
     const badgeMetadataURI = await contract.badgeTokenURI(badgeUID)
     let badgeImageURI = badgeMetadataURI.replace(/^ipfs:\/\/(.*)/, "https://ipfs.io/ipfs/$1")
-    const response = await fetch(badgeImageURI)
-    const metadata = await response.json()
+    const metadata = await scrollRequest(badgeImageURI)
     return metadata
   } catch (error) {
     console.log("Failed to get badge image URI:", error)
@@ -133,11 +132,10 @@ const fillBadgeDetailWithPayload = async (provider, attestation) => {
   const { data, id } = attestation
   try {
     const [badgeContract] = decodeBadgePayload(data)
-    // TODO: provide works well
-    const badgeImageURI = await getBadgeMetadata(provider, badgeContract, id)
+    const badgeMetadata = await getBadgeMetadata(provider, badgeContract, id)
     return {
       ...attestation,
-      ...badgeImageURI,
+      ...badgeMetadata,
       badgeContract,
     }
   } catch (error) {

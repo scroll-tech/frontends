@@ -44,7 +44,7 @@ const Badges = [
     nftAbi: null,
     badgeContract: SCROLL_SEPOLIA_SIMPLE_BADGE_A_ADDRESS,
     description: "A collection 8888 Cute Chubby Pudgy Penquins sliding around on the freezing ETH blockchain.",
-    image: "https://cloudflare-ipfs.com/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/1.png",
+    image: "/imgs/canvas/Penguin1.webp",
     native: true,
     issuer: {
       origin: "https://scroll.io",
