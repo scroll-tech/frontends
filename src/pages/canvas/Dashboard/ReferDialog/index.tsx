@@ -20,7 +20,6 @@ const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  justifyContent: "center",
 }))
 
 const Title = styled(Typography)(({ theme }) => ({
@@ -71,9 +70,9 @@ const ReferDialog = () => {
           Your friend gets 50% off the mint fee <br />
           while you receive 0.0005 ETH per successful referral
         </SubTitle>
+        <Record />
+        <Coupon />
       </StyledDialogContent>
-      <Record />
-      <Coupon />
     </StyledDialog>
   )
 }

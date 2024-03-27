@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 
 import { SvgIcon } from "@mui/material"
 
@@ -28,7 +28,6 @@ const isNativeBadge = badgeContract => {
 
 const BadgeDetailPage = () => {
   const { id } = useParams()
-  const navigate = useNavigate()
 
   const { walletCurrentAddress } = useRainbowContext()
 
@@ -102,13 +101,12 @@ const BadgeDetailPage = () => {
     }
   }
 
-  const handleClickBackToCanvas = () => {
-    if (detail.walletAddress === walletCurrentAddress) {
-      navigate("/scroll-canvas")
-    } else {
-      navigate(`/scroll-canvas/${detail.walletAddress}`)
+  const viewCanvasURL = useMemo(() => {
+    if (walletCurrentAddress === detail.walletAddress) {
+      return "/scroll-canvas"
     }
-  }
+    return `/scroll-canvas/${detail.walletAddress}`
+  }, [walletCurrentAddress, detail])
 
   return (
     <>
@@ -117,7 +115,7 @@ const BadgeDetailPage = () => {
         metadata={metadata}
         loading={loading}
         property={["owner", "issuer", "mintedOn", isOriginsNFTBadge(detail.badgeContract) ? "rarity" : undefined]}
-        breadcrumb={<BackToCanvas username={detail.owner} loading={loading} onClick={handleClickBackToCanvas}></BackToCanvas>}
+        breadcrumb={<BackToCanvas username={detail.owner} loading={loading} href={viewCanvasURL}></BackToCanvas>}
       >
         <ScrollButton color="primary" href={viewEASScanURL(id)} target="_blank">
           View on EAS

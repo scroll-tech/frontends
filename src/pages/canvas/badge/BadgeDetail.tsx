@@ -1,13 +1,11 @@
-import { useMemo } from "react"
 import Img from "react-cool-img"
 import { Helmet } from "react-helmet-async"
-import { Link as RouterLink } from "react-router-dom"
 
-import { Box, Skeleton, Stack, Typography } from "@mui/material"
+import { Box, Stack, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
 import SectionWrapper from "@/components/SectionWrapper"
-import { useRainbowContext } from "@/contexts/RainbowProvider"
+import Skeleton from "@/components/Skeleton"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import { getBadgeImgURL } from "@/utils"
 
@@ -49,14 +47,6 @@ const InfoBox = styled<any>(Box)(({ theme, count }) => ({
 
 const BadgeDetail = props => {
   const { detail, metadata, loading, breadcrumb, property, children, extra } = props
-  const { walletCurrentAddress } = useRainbowContext()
-
-  const viewCanvasURL = useMemo(() => {
-    if (walletCurrentAddress === detail.walletAddress) {
-      return "/scroll-canvas"
-    }
-    return `/scroll-canvas/${detail.walletAddress}`
-  }, [walletCurrentAddress, detail])
 
   const { isPortrait, isLandscape } = useCheckViewport()
 
@@ -114,7 +104,7 @@ const BadgeDetail = props => {
 
           <Box sx={{ width: "48rem", aspectRatio: "1/1" }}>
             {loading ? (
-              <Skeleton variant="rectangular" sx={{ backgroundColor: "rgba(256, 256, 256, 0.15)", height: "100%", borderRadius: "1rem" }}></Skeleton>
+              <Skeleton dark sx={{ height: "100%" }}></Skeleton>
             ) : (
               <Img
                 src={getBadgeImgURL(detail.image)}
@@ -141,12 +131,12 @@ const BadgeDetail = props => {
 
             <InfoBox count={property.length}>
               {property.includes("owner") && (
-                <RouterLink to={viewCanvasURL}>
-                  <Statistic label="Owner" loading={loading} sx={{ "& *": { cursor: "pointer !important" } }}>
-                    <Img width={40} height={40} placeholder="/imgs/canvas/avatarPlaceholder.svg" src={detail.ownerLogo}></Img>
-                    {detail.owner}
-                  </Statistic>
-                </RouterLink>
+                // <RouterLink to={viewCanvasURL}>
+                <Statistic label="Owner" loading={loading} sx={{ "& *": { cursor: "pointer !important" } }}>
+                  <Img width={40} height={40} placeholder="/imgs/canvas/avatarPlaceholder.svg" src={detail.ownerLogo}></Img>
+                  {detail.owner}
+                </Statistic>
+                // </RouterLink>
               )}
               {property.includes("issuer") && (
                 <Statistic label="Issued by" loading={loading}>
