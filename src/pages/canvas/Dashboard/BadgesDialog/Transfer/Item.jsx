@@ -26,14 +26,9 @@ const useStyles = makeStyles()((theme, { transform }) => ({
   "@keyframes pop": {
     "0%": {
       transform: "scale(1)",
-      boxShadow: `0 0 0 calc(1px / ${getScaleX(transform) || 1}) rgba(63, 63, 68, 0.05),
-      0 1px calc(3px / ${getScaleX(transform) || 1}) 0 rgba(34, 33, 81, 0.15)`,
     },
     "100%": {
       transform: "scale(1.05)",
-      boxShadow: `0 0 0 calc(1px / ${getScaleX(transform) || 1}) rgba(63, 63, 68, 0.05),
-      -1px 0 15px 0 rgba(34, 33, 81, 0.01),
-      0px 15px 15px 0 rgba(34, 33, 81, 0.25)`,
     },
   },
 
@@ -65,44 +60,22 @@ const useStyles = makeStyles()((theme, { transform }) => ({
   item: {
     position: "relative",
     width: "100%",
-    // display: "flex",
-    // flexGrow: "1",
-    // alignItems: "center",
-    // padding: "18px 20px",
-    // backgroundColor: "$background-color",
-    boxShadow: `0 0 0 calc(1px / ${getScaleX(transform) || 1}) rgba(63, 63, 68, 0.05), 0 1px calc(3px / ${
-      getScaleX(transform) || 1
-    }) 0 rgba(34, 33, 81, 0.15)`,
     transformOrigin: "50% 50%",
-    transform: "scale(var(--scale, 1))",
+    transform: "scale(1)",
     transition: "box-shadow 200ms cubic-bezier(0.18, 0.67, 0.6, 1.22)",
   },
   dragging: {
-    opacity: "var(--dragging-opacity, 0.5)",
+    opacity: 0.5,
     zIndex: 0,
 
-    "&:focus": {
-      boxShadow: `0 0 0 calc(1px / ${getScaleX(transform) || 1}) rgba(63, 63, 68, 0.05), 0 1px calc(3px / ${
-        getScaleX(transform) || 1
-      }) 0 rgba(34, 33, 81, 0.15)`,
-    },
-
     "&:not(.dragOverlay)": {
-      opacity: "var(--dragging-opacity, 0.5)",
+      opacity: 0.5,
       zIndex: 0,
-
-      "&:focus": {
-        // boxShadow: ,
-      },
     },
     "&.dragOverlay": {
       cursor: "inherit",
-      /* box-shadow: 0 0px 6px 2px $focused-outline-color; */
-      animation: "pop 200ms cubic-bezier(0.18, 0.67, 0.6, 1.22)",
-      transform: "scale(var(--scale))",
-      boxShadow: `0 0 0 calc(1px / ${getScaleX(transform) || 1}) rgba(63, 63, 68, 0.05),
-      -1px 0 15px 0 rgba(34, 33, 81, 0.01),
-      0px 15px 15px 0 rgba(34, 33, 81, 0.25)`,
+      animation: "$pop 200ms cubic-bezier(0.18, 0.67, 0.6, 1.22)",
+      transform: "scale(1.05)",
       opacity: 1,
       position: "relative",
     },
@@ -111,7 +84,6 @@ const useStyles = makeStyles()((theme, { transform }) => ({
 
 const Item = forwardRef((props: any, ref) => {
   const { sx, className, fadeIn, dragging, transition, transform, listeners, name, image, dragOverlay } = props
-
   const { cx, classes } = useStyles({ transform })
   useEffect(() => {
     if (!dragOverlay) {

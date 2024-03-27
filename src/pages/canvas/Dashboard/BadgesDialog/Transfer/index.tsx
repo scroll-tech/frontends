@@ -38,7 +38,6 @@ const BadgeTransfer = props => {
     left: data.filter(({ id }) => !value.includes(id)).map(item => item.id),
     right: value,
   }
-  // console.log(initialIds, "initialIds")
 
   const dataMap = new Proxy(data, {
     get(target, prop) {
@@ -236,7 +235,6 @@ const BadgeTransfer = props => {
         if (overContainer) {
           const activeIndex = items[activeContainer].indexOf(active.id)
           const overIndex = items[overContainer].indexOf(overId)
-          // console.log("设置成功", activeIndex, overIndex)
 
           if (activeIndex !== overIndex) {
             setItems(items => ({
@@ -270,7 +268,7 @@ const BadgeTransfer = props => {
         <DragOverlay zIndex={1500} dropAnimation={dropAnimation}>
           {activeId ? (
             containers.includes(activeId) ? null : (
-              <TransferItemDragOverlay id={activeId} name={dataMap[activeId].name} image={dataMap[activeId].image}></TransferItemDragOverlay>
+              <TransferItemDragOverlay name={dataMap[activeId].name} image={dataMap[activeId].image}></TransferItemDragOverlay>
             )
           ) : null}
         </DragOverlay>,
