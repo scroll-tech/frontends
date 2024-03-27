@@ -1,13 +1,7 @@
-import { Skeleton, Stack, Typography } from "@mui/material"
-import { styled } from "@mui/material/styles"
+import { Stack, Typography } from "@mui/material"
 
 import NumberTypography from "@/components/NumberTypography"
-
-const StatisticSkeleton = styled(Skeleton)(({ theme }) => ({
-  borderRadius: "1rem",
-  width: "100%",
-  backgroundColor: "rgba(256, 256, 256, 0.15)",
-}))
+import Skeleton from "@/components/Skeleton"
 
 const Statistic = props => {
   const { label, children, loading, ...restProps } = props
@@ -25,7 +19,7 @@ const Statistic = props => {
           gap: "0.8rem",
         }}
       >
-        {loading ? <StatisticSkeleton></StatisticSkeleton> : <>{children}</>}
+        {loading ? <Skeleton dark></Skeleton> : <>{children}</>}
       </NumberTypography>
     </Stack>
   )

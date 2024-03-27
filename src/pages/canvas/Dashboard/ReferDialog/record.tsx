@@ -1,9 +1,10 @@
 import { formatEther } from "ethers"
 import { useEffect, useState } from "react"
 
-import { Box, Skeleton, Typography } from "@mui/material"
+import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
+import Skeleton from "@/components/Skeleton"
 import { useCanvasContext } from "@/contexts/CanvasContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { getReferrerData } from "@/services/canvasService"
@@ -25,20 +26,19 @@ const RecordBox = styled(Box)(({ theme }) => ({
 const Item = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
-  justifyContent: "space-between",
+  gap: "1.6rem",
   flex: 1,
 }))
 
 const Description = styled(Typography)(({ theme }) => ({
-  color: "#FFFFFF",
+  color: theme.palette.primary.contrastText,
   fontSize: "1.6rem",
   fontWeight: 500,
   lineHeight: "2.4rem",
-  marginRight: "1.6rem",
 }))
 
 const Value = styled(Typography)(({ theme }) => ({
-  color: "#FFFFFF",
+  color: theme.palette.primary.contrastText,
   fontSize: "4.8rem",
   fontWeight: 600,
   lineHeight: "6.4rem",
@@ -70,37 +70,19 @@ const Record = () => {
   return (
     <RecordBox>
       <Item>
-        <Description variant="body1" color="#FFFFFF">
+        <Description variant="body1">
           Friends <br />
           Referred
         </Description>
-        {loading ? (
-          <Skeleton
-            variant="rectangular"
-            sx={{ my: "2.2rem", height: "2rem", flex: 1, backgroundColor: "rgba(255, 255, 255, 0.45)", borderRadius: "1rem" }}
-          ></Skeleton>
-        ) : (
-          <Value variant="body1" color="#FFFFFF">
-            {count}
-          </Value>
-        )}
+        {loading ? <Skeleton size="small" sx={{ my: "1.7rem", height: "3rem" }}></Skeleton> : <Value variant="body1">{count}</Value>}
       </Item>
       <Item>
-        <Description variant="body1" color="#FFFFFF">
+        <Description variant="body1">
           ETH
           <br />
           Earned
         </Description>
-        {loading ? (
-          <Skeleton
-            variant="rectangular"
-            sx={{ my: "2.2rem", height: "2rem", flex: 1, backgroundColor: "rgba(255, 255, 255, 0.45)", borderRadius: "1rem" }}
-          ></Skeleton>
-        ) : (
-          <Value variant="body1" color="#FFFFFF">
-            {earnedETH}
-          </Value>
-        )}
+        {loading ? <Skeleton size="small" sx={{ my: "1.7rem", height: "3rem" }}></Skeleton> : <Value variant="body1">{earnedETH}</Value>}
       </Item>
     </RecordBox>
   )
