@@ -1,5 +1,5 @@
 import { getDefaultConfig } from "@rainbow-me/rainbowkit"
-import { okxWallet, walletConnectWallet } from "@rainbow-me/rainbowkit/wallets"
+import { injectedWallet, okxWallet, walletConnectWallet } from "@rainbow-me/rainbowkit/wallets"
 import { Chain, mainnet, scroll, scrollSepolia, sepolia } from "@wagmi/core/chains"
 import { parseUnits } from "ethers"
 import produce from "immer"
@@ -12,7 +12,7 @@ const projectId = requireEnv("REACT_APP_CONNECT_WALLET_PROJECT_ID")
 const wallets = [
   {
     groupName: "Popular",
-    wallets: [okxWallet, walletConnectWallet],
+    wallets: [okxWallet, walletConnectWallet, injectedWallet],
   },
 ]
 

@@ -127,7 +127,6 @@ export const PriceFeeProvider = ({ children }) => {
   const { data: blockNumber } = useBlockNumber({ watch: true })
 
   useEffect(() => {
-    if (!blockNumber) return
     fetchData()
       .then(() => {
         setErrorMessage("")
