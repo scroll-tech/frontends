@@ -2,7 +2,7 @@ import { getPublicClient } from "@wagmi/core"
 import { useEffect, useState } from "react"
 import { useBlockNumber } from "wagmi"
 
-import { useBridgeContext } from "@/contexts/BridgeContextProvider"
+import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
 import { config } from "@/contexts/RainbowProvider/configs"
 import useBridgeStore from "@/stores/bridgeStore"
 import { trimErrorMessage } from "@/utils"
@@ -11,8 +11,9 @@ import { useEstimateSendTransaction } from "./useEstimateSendTransaction"
 
 const useGasFee = (selectedToken, needApproval) => {
   const { fromNetwork, toNetwork } = useBridgeStore()
-  const { networksAndSigners } = useBridgeContext()
-  const { estimateSend } = useEstimateSendTransaction({
+  const { gasLimit: priceFeeGasLimit, gasPrice: priceFeeGasPrie } = usePriceFeeContext()
+
+  const { estimateSend, instance } = useEstimateSendTransaction({
     fromNetwork,
     toNetwork,
     selectedToken,
@@ -61,10 +62,9 @@ const useGasFee = (selectedToken, needApproval) => {
   }
 
   const { data: blockNumber } = useBlockNumber({ watch: true })
-  // enabled: !!networksAndSigners[fromNetwork.chainId].provider && needApproval === false,
 
   useEffect(() => {
-    if (!!networksAndSigners[fromNetwork.chainId].provider && needApproval === false)
+    if (needApproval === false && instance)
       calculateGasFee()
         .then(value => {
           setGasFee(value.gasFee)
@@ -83,7 +83,7 @@ const useGasFee = (selectedToken, needApproval) => {
           setError(trimErrorMessage(error.message))
           throw error
         })
-  }, [blockNumber, needApproval, networksAndSigners, fromNetwork.chainId])
+  }, [blockNumber, needApproval, priceFeeGasPrie, priceFeeGasLimit, instance])
 
   return { enlargedGasLimit, gasLimit, gasFee, error, calculateGasFee, maxFeePerGas, maxPriorityFeePerGas }
 }
