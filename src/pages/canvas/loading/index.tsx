@@ -87,7 +87,7 @@ const LoadingPage = () => {
         justifyContent="space-evenly"
         sx={{ width: `${badgewidth * 2 - 1}px`, aspectRatio: "1/1", backgroundColor: "text.primary" }}
       >
-        <Box sx={{ width: "66.67%", paddingTop: "12%" }}>
+        <Box sx={{ width: "66.67%" }}>
           <Img src="/imgs/canvas/Scrolly_Coding.webp" placeholder="/imgs/canvas/avatarPlaceholder.svg" alt="Coding Scrolly" width="100%" />
         </Box>
         <LoadingText>Loading{dots}</LoadingText>

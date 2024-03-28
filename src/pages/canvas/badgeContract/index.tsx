@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react"
+import { useMemo } from "react"
 import { useParams } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
 
@@ -25,8 +25,7 @@ const isNativeBadge = badgeContract => {
 const BadgeContractDetail = props => {
   const { address } = useParams()
   const { walletCurrentAddress, connect, provider } = useRainbowContext()
-  const { profileMinted } = useCanvasStore()
-  const [loading, setLoading] = useState(false)
+  const { profileMinted, changeIsBadgeMinting, isBadgeMinting } = useCanvasStore()
   // const [badgeMinted, setBadgeMinted] = useState(false)
   const navigate = useNavigate()
 
@@ -63,7 +62,8 @@ const BadgeContractDetail = props => {
   )
 
   const handleMint = async () => {
-    setLoading(true)
+    changeIsBadgeMinting(address, true)
+
     const badgeForMint = Badges.find(item => item.badgeContract === address)
     const result = await mintBadge(provider, walletCurrentAddress, badgeForMint!.nftAddress, badgeForMint!.nftAbi, badgeForMint!.badgeContract)
     if (result === false) {
@@ -74,7 +74,7 @@ const BadgeContractDetail = props => {
       // setBadgeMinted(true)
       navigate(`/scroll-canvas/badge/${result}`, { replace: true })
     }
-    setLoading(false)
+    changeIsBadgeMinting(address, false)
   }
 
   const renderTip = () => {
@@ -130,7 +130,7 @@ const BadgeContractDetail = props => {
       )
     } else if (profileMinted === true && !isOwned) {
       return (
-        <ScrollButton color="primary" onClick={handleMint} loading={loading} gloomy={!isValid}>
+        <ScrollButton color="primary" onClick={handleMint} loading={isBadgeMinting.get(address)} gloomy={!isValid}>
           Mint now
         </ScrollButton>
       )

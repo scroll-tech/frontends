@@ -77,7 +77,54 @@ const Dashboard = props => {
     changeProfileDetailLoading,
     profileDetailLoading,
     userBadges,
+    changeUpgradeDialog,
   } = useCanvasStore()
+
+  const metadata = {
+    title: `Scroll -  ${canvasUsername}'s Canvas`,
+    description: "Hi, I've minted Scroll Canvas!",
+    image: `${requireEnv("REACT_APP_CANVAS_BACKEND_URI")}/canvas/${othersWalletAddress || walletCurrentAddress}.png`,
+  }
+
+  const mintableBadgeCount = useAsyncMemo(async () => {
+    if (provider) {
+      const filteredBadges = await Promise.all(
+        Badges.map(async badge => {
+          const isUserBadge = userBadges.some(userBadge => userBadge.badgeContract === badge.badgeContract)
+          const isValidBadge = await badge.validator(walletCurrentAddress, provider)
+          return {
+            ...badge,
+            isValid: !isUserBadge && isValidBadge,
+          }
+        }),
+      )
+      return filteredBadges.filter(badge => badge.isValid).length
+    }
+  }, [provider, walletCurrentAddress, userBadges])
+
+  const scrollyAlert = useMemo(() => {
+    if (mintableBadgeCount) {
+      return {
+        title: "Mint badges",
+        content: "Welcome to Scroll Canvas where you can earn badges across the ecosystem. Mint your badges now!",
+        action: () => {
+          changeUpgradeDialog(true)
+        },
+      }
+    }
+    return {
+      title: "Explore badges",
+      content: "Welcome to Scroll Canvas where you can earn badges across the ecosystem. Explore protocols offering badges now!",
+      action: () => {
+        navigate("/ecosystem")
+      },
+    }
+  }, [mintableBadgeCount])
+
+  const [windowDimensions, setWindowDimensions] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  })
 
   useEffect(() => {
     if (publicProvider && unsignedProfileRegistryContract && othersWalletAddress) {
@@ -122,33 +169,6 @@ const Dashboard = props => {
     await fetchOthersCanvasDetail(provider, othersWalletAddress, profileAddress)
   }
 
-  const metadata = {
-    title: `Scroll -  ${canvasUsername}'s Canvas`,
-    description: "Hi, I've minted Scroll Canvas!",
-    image: `${requireEnv("REACT_APP_CANVAS_BACKEND_URI")}/canvas/${othersWalletAddress || walletCurrentAddress}.png`,
-  }
-
-  const [windowDimensions, setWindowDimensions] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  })
-
-  const mintableBadgeCount = useAsyncMemo(async () => {
-    if (provider) {
-      const filteredBadges = await Promise.all(
-        Badges.map(async badge => {
-          const isUserBadge = userBadges.some(userBadge => userBadge.badgeContract === badge.badgeContract)
-          const isValidBadge = await badge.validator(walletCurrentAddress, provider)
-          return {
-            ...badge,
-            isValid: !isUserBadge && isValidBadge,
-          }
-        }),
-      )
-      return filteredBadges.filter(badge => badge.isValid).length
-    }
-  }, [provider, walletCurrentAddress, userBadges])
-
   const handleResize = useCallback(() => {
     setWindowDimensions({
       width: window.innerWidth,
@@ -172,10 +192,6 @@ const Dashboard = props => {
     }
   }, [windowDimensions, gridNum])
 
-  const handleClickCanvas = () => {
-    navigate("/ecosystem")
-  }
-
   if (othersWalletAddress === walletCurrentAddress) {
     return <Navigate to="/scroll-canvas" replace></Navigate>
   }
@@ -196,13 +212,8 @@ const Dashboard = props => {
       ) : (
         <Container badgewidth={badgewidth}>
           <BadgeWall badgewidth={badgewidth} gridNum={gridNum} windowDimensions={windowDimensions} />
-          <Canvas
-            visible
-            buttonText="Go to ecosystem"
-            title="Welcome to Scroll Canvas where you can earn badges across the ecosystem. Explore protocols offering badges now!"
-            onClick={handleClickCanvas}
-            canvasId="dashboardCanvas"
-          />
+
+          <Canvas visible buttonText={scrollyAlert.title} title={scrollyAlert.content} onClick={scrollyAlert.action} canvasId="dashboardCanvas" />
           {!!othersWalletAddress ? (
             <>
               <ActionBox></ActionBox>

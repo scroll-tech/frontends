@@ -16,14 +16,14 @@ import BadgeItem from "./BadgeItem"
 import Badges from "./Badges"
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
-  borderRadius: "1.6rem",
   backgroundColor: "rgba(16, 16, 16, 0.60)",
   "& .MuiDialog-paper": {
     // background: "linear-gradient(114deg, #2A2A2A 0%, rgba(27, 27, 27, 0.60) 100%)",
     backgroundColor: "#101010",
     width: "64rem",
     height: "67.4rem",
-    padding: "3rem",
+    padding: "3.2rem",
+    borderRadius: "1.6rem",
   },
 }))
 
@@ -33,6 +33,7 @@ const StyledDialogTitle = styled(DialogTitle)(({ theme }) => ({
   justifyContent: "space-between",
   alignItems: "center",
   marginBottom: "2.4rem",
+  marginRight: "-0.8rem",
 }))
 
 const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
@@ -113,9 +114,9 @@ const UpgradeDialog = () => {
   return (
     <StyledDialog maxWidth={false} onClose={handleClose} open={upgradeDialogVisible}>
       <StyledDialogTitle>
-        <Typography sx={{ fontSize: "3.2rem", lineHeight: 1, color: "#ffffff", fontWeight: 600 }}>Badges for mint</Typography>
+        <Typography sx={{ fontSize: "3.2rem", lineHeight: "5.6rem", color: "#ffffff", fontWeight: 600 }}>Badges for mint</Typography>
         <IconButton sx={{ "&:hover": { backgroundColor: "unset" } }} onClick={handleClose}>
-          <SvgIcon sx={{ fontSize: ["1.6rem", "1.8rem"], color: "#fff" }} component={CloseSvg} inheritViewBox></SvgIcon>
+          <SvgIcon sx={{ fontSize: ["1.6rem", "2.4rem"], color: "#fff" }} component={CloseSvg} inheritViewBox></SvgIcon>
         </IconButton>
       </StyledDialogTitle>
       <StyledDialogContent>
