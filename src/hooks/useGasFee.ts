@@ -1,10 +1,12 @@
 import { getPublicClient } from "@wagmi/core"
 import { isNumber } from "lodash"
-import { useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { useBlockNumber } from "wagmi"
 
 import { BATCH_DEPOSIT_TOKENS } from "@/constants"
-import { useBridgeContext } from "@/contexts/BridgeContextProvider"
+// import { useBridgeContext } from "@/contexts/BridgeContextProvider"
+import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
+import { config } from "@/contexts/RainbowProvider/configs"
 import { DepositBatchMode } from "@/stores/batchBridgeStore"
 import useBridgeStore from "@/stores/bridgeStore"
 import { checkApproved, trimErrorMessage } from "@/utils"
@@ -13,9 +15,10 @@ import { useEstimateBatchDeposit } from "./useEstimateBatchDeposit"
 import { useEstimateSendTransaction } from "./useEstimateSendTransaction"
 
 const useGasFee = (selectedToken, needApproval) => {
-  const { networksAndSigners } = useBridgeContext()
   const { fromNetwork, toNetwork } = useBridgeStore()
-  const { estimateSend } = useEstimateSendTransaction({
+  const { gasLimit: priceFeeGasLimit, gasPrice: priceFeeGasPrice } = usePriceFeeContext()
+
+  const { estimateSend, instance } = useEstimateSendTransaction({
     fromNetwork,
     toNetwork,
     selectedToken,
@@ -35,76 +38,93 @@ const useGasFee = (selectedToken, needApproval) => {
   const [maxPriorityFeePerGas, setMaxPriorityFeePerGas] = useState<bigint | null>(null)
   const [error, setError] = useState("")
 
-  const calculateGasFee = async () => {
-    let gasPrice
-    let priorityFee
-    // scroll not support EIP-1559
+  const { data: blockNumber } = useBlockNumber({ watch: true })
 
-    if (fromNetwork.isL1) {
-      const { maxFeePerGas, maxPriorityFeePerGas } = await getPublicClient({ chainId: fromNetwork.chainId }).estimateFeesPerGas()
-      gasPrice = maxFeePerGas as bigint
-      priorityFee = maxPriorityFeePerGas as bigint
-    } else {
-      const { gasPrice: legacyGasPrice } = await getPublicClient({ chainId: fromNetwork.chainId }).estimateFeesPerGas({ type: "legacy" })
-      gasPrice = legacyGasPrice as bigint
-      priorityFee = null
-    }
-    const gasLimit = checkApproved(needApproval, DepositBatchMode.Fast) ? await estimateSend() : BigInt(0)
+  const calculateGasFee = useCallback(async () => {
+    if (
+      (needApproval === false || (isNumber(needApproval) && needApproval !== 3)) &&
+      instance &&
+      priceFeeGasPrice &&
+      priceFeeGasLimit &&
+      blockNumber
+    ) {
+      let gasPrice
+      let priorityFee
+      // scroll not support EIP-1559
 
-    const gasLimitBatch =
-      checkApproved(needApproval, DepositBatchMode.Economy) && BATCH_DEPOSIT_TOKENS.includes(selectedToken.symbol)
-        ? await estimateBatchDeposit()
-        : BigInt(0)
+      if (fromNetwork.isL1) {
+        const { maxFeePerGas, maxPriorityFeePerGas } = await getPublicClient(config, { chainId: fromNetwork.chainId })!.estimateFeesPerGas()
+        gasPrice = maxFeePerGas as bigint
+        priorityFee = maxPriorityFeePerGas as bigint
+      } else {
+        const { gasPrice: legacyGasPrice } = await getPublicClient(config, { chainId: fromNetwork.chainId })!.estimateFeesPerGas({ type: "legacy" })
+        gasPrice = legacyGasPrice as bigint
+        priorityFee = null
+      }
+      const gasLimit = checkApproved(needApproval, DepositBatchMode.Fast) ? await estimateSend() : BigInt(0)
 
-    console.log("gasLimit/gasLimitBatch", gasLimit, gasLimitBatch)
+      const gasLimitBatch =
+        checkApproved(needApproval, DepositBatchMode.Economy) && BATCH_DEPOSIT_TOKENS.includes(selectedToken.symbol)
+          ? await estimateBatchDeposit()
+          : BigInt(0)
 
-    if (gasLimit === null) {
+      console.log("gasLimit/gasLimitBatch", gasLimit, gasLimitBatch)
+
+      if (gasLimit === null) {
+        return {
+          gasLimit: null,
+          batchDepositGasFee: null,
+          enlargedGasLimit: null,
+          gasFee: null,
+          gasPrice,
+          maxPriorityFeePerGas: priorityFee,
+        }
+      }
+      const estimatedGasCost = (gasLimit as bigint) * (gasPrice || BigInt(1e9))
+      const estimatedBatchDepositGasCost = (gasLimitBatch as bigint) * (gasPrice || BigInt(1e9))
+      const enlargedGasLimit = (gasLimit * BigInt(120)) / BigInt(100)
       return {
-        gasLimit: null,
-        batchDepositGasFee: null,
-        enlargedGasLimit: null,
-        gasFee: null,
+        gasLimit,
+        enlargedGasLimit,
+        gasFee: estimatedGasCost,
+        batchDepositGasFee: estimatedBatchDepositGasCost,
         gasPrice,
         maxPriorityFeePerGas: priorityFee,
       }
     }
-    const estimatedGasCost = (gasLimit as bigint) * (gasPrice || BigInt(1e9))
-    const estimatedBatchDepositGasCost = (gasLimitBatch as bigint) * (gasPrice || BigInt(1e9))
-    const enlargedGasLimit = (gasLimit * BigInt(120)) / BigInt(100)
     return {
-      gasLimit,
-      enlargedGasLimit,
-      gasFee: estimatedGasCost,
-      batchDepositGasFee: estimatedBatchDepositGasCost,
-      gasPrice,
-      maxPriorityFeePerGas: priorityFee,
+      gasLimit: null,
+      enlargedGasLimit: null,
+      gasFee: null,
+      batchDepositGasFee: null,
+      gasPrice: null,
+      maxPriorityFeePerGas: null,
     }
-  }
+  }, [blockNumber, needApproval, priceFeeGasPrice, priceFeeGasLimit, instance])
 
-  useBlockNumber({
-    enabled: !!networksAndSigners[fromNetwork.chainId].provider && (needApproval === false || (isNumber(needApproval) && needApproval !== 3)),
-    onBlock(blockNumber) {
-      calculateGasFee()
-        .then(value => {
-          setGasFee(value.gasFee)
-          setBatchDepositGasFee(value.batchDepositGasFee)
-          setGasLimit(value.gasLimit)
-          setEnlargedGasLimit(value.enlargedGasLimit)
-          setMaxFeePerGas(value.gasPrice)
-          setMaxPriorityFeePerGas(value.maxPriorityFeePerGas)
-          setError("")
-        })
-        .catch(error => {
-          setGasFee(null)
-          setBatchDepositGasFee(null)
-          setGasLimit(null)
-          setEnlargedGasLimit(null)
-          setMaxFeePerGas(null)
-          setMaxPriorityFeePerGas(null)
-          setError(trimErrorMessage(error.message))
-        })
-    },
-  })
+  useEffect(() => {
+    calculateGasFee()
+      .then(({ gasLimit, enlargedGasLimit, gasFee, gasPrice, maxPriorityFeePerGas, batchDepositGasFee }) => {
+        setGasLimit(gasLimit)
+        setEnlargedGasLimit(enlargedGasLimit)
+        setGasFee(gasFee)
+        setBatchDepositGasFee(batchDepositGasFee)
+        setMaxFeePerGas(gasPrice)
+        setMaxPriorityFeePerGas(maxPriorityFeePerGas)
+        setError("")
+      })
+      .catch(error => {
+        setGasLimit(null)
+        setEnlargedGasLimit(null)
+        setGasFee(null)
+        setBatchDepositGasFee(null)
+        setMaxFeePerGas(null)
+        setMaxPriorityFeePerGas(null)
+        setError(trimErrorMessage(error.message))
+        throw error
+      })
+  }, [calculateGasFee])
+
   return { enlargedGasLimit, gasLimit, gasFee, error, calculateGasFee, maxFeePerGas, maxPriorityFeePerGas, batchDepositGasFee }
 }
 
