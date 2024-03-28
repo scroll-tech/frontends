@@ -2,6 +2,7 @@ import { getPublicClient } from "@wagmi/core"
 import { useEffect, useState } from "react"
 import { useBlockNumber } from "wagmi"
 
+import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import { config } from "@/contexts/RainbowProvider/configs"
 import useBridgeStore from "@/stores/bridgeStore"
 import { trimErrorMessage } from "@/utils"
@@ -10,6 +11,7 @@ import { useEstimateSendTransaction } from "./useEstimateSendTransaction"
 
 const useGasFee = (selectedToken, needApproval) => {
   const { fromNetwork, toNetwork } = useBridgeStore()
+  const { networksAndSigners } = useBridgeContext()
   const { estimateSend } = useEstimateSendTransaction({
     fromNetwork,
     toNetwork,
@@ -59,26 +61,29 @@ const useGasFee = (selectedToken, needApproval) => {
   }
 
   const { data: blockNumber } = useBlockNumber({ watch: true })
+  // enabled: !!networksAndSigners[fromNetwork.chainId].provider && needApproval === false,
 
   useEffect(() => {
-    calculateGasFee()
-      .then(value => {
-        setGasFee(value.gasFee)
-        setGasLimit(value.gasLimit)
-        setEnlargedGasLimit(value.enlargedGasLimit)
-        setMaxFeePerGas(value.gasPrice)
-        setMaxPriorityFeePerGas(value.maxPriorityFeePerGas)
-        setError("")
-      })
-      .catch(error => {
-        setGasFee(null)
-        setGasLimit(null)
-        setEnlargedGasLimit(null)
-        setMaxFeePerGas(null)
-        setMaxPriorityFeePerGas(null)
-        setError(trimErrorMessage(error.message))
-      })
-  }, [blockNumber])
+    if (!!networksAndSigners[fromNetwork.chainId].provider && needApproval === false)
+      calculateGasFee()
+        .then(value => {
+          setGasFee(value.gasFee)
+          setGasLimit(value.gasLimit)
+          setEnlargedGasLimit(value.enlargedGasLimit)
+          setMaxFeePerGas(value.gasPrice)
+          setMaxPriorityFeePerGas(value.maxPriorityFeePerGas)
+          setError("")
+        })
+        .catch(error => {
+          setGasFee(null)
+          setGasLimit(null)
+          setEnlargedGasLimit(null)
+          setMaxFeePerGas(null)
+          setMaxPriorityFeePerGas(null)
+          setError(trimErrorMessage(error.message))
+          throw error
+        })
+  }, [blockNumber, needApproval, networksAndSigners, fromNetwork.chainId])
 
   return { enlargedGasLimit, gasLimit, gasFee, error, calculateGasFee, maxFeePerGas, maxPriorityFeePerGas }
 }
