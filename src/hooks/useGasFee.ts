@@ -1,17 +1,19 @@
 import { getPublicClient } from "@wagmi/core"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useBlockNumber } from "wagmi"
 
-import { useBridgeContext } from "@/contexts/BridgeContextProvider"
+import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
+import { config } from "@/contexts/RainbowProvider/configs"
 import useBridgeStore from "@/stores/bridgeStore"
 import { trimErrorMessage } from "@/utils"
 
 import { useEstimateSendTransaction } from "./useEstimateSendTransaction"
 
 const useGasFee = (selectedToken, needApproval) => {
-  const { networksAndSigners } = useBridgeContext()
   const { fromNetwork, toNetwork } = useBridgeStore()
-  const { estimateSend } = useEstimateSendTransaction({
+  const { gasLimit: priceFeeGasLimit, gasPrice: priceFeeGasPrie } = usePriceFeeContext()
+
+  const { estimateSend, instance } = useEstimateSendTransaction({
     fromNetwork,
     toNetwork,
     selectedToken,
@@ -30,11 +32,11 @@ const useGasFee = (selectedToken, needApproval) => {
     // scroll not support EIP-1559
 
     if (fromNetwork.isL1) {
-      const { maxFeePerGas, maxPriorityFeePerGas } = await getPublicClient({ chainId: fromNetwork.chainId }).estimateFeesPerGas()
+      const { maxFeePerGas, maxPriorityFeePerGas } = await getPublicClient(config, { chainId: fromNetwork.chainId })!.estimateFeesPerGas()
       gasPrice = maxFeePerGas as bigint
       priorityFee = maxPriorityFeePerGas as bigint
     } else {
-      const { gasPrice: legacyGasPrice } = await getPublicClient({ chainId: fromNetwork.chainId }).estimateFeesPerGas({ type: "legacy" })
+      const { gasPrice: legacyGasPrice } = await getPublicClient(config, { chainId: fromNetwork.chainId })!.estimateFeesPerGas({ type: "legacy" })
       gasPrice = legacyGasPrice as bigint
       priorityFee = null
     }
@@ -59,9 +61,10 @@ const useGasFee = (selectedToken, needApproval) => {
     }
   }
 
-  useBlockNumber({
-    enabled: !!networksAndSigners[fromNetwork.chainId].provider && needApproval === false,
-    onBlock(blockNumber) {
+  const { data: blockNumber } = useBlockNumber({ watch: true })
+
+  useEffect(() => {
+    if (needApproval === false && instance)
       calculateGasFee()
         .then(value => {
           setGasFee(value.gasFee)
@@ -78,9 +81,10 @@ const useGasFee = (selectedToken, needApproval) => {
           setMaxFeePerGas(null)
           setMaxPriorityFeePerGas(null)
           setError(trimErrorMessage(error.message))
+          throw error
         })
-    },
-  })
+  }, [blockNumber, needApproval, priceFeeGasPrie, priceFeeGasLimit, instance])
+
   return { enlargedGasLimit, gasLimit, gasFee, error, calculateGasFee, maxFeePerGas, maxPriorityFeePerGas }
 }
 
