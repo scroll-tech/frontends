@@ -122,7 +122,7 @@ const BadgeDetail = props => {
               Upgrade now
             </UpgradedButton>
           </UpgradedBox> */}
-              <Typography sx={{ fontSize: ["4rem", "5.6rem"], fontWeight: 600, lineHeight: ["5.6rem", "9.6rem"] }}>{detail.name}</Typography>
+              <Typography sx={{ fontSize: ["4rem", "5.6rem"], fontWeight: 600, lineHeight: ["5.6rem", "7.2rem"] }}>{detail.name}</Typography>
 
               <Typography sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: ["2.4rem", "3.2rem"], maxWidth: ["100%", "56rem"] }}>
                 <>{detail.description}</>

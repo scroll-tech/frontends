@@ -27,6 +27,7 @@ const CanvasIndex = props => {
   }, [walletCurrentAddress])
 
   const renderCanvas = () => {
+    // return <LoadingPage></LoadingPage>
     if (!walletCurrentAddress) {
       return <Navigate to="/scroll-canvas/mint" replace={true}></Navigate>
     } else if (isWrongNetwork) {
