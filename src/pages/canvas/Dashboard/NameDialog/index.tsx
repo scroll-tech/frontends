@@ -56,7 +56,7 @@ const NameDialog = () => {
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setProfileName(e.target.value)
+    setProfileName(e.target.value.trim())
   }
 
   const changeUsername = async () => {
@@ -110,7 +110,7 @@ const NameDialog = () => {
               minLength: 4,
             }}
             autoFocus
-            placeholder="Enter your name"
+            placeholder="name"
             value={profileName}
             onChange={handleChange}
             onKeyDown={handleKeydown}
