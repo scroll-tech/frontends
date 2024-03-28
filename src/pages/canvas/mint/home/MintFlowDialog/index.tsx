@@ -14,7 +14,6 @@ import {
 
 import { ReactComponent as CloseSvg } from "@/assets/svgs/nft/flow-close.svg"
 import ScrollLogo from "@/components/ScrollLogo"
-import { SCROLL_ORIGINS_NFT } from "@/constants"
 import useCanvasStore from "@/stores/canvasStore"
 
 import MintFlow from "../../flow"
@@ -44,7 +43,7 @@ const MintFlowDialog = props => {
         <Toolbar sx={{ justifyContent: "space-between", px: ["2rem", "2rem", "6rem"] }}>
           <ScrollLogo light></ScrollLogo>
           <Typography sx={{ fontSize: ["1.6rem", "1.8rem"], fontWeight: 600, color: theme => theme.palette.primary.contrastText }}>
-            Mint {SCROLL_ORIGINS_NFT}
+            Mint Scroll Canvas
           </Typography>
           <Stack direction="row" justifyContent="flex-end" sx={{ width: "8rem" }}>
             {isProfileMinting || isFirstBadgeMinting ? (
