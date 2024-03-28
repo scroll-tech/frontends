@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { usePrevious } from "react-use"
 import { useDebouncedCallback } from "use-debounce"
 
 import { CircularProgress, SvgIcon, Typography } from "@mui/material"
@@ -13,11 +14,12 @@ const useValidateName = value => {
   const { unsignedProfileRegistryContract } = useCanvasContext()
   const { username } = useCanvasStore()
 
+  const preValue = usePrevious(value)
   const [helpText, setHelpText] = useState<string | null>(null)
   const [validating, setValidating] = useState(false)
 
   useEffect(() => {
-    if (value !== username) {
+    if ((preValue && !value) || value !== username) {
       handleValidateName(value)
     }
   }, [value, username])
@@ -36,17 +38,16 @@ const useValidateName = value => {
 
   const validateName = async name => {
     let nextHelpText
-    if (SensitiveWord.some(word => name.toLowerCase().includes(word.toLowerCase()))) {
-      nextHelpText = "This name is not allowed"
-    } else if (!name) {
+    if (!name) {
       nextHelpText = "Please enter your name"
     } else if (!/^[\dA-Za-z_]{4,15}$/g.test(name)) {
-      // nextHelpText = "Must consist of 4-15 characters, including A-Z/a-z/0-9/_"
       nextHelpText = (
         <>
           Your name must consist of 4 to 15 characters,<br></br>comprising only letters, numbers or underline.
         </>
       )
+    } else if (SensitiveWord.some(word => name.toLowerCase().includes(word.toLowerCase()))) {
+      nextHelpText = "This name is not allowed"
     } else {
       const isUsernameUsed = await unsignedProfileRegistryContract.isUsernameUsed(name)
       if (isUsernameUsed) {

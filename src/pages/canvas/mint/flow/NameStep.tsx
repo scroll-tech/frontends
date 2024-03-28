@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { useSwiper } from "swiper/react"
 
 import { Box, InputBase, Stack } from "@mui/material"
@@ -41,6 +41,9 @@ const NameStep = props => {
 
   const { helpText, validating, renderValidation } = useValidateCanvasName(name)
 
+  // alert only when user is printing letter
+  const isAllowedNext = useMemo(() => name && !helpText && !validating, [name, helpText, validating])
+
   const handleNext = () => {
     swiper.slideNext()
     scrollTarget?.scrollTo({
@@ -50,11 +53,11 @@ const NameStep = props => {
   }
 
   const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value)
+    setName(e.target.value.trim())
   }
 
   const handleKeydown = async e => {
-    if (e.keyCode === 13) {
+    if (e.keyCode === 13 && isAllowedNext) {
       handleNext()
     }
   }
@@ -62,7 +65,7 @@ const NameStep = props => {
   const renderAction = () => {
     if (chainId === CHAIN_ID.L2) {
       return (
-        <Button color="primary" gloomy={!!helpText || validating || !name} onClick={handleNext}>
+        <Button color="primary" gloomy={!isAllowedNext} onClick={handleNext}>
           Next
         </Button>
       )
