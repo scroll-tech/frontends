@@ -91,7 +91,15 @@ const BadgeItem = ({ badge }) => {
           <Typography className="MuiListItemText-secondary">
             Issued by
             <Avatar
-              sx={{ height: "2.4rem", width: "2.4rem", display: "inline-block", verticalAlign: "bottom", margin: "0 0.8rem" }}
+              variant="square"
+              sx={{
+                height: "2.4rem",
+                width: "2.4rem",
+                display: "inline-block",
+                verticalAlign: "bottom",
+                margin: "0 0.4rem 0 0.8rem",
+                borderRadius: "2px",
+              }}
               src={badge.issuer.logo}
             />
             {badge.issuer.name}

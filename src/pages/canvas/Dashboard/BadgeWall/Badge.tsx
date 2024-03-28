@@ -27,7 +27,7 @@ const Badge = ({ badge, index, badgewidth }) => {
           left: `${badge.left}px`,
           width: `${badgewidth}px`,
           height: `${badgewidth}px`,
-          padding: `${badgewidth / 10}px`,
+          padding: `${badgewidth * 0.15}px`,
           zIndex: 0,
 
           "@keyframes rotate": {

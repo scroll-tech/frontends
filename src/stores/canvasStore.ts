@@ -221,11 +221,18 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
     })
   },
 
+  // after switching wallet address
   clearCanvas: () => {
     set({
       referralCode: "",
+      // close all dialog
       mintFlowVisible: false,
-      // not sure
+      profileDialogVisible: false,
+      referDialogVisible: false,
+      badgesDialogVisible: false,
+      upgradeDialogVisible: false,
+      badgeDetailDialogVisible: BadgeDetailDialogTpye.HIDDEN,
+      // reset profile mint status
       profileMinted: null,
       profileName: "",
       username: "",
