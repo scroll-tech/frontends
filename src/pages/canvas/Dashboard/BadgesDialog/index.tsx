@@ -33,7 +33,7 @@ const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
   alignItems: "center",
   // justifyContent: "center",
 }))
-
+// TODO:
 const BadgesDialog = props => {
   const { mintableBadgeCount } = props
   const {
@@ -250,7 +250,13 @@ const BadgesDialog = props => {
         </IconButton>
       </DialogTitle>
       <StyledDialogContent>
-        <Transfer titles={["Not displayed", "Dispalyed"]} data={userBadges} value={sortedBadges} onChange={handleTransferChange}></Transfer>
+        <Transfer
+          sx={{ mb: "4.8rem" }}
+          titles={["Not displayed", "Dispalyed"]}
+          data={userBadges}
+          value={sortedBadges}
+          onChange={handleTransferChange}
+        ></Transfer>
         <Stack direction="row" justifyContent="center" gap="1.6rem">
           <Button color="secondary" onClick={handleClose}>
             Cancel

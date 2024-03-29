@@ -32,7 +32,7 @@ const dropAnimation: DropAnimation = {
 }
 
 const BadgeTransfer = props => {
-  const { titles, value, data, onChange } = props
+  const { titles, value, data, sx, onChange } = props
 
   const initialIds = {
     left: data.filter(({ id }) => !value.includes(id)).map(item => item.id),
@@ -248,7 +248,7 @@ const BadgeTransfer = props => {
       }}
       onDragCancel={onDragCancel}
     >
-      <Box sx={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gridGap: "3rem", width: "100%", mb: "4.8rem" }}>
+      <Box sx={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gridGap: "3rem", width: "100%", ...sx }}>
         {containers.map((containerId, index) => (
           <TransferList key={containerId} id={containerId} label={titles[index]} items={items[containerId]}>
             {items[containerId].map(item => (
