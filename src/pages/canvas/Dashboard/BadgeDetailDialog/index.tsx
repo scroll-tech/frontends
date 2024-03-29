@@ -3,48 +3,19 @@ import Img from "react-cool-img"
 import { useNavigate } from "react-router-dom"
 
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined"
-import { Avatar, Box, Dialog, DialogContent, DialogTitle, IconButton, Stack, SvgIcon, Typography } from "@mui/material"
+import { Avatar, Box, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
-import { ReactComponent as BackSvg } from "@/assets/svgs/canvas/back.svg"
-import { ReactComponent as CloseSvg } from "@/assets/svgs/canvas/close.svg"
 import { ReactComponent as ShareSvg } from "@/assets/svgs/canvas/share.svg"
 import ScrollButton from "@/components/Button"
 import Link from "@/components/Link"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import Dialog from "@/pages/canvas/components/Dialog"
 import { getBadgeMetadata, mintBadge } from "@/services/canvasService"
 import useCanvasStore, { BadgeDetailDialogTpye } from "@/stores/canvasStore"
 import { generateShareTwitterURL, getBadgeImgURL, requireEnv } from "@/utils"
 
 import { badgeMap } from "../UpgradeDialog/Badges"
-
-const StyledDialog = styled(Dialog)(({ theme }) => ({
-  borderRadius: "1.6rem",
-  backgroundColor: "rgba(16, 16, 16, 0.60)",
-  "& .MuiDialog-paper": {
-    backgroundColor: "#101010",
-    width: "64rem",
-    // height: "67.4rem",
-    minHeight: "67.4rem",
-    padding: "3.2rem",
-  },
-}))
-
-const StyledDialogTitle = styled(DialogTitle)(({ theme }) => ({
-  padding: 0,
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  marginBottom: "2.4rem",
-}))
-
-const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center",
-  padding: "0",
-}))
 
 const StyledScrollButton = styled(ScrollButton)(({ theme }) => ({
   // width: "24rem",
@@ -165,32 +136,13 @@ const BadgeDetailDialog = () => {
   }, [selectedBadge])
 
   return (
-    <StyledDialog onClose={handleClose} maxWidth={false} open={badgeDetailDialogVisible !== BadgeDetailDialogTpye.HIDDEN}>
-      <StyledDialogTitle>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            direction: "rtl",
-            width: "100%",
-            position: "relative",
-            top: badgeDetailDialogVisible === BadgeDetailDialogTpye.UPGRADE ? "4.8rem" : 0,
-          }}
-        >
-          <Box sx={{ p: 0, "&:hover": { backgroundColor: "unset" } }} onClick={handleClose}>
-            <SvgIcon sx={{ fontSize: ["1.6rem", "1.8rem"], color: "#fff" }} component={CloseSvg} inheritViewBox></SvgIcon>
-          </Box>
-          {[BadgeDetailDialogTpye.MINT_WITH_BACK].includes(badgeDetailDialogVisible) && (
-            <IconButton sx={{ p: 0, "&:hover": { backgroundColor: "unset" } }} onClick={handleBack}>
-              <Box component="span" sx={{ fontSize: "1.8rem", color: "#fff" }}>
-                Back
-              </Box>
-              <SvgIcon sx={{ fontSize: ["1.6rem", "1.8rem"], color: "#fff", marginRight: "1.2rem" }} component={BackSvg} inheritViewBox></SvgIcon>
-            </IconButton>
-          )}
-        </Box>
-      </StyledDialogTitle>
-      <StyledDialogContent>
+    <Dialog
+      open={badgeDetailDialogVisible !== BadgeDetailDialogTpye.HIDDEN}
+      allowBack={[BadgeDetailDialogTpye.MINT_WITH_BACK, BadgeDetailDialogTpye.MINTED].includes(badgeDetailDialogVisible)}
+      onBack={handleBack}
+      onClose={handleClose}
+    >
+      <Stack direction="column" alignItems="center" justifyContent="center" sx={{ width: "57.6rem", height: "64.8rem" }}>
         <Img
           alt="img"
           src={getBadgeImgURL(selectedBadge.image)}
@@ -202,7 +154,7 @@ const BadgeDetailDialog = () => {
         ) && (
           <>
             <Typography
-              sx={{ fontSize: "3.2rem", fontWeight: 600, lineHeight: "0.8rem", marginBottom: "3.2rem", color: "#fff", textAlign: "center" }}
+              sx={{ fontSize: "3.2rem", fontWeight: 600, lineHeight: "4.8rem", marginBottom: "0.8rem", color: "#fff", textAlign: "center" }}
             >
               {selectedBadge.name}
             </Typography>
@@ -218,17 +170,28 @@ const BadgeDetailDialog = () => {
         )}
 
         {[BadgeDetailDialogTpye.MINTED].includes(badgeDetailDialogVisible) && (
-          <Typography sx={{ fontSize: "2.4rem", fontWeight: 600, color: "#fff", marginBottom: "2.4rem", textAlign: "center" }}>
+          <Typography
+            sx={{
+              fontSize: "3.2rem",
+              fontWeight: 600,
+              lineHeight: "4.8rem",
+              color: "primary.contrastText",
+              marginBottom: "3.2rem",
+              textAlign: "center",
+            }}
+          >
             You have successfully minted <br />
             {selectedBadge.name}!
           </Typography>
         )}
 
         {[BadgeDetailDialogTpye.NO_PROFILE].includes(badgeDetailDialogVisible) && (
-          <Typography sx={{ color: "#FAD880", fontSize: "1.8rem", mb: "3.2rem" }}>
-            <InfoOutlinedIcon sx={{ fontSize: "2.4rem", marginRight: "0.8rem", verticalAlign: "middle" }} />
-            You need a Scroll Canvas in order to mint your {selectedBadge.name} Badge.
-          </Typography>
+          <Stack direction="row" gap="0.8rem" alignItems="center" sx={{ mb: "2.4rem", px: "4rem" }}>
+            <InfoOutlinedIcon sx={{ color: "#FAD880", fontSize: "2.4rem" }} />
+            <Typography sx={{ color: "#FAD880", fontSize: "1.8rem", lineHeight: "2.8rem" }}>
+              You need a Scroll Canvas in order to mint your {selectedBadge.name} Badge.
+            </Typography>
+          </Stack>
         )}
 
         <ButtonContainer>
@@ -271,8 +234,8 @@ const BadgeDetailDialog = () => {
             </Link>
           )}
         </ButtonContainer>
-      </StyledDialogContent>
-    </StyledDialog>
+      </Stack>
+    </Dialog>
   )
 }
 
