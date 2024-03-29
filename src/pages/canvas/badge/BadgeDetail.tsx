@@ -73,6 +73,7 @@ const BadgeDetail = props => {
         <Box
           sx={{
             height: "100%",
+            width: "100%",
             display: "grid",
             gridTemplateColumns: "min-content max-content",
             justifyContent: "center",
@@ -114,19 +115,31 @@ const BadgeDetail = props => {
               />
             )}
           </Box>
-          <Stack direction="column" spacing={isPortrait ? "2.4rem" : "3.2rem"} alignItems={isLandscape ? "flex-start" : "center"}>
-            <Box sx={{ textAlign: ["center", "center", "left"] }}>
+          <Stack
+            sx={{ width: "100%" }}
+            direction="column"
+            spacing={isPortrait ? "2.4rem" : "3.2rem"}
+            alignItems={isLandscape ? "flex-start" : "center"}
+          >
+            <Box sx={{ width: "100%", textAlign: ["center", "center", "left"] }}>
               {/* <UpgradedBox>
             UPGRADE AVAILABLE
             <UpgradedButton variant="contained" color="primary" onClick={handleMint}>
               Upgrade now
             </UpgradedButton>
           </UpgradedBox> */}
-              <Typography sx={{ fontSize: ["4rem", "5.6rem"], fontWeight: 600, lineHeight: ["5.6rem", "7.2rem"] }}>{detail.name}</Typography>
-
-              <Typography sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: ["2.4rem", "3.2rem"], maxWidth: ["100%", "56rem"] }}>
-                <>{detail.description}</>
-              </Typography>
+              {loading ? (
+                <Skeleton dark sx={{ height: "7.2rem", width: "60%", my: "0.6rem" }}></Skeleton>
+              ) : (
+                <Typography sx={{ fontSize: ["4rem", "5.6rem"], fontWeight: 600, lineHeight: ["5.6rem", "7.2rem"] }}>{detail.name}</Typography>
+              )}
+              {loading ? (
+                <Skeleton dark sx={{ width: ["100%", "100%", "100%", "56rem"], height: "6.4rem", my: "0.6rem" }}></Skeleton>
+              ) : (
+                <Typography sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: ["2.4rem", "3.2rem"], maxWidth: ["100%", "56rem"] }}>
+                  <>{detail.description}</>
+                </Typography>
+              )}
             </Box>
 
             <InfoBox count={property.length}>
