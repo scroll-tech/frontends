@@ -39,8 +39,8 @@ const Container = styled<any>(Box, { shouldForwardProp: prop => prop !== "others
   width: "100%",
   justifyContent: "center",
   gap: "0.8rem",
-  position: "absolute",
-  bottom: "0",
+  position: "fixed",
+  bottom: 0,
   [theme.breakpoints.down("md")]: {
     gridTemplateColumns: `repeat(${othersWalletAddress ? 1 : 2}, 15.6rem)`,
   },
