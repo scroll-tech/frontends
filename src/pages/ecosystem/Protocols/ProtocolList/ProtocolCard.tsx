@@ -144,6 +144,7 @@ const ProtocolCard = props => {
     }
     onResize()
   }
+
   return (
     <Box className={cx(classes.grid, className)} ref={cardRef} {...restProps}>
       <Stack
@@ -155,7 +156,13 @@ const ProtocolCard = props => {
           gridArea: "logo",
         }}
       >
-        <Img alt={name} src={`${ecosystemListLogoUrl}${name}${ext}`} placeholder={hash} width={isMobile ? 48 : 88} height={isMobile ? 48 : 88}></Img>
+        <Img
+          alt={name}
+          src={`${ecosystemListLogoUrl}${name}${ext}`}
+          placeholder={hash ?? "/logo.svg"}
+          width={isMobile ? 48 : 88}
+          height={isMobile ? 48 : 88}
+        ></Img>
       </Stack>
       <Stack direction="row" alignItems="center" gap="0.8rem" className={classes.name}>
         <Typography sx={{ fontSize: ["2rem", "2.4rem"], lineHeight: ["2.8rem", "3.2rem"], fontWeight: 600 }}>{name}</Typography>
