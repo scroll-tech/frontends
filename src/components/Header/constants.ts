@@ -100,12 +100,6 @@ const mainnetNavigations = [
             href: "/portal",
           },
           {
-            label: SCROLL_ORIGINS_NFT,
-            key: "developer-nft",
-            rootKey: "develop",
-            href: "/developer-nft",
-          },
-          {
             label: "Sepolia Testnet",
             key: "sepolia-resources",
             rootKey: "develop",
