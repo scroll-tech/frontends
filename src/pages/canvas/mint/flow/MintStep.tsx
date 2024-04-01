@@ -6,13 +6,14 @@ import useSWR from "swr"
 
 import { Box, Skeleton } from "@mui/material"
 
-import { getAvatarURL } from "@/apis/canvas"
-import { fetchSignByCode, getHeartrate } from "@/apis/canvas"
+import { fetchSignByCode, getAvatarURL, getHeartrate } from "@/apis/canvas"
 import Button from "@/components/Button"
 import { useCanvasContext } from "@/contexts/CanvasContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useSnackbar from "@/hooks/useSnackbar"
 // import { testAsyncFunc } from "@/services/canvasService"
 import useCanvasStore from "@/stores/canvasStore"
+import { isUserRejected } from "@/utils"
 
 import InsufficientDialog from "./InsufficientDialog"
 import StepWrapper from "./StepWrapper"
@@ -24,6 +25,8 @@ const MintStep = props => {
   const { profileRegistryContract } = useCanvasContext()
 
   const { changeIsProfileMinting, isProfileMinting, profileName, referralCode, changeReferralCode, checkIfProfileMinted } = useCanvasStore()
+  const alertWarning = useSnackbar()
+
   const [insufficientDialogOpen, setInsufficientDialogOpen] = useState(false)
 
   const heartbeatURL = useMemo(() => getAvatarURL(walletCurrentAddress), [walletCurrentAddress])
@@ -69,10 +72,14 @@ const MintStep = props => {
           behavior: "smooth",
         })
       } else {
-        return "due to any operation that can cause the transaction or top-level call to revert"
+        // return "due to any operation that can cause the transaction or top-level call to revert"
+        alertWarning("Failed to mint canvas")
       }
-    } catch (e) {
-      console.log("mint canvas error", e)
+    } catch (error) {
+      if (!isUserRejected(error)) {
+        alertWarning("Failed to mint canvas")
+      }
+      // console.log("mint canvas error", e)
     } finally {
       changeIsProfileMinting(false)
     }

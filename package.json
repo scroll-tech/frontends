@@ -56,6 +56,7 @@
     "ethers": "6.12.0",
     "framer-motion": "^9.0.4",
     "lodash": "^4.17.21",
+    "notistack": "^3.0.1",
     "numbro": "^2.3.6",
     "react": "^18.2.0",
     "react-awesome-reveal": "^4.2.5",

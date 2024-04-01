@@ -6,6 +6,7 @@ import { Box, Stack, Typography } from "@mui/material"
 import Button from "@/components/Button"
 import { FIRST_BADGE } from "@/constants/canvas"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useSnackbar from "@/hooks/useSnackbar"
 import { mintBadge } from "@/services/canvasService"
 import useCanvasStore from "@/stores/canvasStore"
 
@@ -15,12 +16,13 @@ const FirstBadgeStep = props => {
   const navigate = useNavigate()
   const { provider, walletCurrentAddress } = useRainbowContext()
   const { isFirstBadgeMinting, changeIsFirstBadgeMinting, changeMintFlowVisible } = useCanvasStore()
+  const alertWarning = useSnackbar()
+
   const handleMintBadge = async () => {
     changeIsFirstBadgeMinting(true)
-    // const result = await testAsyncFunc("0x11cfb299dda2ae8b1fccf9a055394de9a7f953e8b8f115295dc0f2325e8b2130")
     const result = await mintBadge(provider, walletCurrentAddress, FIRST_BADGE.nftAddress, FIRST_BADGE.nftAbi, FIRST_BADGE.badgeContract)
     if (result === false) {
-      console.log("mint Ethereum Year Badge failed", result)
+      alertWarning("Failed to mint Ethereum Year Badge")
     } else {
       navigate(`/scroll-canvas/badge/${result}`)
       setTimeout(() => {

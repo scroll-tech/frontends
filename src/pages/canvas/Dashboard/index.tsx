@@ -12,6 +12,7 @@ import Canvas from "@/components/Canvas"
 import { useCanvasContext } from "@/contexts/CanvasContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useAsyncMemo } from "@/hooks"
+import useSnackbar from "@/hooks/useSnackbar"
 import Badges from "@/pages/canvas/Dashboard/UpgradeDialog/Badges"
 import { checkIfProfileMinted } from "@/services/canvasService"
 import useCanvasStore from "@/stores/canvasStore"
@@ -137,13 +138,15 @@ const Dashboard = props => {
     }
   }, [provider, othersWalletAddress, profileAddress])
 
+  const alertWarning = useSnackbar()
+
   const fetchCurrent = async (provider, walletAddress, profileAddress) => {
     try {
       changeProfileDetailLoading(true)
       const signer = await provider?.getSigner(0)
       await fetchCurrentCanvasDetail(signer, walletAddress, profileAddress)
     } catch (e) {
-      console.log("fetch others canvas error", e)
+      alertWarning("Falied to fetch canvas detail")
     } finally {
       changeProfileDetailLoading(false)
     }
@@ -154,6 +157,7 @@ const Dashboard = props => {
       changeProfileDetailLoading(true)
       await checkAndFetchOthersCanvasDetail(provider, unsignedProfileRegistryContract, othersWalletAddress)
     } catch (e) {
+      alertWarning("Falied to fetch canvas detail")
     } finally {
       changeProfileDetailLoading(false)
     }

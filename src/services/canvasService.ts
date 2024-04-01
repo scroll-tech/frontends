@@ -1,11 +1,11 @@
 // canvasService.js
-import { AbiCoder, ethers } from "ethers"
+import { AbiCoder, ethers, isError } from "ethers"
 
 import AttestProxyABI from "@/assets/abis/CanvasAttestProxy.json"
 import BadgeABI from "@/assets/abis/CanvasBadge.json"
 import ProfileABI from "@/assets/abis/CanvasProfile.json"
 import ProfileRegistryABI from "@/assets/abis/CanvasProfileRegistry.json"
-import { decodeBadgePayload, requireEnv } from "@/utils"
+import { decodeBadgePayload, requireEnv, trimErrorMessage } from "@/utils"
 
 const EAS_GRAPHQL_URL = requireEnv("REACT_APP_EAS_GRAPHQL_URL")
 const BADGE_SCHEMA = requireEnv("REACT_APP_BADGE_SCHEMA")
@@ -152,8 +152,9 @@ const queryUserBadgesWrapped = async (provider, userAddress) => {
     const formattedBadges = await Promise.all(formattedBadgesPromises)
     return formattedBadges
   } catch (error) {
-    console.log("Failed to query user badges:", error)
-    return []
+    throw new Error("Failed to query user badges")
+    // console.log("Failed to query user badges:", error)
+    // return []
   }
 }
 
@@ -163,23 +164,27 @@ const queryCanvasUsername = async (provider, profileAddress) => {
     const name = await profileContract.username()
     return { profileContract, name }
   } catch (error) {
-    return { profileContract: null, name: null }
+    throw new Error("Failed to fetch username")
+    // return { profileContract: null, name: null }
   }
 }
 
-const getAttachedBadges = async profileContract => {
+const getOrderedAttachedBadges = async profileContract => {
   try {
     const badges = await profileContract!.getAttachedBadges()
     const badgesArray = Array.from(badges)
     const badgeOrder = await getBadgeOrder(profileContract)
     const orderedAttachedBadges = badgeOrder.map(index => badgesArray[Number(BigInt(index as bigint)) - 1])
+    // throw new Error("?????")
+
     // console.log("orderedAttachedBadges", orderedAttachedBadges)
     // console.log("badgeOrder", badgeOrder)
     // setAttachedBadges(orderedAttachedBadges)
     return { orderedAttachedBadges, badgeOrder }
   } catch (error) {
-    console.error("Failed to query attached badges:", error)
-    return { orderedAttachedBadges: [], badgeOrder: [] }
+    throw new Error("Failed to query attached badges")
+    // console.error("Failed to query attached badges:", error)
+    // return { orderedAttachedBadges: [], badgeOrder: [] }
   }
 }
 
@@ -198,7 +203,7 @@ const getBadgeOrder = async profileContract => {
 const fetchCanvasDetail = async (privider, othersAddress, profileAddress) => {
   const { profileContract, name } = await queryCanvasUsername(privider, profileAddress)
   const userBadges = await queryUserBadgesWrapped(privider, othersAddress)
-  const { orderedAttachedBadges, badgeOrder } = await getAttachedBadges(profileContract)
+  const { orderedAttachedBadges, badgeOrder } = await getOrderedAttachedBadges(profileContract)
   // const badgeOrder = await getBadgeOrder(profileContract)
   return { name, profileContract, userBadges, attachedBadges: orderedAttachedBadges, badgeOrder }
 }
@@ -233,108 +238,101 @@ const detachBadges = async (profileContract, badgeAddresses) => {
 }
 
 const mintBadge = async (provider, walletCurrentAddress, nftAddress, nftAbi, badgeAddress) => {
-  const signer = await provider!.getSigner(0)
-  // for testing
+  try {
+    const signer = await provider!.getSigner(0)
 
-  if (!nftAddress || !nftAbi) {
-    const abiCoder = new AbiCoder()
-    const badgePayload = abiCoder.encode(["address", "bytes"], [badgeAddress, "0x"])
-    const easContract = new ethers.Contract(SCROLL_SEPOLIA_EAS_ADDRESS, AttestProxyABI, signer)
-    const attestParams = {
-      schema: SCROLL_SEPOLIA_BADGE_SCHEMA,
-      data: {
-        recipient: walletCurrentAddress,
-        expirationTime: 0,
-        revocable: false,
-        refUID: "0x0000000000000000000000000000000000000000000000000000000000000000",
-        data: badgePayload,
-        value: 0,
-      },
-    }
-    try {
+    if (!nftAddress || !nftAbi) {
+      const abiCoder = new AbiCoder()
+      const badgePayload = abiCoder.encode(["address", "bytes"], [badgeAddress, "0x"])
+      const easContract = new ethers.Contract(SCROLL_SEPOLIA_EAS_ADDRESS, AttestProxyABI, signer)
+      const attestParams = {
+        schema: SCROLL_SEPOLIA_BADGE_SCHEMA,
+        data: {
+          recipient: walletCurrentAddress,
+          expirationTime: 0,
+          revocable: false,
+          refUID: "0x0000000000000000000000000000000000000000000000000000000000000000",
+          data: badgePayload,
+          value: 0,
+        },
+      }
+
       const tx = await easContract.attest(attestParams)
       const txReceipt = await tx.wait()
       if (txReceipt.status === 1) {
         return txReceipt.logs[0].data
       } else {
-        return false
+        throw new Error("due to any operation that can cause the transaction or top-level call to revert")
       }
-      // console.log("Badge minted successfully!")
-    } catch (error) {
+    } else if (Array.isArray(nftAddress)) {
+      // scroll origin nft
+      // try {
+      const nftContract = new ethers.Contract(nftAddress[0], nftAbi, signer)
+      const nftV2Contract = new ethers.Contract(nftAddress[1], nftAbi, signer)
+      let tokenId, nftVersion
+
+      try {
+        tokenId = await nftContract.tokenOfOwnerByIndex(walletCurrentAddress, 0)
+        nftVersion = 0
+      } catch (error) {
+        tokenId = await nftV2Contract.tokenOfOwnerByIndex(walletCurrentAddress, 0)
+        nftVersion = 1
+      }
+
+      const abiCoder = new AbiCoder()
+      const originsBadgePayload = abiCoder.encode(["address", "uint256"], [nftAddress[nftVersion], tokenId])
+      const badgePayload = abiCoder.encode(["address", "bytes"], [badgeAddress, originsBadgePayload])
+      const easContract = new ethers.Contract(SCROLL_SEPOLIA_EAS_ADDRESS, AttestProxyABI, signer)
+      const attestParams = {
+        schema: SCROLL_SEPOLIA_BADGE_SCHEMA,
+        data: {
+          recipient: walletCurrentAddress,
+          expirationTime: 0,
+          revocable: false,
+          refUID: "0x0000000000000000000000000000000000000000000000000000000000000000",
+          data: badgePayload,
+          value: 0,
+        },
+      }
+      const tx = await easContract.attest(attestParams)
+      const txReceipt = await tx.wait()
+      if (txReceipt.status === 1) {
+        return txReceipt.logs[0].data
+      } else {
+        throw new Error("due to any operation that can cause the transaction or top-level call to revert")
+      }
+    }
+  } catch (error) {
+    if (isError(error, "ACTION_REJECTED")) {
       return false
-      // console.log("Badge minted error!", error)
-    }
-  } else if (Array.isArray(nftAddress)) {
-    // scroll origin nft
-    const nftContract = new ethers.Contract(nftAddress[0], nftAbi, signer)
-    const nftV2Contract = new ethers.Contract(nftAddress[1], nftAbi, signer)
-    let tokenId, nftVersion
-
-    try {
-      tokenId = await nftContract.tokenOfOwnerByIndex(walletCurrentAddress, 0)
-      nftVersion = 0
-    } catch (error) {
-      tokenId = await nftV2Contract.tokenOfOwnerByIndex(walletCurrentAddress, 0)
-      nftVersion = 1
-    }
-    const abiCoder = new AbiCoder()
-    const originsBadgePayload = abiCoder.encode(["address", "uint256"], [nftAddress[nftVersion], tokenId])
-    const badgePayload = abiCoder.encode(["address", "bytes"], [badgeAddress, originsBadgePayload])
-    const easContract = new ethers.Contract(SCROLL_SEPOLIA_EAS_ADDRESS, AttestProxyABI, signer)
-    const attestParams = {
-      schema: SCROLL_SEPOLIA_BADGE_SCHEMA,
-      data: {
-        recipient: walletCurrentAddress,
-        expirationTime: 0,
-        revocable: false,
-        refUID: "0x0000000000000000000000000000000000000000000000000000000000000000",
-        data: badgePayload,
-        value: 0,
-      },
-    }
-    try {
-      const tx = await easContract.attest(attestParams)
-      const txReceipt = await tx.wait()
-      if (txReceipt.status === 1) {
-        return txReceipt.logs[0].data
-      } else {
-        return "due to any operation that can cause the transaction or top-level call to revert"
-      }
-      // console.log("Badge minted successfully!")
-    } catch (error) {
-      return "due to any operation that can cause the transaction or top-level call to revert"
-      // console.log("Badge minted error!", error)
+    } else {
+      throw new Error(trimErrorMessage(error.message))
     }
   }
 }
 
 const customiseDisplay = async ({ profileContract, attachBadges, detachBadges, order }) => {
-  try {
-    const calls: any = []
-    if (attachBadges) {
-      const attachCallData = profileContract.interface.encodeFunctionData("attach(bytes32[])", [attachBadges])
-      calls.push(attachCallData)
-    }
+  const calls: any = []
+  if (attachBadges) {
+    const attachCallData = profileContract.interface.encodeFunctionData("attach(bytes32[])", [attachBadges])
+    calls.push(attachCallData)
+  }
 
-    if (detachBadges) {
-      const detachCallData = profileContract.interface.encodeFunctionData("detach", [detachBadges])
-      calls.push(detachCallData)
-    }
+  if (detachBadges) {
+    const detachCallData = profileContract.interface.encodeFunctionData("detach", [detachBadges])
+    calls.push(detachCallData)
+  }
 
-    if (order) {
-      const reorderCallData = profileContract.interface.encodeFunctionData("reorderBadges", [order])
-      calls.push(reorderCallData)
-    }
+  if (order) {
+    const reorderCallData = profileContract.interface.encodeFunctionData("reorderBadges", [order])
+    calls.push(reorderCallData)
+  }
+  const txResponse = await profileContract.multicall(calls)
+  const txReceipt = await txResponse.wait()
+  // console.log(txReceipt, "txReceipt")
 
-    const txResponse = await profileContract.multicall(calls)
-    const txReceipt = await txResponse.wait()
-    txReceipt.events.forEach(event => {
-      if (event.event === "CallExecuted") {
-        console.log(`Call ${event.args.callId}: Success`)
-      }
-    })
-  } catch (error) {
-    console.error("Multicall transaction failed!", error)
+  if (txReceipt.status !== 1) {
+    throw new Error("due to any operation that can cause the transaction or top-level call to revert")
   }
 }
 
@@ -359,16 +357,13 @@ const checkIfHasBadgeByAddress = async (provider, userAddress, badgeAddress) => 
     return hasBadge
   } catch (error) {
     console.log("Failed to check if has badge by address:", error)
+    return false
   }
 }
 
 const getReferrerData = async (registryInstance, userAddress) => {
-  try {
-    const referrerData = await registryInstance.referrerData(userAddress)
-    return referrerData
-  } catch (error) {
-    console.log("Failed to check if has badge by address:", error)
-  }
+  const referrerData = await registryInstance.referrerData(userAddress)
+  return referrerData
 }
 
 const testAsyncFunc = value => {
@@ -388,7 +383,7 @@ export {
   queryUserBadgesWrapped,
   queryBadgeDetailById,
   queryCanvasUsername,
-  getAttachedBadges,
+  getOrderedAttachedBadges,
   getBadgeOrder,
   fetchCanvasDetail,
   attachBadges,

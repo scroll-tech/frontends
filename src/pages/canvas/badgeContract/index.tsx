@@ -1,8 +1,9 @@
+// import { useSnackbar } from "notistack"
 import { useMemo } from "react"
 import { useParams } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
 
-import { Stack, SvgIcon, Typography } from "@mui/material"
+import { CircularProgress, Stack, SvgIcon, Typography } from "@mui/material"
 
 import { ReactComponent as ValidSvg } from "@/assets/svgs/canvas/check.svg"
 import { ReactComponent as WarningSvg } from "@/assets/svgs/canvas/circle-warning.svg"
@@ -11,6 +12,7 @@ import ScrollButton from "@/components/Button"
 import Link from "@/components/Link"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useAsyncMemo } from "@/hooks"
+import useSnackbar from "@/hooks/useSnackbar"
 import { checkIfHasBadgeByAddress, mintBadge } from "@/services/canvasService"
 import useCanvasStore from "@/stores/canvasStore"
 import { generateShareTwitterURL, requireEnv } from "@/utils"
@@ -28,7 +30,7 @@ const BadgeContractDetail = props => {
   const { profileMinted, changeIsBadgeMinting, isBadgeMinting } = useCanvasStore()
   // const [badgeMinted, setBadgeMinted] = useState(false)
   const navigate = useNavigate()
-
+  const alertWarning = useSnackbar()
   const detail = useMemo(() => {
     return badgeMap[address]
   }, [address])
@@ -62,23 +64,30 @@ const BadgeContractDetail = props => {
   )
 
   const handleMint = async () => {
-    changeIsBadgeMinting(address, true)
+    try {
+      changeIsBadgeMinting(address, true)
 
-    const badgeForMint = Badges.find(item => item.badgeContract === address)
-    const result = await mintBadge(provider, walletCurrentAddress, badgeForMint!.nftAddress, badgeForMint!.nftAbi, badgeForMint!.badgeContract)
-    if (result === false) {
-      // setBadgeMinted(false)
-      console.log("mintBadge failed", result)
-    } else {
-      // TODO:
-      // setBadgeMinted(true)
-      navigate(`/scroll-canvas/badge/${result}`, { replace: true })
+      const badgeForMint = Badges.find(item => item.badgeContract === address)
+      const result = await mintBadge(provider, walletCurrentAddress, badgeForMint!.nftAddress, badgeForMint!.nftAbi, badgeForMint!.badgeContract)
+      if (result) {
+        navigate(`/scroll-canvas/badge/${result}`, { replace: true })
+      }
+    } catch (e) {
+      alertWarning("Failed to mint badge")
+    } finally {
+      changeIsBadgeMinting(address, false)
     }
-    changeIsBadgeMinting(address, false)
   }
 
   const renderTip = () => {
-    if (profileMinted === false) {
+    if (isBadgeMinting.get(address)) {
+      return (
+        <>
+          <CircularProgress sx={{ color: "#A5A5A5" }} size={18}></CircularProgress>
+          <Typography sx={{ color: "#A5A5A5 !important", fontSize: "1.8rem", lineHeight: "2.8rem", fontWeight: 500 }}>Minting...</Typography>
+        </>
+      )
+    } else if (profileMinted === false) {
       return (
         <>
           <SvgIcon sx={{ color: "#FAD880", fontSize: "2.4rem" }} component={WarningSvg} inheritViewBox></SvgIcon>
