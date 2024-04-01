@@ -17,6 +17,7 @@ import { ReactComponent as ProfileSvg } from "@/assets/svgs/wallet-connector/pro
 import { CHAIN_ID, EXPLORER_URL } from "@/constants"
 import { useCanvasContext } from "@/contexts/CanvasContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useSnackbar from "@/hooks/useSnackbar"
 import useBridgeStore from "@/stores/bridgeStore"
 import useCanvasStore from "@/stores/canvasStore"
 import { generateExploreLink, truncateAddress } from "@/utils"
@@ -92,6 +93,7 @@ const WalletDropdown = props => {
 
   const { unsignedProfileRegistryContract, publicProvider } = useCanvasContext()
   const { username, profileMinted, walletDetailLoading, checkAndFetchCurrentWalletCanvas, clearCanvas } = useCanvasStore()
+  const alertWarning = useSnackbar()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [copied, setCopied] = useState(false)
@@ -103,10 +105,15 @@ const WalletDropdown = props => {
   }, [walletCurrentAddress])
 
   useEffect(() => {
-    // re check&&fetch walletCurrentAddress's canvas when switching address on Wallet
     if (publicProvider && unsignedProfileRegistryContract && walletCurrentAddress) {
-      checkAndFetchCurrentWalletCanvas(publicProvider, unsignedProfileRegistryContract, walletCurrentAddress)
+      checkAndFetchCurrentWalletCanvas(publicProvider, unsignedProfileRegistryContract, walletCurrentAddress).then(res => {
+        if (res !== true) {
+          alertWarning(res)
+        }
+      })
     }
+
+    // re check&&fetch walletCurrentAddress's canvas when switching address on Wallet
   }, [publicProvider, unsignedProfileRegistryContract, walletCurrentAddress])
 
   const handleClick = e => {

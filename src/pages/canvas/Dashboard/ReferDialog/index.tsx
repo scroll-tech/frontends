@@ -41,7 +41,7 @@ const ReferDialog = () => {
         while you receive 0.0005 ETH per successful referral
       </SubTitle>
       <Record />
-      <Coupon />
+      <Coupon shouldFetch={referDialogVisible} />
     </Dialog>
   )
 }

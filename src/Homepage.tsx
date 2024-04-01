@@ -1,3 +1,4 @@
+import { SnackbarProvider } from "notistack"
 import { Helmet } from "react-helmet-async"
 import { Route, Routes } from "react-router-dom"
 
@@ -14,6 +15,7 @@ import NotFound from "@/pages/404"
 import { isSepolia, requireEnv } from "@/utils"
 
 import useCheckTheme from "./components/Header/useCheckTheme"
+import GlobalWarning from "./components/RequestWarning/GlobalWarning"
 import useMatchedRoute from "./hooks/useMatchedRoute"
 import routes from "./routes"
 
@@ -67,16 +69,18 @@ function Homepage() {
       <RainbowProvider>
         <BridgeContextProvider>
           <CanvasContextProvider>
-            <ScrollToTop>
-              <Header />
-              <Routes>
-                {routes.map((route, key) => (
-                  <Route key={key} path={route.path} element={route.element} />
-                ))}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-              {isSepolia || route.isHiddenFooter ? null : <Footer />}
-            </ScrollToTop>
+            <SnackbarProvider Components={{ default: GlobalWarning }}>
+              <ScrollToTop>
+                <Header />
+                <Routes>
+                  {routes.map((route, key) => (
+                    <Route key={key} path={route.path} element={route.element} />
+                  ))}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+                {isSepolia || route.isHiddenFooter ? null : <Footer />}
+              </ScrollToTop>
+            </SnackbarProvider>
           </CanvasContextProvider>
           <GlobalComponents />
         </BridgeContextProvider>

@@ -1,17 +1,18 @@
 import { isEqual } from "lodash"
-import { useEffect } from "react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { Dialog, DialogContent, DialogTitle, IconButton, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { ReactComponent as CloseSvg } from "@/assets/svgs/canvas/close.svg"
+import useSnackbar from "@/hooks/useSnackbar"
 // import { BADGES_VISIBLE_TYPE } from "@/constants"
 // import { useCanvasContext } from "@/contexts/CanvasContextProvider"
 import Button from "@/pages/canvas/components/Button"
 import { customiseDisplay } from "@/services/canvasService"
 // import { attachBadges, detachBadges, reorderBadges } from "@/services/canvasService"
 import useCanvasStore from "@/stores/canvasStore"
+import { isUserRejected } from "@/utils"
 
 import Empty from "../../components/Empty"
 // import GridDragDrop from "./GridDragDrop"
@@ -47,6 +48,8 @@ const BadgesDialog = props => {
     queryAttachedBadges,
     changeSortedBadges,
   } = useCanvasStore()
+  const alertWarning = useSnackbar()
+
   const [loading, setLoading] = useState(false)
   // console.log(attachedBadges, badgeOrder, "badgeOrder")
   // console.log(badgeOrder, "badgeOrder")
@@ -110,82 +113,82 @@ const BadgesDialog = props => {
   }
 
   const updateDataAndOrder = async () => {
-    // const originalIds = userBadges.map(item => item.id)
-    // const displayedIds = badgesInstance[BADGES_VISIBLE_TYPE.VISIBLE].map(item => item.id)
-    const displayedIds = attachedBadges
-    // const currentDisplayedIds = sortedBadges[BADGES_VISIBLE_TYPE.VISIBLE].map(item => item.id)
-    const currentDisplayedIds = sortedBadges
-    // console.log(displayedIds, "pre displayedIds")
-    // console.log(currentDisplayedIds, "cur displayedIds")
-    // return
-    const displayedSet = new Set(displayedIds)
-    const currentDisplayedSet = new Set(currentDisplayedIds)
-    const hiddenToDisplayed: any = []
-    const displayedToHidden: any = []
-
-    displayedIds.forEach(id => {
-      if (!currentDisplayedSet.has(id)) {
-        displayedToHidden.push(id)
-      }
-    })
-
-    currentDisplayedIds.forEach(id => {
-      if (!displayedSet.has(id)) {
-        hiddenToDisplayed.push(id)
-      }
-    })
-
-    const displayedIdsMap = Object.fromEntries(displayedIds.map((id, index) => [id, Number(badgeOrder[index])]))
-    const newArrayOrder = calculateRelativeOrder(currentDisplayedIds, hiddenToDisplayed, displayedIdsMap)
-    // const newArrayOrder: number[] = calculateRelativeOrder(originalIds, currentDisplayedIds)
-
-    console.log(newArrayOrder, "newArrayOrder")
-    // return
-
-    // if (hiddenToDisplayed.length > 0) {
-    //   setLoading(true)
-
-    //   const result = await attachBadges(profileContract, hiddenToDisplayed)
-    //   if (result! !== true) {
-    //     console.log("mintBadge failed", result)
-    //   } else {
-    //     queryAttachedBadges()
-    //     // handleClose()
-    //   }
-    //   setLoading(false)
-    // }
-
-    // if (displayedToHidden.length > 0) {
-    //   const result = await detachBadges(profileContract, displayedToHidden)
-    //   if (result! !== true) {
-    //     console.log("mintBadge failed", result)
-    //   } else {
-    //     queryAttachedBadges()
-    //     // handleClose()
-    //   }
-    //   setLoading(false)
-    // }
-
-    // if (!isEqual(badgeOrder, newArrayOrder)) {
-    //   const result = await reorderBadges(profileContract, newArrayOrder)
-    //   if (result! !== true) {
-    //     console.log("mintBadge failed", result)
-    //   } else {
-    //     queryAttachedBadges()
-    //     // handleClose()
-    //   }
-    // }
-
     setLoading(true)
-    await customiseDisplay({
-      profileContract: profileContract!,
-      attachBadges: hiddenToDisplayed.length > 0 ? hiddenToDisplayed : null,
-      detachBadges: displayedToHidden.length > 0 ? displayedToHidden : null,
-      order: isEqual(badgeOrder, newArrayOrder) ? null : newArrayOrder,
-    })
-    setLoading(false)
-    changeBadgesDialog(false)
-    queryAttachedBadges()
+
+    try {
+      const displayedIds = attachedBadges
+      const currentDisplayedIds = sortedBadges
+      const displayedSet = new Set(displayedIds)
+      const currentDisplayedSet = new Set(currentDisplayedIds)
+      const hiddenToDisplayed: any = []
+      const displayedToHidden: any = []
+
+      displayedIds.forEach(id => {
+        if (!currentDisplayedSet.has(id)) {
+          displayedToHidden.push(id)
+        }
+      })
+
+      currentDisplayedIds.forEach(id => {
+        if (!displayedSet.has(id)) {
+          hiddenToDisplayed.push(id)
+        }
+      })
+
+      const displayedIdsMap = Object.fromEntries(displayedIds.map((id, index) => [id, Number(badgeOrder[index])]))
+      const newArrayOrder = calculateRelativeOrder(currentDisplayedIds, hiddenToDisplayed, displayedIdsMap)
+      console.log(newArrayOrder, "newArrayOrder")
+
+      // if (hiddenToDisplayed.length > 0) {
+      //   setLoading(true)
+
+      //   const result = await attachBadges(profileContract, hiddenToDisplayed)
+      //   if (result! !== true) {
+      //     console.log("mintBadge failed", result)
+      //   } else {
+      //     queryAttachedBadges()
+      //     // handleClose()
+      //   }
+      //   setLoading(false)
+      // }
+
+      // if (displayedToHidden.length > 0) {
+      //   const result = await detachBadges(profileContract, displayedToHidden)
+      //   if (result! !== true) {
+      //     console.log("mintBadge failed", result)
+      //   } else {
+      //     queryAttachedBadges()
+      //     // handleClose()
+      //   }
+      //   setLoading(false)
+      // }
+
+      // if (!isEqual(badgeOrder, newArrayOrder)) {
+      //   const result = await reorderBadges(profileContract, newArrayOrder)
+      //   if (result! !== true) {
+      //     console.log("mintBadge failed", result)
+      //   } else {
+      //     queryAttachedBadges()
+      //     // handleClose()
+      //   }
+      // }
+
+      await customiseDisplay({
+        profileContract: profileContract!,
+        attachBadges: hiddenToDisplayed.length > 0 ? hiddenToDisplayed : null,
+        detachBadges: displayedToHidden.length > 0 ? displayedToHidden : null,
+        order: isEqual(badgeOrder, newArrayOrder) ? null : newArrayOrder,
+      })
+
+      changeBadgesDialog(false)
+      queryAttachedBadges()
+    } catch (error) {
+      if (!isUserRejected(error)) {
+        alertWarning("Failed to customise display")
+      }
+    } finally {
+      setLoading(false)
+    }
   }
 
   if (!userBadges.length) {

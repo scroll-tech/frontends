@@ -1,4 +1,5 @@
 import { getNetwork, getWalletClient } from "@wagmi/core"
+import { isError } from "ethers"
 import { isNumber } from "lodash"
 
 import { DepositBatchMode } from "@/stores/batchBridgeStore"
@@ -23,4 +24,8 @@ export const switchNetwork = async (chainId: number) => {
 export const checkApproved = (needApproval, mode: DepositBatchMode) => {
   const flag = mode === DepositBatchMode.Economy ? 1 : 2
   return (isNumber(needApproval) && !(needApproval & flag)) || needApproval === false
+}
+
+export const isUserRejected = error => {
+  return isError(error, "ACTION_REJECTED")
 }

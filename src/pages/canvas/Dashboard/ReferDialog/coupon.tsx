@@ -14,6 +14,7 @@ import { ReactComponent as ShareSvg } from "@/assets/svgs/canvas/share.svg"
 import { ReactComponent as TwitterSvg } from "@/assets/svgs/nft/twitter.svg"
 import Skeleton from "@/components/Skeleton"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useSnackbar from "@/hooks/useSnackbar"
 import useCanvasStore from "@/stores/canvasStore"
 
 const CouponBox = styled(Box)(({ theme }) => ({
@@ -79,21 +80,26 @@ const useStyles = makeStyles()(theme => ({
 
 let copyTimer: any
 
-const Coupon = () => {
+const Coupon = props => {
+  const { shouldFetch } = props
   const { classes } = useStyles()
   const { walletCurrentAddress } = useRainbowContext()
   const [copied, setCopied] = useState(0)
 
   const { username } = useCanvasStore()
+  const alertWarning = useSnackbar()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
   const fetchCode = url => scrollRequest(url)
-  const { data: { code } = {}, isLoading } = useSWR(() => fetchCodeByAdd(walletCurrentAddress), fetchCode, {
+  const { data: { code } = {}, isLoading } = useSWR(() => (shouldFetch ? fetchCodeByAdd(walletCurrentAddress) : null), fetchCode, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
     shouldRetryOnError: false,
+    onError: () => {
+      alertWarning("Failed to fetch Scroll Canvas Coupon", "coupon")
+    },
   })
 
   const handleDropdown = e => {
