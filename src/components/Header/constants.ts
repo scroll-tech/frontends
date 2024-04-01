@@ -1,4 +1,3 @@
-import { SCROLL_ORIGINS_NFT } from "@/constants"
 import { isSepolia, requireEnv } from "@/utils"
 
 const sepoliaNavigations = [
