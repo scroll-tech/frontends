@@ -2,7 +2,7 @@ import copy from "copy-to-clipboard"
 import { Fragment, useCallback, useMemo, useState } from "react"
 import { useParams } from "react-router-dom"
 
-import { Box, Menu, MenuItem, Slide, SvgIcon } from "@mui/material"
+import { Badge, Box, Menu, MenuItem, Slide, Stack, SvgIcon } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { ReactComponent as BadgesSvg } from "@/assets/svgs/canvas/badges.svg"
@@ -22,12 +22,14 @@ interface Action {
   color: "primary" | "secondary"
   onClick: (event?) => void
   visible: boolean
+  withBadge?: boolean
   menu?: {
     anchorEl: HTMLElement | null
     open: boolean
     onClose: () => void
     items: Array<{
       label: string | (() => React.ReactNode)
+      extra?: React.ReactNode
       onClick: () => void
     }>
   }
@@ -49,6 +51,10 @@ const Container = styled<any>(Box, { shouldForwardProp: prop => prop !== "others
 const ActionButton = styled(Button)(({ theme }) => ({
   width: "15.6rem",
   height: "4rem",
+  borderRadius: "0.4rem",
+  ".MuiButton-startIcon>*:nth-of-type(1)": {
+    fontSize: "2.4rem",
+  },
 }))
 
 const CustomMenu = styled(Menu)(({ theme }) => ({
@@ -61,6 +67,8 @@ const CustomMenu = styled(Menu)(({ theme }) => ({
 }))
 
 const CustomiseItem = styled(MenuItem)(({ theme }) => ({
+  display: "flex",
+  justifyContent: "space-between",
   padding: "0.8rem",
   backgroundColor: "#FFFFFF",
   color: "#000000",
@@ -69,6 +77,20 @@ const CustomiseItem = styled(MenuItem)(({ theme }) => ({
   "&:hover": {
     backgroundColor: "#FFFFFF",
   },
+}))
+
+const MintableCount = styled("span")(({ theme }) => ({
+  display: "inline-block",
+  height: "1.6rem",
+  minWidth: "1.6rem",
+  borderRadius: "0.8rem",
+  padding: "0 3px",
+  backgroundColor: theme.palette.primary.main,
+  color: theme.palette.primary.contrastText,
+  fontFamily: "var(--developer-page-font-family)",
+  fontSize: "1rem",
+  lineHeight: "1.6rem",
+  textAlign: "center",
 }))
 
 const ActionBox = props => {
@@ -153,6 +175,7 @@ const ActionBox = props => {
           setBadgesAnchorEl(event.currentTarget)
         },
         visible: !othersWalletAddress,
+        withBadge: !!mintableBadgeCount,
         menu: {
           anchorEl: badgesAnchorEl,
           open: badgesOpen,
@@ -166,12 +189,14 @@ const ActionBox = props => {
               },
             },
             {
-              label: `Mint badges${mintableBadgeCount ? " (" + mintableBadgeCount + ")" : ""}`,
+              label: "Mint badges",
+              extra: mintableBadgeCount ? <MintableCount>{mintableBadgeCount > 99 ? "99+" : mintableBadgeCount}</MintableCount> : null,
               onClick: () => {
                 handleCloseBadges()
                 changeUpgradeDialog(true)
               },
             },
+            // TODO: upgrage badges
           ],
         },
       },
@@ -198,9 +223,10 @@ const ActionBox = props => {
           items: [
             {
               label: () => (
-                <>
-                  Share to <SvgIcon sx={{ fontSize: ["1.2rem", "1.3rem"], ml: "6px" }} component={TwitterSvg} inheritViewBox></SvgIcon>
-                </>
+                <Stack direction="row" gap="0.6rem" alignItems="center">
+                  <>Share to</>
+                  <SvgIcon sx={{ fontSize: ["1.2rem", "1.3rem"] }} component={TwitterSvg} inheritViewBox></SvgIcon>
+                </Stack>
               ),
               onClick: () => {
                 handleCloseShare()
@@ -233,7 +259,15 @@ const ActionBox = props => {
                 key={index}
                 color={action.color as any}
                 onClick={action.onClick}
-                startIcon={<SvgIcon sx={{ fontSize: "1.6rem" }} component={action.icon} inheritViewBox></SvgIcon>}
+                startIcon={
+                  action.withBadge ? (
+                    <Badge color="primary" variant="dot">
+                      <SvgIcon sx={{ fontSize: "2.4rem" }} component={action.icon} inheritViewBox></SvgIcon>
+                    </Badge>
+                  ) : (
+                    <SvgIcon component={action.icon} inheritViewBox></SvgIcon>
+                  )
+                }
               >
                 {typeof action.label === "function" ? action.label() : action.label}
               </ActionButton>
@@ -248,12 +282,18 @@ const ActionBox = props => {
                     horizontal: "left",
                   }}
                   anchorEl={action.menu.anchorEl}
+                  sx={{
+                    ".MuiMenu-paper": {
+                      borderRadius: "0.5rem",
+                    },
+                  }}
                   open={action.menu.open}
                   onClose={action.menu.onClose}
                 >
                   {action.menu.items.map((item, index) => (
                     <CustomiseItem key={index} onClick={item.onClick}>
                       {typeof item.label === "function" ? item.label() : item.label}
+                      {item.extra}
                     </CustomiseItem>
                   ))}
                 </CustomMenu>
