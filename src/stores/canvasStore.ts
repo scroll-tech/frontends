@@ -1,7 +1,7 @@
 import { Contract } from "ethers"
 import { create } from "zustand"
 
-import { fetchCanvasDetail, getAttachedBadges, queryCanvasUsername, queryUserBadgesWrapped } from "@/services/canvasService"
+import { fetchCanvasDetail, getOrderedAttachedBadges, queryCanvasUsername, queryUserBadgesWrapped } from "@/services/canvasService"
 
 export enum MintedStatus {
   MINTED = "MINTED",
@@ -65,7 +65,7 @@ interface CanvasStore {
   changeIsBadgeMinting: (id, loading) => void
   checkIfProfileMinted: (instance: Contract, address: string, test?: boolean) => Promise<any>
   fetchCurrentCanvasDetail: (signer, walletAddress, profileAddress) => void
-  checkAndFetchCurrentWalletCanvas: (prividerOrSigner, unsignedProfileRegistryContract, walletAddress) => void
+  checkAndFetchCurrentWalletCanvas: (prividerOrSigner, unsignedProfileRegistryContract, walletAddress) => Promise<any>
   fetchOthersCanvasDetail: (prividerOrSigner, othersAddress, profileAddress) => void
   changeProfileMintedLoading: (loading: boolean) => void
   changeProfileDetailLoading: (loading: boolean) => void
@@ -128,14 +128,15 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
       })
       return { profileAddress, minted: profileMinted }
     } catch (error) {
-      console.log("Failed to check if profile minted:", error)
+      // console.log("Failed to check if profile minted:", error)
 
       set({
         profileAddress: "",
         profileMinted: false,
         profileMintedChecking: false,
       })
-      return { profileAddress: null, minted: null }
+      throw new Error("Failed to check if profile minted")
+      // return { profileAddress: null, minted: null }
     }
   },
   fetchOthersCanvasDetail: async (privider, othersAddress, profileAddress) => {
@@ -153,19 +154,28 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
     set({
       walletDetailLoading: true,
     })
-    const { minted, profileAddress } = await get().checkIfProfileMinted(unsignedProfileRegistryContract, walletAddress)
+    try {
+      const { minted, profileAddress } = await get().checkIfProfileMinted(unsignedProfileRegistryContract, walletAddress)
 
-    if (minted) {
-      const { profileContract, name } = await queryCanvasUsername(prividerOrSigner, profileAddress)
+      if (minted) {
+        const { profileContract, name } = await queryCanvasUsername(prividerOrSigner, profileAddress)
+        set({
+          username: name,
+          profileContract,
+          walletDetailLoading: false,
+        })
+      } else {
+        set({
+          username: "",
+          profileContract: null,
+          walletDetailLoading: false,
+        })
+      }
+      return true
+    } catch (e) {
+      return e.message
+    } finally {
       set({
-        username: name,
-        profileContract,
-        walletDetailLoading: false,
-      })
-    } else {
-      set({
-        username: "",
-        profileContract: null,
         walletDetailLoading: false,
       })
     }
@@ -259,7 +269,7 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
     set({
       queryUserBadgesLoading: true,
     })
-    const { orderedAttachedBadges, badgeOrder } = await getAttachedBadges(get().profileContract)
+    const { orderedAttachedBadges, badgeOrder } = await getOrderedAttachedBadges(get().profileContract)
     set({
       attachedBadges: orderedAttachedBadges,
       badgeOrder,
@@ -273,7 +283,7 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
       queryUserBadgesLoading: true,
     })
     const userBadges = await queryUserBadgesWrapped(provider, walletAddress)
-    const { orderedAttachedBadges, badgeOrder } = await getAttachedBadges(get().profileContract)
+    const { orderedAttachedBadges, badgeOrder } = await getOrderedAttachedBadges(get().profileContract)
     set({
       userBadges,
       attachedBadges: orderedAttachedBadges,

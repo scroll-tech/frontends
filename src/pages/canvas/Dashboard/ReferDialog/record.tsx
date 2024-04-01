@@ -7,6 +7,7 @@ import { styled } from "@mui/system"
 import Skeleton from "@/components/Skeleton"
 import { useCanvasContext } from "@/contexts/CanvasContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useSnackbar from "@/hooks/useSnackbar"
 import { getReferrerData } from "@/services/canvasService"
 
 const RecordBox = styled(Box)(({ theme }) => ({
@@ -48,6 +49,7 @@ const Record = () => {
   const { walletCurrentAddress } = useRainbowContext()
 
   const { profileRegistryContract } = useCanvasContext()
+  const alertWarning = useSnackbar()
 
   const [loading, setLoading] = useState(false)
   const [count, setCount] = useState(0)
@@ -60,6 +62,9 @@ const Record = () => {
         .then(data => {
           setCount(Number(data[0]))
           setEarnedETH(formatEther(data[1]))
+        })
+        .catch(() => {
+          alertWarning("Falied to get referrer data")
         })
         .finally(() => {
           setLoading(false)
