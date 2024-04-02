@@ -113,7 +113,7 @@ const MintStep = props => {
       }
       sx={{ mt: "6rem", mb: "9.6rem" }}
       action={
-        <Button color="primary" loading={isProfileMinting} onClick={handleMintCanvas}>
+        <Button color="primary" width="28.2rem" loading={isProfileMinting} onClick={handleMintCanvas}>
           {isProfileMinting ? "Minting my Canvas" : "Mint my Canvas"}
         </Button>
       }
