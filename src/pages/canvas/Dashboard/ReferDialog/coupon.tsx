@@ -148,7 +148,7 @@ const Coupon = props => {
         <SvgIcon sx={{ width: "8rem" }} component={LogoSvg} inheritViewBox />
       </DescriptionBox>
       <Stack direction="column" alignItems="center" gap="1.5rem">
-        <Typography sx={{ fontSize: "2.8rem", lineHeight: "normal", fontWeight: 500 }}>Scroll Canvas Coupon</Typography>
+        <Typography sx={{ fontSize: "2.8rem", lineHeight: "normal", fontWeight: 500 }}>Invite Code</Typography>
         <Stack direction="row" justifyContent="center" alignItems="center" className={classes.codeWrapper}>
           {isLoading ? (
             <Skeleton size="small" white sx={{ width: "60%", height: "3rem" }}></Skeleton>
@@ -176,7 +176,7 @@ const Coupon = props => {
             {copied === 1 && <SvgIcon sx={{ ml: "0.6rem" }} component={CopySuccessSvg} inheritViewBox></SvgIcon>}
           </MenuItem>
           <MenuItem classes={{ root: classes.item }} onClick={handleCopyCode}>
-            <>{copied === 2 ? "Coupon code copied" : "Copy coupon code"}</>
+            <>{copied === 2 ? "Invite code copied" : "Copy invite code"}</>
             {copied === 2 && <SvgIcon sx={{ ml: "0.6rem" }} component={CopySuccessSvg} inheritViewBox></SvgIcon>}
           </MenuItem>
         </Menu>

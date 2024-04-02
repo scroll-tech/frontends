@@ -161,7 +161,7 @@ const ActionBox = props => {
   const actions: Action[] = useMemo(() => {
     return [
       {
-        label: "Refer & Earn",
+        label: "Invite & Earn",
         icon: EthSvg,
         color: "primary",
         onClick: () => changeReferDialog(true),

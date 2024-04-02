@@ -35,7 +35,7 @@ const ReferDialog = () => {
 
   return (
     <Dialog open={referDialogVisible} onClose={handleClose}>
-      <Title>Refer friends & you both earn</Title>
+      <Title>Invite friends & you both earn</Title>
       <SubTitle>
         Your friend gets 50% off the mint fee <br />
         while you receive 0.0005 ETH per successful referral
