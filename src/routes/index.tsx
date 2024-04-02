@@ -4,6 +4,12 @@ import BlogDetail from "@/pages/blog/detail"
 import BrandKit from "@/pages/brand-kit"
 import Bridge from "@/pages/bridge"
 import BridgeFAQ from "@/pages/bridge/FAQ"
+import ScrollCanvas from "@/pages/canvas"
+import CanvasDashboard from "@/pages/canvas/Dashboard"
+import CanvasBadge from "@/pages/canvas/badge"
+import CanvasBadgeContract from "@/pages/canvas/badgeContract"
+import CanvasInvite from "@/pages/canvas/invite"
+import MintProfile from "@/pages/canvas/mint"
 import Career from "@/pages/career"
 // import ComingSoon from "@/pages/developer-nft/coming-soon"
 import DeveloperNFT from "@/pages/developer-nft/index"
@@ -19,10 +25,6 @@ import RollupScanChunkDetail from "@/pages/rollup/chunk/detail"
 import RollupScan from "@/pages/rollup/index"
 import Sessions from "@/pages/sessions"
 import SessionsTerms from "@/pages/sessions-terms"
-import ScrollSkelly from "@/pages/skelly"
-import SkellyDashboard from "@/pages/skelly/Dashboard"
-import SkellyBadge from "@/pages/skelly/badge"
-import MintProfile from "@/pages/skelly/mint"
 import StickerVote from "@/pages/sticker-vote"
 import StickerWinners from "@/pages/sticker-winners"
 import Terms from "@/pages/terms"
@@ -229,14 +231,14 @@ const mainnetRoutes = [
     element: <SessionsTerms />,
   },
   {
-    name: "Scroll Skelly",
-    path: "/scroll-skelly",
-    element: <ScrollSkelly />,
+    name: "Scroll Canvas",
+    path: "/scroll-canvas",
+    element: <ScrollCanvas />,
     isHiddenFooter: true,
   },
   {
-    name: "Scroll Skelly",
-    path: "/scroll-skelly/mint",
+    name: "Scroll Canvas",
+    path: "/scroll-canvas/mint",
     element: <MintProfile />,
     isHiddenFooter: true,
   },
@@ -247,9 +249,27 @@ const mainnetRoutes = [
   //   isHiddenFooter: true,
   // },
   {
-    name: "Scroll Skelly",
-    path: "/scroll-skelly/badge",
-    element: <SkellyBadge />,
+    name: "Scroll Canvas",
+    path: "/scroll-canvas/badge/:id",
+    element: <CanvasBadge />,
+    isHiddenFooter: true,
+  },
+  {
+    name: "Scroll Canvas",
+    path: "/scroll-canvas/badge-contract/:address",
+    element: <CanvasBadgeContract />,
+    isHiddenFooter: true,
+  },
+  {
+    name: "Canvas Invite",
+    path: "/scroll-canvas/invite/:code",
+    element: <CanvasInvite />,
+    isHiddenFooter: true,
+  },
+  {
+    name: "Scroll Canvas",
+    path: "/scroll-canvas/:address",
+    element: <CanvasDashboard />,
     isHiddenFooter: true,
   },
 ]
