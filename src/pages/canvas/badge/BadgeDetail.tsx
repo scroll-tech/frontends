@@ -169,7 +169,7 @@ const BadgeDetail = props => {
                 </Statistic>
               )}
               {property.includes("rarity") && (
-                <Statistic label="Badge Rarity" loading={loading}>
+                <Statistic label="Rarity" loading={loading}>
                   {detail.rarity}
                 </Statistic>
               )}
