@@ -165,7 +165,7 @@ const ReferralCode = ({ isChecking, setIsChecking, code, codeStatus, setCodeStat
             <Box>
               <Typography sx={{ fontSize: "2rem", fontWeight: "bold", mb: "0.8rem", color: "#fff" }}>what's the mint fee is for?</Typography>
               <Typography sx={{ fontSize: "1.8rem", color: "#fff" }}>
-                To fight spamming bots, we implemented a small fee to mint Scroll Canvas
+                As a bot prevention measure, we’ve implemented a small mint fee for Scroll Canvas
               </Typography>
             </Box>
           }

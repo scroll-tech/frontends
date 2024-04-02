@@ -29,12 +29,17 @@ const Badge = ({ badge, index, badgewidth }) => {
           height: `${badgewidth}px`,
           padding: `${badgewidth * 0.15}px`,
           zIndex: 0,
+          transition: "all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)",
 
           "@keyframes rotate": {
             "100%": {
               transform: "translate(-50%, -50%) rotate(1turn)",
             },
           },
+          "&:hover": {
+            padding: `${badgewidth * 0.1}px`,
+          },
+
           "&:hover:before": {
             content: '""',
             zIndex: -2,

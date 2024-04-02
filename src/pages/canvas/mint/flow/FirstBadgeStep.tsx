@@ -1,35 +1,38 @@
 import Img from "react-cool-img"
-import { useNavigate } from "react-router-dom"
 
 import { Box, Stack, Typography } from "@mui/material"
 
 import Button from "@/components/Button"
+import TextButton from "@/components/TextButton"
 import { FIRST_BADGE } from "@/constants/canvas"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useSnackbar from "@/hooks/useSnackbar"
 import { mintBadge } from "@/services/canvasService"
 import useCanvasStore from "@/stores/canvasStore"
+import { isUserRejected } from "@/utils"
 
 import StepWrapper from "./StepWrapper"
 
 const FirstBadgeStep = props => {
-  const navigate = useNavigate()
   const { provider, walletCurrentAddress } = useRainbowContext()
-  const { isFirstBadgeMinting, changeIsFirstBadgeMinting, changeMintFlowVisible } = useCanvasStore()
+  const { isFirstBadgeMinting, changeIsFirstBadgeMinting, changeMintFlowVisible, queryVisibleBadges } = useCanvasStore()
   const alertWarning = useSnackbar()
 
   const handleMintBadge = async () => {
     changeIsFirstBadgeMinting(true)
-    const result = await mintBadge(provider, walletCurrentAddress, FIRST_BADGE.nftAddress, FIRST_BADGE.nftAbi, FIRST_BADGE.badgeContract)
-    if (result === false) {
-      alertWarning("Failed to mint Ethereum Year Badge")
-    } else {
-      navigate(`/scroll-canvas/badge/${result}`)
-      setTimeout(() => {
+    try {
+      const result = await mintBadge(provider, walletCurrentAddress, FIRST_BADGE.nftAddress, FIRST_BADGE.nftAbi, FIRST_BADGE.badgeContract)
+      if (result) {
         changeMintFlowVisible(false)
-      }, 3e2)
+        queryVisibleBadges(provider, walletCurrentAddress)
+      }
+    } catch (error) {
+      if (!isUserRejected(error)) {
+        alertWarning("Failed to mint Ethereum Year Badge")
+      }
+    } finally {
+      changeIsFirstBadgeMinting(false)
     }
-    changeIsFirstBadgeMinting(false)
   }
 
   const handleViewMyCanvas = () => {
@@ -46,13 +49,13 @@ const FirstBadgeStep = props => {
         </>
       }
       action={
-        <Stack direction="row" gap="1.6rem">
-          <Button color="secondary" onClick={handleViewMyCanvas}>
-            View my Canvas
-          </Button>
-          <Button color="primary" loading={isFirstBadgeMinting} onClick={handleMintBadge}>
+        <Stack direction="column" gap="2.4rem">
+          <Button color="primary" width="28.2rem" loading={isFirstBadgeMinting} onClick={handleMintBadge}>
             {isFirstBadgeMinting ? "Minting badge" : "Mint badge"}
           </Button>
+          <TextButton underline="always" sx={{ color: "#A0A0A0 !important", fontSize: "2rem", lineHeight: "3.5rem" }} onClick={handleViewMyCanvas}>
+            Skip and go to my Canvas
+          </TextButton>
         </Stack>
       }
       sx={{ mt: "7.2rem", mb: "11rem" }}

@@ -104,7 +104,7 @@ const MintHome = props => {
   return (
     <Container>
       <Title>Mint your Scroll Canvas</Title>
-      <SubTitle>Earn badges of attestations across the ecosystem.</SubTitle>
+      <SubTitle>Earn attestation badges across the ecosystem</SubTitle>
       <Box sx={{ width: "66.5rem", height: "29.8rem", mt: "1.8rem", mb: "2rem" }}>
         <img src="/imgs/canvas/heartbeat.webp" alt="heartbeat"></img>
       </Box>
