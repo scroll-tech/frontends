@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 
 import { SvgIcon } from "@mui/material"
 
@@ -7,10 +7,10 @@ import { getSmallAvatarURL, viewEASScanURL } from "@/apis/canvas"
 import { ReactComponent as ShareSvg } from "@/assets/svgs/canvas/share.svg"
 import ScrollButton from "@/components/Button"
 import Link from "@/components/Link"
-import RequestWarning from "@/components/RequestWarning"
 import { NFT_RARITY_MAP } from "@/constants"
 import { useCanvasContext } from "@/contexts/CanvasContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useSnackbar from "@/hooks/useSnackbar"
 import { fillBadgeDetailWithPayload, queryBadgeDetailById, queryCanvasUsername } from "@/services/canvasService"
 import { formatDate, generateShareTwitterURL, requireEnv } from "@/utils"
 
@@ -28,14 +28,17 @@ const isNativeBadge = badgeContract => {
 
 const BadgeDetailPage = () => {
   const { id } = useParams()
+  const navigate = useNavigate()
 
   const { walletCurrentAddress } = useRainbowContext()
 
   const { unsignedProfileRegistryContract, publicProvider } = useCanvasContext()
 
+  const alertWarning = useSnackbar()
+
   const [detail, setDetail] = useState<any>({})
   const [loading, setLoading] = useState(false)
-  const [errorMessage, setErrorMessage] = useState("")
+  // const [errorMessage, setErrorMessage] = useState("")
 
   const metadata = useMemo(
     () => ({
@@ -58,10 +61,6 @@ const BadgeDetailPage = () => {
     }
   }, [unsignedProfileRegistryContract, publicProvider, id])
 
-  const handleCloseWarning = () => {
-    setErrorMessage("")
-  }
-
   const fetchProfileUsername = async (provider, walletAddress) => {
     try {
       const profileAddress = await unsignedProfileRegistryContract.getProfile(walletAddress)
@@ -75,7 +74,13 @@ const BadgeDetailPage = () => {
   const fetchBadgeDetailByBadgeId = async id => {
     setLoading(true)
     try {
-      const [{ attester, time, data }] = await queryBadgeDetailById(id)
+      const badges = await queryBadgeDetailById(id)
+      if (!badges.length) {
+        navigate("/404")
+        return
+      }
+
+      const [{ attester, time, data }] = badges
 
       const { badgeContract, description, ...badgeMetadata } = await fillBadgeDetailWithPayload(publicProvider, { id, data })
       const name = await fetchProfileUsername(publicProvider, attester)
@@ -95,7 +100,7 @@ const BadgeDetailPage = () => {
       }
       setDetail(badgeDetail)
     } catch (e) {
-      setErrorMessage("Error")
+      alertWarning("Failed to fetch badge detail")
     } finally {
       setLoading(false)
     }
@@ -130,9 +135,6 @@ const BadgeDetailPage = () => {
           <SvgIcon sx={{ fontSize: "3.2rem", color: "primary.contrastText" }} component={ShareSvg} inheritViewBox></SvgIcon>
         </Link>
       </BadgeDetail>
-      <RequestWarning open={!!errorMessage} onClose={handleCloseWarning}>
-        {errorMessage}
-      </RequestWarning>
     </>
   )
 }
