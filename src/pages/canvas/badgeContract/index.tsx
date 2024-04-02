@@ -1,7 +1,6 @@
 // import { useSnackbar } from "notistack"
 import { useMemo } from "react"
-import { useParams } from "react-router-dom"
-import { useNavigate } from "react-router-dom"
+import { Navigate, useNavigate, useParams } from "react-router-dom"
 
 import { CircularProgress, Stack, SvgIcon, Typography } from "@mui/material"
 
@@ -40,23 +39,23 @@ const BadgeContractDetail = props => {
       const hasBadge = await checkIfHasBadgeByAddress(provider, walletCurrentAddress, detail.badgeContract)
       return hasBadge
     }
-  }, [provider, walletCurrentAddress, detail.badgeContract])
+  }, [provider, walletCurrentAddress, detail])
 
   const isValid = useAsyncMemo(async () => {
-    const badgeForMint = Badges.find(item => item.badgeContract === address)
+    const badgeForMint = Badges.find(item => item?.badgeContract === address)
     const valid = await badgeForMint!.validator(walletCurrentAddress, provider)
     return valid
   }, [address, walletCurrentAddress, provider])
 
   const shareBadgeURL = useMemo(() => {
     const viewURL = `${requireEnv("REACT_APP_FFRONTENDS_URL")}/scroll-canvas/badge-contract/${address}`
-    return generateShareTwitterURL(viewURL, `I found a badge called ${detail.name} you may like`)
+    return generateShareTwitterURL(viewURL, `I found a badge called ${detail?.name} you may like`)
   }, [address, detail])
 
   const metadata = useMemo(
     () => ({
-      title: `Canvas Badge - ${detail.name}`,
-      description: `I found a badge called ${detail.name} you may like`,
+      title: `Canvas Badge - ${detail?.name}`,
+      description: `I found a badge called ${detail?.name} you may like`,
       // TODO:
       image: "",
     }),
@@ -147,6 +146,9 @@ const BadgeContractDetail = props => {
     return null
   }
 
+  if (!detail) {
+    return <Navigate to="/404"></Navigate>
+  }
   return (
     <BadgeDetail
       detail={detail}
