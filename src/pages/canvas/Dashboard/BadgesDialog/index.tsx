@@ -255,7 +255,7 @@ const BadgesDialog = props => {
       <StyledDialogContent>
         <Transfer
           sx={{ mb: "4.8rem" }}
-          titles={["Not displayed", "Dispalyed"]}
+          titles={["Not displayed", "Displayed"]}
           data={userBadges}
           value={sortedBadges}
           onChange={handleTransferChange}

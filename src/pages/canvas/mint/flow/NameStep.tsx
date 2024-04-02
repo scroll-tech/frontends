@@ -65,7 +65,7 @@ const NameStep = props => {
   const renderAction = () => {
     if (chainId === CHAIN_ID.L2) {
       return (
-        <Button color="primary" gloomy={!isAllowedNext} onClick={handleNext}>
+        <Button color="primary" width={isMobile ? "23rem" : "28.2rem"} gloomy={!isAllowedNext} onClick={handleNext}>
           Next
         </Button>
       )
