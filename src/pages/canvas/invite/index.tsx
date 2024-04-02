@@ -14,14 +14,14 @@ const CanvasCoupon = () => {
   const { code } = useParams()
   const metaImgURI = useMemo(() => getImgByCode(code), [code])
 
-  const title = `Scroll - Canvas Coupon #${code}`
-  const description = `Hi, welcome to use my coupon #${code} to mint Canvas!`
+  const title = "Scroll Canvas - your unique space for onchain presence on Scroll"
+  const description = "Use my referral code to save 50% on Scroll Canvas mint!"
   const url = `${requireEnv("REACT_APP_FFRONTENDS_URL")}/scroll-canvas?code=${code}`
 
   return (
     <>
       <Helmet>
-        <title>Scroll - Canvas Coupon</title>
+        <title>Scroll - Canvas Invite</title>
         <meta name="description" content="Mint Scroll Canvas Now" />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
