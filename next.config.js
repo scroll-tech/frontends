@@ -32,6 +32,7 @@ const nextConfig = {
       { source: "/blog/visionAndValues", destination: "/blog/vision-and-values", permanent: true },
       { source: "/blog/zkEVM", destination: "/blog/zkevm", permanent: true },
       { source: "/blog/scrollsFreshCoat", destination: "/blog/scrolls-fresh-coat", permanent: true },
+      { source: "/sticker-vote", destination: "/sticker-winners", permanent: true },
     ]
   },
   images: {

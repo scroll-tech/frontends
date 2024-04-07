@@ -34,12 +34,14 @@ const useStyles = makeStyles()(theme => ({
     },
   },
   award: {
-    padding: "0.8rem 2rem",
+    padding: "1.5rem 2rem",
     border: `3px solid ${(theme as any).vars.palette.text.primary}`,
-    height: "8rem",
     backgroundColor: (theme as any).vars.palette.themeBackground.light,
     borderRadius: "1.6rem",
     textAlign: "center",
+    [theme.breakpoints.down("md")]: {
+      padding: "0.6rem 2rem",
+    },
     [theme.breakpoints.down("sm")]: {
       borderWidth: "2px",
     },
@@ -69,13 +71,7 @@ const Announcement = () => {
     <Stack direction="row" alignItems="center" gap={1} className={classes.announcement}>
       <SvgIcon sx={{ fontSize: ["2.4rem", "4rem"] }} component={TadaSvg} inheritViewBox></SvgIcon>
       <Typography
-        sx={{
-          fontSize: ["1.6rem", "3.2rem"],
-          lineHeight: ["2.4rem", "4rem"],
-          fontWeight: 500,
-          fontFamily: "var(--developer-page-font-family)",
-          whiteSpace: "nowrap",
-        }}
+        sx={{ fontSize: ["1.8rem", "3.2rem"], lineHeight: ["2.4rem", "4.4rem"], fontWeight: 500, fontFamily: "var(--developer-page-font-family)" }}
       >
         The winners are here!!!
       </Typography>

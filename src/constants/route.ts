@@ -174,11 +174,13 @@ const mainnetRoutes: PageMetadata[] = [
     ogImg: "/og_sticker_vote.png",
     twitterImg: "/twitter_sticker_vote.png",
   },
-  // {
-  //   name: "Scroll Sticker Winners",
-  //   path: "/sticker-winners",
-  //   description: "Congratulations to the winners of the sticker contest.",
-  // },
+  {
+    name: "Scroll Sticker Winners",
+    path: "/sticker-winners",
+    description: "Congratulations to the winners of the sticker contest.",
+    ogImg: "/og_sticker_vote.png",
+    twitterImg: "/twitter_sticker_vote.png",
+  },
 ]
 
 const routes = isSepolia ? sepoliaRoutes : mainnetRoutes
