@@ -75,7 +75,7 @@ const Protocols = () => {
       setSearchParams(pre => ({
         ...pre,
         page: 1,
-        keyword: searchInput,
+        keyword: searchInput.trim(),
       }))
     },
     5e2,
@@ -83,8 +83,7 @@ const Protocols = () => {
   )
 
   const handleChangeKeyword = e => {
-    const nextValue = e.target.value.trim() || ""
-    setSearchInput(nextValue)
+    setSearchInput(e.target.value)
   }
   const handleChangeNetwork = value => {
     setSearchParams(pre => ({
