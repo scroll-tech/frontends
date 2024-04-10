@@ -20,6 +20,7 @@ enum MIN_GASLIMIT {
   USDC_GATEWAY = 16e4,
   DAI_GATEWAY = 15e4,
   LIDO_GATEWAY = 15e4,
+  PUFFER_GATEWAY = 15e4,
 }
 
 type Props = {
@@ -38,6 +39,7 @@ enum GatewayType {
   USDC_GATEWAY = "USDC_GATEWAY",
   DAI_GATEWAY = "DAI_GATEWAY",
   LIDO_GATEWAY = "LIDO_GATEWAY",
+  PUFFER_GATEWAY = "PUFFER_GATEWAY",
 }
 
 // For USDC, Lido, and DAI, can use the STANDARD_ERC20_GATEWAY
@@ -49,6 +51,7 @@ const Address2GatewayType = {
   [requireEnv("REACT_APP_L1_USDC_GATEWAY_PROXY_ADDR")]: GatewayType.USDC_GATEWAY,
   [requireEnv("REACT_APP_L1_DAI_GATEWAY_PROXY_ADDR")]: GatewayType.DAI_GATEWAY,
   [requireEnv("REACT_APP_L1_LIDO_GATEWAY_PROXY_ADDR")]: GatewayType.LIDO_GATEWAY,
+  [requireEnv("REACT_APP_L1_PUFFER_GATEWAY_PROXY_ADDR")]: GatewayType.PUFFER_GATEWAY,
 }
 
 // Contracts
@@ -74,6 +77,10 @@ const Contracts = {
   [GatewayType.LIDO_GATEWAY]: {
     abi: require("@/assets/abis/L2StandardERC20Gateway.json"),
     env: "REACT_APP_L2_LIDO_GATEWAY_PROXY_ADDR",
+  },
+  [GatewayType.PUFFER_GATEWAY]: {
+    abi: require("@/assets/abis/L2StandardERC20Gateway.json"),
+    env: "REACT_APP_L2_PUFFER_GATEWAY_PROXY_ADDR",
   },
   SCROLL_MESSENGER: { abi: require("@/assets/abis/L2ScrollMessenger.json"), env: "REACT_APP_L2_SCROLL_MESSENGER" },
   L1_GAS_PRICE_ORACLE: { abi: require("@/assets/abis/L1GasPriceOracle.json"), env: "REACT_APP_L1_GAS_PRICE_ORACLE" },
@@ -112,7 +119,6 @@ export const PriceFeeProvider = ({ children }) => {
       if (chainId === CHAIN_ID.L1) {
         const price = await getGasPrice()
         const limit = await getGasLimit()
-        // console.log(price, limit, "gas price/limit")
         setGasPrice(price)
         setGasLimit(limit)
       } else {
@@ -195,7 +201,7 @@ export const PriceFeeProvider = ({ children }) => {
         amount,
         "0x",
       ]
-    } else if (gatewayType === GatewayType.CUSTOM_ERC20_GATEWAY) {
+    } else if ([GatewayType.CUSTOM_ERC20_GATEWAY, GatewayType.PUFFER_GATEWAY].includes(gatewayType)) {
       finalizeDepositParams = [(l1Token as ERC20Token).address, (l2Token as ERC20Token).address, walletCurrentAddress, walletCurrentAddress, 0, "0x"]
     } else {
       finalizeDepositParams = [
