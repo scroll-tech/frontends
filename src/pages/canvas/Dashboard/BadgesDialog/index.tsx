@@ -6,8 +6,6 @@ import { styled } from "@mui/system"
 
 import { ReactComponent as CloseSvg } from "@/assets/svgs/canvas/close.svg"
 import useSnackbar from "@/hooks/useSnackbar"
-// import { BADGES_VISIBLE_TYPE } from "@/constants"
-// import { useCanvasContext } from "@/contexts/CanvasContextProvider"
 import Button from "@/pages/canvas/components/Button"
 import { customiseDisplay } from "@/services/canvasService"
 // import { attachBadges, detachBadges, reorderBadges } from "@/services/canvasService"
@@ -15,7 +13,6 @@ import useCanvasStore from "@/stores/canvasStore"
 import { isUserRejected } from "@/utils"
 
 import Empty from "../../components/Empty"
-// import GridDragDrop from "./GridDragDrop"
 import Transfer from "./Transfer"
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
@@ -40,6 +37,7 @@ const BadgesDialog = props => {
   const {
     userBadges,
     attachedBadges,
+    orderedAttachedBadges,
     badgeOrder,
     badgesDialogVisible,
     changeBadgesDialog,
@@ -51,21 +49,10 @@ const BadgesDialog = props => {
   const alertWarning = useSnackbar()
 
   const [loading, setLoading] = useState(false)
-  // console.log(attachedBadges, badgeOrder, "badgeOrder")
-  // console.log(badgeOrder, "badgeOrder")
-
-  // const displayedIdsMap = Object.fromEntries(attachedBadges.map((id, index) => [id, Number(badgeOrder[index])]))
-  // console.log(displayedIdsMap, "displayedIdsMapdisplayedIdsMap")
-  // const badgesInstance = useMemo(() => {
-  //   return {
-  //     [BADGES_VISIBLE_TYPE.INVISIBLE]: userBadges.filter(badge => !attachedBadges.includes(badge.id)),
-  //     [BADGES_VISIBLE_TYPE.VISIBLE]: attachedBadges.map(badgeId => userBadges.find(badge => badge.id === badgeId)),
-  //   }
-  // }, [userBadges, attachedBadges])
 
   useEffect(() => {
     if (badgesDialogVisible) {
-      changeSortedBadges(attachedBadges)
+      changeSortedBadges(orderedAttachedBadges)
     }
   }, [badgesDialogVisible])
 
@@ -77,35 +64,24 @@ const BadgesDialog = props => {
     updateDataAndOrder()
   }
 
-  // const calculateRelativeOrder = (original, frontend) => {
-  //   const indexesInOriginal = frontend.map(element => original.indexOf(element))
-  //   const sortedIndexes = [...indexesInOriginal].sort((a, b) => a - b)
-  //   const relativeOrder = indexesInOriginal.map(index => BigInt(sortedIndexes.indexOf(index) + 1))
-  //   return relativeOrder
-  // }
-
-  const continuousOrder = (order: number[]) => {
-    const orderWithIndex = order.map((o, index) => ({ index, value: o }))
-    const aesOrderWithIndex = orderWithIndex.sort((a, b) => a.value - b.value).map(({ index, value }, i) => ({ value: i + 1, index }))
-    const result = aesOrderWithIndex.sort((a, b) => a.index - b.index).map(item => BigInt(item.value))
-    return result
+  const simulateThenAttachedBadges = (attachedBadges, hiddenToDisplayed, displayedToHidden) => {
+    const badgesAfterAttach = [...attachedBadges, ...hiddenToDisplayed]
+    if (displayedToHidden) {
+      displayedToHidden.forEach(id => {
+        const deleteIndex = badgesAfterAttach.indexOf(id)
+        if (deleteIndex < badgesAfterAttach.length - 1) {
+          badgesAfterAttach.splice(deleteIndex, 1, badgesAfterAttach[badgesAfterAttach.length - 1])
+        }
+        badgesAfterAttach.pop()
+      })
+    }
+    return badgesAfterAttach
   }
 
-  const calculateRelativeOrder = (currentDisplayedIds, hiddenToDisplayed, displayedIdsMap) => {
-    let preCount = Object.keys(displayedIdsMap).length
-    const curDisplayedOrder: number[] = []
-
-    for (let i = 0; i < currentDisplayedIds.length; i++) {
-      const dId = currentDisplayedIds[i]
-      // new attach
-      if (hiddenToDisplayed.includes(dId)) {
-        curDisplayedOrder.splice(i, 0, ++preCount)
-      } else {
-        curDisplayedOrder.push(displayedIdsMap[dId])
-      }
-    }
-    const formattedOrder = continuousOrder(curDisplayedOrder)
-    return formattedOrder
+  const calculateBadgeOrder = (curAttachedBadges, preAttachedBadges) => {
+    return preAttachedBadges.map((id, index) => {
+      return BigInt(curAttachedBadges.indexOf(id) + 1)
+    })
   }
 
   const handleTransferChange = value => {
@@ -116,28 +92,12 @@ const BadgesDialog = props => {
     setLoading(true)
 
     try {
-      const displayedIds = attachedBadges
-      const currentDisplayedIds = sortedBadges
-      const displayedSet = new Set(displayedIds)
-      const currentDisplayedSet = new Set(currentDisplayedIds)
-      const hiddenToDisplayed: any = []
-      const displayedToHidden: any = []
+      const displayedToHidden = attachedBadges.filter(id => !sortedBadges.includes(id))
+      const hiddenToDisplayed = sortedBadges.filter(id => !attachedBadges.includes(id))
 
-      displayedIds.forEach(id => {
-        if (!currentDisplayedSet.has(id)) {
-          displayedToHidden.push(id)
-        }
-      })
-
-      currentDisplayedIds.forEach(id => {
-        if (!displayedSet.has(id)) {
-          hiddenToDisplayed.push(id)
-        }
-      })
-
-      const displayedIdsMap = Object.fromEntries(displayedIds.map((id, index) => [id, Number(badgeOrder[index])]))
-      const newArrayOrder = calculateRelativeOrder(currentDisplayedIds, hiddenToDisplayed, displayedIdsMap)
-      console.log(newArrayOrder, "newArrayOrder")
+      const nextAttachedBadges = simulateThenAttachedBadges(attachedBadges, hiddenToDisplayed, displayedToHidden)
+      const newBadgeOrder = calculateBadgeOrder(sortedBadges, nextAttachedBadges)
+      console.log(newBadgeOrder, "newBadgeOrder")
 
       // if (hiddenToDisplayed.length > 0) {
       //   setLoading(true)
@@ -163,8 +123,8 @@ const BadgesDialog = props => {
       //   setLoading(false)
       // }
 
-      // if (!isEqual(badgeOrder, newArrayOrder)) {
-      //   const result = await reorderBadges(profileContract, newArrayOrder)
+      // if (!isEqual(badgeOrder, newBadgeOrder)) {
+      //   const result = await reorderBadges(profileContract, newBadgeOrder)
       //   if (result! !== true) {
       //     console.log("mintBadge failed", result)
       //   } else {
@@ -177,7 +137,7 @@ const BadgesDialog = props => {
         profileContract: profileContract!,
         attachBadges: hiddenToDisplayed.length > 0 ? hiddenToDisplayed : null,
         detachBadges: displayedToHidden.length > 0 ? displayedToHidden : null,
-        order: isEqual(badgeOrder, newArrayOrder) ? null : newArrayOrder,
+        order: isEqual(badgeOrder, newBadgeOrder) ? null : newBadgeOrder,
       })
 
       changeBadgesDialog(false)
