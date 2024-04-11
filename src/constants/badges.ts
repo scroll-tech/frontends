@@ -1,9 +1,13 @@
+import { requireEnv } from "@/utils"
+
 const SCROLL_SEPOLIA_SIMPLE_BADGE_A_ADDRESS = "0x30C98067517f8ee38e748A3aF63429974103Ea6B"
 const SCROLL_SEPOLIA_SIMPLE_BADGE_B_ADDRESS = "0xeBFc9B95328B2Cdb3c4CA8913e329c101d2Abbc2"
 const SCROLL_SEPOLIA_SIMPLE_BADGE_C_ADDRESS = "0x64492EF5a60245fbaF65F69782FCf158F3a8e3Aa"
 
 const ETHEREUM_YEAR_BADGE_ADDRESS = "0xB59B6466B21a089c93B14030AF88b164905a58fd"
 const ETHEREUM_YEAR_ATTESTER_PROXY_ADDRESS = "0xdAe8D9a30681899C305534849e138579aF0BF88e"
+
+const ETHEREUM_YEAR_BASE_URL = `${requireEnv("REACT_APP_CANVAS_BACKEND_URI")}/badge`
 
 const AMBIENT_SWAPOOR_BADGE_ADDRESS = "0x3abe5377E347D5E7d45bd6E2E506F753B9786cE9"
 const AMBIENT_PROVIDOOR_BADGE_ADDRESS = "0x7D61d353d2b8E8BD66c069eaEa088fDB006ADf5c"
@@ -20,12 +24,13 @@ export const ETHEREUM_YEAR_BADGE = {
   attesterProxy: ETHEREUM_YEAR_ATTESTER_PROXY_ADDRESS,
   description: "A collection 8888 Cute Chubby Pudgy Penquins sliding around on the freezing ETH blockchain.",
   image: "/imgs/canvas/Badge_Ethereum_Year.png",
-  native: true,
+  native: false,
   issuer: {
     origin: "https://scroll.io",
     name: "Scroll",
     logo: "https://scroll.io/static/media/Scroll_Logomark.673577c8260b63ae56867bc9af6af514.svg",
   },
+  baseUrl: ETHEREUM_YEAR_BASE_URL,
 }
 
 export const THIRD_PARTY_BADGES = [
