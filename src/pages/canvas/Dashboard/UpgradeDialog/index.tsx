@@ -22,6 +22,16 @@ const StyledList = styled(List)(({ theme }) => ({
   gap: "2.4rem",
   padding: "2.4rem 0 0",
   overflowY: "auto",
+  "&::-webkit-scrollbar-thumb": {
+    backgroundColor: "rgba(209, 205, 204, 0.30)",
+    borderRadius: "8px",
+  },
+  "&::-webkit-scrollbar": {
+    width: "6px",
+  },
+  // Firefox
+  scrollbarWidth: "thin",
+  scrollbarColor: "rgba(209, 205, 204, 0.30) transparent",
 
   "& .MuiListItem-root": {
     gap: "1.6rem",
