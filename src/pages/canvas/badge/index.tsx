@@ -80,14 +80,14 @@ const BadgeDetailPage = () => {
         return
       }
 
-      const [{ attester, time, data }] = badges
+      const [{ recipient, time, data }] = badges
 
       const { badgeContract, description, ...badgeMetadata } = await fillBadgeDetailWithPayload(publicProvider, { id, data })
-      const name = await fetchProfileUsername(publicProvider, attester)
+      const name = await fetchProfileUsername(publicProvider, recipient)
       const badgeDetail = {
-        walletAddress: attester,
+        walletAddress: recipient,
         owner: name,
-        ownerLogo: getSmallAvatarURL(attester),
+        ownerLogo: getSmallAvatarURL(recipient),
         mintedOn: formatDate(time * 1000),
         badgeContract,
         issuer: badgeMap[badgeContract]?.issuer,
