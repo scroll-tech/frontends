@@ -14,7 +14,7 @@ import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useAsyncMemo } from "@/hooks"
 import useSnackbar from "@/hooks/useSnackbar"
 import Badges from "@/pages/canvas/Dashboard/UpgradeDialog/Badges"
-import { checkIfProfileMinted } from "@/services/canvasService"
+import { checkBadgeEligibility, checkIfProfileMinted } from "@/services/canvasService"
 import useCanvasStore from "@/stores/canvasStore"
 import { requireEnv } from "@/utils"
 
@@ -90,7 +90,7 @@ const Dashboard = props => {
       const filteredBadges = await Promise.all(
         Badges.map(async badge => {
           const isUserBadge = userBadges.some(userBadge => userBadge.badgeContract === badge.badgeContract)
-          const isValidBadge = await badge.validator(walletCurrentAddress, provider)
+          const isValidBadge = await checkBadgeEligibility(provider, walletCurrentAddress, badge)
           return {
             ...badge,
             isValid: !isUserBadge && isValidBadge,

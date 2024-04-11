@@ -86,7 +86,7 @@ const BadgeDetailDialog = () => {
   const handleMint = async () => {
     changeIsBadgeMinting(selectedBadge.badgeContract, true)
 
-    const result = await mintBadge(provider, walletCurrentAddress, selectedBadge.nftAddress, selectedBadge.nftAbi, selectedBadge.badgeContract)
+    const result = await mintBadge(provider, walletCurrentAddress, selectedBadge)
     if (result === false) {
       console.log("mintBadge failed", result)
       alertWarning("Failed to mint badge")

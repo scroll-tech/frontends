@@ -21,7 +21,7 @@ const FirstBadgeStep = props => {
   const handleMintBadge = async () => {
     changeIsFirstBadgeMinting(true)
     try {
-      const result = await mintBadge(provider, walletCurrentAddress, FIRST_BADGE.nftAddress, FIRST_BADGE.nftAbi, FIRST_BADGE.badgeContract)
+      const result = await mintBadge(provider, walletCurrentAddress, FIRST_BADGE)
       if (result) {
         changeMintFlowVisible(false)
         queryVisibleBadges(provider, walletCurrentAddress)

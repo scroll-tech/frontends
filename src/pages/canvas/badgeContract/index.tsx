@@ -12,7 +12,7 @@ import Link from "@/components/Link"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useAsyncMemo } from "@/hooks"
 import useSnackbar from "@/hooks/useSnackbar"
-import { checkIfHasBadgeByAddress, mintBadge } from "@/services/canvasService"
+import { checkBadgeEligibility, checkIfHasBadgeByAddress, mintBadge } from "@/services/canvasService"
 import useCanvasStore from "@/stores/canvasStore"
 import { generateShareTwitterURL, requireEnv } from "@/utils"
 
@@ -41,10 +41,10 @@ const BadgeContractDetail = props => {
     }
   }, [provider, walletCurrentAddress, detail])
 
-  const isValid = useAsyncMemo(async () => {
-    const badgeForMint = Badges.find(item => item?.badgeContract === address)
-    const valid = await badgeForMint!.validator(walletCurrentAddress, provider)
-    return valid
+  const isEligible = useAsyncMemo(async () => {
+    const badgeForMint = Badges.find(item => item?.badgeContract === address) as any
+    const eligibility = await checkBadgeEligibility(provider, walletCurrentAddress, badgeForMint)
+    return eligibility
   }, [address, walletCurrentAddress, provider])
 
   const shareBadgeURL = useMemo(() => {
@@ -66,8 +66,8 @@ const BadgeContractDetail = props => {
     try {
       changeIsBadgeMinting(address, true)
 
-      const badgeForMint = Badges.find(item => item.badgeContract === address)
-      const result = await mintBadge(provider, walletCurrentAddress, badgeForMint!.nftAddress, badgeForMint!.nftAbi, badgeForMint!.badgeContract)
+      const badgeForMint: any = Badges.find(item => item.badgeContract === address)
+      let result = await mintBadge(provider, walletCurrentAddress, badgeForMint)
       if (result) {
         navigate(`/scroll-canvas/badge/${result}`, { replace: true })
       }
@@ -95,7 +95,7 @@ const BadgeContractDetail = props => {
           </Typography>
         </>
       )
-    } else if (profileMinted && !isOwned && isValid) {
+    } else if (profileMinted && !isOwned && isEligible) {
       return (
         <>
           <SvgIcon sx={{ color: "#85E0D1", fontSize: "2.4rem" }} component={ValidSvg} inheritViewBox></SvgIcon>
@@ -104,7 +104,7 @@ const BadgeContractDetail = props => {
           </Typography>
         </>
       )
-    } else if (profileMinted && !isOwned && !isValid) {
+    } else if (profileMinted && !isOwned && !isEligible) {
       return (
         <>
           <SvgIcon sx={{ color: "primary.main", fontSize: "2.4rem" }} component={WarningSvg} inheritViewBox></SvgIcon>
@@ -138,7 +138,7 @@ const BadgeContractDetail = props => {
       )
     } else if (profileMinted === true && !isOwned) {
       return (
-        <ScrollButton color="primary" onClick={handleMint} loading={isBadgeMinting.get(address)} gloomy={!isValid}>
+        <ScrollButton color="primary" onClick={handleMint} loading={isBadgeMinting.get(address)} gloomy={!isEligible}>
           Mint now
         </ScrollButton>
       )

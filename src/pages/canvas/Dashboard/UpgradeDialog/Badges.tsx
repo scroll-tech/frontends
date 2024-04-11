@@ -5,6 +5,7 @@ import { styled } from "@mui/material/styles"
 import ScrollOriginsNFTABI from "@/assets/abis/ScrollOriginsNFT.json"
 import Link from "@/components/Link"
 import { ANNOUNCING_SCROLL_ORIGINS_NFT, DESIGNING_SCROLL_ORIGINS } from "@/constants"
+import thirdBadges from "@/constants/thirdBadges"
 import { requireEnv } from "@/utils"
 
 const SCROLL_ORIGINS_NFT = requireEnv("REACT_APP_SCROLL_ORIGINS_NFT")
@@ -52,7 +53,7 @@ const Badges = [
       name: "Scroll",
       logo: "https://scroll.io/static/media/Scroll_Logomark.673577c8260b63ae56867bc9af6af514.svg",
     },
-    validator: async (address, provider) => {
+    validator: async (provider, address) => {
       const nftContract = new ethers.Contract(SCROLL_ORIGINS_NFT, ScrollOriginsNFTABI, provider)
       const nftV2Contract = new ethers.Contract(SCROLL_ORIGINS_NFT_V2, ScrollOriginsNFTABI, provider)
 
@@ -63,10 +64,9 @@ const Badges = [
       return !!balance
     },
   },
+  ...thirdBadges,
   {
     name: "Pudgy Penguin #1",
-    nftAddress: null,
-    nftAbi: null,
     badgeContract: SCROLL_SEPOLIA_SIMPLE_BADGE_A_ADDRESS,
     description: "A collection 8888 Cute Chubby Pudgy Penquins sliding around on the freezing ETH blockchain.",
     image: "/imgs/canvas/Penguin1.webp",
@@ -76,12 +76,10 @@ const Badges = [
       name: "Scroll",
       logo: "https://scroll.io/static/media/Scroll_Logomark.673577c8260b63ae56867bc9af6af514.svg",
     },
-    validator: (walletCurrentAddress, provider) => true,
+    // validator: (walletCurrentAddress, provider) => true,
   },
   {
     name: "Pudgy Penguin #2",
-    nftAddress: null,
-    nftAbi: null,
     badgeContract: SCROLL_SEPOLIA_SIMPLE_BADGE_B_ADDRESS,
     description: "A collection 8888 Cute Chubby Pudgy Penquins sliding around on the freezing ETH blockchain.",
     image: "https://cloudflare-ipfs.com/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/2.png",
@@ -91,12 +89,10 @@ const Badges = [
       name: "Scroll",
       logo: "https://scroll.io/static/media/Scroll_Logomark.673577c8260b63ae56867bc9af6af514.svg",
     },
-    validator: (walletCurrentAddress, provider) => true,
+    // validator: (walletCurrentAddress, provider) => true,
   },
   {
     name: "Pudgy Penguin #3",
-    nftAddress: null,
-    nftAbi: null,
     badgeContract: SCROLL_SEPOLIA_SIMPLE_BADGE_C_ADDRESS,
     description:
       "AlienSwap is a multi-chain NFT marketplace and aggregator aimed to build the leading trading layer for the community, now we have integrated Scroll not only with the marketplace, but also our CreateX NFT creation platform, so that any one can create, list or trade NFT on Scroll.",
@@ -107,12 +103,12 @@ const Badges = [
       name: "AlienSwap",
       logo: "https://scroll-eco-list.netlify.app/logos/AlienSwap.png",
     },
-    validator: (walletCurrentAddress, provider) => true,
+    // validator: (walletCurrentAddress, provider) => true,
   },
 ]
 
 export const badgeMap = Object.fromEntries(
-  Badges.map(({ badgeContract, native, originsNFT, issuer, image, name, description, metaDescription }) => [
+  Badges.map(({ badgeContract, native, originsNFT, issuer, image, name, description, metaDescription }: any) => [
     badgeContract,
     { native, originsNFT, issuer, image, badgeContract, name, description, metaDescription },
   ]),
