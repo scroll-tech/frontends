@@ -6,6 +6,7 @@ import { List } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import { checkBadgeEligibility } from "@/services/canvasService"
 import useCanvasStore from "@/stores/canvasStore"
 
 import Dialog from "../../components/Dialog"
@@ -48,7 +49,8 @@ const UpgradeDialog = () => {
       const filteredBadges = await Promise.all(
         Badges.map(async badge => {
           const isUserBadge = userBadges.some(userBadge => userBadge.badgeContract === badge.badgeContract)
-          const isValidBadge = await badge.validator(walletCurrentAddress, provider)
+          let isValidBadge = await checkBadgeEligibility(provider, walletCurrentAddress, badge)
+
           return {
             ...badge,
             isValid: !isUserBadge && isValidBadge,
