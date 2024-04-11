@@ -56,6 +56,7 @@ interface CanvasStore {
   canvasUsername: string
   userBadges: Array<any>
   attachedBadges: Array<any>
+  orderedAttachedBadges: Array<any>
   badgeOrder: Array<any>
   profileContract: Contract | null
 
@@ -82,7 +83,7 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
   badgesDialogVisible: false,
   upgradeDialogVisible: false,
   badgeDetailDialogVisible: BadgeDetailDialogTpye.HIDDEN,
-  sortedBadges: {},
+  sortedBadges: [],
   selectedBadge: {},
 
   // now
@@ -104,6 +105,7 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
   canvasUsername: "",
   userBadges: [],
   attachedBadges: [],
+  orderedAttachedBadges: [],
   badgeOrder: [],
 
   checkIfProfileMinted: async (registryInstance, userAddress, test) => {
@@ -140,11 +142,12 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
     }
   },
   fetchOthersCanvasDetail: async (privider, othersAddress, profileAddress) => {
-    const { name, userBadges, attachedBadges, badgeOrder } = await fetchCanvasDetail(privider, othersAddress, profileAddress)
+    const { name, userBadges, attachedBadges, orderedAttachedBadges, badgeOrder } = await fetchCanvasDetail(privider, othersAddress, profileAddress)
     set({
       canvasUsername: name,
       userBadges,
       attachedBadges,
+      orderedAttachedBadges,
       badgeOrder,
     })
   },
@@ -182,13 +185,18 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
   },
 
   fetchCurrentCanvasDetail: async (signer, walletAddress, profileAddress) => {
-    const { name, profileContract, userBadges, attachedBadges, badgeOrder } = await fetchCanvasDetail(signer, walletAddress, profileAddress)
+    const { name, profileContract, userBadges, attachedBadges, orderedAttachedBadges, badgeOrder } = await fetchCanvasDetail(
+      signer,
+      walletAddress,
+      profileAddress,
+    )
     set({
       username: name,
       canvasUsername: name,
       profileContract,
       userBadges,
       attachedBadges,
+      orderedAttachedBadges,
       badgeOrder,
     })
   },
@@ -249,6 +257,7 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
       canvasUsername: "",
       userBadges: [],
       attachedBadges: [],
+      orderedAttachedBadges: [],
       badgeOrder: [],
     })
   },
@@ -269,9 +278,10 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
     set({
       queryUserBadgesLoading: true,
     })
-    const { orderedAttachedBadges, badgeOrder } = await getOrderedAttachedBadges(get().profileContract)
+    const { orderedAttachedBadges, badgeOrder, attachedBadges } = await getOrderedAttachedBadges(get().profileContract)
     set({
-      attachedBadges: orderedAttachedBadges,
+      attachedBadges,
+      orderedAttachedBadges,
       badgeOrder,
       queryUserBadgesLoading: false,
     })
@@ -283,10 +293,11 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
       queryUserBadgesLoading: true,
     })
     const userBadges = await queryUserBadgesWrapped(provider, walletAddress)
-    const { orderedAttachedBadges, badgeOrder } = await getOrderedAttachedBadges(get().profileContract)
+    const { orderedAttachedBadges, badgeOrder, attachedBadges } = await getOrderedAttachedBadges(get().profileContract)
     set({
       userBadges,
-      attachedBadges: orderedAttachedBadges,
+      attachedBadges,
+      orderedAttachedBadges,
       badgeOrder,
       queryUserBadgesLoading: false,
     })

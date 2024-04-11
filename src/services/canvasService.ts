@@ -172,16 +172,20 @@ const queryCanvasUsername = async (provider, profileAddress) => {
 
 const getOrderedAttachedBadges = async profileContract => {
   try {
-    const badges = await profileContract!.getAttachedBadges()
-    const badgesArray = Array.from(badges)
+    const badgesProxy = await profileContract!.getAttachedBadges()
+    const attachedBadges = Array.from(badgesProxy)
     const badgeOrder = await getBadgeOrder(profileContract)
-    const orderedAttachedBadges = badgeOrder.map(index => badgesArray[Number(BigInt(index as bigint)) - 1])
-    // throw new Error("?????")
 
-    // console.log("orderedAttachedBadges", orderedAttachedBadges)
-    // console.log("badgeOrder", badgeOrder)
-    // setAttachedBadges(orderedAttachedBadges)
-    return { orderedAttachedBadges, badgeOrder }
+    const orderedAttachedBadges = badgeOrder
+      .map((order, index) => [Number(order), attachedBadges[index]])
+      .sort((a: any, b: any) => a[0] - b[0])
+      .map(item => item[1])
+
+    // console.log(attachedBadges, "badges")
+    // console.log(badgeOrder, "badgeOrder")
+    // console.log(orderedAttachedBadges, "orderedAttachedBadges")
+
+    return { orderedAttachedBadges, attachedBadges, badgeOrder }
   } catch (error) {
     throw new Error("Failed to query attached badges")
     // console.error("Failed to query attached badges:", error)
@@ -204,9 +208,8 @@ const getBadgeOrder = async profileContract => {
 const fetchCanvasDetail = async (privider, othersAddress, profileAddress) => {
   const { profileContract, name } = await queryCanvasUsername(privider, profileAddress)
   const userBadges = await queryUserBadgesWrapped(privider, othersAddress)
-  const { orderedAttachedBadges, badgeOrder } = await getOrderedAttachedBadges(profileContract)
-  // const badgeOrder = await getBadgeOrder(profileContract)
-  return { name, profileContract, userBadges, attachedBadges: orderedAttachedBadges, badgeOrder }
+  const { orderedAttachedBadges, attachedBadges, badgeOrder } = await getOrderedAttachedBadges(profileContract)
+  return { name, profileContract, userBadges, attachedBadges, orderedAttachedBadges, badgeOrder }
 }
 
 const attachBadges = async (profileContract, badgeAddresses) => {
@@ -225,7 +228,6 @@ const attachBadges = async (profileContract, badgeAddresses) => {
 
 const detachBadges = async (profileContract, badgeAddresses) => {
   try {
-    // badgeAddresses  = ["0xcb8c7fd835c350f56738d13b7cb765c8089f7b2a08ebbd14093fa6e4cf515cf0"]
     const tx = await profileContract!.detach(badgeAddresses)
     const txReceipt = await tx.wait()
     if (txReceipt.status === 1) {

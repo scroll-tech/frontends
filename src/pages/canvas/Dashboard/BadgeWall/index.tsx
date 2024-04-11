@@ -15,9 +15,16 @@ import Tooltip from "../../components/Tooltip"
 import Badge from "./Badge"
 
 interface BadgeType {
-  metadata: string
-  left: number
-  top: number
+  attester: string
+  attributes: Array<any>
+  badgeContract: string
+  data: string
+  description: string
+  id: string
+  image: string
+  name: string
+  time: number
+  txid: string
 }
 
 interface BadgeWallProps {
@@ -27,7 +34,7 @@ interface BadgeWallProps {
 }
 
 interface BadgePosition {
-  metadata: string
+  metadata: BadgeType
   left: number
   top: number
 }
@@ -57,8 +64,8 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
   const { badgewidth, gridNum, windowDimensions } = props
   const divRef = useRef<HTMLDivElement>(null)
 
-  const { profileMinted, canvasUsername, userBadges, attachedBadges } = useCanvasStore()
-  const [badges, setBadges] = useState<BadgeType[]>([])
+  const { profileMinted, canvasUsername, userBadges, orderedAttachedBadges } = useCanvasStore()
+  const [badges, setBadges] = useState<BadgePosition[]>([])
   const { walletCurrentAddress } = useRainbowContext()
 
   const realWalletAddress = useMemo(() => othersWalletAddress || walletCurrentAddress, [othersWalletAddress, walletCurrentAddress])
@@ -70,14 +77,14 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
   }, [profileMinted])
 
   const visibleBadges = useMemo(() => {
-    return attachedBadges.map(badgeId => userBadges.find(badge => badge.id === badgeId))
-  }, [userBadges, attachedBadges])
+    return orderedAttachedBadges.map(badgeId => userBadges.find(badge => badge.id === badgeId))
+  }, [userBadges, orderedAttachedBadges])
 
   useEffect(() => {
     setBadges(generatedBadges())
   }, [badgewidth, windowDimensions, visibleBadges, userBadges])
 
-  const generateBadgePositions = (divRect: DOMRect, badgewidth: number, badges: string[]): BadgePosition[] => {
+  const generateBadgePositions = (divRect: DOMRect, badgewidth: number, badges: BadgeType[]): BadgePosition[] => {
     const positions: BadgePosition[] = []
     let cursor = { x: divRect.left, y: divRect.top - badgewidth }
     let direction = 0 // 0: right, 1: down, 2: left, 3: up
@@ -121,7 +128,7 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
     return positions
   }
 
-  const generatedBadges = (): BadgeType[] => {
+  const generatedBadges = (): BadgePosition[] => {
     if (divRef.current) {
       const divRect = divRef.current.getBoundingClientRect()
       return generateBadgePositions(divRect, badgewidth, visibleBadges)
@@ -161,7 +168,7 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
         <Name>{userInfo.name}</Name>
       </Profile>
       {badges.map((badge, index) => (
-        <Badge key={index} badge={badge} index={index} badgewidth={badgewidth} />
+        <Badge key={badge.metadata.id} badge={badge} index={index} badgewidth={badgewidth} />
       ))}
     </>
   )
