@@ -5,7 +5,7 @@ import { styled } from "@mui/material/styles"
 import ScrollOriginsNFTABI from "@/assets/abis/ScrollOriginsNFT.json"
 import Link from "@/components/Link"
 import { ANNOUNCING_SCROLL_ORIGINS_NFT, DESIGNING_SCROLL_ORIGINS } from "@/constants"
-import { EAMPLE_BADGES, THIRD_PARTY_BADGES } from "@/constants/badges"
+import { EAMPLE_BADGES, ETHEREUM_YEAR_BADGE, THIRD_PARTY_BADGES } from "@/constants/badges"
 import { requireEnv } from "@/utils"
 
 const SCROLL_ORIGINS_NFT = requireEnv("REACT_APP_SCROLL_ORIGINS_NFT")
@@ -59,6 +59,7 @@ const Badges = [
       return !!balance
     },
   },
+  ETHEREUM_YEAR_BADGE,
   ...THIRD_PARTY_BADGES,
   ...EAMPLE_BADGES,
 ]
