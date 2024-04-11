@@ -85,18 +85,19 @@ const BadgeDetailDialog = () => {
 
   const handleMint = async () => {
     changeIsBadgeMinting(selectedBadge.badgeContract, true)
-
-    const result = await mintBadge(provider, walletCurrentAddress, selectedBadge)
-    if (result === false) {
-      console.log("mintBadge failed", result)
+    try {
+      const result = await mintBadge(provider, walletCurrentAddress, selectedBadge)
+      if (result) {
+        const { image } = await getBadgeMetadata(provider, selectedBadge.badgeContract, result)
+        changeSelectedBadge({ ...selectedBadge, id: result, image })
+        changeBadgeDetailDialog(BadgeDetailDialogTpye.MINTED)
+        queryVisibleBadges(provider, walletCurrentAddress)
+      }
+    } catch (e) {
       alertWarning("Failed to mint badge")
-    } else {
-      const { image } = await getBadgeMetadata(provider, selectedBadge.badgeContract, result)
-      changeSelectedBadge({ ...selectedBadge, id: result, image })
-      changeBadgeDetailDialog(BadgeDetailDialogTpye.MINTED)
-      queryVisibleBadges(provider, walletCurrentAddress)
+    } finally {
+      changeIsBadgeMinting(selectedBadge.badgeContract, false)
     }
-    changeIsBadgeMinting(selectedBadge.badgeContract, false)
   }
 
   const handleViewCanvas = () => {

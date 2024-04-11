@@ -4,7 +4,7 @@ import { Box, Stack, Typography } from "@mui/material"
 
 import Button from "@/components/Button"
 import TextButton from "@/components/TextButton"
-import { FIRST_BADGE } from "@/constants/canvas"
+import { ETHEREUM_YEAR_BADGE } from "@/constants/badges"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useSnackbar from "@/hooks/useSnackbar"
 import { mintBadge } from "@/services/canvasService"
@@ -21,7 +21,7 @@ const FirstBadgeStep = props => {
   const handleMintBadge = async () => {
     changeIsFirstBadgeMinting(true)
     try {
-      const result = await mintBadge(provider, walletCurrentAddress, FIRST_BADGE)
+      const result = await mintBadge(provider, walletCurrentAddress, ETHEREUM_YEAR_BADGE)
       if (result) {
         changeMintFlowVisible(false)
         queryVisibleBadges(provider, walletCurrentAddress)
@@ -61,9 +61,9 @@ const FirstBadgeStep = props => {
       sx={{ mt: "7.2rem", mb: "11rem" }}
     >
       <Box sx={{ width: "20rem", mb: "0.8rem" }}>
-        <Img src={FIRST_BADGE.image} placeholder="/imgs/canvas/badgePlaceholder.svg" alt="Ethereum Year"></Img>
+        <Img src={ETHEREUM_YEAR_BADGE.image} placeholder="/imgs/canvas/badgePlaceholder.svg" alt="Ethereum Year"></Img>
       </Box>
-      <Typography sx={{ fontSize: "3.2rem", lineHeight: "4.8rem", fontWeight: 600 }}>{FIRST_BADGE.name}</Typography>
+      <Typography sx={{ fontSize: "3.2rem", lineHeight: "4.8rem", fontWeight: 600 }}>{ETHEREUM_YEAR_BADGE.name}</Typography>
     </StepWrapper>
   )
 }
