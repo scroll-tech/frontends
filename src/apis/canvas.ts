@@ -19,3 +19,8 @@ export const checkCodeValidation = code => `${baseUrl}/code/${code}/active`
 export const getInviteUrlByCode = code => `${requireEnv("REACT_APP_FFRONTENDS_URL")}/scroll-canvas/invite/${code}`
 
 export const viewEASScanURL = id => `${requireEnv("REACT_APP_EAS_EXPLORER_URL")}/attestation/view/${id}`
+
+export const checkBadgeEligibilityURL = (baseUrl, walletAddress, badgeContract) =>
+  `${baseUrl}/check?badge=${badgeContract}&recipient=${walletAddress}`
+
+export const claimBadgeURL = (baseUrl, walletAddress, badgeContract) => `${baseUrl}/claim?badge=${badgeContract}&recipient=${walletAddress}`

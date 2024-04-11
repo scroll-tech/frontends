@@ -9,8 +9,9 @@ import { ReactComponent as RightSvg } from "@/assets/svgs/canvas/arrow-right.svg
 
 interface CarouselItem {
   name: string
-  nftAddress: string[] | null
-  nftAbi: object | null
+  nftAddress?: string[]
+  nftAbi?: object
+  attesterProxy?: string
   badgeContract: string
   description: any
   metaDescription?: string
@@ -22,7 +23,8 @@ interface CarouselItem {
     name: string
     logo: string
   }
-  validator: (address, provider) => Promise<boolean> | boolean
+  validator?: (address, provider) => Promise<boolean>
+  eligibilityAPI?: string
 }
 
 interface CarouselProps {

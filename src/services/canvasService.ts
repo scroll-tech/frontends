@@ -1,6 +1,7 @@
 // canvasService.js
 import { AbiCoder, ethers, isError } from "ethers"
 
+import { checkBadgeEligibilityURL, claimBadgeURL } from "@/apis/canvas"
 import AttestProxyABI from "@/assets/abis/CanvasAttestProxy.json"
 import BadgeABI from "@/assets/abis/CanvasBadge.json"
 import ProfileABI from "@/assets/abis/CanvasProfile.json"
@@ -237,71 +238,114 @@ const detachBadges = async (profileContract, badgeAddresses) => {
   }
 }
 
-const mintBadge = async (provider, walletCurrentAddress, nftAddress, nftAbi, badgeAddress) => {
+const checkBadgeEligibility = async (provider, walletAddress, badge: any) => {
+  // originsNFT
+  if (badge.validator) {
+    const eligibility = await badge.validator(provider, walletAddress)
+    return eligibility
+  }
+
+  // scroll native
+  if (badge.native) {
+    return true
+  }
+  // third-party badge
+  if (badge.attesterProxy) {
+    const data = await scrollRequest(checkBadgeEligibilityURL(badge.baseUrl, walletAddress, badge.badgeContract))
+    return data.eligibility
+  }
+  return false
+}
+
+const mintThirdBadge = async (signer, walletAddress, badgeAddress, attesterProxyAddress, claimBaseUrl) => {
+  const { tx: unsignedTx } = await scrollRequest(claimBadgeURL(claimBaseUrl, walletAddress, badgeAddress))
+  console.log(unsignedTx, "unsignedTx")
+  const tx = await signer.sendTransaction(unsignedTx)
+  const txReceipt = await tx.wait()
+  if (txReceipt.status === 1) {
+    return txReceipt.logs[0].data
+  } else {
+    throw new Error("due to any operation that can cause the transaction or top-level call to revert")
+  }
+}
+
+const mintOriginNFTBadge = async (signer, walletCurrentAddress, badgeAddress, nftAddress, nftAbi) => {
+  const nftContract = new ethers.Contract(nftAddress[0], nftAbi, signer)
+  const nftV2Contract = new ethers.Contract(nftAddress[1], nftAbi, signer)
+  let tokenId, nftVersion
+
   try {
+    tokenId = await nftContract.tokenOfOwnerByIndex(walletCurrentAddress, 0)
+    nftVersion = 0
+  } catch (error) {
+    tokenId = await nftV2Contract.tokenOfOwnerByIndex(walletCurrentAddress, 0)
+    nftVersion = 1
+  }
+
+  const abiCoder = new AbiCoder()
+  const originsBadgePayload = abiCoder.encode(["address", "uint256"], [nftAddress[nftVersion], tokenId])
+  const badgePayload = abiCoder.encode(["address", "bytes"], [badgeAddress, originsBadgePayload])
+  const easContract = new ethers.Contract(SCROLL_SEPOLIA_EAS_ADDRESS, AttestProxyABI, signer)
+  const attestParams = {
+    schema: SCROLL_SEPOLIA_BADGE_SCHEMA,
+    data: {
+      recipient: walletCurrentAddress,
+      expirationTime: 0,
+      revocable: false,
+      refUID: "0x0000000000000000000000000000000000000000000000000000000000000000",
+      data: badgePayload,
+      value: 0,
+    },
+  }
+  const tx = await easContract.attest(attestParams)
+  const txReceipt = await tx.wait()
+  if (txReceipt.status === 1) {
+    return txReceipt.logs[0].data
+  } else {
+    throw new Error("due to any operation that can cause the transaction or top-level call to revert")
+  }
+}
+
+const mintPermissionlessBadge = async (signer, walletCurrentAddress, badgeAddress) => {
+  const abiCoder = new AbiCoder()
+  const badgePayload = abiCoder.encode(["address", "bytes"], [badgeAddress, "0x"])
+  const easContract = new ethers.Contract(SCROLL_SEPOLIA_EAS_ADDRESS, AttestProxyABI, signer)
+  const attestParams = {
+    schema: SCROLL_SEPOLIA_BADGE_SCHEMA,
+    data: {
+      recipient: walletCurrentAddress,
+      expirationTime: 0,
+      revocable: false,
+      refUID: "0x0000000000000000000000000000000000000000000000000000000000000000",
+      data: badgePayload,
+      value: 0,
+    },
+  }
+
+  const tx = await easContract.attest(attestParams)
+  const txReceipt = await tx.wait()
+  if (txReceipt.status === 1) {
+    return txReceipt.logs[0].data
+  } else {
+    throw new Error("due to any operation that can cause the transaction or top-level call to revert")
+  }
+}
+
+const mintBadge = async (provider, walletCurrentAddress, badge) => {
+  try {
+    const { badgeContract, nftAddress, nftAbi, attesterProxy, baseUrl } = badge
     const signer = await provider!.getSigner(0)
 
-    if (!nftAddress || !nftAbi) {
-      const abiCoder = new AbiCoder()
-      const badgePayload = abiCoder.encode(["address", "bytes"], [badgeAddress, "0x"])
-      const easContract = new ethers.Contract(SCROLL_SEPOLIA_EAS_ADDRESS, AttestProxyABI, signer)
-      const attestParams = {
-        schema: SCROLL_SEPOLIA_BADGE_SCHEMA,
-        data: {
-          recipient: walletCurrentAddress,
-          expirationTime: 0,
-          revocable: false,
-          refUID: "0x0000000000000000000000000000000000000000000000000000000000000000",
-          data: badgePayload,
-          value: 0,
-        },
-      }
-
-      const tx = await easContract.attest(attestParams)
-      const txReceipt = await tx.wait()
-      if (txReceipt.status === 1) {
-        return txReceipt.logs[0].data
-      } else {
-        throw new Error("due to any operation that can cause the transaction or top-level call to revert")
-      }
-    } else if (Array.isArray(nftAddress)) {
-      // scroll origin nft
-      // try {
-      const nftContract = new ethers.Contract(nftAddress[0], nftAbi, signer)
-      const nftV2Contract = new ethers.Contract(nftAddress[1], nftAbi, signer)
-      let tokenId, nftVersion
-
-      try {
-        tokenId = await nftContract.tokenOfOwnerByIndex(walletCurrentAddress, 0)
-        nftVersion = 0
-      } catch (error) {
-        tokenId = await nftV2Contract.tokenOfOwnerByIndex(walletCurrentAddress, 0)
-        nftVersion = 1
-      }
-
-      const abiCoder = new AbiCoder()
-      const originsBadgePayload = abiCoder.encode(["address", "uint256"], [nftAddress[nftVersion], tokenId])
-      const badgePayload = abiCoder.encode(["address", "bytes"], [badgeAddress, originsBadgePayload])
-      const easContract = new ethers.Contract(SCROLL_SEPOLIA_EAS_ADDRESS, AttestProxyABI, signer)
-      const attestParams = {
-        schema: SCROLL_SEPOLIA_BADGE_SCHEMA,
-        data: {
-          recipient: walletCurrentAddress,
-          expirationTime: 0,
-          revocable: false,
-          refUID: "0x0000000000000000000000000000000000000000000000000000000000000000",
-          data: badgePayload,
-          value: 0,
-        },
-      }
-      const tx = await easContract.attest(attestParams)
-      const txReceipt = await tx.wait()
-      if (txReceipt.status === 1) {
-        return txReceipt.logs[0].data
-      } else {
-        throw new Error("due to any operation that can cause the transaction or top-level call to revert")
-      }
+    // Origins NFT Badge
+    if (nftAddress) {
+      return await mintOriginNFTBadge(signer, walletCurrentAddress, badgeContract, nftAddress, nftAbi)
     }
+    // Third Party Badge
+    if (attesterProxy) {
+      return await mintThirdBadge(signer, walletCurrentAddress, badgeContract, attesterProxy, baseUrl)
+    }
+
+    return await mintPermissionlessBadge(signer, walletCurrentAddress, badgeContract)
   } catch (error) {
     if (isError(error, "ACTION_REJECTED")) {
       return false
@@ -394,5 +438,6 @@ export {
   checkIfHasBadgeByAddress,
   getReferrerData,
   fillBadgeDetailWithPayload,
+  checkBadgeEligibility,
   testAsyncFunc,
 }
