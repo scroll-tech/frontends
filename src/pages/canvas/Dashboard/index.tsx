@@ -11,7 +11,6 @@ import Canvas from "@/components/Canvas"
 // import { BADGES_VISIBLE_TYPE } from "@/constants"
 import { useCanvasContext } from "@/contexts/CanvasContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { useAsyncMemo } from "@/hooks"
 import useSnackbar from "@/hooks/useSnackbar"
 import Badges from "@/pages/canvas/Dashboard/UpgradeDialog/Badges"
 import { checkBadgeEligibility, checkIfProfileMinted } from "@/services/canvasService"
@@ -67,6 +66,7 @@ const Dashboard = props => {
   const { address: othersWalletAddress } = useParams()
   const navigate = useNavigate()
   const { unsignedProfileRegistryContract, publicProvider } = useCanvasContext()
+
   const {
     canvasUsername,
     attachedBadges,
@@ -79,30 +79,37 @@ const Dashboard = props => {
     changeUpgradeDialog,
   } = useCanvasStore()
 
+  const [visibleBadges, setVisibleBadges] = useState([])
+
   const metadata = {
     title: `Scroll -  ${canvasUsername}'s Canvas`,
     description: "Hi, I've minted Scroll Canvas!",
     image: `${requireEnv("REACT_APP_CANVAS_BACKEND_URI")}/canvas/${othersWalletAddress || walletCurrentAddress}.png`,
   }
 
-  const mintableBadgeCount = useAsyncMemo(async () => {
-    if (provider) {
+  useEffect(() => {
+    const fetchVisibleBadges = async () => {
       const filteredBadges = await Promise.all(
         Badges.map(async badge => {
           const isUserBadge = userBadges.some(userBadge => userBadge.badgeContract === badge.badgeContract)
-          const isValidBadge = await checkBadgeEligibility(provider, walletCurrentAddress, badge)
+          let isValidBadge = await checkBadgeEligibility(provider, walletCurrentAddress, badge)
+
           return {
             ...badge,
             isValid: !isUserBadge && isValidBadge,
           }
         }),
       )
-      return filteredBadges.filter(badge => badge.isValid).length
+
+      setVisibleBadges(filteredBadges.filter(badge => badge.isValid) as any)
     }
-  }, [provider, walletCurrentAddress, userBadges])
+    if (provider && walletCurrentAddress && userBadges?.length) {
+      fetchVisibleBadges()
+    }
+  }, [userBadges, walletCurrentAddress, provider])
 
   const scrollyAlert = useMemo(() => {
-    if (mintableBadgeCount) {
+    if (visibleBadges.length) {
       return {
         title: "Mint badges",
         content: "Welcome to Scroll Canvas where you can earn badges across the ecosystem. Mint your badges now!",
@@ -118,7 +125,7 @@ const Dashboard = props => {
         navigate("/ecosystem")
       },
     }
-  }, [mintableBadgeCount])
+  }, [visibleBadges.length])
 
   const [windowDimensions, setWindowDimensions] = useState({
     width: window.innerWidth,
@@ -223,11 +230,11 @@ const Dashboard = props => {
             </>
           ) : (
             <>
-              <ActionBox mintableBadgeCount={mintableBadgeCount} />
+              <ActionBox mintableBadgeCount={visibleBadges.length} />
               <NameDialog />
-              <BadgesDialog mintableBadgeCount={mintableBadgeCount} />
+              <BadgesDialog mintableBadgeCount={visibleBadges.length} />
               <ReferDialog />
-              <UpgradeDialog />
+              <UpgradeDialog badges={visibleBadges} />
               <BadgeDetailDialog />
             </>
           )}
