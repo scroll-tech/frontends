@@ -111,7 +111,7 @@ const MintStep = props => {
           It beats faster when you are more active onchain.
         </>
       }
-      sx={{ mt: "6rem", mb: "9.6rem" }}
+      sx={{ mt: "2.8rem", mb: "10.2rem" }}
       action={
         <Button color="primary" width="28.2rem" loading={isProfileMinting} onClick={handleMintCanvas}>
           {isProfileMinting ? "Minting my Canvas" : "Mint my Canvas"}

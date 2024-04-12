@@ -87,7 +87,7 @@ const NameStep = props => {
     <StepWrapper
       title="What’s your username?"
       description="Your name is stored onchain. You can always change it later."
-      sx={{ my: "19rem" }}
+      sx={{ mt: "13rem", mb: "22rem" }}
       action={renderAction()}
     >
       <Box sx={{ position: "relative" }}>

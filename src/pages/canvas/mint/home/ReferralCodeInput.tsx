@@ -23,7 +23,6 @@ const Title = styled(Typography)(({ theme }) => ({
   color: theme.palette.primary.contrastText,
   textAlign: "center",
   fontSize: "2rem",
-  fontStyle: "normal",
   fontWeight: 600,
   lineHeight: "3.2rem",
 }))
@@ -55,6 +54,10 @@ const ReferralCodeInput = styled(InputBase)(({ theme }) => ({
   "&::placeholder": {
     color: "#DCDCDC",
     opacity: 1,
+  },
+  [theme.breakpoints.down("sm")]: {
+    width: "5rem",
+    height: "5rem",
   },
 }))
 

@@ -21,8 +21,8 @@ const Container = styled(Box)(({ theme }) => ({
   width: "100%",
   height: "100%",
   minHeight: "calc(100vh - 6.5rem)",
-  paddingTop: "6.4rem",
-  paddingBottom: "7.2rem",
+  paddingTop: "5.5rem",
+  paddingBottom: "6rem",
   backgroundColor: "#101010",
   [theme.breakpoints.down("sm")]: {
     minHeight: "calc(100vh - 6.2rem)",
@@ -33,10 +33,9 @@ const Container = styled(Box)(({ theme }) => ({
 const Title = styled(Typography)(({ theme }) => ({
   color: theme.palette.primary.contrastText,
   textAlign: "center",
-  fontSize: "5.6rem",
-  fontStyle: "normal",
+  fontSize: "4rem",
   fontWeight: 600,
-  lineHeight: "7.2rem",
+  lineHeight: "5.6rem",
   marginBottom: "0.8rem",
 }))
 
@@ -104,9 +103,9 @@ const MintHome = props => {
   return (
     <Container>
       <Title>Mint your Scroll Canvas</Title>
-      <SubTitle>Earn attestation badges across the ecosystem</SubTitle>
-      <Box sx={{ width: "66.5rem", height: "29.8rem", mt: "1.8rem", mb: "2rem" }}>
-        <img src="/imgs/canvas/heartbeat.webp" alt="heartbeat"></img>
+      <SubTitle>Map your journey and earn badges across the ecosystem.</SubTitle>
+      <Box sx={{ height: "28rem", mt: "0.8rem", mb: "1.6rem" }}>
+        <img src="/imgs/canvas/heartbeat.webp" alt="heartbeat" style={{ height: "100%" }}></img>
       </Box>
       <ReferralCodeInput code={code} isChecking={isChecking} setIsChecking={setIsChecking} codeStatus={codeStatus} setCodeStatus={setCodeStatus} />
       <StickyBox>{renderAction()}</StickyBox>

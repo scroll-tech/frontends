@@ -132,8 +132,7 @@ const checkIfProfileMinted = async (registryInstance, userAddress) => {
 const fillBadgeDetailWithPayload = async (provider, attestation) => {
   const { data, id } = attestation
   try {
-    const [badgeContract, sss] = decodeBadgePayload(data)
-    console.log(sss, "sss")
+    const [badgeContract] = decodeBadgePayload(data)
     const badgeMetadata = await getBadgeMetadata(provider, badgeContract, id)
     return {
       ...attestation,
