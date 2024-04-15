@@ -11,15 +11,15 @@ const FirstBadgeMask = props => {
 
   const { provider } = useRainbowContext()
   const firstBadgeRef = useRef()
-  const { firstBadgePosition, changeBadgeAnimationVisible, addFirstBadge, queryUsername, attachedBadges } = useCanvasStore()
-  // console.log(firstBadgePosition, "firstBadgePosition")
+  const { firstBadgeWithPosition, changeBadgeAnimationVisible, addFirstBadge, queryUsername, attachedBadges } = useCanvasStore()
+  // console.log(firstBadgeWithPosition, "firstBadgeWithPosition")
   // const initialLeft = window.innerWidth / 2 - (badgeWidth * 0.7) / 2
   // const initialTop = (window.innerHeight - 65) / 2 + 65 - (badgeWidth * 0.7) / 2
   const left = window.innerWidth / 2 - badgeWidth + badgeWidth * 0.15
   const top = (window.innerHeight - 65) / 2 + 65 - 2 * badgeWidth + badgeWidth * 0.15
 
   useEffect(() => {
-    if (attachedBadges.includes(firstBadgePosition.id)) {
+    if (attachedBadges.includes(firstBadgeWithPosition.id)) {
       setTimeout(() => {
         changeBadgeAnimationVisible(false)
       }, 1000)
@@ -27,15 +27,15 @@ const FirstBadgeMask = props => {
   }, [attachedBadges])
 
   const handleAnimationComplete = () => {
-    addFirstBadge(provider, firstBadgePosition.id, firstBadgePosition.image)
+    addFirstBadge(provider, firstBadgeWithPosition.id, firstBadgeWithPosition.image, firstBadgeWithPosition.badgeContract)
     queryUsername()
   }
   return (
     <motion.div
       layout
       animate={{
-        left: [firstBadgePosition.left, left],
-        top: [firstBadgePosition.top, top],
+        left: [firstBadgeWithPosition.left, left],
+        top: [firstBadgeWithPosition.top, top],
         width: [200, badgeWidth * 0.7],
       }}
       transition={{ delay: 1, duration: 1, type: "spring", stiffness: 40 }}
@@ -53,7 +53,7 @@ const FirstBadgeMask = props => {
           borderRadius: "0.8rem",
         }}
         ref={firstBadgeRef}
-        src={getBadgeImgURL(firstBadgePosition.image)}
+        src={getBadgeImgURL(firstBadgeWithPosition.image)}
         placeholder="/imgs/canvas/badgePlaceholder.svg"
         alt="Ethereum Year Badge"
       ></Img>

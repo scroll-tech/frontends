@@ -52,7 +52,13 @@ const FirstBadgeStep = props => {
       // const result = await testAsyncFunc("0x11cfb299dda2ae8b1fccf9a055394de9a7f953e8b8f115295dc0f2325e8b2130")
       if (result) {
         const { left, top } = firstBadgeRef.current!.getBoundingClientRect()
-        recordFirstBadgePosition({ left, top, id: result, image: EthereumYearBadgeURL(badgeChecked.year) })
+        recordFirstBadgePosition({
+          left,
+          top,
+          id: result,
+          image: EthereumYearBadgeURL(badgeChecked.year),
+          badgeContract: ETHEREUM_YEAR_BADGE.badgeContract,
+        })
         // recordFirstBadgePosition({ left, top, id: result, image: EthereumYearBadgeURL("2020") })
         changeBadgeAnimationVisible(true)
         changeMintFlowVisible(false)
