@@ -10,11 +10,11 @@ import BadgeItem from "./BadgeItem"
 const StyledList = styled(List)(({ theme }) => ({
   width: "57.6rem",
   height: "62.4rem",
+  maxHeight: "70vh",
   display: "flex",
   flexDirection: "column",
   gap: "2.4rem",
   padding: "2.4rem 0 0",
-  overflowY: "auto",
   "&::-webkit-scrollbar-thumb": {
     backgroundColor: "rgba(209, 205, 204, 0.30)",
     borderRadius: "8px",
