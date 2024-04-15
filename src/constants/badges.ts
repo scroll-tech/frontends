@@ -19,7 +19,7 @@ const AMBIENT_ATTESTER_PROXY_ADDRESS = "0x9F54d1FFc14C61b7EC170F6cA53434855D3737
 const Ambient_BASE_URL = "https://ambient-scroll-badge-sepolia.liquidity.tools/api"
 
 export const ETHEREUM_YEAR_BADGE = {
-  name: "Ethereum Year",
+  name: "Ethereum Year Badge",
   badgeContract: ETHEREUM_YEAR_BADGE_ADDRESS,
   attesterProxy: ETHEREUM_YEAR_ATTESTER_PROXY_ADDRESS,
   description: "A collection 8888 Cute Chubby Pudgy Penquins sliding around on the freezing ETH blockchain.",

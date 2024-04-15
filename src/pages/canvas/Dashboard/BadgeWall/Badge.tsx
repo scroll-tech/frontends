@@ -3,7 +3,7 @@ import Img from "react-cool-img"
 import { Box } from "@mui/material"
 
 import useCanvasStore, { BadgeDetailDialogTpye } from "@/stores/canvasStore"
-import { getBadgeImgURL } from "@/utils"
+import { getBadgeImgURL, requireEnv } from "@/utils"
 
 import ToolTip from "../../components/Tooltip"
 
@@ -72,7 +72,9 @@ const Badge = ({ badge, index, badgewidth }) => {
           alt={badge.metadata?.name}
           style={{ width: "100%", borderRadius: "0.8rem" }}
           src={getBadgeImgURL(badge.metadata?.image)}
-          placeholder="/imgs/canvas/badgePlaceholder.svg"
+          placeholder={
+            badge.metadata?.image.startsWith(requireEnv("REACT_APP_ETHEREUM_YEAR_BADGE_API_URI")) ? undefined : "/imgs/canvas/badgePlaceholder.svg"
+          }
         />
       </Box>
     </ToolTip>

@@ -29,6 +29,7 @@ interface RouteItem {
 }
 
 const baseUrl = requireEnv("REACT_APP_API_BASE_URI")
+
 function Homepage() {
   const dark = useCheckTheme()
   const route = useMatchedRoute() as RouteItem
