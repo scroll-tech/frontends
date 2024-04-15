@@ -4,7 +4,7 @@ import { useMatch } from "react-router-dom"
 import { Stack } from "@mui/material"
 import { styled } from "@mui/system"
 
-import { isProduction, requireEnv } from "@/utils"
+import { isMainnet, requireEnv } from "@/utils"
 
 const AnnouncementStack = styled<any>(Stack, { shouldForwardProp: prop => prop !== "production" })(({ theme, production }) => ({
   lineHeight: "2.6rem",
@@ -25,13 +25,13 @@ const Announcement = () => {
   const isPortal = useMatch("/portal")
 
   const announcementContent = useMemo(() => {
-    if (isProduction && (isHome || isPortal)) {
+    if (isMainnet && (isHome || isPortal)) {
       return (
         <>
           Scroll {requireEnv("REACT_APP_SCROLL_ENVIRONMENT")} is now live. <strong>Try it!</strong>
         </>
       )
-    } else if (!isProduction) {
+    } else if (!isMainnet) {
       return (
         <>
           You are on the Scroll {requireEnv("REACT_APP_SCROLL_ENVIRONMENT")} Testnet website. Return to <strong>Mainnet</strong>
@@ -39,21 +39,21 @@ const Announcement = () => {
       )
     }
     return null
-  }, [isProduction, isHome, isPortal])
+  }, [isMainnet, isHome, isPortal])
 
   const rightHref = useMemo(() => {
-    if (isProduction && (isHome || isPortal)) {
+    if (isMainnet && (isHome || isPortal)) {
       return "/portal"
-    } else if (!isProduction) {
+    } else if (!isMainnet) {
       return "https://scroll.io/"
     }
     return ""
-  }, [isProduction, isHome, isPortal])
+  }, [isMainnet, isHome, isPortal])
 
   return (
     announcementContent && (
       <a href={rightHref} rel="noopener noreferrer">
-        <AnnouncementStack production={isProduction}>{announcementContent}</AnnouncementStack>
+        <AnnouncementStack production={isMainnet}>{announcementContent}</AnnouncementStack>
       </a>
     )
   )

@@ -24,3 +24,5 @@ export const checkBadgeEligibilityURL = (baseUrl, walletAddress, badgeContract) 
   `${baseUrl}/check?badge=${badgeContract}&recipient=${walletAddress}`
 
 export const claimBadgeURL = (baseUrl, walletAddress, badgeContract) => `${baseUrl}/claim?badge=${badgeContract}&recipient=${walletAddress}`
+
+export const EthereumYearBadgeURL = year => `${requireEnv("REACT_APP_ETHEREUM_YEAR_BADGE_API_URI")}/canvas/year/${year}.webp`

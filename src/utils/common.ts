@@ -33,9 +33,9 @@ export const generateExploreLink = (explorer, hash, type = "tx") => {
   return `${explorer}/${type}/${hash}`
 }
 
-export const isProduction = requireEnv("REACT_APP_SCROLL_ENVIRONMENT") === requireEnv("REACT_APP_MAIN_ENVIRONMENT")
+export const isMainnet = requireEnv("REACT_APP_SCROLL_ENVIRONMENT") === requireEnv("REACT_APP_MAIN_ENVIRONMENT")
 export const isSepolia = requireEnv("REACT_APP_SCROLL_ENVIRONMENT") === "Sepolia"
-export const networkType = isProduction ? "mainnet" : "testnet"
+export const networkType = isMainnet ? "mainnet" : "testnet"
 
 export const isValidEmail = (email: string): boolean => {
   const emailRegex: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/

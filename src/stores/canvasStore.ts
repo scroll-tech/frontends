@@ -1,7 +1,10 @@
 import { Contract } from "ethers"
 import { create } from "zustand"
 
+import { ETHEREUM_YEAR_BADGE } from "@/constants/badges"
 import { fetchCanvasDetail, getOrderedAttachedBadges, queryCanvasUsername, queryUserBadgesWrapped } from "@/services/canvasService"
+
+// import { testAsyncFunc } from "@/services/canvasService"
 
 export enum MintedStatus {
   MINTED = "MINTED",
@@ -59,6 +62,8 @@ interface CanvasStore {
   orderedAttachedBadges: Array<any>
   badgeOrder: Array<any>
   profileContract: Contract | null
+  firstBadgePosition: any
+  badgeAnimationVisible: boolean
 
   changeProfileName: (name: string) => void
   changeIsProfileMinting: (isProfileMinting: boolean) => void
@@ -73,7 +78,10 @@ interface CanvasStore {
   queryUsername: () => void
   queryAttachedBadges: () => void
   queryVisibleBadges: (provider, address) => void
+  addFirstBadge: (provider, badgeId, badgeImage) => void
   clearCanvas: () => void
+  recordFirstBadgePosition: (position) => void
+  changeBadgeAnimationVisible: (visible: boolean) => void
 }
 
 const useCanvasStore = create<CanvasStore>()((set, get) => ({
@@ -107,6 +115,8 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
   attachedBadges: [],
   orderedAttachedBadges: [],
   badgeOrder: [],
+  firstBadgePosition: {},
+  badgeAnimationVisible: false,
 
   checkIfProfileMinted: async (registryInstance, userAddress, test) => {
     try {
@@ -302,6 +312,24 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
       queryUserBadgesLoading: false,
     })
   },
+  // for test
+  addFirstBadge: async (providerOrSigner, badgeId, badgeImage) => {
+    set({
+      // queryUsernameLoading: true,
+      userBadges: [{ id: badgeId, name: ETHEREUM_YEAR_BADGE.name, description: ETHEREUM_YEAR_BADGE.description, image: badgeImage }],
+      attachedBadges: [badgeId],
+      orderedAttachedBadges: [badgeId],
+      badgeOrder: [1],
+    })
+    // const { profileContract, name }: any = await testAsyncFunc({ name: "Lalala", profileContract: "0x4444" })
+    // const { profileContract, name } = await queryCanvasUsername(providerOrSigner, get().profileAddress)
+    // set({
+    //   username: name,
+    //   canvasUsername: name,
+    //   profileContract,
+    //   queryUserBadgesLoading: false,
+    // })
+  },
 
   // getReferrerData: async ()=>{
   //   ge
@@ -357,6 +385,16 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
   changeSelectedBadge: badge => {
     set({
       selectedBadge: badge,
+    })
+  },
+  recordFirstBadgePosition: firstBadgePosition => {
+    set({
+      firstBadgePosition,
+    })
+  },
+  changeBadgeAnimationVisible: badgeAnimationVisible => {
+    set({
+      badgeAnimationVisible,
     })
   },
 }))

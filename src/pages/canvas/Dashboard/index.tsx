@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet-async"
 import { useParams } from "react-router-dom"
 import { Navigate } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
+import { useLocation } from "react-use"
 
 import { Box } from "@mui/material"
 import { styled } from "@mui/system"
@@ -22,6 +23,7 @@ import ActionBox from "./ActionBox"
 import BadgeDetailDialog from "./BadgeDetailDialog"
 import BadgeWall from "./BadgeWall"
 import BadgesDialog from "./BadgesDialog"
+import FirstBadgeMask from "./FirstBadgeMask"
 import NameDialog from "./NameDialog"
 import ReferDialog from "./ReferDialog"
 import UpgradeDialog from "./UpgradeDialog"
@@ -65,6 +67,13 @@ const Dashboard = props => {
 
   const { address: othersWalletAddress } = useParams()
   const navigate = useNavigate()
+  const location = useLocation()
+  const {
+    state: {
+      usr: { initialMint },
+    },
+  } = location
+  // console.log(location, "location")
   const { unsignedProfileRegistryContract, publicProvider } = useCanvasContext()
 
   const {
@@ -77,6 +86,7 @@ const Dashboard = props => {
     profileDetailLoading,
     userBadges,
     changeUpgradeDialog,
+    badgeAnimationVisible,
   } = useCanvasStore()
 
   const [visibleBadges, setVisibleBadges] = useState([])
@@ -141,19 +151,22 @@ const Dashboard = props => {
   // must have minted
   useEffect(() => {
     if (provider && !othersWalletAddress && profileAddress) {
-      fetchCurrent(provider, walletCurrentAddress, profileAddress)
+      fetchCurrent(provider, walletCurrentAddress, profileAddress, initialMint)
     }
-  }, [provider, othersWalletAddress, profileAddress])
+  }, [provider, othersWalletAddress, profileAddress, initialMint])
 
   const alertWarning = useSnackbar()
 
-  const fetchCurrent = async (provider, walletAddress, profileAddress) => {
+  const fetchCurrent = async (provider, walletAddress, profileAddress, initialMint) => {
+    if (initialMint) {
+      return
+    }
     try {
       changeProfileDetailLoading(true)
       const signer = await provider?.getSigner(0)
       await fetchCurrentCanvasDetail(signer, walletAddress, profileAddress)
     } catch (e) {
-      alertWarning("Falied to fetch canvas detail")
+      alertWarning("Failed to fetch canvas detail 111")
     } finally {
       changeProfileDetailLoading(false)
     }
@@ -164,7 +177,7 @@ const Dashboard = props => {
       changeProfileDetailLoading(true)
       await checkAndFetchOthersCanvasDetail(provider, unsignedProfileRegistryContract, othersWalletAddress)
     } catch (e) {
-      alertWarning("Falied to fetch canvas detail")
+      alertWarning("Failed to fetch canvas detail")
     } finally {
       changeProfileDetailLoading(false)
     }
@@ -240,6 +253,7 @@ const Dashboard = props => {
           )}
         </Container>
       )}
+      {badgeAnimationVisible && <FirstBadgeMask badgeWidth={badgewidth}></FirstBadgeMask>}
     </>
   )
 }
