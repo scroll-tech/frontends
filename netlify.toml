@@ -210,6 +210,8 @@ REACT_APP_EAS_GRAPHQL_URL="https://scroll-sepolia.easscan.org/graphql"
 REACT_APP_CANVAS_BACKEND_URI="https://skelly-backend-git-sepolia-scroll-tech.vercel.app"
 REACT_APP_FFRONTENDS_URL = "https://scroll-skelly.env.scroll.io"
 REACT_APP_EAS_EXPLORER_URL = "https://scroll-sepolia.easscan.org"
+REACT_APP_ETHEREUM_YEAR_BADGE_API_URI = "https://genesis-nft-backend-git-sepolia-scroll-tech.vercel.app"
+
 
 [context.sepolia.environment]
 REACT_APP_SCROLL_ENVIRONMENT = "Sepolia"
