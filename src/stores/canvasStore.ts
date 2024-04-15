@@ -62,7 +62,7 @@ interface CanvasStore {
   orderedAttachedBadges: Array<any>
   badgeOrder: Array<any>
   profileContract: Contract | null
-  firstBadgePosition: any
+  firstBadgeWithPosition: any
   badgeAnimationVisible: boolean
 
   changeProfileName: (name: string) => void
@@ -78,7 +78,7 @@ interface CanvasStore {
   queryUsername: () => void
   queryAttachedBadges: () => void
   queryVisibleBadges: (provider, address) => void
-  addFirstBadge: (provider, badgeId, badgeImage) => void
+  addFirstBadge: (provider, badgeId, badgeImage, badgeContract) => void
   clearCanvas: () => void
   recordFirstBadgePosition: (position) => void
   changeBadgeAnimationVisible: (visible: boolean) => void
@@ -115,7 +115,7 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
   attachedBadges: [],
   orderedAttachedBadges: [],
   badgeOrder: [],
-  firstBadgePosition: {},
+  firstBadgeWithPosition: {},
   badgeAnimationVisible: false,
 
   checkIfProfileMinted: async (registryInstance, userAddress, test) => {
@@ -313,10 +313,10 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
     })
   },
   // for test
-  addFirstBadge: async (providerOrSigner, badgeId, badgeImage) => {
+  addFirstBadge: async (providerOrSigner, badgeId, badgeImage, badgeContract) => {
     set({
       // queryUsernameLoading: true,
-      userBadges: [{ id: badgeId, name: ETHEREUM_YEAR_BADGE.name, description: ETHEREUM_YEAR_BADGE.description, image: badgeImage }],
+      userBadges: [{ id: badgeId, name: ETHEREUM_YEAR_BADGE.name, description: ETHEREUM_YEAR_BADGE.description, image: badgeImage, badgeContract }],
       attachedBadges: [badgeId],
       orderedAttachedBadges: [badgeId],
       badgeOrder: [1],
@@ -387,9 +387,9 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
       selectedBadge: badge,
     })
   },
-  recordFirstBadgePosition: firstBadgePosition => {
+  recordFirstBadgePosition: firstBadgeWithPosition => {
     set({
-      firstBadgePosition,
+      firstBadgeWithPosition,
     })
   },
   changeBadgeAnimationVisible: badgeAnimationVisible => {
