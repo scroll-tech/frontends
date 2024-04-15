@@ -65,9 +65,11 @@ const BadgeDetail = props => {
       <SectionWrapper
         dark
         sx={{
-          pt: ["2.4rem", "4rem", "8rem"],
-          pb: ["8rem", "16rem"],
+          pt: ["5.5rem"],
+          pb: ["6rem"],
           minHeight: "calc(100vh - 6.5rem)",
+          display: "flex",
+          alignItems: "center",
         }}
       >
         <Box
