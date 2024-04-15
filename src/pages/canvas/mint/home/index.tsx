@@ -60,8 +60,7 @@ const MintHome = props => {
   const { isMobile } = useCheckViewport()
   const { connect, walletCurrentAddress, chainId } = useRainbowContext()
   const { changeProfileName, mintFlowVisible, changeMintFlowVisible } = useCanvasStore()
-  // const [mintFlowVisible, setMintFlowVisible] = useState(false)
-  // TODO: optimize
+
   const [isChecking, setIsChecking] = useState(false)
   const [codeStatus, setCodeStatus] = useState(CodeStatus.UNKNOWN)
 

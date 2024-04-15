@@ -1,7 +1,7 @@
 import { ReactComponent as DoubleEyesIcon } from "@/assets/svgs/ecosystem/double-eyes.svg"
 import { ReactComponent as HeartIcon } from "@/assets/svgs/ecosystem/heart.svg"
 import { ReactComponent as SettingsIcon } from "@/assets/svgs/ecosystem/settings.svg"
-import { isProduction } from "@/utils"
+import { isMainnet } from "@/utils"
 
 export const DIVERGENT_CATEGORY_MAP = {
   Community: ["Community", "DAO", "Governance"],
@@ -46,4 +46,4 @@ export const TWITTER_ORIGIN = "https://twitter.com/"
 
 export const ECOSYSTEM_NETWORK_LIST = ["All networks", "Mainnet", "Testnet"]
 
-export const NORMAL_HEADER_HEIGHT = isProduction ? "6.5rem" : "11.5rem"
+export const NORMAL_HEADER_HEIGHT = isMainnet ? "6.5rem" : "11.5rem"

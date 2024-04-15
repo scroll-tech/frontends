@@ -70,12 +70,6 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
 
   const realWalletAddress = useMemo(() => othersWalletAddress || walletCurrentAddress, [othersWalletAddress, walletCurrentAddress])
 
-  useEffect(() => {
-    if (profileMinted) {
-      // queryUserBadges()
-    }
-  }, [profileMinted])
-
   const visibleBadges = useMemo(() => {
     return orderedAttachedBadges.map(badgeId => userBadges.find(badge => badge.id === badgeId))
   }, [userBadges, orderedAttachedBadges])
