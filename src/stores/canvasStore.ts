@@ -64,6 +64,7 @@ interface CanvasStore {
   profileContract: Contract | null
   firstBadgeWithPosition: any
   badgeAnimationVisible: boolean
+  initialMint: boolean
 
   changeProfileName: (name: string) => void
   changeIsProfileMinting: (isProfileMinting: boolean) => void
@@ -82,6 +83,8 @@ interface CanvasStore {
   clearCanvas: () => void
   recordFirstBadgePosition: (position) => void
   changeBadgeAnimationVisible: (visible: boolean) => void
+  changeInitialMint: (initialMint: boolean) => void
+  queryFirstMintUsername: (provider) => void
 }
 
 const useCanvasStore = create<CanvasStore>()((set, get) => ({
@@ -117,6 +120,7 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
   badgeOrder: [],
   firstBadgeWithPosition: {},
   badgeAnimationVisible: false,
+  initialMint: false,
 
   checkIfProfileMinted: async (registryInstance, userAddress, test) => {
     try {
@@ -260,6 +264,7 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
       badgesDialogVisible: false,
       upgradeDialogVisible: false,
       badgeDetailDialogVisible: BadgeDetailDialogTpye.HIDDEN,
+      initialMint: false,
       // reset profile mint status
       profileMinted: null,
       profileName: "",
@@ -272,6 +277,20 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
     })
   },
 
+  // after calling checkIfProfileMinted, no profileContract
+  queryFirstMintUsername: async provider => {
+    set({
+      queryUsernameLoading: true,
+    })
+    const { profileContract, name } = await queryCanvasUsername(provider, get().profileAddress)
+    set({
+      username: name,
+      canvasUsername: name,
+      profileContract,
+
+      queryUsernameLoading: false,
+    })
+  },
   queryUsername: async () => {
     set({
       queryUsernameLoading: true,
@@ -395,6 +414,11 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
   changeBadgeAnimationVisible: badgeAnimationVisible => {
     set({
       badgeAnimationVisible,
+    })
+  },
+  changeInitialMint: initialMint => {
+    set({
+      initialMint,
     })
   },
 }))

@@ -11,7 +11,7 @@ const FirstBadgeMask = props => {
 
   const { provider } = useRainbowContext()
   const firstBadgeRef = useRef()
-  const { firstBadgeWithPosition, changeBadgeAnimationVisible, addFirstBadge, queryUsername, attachedBadges } = useCanvasStore()
+  const { firstBadgeWithPosition, changeBadgeAnimationVisible, addFirstBadge, queryFirstMintUsername, attachedBadges } = useCanvasStore()
   // console.log(firstBadgeWithPosition, "firstBadgeWithPosition")
   // const initialLeft = window.innerWidth / 2 - (badgeWidth * 0.7) / 2
   // const initialTop = (window.innerHeight - 65) / 2 + 65 - (badgeWidth * 0.7) / 2
@@ -28,7 +28,7 @@ const FirstBadgeMask = props => {
 
   const handleAnimationComplete = () => {
     addFirstBadge(provider, firstBadgeWithPosition.id, firstBadgeWithPosition.image, firstBadgeWithPosition.badgeContract)
-    queryUsername()
+    queryFirstMintUsername(provider)
   }
   return (
     <motion.div
