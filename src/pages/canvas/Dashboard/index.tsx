@@ -1,9 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { Helmet } from "react-helmet-async"
-import { useParams } from "react-router-dom"
-import { Navigate } from "react-router-dom"
-import { useNavigate } from "react-router-dom"
-import { useLocation } from "react-use"
+import { Navigate, useNavigate, useParams } from "react-router-dom"
 
 import { Box } from "@mui/material"
 import { styled } from "@mui/system"
@@ -67,10 +64,6 @@ const Dashboard = props => {
 
   const { address: othersWalletAddress } = useParams()
   const navigate = useNavigate()
-  const location = useLocation()
-  const {
-    state: { usr: { initialMint } = { initialMint: false } },
-  } = location
 
   const { unsignedProfileRegistryContract, publicProvider } = useCanvasContext()
 
@@ -85,6 +78,7 @@ const Dashboard = props => {
     userBadges,
     changeUpgradeDialog,
     badgeAnimationVisible,
+    initialMint,
   } = useCanvasStore()
 
   const [visibleBadges, setVisibleBadges] = useState([])
@@ -148,17 +142,14 @@ const Dashboard = props => {
 
   // must have minted
   useEffect(() => {
-    if (provider && !othersWalletAddress && profileAddress) {
-      fetchCurrent(provider, walletCurrentAddress, profileAddress, initialMint)
+    if (provider && !othersWalletAddress && profileAddress && !initialMint) {
+      fetchCurrent(provider, walletCurrentAddress, profileAddress)
     }
   }, [provider, othersWalletAddress, profileAddress, initialMint])
 
   const alertWarning = useSnackbar()
 
-  const fetchCurrent = async (provider, walletAddress, profileAddress, initialMint) => {
-    if (initialMint) {
-      return
-    }
+  const fetchCurrent = async (provider, walletAddress, profileAddress) => {
     try {
       changeProfileDetailLoading(true)
       const signer = await provider?.getSigner(0)

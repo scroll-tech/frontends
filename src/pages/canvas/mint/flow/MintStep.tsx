@@ -24,7 +24,8 @@ const MintStep = props => {
   const { walletCurrentAddress, provider } = useRainbowContext()
   const { profileRegistryContract } = useCanvasContext()
 
-  const { changeIsProfileMinting, isProfileMinting, profileName, referralCode, changeReferralCode, checkIfProfileMinted } = useCanvasStore()
+  const { changeIsProfileMinting, isProfileMinting, profileName, referralCode, changeReferralCode, checkIfProfileMinted, changeInitialMint } =
+    useCanvasStore()
   const alertWarning = useSnackbar()
 
   const [insufficientDialogOpen, setInsufficientDialogOpen] = useState(false)
@@ -65,6 +66,7 @@ const MintStep = props => {
       // const txReceipt: any = await testAsyncFunc({ status: 1 })
       if (txReceipt.status === 1) {
         changeReferralCode("")
+        changeInitialMint(true)
         await checkIfProfileMinted(profileRegistryContract, walletCurrentAddress!)
         swiper.slideNext(300)
         scrollTarget?.scrollTo({
