@@ -69,11 +69,9 @@ const Dashboard = props => {
   const navigate = useNavigate()
   const location = useLocation()
   const {
-    state: {
-      usr: { initialMint },
-    },
+    state: { usr: { initialMint } = { initialMint: false } },
   } = location
-  // console.log(location, "location")
+
   const { unsignedProfileRegistryContract, publicProvider } = useCanvasContext()
 
   const {
