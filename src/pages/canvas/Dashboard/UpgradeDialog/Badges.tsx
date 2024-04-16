@@ -12,6 +12,32 @@ const SCROLL_ORIGINS_NFT = requireEnv("REACT_APP_SCROLL_ORIGINS_NFT")
 const SCROLL_ORIGINS_NFT_V2 = requireEnv("REACT_APP_SCROLL_ORIGINS_NFT_V2")
 const SCROLL_SEPOLIA_ORIGINS_BADGE_ADDRESS = "0x2A3aC1337845f8C02d2dD7f80Dada22f01b569f9"
 
+export interface Badge {
+  name: string
+  description: any
+  metaDescription?: string
+  image: string
+  issuer: {
+    origin: string
+    name: string
+    logo: string
+  }
+  badgeContract: string
+
+  // third party
+  attesterProxy?: string
+  eligibilityAPI?: string
+
+  // Origin NFT
+  originsNFT?: boolean
+  validator?: (address, provider) => Promise<boolean>
+  nftAddress?: string[]
+  nftAbi?: object
+
+  // TODO: no attesterProxy means native?
+  native: boolean
+}
+
 const CustomLink = styled(Link)(({ theme }) => ({
   color: `${theme.palette.primary.main} !important`,
   fontSize: "inherit",
@@ -20,7 +46,7 @@ const CustomLink = styled(Link)(({ theme }) => ({
   fontWeight: 700,
 }))
 
-const Badges = [
+const Badges: Badge[] = [
   {
     name: "Scroll Origins NFT",
     nftAddress: [SCROLL_ORIGINS_NFT, SCROLL_ORIGINS_NFT_V2],

@@ -10,7 +10,7 @@ import Canvas from "@/components/Canvas"
 import { useCanvasContext } from "@/contexts/CanvasContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useSnackbar from "@/hooks/useSnackbar"
-import Badges from "@/pages/canvas/Dashboard/UpgradeDialog/Badges"
+import Badges, { Badge } from "@/pages/canvas/Dashboard/UpgradeDialog/Badges"
 import { checkBadgeEligibility, checkIfProfileMinted } from "@/services/canvasService"
 import useCanvasStore from "@/stores/canvasStore"
 import { requireEnv } from "@/utils"
@@ -81,7 +81,7 @@ const Dashboard = props => {
     initialMint,
   } = useCanvasStore()
 
-  const [visibleBadges, setVisibleBadges] = useState([])
+  const [visibleBadges, setVisibleBadges] = useState<Badge[]>([])
 
   const metadata = {
     title: `Scroll -  ${canvasUsername}'s Canvas`,
@@ -91,7 +91,7 @@ const Dashboard = props => {
 
   useEffect(() => {
     const fetchVisibleBadges = async () => {
-      const filteredBadges = await Promise.all(
+      const checkedBadges = await Promise.allSettled(
         Badges.map(async badge => {
           const isUserBadge = userBadges.some(userBadge => userBadge.badgeContract === badge.badgeContract)
           let isValidBadge = await checkBadgeEligibility(provider, walletCurrentAddress, badge)
@@ -102,8 +102,10 @@ const Dashboard = props => {
           }
         }),
       )
-
-      setVisibleBadges(filteredBadges.filter(badge => badge.isValid) as any)
+      const filteredBadges = checkedBadges
+        .filter((item): item is PromiseFulfilledResult<Badge & { isValid: boolean }> => item.status === "fulfilled" && item.value.isValid)
+        .map(item => item.value)
+      setVisibleBadges(filteredBadges)
     }
     if (provider && walletCurrentAddress && userBadges?.length) {
       fetchVisibleBadges()
