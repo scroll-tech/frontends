@@ -22,13 +22,13 @@ const NavStack = styled(Stack)(() => ({
 
 const Menu = styled("div")(() => ({
   display: "inline-block",
-  [`&.active ${Bar}:nth-of-type(1)`]: {
+  [`&.active > div:nth-of-type(1)`]: {
     transform: "rotate(45deg) translate(5px, 5px)",
   },
-  [`&.active ${Bar}:nth-of-type(2)`]: {
+  [`&.active > div:nth-of-type(2)`]: {
     opacity: 0,
   },
-  [`&.active ${Bar}:nth-of-type(3)`]: {
+  [`&.active > div:nth-of-type(3)`]: {
     transform: "rotate(-45deg) translate(5px, -5px)",
   },
 }))
@@ -191,7 +191,7 @@ const App = ({ currentMenu }) => {
             </ListItem>
           ) : (
             <ListItem dark={dark} className={activeCollapse === item.key ? "active" : ""} sx={{ py: "1rem" }} onClick={() => toggleDrawer(false)}>
-              <MenuLinkStyledButton Link={item.href} dark={dark}>
+              <MenuLinkStyledButton href={item.href} dark={dark}>
                 {item.label}
               </MenuLinkStyledButton>
             </ListItem>
