@@ -16,6 +16,9 @@ const AMBIENT_YEET_BADGE_ADDRESS = "0x3B916928bb6AF9215AdbCeCf9ced50e6Cb3553d0"
 
 const AMBIENT_ATTESTER_PROXY_ADDRESS = "0x9F54d1FFc14C61b7EC170F6cA53434855D3737AA"
 
+// const COG_FINANCE_BADGE_ADDRESS = "0x919d0233B291c0f2e49f36D87bd8938559a4e938"
+// const COG_FINANCE_ATTESTER_PROXY_ADDRESS = "0x93db06C5C0470e50327CBB16641a40750c1a5901"
+
 const Ambient_BASE_URL = "https://ambient-scroll-badge-sepolia.liquidity.tools/api"
 
 export const ETHEREUM_YEAR_BADGE = {
@@ -91,6 +94,20 @@ export const THIRD_PARTY_BADGES = [
     baseUrl: Ambient_BASE_URL,
     native: false,
   },
+  // {
+  //   name: "Cog Finance",
+  //   badgeContract: COG_FINANCE_BADGE_ADDRESS,
+  //   attesterProxy: COG_FINANCE_ATTESTER_PROXY_ADDRESS,
+  //   description: "",
+  //   image: "",
+  //   issuer: {
+  //     origin: "https://www.cog.finance/",
+  //     name: "Cog Finance",
+  //     logo: "https://scroll-eco-list.netlify.app/logos/Cog%20Finance.png",
+  //   },
+  //   baseUrl: "",
+  //   native: false,
+  // },
 ]
 
 export const EAMPLE_BADGES = [

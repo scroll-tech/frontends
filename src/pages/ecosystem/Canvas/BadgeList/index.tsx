@@ -6,29 +6,10 @@ import { styled } from "@mui/system"
 
 import { ReactComponent as LeftSvg } from "@/assets/svgs/canvas/arrow-left.svg"
 import { ReactComponent as RightSvg } from "@/assets/svgs/canvas/arrow-right.svg"
-
-interface CarouselItem {
-  name: string
-  nftAddress?: string[]
-  nftAbi?: object
-  attesterProxy?: string
-  badgeContract: string
-  description: any
-  metaDescription?: string
-  image: string
-  native: boolean
-  originsNFT?: boolean
-  issuer: {
-    origin: string
-    name: string
-    logo: string
-  }
-  validator?: (address, provider) => Promise<boolean>
-  eligibilityAPI?: string
-}
+import { Badge } from "@/pages/canvas/Dashboard/UpgradeDialog/Badges"
 
 interface CarouselProps {
-  items: CarouselItem[]
+  items: Badge[]
 }
 
 const BadgeCard = styled(Card)(({ theme }) => ({
