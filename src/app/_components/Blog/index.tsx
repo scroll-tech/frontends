@@ -2,11 +2,12 @@
 
 import { makeStyles } from "tss-react/mui"
 
-import StoryCard from "@/app/story/BuildingStory/StoryCard"
 import Button from "@/components/Button"
 import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
 import SectionHeader from "@/components/SectionHeader"
 import SectionWrapper from "@/components/SectionWrapper"
+
+import Card from "./Card"
 
 const STORIES = [
   {
@@ -119,7 +120,7 @@ const BuildingStory = () => {
       <SuccessionToView className={classes.grid}>
         {STORIES.map((item, index) => (
           <SuccessionItem key={item.title} className={cx(item.cover ? classes.withCover : classes.noCover, classes[`cardItem${index}`])}>
-            <StoryCard key={item.title} {...item}></StoryCard>
+            <Card key={item.title} {...item}></Card>
           </SuccessionItem>
         ))}
       </SuccessionToView>
