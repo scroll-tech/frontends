@@ -144,7 +144,7 @@ const BadgesDialog = props => {
       queryAttachedBadges()
     } catch (error) {
       if (!isUserRejected(error)) {
-        alertWarning("Failed to customise display")
+        alertWarning(`Failed to customise display: ${error.message}`)
       }
     } finally {
       setLoading(false)
