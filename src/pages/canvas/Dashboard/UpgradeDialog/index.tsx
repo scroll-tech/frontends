@@ -1,6 +1,8 @@
+// import Img from "react-cool-img"
 import { List } from "@mui/material"
 import { styled } from "@mui/system"
 
+// import LoadingPage from "@/components/LoadingPage"
 import useCanvasStore from "@/stores/canvasStore"
 
 import Dialog from "../../components/Dialog"
@@ -38,6 +40,21 @@ const UpgradeDialog = props => {
   const handleClose = () => {
     changeUpgradeDialog(false)
   }
+
+  // if (loading) {
+  //   return (
+  //     <Dialog title="Badges for mint" open={upgradeDialogVisible} onClose={handleClose}>
+  //       <StyledList>
+  //         <LoadingPage
+  //           height="100%"
+  //           component={
+  //             <Img src="/imgs/canvas/Scrolly_Coding.webp" placeholder="/imgs/canvas/avatarPlaceholder.svg" alt="Coding Scrolly" width="200" />
+  //           }
+  //         ></LoadingPage>
+  //       </StyledList>
+  //     </Dialog>
+  //   )
+  // }
 
   if (!badges.length) {
     return (
