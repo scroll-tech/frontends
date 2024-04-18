@@ -19,10 +19,6 @@ import { generateShareTwitterURL, requireEnv } from "@/utils"
 import Badges, { badgeMap } from "../Dashboard/UpgradeDialog/Badges"
 import BadgeDetail from "../badge/BadgeDetail"
 
-const isNativeBadge = badgeContract => {
-  return badgeMap[badgeContract]?.native
-}
-
 const BadgeContractDetail = props => {
   const { address } = useParams()
   const { walletCurrentAddress, connect, provider } = useRainbowContext()
@@ -95,6 +91,13 @@ const BadgeContractDetail = props => {
           </Typography>
         </>
       )
+    } else if (isEligible === undefined) {
+      return (
+        <>
+          <CircularProgress sx={{ color: "#A5A5A5" }} size={18}></CircularProgress>
+          <Typography sx={{ color: "#A5A5A5 !important", fontSize: "1.8rem", lineHeight: "2.8rem", fontWeight: 500 }}>Checking...</Typography>
+        </>
+      )
     } else if (profileMinted && !isOwned && isEligible) {
       return (
         <>
@@ -161,7 +164,7 @@ const BadgeContractDetail = props => {
       }
     >
       {renderAction()}
-      {!isNativeBadge && (
+      {!detail.native && (
         <ScrollButton color="secondary" href={detail.issuer?.origin} target="_blank">
           Visit {detail.issuer?.name}
         </ScrollButton>
