@@ -82,9 +82,11 @@ const Dashboard = props => {
     changeUpgradeDialog,
     badgeAnimationVisible,
     initialMint,
+    upgradeDialogVisible,
   } = useCanvasStore()
 
   const [visibleBadges, setVisibleBadges] = useState<VisibleBadge[]>([])
+  const [loading, setLoading] = useState(false)
 
   const preVisibleBadges = usePrevious(visibleBadges)
 
@@ -94,32 +96,41 @@ const Dashboard = props => {
     image: `${requireEnv("REACT_APP_CANVAS_BACKEND_URI")}/canvas/${othersWalletAddress || walletCurrentAddress}.png`,
   }
 
-  useEffect(() => {
-    const fetchVisibleBadges = async () => {
-      const checkedBadges = await Promise.allSettled(
-        Badges.map(async badge => {
-          const isUserBadge = userBadges.some(userBadge => userBadge.badgeContract === badge.badgeContract)
-          const preCheckedBadge = preVisibleBadges?.find(item => item.badgeContract === badge.badgeContract)
-          if (preCheckedBadge && !isUserBadge) {
-            return preCheckedBadge
-          }
-          let isValidBadge = await checkBadgeEligibility(provider, walletCurrentAddress, badge)
+  const fetchVisibleBadges = async refresh => {
+    setLoading(true)
+    const checkedBadges = await Promise.allSettled(
+      Badges.map(async badge => {
+        const isUserBadge = userBadges.some(userBadge => userBadge.badgeContract === badge.badgeContract)
+        const preCheckedBadge = preVisibleBadges?.find(item => item.badgeContract === badge.badgeContract)
+        if (preCheckedBadge && !isUserBadge && !refresh) {
+          return preCheckedBadge
+        }
+        let isValidBadge = await checkBadgeEligibility(provider, walletCurrentAddress, badge)
 
-          return {
-            ...badge,
-            isValid: !isUserBadge && isValidBadge,
-          }
-        }),
-      )
-      const filteredBadges = checkedBadges
-        .filter((item): item is PromiseFulfilledResult<VisibleBadge> => item.status === "fulfilled" && item.value.isValid)
-        .map(item => item.value)
-      setVisibleBadges(filteredBadges)
-    }
+        return {
+          ...badge,
+          isValid: !isUserBadge && isValidBadge,
+        }
+      }),
+    )
+    const filteredBadges = checkedBadges
+      .filter((item): item is PromiseFulfilledResult<VisibleBadge> => item.status === "fulfilled" && item.value.isValid)
+      .map(item => item.value)
+    setLoading(false)
+    setVisibleBadges(filteredBadges)
+  }
+
+  useEffect(() => {
     if (provider && walletCurrentAddress && userBadges?.length) {
-      fetchVisibleBadges()
+      fetchVisibleBadges(false)
     }
-  }, [userBadges, preVisibleBadges, walletCurrentAddress, provider])
+  }, [userBadges, walletCurrentAddress, provider])
+
+  useEffect(() => {
+    if (upgradeDialogVisible) {
+      fetchVisibleBadges(true)
+    }
+  }, [upgradeDialogVisible])
 
   const scrollyAlert = useMemo(() => {
     if (visibleBadges.length) {
@@ -247,7 +258,7 @@ const Dashboard = props => {
               <NameDialog />
               <BadgesDialog mintableBadgeCount={visibleBadges.length} />
               <ReferDialog />
-              <UpgradeDialog badges={visibleBadges} />
+              <UpgradeDialog badges={visibleBadges} loading={loading} />
               <BadgeDetailDialog />
             </>
           )}

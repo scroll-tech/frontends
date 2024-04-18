@@ -1,8 +1,9 @@
-// import Img from "react-cool-img"
+import Img from "react-cool-img"
+
 import { List } from "@mui/material"
 import { styled } from "@mui/system"
 
-// import LoadingPage from "@/components/LoadingPage"
+import LoadingPage from "@/components/LoadingPage"
 import useCanvasStore from "@/stores/canvasStore"
 
 import Dialog from "../../components/Dialog"
@@ -34,27 +35,22 @@ const StyledList = styled(List)(({ theme }) => ({
 }))
 
 const UpgradeDialog = props => {
-  const { badges } = props
+  const { badges, loading } = props
   const { upgradeDialogVisible, changeUpgradeDialog } = useCanvasStore()
 
   const handleClose = () => {
     changeUpgradeDialog(false)
   }
 
-  // if (loading) {
-  //   return (
-  //     <Dialog title="Badges for mint" open={upgradeDialogVisible} onClose={handleClose}>
-  //       <StyledList>
-  //         <LoadingPage
-  //           height="100%"
-  //           component={
-  //             <Img src="/imgs/canvas/Scrolly_Coding.webp" placeholder="/imgs/canvas/avatarPlaceholder.svg" alt="Coding Scrolly" width="200" />
-  //           }
-  //         ></LoadingPage>
-  //       </StyledList>
-  //     </Dialog>
-  //   )
-  // }
+  if (loading) {
+    return (
+      <Dialog title="Badges for mint" open={upgradeDialogVisible} onClose={handleClose}>
+        <StyledList>
+          <LoadingPage height="100%" component={<Img src="/imgs/canvas/Scrolly_Coding_s.webp" alt="Coding Scrolly" width="200" />}></LoadingPage>
+        </StyledList>
+      </Dialog>
+    )
+  }
 
   if (!badges.length) {
     return (
