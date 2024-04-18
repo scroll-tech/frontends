@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { Helmet } from "react-helmet-async"
 import { Navigate, useNavigate, useParams } from "react-router-dom"
+import { usePrevious } from "react-use"
 
 import { Box } from "@mui/material"
 import { styled } from "@mui/system"
@@ -59,6 +60,8 @@ const Container: any = styled(Box)(({ theme, badgewidth }: any) => ({
   },
 }))
 
+type VisibleBadge = Badge & { isValid: boolean }
+
 const Dashboard = props => {
   const { walletCurrentAddress, provider } = useRainbowContext()
 
@@ -81,7 +84,9 @@ const Dashboard = props => {
     initialMint,
   } = useCanvasStore()
 
-  const [visibleBadges, setVisibleBadges] = useState<Badge[]>([])
+  const [visibleBadges, setVisibleBadges] = useState<VisibleBadge[]>([])
+
+  const preVisibleBadges = usePrevious(visibleBadges)
 
   const metadata = {
     title: `Scroll -  ${canvasUsername}'s Canvas`,
@@ -94,6 +99,10 @@ const Dashboard = props => {
       const checkedBadges = await Promise.allSettled(
         Badges.map(async badge => {
           const isUserBadge = userBadges.some(userBadge => userBadge.badgeContract === badge.badgeContract)
+          const preCheckedBadge = preVisibleBadges?.find(item => item.badgeContract === badge.badgeContract)
+          if (preCheckedBadge && !isUserBadge) {
+            return preCheckedBadge
+          }
           let isValidBadge = await checkBadgeEligibility(provider, walletCurrentAddress, badge)
 
           return {
@@ -103,14 +112,14 @@ const Dashboard = props => {
         }),
       )
       const filteredBadges = checkedBadges
-        .filter((item): item is PromiseFulfilledResult<Badge & { isValid: boolean }> => item.status === "fulfilled" && item.value.isValid)
+        .filter((item): item is PromiseFulfilledResult<VisibleBadge> => item.status === "fulfilled" && item.value.isValid)
         .map(item => item.value)
       setVisibleBadges(filteredBadges)
     }
     if (provider && walletCurrentAddress && userBadges?.length) {
       fetchVisibleBadges()
     }
-  }, [userBadges, walletCurrentAddress, provider])
+  }, [userBadges, preVisibleBadges, walletCurrentAddress, provider])
 
   const scrollyAlert = useMemo(() => {
     if (visibleBadges.length) {
