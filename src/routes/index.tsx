@@ -10,7 +10,6 @@ import DeveloperNFT from "@/pages/developer-nft/index"
 import MintNFT from "@/pages/developer-nft/mint"
 import Ecosystem from "@/pages/ecosystem"
 import Home from "@/pages/landingpage"
-import OurStory from "@/pages/ourStory"
 import Portal from "@/pages/portal"
 import PrivacyPolicy from "@/pages/privacyPolicy"
 import RollupScanBatch from "@/pages/rollup/batch"
@@ -101,11 +100,6 @@ const mainnetRoutes = [
     name: "Native zkEVM Layer 2 for Ethereum",
     path: "/",
     element: <Home />,
-  },
-  {
-    name: "Our Story",
-    path: "/story",
-    element: <OurStory />,
   },
   { name: "Blog", path: "/blog", element: <Blog /> },
   {
