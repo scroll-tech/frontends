@@ -3,7 +3,6 @@
   { "url": "https://scroll.io/bridge", "changefreq": "weekly", "priority": 0.7 },
   { "url": "https://scroll.io/ecosystem", "changefreq": "weekly", "priority": 0.7 },
   { "url": "https://scroll.io/brand-kit", "changefreq": "weekly", "priority": 0.7 },
-  { "url": "https://scroll.io/story", "changefreq": "weekly", "priority": 0.7 },
   { "url": "https://scroll.io/portal", "changefreq": "weekly", "priority": 0.7 },
   { "url": "https://scroll.io/blog", "changefreq": "weekly", "priority": 0.7 },
   { "url": "https://scroll.io/join-us", "changefreq": "monthly", "priority": 0.6 },
