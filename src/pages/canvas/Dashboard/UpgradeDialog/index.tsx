@@ -44,7 +44,7 @@ const UpgradeDialog = props => {
 
   if (loading) {
     return (
-      <Dialog title="Badges for mint" open={upgradeDialogVisible} onClose={handleClose}>
+      <Dialog title="Available badges to mint" open={upgradeDialogVisible} onClose={handleClose}>
         <StyledList>
           <LoadingPage height="100%" component={<Img src="/imgs/canvas/Scrolly_Coding_s.webp" alt="Coding Scrolly" width="200" />}></LoadingPage>
         </StyledList>
@@ -61,7 +61,7 @@ const UpgradeDialog = props => {
   }
 
   return (
-    <Dialog title="Badges for mint" open={upgradeDialogVisible} onClose={handleClose}>
+    <Dialog title="Available badges to mint" open={upgradeDialogVisible} onClose={handleClose}>
       <StyledList>
         {badges.map((badge, index) => (
           <BadgeItem key={index} badge={badge} />
