@@ -26,9 +26,10 @@ const FirstBadgeMask = props => {
     }
   }, [attachedBadges])
 
-  const handleAnimationComplete = () => {
+  const handleAnimationComplete = async () => {
     addFirstBadge(provider, firstBadgeWithPosition.id, firstBadgeWithPosition.image, firstBadgeWithPosition.badgeContract)
-    queryFirstMintUsername(provider)
+    const signer = await provider!.getSigner(0)
+    queryFirstMintUsername(signer)
   }
   return (
     <motion.div

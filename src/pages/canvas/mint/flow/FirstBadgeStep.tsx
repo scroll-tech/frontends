@@ -20,8 +20,14 @@ import StepWrapper from "./StepWrapper"
 const FirstBadgeStep = props => {
   const { provider, walletCurrentAddress } = useRainbowContext()
 
-  const { isFirstBadgeMinting, changeIsFirstBadgeMinting, changeMintFlowVisible, recordFirstBadgePosition, changeBadgeAnimationVisible } =
-    useCanvasStore()
+  const {
+    isFirstBadgeMinting,
+    changeIsFirstBadgeMinting,
+    changeMintFlowVisible,
+    recordFirstBadgePosition,
+    changeBadgeAnimationVisible,
+    queryFirstMintUsername,
+  } = useCanvasStore()
   const alertWarning = useSnackbar()
 
   const badgeChecked = useAsyncMemo(async () => {
@@ -72,7 +78,9 @@ const FirstBadgeStep = props => {
     }
   }
 
-  const handleViewMyCanvas = () => {
+  const handleViewMyCanvas = async () => {
+    const signer = await provider?.getSigner(0)
+    queryFirstMintUsername(signer)
     changeMintFlowVisible(false)
   }
 
