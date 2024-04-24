@@ -21,6 +21,12 @@ const AMBIENT_ATTESTER_PROXY_ADDRESS = "0x9F54d1FFc14C61b7EC170F6cA53434855D3737
 
 const Ambient_BASE_URL = "https://ambient-scroll-badge-sepolia.liquidity.tools/api"
 
+const ZEBRA_BADGE_ADDRESS = "0x619a0A19203697f36C4092C757485734Ec23b2eB"
+
+const ZEBRA_ATTESTER_PROXY_ADDRESS = "0xD528308D3f0c6CfF15C6D25193d77aFB123ABe82"
+
+const Zebra_BASE_URL = "https://zktrade.net/api"
+
 export const ETHEREUM_YEAR_BADGE = {
   name: "Ethereum Year Badge",
   badgeContract: ETHEREUM_YEAR_BADGE_ADDRESS,
@@ -92,6 +98,21 @@ export const THIRD_PARTY_BADGES = [
       logo: "https://scroll-eco-list.netlify.app/logos/Ambient%20Finance.png",
     },
     baseUrl: Ambient_BASE_URL,
+    native: false,
+  },
+  {
+    name: "Zebra",
+    badgeContract: ZEBRA_BADGE_ADDRESS,
+    attesterProxy: ZEBRA_ATTESTER_PROXY_ADDRESS,
+    description:
+      "Users who participate in Scroll Canvas and complete tasks will receive Zebra's 'zebra' badge. Users with this badge will enjoy Zebra's early benefits in the future.",
+    image: "https://app.zebra.xyz/images/badge.png",
+    issuer: {
+      origin: "https://zebra.xyz/",
+      name: "Zebra",
+      logo: "https://scroll-eco-list.netlify.app/logos/Zebra.png",
+    },
+    baseUrl: Zebra_BASE_URL,
     native: false,
   },
   // {
