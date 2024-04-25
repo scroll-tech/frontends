@@ -262,6 +262,7 @@ const checkBadgeEligibility = async (provider, walletAddress, badge: any) => {
 const mintThirdBadge = async (signer, walletAddress, badgeAddress, attesterProxyAddress, claimBaseUrl) => {
   const { tx: unsignedTx } = await scrollRequest(claimBadgeURL(claimBaseUrl, walletAddress, badgeAddress))
   console.log(unsignedTx, "unsignedTx")
+
   const tx = await signer.sendTransaction(unsignedTx)
   const txReceipt = await tx.wait()
   if (txReceipt.status === 1) {
@@ -352,6 +353,7 @@ const mintBadge = async (provider, walletCurrentAddress, badge) => {
     if (isError(error, "ACTION_REJECTED")) {
       return false
     } else {
+      console.log("Failed to mint badge:", error)
       throw new Error(trimErrorMessage(error.message))
     }
   }
