@@ -25,7 +25,7 @@ const ZEBRA_BADGE_ADDRESS = "0x619a0A19203697f36C4092C757485734Ec23b2eB"
 
 const ZEBRA_ATTESTER_PROXY_ADDRESS = "0xD528308D3f0c6CfF15C6D25193d77aFB123ABe82"
 
-const Zebra_BASE_URL = "https://zktrade.net/api"
+const Zebra_BASE_URL = "https://zktrade.net/api/badge"
 
 export const ETHEREUM_YEAR_BADGE = {
   name: "Ethereum Year Badge",
