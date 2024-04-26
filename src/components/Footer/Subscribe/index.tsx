@@ -76,7 +76,7 @@ const Subscribe = () => {
                 ></EmailInput>
 
                 {customMessage && (
-                  <Typography sx={{ position: "absolute", fontSize: "1.6rem", textAlign: "center", mt: "1rem", width: "100%" }}>
+                  <Typography sx={{ position: "absolute", fontSize: "1.6rem", textAlign: "center", mt: "1rem", width: "100%",color: "red" }}>
                     {customMessage}
                   </Typography>
                 )}
