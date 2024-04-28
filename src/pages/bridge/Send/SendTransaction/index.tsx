@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react"
+import { useSearchParams } from "react-router-dom"
 import useStorage from "squirrel-gill"
 
 import { Box, Stack, SvgIcon, Typography } from "@mui/material"
@@ -28,11 +29,17 @@ import NetworkDirection from "./NetworkDirection"
 import TransactionSummary from "./TransactionSummary"
 
 const SendTransaction = props => {
+  const [searchParams] = useSearchParams()
+  const token = searchParams.get("token")
+
   const { chainId, connect } = useRainbowContext()
   // TODO: extract tokenList
   const { tokenList } = useBridgeContext()
   const { isMobile } = useCheckViewport()
-  const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
+  // const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
+  const [storedTokenSymbol, setStoredTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
+
+  const tokenSymbol = useMemo(() => token || storedTokenSymbol, [storedTokenSymbol, token])
 
   const { gasLimit, gasPrice, errorMessage: relayFeeErrorMessage, fetchData: fetchPriceFee, getL1DataFee } = usePriceFeeContext()
 
@@ -189,7 +196,8 @@ const SendTransaction = props => {
   }, [isRequestedApproval])
 
   const handleChangeTokenSymbol = symbol => {
-    setTokenSymbol(symbol)
+    // setTokenSymbol(symbol)
+    setStoredTokenSymbol(symbol)
   }
 
   const handleChangeAmount = value => {
