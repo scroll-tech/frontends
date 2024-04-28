@@ -20,8 +20,8 @@ import blogSource from "./data.json"
 
 const BlogContainer = styled(Box)(
   ({ theme }) => `
-    max-width: 100rem;
-    padding: 8rem 6rem 14rem;
+    max-width: 140rem;
+    padding: 6rem 4rem 14rem;
     overflow: visible;
     display: flex;
   ${theme.breakpoints.down("md")} {
@@ -35,11 +35,7 @@ const BlogContainer = styled(Box)(
 const BlogNavbar = styled(Box)(({ theme }) => ({
   position: "sticky",
   top: "14rem",
-  width: "40rem",
-  marginLeft: "4rem",
-  maxWidth: "30vw",
-  paddingLeft: "2rem",
-  borderLeft: `1px solid ${theme.palette.border.main}`,
+  maxWidth: "32vw",
   [theme.breakpoints.down("md")]: {
     display: "none",
   },
@@ -128,17 +124,17 @@ const BlogDetail = () => {
       ) : (
         <Box>
           <BlogContainer className="wrapper">
+            <Box sx={{ width: "32rem", flexShrink: 0, position: "relative" }}>
+              <BlogNavbar>
+                <TOC />
+              </BlogNavbar>
+            </Box>
             <ReactMarkdown
               children={blog as string}
               remarkPlugins={[remarkMath, remarkGfm]}
               rehypePlugins={[rehypeKatex, rehypeRaw]}
               className="markdown-body"
             />
-            <Box sx={{ width: "32rem", flexShrink: 0, position: "relative" }}>
-              <BlogNavbar>
-                <TOC />
-              </BlogNavbar>
-            </Box>
           </BlogContainer>
           {isPortrait ? (
             <Box sx={{ paddingBottom: "10rem" }}>
