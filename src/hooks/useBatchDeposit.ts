@@ -5,7 +5,6 @@ import { CHAIN_ID, NETWORKS, TX_STATUS } from "@/constants"
 import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import useBatchBridgeStore, { BridgeSummaryType, DepositBatchMode } from "@/stores/batchBridgeStore"
 import useBridgeStore from "@/stores/bridgeStore"
 import useTxStore from "@/stores/txStore"
 import { isValidOffsetTime } from "@/stores/utils"
@@ -19,15 +18,14 @@ type TxOptions = {
   maxPriorityFeePerGas?: bigint | null
 }
 
-export function useSendTransaction(props) {
-  const { amount: fromTokenAmount, selectedToken, receiver } = props
+export function useBatchDeposit(props) {
+  const { amount: fromTokenAmount, selectedToken } = props
   const { walletCurrentAddress } = useRainbowContext()
   const { networksAndSigners, blockNumbers } = useBridgeContext()
-  const { enlargedGasLimit: txGasLimit, maxFeePerGas, maxPriorityFeePerGas } = useGasFee(selectedToken, false)
+  //   const { enlargedGasLimit: txGasLimit, maxFeePerGas, maxPriorityFeePerGas } = useGasFee(selectedToken, false)
+  const { maxFeePerGas, maxPriorityFeePerGas } = useGasFee(selectedToken, false)
   const { addTransaction, addEstimatedTimeMap, removeFrontTransactions, updateTransaction } = useTxStore()
-  const { fromNetwork, toNetwork, changeTxResult, changeWithdrawStep } = useBridgeStore()
-  const { bridgeSummaryType, depositBatchMode, batchDepositConfig } = useBatchBridgeStore()
-
+  const { fromNetwork, changeTxResult } = useBridgeStore()
   const { gasLimit, gasPrice } = usePriceFeeContext()
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -42,16 +40,12 @@ export function useSendTransaction(props) {
     setIsLoading(true)
     let tx
     let currentBlockNumber
+    currentBlockNumber = await networksAndSigners[CHAIN_ID.L1].provider.getBlockNumber()
     try {
-      if (bridgeSummaryType === BridgeSummaryType.Selector && depositBatchMode === DepositBatchMode.Economy) {
-        currentBlockNumber = await networksAndSigners[CHAIN_ID.L1].provider.getBlockNumber()
-        tx = await batchSendL1ToL2()
-      } else if (fromNetwork.isL1) {
-        currentBlockNumber = await networksAndSigners[CHAIN_ID.L1].provider.getBlockNumber()
-        tx = await sendl1ToL2()
-      } else if (!fromNetwork.isL1 && toNetwork.isL1) {
-        currentBlockNumber = await networksAndSigners[CHAIN_ID.L2].provider.getBlockNumber()
-        tx = await sendl2ToL1()
+      if (selectedToken.native) {
+        await depositETH()
+      } else {
+        await depositERC20()
       }
       // start to check tx replacement from current block number
       // TODO: shouldn't add it here(by @ricmoo)
@@ -62,20 +56,15 @@ export function useSendTransaction(props) {
         .then(receipt => {
           if (receipt?.status === 1) {
             changeTxResult({ code: 1 })
-            if (!tx.isL1) {
-              changeWithdrawStep("2")
-            }
             handleTransaction(tx, {
               fromBlockNumber: receipt.blockNumber,
             })
-            if (fromNetwork.isL1) {
-              const estimatedOffsetTime = (receipt.blockNumber - blockNumbers[0]) * 12 * 1000
-              if (isValidOffsetTime(estimatedOffsetTime)) {
-                addEstimatedTimeMap(`from_${tx.hash}`, Date.now() + estimatedOffsetTime)
-              } else {
-                addEstimatedTimeMap(`from_${tx.hash}`, 0)
-                sentryDebug(`safe block number: ${blockNumbers[0]}`)
-              }
+            const estimatedOffsetTime = (receipt.blockNumber - blockNumbers[0]) * 12 * 1000
+            if (isValidOffsetTime(estimatedOffsetTime)) {
+              addEstimatedTimeMap(`from_${tx.hash}`, Date.now() + estimatedOffsetTime)
+            } else {
+              addEstimatedTimeMap(`from_${tx.hash}`, 0)
+              sentryDebug(`safe block number: ${blockNumbers[0]}`)
             }
           } else {
             const errorMessage = "due to any operation that can cause the transaction or top-level call to revert"
@@ -156,14 +145,7 @@ export function useSendTransaction(props) {
       options.maxFeePerGas = maxFeePerGas
       options.maxPriorityFeePerGas = maxPriorityFeePerGas
     }
-
-    return networksAndSigners[CHAIN_ID.L1].scrollMessenger["sendMessage(address,uint256,bytes,uint256)"](
-      receiver || walletCurrentAddress,
-      parsedAmount,
-      "0x",
-      gasLimit,
-      options,
-    )
+    return networksAndSigners[CHAIN_ID.L1].batchBridgeGateway.depositETH(options)
   }
 
   const depositERC20 = async () => {
@@ -176,88 +158,7 @@ export function useSendTransaction(props) {
       options.maxFeePerGas = maxFeePerGas
       options.maxPriorityFeePerGas = maxPriorityFeePerGas
     }
-
-    if (receiver) {
-      return networksAndSigners[CHAIN_ID.L1].gateway["depositERC20(address,address,uint256,uint256)"](
-        selectedToken.address,
-        receiver,
-        parsedAmount,
-        gasLimit,
-        options,
-      )
-    }
-
     return networksAndSigners[CHAIN_ID.L1].gateway["depositERC20(address,uint256,uint256)"](selectedToken.address, parsedAmount, gasLimit, options)
-  }
-
-  const withdrawETH = async () => {
-    return networksAndSigners[CHAIN_ID.L2].scrollMessenger["sendMessage(address,uint256,bytes,uint256)"](
-      receiver || walletCurrentAddress,
-      parsedAmount,
-      "0x",
-      0,
-      {
-        value: parsedAmount,
-        gasLimit: txGasLimit,
-      },
-    )
-  }
-
-  const withdrawERC20 = async () => {
-    if (receiver) {
-      return networksAndSigners[CHAIN_ID.L2].gateway["withdrawERC20(address,address,uint256,uint256)"](
-        selectedToken.address,
-        receiver,
-        parsedAmount,
-        0,
-        {
-          gasLimit: txGasLimit,
-        },
-      )
-    }
-    return networksAndSigners[CHAIN_ID.L2].gateway["withdrawERC20(address,uint256,uint256)"](selectedToken.address, parsedAmount, 0, {
-      gasLimit: txGasLimit,
-    })
-  }
-
-  const batchDepositETH = async () => {
-    const options: TxOptions = {
-      value: parsedAmount + batchDepositConfig.feeAmountPerTx,
-    }
-
-    return networksAndSigners[CHAIN_ID.L1].batchBridgeGateway.depositETH(options)
-  }
-
-  const batchDepositERC20 = async () => {
-    const options: TxOptions = {
-      value: parsedAmount + batchDepositConfig.feeAmountPerTx,
-    }
-
-    return networksAndSigners[CHAIN_ID.L1].gateway.depositERC20(selectedToken.address, parsedAmount, options)
-  }
-
-  const batchSendL1ToL2 = () => {
-    if (selectedToken.native) {
-      return batchDepositETH()
-    } else {
-      return batchDepositERC20()
-    }
-  }
-
-  const sendl1ToL2 = () => {
-    if (selectedToken.native) {
-      return depositETH()
-    } else {
-      return depositERC20()
-    }
-  }
-
-  const sendl2ToL1 = () => {
-    if (selectedToken.native) {
-      return withdrawETH()
-    } else {
-      return withdrawERC20()
-    }
   }
 
   return {
