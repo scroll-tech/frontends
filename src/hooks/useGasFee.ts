@@ -49,6 +49,8 @@ const useGasFee = (selectedToken, needApproval) => {
     const gasLimit = await estimateSend()
     const gasLimitBatch = await estimateBatchDeposit()
 
+    console.log("gasLimitBatch1", gasLimitBatch)
+
     if (gasLimit === null) {
       return {
         gasLimit: null,

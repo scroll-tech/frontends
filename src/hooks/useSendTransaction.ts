@@ -230,10 +230,11 @@ export function useSendTransaction(props) {
 
   const batchDepositERC20 = async () => {
     const options: TxOptions = {
-      value: parsedAmount + batchDepositConfig.feeAmountPerTx,
+      value: batchDepositConfig.feeAmountPerTx,
     }
 
-    return networksAndSigners[CHAIN_ID.L1].gateway.depositERC20(selectedToken.address, parsedAmount, options)
+    console.log("batchDepositConfig", selectedToken.address, parsedAmount, options)
+    return networksAndSigners[CHAIN_ID.L1].batchBridgeGateway.depositERC20(selectedToken.address, parsedAmount)
   }
 
   const batchSendL1ToL2 = () => {

@@ -1,10 +1,7 @@
-import { parseUnits } from "ethers"
-import { useEffect, useState } from "react"
-
 import { CHAIN_ID } from "@/constants"
 import { useBridgeContext } from "@/contexts/BridgeContextProvider"
-import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useBatchBridgeStore from "@/stores/batchBridgeStore"
 
 type TxOptions = {
   value: bigint
@@ -15,38 +12,20 @@ type TxOptions = {
 export function useEstimateBatchDeposit(props) {
   const { fromNetwork, selectedToken } = props
   const { checkConnectedChainId, walletCurrentAddress } = useRainbowContext()
-  const { gasLimit, gasPrice } = usePriceFeeContext()
+  const { batchDepositConfig } = useBatchBridgeStore()
 
   const { networksAndSigners } = useBridgeContext()
 
-  const [instance, setInstance] = useState<any>(null)
-
-  const minimumAmount = parseUnits("0.001", "ether")
-
-  useEffect(() => {
-    const instance = selectedToken.native
-      ? networksAndSigners[fromNetwork.isL1 ? CHAIN_ID.L1 : CHAIN_ID.L2].scrollMessenger
-      : networksAndSigners[fromNetwork.isL1 ? CHAIN_ID.L1 : CHAIN_ID.L2].gateway
-    if (instance) {
-      setInstance(instance)
-    }
-  }, [networksAndSigners, fromNetwork, selectedToken.native])
-
   const depositETH = async () => {
-    const fee = gasPrice * gasLimit
     const options: TxOptions = {
-      value: minimumAmount + fee,
+      value: batchDepositConfig.minAmountPerTx + batchDepositConfig.feeAmountPerTx,
     }
 
     return networksAndSigners[CHAIN_ID.L1].batchBridgeGateway.depositETH.estimateGas(options)
   }
 
   const depositERC20 = async () => {
-    const fee = gasPrice * gasLimit
-
-    return instance["depositERC20(address,uint256,uint256)"].estimateGas(selectedToken.address, minimumAmount, gasLimit, {
-      value: fee,
-    })
+    return networksAndSigners[CHAIN_ID.L1].batchBridgeGateway.depositERC20.estimateGas(selectedToken.address, batchDepositConfig.minAmountPerTx)
   }
 
   const estimateSend = async () => {
@@ -55,17 +34,21 @@ export function useEstimateBatchDeposit(props) {
     const nativeTokenBalance = await networksAndSigners[fromNetwork.chainId].provider.getBalance(walletCurrentAddress)
     if (!nativeTokenBalance) {
       return null
-    } else if (fromNetwork.isL1 && gasLimit && gasPrice) {
+    } else if (fromNetwork.isL1 && batchDepositConfig.minAmountPerTx) {
       return await estimateSendL1ToL2()
     }
     return null
   }
 
   const estimateSendL1ToL2 = () => {
-    if (selectedToken.native) {
-      return depositETH()
-    } else {
-      return depositERC20()
+    try {
+      if (selectedToken.native) {
+        return depositETH()
+      } else {
+        return depositERC20()
+      }
+    } catch (error) {
+      console.error("estimateSendL1ToL2", error)
     }
   }
 

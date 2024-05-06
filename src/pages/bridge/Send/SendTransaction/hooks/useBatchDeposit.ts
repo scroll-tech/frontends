@@ -9,7 +9,7 @@ import { BNToAmount } from "@/utils"
 
 const batchDepositTokens = ["ETH", "wstETH"]
 
-export default function useBatchDepositConfig(props) {
+export default function useBatchDeposit(props) {
   const { selectedToken, amount } = props
   const { networksAndSigners } = useBridgeContext()
   const { txType, isNetworkCorrect } = useBridgeStore()
@@ -36,14 +36,19 @@ export default function useBatchDepositConfig(props) {
     if (txType === "Deposit" && enableBatchDeposit) {
       changeBridgeSummaryType(BridgeSummaryType.Selector)
       if (networksAndSigners[CHAIN_ID.L1].provider) {
-        getBatchDepositConfigsByToken(selectedToken).then(configs => {
-          changeBatchDepositConfig(configs)
-        })
+        getBatchDepositConfigsByToken(selectedToken)
+          .then(configs => {
+            changeBatchDepositConfig(configs)
+            console.error("getBatchDepositConfigsByToken", configs)
+          })
+          .catch(err => {
+            console.error("getBatchDepositConfigsByToken", err)
+          })
       }
     } else {
       changeBridgeSummaryType(BridgeSummaryType.Summary)
     }
-  }, [txType, isNetworkCorrect, enableBatchDeposit, networksAndSigners])
+  }, [txType, isNetworkCorrect, enableBatchDeposit, networksAndSigners, selectedToken])
 
   return {
     getBatchDepositConfigsByToken,

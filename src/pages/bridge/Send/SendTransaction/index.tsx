@@ -29,7 +29,7 @@ import CustomiseRecipient from "./CustomiseRecipient"
 import DepositSelector from "./DepositSelector"
 import NetworkDirection from "./NetworkDirection"
 import TransactionSummary from "./TransactionSummary"
-import useBatchDepositConfig from "./hooks/useBatchDeposit"
+import useBatchDeposit from "./hooks/useBatchDeposit"
 
 const SendTransaction = props => {
   const [searchParams] = useSearchParams()
@@ -87,16 +87,7 @@ const SendTransaction = props => {
     receiver: recipient,
   })
 
-  // const {
-  //   send: sendTransaction,
-  //   isLoading: sendLoading,
-  //   error: sendError,
-  // } = useBatchDeposit({
-  //   amount: validAmount,
-  //   selectedToken,
-  // })
-
-  const { depositAmountIsInvaild } = useBatchDepositConfig({ selectedToken, amount: validAmount })
+  const { depositAmountIsInvaild } = useBatchDeposit({ selectedToken, amount: validAmount })
 
   // fee start
   const {

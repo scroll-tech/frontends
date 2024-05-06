@@ -2,15 +2,24 @@ import { ethers } from "ethers"
 import { useCallback, useEffect, useMemo, useState } from "react"
 
 import L1_erc20ABI from "@/assets/abis/L1_erc20ABI.json"
-import { GATEWAY_ROUTE_PROXY_ADDR, USDC_GATEWAY_PROXY_ADDR, USDC_SYMBOL, WETH_GATEWAY_PROXY_ADDR, WETH_SYMBOL } from "@/constants"
+import {
+  BATCH_BRIDGE_GATEWAY_PROXY_ADDR,
+  GATEWAY_ROUTE_PROXY_ADDR,
+  USDC_GATEWAY_PROXY_ADDR,
+  USDC_SYMBOL,
+  WETH_GATEWAY_PROXY_ADDR,
+  WETH_SYMBOL,
+} from "@/constants"
 import { CHAIN_ID } from "@/constants"
 import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useBatchBridgeStore, { BridgeSummaryType, DepositBatchMode } from "@/stores/batchBridgeStore"
 import { amountToBN } from "@/utils"
 
 const useApprove = (fromNetwork, selectedToken, amount) => {
   const { walletCurrentAddress, chainId } = useRainbowContext()
   const { networksAndSigners } = useBridgeContext()
+  const { bridgeSummaryType, depositBatchMode } = useBatchBridgeStore()
 
   const [isLoading, setIsLoading] = useState(false)
   const [isRequested, setIsRequested] = useState(false)
@@ -21,9 +30,11 @@ const useApprove = (fromNetwork, selectedToken, amount) => {
   const approveAddress = useMemo(() => {
     if (!fromNetwork.isL1 && selectedToken.symbol === WETH_SYMBOL) return WETH_GATEWAY_PROXY_ADDR[fromNetwork.chainId]
     if (!fromNetwork.isL1 && selectedToken.symbol === USDC_SYMBOL) return USDC_GATEWAY_PROXY_ADDR[fromNetwork.chainId]
+    if (depositBatchMode === DepositBatchMode.Economy && bridgeSummaryType === BridgeSummaryType.Selector)
+      return BATCH_BRIDGE_GATEWAY_PROXY_ADDR[fromNetwork.chainId]
 
     return GATEWAY_ROUTE_PROXY_ADDR[fromNetwork.chainId]
-  }, [fromNetwork, selectedToken])
+  }, [fromNetwork, selectedToken, depositBatchMode, bridgeSummaryType])
 
   const tokenInstance = useMemo(() => {
     // ETH & L2 ERC20 don't need approval
@@ -51,6 +62,7 @@ const useApprove = (fromNetwork, selectedToken, amount) => {
 
       const parsedAmount = amountToBN(amount, selectedToken.decimals)
       const approvedAmount = await tokenInstance.allowance(walletCurrentAddress, approveAddress)
+      console.log("approvedAmount", approvedAmount.toString(), approveAddress)
       if (approvedAmount >= parsedAmount) {
         return false
       }
