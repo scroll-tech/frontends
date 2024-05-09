@@ -113,8 +113,8 @@ const FirstBadgeStep = props => {
           ></Img>
         )}
       </Box>
-      <Typography sx={{ fontSize: "2.4rem", lineHeight: "3.6rem", fontWeight: 600 }}>{ETHEREUM_YEAR_BADGE.name}</Typography>
-      <Typography sx={{ fontSize: "1.8rem", lineHeight: "2.8rem", maxWidth: "66rem" }}>{renderTip()}</Typography>
+      <Typography sx={{ fontSize: "2rem", lineHeight: "3rem", fontWeight: 600 }}>{ETHEREUM_YEAR_BADGE.name}</Typography>
+      <Typography sx={{ fontSize: "1.6rem", lineHeight: "2.4rem", maxWidth: "60rem" }}>{renderTip()}</Typography>
     </StepWrapper>
   )
 }

@@ -26,7 +26,7 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
   button: {
     fontFamily: "var(--developer-page-font-family)",
     fontSize: "1.6rem",
-    height: "3.6rem",
+    height: "4rem",
     width: "16rem",
     padding: "0 1.2rem",
     borderRadius: "0.5rem",
@@ -194,8 +194,8 @@ const WalletDropdown = props => {
             placeholder="/imgs/canvas/avatarPlaceholder.svg"
           ></Img>
           <Box sx={{ lineHeight: "1.6rem", textAlign: "left" }}>
-            <strong style={{ fontSize: "1.2rem" }}>{username}</strong>
-            <p style={{ fontSize: "1.2rem" }}>{truncateAddress(walletCurrentAddress as string)}</p>
+            <strong style={{ fontSize: "1.2rem", lineHeight: "1.6rem" }}>{username}</strong>
+            <p style={{ fontSize: "1.2rem", lineHeight: "1.6rem" }}>{truncateAddress(walletCurrentAddress as string)}</p>
           </Box>
           <SvgIcon className={cx(classes.endIcon, open && classes.reverseEndIcon)} component={DownTriangleSvg} inheritViewBox></SvgIcon>
         </ButtonBase>

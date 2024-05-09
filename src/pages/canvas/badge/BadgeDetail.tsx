@@ -105,7 +105,7 @@ const BadgeDetail = props => {
         >
           {!!breadcrumb && <Box sx={{ width: "100%", gridColumn: ["span 1", "span 1", "span 2"], justifySelf: "flex-start" }}>{breadcrumb}</Box>}
 
-          <Box sx={{ width: "48rem", aspectRatio: "1/1" }}>
+          <Box sx={{ width: "40rem", aspectRatio: "1/1" }}>
             {loading ? (
               <Skeleton dark sx={{ height: "100%" }}></Skeleton>
             ) : (
@@ -133,12 +133,12 @@ const BadgeDetail = props => {
               {loading ? (
                 <Skeleton dark sx={{ height: "7.2rem", width: "60%", my: "0.6rem" }}></Skeleton>
               ) : (
-                <Typography sx={{ fontSize: ["4rem", "5.6rem"], fontWeight: 600, lineHeight: ["5.6rem", "7.2rem"] }}>{detail.name}</Typography>
+                <Typography sx={{ fontSize: ["4rem", "4rem"], fontWeight: 600, lineHeight: ["5.6rem", "7.2rem"] }}>{detail.name}</Typography>
               )}
               {loading ? (
                 <Skeleton dark sx={{ width: ["100%", "100%", "100%", "56rem"], height: "6.4rem", my: "0.6rem" }}></Skeleton>
               ) : (
-                <Typography sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: ["2.4rem", "3.2rem"], maxWidth: ["100%", "56rem"] }}>
+                <Typography sx={{ fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.4rem", "2.8rem"], maxWidth: ["100%", "56rem"] }}>
                   <>{detail.description}</>
                 </Typography>
               )}
@@ -148,21 +148,39 @@ const BadgeDetail = props => {
               {property.includes("owner") && (
                 // <RouterLink to={viewCanvasURL}>
                 <Statistic label="Owner" loading={loading} sx={{ "& *": { cursor: "pointer !important" } }}>
-                  <Img width={40} height={40} placeholder="/imgs/canvas/avatarPlaceholder.svg" src={detail.ownerLogo}></Img>
-                  {detail.owner}
+                  <Box
+                    sx={{
+                      mt: "0.8rem",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.8rem",
+                    }}
+                  >
+                    <Img width={32} height={32} placeholder="/imgs/canvas/avatarPlaceholder.svg" src={detail.ownerLogo}></Img>
+                    {detail.owner}
+                  </Box>
                 </Statistic>
                 // </RouterLink>
               )}
               {property.includes("issuer") && (
                 <Statistic label="Issued by" loading={loading}>
-                  <Img
-                    width={40}
-                    height={40}
-                    style={{ borderRadius: "0.8rem" }}
-                    placeholder="/imgs/canvas/avatarPlaceholder.svg"
-                    src={detail.issuer?.logo}
-                  ></Img>
-                  {detail.issuer?.name}
+                  <Box
+                    sx={{
+                      mt: "0.8rem",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.8rem",
+                    }}
+                  >
+                    <Img
+                      width={32}
+                      height={32}
+                      style={{ borderRadius: "0.4rem" }}
+                      placeholder="/imgs/canvas/avatarPlaceholder.svg"
+                      src={detail.issuer?.logo}
+                    ></Img>
+                    {detail.issuer?.name}
+                  </Box>
                 </Statistic>
               )}
               {property.includes("mintedOn") && (

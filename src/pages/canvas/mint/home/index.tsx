@@ -42,10 +42,10 @@ const Title = styled(Typography)(({ theme }) => ({
 const SubTitle = styled(Typography)(({ theme }) => ({
   color: theme.palette.primary.contrastText,
   textAlign: "center",
-  fontSize: "2rem",
+  fontSize: "1.8rem",
   fontStyle: "normal",
   fontWeight: 400,
-  lineHeight: "3.2rem",
+  lineHeight: "2.8rem",
 }))
 
 const StickyBox = styled(Box)(({ theme }) => ({

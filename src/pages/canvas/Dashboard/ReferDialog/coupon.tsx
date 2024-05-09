@@ -144,7 +144,7 @@ const Coupon = props => {
       <DescriptionBox>
         <Typography sx={{ fontSize: "1.8rem", lineHeight: "2.4rem" }}>From: {username}</Typography>
         <Typography sx={{ fontSize: "4.8rem", lineHeight: "1", fontWeight: 500, margin: "0.8rem 0" }}>50% OFF</Typography>
-        <Typography sx={{ fontSize: "1.8rem", marginBottom: "2.3rem", lineHeight: "2.4rem" }}>Mint Fee</Typography>
+        <Typography sx={{ fontSize: "1.8rem", marginBottom: "2.3rem", lineHeight: "2.4rem" }}>Canvas Mint Fee</Typography>
         <SvgIcon sx={{ width: "8rem" }} component={LogoSvg} inheritViewBox />
       </DescriptionBox>
       <Stack direction="column" alignItems="center" gap="1.5rem">

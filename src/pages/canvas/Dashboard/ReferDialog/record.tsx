@@ -20,7 +20,7 @@ const RecordBox = styled(Box)(({ theme }) => ({
   justifyContent: "center",
   maxWidth: "40rem",
   width: "100%",
-  margin: "0 auto 8.5rem",
+  margin: "0 auto 6rem",
   gap: "4rem",
 }))
 

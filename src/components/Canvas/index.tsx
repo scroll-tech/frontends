@@ -157,7 +157,7 @@ const Canvas = props => {
           {tooltipVisible && (
             <Tooltip style={{ display: "block" }}>
               <Typography sx={{ textAlign: "right" }}>
-                <SvgIcon sx={{ fontSize: "1.3rem" }} onClick={handleCloseClick} component={CloseSvg} inheritViewBox />
+                <SvgIcon sx={{ fontSize: "1.3rem", color: "#000" }} onClick={handleCloseClick} component={CloseSvg} inheritViewBox />
               </Typography>
               <Typography sx={{ fontSize: "1.6rem", fontWeight: 500, marginBottom: "1.2rem" }}>{title}</Typography>
               <MintButton variant="contained" color="primary" sx={{ width: "100%" }} loading={loading} onClick={handleCanvasClick}>

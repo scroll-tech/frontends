@@ -187,7 +187,7 @@ const BadgesDialog = props => {
     <StyledDialog
       sx={{
         [`& .MuiDialog-paper`]: {
-          width: "120rem",
+          width: "112rem",
         },
       }}
       maxWidth={false}
@@ -198,14 +198,14 @@ const BadgesDialog = props => {
         sx={{
           m: 0,
           p: ["2rem", "3rem"],
-          pt: ["3.2rem", "4.8rem"],
+          pt: ["3.2rem", "4rem"],
           pb: ["3rem", "4rem"],
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
         }}
       >
-        <Typography sx={{ flex: 1, fontSize: "4rem", fontWeight: 600, color: "primary.contrastText", textAlign: "center" }}>
+        <Typography sx={{ flex: 1, fontSize: "2.4rem", fontWeight: 600, color: "primary.contrastText", textAlign: "center" }}>
           Drag badges to customize
         </Typography>
         <IconButton onClick={handleClose}>
@@ -214,7 +214,7 @@ const BadgesDialog = props => {
       </DialogTitle>
       <StyledDialogContent>
         <Transfer
-          sx={{ mb: "4.8rem" }}
+          sx={{ mb: "4rem" }}
           titles={["Not displayed", "Displayed"]}
           data={userBadges}
           value={sortedBadges}
