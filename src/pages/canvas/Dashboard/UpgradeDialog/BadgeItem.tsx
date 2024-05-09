@@ -83,7 +83,11 @@ const BadgeItem = ({ badge }) => {
       // }
     >
       <StyledListItemAvatar>
-        <Img src={badge.image} placeholder="/imgs/canvas/badgePlaceholder.svg" style={{ fontSize: "8rem", borderRadius: "0.8rem" }}></Img>
+        <Img
+          src={badge.image}
+          placeholder="/imgs/canvas/badgePlaceholder.svg"
+          style={{ fontSize: "8rem", borderRadius: "0.8rem", background: "transparent" }}
+        ></Img>
       </StyledListItemAvatar>
       <StyledListItemText
         primary={badge.name}
