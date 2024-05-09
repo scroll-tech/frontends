@@ -50,11 +50,11 @@ const cColor = (color, theme) => {
 const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, whiteButton }) => ({
   wrapper: {
     position: "relative",
-    height: "5.4rem",
+    height: "4.8rem",
     overflow: "hidden",
     borderRadius: "1rem",
     backgroundColor: whiteButton ? "#ffffff" : "transparent",
-    width: width ?? "25rem",
+    width: width ?? "24rem",
     [theme.breakpoints.down("sm")]: {
       width: width ?? "18.5rem",
       height: "4.8rem",
@@ -73,7 +73,7 @@ const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, w
     pointerEvents: "none",
   },
   button: {
-    fontSize: "2rem",
+    fontSize: "1.8rem",
     fontWeight: 600,
     height: "100%",
     width: "100%",

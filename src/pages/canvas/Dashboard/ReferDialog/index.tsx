@@ -10,7 +10,7 @@ import Record from "./record"
 const Title = styled(Typography)(({ theme }) => ({
   color: "#FFFFFF",
   textAlign: "center",
-  fontSize: "4rem",
+  fontSize: "3.2rem",
   fontWeight: 600,
   lineHeight: 1,
   marginBottom: "1.6rem",
