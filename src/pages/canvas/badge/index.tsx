@@ -129,7 +129,7 @@ const BadgeDetailPage = () => {
 
         {detail.badgeContract && !isNativeBadge(detail.badgeContract) && (
           <ScrollButton color="secondary" href={detail.issuer?.origin} target="_blank">
-            Visit {detail.issuer?.name}
+            Visit {isNativeBadge(detail.badgeContract) ? "Canvas" : detail.issuer?.name}
           </ScrollButton>
         )}
         <Link external href={shareBadgeURL}>
