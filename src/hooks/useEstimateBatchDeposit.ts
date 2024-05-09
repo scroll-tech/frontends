@@ -37,7 +37,7 @@ export function useEstimateBatchDeposit(props) {
     } else if (fromNetwork.isL1 && batchDepositConfig.minAmountPerTx) {
       return await estimateSendL1ToL2()
     }
-    return null
+    return BigInt(0)
   }
 
   const estimateSendL1ToL2 = () => {

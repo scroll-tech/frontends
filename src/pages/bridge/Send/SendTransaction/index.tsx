@@ -87,7 +87,7 @@ const SendTransaction = props => {
     receiver: recipient,
   })
 
-  const { depositAmountIsInvaild } = useBatchDeposit({ selectedToken, amount: validAmount })
+  const { depositAmountIsVaild } = useBatchDeposit({ selectedToken, amount: validAmount })
 
   // fee start
   const {
@@ -276,7 +276,7 @@ const SendTransaction = props => {
         key="send"
         width={isMobile ? "100%" : "25rem"}
         color="primary"
-        disabled={!necessaryCondition || needApproval === undefined || depositAmountIsInvaild}
+        disabled={!necessaryCondition || needApproval === undefined}
         loading={sendLoading}
         onClick={sendTransaction}
         whiteButton
@@ -340,7 +340,7 @@ const SendTransaction = props => {
           batchDepositGasFee={estimatedBatchDepositGasCost}
           l1DataFee={l1DataFee}
           needApproval={needApproval}
-          isVaild={!depositAmountIsInvaild}
+          isVaild={depositAmountIsVaild}
         />
       )}
 

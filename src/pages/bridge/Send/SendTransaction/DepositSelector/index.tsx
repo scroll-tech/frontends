@@ -18,7 +18,7 @@ type TransactionValue = bigint | null
 
 const DEPOSIT_OPTIONS = [
   {
-    title: "Fast & Furious ⚡️",
+    title: "Fast ⚡️",
     info: ["Approval on each order", "Pay gas on every trade"],
     type: DepositBatchMode.Fast,
     time: "20 min",
@@ -37,29 +37,34 @@ const useStyles = makeStyles()(theme => ({
   cardRoot: {
     position: "relative",
     borderRadius: "2rem",
-    borderColor: "#473835",
-    padding: "3rem 1.6rem",
+    backgroundColor: theme.palette.themeBackground.light,
+    padding: "2.7rem 1.5rem 3.1rem",
     display: "flex",
     overflow: "visible",
     cursor: "pointer",
     flex: 1,
-    "*": {
-      cursor: "pointer !important",
-      fontFamily: "var(--default-font-family) !important",
+    border: "none",
+    transition: "backgroundColor 0.3s ease",
+
+    "&:hover": {
+      backgroundColor: theme.palette.background.default,
     },
+
     [theme.breakpoints.down("sm")]: {
       aspectRatio: "unset",
       justifyContent: "center",
     },
   },
   invaildCard: {
-    opacity: 0.7,
+    opacity: 0.6,
+    pointerEvents: "none",
   },
   selectedCard: {
     outline: `1px solid ${theme.palette.text.primary}`,
+    backgroundColor: theme.palette.background.default,
   },
   selectedIcon: {
-    fontSize: "2.8rem",
+    fontSize: "3.2rem",
     position: "absolute",
     right: "0.8rem",
     top: "0.8rem",
@@ -68,11 +73,11 @@ const useStyles = makeStyles()(theme => ({
     fontSize: "1.6rem",
     lineHeight: "2.4rem",
     fontWeight: 700,
+    fontFamily: "var(--default-font-family) !important",
   },
   info: {
     fontSize: "1.6rem",
     lineHeight: "2.4rem",
-    fontFamily: "var(--developer-page-font-family) !important",
     display: "flex",
     justifyContent: "flex-end",
   },
@@ -81,7 +86,6 @@ const useStyles = makeStyles()(theme => ({
     lineHeight: "2.4rem",
     color: "#5B5B5B",
     marginLeft: "0.6rem",
-    fontFamily: "var(--developer-page-font-family) !important",
   },
   subheader: {
     fontSize: "1.2rem",
@@ -89,6 +93,7 @@ const useStyles = makeStyles()(theme => ({
     color: "#5B5B5B",
     fontWeight: 700,
     textTransform: "uppercase",
+    fontFamily: "var(--default-font-family) !important",
   },
 }))
 
@@ -197,7 +202,17 @@ const DepositSelector = props => {
           >
             {item.type === selectedType && <SvgIcon classes={{ root: classes.selectedIcon }} component={SelectedSvg} inheritViewBox></SvgIcon>}
             <Box sx={{ width: "100%", display: "flex", flexDirection: "column", gap: "0.8rem" }}>
-              <Typography sx={{ fontSize: ["2rem", "2.4rem"], lineHeight: "3.6rem", fontWeight: 600, textAlign: "center" }}>{item.title}</Typography>
+              <Typography
+                sx={{
+                  fontSize: ["2rem", "2.4rem"],
+                  lineHeight: "3.6rem",
+                  fontWeight: 600,
+                  textAlign: "center",
+                  fontFamily: "var(--default-font-family) !important",
+                }}
+              >
+                {item.title}
+              </Typography>
               <Grid container>
                 <Grid classes={{ root: classes.label }} item xs={4}>
                   Time

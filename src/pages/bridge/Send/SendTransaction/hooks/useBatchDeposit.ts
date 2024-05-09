@@ -3,7 +3,7 @@ import { useEffect, useMemo } from "react"
 
 import { CHAIN_ID } from "@/constants"
 import { useBridgeContext } from "@/contexts/BridgeContextProvider"
-import useBatchBridgeStore, { BridgeSummaryType, DepositBatchMode } from "@/stores/batchBridgeStore"
+import useBatchBridgeStore, { BridgeSummaryType } from "@/stores/batchBridgeStore"
 import useBridgeStore from "@/stores/bridgeStore"
 import { BNToAmount } from "@/utils"
 
@@ -13,7 +13,7 @@ export default function useBatchDeposit(props) {
   const { selectedToken, amount } = props
   const { networksAndSigners } = useBridgeContext()
   const { txType, isNetworkCorrect } = useBridgeStore()
-  const { batchDepositConfig, depositBatchMode, changeBatchDepositConfig, changeBridgeSummaryType } = useBatchBridgeStore()
+  const { batchDepositConfig, changeBatchDepositConfig, changeBridgeSummaryType } = useBatchBridgeStore()
 
   const getBatchDepositConfigsByToken = async selectedToken => {
     return networksAndSigners[CHAIN_ID.L1].batchBridgeGateway.configs(selectedToken.address || ethers.ZeroAddress)
@@ -27,10 +27,13 @@ export default function useBatchDeposit(props) {
     return batchDepositTokens.includes(selectedToken.symbol)
   }, [selectedToken])
 
-  const depositAmountIsInvaild = useMemo(() => {
+  const depositAmountIsVaild = useMemo(() => {
     const minAmount = BNToAmount(batchDepositConfig.minAmountPerTx, selectedToken.decimals)
-    return amount && amount < minAmount && txType === "Deposit" && depositBatchMode === DepositBatchMode.Economy
-  }, [batchDepositConfig, amount, txType, depositBatchMode])
+    if (amount && txType === "Deposit" && enableBatchDeposit) {
+      return amount > minAmount
+    }
+    return true
+  }, [batchDepositConfig, amount, txType, enableBatchDeposit])
 
   useEffect(() => {
     if (txType === "Deposit" && enableBatchDeposit) {
@@ -52,6 +55,6 @@ export default function useBatchDeposit(props) {
 
   return {
     getBatchDepositConfigsByToken,
-    depositAmountIsInvaild,
+    depositAmountIsVaild,
   }
 }

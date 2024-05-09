@@ -49,7 +49,6 @@ const EconomyTooltip = props => {
   return (
     <Typography
       sx={{
-        fontWeight: 500,
         lineHeight: ["3.2rem", "4rem"],
         fontSize: ["1.4rem", "1.6rem"],
         textAlign: "left",
@@ -58,10 +57,10 @@ const EconomyTooltip = props => {
         borderRadius: "0.8rem",
         paddingLeft: "1.6rem",
         marginBottom: "1.6rem",
-        // fontFamily: "var(--developer-page-font-family)",
       }}
     >
-      <SvgIcon sx={{ fontSize: "1.6rem" }} component={InfoSvg} inheritViewBox></SvgIcon> Economy requires you deposit over {minAmount}.
+      <SvgIcon sx={{ fontSize: "1.6rem", mr: "0.8rem", cursor: "default" }} component={InfoSvg} inheritViewBox></SvgIcon>You can only use "Economy"
+      for deposit more than {minAmount}
     </Typography>
   )
 }

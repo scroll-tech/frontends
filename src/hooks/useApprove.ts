@@ -14,7 +14,7 @@ import { CHAIN_ID } from "@/constants"
 import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useBatchBridgeStore, { BridgeSummaryType, DepositBatchMode } from "@/stores/batchBridgeStore"
-import { amountToBN } from "@/utils"
+import { BNToAmount, amountToBN } from "@/utils"
 
 const useApprove = (fromNetwork, selectedToken, amount) => {
   const { walletCurrentAddress, chainId } = useRainbowContext()
@@ -62,7 +62,7 @@ const useApprove = (fromNetwork, selectedToken, amount) => {
 
       const parsedAmount = amountToBN(amount, selectedToken.decimals)
       const approvedAmount = await tokenInstance.allowance(walletCurrentAddress, approveAddress)
-      console.log("approvedAmount", approvedAmount.toString(), approveAddress)
+      console.log("approvedAmount", BNToAmount(approvedAmount), approveAddress)
       if (approvedAmount >= parsedAmount) {
         return false
       }
