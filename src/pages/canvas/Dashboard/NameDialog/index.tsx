@@ -11,8 +11,8 @@ import useCanvasStore from "@/stores/canvasStore"
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   "& .MuiInputBase-input": {
     textAlign: "center",
-    fontSize: "8.8rem",
-    height: "8.8rem",
+    fontSize: "6.4rem",
+    height: "7.2rem",
     fontWeight: 600,
     color: theme.palette.primary.contrastText,
   },
@@ -68,7 +68,7 @@ const NameDialog = () => {
 
   return (
     <Dialog onClose={handleClose} open={profileDialogVisible}>
-      <Typography sx={{ fontSize: "3.2rem", fontWeight: 600, textAlign: "center", lineHeight: 1, color: "primary.contrastText" }}>
+      <Typography sx={{ fontSize: "2.4rem", fontWeight: 600, textAlign: "center", lineHeight: 1, color: "primary.contrastText" }}>
         Change name
       </Typography>
       <Box sx={{ position: "relative", width: "57.6rem", marginBottom: "13.6rem", marginTop: "14.4rem" }}>

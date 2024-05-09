@@ -52,8 +52,9 @@ const ActionButton = styled(Button)(({ theme }) => ({
   width: "15.6rem",
   height: "4rem",
   borderRadius: "0.4rem",
+  fontSize: "1.6rem",
   ".MuiButton-startIcon>*:nth-of-type(1)": {
-    fontSize: "2.4rem",
+    fontSize: "2rem",
   },
 }))
 

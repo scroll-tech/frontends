@@ -107,6 +107,7 @@ const BadgeDetailPage = () => {
   }
 
   const viewCanvasURL = useMemo(() => {
+    console.log("walletCurrentAddress", walletCurrentAddress, detail)
     if (walletCurrentAddress === detail.walletAddress) {
       return "/scroll-canvas"
     }

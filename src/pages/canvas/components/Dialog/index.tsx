@@ -36,7 +36,7 @@ const ScrollDialog = props => {
           </IconButton>
         )}
 
-        <Typography sx={{ fontSize: "3.2rem", lineHeight: "5.6rem", color: "primary.contrastText", fontWeight: 600 }}>{title}</Typography>
+        <Typography sx={{ fontSize: "2.4rem", lineHeight: "4.8rem", color: "primary.contrastText", fontWeight: 600 }}>{title}</Typography>
         <IconButton sx={{ marginRight: "-0.8rem", "&:hover": { backgroundColor: "unset" } }} onClick={onClose}>
           <SvgIcon sx={{ fontSize: ["1.6rem", "2.4rem"], color: "primary.contrastText" }} component={CloseSvg} inheritViewBox></SvgIcon>
         </IconButton>

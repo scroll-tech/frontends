@@ -22,9 +22,9 @@ export enum CodeStatus {
 const Title = styled(Typography)(({ theme }) => ({
   color: theme.palette.primary.contrastText,
   textAlign: "center",
-  fontSize: "2rem",
+  fontSize: "1.8rem",
   fontWeight: 600,
-  lineHeight: "3.2rem",
+  lineHeight: "2.8rem",
 }))
 
 const ReferralCodeBox = styled(Box)(({ theme }) => ({

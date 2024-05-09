@@ -20,8 +20,8 @@ import { badgeMap } from "../UpgradeDialog/Badges"
 
 const StyledScrollButton = styled(ScrollButton)(({ theme }) => ({
   // width: "24rem",
-  height: "5.4rem",
-  fontSize: "2rem",
+  // height: "4.8rem",
+  // fontSize: "1.8rem",
   fontWeight: 600,
 }))
 
@@ -151,7 +151,7 @@ const BadgeDetailDialog = () => {
           alt="img"
           src={getBadgeImgURL(selectedBadge.image)}
           placeholder="/imgs/canvas/badgePlaceholder.svg"
-          style={{ width: "20rem", height: "20rem", marginBottom: "4rem", borderRadius: "0.8rem" }}
+          style={{ width: "20rem", height: "20rem", marginBottom: "3.2rem", borderRadius: "0.8rem" }}
         />
         {[BadgeDetailDialogTpye.MINT, BadgeDetailDialogTpye.MINT_WITH_BACK, BadgeDetailDialogTpye.VIEW, BadgeDetailDialogTpye.NO_PROFILE].includes(
           badgeDetailDialogVisible,
