@@ -185,12 +185,24 @@ const BadgeDetail = props => {
               )}
               {property.includes("mintedOn") && (
                 <Statistic label="Minted on" loading={loading}>
-                  {detail.mintedOn}
+                  <Box
+                    sx={{
+                      mt: "1rem",
+                    }}
+                  >
+                    {detail.mintedOn}
+                  </Box>
                 </Statistic>
               )}
               {property.includes("rarity") && (
                 <Statistic label="Rarity" loading={loading}>
-                  {detail.rarity}
+                  <Box
+                    sx={{
+                      mt: "1rem",
+                    }}
+                  >
+                    {detail.rarity}
+                  </Box>
                 </Statistic>
               )}
             </InfoBox>
