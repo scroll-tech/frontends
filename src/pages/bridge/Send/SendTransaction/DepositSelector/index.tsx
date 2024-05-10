@@ -9,7 +9,7 @@ import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useBatchBridgeStore, { DepositBatchMode } from "@/stores/batchBridgeStore"
 import useBridgeStore from "@/stores/bridgeStore"
-import { BNToAmount, toTokenDisplay } from "@/utils"
+import { BNToAmount, checkApproved, toTokenDisplay } from "@/utils"
 import { formatAmount } from "@/utils"
 
 import EconomyTooltip from "./EconomyTooltip"
@@ -100,13 +100,13 @@ const useStyles = makeStyles()(theme => ({
 const CustomTypography = ({ isError, ...props }) => <Typography sx={{ color: isError ? "primary.main" : undefined }} {...props} />
 
 const DepositSelector = props => {
-  const { amount, feeError, l1GasFee, l2GasFee, needApproval, batchDepositGasFee, selectedToken, isVaild } = props
+  const { amount, feeError, l1GasFee, l2GasFee, l1EconomyGasFee, l2EconomyGasFee, needApproval, selectedToken, isVaild } = props
   const { isMobile } = useCheckViewport()
   const { classes, cx } = useStyles()
 
   const [selectedType, setSelectedType] = useState(DepositBatchMode.Fast)
   const { isNetworkCorrect } = useBridgeStore()
-  const { changeDepositBatchMode, batchDepositConfig } = useBatchBridgeStore()
+  const { changeDepositBatchMode, depositBatchMode } = useBatchBridgeStore()
   const { tokenPrice } = useBridgeContext()
 
   const handleSelect = value => {
@@ -118,8 +118,8 @@ const DepositSelector = props => {
   }, [selectedType])
 
   const allowDisplayValue = useMemo(() => {
-    return isNetworkCorrect && amount && needApproval === false && !feeError
-  }, [isNetworkCorrect, amount, needApproval, feeError])
+    return isNetworkCorrect && amount && !feeError
+  }, [isNetworkCorrect, amount, feeError, depositBatchMode])
 
   const showFeeError = useMemo(() => {
     return !!feeError && amount && !needApproval
@@ -146,12 +146,18 @@ const DepositSelector = props => {
   )
 
   const displayedL1Fee = useMemo(() => {
-    const displayedFee = getDisplayedValue(l1GasFee)
-    const displayedPrice = getDisplayedPrice(BNToAmount(l1GasFee as bigint))
-
-    const displayedBatchFee = getDisplayedValue(batchDepositGasFee)
-    const displayedBatchPrice = getDisplayedPrice(BNToAmount(batchDepositGasFee as bigint))
-
+    let displayedFee = "-"
+    let displayedPrice = ""
+    if (checkApproved(needApproval, DepositBatchMode.Fast) && allowDisplayValue) {
+      displayedFee = getDisplayedValue(l1GasFee) as any
+      displayedPrice = getDisplayedPrice(BNToAmount(l1GasFee as bigint))
+    }
+    let displayedBatchFee = "-"
+    let displayedBatchPrice = ""
+    if (checkApproved(needApproval, DepositBatchMode.Economy) && allowDisplayValue) {
+      displayedBatchFee = getDisplayedValue(l1EconomyGasFee) as any
+      displayedBatchPrice = getDisplayedPrice(BNToAmount(l1EconomyGasFee as bigint))
+    }
     return {
       [DepositBatchMode.Fast]: {
         value: displayedFee,
@@ -162,15 +168,21 @@ const DepositSelector = props => {
         price: displayedBatchPrice,
       },
     }
-  }, [l1GasFee, batchDepositGasFee, getDisplayedValue, getDisplayedPrice])
+  }, [l1GasFee, l1EconomyGasFee, getDisplayedValue, getDisplayedPrice, needApproval, allowDisplayValue])
 
   const displayedL2Fee = useMemo(() => {
-    const displayedFee = getDisplayedValue(l2GasFee)
-    const displayedPrice = getDisplayedPrice(BNToAmount(l2GasFee as bigint))
-
-    const displayedBatchFee = getDisplayedValue(batchDepositConfig.feeAmountPerTx)
-    const displayedBatchPrice = getDisplayedPrice(BNToAmount(batchDepositConfig.feeAmountPerTx as bigint))
-
+    let displayedFee = "-"
+    let displayedPrice = ""
+    if (checkApproved(needApproval, DepositBatchMode.Fast) && allowDisplayValue) {
+      displayedFee = getDisplayedValue(l2GasFee) as any
+      displayedPrice = getDisplayedPrice(BNToAmount(l2GasFee as bigint))
+    }
+    let displayedBatchFee = "-"
+    let displayedBatchPrice = ""
+    if (checkApproved(needApproval, DepositBatchMode.Economy) && allowDisplayValue) {
+      displayedBatchFee = getDisplayedValue(l2EconomyGasFee) as any
+      displayedBatchPrice = getDisplayedPrice(BNToAmount(l2EconomyGasFee as bigint))
+    }
     return {
       [DepositBatchMode.Fast]: {
         value: displayedFee,
@@ -181,7 +193,7 @@ const DepositSelector = props => {
         price: displayedBatchPrice,
       },
     }
-  }, [l2GasFee, getDisplayedValue, getDisplayedPrice])
+  }, [l2GasFee, l2EconomyGasFee, getDisplayedValue, getDisplayedPrice, needApproval, allowDisplayValue])
 
   return (
     <Box sx={{ width: "100%" }}>

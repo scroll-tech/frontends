@@ -20,10 +20,10 @@ type TxOptions = {
 }
 
 export function useSendTransaction(props) {
-  const { amount: fromTokenAmount, selectedToken, receiver } = props
+  const { amount: fromTokenAmount, selectedToken, receiver, needApproval } = props
   const { walletCurrentAddress } = useRainbowContext()
   const { networksAndSigners, blockNumbers } = useBridgeContext()
-  const { enlargedGasLimit: txGasLimit, maxFeePerGas, maxPriorityFeePerGas } = useGasFee(selectedToken, false)
+  const { enlargedGasLimit: txGasLimit, maxFeePerGas, maxPriorityFeePerGas } = useGasFee(selectedToken, needApproval)
   const { addTransaction, addEstimatedTimeMap, removeFrontTransactions, updateTransaction } = useTxStore()
   const { fromNetwork, toNetwork, changeTxResult, changeWithdrawStep } = useBridgeStore()
   const { bridgeSummaryType, depositBatchMode, batchDepositConfig } = useBatchBridgeStore()
@@ -41,21 +41,23 @@ export function useSendTransaction(props) {
   const send = async () => {
     setIsLoading(true)
     let tx
-    let currentBlockNumber
+    // let currentBlockNumber
     try {
       if (bridgeSummaryType === BridgeSummaryType.Selector && depositBatchMode === DepositBatchMode.Economy) {
-        currentBlockNumber = await networksAndSigners[CHAIN_ID.L1].provider.getBlockNumber()
+        // currentBlockNumber = await networksAndSigners[CHAIN_ID.L1].provider.getBlockNumber()
         tx = await batchSendL1ToL2()
+        setIsLoading(false)
       } else if (fromNetwork.isL1) {
-        currentBlockNumber = await networksAndSigners[CHAIN_ID.L1].provider.getBlockNumber()
+        // currentBlockNumber = await networksAndSigners[CHAIN_ID.L1].provider.getBlockNumber()
         tx = await sendl1ToL2()
       } else if (!fromNetwork.isL1 && toNetwork.isL1) {
-        currentBlockNumber = await networksAndSigners[CHAIN_ID.L2].provider.getBlockNumber()
+        // currentBlockNumber = await networksAndSigners[CHAIN_ID.L2].provider.getBlockNumber()
         tx = await sendl2ToL1()
       }
+
       // start to check tx replacement from current block number
       // TODO: shouldn't add it here(by @ricmoo)
-      tx = tx.replaceableTransaction(currentBlockNumber)
+      // tx = tx.replaceableTransaction(currentBlockNumber)
 
       handleTransaction(tx)
       tx.wait()
@@ -124,6 +126,7 @@ export function useSendTransaction(props) {
       if (isError(error, "ACTION_REJECTED")) {
         setSendError("reject")
       } else {
+        console.log(error, "error")
         setSendError(error)
       }
     }
@@ -229,6 +232,7 @@ export function useSendTransaction(props) {
   }
 
   const batchDepositERC20 = async () => {
+    console.log("batchSendL1ToL2")
     const options: TxOptions = {
       value: batchDepositConfig.feeAmountPerTx,
     }

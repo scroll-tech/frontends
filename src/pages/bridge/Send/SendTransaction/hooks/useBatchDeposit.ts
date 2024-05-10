@@ -1,13 +1,11 @@
 import { ethers } from "ethers"
 import { useEffect, useMemo } from "react"
 
-import { CHAIN_ID } from "@/constants"
+import { BATCH_DEPOSIT_TOKENS, CHAIN_ID } from "@/constants"
 import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import useBatchBridgeStore, { BridgeSummaryType } from "@/stores/batchBridgeStore"
 import useBridgeStore from "@/stores/bridgeStore"
 import { BNToAmount } from "@/utils"
-
-const batchDepositTokens = ["ETH", "wstETH"]
 
 export default function useBatchDeposit(props) {
   const { selectedToken, amount } = props
@@ -24,7 +22,7 @@ export default function useBatchDeposit(props) {
   }, [batchDepositConfig])
 
   const enableBatchDeposit = useMemo(() => {
-    return batchDepositTokens.includes(selectedToken.symbol)
+    return BATCH_DEPOSIT_TOKENS.includes(selectedToken.symbol)
   }, [selectedToken])
 
   const depositAmountIsVaild = useMemo(() => {

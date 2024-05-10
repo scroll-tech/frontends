@@ -25,3 +25,5 @@ export enum TX_STATUS {
   Skipped,
   Dropped,
 }
+
+export const BATCH_DEPOSIT_TOKENS = ["ETH", "wstETH"]

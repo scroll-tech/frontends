@@ -1,10 +1,13 @@
 import { getPublicClient } from "@wagmi/core"
+import { isNumber } from "lodash"
 import { useState } from "react"
 import { useBlockNumber } from "wagmi"
 
+import { BATCH_DEPOSIT_TOKENS } from "@/constants"
 import { useBridgeContext } from "@/contexts/BridgeContextProvider"
+import { DepositBatchMode } from "@/stores/batchBridgeStore"
 import useBridgeStore from "@/stores/bridgeStore"
-import { trimErrorMessage } from "@/utils"
+import { checkApproved, trimErrorMessage } from "@/utils"
 
 import { useEstimateBatchDeposit } from "./useEstimateBatchDeposit"
 import { useEstimateSendTransaction } from "./useEstimateSendTransaction"
@@ -46,10 +49,14 @@ const useGasFee = (selectedToken, needApproval) => {
       gasPrice = legacyGasPrice as bigint
       priorityFee = null
     }
-    const gasLimit = await estimateSend()
-    const gasLimitBatch = await estimateBatchDeposit()
+    const gasLimit = checkApproved(needApproval, DepositBatchMode.Fast) ? await estimateSend() : BigInt(0)
 
-    console.log("gasLimitBatch1", gasLimitBatch)
+    const gasLimitBatch =
+      checkApproved(needApproval, DepositBatchMode.Economy) && BATCH_DEPOSIT_TOKENS.includes(selectedToken.symbol)
+        ? await estimateBatchDeposit()
+        : BigInt(0)
+
+    console.log("gasLimit/gasLimitBatch", gasLimit, gasLimitBatch)
 
     if (gasLimit === null) {
       return {
@@ -75,7 +82,7 @@ const useGasFee = (selectedToken, needApproval) => {
   }
 
   useBlockNumber({
-    enabled: !!networksAndSigners[fromNetwork.chainId].provider && needApproval === false,
+    enabled: !!networksAndSigners[fromNetwork.chainId].provider && (needApproval === false || (isNumber(needApproval) && needApproval !== 3)),
     onBlock(blockNumber) {
       calculateGasFee()
         .then(value => {

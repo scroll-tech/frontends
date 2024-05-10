@@ -19,9 +19,9 @@ import useCheckViewport from "@/hooks/useCheckViewport"
 import useGasFee from "@/hooks/useGasFee"
 import { useSendTransaction } from "@/hooks/useSendTransaction"
 import useSufficientBalance from "@/hooks/useSufficientBalance"
-import useBatchBridgeStore, { BridgeSummaryType } from "@/stores/batchBridgeStore"
+import useBatchBridgeStore, { BridgeSummaryType, DepositBatchMode } from "@/stores/batchBridgeStore"
 import useBridgeStore from "@/stores/bridgeStore"
-import { amountToBN, switchNetwork, trimErrorMessage } from "@/utils"
+import { amountToBN, checkApproved, switchNetwork, trimErrorMessage } from "@/utils"
 
 import ApprovalDialog from "./ApprovalDialog"
 import BalanceInput from "./BalanceInput"
@@ -47,7 +47,7 @@ const SendTransaction = props => {
   const { gasLimit, gasPrice, errorMessage: relayFeeErrorMessage, fetchData: fetchPriceFee, getL1DataFee } = usePriceFeeContext()
 
   const { txType, isNetworkCorrect, fromNetwork, changeTxResult } = useBridgeStore()
-  const { bridgeSummaryType } = useBatchBridgeStore()
+  const { bridgeSummaryType, depositBatchMode, batchDepositConfig } = useBatchBridgeStore()
 
   const [amount, setAmount] = useState<string>("")
 
@@ -85,6 +85,7 @@ const SendTransaction = props => {
     amount: validAmount,
     selectedToken,
     receiver: recipient,
+    needApproval,
   })
 
   const { depositAmountIsVaild } = useBatchDeposit({ selectedToken, amount: validAmount })
@@ -105,11 +106,25 @@ const SendTransaction = props => {
         : BigInt(0),
     [amount, selectedToken, txGasLimit, txType],
   )
-
   const relayFee = useMemo(() => gasLimit * gasPrice, [gasLimit, gasPrice])
+
+  const l1GasFee = useMemo(() => {
+    if (depositBatchMode === DepositBatchMode.Economy && bridgeSummaryType === BridgeSummaryType.Selector) {
+      return estimatedBatchDepositGasCost
+    }
+    return estimatedGasCost
+  }, [depositBatchMode, bridgeSummaryType, estimatedBatchDepositGasCost, estimatedGasCost])
+
+  const l2GasFee = useMemo(() => {
+    if (depositBatchMode === DepositBatchMode.Economy && bridgeSummaryType === BridgeSummaryType.Selector) {
+      return batchDepositConfig.feeAmountPerTx
+    }
+    return relayFee
+  }, [depositBatchMode, bridgeSummaryType, batchDepositConfig, relayFee])
+
   const totalFee = useMemo(
-    () => (estimatedGasCost && !relayFeeErrorMessage ? estimatedGasCost + relayFee + (l1DataFee ?? BigInt(0)) : null),
-    [estimatedGasCost, relayFeeErrorMessage, relayFee, l1DataFee],
+    () => (l1GasFee && !relayFeeErrorMessage ? l1GasFee + l2GasFee + (l1DataFee ?? BigInt(0)) : null),
+    [l1GasFee, relayFeeErrorMessage, l2GasFee, l1DataFee],
   )
 
   const { insufficientWarning } = useSufficientBalance(
@@ -254,7 +269,11 @@ const SendTransaction = props => {
       )
     }
 
-    if (needApproval) {
+    if (
+      needApproval === true ||
+      (!checkApproved(needApproval, DepositBatchMode.Economy) && depositBatchMode === DepositBatchMode.Economy) ||
+      (!checkApproved(needApproval, DepositBatchMode.Fast) && depositBatchMode === DepositBatchMode.Fast)
+    ) {
       return (
         <Button
           key="approve"
@@ -337,7 +356,8 @@ const SendTransaction = props => {
           // totalFee={displayedEstimatedGasCost}
           l2GasFee={relayFee}
           l1GasFee={estimatedGasCost}
-          batchDepositGasFee={estimatedBatchDepositGasCost}
+          l1EconomyGasFee={estimatedBatchDepositGasCost}
+          l2EconomyGasFee={batchDepositConfig.feeAmountPerTx}
           l1DataFee={l1DataFee}
           needApproval={needApproval}
           isVaild={depositAmountIsVaild}
@@ -360,7 +380,7 @@ const SendTransaction = props => {
           l2GasFee={relayFee}
           l1GasFee={estimatedGasCost}
           l1DataFee={l1DataFee}
-          needApproval={needApproval}
+          needApproval={!!needApproval}
         />
       )}
       <Box

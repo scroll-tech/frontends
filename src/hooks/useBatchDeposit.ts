@@ -19,11 +19,11 @@ type TxOptions = {
 }
 
 export function useBatchDeposit(props) {
-  const { amount: fromTokenAmount, selectedToken } = props
+  const { amount: fromTokenAmount, selectedToken, needApproval } = props
   const { walletCurrentAddress } = useRainbowContext()
   const { networksAndSigners, blockNumbers } = useBridgeContext()
   //   const { enlargedGasLimit: txGasLimit, maxFeePerGas, maxPriorityFeePerGas } = useGasFee(selectedToken, false)
-  const { maxFeePerGas, maxPriorityFeePerGas } = useGasFee(selectedToken, false)
+  const { maxFeePerGas, maxPriorityFeePerGas } = useGasFee(selectedToken, needApproval)
   const { addTransaction, addEstimatedTimeMap, removeFrontTransactions, updateTransaction } = useTxStore()
   const { fromNetwork, changeTxResult } = useBridgeStore()
   const { gasLimit, gasPrice } = usePriceFeeContext()
