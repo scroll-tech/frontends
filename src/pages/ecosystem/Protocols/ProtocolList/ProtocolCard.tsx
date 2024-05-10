@@ -185,7 +185,7 @@ const ProtocolCard = props => {
       </Stack>
       <LinesEllipsis
         className={classes.desc}
-        text={desc}
+        text={desc || ""}
         maxLine={isExpended ? 100 : isMobile ? 4 : 2}
         ellipsis={
           <>
