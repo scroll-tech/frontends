@@ -363,13 +363,14 @@ const SendTransaction = props => {
           isVaild={depositAmountIsVaild}
         />
       )}
-
-      <CustomiseRecipient
-        readOnly={approveLoading || sendLoading}
-        disabled={fromNetwork.chainId !== chainId}
-        bridgeWarning={bridgeWarning}
-        handleChangeRecipient={handleChangeRecipient}
-      />
+      {!(bridgeSummaryType === BridgeSummaryType.Selector && depositBatchMode === DepositBatchMode.Economy) && (
+        <CustomiseRecipient
+          readOnly={approveLoading || sendLoading}
+          disabled={fromNetwork.chainId !== chainId}
+          bridgeWarning={bridgeWarning}
+          handleChangeRecipient={handleChangeRecipient}
+        />
+      )}
 
       {bridgeSummaryType === BridgeSummaryType.Summary && (
         <TransactionSummary

@@ -28,7 +28,7 @@ export default function useBatchDeposit(props) {
   const depositAmountIsVaild = useMemo(() => {
     const minAmount = BNToAmount(batchDepositConfig.minAmountPerTx, selectedToken.decimals)
     if (amount && txType === "Deposit" && enableBatchDeposit) {
-      return amount > minAmount
+      return amount >= minAmount
     }
     return true
   }, [batchDepositConfig, amount, txType, enableBatchDeposit])
@@ -36,11 +36,11 @@ export default function useBatchDeposit(props) {
   useEffect(() => {
     if (txType === "Deposit" && enableBatchDeposit) {
       changeBridgeSummaryType(BridgeSummaryType.Selector)
-      if (networksAndSigners[CHAIN_ID.L1].provider) {
+      if (networksAndSigners[CHAIN_ID.L1].signer) {
         getBatchDepositConfigsByToken(selectedToken)
           .then(configs => {
             changeBatchDepositConfig(configs)
-            console.error("getBatchDepositConfigsByToken", configs)
+            console.log("getBatchDepositConfigsByToken", configs)
           })
           .catch(err => {
             console.error("getBatchDepositConfigsByToken", err)
