@@ -25,13 +25,14 @@ export default function useBatchDeposit(props) {
     return BATCH_DEPOSIT_TOKENS.includes(selectedToken.symbol)
   }, [selectedToken])
 
+  // < 0.001 need special check for economy mode
   const depositAmountIsVaild = useMemo(() => {
     const minAmount = BNToAmount(batchDepositConfig.minAmountPerTx, selectedToken.decimals)
     if (amount && txType === "Deposit" && enableBatchDeposit) {
       return amount >= minAmount
     }
     return true
-  }, [batchDepositConfig, amount, txType, enableBatchDeposit])
+  }, [batchDepositConfig, amount, selectedToken, txType, enableBatchDeposit])
 
   useEffect(() => {
     if (txType === "Deposit" && enableBatchDeposit) {

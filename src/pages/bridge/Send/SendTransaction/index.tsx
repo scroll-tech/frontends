@@ -184,8 +184,8 @@ const SendTransaction = props => {
   // fee end
 
   const necessaryCondition = useMemo(() => {
-    return validAmount && !bridgeWarning
-  }, [validAmount, bridgeWarning])
+    return validAmount && !bridgeWarning && (depositAmountIsVaild || (!depositAmountIsVaild && depositBatchMode === DepositBatchMode.Fast))
+  }, [validAmount, bridgeWarning, depositAmountIsVaild, depositBatchMode])
 
   const sendText = useMemo(() => {
     if (txType === "Deposit" && sendLoading) {
