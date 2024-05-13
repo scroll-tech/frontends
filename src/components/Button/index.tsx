@@ -77,7 +77,7 @@ const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, w
     fontWeight: 600,
     height: "100%",
     width: "100%",
-    paddingLeft: "5.4rem",
+    paddingLeft: "4.8rem",
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: gColor(color, theme),
@@ -103,7 +103,7 @@ const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, w
     color: cColor(color, theme),
   },
   mask: {
-    width: "5.4rem",
+    width: "4.8rem",
     height: "100%",
     position: "absolute",
     backgroundColor: gColor(color, theme),
@@ -120,7 +120,7 @@ const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, w
   },
 
   icon: {
-    width: "5.4rem",
+    width: "4.8rem",
     height: "100%",
     position: "absolute",
     zIndex: 1,
@@ -133,7 +133,7 @@ const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, w
 
 const maskDesktop = {
   normal: {
-    width: "5.4rem",
+    width: "4.8rem",
   },
   expanding: {
     width: "100%",
