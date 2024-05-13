@@ -34,13 +34,6 @@ const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
   padding: "0",
 }))
 
-const StyledScrollButton = styled(ScrollButton)(({ theme }) => ({
-  // width: "24rem",
-  height: "5.4rem",
-  fontSize: "2rem",
-  fontWeight: 600,
-}))
-
 const ButtonContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   gap: "1.6rem",
@@ -93,18 +86,18 @@ const InsufficientDialog = ({ open, onClose }) => {
         <ButtonContainer>
           {chainId ? (
             isWrongNetwork ? (
-              <StyledScrollButton color="primary" onClick={() => switchNetwork(CHAIN_ID.L2)}>
+              <ScrollButton color="primary" onClick={() => switchNetwork(CHAIN_ID.L2)}>
                 Switch to Scroll
-              </StyledScrollButton>
+              </ScrollButton>
             ) : (
-              <StyledScrollButton color="primary" onClick={handleGoToBridge}>
+              <ScrollButton color="primary" onClick={handleGoToBridge}>
                 Bridge into Scroll
-              </StyledScrollButton>
+              </ScrollButton>
             )
           ) : (
-            <StyledScrollButton color="primary" onClick={connect}>
+            <ScrollButton color="primary" onClick={connect}>
               Connect Wallet
-            </StyledScrollButton>
+            </ScrollButton>
           )}
         </ButtonContainer>
       </StyledDialogContent>
