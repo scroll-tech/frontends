@@ -2,8 +2,9 @@ import { motion } from "framer-motion"
 import { isNumber } from "lodash"
 import useStorage from "squirrel-gill"
 import useSWR from "swr"
+import { makeStyles } from "tss-react/mui"
 
-import { Box, Skeleton, Typography } from "@mui/material"
+import { Box, Skeleton, Tooltip, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
 import { fetchWalletPointsUrl } from "@/apis/sessions"
@@ -12,8 +13,17 @@ import { WALLET_MARKS } from "@/constants/storageKey"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useSessionsStore from "@/stores/sessionsStore"
-import { formatLargeNumber } from "@/utils"
+import { commafy, formatLargeNumber } from "@/utils"
 
+const useStyles = makeStyles()(theme => ({
+  tooltip: {
+    background: "linear-gradient(180deg, #262626 0%, #111 100%)",
+    padding: "1.2rem 1.4rem",
+    fontSize: "1.8rem",
+    lineHeight: "2.4rem",
+    fontFamily: "var(--developer-page-font-family)",
+  },
+}))
 const StatisticSkeleton = styled(Skeleton)(({ theme }) => ({
   borderRadius: "1rem",
   width: "12rem",
@@ -24,6 +34,7 @@ const StatisticSkeleton = styled(Skeleton)(({ theme }) => ({
 const MotionBox = motion(Box)
 
 const TotalPoints = () => {
+  const { classes } = useStyles()
   const { walletCurrentAddress, connect } = useRainbowContext()
   const { isMobile } = useCheckViewport()
 
@@ -35,7 +46,7 @@ const TotalPoints = () => {
     [fetchWalletPointsUrl(walletCurrentAddress), walletCurrentAddress, hasSignedTerms],
     async ([url, walletAddress, signed]) => {
       try {
-        if (!walletAddress || !signed) {
+        if (!walletAddress) {
           throw new Error("Wallet address or signed terms missing.")
         }
         const now = new Date().getTime()
@@ -104,16 +115,19 @@ const TotalPoints = () => {
       )}
       {walletCurrentAddress && hasSignedTerms && (
         <>
-          <Typography
-            sx={{
-              fontSize: ["4rem", "5.6rem"],
-              lineHeight: ["2.4rem", "8rem"],
-              fontWeight: 600,
-              fontFamily: "var(--developer-page-font-family)",
-            }}
-          >
-            {isLoading ? <StatisticSkeleton></StatisticSkeleton> : <>{isNumber(marks) ? formatLargeNumber(marks, 2) : "--"}</>}
-          </Typography>
+          <Tooltip disableHoverListener={!marks} title={marks ? commafy(marks) : "--"} followCursor classes={{ tooltip: classes.tooltip }}>
+            <Typography
+              sx={{
+                fontSize: ["4rem", "5.6rem"],
+                lineHeight: ["2.4rem", "8rem"],
+                fontWeight: 600,
+                fontFamily: "var(--developer-page-font-family)",
+              }}
+            >
+              {isLoading ? <StatisticSkeleton></StatisticSkeleton> : <>{isNumber(marks) ? formatLargeNumber(marks, 2) : "--"}</>}
+            </Typography>
+          </Tooltip>
+
           <Typography sx={{ fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.4rem", "2.8rem"], fontStyle: "italic", textAlign: "center" }}>
             Marks are updated every 24 hours
             <br />

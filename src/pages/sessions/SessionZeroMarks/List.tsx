@@ -1,4 +1,5 @@
 import { isNumber } from "lodash"
+import { makeStyles } from "tss-react/mui"
 
 import { Avatar, Box, Button, Link, List, ListItem, ListItemIcon, ListItemText, Skeleton, Tooltip, Typography } from "@mui/material"
 import { useTheme } from "@mui/material/styles"
@@ -13,6 +14,16 @@ export enum MarksType {
   ELIGIBLE_ASSETS,
   GAS_SPENT,
 }
+
+const useStyles = makeStyles()(theme => ({
+  tooltip: {
+    background: "linear-gradient(180deg, #262626 0%, #111 100%)",
+    padding: "1.2rem 1.4rem",
+    fontSize: "1.8rem",
+    lineHeight: "2.4rem",
+    fontFamily: "var(--developer-page-font-family)",
+  },
+}))
 
 const SectionTitle = styled(Typography)(({ theme }) => ({
   fontSize: "2rem",
@@ -48,6 +59,7 @@ const ListAddressStyled = styled(Link)(({ theme }) => ({
 
 const TokenList = props => {
   const { title, data, description, type = MarksType.ELIGIBLE_ASSETS, isLoading } = props
+  const { classes } = useStyles()
   const theme = useTheme()
 
   return (
@@ -111,7 +123,13 @@ const TokenList = props => {
               )}
             </ListItemText>
 
-            <Tooltip key={item.marks} disableHoverListener={!item.marks} title={item.marks ? commafy(item.marks) : "--"} followCursor>
+            <Tooltip
+              key={item.marks}
+              disableHoverListener={!item.marks}
+              title={item.marks ? commafy(item.marks) : "--"}
+              followCursor
+              classes={{ tooltip: classes.tooltip }}
+            >
               <Box
                 sx={{
                   justifySelf: "flex-end",
