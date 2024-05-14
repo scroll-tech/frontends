@@ -217,6 +217,7 @@ const mainnetRoutes = [
     name: "Scroll Sessions",
     path: "/sessions",
     element: <Sessions />,
+    description: "Get rewarded for your engagement with Scroll Marks! Join Sessions now!",
   },
   {
     name: "Scroll Sessions Terms of Use",
