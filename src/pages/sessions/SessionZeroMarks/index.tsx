@@ -43,7 +43,7 @@ const BridgePoints = () => {
         if (isDataExpired) {
           const list = await scrollRequest(url)
           const tokensMarks = tokenList.map(item => {
-            const withMarks = list.find(i => i.bridge_asset.toUpperCase() === item.symbol.toUpperCase())
+            const withMarks = list.filter(item => item.points).find(i => i.bridge_asset.toUpperCase() === item.symbol.toUpperCase())
             let marks = withMarks?.points ?? 0
 
             if (item.additionalToken) {
