@@ -128,7 +128,7 @@ const SignatureRequestDialog = () => {
       changeHasSignedTerms(false)
     } else {
       ;(async () => {
-        let hasSigned = signedTerms[walletCurrentAddress]
+        let hasSigned = !!signedTerms[walletCurrentAddress]
         if (!hasSigned) {
           const result = await scrollRequest(checkSignStatus(walletCurrentAddress))
           if (result?.errcode === 0) {

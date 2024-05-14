@@ -42,7 +42,7 @@ const TotalPoints = () => {
         const updatedAt = walletMarks[walletAddress]?.updatedAt ?? 0
         const lastUpdatedTime = new Date(updatedAt).getTime()
         // const isDataExpired = now - lastUpdatedTime > 24 * 60 * 60 * 1000
-        const isDataExpired = now - lastUpdatedTime > 10 * 1000
+        const isDataExpired = now - lastUpdatedTime > 60 * 60 * 1000
 
         if (isDataExpired) {
           const data = await scrollRequest(url)
