@@ -133,6 +133,10 @@ const SignatureRequestDialog = () => {
           const result = await scrollRequest(checkSignStatus(walletCurrentAddress))
           if (result?.errcode === 0) {
             hasSigned = true
+            setSignedTerms({
+              ...signedTerms,
+              [walletCurrentAddress as string]: result.data,
+            })
           } else {
             hasSigned = false
           }
