@@ -7,6 +7,7 @@ export const tokenList = [
     name: "Ether",
     symbol: ETH_SYMBOL,
     logoURI: ETHSvg,
+    additionalToken: "WETH",
   },
   // {
   //   name: "Wrapped Ether",

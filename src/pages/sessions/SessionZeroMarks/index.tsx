@@ -44,9 +44,18 @@ const BridgePoints = () => {
           const list = await scrollRequest(url)
           const tokensMarks = tokenList.map(item => {
             const withMarks = list.find(i => i.bridge_asset.toUpperCase() === item.symbol.toUpperCase())
+            let marks = withMarks?.points ?? 0
+
+            if (item.additionalToken) {
+              const additionalToken = list.find(i => i.bridge_asset.toUpperCase() === item.additionalToken.toUpperCase())
+              if (additionalToken) {
+                marks += additionalToken.points ?? 0
+              }
+            }
+
             return {
               ...item,
-              marks: withMarks?.points ?? 0,
+              marks,
             }
           })
           const gasMarksResult = list.find(item => item.bridge_asset === "gas-points")
