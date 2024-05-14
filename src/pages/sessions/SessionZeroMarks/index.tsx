@@ -47,7 +47,7 @@ const BridgePoints = () => {
             let marks = withMarks?.points ?? 0
 
             if (item.additionalToken) {
-              const additionalToken = list.find(i => i.bridge_asset.toUpperCase() === item.additionalToken.toUpperCase())
+              const additionalToken = list.filter(item => item.points).find(i => i.bridge_asset.toUpperCase() === item.additionalToken.toUpperCase())
               if (additionalToken) {
                 marks += additionalToken.points ?? 0
               }
