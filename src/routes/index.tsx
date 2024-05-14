@@ -217,7 +217,6 @@ const mainnetRoutes = [
     name: "Scroll Sessions",
     path: "/sessions",
     element: <Sessions />,
-    // description: "Congratulations to the winners of the sticker contest.",
   },
   {
     name: "Scroll Sessions Terms of Use",
