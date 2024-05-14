@@ -1,13 +1,17 @@
 import { useEffect } from "react"
+import useStorage from "squirrel-gill"
 import { makeStyles } from "tss-react/mui"
 import { useSignMessage } from "wagmi"
 
-import { Dialog, DialogContent, DialogTitle, IconButton, Stack, SvgIcon, Typography } from "@mui/material"
+import { Dialog, DialogContent, DialogTitle, IconButton, Stack, SvgIcon } from "@mui/material"
 
+import { checkSignStatus, updateSignStatus } from "@/apis/sessions"
 import { ReactComponent as CloseSvg } from "@/assets/svgs/bridge/close.svg"
 import Button from "@/components/Button"
+import { SIGNED_TERMS } from "@/constants/storageKey"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
+import SessionsTerms from "@/pages/sessions-terms"
 import useSessionsStore from "@/stores/sessionsStore"
 
 const useStyles = makeStyles()(theme => ({
@@ -104,13 +108,15 @@ const SignatureRequestDialog = () => {
   const { changeSignatureRequestVisible, signatureRequestVisible, changeHasSignedTerms } = useSessionsStore()
 
   const { signMessage, isLoading, data: signMessageData, reset } = useSignMessage()
+  const [signedTerms, setSignedTerms] = useStorage(localStorage, SIGNED_TERMS, {})
 
   const onClose = () => {
     changeSignatureRequestVisible(false)
   }
 
   const signTerms = async () => {
-    const message = "I agree to the terms and conditions."
+    const message =
+      "By signing this message, you acknowledge that you have read and understood the Scroll Sessions Terms of Use, Scroll Terms of Service and Privacy Policy, and agree to abide by all of the terms and conditions contained therein."
     signMessage({ message })
   }
 
@@ -122,22 +128,42 @@ const SignatureRequestDialog = () => {
       changeHasSignedTerms(false)
     } else {
       ;(async () => {
-        // const hasSigned = await checkIfSigned(walletCurrentAddress);
-        // setHasSignedTerms(hasSigned);
-        // const hasSigned = Math.random() > 0.5
-        // changeHasSignedTerms(hasSigned)
-        // if (hasSigned) {
-        //   // record that the user has signed the terms
-        // }
+        let hasSigned = signedTerms[walletCurrentAddress]
+        if (!hasSigned) {
+          const result = await scrollRequest(checkSignStatus(walletCurrentAddress))
+          if (result?.errcode === 0) {
+            hasSigned = true
+          } else {
+            hasSigned = false
+          }
+        }
+        changeHasSignedTerms(hasSigned)
       })()
     }
   }, [walletCurrentAddress])
 
   useEffect(() => {
     if (signMessageData) {
+      const info = {
+        address: walletCurrentAddress,
+        signature: signMessageData,
+        timestamp: new Date().valueOf(),
+      }
       reset()
       onClose()
       changeHasSignedTerms(true)
+      setSignedTerms({
+        ...signedTerms,
+        [walletCurrentAddress as string]: info,
+      })
+
+      scrollRequest(updateSignStatus, {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(info),
+      })
     }
   }, [signMessageData])
 
@@ -149,42 +175,25 @@ const SignatureRequestDialog = () => {
         sx={{
           position: "absolute",
           right: 16,
-          top: 28,
+          top: [10, 28],
         }}
       >
-        <SvgIcon sx={{ fontSize: "1.8rem" }} component={CloseSvg} inheritViewBox></SvgIcon>
+        <SvgIcon sx={{ fontSize: ["1.6rem", "1.8rem"] }} component={CloseSvg} inheritViewBox></SvgIcon>
       </IconButton>
-      <DialogTitle sx={{ textAlign: "center", fontSize: ["2rem", "2.4rem"], lineHeight: ["2.8rem", "3.6rem"], fontWeight: "600" }}>
-        Scroll Sessions’ terms and conditions
+      <DialogTitle
+        sx={{
+          textAlign: "center",
+          fontSize: ["2rem", "2.4rem"],
+          lineHeight: ["2.8rem", "3.6rem"],
+          fontWeight: "600",
+          margin: "0 auto",
+          maxWidth: ["26rem", "100%"],
+        }}
+      >
+        Scroll Sessions Program Terms of Use
       </DialogTitle>
       <DialogContent classes={{ root: classes.dialogContentRoot }}>
-        <Typography
-          sx={{
-            fontSize: ["1.6rem", "1.8rem"],
-            lineHeight: ["2rem", "2.8rem"],
-            textAlign: ["center", "left"],
-            maxHeight: "50vh",
-            overflow: "auto",
-            color: "#5B5B5B",
-          }}
-        >
-          Lorem ipsum dolor sit amet consectetur. Rutrum diam elit nec mauris tempor mi molestie in. Condimentum sit dolor morbi massa sit laoreet
-          augue est. Faucibus imperdiet dictumst facilisi montes. Vitae nunc dui augue vitae ac arcu. Non nisl lectus feugiat id quam sed facilisi.
-          Blandit in tellus volutpat ut a posuere habitant. Tempus in ac aliquet euismod sed. Lorem condimentum molestie ipsum neque molestie ac.
-          Semper mauris risus magna amet nulla eu viverra tortor viverra. Morbi nisl mattis faucibus arcu et eu blandit urna. Quam eu mauris molestie
-          eros. Tortor sed varius congue vehicula. Est euismod pellentesque odio imperdiet nibh. Facilisis adipiscing integer ullamcorper metus quis
-          tellus risus suspendisse proin. Egestas nisl venenatis diam turpis urna in nulla massa nunc. Orci leo orci volutpat a. Leo venenatis non
-          metus purus quis molestie. Laoreet eleifend ac sit id facilisi dignissim massa. Fermentum velit tristique ligula pellentesque turpis
-          vulputate libero molestie. Lectus dignissim nullam pretium imperdiet enim eget et et. Lorem ipsum dolor sit amet consectetur. Rutrum diam
-          elit nec mauris tempor mi molestie in. Condimentum sit dolor morbi massa sit laoreet augue est. Faucibus imperdiet dictumst facilisi montes.
-          Vitae nunc dui augue vitae ac arcu. Non nisl lectus feugiat id quam sed facilisi. Blandit in tellus volutpat ut a posuere habitant. Tempus
-          in ac aliquet euismod sed. Lorem condimentum molestie ipsum neque molestie ac. Semper mauris risus magna amet nulla eu viverra tortor
-          viverra. Morbi nisl mattis faucibus arcu et eu blandit urna. Quam eu mauris molestie eros. Tortor sed varius congue vehicula. Est euismod
-          pellentesque odio imperdiet nibh. Facilisis adipiscing integer ullamcorper metus quis tellus risus suspendisse proin. Egestas nisl venenatis
-          diam turpis urna in nulla massa nunc. Orci leo orci volutpat a. Leo venenatis non metus purus quis molestie. Laoreet eleifend ac sit id
-          facilisi dignissim massa. Fermentum velit tristique ligula pellentesque turpis vulputate libero molestie. Lectus dignissim nullam pretium
-          imperdiet enim eget et et.
-        </Typography>
+        <SessionsTerms isPopup />
         <Stack direction="row" justifyContent="center" sx={{ width: "100%", mt: "3.2rem" }}>
           <Button color="primary" width={isMobile ? "100%" : "22rem"} loading={isLoading} whiteButton onClick={signTerms}>
             {isLoading ? "Check Wallet" : "Sign to agree"}

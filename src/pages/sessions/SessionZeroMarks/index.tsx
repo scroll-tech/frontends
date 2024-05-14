@@ -1,55 +1,90 @@
-import { useState } from "react"
+import useStorage from "squirrel-gill"
+import useSWR from "swr"
 
 import { Divider, Typography } from "@mui/material"
 
+import { fetchTokensMarksUrl } from "@/apis/sessions"
+import { BRIDGE_BALANCES } from "@/constants/storageKey"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { useAsyncMemo } from "@/hooks"
 import useSessionsStore from "@/stores/sessionsStore"
-// import useCheckViewport from "@/hooks/useCheckViewport"
-import { testAsyncFunc } from "@/utils"
 
 import Card from "../components/Card"
 import BridgeTokenList from "./List"
 import { MarksType } from "./List"
-import tokenList, { gasMetricsMark, tokenListWithMasks, tokenMap } from "./tokenList"
+import { gasList, tokenList } from "./tokenList"
+
+const defaultMarks = {
+  tokensMarks: tokenList.map(item => ({ ...item, masks: null })),
+  gasMarks: gasList.map(item => ({
+    ...item,
+    amount: null,
+    marks: null,
+  })),
+}
 
 const BridgePoints = () => {
   const { walletCurrentAddress } = useRainbowContext()
-  const [isLoading, setIsLoading] = useState(false)
   const { hasSignedTerms } = useSessionsStore()
-  // const { isMobile } = useCheckViewport()
+  const [bridgeBalances, setBridgeBalances] = useStorage(localStorage, BRIDGE_BALANCES, {})
 
-  const eligibleList = useAsyncMemo(async () => {
-    console.log("eligibleList", walletCurrentAddress, hasSignedTerms)
-    if (!walletCurrentAddress || !hasSignedTerms) {
-      return tokenList
-    }
-    setIsLoading(true)
-    const listWithMasks = await testAsyncFunc(tokenListWithMasks)
-    console.log("eligibleList2", walletCurrentAddress, hasSignedTerms)
+  const { data: masks, isLoading } = useSWR(
+    [fetchTokensMarksUrl(walletCurrentAddress), walletCurrentAddress, hasSignedTerms],
+    async ([url, walletAddress, signed]) => {
+      try {
+        if (!walletAddress || !signed) {
+          throw new Error()
+        }
+        const now = new Date().getTime()
+        const updatedAt = bridgeBalances[walletAddress]?.updatedAt ?? 0
+        const lastUpdatedTime = new Date(updatedAt).getTime()
+        // const isDataExpired = now - lastUpdatedTime > 24 * 60 * 60 * 1000
+        const isDataExpired = now - lastUpdatedTime > 10 * 1000
 
-    setIsLoading(false)
-    return (listWithMasks as Array<any>).map(item => ({ ...item, ...tokenMap[item.tokenSymbol] }))
-  }, [walletCurrentAddress, hasSignedTerms])
-
-  const gasMetricsList = useAsyncMemo(async () => {
-    if (!walletCurrentAddress || !hasSignedTerms) {
-      return [
-        {
-          logoURI: "/imgs/sessions/gas.svg",
-          tokenSymbol: "ETH",
-        },
-      ]
-    }
-    const mark = await testAsyncFunc(gasMetricsMark)
-    return [
-      {
-        ...(mark as any),
-        logoURI: "/imgs/sessions/gas.svg",
-        tokenSymbol: "ETH",
-      },
-    ]
-  }, [walletCurrentAddress, hasSignedTerms])
+        if (isDataExpired) {
+          const list = await scrollRequest(url)
+          const tokensMarks = tokenList.map(item => {
+            const withMarks = list.find(i => i.bridge_asset.toUpperCase() === item.symbol.toUpperCase())
+            return {
+              ...item,
+              marks: withMarks?.points ?? 0,
+            }
+          })
+          const gasMarksResult = list.find(item => item.bridge_asset === "gas-points")
+          const gasMarks = gasList.map(item => ({
+            ...item,
+            amount: gasMarksResult?.amount ?? 0,
+            marks: gasMarksResult?.points ?? 0,
+          }))
+          setBridgeBalances({
+            ...bridgeBalances,
+            [walletAddress]: {
+              tokensMarks,
+              gasMarks,
+              updatedAt: now,
+            },
+          })
+          return {
+            tokensMarks,
+            gasMarks,
+          }
+        } else {
+          const tokensMarks = bridgeBalances[walletAddress]?.tokensMarks ?? []
+          const gasMarks = bridgeBalances[walletAddress]?.gasMarks ?? []
+          return {
+            tokensMarks,
+            gasMarks,
+          }
+        }
+      } catch (e) {
+        return defaultMarks
+      }
+    },
+    {
+      fallbackData: defaultMarks,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    },
+  )
 
   return (
     <Card
@@ -62,18 +97,18 @@ const BridgePoints = () => {
 
       <BridgeTokenList
         type={MarksType.ELIGIBLE_ASSETS}
-        title="Marks for eligible assets"
-        description="Marks are rewarded to all eligible bridged assets since Scroll's mainnet launch on October 10th, 2023, based on amount and time on Scroll."
-        data={eligibleList}
+        title="Marks for bridged eligible assets"
+        description="Marks are rewarded to all eligible bridged assets since Scroll's mainnet launch on October 10th, 2023, based on amount and time held on Scroll."
+        data={masks?.tokensMarks}
         isLoading={isLoading}
       ></BridgeTokenList>
       <Divider sx={{ margin: "0 0 2.4rem 0" }}></Divider>
 
       <BridgeTokenList
         type={MarksType.GAS_SPENT}
-        title="Marks for gas spent"
-        description="Marks have been awarded for all gas-consuming activities since Scroll's mainnet launch on October 10th, 2023."
-        data={gasMetricsList}
+        title="Marks for gas spent on Scroll"
+        description="Marks have been awarded to users with more than $5 total gas spent on Scroll from the mainnet launch on Oct 10th, 2023 to Apr 29th, 2024 12pm UTC."
+        data={masks?.gasMarks}
         isLoading={isLoading}
       ></BridgeTokenList>
     </Card>

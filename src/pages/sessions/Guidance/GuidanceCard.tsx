@@ -51,7 +51,7 @@ const GuidanceCard = props => {
           </Box>
           <Typography
             sx={{
-              fontSize: ["1.8rem", "2rem", "2.4rem"],
+              fontSize: ["1.8rem", "2rem"],
               fontWeight: 600,
               lineHeight: [1.6, "normal"],
               mt: ["0.4rem", "1.6rem"],

@@ -7,14 +7,14 @@ import Guidance from "./Guidance"
 import Header from "./Header"
 import BridgeMaks from "./SessionZeroMarks"
 import SignatureRequestDialog from "./SignatureRequestDialog"
-import TotalMasks from "./TotalMasks"
+import TotalMarks from "./TotalMarks"
 
 const Chronicle = () => {
   return (
     <BridgeContextProvider>
       <Header></Header>
-      <Stack gap="3rem" sx={{ mb: "6rem" }}>
-        <TotalMasks></TotalMasks>
+      <Stack gap="3rem" sx={{ mb: "6rem", position: "relative" }}>
+        <TotalMarks></TotalMarks>
         <BridgeMaks></BridgeMaks>
         <ComingSoon></ComingSoon>
         <Guidance />

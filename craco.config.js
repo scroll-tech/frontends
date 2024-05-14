@@ -1,8 +1,8 @@
 const CracoLessPlugin = require("craco-less")
 const webpack = require("webpack")
 const path = require("path")
-const MiniCssExtractPlugin = require("mini-css-extract-plugin")
-const SentryWebpackPlugin = require("@sentry/webpack-plugin")
+// const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+// const SentryWebpackPlugin = require("@sentry/webpack-plugin")
 require("./scripts/download-blog-posts.data.json.js")
 
 module.exports = {
@@ -74,18 +74,18 @@ module.exports = {
           fullySpecified: false,
         },
       })
-      if (env === "production" && process.env.CI) {
-        const sentryPlugin = new SentryWebpackPlugin({
-          org: "scroll-zkp",
-          project: "scroll-io",
-          include: "./build",
-          release: process.env.REACT_APP_VERSION,
-        })
-        webpackConfig.plugins.push(sentryPlugin)
+      // if (env === "production" && process.env.CI) {
+      //   const sentryPlugin = new SentryWebpackPlugin({
+      //     org: "scroll-zkp",
+      //     project: "scroll-io",
+      //     include: "./build",
+      //     release: process.env.REACT_APP_VERSION,
+      //   })
+      //   webpackConfig.plugins.push(sentryPlugin)
 
-        const instanceOfMiniCssExtractPlugin = webpackConfig.plugins.find(plugin => plugin instanceof MiniCssExtractPlugin)
-        instanceOfMiniCssExtractPlugin.options.ignoreOrder = true
-      }
+      //   const instanceOfMiniCssExtractPlugin = webpackConfig.plugins.find(plugin => plugin instanceof MiniCssExtractPlugin)
+      //   instanceOfMiniCssExtractPlugin.options.ignoreOrder = true
+      // }
       return webpackConfig
     },
   },

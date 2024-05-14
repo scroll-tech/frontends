@@ -79,12 +79,12 @@ export const convertDateToTimestamp = (dateString: string, isMilliseconds: boole
   return Math.floor(timestamp)
 }
 
-export const formatLargeNumber = (value: number): string => {
+export const formatLargeNumber = (value: number, decimal: number = 1): string => {
   if (value.toString().length <= 6) {
     return new Intl.NumberFormat("en-US").format(value)
   }
   return new Intl.NumberFormat("en-US", {
-    maximumFractionDigits: 1,
+    maximumFractionDigits: decimal,
     notation: "compact",
   }).format(value)
 }

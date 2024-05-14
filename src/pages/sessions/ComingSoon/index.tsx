@@ -27,7 +27,15 @@ const ComingSoon = () => {
     <Card>
       <Typography sx={{ fontSize: ["2rem", "2.4rem"], lineHeight: ["3.2rem"], fontWeight: 600, textAlign: "center" }}>Session One</Typography>
       <Typography sx={{ fontSize: ["1.4rem", "1.8rem"], lineHeight: ["1.6rem", "2.4rem"], textAlign: "center", mt: "0.8rem" }}>
-        Coming soon... Stay tuned!
+        Stay tuned by following{" "}
+        <a
+          href="https://twitter.com/Scroll_ZKP"
+          target="_blank"
+          style={{ fontWeight: 700, color: "#FF684B", textDecoration: "underline" }}
+          rel="noreferrer"
+        >
+          Scroll’s X
+        </a>
       </Typography>
       <Stack direction="row" display="none" justifyContent="center" sx={{ mt: "1.6rem" }}>
         <Countdown date={Chapter1StartDate.valueOf()} renderer={renderCountDown}></Countdown>

@@ -1,12 +1,11 @@
-import { isNil } from "lodash"
-import { useEffect } from "react"
+import { isNumber } from "lodash"
 
-import { Avatar, Box, Button, Link, List, ListItem, ListItemIcon, ListItemText, Typography } from "@mui/material"
+import { Avatar, Box, Button, Link, List, ListItem, ListItemIcon, ListItemText, Skeleton, Tooltip, Typography } from "@mui/material"
 import { useTheme } from "@mui/material/styles"
 import { styled } from "@mui/system"
 
 import { EXPLORER_URL } from "@/constants"
-import { commafy, generateExploreLink, truncateHash } from "@/utils"
+import { commafy, formatLargeNumber, generateExploreLink, toPrecision, truncateHash } from "@/utils"
 
 import Statistic from "../components/Statistic"
 
@@ -35,7 +34,6 @@ const SectionDescription = styled(Typography)(({ theme }) => ({
 
 const ListAddressStyled = styled(Link)(({ theme }) => ({
   color: "#101010",
-  fontFamily: "var(--developer-page-font-family)",
   fontSize: "1.8rem",
   fontStyle: "normal",
   fontWeight: 400,
@@ -52,15 +50,18 @@ const TokenList = props => {
   const { title, data, description, type = MarksType.ELIGIBLE_ASSETS, isLoading } = props
   const theme = useTheme()
 
-  useEffect(() => {
-    console.log("TokenList useEffect", data)
-  }, [data])
-
   return (
     <>
       <SectionTitle>{title}</SectionTitle>
       <SectionDescription>{description}</SectionDescription>
-      <List sx={{ p: 0 }}>
+      <List
+        sx={{
+          p: 0,
+          "& *": {
+            fontFamily: "var(--developer-page-font-family) !important",
+          },
+        }}
+      >
         {data?.map((item, index) => (
           <ListItem
             key={index + type}
@@ -80,10 +81,21 @@ const TokenList = props => {
             <ListItemText sx={{ mt: 0, mb: 0 }}>
               {type === MarksType.GAS_SPENT && (
                 <>
-                  <Typography sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: ["2.4rem", "3.2rem"], fontWeight: 600 }}>
-                    {item.gasSpent ?? "--"} ETH
-                  </Typography>
-                  <Typography sx={{ fontSize: ["1.4rem", "1.6rem"], lineHeight: "2.4rem" }}>Gas spent</Typography>
+                  {isLoading ? (
+                    <Skeleton variant="text" sx={{ fontSize: ["1.6rem", "2rem"], borderRadius: "4px" }}></Skeleton>
+                  ) : (
+                    <Typography
+                      sx={{
+                        fontSize: ["1.6rem", "2rem"],
+                        lineHeight: ["2.4rem", "3.2rem"],
+                        fontWeight: 600,
+                      }}
+                    >
+                      {isNumber(item.amount) ? (item.amount > 0 ? `${toPrecision(item.amount)} ${item.symbol}` : " Less than $5 ") : "-- ETH"}
+                    </Typography>
+                  )}
+
+                  <Typography sx={{ fontSize: ["1.4rem", "1.8rem"], lineHeight: "2.4rem" }}>Gas spent</Typography>
                 </>
               )}
 
@@ -99,21 +111,27 @@ const TokenList = props => {
               )}
             </ListItemText>
 
-            <Statistic
-              count={isNil(item.points) ? "--" : commafy(item.points)}
-              label="Masks earned"
-              isLoading={isLoading}
-              sx={{
-                justifySelf: "flex-end",
-                // will replace responsive css in Statistic
-                [theme.breakpoints.up("sm")]: {
-                  position: "absolute",
-                  left: "50%",
-                  transform: "translateX(-50%)",
-                  // p: "0.8rem 1.6rem",
-                },
-              }}
-            ></Statistic>
+            <Tooltip key={item.marks} disableHoverListener={!item.marks} title={item.marks ? commafy(item.marks) : "--"} followCursor>
+              <Box
+                sx={{
+                  justifySelf: "flex-end",
+                  // will replace responsive css in Statistic
+                  [theme.breakpoints.up("sm")]: {
+                    position: "absolute",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    // p: "0.8rem 1.6rem",
+                  },
+                }}
+              >
+                <Statistic
+                  count={isNumber(item.marks) ? formatLargeNumber(item.marks, 2) : "--"}
+                  label="Marks earned"
+                  isLoading={isLoading}
+                  sx={{}}
+                ></Statistic>
+              </Box>
+            </Tooltip>
 
             {type === MarksType.ELIGIBLE_ASSETS && (
               <Button
@@ -128,7 +146,6 @@ const TokenList = props => {
                   width: ["100%", "18rem"],
                   p: 0,
                   justifySelf: "flex-end",
-                  fontFamily: "var(--developer-page-font-family)",
                   "&:hover": { borderWidth: "1px", borderColor: "primary.main" },
                   [theme.breakpoints.down("sm")]: {
                     gridColumn: "span 3",
@@ -165,7 +182,7 @@ const TokenList = props => {
                     fontSize: ["1.4rem", "1.6rem", "1.8rem"],
                   }}
                 >
-                  Apr 26 ,12pm UTC
+                  Apr 29th, 12pm UTC
                 </Typography>
               </Box>
             )}
@@ -174,7 +191,7 @@ const TokenList = props => {
       </List>
       {type === MarksType.ELIGIBLE_ASSETS && (
         <Typography sx={{ fontSize: ["1.8rem", "2rem"], lineHeight: ["2.8rem"], fontWeight: 600, mb: "2.4rem" }}>
-          More eligible assets and bridges will be announced soon!
+          More eligible assets will be announced soon!
         </Typography>
       )}
     </>

@@ -1,16 +1,18 @@
 import { motion } from "framer-motion"
-import { useState } from "react"
+import { isNumber } from "lodash"
+import useStorage from "squirrel-gill"
+import useSWR from "swr"
 
 import { Box, Skeleton, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
-import { generateWalletPointsUrl } from "@/apis/sessions"
+import { fetchWalletPointsUrl } from "@/apis/sessions"
 import Button from "@/components/Button"
+import { WALLET_MARKS } from "@/constants/storageKey"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { useAsyncMemo } from "@/hooks"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useSessionsStore from "@/stores/sessionsStore"
-import { commafy, isProduction } from "@/utils"
+import { formatLargeNumber } from "@/utils"
 
 const StatisticSkeleton = styled(Skeleton)(({ theme }) => ({
   borderRadius: "1rem",
@@ -26,38 +28,64 @@ const TotalPoints = () => {
   const { isMobile } = useCheckViewport()
 
   const { hasSignedTerms, changeSignatureRequestVisible } = useSessionsStore()
-  const [isLoading, setIsLoading] = useState(true)
 
-  const marks = useAsyncMemo(async () => {
-    setIsLoading(true)
-    try {
-      const data = await scrollRequest(generateWalletPointsUrl(walletCurrentAddress))
-      setIsLoading(false)
-      return data[0].points
-    } catch (error) {
-      setIsLoading(false)
-      return "--"
-    }
-  }, [walletCurrentAddress])
+  const [walletMarks, setWalletMarks] = useStorage(localStorage, WALLET_MARKS, {})
+
+  const { data: marks, isLoading } = useSWR(
+    [fetchWalletPointsUrl(walletCurrentAddress), walletCurrentAddress, hasSignedTerms],
+    async ([url, walletAddress, signed]) => {
+      try {
+        if (!walletAddress || !signed) {
+          throw new Error("Wallet address or signed terms missing.")
+        }
+        const now = new Date().getTime()
+        const updatedAt = walletMarks[walletAddress]?.updatedAt ?? 0
+        const lastUpdatedTime = new Date(updatedAt).getTime()
+        // const isDataExpired = now - lastUpdatedTime > 24 * 60 * 60 * 1000
+        const isDataExpired = now - lastUpdatedTime > 10 * 1000
+
+        if (isDataExpired) {
+          const data = await scrollRequest(url)
+          const points = data[0].points
+          setWalletMarks({
+            ...walletMarks,
+            [walletAddress]: {
+              points,
+              updatedAt: now,
+            },
+          })
+          return points
+        } else {
+          return walletMarks[walletAddress].points
+        }
+      } catch (e) {
+        return null
+      }
+    },
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    },
+  )
 
   return (
     <MotionBox
       sx={{
-        width: ["calc(100vw - 4rem)", "38rem"],
-        height: ["20.4rem", "25.2rem"],
+        width: ["calc(100vw - 4rem)", "calc(100vw - 4rem)", "38rem"],
+        height: ["20.4rem", "25.2rem", "25.2rem"],
         padding: "3.2rem",
         background: "#FFF0DD",
         borderRadius: "1.6rem",
-        margin: ["0 auto"],
+        margin: "0 auto",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
         alignItems: "center",
-        position: ["relative", "absolute"],
+        position: ["relative", "relative", "absolute"],
         zIndex: 1,
-        top: ["0", `calc(10.5vw + ${isProduction ? "10rem" : "16.5rem"})`],
-        left: ["0", "50%"],
-        marginLeft: ["auto", "-19rem"],
+        top: [0, 0, `calc(-46vw + 10rem)`],
+        left: [0, 0, "50%"],
+        marginLeft: ["auto", "auto", "-19rem"],
       }}
       initial={isMobile ? {} : { opacity: 0, y: 30, scale: 0.9 }}
       animate={isMobile ? {} : { opacity: 1, y: 0, scale: 1 }}
@@ -74,7 +102,7 @@ const TotalPoints = () => {
           </Button>
         </>
       )}
-      {hasSignedTerms && (
+      {walletCurrentAddress && hasSignedTerms && (
         <>
           <Typography
             sx={{
@@ -84,10 +112,14 @@ const TotalPoints = () => {
               fontFamily: "var(--developer-page-font-family)",
             }}
           >
-            {isLoading ? <StatisticSkeleton></StatisticSkeleton> : <>{commafy(marks)}</>}
+            {isLoading ? <StatisticSkeleton></StatisticSkeleton> : <>{isNumber(marks) ? formatLargeNumber(marks, 2) : "--"}</>}
           </Typography>
-          <Typography sx={{ fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.4rem", "2.8rem"], fontStyle: "italic" }}>
+          <Typography sx={{ fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.4rem", "2.8rem"], fontStyle: "italic", textAlign: "center" }}>
             Marks are updated every 24 hours
+            <br />
+            <a style={{ textDecoration: "underline" }} href="https://scroll.io/blog/introducing-scroll-sessions">
+              More about Sessions
+            </a>
           </Typography>
         </>
       )}
@@ -96,10 +128,10 @@ const TotalPoints = () => {
         <>
           <>
             <Typography sx={{ fontSize: ["1.4rem", "1.6rem"], lineHeight: ["2rem", "2.8rem"], textAlign: "center" }}>
-              You need to agree to Sessions’s terms and conditions to see your marks and details
+              You need to agree to Scroll Sessions Terms of Use to see your Marks and details
             </Typography>
             <Button color="primary" whiteButton onClick={() => changeSignatureRequestVisible(true)} width={isMobile ? "100%" : "32.2rem"}>
-              View terms and conditions
+              View terms of use
             </Button>
           </>
         </>

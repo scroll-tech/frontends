@@ -5,7 +5,7 @@ import NumberTypography from "@/components/NumberTypography"
 
 const StatisticSkeleton = styled(Skeleton)(({ theme }) => ({
   borderRadius: "1rem",
-  width: "12rem",
+  width: "8rem",
   height: ["2.4rem", "2.8rem", "4rem"],
   display: "inline-block",
 }))

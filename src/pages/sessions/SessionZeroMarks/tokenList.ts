@@ -8,6 +8,12 @@ export const tokenList = [
     symbol: ETH_SYMBOL,
     logoURI: ETHSvg,
   },
+  // {
+  //   name: "Wrapped Ether",
+  //   symbol: "WETH",
+  //   logoURI: "/imgs/sessions/tokens/weth.png",
+  //   address: "0x5300000000000000000000000000000000000004",
+  // },
   {
     name: "Wrapped stETH",
     symbol: "wstETH",
@@ -17,12 +23,19 @@ export const tokenList = [
   {
     name: "StakeStone Ether",
     symbol: "STONE",
-    logoURI: "/imgs/sessions/tokens/stone.svg",
+    logoURI: "/imgs/sessions/tokens/stone-white.svg",
     address: "0x80137510979822322193FC997d400D5A6C747bf7",
     thirdPartyBridge: {
-      url: "https://app.stakestone.io/u/bridge?t=s&n=534352",
+      url: "https://app.stakestone.io/u/bridge?n=534352",
       name: "LayerZero",
     },
+  },
+]
+
+export const gasList = [
+  {
+    logoURI: "/imgs/sessions/gas.svg",
+    symbol: ETH_SYMBOL,
   },
 ]
 
@@ -33,7 +46,7 @@ export const tokenMap = new Proxy(tokenList, {
 })
 
 // TODO: fetch from api
-export const tokenListWithMasks = [
+export const tokenListWithMarks = [
   {
     tokenSymbol: ETH_SYMBOL,
     amount: "1.234",

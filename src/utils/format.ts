@@ -17,7 +17,7 @@ export const commafy = (value: string | number | undefined, decimals: number = 2
   try {
     return numbro(value).format({
       thousandSeparated: true,
-      optionalMantissa: true,
+      optionalMantissa: false,
       mantissa: decimals,
     })
   } catch (err) {
@@ -48,21 +48,26 @@ export const toTokenDisplay = (num, decimals: bigint = BigInt(18), symbol?: stri
   }
 
   const formattedNum = formatUnits(num, decimals)
-  const nonDecimalNum = formattedNum.split(".")[0]
-  let significantDecimals = 0
-  if (nonDecimalNum.length < 8) {
-    significantDecimals = 8 - nonDecimalNum.length
-  }
 
-  let formatted = commafy(formatUnits(num, decimals), significantDecimals)
+  let formatted = toPrecision(formattedNum)
 
-  // Remove trailing zeros after decimal point
-  formatted = formatted.replace(/(\.\d*?)0+$/, "$1").replace(/(\.\d+?)0+$/, "$10")
   if (symbol) {
     formatted += ` ${symbol}`
   }
 
   return formatted
+}
+
+export const toPrecision = (amount, precise = 8) => {
+  const [nonDecimalNum] = String(amount).split(".")
+  let significantDecimals = 0
+  if (nonDecimalNum.length < precise) {
+    // significantDecimals = precise - nonDecimalNum.length > decimalNum.length ? decimalNum.length : precise - nonDecimalNum.length
+    significantDecimals = precise - nonDecimalNum.length
+  }
+  const withPrecision = commafy(amount, significantDecimals)
+  // Remove trailing zeros after decimal point
+  return parseFloat(withPrecision).toString()
 }
 
 export function sanitizeNumericalString(numStr: string) {
