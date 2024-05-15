@@ -17,10 +17,6 @@ export default function useBatchDeposit(props) {
     return networksAndSigners[CHAIN_ID.L1].batchBridgeGateway.configs(selectedToken.address || ethers.ZeroAddress)
   }
 
-  useEffect(() => {
-    console.log("batchDepositConfig", batchDepositConfig)
-  }, [batchDepositConfig])
-
   const enableBatchDeposit = useMemo(() => {
     return BATCH_DEPOSIT_TOKENS.includes(selectedToken.symbol)
   }, [selectedToken])
@@ -41,7 +37,6 @@ export default function useBatchDeposit(props) {
         getBatchDepositConfigsByToken(selectedToken)
           .then(configs => {
             changeBatchDepositConfig(configs)
-            console.log("getBatchDepositConfigsByToken", configs)
           })
           .catch(err => {
             console.error("getBatchDepositConfigsByToken", err)

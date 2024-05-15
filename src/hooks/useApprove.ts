@@ -33,7 +33,7 @@ const useApprove = (fromNetwork, selectedToken, amount) => {
     if (!fromNetwork.isL1 && selectedToken.symbol === USDC_SYMBOL) return USDC_GATEWAY_PROXY_ADDR[fromNetwork.chainId]
 
     return GATEWAY_ROUTE_PROXY_ADDR[fromNetwork.chainId]
-  }, [fromNetwork, selectedToken, depositBatchMode, bridgeSummaryType])
+  }, [fromNetwork, selectedToken])
 
   const tokenInstance = useMemo(() => {
     // ETH & L2 ERC20 don't need approval

@@ -25,7 +25,10 @@ export function useEstimateBatchDeposit(props) {
   }
 
   const depositERC20 = async () => {
-    return networksAndSigners[CHAIN_ID.L1].batchBridgeGateway.depositERC20.estimateGas(selectedToken.address, batchDepositConfig.minAmountPerTx)
+    return networksAndSigners[CHAIN_ID.L1].batchBridgeGateway.depositERC20.estimateGas(
+      selectedToken.address,
+      batchDepositConfig.minAmountPerTx + batchDepositConfig.feeAmountPerTx,
+    )
   }
 
   const estimateSend = async () => {

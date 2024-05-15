@@ -232,13 +232,10 @@ export function useSendTransaction(props) {
   }
 
   const batchDepositERC20 = async () => {
-    console.log("batchSendL1ToL2")
-    const options: TxOptions = {
-      value: batchDepositConfig.feeAmountPerTx,
-    }
-
-    console.log("batchDepositConfig", selectedToken.address, parsedAmount, options)
-    return networksAndSigners[CHAIN_ID.L1].batchBridgeGateway.depositERC20(selectedToken.address, parsedAmount)
+    // const options: TxOptions = {
+    //   value: batchDepositConfig.feeAmountPerTx,
+    // }
+    return networksAndSigners[CHAIN_ID.L1].batchBridgeGateway.depositERC20(selectedToken.address, parsedAmount + batchDepositConfig.feeAmountPerTx)
   }
 
   const batchSendL1ToL2 = () => {

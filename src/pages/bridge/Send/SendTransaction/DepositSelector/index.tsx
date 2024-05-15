@@ -19,19 +19,15 @@ type TransactionValue = bigint | null
 const DEPOSIT_OPTIONS = [
   {
     title: "Fast ⚡️",
-    info: ["Approval on each order", "Pay gas on every trade"],
     type: DepositBatchMode.Fast,
     time: "20 min",
   },
   {
     title: "Economy 💰",
-    info: ["Only approve once", "Save on future gas fee"],
     type: DepositBatchMode.Economy,
     time: "30min ~ 1 hour",
   },
 ]
-
-// const DEPOSIT_TYPE = Object.fromEntries(DEPOSIT_OPTIONS.map(item => [item.type, item.type]))
 
 const useStyles = makeStyles()(theme => ({
   cardRoot: {
