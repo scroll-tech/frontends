@@ -24,3 +24,9 @@ export const USER_TOKEN_LIST = "userTokenList"
 export const STORAGE_AVAILABLE = "__storage_test__"
 
 export const ENVIRONMENT_NAME = "environmentName"
+
+export const SIGNED_TERMS = "signedTerms"
+
+export const WALLET_MARKS = "walletMarks"
+
+export const BRIDGE_BALANCES = "bridgeBalances"

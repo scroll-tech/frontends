@@ -12,6 +12,7 @@ import ListItemText from "@mui/material/ListItemText"
 import { EXPLORER_URL } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useAddToken, { TOKEN_LEVEL } from "@/hooks/useAddToken"
+import { tokenList } from "@/pages/sessions/SessionZeroMarks/tokenList"
 import useBridgeStore from "@/stores/bridgeStore"
 import { generateExploreLink, truncateHash } from "@/utils"
 
@@ -110,6 +111,21 @@ const ListAddressStyled = styled(Link)(({ theme }) => ({
   textDecorationLine: "underline",
   textDecorationColor: "unset",
 }))
+const EarnMarksLabel = styled(Typography)(() => ({
+  display: "inline",
+  color: "#0F8E7E",
+  textAlign: "center",
+  fontFamily: "var(--developer-page-font-family)",
+  fontSize: "12px",
+  fontStyle: "normal",
+  fontWeight: 600,
+  lineHeight: "16px",
+  letterSpacing: "0.12px",
+  marginLeft: "4px",
+  padding: "4px 8px",
+  borderRadius: "12px",
+  background: "#DFFCF8",
+}))
 
 const ListItemTextStyled = styled(ListItemText)(({ theme }) => ({
   fontSize: "2.4rem",
@@ -173,6 +189,7 @@ const MenuItemComponent = ({ token, isSelected, selectToken, txType }) => (
         <>
           <ListSymbolStyled>{token.symbol}</ListSymbolStyled>
           <ListNameStyled>{token.name}</ListNameStyled>
+          {token.earnMarks && <EarnMarksLabel>Earn marks</EarnMarksLabel>}
         </>
       }
       secondary={
@@ -257,7 +274,14 @@ function List(props: TokenListProps) {
   }, [newToken, filteredTokens])
 
   const listedbyScroll = useMemo(() => {
-    return filteredTokens?.filter((token: any) => !token.tokenLevel)
+    return filteredTokens
+      ?.filter((token: any) => !token.tokenLevel)
+      .map((token: any) => {
+        return {
+          ...token,
+          earnMarks: tokenList.some(t => t.symbol === token.symbol),
+        }
+      })
   }, [filteredTokens])
 
   const listedbyUser = useMemo(() => {

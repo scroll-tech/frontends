@@ -17,6 +17,8 @@ import RollupScanBlock from "@/pages/rollup/block"
 import RollupScanChunk from "@/pages/rollup/chunk"
 import RollupScanChunkDetail from "@/pages/rollup/chunk/detail"
 import RollupScan from "@/pages/rollup/index"
+import Sessions from "@/pages/sessions"
+import SessionsTerms from "@/pages/sessions-terms"
 import StickerVote from "@/pages/sticker-vote"
 import StickerWinners from "@/pages/sticker-winners"
 import Terms from "@/pages/terms"
@@ -210,6 +212,17 @@ const mainnetRoutes = [
     path: "/sticker-winners",
     element: <StickerWinners />,
     description: "Congratulations to the winners of the sticker contest.",
+  },
+  {
+    name: "Scroll Sessions",
+    path: "/sessions",
+    element: <Sessions />,
+    description: "Get rewarded for your engagement with Scroll Marks! Join Sessions now!",
+  },
+  {
+    name: "Scroll Sessions Terms of Use",
+    path: "/sessions-terms-of-use",
+    element: <SessionsTerms />,
   },
 ]
 
