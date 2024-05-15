@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom"
 
 import useScrollTrigger from "@mui/material/useScrollTrigger"
 
-const TRANSPARENT_BG_PAGE_LIST = ["/story"]
+const TRANSPARENT_BG_PAGE_LIST = ["/story", "/sessions"]
 // themeBackground
 const CUSTOM_BG_PAGE_MAP = {
   "/brand-kit": "brand",

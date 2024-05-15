@@ -195,6 +195,11 @@ const mainnetNavigations = [
     key: "bridge",
     href: "/bridge",
   },
+  {
+    label: "Sessions",
+    key: "sessions",
+    href: "/sessions",
+  },
 ]
 
 const navigations = isSepolia ? sepoliaNavigations : mainnetNavigations

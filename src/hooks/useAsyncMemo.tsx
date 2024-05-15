@@ -5,6 +5,7 @@ import { shallowEquals } from "@/utils"
 function useAsyncMemo<T>(factory: () => Promise<T>, deps: DependencyList | undefined): T | undefined {
   const [res, setRes] = useState<T>()
   const prevDependencies = useRef<DependencyList>()
+  const lastCallId = useRef(0)
 
   useEffect(() => {
     if (shallowEquals(deps, prevDependencies.current)) {
@@ -13,8 +14,11 @@ function useAsyncMemo<T>(factory: () => Promise<T>, deps: DependencyList | undef
     prevDependencies.current = deps
 
     const fetchRes = async () => {
+      const callId = ++lastCallId.current
       const _res = await factory()
-      setRes(_res)
+      if (callId === lastCallId.current) {
+        setRes(_res)
+      }
     }
 
     fetchRes()
