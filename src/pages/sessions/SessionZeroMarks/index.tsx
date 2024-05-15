@@ -1,10 +1,11 @@
+import dayjs from "dayjs"
 import useStorage from "squirrel-gill"
 import useSWR from "swr"
 
 import { Divider, Typography } from "@mui/material"
 
 import { fetchTokensMarksUrl } from "@/apis/sessions"
-import { BRIDGE_BALANCES } from "@/constants/storageKey"
+import { BRIDGE_BALANCES, WALLET_MARKS } from "@/constants/storageKey"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useSessionsStore from "@/stores/sessionsStore"
 
@@ -26,6 +27,7 @@ const BridgePoints = () => {
   const { walletCurrentAddress } = useRainbowContext()
   const { hasSignedTerms } = useSessionsStore()
   const [bridgeBalances, setBridgeBalances] = useStorage(localStorage, BRIDGE_BALANCES, {})
+  const [walletMarks] = useStorage(localStorage, WALLET_MARKS, {})
 
   const { data: marks, isLoading } = useSWR(
     [fetchTokensMarksUrl(walletCurrentAddress), walletCurrentAddress, hasSignedTerms],
@@ -34,11 +36,10 @@ const BridgePoints = () => {
         if (!walletAddress || !signed) {
           throw new Error("Wallet address or signed terms missing.")
         }
-        const now = new Date().getTime()
-        const updatedAt = bridgeBalances[walletAddress]?.updatedAt ?? 0
-        const lastUpdatedTime = new Date(updatedAt).getTime()
-        // const isDataExpired = now - lastUpdatedTime > 24 * 60 * 60 * 1000
-        const isDataExpired = now - lastUpdatedTime > 60 * 60 * 1000
+
+        const now = dayjs().unix()
+        const timestamp = bridgeBalances[walletAddress]?.timestamp ?? 0
+        const isDataExpired = dayjs.unix(now).diff(dayjs.unix(timestamp), "day") > 1
 
         if (isDataExpired) {
           const list = await scrollRequest(url)
@@ -69,7 +70,7 @@ const BridgePoints = () => {
             [walletAddress]: {
               tokensMarks,
               gasMarks,
-              updatedAt: now,
+              timestamp: walletMarks[walletAddress]?.timestamp ?? 0,
             },
           })
           return {

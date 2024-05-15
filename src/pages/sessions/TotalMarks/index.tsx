@@ -1,3 +1,4 @@
+import dayjs from "dayjs"
 import { motion } from "framer-motion"
 import { isNumber } from "lodash"
 import useStorage from "squirrel-gill"
@@ -49,21 +50,16 @@ const TotalPoints = () => {
         if (!walletAddress) {
           throw new Error("Wallet address or signed terms missing.")
         }
-        const now = new Date().getTime()
-        const updatedAt = walletMarks[walletAddress]?.updatedAt ?? 0
-        const lastUpdatedTime = new Date(updatedAt).getTime()
-        // const isDataExpired = now - lastUpdatedTime > 24 * 60 * 60 * 1000
-        const isDataExpired = now - lastUpdatedTime > 60 * 60 * 1000
-
+        const now = dayjs().unix()
+        const timestamp = walletMarks[walletAddress]?.timestamp ?? 0
+        const isDataExpired = dayjs.unix(now).diff(dayjs.unix(timestamp), "day") > 1
         if (isDataExpired) {
           const data = await scrollRequest(url)
           const points = data[0].points
+
           setWalletMarks({
             ...walletMarks,
-            [walletAddress]: {
-              points,
-              updatedAt: now,
-            },
+            [walletAddress]: data[0],
           })
           return points
         } else {
