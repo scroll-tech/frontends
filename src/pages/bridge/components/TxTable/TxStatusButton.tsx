@@ -111,7 +111,7 @@ const TxStatus = props => {
     }
   }
 
-  if ([TX_STATUS.Dropped, TX_STATUS.SentFailed, TX_STATUS.Skipped].includes(tx.txStatus)) {
+  if ([TX_STATUS.Dropped, TX_STATUS.SentFailed, TX_STATUS.Skipped, TX_STATUS.BatchDepositFailed].includes(tx.txStatus)) {
     return (
       <Tooltip placement="top" title="Please click on the transaction hash to view the error reason.">
         <Chip
@@ -126,7 +126,7 @@ const TxStatus = props => {
     )
   }
 
-  if (tx.txStatus === TX_STATUS.Relayed) {
+  if (tx.txStatus === TX_STATUS.Relayed || tx.txStatus === TX_STATUS.BatchDepositRelayed) {
     return <Chip className={cx(classes.chip, classes.successChip)} label="Success"></Chip>
   }
 

@@ -41,9 +41,10 @@ export function useSendTransaction(props) {
   const send = async () => {
     setIsLoading(true)
     let tx
+    const isBatchMode = bridgeSummaryType === BridgeSummaryType.Selector && depositBatchMode === DepositBatchMode.Economy
     // let currentBlockNumber
     try {
-      if (bridgeSummaryType === BridgeSummaryType.Selector && depositBatchMode === DepositBatchMode.Economy) {
+      if (isBatchMode) {
         // currentBlockNumber = await networksAndSigners[CHAIN_ID.L1].provider.getBlockNumber()
         tx = await batchSendL1ToL2()
         setIsLoading(false)
@@ -71,7 +72,9 @@ export function useSendTransaction(props) {
               fromBlockNumber: receipt.blockNumber,
             })
             if (fromNetwork.isL1) {
-              const estimatedOffsetTime = (receipt.blockNumber - blockNumbers[0]) * 12 * 1000
+              const estimatedOffsetTime = isBatchMode
+                ? (receipt.blockNumber - blockNumbers[0]) * 12 * 1000 + 1000 * 60 * 10
+                : (receipt.blockNumber - blockNumbers[0]) * 12 * 1000
               if (isValidOffsetTime(estimatedOffsetTime)) {
                 addEstimatedTimeMap(`from_${tx.hash}`, Date.now() + estimatedOffsetTime)
               } else {
@@ -102,7 +105,9 @@ export function useSendTransaction(props) {
                 hash: transactionHash,
               })
               if (fromNetwork.isL1) {
-                const estimatedOffsetTime = (blockNumber - blockNumbers[0]) * 12 * 1000
+                const estimatedOffsetTime = isBatchMode
+                  ? (blockNumber - blockNumbers[0]) * 12 * 1000 + 1000 * 60 * 10
+                  : (blockNumber - blockNumbers[0]) * 12 * 1000
                 if (isValidOffsetTime(estimatedOffsetTime)) {
                   addEstimatedTimeMap(`from_${transactionHash}`, Date.now() + estimatedOffsetTime)
                 } else {
