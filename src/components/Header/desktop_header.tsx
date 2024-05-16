@@ -158,7 +158,6 @@ const LinkStyledSubButton = styled<any>(NavLink, { shouldForwardProp: prop => pr
 
 const App = ({ currentMenu }) => {
   const { cx } = useStyles()
-  const navbarBg = useCheckCustomNavBarBg()
   const { isDesktop } = useCheckViewport()
   const dark = useCheckTheme()
 
@@ -167,6 +166,8 @@ const App = ({ currentMenu }) => {
   const showWalletConnector = useShowWalletConnector()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+
+  const navbarBg = useCheckCustomNavBarBg({ isHover: Boolean(anchorEl) })
 
   const handleMouseEnter = (e, key) => {
     setChecked(key)
