@@ -12,7 +12,8 @@ const CUSTOM_BG_PAGE_MAP = {
   "/sticker-winners": "brand",
 }
 
-const useCheckCustomNavBarBg = () => {
+const useCheckCustomNavBarBg = (props = { isHover: false }) => {
+  const { isHover } = props
   const isScrolling = useScrollTrigger({ disableHysteresis: true, threshold: 10 })
 
   const { pathname } = useLocation()
@@ -20,11 +21,10 @@ const useCheckCustomNavBarBg = () => {
 
   const navbarBg = useMemo(() => {
     if (isNoBgPage) {
-      return isScrolling ? "" : "transparent"
+      return isScrolling || isHover ? "" : "transparent"
     }
     return CUSTOM_BG_PAGE_MAP[pathname] || ""
-  }, [isNoBgPage, isScrolling, pathname])
-
+  }, [isNoBgPage, isScrolling, pathname, isHover])
   return navbarBg
 }
 

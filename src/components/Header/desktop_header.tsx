@@ -158,7 +158,8 @@ const LinkStyledSubButton = styled<any>(NavLink, { shouldForwardProp: prop => pr
 
 const App = ({ currentMenu }) => {
   const { cx } = useStyles()
-  const navbarBg = useCheckCustomNavBarBg()
+  const [isHover, setIsHover] = useState(false)
+  const navbarBg = useCheckCustomNavBarBg({ isHover })
   const { isDesktop } = useCheckViewport()
   const dark = useCheckTheme()
 
@@ -268,7 +269,7 @@ const App = ({ currentMenu }) => {
   }
 
   return (
-    <StyledBox bgColor={navbarBg} dark={dark}>
+    <StyledBox bgColor={navbarBg} dark={dark} onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
       <Announcement />
       <Container>
         <HeaderContainer>
