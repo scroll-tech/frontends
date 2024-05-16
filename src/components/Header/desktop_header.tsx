@@ -11,7 +11,7 @@ import WalletToolkit from "@/components/WalletToolkit"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useShowWalletConnector from "@/hooks/useShowWalletToolkit"
 
-import Announcement from "./announcement"
+// import Announcement from "./announcement"
 import { navigations } from "./constants"
 import useCheckCustomNavBarBg from "./useCheckCustomNavBarBg"
 import useCheckTheme from "./useCheckTheme"
@@ -158,6 +158,8 @@ const LinkStyledSubButton = styled<any>(NavLink, { shouldForwardProp: prop => pr
 
 const App = ({ currentMenu }) => {
   const { cx } = useStyles()
+  const [isHover, setIsHover] = useState(false)
+  const navbarBg = useCheckCustomNavBarBg({ isHover })
   const { isDesktop } = useCheckViewport()
   const dark = useCheckTheme()
 
@@ -166,8 +168,6 @@ const App = ({ currentMenu }) => {
   const showWalletConnector = useShowWalletConnector()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-
-  const navbarBg = useCheckCustomNavBarBg({ isHover: Boolean(anchorEl) })
 
   const handleMouseEnter = (e, key) => {
     setChecked(key)
@@ -269,8 +269,8 @@ const App = ({ currentMenu }) => {
   }
 
   return (
-    <StyledBox bgColor={navbarBg} dark={dark}>
-      <Announcement />
+    <StyledBox bgColor={navbarBg} dark={dark} onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
+      {/* <Announcement /> */}
       <Container>
         <HeaderContainer>
           <NavLink to="/" className="flex">
