@@ -92,7 +92,7 @@ const TxStatus = props => {
     )
   }
 
-  if (tx.txStatus === TX_STATUS.Sent) {
+  if (tx.txStatus === TX_STATUS.Sent || tx.txStatus === TX_STATUS.BatchDepositSent) {
     if (tx.claimInfo?.claimable) {
       return <ActiveButton type="Claim" tx={tx} />
     } else if (tx.isL1) {
