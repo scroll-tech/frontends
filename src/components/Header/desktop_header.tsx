@@ -11,7 +11,7 @@ import WalletToolkit from "@/components/WalletToolkit"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useShowWalletConnector from "@/hooks/useShowWalletToolkit"
 
-// import Announcement from "./announcement"
+import Announcement from "./announcement"
 import { navigations } from "./constants"
 import useCheckCustomNavBarBg from "./useCheckCustomNavBarBg"
 import useCheckTheme from "./useCheckTheme"
@@ -270,7 +270,7 @@ const App = ({ currentMenu }) => {
 
   return (
     <StyledBox bgColor={navbarBg} dark={dark} onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
-      {/* <Announcement /> */}
+      <Announcement />
       <Container>
         <HeaderContainer>
           <NavLink to="/" className="flex">
