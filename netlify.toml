@@ -104,7 +104,7 @@ REACT_APP_OPEN_BLOCK_URI = "https://kx58j6x5me.execute-api.us-east-1.amazonaws.c
 [context.deploy-preview.environment]
 REACT_APP_SCROLL_ENVIRONMENT = "Staging"
 REACT_APP_API_BASE_URI = "https://sepolia-api.scroll.io"
-REACT_APP_BRIDGE_API_URI = "https://sepolia-api-bridge-v2.scroll.io/api"
+REACT_APP_BRIDGE_API_URI = "http://bridge-historyv2-api.devnet.scroll.tech:8080/api"
 REACT_APP_ROLLUPSCAN_API_URI = "https://sepolia-api-re.scroll.io/api"
 REACT_APP_CHAIN_ID_L1 = "11155111"
 REACT_APP_CHAIN_ID_L2 = "534351"
