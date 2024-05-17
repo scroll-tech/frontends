@@ -176,7 +176,7 @@ const DepositSelector = props => {
     let displayedBatchFee = "-"
     let displayedBatchPrice = ""
     if (checkApproved(needApproval, DepositBatchMode.Economy) && allowDisplayValue) {
-      displayedBatchFee = getDisplayedValue(l2EconomyGasFee) as any
+      displayedBatchFee = getDisplayedValue(l2EconomyGasFee, selectedToken.decimals, selectedToken.symbol) as any
       displayedBatchPrice = getDisplayedPrice(BNToAmount(l2EconomyGasFee as bigint))
     }
     return {
