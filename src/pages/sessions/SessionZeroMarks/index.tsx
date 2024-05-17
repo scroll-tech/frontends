@@ -1,4 +1,4 @@
-import dayjs from "dayjs"
+// import dayjs from "dayjs"
 import useStorage from "squirrel-gill"
 import useSWR from "swr"
 
@@ -37,54 +37,54 @@ const BridgePoints = () => {
           throw new Error("Wallet address or signed terms missing.")
         }
 
-        const now = dayjs().unix()
-        const timestamp = bridgeBalances[walletAddress]?.timestamp ?? 0
-        const isDataExpired = dayjs.unix(now).diff(dayjs.unix(timestamp), "day") > 1
+        // const now = dayjs().unix()
+        // const timestamp = bridgeBalances[walletAddress]?.timestamp ?? 0
+        // const isDataExpired = dayjs.unix(now).diff(dayjs.unix(timestamp), "day") > 1
 
-        if (isDataExpired) {
-          const list = await scrollRequest(url)
-          const tokensMarks = tokenList.map(item => {
-            const withMarks = list.filter(item => item.points).find(i => i.bridge_asset.toUpperCase() === item.symbol.toUpperCase())
-            let marks = withMarks?.points ?? 0
+        // if (isDataExpired) {
+        const list = await scrollRequest(url)
+        const tokensMarks = tokenList.map(item => {
+          const withMarks = list.filter(item => item.points).find(i => i.bridge_asset.toUpperCase() === item.symbol.toUpperCase())
+          let marks = withMarks?.points ?? 0
 
-            if (item.additionalToken) {
-              const additionalToken = list.filter(item => item.points).find(i => i.bridge_asset.toUpperCase() === item.additionalToken.toUpperCase())
-              if (additionalToken) {
-                marks += additionalToken.points ?? 0
-              }
+          if (item.additionalToken) {
+            const additionalToken = list.filter(item => item.points).find(i => i.bridge_asset.toUpperCase() === item.additionalToken.toUpperCase())
+            if (additionalToken) {
+              marks += additionalToken.points ?? 0
             }
+          }
 
-            return {
-              ...item,
-              marks,
-            }
-          })
-          const gasMarksResult = list.find(item => item.bridge_asset === "gas-points")
-          const gasMarks = gasList.map(item => ({
+          return {
             ...item,
-            amount: gasMarksResult?.amount ?? 0,
-            marks: gasMarksResult?.points ?? 0,
-          }))
-          setBridgeBalances({
-            ...bridgeBalances,
-            [walletAddress]: {
-              tokensMarks,
-              gasMarks,
-              timestamp: walletMarks[walletAddress]?.timestamp ?? 0,
-            },
-          })
-          return {
+            marks,
+          }
+        })
+        const gasMarksResult = list.find(item => item.bridge_asset === "gas-points")
+        const gasMarks = gasList.map(item => ({
+          ...item,
+          amount: gasMarksResult?.amount ?? 0,
+          marks: gasMarksResult?.points ?? 0,
+        }))
+        setBridgeBalances({
+          ...bridgeBalances,
+          [walletAddress]: {
             tokensMarks,
             gasMarks,
-          }
-        } else {
-          const tokensMarks = bridgeBalances[walletAddress]?.tokensMarks ?? []
-          const gasMarks = bridgeBalances[walletAddress]?.gasMarks ?? []
-          return {
-            tokensMarks,
-            gasMarks,
-          }
+            timestamp: walletMarks[walletAddress]?.timestamp ?? 0,
+          },
+        })
+        return {
+          tokensMarks,
+          gasMarks,
         }
+        // } else {
+        //   const tokensMarks = bridgeBalances[walletAddress]?.tokensMarks ?? []
+        //   const gasMarks = bridgeBalances[walletAddress]?.gasMarks ?? []
+        //   return {
+        //     tokensMarks,
+        //     gasMarks,
+        //   }
+        // }
       } catch (e) {
         return defaultMarks
       }
