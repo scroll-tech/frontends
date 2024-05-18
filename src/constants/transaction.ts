@@ -29,4 +29,4 @@ export enum TX_STATUS {
   BatchDepositFailed,
 }
 
-export const BATCH_DEPOSIT_TOKENS = ["ETH", "wstETH"]
+export const BATCH_DEPOSIT_TOKENS = ["ETH"]
