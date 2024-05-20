@@ -11,7 +11,7 @@ import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useAsyncMemo } from "@/hooks"
 import useSnackbar from "@/hooks/useSnackbar"
 import { mintBadge } from "@/services/canvasService"
-// import {testAsyncFunc} from "@/services/canvasService"
+// import { testAsyncFunc } from "@/services/canvasService"
 import useCanvasStore from "@/stores/canvasStore"
 import { isUserRejected, truncateAddress } from "@/utils"
 

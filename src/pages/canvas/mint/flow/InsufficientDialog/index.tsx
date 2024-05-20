@@ -1,47 +1,34 @@
 import { useMemo } from "react"
 import { useNavigate } from "react-router-dom"
 
-import { Box, Dialog, DialogContent, DialogTitle, IconButton, SvgIcon, Typography } from "@mui/material"
+import { Box, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
-import { ReactComponent as CloseSvg } from "@/assets/svgs/canvas/close.svg"
 import { ReactComponent as InsufficientSvg } from "@/assets/svgs/canvas/insufficient.svg"
 import ScrollButton from "@/components/Button"
 import { CHAIN_ID } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import Dialog from "@/pages/canvas/components/Dialog"
 import useCanvasStore from "@/stores/canvasStore"
 import { switchNetwork } from "@/utils"
 
-const StyledDialog = styled(Dialog)(({ theme }) => ({
-  borderRadius: "1.6rem",
-  backgroundColor: "rgba(0, 0, 0, 0.5)",
-  backdropFilter: "blur(50px)",
-  "& .MuiDialog-paper": {
-    background: "linear-gradient(114deg, #2A2A2A 0%, rgba(27, 27, 27, 0.60) 100%)",
-    backgroundColor: "#101010",
-    width: "64rem",
-    height: "56rem",
-    padding: "3.2rem",
-    backdropFilter: "blur(50px)",
-  },
-}))
-
-const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
+const StyledDialogContent = styled(Box)(({ theme }) => ({
+  width: "100%",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "center",
-  padding: "0",
 }))
 
 const ButtonContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   gap: "1.6rem",
   alignItems: "center",
-  marginTop: "3.2rem",
+  marginTop: "4rem",
   [theme.breakpoints.down("sm")]: {
     flexDirection: "column",
     gap: "2rem",
+    marginTop: "1.6rem",
   },
 }))
 
@@ -61,47 +48,43 @@ const InsufficientDialog = ({ open, onClose }) => {
   }
 
   return (
-    <StyledDialog maxWidth={false} open={open}>
-      <DialogTitle
-        sx={{
-          m: 0,
-          p: 0,
-          display: "flex",
-          justifyContent: "flex-end",
-          alignItems: "center",
-        }}
-      >
-        <IconButton sx={{ p: 0, "&:hover": { backgroundColor: "unset" } }} onClick={onClose}>
-          <SvgIcon sx={{ fontSize: ["1.6rem", "1.8rem"], color: "#fff" }} component={CloseSvg} inheritViewBox></SvgIcon>
-        </IconButton>
-      </DialogTitle>
+    <Dialog open={open} onClose={onClose}>
       <StyledDialogContent>
-        <SvgIcon sx={{ fontSize: ["1.6rem", "18rem"], marginBottom: "4rem" }} component={InsufficientSvg} inheritViewBox></SvgIcon>
-        <Typography sx={{ fontSize: "3.2rem", fontWeight: 600, marginBottom: "0.8rem", color: "#fff", textAlign: "center" }}>
+        <SvgIcon sx={{ fontSize: ["12rem", "18rem"], marginBottom: ["1.6rem", "4rem"] }} component={InsufficientSvg} inheritViewBox></SvgIcon>
+        <Typography
+          sx={{
+            fontSize: ["2rem", "3.2rem"],
+            lineHeight: ["3.2rem", "4.8rem"],
+            fontWeight: 600,
+            marginBottom: "0.8rem",
+            color: "#fff",
+            textAlign: "center",
+          }}
+        >
           Oops! Not enough ETH <br /> to pay for transaction fees
         </Typography>
-        <Typography sx={{ fontSize: "1.8rem", lineHeight: "2.8rem", color: "primary.contrastText", textAlign: "center", marginBottom: "2.8rem" }}>
+        <Typography sx={{ fontSize: ["1.6rem", "1.8rem"], lineHeight: "2.8rem", color: "primary.contrastText", textAlign: "center" }}>
           Bridge more ETH to your wallet
         </Typography>
         <ButtonContainer>
           {chainId ? (
             isWrongNetwork ? (
-              <ScrollButton color="primary" onClick={() => switchNetwork(CHAIN_ID.L2)}>
+              <ScrollButton width="21.6rem" color="primary" onClick={() => switchNetwork(CHAIN_ID.L2)}>
                 Switch to Scroll
               </ScrollButton>
             ) : (
-              <ScrollButton color="primary" onClick={handleGoToBridge}>
+              <ScrollButton width="21.6rem" color="primary" onClick={handleGoToBridge}>
                 Bridge into Scroll
               </ScrollButton>
             )
           ) : (
-            <ScrollButton color="primary" onClick={connect}>
+            <ScrollButton width="21.6rem" color="primary" onClick={connect}>
               Connect Wallet
             </ScrollButton>
           )}
         </ButtonContainer>
       </StyledDialogContent>
-    </StyledDialog>
+    </Dialog>
   )
 }
 

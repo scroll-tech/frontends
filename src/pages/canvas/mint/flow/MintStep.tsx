@@ -100,11 +100,17 @@ const MintStep = props => {
           Your Pulse is{" "}
           {isLoading ? (
             <Skeleton
-              variant="rectangular"
-              sx={{ display: "inline-block", width: "1.5em", backgroundColor: "rgba(256, 256, 256, 0.15)", borderRadius: "0.4rem", height: "3rem" }}
+              variant="text"
+              sx={{
+                display: "inline-block",
+                width: "2em",
+                backgroundColor: "rgba(256, 256, 256, 0.15)",
+                borderRadius: "0.4rem",
+                fontSize: ["2rem", "3.2rem"],
+              }}
             ></Skeleton>
           ) : (
-            <>{data?.heartrate}</>
+            <>{data?.heartrate ?? "--"}</>
           )}
         </>
       }
