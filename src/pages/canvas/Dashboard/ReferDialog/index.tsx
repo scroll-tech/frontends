@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material"
+import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import Dialog from "@/pages/canvas/components/Dialog"
@@ -14,6 +14,11 @@ const Title = styled(Typography)(({ theme }) => ({
   fontWeight: 600,
   lineHeight: 1,
   marginBottom: "1.6rem",
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "2rem",
+    lineHeight: "3.2rem",
+    marginBottom: "0.8rem",
+  },
 }))
 
 const SubTitle = styled(Typography)(({ theme }) => ({
@@ -24,6 +29,11 @@ const SubTitle = styled(Typography)(({ theme }) => ({
   fontWeight: 400,
   lineHeight: "2.8rem",
   marginBottom: "3.2rem",
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1.6rem",
+    lineHeight: "2.4rem",
+    marginBottom: "2.4rem",
+  },
 }))
 
 const ReferDialog = () => {
@@ -35,13 +45,15 @@ const ReferDialog = () => {
 
   return (
     <Dialog open={referDialogVisible} onClose={handleClose}>
-      <Title>Invite friends, earn rewards together</Title>
-      <SubTitle>
-        Your friend gets 50% off the mint fee <br />
-        while you receive 0.0005 ETH per successful referral
-      </SubTitle>
-      <Record />
-      <Coupon shouldFetch={referDialogVisible} />
+      <Box sx={{ width: ["100%", "auto"], height: ["80%", "auto"] }}>
+        <Title>Invite friends & you both earn</Title>
+        <SubTitle>
+          Your friend gets 50% off the mint fee <br />
+          while you receive 0.0005 ETH per successful referral
+        </SubTitle>
+        <Record />
+        <Coupon shouldFetch={referDialogVisible} />
+      </Box>
     </Dialog>
   )
 }

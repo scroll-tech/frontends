@@ -1,13 +1,11 @@
 import React, { useEffect, useMemo, useRef, useState } from "react"
 
-import { Box, InputBase, Stack, SvgIcon, Tooltip, Typography } from "@mui/material"
-import { TooltipProps, tooltipClasses } from "@mui/material/Tooltip"
+import { Box, InputBase, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { checkCodeValidation } from "@/apis/canvas"
 import { ReactComponent as CheckSvg } from "@/assets/svgs/canvas/check.svg"
 import { ReactComponent as ErrorSvg } from "@/assets/svgs/canvas/error.svg"
-import { ReactComponent as InfoSvg } from "@/assets/svgs/canvas/info.svg"
 import { ReactComponent as LoadingSvg } from "@/assets/svgs/canvas/loading.svg"
 import useCanvasStore from "@/stores/canvasStore"
 
@@ -25,6 +23,10 @@ const Title = styled(Typography)(({ theme }) => ({
   fontSize: "1.8rem",
   fontWeight: 600,
   lineHeight: "2.8rem",
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1.6rem",
+    lineHeight: "2.4rem",
+  },
 }))
 
 const ReferralCodeBox = styled(Box)(({ theme }) => ({
@@ -33,6 +35,9 @@ const ReferralCodeBox = styled(Box)(({ theme }) => ({
   marginTop: "1.6rem",
   marginBottom: "4rem",
   gap: "0.8rem",
+  [theme.breakpoints.down("sm")]: {
+    marginBottom: 0,
+  },
 }))
 
 const ReferralCodeInput = styled(InputBase)(({ theme }) => ({
@@ -42,11 +47,13 @@ const ReferralCodeInput = styled(InputBase)(({ theme }) => ({
   borderRadius: "1rem",
   width: "7.2rem",
   height: "7.2rem",
+
   fontSize: "4rem",
   fontWeight: 600,
   textAlign: "center",
   "& input": {
     textAlign: "center",
+    padding: 0,
   },
   "&.Mui-focused": {
     borderColor: theme.palette.primary.contrastText,
@@ -56,8 +63,9 @@ const ReferralCodeInput = styled(InputBase)(({ theme }) => ({
     opacity: 1,
   },
   [theme.breakpoints.down("sm")]: {
-    width: "5rem",
-    height: "5rem",
+    width: "5.6rem",
+    height: "5.6rem",
+    fontSize: "3.2rem",
   },
 }))
 
@@ -66,6 +74,9 @@ const StatusBox = styled(Box)(({ theme }) => ({
   bottom: "1rem",
   left: "50%",
   transform: "translateX(-50%)",
+  [theme.breakpoints.down("sm")]: {
+    bottom: "-4.2rem",
+  },
 }))
 
 const StatusContent = styled(Typography)(({ theme }) => ({
@@ -74,20 +85,10 @@ const StatusContent = styled(Typography)(({ theme }) => ({
   lineHeight: "2.8rem",
   color: "#A5A5A5",
   whiteSpace: "nowrap",
+  [theme.breakpoints.down("sm")]: {
+    lineHeight: "2.4rem",
+  },
 }))
-
-const ReferralTooltip = styled(({ className, ...props }: TooltipProps) => <Tooltip {...props} arrow classes={{ popper: className }} />)(
-  ({ theme }) => ({
-    [`& .${tooltipClasses.arrow}`]: {
-      color: "#262626",
-    },
-    [`& .${tooltipClasses.tooltip}`]: {
-      backgroundColor: "#262626",
-      maxWidth: 388,
-      padding: "1.6rem 2.4rem",
-    },
-  }),
-)
 
 const ReferralCode = ({ isChecking, setIsChecking, code, codeStatus, setCodeStatus }) => {
   const [codes, setCodes] = useState(Array(INVITE_CODE_LENGTH).fill(""))
@@ -161,20 +162,9 @@ const ReferralCode = ({ isChecking, setIsChecking, code, codeStatus, setCodeStat
   return (
     <Box sx={{ position: "relative" }}>
       <Stack direction="row" gap="0.8rem" alignItems="center">
-        <Title>Have an invite code? Enter it here for 50% off of the mint cost.</Title>
-        <ReferralTooltip
-          placement="top"
-          title={
-            <Box>
-              <Typography sx={{ fontSize: "2rem", fontWeight: "bold", mb: "0.8rem", color: "#fff" }}>what's the mint fee is for?</Typography>
-              <Typography sx={{ fontSize: "1.8rem", color: "#fff" }}>
-                As a bot prevention measure, we’ve implemented a small mint fee for Scroll Canvas
-              </Typography>
-            </Box>
-          }
-        >
-          <SvgIcon sx={{ fontSize: "2rem" }} component={InfoSvg} inheritViewBox></SvgIcon>
-        </ReferralTooltip>
+        <Title>
+          Canvas has a mint fee of 0.001 ETH to fight spam.<br></br>Enter an invite code to get 50% off!
+        </Title>
       </Stack>
 
       <ReferralCodeBox>

@@ -69,7 +69,8 @@ const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, w
     borderRadius: "1rem",
     [theme.breakpoints.down("sm")]: {
       fontSize: "1.6rem",
-      paddingLeft: "4.8rem",
+      height: "4rem",
+      // paddingLeft: "4.8rem",
     },
     "&:hover": {
       backgroundColor: backgroundColor(color, theme),

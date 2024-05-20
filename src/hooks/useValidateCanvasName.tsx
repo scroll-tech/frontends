@@ -73,8 +73,8 @@ const useValidateName = value => {
           <SvgIcon component={helpText ? WarningSvg : CheckSvg} inheritViewBox></SvgIcon>
           <Typography
             sx={{
-              fontSize: "1.8rem",
-              lineHeight: "2.8rem",
+              fontSize: ["1.6rem", "1.8rem"],
+              lineHeight: ["2.4rem", "2.8rem"],
               fontWeight: 500,
               color: helpText ? "#FF684B !important" : "#85E0D1 !important",
               whiteSpace: "nowrap",

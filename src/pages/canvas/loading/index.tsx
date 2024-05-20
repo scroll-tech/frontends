@@ -35,7 +35,8 @@ const Container: any = styled(Box)(({ theme, badgewidth }: any) => ({
     right: 0,
   },
   [theme.breakpoints.down("md")]: {
-    height: "calc(100vh - 6.2rem)",
+    marginTop: "-6.2rem",
+    height: "100vh",
   },
 }))
 
@@ -43,6 +44,9 @@ const LoadingText: any = styled(Typography)(({ theme }) => ({
   color: theme.palette.primary.contrastText,
   fontSize: "3.2rem",
   fontWeight: 600,
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1.6rem",
+  },
 }))
 
 const LoadingPage = () => {

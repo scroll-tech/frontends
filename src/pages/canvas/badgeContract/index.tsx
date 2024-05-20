@@ -79,14 +79,16 @@ const BadgeContractDetail = props => {
       return (
         <>
           <CircularProgress sx={{ color: "#A5A5A5" }} size={18}></CircularProgress>
-          <Typography sx={{ color: "#A5A5A5 !important", fontSize: "1.8rem", lineHeight: "2.8rem", fontWeight: 500 }}>Minting...</Typography>
+          <Typography sx={{ color: "#A5A5A5 !important", fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.4rem", "2.8rem"], fontWeight: 500 }}>
+            Minting...
+          </Typography>
         </>
       )
-    } else if (profileMinted === false) {
+    } else if (profileMinted !== false) {
       return (
         <>
           <SvgIcon sx={{ color: "#FAD880", fontSize: "2.4rem" }} component={WarningSvg} inheritViewBox></SvgIcon>
-          <Typography sx={{ color: "#FAD880 !important", fontSize: "1.8rem", lineHeight: "2.8rem", fontWeight: 500 }}>
+          <Typography sx={{ color: "#FAD880 !important", fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.4rem", "2.8rem"], fontWeight: 500 }}>
             You need a Scroll Canvas in order to mint your Zebra Badge.
           </Typography>
         </>
@@ -95,14 +97,16 @@ const BadgeContractDetail = props => {
       return (
         <>
           <CircularProgress sx={{ color: "#A5A5A5" }} size={18}></CircularProgress>
-          <Typography sx={{ color: "#A5A5A5 !important", fontSize: "1.8rem", lineHeight: "2.8rem", fontWeight: 500 }}>Checking...</Typography>
+          <Typography sx={{ color: "#A5A5A5 !important", fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.4rem", "2.8rem"], fontWeight: 500 }}>
+            Checking...
+          </Typography>
         </>
       )
     } else if (profileMinted && !isOwned && isEligible) {
       return (
         <>
           <SvgIcon sx={{ color: "#85E0D1", fontSize: "2.4rem" }} component={ValidSvg} inheritViewBox></SvgIcon>
-          <Typography sx={{ color: "#85E0D1 !important", fontSize: "1.8rem", lineHeight: "2.8rem", fontWeight: 500 }}>
+          <Typography sx={{ color: "#85E0D1 !important", fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.4rem", "2.8rem"], fontWeight: 500 }}>
             You are eligible to mint the badge
           </Typography>
         </>
@@ -111,7 +115,7 @@ const BadgeContractDetail = props => {
       return (
         <>
           <SvgIcon sx={{ color: "primary.main", fontSize: "2.4rem" }} component={WarningSvg} inheritViewBox></SvgIcon>
-          <Typography sx={{ color: "#FF684B !important", fontSize: "1.8rem", lineHeight: "2.8rem", fontWeight: 500 }}>
+          <Typography sx={{ color: "#FF684B !important", fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.4rem", "2.8rem"], fontWeight: 500 }}>
             Selected account is not eligible to mint the badge yet.
           </Typography>
         </>
@@ -123,25 +127,59 @@ const BadgeContractDetail = props => {
   const renderAction = () => {
     if (!walletCurrentAddress) {
       return (
-        <ScrollButton color="primary" onClick={connect}>
+        <ScrollButton
+          sx={theme => ({
+            [theme.breakpoints.down("sm")]: {
+              gridColumn: "span 3",
+            },
+          })}
+          color="primary"
+          onClick={connect}
+        >
           Connect wallet
         </ScrollButton>
       )
     } else if (!profileMinted) {
       return (
-        <ScrollButton color="primary" href="/scroll-canvas/mint">
+        <ScrollButton
+          sx={theme => ({
+            [theme.breakpoints.down("sm")]: {
+              gridColumn: "span 3",
+            },
+          })}
+          color="primary"
+          href="/scroll-canvas/mint"
+        >
           Mint Scroll Canvas
         </ScrollButton>
       )
     } else if (isOwned) {
       return (
-        <ScrollButton color="primary" href="/scroll-canvas">
+        <ScrollButton
+          sx={theme => ({
+            [theme.breakpoints.down("sm")]: {
+              gridColumn: "span 3",
+            },
+          })}
+          color="primary"
+          href="/scroll-canvas"
+        >
           Visit Scroll Canvas
         </ScrollButton>
       )
     } else if (profileMinted === true && !isOwned) {
       return (
-        <ScrollButton color="primary" onClick={handleMint} loading={isBadgeMinting.get(address)} gloomy={!isEligible}>
+        <ScrollButton
+          sx={theme => ({
+            [theme.breakpoints.down("sm")]: {
+              gridColumn: "span 3",
+            },
+          })}
+          color="primary"
+          onClick={handleMint}
+          loading={isBadgeMinting.get(address)}
+          gloomy={!isEligible}
+        >
           Mint now
         </ScrollButton>
       )
@@ -153,25 +191,42 @@ const BadgeContractDetail = props => {
     return <Navigate to="/404"></Navigate>
   }
   return (
-    <BadgeDetail
-      detail={detail}
-      metadata={metadata}
-      property={["issuer"]}
-      extra={
-        <Stack direction="row" gap="0.8rem" alignItems="center">
-          {renderTip()}
-        </Stack>
-      }
-    >
+    <BadgeDetail detail={detail} metadata={metadata} property={["issuer"]}>
       {renderAction()}
-      {!detail.native && (
-        <ScrollButton color="secondary" href={detail.issuer?.origin} target="_blank">
+
+      {detail.native ? (
+        <ScrollButton
+          color="secondary"
+          sx={theme => ({
+            [theme.breakpoints.down("sm")]: {
+              gridColumn: "span 2",
+            },
+          })}
+          href="/scroll-canvas"
+        >
+          Visit my canvas
+        </ScrollButton>
+      ) : (
+        <ScrollButton
+          color="secondary"
+          sx={theme => ({
+            [theme.breakpoints.down("sm")]: {
+              gridColumn: "span 2",
+            },
+          })}
+          href={detail.issuer?.origin}
+          target="_blank"
+        >
           Visit {detail.issuer?.name}
         </ScrollButton>
       )}
+
       <Link external href={shareBadgeURL}>
         <SvgIcon sx={{ fontSize: "3.2rem", color: "primary.contrastText" }} component={ShareSvg} inheritViewBox></SvgIcon>
       </Link>
+      <Stack sx={{ gridColumn: "span 3", gridRow: "2 / 3" }} direction="row" gap="0.8rem" alignItems="center">
+        {renderTip()}
+      </Stack>
     </BadgeDetail>
   )
 }

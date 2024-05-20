@@ -8,6 +8,7 @@ import { styled } from "@mui/system"
 
 import { fetchCodeByAdd, getInviteUrlByCode } from "@/apis/canvas"
 import { ReactComponent as CopySuccessSvg } from "@/assets/svgs/canvas/copy-success.svg"
+import couponMobileBackground from "@/assets/svgs/canvas/coupon-mobile.svg"
 import couponBackground from "@/assets/svgs/canvas/coupon.svg"
 import { ReactComponent as LogoSvg } from "@/assets/svgs/canvas/logo.svg"
 import { ReactComponent as ShareSvg } from "@/assets/svgs/canvas/share.svg"
@@ -26,9 +27,19 @@ const CouponBox = styled(Box)(({ theme }) => ({
   alignItems: "center",
   justifyContent: "space-between",
   padding: "2.4rem 1.6rem",
+  [theme.breakpoints.down("sm")]: {
+    width: "100%",
+    height: "auto",
+    aspectRatio: "320/158",
+    background: `url(${couponMobileBackground}) no-repeat center center`,
+    backgroundSize: "contain",
+    padding: "1.4rem 1.2rem",
+    margin: 0,
+    gap: "3rem",
+  },
 }))
 
-const DescriptionBox = styled(Typography)(({ theme }) => ({
+const DescriptionBox = styled(Box)(({ theme }) => ({
   border: "1px solid #000",
   background: "#FDE9D5",
   height: "22.2rem",
@@ -37,6 +48,12 @@ const DescriptionBox = styled(Typography)(({ theme }) => ({
   alignItems: "center",
   justifyContent: "center",
   flexDirection: "column",
+  [theme.breakpoints.down("sm")]: {
+    height: "13.4rem",
+    // width: "max-content",
+    flex: 110,
+    padding: "1rem 1rem 0",
+  },
 }))
 
 // const ReferralLink = styled(Typography)(({ theme }) => ({
@@ -51,7 +68,7 @@ const DescriptionBox = styled(Typography)(({ theme }) => ({
 //   fontWeight: 500,
 // }))
 
-const useStyles = makeStyles()(theme => ({
+const useStyles = makeStyles<any>()((theme, { dropdownWidth }) => ({
   paper: {
     borderRadius: "0.5rem",
     marginTop: "0.5rem",
@@ -60,6 +77,9 @@ const useStyles = makeStyles()(theme => ({
   list: {
     padding: 0,
     width: "34rem",
+    [theme.breakpoints.down("sm")]: {
+      width: dropdownWidth,
+    },
   },
   item: {
     width: "100%",
@@ -68,6 +88,9 @@ const useStyles = makeStyles()(theme => ({
     fontWeight: 600,
     lineHeight: "2.4rem",
     justifyContent: "center",
+    [theme.breakpoints.down("sm")]: {
+      minHeight: "unset",
+    },
   },
   codeWrapper: {
     borderRadius: "0.6rem",
@@ -75,6 +98,10 @@ const useStyles = makeStyles()(theme => ({
     background: theme.palette.background.default,
     width: "34rem",
     height: "7.2rem",
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+      height: "4rem",
+    },
   },
 }))
 
@@ -82,7 +109,9 @@ let copyTimer: any
 
 const Coupon = props => {
   const { shouldFetch } = props
-  const { classes } = useStyles()
+  const [dropdownWidth, setDropdownWidth] = useState<string>()
+
+  const { classes } = useStyles({ dropdownWidth: dropdownWidth ? dropdownWidth : "auto" })
   const { walletCurrentAddress } = useRainbowContext()
   const [copied, setCopied] = useState(0)
 
@@ -92,18 +121,22 @@ const Coupon = props => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
   const fetchCode = url => scrollRequest(url)
+
   const { data: { code } = {}, isLoading } = useSWR(() => (shouldFetch ? fetchCodeByAdd(walletCurrentAddress) : null), fetchCode, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
     shouldRetryOnError: false,
-    onError: () => {
+    onError: e => {
       alertWarning("Failed to fetch Scroll Canvas Coupon", "coupon")
     },
   })
 
   const handleDropdown = e => {
     setAnchorEl(e.currentTarget)
+    if (e.currentTarget) {
+      setDropdownWidth(e.currentTarget.getBoundingClientRect().width + "px")
+    }
   }
 
   const handleClose = () => {
@@ -142,23 +175,32 @@ const Coupon = props => {
   return (
     <CouponBox>
       <DescriptionBox>
-        <Typography sx={{ fontSize: "1.8rem", lineHeight: "2.4rem" }}>From: {username}</Typography>
-        <Typography sx={{ fontSize: "4.8rem", lineHeight: "1", fontWeight: 500, margin: "0.8rem 0" }}>50% OFF</Typography>
-        <Typography sx={{ fontSize: "1.8rem", marginBottom: "2.3rem", lineHeight: "2.4rem" }}>Canvas Mint Fee</Typography>
-        <SvgIcon sx={{ width: "8rem" }} component={LogoSvg} inheritViewBox />
+        <Typography sx={{ fontSize: ["1.4rem", "1.8rem"], fontWeight: 500, lineHeight: ["2rem", "2.4rem"] }}>From: {username}</Typography>
+        <Typography sx={{ fontSize: ["2.4rem", "4.8rem"], lineHeight: ["3.2rem", 1], fontWeight: 500, my: ["0.4rem", "0.8rem"] }}>50% OFF</Typography>
+        <Typography sx={{ fontSize: ["1.4rem", "1.8rem"], mb: ["0.6rem", "2.3rem"], lineHeight: ["2rem", "2.4rem"], fontWeight: 500 }}>
+          Mint Fee
+        </Typography>
+        <SvgIcon sx={{ width: ["4.2rem", "8rem"] }} component={LogoSvg} inheritViewBox />
       </DescriptionBox>
-      <Stack direction="column" alignItems="center" gap="1.5rem">
-        <Typography sx={{ fontSize: "2.8rem", lineHeight: "normal", fontWeight: 500 }}>Invite Code</Typography>
+      <Stack direction="column" alignItems="center" sx={{ flex: [170, "unset"], gap: ["0.8rem", "1.5rem"] }}>
+        <Typography sx={{ fontSize: ["1.6rem", "2.8rem"], lineHeight: ["2.4rem", "normal"], fontWeight: 500 }}>Invite Code</Typography>
         <Stack direction="row" justifyContent="center" alignItems="center" className={classes.codeWrapper}>
           {isLoading ? (
             <Skeleton size="small" white sx={{ width: "60%", height: "3rem" }}></Skeleton>
           ) : (
-            <Typography sx={{ fontSize: "4rem", fontWeight: 500, lineHeight: "7.2rem" }}>{code}</Typography>
+            <Typography sx={{ fontSize: ["2rem", "4rem"], fontWeight: 500 }}>{code}</Typography>
           )}
         </Stack>
 
         <Button
-          sx={{ width: "100%" }}
+          sx={[
+            { width: "100%", fontWeight: 600, fontSize: ["1.6rem", "2rem"] },
+            theme => ({
+              [theme.breakpoints.down("sm")]: {
+                height: "4rem",
+              },
+            }),
+          ]}
           disabled={isLoading}
           variant="contained"
           color="secondary"
@@ -172,12 +214,12 @@ const Coupon = props => {
             Share to <SvgIcon sx={{ fontSize: ["1.2rem", "1.3rem"], ml: "6px" }} component={TwitterSvg} inheritViewBox></SvgIcon>
           </MenuItem>
           <MenuItem classes={{ root: classes.item }} onClick={handleCopyLink}>
-            <>{copied === 1 ? "Link copied" : "Copy link"}</>
             {copied === 1 && <SvgIcon sx={{ ml: "0.6rem" }} component={CopySuccessSvg} inheritViewBox></SvgIcon>}
+            <>{copied === 1 ? "Link copied" : "Copy link"}</>
           </MenuItem>
           <MenuItem classes={{ root: classes.item }} onClick={handleCopyCode}>
-            <>{copied === 2 ? "Invite code copied" : "Copy invite code"}</>
             {copied === 2 && <SvgIcon sx={{ ml: "0.6rem" }} component={CopySuccessSvg} inheritViewBox></SvgIcon>}
+            <>{copied === 2 ? "Code copied" : "Copy code"}</>
           </MenuItem>
         </Menu>
       </Stack>

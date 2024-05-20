@@ -24,6 +24,10 @@ const StyledListItemAvatar = styled(ListItemAvatar)(({ theme }) => ({
     width: "8rem",
     height: "8rem",
     backgroundColor: "#000",
+    [theme.breakpoints.down("sm")]: {
+      width: "4.8rem",
+      height: "4.8rem",
+    },
   },
   "& .MuiAvatar-img": {
     objectFit: "contain !important",
@@ -31,17 +35,26 @@ const StyledListItemAvatar = styled(ListItemAvatar)(({ theme }) => ({
 }))
 
 const StyledListItemText = styled(ListItemText)(({ theme }) => ({
+  margin: 0,
   "& .MuiListItemText-primary": {
     fontSize: "2.4rem",
     fontWeight: 600,
     lineHeight: "3.2rem",
     color: "#fff",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "1.8rem",
+      lineHeight: "2.8rem",
+    },
   },
   "& .MuiListItemText-secondary": {
     fontSize: "1.8rem",
     fontWeight: 600,
     lineHeight: "2.4rem",
     color: "#fff",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "1.6rem",
+      lineHeight: "2.4rem",
+    },
   },
 }))
 

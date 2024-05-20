@@ -8,10 +8,12 @@ import { getBadgeImgURL } from "@/utils"
 import ToolTip from "../../components/Tooltip"
 
 const Badge = ({ badge, index, badgewidth }) => {
+  // const { isMobile } = useCheckViewport()
   const { changeBadgeDetailDialog, changeSelectedBadge } = useCanvasStore()
 
   const handleShowBadgeDetailDialog = () => {
     changeSelectedBadge(badge.metadata)
+    // console.log(badge.metadata, "badge.metadata")
     changeBadgeDetailDialog(BadgeDetailDialogTpye.VIEW)
   }
 

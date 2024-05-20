@@ -45,6 +45,15 @@ const Container = styled<any>(Box, { shouldForwardProp: prop => prop !== "others
   bottom: 0,
   [theme.breakpoints.down("md")]: {
     gridTemplateColumns: `repeat(${othersWalletAddress ? 1 : 2}, 15.6rem)`,
+    zIndex: 99,
+    padding: "2.4rem 2rem",
+    bottom: 0,
+    "& > button": {
+      width: "100%",
+    },
+  },
+  [theme.breakpoints.down("sm")]: {
+    gridTemplateColumns: `repeat(${othersWalletAddress ? 1 : 2}, 1fr)`,
   },
 }))
 
@@ -55,6 +64,11 @@ const ActionButton = styled(Button)(({ theme }) => ({
   fontSize: "1.6rem",
   ".MuiButton-startIcon>*:nth-of-type(1)": {
     fontSize: "2rem",
+  },
+  ".MuiButton-startIcon": {
+    [theme.breakpoints.down("sm")]: {
+      marginRight: "4px",
+    },
   },
 }))
 
@@ -283,11 +297,20 @@ const ActionBox = props => {
                     horizontal: "left",
                   }}
                   anchorEl={action.menu.anchorEl}
-                  sx={{
-                    ".MuiMenu-paper": {
-                      borderRadius: "0.5rem",
+                  sx={[
+                    {
+                      ".MuiMenu-paper": {
+                        borderRadius: "0.5rem",
+                      },
                     },
-                  }}
+                    theme => ({
+                      [theme.breakpoints.down("sm")]: {
+                        ".MuiMenu-list": {
+                          padding: 0,
+                        },
+                      },
+                    }),
+                  ]}
                   open={action.menu.open}
                   onClose={action.menu.onClose}
                 >

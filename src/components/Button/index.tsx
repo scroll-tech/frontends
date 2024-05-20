@@ -2,7 +2,7 @@ import { motion, useCycle } from "framer-motion"
 import { useMemo } from "react"
 import { makeStyles } from "tss-react/mui"
 
-import { ButtonBase, ButtonProps, CircularProgress, IconButton, SvgIcon } from "@mui/material"
+import { Box, ButtonBase, ButtonProps, CircularProgress, IconButton, SvgIcon } from "@mui/material"
 
 import { ReactComponent as ArrowRightIcon } from "@/assets/svgs/common/arrow-right.svg"
 import useCheckViewport from "@/hooks/useCheckViewport"
@@ -46,6 +46,8 @@ const cColor = (color, theme) => {
       return theme.palette.primary.contrastText
   }
 }
+
+const ButtonContainer = motion(Box)
 
 const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, whiteButton }) => ({
   wrapper: {
@@ -149,7 +151,7 @@ const maskMobile = {
   },
 }
 const Button = (props: ScrollButtonProps) => {
-  const { id, width, sx, color, loading, disabled, gloomy, children, whiteButton, ...restProps } = props
+  const { id, className, width, sx, color, loading, disabled, gloomy, children, whiteButton, ...restProps } = props
   const { classes, cx } = useStyles({ color, width, disabled, loading, whiteButton })
 
   const { isMobile } = useCheckViewport()
@@ -168,9 +170,16 @@ const Button = (props: ScrollButtonProps) => {
   return (
     // TODO: allow sx, allow size=small/medium
     // avoid setting both 'disabled' and 'loading' to true.
-    <motion.div
+    <ButtonContainer
       id={id}
-      className={cx(classes.wrapper, innerDisabled && classes.wrapperDisabled, loading && classes.wrapperLoading, gloomy && classes.wrapperGloomy)}
+      className={cx(
+        classes.wrapper,
+        innerDisabled && classes.wrapperDisabled,
+        loading && classes.wrapperLoading,
+        gloomy && classes.wrapperGloomy,
+        className,
+      )}
+      sx={sx}
       onHoverStart={handleHover}
       onHoverEnd={handleHover}
       animate={isHover ? "expanding" : "normal"}
@@ -198,7 +207,7 @@ const Button = (props: ScrollButtonProps) => {
       >
         {children} {loading && <CircularProgress sx={{ color: "inherit" }} size={isMobile ? 18 : 24} thickness={4}></CircularProgress>}
       </ButtonBase>
-    </motion.div>
+    </ButtonContainer>
   )
 }
 
