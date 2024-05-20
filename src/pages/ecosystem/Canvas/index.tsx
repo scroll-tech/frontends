@@ -15,14 +15,19 @@ const Canvas = () => {
 
   return (
     <SectionWrapper dark sx={{ pt: ["4rem", "5.5rem", "6rem"], background: "#101010" }}>
-      <Stack direction="row" justifyContent="space-between" alignItems="center" gap="2rem">
+      <Stack
+        direction={isMobile ? "column" : "row"}
+        justifyContent="space-between"
+        alignItems={isMobile ? "flex-start" : "center"}
+        gap={isMobile ? "1.6rem" : "2rem"}
+      >
         <Typography
           className="ecosystem-protocols-title"
           sx={{ color: "#fff", fontSize: ["2.4rem", "4.4rem"], lineHeight: ["3.6rem", "5.6rem"], fontWeight: [600, 500], flex: 1 }}
         >
           Earn badges for Scroll Canvas
         </Typography>
-        <Button width={isMobile ? "15.4rem" : isTablet ? "21.5rem" : "25rem"} onClick={() => navigate("/scroll-canvas")} color="primary">
+        <Button width={isMobile ? "19.7rem" : isTablet ? "21.5rem" : "25rem"} onClick={() => navigate("/scroll-canvas")} color="primary">
           Go to Scroll Canvas
         </Button>
       </Stack>
