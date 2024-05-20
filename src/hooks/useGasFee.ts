@@ -44,8 +44,7 @@ const useGasFee = (selectedToken, needApproval) => {
     if (
       (needApproval === false || (isNumber(needApproval) && needApproval !== 3)) &&
       instance &&
-      priceFeeGasPrice &&
-      priceFeeGasLimit &&
+      ((priceFeeGasPrice && priceFeeGasLimit) || !fromNetwork.isL1) &&
       blockNumber
     ) {
       let gasPrice
