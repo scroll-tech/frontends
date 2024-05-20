@@ -7,11 +7,13 @@ const Statistic = props => {
   const { label, children, loading, ...restProps } = props
   return (
     <Stack direction="column" {...restProps}>
-      <Typography sx={{ fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2rem", "2.8rem"], fontWeight: 500, whiteSpace: "nowrap" }}>{label}</Typography>
+      <Typography sx={{ fontSize: ["1.4rem", "1.8rem"], lineHeight: ["2.8rem", "2.8rem"], fontWeight: 500, whiteSpace: "nowrap" }}>
+        {label}
+      </Typography>
       <NumberTypography
         sx={{
           fontSize: ["1.8rem", "2rem"],
-          lineHeight: ["2.4rem", "2.8rem"],
+          lineHeight: ["3.2rem", "2.8rem"],
           fontWeight: 600,
           whiteSpace: "nowrap",
           display: "flex",

@@ -10,6 +10,7 @@ import { fetchSignByCode, getAvatarURL, getHeartrate } from "@/apis/canvas"
 import Button from "@/components/Button"
 import { useCanvasContext } from "@/contexts/CanvasContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useCheckViewport from "@/hooks/useCheckViewport"
 import useSnackbar from "@/hooks/useSnackbar"
 // import { testAsyncFunc } from "@/services/canvasService"
 import useCanvasStore from "@/stores/canvasStore"
@@ -21,6 +22,7 @@ import StepWrapper from "./StepWrapper"
 const MintStep = props => {
   const { scrollTarget } = props
   const swiper = useSwiper()
+  const { isMobile } = useCheckViewport()
   const { walletCurrentAddress, provider } = useRainbowContext()
   const { profileRegistryContract } = useCanvasContext()
 
@@ -109,7 +111,7 @@ const MintStep = props => {
       description={
         <>
           Everyone who uses Scroll has a unique heartbeat.
-          <br></br>
+          {!isMobile && <br></br>}
           It beats faster when you are more active onchain.
         </>
       }
@@ -120,7 +122,7 @@ const MintStep = props => {
         </Button>
       }
     >
-      <Box sx={{ width: "28rem" }}>
+      <Box sx={{ width: ["20rem", "28rem"] }}>
         <Img src={heartbeatURL} placeholder="/imgs/canvas/avatarPlaceholder.svg" alt="avatar" width="100%"></Img>
       </Box>
       <InsufficientDialog open={insufficientDialogOpen} onClose={handleCloseInsufficientDialog} />

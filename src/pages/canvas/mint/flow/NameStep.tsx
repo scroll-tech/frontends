@@ -25,6 +25,11 @@ const StyledInputBase = styled(InputBase)(({ theme, value }) => ({
     fontWeight: 600,
     padding: 0,
     color: theme.palette.primary.contrastText,
+    [theme.breakpoints.down("sm")]: {
+      height: "4.8rem",
+      fontSize: "3.2rem",
+      lineHeight: "4.8rem",
+    },
   },
 }))
 
@@ -87,7 +92,7 @@ const NameStep = props => {
     <StepWrapper
       title="What’s your username?"
       description="Your name is stored onchain. You can always change it later."
-      sx={{ mt: "13rem", mb: "22rem" }}
+      sx={{ mt: ["10rem", "13rem"], mb: ["4.4rem", "22rem"] }}
       action={renderAction()}
     >
       <Box sx={{ position: "relative" }}>
@@ -110,7 +115,7 @@ const NameStep = props => {
           alignItems="center"
           sx={{
             position: "absolute",
-            top: "11.2rem",
+            top: ["6.4rem", "11.2rem"],
             left: "50%",
             transform: "translateX(-50%)",
           }}

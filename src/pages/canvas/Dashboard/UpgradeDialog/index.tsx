@@ -4,6 +4,7 @@ import { List } from "@mui/material"
 import { styled } from "@mui/system"
 
 import LoadingPage from "@/components/LoadingPage"
+import useCheckViewport from "@/hooks/useCheckViewport"
 import useCanvasStore from "@/stores/canvasStore"
 
 import Dialog from "../../components/Dialog"
@@ -32,10 +33,16 @@ const StyledList = styled(List)(({ theme }) => ({
   "& .MuiListItem-root": {
     gap: "1.6rem",
   },
+
+  [theme.breakpoints.down("sm")]: {
+    height: "100%",
+    maxHeight: "unset",
+  },
 }))
 
 const UpgradeDialog = props => {
   const { badges, loading } = props
+  const { isMobile } = useCheckViewport()
   const { upgradeDialogVisible, changeUpgradeDialog } = useCanvasStore()
 
   const handleClose = () => {
@@ -46,7 +53,10 @@ const UpgradeDialog = props => {
     return (
       <Dialog title="Badges Ready to Mint" open={upgradeDialogVisible} onClose={handleClose}>
         <StyledList>
-          <LoadingPage height="100%" component={<Img src="/imgs/canvas/Scrolly_Coding_s.webp" alt="Coding Scrolly" width="200" />}></LoadingPage>
+          <LoadingPage
+            height="100%"
+            component={<Img src="/imgs/canvas/Scrolly_Coding_s.webp" alt="Coding Scrolly" width={isMobile ? "120" : "200"} />}
+          ></LoadingPage>
         </StyledList>
       </Dialog>
     )
@@ -55,13 +65,13 @@ const UpgradeDialog = props => {
   if (!badges.length) {
     return (
       <Dialog onClose={handleClose} open={upgradeDialogVisible}>
-        <Empty title="No eligible badges for minting" sx={{ width: "57.6rem", height: "62.7rem" }}></Empty>
+        <Empty title="No eligible badges for minting" sx={{ width: "57.6rem", height: ["auto", "62.7rem"] }}></Empty>
       </Dialog>
     )
   }
 
   return (
-    <Dialog title="Badges Ready to Mint" open={upgradeDialogVisible} onClose={handleClose}>
+    <Dialog title={isMobile ? "Badges for Mint" : "Badges Ready to Mint"} open={upgradeDialogVisible} onClose={handleClose}>
       <StyledList>
         {badges.map((badge, index) => (
           <BadgeItem key={index} badge={badge} />

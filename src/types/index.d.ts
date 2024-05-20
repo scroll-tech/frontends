@@ -70,14 +70,6 @@ declare module "@mui/material/styles" {
     border: {
       main: string
     }
-    scaleBackground: {
-      primary: string
-      secondary: string
-      disabled: string
-      select: string
-      disabledSecondary: string
-      gradient: string
-    }
     tagSuccess: {
       light: string
       main: string
@@ -126,14 +118,6 @@ declare module "@mui/material/styles" {
     }
     border?: {
       main?: string
-    }
-    scaleBackground?: {
-      primary?: string
-      secondary?: string
-      disabled?: string
-      select?: string
-      disabledSecondary?: string
-      gradient?: string
     }
     tagSuccess?: {
       light?: string

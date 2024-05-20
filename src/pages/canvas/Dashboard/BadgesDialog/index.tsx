@@ -1,12 +1,13 @@
 import { isEqual } from "lodash"
 import { useEffect, useState } from "react"
 
-import { Dialog, DialogContent, DialogTitle, IconButton, Stack, SvgIcon, Typography } from "@mui/material"
+import { Box, Dialog, DialogContent, DialogTitle, IconButton, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { ReactComponent as CloseSvg } from "@/assets/svgs/canvas/close.svg"
 import useSnackbar from "@/hooks/useSnackbar"
 import Button from "@/pages/canvas/components/Button"
+import { default as CanvasDialog } from "@/pages/canvas/components/Dialog"
 import { customiseDisplay } from "@/services/canvasService"
 // import { attachBadges, detachBadges, reorderBadges } from "@/services/canvasService"
 import useCanvasStore from "@/stores/canvasStore"
@@ -17,10 +18,19 @@ import Transfer from "./Transfer"
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
   borderRadius: "1.6rem",
-  backgroundColor: "rgba(16, 16, 16, 0.60)",
+  "& .MuiBackdrop-root": {
+    backgroundColor: "rgba(16, 16, 16, 0.60)",
+  },
   "& .MuiDialog-paper": {
     backgroundColor: "#101010",
-    width: "100%",
+    width: "112rem",
+    [theme.breakpoints.down("sm")]: {
+      margin: 0,
+      maxHeight: "unset",
+      maxWidth: "unset",
+      height: "100%",
+      width: "100%",
+    },
   },
 }))
 
@@ -30,6 +40,10 @@ const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
   flexDirection: "column",
   alignItems: "center",
   // justifyContent: "center",
+  [theme.breakpoints.down("sm")]: {
+    // flexDirection: "row",
+    padding: "0 2rem 2.4rem",
+  },
 }))
 // TODO:
 const BadgesDialog = props => {
@@ -47,6 +61,8 @@ const BadgesDialog = props => {
     changeSortedBadges,
   } = useCanvasStore()
   const alertWarning = useSnackbar()
+
+  console.log(userBadges, "userBadges")
 
   const [loading, setLoading] = useState(false)
 
@@ -153,75 +169,57 @@ const BadgesDialog = props => {
 
   if (!userBadges.length) {
     return (
-      <StyledDialog
-        sx={{
-          [`& .MuiDialog-paper`]: {
-            width: "64rem",
-          },
-        }}
-        maxWidth={false}
-        onClose={handleClose}
-        open={badgesDialogVisible}
-      >
-        <DialogTitle
-          sx={{
-            m: 0,
-            p: ["2rem", "3rem"],
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "center",
-          }}
-        >
-          <IconButton onClick={handleClose}>
-            <SvgIcon sx={{ fontSize: ["1.6rem", "2.4rem"], color: "primary.contrastText" }} component={CloseSvg} inheritViewBox></SvgIcon>
-          </IconButton>
-        </DialogTitle>
-        <DialogContent sx={{ pt: "7.6rem", pb: "16rem" }}>
+      <CanvasDialog onClose={handleClose} open={badgesDialogVisible}>
+        <Box sx={{ my: [0, "8rem"] }}>
           <Empty title="No badges for customisation" mintableBadgeCount={mintableBadgeCount} />
-        </DialogContent>
-      </StyledDialog>
+        </Box>
+      </CanvasDialog>
     )
   }
 
   return (
-    <StyledDialog
-      sx={{
-        [`& .MuiDialog-paper`]: {
-          width: "112rem",
-        },
-      }}
-      maxWidth={false}
-      onClose={handleClose}
-      open={badgesDialogVisible}
-    >
+    <StyledDialog maxWidth={false} onClose={handleClose} open={badgesDialogVisible}>
       <DialogTitle
         sx={{
           m: 0,
           p: ["2rem", "3rem"],
-          pt: ["3.2rem", "4rem"],
-          pb: ["3rem", "4rem"],
+          pt: ["1.2rem", "4rem"],
+          pb: ["1.2rem", "4rem"],
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
         }}
       >
-        <Typography sx={{ flex: 1, fontSize: "2.4rem", fontWeight: 600, color: "primary.contrastText", textAlign: "center" }}>
+        <Typography sx={{ flex: 1, fontSize: ["2rem", "2.4rem"], fontWeight: 600, color: "primary.contrastText", textAlign: "center" }}>
           Drag badges to customize
         </Typography>
         <IconButton onClick={handleClose}>
-          <SvgIcon sx={{ fontSize: ["1.6rem", "2.4rem"], color: "primary.contrastText" }} component={CloseSvg} inheritViewBox></SvgIcon>
+          <SvgIcon sx={{ fontSize: "2.4rem", mr: "-0.8rem", color: "primary.contrastText" }} component={CloseSvg} inheritViewBox></SvgIcon>
         </IconButton>
       </DialogTitle>
       <StyledDialogContent>
         <Transfer
-          sx={{ mb: "4rem" }}
+          sx={{ mb: ["2rem", "4rem"] }}
           titles={["Not displayed", "Displayed"]}
           data={userBadges}
           value={sortedBadges}
           onChange={handleTransferChange}
         ></Transfer>
-        <Stack direction="row" justifyContent="center" gap="1.6rem">
-          <Button color="secondary" onClick={handleClose}>
+        <Stack
+          direction="row"
+          justifyContent="center"
+          gap="1.6rem"
+          sx={theme => ({
+            [theme.breakpoints.down("sm")]: {
+              width: "100%",
+              pt: "2.4rem",
+              "& > *": {
+                width: "50%",
+              },
+            },
+          })}
+        >
+          <Button color="secondary" sx={{ borderColor: "#fff !important" }} onClick={handleClose}>
             Cancel
           </Button>
           <Button loading={loading} color="primary" variant="contained" onClick={handleSave}>

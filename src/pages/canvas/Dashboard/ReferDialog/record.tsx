@@ -22,6 +22,11 @@ const RecordBox = styled(Box)(({ theme }) => ({
   width: "100%",
   margin: "0 auto 6rem",
   gap: "4rem",
+  [theme.breakpoints.down("sm")]: {
+    justifyContent: "space-between",
+    gap: "1.8rem",
+    margin: "0 0 2.4rem",
+  },
 }))
 
 const Item = styled(Box)(({ theme }) => ({
@@ -29,6 +34,9 @@ const Item = styled(Box)(({ theme }) => ({
   alignItems: "center",
   gap: "1.6rem",
   flex: 1,
+  [theme.breakpoints.down("sm")]: {
+    flex: "unset",
+  },
 }))
 
 const Description = styled(Typography)(({ theme }) => ({
@@ -43,6 +51,10 @@ const Value = styled(Typography)(({ theme }) => ({
   fontSize: "4.8rem",
   fontWeight: 600,
   lineHeight: "6.4rem",
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "3.2rem",
+    lineHeight: "4.8rem",
+  },
 }))
 
 const Record = () => {
@@ -79,7 +91,11 @@ const Record = () => {
           Friends <br />
           Referred
         </Description>
-        {loading ? <Skeleton size="small" sx={{ my: "1.7rem", height: "3rem" }}></Skeleton> : <Value variant="body1">{count}</Value>}
+        {loading ? (
+          <Skeleton size="small" sx={{ my: ["1rem", "1.7rem"], height: ["2.4rem", "3rem"], width: "3em" }}></Skeleton>
+        ) : (
+          <Value variant="body1">{count}</Value>
+        )}
       </Item>
       <Item>
         <Description variant="body1">
@@ -87,7 +103,11 @@ const Record = () => {
           <br />
           Earned
         </Description>
-        {loading ? <Skeleton size="small" sx={{ my: "1.7rem", height: "3rem" }}></Skeleton> : <Value variant="body1">{earnedETH}</Value>}
+        {loading ? (
+          <Skeleton size="small" sx={{ my: ["1rem", "1.7rem"], height: ["2.4rem", "3rem"], width: "3em" }}></Skeleton>
+        ) : (
+          <Value variant="body1">{earnedETH}</Value>
+        )}
       </Item>
     </RecordBox>
   )

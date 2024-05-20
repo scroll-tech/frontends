@@ -89,18 +89,35 @@ const FirstBadgeStep = props => {
       title="Mint your first badge"
       description={<>A badge is an attestation of status or achievement, permanently recorded on your Canvas.</>}
       action={
-        <Stack direction="column" gap="2.4rem" alignItems="center">
+        <Stack
+          direction="column"
+          sx={[
+            { gap: ["1rem", "2.4rem"] },
+            theme => ({
+              [theme.breakpoints.down("sm")]: {
+                "& > div": {
+                  width: "100%",
+                },
+              },
+            }),
+          ]}
+          alignItems="center"
+        >
           <Button color="primary" width="28.2rem" gloomy={!badgeChecked?.eligibility} loading={isFirstBadgeMinting} onClick={handleMintBadge}>
             {isFirstBadgeMinting ? "Minting badge" : "Mint badge"}
           </Button>
-          <TextButton underline="always" sx={{ color: "#A0A0A0 !important", fontSize: "2rem", lineHeight: "3.5rem" }} onClick={handleViewMyCanvas}>
+          <TextButton
+            underline="always"
+            sx={{ color: "#A0A0A0 !important", fontSize: ["1.8rem", "2rem"], lineHeight: ["2.8rem", "3.5rem"] }}
+            onClick={handleViewMyCanvas}
+          >
             Skip and go to my Canvas
           </TextButton>
         </Stack>
       }
-      sx={{ mt: "4.6rem", mb: "8.8rem", textAlign: "center" }}
+      sx={{ mt: ["2.4rem", "4.6rem"], mb: ["2rem", "8.8rem"], textAlign: "center" }}
     >
-      <Box sx={{ width: "20rem", mb: "1.6rem", display: "inline-block" }}>
+      <Box sx={{ width: ["12rem", "20rem"], mb: "1.6rem", display: "inline-block" }}>
         {!badgeChecked ? (
           <Img style={{ borderRadius: "50%" }} src="/imgs/canvas/badgePlaceholder.svg" alt="Ethereum Year Badge"></Img>
         ) : (
@@ -113,7 +130,7 @@ const FirstBadgeStep = props => {
           ></Img>
         )}
       </Box>
-      <Typography sx={{ fontSize: "2rem", lineHeight: "3rem", fontWeight: 600 }}>{ETHEREUM_YEAR_BADGE.name}</Typography>
+      <Typography sx={{ fontSize: ["1.8rem", "2rem"], lineHeight: ["2.8rem", "3rem"], fontWeight: 600 }}>{ETHEREUM_YEAR_BADGE.name}</Typography>
       <Typography sx={{ fontSize: "1.6rem", lineHeight: "2.4rem", maxWidth: "60rem" }}>{renderTip()}</Typography>
     </StepWrapper>
   )

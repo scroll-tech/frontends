@@ -248,7 +248,16 @@ const BadgeTransfer = props => {
       }}
       onDragCancel={onDragCancel}
     >
-      <Box sx={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gridGap: "3rem", width: "100%", ...sx }}>
+      <Box
+        sx={[
+          { display: "grid", gridTemplateColumns: ["1fr", "repeat(2, 1fr)"], gridGap: ["1.6rem", "3rem"], width: "100%", ...sx },
+          theme => ({
+            [theme.breakpoints.down("sm")]: {
+              height: "calc(100% - 6.4rem)",
+            },
+          }),
+        ]}
+      >
         {containers.map((containerId, index) => (
           <TransferList key={containerId} id={containerId} label={titles[index]} items={items[containerId]}>
             {items[containerId].map(item => (

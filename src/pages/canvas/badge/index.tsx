@@ -107,7 +107,7 @@ const BadgeDetailPage = () => {
   }
 
   const viewCanvasURL = useMemo(() => {
-    console.log("walletCurrentAddress", walletCurrentAddress, detail)
+    // console.log("walletCurrentAddress", walletCurrentAddress, detail)
     if (walletCurrentAddress === detail.walletAddress) {
       return "/scroll-canvas"
     }
@@ -123,15 +123,20 @@ const BadgeDetailPage = () => {
         property={["owner", "issuer", "mintedOn", isOriginsNFTBadge(detail.badgeContract) ? "rarity" : undefined]}
         breadcrumb={<BackToCanvas username={detail.owner} loading={loading} href={viewCanvasURL}></BackToCanvas>}
       >
-        <ScrollButton color="primary" href={viewEASScanURL(id)} target="_blank">
+        <ScrollButton color="primary" href={viewEASScanURL(id)} sx={{ gridColumn: ["span 2", "unset"] }} target="_blank">
           View on EAS
         </ScrollButton>
 
-        {detail.badgeContract && !isNativeBadge(detail.badgeContract) && (
+        {isNativeBadge(detail.badgeContract) ? (
+          <ScrollButton color="secondary" href="/scroll-canvas">
+            Visit my canvas
+          </ScrollButton>
+        ) : (
           <ScrollButton color="secondary" href={detail.issuer?.origin} target="_blank">
-            Visit {isNativeBadge(detail.badgeContract) ? "Canvas" : detail.issuer?.name}
+            Visit {detail.issuer?.name}
           </ScrollButton>
         )}
+
         <Link external href={shareBadgeURL}>
           <SvgIcon sx={{ fontSize: "3.2rem", color: "primary.contrastText" }} component={ShareSvg} inheritViewBox></SvgIcon>
         </Link>
