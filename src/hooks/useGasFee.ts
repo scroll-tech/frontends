@@ -33,6 +33,7 @@ const useGasFee = (selectedToken, needApproval) => {
   const [gasFee, setGasFee] = useState<bigint | null>(null)
   const [batchDepositGasFee, setBatchDepositGasFee] = useState<bigint | null>(null)
   const [gasLimit, setGasLimit] = useState<bigint | null>(null)
+  const [gasLimitBatch, setGasLimitBatch] = useState<bigint | null>(null)
   const [enlargedGasLimit, setEnlargedGasLimit] = useState<bigint | null>(null)
   const [maxFeePerGas, setMaxFeePerGas] = useState<bigint | null>(null)
   const [maxPriorityFeePerGas, setMaxPriorityFeePerGas] = useState<bigint | null>(null)
@@ -72,6 +73,7 @@ const useGasFee = (selectedToken, needApproval) => {
       if (gasLimit === null) {
         return {
           gasLimit: null,
+          gasLimitBatch: null,
           batchDepositGasFee: null,
           enlargedGasLimit: null,
           gasFee: null,
@@ -84,6 +86,7 @@ const useGasFee = (selectedToken, needApproval) => {
       const enlargedGasLimit = (gasLimit * BigInt(120)) / BigInt(100)
       return {
         gasLimit,
+        gasLimitBatch,
         enlargedGasLimit,
         gasFee: estimatedGasCost,
         batchDepositGasFee: estimatedBatchDepositGasCost,
@@ -93,6 +96,7 @@ const useGasFee = (selectedToken, needApproval) => {
     }
     return {
       gasLimit: null,
+      gasLimitBatch: null,
       enlargedGasLimit: null,
       gasFee: null,
       batchDepositGasFee: null,
@@ -103,8 +107,9 @@ const useGasFee = (selectedToken, needApproval) => {
 
   useEffect(() => {
     calculateGasFee()
-      .then(({ gasLimit, enlargedGasLimit, gasFee, gasPrice, maxPriorityFeePerGas, batchDepositGasFee }) => {
+      .then(({ gasLimit, enlargedGasLimit, gasFee, gasPrice, maxPriorityFeePerGas, batchDepositGasFee, gasLimitBatch }) => {
         setGasLimit(gasLimit)
+        setGasLimitBatch(gasLimitBatch)
         setEnlargedGasLimit(enlargedGasLimit)
         setGasFee(gasFee)
         setBatchDepositGasFee(batchDepositGasFee)
@@ -114,6 +119,7 @@ const useGasFee = (selectedToken, needApproval) => {
       })
       .catch(error => {
         setGasLimit(null)
+        setGasLimitBatch(null)
         setEnlargedGasLimit(null)
         setGasFee(null)
         setBatchDepositGasFee(null)
@@ -124,7 +130,7 @@ const useGasFee = (selectedToken, needApproval) => {
       })
   }, [calculateGasFee])
 
-  return { enlargedGasLimit, gasLimit, gasFee, error, calculateGasFee, maxFeePerGas, maxPriorityFeePerGas, batchDepositGasFee }
+  return { enlargedGasLimit, gasLimit, gasLimitBatch, gasFee, error, calculateGasFee, maxFeePerGas, maxPriorityFeePerGas, batchDepositGasFee }
 }
 
 export default useGasFee
