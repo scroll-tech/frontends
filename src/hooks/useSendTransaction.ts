@@ -17,7 +17,10 @@ type TxOptions = {
   value: bigint
   maxFeePerGas?: bigint | null
   maxPriorityFeePerGas?: bigint | null
+  gasLimit?: bigint
 }
+
+const LOWER_BOUND = BigInt(11e4)
 
 export function useSendTransaction(props) {
   const { amount: fromTokenAmount, selectedToken, receiver, needApproval } = props
@@ -231,6 +234,7 @@ export function useSendTransaction(props) {
   const batchDepositETH = async () => {
     const options: TxOptions = {
       value: parsedAmount + batchDepositConfig.feeAmountPerTx,
+      gasLimit: LOWER_BOUND,
     }
 
     return networksAndSigners[CHAIN_ID.L1].batchBridgeGateway.depositETH(options)
