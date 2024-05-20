@@ -1,11 +1,16 @@
 import { Tooltip as MuiTooltip } from "@mui/material"
 import { tooltipClasses } from "@mui/material/Tooltip"
 
+import useCheckViewport from "@/hooks/useCheckViewport"
+
 const ToolTip = props => {
-  const { title, children } = props
+  const { title, children, ...restProps } = props
+  const { isDesktop } = useCheckViewport()
   return (
     <MuiTooltip
       title={title}
+      disableFocusListener={!isDesktop}
+      disableTouchListener={!isDesktop}
       followCursor
       PopperProps={{
         popperOptions: {
@@ -42,6 +47,7 @@ const ToolTip = props => {
           },
         },
       }}
+      {...restProps}
     >
       {children}
     </MuiTooltip>

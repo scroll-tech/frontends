@@ -41,7 +41,6 @@ interface BadgePosition {
 
 const Profile = styled(Box)(({ theme }) => ({
   backgroundColor: "#101010",
-  border: "1px solid rgba(255,255,255, 0.3)",
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-evenly",
@@ -57,12 +56,18 @@ const Name = styled(Typography)(({ theme }) => ({
   lineHeight: "3.2rem",
   alignSelf: "center",
   flexShrink: 0,
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1.6rem",
+    lineHeight: "2.4rem",
+  },
 }))
 
 const BadgeWall: React.FC<BadgeWallProps> = props => {
   const { address: othersWalletAddress } = useParams()
   const { badgewidth, gridNum, windowDimensions } = props
   const divRef = useRef<HTMLDivElement>(null)
+
+  // console.log(badgewidth, "badgewidth")
 
   const { profileMinted, canvasUsername, userBadges, orderedAttachedBadges } = useCanvasStore()
   const [badges, setBadges] = useState<BadgePosition[]>([])
@@ -83,35 +88,51 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
     let cursor = { x: divRect.left, y: divRect.top - badgewidth }
     let direction = 0 // 0: right, 1: down, 2: left, 3: up
     const limits = { left: divRect.left, right: divRect.right, top: divRect.top - badgewidth, bottom: divRect.bottom }
+    // const tempBadges = [
+    //   ...badges,
+    //   ...badges,
+    //   ...badges,
+    //   ...badges,
+    //   ...badges,
+    //   ...badges,
+    //   ...badges,
+    //   ...badges,
+    //   ...badges,
+    //   ...badges,
+    //   ...badges,
+    //   ...badges,
+    //   ...badges,
+    //   ...badges,
+    // ]
 
-    badges.forEach(badge => {
+    badges.slice(0, 48).forEach(badge => {
       positions.push({ metadata: badge, left: cursor.x, top: cursor.y })
 
       switch (direction) {
         case 0: // right
           cursor.x += badgewidth
-          if (cursor.x === limits.right) {
+          if (cursor.x > limits.right) {
             limits.right += badgewidth
             direction = 1
           }
           break
         case 1: // down
           cursor.y += badgewidth
-          if (cursor.y === limits.bottom) {
+          if (cursor.y > limits.bottom) {
             limits.bottom += badgewidth
             direction = 2
           }
           break
         case 2: // left
           cursor.x -= badgewidth
-          if (cursor.x === limits.left - badgewidth) {
+          if (cursor.x < limits.left) {
             limits.left -= badgewidth
             direction = 3
           }
           break
         case 3: // up
           cursor.y -= badgewidth
-          if (cursor.y === limits.top - badgewidth) {
+          if (cursor.y < limits.top) {
             limits.top -= badgewidth
             direction = 0
           }
@@ -125,6 +146,8 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
   const generatedBadges = (): BadgePosition[] => {
     if (divRef.current) {
       const divRect = divRef.current.getBoundingClientRect()
+      // console.log(divRect, "divRect")
+
       return generateBadgePositions(divRect, badgewidth, visibleBadges)
     }
     return []
@@ -142,8 +165,8 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
       <Profile
         ref={divRef}
         sx={{
-          width: `${(badgewidth * gridNum) / 2}px`,
-          height: `${(badgewidth * gridNum) / 2}px`,
+          width: `${(badgewidth * gridNum) / 2 - 1}px`,
+          height: `${(badgewidth * gridNum) / 2 - 1}px`,
         }}
       >
         <Tooltip
@@ -162,7 +185,7 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
         <Name>{userInfo.name}</Name>
       </Profile>
       {badges.map((badge, index) => (
-        <Badge key={badge.metadata.id} badge={badge} index={index} badgewidth={badgewidth} />
+        <Badge key={badge.metadata?.id} badge={badge} index={index} badgewidth={badgewidth} />
       ))}
     </>
   )

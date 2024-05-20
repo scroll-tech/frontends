@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react"
 import Img from "react-cool-img"
 import { Helmet } from "react-helmet-async"
 
@@ -17,6 +18,12 @@ const InfoBox = styled<any>(Box)(({ theme, count }) => ({
   // gridAutoColumns: "min-content",
   rowGap: "3.2rem",
   columnGap: "4.8rem",
+  [theme.breakpoints.down("sm")]: {
+    gridTemplateColumns: count === 1 ? "1fr" : "repeat(2, 1fr)",
+    width: "100%",
+    columnGap: "2.4rem",
+    rowGap: "1.6rem",
+  },
   // justifyItems: "center",
 }))
 
@@ -46,9 +53,25 @@ const InfoBox = styled<any>(Box)(({ theme, count }) => ({
 // }))
 
 const BadgeDetail = props => {
-  const { detail, metadata, loading, breadcrumb, property, children, extra } = props
+  const { detail, metadata, loading, breadcrumb, property, children } = props
+  const { isLandscape } = useCheckViewport()
+  const [actionHeight, setActionHeight] = useState("auto")
+  const [isOverflow, setIsOverflow] = useState(false)
 
-  const { isPortrait, isLandscape } = useCheckViewport()
+  const actionsRef = useRef()
+
+  useEffect(() => {
+    if (actionsRef?.current) {
+      setActionHeight((actionsRef.current as HTMLElement).getBoundingClientRect().height + "px")
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!loading) {
+      const detailContainerEl = document.querySelector(".detail-container") as HTMLElement
+      setIsOverflow(detailContainerEl.clientHeight < detailContainerEl.scrollHeight)
+    }
+  }, [loading])
 
   return (
     <>
@@ -64,12 +87,22 @@ const BadgeDetail = props => {
       </Helmet>
       <SectionWrapper
         dark
+        // containerSx={{
+        //   height: [`calc(100vh - 6.2rem - ${actionHeight})`, "auto"],
+        //   display: "flex",
+        //   alignItems: "center",
+        //   overflowY: "auto",
+        // }}
+        className="detail-container"
         sx={{
-          pt: ["5.5rem"],
-          pb: ["6rem"],
-          minHeight: "calc(100vh - 6.5rem)",
+          pt: ["1.6rem", "5.5rem"],
+          pb: [0, "6rem"],
+          minHeight: ["unset", "calc(100vh - 6.5rem)"],
+
+          height: [`calc(100vh - 6.2rem - ${actionHeight})`, "auto"],
           display: "flex",
-          alignItems: "center",
+          alignItems: isOverflow ? "flex-start" : "center",
+          overflowY: "auto",
         }}
       >
         <Box
@@ -99,13 +132,14 @@ const BadgeDetail = props => {
               gridTemplateColumns: "1fr",
             },
             "@media (max-width: 600px)": {
-              gap: "2.4rem",
+              gap: "1.6rem",
+              height: "max-content",
             },
           }}
         >
           {!!breadcrumb && <Box sx={{ width: "100%", gridColumn: ["span 1", "span 1", "span 2"], justifySelf: "flex-start" }}>{breadcrumb}</Box>}
 
-          <Box sx={{ width: "40rem", aspectRatio: "1/1" }}>
+          <Box sx={{ width: ["12rem", "40rem"], aspectRatio: "1/1" }}>
             {loading ? (
               <Skeleton dark sx={{ height: "100%" }}></Skeleton>
             ) : (
@@ -118,9 +152,9 @@ const BadgeDetail = props => {
             )}
           </Box>
           <Stack
-            sx={{ width: "100%" }}
+            sx={{ width: "100%", gap: ["1.6rem", "2.4rem", "3.2rem"] }}
             direction="column"
-            spacing={isPortrait ? "2.4rem" : "3.2rem"}
+            // spacing={isPortrait ? "2.4rem" : "3.2rem"}
             alignItems={isLandscape ? "flex-start" : "center"}
           >
             <Box sx={{ width: "100%", textAlign: ["center", "center", "left"] }}>
@@ -131,15 +165,35 @@ const BadgeDetail = props => {
             </UpgradedButton>
           </UpgradedBox> */}
               {loading ? (
-                <Skeleton dark sx={{ height: "7.2rem", width: "60%", my: "0.6rem" }}></Skeleton>
+                <Skeleton
+                  dark
+                  sx={{
+                    height: ["3.2rem", "7.2rem"],
+                    width: ["40vw", "40vw", "60%"],
+                    my: "0.6rem",
+                  }}
+                ></Skeleton>
               ) : (
-                <Typography sx={{ fontSize: ["4rem", "4rem"], fontWeight: 600, lineHeight: ["5.6rem", "7.2rem"] }}>{detail.name}</Typography>
+                <Typography
+                  sx={{
+                    fontSize: ["2rem", "4rem"],
+                    fontWeight: 600,
+                    lineHeight: ["3.2rem", "7.2rem"],
+                    textAlign: ["center", "center", "left"],
+                    mb: "0.8rem",
+                  }}
+                >
+                  {detail.name}
+                </Typography>
               )}
               {loading ? (
-                <Skeleton dark sx={{ width: ["100%", "100%", "100%", "56rem"], height: "6.4rem", my: "0.6rem" }}></Skeleton>
+                <Skeleton
+                  dark
+                  sx={{ display: "block", width: ["100%", "100%", "100%", "56rem"], height: ["4.8rem", "6.4rem"], my: "0.6rem" }}
+                ></Skeleton>
               ) : (
-                <Typography sx={{ fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.4rem", "2.8rem"], maxWidth: ["100%", "56rem"] }}>
-                  <>{detail.description}</>
+                <Typography sx={{ fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.4rem", "2.8rem"], maxWidth: ["100%", "100%", "56rem"] }}>
+                  {detail.description}
                 </Typography>
               )}
             </Box>
@@ -150,7 +204,6 @@ const BadgeDetail = props => {
                 <Statistic label="Owner" loading={loading} sx={{ "& *": { cursor: "pointer !important" } }}>
                   <Box
                     sx={{
-                      mt: "0.8rem",
                       display: "flex",
                       alignItems: "center",
                       gap: "0.8rem",
@@ -166,7 +219,6 @@ const BadgeDetail = props => {
                 <Statistic label="Issued by" loading={loading}>
                   <Box
                     sx={{
-                      mt: "0.8rem",
                       display: "flex",
                       alignItems: "center",
                       gap: "0.8rem",
@@ -185,32 +237,43 @@ const BadgeDetail = props => {
               )}
               {property.includes("mintedOn") && (
                 <Statistic label="Minted on" loading={loading}>
-                  <Box
-                    sx={{
-                      mt: "1rem",
-                    }}
-                  >
-                    {detail.mintedOn}
-                  </Box>
+                  <Box>{detail.mintedOn}</Box>
                 </Statistic>
               )}
               {property.includes("rarity") && (
                 <Statistic label="Rarity" loading={loading}>
-                  <Box
-                    sx={{
-                      mt: "1rem",
-                    }}
-                  >
-                    {detail.rarity}
-                  </Box>
+                  <Box>{detail.rarity}</Box>
                 </Statistic>
               )}
             </InfoBox>
 
-            <Stack direction="row" gap="1.6rem" alignItems="center">
+            <Box
+              ref={actionsRef}
+              sx={[
+                {
+                  display: "grid",
+                  gridTemplateColumns: "repeat(3, min-content)",
+                  alignItems: "center",
+                  columnGap: "1.6rem",
+                  rowGap: "3.2rem",
+                },
+                theme => ({
+                  [theme.breakpoints.down("sm")]: {
+                    position: "fixed",
+                    padding: "2.4rem 2rem",
+                    bottom: 0,
+                    width: "100%",
+                    rowGap: "1.6rem",
+                    gridTemplateColumns: "1fr min-content",
+                    "& > div": {
+                      width: "100%",
+                    },
+                  },
+                }),
+              ]}
+            >
               {children}
-            </Stack>
-            {extra}
+            </Box>
           </Stack>
         </Box>
       </SectionWrapper>

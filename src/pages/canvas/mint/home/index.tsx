@@ -25,8 +25,9 @@ const Container = styled(Box)(({ theme }) => ({
   paddingBottom: "6rem",
   backgroundColor: "#101010",
   [theme.breakpoints.down("sm")]: {
-    minHeight: "calc(100vh - 6.2rem)",
+    minHeight: "calc(100vh - 6.2rem - 9.6rem)",
     padding: "0 1rem",
+    overflowY: "auto",
   },
 }))
 
@@ -37,6 +38,10 @@ const Title = styled(Typography)(({ theme }) => ({
   fontWeight: 600,
   lineHeight: "5.6rem",
   marginBottom: "0.8rem",
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "2.4rem",
+    lineHeight: "3.2rem",
+  },
 }))
 
 const SubTitle = styled(Typography)(({ theme }) => ({
@@ -46,6 +51,10 @@ const SubTitle = styled(Typography)(({ theme }) => ({
   fontStyle: "normal",
   fontWeight: 400,
   lineHeight: "2.8rem",
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1.6rem",
+    lineHeight: "2.4rem",
+  },
 }))
 
 const StickyBox = styled(Box)(({ theme }) => ({
@@ -53,6 +62,15 @@ const StickyBox = styled(Box)(({ theme }) => ({
   bottom: "0.8rem",
   zIndex: 1,
   backgroundColor: "#101010",
+  [theme.breakpoints.down("sm")]: {
+    position: "fixed",
+    padding: "2.4rem 2rem",
+    bottom: 0,
+    width: "100%",
+    "& > div": {
+      width: "100%",
+    },
+  },
 }))
 
 const MintHome = props => {
@@ -103,8 +121,8 @@ const MintHome = props => {
     <Container>
       <Title>Mint your Scroll Canvas</Title>
       <SubTitle>Map your journey and earn badges across the ecosystem.</SubTitle>
-      <Box sx={{ height: "28rem", mt: "0.8rem", mb: "1.6rem" }}>
-        <img src="/imgs/canvas/heartbeat.webp" alt="heartbeat" style={{ height: "100%" }}></img>
+      <Box sx={{ height: ["min-content", "28rem"], width: ["100%", "auto"], mt: "0.8rem", mb: ["2.4rem", "1.6rem"] }}>
+        <img src="/imgs/canvas/heartbeat.webp" alt="heartbeat" style={{ height: isMobile ? "unset" : "100%" }}></img>
       </Box>
       <ReferralCodeInput code={code} isChecking={isChecking} setIsChecking={setIsChecking} codeStatus={codeStatus} setCodeStatus={setCodeStatus} />
       <StickyBox>{renderAction()}</StickyBox>

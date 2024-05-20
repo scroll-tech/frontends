@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react"
+import { isDesktop } from "react-device-detect"
 import { Helmet } from "react-helmet-async"
 import { Navigate, useNavigate, useParams } from "react-router-dom"
 import { usePrevious } from "react-use"
@@ -26,7 +27,7 @@ import NameDialog from "./NameDialog"
 import ReferDialog from "./ReferDialog"
 import UpgradeDialog from "./UpgradeDialog"
 
-const Container: any = styled(Box)(({ theme, badgewidth }: any) => ({
+const Container: any = styled(Box)(({ theme, badgewidth, gridNum }: any) => ({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -46,17 +47,31 @@ const Container: any = styled(Box)(({ theme, badgewidth }: any) => ({
     top: 0,
     width: "calc((100vw - 100vh + 14rem)/ 2) ",
     zIndex: 42,
+
+    [theme.breakpoints.down("md")]: {
+      width: "100%",
+      height: `calc((100vh - ${gridNum * badgewidth}px) / 2)`,
+    },
   },
   "&::before": {
     background: "linear-gradient(90deg, #101010 50.5%, rgba(16, 16, 16, 0) 100%)",
     left: 0,
+    [theme.breakpoints.down("md")]: {
+      background: "linear-gradient(#101010 75%,  rgba(16, 16, 16, 0) 100%)",
+    },
   },
   "&::after": {
     background: "linear-gradient(270deg, #101010 50.5%, rgba(16, 16, 16, 0) 100%)",
     right: 0,
+    [theme.breakpoints.down("md")]: {
+      background: "linear-gradient(rgba(16, 16, 16, 0) 0%, #101010 20%)",
+      top: "unset",
+      bottom: 0,
+    },
   },
   [theme.breakpoints.down("md")]: {
-    height: "calc(100vh - 6.2rem)",
+    marginTop: "-6.2rem",
+    height: "100vh",
   },
 }))
 
@@ -116,6 +131,7 @@ const Dashboard = props => {
     const filteredBadges = checkedBadges
       .filter((item): item is PromiseFulfilledResult<VisibleBadge> => item.status === "fulfilled" && item.value.isValid)
       .map(item => item.value)
+
     setLoading(false)
     setVisibleBadges(filteredBadges)
   }
@@ -127,7 +143,8 @@ const Dashboard = props => {
   }, [userBadges, walletCurrentAddress, provider])
 
   useEffect(() => {
-    if (upgradeDialogVisible) {
+    // initail fetch/when open badges dialog
+    if (upgradeDialogVisible || !preVisibleBadges?.length) {
       fetchVisibleBadges(true)
     }
   }, [upgradeDialogVisible])
@@ -243,10 +260,12 @@ const Dashboard = props => {
       {!!profileDetailLoading ? (
         <LoadingPage></LoadingPage>
       ) : (
-        <Container badgewidth={badgewidth}>
+        <Container badgewidth={badgewidth} gridNum={gridNum}>
           <BadgeWall badgewidth={badgewidth} gridNum={gridNum} windowDimensions={windowDimensions} />
 
-          <Canvas visible buttonText={scrollyAlert.title} title={scrollyAlert.content} onClick={scrollyAlert.action} canvasId="dashboardCanvas" />
+          {isDesktop && (
+            <Canvas visible buttonText={scrollyAlert.title} title={scrollyAlert.content} onClick={scrollyAlert.action} canvasId="dashboardCanvas" />
+          )}
           {!!othersWalletAddress ? (
             <>
               <ActionBox></ActionBox>

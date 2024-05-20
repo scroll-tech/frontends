@@ -43,15 +43,7 @@ export const paletteOptions = {
     default: "#FFF",
     paper: "#FFF",
   },
-  // TODO: delete
-  scaleBackground: {
-    primary: "rgba(201, 203, 206, 0.2)",
-    second: "#C9CBCE33",
-    disabled: "#EBEBEB",
-    select: "#C9CBCE33",
-    disabledSecondary: "#B4B4B4",
-    gradient: "linear-gradient(180deg, rgba(255, 232, 203, 0.74) 0%, rgba(255, 255, 255, 0) 100%)",
-  },
+
   themeBackground: {
     light: "#FFF8F3",
     dark: "#101010",
