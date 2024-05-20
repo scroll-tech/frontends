@@ -3,11 +3,13 @@ import { useEffect, useRef } from "react"
 import Img from "react-cool-img"
 
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useCheckViewport from "@/hooks/useCheckViewport"
 import useCanvasStore from "@/stores/canvasStore"
 import { getBadgeImgURL } from "@/utils"
 
 const FirstBadgeMask = props => {
   const { badgeWidth } = props
+  const { isMobile, isPortrait } = useCheckViewport()
 
   const { provider } = useRainbowContext()
   const firstBadgeRef = useRef()
@@ -15,8 +17,9 @@ const FirstBadgeMask = props => {
   // console.log(firstBadgeWithPosition, "firstBadgeWithPosition")
   // const initialLeft = window.innerWidth / 2 - (badgeWidth * 0.7) / 2
   // const initialTop = (window.innerHeight - 65) / 2 + 65 - (badgeWidth * 0.7) / 2
+  const headerHeight = isPortrait ? 0 : 65
   const left = window.innerWidth / 2 - badgeWidth + badgeWidth * 0.15
-  const top = (window.innerHeight - 65) / 2 + 65 - 2 * badgeWidth + badgeWidth * 0.15
+  const top = (window.innerHeight - headerHeight) / 2 + headerHeight - 2 * badgeWidth + badgeWidth * 0.15
 
   useEffect(() => {
     if (attachedBadges.includes(firstBadgeWithPosition.id)) {
@@ -37,7 +40,7 @@ const FirstBadgeMask = props => {
       animate={{
         left: [firstBadgeWithPosition.left, left],
         top: [firstBadgeWithPosition.top, top],
-        width: [200, badgeWidth * 0.7],
+        width: [isMobile ? 120 : 200, badgeWidth * 0.7],
       }}
       transition={{ delay: 1, duration: 1, type: "spring", stiffness: 40 }}
       onAnimationComplete={handleAnimationComplete}
@@ -55,7 +58,7 @@ const FirstBadgeMask = props => {
         }}
         ref={firstBadgeRef}
         src={getBadgeImgURL(firstBadgeWithPosition.image)}
-        placeholder="/imgs/canvas/badgePlaceholder.svg"
+        // placeholder="/imgs/canvas/badgePlaceholder.svg"
         alt="Ethereum Year Badge"
       ></Img>
     </motion.div>

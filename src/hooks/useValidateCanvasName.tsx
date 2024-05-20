@@ -64,7 +64,9 @@ const useValidateName = value => {
       return (
         <>
           <CircularProgress sx={{ color: "#A5A5A5" }} size={18}></CircularProgress>
-          <Typography sx={{ fontSize: "1.8rem", lineHeight: "2.8rem", fontWeight: 500, color: "#A5A5A5 !important" }}>Checking...</Typography>
+          <Typography sx={{ fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.4rem", "2.8rem"], fontWeight: 500, color: "#A5A5A5 !important" }}>
+            Checking...
+          </Typography>
         </>
       )
     } else if (helpText !== null) {

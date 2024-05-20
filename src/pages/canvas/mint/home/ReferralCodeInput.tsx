@@ -35,14 +35,12 @@ const ReferralCodeBox = styled(Box)(({ theme }) => ({
   marginTop: "1.6rem",
   marginBottom: "4rem",
   gap: "0.8rem",
-  [theme.breakpoints.down("sm")]: {
-    marginBottom: 0,
-  },
 }))
 
 const ReferralCodeInput = styled(InputBase)(({ theme }) => ({
   backgroundColor: "#101010",
   color: theme.palette.primary.contrastText,
+  fontFamily: "var(--developer-page-font-family)",
   border: "1px solid #5b5b5b",
   borderRadius: "1rem",
   width: "7.2rem",
@@ -75,7 +73,7 @@ const StatusBox = styled(Box)(({ theme }) => ({
   left: "50%",
   transform: "translateX(-50%)",
   [theme.breakpoints.down("sm")]: {
-    bottom: "-4.2rem",
+    bottom: 0,
   },
 }))
 
