@@ -73,6 +73,7 @@ const useGasFee = (selectedToken, needApproval) => {
       if (gasLimit === null) {
         return {
           gasLimit: null,
+          gasLimitBatch: null,
           batchDepositGasFee: null,
           enlargedGasLimit: null,
           gasFee: null,
@@ -85,7 +86,7 @@ const useGasFee = (selectedToken, needApproval) => {
       const enlargedGasLimit = (gasLimit * BigInt(120)) / BigInt(100)
       return {
         gasLimit,
-        gasLimitBatch: null,
+        gasLimitBatch,
         enlargedGasLimit,
         gasFee: estimatedGasCost,
         batchDepositGasFee: estimatedBatchDepositGasCost,
@@ -106,8 +107,9 @@ const useGasFee = (selectedToken, needApproval) => {
 
   useEffect(() => {
     calculateGasFee()
-      .then(({ gasLimit, enlargedGasLimit, gasFee, gasPrice, maxPriorityFeePerGas, batchDepositGasFee }) => {
+      .then(({ gasLimit, enlargedGasLimit, gasFee, gasPrice, maxPriorityFeePerGas, batchDepositGasFee, gasLimitBatch }) => {
         setGasLimit(gasLimit)
+        setGasLimitBatch(gasLimitBatch)
         setEnlargedGasLimit(enlargedGasLimit)
         setGasFee(gasFee)
         setBatchDepositGasFee(batchDepositGasFee)
@@ -117,6 +119,7 @@ const useGasFee = (selectedToken, needApproval) => {
       })
       .catch(error => {
         setGasLimit(null)
+        setGasLimitBatch(null)
         setEnlargedGasLimit(null)
         setGasFee(null)
         setBatchDepositGasFee(null)
