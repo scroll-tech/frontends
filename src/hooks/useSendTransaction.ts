@@ -17,16 +17,16 @@ type TxOptions = {
   value: bigint
   maxFeePerGas?: bigint | null
   maxPriorityFeePerGas?: bigint | null
-  gasLimit?: bigint
+  gasLimit?: number | null
 }
 
-const LOWER_BOUND = BigInt(11e4)
+const LOWER_BOUND = 1e5
 
 export function useSendTransaction(props) {
   const { amount: fromTokenAmount, selectedToken, receiver, needApproval } = props
   const { walletCurrentAddress } = useRainbowContext()
   const { networksAndSigners, blockNumbers } = useBridgeContext()
-  const { enlargedGasLimit: txGasLimit, maxFeePerGas, maxPriorityFeePerGas } = useGasFee(selectedToken, needApproval)
+  const { enlargedGasLimit: txGasLimit, maxFeePerGas, maxPriorityFeePerGas, gasLimitBatch } = useGasFee(selectedToken, needApproval)
   const { addTransaction, addEstimatedTimeMap, removeFrontTransactions, updateTransaction } = useTxStore()
   const { fromNetwork, toNetwork, changeTxResult, changeWithdrawStep } = useBridgeStore()
   const { bridgeSummaryType, depositBatchMode, batchDepositConfig } = useBatchBridgeStore()
@@ -234,7 +234,7 @@ export function useSendTransaction(props) {
   const batchDepositETH = async () => {
     const options: TxOptions = {
       value: parsedAmount + batchDepositConfig.feeAmountPerTx,
-      gasLimit: LOWER_BOUND,
+      gasLimit: Math.max(Number(gasLimitBatch), LOWER_BOUND),
     }
 
     return networksAndSigners[CHAIN_ID.L1].batchBridgeGateway.depositETH(options)

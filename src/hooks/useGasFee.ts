@@ -30,6 +30,7 @@ const useGasFee = (selectedToken, needApproval) => {
   const [gasFee, setGasFee] = useState<bigint | null>(null)
   const [batchDepositGasFee, setBatchDepositGasFee] = useState<bigint | null>(null)
   const [gasLimit, setGasLimit] = useState<bigint | null>(null)
+  const [gasLimitBatch, setGasLimitBatch] = useState<bigint | null>(null)
   const [enlargedGasLimit, setEnlargedGasLimit] = useState<bigint | null>(null)
   const [maxFeePerGas, setMaxFeePerGas] = useState<bigint | null>(null)
   const [maxPriorityFeePerGas, setMaxPriorityFeePerGas] = useState<bigint | null>(null)
@@ -61,6 +62,7 @@ const useGasFee = (selectedToken, needApproval) => {
     if (gasLimit === null) {
       return {
         gasLimit: null,
+        gasLimitBatch: null,
         batchDepositGasFee: null,
         enlargedGasLimit: null,
         gasFee: null,
@@ -73,6 +75,7 @@ const useGasFee = (selectedToken, needApproval) => {
     const enlargedGasLimit = (gasLimit * BigInt(120)) / BigInt(100)
     return {
       gasLimit,
+      gasLimitBatch,
       enlargedGasLimit,
       gasFee: estimatedGasCost,
       batchDepositGasFee: estimatedBatchDepositGasCost,
@@ -89,6 +92,7 @@ const useGasFee = (selectedToken, needApproval) => {
           setGasFee(value.gasFee)
           setBatchDepositGasFee(value.batchDepositGasFee)
           setGasLimit(value.gasLimit)
+          setGasLimitBatch(value.gasLimitBatch)
           setEnlargedGasLimit(value.enlargedGasLimit)
           setMaxFeePerGas(value.gasPrice)
           setMaxPriorityFeePerGas(value.maxPriorityFeePerGas)
@@ -98,6 +102,7 @@ const useGasFee = (selectedToken, needApproval) => {
           setGasFee(null)
           setBatchDepositGasFee(null)
           setGasLimit(null)
+          setGasLimitBatch(null)
           setEnlargedGasLimit(null)
           setMaxFeePerGas(null)
           setMaxPriorityFeePerGas(null)
@@ -105,7 +110,7 @@ const useGasFee = (selectedToken, needApproval) => {
         })
     },
   })
-  return { enlargedGasLimit, gasLimit, gasFee, error, calculateGasFee, maxFeePerGas, maxPriorityFeePerGas, batchDepositGasFee }
+  return { enlargedGasLimit, gasLimit, gasLimitBatch, gasFee, error, calculateGasFee, maxFeePerGas, maxPriorityFeePerGas, batchDepositGasFee }
 }
 
 export default useGasFee
