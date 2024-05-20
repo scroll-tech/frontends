@@ -18,6 +18,7 @@ import { generateShareTwitterURL, requireEnv } from "@/utils"
 
 import Badges, { badgeMap } from "../Dashboard/UpgradeDialog/Badges"
 import BadgeDetail from "../badge/BadgeDetail"
+import Back from "./Back"
 
 const BadgeContractDetail = props => {
   const { address } = useParams()
@@ -191,7 +192,7 @@ const BadgeContractDetail = props => {
     return <Navigate to="/404"></Navigate>
   }
   return (
-    <BadgeDetail detail={detail} metadata={metadata} property={["issuer"]}>
+    <BadgeDetail detail={detail} metadata={metadata} property={["issuer"]} breadcrumb={<Back></Back>}>
       {renderAction()}
 
       {detail.native ? (

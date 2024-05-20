@@ -67,11 +67,12 @@ const BadgeDetail = props => {
   }, [])
 
   useEffect(() => {
-    if (!loading) {
+    if (!loading && actionHeight !== "auto") {
       const detailContainerEl = document.querySelector(".detail-container") as HTMLElement
+      // console.log(detailContainerEl.clientHeight, detailContainerEl.scrollHeight)
       setIsOverflow(detailContainerEl.clientHeight < detailContainerEl.scrollHeight)
     }
-  }, [loading])
+  }, [loading, actionHeight])
 
   return (
     <>
