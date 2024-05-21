@@ -128,7 +128,7 @@ const Coupon = props => {
     revalidateOnReconnect: false,
     shouldRetryOnError: false,
     onError: e => {
-      alertWarning("Failed to fetch Scroll Canvas Coupon", "coupon")
+      alertWarning("Failed to fetch Scroll Canvas Coupon")
     },
   })
 

@@ -13,7 +13,7 @@ import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useSnackbar from "@/hooks/useSnackbar"
 import Dialog from "@/pages/canvas/components/Dialog"
-import { getBadgeMetadata, mintBadge } from "@/services/canvasService"
+import { mintBadge } from "@/services/canvasService"
 import useCanvasStore, { BadgeDetailDialogTpye } from "@/stores/canvasStore"
 import { generateShareTwitterURL, getBadgeImgURL, requireEnv } from "@/utils"
 
@@ -84,15 +84,12 @@ const BadgeDetailDialog = () => {
     selectedBadge,
     changeUpgradeDialog,
     queryVisibleBadges,
-    changeSelectedBadge,
     isBadgeMinting,
     changeIsBadgeMinting,
   } = useCanvasStore()
   const navigate = useNavigate()
   const alertWarning = useSnackbar()
   const { isMobile } = useCheckViewport()
-
-  console.log(badgeDetailDialogVisible, "badgeDetailDialogVisible")
 
   const handleClose = () => {
     changeBadgeDetailDialog(BadgeDetailDialogTpye.HIDDEN)
@@ -103,11 +100,20 @@ const BadgeDetailDialog = () => {
     changeIsBadgeMinting(selectedBadge.badgeContract, true)
     try {
       const result = await mintBadge(provider, walletCurrentAddress, selectedBadge)
+      // const result: any = await testAsyncFunc("0x11cfb299dda2ae8b1fccf9a055394de9a7f953e8b8f115295dc0f2325e8b2130")
       if (result) {
-        const { image } = await getBadgeMetadata(provider, selectedBadge.badgeContract, result)
-        changeSelectedBadge({ ...selectedBadge, id: result, image })
-        changeBadgeDetailDialog(BadgeDetailDialogTpye.MINTED)
-        queryVisibleBadges(provider, walletCurrentAddress)
+        await queryVisibleBadges(provider, walletCurrentAddress)
+        alertWarning(
+          <>
+            {selectedBadge.name} minted successfully!<br></br>
+            <Link underline="always" sx={{ color: "inherit", fontSize: "inherit" }} href={`/scroll-canvas/badge/${result}`}>
+              View badge details
+            </Link>
+          </>,
+          "success",
+        )
+        changeBadgeDetailDialog(BadgeDetailDialogTpye.HIDDEN)
+        changeUpgradeDialog(true)
       }
     } catch (e) {
       alertWarning("Failed to mint badge")
@@ -127,16 +133,12 @@ const BadgeDetailDialog = () => {
   // }
 
   const handleViewBadge = () => {
-    console.log(selectedBadge, "selectedBadge")
     changeBadgeDetailDialog(BadgeDetailDialogTpye.HIDDEN)
     changeUpgradeDialog(false)
-    // console.log(`/scroll-canvas/badge/${selectedBadge.id}`, "?????")
     navigate(`/scroll-canvas/badge/${selectedBadge.id}`)
   }
 
   const handleViewBadgeContract = () => {
-    console.log(selectedBadge, "badge contract")
-
     changeBadgeDetailDialog(BadgeDetailDialogTpye.HIDDEN)
     changeUpgradeDialog(false)
     navigate(`/scroll-canvas/badge-contract/${selectedBadge.badgeContract}`)
