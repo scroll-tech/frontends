@@ -17,14 +17,6 @@ const useStyles = makeStyles()(theme => ({
     backgroundColor: "#FF684B",
     color: "#FFEBD7",
   },
-  defaultSuccess: {
-    backgroundColor: "#62E3D1",
-    color: theme.palette.text.primary,
-  },
-  defaultInfo: {
-    backgroundColor: theme.palette.themeBackground.highlight,
-    color: theme.palette.text.primary,
-  },
   icon: {
     marginRight: 8,
   },
@@ -45,16 +37,12 @@ const GlobalWarning = forwardRef((props: any, ref) => {
       severity={severity}
       sx={{ maxWidth: "49rem" }}
       iconMapping={{
-        // success: <SvgIcon sx={{ fontSize: "2.4rem", color: theme => theme.palette.text.primary }} component={SuccessSvg} inheritViewBox></SvgIcon>,
         error: <SvgIcon sx={{ fontSize: "2.4rem", color: "#FFEBD7" }} component={ErrorSvg} inheritViewBox></SvgIcon>,
-        // info: <SvgIcon sx={{ fontSize: "2.4rem", color: theme => theme.palette.text.primary }} component={ErrorSvg} inheritViewBox></SvgIcon>,
       }}
       classes={{
         root: classes.alert,
         icon: classes.icon,
         defaultError: classes.defaultError,
-        // defaultSuccess: classes.defaultSuccess,
-        // defaultInfo: classes.defaultInfo,
         message: classes.message,
       }}
       {...restProps}

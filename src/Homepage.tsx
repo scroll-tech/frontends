@@ -15,7 +15,8 @@ import NotFound from "@/pages/404"
 import { isSepolia, requireEnv } from "@/utils"
 
 import useCheckTheme from "./components/Header/useCheckTheme"
-import GlobalWarning from "./components/RequestWarning/GlobalWarning"
+import GlobalError from "./components/RequestWarning/GlobalError"
+import GlobalSuccess from "./components/RequestWarning/GlobalSuccess"
 import useMatchedRoute from "./hooks/useMatchedRoute"
 import routes from "./routes"
 
@@ -70,7 +71,7 @@ function Homepage() {
       <RainbowProvider>
         <BridgeContextProvider>
           <CanvasContextProvider>
-            <SnackbarProvider Components={{ default: GlobalWarning }}>
+            <SnackbarProvider Components={{ default: GlobalError, success: GlobalSuccess }}>
               <ScrollToTop>
                 <Header />
                 <Routes>
