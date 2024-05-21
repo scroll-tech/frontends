@@ -17,7 +17,7 @@ export const commafy = (value: string | number | undefined, decimals: number = 2
   try {
     return numbro(value).format({
       thousandSeparated: true,
-      optionalMantissa: false,
+      optionalMantissa: true,
       mantissa: decimals,
     })
   } catch (err) {
@@ -67,7 +67,8 @@ export const toPrecision = (amount, precise = 8) => {
   }
   const withPrecision = commafy(amount, significantDecimals)
   // Remove trailing zeros after decimal point
-  return parseFloat(withPrecision).toString()
+  const withoutTrailingZero = withPrecision.replace(/(\.\d*?)0+$/, "$1").replace(/(\.\d+?)0+$/, "$10")
+  return withoutTrailingZero
 }
 
 export function sanitizeNumericalString(numStr: string) {
