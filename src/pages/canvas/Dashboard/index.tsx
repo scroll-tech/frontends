@@ -194,7 +194,7 @@ const Dashboard = props => {
       const signer = await provider?.getSigner(0)
       await fetchCurrentCanvasDetail(signer, walletAddress, profileAddress)
     } catch (e) {
-      alertWarning("Failed to fetch canvas detail 111")
+      alertWarning(e.message)
     } finally {
       changeProfileDetailLoading(false)
     }
@@ -205,7 +205,7 @@ const Dashboard = props => {
       changeProfileDetailLoading(true)
       await checkAndFetchOthersCanvasDetail(provider, unsignedProfileRegistryContract, othersWalletAddress)
     } catch (e) {
-      alertWarning("Failed to fetch canvas detail")
+      alertWarning(e.message)
     } finally {
       changeProfileDetailLoading(false)
     }

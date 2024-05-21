@@ -62,8 +62,9 @@ const queryUserBadges = async userAddress => {
 
     return attestations
   } catch (error) {
-    console.log("Failed to query user badges:", error)
-    return []
+    throw new Error("Failed to query user badges:")
+    // console.log("Failed to query user badges:", error)
+    // return []
   }
 }
 

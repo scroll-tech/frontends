@@ -25,7 +25,6 @@ const SubTitle = styled(Typography)(({ theme }) => ({
   color: "#EEEEEE",
   textAlign: "center",
   fontSize: "1.8rem",
-  fontStyle: "normal",
   fontWeight: 400,
   lineHeight: "2.8rem",
   marginBottom: "3.2rem",
@@ -48,8 +47,7 @@ const ReferDialog = () => {
       <Box sx={{ width: ["100%", "auto"], height: ["80%", "auto"] }}>
         <Title>Invite friends & you both earn</Title>
         <SubTitle>
-          Your friend gets 50% off the mint fee <br />
-          while you receive 0.0005 ETH per successful referral
+          Your friend gets 50% off the Canvas mint fee <br></br> and you receive 0.0005 ETH per successful referral
         </SubTitle>
         <Record />
         <Coupon shouldFetch={referDialogVisible} />
