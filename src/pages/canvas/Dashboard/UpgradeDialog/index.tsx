@@ -5,10 +5,10 @@ import { styled } from "@mui/system"
 
 import LoadingPage from "@/components/LoadingPage"
 import useCheckViewport from "@/hooks/useCheckViewport"
+import Dialog from "@/pages/canvas/components/Dialog"
+import Empty from "@/pages/canvas/components/Empty"
 import useCanvasStore from "@/stores/canvasStore"
 
-import Dialog from "../../components/Dialog"
-import Empty from "../../components/Empty"
 import BadgeItem from "./BadgeItem"
 
 const StyledList = styled(List)(({ theme }) => ({
@@ -71,7 +71,7 @@ const UpgradeDialog = props => {
   }
 
   return (
-    <Dialog title={isMobile ? "Badges for Mint" : "Badges Ready to Mint"} open={upgradeDialogVisible} onClose={handleClose}>
+    <Dialog title="Badges for Mint" open={upgradeDialogVisible} onClose={handleClose}>
       <StyledList>
         {badges.map((badge, index) => (
           <BadgeItem key={index} badge={badge} />

@@ -4,55 +4,9 @@ import Img from "react-cool-img"
 import { Box, Stack, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
+import GridBg from "../components/GridBg"
+
 const defaultGridNum = 4
-
-const Container: any = styled(Box)(({ theme, badgewidth }: any) => ({
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center",
-  width: "100%",
-  height: "calc(100vh - 6.5rem)",
-  backgroundColor: "#101010",
-  backgroundImage:
-    "linear-gradient(90deg, rgba(255,255,255, 0.3) 1px, transparent 1px), linear-gradient( rgba(255,255,255, 0.3) 1px, transparent 1px)",
-  backgroundSize: `${badgewidth}px ${badgewidth}px`,
-  backgroundPosition: `calc(50% - ${badgewidth / 2}px) calc(50% - ${badgewidth / 2}px)`,
-  "&::before, &::after": {
-    content: "''",
-    height: "100%",
-    position: "absolute",
-    top: 0,
-    width: "calc((100vw - 100vh + 14rem)/ 2) ",
-    zIndex: 42,
-
-    [theme.breakpoints.down("md")]: {
-      width: "100%",
-      height: `calc((100vh - ${defaultGridNum * badgewidth}px) / 2)`,
-    },
-  },
-  "&::before": {
-    background: "linear-gradient(90deg, #101010 50.5%, rgba(16, 16, 16, 0) 100%)",
-    left: 0,
-
-    [theme.breakpoints.down("md")]: {
-      background: "linear-gradient(#101010 75%,  rgba(16, 16, 16, 0) 100%)",
-    },
-  },
-  "&::after": {
-    background: "linear-gradient(270deg, #101010 50.5%, rgba(16, 16, 16, 0) 100%)",
-    right: 0,
-    [theme.breakpoints.down("md")]: {
-      background: "linear-gradient(rgba(16, 16, 16, 0) 0%, #101010 20%)",
-      top: "unset",
-      bottom: 0,
-    },
-  },
-  [theme.breakpoints.down("md")]: {
-    marginTop: "-6.2rem",
-    height: "100vh",
-  },
-}))
 
 const LoadingText: any = styled(Typography)(({ theme }) => ({
   color: theme.palette.primary.contrastText,
@@ -98,7 +52,7 @@ const LoadingPage = () => {
     }
   }, [windowDimensions, defaultGridNum])
   return (
-    <Container badgewidth={badgewidth}>
+    <GridBg badgewidth={badgewidth} gridNum={defaultGridNum}>
       <Stack
         direction="column"
         alignItems="center"
@@ -110,7 +64,7 @@ const LoadingPage = () => {
         </Box>
         <LoadingText>Loading{dots}</LoadingText>
       </Stack>
-    </Container>
+    </GridBg>
   )
 }
 

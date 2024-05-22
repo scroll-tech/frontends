@@ -27,6 +27,14 @@ const Container = styled(Box)(({ theme }) => ({
     margin: "0 auto",
     display: "block",
   },
+  [theme.breakpoints.down("sm")]: {
+    right: "2rem",
+    bottom: "2rem",
+    "& canvas": {
+      width: "6rem",
+      height: "6rem",
+    },
+  },
 }))
 
 const Tooltip = styled(Box)(({ theme }) => ({
@@ -102,7 +110,7 @@ const Canvas = props => {
         setOpen(true)
         setTimeout(() => {
           playGif()
-        }, 0)
+        }, 4)
       }, 1500)
     } else {
       handleCloseTooltip()

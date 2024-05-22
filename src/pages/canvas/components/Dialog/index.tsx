@@ -29,7 +29,8 @@ const ScrollDialog = props => {
           [theme.breakpoints.down("sm")]: {
             "& .MuiDialog-paper": {
               margin: 0,
-              height: "100vh",
+              borderRadius: 0,
+              height: "calc(var(--vh, 1vh) * 100)",
               maxHeight: "unset",
               minWidth: "unset",
               width: "100%",

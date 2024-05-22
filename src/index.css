@@ -20,6 +20,10 @@ object {
     max-height: 100vh;
   }
 } */
+:root {
+  --vh: 100vh;
+}
+
 html {
   scroll-padding-top: 140px;
 }
