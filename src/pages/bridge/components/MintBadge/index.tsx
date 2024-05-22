@@ -6,7 +6,7 @@ import { useRainbowContext } from "@/contexts/RainbowProvider"
 import BadgeDetailDialog from "@/pages/canvas/Dashboard/BadgeDetailDialog"
 import Badges from "@/pages/canvas/Dashboard/UpgradeDialog/Badges"
 import { checkIfHasBadgeByAddress } from "@/services/canvasService"
-import useCanvasStore, { BadgeDetailDialogTpye } from "@/stores/canvasStore"
+import useCanvasStore, { BadgeDetailDialogType } from "@/stores/canvasStore"
 
 const MintBadge = () => {
   const { changeBadgeDetailDialog, changeSelectedBadge, profileMinted } = useCanvasStore()
@@ -38,9 +38,9 @@ const MintBadge = () => {
   const handleMintBadge = async () => {
     changeSelectedBadge(Badges[3])
     if (profileMinted) {
-      changeBadgeDetailDialog(BadgeDetailDialogTpye.MINT)
+      changeBadgeDetailDialog(BadgeDetailDialogType.MINT)
     } else {
-      changeBadgeDetailDialog(BadgeDetailDialogTpye.NO_PROFILE)
+      changeBadgeDetailDialog(BadgeDetailDialogType.NO_PROFILE)
     }
   }
 

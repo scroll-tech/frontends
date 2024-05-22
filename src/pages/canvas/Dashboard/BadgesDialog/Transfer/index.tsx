@@ -250,7 +250,14 @@ const BadgeTransfer = props => {
     >
       <Box
         sx={[
-          { display: "grid", gridTemplateColumns: ["1fr", "repeat(2, 1fr)"], gridGap: ["1.6rem", "3rem"], width: "100%", ...sx },
+          {
+            display: "grid",
+            gridTemplateColumns: ["1fr", "repeat(2, 1fr)"],
+            gridTemplateRows: ["repeat(2, 1fr)", "1fr"],
+            gridGap: ["1.6rem", "3rem"],
+            width: "100%",
+            ...sx,
+          },
           theme => ({
             [theme.breakpoints.down("sm")]: {
               height: "calc(100% - 6.4rem)",

@@ -5,7 +5,7 @@ import { Avatar, ListItem, ListItemAvatar, ListItemText, Typography } from "@mui
 import { styled } from "@mui/system"
 
 // import Button from "@/pages/canvas/components/Button"
-import useCanvasStore, { BadgeDetailDialogTpye } from "@/stores/canvasStore"
+import useCanvasStore, { BadgeDetailDialogType } from "@/stores/canvasStore"
 
 const StyledListItem = styled(ListItem)(({ theme }) => ({
   width: "100%",
@@ -74,14 +74,14 @@ const BadgeItem = ({ badge }) => {
 
   const handleBadge = async () => {
     changeSelectedBadge(badge)
-    changeBadgeDetailDialog(BadgeDetailDialogTpye.MINT_WITH_BACK)
+    changeBadgeDetailDialog(BadgeDetailDialogType.MINT_WITH_BACK)
     changeUpgradeDialog(false)
   }
 
   useEffect(() => {
     // if (userBadges.length && loading) {
     //   changeSelectedBadge(userBadges[userBadges.length - 1])
-    //   changeBadgeDetailDialog(BadgeDetailDialogTpye.MINTED)
+    //   changeBadgeDetailDialog(BadgeDetailDialogType.MINTED)
     //   setLoading(false)
     // }
   }, [userBadges])

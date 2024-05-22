@@ -15,6 +15,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     height: "7.2rem",
     fontWeight: 600,
     color: theme.palette.primary.contrastText,
+    "&.Mui-disabled": {
+      "-webkit-text-fill-color": "unset",
+    },
     [theme.breakpoints.down("sm")]: {
       fontSize: "3.2rem",
       lineHeight: "4.8rem",
@@ -94,6 +97,7 @@ const NameDialog = () => {
             }}
             autoFocus
             placeholder="name"
+            disabled={loading}
             value={profileName}
             onChange={handleChange}
             onKeyDown={handleKeydown}

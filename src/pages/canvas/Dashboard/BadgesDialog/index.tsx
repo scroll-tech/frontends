@@ -199,7 +199,7 @@ const BadgesDialog = props => {
       </DialogTitle>
       <StyledDialogContent>
         <Transfer
-          sx={{ mb: ["2rem", "4rem"] }}
+          sx={{ mb: [0, "4rem"] }}
           titles={["Not displayed", "Displayed"]}
           data={userBadges}
           value={sortedBadges}
@@ -211,8 +211,10 @@ const BadgesDialog = props => {
           gap="1.6rem"
           sx={theme => ({
             [theme.breakpoints.down("sm")]: {
+              position: "fixed",
+              bottom: 0,
               width: "100%",
-              pt: "2.4rem",
+              p: "2.4rem 2rem",
               "& > *": {
                 width: "50%",
               },
