@@ -39,6 +39,7 @@ const useGasFee = (selectedToken, needApproval) => {
   const calculateGasFee = async () => {
     let gasPrice
     let priorityFee
+    let gasLimitBatch
     // scroll not support EIP-1559
 
     if (fromNetwork.isL1) {
@@ -52,12 +53,14 @@ const useGasFee = (selectedToken, needApproval) => {
     }
     const gasLimit = checkApproved(needApproval, DepositBatchMode.Fast) ? await estimateSend() : BigInt(0)
 
-    const gasLimitBatch =
-      checkApproved(needApproval, DepositBatchMode.Economy) && BATCH_DEPOSIT_TOKENS.includes(selectedToken.symbol)
-        ? await estimateBatchDeposit()
-        : BigInt(0)
-
-    console.log("gasLimit/gasLimitBatch", gasLimit, gasLimitBatch)
+    try {
+      gasLimitBatch =
+        checkApproved(needApproval, DepositBatchMode.Economy) && BATCH_DEPOSIT_TOKENS.includes(selectedToken.symbol)
+          ? await estimateBatchDeposit()
+          : BigInt(0)
+    } catch (error) {
+      gasLimitBatch = 100000n
+    }
 
     if (gasLimit === null) {
       return {
