@@ -72,12 +72,20 @@ const ActionButton = styled(Button)(({ theme }) => ({
   },
 }))
 
-const CustomMenu = styled(Menu)(({ theme }) => ({
+const CustomMenu = styled<any>(Menu)(({ theme, dropdownWidth }) => ({
   "& .MuiPaper-root": {
-    borderRadius: "0.8rem",
+    borderRadius: "0.5rem",
     padding: "0 0.8rem",
     marginTop: "-0.8rem",
     minWidth: "15.6rem",
+    [theme.breakpoints.down("sm")]: {
+      width: dropdownWidth,
+    },
+  },
+  "& .MuiMenu-list": {
+    [theme.breakpoints.down("sm")]: {
+      padding: 0,
+    },
   },
 }))
 
@@ -171,6 +179,8 @@ const ActionBox = props => {
   }
 
   const [shareAnchorEl, setShareAnchorEl] = useState<null | HTMLElement>(null)
+  const [dropdownWidth, setDropdownWidth] = useState<string>()
+
   const shareOpen = Boolean(shareAnchorEl)
 
   const actions: Action[] = useMemo(() => {
@@ -188,6 +198,9 @@ const ActionBox = props => {
         color: "secondary",
         onClick: event => {
           setBadgesAnchorEl(event.currentTarget)
+          if (event.currentTarget) {
+            setDropdownWidth(event.currentTarget.getBoundingClientRect().width + "px")
+          }
         },
         visible: !othersWalletAddress,
         withBadge: !!mintableBadgeCount,
@@ -229,6 +242,9 @@ const ActionBox = props => {
         color: "secondary",
         onClick: event => {
           setShareAnchorEl(event.currentTarget)
+          if (event.currentTarget) {
+            setDropdownWidth(event.currentTarget.getBoundingClientRect().width + "px")
+          }
         },
         visible: true,
         menu: {
@@ -290,27 +306,14 @@ const ActionBox = props => {
                 <CustomMenu
                   anchorOrigin={{
                     vertical: "top",
-                    horizontal: "left",
+                    horizontal: "center",
                   }}
                   transformOrigin={{
                     vertical: "bottom",
-                    horizontal: "left",
+                    horizontal: "center",
                   }}
                   anchorEl={action.menu.anchorEl}
-                  sx={[
-                    {
-                      ".MuiMenu-paper": {
-                        borderRadius: "0.5rem",
-                      },
-                    },
-                    theme => ({
-                      [theme.breakpoints.down("sm")]: {
-                        ".MuiMenu-list": {
-                          padding: 0,
-                        },
-                      },
-                    }),
-                  ]}
+                  dropdownWidth={dropdownWidth}
                   open={action.menu.open}
                   onClose={action.menu.onClose}
                 >
