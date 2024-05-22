@@ -171,7 +171,7 @@ const BadgeDetailDialog = () => {
 
   return (
     <Dialog
-      disablePortal
+      disablePortal={isMobile}
       open={badgeDetailDialogVisible !== BadgeDetailDialogType.HIDDEN}
       allowBack={[BadgeDetailDialogType.MINT_WITH_BACK].includes(badgeDetailDialogVisible)}
       onBack={handleBack}
@@ -181,7 +181,7 @@ const BadgeDetailDialog = () => {
         direction="column"
         alignItems="center"
         justifyContent={isMobile ? "flex-start" : "center"}
-        sx={{ width: ["100%", "57.6rem"], height: [`calc(100% - ${actionHeight})`, "64.8rem"] }}
+        sx={{ width: ["100%", "57.6rem"], height: [`calc(100% - ${actionHeight})`, "auto", "auto", "64.8rem"] }}
       >
         <Img
           alt="img"

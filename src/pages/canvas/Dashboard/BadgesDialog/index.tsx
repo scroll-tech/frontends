@@ -26,6 +26,7 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
     width: "112rem",
     [theme.breakpoints.down("sm")]: {
       margin: 0,
+      borderRadius: 0,
       maxHeight: "unset",
       maxWidth: "unset",
       height: "100%",

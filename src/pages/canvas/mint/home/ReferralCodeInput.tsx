@@ -15,6 +15,7 @@ export enum CodeStatus {
   VALID = "Valid",
   INVALID = "Invalid",
   UNKNOWN = "Unknown",
+  ERROR = "Error",
 }
 
 const Title = styled(Typography)(({ theme }) => ({
@@ -125,7 +126,8 @@ const ReferralCode = ({ isChecking, setIsChecking, code, codeStatus, setCodeStat
       }
     } catch (e) {
       changeReferralCode("")
-      setCodeStatus(CodeStatus.INVALID)
+      setCodeStatus(CodeStatus.ERROR)
+      inputRefs.current[INVITE_CODE_LENGTH - 1]?.focus()
     } finally {
       setIsChecking(false)
     }
@@ -184,6 +186,12 @@ const ReferralCode = ({ isChecking, setIsChecking, code, codeStatus, setCodeStat
           <Stack direction="row" gap="0.5rem" alignItems="center">
             <SvgIcon component={LoadingSvg} inheritViewBox></SvgIcon>
             <StatusContent>Checking...</StatusContent>
+          </Stack>
+        )}
+        {codeStatus === CodeStatus.ERROR && (
+          <Stack direction="row" gap="0.5rem" alignItems="center">
+            <SvgIcon sx={{ fontSize: "2.4rem" }} component={ErrorSvg} inheritViewBox></SvgIcon>
+            <StatusContent sx={{ color: "#FF684B" }}>Network error. Please try again later</StatusContent>
           </Stack>
         )}
         {codeStatus === CodeStatus.INVALID && (
