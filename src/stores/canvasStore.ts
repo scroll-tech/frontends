@@ -12,11 +12,10 @@ export enum MintedStatus {
   UNKNOWN = "UNKNOWN",
 }
 
-export enum BadgeDetailDialogTpye {
+export enum BadgeDetailDialogType {
   HIDDEN = "",
   MINT = "mint", // no badge
   MINT_WITH_BACK = "mintWithBack", // no badge
-  MINTED = "minted",
   UPGRADE = "upgrade",
   VIEW = "view",
   NO_PROFILE = "noProfile", // no badge
@@ -29,7 +28,7 @@ interface CanvasStore {
   referDialogVisible: boolean
   badgesDialogVisible: boolean
   upgradeDialogVisible: boolean
-  badgeDetailDialogVisible: BadgeDetailDialogTpye
+  badgeDetailDialogVisible: BadgeDetailDialogType
   mintFlowVisible: boolean
   sortedBadges: any
   selectedBadge: any
@@ -41,7 +40,7 @@ interface CanvasStore {
   changeBadgesDialog: (visible: boolean) => void
   changeSortedBadges: (badges: any) => void
   changeUpgradeDialog: (visible: boolean) => void
-  changeBadgeDetailDialog: (visible: BadgeDetailDialogTpye) => void
+  changeBadgeDetailDialog: (visible: BadgeDetailDialogType) => void
   changeSelectedBadge: (badge: any) => void
 
   profileName: string
@@ -93,7 +92,7 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
   referDialogVisible: false,
   badgesDialogVisible: false,
   upgradeDialogVisible: false,
-  badgeDetailDialogVisible: BadgeDetailDialogTpye.HIDDEN,
+  badgeDetailDialogVisible: BadgeDetailDialogType.HIDDEN,
   sortedBadges: [],
   selectedBadge: {},
 
@@ -263,7 +262,7 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
       referDialogVisible: false,
       badgesDialogVisible: false,
       upgradeDialogVisible: false,
-      badgeDetailDialogVisible: BadgeDetailDialogTpye.HIDDEN,
+      badgeDetailDialogVisible: BadgeDetailDialogType.HIDDEN,
       initialMint: false,
       // reset profile mint status
       profileMinted: null,

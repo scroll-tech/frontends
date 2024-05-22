@@ -25,14 +25,28 @@ const Container: any = styled(Box)(({ theme, badgewidth }: any) => ({
     top: 0,
     width: "calc((100vw - 100vh + 14rem)/ 2) ",
     zIndex: 42,
+
+    [theme.breakpoints.down("md")]: {
+      width: "100%",
+      height: `calc((100vh - ${defaultGridNum * badgewidth}px) / 2)`,
+    },
   },
   "&::before": {
     background: "linear-gradient(90deg, #101010 50.5%, rgba(16, 16, 16, 0) 100%)",
     left: 0,
+
+    [theme.breakpoints.down("md")]: {
+      background: "linear-gradient(#101010 75%,  rgba(16, 16, 16, 0) 100%)",
+    },
   },
   "&::after": {
     background: "linear-gradient(270deg, #101010 50.5%, rgba(16, 16, 16, 0) 100%)",
     right: 0,
+    [theme.breakpoints.down("md")]: {
+      background: "linear-gradient(rgba(16, 16, 16, 0) 0%, #101010 20%)",
+      top: "unset",
+      bottom: 0,
+    },
   },
   [theme.breakpoints.down("md")]: {
     marginTop: "-6.2rem",

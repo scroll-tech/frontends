@@ -2,7 +2,7 @@ import Img from "react-cool-img"
 
 import { Box } from "@mui/material"
 
-import useCanvasStore, { BadgeDetailDialogTpye } from "@/stores/canvasStore"
+import useCanvasStore, { BadgeDetailDialogType } from "@/stores/canvasStore"
 import { getBadgeImgURL } from "@/utils"
 
 import ToolTip from "../../components/Tooltip"
@@ -14,7 +14,7 @@ const Badge = ({ badge, index, badgewidth }) => {
   const handleShowBadgeDetailDialog = () => {
     changeSelectedBadge(badge.metadata)
     // console.log(badge.metadata, "badge.metadata")
-    changeBadgeDetailDialog(BadgeDetailDialogTpye.VIEW)
+    changeBadgeDetailDialog(BadgeDetailDialogType.VIEW)
   }
 
   return (

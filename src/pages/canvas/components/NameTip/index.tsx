@@ -1,7 +1,7 @@
 import { Button } from "@mui/material"
 import { styled } from "@mui/system"
 
-import useCanvasStore, { BadgeDetailDialogTpye } from "@/stores/canvasStore"
+import useCanvasStore, { BadgeDetailDialogType } from "@/stores/canvasStore"
 
 const StyledButton = styled(Button)(({ theme }) => ({
   borderRadius: "0.8rem",
@@ -26,7 +26,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
 const NameTip = ({ metadata }) => {
   const { changeBadgeDetailDialog } = useCanvasStore()
 
-  return <StyledButton onClick={() => changeBadgeDetailDialog(BadgeDetailDialogTpye.VIEW)}>{metadata?.name}</StyledButton>
+  return <StyledButton onClick={() => changeBadgeDetailDialog(BadgeDetailDialogType.VIEW)}>{metadata?.name}</StyledButton>
 }
 
 export default NameTip

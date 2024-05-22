@@ -88,12 +88,6 @@ const BadgeDetail = props => {
       </Helmet>
       <SectionWrapper
         dark
-        // containerSx={{
-        //   height: [`calc(100vh - 6.2rem - ${actionHeight})`, "auto"],
-        //   display: "flex",
-        //   alignItems: "center",
-        //   overflowY: "auto",
-        // }}
         className="detail-container"
         sx={{
           pt: ["1.6rem", "5.5rem"],
