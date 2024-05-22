@@ -2,21 +2,31 @@ import { ethers } from "ethers"
 import { useCallback, useEffect, useMemo, useState } from "react"
 
 import L1_erc20ABI from "@/assets/abis/L1_erc20ABI.json"
-import { GATEWAY_ROUTE_PROXY_ADDR, USDC_GATEWAY_PROXY_ADDR, USDC_SYMBOL, WETH_GATEWAY_PROXY_ADDR, WETH_SYMBOL } from "@/constants"
+import {
+  BATCH_BRIDGE_GATEWAY_PROXY_ADDR,
+  BATCH_DEPOSIT_TOKENS,
+  GATEWAY_ROUTE_PROXY_ADDR,
+  USDC_GATEWAY_PROXY_ADDR,
+  USDC_SYMBOL,
+  WETH_GATEWAY_PROXY_ADDR,
+  WETH_SYMBOL,
+} from "@/constants"
 import { CHAIN_ID } from "@/constants"
 import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useBatchBridgeStore, { BridgeSummaryType, DepositBatchMode } from "@/stores/batchBridgeStore"
 import { amountToBN } from "@/utils"
 
 const useApprove = (fromNetwork, selectedToken, amount) => {
   const { walletCurrentAddress, chainId } = useRainbowContext()
   const { networksAndSigners } = useBridgeContext()
+  const { bridgeSummaryType, depositBatchMode } = useBatchBridgeStore()
 
   const [isLoading, setIsLoading] = useState(false)
   const [isRequested, setIsRequested] = useState(false)
   const [error, setError] = useState(null)
 
-  const [isNeeded, setIsNeeded] = useState<boolean>()
+  const [isNeeded, setIsNeeded] = useState<boolean | number>()
 
   const approveAddress = useMemo(() => {
     if (!fromNetwork.isL1 && selectedToken.symbol === WETH_SYMBOL) return WETH_GATEWAY_PROXY_ADDR[fromNetwork.chainId]
@@ -51,10 +61,17 @@ const useApprove = (fromNetwork, selectedToken, amount) => {
 
       const parsedAmount = amountToBN(amount, selectedToken.decimals)
       const approvedAmount = await tokenInstance.allowance(walletCurrentAddress, approveAddress)
-      if (approvedAmount >= parsedAmount) {
-        return false
+      if (BATCH_DEPOSIT_TOKENS.includes(selectedToken.symbol)) {
+        let fastNeedApproval
+        let economyNeedApproval
+
+        fastNeedApproval = parsedAmount > approvedAmount ? 2 : 0
+        const approvedAmount2 = await tokenInstance.allowance(walletCurrentAddress, BATCH_BRIDGE_GATEWAY_PROXY_ADDR[fromNetwork.chainId])
+        economyNeedApproval = parsedAmount > approvedAmount2 ? 1 : 0
+        return fastNeedApproval | economyNeedApproval
+      } else {
+        return parsedAmount > approvedAmount
       }
-      return true
     } catch (err) {
       return undefined
     }
@@ -75,7 +92,11 @@ const useApprove = (fromNetwork, selectedToken, amount) => {
     const toApproveAmount = isMaximum ? ethers.MaxUint256 : amountToBN(amount, selectedToken.decimals)
 
     try {
-      const tx = await tokenInstance.approve(approveAddress, toApproveAmount)
+      let proxyAddress = approveAddress
+      if (bridgeSummaryType === BridgeSummaryType.Selector && depositBatchMode === DepositBatchMode.Economy) {
+        proxyAddress = BATCH_BRIDGE_GATEWAY_PROXY_ADDR[fromNetwork.chainId]
+      }
+      const tx = await tokenInstance.approve(proxyAddress, toApproveAmount)
       setIsRequested(true)
       await tx?.wait()
       const needApproval = await checkApproval()
@@ -90,7 +111,11 @@ const useApprove = (fromNetwork, selectedToken, amount) => {
 
   // TODO: test
   const cancelApproval = async () => {
-    const tx = await tokenInstance?.approve(approveAddress, 0)
+    let proxyAddress = approveAddress
+    if (bridgeSummaryType === BridgeSummaryType.Selector && depositBatchMode === DepositBatchMode.Economy) {
+      proxyAddress = BATCH_BRIDGE_GATEWAY_PROXY_ADDR[fromNetwork.chainId]
+    }
+    const tx = await tokenInstance?.approve(proxyAddress, 0)
     await tx?.wait()
     const needApproval = await checkApproval()
     setIsNeeded(needApproval)
