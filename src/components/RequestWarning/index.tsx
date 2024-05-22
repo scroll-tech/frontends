@@ -2,8 +2,6 @@ import { makeStyles } from "tss-react/mui"
 
 import { Snackbar } from "@mui/material"
 
-import Alert from "@/components/Alert/NFTAlert"
-
 const useStyles = makeStyles()(theme => ({
   snackbar: {
     width: "max-content",
@@ -20,7 +18,7 @@ const RequestWarning = props => {
   const { open, onClose, severity = "error", children, AlertComponent } = props
   const { classes } = useStyles()
 
-  const CustomAlert = AlertComponent || Alert
+  const CustomAlert = AlertComponent
   return (
     <Snackbar
       open={open}

@@ -5,7 +5,7 @@ const theme = createTheme()
 export const paletteOptions = {
   primary: {
     light: "#F18740",
-    main: "#FF684B",
+    main: "#008070",
     dark: "#FFDEB5",
     contrastText: "#FFF8F3",
   },
@@ -53,11 +53,11 @@ export const paletteOptions = {
     gradient: "linear-gradient(180deg, rgba(255, 232, 203, 0.74) 0%, rgba(255, 255, 255, 0) 100%)",
   },
   themeBackground: {
-    light: "#FFF8F3",
+    light: "#FFFFFF",
     dark: "#101010",
-    normal: "#FFF0DD",
+    normal: "#FFFFFF",
     highlight: "#FFDEB5",
-    optionHightlight: "#FFE6C8",
+    optionHightlight: "#FFFEF2",
     tag: "#262626",
     transparent: "transparent",
     brand: "#FFEEDA",
@@ -66,7 +66,7 @@ export const paletteOptions = {
     main: "#000",
   },
   link: {
-    main: "#FF684B",
+    main: "#008070",
   },
   // for tag
   tagSuccess: {

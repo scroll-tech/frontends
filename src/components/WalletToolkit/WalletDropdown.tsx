@@ -23,7 +23,7 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
     height: "3.6rem",
     padding: "0 1.2rem",
     borderRadius: "0.5rem",
-    border: dark ? `1px solid ${theme.palette.primary.contrastText}` : "none",
+    border: `1px solid #101010`,
     backgroundColor: dark ? "unset" : theme.palette.themeBackground.normal,
     color: dark ? theme.palette.primary.contrastText : "#473835",
     whiteSpace: "nowrap",
@@ -31,7 +31,7 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
 
   connectButton: {
     fontFamily: "var(--default-font-family)",
-    backgroundColor: "#FF684B",
+    backgroundColor: "#008070",
     color: theme.palette.primary.contrastText,
     border: "none",
     fontSize: "1.8rem",
@@ -49,7 +49,7 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
   },
   paper: {
     borderRadius: "0.5rem",
-    border: dark ? `1px solid ${theme.palette.primary.contrastText}` : "none",
+    border: "1px solid #DADADA",
     backgroundColor: dark ? theme.palette.text.primary : theme.palette.themeBackground.normal,
     marginTop: "0.5rem",
   },

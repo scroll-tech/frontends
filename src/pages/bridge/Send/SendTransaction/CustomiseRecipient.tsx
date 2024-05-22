@@ -72,7 +72,7 @@ const CustomiseRecipient = props => {
             </Typography>
             <Typography onClick={() => setIsEditing(false)} className={classes.title}>
               <SvgIcon sx={{ fontSize: "1.6rem", marginRight: "0.4rem" }} component={RemoveSvg} inheritViewBox />
-              <span style={{ color: "#FF684B" }}>Remove</span>
+              <span style={{ color: "#008070" }}>Remove</span>
             </Typography>
           </Stack>
           <Stack spacing={2}>
@@ -84,7 +84,7 @@ const CustomiseRecipient = props => {
                 lineHeight: "2.4rem",
                 fontWeight: 500,
                 background: "#ffffff",
-                border: showErrorMessage ? "2px solid #FF684B" : "1px solid #473835",
+                border: showErrorMessage ? "2px solid #008070" : "1px solid #473835",
                 borderRadius: "1rem",
               }}
               disabled={disabled}
@@ -108,14 +108,14 @@ const CustomiseRecipient = props => {
       {showErrorMessage ? (
         <Box sx={{ mt: "0.4rem" }}>
           <SvgIcon
-            sx={{ fontSize: "1.6rem", mr: "0.8rem", verticalAlign: "middle", color: "#FF684B" }}
+            sx={{ fontSize: "1.6rem", mr: "0.8rem", verticalAlign: "middle", color: "#008070" }}
             component={WarningSvg}
             inheritViewBox
           ></SvgIcon>
           <Stack
             component="span"
             direction="row"
-            style={{ fontSize: "1.6rem", display: "inline-flex", verticalAlign: "middle", alignItems: "center", color: "#FF684B" }}
+            style={{ fontSize: "1.6rem", display: "inline-flex", verticalAlign: "middle", alignItems: "center", color: "#008070" }}
           >
             Invalid wallet address
           </Stack>

@@ -12,7 +12,6 @@ import ListItemText from "@mui/material/ListItemText"
 import { EXPLORER_URL } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useAddToken, { TOKEN_LEVEL } from "@/hooks/useAddToken"
-import { tokenList } from "@/pages/sessions/SessionZeroMarks/tokenList"
 import useBridgeStore from "@/stores/bridgeStore"
 import { generateExploreLink, truncateHash } from "@/utils"
 
@@ -142,7 +141,7 @@ const ListItemTextStyled = styled(ListItemText)(({ theme }) => ({
 }))
 
 const ErrorBoxStyled = styled(Box)(({ theme }) => ({
-  color: "#FF684B",
+  color: "#008070",
   fontSize: "1.3rem",
   fontWeight: 500,
   margin: "1rem 2.4rem 0",
@@ -279,7 +278,6 @@ function List(props: TokenListProps) {
       .map((token: any) => {
         return {
           ...token,
-          earnMarks: tokenList.some(t => t.symbol === token.symbol),
         }
       })
   }, [filteredTokens])

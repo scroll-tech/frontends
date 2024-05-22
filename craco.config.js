@@ -1,9 +1,6 @@
 const CracoLessPlugin = require("craco-less")
 const webpack = require("webpack")
 const path = require("path")
-const MiniCssExtractPlugin = require("mini-css-extract-plugin")
-const SentryWebpackPlugin = require("@sentry/webpack-plugin")
-require("./scripts/download-blog-posts.data.json.js")
 
 module.exports = {
   babel: {
@@ -24,16 +21,7 @@ module.exports = {
   ],
   // local proxy
   devServer: {
-    proxy: {
-      // "/bridgehistory/api": {
-      //   target: "http://localhost:4000",
-      //   pathRewrite: { "^/bridgehistory/api": "/api" },
-      //  },
-      // "/rollupscan/api": {
-      //   target: "http://10.0.3.119:8560",
-      //   pathRewrite: { "^/rollupscan/api": "/api" },
-      // },
-    },
+    proxy: {},
   },
 
   webpack: {
@@ -74,18 +62,6 @@ module.exports = {
           fullySpecified: false,
         },
       })
-      if (env === "production" && process.env.CI) {
-        const sentryPlugin = new SentryWebpackPlugin({
-          org: "scroll-zkp",
-          project: "scroll-io",
-          include: "./build",
-          release: process.env.REACT_APP_VERSION,
-        })
-        webpackConfig.plugins.push(sentryPlugin)
-
-        const instanceOfMiniCssExtractPlugin = webpackConfig.plugins.find(plugin => plugin instanceof MiniCssExtractPlugin)
-        instanceOfMiniCssExtractPlugin.options.ignoreOrder = true
-      }
       return webpackConfig
     },
   },

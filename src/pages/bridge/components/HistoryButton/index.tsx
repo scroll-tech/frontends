@@ -4,13 +4,13 @@ import { ButtonBase, SvgIcon } from "@mui/material"
 
 import { ReactComponent as HistorySvg } from "@/assets/svgs/bridge/history.svg"
 import useBridgeStore from "@/stores/bridgeStore"
-import { isSepolia } from "@/utils"
 
 const useStyles = makeStyles()(theme => ({
   button: {
     height: "4.8rem",
     padding: "0 1.2rem",
     backgroundColor: theme.palette.themeBackground.normal,
+    border: `1px solid #DADADA`,
     color: "#473835",
     fontSize: "1.8rem",
     fontWeight: 500,
@@ -34,7 +34,7 @@ const BridgeHistoryButton = props => {
   return (
     <ButtonBase classes={{ root: classes.button }} {...props} onClick={handleOpenHistory}>
       <SvgIcon sx={{ fontSize: ["1.4rem", "1.8rem"] }} component={HistorySvg} inheritViewBox></SvgIcon>
-      {isSepolia ? "" : "Transaction History"}
+      Transaction History
     </ButtonBase>
   )
 }

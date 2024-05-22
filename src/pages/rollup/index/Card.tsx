@@ -7,13 +7,13 @@ import { styled } from "@mui/material/styles"
 const Card = styled(Paper)(({ theme }) => ({
   flex: "1",
   boxShadow: "none",
-  borderRadius: "2.7rem",
-  background: "#FFF0DD",
+  borderRadius: ".8rem",
+  background: "#FFFEF2",
   paddingLeft: "6rem",
   paddingTop: "2.7rem",
   paddingBottom: "2.2rem",
   cursor: "pointer",
-
+  border: "1px solid #101010",
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-between",

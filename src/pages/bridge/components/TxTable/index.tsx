@@ -92,7 +92,7 @@ const useStyles = makeStyles<any>()((theme, { type }) => {
     },
     pendingChip: {
       color: "#FFF8F3",
-      backgroundColor: "#FF684B",
+      backgroundColor: "#008070",
     },
     successChip: {
       color: "#0F8E7E",

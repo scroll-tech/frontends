@@ -3,8 +3,6 @@ interface Window {
   ethereum: any
 }
 
-declare module "react-mailchimp-subscribe"
-
 declare module "fortmatic"
 
 declare module "react-router-dom"

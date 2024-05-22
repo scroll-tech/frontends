@@ -11,9 +11,7 @@ import WalletToolkit from "@/components/WalletToolkit"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useShowWalletConnector from "@/hooks/useShowWalletToolkit"
 
-// import Announcement from "./announcement"
 import { navigations } from "./constants"
-import useCheckCustomNavBarBg from "./useCheckCustomNavBarBg"
 import useCheckTheme from "./useCheckTheme"
 
 const StyledBox = styled<any>(Stack, { shouldForwardProp: prop => prop !== "dark" && prop !== "bgColor" })(({ theme, bgColor, dark }) => ({
@@ -158,8 +156,6 @@ const LinkStyledSubButton = styled<any>(NavLink, { shouldForwardProp: prop => pr
 
 const App = ({ currentMenu }) => {
   const { cx } = useStyles()
-  const [isHover, setIsHover] = useState(false)
-  const navbarBg = useCheckCustomNavBarBg({ isHover })
   const { isDesktop } = useCheckViewport()
   const dark = useCheckTheme()
 
@@ -233,7 +229,7 @@ const App = ({ currentMenu }) => {
             inheritViewBox
           ></SvgIcon>
           {item.key === checked && (
-            <StyledPopper open={true} placement="bottom-start" anchorEl={anchorEl} transition bgColor={navbarBg} dark={dark}>
+            <StyledPopper open={true} placement="bottom-start" anchorEl={anchorEl} transition dark={dark}>
               {({ TransitionProps }) => (
                 <Fade {...TransitionProps}>
                   <SubMenuList onClick={handleMouseLeave}>{renderSubMenuList(item.children)}</SubMenuList>
@@ -269,8 +265,7 @@ const App = ({ currentMenu }) => {
   }
 
   return (
-    <StyledBox bgColor={navbarBg} dark={dark} onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
-      {/* <Announcement /> */}
+    <StyledBox dark={dark}>
       <Container>
         <HeaderContainer>
           <NavLink to="/" className="flex">

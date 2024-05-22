@@ -163,7 +163,12 @@ const RollupTable = forwardRef<any, any>((props, ref) => {
   }
 
   return (
-    <TableContainer sx={{ marginBottom: "4rem", minHeight: 300 }}>
+    <TableContainer
+      sx={{
+        marginBottom: "4rem",
+        borderRadius: "8px",
+      }}
+    >
       {searchLoading || batchLoading ? (
         <Spinning />
       ) : (

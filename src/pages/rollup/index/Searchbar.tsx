@@ -17,6 +17,7 @@ const SearchbarContainer = styled(Paper)(({ theme }) => ({
   marginBottom: "6rem",
   boxShadow: "none",
   height: "5.5rem",
+  border: "1px solid #101010",
   [theme.breakpoints.down("md")]: {
     padding: "0",
     overflow: "hidden",

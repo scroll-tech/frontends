@@ -13,7 +13,7 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
   button: {
     height: "3.6rem",
     padding: "0 1.2rem",
-    border: dark ? `1px solid ${theme.palette.primary.contrastText}` : "none",
+    border: `1px solid #101010`,
     backgroundColor: dark ? "unset" : theme.palette.themeBackground.normal,
     color: dark ? theme.palette.primary.contrastText : "#473835",
     borderRadius: "0.5rem",

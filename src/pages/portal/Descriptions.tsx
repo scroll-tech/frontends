@@ -4,13 +4,14 @@ import { Box, Card, CardContent, CardHeader } from "@mui/material"
 
 const useStyles = makeStyles()(theme => ({
   card: {
-    borderRadius: "2.7rem",
+    borderRadius: ".8rem",
     boxShadow: "unset",
     width: "100%",
+    border: "1px solid #000000",
   },
   cardHeader: {
     padding: "2.2rem 3rem",
-    backgroundColor: theme.palette.themeBackground.normal,
+    borderBottom: "1px solid #000000",
     [theme.breakpoints.down("sm")]: {
       padding: "2rem 1.6rem",
     },
@@ -21,7 +22,6 @@ const useStyles = makeStyles()(theme => ({
   cardContent: {
     padding: 0,
     marginTop: "1px",
-    backgroundColor: theme.palette.themeBackground.normal,
     "&:last-child": {
       paddingBottom: 0,
     },
@@ -40,17 +40,16 @@ const useStyles = makeStyles()(theme => ({
       gap: "1.5rem",
       minHeight: "unset",
     },
+    "&:not(:last-child)": {
+      borderBottom: "1px solid #DADADA",
+    },
   },
   odd: {
     "&:nth-of-type(odd)": {
-      backgroundColor: "rgba(249, 249, 249, 0.30)",
+      backgroundColor: "#FFFEF2",
     },
   },
-  even: {
-    "&:nth-of-type(even)": {
-      backgroundColor: "rgba(249, 249, 249, 0.30)",
-    },
-  },
+  even: {},
 }))
 
 const Descriptions = props => {
