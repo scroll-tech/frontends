@@ -1,5 +1,14 @@
 import { getDefaultConfig } from "@rainbow-me/rainbowkit"
-import { coinbaseWallet, metaMaskWallet, okxWallet, rabbyWallet, safeWallet, walletConnectWallet, zerionWallet } from "@rainbow-me/rainbowkit/wallets"
+import {
+  bitgetWallet,
+  coinbaseWallet,
+  metaMaskWallet,
+  okxWallet,
+  rabbyWallet,
+  safeWallet,
+  walletConnectWallet,
+  zerionWallet,
+} from "@rainbow-me/rainbowkit/wallets"
 import { Chain, mainnet, scroll, scrollSepolia, sepolia } from "@wagmi/core/chains"
 import { parseUnits } from "ethers"
 import produce from "immer"
@@ -12,7 +21,7 @@ const projectId = requireEnv("REACT_APP_CONNECT_WALLET_PROJECT_ID")
 const wallets = [
   {
     groupName: "Popular",
-    wallets: [metaMaskWallet, walletConnectWallet, coinbaseWallet, okxWallet, rabbyWallet, safeWallet, zerionWallet],
+    wallets: [metaMaskWallet, walletConnectWallet, coinbaseWallet, okxWallet, bitgetWallet, rabbyWallet, safeWallet, zerionWallet],
   },
 ]
 
