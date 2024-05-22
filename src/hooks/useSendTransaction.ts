@@ -9,7 +9,7 @@ import useBatchBridgeStore, { BridgeSummaryType, DepositBatchMode } from "@/stor
 import useBridgeStore from "@/stores/bridgeStore"
 import useTxStore from "@/stores/txStore"
 import { isValidOffsetTime } from "@/stores/utils"
-import { amountToBN, isSepolia, sentryDebug } from "@/utils"
+import { amountToBN } from "@/utils"
 
 import useGasFee from "./useGasFee"
 
@@ -26,7 +26,7 @@ export function useSendTransaction(props) {
   const { amount: fromTokenAmount, selectedToken, receiver, needApproval } = props
   const { walletCurrentAddress } = useRainbowContext()
   const { networksAndSigners, blockNumbers } = useBridgeContext()
-  const { enlargedGasLimit: txGasLimit, maxFeePerGas, maxPriorityFeePerGas, gasLimitBatch } = useGasFee(selectedToken, needApproval)
+  const { enlargedGasLimit: txGasLimit, gasLimitBatch } = useGasFee(selectedToken, needApproval)
   const { addTransaction, addEstimatedTimeMap, removeFrontTransactions, updateTransaction } = useTxStore()
   const { fromNetwork, toNetwork, changeTxResult, changeWithdrawStep } = useBridgeStore()
   const { bridgeSummaryType, depositBatchMode, batchDepositConfig } = useBatchBridgeStore()
@@ -82,7 +82,6 @@ export function useSendTransaction(props) {
                 addEstimatedTimeMap(`from_${tx.hash}`, Date.now() + estimatedOffsetTime)
               } else {
                 addEstimatedTimeMap(`from_${tx.hash}`, 0)
-                sentryDebug(`safe block number: ${blockNumbers[0]}`)
               }
             }
           } else {
@@ -96,7 +95,6 @@ export function useSendTransaction(props) {
         })
         .catch(error => {
           // TRANSACTION_REPLACED or TIMEOUT
-          sentryDebug(error.message)
           if (isError(error, "TRANSACTION_REPLACED")) {
             if (error.cancelled) {
               removeFrontTransactions(tx.hash)
@@ -115,7 +113,6 @@ export function useSendTransaction(props) {
                   addEstimatedTimeMap(`from_${transactionHash}`, Date.now() + estimatedOffsetTime)
                 } else {
                   addEstimatedTimeMap(`from_${transactionHash}`, 0)
-                  sentryDebug(`safe block number: ${blockNumbers[0]}`)
                 }
               }
             }
@@ -162,12 +159,6 @@ export function useSendTransaction(props) {
       value: parsedAmount + fee,
     }
 
-    // set maxFeePerGas for testnet
-    if (maxFeePerGas && maxPriorityFeePerGas && isSepolia) {
-      options.maxFeePerGas = maxFeePerGas
-      options.maxPriorityFeePerGas = maxPriorityFeePerGas
-    }
-
     return networksAndSigners[CHAIN_ID.L1].scrollMessenger["sendMessage(address,uint256,bytes,uint256)"](
       receiver || walletCurrentAddress,
       parsedAmount,
@@ -181,11 +172,6 @@ export function useSendTransaction(props) {
     const fee = gasPrice * gasLimit
     const options: TxOptions = {
       value: fee,
-    }
-
-    if (maxFeePerGas && maxPriorityFeePerGas && isSepolia) {
-      options.maxFeePerGas = maxFeePerGas
-      options.maxPriorityFeePerGas = maxPriorityFeePerGas
     }
 
     if (receiver) {

@@ -2,16 +2,14 @@ import React, { useEffect, useState } from "react"
 import { NavLink } from "react-router-dom"
 
 import { ExpandMore } from "@mui/icons-material"
-import { Box, Collapse, Link, List, ListItemButton, Stack, Typography } from "@mui/material"
+import { Box, Collapse, Link, List, ListItemButton, Stack } from "@mui/material"
 import { styled } from "@mui/system"
 
 import WalletToolkit from "@/components/WalletToolkit"
 import useShowWalletConnector from "@/hooks/useShowWalletToolkit"
 
 import Logo from "../ScrollLogo"
-// import Announcement from "./announcement"
 import { navigations } from "./constants"
-import useCheckCustomNavBarBg from "./useCheckCustomNavBarBg"
 import useCheckTheme from "./useCheckTheme"
 
 const NavStack = styled(Stack)(({ theme }) => ({
@@ -131,7 +129,6 @@ const ExpandMoreIcon = styled(ExpandMore)(({ theme }) => ({
 }))
 
 const App = ({ currentMenu }) => {
-  const navbarBg = useCheckCustomNavBarBg()
   const showWalletConnector = useShowWalletConnector()
 
   const dark = useCheckTheme()
@@ -187,7 +184,7 @@ const App = ({ currentMenu }) => {
             <List component="div" disablePadding>
               {item.children?.map((section, idx) => (
                 <SectionList key={idx} dark={dark}>
-                  <Typography sx={{ fontSize: "1.4rem", fontWeight: "bold", lineHeight: "3rem" }}>{section.label}</Typography>
+                  {/* <Typography sx={{ fontSize: "1.4rem", fontWeight: "bold", lineHeight: "3rem" }}>{section.label}</Typography> */}
                   {section.children
                     // only show sub items with href
                     ?.filter(subItem => subItem.href)
@@ -229,11 +226,7 @@ const App = ({ currentMenu }) => {
   )
 
   return (
-    <Box
-      className={open ? "active" : ""}
-      sx={{ backgroundColor: navbarBg && !open ? `themeBackground.${navbarBg}` : dark ? "themeBackground.dark" : "themeBackground.light" }}
-    >
-      {/* <Announcement /> */}
+    <Box className={open ? "active" : ""} sx={{ backgroundColor: dark ? "themeBackground.dark" : "themeBackground.light" }}>
       <NavStack direction="row" justifyContent="space-between" alignItems="center">
         <NavLink to="/" className="flex">
           <Box onClick={() => toggleDrawer(false)}>

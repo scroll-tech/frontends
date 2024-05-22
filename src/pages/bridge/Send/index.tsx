@@ -6,7 +6,7 @@ import { Box, Snackbar, Tab } from "@mui/material"
 
 import Alert from "@/components/Alert"
 import TextButton from "@/components/TextButton"
-import { CHAIN_ID } from "@/constants"
+import { CHAIN_ID, L1_NAME, L2_NAME } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useBatchBridgeStore, { DepositBatchMode } from "@/stores/batchBridgeStore"
 import useBridgeStore from "@/stores/bridgeStore"
@@ -16,7 +16,7 @@ import Withdraw from "./Withdraw"
 
 const useStyles = makeStyles()(theme => ({
   sendWrapper: {
-    borderRadius: "2rem",
+    borderRadius: "0.8rem",
     overflow: "hidden",
     maxWidth: "64rem",
     width: "100%",
@@ -24,6 +24,7 @@ const useStyles = makeStyles()(theme => ({
       fontFamily: "var(--developer-page-font-family) !important",
     },
     position: "relative",
+    border: `1px solid #101010`,
     [theme.breakpoints.down("sm")]: {
       maxWidth: "100%",
     },
@@ -40,6 +41,7 @@ const useStyles = makeStyles()(theme => ({
     padding: 0,
     backgroundColor: theme.palette.themeBackground.normal,
     textTransform: "unset",
+    borderBottom: `1px solid #101010`,
     "&.Mui-selected": {
       color: theme.palette.text.primary,
       fontWeight: 600,
@@ -49,6 +51,9 @@ const useStyles = makeStyles()(theme => ({
     [theme.breakpoints.down("sm")]: {
       width: "50%",
       fontSize: "1.4rem",
+    },
+    "&:not(:last-child)": {
+      borderRight: "1px solid #101010",
     },
   },
   indicator: {
@@ -122,8 +127,8 @@ const Send = () => {
           textColor="primary"
           classes={{ root: classes.tabList, fixed: classes.tabList, flexContainer: classes.tabList, indicator: classes.indicator }}
         >
-          <Tab label="Deposit to Scroll" value="Deposit" classes={{ root: classes.tab }}></Tab>
-          <Tab label="Withdraw to Ethereum" value="Withdraw" classes={{ root: classes.tab }}></Tab>
+          <Tab label={`Deposit to ${L2_NAME}`} value="Deposit" classes={{ root: classes.tab }}></Tab>
+          <Tab label={`Withdraw to ${L1_NAME}`} value="Withdraw" classes={{ root: classes.tab }}></Tab>
         </TabList>
         <TabPanel value="Deposit" classes={{ root: classes.tabPanel }}>
           <Deposit></Deposit>

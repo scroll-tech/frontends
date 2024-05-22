@@ -224,6 +224,13 @@ const lightTheme = createTheme({
         },
       },
     },
+    MuiTable: {
+      styleOverrides: {
+        root: {
+          borderRadius: "0.8rem !important",
+        },
+      },
+    },
     MuiTableRow: {
       styleOverrides: {
         root: {

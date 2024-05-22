@@ -337,7 +337,7 @@ const SendTransaction = props => {
             color="primary"
           >
             <SvgIcon
-              sx={{ fontSize: "1.6rem", mr: "0.8rem", verticalAlign: "middle", color: "#FF684B" }}
+              sx={{ fontSize: "1.6rem", mr: "0.8rem", verticalAlign: "middle", color: "#008070" }}
               component={WarningSvg}
               inheritViewBox
             ></SvgIcon>

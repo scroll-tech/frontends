@@ -2,9 +2,8 @@ import { Box, Container, Stack, Typography } from "@mui/material"
 
 import { L2_NAME } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
-import { networkType } from "@/utils"
 
-import SendFeedback from "./SendFeedback"
+// import SendFeedback from "./SendFeedback"
 import TestFlow from "./TestFlow"
 import WalletConfig from "./WalletConfig"
 
@@ -13,8 +12,8 @@ const Portal = () => {
   return (
     <Container>
       <Box sx={{ textAlign: "center", mt: ["6.8rem", "13.8rem"] }}>
-        <Typography sx={{ fontSize: ["4rem", "7.8rem"], lineHeight: 1, fontWeight: 600 }}>{L2_NAME}</Typography>
-        <Typography sx={{ fontSize: ["2rem", "2.6rem"], mt: ["2rem", "1.4rem"] }}>Get started with our {networkType} now!</Typography>
+        <Typography sx={{ fontSize: ["4rem", "7.8rem"], lineHeight: 1, fontWeight: 600 }}>{L2_NAME} Stack</Typography>
+        <Typography sx={{ fontSize: ["2rem", "2.6rem"], mt: ["2rem", "1.4rem"] }}>Get started with us now!</Typography>
       </Box>
       <Stack
         direction="column"
@@ -33,7 +32,7 @@ const Portal = () => {
       >
         <WalletConfig></WalletConfig>
         <TestFlow></TestFlow>
-        <SendFeedback></SendFeedback>
+        {/* <SendFeedback></SendFeedback> */}
       </Stack>
     </Container>
   )

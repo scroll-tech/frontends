@@ -6,9 +6,9 @@ import { styled } from "@mui/material/styles"
 
 import Link from "@/components/Link"
 import TextButton from "@/components/TextButton"
-import { NETWORKS } from "@/constants"
+import { L2_NAME, NETWORKS } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { isProduction, switchNetwork } from "@/utils"
+import { switchNetwork } from "@/utils"
 
 import Descriptions, { DescriptionItem } from "./Descriptions"
 
@@ -59,14 +59,14 @@ const WalletConfig = () => {
 
   return (
     <>
-      <Descriptions title={`Configure for ${isProduction ? "Scroll mainnet" : "our Sepolia testnet"}`}>
+      <Descriptions title={`Configure for our ${L2_NAME} networks`}>
         {NETWORKS.map((item, index) => (
-          <DescriptionItem key={item.name}>
-            <Typography bold>Layer{index + 1}</Typography>
+          <DescriptionItem key={item.name} odd>
+            <Typography bold>{index ? "Rollup" : "Base Chain"}</Typography>
             <Stack
               direction="row"
               justifyContent="space-between"
-              sx={{ width: ["100%", "60rem"], border: "1px solid #DADADA", borderRadius: "10rem", p: ["1.2rem 1.6rem", "1.2rem 2.2rem"] }}
+              sx={{ width: ["100%", "60rem"], border: "1px solid #0F8E7E", borderRadius: "10rem", p: ["1.2rem 1.6rem", "1.2rem 2.2rem"] }}
             >
               <Typography>{item.name}</Typography>
               {walletName ? (
@@ -77,9 +77,9 @@ const WalletConfig = () => {
             </Stack>
           </DescriptionItem>
         ))}
-        <DescriptionItem>
+        <DescriptionItem odd>
           <Typography>
-            Having issues? Try completely removing previous Scroll networks from your {walletName || "wallet"}. Troubleshoot other{" "}
+            Having issues? Try completely removing previous {L2_NAME} networks from your {walletName || "wallet"}. Troubleshoot other{" "}
             <Link href="https://docs.scroll.io/en/user-guide/common-errors/" underline="hover" external>
               Common Errors
             </Link>{" "}

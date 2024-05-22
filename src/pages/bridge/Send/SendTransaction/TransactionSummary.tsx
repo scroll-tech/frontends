@@ -1,7 +1,7 @@
 import { FC, useCallback, useMemo } from "react"
 import { makeStyles } from "tss-react/mui"
 
-import { Typography } from "@mui/material"
+import { Box, Typography } from "@mui/material"
 
 import { ETH_SYMBOL } from "@/constants"
 import { useBridgeContext } from "@/contexts/BridgeContextProvider"
@@ -23,7 +23,6 @@ const useStyles = makeStyles()(theme => ({
     marginBottom: "0.4rem",
   },
   table: {
-    borderRadius: "1rem",
     overflow: "hidden",
     background: theme.palette.themeBackground.normal,
     width: "100%",
@@ -163,25 +162,33 @@ const TransactionSummary: FC<Props> = props => {
       <Typography className={styles.title} variant="h5">
         Summary
       </Typography>
-      <table className={styles.table}>
-        <tbody>
-          <DetailRow
-            title={`You're ${txType === "Deposit" ? "depositing" : "withdrawing"}`}
-            value={displayedAmount.value}
-            price={displayedAmount.price}
-            large
-          />
-          {txType === "Deposit" && <DetailRow title="Ethereum gas fee" value={displayedL1Fee.value} price={displayedL1Fee.price} large />}
-          <DetailRow title="Scroll gas fee" value={displayedL2Fee.value} price={displayedL2Fee.price} large />
-          {txType === "Withdraw" && <DetailRow title="Ethereum data fee" value={displayedL1DataFee.value} price={displayedL1DataFee.price} large />}
-          <tr className={styles.hr}>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <DetailRow title="Total" value={displayedTotalCost.value} price={displayedTotalCost.price} large />
-        </tbody>
-      </table>
+      <Box
+        sx={{
+          borderRadius: "0.8rem",
+          border: "1px solid #101010",
+          overflow: "hidden",
+        }}
+      >
+        <table className={styles.table}>
+          <tbody>
+            <DetailRow
+              title={`You're ${txType === "Deposit" ? "depositing" : "withdrawing"}`}
+              value={displayedAmount.value}
+              price={displayedAmount.price}
+              large
+            />
+            {txType === "Deposit" && <DetailRow title="Ethereum gas fee" value={displayedL1Fee.value} price={displayedL1Fee.price} large />}
+            <DetailRow title="Scroll gas fee" value={displayedL2Fee.value} price={displayedL2Fee.price} large />
+            {txType === "Withdraw" && <DetailRow title="Ethereum data fee" value={displayedL1DataFee.value} price={displayedL1DataFee.price} large />}
+            <tr className={styles.hr}>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <DetailRow title="Total" value={displayedTotalCost.value} price={displayedTotalCost.price} large />
+          </tbody>
+        </table>
+      </Box>
     </div>
   )
 }

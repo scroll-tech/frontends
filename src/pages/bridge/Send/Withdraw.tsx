@@ -38,7 +38,7 @@ const useStyles = makeStyles()(theme => ({
   },
   indicator: {
     height: "4px",
-    backgroundColor: "#FF684B",
+    backgroundColor: "#008070",
   },
   tabPanel: {
     backgroundColor: theme.palette.themeBackground.optionHightlight,

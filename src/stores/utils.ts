@@ -4,7 +4,6 @@ import { readItem } from "squirrel-gill/lib/storage"
 import { fetchClaimableTxListUrl, fetchTxListUrl, fetchWithdrawalListUrl } from "@/apis/bridge"
 import { BLOCK_NUMBERS } from "@/constants/storageKey"
 import { TX_TYPE } from "@/constants/transaction"
-import { sentryDebug } from "@/utils"
 
 export interface FrontendTxDB {
   [key: string]: Transaction[]
@@ -84,7 +83,6 @@ export const formatBackTxList = (backList, estimatedTimeMap) => {
           nextEstimatedTimeMap[`from_${tx.hash}`] = Date.now() + estimatedOffsetTime
         } else if (!tx.counterpart_chain_tx?.block_number || tx.counterpart_chain_tx.block_number > blockNumbers[1]) {
           nextEstimatedTimeMap[`from_${tx.hash}`] = 0
-          sentryDebug(`safe block number: ${blockNumbers[0]}`)
         }
       } else if (tx.blockNumber <= blockNumbers[0] && Object.keys(nextEstimatedTimeMap).includes(`from_${tx.hash}`)) {
         delete nextEstimatedTimeMap[`from_${tx.hash}`]

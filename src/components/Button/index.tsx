@@ -64,7 +64,7 @@ const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, w
     pointerEvents: "none",
   },
   wrapperDisabled: {
-    backgroundColor: "#FFF0DD80",
+    // backgroundColor: "#FFF0DD80",
     borderRadius: "1rem",
     pointerEvents: "none",
   },
@@ -85,8 +85,11 @@ const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, w
     },
   },
   buttonDisabled: {
-    borderColor: "#EBC28E",
-    color: "#EBC28E",
+    // borderColor: "#EBC28E",
+    // color: "#EBC28E",
+    // "&:hover": {
+    //   cursor: "not-allowed",
+    // },
   },
   buttonLoading: {
     paddingLeft: "2rem",
@@ -112,7 +115,7 @@ const useStyles = makeStyles<any>()((theme, { width, color, disabled, loading, w
     width: "100% !important",
   },
   maskDisabled: {
-    backgroundColor: "#EBC28E",
+    // backgroundColor: "#EBC28E",
   },
 
   icon: {

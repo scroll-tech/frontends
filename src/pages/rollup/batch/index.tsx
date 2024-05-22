@@ -149,7 +149,7 @@ const Batch = () => {
                 sx={{
                   width: "100%",
                   border: theme => `1px solid ${theme.palette.border.main}`,
-                  borderRadius: "27px",
+                  borderRadius: "8px",
                   marginTop: "2.2rem",
                 }}
                 aria-label="batch"

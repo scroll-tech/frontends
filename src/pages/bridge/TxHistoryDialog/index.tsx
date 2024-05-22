@@ -15,6 +15,7 @@ const useStyles = makeStyles()(theme => ({
     boxShadow: "unset",
     width: "100%",
     maxWidth: "78rem",
+    borderRadius: "0.8rem",
     [theme.breakpoints.down("sm")]: {
       maxWidth: "unset",
     },
