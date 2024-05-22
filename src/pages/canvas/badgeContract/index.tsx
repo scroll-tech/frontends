@@ -85,7 +85,7 @@ const BadgeContractDetail = props => {
           </Typography>
         </>
       )
-    } else if (profileMinted !== false) {
+    } else if (profileMinted === false) {
       return (
         <>
           <SvgIcon sx={{ color: "#FAD880", fontSize: "2.4rem" }} component={WarningSvg} inheritViewBox></SvgIcon>

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 
 import { Box } from "@mui/material"
 
+import useCheckViewport from "@/hooks/useCheckViewport"
 import ToolTip from "@/pages/canvas/components/Tooltip"
 
 import Item from "./Item"
@@ -13,6 +14,7 @@ const TransferItem = props => {
   const { setNodeRef, listeners, isDragging, transform, transition } = useSortable({
     id,
   })
+  const { isDesktop } = useCheckViewport()
 
   const mounted = useMountStatus()
   const mountedWhileDragging = isDragging && !mounted
@@ -30,7 +32,7 @@ const TransferItem = props => {
   }, [dragOverlay])
 
   return (
-    <ToolTip title={<Box sx={{ fontWeight: 600 }}>{name}</Box>}>
+    <ToolTip title={<Box sx={{ fontWeight: 600 }}>{name}</Box>} disableHoverListener={!isDesktop}>
       <Box sx={{ cursor: "grab" }}>
         <Item
           sx={{ opacity: containerId === "left" ? 0.6 : 1 }}

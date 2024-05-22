@@ -1,4 +1,4 @@
-import { useMemo } from "react"
+import { forwardRef, useEffect, useMemo, useRef, useState } from "react"
 import Img from "react-cool-img"
 import { useNavigate } from "react-router-dom"
 
@@ -14,7 +14,7 @@ import useCheckViewport from "@/hooks/useCheckViewport"
 import useSnackbar from "@/hooks/useSnackbar"
 import Dialog from "@/pages/canvas/components/Dialog"
 import { mintBadge } from "@/services/canvasService"
-import useCanvasStore, { BadgeDetailDialogTpye } from "@/stores/canvasStore"
+import useCanvasStore, { BadgeDetailDialogType } from "@/stores/canvasStore"
 import { generateShareTwitterURL, getBadgeImgURL, requireEnv } from "@/utils"
 
 import { badgeMap } from "../UpgradeDialog/Badges"
@@ -26,7 +26,7 @@ const StyledScrollButton = styled(ScrollButton)(({ theme }) => ({
   // fontWeight: 600,
 }))
 
-const ButtonContainer = styled(Box)(({ theme }) => ({
+const ButtonContainer = styled(forwardRef<any, any>((props, ref) => <Box {...props} ref={ref} />))(({ theme }) => ({
   display: "flex",
   gap: "1.6rem",
   alignItems: "center",
@@ -90,9 +90,17 @@ const BadgeDetailDialog = () => {
   const navigate = useNavigate()
   const alertWarning = useSnackbar()
   const { isMobile } = useCheckViewport()
+  const [actionHeight, setActionHeight] = useState("auto")
+  const actionsRef = useRef()
+
+  useEffect(() => {
+    if (badgeDetailDialogVisible !== BadgeDetailDialogType.HIDDEN && actionsRef?.current) {
+      setActionHeight((actionsRef.current as HTMLDivElement).getBoundingClientRect().height + "px")
+    }
+  }, [badgeDetailDialogVisible])
 
   const handleClose = () => {
-    changeBadgeDetailDialog(BadgeDetailDialogTpye.HIDDEN)
+    changeBadgeDetailDialog(BadgeDetailDialogType.HIDDEN)
     changeUpgradeDialog(false)
   }
 
@@ -112,7 +120,7 @@ const BadgeDetailDialog = () => {
           </>,
           "success",
         )
-        changeBadgeDetailDialog(BadgeDetailDialogTpye.HIDDEN)
+        changeBadgeDetailDialog(BadgeDetailDialogType.HIDDEN)
         changeUpgradeDialog(true)
       }
     } catch (e) {
@@ -123,29 +131,29 @@ const BadgeDetailDialog = () => {
   }
 
   const handleViewCanvas = () => {
-    changeBadgeDetailDialog(BadgeDetailDialogTpye.HIDDEN)
+    changeBadgeDetailDialog(BadgeDetailDialogType.HIDDEN)
     navigate("/scroll-canvas")
   }
 
   // const handleViewEAS = () => {
-  //   changeBadgeDetailDialog(BadgeDetailDialogTpye.HIDDEN)
+  //   changeBadgeDetailDialog(BadgeDetailDialogType.HIDDEN)
   //   navigate("/scroll-canvas/eas")
   // }
 
   const handleViewBadge = () => {
-    changeBadgeDetailDialog(BadgeDetailDialogTpye.HIDDEN)
+    changeBadgeDetailDialog(BadgeDetailDialogType.HIDDEN)
     changeUpgradeDialog(false)
     navigate(`/scroll-canvas/badge/${selectedBadge.id}`)
   }
 
   const handleViewBadgeContract = () => {
-    changeBadgeDetailDialog(BadgeDetailDialogTpye.HIDDEN)
+    changeBadgeDetailDialog(BadgeDetailDialogType.HIDDEN)
     changeUpgradeDialog(false)
     navigate(`/scroll-canvas/badge-contract/${selectedBadge.badgeContract}`)
   }
 
   const handleBack = () => {
-    changeBadgeDetailDialog(BadgeDetailDialogTpye.HIDDEN)
+    changeBadgeDetailDialog(BadgeDetailDialogType.HIDDEN)
     changeUpgradeDialog(true)
   }
 
@@ -163,8 +171,9 @@ const BadgeDetailDialog = () => {
 
   return (
     <Dialog
-      open={badgeDetailDialogVisible !== BadgeDetailDialogTpye.HIDDEN}
-      allowBack={[BadgeDetailDialogTpye.MINT_WITH_BACK, BadgeDetailDialogTpye.MINTED].includes(badgeDetailDialogVisible)}
+      disablePortal
+      open={badgeDetailDialogVisible !== BadgeDetailDialogType.HIDDEN}
+      allowBack={[BadgeDetailDialogType.MINT_WITH_BACK].includes(badgeDetailDialogVisible)}
       onBack={handleBack}
       onClose={handleClose}
     >
@@ -172,7 +181,7 @@ const BadgeDetailDialog = () => {
         direction="column"
         alignItems="center"
         justifyContent={isMobile ? "flex-start" : "center"}
-        sx={{ width: ["100%", "57.6rem"], height: ["60%", "64.8rem"] }}
+        sx={{ width: ["100%", "57.6rem"], height: [`calc(100% - ${actionHeight})`, "64.8rem"] }}
       >
         <Img
           alt="img"
@@ -185,7 +194,7 @@ const BadgeDetailDialog = () => {
             borderRadius: "0.8rem",
           }}
         />
-        {[BadgeDetailDialogTpye.MINT, BadgeDetailDialogTpye.MINT_WITH_BACK, BadgeDetailDialogTpye.VIEW, BadgeDetailDialogTpye.NO_PROFILE].includes(
+        {[BadgeDetailDialogType.MINT, BadgeDetailDialogType.MINT_WITH_BACK, BadgeDetailDialogType.VIEW, BadgeDetailDialogType.NO_PROFILE].includes(
           badgeDetailDialogVisible,
         ) && (
           <>
@@ -202,42 +211,37 @@ const BadgeDetailDialog = () => {
               {selectedBadge.name}
             </Typography>
             <Typography
-              sx={{
-                fontSize: ["1.6rem", "1.8rem"],
-                lineHeight: ["2.4rem", "2.8rem"],
-                color: "primary.contrastText",
-                textAlign: ["left", "center"],
-                marginBottom: "1.2rem",
-              }}
+              sx={[
+                {
+                  fontSize: ["1.6rem", "1.8rem"],
+                  lineHeight: ["2.4rem", "2.8rem"],
+                  color: "primary.contrastText",
+                  textAlign: ["left", "center"],
+                  marginBottom: "1.2rem",
+                },
+                theme => ({
+                  [theme.breakpoints.down("sm")]: {
+                    display: "-webkit-box",
+                    width: "100%",
+                    "-webkit-box-orient": "vertical",
+                    "-webkit-line-clamp": "4",
+                    overflow: "hidden",
+                  },
+                }),
+              ]}
             >
               {selectedBadge.description}
             </Typography>
             {/* TODO: how to get badge contract address from a user's badge */}
-            <Stack direction="row" alignItems="center" gap="0.8rem" mb={isMobile ? "1.6rem" : "3.2rem"}>
+            <Stack direction="row" alignItems="center" gap="0.8rem" mb={isMobile ? "0.8rem" : "3.2rem"}>
               <Avatar variant="square" src={badgeIssuer.logo} sx={{ width: "3.2rem", height: "3.2rem", borderRadius: "0.4rem" }}></Avatar>
               <Typography sx={{ fontSize: ["1.8rem", "2rem"], fontWeight: 600, color: "primary.contrastText" }}>{badgeIssuer.name}</Typography>
             </Stack>
           </>
         )}
 
-        {[BadgeDetailDialogTpye.MINTED].includes(badgeDetailDialogVisible) && (
-          <Typography
-            sx={{
-              fontSize: ["2rem", "3.2rem"],
-              fontWeight: 600,
-              lineHeight: ["3.2rem", "4.8rem"],
-              color: "primary.contrastText",
-              marginBottom: "3.2rem",
-              textAlign: "center",
-            }}
-          >
-            You have successfully minted <br />
-            {selectedBadge.name}!
-          </Typography>
-        )}
-
-        {[BadgeDetailDialogTpye.NO_PROFILE].includes(badgeDetailDialogVisible) && (
-          <Stack direction="row" gap="0.8rem" alignItems="center" sx={{ mb: "2.4rem", px: [0, "4rem"] }}>
+        {[BadgeDetailDialogType.NO_PROFILE].includes(badgeDetailDialogVisible) && (
+          <Stack direction="row" gap="0.8rem" alignItems="center" sx={{ mb: [0, "2.4rem"], px: [0, "4rem"] }}>
             <InfoOutlinedIcon sx={{ color: "#FAD880", fontSize: ["1.8rem", "2.4rem"] }} />
             <Typography sx={{ color: "#FAD880", fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.4rem", "2.8rem"] }}>
               You need a Scroll Canvas in order to mint your {selectedBadge.name} Badge.
@@ -245,42 +249,42 @@ const BadgeDetailDialog = () => {
           </Stack>
         )}
 
-        <ButtonContainer>
-          {[BadgeDetailDialogTpye.MINT, BadgeDetailDialogTpye.MINT_WITH_BACK].includes(badgeDetailDialogVisible) && (
+        <ButtonContainer ref={actionsRef}>
+          {[BadgeDetailDialogType.MINT, BadgeDetailDialogType.MINT_WITH_BACK].includes(badgeDetailDialogVisible) && (
             <StyledScrollButton className="mintBtn" loading={isBadgeMinting.get(selectedBadge.badgeContract)} color="primary" onClick={handleMint}>
               {isBadgeMinting.get(selectedBadge.badgeContract) ? "Minting" : "Mint badge"}
             </StyledScrollButton>
           )}
 
-          {/* {[BadgeDetailDialogTpye.UPGRADE].includes(badgeDetailDialogVisible) && (
+          {/* {[BadgeDetailDialogType.UPGRADE].includes(badgeDetailDialogVisible) && (
             <StyledScrollButton color="primary" onClick={handleViewEAS}>
               View on EAS
             </StyledScrollButton>
           )} */}
 
-          {[BadgeDetailDialogTpye.MINTED, BadgeDetailDialogTpye.NO_PROFILE].includes(badgeDetailDialogVisible) && (
+          {[BadgeDetailDialogType.NO_PROFILE].includes(badgeDetailDialogVisible) && (
             <StyledScrollButton className="viewBtn" color="primary" target="_blank" onClick={handleViewCanvas}>
               View Scroll Canvas
             </StyledScrollButton>
           )}
 
-          {[BadgeDetailDialogTpye.MINT, BadgeDetailDialogTpye.MINT_WITH_BACK].includes(badgeDetailDialogVisible) && (
+          {[BadgeDetailDialogType.MINT, BadgeDetailDialogType.MINT_WITH_BACK].includes(badgeDetailDialogVisible) && (
             <StyledScrollButton className="detailBtn" width="24rem" color="tertiary" onClick={handleViewBadgeContract}>
               View details
             </StyledScrollButton>
           )}
-          {[BadgeDetailDialogTpye.VIEW, BadgeDetailDialogTpye.MINTED].includes(badgeDetailDialogVisible) && (
+          {[BadgeDetailDialogType.VIEW].includes(badgeDetailDialogVisible) && (
             <StyledScrollButton className="detailBtn" width="24rem" color="tertiary" onClick={handleViewBadge}>
               View details
             </StyledScrollButton>
           )}
 
-          {[BadgeDetailDialogTpye.VIEW, BadgeDetailDialogTpye.MINTED].includes(badgeDetailDialogVisible) && (
+          {[BadgeDetailDialogType.VIEW].includes(badgeDetailDialogVisible) && (
             <Link external href={shareBadgeURL} className="shareBtn">
               <SvgIcon sx={{ width: "3.2rem", height: "3.2rem", color: "primary.contrastText" }} component={ShareSvg} inheritViewBox></SvgIcon>
             </Link>
           )}
-          {[BadgeDetailDialogTpye.MINT, BadgeDetailDialogTpye.MINT_WITH_BACK].includes(badgeDetailDialogVisible) && (
+          {[BadgeDetailDialogType.MINT, BadgeDetailDialogType.MINT_WITH_BACK].includes(badgeDetailDialogVisible) && (
             <Link external href={shareBadgeContractURL} className="shareBtn">
               <SvgIcon sx={{ width: "3.2rem", height: "3.2rem", color: "primary.contrastText" }} component={ShareSvg} inheritViewBox></SvgIcon>
             </Link>
