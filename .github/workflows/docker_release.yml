@@ -27,9 +27,18 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: |
+            scrolltech/${{ github.repository }}
+          tags: |
+            type=semver,pattern={{version}}
+
       - name: Build and push image
         id: build
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: scrolltech/frontend:${{ steps.meta.outputs.tags }}
+          tags: ${{ steps.meta.outputs.tags }}
