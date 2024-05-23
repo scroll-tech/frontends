@@ -8,6 +8,7 @@ import Alert from "@/components/Alert"
 import TextButton from "@/components/TextButton"
 import { CHAIN_ID } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useBatchBridgeStore, { DepositBatchMode } from "@/stores/batchBridgeStore"
 import useBridgeStore from "@/stores/bridgeStore"
 
 import Deposit from "./Deposit"
@@ -85,6 +86,7 @@ const Send = () => {
   const { classes, cx } = useStyles()
   const { chainId } = useRainbowContext()
   const { txType, txResult, fromNetwork, withDrawStep, changeTxType, changeTxResult, changeHistoryVisible, changeIsNetworkCorrect } = useBridgeStore()
+  const { depositBatchMode } = useBatchBridgeStore()
 
   useEffect(() => {
     let networkCorrect
@@ -143,7 +145,9 @@ const Send = () => {
             <Alert severity="success">
               <>
                 Submitted successfully! <br />
-                {txType === "Deposit" ? "Funds take up to 20 mins to be ready" : "Funds take up to 1h to be claimable"}
+                {txType === "Deposit"
+                  ? `Funds take up to ${depositBatchMode === DepositBatchMode.Economy ? "1h" : "20 mins"} to be ready`
+                  : "Funds take up to 1h to be claimable"}
                 <br />
                 <TextButton underline="always" sx={{ color: "inherit" }} onClick={handleOpenHistory}>
                   View transaction history

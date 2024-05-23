@@ -58,7 +58,7 @@ export const toTokenDisplay = (num, decimals: bigint = BigInt(18), symbol?: stri
   return formatted
 }
 
-export const toPrecision = (amount, precise = 8) => {
+export const toPrecision = (amount, precise = 6) => {
   const [nonDecimalNum] = String(amount).split(".")
   let significantDecimals = 0
   if (nonDecimalNum.length < precise) {
