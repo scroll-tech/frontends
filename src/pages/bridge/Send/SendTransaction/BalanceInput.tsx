@@ -40,9 +40,11 @@ const useStyles = makeStyles()(theme => ({
     borderRadius: "1rem",
     paddingLeft: "1.4rem",
     "&.Mui-disabled": {
-      backgroundColor: "#FFF5E8",
-      border: "1px solid #A39B9A",
+      // backgroundColor: "#FFF5E8",
+      // border: "1px solid #A39B9A",
       cursor: "not-allowed",
+      opacity: 0.3,
+      "-webkit-text-fill-color": "#101010",
     },
     [theme.breakpoints.down("sm")]: {
       fontSize: "2.4rem",
@@ -53,7 +55,7 @@ const useStyles = makeStyles()(theme => ({
     fontSize: "1.4rem",
     fontWeight: 500,
     lineHeight: 2,
-    color: "#A39B9A",
+    color: "#5B5B5B",
     whiteSpace: "nowrap",
     [theme.breakpoints.down("sm")]: {
       fontSize: "1.2rem",

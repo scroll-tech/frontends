@@ -25,12 +25,11 @@ const useStyles = makeStyles()(theme => ({
       backgroundColor: "#ffffff",
     },
     "&.Mui-disabled": {
-      backgroundColor: "#FFF5E8",
-      border: "1px solid #A39B9A",
-      opacity: 1,
-      "*": {
-        opacity: 0.75,
-      },
+      // backgroundColor: "#FFF5E8",
+      // border: "1px solid #A39B9A",
+      // opacity: 1,
+      opacity: 0.3,
+      "-webkit-text-fill-color": "#000000",
     },
     [theme.breakpoints.down("sm")]: {
       padding: "0.6rem 0.8rem",
