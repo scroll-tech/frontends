@@ -1,5 +1,5 @@
 import { AbiCoder, Transaction, ethers } from "ethers"
-import React, { createContext, useContext, useMemo, useState } from "react"
+import React, { createContext, useContext, useEffect, useMemo, useState } from "react"
 import useStorage from "squirrel-gill"
 import { useBlockNumber } from "wagmi"
 
@@ -130,21 +130,21 @@ export const PriceFeeProvider = ({ children }) => {
     }
   }
 
-  useBlockNumber({
-    // enabled: !!(networksAndSigners[CHAIN_ID.L1].signer && networksAndSigners[CHAIN_ID.L2].provider),
-    onBlock(blockNumber) {
-      fetchData()
-        .then(() => {
-          setErrorMessage("")
-        })
-        .catch(error => {
-          //TODO:
-          // setGasLimit(null)
-          // setGasPrice(null)
-          setErrorMessage(trimErrorMessage(error.message))
-        })
-    },
-  })
+  const { data: blockNumber } = useBlockNumber({ watch: true })
+
+  useEffect(() => {
+    fetchData()
+      .then(() => {
+        setErrorMessage("")
+      })
+      .catch(error => {
+        console.log("error", error)
+        //TODO:
+        // setGasLimit(null)
+        // setGasPrice(null)
+        setErrorMessage(trimErrorMessage(error.message))
+      })
+  }, [blockNumber])
 
   const l1Token = useMemo(
     () => tokenList.find(item => item.chainId === CHAIN_ID.L1 && item.symbol === tokenSymbol) ?? ({} as any as Token),
@@ -162,7 +162,7 @@ export const PriceFeeProvider = ({ children }) => {
       const gasPrice = await L1MessageQueueWithGasPriceOracleContract.l2BaseFee()
       return (gasPrice * BigInt(120)) / BigInt(100)
     } catch (err) {
-      // console.log(err)
+      console.log("err", err)
       throw new Error("Failed to get gas price")
     }
   }
