@@ -67,7 +67,7 @@ const BadgeDetail = props => {
   }, [])
 
   useEffect(() => {
-    if (!loading && actionHeight !== "auto") {
+    if (actionHeight !== "auto") {
       const detailContainerEl = document.querySelector(".detail-container") as HTMLElement
       // console.log(detailContainerEl.clientHeight, detailContainerEl.scrollHeight)
       setIsOverflow(detailContainerEl.clientHeight < detailContainerEl.scrollHeight)
@@ -94,10 +94,10 @@ const BadgeDetail = props => {
           pb: [0, "6rem"],
           minHeight: ["unset", "calc(100vh - 6.5rem)"],
 
-          height: [`calc(100vh - 6.2rem - ${actionHeight})`, "auto"],
+          height: [`calc(var(--vh, 1vh) * 100 - 6.2rem - ${actionHeight})`, "auto"],
           display: "flex",
           alignItems: isOverflow ? "flex-start" : "center",
-          overflowY: "auto",
+          overflowY: isOverflow ? "auto" : "unset",
         }}
       >
         <Box
@@ -251,6 +251,7 @@ const BadgeDetail = props => {
                   alignItems: "center",
                   columnGap: "1.6rem",
                   rowGap: "3.2rem",
+                  backgroundColor: "themeBackground.dark",
                 },
                 theme => ({
                   [theme.breakpoints.down("sm")]: {
