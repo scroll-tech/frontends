@@ -1,11 +1,9 @@
 import { BrowserProvider, JsonRpcProvider, JsonRpcSigner, ethers } from "ethers"
 import { createContext, useContext, useEffect, useState } from "react"
 import useStorage from "squirrel-gill"
-import useSWR, { mutate } from "swr"
 
 import { Alert, Snackbar } from "@mui/material"
 
-import { tokenListUrl } from "@/apis/dynamic"
 import BATCH_BRIDGE_GATEWAY_PROXY_ABI from "@/assets/abis/L1BatchBridgeGateway.json"
 import L1_SCROLL_MESSENGER_ABI from "@/assets/abis/L1ScrollMessenger.json"
 import L1_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L1_GATEWAY_ROUTER_PROXY_ADDR.json"
@@ -56,6 +54,7 @@ const BridgeContextProvider = ({ children }: any) => {
 
   const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
   const [blockNumbers] = useStorage(localStorage, BLOCK_NUMBERS, [-1, -1])
+  const [tokenList, setTokenList] = useState<Token[]>([])
 
   const [networksAndSigners, setNetworksAndSigners] = useState({
     [CHAIN_ID.L1]: {},
@@ -121,47 +120,39 @@ const BridgeContextProvider = ({ children }: any) => {
     })
   }
 
-  const { data: tokenList } = useSWR(tokenListUrl, url => {
-    return scrollRequest(url)
-      .then((data: any) => {
-        const tokensListTokens = data.tokens
-        const currentUserTokens = loadState(USER_TOKEN_LIST) || []
+  const loadLocalTokenList = () => {
+    const currentUserTokens = loadState(USER_TOKEN_LIST) || []
 
-        const combinedList = [...NATIVE_TOKEN_LIST, ...tokensListTokens, ...currentUserTokens]
-        const uniqueList = combinedList.reduce(
-          (accumulator, token) => {
-            // If the token doesn't have an address, consider it a native token and add it directly
-            if (!token.address) {
-              accumulator.result.push(token)
-              return accumulator
-            }
-            // Convert address to lowercase for case-insensitive deduplication
-            const lowercaseAddress = token.address.toLowerCase()
-            // Create a key combining address and chainId to ensure different chainIds are not deduplicated
-            const key = `${lowercaseAddress}-${token.chainId}`
+    const combinedList = [...NATIVE_TOKEN_LIST, ...currentUserTokens]
+    const uniqueList = combinedList.reduce(
+      (accumulator, token) => {
+        if (!token.address) {
+          accumulator.result.push(token)
+          return accumulator
+        }
+        const lowercaseAddress = token.address.toLowerCase()
+        const key = `${lowercaseAddress}-${token.chainId}`
 
-            if (!accumulator.seen[key]) {
-              accumulator.seen[key] = true
-              accumulator.result.push(token)
-            }
-            return accumulator
-          },
-          { seen: {}, result: [] },
-        ).result
+        if (!accumulator.seen[key]) {
+          accumulator.seen[key] = true
+          accumulator.result.push(token)
+        }
+        return accumulator
+      },
+      { seen: {}, result: [] },
+    ).result
 
-        return uniqueList
-      })
-      .catch(() => {
-        setFetchTokenListError("Fail to fetch token list")
-        setTokenSymbol(ETH_SYMBOL)
-        return null
-      })
-  })
+    return uniqueList
+  }
+
+  useEffect(() => {
+    setTokenList(loadLocalTokenList())
+  }, [])
 
   const tokenPrice = useTokenPrice(tokenList)
 
   const refreshTokenList = () => {
-    mutate(tokenListUrl)
+    setTokenList(loadLocalTokenList())
   }
 
   useEffect(() => {

@@ -68,7 +68,7 @@ const useStyles = makeStyles()(theme => ({
   },
   disabledMaxButton: {
     pointerEvents: "none",
-    color: "#EBC28E",
+    opacity: 0.3,
   },
   readOnlyMaxButton: {
     pointerEvents: "none",
