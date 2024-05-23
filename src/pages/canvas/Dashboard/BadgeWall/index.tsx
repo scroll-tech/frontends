@@ -45,6 +45,14 @@ const Profile = styled(Box)(({ theme }) => ({
   flexDirection: "column",
   justifyContent: "space-evenly",
   alignItems: "center",
+  // TODO: ???
+  transform: "translate(0.25px, 0.25px)",
+  [theme.breakpoints.down("lg")]: {
+    transform: "translate(0.5px, 0.5px)",
+  },
+  [theme.breakpoints.down("sm")]: {
+    transform: "translate(0.25px, 0.25px)",
+  },
 }))
 
 const Name = styled(Typography)(({ theme }) => ({
@@ -74,6 +82,7 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
   const { walletCurrentAddress } = useRainbowContext()
 
   const realWalletAddress = useMemo(() => othersWalletAddress || walletCurrentAddress, [othersWalletAddress, walletCurrentAddress])
+  const profileSize = useMemo(() => (badgewidth * gridNum) / 2 - 1, [badgewidth, gridNum])
 
   const visibleBadges = useMemo(() => {
     return orderedAttachedBadges.map(badgeId => userBadges.find(badge => badge.id === badgeId))
@@ -165,8 +174,8 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
       <Profile
         ref={divRef}
         sx={{
-          width: `${(badgewidth * gridNum) / 2 - 1}px`,
-          height: `${(badgewidth * gridNum) / 2 - 1}px`,
+          width: `${profileSize}px`,
+          height: `${profileSize}px`,
         }}
       >
         <Tooltip
