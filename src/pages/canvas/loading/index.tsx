@@ -57,7 +57,12 @@ const LoadingPage = () => {
         direction="column"
         alignItems="center"
         justifyContent="space-evenly"
-        sx={{ width: `${badgewidth * 2 - 1}px`, aspectRatio: "1/1", backgroundColor: "text.primary" }}
+        sx={{
+          width: `${badgewidth * 2 - 1}px`,
+          aspectRatio: "1/1",
+          backgroundColor: "text.primary",
+          transform: ["translate(0.25px, 0.25px)", "translate(0.5px, 0.5px)", "translate(0.5px, 0.5px)", "translate(0.25px, 0.25px)"],
+        }}
       >
         <Box sx={{ width: "66.67%" }}>
           <Img src="/imgs/canvas/Scrolly_Coding.webp" placeholder="/imgs/canvas/avatarPlaceholder.svg" alt="Coding Scrolly" width="100%" />
