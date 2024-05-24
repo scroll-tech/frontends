@@ -80,7 +80,7 @@ body.mobile-top-nav-open {
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
   /* same as scroll documnet */
-  --developer-page-font-family: "Roboto Flex", "trans-sans", "circular", Arial, "Helvetica Neue", Helvetica, sans-serif;
+  --developer-page-font-family: "Roboto", "trans-sans", "circular", Arial, "Helvetica Neue", Helvetica, sans-serif;
 }
 
 .App {
@@ -110,7 +110,14 @@ onboard-v2 .outer-container icon {
 
 div.markdown-body {
   max-width: 76rem;
-  font-family: var(--default-font-family);
+  font-family: var(--developer-page-font-family);
+  letter-spacing: 0.09px;
+}
+
+div.markdown-body p {
+  margin: 0 0 16px;
+  max-width: 100%;
+  line-height: 2.6rem;
 }
 
 div.markdown-body h1,
