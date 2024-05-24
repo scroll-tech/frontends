@@ -1,5 +1,4 @@
 import { isHexString } from "ethers"
-import { isNil } from "lodash"
 import find from "lodash/find"
 import { DependencyList } from "react"
 
@@ -22,11 +21,12 @@ export function findNetworkBySlug(slug: string, networks: any[]) {
 }
 
 export function requireEnv(entry) {
-  if (isNil(process.env[entry])) {
-    throw new Error(`${entry} not defined in .env`)
-  } else {
-    return process.env[entry]!
-  }
+  // if (isNil(process.env[entry])) {
+  //   throw new Error(`${entry} not defined in .env`)
+  // } else {
+  //   return process.env[entry]!
+  // }
+  return process.env[entry] || (window as any)[entry]
 }
 
 export const generateExploreLink = (explorer, hash, type = "tx") => {
