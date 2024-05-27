@@ -5,7 +5,7 @@ import {
   metaMaskWallet,
   okxWallet,
   rabbyWallet,
-  safeWallet,
+  trustWallet,
   walletConnectWallet,
   zerionWallet,
 } from "@rainbow-me/rainbowkit/wallets"
@@ -21,7 +21,11 @@ const projectId = requireEnv("REACT_APP_CONNECT_WALLET_PROJECT_ID")
 const wallets = [
   {
     groupName: "Popular",
-    wallets: [metaMaskWallet, walletConnectWallet, coinbaseWallet, okxWallet, bitgetWallet, rabbyWallet, safeWallet, zerionWallet],
+    wallets: [metaMaskWallet, coinbaseWallet, rabbyWallet, okxWallet, zerionWallet, trustWallet],
+  },
+  {
+    groupName: "More",
+    wallets: [bitgetWallet, walletConnectWallet],
   },
 ]
 
