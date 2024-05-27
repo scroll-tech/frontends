@@ -25,7 +25,7 @@ const DEPOSIT_OPTIONS = [
   {
     title: "Economy 💰",
     type: DepositBatchMode.Economy,
-    time: "30min ~ 1 hour",
+    time: "30 min ~ 1 hour",
   },
 ]
 
@@ -39,7 +39,7 @@ const useStyles = makeStyles()(theme => ({
     overflow: "visible",
     cursor: "pointer",
     flex: 1,
-    border: "none",
+    border: "1px solid transparent",
     transition: "backgroundColor 0.3s ease",
 
     "&:hover": {
@@ -56,7 +56,7 @@ const useStyles = makeStyles()(theme => ({
     pointerEvents: "none",
   },
   selectedCard: {
-    outline: `1px solid ${theme.palette.text.primary}`,
+    border: `1px solid ${theme.palette.text.primary}`,
     backgroundColor: theme.palette.background.default,
   },
   selectedIcon: {
