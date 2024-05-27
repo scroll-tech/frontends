@@ -6,7 +6,7 @@ import AttestProxyABI from "@/assets/abis/CanvasAttestProxy.json"
 import BadgeABI from "@/assets/abis/CanvasBadge.json"
 import ProfileABI from "@/assets/abis/CanvasProfile.json"
 import ProfileRegistryABI from "@/assets/abis/CanvasProfileRegistry.json"
-import { decodeBadgePayload, requireEnv, trimErrorMessage } from "@/utils"
+import { checkDelegatedAttestation, decodeBadgePayload, requireEnv, trimErrorMessage } from "@/utils"
 
 const EAS_GRAPHQL_URL = requireEnv("REACT_APP_EAS_GRAPHQL_URL")
 const BADGE_SCHEMA = requireEnv("REACT_APP_BADGE_SCHEMA")
@@ -263,7 +263,7 @@ const checkBadgeEligibility = async (provider, walletAddress, badge: any) => {
 const mintThirdBadge = async (signer, walletAddress, badgeAddress, attesterProxyAddress, claimBaseUrl) => {
   const { tx: unsignedTx } = await scrollRequest(claimBadgeURL(claimBaseUrl, walletAddress, badgeAddress))
   console.log(unsignedTx, "unsignedTx")
-
+  checkDelegatedAttestation(unsignedTx, attesterProxyAddress)
   const tx = await signer.sendTransaction(unsignedTx)
   const txReceipt = await tx.wait()
   if (txReceipt.status === 1) {
