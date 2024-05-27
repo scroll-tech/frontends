@@ -80,5 +80,5 @@ body.mobile-top-nav-open {
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
   /* same as scroll documnet */
-  --developer-page-font-family: "Roboto Flex", "trans-sans", "circular", Arial, "Helvetica Neue", Helvetica, sans-serif;
+  --developer-page-font-family: "Roboto", "trans-sans", "circular", Arial, "Helvetica Neue", Helvetica, sans-serif;
 }
