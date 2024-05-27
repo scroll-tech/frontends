@@ -124,7 +124,7 @@ const BadgeDetailDialog = () => {
         changeUpgradeDialog(true)
       }
     } catch (e) {
-      alertWarning("Failed to mint badge")
+      alertWarning(e.message)
     } finally {
       changeIsBadgeMinting(selectedBadge.badgeContract, false)
     }

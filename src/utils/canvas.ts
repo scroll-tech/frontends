@@ -1,6 +1,6 @@
 import { NO_EXPIRATION, SchemaEncoder, ZERO_BYTES32 } from "@ethereum-attestation-service/eas-sdk"
 import { EIP712Proxy } from "@ethereum-attestation-service/eas-sdk/dist/eip712-proxy.js"
-import { AbiCoder, ethers } from "ethers"
+import { AbiCoder, TransactionDescription, ethers } from "ethers"
 
 import AttestProxyABI from "@/assets/abis/CanvasAttestProxy.json"
 import { requireEnv } from "@/utils"
@@ -67,4 +67,29 @@ export const generateAttestParams = async (signer, walletAddress, attesterProxyA
   console.log(attestParams, "attestParams")
   const tx = await easContract.attestByDelegation.populateTransaction(attestParams)
   return tx
+}
+
+export const checkDelegatedAttestation = (tx, proxyAddress) => {
+  if (!tx) {
+    throw new Error("Got empty tx")
+  }
+
+  if (!tx.to || tx.to.toUpperCase() !== proxyAddress.toUpperCase()) {
+    throw new Error("Unexpected contract address")
+  }
+  const instance = new ethers.Interface(AttestProxyABI)
+  const parsedTx = instance.parseTransaction(tx) as TransactionDescription
+
+  if (parsedTx.name !== "attestByDelegation") {
+    throw new Error("Unexpected function name")
+  }
+
+  if (parsedTx.args[0].length !== 5) {
+    throw new Error("Unexpected number of arguments")
+  }
+
+  if (parsedTx.value !== BigInt(0)) {
+    throw new Error("Unexpected transaction value")
+  }
+  return
 }
