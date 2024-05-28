@@ -105,7 +105,7 @@ const WalletDropdown = props => {
   }, [walletCurrentAddress])
 
   useEffect(() => {
-    if (publicProvider && unsignedProfileRegistryContract && walletCurrentAddress) {
+    if (unsignedProfileRegistryContract && walletCurrentAddress) {
       checkAndFetchCurrentWalletCanvas(publicProvider, unsignedProfileRegistryContract, walletCurrentAddress).then(res => {
         if (res !== true) {
           alertWarning(res)
@@ -114,7 +114,7 @@ const WalletDropdown = props => {
     }
 
     // re check&&fetch walletCurrentAddress's canvas when switching address on Wallet
-  }, [publicProvider, unsignedProfileRegistryContract, walletCurrentAddress])
+  }, [unsignedProfileRegistryContract, walletCurrentAddress])
 
   const handleClick = e => {
     setAnchorEl(e.currentTarget)
