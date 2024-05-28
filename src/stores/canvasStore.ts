@@ -143,7 +143,7 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
       })
       return { profileAddress, minted: profileMinted }
     } catch (error) {
-      // console.log("Failed to check if profile minted:", error)
+      console.log("Failed to get wallet profile:", error)
 
       set({
         profileAddress: "",

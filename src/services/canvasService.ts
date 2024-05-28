@@ -164,8 +164,10 @@ const queryCanvasUsername = async (provider, profileAddress) => {
   try {
     const profileContract = new ethers.Contract(profileAddress, ProfileABI, provider)
     const name = await profileContract.username()
+
     return { profileContract, name }
   } catch (error) {
+    console.log(error, "queryCanvasUsername")
     throw new Error("Failed to fetch username")
     // return { profileContract: null, name: null }
   }
