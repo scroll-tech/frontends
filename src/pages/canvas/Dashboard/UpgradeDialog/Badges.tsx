@@ -5,12 +5,12 @@ import { styled } from "@mui/material/styles"
 import ScrollOriginsNFTABI from "@/assets/abis/ScrollOriginsNFT.json"
 import Link from "@/components/Link"
 import { ANNOUNCING_SCROLL_ORIGINS_NFT, DESIGNING_SCROLL_ORIGINS } from "@/constants"
-import { EAMPLE_BADGES, ETHEREUM_YEAR_BADGE, THIRD_PARTY_BADGES } from "@/constants/badges"
-import { requireEnv } from "@/utils"
+import { BADGES_ADDRESS, EAMPLE_BADGES, ETHEREUM_YEAR_BADGE, THIRD_PARTY_BADGES } from "@/constants/badges"
+import { isMainnet, requireEnv } from "@/utils"
 
 const SCROLL_ORIGINS_NFT = requireEnv("REACT_APP_SCROLL_ORIGINS_NFT")
 const SCROLL_ORIGINS_NFT_V2 = requireEnv("REACT_APP_SCROLL_ORIGINS_NFT_V2")
-const SCROLL_SEPOLIA_ORIGINS_BADGE_ADDRESS = "0x2A3aC1337845f8C02d2dD7f80Dada22f01b569f9"
+const { SCROLL_ORIGINS_BADGE_ADDRESS } = BADGES_ADDRESS[isMainnet ? "mainnet" : "sepolia"]
 
 export interface Badge {
   name: string
@@ -51,7 +51,7 @@ const Badges: Badge[] = [
     name: "Scroll Origins NFT",
     nftAddress: [SCROLL_ORIGINS_NFT, SCROLL_ORIGINS_NFT_V2],
     nftAbi: ScrollOriginsNFTABI,
-    badgeContract: SCROLL_SEPOLIA_ORIGINS_BADGE_ADDRESS,
+    badgeContract: SCROLL_ORIGINS_BADGE_ADDRESS,
     metaDescription:
       "The Scroll Origins NFT is a soulbound NFT that serves to recognize the early builders of Scroll. Eligible minters have deployed a smart contract to Scroll Mainnetwithin 60 days of the Genesis Block. Higher levels of rarity are are rewarded to smart contracts that have contributed significant levels of interaction or value to the network.",
     description: (
