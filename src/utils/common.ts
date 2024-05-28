@@ -105,7 +105,8 @@ export const testAsyncFunc = value => {
       resolve(value)
     }, 1000)
   })
-  
+}
+
 export function generateShareTwitterURL(url, text, via = "Scroll_ZKP") {
   return `https://twitter.com/intent/tweet?original_referer=${encodeURIComponent(window.location.href)}&url=${encodeURIComponent(
     url,
