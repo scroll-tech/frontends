@@ -18,14 +18,14 @@ type TransactionValue = bigint | null
 
 const DEPOSIT_OPTIONS = [
   {
-    title: "Fast ⚡️",
-    type: DepositBatchMode.Fast,
-    time: "20 min",
-  },
-  {
     title: "Economy 💰",
     type: DepositBatchMode.Economy,
     time: "30 min ~ 1 hour",
+  },
+  {
+    title: "Fast ⚡️",
+    type: DepositBatchMode.Fast,
+    time: "20 min",
   },
 ]
 
@@ -100,7 +100,7 @@ const DepositSelector = props => {
   const { isMobile } = useCheckViewport()
   const { classes, cx } = useStyles()
 
-  const [selectedType, setSelectedType] = useState(DepositBatchMode.Fast)
+  const [selectedType, setSelectedType] = useState(DepositBatchMode.Economy)
   const { isNetworkCorrect } = useBridgeStore()
   const { changeDepositBatchMode, depositBatchMode } = useBatchBridgeStore()
   const { tokenPrice } = useBridgeContext()
@@ -205,7 +205,7 @@ const DepositSelector = props => {
             role="button"
             tabIndex={0}
             variant="outlined"
-            classes={{ root: cx(classes.cardRoot, !!idx && !isVaild && classes.invaildCard, selectedType === item.type && classes.selectedCard) }}
+            classes={{ root: cx(classes.cardRoot, !idx && !isVaild && classes.invaildCard, selectedType === item.type && classes.selectedCard) }}
             onClick={() => handleSelect(item.type)}
           >
             {item.type === selectedType && <SvgIcon classes={{ root: classes.selectedIcon }} component={SelectedSvg} inheritViewBox></SvgIcon>}
