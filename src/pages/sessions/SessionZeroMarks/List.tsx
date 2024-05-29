@@ -1,14 +1,15 @@
 import { isNumber } from "lodash"
 import { makeStyles } from "tss-react/mui"
 
-import { Avatar, Box, Button, Link, List, ListItem, ListItemIcon, ListItemText, Skeleton, Tooltip, Typography } from "@mui/material"
+import { Avatar, Box, Button, Link, List, ListItem, ListItemIcon, ListItemText, Skeleton, Stack, Tooltip, Typography } from "@mui/material"
 import { useTheme } from "@mui/material/styles"
 import { styled } from "@mui/system"
 
-import { EXPLORER_URL } from "@/constants"
 import { commafy, formatLargeNumber, generateExploreLink, toPrecision, truncateHash } from "@/utils"
 
 import Statistic from "../components/Statistic"
+
+const TOEKN_BASE_URL = "https://scrollscan.com"
 
 export enum MarksType {
   ELIGIBLE_ASSETS,
@@ -113,11 +114,18 @@ const TokenList = props => {
 
               {type === MarksType.ELIGIBLE_ASSETS && (
                 <>
-                  <Typography sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: ["2.4rem", "3.2rem"], fontWeight: 600 }}>{item.symbol}</Typography>
+                  <Typography sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: ["2.4rem", "3.2rem"], fontWeight: 600 }}>{item.name}</Typography>
                   {item.address && (
-                    <ListAddressStyled href={generateExploreLink(EXPLORER_URL["L2"], item.address, "token")} target="_blank">
+                    <ListAddressStyled href={generateExploreLink(TOEKN_BASE_URL, item.address, "token")} target="_blank">
                       {truncateHash(item.address)}
                     </ListAddressStyled>
+                  )}
+                  {item.containedTokens && (
+                    <Stack direction="row">
+                      {item.containedTokens.map(({ symbol, logoURI }) => (
+                        <Avatar sx={{ width: "2.4rem", height: "2.4rem" }} alt={symbol} src={logoURI}></Avatar>
+                      ))}
+                    </Stack>
                   )}
                 </>
               )}
@@ -154,6 +162,7 @@ const TokenList = props => {
             {type === MarksType.ELIGIBLE_ASSETS && (
               <Button
                 href={item.thirdPartyBridge ? item.thirdPartyBridge.url : `/bridge?token=${item.symbol}`}
+                target={item.thirdPartyBridge ? "_blank" : "_self"}
                 sx={{
                   borderRadius: "0.8rem",
                   borderWidth: "1px",
