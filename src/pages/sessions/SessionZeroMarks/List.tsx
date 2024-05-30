@@ -10,7 +10,7 @@ import { commafy, formatLargeNumber, generateExploreLink, toPrecision, truncateH
 
 import Statistic from "../components/Statistic"
 
-const TOEKN_BASE_URL = "https://scrollscan.com"
+const TOKEN_BASE_URL = "https://scrollscan.com"
 
 export enum MarksType {
   ELIGIBLE_ASSETS,
@@ -123,7 +123,7 @@ const TokenList = props => {
                     {item.name}
                   </Typography>
                   {item.address && (
-                    <ListAddressStyled href={generateExploreLink(TOEKN_BASE_URL, item.address, "token")} target="_blank">
+                    <ListAddressStyled href={generateExploreLink(TOKEN_BASE_URL, item.address, "token")} target="_blank">
                       {truncateHash(item.address)}
                     </ListAddressStyled>
                   )}
