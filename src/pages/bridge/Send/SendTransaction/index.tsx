@@ -7,7 +7,7 @@ import { Box, Stack, SvgIcon, Typography } from "@mui/material"
 import { ReactComponent as WarningSvg } from "@/assets/svgs/bridge/warning.svg"
 import Button from "@/components/Button"
 import TextButton from "@/components/TextButton"
-import { ETH_SYMBOL } from "@/constants"
+import { ETH_SYMBOL, NATIVE_TOKEN_LIST } from "@/constants"
 import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
 import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
@@ -65,8 +65,10 @@ const SendTransaction = props => {
     return fromNetwork.chainId ? tokenList.filter(item => item.chainId === fromNetwork.chainId) : []
   }, [tokenList, fromNetwork])
 
-  const selectedToken: any = useMemo(() => tokenOptions.find(item => item.symbol === tokenSymbol) ?? {}, [tokenOptions, tokenSymbol])
-
+  const selectedToken: any = useMemo(
+    () => tokenOptions.find(item => item.symbol === tokenSymbol) ?? NATIVE_TOKEN_LIST.find(item => item.chainId === fromNetwork.chainId),
+    [tokenOptions, tokenSymbol, fromNetwork],
+  )
   // const { balance, isLoading: balanceLoading } = useBalance(selectedToken.address)
   const { balance, loading: balanceLoading } = useBalance(selectedToken, fromNetwork)
 

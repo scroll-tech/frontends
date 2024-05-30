@@ -1,7 +1,5 @@
-// import dayjs from "dayjs"
 import { motion } from "framer-motion"
 import { isNumber } from "lodash"
-import useStorage from "squirrel-gill"
 import useSWR from "swr"
 import { makeStyles } from "tss-react/mui"
 
@@ -10,11 +8,10 @@ import { styled } from "@mui/material/styles"
 
 import { fetchWalletPointsUrl } from "@/apis/sessions"
 import Button from "@/components/Button"
-import { WALLET_MARKS } from "@/constants/storageKey"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useSessionsStore from "@/stores/sessionsStore"
-import { commafy, formatLargeNumber } from "@/utils"
+import { commafy, formatLargeNumber, sentryDebug } from "@/utils"
 
 const useStyles = makeStyles()(theme => ({
   tooltip: {
@@ -41,32 +38,20 @@ const TotalPoints = () => {
 
   const { hasSignedTerms, changeSignatureRequestVisible } = useSessionsStore()
 
-  const [walletMarks, setWalletMarks] = useStorage(localStorage, WALLET_MARKS, {})
-
   const { data: marks, isLoading } = useSWR(
     [fetchWalletPointsUrl(walletCurrentAddress), walletCurrentAddress, hasSignedTerms],
     async ([url, walletAddress, signed]) => {
       try {
-        if (!walletAddress) {
+        if (!walletAddress || !signed) {
           throw new Error("Wallet address or signed terms missing.")
         }
-        // const now = dayjs().unix()
-        // const timestamp = walletMarks[walletAddress]?.timestamp ?? 0
-        // const isDataExpired = dayjs.unix(now).diff(dayjs.unix(timestamp), "day") > 1
-        // if (isDataExpired) {
+
         const data = await scrollRequest(url)
         const points = data[0].points
 
-        setWalletMarks({
-          ...walletMarks,
-          [walletAddress]: data[0],
-        })
         return points
-        // }
-        //  else {
-        //   return walletMarks[walletAddress].points
-        // }
       } catch (e) {
+        sentryDebug(`total marks: ${walletCurrentAddress}-${e.message}`)
         return null
       }
     },

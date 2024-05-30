@@ -1,5 +1,6 @@
 import { Stack } from "@mui/material"
 
+import GlobalComponents from "@/components/GlobalComponents"
 import BridgeContextProvider from "@/contexts/BridgeContextProvider"
 
 import ComingSoon from "./ComingSoon"
@@ -12,6 +13,7 @@ import TotalMarks from "./TotalMarks"
 const Chronicle = () => {
   return (
     <BridgeContextProvider>
+      <GlobalComponents></GlobalComponents>
       <Header></Header>
       <Stack gap="3rem" sx={{ mb: "6rem", position: "relative" }}>
         <TotalMarks></TotalMarks>

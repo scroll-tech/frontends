@@ -279,7 +279,7 @@ function List(props: TokenListProps) {
       .map((token: any) => {
         return {
           ...token,
-          earnMarks: tokenList.some(t => t.symbol === token.symbol),
+          earnMarks: tokenList.some(t => t.symbol === token.symbol || t.additionalToken === token.symbol),
         }
       })
   }, [filteredTokens])
