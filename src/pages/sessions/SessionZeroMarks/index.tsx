@@ -5,6 +5,7 @@ import { Divider, Typography } from "@mui/material"
 import { fetchTokensMarksUrl } from "@/apis/sessions"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useSessionsStore from "@/stores/sessionsStore"
+import { sentryDebug } from "@/utils"
 
 import Card from "../components/Card"
 import BridgeTokenList, { MarksType } from "./List"
@@ -53,6 +54,7 @@ const BridgePoints = () => {
           gasMarks,
         }
       } catch (e) {
+        sentryDebug(`asset marks: ${walletCurrentAddress}-${e.message}`)
         return defaultMarks
       }
     },

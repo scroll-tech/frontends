@@ -11,7 +11,7 @@ import Button from "@/components/Button"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useSessionsStore from "@/stores/sessionsStore"
-import { commafy, formatLargeNumber } from "@/utils"
+import { commafy, formatLargeNumber, sentryDebug } from "@/utils"
 
 const useStyles = makeStyles()(theme => ({
   tooltip: {
@@ -51,6 +51,7 @@ const TotalPoints = () => {
 
         return points
       } catch (e) {
+        sentryDebug(`total marks: ${walletCurrentAddress}-${e.message}`)
         return null
       }
     },
