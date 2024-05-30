@@ -27,7 +27,7 @@ export const tokenList = [
     address: "0x06eFdBFf2a14a7c8E15944D1F4A48F9F95F663A4",
   },
   {
-    name: "Tether",
+    name: "USDT",
     symbol: "USDT",
     key: "USDT",
     logoURI: "https://scroll-tech.github.io/token-list/data/USDT/logo.svg",
