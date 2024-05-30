@@ -14,7 +14,7 @@ import useCheckViewport from "@/hooks/useCheckViewport"
 import useSnackbar from "@/hooks/useSnackbar"
 // import { testAsyncFunc } from "@/services/canvasService"
 import useCanvasStore from "@/stores/canvasStore"
-import { isUserRejected } from "@/utils"
+import { isUserRejected, sentryDebug } from "@/utils"
 
 import InsufficientDialog from "./InsufficientDialog"
 import StepWrapper from "./StepWrapper"
@@ -82,6 +82,7 @@ const MintStep = props => {
     } catch (error) {
       if (!isUserRejected(error)) {
         alertWarning("Failed to mint canvas")
+        sentryDebug(`mint canvas error: ${walletCurrentAddress}-${error.message}`)
       }
       // console.log("mint canvas error", e)
     } finally {
