@@ -6,7 +6,7 @@ import AttestProxyABI from "@/assets/abis/CanvasAttestProxy.json"
 import BadgeABI from "@/assets/abis/CanvasBadge.json"
 import ProfileABI from "@/assets/abis/CanvasProfile.json"
 import ProfileRegistryABI from "@/assets/abis/CanvasProfileRegistry.json"
-import { checkDelegatedAttestation, decodeBadgePayload, requireEnv, trimErrorMessage } from "@/utils"
+import { checkDelegatedAttestation, decodeBadgePayload, requireEnv, sentryDebug, trimErrorMessage } from "@/utils"
 
 const EAS_GRAPHQL_URL = requireEnv("REACT_APP_EAS_GRAPHQL_URL")
 const BADGE_SCHEMA = requireEnv("REACT_APP_BADGE_SCHEMA")
@@ -62,6 +62,7 @@ const queryUserBadges = async userAddress => {
 
     return attestations
   } catch (error) {
+    sentryDebug(`query user's badges: ${error.message}`)
     throw new Error("Failed to query user badges:")
     // console.log("Failed to query user badges:", error)
     // return []
@@ -100,7 +101,8 @@ const queryBadgeDetailById = async badgeId => {
 
     return attestations
   } catch (error) {
-    console.log("Failed to query user badges:", error)
+    sentryDebug(`query badge detail: ${error.message}`)
+    console.log(`Failed to query badge: ${badgeId}:`, error)
     return []
   }
 }
@@ -124,6 +126,7 @@ const checkIfProfileMinted = async (registryInstance, userAddress) => {
     const minted = await registryInstance!.isProfileMinted(profileAddress)
     return { profileAddress, minted }
   } catch (error) {
+    sentryDebug(`check minted: ${error.message}`)
     console.log("Failed to check if profile minted:", error)
     return { profileAddress: null, minted: null }
   }
@@ -141,6 +144,7 @@ const fillBadgeDetailWithPayload = async (provider, attestation) => {
       badgeContract,
     }
   } catch (error) {
+    sentryDebug(`fill badges detail: ${error.message}`)
     console.error("Failed to decode badge payload:", error)
   }
 }
@@ -167,6 +171,7 @@ const queryCanvasUsername = async (provider, profileAddress) => {
 
     return { profileContract, name }
   } catch (error) {
+    sentryDebug(`query username: ${error.message}`)
     console.log(error, "queryCanvasUsername")
     throw new Error("Failed to fetch username")
     // return { profileContract: null, name: null }
@@ -190,6 +195,7 @@ const getOrderedAttachedBadges = async profileContract => {
 
     return { orderedAttachedBadges, attachedBadges, badgeOrder }
   } catch (error) {
+    sentryDebug(`query attached badges: ${error.message}`)
     throw new Error("Failed to query attached badges")
     // console.error("Failed to query attached badges:", error)
     // return { orderedAttachedBadges: [], badgeOrder: [] }
@@ -203,6 +209,7 @@ const getBadgeOrder = async profileContract => {
     // console.log("badgeOrder", badgeOrderArray)
     return badgeOrderArray
   } catch (error) {
+    sentryDebug(`query badge order: ${error.message}`)
     console.error("Failed to query attached badges:", error)
     return []
   }
@@ -215,6 +222,7 @@ const fetchCanvasDetail = async (privider, othersAddress, profileAddress) => {
   return { name, profileContract, userBadges, attachedBadges, orderedAttachedBadges, badgeOrder }
 }
 
+// no use
 const attachBadges = async (profileContract, badgeAddresses) => {
   try {
     const tx = await profileContract!["attach(bytes32[])"](badgeAddresses)
@@ -229,6 +237,7 @@ const attachBadges = async (profileContract, badgeAddresses) => {
   }
 }
 
+// no use
 const detachBadges = async (profileContract, badgeAddresses) => {
   try {
     const tx = await profileContract!.detach(badgeAddresses)
@@ -244,22 +253,28 @@ const detachBadges = async (profileContract, badgeAddresses) => {
 }
 
 const checkBadgeEligibility = async (provider, walletAddress, badge: any) => {
-  // originsNFT
-  if (badge.validator) {
-    const eligibility = await badge.validator(provider, walletAddress)
-    return eligibility
-  }
+  try {
+    // originsNFT
+    if (badge.validator) {
+      const eligibility = await badge.validator(provider, walletAddress)
+      return eligibility
+    }
 
-  // scroll native
-  if (badge.native) {
-    return true
+    // scroll native
+    if (badge.native) {
+      return true
+    }
+    // third-party badge
+    if (badge.attesterProxy) {
+      const data = await scrollRequest(checkBadgeEligibilityURL(badge.baseUrl, walletAddress, badge.badgeContract))
+      return data.eligibility
+    }
+    return false
+  } catch (error) {
+    sentryDebug(`check badge eligibility: ${error.message}`)
+  } finally {
+    return false
   }
-  // third-party badge
-  if (badge.attesterProxy) {
-    const data = await scrollRequest(checkBadgeEligibilityURL(badge.baseUrl, walletAddress, badge.badgeContract))
-    return data.eligibility
-  }
-  return false
 }
 
 const mintThirdBadge = async (signer, walletAddress, badgeAddress, attesterProxyAddress, claimBaseUrl) => {
@@ -356,6 +371,7 @@ const mintBadge = async (provider, walletCurrentAddress, badge) => {
     if (isError(error, "ACTION_REJECTED")) {
       return false
     } else {
+      sentryDebug(`mint badge: ${error.message}`)
       console.log("Failed to mint badge:", error)
       throw new Error(trimErrorMessage(error.message))
     }

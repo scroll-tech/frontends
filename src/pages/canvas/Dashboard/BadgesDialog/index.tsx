@@ -11,7 +11,7 @@ import { default as CanvasDialog } from "@/pages/canvas/components/Dialog"
 import { customiseDisplay } from "@/services/canvasService"
 // import { attachBadges, detachBadges, reorderBadges } from "@/services/canvasService"
 import useCanvasStore from "@/stores/canvasStore"
-import { isUserRejected } from "@/utils"
+import { isUserRejected, sentryDebug } from "@/utils"
 
 import Empty from "../../components/Empty"
 import Transfer from "./Transfer"
@@ -161,6 +161,7 @@ const BadgesDialog = props => {
       queryAttachedBadges()
     } catch (error) {
       if (!isUserRejected(error)) {
+        sentryDebug(`customise display: ${error.message}`)
         alertWarning(`Failed to customise display: ${error.message}`)
       }
     } finally {
