@@ -1,17 +1,14 @@
-// import dayjs from "dayjs"
-import useStorage from "squirrel-gill"
 import useSWR from "swr"
 
 import { Divider, Typography } from "@mui/material"
 
 import { fetchTokensMarksUrl } from "@/apis/sessions"
-import { BRIDGE_BALANCES, WALLET_MARKS } from "@/constants/storageKey"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useSessionsStore from "@/stores/sessionsStore"
+import { sentryDebug } from "@/utils"
 
 import Card from "../components/Card"
-import BridgeTokenList from "./List"
-import { MarksType } from "./List"
+import BridgeTokenList, { MarksType } from "./List"
 import { gasList, tokenList } from "./tokenList"
 
 const defaultMarks = {
@@ -26,8 +23,6 @@ const defaultMarks = {
 const BridgePoints = () => {
   const { walletCurrentAddress } = useRainbowContext()
   const { hasSignedTerms } = useSessionsStore()
-  const [bridgeBalances, setBridgeBalances] = useStorage(localStorage, BRIDGE_BALANCES, {})
-  const [walletMarks] = useStorage(localStorage, WALLET_MARKS, {})
 
   const { data: marks, isLoading } = useSWR(
     [fetchTokensMarksUrl(walletCurrentAddress), walletCurrentAddress, hasSignedTerms],
@@ -37,22 +32,10 @@ const BridgePoints = () => {
           throw new Error("Wallet address or signed terms missing.")
         }
 
-        // const now = dayjs().unix()
-        // const timestamp = bridgeBalances[walletAddress]?.timestamp ?? 0
-        // const isDataExpired = dayjs.unix(now).diff(dayjs.unix(timestamp), "day") > 1
-
-        // if (isDataExpired) {
         const list = await scrollRequest(url)
         const tokensMarks = tokenList.map(item => {
-          const withMarks = list.filter(item => item.points).find(i => i.bridge_asset.toUpperCase() === item.symbol.toUpperCase())
+          const withMarks = list.filter(item => item.points).find(i => i.bridge_asset.toUpperCase() === item.key.toUpperCase())
           let marks = withMarks?.points ?? 0
-
-          if (item.additionalToken) {
-            const additionalToken = list.filter(item => item.points).find(i => i.bridge_asset.toUpperCase() === item.additionalToken.toUpperCase())
-            if (additionalToken) {
-              marks += additionalToken.points ?? 0
-            }
-          }
 
           return {
             ...item,
@@ -65,27 +48,13 @@ const BridgePoints = () => {
           amount: gasMarksResult?.amount ?? 0,
           marks: gasMarksResult?.points ?? 0,
         }))
-        setBridgeBalances({
-          ...bridgeBalances,
-          [walletAddress]: {
-            tokensMarks,
-            gasMarks,
-            timestamp: walletMarks[walletAddress]?.timestamp ?? 0,
-          },
-        })
+
         return {
           tokensMarks,
           gasMarks,
         }
-        // } else {
-        //   const tokensMarks = bridgeBalances[walletAddress]?.tokensMarks ?? []
-        //   const gasMarks = bridgeBalances[walletAddress]?.gasMarks ?? []
-        //   return {
-        //     tokensMarks,
-        //     gasMarks,
-        //   }
-        // }
       } catch (e) {
+        sentryDebug(`asset marks: ${walletCurrentAddress}-${e.message}`)
         return defaultMarks
       }
     },

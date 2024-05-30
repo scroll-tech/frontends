@@ -13,6 +13,7 @@ import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import SessionsTerms from "@/pages/sessions-terms"
 import useSessionsStore from "@/stores/sessionsStore"
+import { sentryDebug } from "@/utils"
 
 const useStyles = makeStyles()(theme => ({
   dialogPaper: {
@@ -130,15 +131,19 @@ const SignatureRequestDialog = () => {
       ;(async () => {
         let hasSigned = !!signedTerms[walletCurrentAddress]
         if (!hasSigned) {
-          const result = await scrollRequest(checkSignStatus(walletCurrentAddress))
-          if (result?.errcode === 0) {
-            hasSigned = true
-            setSignedTerms({
-              ...signedTerms,
-              [walletCurrentAddress as string]: result.data,
-            })
-          } else {
-            hasSigned = false
+          try {
+            const result = await scrollRequest(checkSignStatus(walletCurrentAddress))
+            if (result?.errcode === 0) {
+              hasSigned = true
+              setSignedTerms({
+                ...signedTerms,
+                [walletCurrentAddress as string]: result.data,
+              })
+            } else {
+              hasSigned = false
+            }
+          } catch (e) {
+            sentryDebug(`check sign: ${walletCurrentAddress}-${e.message}`)
           }
         }
         changeHasSignedTerms(hasSigned)
@@ -161,13 +166,17 @@ const SignatureRequestDialog = () => {
         [walletCurrentAddress as string]: info,
       })
 
-      scrollRequest(updateSignStatus, {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(info),
-      })
+      try {
+        scrollRequest(updateSignStatus, {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(info),
+        })
+      } catch (e) {
+        sentryDebug(`update sign: ${walletCurrentAddress}-${e.message}`)
+      }
     }
   }, [signMessageData])
 

@@ -1,14 +1,16 @@
 import { isNumber } from "lodash"
 import { makeStyles } from "tss-react/mui"
 
-import { Avatar, Box, Button, Link, List, ListItem, ListItemIcon, ListItemText, Skeleton, Tooltip, Typography } from "@mui/material"
+import { Avatar, Box, Button, Link, List, ListItem, ListItemIcon, ListItemText, Skeleton, Stack, Tooltip, Typography } from "@mui/material"
 import { useTheme } from "@mui/material/styles"
 import { styled } from "@mui/system"
 
-import { EXPLORER_URL } from "@/constants"
+import useCheckViewport from "@/hooks/useCheckViewport"
 import { commafy, formatLargeNumber, generateExploreLink, toPrecision, truncateHash } from "@/utils"
 
 import Statistic from "../components/Statistic"
+
+const TOKEN_BASE_URL = "https://scrollscan.com"
 
 export enum MarksType {
   ELIGIBLE_ASSETS,
@@ -61,6 +63,7 @@ const TokenList = props => {
   const { title, data, description, type = MarksType.ELIGIBLE_ASSETS, isLoading } = props
   const { classes } = useStyles()
   const theme = useTheme()
+  const { isLandscape } = useCheckViewport()
 
   return (
     <>
@@ -81,9 +84,10 @@ const TokenList = props => {
               position: "relative",
               display: "grid",
               gridTemplateColumns: ["repeat(2, max-content) 1fr", "repeat(2, max-content) 1fr"],
-              gap: "1.6rem",
+              columnGap: ["0.8rem", "1.6rem"],
+              rowGap: ["1.6rem"],
               height: ["auto", "8.4rem"],
-              m: ["1.6rem 0 !important", "2.4rem 0 !important"],
+              m: "2.4rem 0 !important",
               p: [0],
             }}
           >
@@ -113,11 +117,22 @@ const TokenList = props => {
 
               {type === MarksType.ELIGIBLE_ASSETS && (
                 <>
-                  <Typography sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: ["2.4rem", "3.2rem"], fontWeight: 600 }}>{item.symbol}</Typography>
+                  <Typography
+                    sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: ["2.4rem", "3.2rem"], fontWeight: 600, maxWidth: ["12rem", "12rem", "unset"] }}
+                  >
+                    {item.name}
+                  </Typography>
                   {item.address && (
-                    <ListAddressStyled href={generateExploreLink(EXPLORER_URL["L2"], item.address, "token")} target="_blank">
+                    <ListAddressStyled href={generateExploreLink(TOKEN_BASE_URL, item.address, "token")} target="_blank">
                       {truncateHash(item.address)}
                     </ListAddressStyled>
+                  )}
+                  {isLandscape && item.containedTokens && (
+                    <Stack direction="row">
+                      {item.containedTokens.map(({ symbol, logoURI }) => (
+                        <Avatar sx={{ width: "2.4rem", height: "2.4rem" }} alt={symbol} src={logoURI}></Avatar>
+                      ))}
+                    </Stack>
                   )}
                 </>
               )}
@@ -154,6 +169,7 @@ const TokenList = props => {
             {type === MarksType.ELIGIBLE_ASSETS && (
               <Button
                 href={item.thirdPartyBridge ? item.thirdPartyBridge.url : `/bridge?token=${item.symbol}`}
+                target={item.thirdPartyBridge ? "_blank" : "_self"}
                 sx={{
                   borderRadius: "0.8rem",
                   borderWidth: "1px",
