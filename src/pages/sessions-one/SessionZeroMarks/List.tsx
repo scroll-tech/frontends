@@ -1,7 +1,7 @@
 import { isNumber } from "lodash"
 import { makeStyles } from "tss-react/mui"
 
-import { Avatar, Box, Button, Link, List, ListItem, ListItemIcon, ListItemText, Skeleton, Stack, Tooltip, Typography } from "@mui/material"
+import { Avatar, Box, Button, Link, List, ListItem, ListItemIcon, ListItemText, Skeleton, Stack, SvgIcon, Tooltip, Typography } from "@mui/material"
 import { useTheme } from "@mui/material/styles"
 import { styled } from "@mui/system"
 
@@ -31,7 +31,6 @@ const SectionTitle = styled(Typography)(({ theme }) => ({
   fontSize: "2rem",
   lineHeight: "2.8rem",
   fontWeight: 600,
-  marginBottom: "0.8rem",
   [theme.breakpoints.down("sm")]: {
     fontSize: "1.8rem",
   },
@@ -59,15 +58,18 @@ const ListAddressStyled = styled(Link)(({ theme }) => ({
   },
 }))
 
-const TokenList = props => {
-  const { title, data, description, type = MarksType.ELIGIBLE_ASSETS, isLoading } = props
+const MarkList = props => {
+  const { id, title, icon, data, description, type = MarksType.ELIGIBLE_ASSETS, isLoading } = props
   const { classes } = useStyles()
   const theme = useTheme()
   const { isLandscape } = useCheckViewport()
 
   return (
     <>
-      <SectionTitle>{title}</SectionTitle>
+      <Stack id={id} direction="row" gap="0.8rem" sx={{ mb: "0.8rem" }} alignItems="center">
+        <SvgIcon sx={{ fontSize: "2.4rem" }} component={icon} inheritViewBox></SvgIcon>
+        <SectionTitle>{title}</SectionTitle>
+      </Stack>
       <SectionDescription>{description}</SectionDescription>
       <List
         sx={{
@@ -86,8 +88,8 @@ const TokenList = props => {
               gridTemplateColumns: ["repeat(2, max-content) 1fr", "repeat(2, max-content) 1fr"],
               columnGap: ["0.8rem", "1.6rem"],
               rowGap: ["1.6rem"],
-              height: ["auto", "8.4rem"],
-              m: "2.4rem 0 !important",
+              height: ["auto", "5.6rem"],
+              m: "3.2rem 0 !important",
               p: [0],
             }}
           >
@@ -141,8 +143,6 @@ const TokenList = props => {
             <Tooltip
               key={item.marks}
               disableHoverListener={!item.marks}
-              disableFocusListener={!item.marks}
-              disableTouchListener={!item.marks}
               title={item.marks ? commafy(item.marks) : "--"}
               followCursor
               classes={{ tooltip: classes.tooltip }}
@@ -159,7 +159,12 @@ const TokenList = props => {
                   },
                 }}
               >
-                <Statistic count={isNumber(item.marks) ? formatLargeNumber(item.marks, 2) : "--"} isLoading={isLoading}></Statistic>
+                <Statistic
+                  count={isNumber(item.marks) ? formatLargeNumber(item.marks, 2) : "--"}
+                  label="Marks earned"
+                  isLoading={isLoading}
+                  sx={{}}
+                ></Statistic>
               </Box>
             </Tooltip>
 
@@ -195,6 +200,7 @@ const TokenList = props => {
                   display: "flex",
                   flexDirection: ["row", "column"],
                   justifyContent: "space-between",
+                  textAlign: "right",
                   [theme.breakpoints.down("sm")]: {
                     gridColumn: "span 3",
                   },
@@ -229,4 +235,4 @@ const TokenList = props => {
   )
 }
 
-export default TokenList
+export default MarkList

@@ -3,13 +3,16 @@ import { create } from "zustand"
 interface SessionsStore {
   hasSignedTerms: boolean
   signatureRequestVisible: boolean
+  selectedSection: string
   changeHasSignedTerms: (hasSignedTerms: boolean) => void
   changeSignatureRequestVisible: (signatureRequestVisible: boolean) => void
+  changeSelectedSection: (selectedSection: string) => void
 }
 
 const useSessionsStore = create<SessionsStore>()((set, get) => ({
   hasSignedTerms: false,
   signatureRequestVisible: false,
+  selectedSection: "dex",
   changeHasSignedTerms: hasSignedTerms => {
     set({
       hasSignedTerms,
@@ -18,6 +21,11 @@ const useSessionsStore = create<SessionsStore>()((set, get) => ({
   changeSignatureRequestVisible: signatureRequestVisible => {
     set({
       signatureRequestVisible,
+    })
+  },
+  changeSelectedSection: selectedSection => {
+    set({
+      selectedSection,
     })
   },
 }))
