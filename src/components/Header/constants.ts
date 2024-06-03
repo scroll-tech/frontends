@@ -141,6 +141,12 @@ const mainnetNavigations = [
             href: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_DORA"),
             isExternal: true,
           },
+          {
+            label: "OKX Explorer",
+            key: "okx",
+            href: requireEnv("REACT_APP_OKX_URI"),
+            isExternal: true,
+          },
         ],
       },
     ],
