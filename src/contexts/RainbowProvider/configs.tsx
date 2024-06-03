@@ -3,6 +3,7 @@ import {
   bitgetWallet,
   coinbaseWallet,
   metaMaskWallet,
+  nestWallet,
   okxWallet,
   rabbyWallet,
   trustWallet,
@@ -15,8 +16,6 @@ import produce from "immer"
 
 import { RPC_URL } from "@/constants"
 import { requireEnv } from "@/utils"
-
-import { nestWallet } from "./wallets/NestWallet"
 
 const projectId = requireEnv("REACT_APP_CONNECT_WALLET_PROJECT_ID")
 
