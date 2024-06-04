@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react"
 import { useLocation } from "react-router-dom"
 
 import { AppBar, Slide } from "@mui/material"
+import { styled } from "@mui/material/styles"
 import useScrollTrigger from "@mui/material/useScrollTrigger"
-import { styled } from "@mui/system"
 
 import useCheckViewport from "@/hooks/useCheckViewport"
 

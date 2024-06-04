@@ -12,7 +12,7 @@ interface SessionsStore {
 const useSessionsStore = create<SessionsStore>()((set, get) => ({
   hasSignedTerms: false,
   signatureRequestVisible: false,
-  selectedSection: "dex",
+  selectedSection: "1-dex",
   changeHasSignedTerms: hasSignedTerms => {
     set({
       hasSignedTerms,

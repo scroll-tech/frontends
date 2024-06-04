@@ -1,30 +1,20 @@
 import { isNumber } from "lodash"
-import { makeStyles } from "tss-react/mui"
+import { useState } from "react"
 
-import { Avatar, Box, Button, List, ListItem, ListItemIcon, ListItemText, Stack, SvgIcon, Tooltip, Typography } from "@mui/material"
+import { Avatar, Box, Button, List, ListItem, ListItemIcon, ListItemText, Stack, SvgIcon, Typography } from "@mui/material"
 import { useTheme } from "@mui/material/styles"
 import { styled } from "@mui/system"
 
-// import Button from "@/components/Button"
-// import useCheckViewport from "@/hooks/useCheckViewport"
 import { commafy, formatLargeNumber } from "@/utils"
 
+import MarksTooltip from "../components/MarksTooltip"
 import Statistic from "../components/Statistic"
+import OthersModal from "./OthersModal"
 
 export enum MarksType {
   ELIGIBLE_ASSETS,
   GAS_SPENT,
 }
-
-const useStyles = makeStyles()(theme => ({
-  tooltip: {
-    background: "linear-gradient(180deg, #262626 0%, #111 100%)",
-    padding: "1.2rem 1.4rem",
-    fontSize: "1.8rem",
-    lineHeight: "2.4rem",
-    fontFamily: "var(--developer-page-font-family)",
-  },
-}))
 
 const SectionTitle = styled(Typography)(({ theme }) => ({
   fontSize: "2rem",
@@ -45,9 +35,16 @@ const SectionDescription = styled(Typography)(({ theme }) => ({
 
 const MarkList = props => {
   const { id, icon, title, data, description, isLoading } = props
-  const { classes } = useStyles()
   const theme = useTheme()
-  // const { isLandscape } = useCheckViewport()
+  const [open, setOpen] = useState(false)
+
+  const handleOpenOthersModal = () => {
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+  }
 
   return (
     <>
@@ -75,7 +72,7 @@ const MarkList = props => {
               rowGap: ["1.6rem"],
               height: ["auto", "5.6rem"],
               m: "3.2rem 0 !important",
-              p: [0],
+              p: 0,
             }}
           >
             {item.project === "Others" ? (
@@ -99,19 +96,22 @@ const MarkList = props => {
                     src={item.logo}
                   ></Avatar>
                 </ListItemIcon>
-                <ListItemText primaryTypographyProps={{ sx: { fontSize: "2rem", lineHeight: "3.2rem", fontWeight: 600 } }}>
+                <ListItemText
+                  primaryTypographyProps={{
+                    sx: {
+                      fontSize: ["1.6rem", "2rem"],
+                      lineHeight: ["2.4rem", "3.2rem"],
+                      fontWeight: 600,
+                      maxWidth: ["15.2rem", "15.2rem", "unset"],
+                    },
+                  }}
+                >
                   {item.project}
                 </ListItemText>
               </>
             )}
 
-            <Tooltip
-              key={item.marks}
-              disableHoverListener={!item.marks}
-              title={item.marks ? commafy(item.marks) : "--"}
-              followCursor
-              classes={{ tooltip: classes.tooltip }}
-            >
+            <MarksTooltip key={item.marks} disabled={!item.marks} title={item.marks ? commafy(item.marks) : "--"}>
               <Box
                 sx={{
                   justifySelf: "flex-end",
@@ -125,27 +125,31 @@ const MarkList = props => {
               >
                 <Statistic count={isNumber(item.marks) ? formatLargeNumber(item.marks, 2) : "--"} isLoading={isLoading} sx={{}}></Statistic>
               </Box>
-            </Tooltip>
+            </MarksTooltip>
             {item.project === "Others" ? (
-              <Button
-                sx={{
-                  borderRadius: "0.8rem",
-                  borderWidth: "1px",
-                  borderColor: "text.primary",
-                  fontSize: ["1.6rem", "1.8rem"],
-                  fontWeight: 600,
-                  height: "4.8rem",
-                  width: ["100%", "18rem"],
-                  p: 0,
-                  justifySelf: "flex-end",
-                  "&:hover": { borderWidth: "1px", borderColor: "primary.main" },
-                  [theme.breakpoints.down("sm")]: {
-                    gridColumn: "span 3",
-                  },
-                }}
-              >
-                View all protocols
-              </Button>
+              <>
+                <Button
+                  sx={{
+                    borderRadius: "0.8rem",
+                    borderWidth: "1px",
+                    borderColor: "text.primary",
+                    fontSize: ["1.6rem", "1.8rem"],
+                    fontWeight: 600,
+                    height: "4.8rem",
+                    width: ["100%", "18rem"],
+                    p: 0,
+                    justifySelf: "flex-end",
+                    "&:hover": { borderWidth: "1px", borderColor: "primary.main" },
+                    [theme.breakpoints.down("sm")]: {
+                      gridColumn: "span 3",
+                    },
+                  }}
+                  onClick={handleOpenOthersModal}
+                >
+                  View all protocols
+                </Button>
+                <OthersModal open={open} data={item.items} onClose={handleClose}></OthersModal>
+              </>
             ) : (
               <Button
                 sx={{
@@ -167,28 +171,6 @@ const MarkList = props => {
                 Go to {item.alias || item.project}
               </Button>
             )}
-
-            {/* <Button
-              href={item.project === "others" ? "void 0" : item.website}
-              target="_blank"
-              sx={{
-                borderRadius: "0.8rem",
-                borderWidth: "1px",
-                borderColor: "text.primary",
-                fontSize: ["1.6rem", "1.8rem"],
-                fontWeight: 600,
-                height: "4.8rem",
-                width: ["100%", "18rem"],
-                p: 0,
-                justifySelf: "flex-end",
-                "&:hover": { borderWidth: "1px", borderColor: "primary.main" },
-                [theme.breakpoints.down("sm")]: {
-                  gridColumn: "span 3",
-                },
-              }}
-            >
-              {item.project === "others" ? "View all protocols" : `Go to ${item.project}`}
-            </Button> */}
           </ListItem>
         ))}
       </List>

@@ -1,13 +1,13 @@
 import { isNumber } from "lodash"
-import { makeStyles } from "tss-react/mui"
 
-import { Avatar, Box, Button, Link, List, ListItem, ListItemIcon, ListItemText, Skeleton, Stack, SvgIcon, Tooltip, Typography } from "@mui/material"
+import { Avatar, Box, Button, Link, List, ListItem, ListItemIcon, ListItemText, Skeleton, Stack, SvgIcon, Typography } from "@mui/material"
 import { useTheme } from "@mui/material/styles"
 import { styled } from "@mui/system"
 
 import useCheckViewport from "@/hooks/useCheckViewport"
 import { commafy, formatLargeNumber, generateExploreLink, toPrecision, truncateHash } from "@/utils"
 
+import MarksTooltip from "../components/MarksTooltip"
 import Statistic from "../components/Statistic"
 
 const TOKEN_BASE_URL = "https://scrollscan.com"
@@ -16,16 +16,6 @@ export enum MarksType {
   ELIGIBLE_ASSETS,
   GAS_SPENT,
 }
-
-const useStyles = makeStyles()(theme => ({
-  tooltip: {
-    background: "linear-gradient(180deg, #262626 0%, #111 100%)",
-    padding: "1.2rem 1.4rem",
-    fontSize: "1.8rem",
-    lineHeight: "2.4rem",
-    fontFamily: "var(--developer-page-font-family)",
-  },
-}))
 
 const SectionTitle = styled(Typography)(({ theme }) => ({
   fontSize: "2rem",
@@ -60,7 +50,6 @@ const ListAddressStyled = styled(Link)(({ theme }) => ({
 
 const MarkList = props => {
   const { id, title, icon, data, description, type = MarksType.ELIGIBLE_ASSETS, isLoading } = props
-  const { classes } = useStyles()
   const theme = useTheme()
   const { isLandscape } = useCheckViewport()
 
@@ -140,13 +129,7 @@ const MarkList = props => {
               )}
             </ListItemText>
 
-            <Tooltip
-              key={item.marks}
-              disableHoverListener={!item.marks}
-              title={item.marks ? commafy(item.marks) : "--"}
-              followCursor
-              classes={{ tooltip: classes.tooltip }}
-            >
+            <MarksTooltip key={item.marks} disabled={!item.marks} title={item.marks ? commafy(item.marks) : "--"}>
               <Box
                 sx={{
                   justifySelf: "flex-end",
@@ -166,7 +149,7 @@ const MarkList = props => {
                   sx={{}}
                 ></Statistic>
               </Box>
-            </Tooltip>
+            </MarksTooltip>
 
             {type === MarksType.ELIGIBLE_ASSETS && (
               <Button

@@ -51,7 +51,19 @@ export const projectList = {
       marks: 1234,
     },
     {
+      project: "Cog Finance",
+      logo: "https://scroll-eco-list.netlify.app/logos/Nuri%20Exchange.jpeg",
+      website: "",
+      marks: 1234,
+    },
+    {
       project: "LayerBank",
+      logo: "https://scroll-eco-list.netlify.app/logos/Nuri%20Exchange.jpeg",
+      website: "",
+      marks: 1234,
+    },
+    {
+      project: "Rho Markets",
       logo: "https://scroll-eco-list.netlify.app/logos/Nuri%20Exchange.jpeg",
       website: "",
       marks: 1234,

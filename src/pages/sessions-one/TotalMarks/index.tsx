@@ -34,7 +34,7 @@ const MotionBox = motion(Box)
 const TotalPoints = () => {
   const { classes } = useStyles()
   const { walletCurrentAddress, connect } = useRainbowContext()
-  const { isMobile } = useCheckViewport()
+  const { isMobile, isPortrait } = useCheckViewport()
 
   const { hasSignedTerms, changeSignatureRequestVisible } = useSessionsStore()
 
@@ -80,9 +80,9 @@ const TotalPoints = () => {
         left: [0, 0, "50%"],
         marginLeft: ["auto", "auto", "-19rem"],
       }}
-      initial={isMobile ? {} : { opacity: 0, y: 30, scale: 0.9 }}
-      animate={isMobile ? {} : { opacity: 1, y: 0, scale: 1 }}
-      transition={isMobile ? {} : { duration: 0.5, delay: 1.3 }}
+      initial={isPortrait ? {} : { opacity: 0, y: 30, scale: 0.9 }}
+      animate={isPortrait ? {} : { opacity: 1, y: 0, scale: 1 }}
+      transition={isPortrait ? {} : { duration: 0.5, delay: 1.3 }}
     >
       <Typography sx={{ fontSize: ["1.8rem", "2.4rem"], lineHeight: ["2.4rem", "3.6rem"], fontWeight: 600 }}>Your Marks</Typography>
       {!walletCurrentAddress && (

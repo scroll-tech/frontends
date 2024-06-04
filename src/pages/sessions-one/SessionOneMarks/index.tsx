@@ -20,7 +20,7 @@ import { projectList } from "./projectList"
 //   })),
 // }
 
-console.log(SESSIONS_SECTION_MAP["1-dex"])
+// console.log(SESSIONS_SECTION_MAP["1-dex"])
 
 const SessionOneMarks = () => {
   // const { walletCurrentAddress } = useRainbowContext()

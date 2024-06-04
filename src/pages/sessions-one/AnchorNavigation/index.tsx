@@ -59,42 +59,58 @@ export const SESSIONS_SECTION_MAP = new Proxy(SESSIONS_SECTION, {
   },
 })
 
-const AnchorNavigation = () => {
+const AnchorNavigation = props => {
+  const { onMobile, onSeleted } = props
   const trigger = useScrollTrigger()
   const { selectedSection, changeSelectedSection } = useSessionsStore()
 
   const stickyTop = useMemo(() => (trigger ? "2rem" : NORMAL_HEADER_HEIGHT), [trigger])
 
   const handleClick = (sessionKey, sectionKey) => {
-    changeSelectedSection(sectionKey)
+    changeSelectedSection(`${sessionKey}-${sectionKey}`)
+
     const targetEl = document.getElementById(`session-${sessionKey}-${sectionKey}`)
     const offsetTop = targetEl!.getBoundingClientRect().top + window.pageYOffset
+
     window.scrollTo({
-      top: offsetTop - parseFloat(NORMAL_HEADER_HEIGHT) * 10 - 20,
+      top: offsetTop - parseFloat(onMobile ? "10.8rem" : NORMAL_HEADER_HEIGHT) * 10 - 20,
       behavior: "smooth",
     })
+
+    // targetEl?.scrollIntoView({
+    //   behavior: "smooth",
+    //   block: "start",
+    // })
+
+    onSeleted?.()
   }
 
   const renderItems = (items, sessionKey) => {
     return items.map(({ icon, key, label }) => (
       <ListItemButton
-        selected={key === selectedSection}
-        sx={{
-          py: "1.6rem",
+        selected={key === selectedSection.split("-")[1]}
+        sx={[
+          {
+            py: ["1.2rem", "1.2rem", "1.6rem"],
 
-          "&.Mui-selected": {
-            color: "primary.main",
-            backgroundColor: "unset",
-            fontWeight: 600,
-            "&:hover": {
+            "&.Mui-selected": {
+              color: "primary.main",
               backgroundColor: "unset",
+              fontWeight: 600,
+              "&:hover": {
+                backgroundColor: "unset",
+              },
             },
           },
-          "&:hover": {
-            color: "primary.main",
-            backgroundColor: "unset",
-          },
-        }}
+          theme => ({
+            [theme.breakpoints.up("md")]: {
+              "&:hover": {
+                color: "primary.main",
+                backgroundColor: "unset",
+              },
+            },
+          }),
+        ]}
         onClick={() => handleClick(sessionKey, key)}
       >
         <ListItemIcon sx={{ minWidth: "unset", mr: "0.8rem", color: "inherit" }}>
@@ -114,15 +130,17 @@ const AnchorNavigation = () => {
         position: "sticky",
         top: stickyTop,
         backgroundColor: "themeBackground.normal",
-        borderRadius: "1.6rem",
-        width: "24rem",
+        borderRadius: [0, 0, "1.6rem"],
+        width: ["100%", "100%", "24rem"],
         height: "min-content",
         py: "1.6rem",
       }}
     >
       {SESSIONS_SECTION.map(item => (
         <>
-          <ListItem sx={{ fontSize: "2rem", lineHeight: "2.4rem", fontWeight: 600, py: "1.6rem" }}>{item.label}</ListItem>
+          <ListItem sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: "2.4rem", fontWeight: 600, py: ["1.2rem", "1.2rem", "1.6rem"] }}>
+            {item.label}
+          </ListItem>
           <>{renderItems(item.items, item.key)}</>
         </>
       ))}

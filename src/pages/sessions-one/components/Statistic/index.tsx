@@ -17,8 +17,8 @@ const Statistic = props => {
       alignItems="center"
       justifyContent="center"
       sx={{
-        width: ["10.3rem", "11rem", "11rem"],
-        height: ["5.2rem", "4.8rem", "4.8rem"],
+        width: ["8rem", "11rem", "11rem"],
+        height: ["4rem", "4.8rem", "4.8rem"],
         backgroundColor: "themeBackground.light",
         borderRadius: "0.8rem",
         px: ["0.4rem", "1rem"],
