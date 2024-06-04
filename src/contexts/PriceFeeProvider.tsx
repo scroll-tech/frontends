@@ -1,10 +1,10 @@
 import { AbiCoder, Transaction, ethers } from "ethers"
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react"
-import useStorage from "squirrel-gill"
+import { useSearchParams } from "react-router-dom"
 import { useBlockNumber } from "wagmi"
 
 import { CHAIN_ID, ETH_SYMBOL } from "@/constants"
-import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
+import { BRIDGE_TOKEN } from "@/constants/searchParamsKey"
 import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { requireEnv, trimErrorMessage } from "@/utils"
@@ -107,7 +107,11 @@ export const usePriceFeeContext = () => {
 
 export const PriceFeeProvider = ({ children }) => {
   const { walletCurrentAddress, chainId } = useRainbowContext()
-  const [tokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
+  const [searchParams] = useSearchParams()
+
+  const token = searchParams.get(BRIDGE_TOKEN)
+  const tokenSymbol = useMemo(() => token || ETH_SYMBOL, [token])
+
   const { networksAndSigners, tokenList } = useBridgeContext()
   const [gasLimit, setGasLimit] = useState(BigInt(0))
   const [gasPrice, setGasPrice] = useState(BigInt(0))

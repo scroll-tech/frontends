@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react"
 import { useSearchParams } from "react-router-dom"
-import useStorage from "squirrel-gill"
 
 import { Box, Stack, SvgIcon, Typography } from "@mui/material"
 
@@ -8,7 +7,7 @@ import { ReactComponent as WarningSvg } from "@/assets/svgs/bridge/warning.svg"
 import Button from "@/components/Button"
 import TextButton from "@/components/TextButton"
 import { ETH_SYMBOL, NATIVE_TOKEN_LIST } from "@/constants"
-import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
+import { BRIDGE_TOKEN } from "@/constants/searchParamsKey"
 import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
@@ -32,17 +31,14 @@ import TransactionSummary from "./TransactionSummary"
 import useBatchDeposit from "./hooks/useBatchDeposit"
 
 const SendTransaction = props => {
-  const [searchParams] = useSearchParams()
-  const token = searchParams.get("token")
+  const [searchParams, setSearchParams] = useSearchParams()
+  const token = searchParams.get(BRIDGE_TOKEN)
+  const tokenSymbol = useMemo(() => token || ETH_SYMBOL, [token])
 
   const { chainId, connect, walletCurrentAddress } = useRainbowContext()
   // TODO: extract tokenList
   const { tokenList } = useBridgeContext()
   const { isMobile } = useCheckViewport()
-  // const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
-  const [storedTokenSymbol, setStoredTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
-
-  const tokenSymbol = useMemo(() => token || storedTokenSymbol, [storedTokenSymbol, token])
 
   const { gasLimit, gasPrice, errorMessage: relayFeeErrorMessage, fetchData: fetchPriceFee, getL1DataFee } = usePriceFeeContext()
 
@@ -226,8 +222,7 @@ const SendTransaction = props => {
   }, [isRequestedApproval])
 
   const handleChangeTokenSymbol = symbol => {
-    // setTokenSymbol(symbol)
-    setStoredTokenSymbol(symbol)
+    setSearchParams({ [BRIDGE_TOKEN]: symbol })
   }
 
   const handleChangeAmount = value => {
