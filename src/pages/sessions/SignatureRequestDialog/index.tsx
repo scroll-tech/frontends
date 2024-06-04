@@ -108,7 +108,7 @@ const SignatureRequestDialog = () => {
 
   const { changeSignatureRequestVisible, signatureRequestVisible, changeHasSignedTerms } = useSessionsStore()
 
-  const { signMessage, isLoading, data: signMessageData, reset } = useSignMessage()
+  const { signMessage, isPending, data: signMessageData, reset } = useSignMessage()
   const [signedTerms, setSignedTerms] = useStorage(localStorage, SIGNED_TERMS, {})
 
   const onClose = () => {
@@ -208,8 +208,8 @@ const SignatureRequestDialog = () => {
       <DialogContent classes={{ root: classes.dialogContentRoot }}>
         <SessionsTerms isPopup />
         <Stack direction="row" justifyContent="center" sx={{ width: "100%", mt: "3.2rem" }}>
-          <Button color="primary" width={isMobile ? "100%" : "22rem"} loading={isLoading} whiteButton onClick={signTerms}>
-            {isLoading ? "Check Wallet" : "Sign to agree"}
+          <Button color="primary" width={isMobile ? "100%" : "22rem"} loading={isPending} whiteButton onClick={signTerms}>
+            {isPending ? "Check Wallet" : "Sign to agree"}
           </Button>
         </Stack>
       </DialogContent>

@@ -1,69 +1,37 @@
-import { Chain, Wallet } from "@rainbow-me/rainbowkit"
-import "@rainbow-me/rainbowkit/styles.css"
+import { getDefaultConfig } from "@rainbow-me/rainbowkit"
 import {
-  braveWallet,
+  bitgetWallet,
   coinbaseWallet,
-  frameWallet,
-  imTokenWallet,
-  injectedWallet,
   metaMaskWallet,
+  nestWallet,
   okxWallet,
   rabbyWallet,
-  rainbowWallet,
-  safeWallet,
+  trustWallet,
   walletConnectWallet,
+  zerionWallet,
 } from "@rainbow-me/rainbowkit/wallets"
+import { Chain, mainnet, scroll, scrollSepolia, sepolia } from "@wagmi/core/chains"
 import { parseUnits } from "ethers"
 import produce from "immer"
-import { configureChains, mainnet, sepolia } from "wagmi"
-import { jsonRpcProvider } from "wagmi/providers/jsonRpc"
-import { publicProvider } from "wagmi/providers/public"
 
-import { CHAIN_ID, ETH_SYMBOL, L2_NAME, RPC_URL } from "@/constants"
-import { networkType, requireEnv } from "@/utils"
+import { RPC_URL } from "@/constants"
+import { requireEnv } from "@/utils"
 
-interface WalletConfig {
-  name: string
-  wallet: Wallet
-  visible: boolean
-  fixedWallet?: boolean
-}
+const projectId = requireEnv("REACT_APP_CONNECT_WALLET_PROJECT_ID")
 
-const createWalletConfig = (name: string, walletFunction: () => Wallet, condition: boolean, fixedWallet?: boolean): WalletConfig => {
-  return {
-    name,
-    wallet: walletFunction(),
-    visible: condition,
-    fixedWallet,
-  }
-}
-
-export const scrollChain: Chain = {
-  id: CHAIN_ID.L2,
-  name: L2_NAME,
-  network: L2_NAME,
-  iconUrl: "https://scroll.io/logo.png",
-  iconBackground: "#fff",
-  nativeCurrency: {
-    decimals: 18,
-    name: L2_NAME,
-    symbol: ETH_SYMBOL,
+const wallets = [
+  {
+    groupName: "Popular",
+    wallets: [metaMaskWallet, coinbaseWallet, rabbyWallet, okxWallet, zerionWallet, trustWallet],
   },
-  rpcUrls: {
-    default: {
-      http: [RPC_URL.L2],
-    },
-    public: {
-      http: [RPC_URL.L2],
-    },
+  {
+    groupName: "More",
+    wallets: [bitgetWallet, nestWallet, walletConnectWallet],
   },
-  blockExplorers: {
-    default: { name: "Scrollscan", url: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2") },
-  },
-}
+]
 
 const sepoliaChain = produce(sepolia, draft => {
-  draft.rpcUrls.public.http = [RPC_URL.L1 as any]
+  draft.rpcUrls.default.http = [RPC_URL.L1 as any]
   draft.fees = {
     // adopt MetaMask params
     baseFeeMultiplier: 1,
@@ -74,7 +42,7 @@ const sepoliaChain = produce(sepolia, draft => {
 })
 
 const mainnetChain = produce(mainnet, draft => {
-  draft.rpcUrls.public.http = [RPC_URL.L1 as any]
+  draft.rpcUrls.default.http = [RPC_URL.L1 as any]
   draft.fees = {
     // adopt MetaMask params
     baseFeeMultiplier: 1,
@@ -85,69 +53,9 @@ const mainnetChain = produce(mainnet, draft => {
   }
 })
 
-const projectId = requireEnv("REACT_APP_CONNECT_WALLET_PROJECT_ID")
-
-const { chains, publicClient } = configureChains(
-  // ankr
-  [mainnetChain, sepoliaChain, scrollChain],
-  [
-    publicProvider(),
-    jsonRpcProvider({
-      rpc: chain => ({ http: chain.rpcUrls.default.http[0] }),
-    }),
-  ],
-)
-
-const walletConfigs: WalletConfig[] = [
-  createWalletConfig("MetaMask", () => metaMaskWallet({ chains, projectId }), window.ethereum?.isMetaMask === true, true),
-  createWalletConfig("Coinbase", () => coinbaseWallet({ appName: "Scroll", chains }), window.ethereum?.isCoinbaseWallet === true, true),
-  createWalletConfig("Brave", () => braveWallet({ chains }), window.ethereum?.isBraveWallet === true),
-  createWalletConfig("Rainbow", () => rainbowWallet({ chains, projectId }), window.ethereum?.isRainbow === true),
-  createWalletConfig("Safe", () => safeWallet({ chains }), window.ethereum?.isSafeWallet === true),
-  createWalletConfig("Frame", () => frameWallet({ chains }), window.ethereum?.isFrame === true),
-  createWalletConfig("imToken", () => imTokenWallet({ chains, projectId }), window.ethereum?.isImToken === true),
-  createWalletConfig("Okx Wallet", () => okxWallet({ chains, projectId }), window.okxwallet?.isOKExWallet || window.okxwallet?.isOkxWallet === true),
-  createWalletConfig("Rabby", () => rabbyWallet({ chains }), window.ethereum?.isRabby && !window.ethereum?.isMetaMask === true),
-  // Add any additional wallets here
-]
-
-const sortWallets = (a, b) => {
-  if (a.visible === b.visible) return 0
-  if (a.visible || a.fixedWallet) return -1
-  return 1
-}
-
-const activeWallets: Wallet[] = walletConfigs
-  .filter(wallet => wallet.visible || wallet.fixedWallet)
-  .sort(sortWallets)
-  .map(wallet => wallet.wallet)
-
-const Wallets = [
-  // TODO: rainbowkit/injectedWallet.ts "Browser Wallet" and "injectedWallet.svg" -> need to detect automaticlly
-  injectedWallet({ chains }),
-  ...activeWallets,
-  walletConnectWallet({
-    projectId,
-    chains,
-    options: {
-      metadata: {
-        name: "Scroll",
-        description: `Get started with our ${networkType} now.`,
-        url: "https://scroll.io/",
-        icons: ["https://scroll.io/logo_walletconnect.png"],
-      },
-      qrModalOptions: {
-        explorerRecommendedWalletIds: [
-          // metamask
-          "c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96",
-          // trust
-          "4622a2b2d6af1c9844944291e5e7351a6aa24cd7b23099efac1b2fd875da31a0",
-          // uniswap
-          "c03dfee351b6fcc421b4494ea33b9d4b92a984f87aa76d1663bb28705e95034a",
-        ],
-      },
-    },
-  } as any),
-]
-
-export { Wallets, chains, publicClient }
+export const config = getDefaultConfig({
+  wallets,
+  appName: "Scroll",
+  projectId,
+  chains: [mainnetChain, sepoliaChain as unknown as Chain, scroll, scrollSepolia],
+})
