@@ -251,7 +251,14 @@ const App = ({ currentMenu }) => {
       )
     } else {
       return (
-        <LinkStyledButton className={currentMenu === item.key ? "active" : ""} dark={dark} to={item.href} end={item.end} key={item.key}>
+        <LinkStyledButton
+          className={currentMenu === item.key ? "active" : ""}
+          dark={dark}
+          to={item.href}
+          end={item.end}
+          key={item.key}
+          reloadDocument={item.reload}
+        >
           {item.label}
         </LinkStyledButton>
       )
