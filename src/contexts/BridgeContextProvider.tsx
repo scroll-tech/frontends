@@ -9,16 +9,8 @@ import L1_SCROLL_MESSENGER_ABI from "@/assets/abis/L1ScrollMessenger.json"
 import L1_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L1_GATEWAY_ROUTER_PROXY_ADDR.json"
 import L2_SCROLL_MESSENGER_ABI from "@/assets/abis/L2ScrollMessenger.json"
 import L2_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L2_GATEWAY_ROUTER_PROXY_ADDR.json"
-import {
-  BATCH_BRIDGE_GATEWAY_PROXY_ADDR,
-  CHAIN_ID,
-  ETH_SYMBOL,
-  GATEWAY_ROUTE_PROXY_ADDR,
-  NATIVE_TOKEN_LIST,
-  RPC_URL,
-  SCROLL_MESSENGER_ADDR,
-} from "@/constants"
-import { BLOCK_NUMBERS, BRIDGE_TOKEN_SYMBOL, USER_TOKEN_LIST } from "@/constants/storageKey"
+import { BATCH_BRIDGE_GATEWAY_PROXY_ADDR, CHAIN_ID, GATEWAY_ROUTE_PROXY_ADDR, NATIVE_TOKEN_LIST, RPC_URL, SCROLL_MESSENGER_ADDR } from "@/constants"
+import { BLOCK_NUMBERS, USER_TOKEN_LIST } from "@/constants/storageKey"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useBlockNumbers from "@/hooks/useBlockNumbers"
 import useClaimHistory from "@/hooks/useClaimHistory"
@@ -52,7 +44,6 @@ const BridgeContextProvider = ({ children }: any) => {
   const { provider, walletCurrentAddress, chainId } = useRainbowContext()
   const { isL1Available, isL2Available } = useBlockNumbers()
 
-  const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
   const [blockNumbers] = useStorage(localStorage, BLOCK_NUMBERS, [-1, -1])
   const [tokenList, setTokenList] = useState<Token[]>([])
 
@@ -160,13 +151,6 @@ const BridgeContextProvider = ({ children }: any) => {
       update(provider, walletCurrentAddress)
     }
   }, [provider, walletCurrentAddress, chainId])
-
-  useEffect(() => {
-    const fromToken = tokenList?.find(item => item.chainId === chainId && item.symbol === tokenSymbol)
-    if (!fromToken) {
-      setTokenSymbol(ETH_SYMBOL)
-    }
-  }, [chainId, tokenList])
 
   const handleClose = () => {
     setFetchTokenListError("")
