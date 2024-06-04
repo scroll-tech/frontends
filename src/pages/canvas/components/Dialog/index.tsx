@@ -66,6 +66,16 @@ const ScrollDialog = props => {
         sx={[
           {
             padding: 0,
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "rgba(209, 205, 204, 0.30)",
+              borderRadius: "8px",
+            },
+            "&::-webkit-scrollbar": {
+              width: "6px",
+            },
+            // Firefox
+            scrollbarWidth: "thin",
+            scrollbarColor: "rgba(209, 205, 204, 0.30) transparent",
           },
           theme => ({
             [theme.breakpoints.down("sm")]: {
