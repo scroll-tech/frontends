@@ -5,7 +5,7 @@ export const WETH_SYMBOL = "WETH"
 export const USDC_SYMBOL = "USDC"
 
 export const L1_NAME = requireEnv("REACT_APP_BASE_CHAIN")
-export const L2_NAME = requireEnv("REACT_APP_ROLLUP")
+export const L2_NAME = requireEnv("REACT_APP_ROLLUP") || "ScrollStack"
 
 export const CHAIN_ID = {
   L1: parseInt(requireEnv("REACT_APP_CHAIN_ID_L1") as string),

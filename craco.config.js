@@ -62,6 +62,16 @@ module.exports = {
           fullySpecified: false,
         },
       })
+
+      webpackConfig.module.rules.push({
+        test: /\.m?js$/,
+        include: /node_modules/,
+        type: "javascript/auto",
+        resolve: {
+          fullySpecified: false,
+        },
+      })
+
       return webpackConfig
     },
   },

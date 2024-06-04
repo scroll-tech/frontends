@@ -12,7 +12,7 @@ const Portal = () => {
   return (
     <Container>
       <Box sx={{ textAlign: "center", mt: ["6.8rem", "13.8rem"] }}>
-        <Typography sx={{ fontSize: ["4rem", "7.8rem"], lineHeight: 1, fontWeight: 600 }}>{L2_NAME} Stack</Typography>
+        <Typography sx={{ fontSize: ["4rem", "7.8rem"], lineHeight: 1, fontWeight: 600 }}>{L2_NAME} Chain</Typography>
         <Typography sx={{ fontSize: ["2rem", "2.6rem"], mt: ["2rem", "1.4rem"] }}>Get started with us now!</Typography>
       </Box>
       <Stack

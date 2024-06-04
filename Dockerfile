@@ -14,6 +14,8 @@ WORKDIR /usr/share/nginx/html
 RUN rm -rf ./*
 COPY --from=build /app/build .
 
+COPY nginx.conf /etc/nginx/nginx.conf
+
 COPY entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
