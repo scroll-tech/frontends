@@ -111,6 +111,7 @@
     "os-browserify": "^0.3.0",
     "postcss": "^8.4.17",
     "prettier": "^2.8.1",
+    "process": "^0.11.10",
     "react-device-detect": "^2.2.3",
     "react-redux": "^7.2.0",
     "react-router-dom": "^6.3.0",
