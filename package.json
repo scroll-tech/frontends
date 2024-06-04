@@ -1,6 +1,6 @@
 {
   "name": "scroll.io",
-  "version": "5.0.100",
+  "version": "5.0.101",
   "private": false,
   "license": "MIT",
   "scripts": {
@@ -92,7 +92,6 @@
     "@types/lodash": "^4.14.186",
     "@types/react-helmet": "^6.1.6",
     "@types/react-redux": "^7.1.8",
-    "@types/react-router-dom": "^5.0.0",
     "@types/testing-library__cypress": "^5.0.5",
     "assert": "^2.0.0",
     "autoprefixer": "^10.4.12",

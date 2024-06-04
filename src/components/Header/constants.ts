@@ -205,6 +205,7 @@ const mainnetNavigations = [
     label: "Sessions",
     key: "sessions",
     href: "/sessions",
+    reload: true,
   },
 ]
 

@@ -177,7 +177,7 @@ const App = ({ currentMenu }) => {
             </ListItem>
           ) : (
             <ListItem dark={dark} className={activeCollapse === item.key ? "active" : ""} sx={{ py: "1rem" }} onClick={() => toggleDrawer(false)}>
-              <MenuLinkStyledButton to={item.href} dark={dark}>
+              <MenuLinkStyledButton to={item.href} dark={dark} reloadDocument={item.reload}>
                 {item.label}
               </MenuLinkStyledButton>
             </ListItem>
