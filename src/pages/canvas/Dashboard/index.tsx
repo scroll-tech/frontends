@@ -70,7 +70,7 @@ const Dashboard = props => {
         if (preCheckedBadge && !isUserBadge && !refresh) {
           return preCheckedBadge
         }
-        let isValidBadge = await checkBadgeEligibility(provider, walletCurrentAddress, badge)
+        const isValidBadge = await checkBadgeEligibility(provider, walletCurrentAddress, badge)
 
         return {
           ...badge,
