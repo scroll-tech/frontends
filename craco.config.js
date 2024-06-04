@@ -74,6 +74,16 @@ module.exports = {
           fullySpecified: false,
         },
       })
+
+      webpackConfig.module.rules.push({
+        test: /\.m?js$/,
+        include: /node_modules/,
+        type: "javascript/auto",
+        resolve: {
+          fullySpecified: false,
+        },
+      })
+
       if (env === "production" && process.env.CI) {
         const sentryPlugin = new SentryWebpackPlugin({
           org: "scroll-zkp",

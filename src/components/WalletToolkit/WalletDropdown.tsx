@@ -135,7 +135,7 @@ const WalletDropdown = props => {
 
   return (
     <>
-      {chainId ? (
+      {walletCurrentAddress ? (
         <ButtonBase classes={{ root: classes.button }} sx={sx} onClick={handleClick}>
           {truncateAddress(walletCurrentAddress as string)}
           <SvgIcon className={cx(classes.endIcon, open && classes.reverseEndIcon)} component={DownTriangleSvg} inheritViewBox></SvgIcon>

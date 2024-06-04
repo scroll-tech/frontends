@@ -35,7 +35,7 @@ const SendTransaction = props => {
   const [searchParams] = useSearchParams()
   const token = searchParams.get("token")
 
-  const { chainId, connect } = useRainbowContext()
+  const { chainId, connect, walletCurrentAddress } = useRainbowContext()
   // TODO: extract tokenList
   const { tokenList } = useBridgeContext()
   const { isMobile } = useCheckViewport()
@@ -139,7 +139,7 @@ const SendTransaction = props => {
   useEffect(() => {
     let nextBridgeWarning
     let nextInputError = false
-    if (!chainId) {
+    if (!walletCurrentAddress) {
       nextBridgeWarning = (
         <TextButton underline="always" sx={{ fontSize: "1.4rem" }} onClick={connect}>
           Connect wallet
@@ -255,7 +255,7 @@ const SendTransaction = props => {
   }
 
   const renderButton = () => {
-    if (!chainId) {
+    if (!walletCurrentAddress) {
       return (
         <Button key="connect" width={isMobile ? "100%" : "25rem"} color="primary" onClick={connect} whiteButton>
           Connect Wallet
