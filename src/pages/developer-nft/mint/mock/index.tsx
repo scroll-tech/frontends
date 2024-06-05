@@ -35,7 +35,7 @@ const Mock = () => {
             </Link>
           ) : (
             <Button color="primary" loading={loading} onClick={handleGenerateProof}>
-              {loading ? "Genarating" : "Genarate Proof"}
+              {loading ? "Generating" : "Genarate Proof"}
             </Button>
           )}
         </>
