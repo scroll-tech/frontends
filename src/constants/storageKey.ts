@@ -5,8 +5,6 @@ export const TOKEN_SYMBOL_MAP_KEY = "tokenSymbolMap"
 
 export const TOKEN_INFO_MAP = "tokenInfoMap"
 
-export const BRIDGE_TOKEN_SYMBOL = "bridgeTokenSymbol"
-
 export const BRIDGE_TRANSACTIONS = "bridgeTransactions"
 
 export const CLAIM_TRANSACTIONS = "claimTransactions"
