@@ -13,7 +13,7 @@ import useCheckViewport from "@/hooks/useCheckViewport"
 import Category from "./Category"
 import NetworkSelect from "./NetworkSelect"
 import ProtocolList from "./ProtocolList"
-import SearchInput from "./SeachInput"
+import SearchInput from "./SearchInput"
 
 const Grid = withStyles(Box, theme => ({
   root: {
