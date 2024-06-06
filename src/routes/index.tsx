@@ -18,6 +18,7 @@ import RollupScanChunk from "@/pages/rollup/chunk"
 import RollupScanChunkDetail from "@/pages/rollup/chunk/detail"
 import RollupScan from "@/pages/rollup/index"
 import Sessions from "@/pages/sessions"
+import SessionsRestricted from "@/pages/sessions-restricted"
 import SessionsTerms from "@/pages/sessions-terms"
 import StickerVote from "@/pages/sticker-vote"
 import StickerWinners from "@/pages/sticker-winners"
@@ -223,6 +224,11 @@ const mainnetRoutes = [
     name: "Scroll Sessions Terms of Use",
     path: "/sessions-terms-of-use",
     element: <SessionsTerms />,
+  },
+  {
+    name: "Scroll Sessions Restricted",
+    path: "/sessions-restricted",
+    element: <SessionsRestricted />,
   },
 ]
 
