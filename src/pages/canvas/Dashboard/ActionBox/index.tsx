@@ -1,6 +1,6 @@
 import copy from "copy-to-clipboard"
 import { Fragment, useCallback, useMemo, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 
 import { Badge, Box, Menu, MenuItem, Slide, Stack, SvgIcon } from "@mui/material"
 import { styled } from "@mui/system"
@@ -119,6 +119,8 @@ const MintableCount = styled("span")(({ theme }) => ({
 const ActionBox = props => {
   const { mintableBadgeCount } = props
   const { address: othersWalletAddress } = useParams()
+  const navigate = useNavigate()
+
   const { walletCurrentAddress } = useRainbowContext()
 
   const [copied, setCopied] = useState(false)
@@ -152,27 +154,6 @@ const ActionBox = props => {
 
   const [badgesAnchorEl, setBadgesAnchorEl] = useState<null | HTMLElement>(null)
   const badgesOpen = Boolean(badgesAnchorEl)
-
-  // const [mintableBadgeCount, setMintableBadgeCount] = useState(0)
-
-  // useEffect(() => {
-  //   const fetchVisibleBadges = async () => {
-  //     const filteredBadges = await Promise.all(
-  //       Badges.map(async badge => {
-  //         const isUserBadge = userBadges.some(userBadge => userBadge.badgeContract === badge.badgeContract)
-  //         const isValidBadge = await badge.validator(walletCurrentAddress, provider)
-  //         return {
-  //           ...badge,
-  //           isValid: !isUserBadge && isValidBadge,
-  //         }
-  //       }),
-  //     )
-
-  //     setMintableBadgeCount(filteredBadges.filter(badge => badge.isValid).length)
-  //   }
-
-  //   fetchVisibleBadges()
-  // }, [userBadges, walletCurrentAddress, provider])
 
   const handleCloseBadges = () => {
     setBadgesAnchorEl(null)
@@ -222,6 +203,12 @@ const ActionBox = props => {
               onClick: () => {
                 handleCloseBadges()
                 changeUpgradeDialog(true)
+              },
+            },
+            {
+              label: "Explore badges",
+              onClick: () => {
+                navigate("/ecosystem#badges")
               },
             },
             // TODO: upgrage badges
