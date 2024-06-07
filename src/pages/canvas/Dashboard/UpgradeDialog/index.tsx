@@ -51,7 +51,7 @@ const UpgradeDialog = props => {
 
   if (loading) {
     return (
-      <Dialog title="Badges Ready to Mint" open={upgradeDialogVisible} onClose={handleClose}>
+      <Dialog title="Mint eligible badges" open={upgradeDialogVisible} onClose={handleClose}>
         <StyledList>
           <LoadingPage
             height="100%"
@@ -71,7 +71,7 @@ const UpgradeDialog = props => {
   }
 
   return (
-    <Dialog title="Badges for Mint" open={upgradeDialogVisible} onClose={handleClose}>
+    <Dialog title="Mint eligible badges" open={upgradeDialogVisible} onClose={handleClose}>
       <StyledList>
         {badges.map((badge, index) => (
           <BadgeItem key={index} badge={badge} />

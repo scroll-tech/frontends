@@ -72,7 +72,8 @@ export const ETHEREUM_YEAR_BADGE = {
   name: "Ethereum Year Badge",
   badgeContract: ETHEREUM_YEAR_BADGE_ADDRESS,
   attesterProxy: ETHEREUM_YEAR_ATTESTER_PROXY_ADDRESS,
-  description: "A collection 8888 Cute Chubby Pudgy Penquins sliding around on the freezing ETH blockchain.",
+  description:
+    "Check out the Ethereum Year Badge! It's like a digital trophy that shows off the year your wallet made its debut on Ethereum. It's a little present from Scroll to celebrate all the cool stuff you've done in the Ethereum ecosystem.",
   image: "/imgs/canvas/Badge_Ethereum_Year.png",
   native: false,
   issuer: {
