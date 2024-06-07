@@ -3,6 +3,8 @@ import { ReactComponent as HeartIcon } from "@/assets/svgs/ecosystem/heart.svg"
 import { ReactComponent as SettingsIcon } from "@/assets/svgs/ecosystem/settings.svg"
 import { isMainnet } from "@/utils"
 
+export const ECOSYSTEM_PAGE_SYMBOL = "ecosystem"
+
 export const DIVERGENT_CATEGORY_MAP = {
   Community: ["Community", "DAO", "Governance"],
   DeFi: ["DEX", "DeFi", "Launchpad", "Lending", "Marketplace", "Payment"],
