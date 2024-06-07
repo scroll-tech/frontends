@@ -12,6 +12,7 @@ import { ReactComponent as EthSvg } from "@/assets/svgs/canvas/eth.svg"
 import { ReactComponent as ShareSvg } from "@/assets/svgs/canvas/share.svg"
 import { ReactComponent as TwitterSvg } from "@/assets/svgs/nft/twitter.svg"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useCheckViewport from "@/hooks/useCheckViewport"
 import Button from "@/pages/canvas/components/Button"
 import useCanvasStore from "@/stores/canvasStore"
 import { requireEnv } from "@/utils"
@@ -79,7 +80,7 @@ const CustomMenu = styled<any>(Menu)(({ theme, dropdownWidth }) => ({
     marginTop: "-0.8rem",
     minWidth: "15.6rem",
     [theme.breakpoints.down("sm")]: {
-      width: dropdownWidth,
+      minWidth: dropdownWidth,
     },
   },
   "& .MuiMenu-list": {
@@ -114,6 +115,10 @@ const MintableCount = styled("span")(({ theme }) => ({
   fontSize: "1rem",
   lineHeight: "1.6rem",
   textAlign: "center",
+  marginLeft: "1.6rem",
+  [theme.breakpoints.down("sm")]: {
+    marginLeft: "0.8rem",
+  },
 }))
 
 const ActionBox = props => {
@@ -122,6 +127,7 @@ const ActionBox = props => {
   const navigate = useNavigate()
 
   const { walletCurrentAddress } = useRainbowContext()
+  const { isPortrait } = useCheckViewport()
 
   const [copied, setCopied] = useState(false)
 
@@ -198,7 +204,7 @@ const ActionBox = props => {
               },
             },
             {
-              label: "Mint badges",
+              label: "Mint eligible badges",
               extra: mintableBadgeCount ? <MintableCount>{mintableBadgeCount > 99 ? "99+" : mintableBadgeCount}</MintableCount> : null,
               onClick: () => {
                 handleCloseBadges()
@@ -293,11 +299,11 @@ const ActionBox = props => {
                 <CustomMenu
                   anchorOrigin={{
                     vertical: "top",
-                    horizontal: "center",
+                    horizontal: isPortrait ? "right" : "left",
                   }}
                   transformOrigin={{
                     vertical: "bottom",
-                    horizontal: "center",
+                    horizontal: isPortrait ? "right" : "left",
                   }}
                   anchorEl={action.menu.anchorEl}
                   dropdownWidth={dropdownWidth}

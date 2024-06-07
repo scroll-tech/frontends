@@ -102,7 +102,7 @@ const Dashboard = props => {
   const scrollyAlert = useMemo(() => {
     if (visibleBadges.length) {
       return {
-        title: "Mint badges",
+        title: "Mint eligible badges",
         content: "Welcome to Scroll Canvas where you can earn badges across the ecosystem. Mint your badges now!",
         action: () => {
           changeUpgradeDialog(true)
