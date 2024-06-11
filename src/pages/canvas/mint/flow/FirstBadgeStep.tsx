@@ -31,7 +31,15 @@ const FirstBadgeStep = props => {
   const alertWarning = useSnackbar()
 
   const badgeChecked = useAsyncMemo(async () => {
+    // const data: any = await testAsyncFunc({
+    //   code: 1,
+    //   eligibility: true,
+    //   year: 2022,
+    // })
+    // return data
     const data = await scrollRequest(checkBadgeEligibilityURL(ETHEREUM_YEAR_BADGE.baseUrl, walletCurrentAddress, ETHEREUM_YEAR_BADGE.badgeContract))
+
+    // await fetch(EthereumYearBadgeURL(data.year))
     return data
   }, [provider, walletCurrentAddress])
   const firstBadgeRef = useRef<HTMLElement>()
@@ -65,7 +73,6 @@ const FirstBadgeStep = props => {
           image: EthereumYearBadgeURL(badgeChecked.year),
           badgeContract: ETHEREUM_YEAR_BADGE.badgeContract,
         })
-        // recordFirstBadgePosition({ left, top, id: result, image: EthereumYearBadgeURL("2020") })
         changeBadgeAnimationVisible(true)
         changeMintFlowVisible(false)
       }
@@ -118,16 +125,17 @@ const FirstBadgeStep = props => {
       sx={{ mt: ["2.4rem", "4.6rem"], mb: ["2rem", "8.8rem"], textAlign: "center" }}
     >
       <Box sx={{ width: ["12rem", "20rem"], mb: "1.6rem", display: "inline-block" }}>
-        {!badgeChecked ? (
-          <Img style={{ borderRadius: "50%" }} src="/imgs/canvas/badgePlaceholder.svg" alt="Ethereum Year Badge"></Img>
-        ) : (
+        {badgeChecked?.code === 1 ? (
           <Img
+            width="100%"
             style={{ borderRadius: "50%" }}
             ref={firstBadgeRef}
-            src={badgeChecked?.code === 1 ? EthereumYearBadgeURL(badgeChecked.year) : ETHEREUM_YEAR_BADGE.image}
+            src={EthereumYearBadgeURL(badgeChecked.year)}
             placeholder="/imgs/canvas/badgePlaceholder.svg"
             alt={ETHEREUM_YEAR_BADGE.name}
           ></Img>
+        ) : (
+          <Img width="100%" style={{ borderRadius: "50%" }} src="/imgs/canvas/badgePlaceholder.svg" alt="Ethereum Year Badge"></Img>
         )}
       </Box>
       <Typography sx={{ fontSize: ["1.8rem", "2rem"], lineHeight: ["2.8rem", "3rem"], fontWeight: 600 }}>{ETHEREUM_YEAR_BADGE.name}</Typography>

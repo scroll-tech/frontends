@@ -284,6 +284,7 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
       username: "",
       canvasUsername: "",
       userBadges: [],
+      mintableBadges: [],
       attachedBadges: [],
       orderedAttachedBadges: [],
       badgeOrder: [],

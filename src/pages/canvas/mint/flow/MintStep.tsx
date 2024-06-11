@@ -38,10 +38,8 @@ const MintStep = props => {
 
   const checkBalance = async mintFee => {
     const balance = await provider?.getBalance(walletCurrentAddress as `0x${string}`)
-    if (balance) {
-      if (mintFee < balance) {
-        return true
-      }
+    if (balance && mintFee < balance) {
+      return true
     }
     return false
   }
