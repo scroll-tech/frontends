@@ -2,15 +2,13 @@ import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { isDesktop } from "react-device-detect"
 import { Helmet } from "react-helmet-async"
 import { Navigate, useNavigate, useParams } from "react-router-dom"
-import { usePrevious } from "react-use"
 
 import Canvas from "@/components/Canvas"
 // import { BADGES_VISIBLE_TYPE } from "@/constants"
 import { useCanvasContext } from "@/contexts/CanvasContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useSnackbar from "@/hooks/useSnackbar"
-import Badges, { Badge } from "@/pages/canvas/Dashboard/UpgradeDialog/Badges"
-import { checkBadgeEligibility, checkIfProfileMinted } from "@/services/canvasService"
+import { checkIfProfileMinted } from "@/services/canvasService"
 import useCanvasStore from "@/stores/canvasStore"
 import { requireEnv } from "@/utils"
 
@@ -24,8 +22,6 @@ import FirstBadgeMask from "./FirstBadgeMask"
 import NameDialog from "./NameDialog"
 import ReferDialog from "./ReferDialog"
 import UpgradeDialog from "./UpgradeDialog"
-
-type VisibleBadge = Badge & { isValid: boolean }
 
 const Dashboard = props => {
   const { walletCurrentAddress, provider } = useRainbowContext()
@@ -43,17 +39,14 @@ const Dashboard = props => {
     profileAddress,
     changeProfileDetailLoading,
     profileDetailLoading,
-    userBadges,
     changeUpgradeDialog,
     badgeAnimationVisible,
     initialMint,
     upgradeDialogVisible,
+    mintableBadges,
+    pickMintableBadges,
+    pickMintableBadgesLoading,
   } = useCanvasStore()
-
-  const [visibleBadges, setVisibleBadges] = useState<VisibleBadge[]>([])
-  const [loading, setLoading] = useState(false)
-
-  const preVisibleBadges = usePrevious(visibleBadges)
 
   const metadata = {
     title: `Scroll -  ${canvasUsername}'s Canvas`,
@@ -61,46 +54,15 @@ const Dashboard = props => {
     image: `${requireEnv("REACT_APP_CANVAS_BACKEND_URI")}/canvas/${othersWalletAddress || walletCurrentAddress}.png`,
   }
 
-  const fetchVisibleBadges = async refresh => {
-    setLoading(true)
-    const checkedBadges = await Promise.allSettled(
-      Badges.map(async badge => {
-        const isUserBadge = userBadges.some(userBadge => userBadge.badgeContract === badge.badgeContract)
-        const preCheckedBadge = preVisibleBadges?.find(item => item.badgeContract === badge.badgeContract)
-        if (preCheckedBadge && !isUserBadge && !refresh) {
-          return preCheckedBadge
-        }
-        const isValidBadge = await checkBadgeEligibility(provider, walletCurrentAddress, badge)
-
-        return {
-          ...badge,
-          isValid: !isUserBadge && isValidBadge,
-        }
-      }),
-    )
-    const filteredBadges = checkedBadges
-      .filter((item): item is PromiseFulfilledResult<VisibleBadge> => item.status === "fulfilled" && item.value.isValid)
-      .map(item => item.value)
-
-    setLoading(false)
-    setVisibleBadges(filteredBadges)
-  }
-
   useEffect(() => {
-    if (provider && walletCurrentAddress && userBadges?.length) {
-      fetchVisibleBadges(false)
-    }
-  }, [userBadges, walletCurrentAddress, provider])
-
-  useEffect(() => {
-    // initail fetch/when open badges dialog
-    if (upgradeDialogVisible || !preVisibleBadges?.length) {
-      fetchVisibleBadges(true)
+    // recheck badge eligibility when openning badges dialog
+    if (upgradeDialogVisible) {
+      pickMintableBadges(provider, walletCurrentAddress, true)
     }
   }, [upgradeDialogVisible])
 
   const scrollyAlert = useMemo(() => {
-    if (visibleBadges.length) {
+    if (mintableBadges.length) {
       return {
         title: "Mint eligible badges",
         content: "Welcome to Scroll Canvas where you can earn badges across the ecosystem. Mint your badges now!",
@@ -116,7 +78,7 @@ const Dashboard = props => {
         navigate("/ecosystem")
       },
     }
-  }, [visibleBadges.length])
+  }, [mintableBadges.length])
 
   const [windowDimensions, setWindowDimensions] = useState({
     width: window.innerWidth,
@@ -143,6 +105,8 @@ const Dashboard = props => {
       changeProfileDetailLoading(true)
       const signer = await provider?.getSigner(0)
       await fetchCurrentCanvasDetail(signer, walletAddress, profileAddress)
+      // initially check eligibility
+      await pickMintableBadges(provider, walletAddress, true)
     } catch (e) {
       alertWarning(e.message)
     } finally {
@@ -213,7 +177,7 @@ const Dashboard = props => {
         <GridBg badgewidth={badgewidth} gridNum={gridNum}>
           <BadgeWall badgewidth={badgewidth} gridNum={gridNum} windowDimensions={windowDimensions} />
 
-          {isDesktop && (
+          {isDesktop && !othersWalletAddress && (
             <Canvas visible buttonText={scrollyAlert.title} title={scrollyAlert.content} onClick={scrollyAlert.action} canvasId="dashboardCanvas" />
           )}
           {!!othersWalletAddress ? (
@@ -223,11 +187,11 @@ const Dashboard = props => {
             </>
           ) : (
             <>
-              <ActionBox mintableBadgeCount={visibleBadges.length} />
+              <ActionBox mintableBadgeCount={mintableBadges.length} />
               <NameDialog />
-              <BadgesDialog mintableBadgeCount={visibleBadges.length} />
+              <BadgesDialog mintableBadgeCount={mintableBadges.length} />
               <ReferDialog />
-              <UpgradeDialog badges={visibleBadges} loading={loading} />
+              <UpgradeDialog badges={mintableBadges} loading={pickMintableBadgesLoading} />
               <BadgeDetailDialog />
             </>
           )}

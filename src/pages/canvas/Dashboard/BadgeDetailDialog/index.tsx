@@ -86,6 +86,7 @@ const BadgeDetailDialog = () => {
     queryVisibleBadges,
     isBadgeMinting,
     changeIsBadgeMinting,
+    pickMintableBadges,
   } = useCanvasStore()
   const navigate = useNavigate()
   const alertWarning = useSnackbar()
@@ -111,6 +112,7 @@ const BadgeDetailDialog = () => {
       // const result: any = await testAsyncFunc("0x11cfb299dda2ae8b1fccf9a055394de9a7f953e8b8f115295dc0f2325e8b2130")
       if (result) {
         await queryVisibleBadges(provider, walletCurrentAddress)
+        await pickMintableBadges(provider, walletCurrentAddress, false)
         alertWarning(
           <>
             {selectedBadge.name} minted successfully!<br></br>
@@ -121,7 +123,6 @@ const BadgeDetailDialog = () => {
           "success",
         )
         changeBadgeDetailDialog(BadgeDetailDialogType.HIDDEN)
-        changeUpgradeDialog(true)
       }
     } catch (e) {
       alertWarning(e.message)
@@ -154,7 +155,7 @@ const BadgeDetailDialog = () => {
 
   const handleBack = () => {
     changeBadgeDetailDialog(BadgeDetailDialogType.HIDDEN)
-    changeUpgradeDialog(true)
+    // changeUpgradeDialog(true)
   }
 
   const badgeIssuer = useMemo(() => badgeMap[selectedBadge.badgeContract]?.issuer || {}, [selectedBadge])
@@ -171,6 +172,7 @@ const BadgeDetailDialog = () => {
 
   return (
     <Dialog
+      sx={{ zIndex: theme => theme.zIndex.modal + 1 }}
       disablePortal={isMobile}
       open={badgeDetailDialogVisible !== BadgeDetailDialogType.HIDDEN}
       allowBack={[BadgeDetailDialogType.MINT_WITH_BACK].includes(badgeDetailDialogVisible)}
@@ -181,7 +183,7 @@ const BadgeDetailDialog = () => {
         direction="column"
         alignItems="center"
         justifyContent={isMobile ? "flex-start" : "center"}
-        sx={{ width: ["100%", "57.6rem"], height: [`calc(100% - ${actionHeight})`, "auto", "auto", "64.8rem"] }}
+        sx={{ width: ["100%", "57.6rem"], height: [`calc(100% - ${actionHeight})`, "auto", "auto", "64.2rem"] }}
       >
         <Img
           alt="img"

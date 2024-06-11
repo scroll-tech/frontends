@@ -2,7 +2,14 @@ import { Contract } from "ethers"
 import { create } from "zustand"
 
 import { ETHEREUM_YEAR_BADGE } from "@/constants/badges"
-import { fetchCanvasDetail, getOrderedAttachedBadges, queryCanvasUsername, queryUserBadgesWrapped } from "@/services/canvasService"
+import { Badge, default as badgeList } from "@/pages/canvas/Dashboard/UpgradeDialog/Badges"
+import {
+  checkBadgeEligibility,
+  fetchCanvasDetail,
+  getOrderedAttachedBadges,
+  queryCanvasUsername,
+  queryUserBadgesWrapped,
+} from "@/services/canvasService"
 
 // import { testAsyncFunc } from "@/services/canvasService"
 
@@ -20,6 +27,8 @@ export enum BadgeDetailDialogType {
   VIEW = "view",
   NO_PROFILE = "noProfile", // no badge
 }
+
+type MintableBadge = Badge & { mintable: boolean }
 
 interface CanvasStore {
   // /invite/referralCode
@@ -52,6 +61,7 @@ interface CanvasStore {
   walletDetailLoading: boolean
   queryUsernameLoading: boolean
   queryUserBadgesLoading: boolean
+  pickMintableBadgesLoading: boolean
   profileAddress: string | null
   profileMinted: boolean | null
   username: string
@@ -59,6 +69,7 @@ interface CanvasStore {
   userBadges: Array<any>
   attachedBadges: Array<any>
   orderedAttachedBadges: Array<any>
+  mintableBadges: Array<MintableBadge>
   badgeOrder: Array<any>
   profileContract: Contract | null
   firstBadgeWithPosition: any
@@ -78,6 +89,7 @@ interface CanvasStore {
   queryUsername: () => void
   queryAttachedBadges: () => void
   queryVisibleBadges: (provider, address) => void
+  pickMintableBadges: (provider, address, refresh?) => void
   addFirstBadge: (provider, badgeId, badgeImage, badgeContract) => void
   clearCanvas: () => void
   recordFirstBadgePosition: (position) => void
@@ -111,11 +123,13 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
   queryUsernameLoading: false,
   walletDetailLoading: false,
   queryUserBadgesLoading: false,
+  pickMintableBadgesLoading: false,
   username: "",
   canvasUsername: "",
   userBadges: [],
   attachedBadges: [],
   orderedAttachedBadges: [],
+  mintableBadges: [],
   badgeOrder: [],
   firstBadgeWithPosition: {},
   badgeAnimationVisible: false,
@@ -330,6 +344,38 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
       queryUserBadgesLoading: false,
     })
   },
+
+  pickMintableBadges: async (provider, walletCurrentAddress, refresh) => {
+    const { userBadges, mintableBadges } = get()
+    const preMintableBadges = [...mintableBadges]
+    set({
+      pickMintableBadgesLoading: true,
+    })
+    const checkedBadges = await Promise.allSettled(
+      badgeList.map(async badge => {
+        const isUserBadge = userBadges.some(userBadge => userBadge.badgeContract === badge.badgeContract)
+        const preCheckedBadge = preMintableBadges?.find(item => item.badgeContract === badge.badgeContract)
+        if (preCheckedBadge && !isUserBadge && !refresh) {
+          return preCheckedBadge
+        }
+        const isEligibleBadge = await checkBadgeEligibility(provider, walletCurrentAddress, badge)
+
+        return {
+          ...badge,
+          mintable: !isUserBadge && isEligibleBadge,
+        }
+      }),
+    )
+    const filteredBadges = checkedBadges
+      .filter((item): item is PromiseFulfilledResult<MintableBadge> => item.status === "fulfilled" && item.value.mintable)
+      .map(item => item.value)
+
+    set({
+      pickMintableBadgesLoading: false,
+      mintableBadges: filteredBadges,
+    })
+  },
+
   // for test
   addFirstBadge: async (providerOrSigner, badgeId, badgeImage, badgeContract) => {
     set({

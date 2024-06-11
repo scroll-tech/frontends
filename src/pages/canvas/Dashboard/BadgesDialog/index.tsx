@@ -63,8 +63,6 @@ const BadgesDialog = props => {
   } = useCanvasStore()
   const alertWarning = useSnackbar()
 
-  console.log(userBadges, "userBadges")
-
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
