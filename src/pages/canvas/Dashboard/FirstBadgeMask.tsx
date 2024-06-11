@@ -5,7 +5,6 @@ import Img from "react-cool-img"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useCanvasStore from "@/stores/canvasStore"
-import { getBadgeImgURL } from "@/utils"
 
 const FirstBadgeMask = props => {
   const { badgeWidth } = props
@@ -46,8 +45,8 @@ const FirstBadgeMask = props => {
       onAnimationComplete={handleAnimationComplete}
       style={{
         position: "fixed",
-        // left: initialLeft, // window
-        // top: initialTop,
+        // left: firstBadgeWithPosition.left, // window
+        // top: firstBadgeWithPosition.top,
         // width: 200,
       }}
     >
@@ -57,9 +56,8 @@ const FirstBadgeMask = props => {
           borderRadius: "0.8rem",
         }}
         ref={firstBadgeRef}
-        src={getBadgeImgURL(firstBadgeWithPosition.image)}
-        // placeholder="/imgs/canvas/badgePlaceholder.svg"
-        alt="Ethereum Year Badge"
+        src={firstBadgeWithPosition.image}
+        alt="Ethereum Year"
       ></Img>
     </motion.div>
   )

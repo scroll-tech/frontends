@@ -6,6 +6,7 @@ import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { getAvatarURL } from "@/apis/canvas"
+import Skeleton from "@/components/Skeleton"
 // import { ReactComponent as DefaultAvatarSvg } from "@/assets/svgs/canvas/default-avatar.svg"
 // import { BADGES_VISIBLE_TYPE } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
@@ -62,11 +63,13 @@ const Name = styled(Typography)(({ theme }) => ({
   fontStyle: "normal",
   fontWeight: 600,
   lineHeight: "3.2rem",
+  height: "3.2rem",
   alignSelf: "center",
   flexShrink: 0,
   [theme.breakpoints.down("sm")]: {
     fontSize: "1.6rem",
     lineHeight: "2.4rem",
+    height: "2.4rem",
   },
 }))
 
@@ -77,7 +80,7 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
 
   // console.log(badgewidth, "badgewidth")
 
-  const { profileMinted, canvasUsername, userBadges, orderedAttachedBadges } = useCanvasStore()
+  const { profileMinted, canvasUsername, queryUsernameLoading, userBadges, orderedAttachedBadges } = useCanvasStore()
   const [badges, setBadges] = useState<BadgePosition[]>([])
   const { walletCurrentAddress } = useRainbowContext()
 
@@ -191,7 +194,7 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
             <Img src={userInfo.avatar} placeholder="/imgs/canvas/avatarPlaceholder.svg" alt="avatar" width="100%"></Img>
           </Box>
         </Tooltip>
-        <Name>{userInfo.name}</Name>
+        {queryUsernameLoading ? <Skeleton dark sx={{ width: "6em", height: ["2.4rem", "3.2rem"] }}></Skeleton> : <Name>{userInfo.name}</Name>}
       </Profile>
       {badges.map((badge, index) => (
         <Badge key={badge.metadata?.id} badge={badge} index={index} badgewidth={badgewidth} />
