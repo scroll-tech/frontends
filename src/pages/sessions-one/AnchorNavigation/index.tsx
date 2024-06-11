@@ -130,7 +130,7 @@ const AnchorNavigation = props => {
         position: "sticky",
         top: stickyTop,
         backgroundColor: "themeBackground.normal",
-        borderRadius: [0, 0, "1.6rem"],
+        borderRadius: ["0 0 0.8rem 0.8rem", "0 0 0.8rem 0.8rem", "1.6rem"],
         width: ["100%", "100%", "24rem"],
         height: "min-content",
         py: "1.6rem",

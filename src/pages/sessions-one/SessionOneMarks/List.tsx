@@ -80,7 +80,7 @@ const MarkList = props => {
                 <Stack direction="column" gap="4px">
                   <Typography sx={{ fontSize: "2rem", lineHeight: "2.4rem", fontWeight: 600 }}>Others</Typography>
                   <Stack direction="row" gap="4px">
-                    {item.items.map(({ project, logo, website }) => (
+                    {item?.items?.map(({ project, logo, website }) => (
                       <Avatar variant="square" src={logo} alt={project} sx={{ width: "2rem", height: "2rem", borderRadius: "3px" }}></Avatar>
                     ))}
                   </Stack>

@@ -73,7 +73,7 @@ const OthersModal = props => {
       </DialogTitle>
       <DialogContent sx={{ p: 0 }}>
         <List sx={{ pt: "2.4rem", pb: 0 }}>
-          {data.map(item => (
+          {data?.map(item => (
             <ListItem
               sx={{
                 height: "5.6rem",

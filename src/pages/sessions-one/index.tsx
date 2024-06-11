@@ -29,7 +29,23 @@ const Seesions = () => {
         }}
       >
         {!isPortrait && <AnchorNavigation></AnchorNavigation>}
-        <Stack sx={{ gap: ["1.6rem", "2.4rem", "3.2rem"], mb: "6rem", maxWidth: "88.4rem" }}>
+        <Stack
+          sx={[
+            { gap: [0, 0, "3.2rem"], mb: "6rem", maxWidth: "88.4rem" },
+            theme => ({
+              [theme.breakpoints.down("md")]: {
+                "& > *:nth-of-type(n + 4)": {
+                  marginTop: "2.4rem",
+                },
+              },
+              [theme.breakpoints.down("sm")]: {
+                "& > *:nth-of-type(n + 4)": {
+                  marginTop: "1.6rem",
+                },
+              },
+            }),
+          ]}
+        >
           <TotalMarks></TotalMarks>
           {isPortrait && <MobileAnchorNavigation></MobileAnchorNavigation>}
           <SessionOneMarks></SessionOneMarks>

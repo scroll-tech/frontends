@@ -1,12 +1,13 @@
-// import useSWR from "swr"
+import useSWR from "swr"
+
 import { Divider, Typography } from "@mui/material"
 
+import { fetchProjectsMarksUrl } from "@/apis/sessions"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useSessionsStore from "@/stores/sessionsStore"
+import { sentryDebug } from "@/utils"
+
 import { SESSIONS_SECTION_MAP } from "../AnchorNavigation"
-// import { fetchTokensMarksUrl } from "@/apis/sessions"
-// import { useRainbowContext } from "@/contexts/RainbowProvider"
-// import useSessionsStore from "@/stores/sessionsStore"
-// import { sentryDebug } from "@/utils"
-// import MarkList, { MarksType } from "../SessionZeroMarks/List"
 import Card from "../components/Card"
 import MarkList from "./List"
 import { projectList } from "./projectList"
@@ -23,49 +24,33 @@ import { projectList } from "./projectList"
 // console.log(SESSIONS_SECTION_MAP["1-dex"])
 
 const SessionOneMarks = () => {
-  // const { walletCurrentAddress } = useRainbowContext()
-  // const { hasSignedTerms } = useSessionsStore()
+  const { walletCurrentAddress } = useRainbowContext()
+  const { hasSignedTerms } = useSessionsStore()
 
-  // const { data: marks, isLoading } = useSWR(
-  //   [fetchTokensMarksUrl(walletCurrentAddress), walletCurrentAddress, hasSignedTerms],
-  //   async ([url, walletAddress, signed]) => {
-  //     try {
-  //       if (!walletAddress || !signed) {
-  //         throw new Error("Wallet address or signed terms missing.")
-  //       }
+  const { data: marks, isLoading } = useSWR(
+    [fetchProjectsMarksUrl(walletCurrentAddress), walletCurrentAddress, hasSignedTerms],
+    async ([url, walletAddress, signed]) => {
+      try {
+        if (!walletAddress || !signed) {
+          throw new Error("Wallet address or signed terms missing.")
+        }
 
-  //       const list = await scrollRequest(url)
-  //       const tokensMarks = tokenList.map(item => {
-  //         const withMarks = list.filter(item => item.points).find(i => i.bridge_asset.toUpperCase() === item.key.toUpperCase())
-  //         let marks = withMarks?.points ?? 0
+        const result = await scrollRequest(url)
+        // const { dex, lending } = result
+        return result
+      } catch (e) {
+        sentryDebug(`project marks: ${walletCurrentAddress}-${e.message}`)
+        return {}
+      }
+    },
+    {
+      fallbackData: {},
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    },
+  )
 
-  //         return {
-  //           ...item,
-  //           marks,
-  //         }
-  //       })
-  //       const gasMarksResult = list.find(item => item.bridge_asset === "gas-points")
-  //       const gasMarks = gasList.map(item => ({
-  //         ...item,
-  //         amount: gasMarksResult?.amount ?? 0,
-  //         marks: gasMarksResult?.points ?? 0,
-  //       }))
-
-  //       return {
-  //         tokensMarks,
-  //         gasMarks,
-  //       }
-  //     } catch (e) {
-  //       sentryDebug(`asset marks: ${walletCurrentAddress}-${e.message}`)
-  //       return defaultMarks
-  //     }
-  //   },
-  //   {
-  //     fallbackData: defaultMarks,
-  //     revalidateOnFocus: false,
-  //     revalidateOnReconnect: false,
-  //   },
-  // )
+  console.log(marks, "marks")
 
   return (
     <Card bottomDiff="0rem">
@@ -77,27 +62,27 @@ const SessionOneMarks = () => {
         id="session-1-dex"
         icon={SESSIONS_SECTION_MAP["1-dex"].icon}
         title={SESSIONS_SECTION_MAP["1-dex"].label}
-        description="Marks are rewarded to all eligible bridged assets since Scroll's mainnet launch on October 10th, 2023, based on amount and time held on Scroll."
+        description="Marks are rewarded to users who deposit eligible assets into selected DEXs’ liquidity pools. Liquidity deposits with tighter ranges or more market depth are awarded Marks at a higher rate. "
         data={projectList?.dex}
-        // isLoading={isLoading}
+        isLoading={isLoading}
       ></MarkList>
       <Divider sx={{ margin: "0 0 3.2rem 0" }}></Divider>
       <MarkList
         id="session-1-lending"
         icon={SESSIONS_SECTION_MAP["1-lending"].icon}
         title={SESSIONS_SECTION_MAP["1-lending"].label}
-        description="Marks have been awarded to users with more than $5 total gas spent on Scroll from the mainnet launch on Oct 10th, 2023 to Apr 29th, 2024 12pm UTC."
+        description="Marks are rewarded to users who deposit eligible assets into selected lending markets. Marks are not rewarded for recursive supplying/borrowing."
         data={projectList?.lending}
-        // isLoading={isLoading}
+        isLoading={isLoading}
       ></MarkList>
       <Divider sx={{ margin: "0 0 3.2rem 0" }}></Divider>
       <MarkList
         id="session-1-activities"
         icon={SESSIONS_SECTION_MAP["1-activities"].icon}
         title={SESSIONS_SECTION_MAP["1-activities"].label}
-        description="Marks have been awarded to users with more than $5 total gas spent on Scroll from the mainnet launch on Oct 10th, 2023 to Apr 29th, 2024 12pm UTC."
+        description="Marks are rewarded to users who participate in Scroll native projects."
         data={projectList?.activities}
-        // isLoading={isLoading}
+        isLoading={isLoading}
       ></MarkList>
     </Card>
   )

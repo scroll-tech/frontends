@@ -4,6 +4,7 @@ import { makeStyles } from "tss-react/mui"
 import { Box, Button, ClickAwayListener, Fade, Popper, SvgIcon, Typography } from "@mui/material"
 
 import { ReactComponent as DownTriangleSvg } from "@/assets/svgs/sessions/downTriangle.svg"
+import useCheckViewport from "@/hooks/useCheckViewport"
 // import { NORMAL_HEADER_HEIGHT } from "@/constants"
 import useSessionsStore from "@/stores/sessionsStore"
 
@@ -11,12 +12,10 @@ import { default as AnchorNavigation, SESSIONS_SECTION_MAP } from "./index"
 
 const useStyles = makeStyles()(theme => ({
   button: {
-    position: "sticky",
-    zIndex: theme.zIndex.appBar,
-    top: "6.2rem",
+    width: "100%",
     height: "4.8rem",
     borderRadius: "0.8rem",
-    padding: "0 1.6rem",
+    padding: "0 1.6rem !important",
     backgroundColor: theme.palette.themeBackground.normal,
     border: "none",
     fontWeight: 400,
@@ -27,7 +26,7 @@ const useStyles = makeStyles()(theme => ({
       color: theme.palette.text.primary,
     },
     [theme.breakpoints.down("sm")]: {
-      padding: "0 1.6rem",
+      borderRadius: "0.8rem",
     },
   },
   openButton: {
@@ -49,10 +48,11 @@ const useStyles = makeStyles()(theme => ({
 
 const MobileAnchorNavigation = () => {
   const { classes, cx } = useStyles()
+  const { selectedSection } = useSessionsStore()
+  const { isPortrait } = useCheckViewport()
+
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>()
   const [popoverWidth, setPopoverWidth] = useState("auto")
-
-  const { selectedSection } = useSessionsStore()
 
   const seletedNavigation = useMemo(() => {
     const item = SESSIONS_SECTION_MAP[selectedSection]
@@ -72,7 +72,9 @@ const MobileAnchorNavigation = () => {
     handleClose()
   }
   return (
-    <>
+    <Box
+      sx={{ position: "sticky", zIndex: "appBar", top: "6.2rem", py: "0.8rem", my: ["0.8rem", "1.6rem"], backgroundColor: "themeBackground.light" }}
+    >
       <Button
         classes={{
           root: cx(classes.button, Boolean(anchorEl) && classes.openButton),
@@ -90,11 +92,11 @@ const MobileAnchorNavigation = () => {
       </Button>
       <Popper
         open={Boolean(anchorEl)}
+        sx={{ zIndex: theme => theme.zIndex.appBar + 1 }}
         anchorEl={anchorEl}
         transition
-        disablePortal={false}
+        disablePortal={isPortrait}
         popperOptions={{
-          strategy: "fixed",
           modifiers: [
             {
               name: "flip",
@@ -112,14 +114,14 @@ const MobileAnchorNavigation = () => {
         {({ TransitionProps }) => (
           <ClickAwayListener onClickAway={handleClose}>
             <Fade {...TransitionProps} timeout={300}>
-              <Box sx={{ borderRadius: "0 0 0.8rem 0.8rem", width: popoverWidth }}>
+              <Box sx={{ width: popoverWidth, backgroundColor: "themeBackground.light", pb: "0.8rem" }}>
                 <AnchorNavigation onMobile onSeleted={handleSeleted}></AnchorNavigation>
               </Box>
             </Fade>
           </ClickAwayListener>
         )}
       </Popper>
-    </>
+    </Box>
   )
 }
 
