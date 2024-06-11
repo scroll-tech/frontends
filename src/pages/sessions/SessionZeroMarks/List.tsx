@@ -141,6 +141,8 @@ const TokenList = props => {
             <Tooltip
               key={item.marks}
               disableHoverListener={!item.marks}
+              disableFocusListener={!item.marks}
+              disableTouchListener={!item.marks}
               title={item.marks ? commafy(item.marks) : "--"}
               followCursor
               classes={{ tooltip: classes.tooltip }}
