@@ -4,7 +4,7 @@ import { ReactComponent as BackSvg } from "@/assets/svgs/canvas/back.svg"
 import { ReactComponent as CloseSvg } from "@/assets/svgs/canvas/close.svg"
 
 const ScrollDialog = props => {
-  const { title, fullWidth, allowBack, noClose, onClose, onBack, children, extra, ...restProps } = props
+  const { title, sx, fullWidth, allowBack, noClose, onClose, onBack, children, extra, ...restProps } = props
 
   return (
     <Dialog
@@ -24,7 +24,7 @@ const ScrollDialog = props => {
             borderRadius: "1.6rem",
           },
         },
-        // ...(sx ?? {}),
+        sx ?? {},
         theme => ({
           [theme.breakpoints.down("sm")]: {
             "& .MuiDialog-paper": {

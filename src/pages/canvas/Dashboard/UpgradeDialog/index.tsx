@@ -14,7 +14,6 @@ import BadgeItem from "./BadgeItem"
 const StyledList = styled(List)(({ theme }) => ({
   width: "57.6rem",
   height: "62.4rem",
-  maxHeight: "70vh",
   display: "flex",
   flexDirection: "column",
   gap: "2.4rem",

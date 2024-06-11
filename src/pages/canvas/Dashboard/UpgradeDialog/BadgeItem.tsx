@@ -61,40 +61,19 @@ const StyledListItemText = styled(ListItemText)(({ theme }) => ({
 // const StyledButton = styled(Button)(({ theme }) => ({}))
 
 const BadgeItem = ({ badge }) => {
-  const { changeBadgeDetailDialog, changeSelectedBadge, userBadges, changeUpgradeDialog } = useCanvasStore()
-  // const [loading, setLoading] = useState(false)
-  // const userBadgesLength = userBadges.length
+  const { changeBadgeDetailDialog, changeSelectedBadge, userBadges } = useCanvasStore()
 
-  // const checkEligibility = async () => {
-  //   // const signer = await provider!.getSigner(0)
-  //   // const originsV2Contract = new ethers.Contract(SCROLL_ORIGINS_NFT_V2, ScrollOriginsNFTABI, signer)
-  //   // const tokenId = await originsV2Contract.tokenOfOwnerByIndex(walletCurrentAddress, 0)
-  //   // console.log("tokenId", tokenId)
-  // }
-
-  const handleBadge = async () => {
+  const handleViewBadge = async () => {
     changeSelectedBadge(badge)
     changeBadgeDetailDialog(BadgeDetailDialogType.MINT_WITH_BACK)
-    changeUpgradeDialog(false)
   }
 
   useEffect(() => {
-    // if (userBadges.length && loading) {
-    //   changeSelectedBadge(userBadges[userBadges.length - 1])
-    //   changeBadgeDetailDialog(BadgeDetailDialogType.MINTED)
-    //   setLoading(false)
-    // }
+    console.log(userBadges, "userBadges")
   }, [userBadges])
 
   return (
-    <StyledListItem
-      onClick={handleBadge}
-      // secondaryAction={
-      //   <StyledButton variant="outlined" color="tertiary" onClick={handleBadge}>
-      //     Mint now
-      //   </StyledButton>
-      // }
-    >
+    <StyledListItem onClick={handleViewBadge}>
       <StyledListItemAvatar>
         <Img
           src={badge.image}
