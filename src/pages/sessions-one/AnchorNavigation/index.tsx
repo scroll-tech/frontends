@@ -1,4 +1,4 @@
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
 
 import { List, ListItem, ListItemButton, ListItemIcon, ListItemText, SvgIcon } from "@mui/material"
 import useScrollTrigger from "@mui/material/useScrollTrigger"
@@ -53,27 +53,49 @@ const SESSIONS_SECTION = [
 
 export const SESSIONS_SECTION_MAP = new Proxy(SESSIONS_SECTION, {
   get(target, prop: string) {
-    const [session, section] = prop.split("-")
+    const [session, section] = prop.split("-").slice(1)
     const sessionTarget = target.find(item => item.key === +session)?.items
     return sessionTarget?.find(item => item.key === section)
   },
 })
 
 const AnchorNavigation = props => {
-  const { onMobile, onSeleted } = props
+  const { mobile, onSeleted } = props
   const trigger = useScrollTrigger()
   const { selectedSection, changeSelectedSection } = useSessionsStore()
 
   const stickyTop = useMemo(() => (trigger ? "2rem" : NORMAL_HEADER_HEIGHT), [trigger])
 
+  useEffect(() => {
+    if (!mobile) {
+      const callback: IntersectionObserverCallback = entries => {
+        for (const entry of entries) {
+          if (entry.intersectionRatio === 1 || entry.isIntersecting) {
+            changeSelectedSection(entry.target.id)
+            break
+          }
+        }
+      }
+      const observerOptions: IntersectionObserverInit = {
+        rootMargin: "0px 0px -50%",
+      }
+
+      const sectionObserver = new IntersectionObserver(callback, observerOptions)
+      document.querySelectorAll(".session-section").forEach(section => {
+        sectionObserver.observe(section)
+      })
+      return () => sectionObserver.disconnect()
+    }
+  }, [mobile])
+
   const handleClick = (sessionKey, sectionKey) => {
-    changeSelectedSection(`${sessionKey}-${sectionKey}`)
+    changeSelectedSection(`session-${sessionKey}-${sectionKey}`)
 
     const targetEl = document.getElementById(`session-${sessionKey}-${sectionKey}`)
     const offsetTop = targetEl!.getBoundingClientRect().top + window.pageYOffset
 
     window.scrollTo({
-      top: offsetTop - parseFloat(onMobile ? "10.8rem" : NORMAL_HEADER_HEIGHT) * 10 - 20,
+      top: offsetTop - parseFloat(mobile ? "11.2rem" : NORMAL_HEADER_HEIGHT) * 10 - 20,
       behavior: "smooth",
     })
 
@@ -88,7 +110,7 @@ const AnchorNavigation = props => {
   const renderItems = (items, sessionKey) => {
     return items.map(({ icon, key, label }) => (
       <ListItemButton
-        selected={key === selectedSection.split("-")[1]}
+        selected={key === selectedSection.split("-")[2]}
         sx={[
           {
             py: ["1.2rem", "1.2rem", "1.6rem"],

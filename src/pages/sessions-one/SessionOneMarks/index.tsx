@@ -3,6 +3,7 @@ import useSWR from "swr"
 import { Divider, Typography } from "@mui/material"
 
 import { fetchProjectsMarksUrl } from "@/apis/sessions"
+import { SESSIONS_ONE_ACTIVITIES, SESSIONS_ONE_DEX, SESSIONS_ONE_LENDING } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useSessionsStore from "@/stores/sessionsStore"
 import { sentryDebug } from "@/utils"
@@ -20,8 +21,6 @@ import { projectList } from "./projectList"
 //     marks: null,
 //   })),
 // }
-
-// console.log(SESSIONS_SECTION_MAP["1-dex"])
 
 const SessionOneMarks = () => {
   const { walletCurrentAddress } = useRainbowContext()
@@ -59,27 +58,27 @@ const SessionOneMarks = () => {
       </Typography>
 
       <MarkList
-        id="session-1-dex"
-        icon={SESSIONS_SECTION_MAP["1-dex"].icon}
-        title={SESSIONS_SECTION_MAP["1-dex"].label}
+        id={SESSIONS_ONE_DEX}
+        icon={SESSIONS_SECTION_MAP[SESSIONS_ONE_DEX].icon}
+        title={SESSIONS_SECTION_MAP[SESSIONS_ONE_DEX].label}
         description="Marks are rewarded to users who deposit eligible assets into selected DEXs’ liquidity pools. Liquidity deposits with tighter ranges or more market depth are awarded Marks at a higher rate. "
         data={projectList?.dex}
         isLoading={isLoading}
       ></MarkList>
-      <Divider sx={{ margin: "0 0 3.2rem 0" }}></Divider>
+      <Divider sx={{ margin: ["0 0 2.4rem 0", "0 0 3.2rem 0"] }}></Divider>
       <MarkList
-        id="session-1-lending"
-        icon={SESSIONS_SECTION_MAP["1-lending"].icon}
-        title={SESSIONS_SECTION_MAP["1-lending"].label}
+        id={SESSIONS_ONE_LENDING}
+        icon={SESSIONS_SECTION_MAP[SESSIONS_ONE_LENDING].icon}
+        title={SESSIONS_SECTION_MAP[SESSIONS_ONE_LENDING].label}
         description="Marks are rewarded to users who deposit eligible assets into selected lending markets. Marks are not rewarded for recursive supplying/borrowing."
         data={projectList?.lending}
         isLoading={isLoading}
       ></MarkList>
-      <Divider sx={{ margin: "0 0 3.2rem 0" }}></Divider>
+      <Divider sx={{ margin: ["0 0 2.4rem 0", "0 0 3.2rem 0"] }}></Divider>
       <MarkList
-        id="session-1-activities"
-        icon={SESSIONS_SECTION_MAP["1-activities"].icon}
-        title={SESSIONS_SECTION_MAP["1-activities"].label}
+        id={SESSIONS_ONE_ACTIVITIES}
+        icon={SESSIONS_SECTION_MAP[SESSIONS_ONE_ACTIVITIES].icon}
+        title={SESSIONS_SECTION_MAP[SESSIONS_ONE_ACTIVITIES].label}
         description="Marks are rewarded to users who participate in Scroll native projects."
         data={projectList?.activities}
         isLoading={isLoading}

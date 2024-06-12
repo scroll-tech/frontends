@@ -75,6 +75,7 @@ const OthersModal = props => {
         <List sx={{ pt: "2.4rem", pb: 0 }}>
           {data?.map(item => (
             <ListItem
+              key={item.project}
               sx={{
                 height: "5.6rem",
                 p: 0,

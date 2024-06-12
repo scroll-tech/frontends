@@ -48,7 +48,7 @@ const MarkList = props => {
 
   return (
     <>
-      <Stack id={id} direction="row" gap="0.8rem" sx={{ mb: "0.8rem" }} alignItems="center">
+      <Stack id={id} className="session-section" direction="row" gap="0.8rem" sx={{ mb: [0, "0.8rem"] }} alignItems="center">
         <SvgIcon sx={{ fontSize: "2.4rem" }} component={icon} inheritViewBox></SvgIcon>
         <SectionTitle>{title}</SectionTitle>
       </Stack>
@@ -71,7 +71,7 @@ const MarkList = props => {
               columnGap: ["0.8rem", "1.6rem"],
               rowGap: ["1.6rem"],
               height: ["auto", "5.6rem"],
-              m: "3.2rem 0 !important",
+              m: ["2.4rem 0 !important", "3.2rem 0 !important"],
               p: 0,
             }}
           >

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { makeStyles } from "tss-react/mui"
 
 import { Box, Button, ClickAwayListener, Fade, Popper, SvgIcon, Typography } from "@mui/material"
@@ -48,7 +48,8 @@ const useStyles = makeStyles()(theme => ({
 
 const MobileAnchorNavigation = () => {
   const { classes, cx } = useStyles()
-  const { selectedSection } = useSessionsStore()
+  const { selectedSection, changeSelectedSection } = useSessionsStore()
+
   const { isPortrait } = useCheckViewport()
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>()
@@ -58,6 +59,26 @@ const MobileAnchorNavigation = () => {
     const item = SESSIONS_SECTION_MAP[selectedSection]
     return item
   }, [selectedSection])
+
+  useEffect(() => {
+    const callback: IntersectionObserverCallback = entries => {
+      for (const entry of entries) {
+        if (entry.intersectionRatio === 1 || entry.isIntersecting) {
+          changeSelectedSection(entry.target.id)
+          break
+        }
+      }
+    }
+    const observerOptions: IntersectionObserverInit = {
+      rootMargin: "0px 0px -50%",
+    }
+
+    const sectionObserver = new IntersectionObserver(callback, observerOptions)
+    document.querySelectorAll(".session-section").forEach(section => {
+      sectionObserver.observe(section)
+    })
+    return () => sectionObserver.disconnect()
+  }, [])
 
   const handleClick = event => {
     setAnchorEl(event.currentTarget)
@@ -115,7 +136,7 @@ const MobileAnchorNavigation = () => {
           <ClickAwayListener onClickAway={handleClose}>
             <Fade {...TransitionProps} timeout={300}>
               <Box sx={{ width: popoverWidth, backgroundColor: "themeBackground.light", pb: "0.8rem" }}>
-                <AnchorNavigation onMobile onSeleted={handleSeleted}></AnchorNavigation>
+                <AnchorNavigation mobile onSeleted={handleSeleted}></AnchorNavigation>
               </Box>
             </Fade>
           </ClickAwayListener>

@@ -3,6 +3,7 @@ import useSWR from "swr"
 import { Divider, Typography } from "@mui/material"
 
 import { fetchTokensMarksUrl } from "@/apis/sessions"
+import { SESSIONS_ZERO_ASSETS, SESSIONS_ZERO_GAS } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useSessionsStore from "@/stores/sessionsStore"
 import { sentryDebug } from "@/utils"
@@ -73,21 +74,21 @@ const BridgePoints = () => {
       </Typography>
 
       <MarkList
-        id="session-0-assets"
+        id={SESSIONS_ZERO_ASSETS}
         type={MarksType.ELIGIBLE_ASSETS}
-        icon={SESSIONS_SECTION_MAP["0-assets"].icon}
-        title={SESSIONS_SECTION_MAP["0-assets"].label}
+        icon={SESSIONS_SECTION_MAP[SESSIONS_ZERO_ASSETS].icon}
+        title={SESSIONS_SECTION_MAP[SESSIONS_ZERO_ASSETS].label}
         description="Marks are rewarded to all eligible bridged assets since Scroll's mainnet launch on October 10th, 2023, based on amount and time held on Scroll."
         data={marks?.tokensMarks}
         isLoading={isLoading}
       ></MarkList>
-      <Divider sx={{ margin: "0 0 3.2rem 0" }}></Divider>
+      <Divider sx={{ margin: ["0 0 2.4rem 0", "0 0 3.2rem 0"] }}></Divider>
 
       <MarkList
-        id="session-0-gas"
+        id={SESSIONS_ZERO_GAS}
         type={MarksType.GAS_SPENT}
-        icon={SESSIONS_SECTION_MAP["0-gas"].icon}
-        title={SESSIONS_SECTION_MAP["0-gas"].label}
+        icon={SESSIONS_SECTION_MAP[SESSIONS_ZERO_GAS].icon}
+        title={SESSIONS_SECTION_MAP[SESSIONS_ZERO_GAS].label}
         description="Marks have been awarded to users with more than $5 total gas spent on Scroll from the mainnet launch on Oct 10th, 2023 to Apr 29th, 2024 12pm UTC."
         data={marks?.gasMarks}
         isLoading={isLoading}
