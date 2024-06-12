@@ -209,11 +209,11 @@ const MarkList = props => {
           </ListItem>
         ))}
       </List>
-      {type === MarksType.ELIGIBLE_ASSETS && (
+      {/* {type === MarksType.ELIGIBLE_ASSETS && (
         <Typography sx={{ fontSize: ["1.8rem", "2rem"], lineHeight: ["2.8rem"], fontWeight: 600, mb: "2.4rem" }}>
           More eligible assets will be announced soon!
         </Typography>
-      )}
+      )} */}
     </>
   )
 }
