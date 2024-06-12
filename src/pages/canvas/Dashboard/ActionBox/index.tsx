@@ -73,7 +73,7 @@ const ActionButton = styled(Button)(({ theme }) => ({
   },
 }))
 
-const CustomMenu = styled<any>(Menu)(({ theme, dropdownWidth }) => ({
+const CustomMenu = styled<any>(Menu, { shouldForwardProp: prop => prop !== "dropdownWidth" })(({ theme, dropdownWidth }) => ({
   "& .MuiPaper-root": {
     borderRadius: "0.5rem",
     padding: "0 0.8rem",
