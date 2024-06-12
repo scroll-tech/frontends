@@ -95,12 +95,5 @@ export const projectList = {
       alias: "Scroll Canvas",
       marks: 1234,
     },
-    {
-      project: "Mint Scroll Origins NFT",
-      logo: "/imgs/nft/OriginsNFT.svg",
-      website: "",
-      alias: "Origins NFT",
-      marks: 1234,
-    },
   ],
 }

@@ -74,6 +74,7 @@ const SessionOneMarks = () => {
         data={projectList?.lending}
         isLoading={isLoading}
       ></MarkList>
+      {/* TODO: need to remove at the initial launch */}
       <Divider sx={{ margin: ["0 0 2.4rem 0", "0 0 3.2rem 0"] }}></Divider>
       <MarkList
         id={SESSIONS_ONE_ACTIVITIES}
