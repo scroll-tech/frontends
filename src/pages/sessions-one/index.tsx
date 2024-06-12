@@ -13,7 +13,7 @@ import SessionZeroMarks from "./SessionZeroMarks"
 import SignatureRequestDialog from "./SignatureRequestDialog"
 import TotalMarks from "./TotalMarks"
 
-const Seesions = () => {
+const Sessions = () => {
   const { isPortrait } = useCheckViewport()
   return (
     <BridgeContextProvider>
@@ -58,4 +58,4 @@ const Seesions = () => {
   )
 }
 
-export default Seesions
+export default Sessions

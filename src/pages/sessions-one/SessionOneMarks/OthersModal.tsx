@@ -71,7 +71,7 @@ const OthersModal = props => {
           <SvgIcon sx={{ fontSize: "1.8rem" }} component={CloseSvg} inheritViewBox></SvgIcon>
         </IconButton>
       </DialogTitle>
-      <DialogContent sx={{ p: 0 }}>
+      <DialogContent sx={{ p: 0, minHeight: "50rem" }}>
         <List sx={{ pt: "2.4rem", pb: 0 }}>
           {data?.map(item => (
             <ListItem

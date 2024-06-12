@@ -2,7 +2,7 @@ export const projectList = {
   dex: [
     {
       project: "Ambient",
-      logo: "https://scroll-eco-list.netlify.app/logos/Nuri%20Exchange.jpeg",
+      logo: "https://scroll-eco-list.netlify.app/logos/Ambient%20Finance.png",
       website: "",
       marks: 12341234123412341234,
     },
@@ -18,13 +18,7 @@ export const projectList = {
       items: [
         {
           project: "Izumi",
-          logo: "https://scroll-eco-list.netlify.app/logos/Nuri%20Exchange.jpeg",
-          website: "",
-          marks: 1,
-        },
-        {
-          project: "Syncswap",
-          logo: "https://scroll-eco-list.netlify.app/logos/Nuri%20Exchange.jpeg",
+          logo: "https://scroll-eco-list.netlify.app/logos/iZUMi%20Finance.png",
           website: "",
           marks: 1,
         },
@@ -35,8 +29,14 @@ export const projectList = {
           marks: 1,
         },
         {
+          project: "Syncswap",
+          logo: "https://scroll-eco-list.netlify.app/logos/Syncswap.png",
+          website: "",
+          marks: 1,
+        },
+        {
           project: "Zebra",
-          logo: "https://scroll-eco-list.netlify.app/logos/Nuri%20Exchange.jpeg",
+          logo: "https://scroll-eco-list.netlify.app/logos/Zebra.png",
           website: "",
           marks: 1,
         },
@@ -46,25 +46,25 @@ export const projectList = {
   lending: [
     {
       project: "Aave",
-      logo: "https://scroll-eco-list.netlify.app/logos/Nuri%20Exchange.jpeg",
+      logo: "https://scroll-eco-list.netlify.app/logos/Aave.svg",
       website: "",
       marks: 1234,
     },
     {
       project: "Cog Finance",
-      logo: "https://scroll-eco-list.netlify.app/logos/Nuri%20Exchange.jpeg",
+      logo: "https://scroll-eco-list.netlify.app/logos/Cog%20Finance.png",
       website: "",
       marks: 1234,
     },
     {
       project: "LayerBank",
-      logo: "https://scroll-eco-list.netlify.app/logos/Nuri%20Exchange.jpeg",
+      logo: "https://scroll-eco-list.netlify.app/logos/LayerBank.png",
       website: "",
       marks: 1234,
     },
     {
       project: "Rho Markets",
-      logo: "https://scroll-eco-list.netlify.app/logos/Nuri%20Exchange.jpeg",
+      logo: "https://scroll-eco-list.netlify.app/logos/Rho%20Markets.png",
       website: "",
       marks: 1234,
     },
@@ -74,13 +74,13 @@ export const projectList = {
       items: [
         {
           project: "Compound",
-          logo: "https://scroll-eco-list.netlify.app/logos/Nuri%20Exchange.jpeg",
+          logo: "https://scroll-eco-list.netlify.app/logos/Compound%20Finance.png",
           website: "",
           marks: 1,
         },
         {
-          project: "Symmetry",
-          logo: "https://scroll-eco-list.netlify.app/logos/Nuri%20Exchange.jpeg",
+          project: "Synonym",
+          logo: "https://scroll-eco-list.netlify.app/logos/Synonym%20Finance.jpg",
           website: "",
           marks: 1,
         },
@@ -90,14 +90,14 @@ export const projectList = {
   activities: [
     {
       project: "Mint Scroll Canvas",
-      logo: "https://scroll-eco-list.netlify.app/logos/Nuri%20Exchange.jpeg",
+      logo: "/imgs/canvas/ScrollCanvas.svg",
       website: "",
       alias: "Scroll Canvas",
       marks: 1234,
     },
     {
       project: "Mint Scroll Origins NFT",
-      logo: "https://scroll-eco-list.netlify.app/logos/Nuri%20Exchange.jpeg",
+      logo: "/imgs/nft/OriginsNFT.svg",
       website: "",
       alias: "Origins NFT",
       marks: 1234,
