@@ -1,5 +1,5 @@
 import { motion } from "framer-motion"
-import { useEffect, useRef } from "react"
+import { useEffect } from "react"
 import Img from "react-cool-img"
 
 import { useRainbowContext } from "@/contexts/RainbowProvider"
@@ -11,11 +11,7 @@ const FirstBadgeMask = props => {
   const { isMobile, isPortrait } = useCheckViewport()
 
   const { provider } = useRainbowContext()
-  const firstBadgeRef = useRef()
   const { firstBadgeWithPosition, changeBadgeAnimationVisible, addFirstBadge, queryFirstMintUsername, attachedBadges } = useCanvasStore()
-  // console.log(firstBadgeWithPosition, "firstBadgeWithPosition")
-  // const initialLeft = window.innerWidth / 2 - (badgeWidth * 0.7) / 2
-  // const initialTop = (window.innerHeight - 65) / 2 + 65 - (badgeWidth * 0.7) / 2
   const headerHeight = isPortrait ? 0 : 65
   const left = window.innerWidth / 2 - badgeWidth + badgeWidth * 0.15
   const top = (window.innerHeight - headerHeight) / 2 + headerHeight - 2 * badgeWidth + badgeWidth * 0.15
@@ -45,6 +41,7 @@ const FirstBadgeMask = props => {
       onAnimationComplete={handleAnimationComplete}
       style={{
         position: "fixed",
+        aspectRatio: "1/1",
         // left: firstBadgeWithPosition.left, // window
         // top: firstBadgeWithPosition.top,
         // width: 200,
@@ -52,10 +49,8 @@ const FirstBadgeMask = props => {
     >
       <Img
         style={{
-          aspectRatio: "1/1",
           borderRadius: "0.8rem",
         }}
-        ref={firstBadgeRef}
         src={firstBadgeWithPosition.image}
         alt="Ethereum Year"
       ></Img>

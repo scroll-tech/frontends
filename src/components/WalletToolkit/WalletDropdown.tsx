@@ -1,5 +1,5 @@
 import copy from "copy-to-clipboard"
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import Img from "react-cool-img"
 import { useLocation, useNavigate } from "react-router-dom"
 import { makeStyles } from "tss-react/mui"
