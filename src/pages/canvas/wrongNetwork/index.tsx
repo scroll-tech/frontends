@@ -41,7 +41,7 @@ const ButtonContainer = styled(Box)(({ theme }) => ({
 }))
 
 const WrongNetwork = () => {
-  const { chainId, connect } = useRainbowContext()
+  const { walletCurrentAddress, connect } = useRainbowContext()
 
   return (
     <StyledDialog open noClose>
@@ -74,13 +74,13 @@ const WrongNetwork = () => {
           You can only view your Canvas on Scroll Network.
         </Typography>
         <ButtonContainer>
-          {chainId ? (
-            <ScrollButton color="primary" onClick={() => switchNetwork(CHAIN_ID.L2)}>
-              Switch to Scroll
-            </ScrollButton>
-          ) : (
+          {!walletCurrentAddress ? (
             <ScrollButton color="primary" onClick={connect}>
               Connect Wallet
+            </ScrollButton>
+          ) : (
+            <ScrollButton color="primary" onClick={() => switchNetwork(CHAIN_ID.L2)}>
+              Switch to Scroll
             </ScrollButton>
           )}
         </ButtonContainer>

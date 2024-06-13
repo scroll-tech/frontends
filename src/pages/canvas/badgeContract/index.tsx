@@ -9,12 +9,13 @@ import { ReactComponent as WarningSvg } from "@/assets/svgs/canvas/circle-warnin
 import { ReactComponent as ShareSvg } from "@/assets/svgs/canvas/share.svg"
 import ScrollButton from "@/components/Button"
 import Link from "@/components/Link"
+import { CHAIN_ID } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useAsyncMemo } from "@/hooks"
 import useSnackbar from "@/hooks/useSnackbar"
 import { checkBadgeEligibility, checkIfHasBadgeByAddress, mintBadge } from "@/services/canvasService"
 import useCanvasStore from "@/stores/canvasStore"
-import { generateShareTwitterURL, requireEnv } from "@/utils"
+import { generateShareTwitterURL, requireEnv, switchNetwork } from "@/utils"
 
 import Badges, { badgeMap } from "../Dashboard/UpgradeDialog/Badges"
 import BadgeDetail from "../badge/BadgeDetail"
@@ -22,7 +23,7 @@ import Back from "./Back"
 
 const BadgeContractDetail = props => {
   const { address } = useParams()
-  const { walletCurrentAddress, connect, provider } = useRainbowContext()
+  const { walletCurrentAddress, connect, chainId, provider } = useRainbowContext()
   const { profileMinted, changeIsBadgeMinting, isBadgeMinting } = useCanvasStore()
   // const [badgeMinted, setBadgeMinted] = useState(false)
   const navigate = useNavigate()
@@ -31,18 +32,22 @@ const BadgeContractDetail = props => {
     return badgeMap[address]
   }, [address])
 
+  const isL2 = useMemo(() => chainId === CHAIN_ID.L2, [chainId])
+
   const isOwned = useAsyncMemo(async () => {
-    if (provider && detail.badgeContract) {
+    if (provider && isL2 && detail.badgeContract) {
       const hasBadge = await checkIfHasBadgeByAddress(provider, walletCurrentAddress, detail.badgeContract)
       return hasBadge
     }
-  }, [provider, walletCurrentAddress, detail])
+  }, [provider, isL2, walletCurrentAddress, detail])
 
   const isEligible = useAsyncMemo(async () => {
-    const badgeForMint = Badges.find(item => item?.badgeContract === address) as any
-    const eligibility = await checkBadgeEligibility(provider, walletCurrentAddress, badgeForMint)
-    return eligibility
-  }, [address, walletCurrentAddress, provider])
+    if (provider && isL2) {
+      const badgeForMint = Badges.find(item => item?.badgeContract === address) as any
+      const eligibility = await checkBadgeEligibility(provider, walletCurrentAddress, badgeForMint)
+      return eligibility
+    }
+  }, [provider, isL2, walletCurrentAddress, address])
 
   const shareBadgeURL = useMemo(() => {
     const viewURL = `${requireEnv("REACT_APP_FFRONTENDS_URL")}/scroll-canvas/badge-contract/${address}`
@@ -76,7 +81,16 @@ const BadgeContractDetail = props => {
   }
 
   const renderTip = () => {
-    if (isBadgeMinting.get(address)) {
+    if (!isL2) {
+      return (
+        <>
+          <SvgIcon sx={{ color: "primary.main", fontSize: "2.4rem" }} component={WarningSvg} inheritViewBox></SvgIcon>
+          <Typography sx={{ color: "#FF684B !important", fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.4rem", "2.8rem"], fontWeight: 500 }}>
+            Please switch to Scroll.
+          </Typography>
+        </>
+      )
+    } else if (isBadgeMinting.get(address)) {
       return (
         <>
           <CircularProgress sx={{ color: "#A5A5A5" }} size={18}></CircularProgress>
@@ -138,6 +152,20 @@ const BadgeContractDetail = props => {
           onClick={connect}
         >
           Connect wallet
+        </ScrollButton>
+      )
+    } else if (!isL2) {
+      return (
+        <ScrollButton
+          sx={theme => ({
+            [theme.breakpoints.down("sm")]: {
+              gridColumn: "span 3",
+            },
+          })}
+          color="primary"
+          onClick={() => switchNetwork(CHAIN_ID.L2)}
+        >
+          Switch to Scroll
         </ScrollButton>
       )
     } else if (!profileMinted) {

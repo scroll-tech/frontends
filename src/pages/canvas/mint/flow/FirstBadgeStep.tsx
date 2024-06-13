@@ -31,15 +31,8 @@ const FirstBadgeStep = props => {
   const alertWarning = useSnackbar()
 
   const badgeChecked = useAsyncMemo(async () => {
-    // const data: any = await testAsyncFunc({
-    //   code: 1,
-    //   eligibility: true,
-    //   year: 2022,
-    // })
-    // return data
     const data = await scrollRequest(checkBadgeEligibilityURL(ETHEREUM_YEAR_BADGE.baseUrl, walletCurrentAddress, ETHEREUM_YEAR_BADGE.badgeContract))
-
-    // await fetch(EthereumYearBadgeURL(data.year))
+    await fetch(EthereumYearBadgeURL(data.year))
     return data
   }, [provider, walletCurrentAddress])
   const firstBadgeRef = useRef<HTMLElement>()

@@ -1,5 +1,5 @@
-import { useEffect, useMemo } from "react"
-import { Navigate, useMatch, useNavigate } from "react-router-dom"
+import { useMemo } from "react"
+import { Navigate, useMatch } from "react-router-dom"
 
 import { CHAIN_ID } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
@@ -10,7 +10,6 @@ import LoadingPage from "./loading"
 import WrongNetwork from "./wrongNetwork"
 
 const CanvasIndex = props => {
-  const navigate = useNavigate()
   const isOthersCanvas = useMatch("/scroll-canvas/:address")
   const isBadgeDetail = useMatch("/scroll-canvas/badge/:id")
 
@@ -20,18 +19,10 @@ const CanvasIndex = props => {
     return !isOthersCanvas && !isBadgeDetail && chainId !== CHAIN_ID.L2
   }, [chainId, isOthersCanvas, isBadgeDetail])
 
-  useEffect(() => {
-    if (!walletCurrentAddress) {
-      navigate("/scroll-canvas/mint")
-    }
-  }, [walletCurrentAddress])
-
   const renderCanvas = () => {
     // return <LoadingPage></LoadingPage>
     if (!walletCurrentAddress) {
       return <Navigate to="/scroll-canvas/mint" replace={true}></Navigate>
-    } else if (isWrongNetwork) {
-      return <WrongNetwork></WrongNetwork>
     } else if (profileMintedChecking || profileMinted === null) {
       return <LoadingPage></LoadingPage>
     } else if (profileMinted) {
@@ -41,7 +32,12 @@ const CanvasIndex = props => {
     return <Navigate to="/scroll-canvas/mint" replace={true}></Navigate>
   }
 
-  return <>{renderCanvas()}</>
+  return (
+    <>
+      {renderCanvas()}
+      {isWrongNetwork && <WrongNetwork></WrongNetwork>}
+    </>
+  )
 }
 
 export default CanvasIndex

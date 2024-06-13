@@ -1,5 +1,5 @@
 import { ethers } from "ethers"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import Img from "react-cool-img"
 import { useSwiper } from "swiper/react"
 import useSWR from "swr"
@@ -33,6 +33,12 @@ const MintStep = props => {
   const [insufficientDialogOpen, setInsufficientDialogOpen] = useState(false)
 
   const heartbeatURL = useMemo(() => getAvatarURL(walletCurrentAddress), [walletCurrentAddress])
+
+  useEffect(() => {
+    if (heartbeatURL) {
+      fetch(heartbeatURL)
+    }
+  }, [heartbeatURL])
 
   const { data, isLoading } = useSWR(getHeartrate(walletCurrentAddress), (url: string) => scrollRequest(url))
 
@@ -82,7 +88,6 @@ const MintStep = props => {
         alertWarning("Failed to mint canvas")
         sentryDebug(`mint canvas error: ${walletCurrentAddress}-${error.message}`)
       }
-      // console.log("mint canvas error", e)
     } finally {
       changeIsProfileMinting(false)
     }

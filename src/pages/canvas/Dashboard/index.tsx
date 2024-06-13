@@ -1,3 +1,4 @@
+import { BrowserProvider } from "ethers"
 import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { isDesktop } from "react-device-detect"
 import { Helmet } from "react-helmet-async"
@@ -24,7 +25,7 @@ import ReferDialog from "./ReferDialog"
 import UpgradeDialog from "./UpgradeDialog"
 
 const Dashboard = props => {
-  const { walletCurrentAddress, provider } = useRainbowContext()
+  const { walletCurrentAddress } = useRainbowContext()
 
   const { address: othersWalletAddress } = useParams()
   const navigate = useNavigate()
@@ -57,7 +58,7 @@ const Dashboard = props => {
   useEffect(() => {
     // recheck badge eligibility when openning badges dialog
     if (upgradeDialogVisible) {
-      pickMintableBadges(provider, walletCurrentAddress, true)
+      pickMintableBadges(publicProvider, walletCurrentAddress, true)
     }
   }, [upgradeDialogVisible])
 
@@ -93,10 +94,10 @@ const Dashboard = props => {
 
   // must have minted
   useEffect(() => {
-    if (provider && !othersWalletAddress && profileAddress && !initialMint) {
-      fetchCurrent(provider, walletCurrentAddress, profileAddress)
+    if (publicProvider && publicProvider instanceof BrowserProvider && !othersWalletAddress && profileAddress && !initialMint) {
+      fetchCurrent(publicProvider, walletCurrentAddress, profileAddress)
     }
-  }, [provider, othersWalletAddress, profileAddress, initialMint])
+  }, [publicProvider, othersWalletAddress, profileAddress, initialMint])
 
   const alertWarning = useSnackbar()
 

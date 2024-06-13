@@ -1,5 +1,5 @@
 import { BrowserProvider, Contract, JsonRpcProvider, ethers } from "ethers"
-import { createContext, useContext, useEffect, useMemo, useState } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 
 import ProfileRegistryABI from "@/assets/abis/CanvasProfileRegistry.json"
 import { CHAIN_ID, RPC_URL } from "@/constants"
@@ -20,8 +20,6 @@ const CanvasContext = createContext<CanvasContextProps | null>(null)
 const CanvasContextProvider = ({ children }: any) => {
   const { provider, chainId } = useRainbowContext()
 
-  const isL2 = useMemo(() => chainId === CHAIN_ID.L2, [chainId])
-
   const [publicProvider, setPublicProvider] = useState<JsonRpcProvider | BrowserProvider | null>(null)
 
   const [profileRegistryContract, setProfileRegistryContract] = useState<Contract>()
@@ -41,7 +39,7 @@ const CanvasContextProvider = ({ children }: any) => {
   }
 
   useEffect(() => {
-    if (provider && isL2) {
+    if (provider && chainId === CHAIN_ID.L2) {
       initializeInstanceWrapped(provider)
       setPublicProvider(provider)
     } else {
@@ -49,7 +47,7 @@ const CanvasContextProvider = ({ children }: any) => {
       setPublicProvider(instance)
       initializeRPCInstance(instance)
     }
-  }, [isL2])
+  }, [provider, chainId])
 
   return (
     <CanvasContext.Provider
