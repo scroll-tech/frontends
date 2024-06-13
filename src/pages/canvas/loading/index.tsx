@@ -65,7 +65,13 @@ const LoadingPage = () => {
         }}
       >
         <Box sx={{ width: "66.67%" }}>
-          <Img src="/imgs/canvas/Scrolly_Coding.webp" placeholder="/imgs/canvas/avatarPlaceholder.svg" alt="Coding Scrolly" width="100%" />
+          <Img
+            src="/imgs/canvas/Scrolly_Coding.webp"
+            placeholder="/imgs/canvas/avatarPlaceholder.svg"
+            alt="Coding Scrolly"
+            width="100%"
+            style={{ aspectRatio: "1/1" }}
+          />
         </Box>
         <LoadingText>Loading{dots}</LoadingText>
       </Stack>
