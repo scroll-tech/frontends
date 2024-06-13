@@ -346,34 +346,98 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
     })
   },
 
+  // pickMintableBadges: async (provider, walletCurrentAddress, refresh) => {
+  //   const { userBadges, mintableBadges } = get()
+  //   const preMintableBadges = [...mintableBadges]
+  //   set({
+  //     pickMintableBadgesLoading: true,
+  //   })
+  //   const checkedBadges = await Promise.allSettled(
+  //     badgeList.map(async badge => {
+  //       const isUserBadge = userBadges.some(userBadge => userBadge.badgeContract === badge.badgeContract)
+  //       const preCheckedBadge = preMintableBadges?.find(item => item.badgeContract === badge.badgeContract)
+  //       if (preCheckedBadge && !isUserBadge && !refresh) {
+  //         return preCheckedBadge
+  //       }
+  //       const isEligibleBadge = await checkBadgeEligibility(provider, walletCurrentAddress, badge)
+
+  //       return {
+  //         ...badge,
+  //         mintable: !isUserBadge && isEligibleBadge,
+  //       }
+  //     }),
+  //   )
+  //   const filteredBadges = checkedBadges
+  //     .filter((item): item is PromiseFulfilledResult<MintableBadge> => item.status === "fulfilled" && item.value.mintable)
+  //     .map(item => item.value)
+
+  //   set({
+  //     pickMintableBadgesLoading: false,
+  //     mintableBadges: filteredBadges,
+  //   })
+  // },
+
   pickMintableBadges: async (provider, walletCurrentAddress, refresh) => {
-    const { userBadges, mintableBadges } = get()
-    const preMintableBadges = [...mintableBadges]
     set({
       pickMintableBadgesLoading: true,
     })
-    const checkedBadges = await Promise.allSettled(
-      badgeList.map(async badge => {
-        const isUserBadge = userBadges.some(userBadge => userBadge.badgeContract === badge.badgeContract)
-        const preCheckedBadge = preMintableBadges?.find(item => item.badgeContract === badge.badgeContract)
-        if (preCheckedBadge && !isUserBadge && !refresh) {
-          return preCheckedBadge
-        }
-        const isEligibleBadge = await checkBadgeEligibility(provider, walletCurrentAddress, badge)
 
-        return {
+    const { userBadges, mintableBadges } = get()
+    const preMintableBadges = [...mintableBadges]
+
+    const checkedBadgeList: Array<MintableBadge> = []
+    const checkPromiseList: Array<any> = []
+    const checkingList: Array<any> = []
+    const LIMIT = 3
+
+    for (const badge of badgeList) {
+      const isUserBadge = userBadges.some(userBadge => userBadge.badgeContract === badge.badgeContract)
+      const preCheckedBadge = preMintableBadges.find(item => item.badgeContract === badge.badgeContract)
+
+      if (isUserBadge) {
+        continue
+      }
+
+      if (preCheckedBadge && !refresh) {
+        checkedBadgeList.push(preCheckedBadge)
+        continue
+      }
+
+      const checking = new Promise(async resolve => {
+        const isEligibleBadge = await checkBadgeEligibility(provider, walletCurrentAddress, badge)
+        resolve({
           ...badge,
-          mintable: !isUserBadge && isEligibleBadge,
+          mintable: isEligibleBadge,
+        })
+      })
+      checkPromiseList.push(checking)
+
+      if (checkPromiseList.length >= LIMIT) {
+        const c: any = checking.then(() => checkingList.splice(checkingList.indexOf(c), 1))
+        checkingList.push(c)
+        if (checkingList.length >= LIMIT) {
+          await Promise.race(checkingList)
         }
-      }),
+      }
+    }
+    const asyncCheckedBadges = await Promise.allSettled(checkPromiseList)
+
+    checkedBadgeList.push(
+      ...asyncCheckedBadges
+        .filter((item): item is PromiseFulfilledResult<MintableBadge> => item.status === "fulfilled" && item.value.mintable)
+        .map(item => item.value),
     )
-    const filteredBadges = checkedBadges
-      .filter((item): item is PromiseFulfilledResult<MintableBadge> => item.status === "fulfilled" && item.value.mintable)
-      .map(item => item.value)
+
+    const finalMintableBadges = badgeList
+      .filter(({ badgeContract }) => {
+        const curBadge = checkedBadgeList.find(item => item.badgeContract === badgeContract)
+        return curBadge?.mintable
+      })
+      .map(item => ({ ...item, mintable: true }))
 
     set({
       pickMintableBadgesLoading: false,
-      mintableBadges: filteredBadges,
+      mintableBadges: finalMintableBadges,
     })
   },
 
