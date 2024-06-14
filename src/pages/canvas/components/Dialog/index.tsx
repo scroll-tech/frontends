@@ -15,7 +15,7 @@ const ScrollDialog = props => {
             backgroundColor: "rgba(16, 16, 16, 0.60)",
           },
           "& .MuiDialog-paper": {
-            backgroundColor: theme => theme.palette.themeBackground.dark,
+            background: "linear-gradient(127deg, #2A2A2A 0.6%, #101010 100%)",
             // // width: "64rem",
             width: fullWidth ? "100%" : "auto",
             minWidth: "64rem",
