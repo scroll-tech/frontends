@@ -7,6 +7,7 @@ import L2_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L2_GATEWAY_ROUTER_PROXY_A
 import { CHAIN_ID, GATEWAY_ROUTE_PROXY_ADDR } from "@/constants"
 import { USER_TOKEN_LIST } from "@/constants/storageKey"
 import { useBridgeContext } from "@/contexts/BridgeContextProvider"
+import useBridgeStore from "@/stores/bridgeStore"
 import { loadState, saveState } from "@/utils/localStorage"
 
 export enum TOKEN_LEVEL {
@@ -16,7 +17,8 @@ export enum TOKEN_LEVEL {
 }
 
 const useAddToken = () => {
-  const { networksAndSigners, refreshTokenList } = useBridgeContext()
+  const { networksAndSigners } = useBridgeContext()
+  const { fetchTokenList } = useBridgeStore()
   const [isLoading, setIsLoading] = useState(false)
 
   const getProvider = chainId => networksAndSigners[chainId].provider
@@ -50,7 +52,7 @@ const useAddToken = () => {
       }
 
       const l1TokenDetails = await getTokenDetails(l1TokenContract)
-
+      console.log(l1TokenDetails, "l1TokenDetails")
       const l2TokenDetails = await getTokenDetails(l2TokenContract)
 
       const l1Token = {
@@ -85,7 +87,7 @@ const useAddToken = () => {
       currentUserTokens.push(token)
     }
     saveState(USER_TOKEN_LIST, currentUserTokens)
-    refreshTokenList()
+    fetchTokenList()
   }
 
   return { loading: isLoading, addToken }
