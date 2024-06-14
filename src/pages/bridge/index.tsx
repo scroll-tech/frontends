@@ -7,6 +7,7 @@ import SectionWrapper from "@/components/SectionWrapper"
 import { NETWORKS } from "@/constants"
 import BridgeContextProvider from "@/contexts/BridgeContextProvider"
 import { PriceFeeProvider } from "@/contexts/PriceFeeProvider"
+import useSnackbar from "@/hooks/useSnackbar"
 import MintBadge from "@/pages/bridge/components/MintBadge"
 import useBridgeStore from "@/stores/bridgeStore"
 import { isSepolia, requireEnv } from "@/utils"
@@ -16,7 +17,14 @@ import Send from "./Send"
 import HistoryButton from "./components/HistoryButton"
 
 const Bridge = () => {
-  const { txType, changeFromNetwork, changeToNetwork } = useBridgeStore()
+  const { txType, changeFromNetwork, changeToNetwork, fetchTokenList } = useBridgeStore()
+  const alertWarning = useSnackbar()
+
+  useEffect(() => {
+    fetchTokenList().catch(() => {
+      alertWarning("Fail to fetch token list")
+    })
+  }, [])
 
   useEffect(() => {
     if (txType === "Deposit") {
