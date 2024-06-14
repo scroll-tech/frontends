@@ -10,7 +10,6 @@ import DeveloperNFT from "@/pages/developer-nft/index"
 import MintNFT from "@/pages/developer-nft/mint"
 import Ecosystem from "@/pages/ecosystem"
 import Home from "@/pages/landingpage"
-import OurStory from "@/pages/ourStory"
 import Portal from "@/pages/portal"
 import PrivacyPolicy from "@/pages/privacyPolicy"
 import RollupScanBatch from "@/pages/rollup/batch"
@@ -18,8 +17,11 @@ import RollupScanBlock from "@/pages/rollup/block"
 import RollupScanChunk from "@/pages/rollup/chunk"
 import RollupScanChunkDetail from "@/pages/rollup/chunk/detail"
 import RollupScan from "@/pages/rollup/index"
+import Sessions from "@/pages/sessions"
+import SessionsRestricted from "@/pages/sessions-restricted"
+import SessionsTerms from "@/pages/sessions-terms"
 import StickerVote from "@/pages/sticker-vote"
-// import StickerWinners from "@/pages/sticker-winners"
+import StickerWinners from "@/pages/sticker-winners"
 import Terms from "@/pages/terms"
 import { isSepolia } from "@/utils"
 
@@ -101,11 +103,6 @@ const mainnetRoutes = [
     name: "Native zkEVM Layer 2 for Ethereum",
     path: "/",
     element: <Home />,
-  },
-  {
-    name: "Our Story",
-    path: "/story",
-    element: <OurStory />,
   },
   { name: "Blog", path: "/blog", element: <Blog /> },
   {
@@ -211,12 +208,28 @@ const mainnetRoutes = [
     element: <StickerVote />,
     description: "Vote for your favourite sticker designs.",
   },
-  // {
-  //   name: "Scroll Sticker Winners",
-  //   path: "/sticker-winners",
-  //   element: <StickerWinners />,
-  //   description: "Congratulations to the winners of the sticker contest.",
-  // },
+  {
+    name: "Scroll Sticker Winners",
+    path: "/sticker-winners",
+    element: <StickerWinners />,
+    description: "Congratulations to the winners of the sticker contest.",
+  },
+  {
+    name: "Scroll Sessions",
+    path: "/sessions",
+    element: <Sessions />,
+    description: "Get rewarded for your engagement with Scroll Marks! Join Sessions now!",
+  },
+  {
+    name: "Scroll Sessions Terms of Use",
+    path: "/sessions-terms-of-use",
+    element: <SessionsTerms />,
+  },
+  {
+    name: "Scroll Sessions Restricted",
+    path: "/sessions-restricted",
+    element: <SessionsRestricted />,
+  },
 ]
 
 const routes = isSepolia ? sepoliaRoutes : mainnetRoutes

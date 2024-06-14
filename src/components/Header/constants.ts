@@ -1,4 +1,3 @@
-import { SCROLL_ORIGINS_NFT } from "@/constants"
 import { isSepolia, requireEnv } from "@/utils"
 
 const sepoliaNavigations = [
@@ -82,11 +81,6 @@ const sepoliaNavigations = [
 
 const mainnetNavigations = [
   {
-    label: "Our Story",
-    key: "story",
-    href: "/story",
-  },
-  {
     label: "Develop",
     key: "develop",
     children: [
@@ -98,12 +92,6 @@ const mainnetNavigations = [
             key: "mainnet-resources",
             rootKey: "develop",
             href: "/portal",
-          },
-          {
-            label: SCROLL_ORIGINS_NFT,
-            key: "developer-nft",
-            rootKey: "develop",
-            href: "/developer-nft",
           },
           {
             label: "Sepolia Testnet",
@@ -153,6 +141,12 @@ const mainnetNavigations = [
             href: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_DORA"),
             isExternal: true,
           },
+          {
+            label: "OKX Explorer",
+            key: "okx",
+            href: requireEnv("REACT_APP_OKX_URI"),
+            isExternal: true,
+          },
         ],
       },
     ],
@@ -192,6 +186,12 @@ const mainnetNavigations = [
             href: "https://community.scroll.io",
             isExternal: true,
           },
+          {
+            label: "Audits",
+            key: "audits",
+            href: "https://github.com/scroll-tech/scroll-audits",
+            isExternal: true,
+          },
         ],
       },
     ],
@@ -200,6 +200,12 @@ const mainnetNavigations = [
     label: "Bridge",
     key: "bridge",
     href: "/bridge",
+  },
+  {
+    label: "Sessions",
+    key: "sessions",
+    href: "/sessions",
+    reload: true,
   },
 ]
 

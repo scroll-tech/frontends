@@ -29,7 +29,7 @@ body {
   /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif; */
-  font-family: "TransSansPremium";
+  font-family: var(--default-font-family);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-variant-ligatures: no-contextual;
@@ -80,7 +80,7 @@ body.mobile-top-nav-open {
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
   /* same as scroll documnet */
-  --developer-page-font-family: "Roboto Flex", "trans-sans", "circular", Arial, "Helvetica Neue", Helvetica, sans-serif;
+  --developer-page-font-family: "Roboto", "trans-sans", "circular", Arial, "Helvetica Neue", Helvetica, sans-serif;
 }
 
 .App {
@@ -108,6 +108,18 @@ onboard-v2 .outer-container icon {
   }
 }
 
+div.markdown-body {
+  max-width: 76rem;
+  font-family: var(--developer-page-font-family);
+  letter-spacing: 0.09px;
+}
+
+div.markdown-body p {
+  margin: 0 0 16px;
+  max-width: 100%;
+  line-height: 2.6rem;
+}
+
 div.markdown-body h1,
 div.markdown-body h2,
 div.markdown-body h3 {
@@ -116,6 +128,12 @@ div.markdown-body h3 {
 
 .markdown-body ol {
   list-style-type: decimal;
+}
+
+div.markdown-body a {
+  color: #ff684b;
+  font-weight: 600;
+  text-decoration: underline;
 }
 
 div.markdown-body img {
@@ -129,11 +147,10 @@ div.markdown-body img {
 .header-link {
   font-size: 1.6rem;
   font-weight: 400;
-  padding-left: 1em;
   cursor: pointer;
   display: block;
-  line-height: normal;
-  margin: 0.5rem 0;
+  line-height: 1.5;
+  margin: 1.2rem 0;
   padding-right: 1.8em;
   transition: all 0.2s;
 }
@@ -141,7 +158,8 @@ div.markdown-body img {
 .header-link.active,
 .header-link:hover,
 .header-link:focus {
-  font-weight: 500;
+  font-weight: 600;
+  color: #ff684b;
 }
 
 .header-link a {

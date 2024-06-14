@@ -9,7 +9,7 @@ import WalletToolkit from "@/components/WalletToolkit"
 import useShowWalletConnector from "@/hooks/useShowWalletToolkit"
 
 import Logo from "../ScrollLogo"
-import Announcement from "./announcement"
+// import Announcement from "./announcement"
 import { navigations } from "./constants"
 import useCheckCustomNavBarBg from "./useCheckCustomNavBarBg"
 import useCheckTheme from "./useCheckTheme"
@@ -177,7 +177,7 @@ const App = ({ currentMenu }) => {
             </ListItem>
           ) : (
             <ListItem dark={dark} className={activeCollapse === item.key ? "active" : ""} sx={{ py: "1rem" }} onClick={() => toggleDrawer(false)}>
-              <MenuLinkStyledButton to={item.href} dark={dark}>
+              <MenuLinkStyledButton to={item.href} dark={dark} reloadDocument={item.reload}>
                 {item.label}
               </MenuLinkStyledButton>
             </ListItem>
@@ -233,7 +233,7 @@ const App = ({ currentMenu }) => {
       className={open ? "active" : ""}
       sx={{ backgroundColor: navbarBg && !open ? `themeBackground.${navbarBg}` : dark ? "themeBackground.dark" : "themeBackground.light" }}
     >
-      <Announcement />
+      {/* <Announcement /> */}
       <NavStack direction="row" justifyContent="space-between" alignItems="center">
         <NavLink to="/" className="flex">
           <Box onClick={() => toggleDrawer(false)}>

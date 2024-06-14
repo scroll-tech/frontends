@@ -183,21 +183,25 @@ const ProtocolCard = props => {
           </Box>
         )}
       </Stack>
-      <LinesEllipsis
-        className={classes.desc}
-        text={desc}
-        maxLine={isExpended ? 100 : isMobile ? 4 : 2}
-        ellipsis={
-          <>
-            &thinsp;...&thinsp;
-            <TextButton sx={{ fontWeight: 400, color: "#5b5b5b" }} underline="always" onClick={handleClickMore}>
-              More
-            </TextButton>
-          </>
-        }
-        basedOn="words"
-        onReflow={handleReflow}
-      />
+      {desc ? (
+        <LinesEllipsis
+          className={classes.desc}
+          text={desc}
+          maxLine={isExpended ? 100 : isMobile ? 4 : 2}
+          ellipsis={
+            <>
+              &thinsp;...&thinsp;
+              <TextButton sx={{ fontWeight: 400, color: "#5b5b5b" }} underline="always" onClick={handleClickMore}>
+                More
+              </TextButton>
+            </>
+          }
+          basedOn="words"
+          onReflow={handleReflow}
+        />
+      ) : (
+        <Typography className={classes.desc}>(empty)</Typography>
+      )}
 
       {!isDesktop && (
         <Box className={classes.tagWrapper}>

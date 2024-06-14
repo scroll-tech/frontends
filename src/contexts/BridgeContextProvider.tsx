@@ -6,12 +6,13 @@ import useSWR, { mutate } from "swr"
 import { Alert, Snackbar } from "@mui/material"
 
 import { tokenListUrl } from "@/apis/dynamic"
+import BATCH_BRIDGE_GATEWAY_PROXY_ABI from "@/assets/abis/L1BatchBridgeGateway.json"
 import L1_SCROLL_MESSENGER_ABI from "@/assets/abis/L1ScrollMessenger.json"
 import L1_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L1_GATEWAY_ROUTER_PROXY_ADDR.json"
 import L2_SCROLL_MESSENGER_ABI from "@/assets/abis/L2ScrollMessenger.json"
 import L2_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L2_GATEWAY_ROUTER_PROXY_ADDR.json"
-import { CHAIN_ID, ETH_SYMBOL, GATEWAY_ROUTE_PROXY_ADDR, NATIVE_TOKEN_LIST, RPC_URL, SCROLL_MESSENGER_ADDR } from "@/constants"
-import { BLOCK_NUMBERS, BRIDGE_TOKEN_SYMBOL, USER_TOKEN_LIST } from "@/constants/storageKey"
+import { BATCH_BRIDGE_GATEWAY_PROXY_ADDR, CHAIN_ID, GATEWAY_ROUTE_PROXY_ADDR, NATIVE_TOKEN_LIST, RPC_URL, SCROLL_MESSENGER_ADDR } from "@/constants"
+import { BLOCK_NUMBERS, USER_TOKEN_LIST } from "@/constants/storageKey"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useBlockNumbers from "@/hooks/useBlockNumbers"
 import useClaimHistory from "@/hooks/useClaimHistory"
@@ -45,7 +46,6 @@ const BridgeContextProvider = ({ children }: any) => {
   const { provider, walletCurrentAddress, chainId } = useRainbowContext()
   const { isL1Available, isL2Available } = useBlockNumbers()
 
-  const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
   const [blockNumbers] = useStorage(localStorage, BLOCK_NUMBERS, [-1, -1])
 
   const [networksAndSigners, setNetworksAndSigners] = useState({
@@ -60,7 +60,16 @@ const BridgeContextProvider = ({ children }: any) => {
 
   // TODO: need refactoring inspired by publicClient and walletClient
   const update = async (walletProvider: BrowserProvider, address: string) => {
-    let l1signer, l2signer, l1Gateway, l2Gateway, l1Provider, l2Provider, l1ProviderForSafeBlock, l1ScrollMessenger, l2ScrollMessenger
+    let l1signer,
+      l2signer,
+      l1Gateway,
+      l2Gateway,
+      l1Provider,
+      l2Provider,
+      l1ProviderForSafeBlock,
+      l1ScrollMessenger,
+      l2ScrollMessenger,
+      l1BatchBridgeGateway
     if (chainId === CHAIN_ID.L1) {
       l1Provider = walletProvider
       l2Provider = await new JsonRpcProvider(RPC_URL.L2)
@@ -81,6 +90,7 @@ const BridgeContextProvider = ({ children }: any) => {
     l1ProviderForSafeBlock = await new JsonRpcProvider(RPC_URL.L1)
     l1ScrollMessenger = new ethers.Contract(SCROLL_MESSENGER_ADDR[CHAIN_ID.L1], L1_SCROLL_MESSENGER_ABI, l1signer)
     l2ScrollMessenger = new ethers.Contract(SCROLL_MESSENGER_ADDR[CHAIN_ID.L2], L2_SCROLL_MESSENGER_ABI, l2signer)
+    l1BatchBridgeGateway = new ethers.Contract(BATCH_BRIDGE_GATEWAY_PROXY_ADDR[CHAIN_ID.L1], BATCH_BRIDGE_GATEWAY_PROXY_ABI, l1signer)
 
     setNetworksAndSigners({
       [CHAIN_ID.L1]: {
@@ -88,6 +98,7 @@ const BridgeContextProvider = ({ children }: any) => {
         signer: l1signer,
         gateway: l1Gateway,
         scrollMessenger: l1ScrollMessenger,
+        batchBridgeGateway: l1BatchBridgeGateway,
       },
       [`${CHAIN_ID.L1}ForSafeBlock`]: {
         provider: l1ProviderForSafeBlock,
@@ -133,7 +144,6 @@ const BridgeContextProvider = ({ children }: any) => {
       })
       .catch(() => {
         setFetchTokenListError("Fail to fetch token list")
-        setTokenSymbol(ETH_SYMBOL)
         return null
       })
   })
@@ -149,13 +159,6 @@ const BridgeContextProvider = ({ children }: any) => {
       update(provider, walletCurrentAddress)
     }
   }, [provider, walletCurrentAddress, chainId])
-
-  useEffect(() => {
-    const fromToken = tokenList?.find(item => item.chainId === chainId && item.symbol === tokenSymbol)
-    if (!fromToken) {
-      setTokenSymbol(ETH_SYMBOL)
-    }
-  }, [chainId, tokenList])
 
   const handleClose = () => {
     setFetchTokenListError("")

@@ -1,10 +1,10 @@
 import { AbiCoder, Transaction, ethers } from "ethers"
-import React, { createContext, useContext, useMemo, useState } from "react"
-import useStorage from "squirrel-gill"
+import React, { createContext, useContext, useEffect, useMemo, useState } from "react"
+import { useSearchParams } from "react-router-dom"
 import { useBlockNumber } from "wagmi"
 
 import { CHAIN_ID, ETH_SYMBOL } from "@/constants"
-import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
+import { BRIDGE_TOKEN } from "@/constants/searchParamsKey"
 import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { requireEnv, trimErrorMessage } from "@/utils"
@@ -20,6 +20,7 @@ enum MIN_GASLIMIT {
   USDC_GATEWAY = 16e4,
   DAI_GATEWAY = 15e4,
   LIDO_GATEWAY = 15e4,
+  PUFFER_GATEWAY = 15e4,
 }
 
 type Props = {
@@ -38,6 +39,7 @@ enum GatewayType {
   USDC_GATEWAY = "USDC_GATEWAY",
   DAI_GATEWAY = "DAI_GATEWAY",
   LIDO_GATEWAY = "LIDO_GATEWAY",
+  PUFFER_GATEWAY = "PUFFER_GATEWAY",
 }
 
 // For USDC, Lido, and DAI, can use the STANDARD_ERC20_GATEWAY
@@ -49,6 +51,7 @@ const Address2GatewayType = {
   [requireEnv("REACT_APP_L1_USDC_GATEWAY_PROXY_ADDR")]: GatewayType.USDC_GATEWAY,
   [requireEnv("REACT_APP_L1_DAI_GATEWAY_PROXY_ADDR")]: GatewayType.DAI_GATEWAY,
   [requireEnv("REACT_APP_L1_LIDO_GATEWAY_PROXY_ADDR")]: GatewayType.LIDO_GATEWAY,
+  [requireEnv("REACT_APP_L1_PUFFER_GATEWAY_PROXY_ADDR")]: GatewayType.PUFFER_GATEWAY,
 }
 
 // Contracts
@@ -75,6 +78,10 @@ const Contracts = {
     abi: require("@/assets/abis/L2StandardERC20Gateway.json"),
     env: "REACT_APP_L2_LIDO_GATEWAY_PROXY_ADDR",
   },
+  [GatewayType.PUFFER_GATEWAY]: {
+    abi: require("@/assets/abis/L2StandardERC20Gateway.json"),
+    env: "REACT_APP_L2_PUFFER_GATEWAY_PROXY_ADDR",
+  },
   SCROLL_MESSENGER: { abi: require("@/assets/abis/L2ScrollMessenger.json"), env: "REACT_APP_L2_SCROLL_MESSENGER" },
   L1_GAS_PRICE_ORACLE: { abi: require("@/assets/abis/L1GasPriceOracle.json"), env: "REACT_APP_L1_GAS_PRICE_ORACLE" },
   L1_MESSAGE_QUEUE_WITH_GAS_PRICE_ORACLE: {
@@ -100,7 +107,11 @@ export const usePriceFeeContext = () => {
 
 export const PriceFeeProvider = ({ children }) => {
   const { walletCurrentAddress, chainId } = useRainbowContext()
-  const [tokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
+  const [searchParams] = useSearchParams()
+
+  const token = searchParams.get(BRIDGE_TOKEN)
+  const tokenSymbol = useMemo(() => token || ETH_SYMBOL, [token])
+
   const { networksAndSigners, tokenList } = useBridgeContext()
   const [gasLimit, setGasLimit] = useState(BigInt(0))
   const [gasPrice, setGasPrice] = useState(BigInt(0))
@@ -112,7 +123,6 @@ export const PriceFeeProvider = ({ children }) => {
       if (chainId === CHAIN_ID.L1) {
         const price = await getGasPrice()
         const limit = await getGasLimit()
-        // console.log(price, limit, "gas price/limit")
         setGasPrice(price)
         setGasLimit(limit)
       } else {
@@ -124,21 +134,21 @@ export const PriceFeeProvider = ({ children }) => {
     }
   }
 
-  useBlockNumber({
-    // enabled: !!(networksAndSigners[CHAIN_ID.L1].signer && networksAndSigners[CHAIN_ID.L2].provider),
-    onBlock(blockNumber) {
-      fetchData()
-        .then(() => {
-          setErrorMessage("")
-        })
-        .catch(error => {
-          //TODO:
-          // setGasLimit(null)
-          // setGasPrice(null)
-          setErrorMessage(trimErrorMessage(error.message))
-        })
-    },
-  })
+  const { data: blockNumber } = useBlockNumber({ watch: true })
+
+  useEffect(() => {
+    fetchData()
+      .then(() => {
+        setErrorMessage("")
+      })
+      .catch(error => {
+        console.log("error", error)
+        //TODO:
+        // setGasLimit(null)
+        // setGasPrice(null)
+        setErrorMessage(trimErrorMessage(error.message))
+      })
+  }, [blockNumber])
 
   const l1Token = useMemo(
     () => tokenList.find(item => item.chainId === CHAIN_ID.L1 && item.symbol === tokenSymbol) ?? ({} as any as Token),
@@ -156,7 +166,7 @@ export const PriceFeeProvider = ({ children }) => {
       const gasPrice = await L1MessageQueueWithGasPriceOracleContract.l2BaseFee()
       return (gasPrice * BigInt(120)) / BigInt(100)
     } catch (err) {
-      // console.log(err)
+      console.log("err", err)
       throw new Error("Failed to get gas price")
     }
   }
@@ -195,7 +205,7 @@ export const PriceFeeProvider = ({ children }) => {
         amount,
         "0x",
       ]
-    } else if (gatewayType === GatewayType.CUSTOM_ERC20_GATEWAY) {
+    } else if ([GatewayType.CUSTOM_ERC20_GATEWAY, GatewayType.PUFFER_GATEWAY].includes(gatewayType)) {
       finalizeDepositParams = [(l1Token as ERC20Token).address, (l2Token as ERC20Token).address, walletCurrentAddress, walletCurrentAddress, 0, "0x"]
     } else {
       finalizeDepositParams = [
