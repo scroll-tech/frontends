@@ -10,7 +10,7 @@ import { PriceFeeProvider } from "@/contexts/PriceFeeProvider"
 import useSnackbar from "@/hooks/useSnackbar"
 import MintBadge from "@/pages/bridge/components/MintBadge"
 import useBridgeStore from "@/stores/bridgeStore"
-import { isSepolia, requireEnv } from "@/utils"
+import { isSepolia, requireEnv, sentryDebug } from "@/utils"
 
 import FAQsLink from "./FAQ/link"
 import Send from "./Send"
@@ -21,7 +21,9 @@ const Bridge = () => {
   const alertWarning = useSnackbar()
 
   useEffect(() => {
-    fetchTokenList().catch(() => {
+    fetchTokenList().catch(e => {
+      console.log(`tokenList: ${e.message}`)
+      sentryDebug(`tokenList: ${e.message}`)
       alertWarning("Fail to fetch token list")
     })
   }, [])
