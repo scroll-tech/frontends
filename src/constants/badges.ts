@@ -36,12 +36,12 @@ export const BADGES_ADDRESS = {
     ETHEREUM_YEAR_BADGE_ADDRESS: "0x24Eb2CC4657986efbB2cCE41943C59d6708c8f54",
     ETHEREUM_YEAR_ATTESTER_PROXY_ADDRESS: "0xc1d9C7Cdb33107f1fEa871F2e874b9a95EE3f260",
 
-    AMBIENT_SWAPOOR_BADGE_ADDRESS: "",
-    AMBIENT_PROVIDOOR_BADGE_ADDRESS: "",
-    AMBIENT_FILLOOR_BADGE_ADDRESS: "",
-    AMBIENT_YEET_BADGE_ADDRESS: "",
-    AMBIENT_ATTESTER_PROXY_ADDRESS: "",
-    Ambient_BASE_URL: "",
+    AMBIENT_SWAPOOR_BADGE_ADDRESS: "0xDcB439703F40430dE360dfeEd51E4261D1fAa310",
+    AMBIENT_PROVIDOOR_BADGE_ADDRESS: "0x9289079DF3C056A5feFD0F07AD610C1D889Ea316",
+    AMBIENT_FILLOOR_BADGE_ADDRESS: "0x7aFcb77B33F8CAb87Bcd16bA8E94b79A2146a39E",
+    AMBIENT_YEET_BADGE_ADDRESS: "0x38129F0582A984F57f41F29eD183c8Ea5e798796",
+    AMBIENT_ATTESTER_PROXY_ADDRESS: "0x83f26d1c451DFCFE2e16B479981c6fA2BCCe053F",
+    Ambient_BASE_URL: "https://ambient-scroll-badge.liquidity.tools/api",
 
     ZEBRA_BADGE_ADDRESS: "",
     ZEBRA_ATTESTER_PROXY_ADDRESS: "",
@@ -85,7 +85,65 @@ export const ETHEREUM_YEAR_BADGE = {
 }
 
 export const THIRD_PARTY_BADGES = isMainnet
-  ? []
+  ? [
+      {
+        name: "Swapoor",
+        badgeContract: AMBIENT_SWAPOOR_BADGE_ADDRESS,
+        attesterProxy: AMBIENT_ATTESTER_PROXY_ADDRESS,
+        description: "Swapooor! You have made a swap on Ambient Finance for over $500. Art by: @ShizzyAizawa",
+        image: "https://ambient.finance/scroll-badge/1.png",
+        issuer: {
+          origin: "https://scroll.ambient.finance/",
+          name: "Ambient",
+          logo: "https://scroll-eco-list.netlify.app/logos/Ambient%20Finance.png",
+        },
+        baseUrl: Ambient_BASE_URL,
+        native: false,
+      },
+      {
+        name: "Providoor",
+        badgeContract: AMBIENT_PROVIDOOR_BADGE_ADDRESS,
+        attesterProxy: AMBIENT_ATTESTER_PROXY_ADDRESS,
+        description: "Providoor! You have minted an LP position on Ambient Finance valued over $1000. Art by: @ShizzyAizawa",
+        image: "https://ambient.finance/scroll-badge/2.png",
+        issuer: {
+          origin: "https://scroll.ambient.finance/",
+          name: "Ambient",
+          logo: "https://scroll-eco-list.netlify.app/logos/Ambient%20Finance.png",
+        },
+        baseUrl: Ambient_BASE_URL,
+        native: false,
+      },
+      {
+        name: "Filloor",
+        badgeContract: AMBIENT_FILLOOR_BADGE_ADDRESS,
+        attesterProxy: AMBIENT_ATTESTER_PROXY_ADDRESS,
+        description: "Filloor! You have filled a limit on Ambient Finance valued over $500. Art by: @ShizzyAizawa",
+        image: "https://ambient.finance/scroll-badge/3.png",
+        issuer: {
+          origin: "https://scroll.ambient.finance/",
+          name: "Ambient",
+          logo: "https://scroll-eco-list.netlify.app/logos/Ambient%20Finance.png",
+        },
+        baseUrl: Ambient_BASE_URL,
+        native: false,
+      },
+      {
+        name: "Yeet",
+        badgeContract: AMBIENT_YEET_BADGE_ADDRESS,
+        attesterProxy: AMBIENT_ATTESTER_PROXY_ADDRESS,
+        description:
+          "Yeet! You are providing a modest amount of liquidity in a single position. You will be rewarded accordingly to the size! For now, enjoy having a differently colored croc. Art by: @ShizzyAizawa",
+        image: "https://ambient.finance/scroll-badge/4.png",
+        issuer: {
+          origin: "https://scroll.ambient.finance/",
+          name: "Ambient",
+          logo: "https://scroll-eco-list.netlify.app/logos/Ambient%20Finance.png",
+        },
+        baseUrl: Ambient_BASE_URL,
+        native: false,
+      },
+    ]
   : [
       {
         name: "Swapoor",
