@@ -1,15 +1,16 @@
 // import createCache from "@emotion/cache"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 
-import { Alert, Snackbar, Stack, Typography } from "@mui/material"
+import { Stack, Typography } from "@mui/material"
 
 import SectionWrapper from "@/components/SectionWrapper"
 import { NETWORKS } from "@/constants"
 import BridgeContextProvider from "@/contexts/BridgeContextProvider"
 import { PriceFeeProvider } from "@/contexts/PriceFeeProvider"
+import useSnackbar from "@/hooks/useSnackbar"
 import MintBadge from "@/pages/bridge/components/MintBadge"
 import useBridgeStore from "@/stores/bridgeStore"
-import { isSepolia, requireEnv, sentryDebug } from "@/utils"
+import { isSepolia, requireEnv } from "@/utils"
 
 import FAQsLink from "./FAQ/link"
 import Send from "./Send"
@@ -17,13 +18,11 @@ import HistoryButton from "./components/HistoryButton"
 
 const Bridge = () => {
   const { txType, changeFromNetwork, changeToNetwork, fetchTokenList } = useBridgeStore()
-  const [fetchTokenListError, setFetchTokenListError] = useState("")
+  const alertWarning = useSnackbar()
 
   useEffect(() => {
-    fetchTokenList().catch(e => {
-      console.log(`tokenList: ${e.message}`)
-      sentryDebug(`tokenList: ${e.message}`)
-      setFetchTokenListError("Fail to fetch token list")
+    fetchTokenList().catch(() => {
+      alertWarning("Fail to fetch token list")
     })
   }, [])
 
@@ -36,10 +35,6 @@ const Bridge = () => {
       changeToNetwork(NETWORKS[0])
     }
   }, [txType])
-
-  const handleClose = () => {
-    setFetchTokenListError("")
-  }
 
   return (
     <BridgeContextProvider>
@@ -79,11 +74,6 @@ const Bridge = () => {
           </Stack>
           <Send></Send>
           <FAQsLink />
-          <Snackbar open={!!fetchTokenListError} autoHideDuration={null} onClose={handleClose}>
-            <Alert severity="error" onClose={handleClose} sx={{ ".MuiAlert-action": { padding: "0 0.8rem" } }}>
-              {fetchTokenListError}
-            </Alert>
-          </Snackbar>
         </SectionWrapper>
         <MintBadge />
       </PriceFeeProvider>
