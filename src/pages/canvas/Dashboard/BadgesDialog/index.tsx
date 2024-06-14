@@ -22,7 +22,7 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
     backgroundColor: "rgba(16, 16, 16, 0.60)",
   },
   "& .MuiDialog-paper": {
-    backgroundColor: "#101010",
+    background: "linear-gradient(127deg, #2A2A2A 0.6%, #101010 100%)",
     width: "112rem",
     [theme.breakpoints.down("sm")]: {
       margin: 0,
