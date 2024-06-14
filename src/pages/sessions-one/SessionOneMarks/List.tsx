@@ -5,6 +5,7 @@ import { Avatar, Box, Button, List, ListItem, ListItemIcon, ListItemText, Stack,
 import { useTheme } from "@mui/material/styles"
 import { styled } from "@mui/system"
 
+import { SESSIONS_ONE_ACTIVITIES } from "@/constants"
 import { commafy, formatLargeNumber } from "@/utils"
 
 import MarksTooltip from "../components/MarksTooltip"
@@ -81,7 +82,12 @@ const MarkList = props => {
                   <Typography sx={{ fontSize: "2rem", lineHeight: "2.4rem", fontWeight: 600 }}>Others</Typography>
                   <Stack direction="row" gap="4px">
                     {item?.items?.map(({ project, logo, website }) => (
-                      <Avatar variant="square" src={logo} alt={project} sx={{ width: "2rem", height: "2rem", borderRadius: "3px" }}></Avatar>
+                      <Avatar
+                        variant="square"
+                        src={logo}
+                        alt={project}
+                        sx={{ width: "2rem", height: "2rem", borderRadius: "3px", backgroundColor: "background.default" }}
+                      ></Avatar>
                     ))}
                   </Stack>
                 </Stack>
@@ -92,7 +98,12 @@ const MarkList = props => {
                 <ListItemIcon sx={{ minWidth: "unset" }}>
                   <Avatar
                     variant="square"
-                    sx={{ width: ["4rem", "4.8rem"], height: ["4rem", "4.8rem"], borderRadius: "6px" }}
+                    sx={{
+                      width: ["4rem", "4.8rem"],
+                      height: ["4rem", "4.8rem"],
+                      borderRadius: id === SESSIONS_ONE_ACTIVITIES ? "50%" : "7px",
+                      backgroundColor: "background.default",
+                    }}
                     src={item.logo}
                   ></Avatar>
                 </ListItemIcon>

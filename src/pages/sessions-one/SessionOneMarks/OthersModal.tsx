@@ -86,7 +86,7 @@ const OthersModal = props => {
               }}
             >
               <ListItemAvatar sx={{ minWidth: 0 }}>
-                <Avatar sx={{ width: "4.8rem", height: "4.8rem", borderRadius: "0.6rem" }} alt={item.project} src={item.logo} />
+                <Avatar sx={{ width: "4.8rem", height: "4.8rem", borderRadius: "0.7rem" }} alt={item.project} src={item.logo} />
               </ListItemAvatar>
               <ListItemText primaryTypographyProps={{ fontSize: ["1.6rem", "2rem"], fontWeight: 600 }}>{item.project}</ListItemText>
               <Button
