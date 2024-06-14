@@ -9,7 +9,7 @@ import { NETWORKS } from "@/constants"
 import BridgeContextProvider from "@/contexts/BridgeContextProvider"
 import { PriceFeeProvider } from "@/contexts/PriceFeeProvider"
 import useBridgeStore from "@/stores/bridgeStore"
-import { isSepolia, requireEnv } from "@/utils"
+import { isSepolia, requireEnv, sentryDebug } from "@/utils"
 
 import FAQsLink from "./FAQ/link"
 import Send from "./Send"
@@ -20,7 +20,9 @@ const Bridge = () => {
   const [fetchTokenListError, setFetchTokenListError] = useState("")
 
   useEffect(() => {
-    fetchTokenList().catch(() => {
+    fetchTokenList().catch(e => {
+      console.log(`tokenList: ${e.message}`)
+      sentryDebug(`tokenList: ${e.message}`)
       setFetchTokenListError("Fail to fetch token list")
     })
   }, [])

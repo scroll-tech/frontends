@@ -51,33 +51,40 @@ const useBridgeStore = create<BridgeStore>()((set, get) => ({
   tokenList: [],
 
   fetchTokenList: async () => {
-    const { tokens: tokensListTokens } = await scrollRequest(tokenListUrl)
-    const currentUserTokens = loadState(USER_TOKEN_LIST) || []
+    try {
+      const { tokens: tokensListTokens } = await scrollRequest(tokenListUrl)
+      const currentUserTokens = loadState(USER_TOKEN_LIST) || []
 
-    const combinedList = [...NATIVE_TOKEN_LIST, ...tokensListTokens, ...currentUserTokens]
-    const uniqueList = combinedList.reduce(
-      (accumulator, token) => {
-        // If the token doesn't have an address, consider it a native token and add it directly
-        if (!token.address) {
-          accumulator.result.push(token)
+      const combinedList = [...NATIVE_TOKEN_LIST, ...tokensListTokens, ...currentUserTokens]
+      const uniqueList = combinedList.reduce(
+        (accumulator, token) => {
+          // If the token doesn't have an address, consider it a native token and add it directly
+          if (!token.address) {
+            accumulator.result.push(token)
+            return accumulator
+          }
+          // Convert address to lowercase for case-insensitive deduplication
+          const lowercaseAddress = token.address.toLowerCase()
+          // Create a key combining address and chainId to ensure different chainIds are not deduplicated
+          const key = `${lowercaseAddress}-${token.chainId}`
+
+          if (!accumulator.seen[key]) {
+            accumulator.seen[key] = true
+            accumulator.result.push(token)
+          }
           return accumulator
-        }
-        // Convert address to lowercase for case-insensitive deduplication
-        const lowercaseAddress = token.address.toLowerCase()
-        // Create a key combining address and chainId to ensure different chainIds are not deduplicated
-        const key = `${lowercaseAddress}-${token.chainId}`
-
-        if (!accumulator.seen[key]) {
-          accumulator.seen[key] = true
-          accumulator.result.push(token)
-        }
-        return accumulator
-      },
-      { seen: {}, result: [] },
-    ).result
-    set({
-      tokenList: uniqueList,
-    })
+        },
+        { seen: {}, result: [] },
+      ).result
+      set({
+        tokenList: uniqueList,
+      })
+    } catch (e) {
+      set({
+        tokenList: NATIVE_TOKEN_LIST,
+      })
+      throw new Error(e.message)
+    }
   },
 
   changeHistoryVisible: value => {
