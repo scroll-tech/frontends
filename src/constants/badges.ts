@@ -25,6 +25,13 @@ export const BADGES_ADDRESS = {
 
     // COG_FINANCE_BADGE_ADDRESS : "0x919d0233B291c0f2e49f36D87bd8938559a4e938",
     // COG_FINANCE_ATTESTER_PROXY_ADDRESS : "0x93db06C5C0470e50327CBB16641a40750c1a5901",
+    SCROLLY_BADGE_ADDRESS: "",
+    SCROLLY_ATTESTER_PROXY_ADDRESS: "",
+    Scrolly_BASE_URL: "",
+
+    PENCILS_BADGE_ADDRESS: "",
+    PENCILS_ATTESTER_PROXY_ADDRESS: "",
+    Pencils_BASE_URL: "",
   },
   mainnet: {
     SCROLL_SIMPLE_BADGE_A_ADDRESS: "0xB1Dbd079c62d181926E5A54932Bb1b15F760e8A0",
@@ -43,9 +50,17 @@ export const BADGES_ADDRESS = {
     AMBIENT_ATTESTER_PROXY_ADDRESS: "0x83f26d1c451DFCFE2e16B479981c6fA2BCCe053F",
     Ambient_BASE_URL: "https://ambient-scroll-badge.liquidity.tools/api",
 
-    ZEBRA_BADGE_ADDRESS: "",
-    ZEBRA_ATTESTER_PROXY_ADDRESS: "",
-    Zebra_BASE_URL: "",
+    ZEBRA_BADGE_ADDRESS: "0xbAdc59EF32e33feEA29Ee7e35435da89A30e875d",
+    ZEBRA_ATTESTER_PROXY_ADDRESS: "0x69D872fbBdb71CF3599A0Ee29D4115C3FC31745E",
+    Zebra_BASE_URL: "https://zebra.xyz/api/badge",
+
+    SCROLLY_BADGE_ADDRESS: "0x89b27e836BF46275e6D87cD55461D34ABaade51A",
+    SCROLLY_ATTESTER_PROXY_ADDRESS: "0x47a49cCfa1924D5b59cb400708199b6Ae8543D31",
+    Scrolly_BASE_URL: "https://api.scrolly.xyz/api/badge",
+
+    PENCILS_BADGE_ADDRESS: "0x06471896f95d349d750977c206974410abe971ed",
+    PENCILS_ATTESTER_PROXY_ADDRESS: "0x370d58d5c5db8dae58c28b1310174e8cb3eb4a77",
+    Pencils_BASE_URL: "https://pencilsprotocol.io/api/scroll/canvas/badge/pencil",
   },
 }
 
@@ -64,6 +79,12 @@ const {
   ZEBRA_BADGE_ADDRESS,
   ZEBRA_ATTESTER_PROXY_ADDRESS,
   Zebra_BASE_URL,
+  SCROLLY_BADGE_ADDRESS,
+  SCROLLY_ATTESTER_PROXY_ADDRESS,
+  Scrolly_BASE_URL,
+  PENCILS_BADGE_ADDRESS,
+  PENCILS_ATTESTER_PROXY_ADDRESS,
+  Pencils_BASE_URL,
 } = BADGES_ADDRESS[isMainnet ? "mainnet" : "sepolia"]
 
 const ETHEREUM_YEAR_BASE_URL = `${requireEnv("REACT_APP_CANVAS_BACKEND_URI")}/badge`
@@ -141,6 +162,51 @@ export const THIRD_PARTY_BADGES = isMainnet
           logo: "https://scroll-eco-list.netlify.app/logos/Ambient%20Finance.png",
         },
         baseUrl: Ambient_BASE_URL,
+        native: false,
+      },
+      {
+        name: "Zebra",
+        badgeContract: ZEBRA_BADGE_ADDRESS,
+        attesterProxy: ZEBRA_ATTESTER_PROXY_ADDRESS,
+        description:
+          "Users who participate in Scroll Canvas and complete tasks will receive Zebra's 'zebra' badge. Users with this badge will enjoy Zebra's early benefits in the future.",
+        image: "https://app.zebra.xyz/images/badge.png",
+        issuer: {
+          origin: "https://zebra.xyz/",
+          name: "Zebra",
+          logo: "https://scroll-eco-list.netlify.app/logos/Zebra.png",
+        },
+        baseUrl: Zebra_BASE_URL,
+        native: false,
+      },
+      {
+        name: "Scrolly Baby",
+        badgeContract: SCROLLY_BADGE_ADDRESS,
+        attesterProxy: SCROLLY_ATTESTER_PROXY_ADDRESS,
+        description:
+          "Users who participate in Scroll Canvas and complete tasks will receive Zebra's 'zebra' badge. Users with this badge will enjoy Zebra's early benefits in the future.",
+        image: "https://cyan-passive-guan-475.mypinata.cloud/ipfs/QmY9rG94E1qpc5NPs1zFTM1hCCTmv9kiRvMoZjGyxCJ2ZE/0.png",
+        issuer: {
+          origin: "https://scrolly.xyz/",
+          name: "Scrolly",
+          logo: "	https://scroll-eco-list.netlify.app/logos/Scrolly.jpg",
+        },
+        baseUrl: Scrolly_BASE_URL,
+        native: false,
+      },
+      {
+        name: "Pencil S Badge",
+        badgeContract: PENCILS_BADGE_ADDRESS,
+        attesterProxy: PENCILS_ATTESTER_PROXY_ADDRESS,
+        description:
+          "Users who participate in Scroll Canvas and complete tasks will receive Zebra's 'zebra' badge. Users with this badge will enjoy Zebra's early benefits in the future.",
+        image: "https://pencilsprotocol.io/nft/scroll/pencil/0.png",
+        issuer: {
+          origin: "https://pencilsprotocol.io/",
+          name: "Pencils Protocol",
+          logo: "	https://scroll-eco-list.netlify.app/logos/Pencils%20Protocol.jpg",
+        },
+        baseUrl: Pencils_BASE_URL,
         native: false,
       },
     ]
