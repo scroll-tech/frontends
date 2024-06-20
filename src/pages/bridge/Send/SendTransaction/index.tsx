@@ -8,7 +8,6 @@ import Button from "@/components/Button"
 import TextButton from "@/components/TextButton"
 import { ETH_SYMBOL, NATIVE_TOKEN_LIST } from "@/constants"
 import { BRIDGE_TOKEN } from "@/constants/searchParamsKey"
-import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useAsyncMemo, useBalance } from "@/hooks"
@@ -36,13 +35,11 @@ const SendTransaction = props => {
   const tokenSymbol = useMemo(() => token || ETH_SYMBOL, [token])
 
   const { chainId, connect, walletCurrentAddress } = useRainbowContext()
-  // TODO: extract tokenList
-  const { tokenList } = useBridgeContext()
   const { isMobile } = useCheckViewport()
 
   const { gasLimit, gasPrice, errorMessage: relayFeeErrorMessage, fetchData: fetchPriceFee, getL1DataFee } = usePriceFeeContext()
 
-  const { txType, isNetworkCorrect, fromNetwork, changeTxResult } = useBridgeStore()
+  const { txType, isNetworkCorrect, fromNetwork, changeTxResult, tokenList } = useBridgeStore()
   const { bridgeSummaryType, depositBatchMode, batchDepositConfig } = useBatchBridgeStore()
 
   const [amount, setAmount] = useState<string>("")

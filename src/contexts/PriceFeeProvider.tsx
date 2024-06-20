@@ -7,6 +7,7 @@ import { CHAIN_ID, ETH_SYMBOL } from "@/constants"
 import { BRIDGE_TOKEN } from "@/constants/searchParamsKey"
 import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useBridgeStore from "@/stores/bridgeStore"
 import { requireEnv, trimErrorMessage } from "@/utils"
 
 const OFFSET = "0x1111000000000000000000000000000000001111"
@@ -112,7 +113,8 @@ export const PriceFeeProvider = ({ children }) => {
   const token = searchParams.get(BRIDGE_TOKEN)
   const tokenSymbol = useMemo(() => token || ETH_SYMBOL, [token])
 
-  const { networksAndSigners, tokenList } = useBridgeContext()
+  const { networksAndSigners } = useBridgeContext()
+  const { tokenList } = useBridgeStore()
   const [gasLimit, setGasLimit] = useState(BigInt(0))
   const [gasPrice, setGasPrice] = useState(BigInt(0))
   const [errorMessage, setErrorMessage] = useState("")
