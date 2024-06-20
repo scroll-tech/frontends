@@ -86,11 +86,12 @@ const Dashboard = props => {
     height: window.innerHeight,
   })
 
+  // TODO: fetchOther does not depend on a connected wallet
   useEffect(() => {
-    if (publicProvider && unsignedProfileRegistryContract && othersWalletAddress) {
+    if (unsignedProfileRegistryContract && othersWalletAddress) {
       fetchOthers(publicProvider, unsignedProfileRegistryContract, othersWalletAddress)
     }
-  }, [publicProvider, unsignedProfileRegistryContract, othersWalletAddress])
+  }, [unsignedProfileRegistryContract, othersWalletAddress])
 
   // must have minted
   useEffect(() => {
