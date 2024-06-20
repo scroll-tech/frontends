@@ -44,8 +44,7 @@ const BadgeDetailPage = () => {
     () => ({
       title: `Canvas Badge - ${detail.name} Owned by ${detail.owner}`,
       description: `I have minted the ${detail.name}`,
-      // TODO:
-      image: "",
+      image: `${requireEnv("REACT_APP_CANVAS_BACKEND_URI")}/badge/${id}.png`,
     }),
     [detail],
   )

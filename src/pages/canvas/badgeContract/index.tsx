@@ -58,8 +58,7 @@ const BadgeContractDetail = props => {
     () => ({
       title: `Canvas Badge - ${detail?.name}`,
       description: `I found a badge called ${detail?.name} you may like`,
-      // TODO:
-      image: "",
+      image: `${requireEnv("REACT_APP_CANVAS_BACKEND_URI")}/badge-contract/${address}.png`,
     }),
     [detail],
   )
