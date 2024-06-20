@@ -8,6 +8,7 @@ import Badges from "@/pages/canvas/Dashboard/UpgradeDialog/Badges"
 import { checkIfHasBadgeByAddress } from "@/services/canvasService"
 import useCanvasStore, { BadgeDetailDialogType } from "@/stores/canvasStore"
 
+//TODO: Scroll hasn’t issued a badge according to the bridge yet, so there’s no need to display Scrolly
 const MintBadge = () => {
   const { changeBadgeDetailDialog, changeSelectedBadge, profileMinted } = useCanvasStore()
   const badge: any = Badges[3]

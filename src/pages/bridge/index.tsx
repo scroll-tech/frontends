@@ -8,7 +8,7 @@ import { NETWORKS } from "@/constants"
 import BridgeContextProvider from "@/contexts/BridgeContextProvider"
 import { PriceFeeProvider } from "@/contexts/PriceFeeProvider"
 import useSnackbar from "@/hooks/useSnackbar"
-import MintBadge from "@/pages/bridge/components/MintBadge"
+// import MintBadge from "@/pages/bridge/components/MintBadge"
 import useBridgeStore from "@/stores/bridgeStore"
 import { isSepolia, requireEnv, sentryDebug } from "@/utils"
 
@@ -77,7 +77,7 @@ const Bridge = () => {
           <Send></Send>
           <FAQsLink />
         </SectionWrapper>
-        <MintBadge />
+        {/* <MintBadge /> */}
       </PriceFeeProvider>
     </BridgeContextProvider>
   )

@@ -76,6 +76,8 @@ interface CanvasStore {
   badgeAnimationVisible: boolean
   initialMint: boolean
 
+  inputReferralCode: Array<string>
+
   changeProfileName: (name: string) => void
   changeIsProfileMinting: (isProfileMinting: boolean) => void
   changeIsFirstBadgeMinting: (isFirstBadgeMinting: boolean) => void
@@ -96,6 +98,7 @@ interface CanvasStore {
   changeBadgeAnimationVisible: (visible: boolean) => void
   changeInitialMint: (initialMint: boolean) => void
   queryFirstMintUsername: (provider) => void
+  changeInputReferralCode: (inputReferralCode) => void
 }
 
 const useCanvasStore = create<CanvasStore>()((set, get) => ({
@@ -134,6 +137,8 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
   firstBadgeWithPosition: {},
   badgeAnimationVisible: false,
   initialMint: false,
+
+  inputReferralCode: ["", "", "", "", ""],
 
   checkIfProfileMinted: async (registryInstance, userAddress, test) => {
     try {
@@ -529,6 +534,12 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
   changeInitialMint: initialMint => {
     set({
       initialMint,
+    })
+  },
+
+  changeInputReferralCode: inputReferralCode => {
+    set({
+      inputReferralCode,
     })
   },
 }))

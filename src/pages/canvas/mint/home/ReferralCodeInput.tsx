@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react"
+import React, { useEffect, useRef } from "react"
 
 import { Box, InputBase, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
@@ -90,28 +90,28 @@ const StatusContent = styled(Typography)(({ theme }) => ({
 }))
 
 const ReferralCode = ({ isChecking, setIsChecking, code, codeStatus, setCodeStatus }) => {
-  const [codes, setCodes] = useState(Array(INVITE_CODE_LENGTH).fill(""))
-  // const [codeStatus, setCodeStatus] = useState(CodeStatus.UNKNOWN)
   const inputRefs = useRef<Array<HTMLInputElement | null>>(new Array(INVITE_CODE_LENGTH).fill(null))
-  const { changeReferralCode } = useCanvasStore()
+  const { changeReferralCode, inputReferralCode: codes, changeInputReferralCode: setCodes } = useCanvasStore()
 
   useEffect(() => {
     if (code) {
-      setCodes(code.split(""))
-      inputRefs.current[INVITE_CODE_LENGTH - 1]?.focus()
+      const nextCodes = code
+        .slice(0, INVITE_CODE_LENGTH)
+        .padEnd(INVITE_CODE_LENGTH, ".")
+        .split("")
+        .map(item => (item === "." ? "" : item))
+      setCodes(nextCodes)
     }
   }, [code])
 
-  const referralCode = useMemo(() => {
-    return codes.join("")
-  }, [codes])
-
   useEffect(() => {
-    // Check if all codes are filled and then validate
-    if (codes.every(code => code.length === 1)) {
-      validateCode(referralCode)
+    const validLength = codes.findIndex(item => !item)
+    inputRefs.current[validLength === -1 ? INVITE_CODE_LENGTH - 1 : validLength]?.focus()
+
+    if (codes.every(code => code)) {
+      validateCode(codes.join(""))
     }
-  }, [codes])
+  }, [codes.toString()])
 
   const validateCode = async (code: string) => {
     try {
@@ -138,6 +138,7 @@ const ReferralCode = ({ isChecking, setIsChecking, code, codeStatus, setCodeStat
     // changeReferralCode("")
     const newCodes = [...codes]
     newCodes[index] = (event.target as HTMLInputElement).value
+    console.log(newCodes, "newCodes")
     setCodes(newCodes)
 
     if (event.target.value && index < INVITE_CODE_LENGTH - 1) {
@@ -155,10 +156,15 @@ const ReferralCode = ({ isChecking, setIsChecking, code, codeStatus, setCodeStat
     event.preventDefault()
     const paste = event.clipboardData.getData("text")
     if (paste.length) {
-      const pasteArray = paste.split("").slice(0, INVITE_CODE_LENGTH)
-      setCodes(prevCodes => pasteArray.map((char, index) => pasteArray[index] || prevCodes[index]))
+      const pasteArray = paste
+        .slice(0, INVITE_CODE_LENGTH)
+        .padEnd(INVITE_CODE_LENGTH, ".")
+        .split("")
+        .map(item => (item === "." ? "" : item))
+      setCodes(pasteArray)
     }
   }
+  // 6T1XL
   return (
     <Box sx={{ position: "relative" }}>
       <Stack direction="row" gap="0.8rem" alignItems="center">
@@ -182,7 +188,7 @@ const ReferralCode = ({ isChecking, setIsChecking, code, codeStatus, setCodeStat
         ))}
       </ReferralCodeBox>
       <StatusBox>
-        {isChecking && (
+        {isChecking && codeStatus === CodeStatus.UNKNOWN && (
           <Stack direction="row" gap="0.5rem" alignItems="center">
             <SvgIcon component={LoadingSvg} inheritViewBox></SvgIcon>
             <StatusContent>Checking...</StatusContent>
