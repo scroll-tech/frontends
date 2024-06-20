@@ -240,6 +240,7 @@ const mainnetRoutes = [
     name: "Scroll Canvas",
     path: "/scroll-canvas",
     element: <ScrollCanvas />,
+    isHiddenFooter: true,
   },
   {
     name: "Scroll Canvas",

@@ -183,8 +183,7 @@ export const THIRD_PARTY_BADGES = isMainnet
         name: "Scrolly Baby",
         badgeContract: SCROLLY_BADGE_ADDRESS,
         attesterProxy: SCROLLY_ATTESTER_PROXY_ADDRESS,
-        description:
-          "Users who participate in Scroll Canvas and complete tasks will receive Zebra's 'zebra' badge. Users with this badge will enjoy Zebra's early benefits in the future.",
+        description: "Bestowed upon all who enter the Scrollyverse, this badge signifies the start of your journey",
         image: "https://cyan-passive-guan-475.mypinata.cloud/ipfs/QmY9rG94E1qpc5NPs1zFTM1hCCTmv9kiRvMoZjGyxCJ2ZE/0.png",
         issuer: {
           origin: "https://scrolly.xyz/",
@@ -199,7 +198,7 @@ export const THIRD_PARTY_BADGES = isMainnet
         badgeContract: PENCILS_BADGE_ADDRESS,
         attesterProxy: PENCILS_ATTESTER_PROXY_ADDRESS,
         description:
-          "Users who participate in Scroll Canvas and complete tasks will receive Zebra's 'zebra' badge. Users with this badge will enjoy Zebra's early benefits in the future.",
+          "Pencils S Badge is rewarded to users who actively participated in Pencils Protocol multi-seasons campaign, with staking more than 0.5 ETH equivalent assets into Scroll ecosystem",
         image: "https://pencilsprotocol.io/nft/scroll/pencil/0.png",
         issuer: {
           origin: "https://pencilsprotocol.io/",

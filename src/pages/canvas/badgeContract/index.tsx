@@ -209,7 +209,7 @@ const BadgeContractDetail = props => {
           loading={isBadgeMinting.get(address)}
           gloomy={!isEligible}
         >
-          Mint now
+          {isBadgeMinting.get(address) ? "Minting" : "Mint now"}
         </ScrollButton>
       )
     }
