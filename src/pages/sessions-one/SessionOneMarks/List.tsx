@@ -1,4 +1,4 @@
-import { isNumber } from "lodash"
+import { isNil, isNumber } from "lodash"
 import { useState } from "react"
 
 import { Avatar, Box, Button, List, ListItem, ListItemIcon, ListItemText, Stack, SvgIcon, Typography } from "@mui/material"
@@ -121,8 +121,7 @@ const MarkList = props => {
                 </ListItemText>
               </>
             )}
-
-            <MarksTooltip key={item.marks} disabled={!item.marks} title={item.marks ? commafy(item.marks) : "--"}>
+            {isNil(item.marks) ? (
               <Box
                 sx={{
                   justifySelf: "flex-end",
@@ -134,9 +133,26 @@ const MarkList = props => {
                   },
                 }}
               >
-                <Statistic count={isNumber(item.marks) ? formatLargeNumber(item.marks, 2) : "--"} isLoading={isLoading} sx={{}}></Statistic>
+                <Typography sx={{ fontSize: ["1.4rem", "1.6rem"] }}>Coming soon</Typography>
               </Box>
-            </MarksTooltip>
+            ) : (
+              <MarksTooltip key={item.marks} disabled={!item.marks} title={item.marks ? commafy(item.marks) : "--"}>
+                <Box
+                  sx={{
+                    justifySelf: "flex-end",
+                    // will replace responsive css in Statistic
+                    [theme.breakpoints.up("sm")]: {
+                      position: "absolute",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                    },
+                  }}
+                >
+                  <Statistic count={isNumber(item.marks) ? formatLargeNumber(item.marks, 2) : "--"} isLoading={isLoading} sx={{}}></Statistic>
+                </Box>
+              </MarksTooltip>
+            )}
+
             {item.project === "Others" ? (
               <>
                 <Button

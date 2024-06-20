@@ -50,33 +50,34 @@ export const projectList = {
       website: "",
       marks: 1234,
     },
-    {
-      project: "Cog Finance",
-      logo: "https://scroll-eco-list.netlify.app/logos/Cog%20Finance.png",
-      website: "",
-      marks: 1234,
-    },
-    {
-      project: "LayerBank",
-      logo: "https://scroll-eco-list.netlify.app/logos/LayerBank.png",
-      website: "",
-      marks: 1234,
-    },
+
     {
       project: "Rho Markets",
       logo: "https://scroll-eco-list.netlify.app/logos/Rho%20Markets.png",
       website: "",
-      marks: 1234,
+      marks: null,
     },
     {
       project: "Others",
       marks: 1234,
       items: [
         {
+          project: "Cog Finance",
+          logo: "https://scroll-eco-list.netlify.app/logos/Cog%20Finance.png",
+          website: "",
+          marks: 1234,
+        },
+        {
           project: "Compound",
           logo: "https://scroll-eco-list.netlify.app/logos/Compound%20Finance.png",
           website: "",
           marks: 1,
+        },
+        {
+          project: "LayerBank",
+          logo: "https://scroll-eco-list.netlify.app/logos/LayerBank.png",
+          website: "",
+          marks: 1234,
         },
         {
           project: "Synonym",

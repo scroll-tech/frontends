@@ -3,7 +3,7 @@ import useSWR from "swr"
 import { Divider, Typography } from "@mui/material"
 
 import { fetchProjectsMarksUrl } from "@/apis/sessions"
-import { SESSIONS_ONE_ACTIVITIES, SESSIONS_ONE_DEX, SESSIONS_ONE_LENDING } from "@/constants"
+import { SESSIONS_ONE_DEX, SESSIONS_ONE_LENDING } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useSessionsStore from "@/stores/sessionsStore"
 import { sentryDebug } from "@/utils"
@@ -75,7 +75,7 @@ const SessionOneMarks = () => {
         isLoading={isLoading}
       ></MarkList>
       {/* TODO: need to remove at the initial launch */}
-      <Divider sx={{ margin: ["0 0 2.4rem 0", "0 0 3.2rem 0"] }}></Divider>
+      {/* <Divider sx={{ margin: ["0 0 2.4rem 0", "0 0 3.2rem 0"] }}></Divider>
       <MarkList
         id={SESSIONS_ONE_ACTIVITIES}
         icon={SESSIONS_SECTION_MAP[SESSIONS_ONE_ACTIVITIES].icon}
@@ -83,7 +83,7 @@ const SessionOneMarks = () => {
         description="Marks are rewarded to users who participate in Scroll native projects."
         data={projectList?.activities}
         isLoading={isLoading}
-      ></MarkList>
+      ></MarkList> */}
     </Card>
   )
 }

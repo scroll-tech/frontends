@@ -3,7 +3,7 @@ import { useEffect, useMemo } from "react"
 import { List, ListItem, ListItemButton, ListItemIcon, ListItemText, SvgIcon } from "@mui/material"
 import useScrollTrigger from "@mui/material/useScrollTrigger"
 
-import { ReactComponent as ActivitiesSvg } from "@/assets/svgs/sessions/activities.svg"
+// import { ReactComponent as ActivitiesSvg } from "@/assets/svgs/sessions/activities.svg"
 import { ReactComponent as AssetsSvg } from "@/assets/svgs/sessions/assets.svg"
 import { ReactComponent as DexSvg } from "@/assets/svgs/sessions/dex.svg"
 import { ReactComponent as GasSvg } from "@/assets/svgs/sessions/gas.svg"
@@ -26,11 +26,11 @@ const SESSIONS_SECTION = [
         key: "lending",
         icon: LendingSvg,
       },
-      {
-        label: "Platform activities",
-        key: "activities",
-        icon: ActivitiesSvg,
-      },
+      // {
+      //   label: "Platform activities",
+      //   key: "activities",
+      //   icon: ActivitiesSvg,
+      // },
     ],
   },
   {
