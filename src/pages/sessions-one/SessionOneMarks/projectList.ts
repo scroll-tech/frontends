@@ -89,7 +89,7 @@ const PROJECT_LIST = [
   {
     name: "Oku Trade",
     key: "Oku Trade",
-    logo: "https://scroll-eco-list.netlify.app/logos/Oku%20Trade.png",
+    logo: "https://scroll-eco-list.netlify.app/logos/Oku%20Trade.jpeg",
     website: "https://oku.trade/",
   },
   {
