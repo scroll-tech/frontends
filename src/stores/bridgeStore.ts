@@ -48,7 +48,7 @@ const useBridgeStore = create<BridgeStore>()((set, get) => ({
   withDrawStep: "1",
   txResult: null,
   isNetworkCorrect: true,
-  tokenList: [],
+  tokenList: NATIVE_TOKEN_LIST,
 
   fetchTokenList: async () => {
     try {
