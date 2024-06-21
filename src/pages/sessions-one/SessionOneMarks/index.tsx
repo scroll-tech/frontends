@@ -26,8 +26,7 @@ const SessionOneMarks = () => {
         }
 
         const result = await scrollRequest(url)
-        // const { dex, lending } = result
-        return result[0][0]
+        return result[0]
       } catch (e) {
         sentryDebug(`project marks: ${walletCurrentAddress}-${e.message}`)
         return defaultProjectList
@@ -39,8 +38,6 @@ const SessionOneMarks = () => {
       revalidateOnReconnect: false,
     },
   )
-
-  console.log(marks, "marks")
 
   return (
     <Card bottomDiff="0rem">

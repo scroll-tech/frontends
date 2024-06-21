@@ -21,7 +21,7 @@ const Statistic = props => {
         height: ["4rem", "4.8rem", "4.8rem"],
         backgroundColor: "themeBackground.light",
         borderRadius: "0.8rem",
-        px: ["0.4rem", "1rem"],
+        px: "0.4rem",
         ...sx,
       }}
     >

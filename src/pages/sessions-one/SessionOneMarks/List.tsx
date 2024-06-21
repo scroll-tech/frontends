@@ -84,6 +84,7 @@ const MarkList = props => {
                   <Stack direction="row" gap="4px">
                     {item?.items?.map(({ project, logo, website }) => (
                       <Avatar
+                        key={project}
                         variant="square"
                         src={PROJECT_MAP[project].logo}
                         alt={project}

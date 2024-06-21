@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react"
+import { Fragment, useEffect, useMemo } from "react"
 
 import { List, ListItem, ListItemButton, ListItemIcon, ListItemText, SvgIcon } from "@mui/material"
 import useScrollTrigger from "@mui/material/useScrollTrigger"
@@ -77,7 +77,7 @@ const AnchorNavigation = props => {
         }
       }
       const observerOptions: IntersectionObserverInit = {
-        rootMargin: "0px 0px -50%",
+        rootMargin: "0px 0px -55%",
       }
 
       const sectionObserver = new IntersectionObserver(callback, observerOptions)
@@ -110,6 +110,7 @@ const AnchorNavigation = props => {
   const renderItems = (items, sessionKey) => {
     return items.map(({ icon, key, label }) => (
       <ListItemButton
+        key={key}
         selected={key === selectedSection.split("-")[2]}
         sx={[
           {
@@ -159,12 +160,12 @@ const AnchorNavigation = props => {
       }}
     >
       {SESSIONS_SECTION.map(item => (
-        <>
+        <Fragment key={item.key}>
           <ListItem sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: "2.4rem", fontWeight: 600, py: ["1.2rem", "1.2rem", "1.6rem"] }}>
             {item.label}
           </ListItem>
           <>{renderItems(item.items, item.key)}</>
-        </>
+        </Fragment>
       ))}
     </List>
   )

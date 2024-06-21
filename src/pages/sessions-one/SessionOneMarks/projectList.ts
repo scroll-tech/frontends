@@ -2,11 +2,11 @@ export const defaultProjectList = {
   dex: [
     {
       name: "Ambient",
-      project: "ambient",
+      project: "Ambient",
     },
     {
       name: "Nuri",
-      project: "nuri",
+      project: "Nuri",
     },
     {
       name: "Others",
@@ -14,19 +14,19 @@ export const defaultProjectList = {
       items: [
         {
           name: "Izumi",
-          project: "izumi",
+          project: "Izumi",
         },
         {
           name: "Oku Trade",
-          project: "oku_trade",
+          project: "Oku Trade",
         },
         {
-          name: "Syncswap",
-          project: "syncswap",
+          name: "SyncSwap",
+          project: "SyncSwap",
         },
         {
           name: "Zebra",
-          project: "zebra",
+          project: "Zebra",
         },
       ],
     },
@@ -34,12 +34,12 @@ export const defaultProjectList = {
   lending: [
     {
       name: "Aave",
-      project: "aave",
+      project: "Aave",
     },
 
     {
       name: "Rho Markets",
-      project: "rho_markets",
+      project: "Rho Markets",
     },
     {
       name: "Others",
@@ -47,19 +47,19 @@ export const defaultProjectList = {
       items: [
         {
           name: "Cog Finance",
-          project: "cog_finance",
+          project: "Cog Finance",
         },
         {
           name: "Compound",
-          project: "compound",
+          project: "Compound",
         },
         {
           name: "LayerBank",
-          project: "layerbank",
+          project: "Layerbank",
         },
         {
           name: "Synonym",
-          project: "synonym",
+          project: "Synonym",
         },
       ],
     },
@@ -73,71 +73,71 @@ export const defaultProjectList = {
 }
 
 const PROJECT_LIST = [
-  { name: "Ambient", key: "ambient", logo: "https://scroll-eco-list.netlify.app/logos/Ambient%20Finance.png", website: "https://ambient.finance/" },
+  { name: "Ambient", key: "Ambient", logo: "https://scroll-eco-list.netlify.app/logos/Ambient%20Finance.png", website: "https://ambient.finance/" },
   {
     name: "Nuri",
-    key: "nuri",
+    key: "Nuri",
     logo: "https://scroll-eco-list.netlify.app/logos/Nuri%20Exchange.jpeg",
     website: "https://www.nuri.exchange/swap",
   },
   {
     name: "Izumi",
-    key: "izumi",
+    key: "Izumi",
     logo: "https://scroll-eco-list.netlify.app/logos/iZUMi%20Finance.png",
     website: "https://izumi.finance/trade/swap",
   },
   {
     name: "Oku Trade",
-    key: "oku_trade",
+    key: "Oku Trade",
     logo: "https://scroll-eco-list.netlify.app/logos/Oku%20Trade.png",
     website: "https://oku.trade/",
   },
   {
-    name: "Syncswap",
-    key: "syncswap",
+    name: "SyncSwap",
+    key: "SyncSwap",
     logo: "https://scroll-eco-list.netlify.app/logos/Syncswap.png",
     website: "https://syncswap.xyz/",
   },
   {
     name: "Zebra",
-    key: "zebra",
+    key: "Zebra",
     logo: "https://scroll-eco-list.netlify.app/logos/Zebra.png",
     website: "https://www.zebra.xyz/",
   },
   {
     name: "Aave",
-    key: "aave",
+    key: "Aave",
     logo: "https://scroll-eco-list.netlify.app/logos/Aave.svg",
     website: "https://app.aave.com/",
   },
 
   {
     name: "Rho Markets",
-    key: "rho_markets",
+    key: "Rho Markets",
     logo: "https://scroll-eco-list.netlify.app/logos/Rho%20Markets.png",
     website: "https://dapp.rhomarkets.xyz/",
   },
   {
     name: "Cog Finance",
-    key: "cog_finance",
+    key: "Cog Finance",
     logo: "https://scroll-eco-list.netlify.app/logos/Cog%20Finance.png",
     website: "https://www.cog.finance/",
   },
   {
     name: "Compound",
-    key: "compound",
+    key: "Compound",
     logo: "https://scroll-eco-list.netlify.app/logos/Compound%20Finance.png",
     website: "https://compound.finance/",
   },
   {
     name: "LayerBank",
-    key: "layerbank",
+    key: "Layerbank",
     logo: "https://scroll-eco-list.netlify.app/logos/LayerBank.png",
     website: "https://scroll.layerbank.finance/bank",
   },
   {
     name: "Synonym",
-    key: "synonym",
+    key: "Synonym",
     logo: "https://scroll-eco-list.netlify.app/logos/Synonym%20Finance.jpg",
     website: "https://www.synonym.finance/",
   },

@@ -121,7 +121,7 @@ const MarkList = props => {
                   {isLandscape && item.containedTokens && (
                     <Stack direction="row">
                       {item.containedTokens.map(({ symbol, logoURI }) => (
-                        <Avatar sx={{ width: "2.4rem", height: "2.4rem" }} alt={symbol} src={logoURI}></Avatar>
+                        <Avatar key={symbol} sx={{ width: "2.4rem", height: "2.4rem" }} alt={symbol} src={logoURI}></Avatar>
                       ))}
                     </Stack>
                   )}
