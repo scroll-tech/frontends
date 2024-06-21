@@ -1,4 +1,4 @@
-import { isNil, isNumber } from "lodash"
+import { isNull, isNumber } from "lodash"
 import { useState } from "react"
 
 import { Avatar, Box, Button, List, ListItem, ListItemIcon, ListItemText, Stack, SvgIcon, Typography } from "@mui/material"
@@ -11,6 +11,7 @@ import { commafy, formatLargeNumber } from "@/utils"
 import MarksTooltip from "../components/MarksTooltip"
 import Statistic from "../components/Statistic"
 import OthersModal from "./OthersModal"
+import { PROJECT_MAP } from "./projectList"
 
 export enum MarksType {
   ELIGIBLE_ASSETS,
@@ -84,7 +85,7 @@ const MarkList = props => {
                     {item?.items?.map(({ project, logo, website }) => (
                       <Avatar
                         variant="square"
-                        src={logo}
+                        src={PROJECT_MAP[project].logo}
                         alt={project}
                         sx={{ width: "2rem", height: "2rem", borderRadius: "3px", backgroundColor: "background.default" }}
                       ></Avatar>
@@ -104,7 +105,7 @@ const MarkList = props => {
                       borderRadius: id === SESSIONS_ONE_ACTIVITIES ? "50%" : "7px",
                       backgroundColor: "background.default",
                     }}
-                    src={item.logo}
+                    src={PROJECT_MAP[item.project].logo}
                   ></Avatar>
                 </ListItemIcon>
                 <ListItemText
@@ -117,11 +118,11 @@ const MarkList = props => {
                     },
                   }}
                 >
-                  {item.project}
+                  {PROJECT_MAP[item.project].name}
                 </ListItemText>
               </>
             )}
-            {isNil(item.marks) ? (
+            {isNull(item.marks) ? (
               <Box
                 sx={{
                   justifySelf: "flex-end",
@@ -194,8 +195,11 @@ const MarkList = props => {
                     gridColumn: "span 3",
                   },
                 }}
+                href={PROJECT_MAP[item.project].website}
+                target="_blank"
               >
-                Go to {item.alias || item.project}
+                {/* Go to {PROJECT_MAP[item.project].alias || PROJECT_MAP[item.project].name} */}
+                Go to {PROJECT_MAP[item.project].name}
               </Button>
             )}
           </ListItem>

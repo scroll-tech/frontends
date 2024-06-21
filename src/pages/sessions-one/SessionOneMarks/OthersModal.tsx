@@ -15,6 +15,8 @@ import {
 
 import { ReactComponent as CloseSvg } from "@/assets/svgs/bridge/close.svg"
 
+import { PROJECT_MAP } from "./projectList"
+
 // TODO: common modal
 const OthersModal = props => {
   const { data, children, onClose, ...restProps } = props
@@ -86,11 +88,11 @@ const OthersModal = props => {
               }}
             >
               <ListItemAvatar sx={{ minWidth: 0 }}>
-                <Avatar sx={{ width: "4.8rem", height: "4.8rem", borderRadius: "0.7rem" }} alt={item.project} src={item.logo} />
+                <Avatar sx={{ width: "4.8rem", height: "4.8rem", borderRadius: "0.7rem" }} alt={item.project} src={PROJECT_MAP[item.project].logo} />
               </ListItemAvatar>
-              <ListItemText primaryTypographyProps={{ fontSize: ["1.6rem", "2rem"], fontWeight: 600 }}>{item.project}</ListItemText>
+              <ListItemText primaryTypographyProps={{ fontSize: ["1.6rem", "2rem"], fontWeight: 600 }}>{PROJECT_MAP[item.project].name}</ListItemText>
               <Button
-                href={item.website}
+                href={PROJECT_MAP[item.project].website}
                 sx={{
                   borderRadius: "0.8rem",
                   width: ["14rem", "18rem"],
@@ -104,7 +106,7 @@ const OthersModal = props => {
                 }}
                 target="_blank"
               >
-                Go to {item.project}
+                Go to {PROJECT_MAP[item.project].name}
               </Button>
             </ListItem>
           ))}

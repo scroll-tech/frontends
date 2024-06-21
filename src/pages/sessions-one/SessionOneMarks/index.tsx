@@ -11,16 +11,7 @@ import { sentryDebug } from "@/utils"
 import { SESSIONS_SECTION_MAP } from "../AnchorNavigation"
 import Card from "../components/Card"
 import MarkList from "./List"
-import { projectList } from "./projectList"
-
-// const defaultMarks = {
-//   tokensMarks: tokenList.map(item => ({ ...item, marks: null })),
-//   gasMarks: gasList.map(item => ({
-//     ...item,
-//     amount: null,
-//     marks: null,
-//   })),
-// }
+import { defaultProjectList } from "./projectList"
 
 const SessionOneMarks = () => {
   const { walletCurrentAddress } = useRainbowContext()
@@ -36,14 +27,14 @@ const SessionOneMarks = () => {
 
         const result = await scrollRequest(url)
         // const { dex, lending } = result
-        return result
+        return result[0][0]
       } catch (e) {
         sentryDebug(`project marks: ${walletCurrentAddress}-${e.message}`)
-        return {}
+        return defaultProjectList
       }
     },
     {
-      fallbackData: {},
+      fallbackData: defaultProjectList,
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
     },
@@ -62,7 +53,7 @@ const SessionOneMarks = () => {
         icon={SESSIONS_SECTION_MAP[SESSIONS_ONE_DEX].icon}
         title={SESSIONS_SECTION_MAP[SESSIONS_ONE_DEX].label}
         description="Marks are rewarded to users who deposit eligible assets into selected DEXs’ liquidity pools. Liquidity deposits with tighter ranges or more market depth are awarded Marks at a higher rate. "
-        data={projectList?.dex}
+        data={marks?.dex}
         isLoading={isLoading}
       ></MarkList>
       <Divider sx={{ margin: ["0 0 2.4rem 0", "0 0 3.2rem 0"] }}></Divider>
@@ -71,7 +62,7 @@ const SessionOneMarks = () => {
         icon={SESSIONS_SECTION_MAP[SESSIONS_ONE_LENDING].icon}
         title={SESSIONS_SECTION_MAP[SESSIONS_ONE_LENDING].label}
         description="Marks are rewarded to users who deposit eligible assets into selected lending markets. Marks are not rewarded for recursive supplying/borrowing."
-        data={projectList?.lending}
+        data={marks?.lending}
         isLoading={isLoading}
       ></MarkList>
       {/* TODO: need to remove at the initial launch */}
