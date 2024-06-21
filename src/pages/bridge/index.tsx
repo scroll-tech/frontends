@@ -1,7 +1,7 @@
 // import createCache from "@emotion/cache"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
-import { Stack, Typography } from "@mui/material"
+import { Alert, Snackbar, Stack, Typography } from "@mui/material"
 
 import GlobalComponents from "@/components/GlobalComponents"
 import SectionWrapper from "@/components/SectionWrapper"
@@ -9,14 +9,23 @@ import { NETWORKS } from "@/constants"
 import BridgeContextProvider from "@/contexts/BridgeContextProvider"
 import { PriceFeeProvider } from "@/contexts/PriceFeeProvider"
 import useBridgeStore from "@/stores/bridgeStore"
-import { isSepolia, requireEnv } from "@/utils"
+import { isSepolia, requireEnv, sentryDebug } from "@/utils"
 
 import FAQsLink from "./FAQ/link"
 import Send from "./Send"
 import HistoryButton from "./components/HistoryButton"
 
 const Bridge = () => {
-  const { txType, changeFromNetwork, changeToNetwork } = useBridgeStore()
+  const { txType, changeFromNetwork, changeToNetwork, fetchTokenList } = useBridgeStore()
+  const [fetchTokenListError, setFetchTokenListError] = useState("")
+
+  useEffect(() => {
+    fetchTokenList().catch(e => {
+      console.log(`tokenList: ${e.message}`)
+      sentryDebug(`tokenList: ${e.message}`)
+      setFetchTokenListError("Fail to fetch token list")
+    })
+  }, [])
 
   useEffect(() => {
     if (txType === "Deposit") {
@@ -27,6 +36,10 @@ const Bridge = () => {
       changeToNetwork(NETWORKS[0])
     }
   }, [txType])
+
+  const handleClose = () => {
+    setFetchTokenListError("")
+  }
 
   return (
     <BridgeContextProvider>
@@ -67,6 +80,11 @@ const Bridge = () => {
           </Stack>
           <Send></Send>
           <FAQsLink />
+          <Snackbar open={!!fetchTokenListError} autoHideDuration={null} onClose={handleClose}>
+            <Alert severity="error" onClose={handleClose} sx={{ ".MuiAlert-action": { padding: "0 0.8rem" } }}>
+              {fetchTokenListError}
+            </Alert>
+          </Snackbar>
         </SectionWrapper>
       </PriceFeeProvider>
     </BridgeContextProvider>

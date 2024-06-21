@@ -1,24 +1,22 @@
 import { BrowserProvider, JsonRpcProvider, JsonRpcSigner, ethers } from "ethers"
 import { createContext, useContext, useEffect, useState } from "react"
 import useStorage from "squirrel-gill"
-import useSWR, { mutate } from "swr"
 
 import { Alert, Snackbar } from "@mui/material"
 
-import { tokenListUrl } from "@/apis/dynamic"
 import BATCH_BRIDGE_GATEWAY_PROXY_ABI from "@/assets/abis/L1BatchBridgeGateway.json"
 import L1_SCROLL_MESSENGER_ABI from "@/assets/abis/L1ScrollMessenger.json"
 import L1_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L1_GATEWAY_ROUTER_PROXY_ADDR.json"
 import L2_SCROLL_MESSENGER_ABI from "@/assets/abis/L2ScrollMessenger.json"
 import L2_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L2_GATEWAY_ROUTER_PROXY_ADDR.json"
-import { BATCH_BRIDGE_GATEWAY_PROXY_ADDR, CHAIN_ID, GATEWAY_ROUTE_PROXY_ADDR, NATIVE_TOKEN_LIST, RPC_URL, SCROLL_MESSENGER_ADDR } from "@/constants"
-import { BLOCK_NUMBERS, USER_TOKEN_LIST } from "@/constants/storageKey"
+import { BATCH_BRIDGE_GATEWAY_PROXY_ADDR, CHAIN_ID, GATEWAY_ROUTE_PROXY_ADDR, RPC_URL, SCROLL_MESSENGER_ADDR } from "@/constants"
+import { BLOCK_NUMBERS } from "@/constants/storageKey"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useBlockNumbers from "@/hooks/useBlockNumbers"
 import useClaimHistory from "@/hooks/useClaimHistory"
 import useTokenPrice from "@/hooks/useTokenPrice"
 import useTxHistory, { TxHistory } from "@/hooks/useTxHistory"
-import { loadState } from "@/utils/localStorage"
+import useBridgeStore from "@/stores/bridgeStore"
 
 export interface Price {
   usd: number
@@ -34,10 +32,8 @@ type BridgeContextProps = {
   networksAndSigners: any
   txHistory: TxHistory
   blockNumbers: number[]
-  tokenList: Token[]
   claimHistory: TxHistory
   tokenPrice: Prices
-  refreshTokenList: () => void
 }
 
 const BridgeContext = createContext<BridgeContextProps | undefined>(undefined)
@@ -45,6 +41,7 @@ const BridgeContext = createContext<BridgeContextProps | undefined>(undefined)
 const BridgeContextProvider = ({ children }: any) => {
   const { provider, walletCurrentAddress, chainId } = useRainbowContext()
   const { isL1Available, isL2Available } = useBlockNumbers()
+  const { tokenList } = useBridgeStore()
 
   const [blockNumbers] = useStorage(localStorage, BLOCK_NUMBERS, [-1, -1])
 
@@ -52,8 +49,6 @@ const BridgeContextProvider = ({ children }: any) => {
     [CHAIN_ID.L1]: {},
     [CHAIN_ID.L2]: {},
   })
-
-  const [fetchTokenListError, setFetchTokenListError] = useState("")
 
   const txHistory = useTxHistory()
   const claimHistory = useClaimHistory()
@@ -112,57 +107,13 @@ const BridgeContextProvider = ({ children }: any) => {
     })
   }
 
-  const { data: tokenList } = useSWR(tokenListUrl, url => {
-    return scrollRequest(url)
-      .then((data: any) => {
-        const tokensListTokens = data.tokens
-        const currentUserTokens = loadState(USER_TOKEN_LIST) || []
-
-        const combinedList = [...NATIVE_TOKEN_LIST, ...tokensListTokens, ...currentUserTokens]
-        const uniqueList = combinedList.reduce(
-          (accumulator, token) => {
-            // If the token doesn't have an address, consider it a native token and add it directly
-            if (!token.address) {
-              accumulator.result.push(token)
-              return accumulator
-            }
-            // Convert address to lowercase for case-insensitive deduplication
-            const lowercaseAddress = token.address.toLowerCase()
-            // Create a key combining address and chainId to ensure different chainIds are not deduplicated
-            const key = `${lowercaseAddress}-${token.chainId}`
-
-            if (!accumulator.seen[key]) {
-              accumulator.seen[key] = true
-              accumulator.result.push(token)
-            }
-            return accumulator
-          },
-          { seen: {}, result: [] },
-        ).result
-
-        return uniqueList
-      })
-      .catch(() => {
-        setFetchTokenListError("Fail to fetch token list")
-        return null
-      })
-  })
-
   const tokenPrice = useTokenPrice(tokenList)
-
-  const refreshTokenList = () => {
-    mutate(tokenListUrl)
-  }
 
   useEffect(() => {
     if (provider && walletCurrentAddress) {
       update(provider, walletCurrentAddress)
     }
   }, [provider, walletCurrentAddress, chainId])
-
-  const handleClose = () => {
-    setFetchTokenListError("")
-  }
 
   return (
     <BridgeContext.Provider
@@ -171,18 +122,10 @@ const BridgeContextProvider = ({ children }: any) => {
         txHistory,
         blockNumbers,
         claimHistory,
-        tokenList: tokenList ?? NATIVE_TOKEN_LIST,
-        refreshTokenList,
         tokenPrice,
       }}
     >
       {children}
-      {/* TODO: unify error reporting */}
-      <Snackbar open={!!fetchTokenListError} autoHideDuration={null} onClose={handleClose}>
-        <Alert severity="error" onClose={handleClose} sx={{ ".MuiAlert-action": { padding: "0 0.8rem" } }}>
-          {fetchTokenListError}
-        </Alert>
-      </Snackbar>
       {!isL1Available && (
         <Snackbar open={true}>
           <Alert severity="error" key="l1">
