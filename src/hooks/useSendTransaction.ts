@@ -43,20 +43,34 @@ export function useSendTransaction(props) {
 
   const send = async () => {
     setIsLoading(true)
-    let tx
+    let tx, chainId
     const isBatchMode = bridgeSummaryType === BridgeSummaryType.Selector && depositBatchMode === DepositBatchMode.Economy
     // let currentBlockNumber
     try {
       if (isBatchMode) {
         // currentBlockNumber = await networksAndSigners[CHAIN_ID.L1].provider.getBlockNumber()
-        tx = await batchSendL1ToL2()
-        setIsLoading(false)
+        chainId = await networksAndSigners[CHAIN_ID.L1].provider.getNetwork().then(network => Number(network.chainId))
+        if (chainId === CHAIN_ID.L1) {
+          tx = await batchSendL1ToL2()
+        } else {
+          throw new Error("Invalid chainId for transaction.")
+        }
       } else if (fromNetwork.isL1) {
         // currentBlockNumber = await networksAndSigners[CHAIN_ID.L1].provider.getBlockNumber()
-        tx = await sendl1ToL2()
+        chainId = await networksAndSigners[CHAIN_ID.L1].provider.getNetwork().then(network => Number(network.chainId))
+        if (chainId === CHAIN_ID.L1) {
+          tx = await sendl1ToL2()
+        } else {
+          throw new Error("Invalid chainId for transaction.")
+        }
       } else if (!fromNetwork.isL1 && toNetwork.isL1) {
         // currentBlockNumber = await networksAndSigners[CHAIN_ID.L2].provider.getBlockNumber()
-        tx = await sendl2ToL1()
+        chainId = await networksAndSigners[CHAIN_ID.L2].provider.getNetwork().then(network => Number(network.chainId))
+        if (chainId === CHAIN_ID.L2) {
+          tx = await sendl2ToL1()
+        } else {
+          throw new Error("Invalid chainId for transaction.")
+        }
       }
 
       // start to check tx replacement from current block number
