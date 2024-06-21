@@ -24,7 +24,7 @@ const LOWER_BOUND = 1e5
 
 export function useSendTransaction(props) {
   const { amount: fromTokenAmount, selectedToken, receiver, needApproval } = props
-  const { walletCurrentAddress } = useRainbowContext()
+  const { walletCurrentAddress, provider } = useRainbowContext()
   const { networksAndSigners, blockNumbers } = useBridgeContext()
   const { enlargedGasLimit: txGasLimit, maxFeePerGas, maxPriorityFeePerGas, gasLimitBatch } = useGasFee(selectedToken, needApproval)
   const { addTransaction, addEstimatedTimeMap, removeFrontTransactions, updateTransaction } = useTxStore()
@@ -43,13 +43,13 @@ export function useSendTransaction(props) {
 
   const send = async () => {
     setIsLoading(true)
-    let tx, chainId
+    let tx
     const isBatchMode = bridgeSummaryType === BridgeSummaryType.Selector && depositBatchMode === DepositBatchMode.Economy
     // let currentBlockNumber
+    const chainId = await provider!.getNetwork().then(network => Number(network.chainId))
     try {
       if (isBatchMode) {
         // currentBlockNumber = await networksAndSigners[CHAIN_ID.L1].provider.getBlockNumber()
-        chainId = await networksAndSigners[CHAIN_ID.L1].provider.getNetwork().then(network => Number(network.chainId))
         if (chainId === CHAIN_ID.L1) {
           tx = await batchSendL1ToL2()
         } else {
@@ -57,7 +57,6 @@ export function useSendTransaction(props) {
         }
       } else if (fromNetwork.isL1) {
         // currentBlockNumber = await networksAndSigners[CHAIN_ID.L1].provider.getBlockNumber()
-        chainId = await networksAndSigners[CHAIN_ID.L1].provider.getNetwork().then(network => Number(network.chainId))
         if (chainId === CHAIN_ID.L1) {
           tx = await sendl1ToL2()
         } else {
@@ -65,7 +64,6 @@ export function useSendTransaction(props) {
         }
       } else if (!fromNetwork.isL1 && toNetwork.isL1) {
         // currentBlockNumber = await networksAndSigners[CHAIN_ID.L2].provider.getBlockNumber()
-        chainId = await networksAndSigners[CHAIN_ID.L2].provider.getNetwork().then(network => Number(network.chainId))
         if (chainId === CHAIN_ID.L2) {
           tx = await sendl2ToL1()
         } else {
