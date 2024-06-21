@@ -1,13 +1,13 @@
 import { isNumber } from "lodash"
-import { makeStyles } from "tss-react/mui"
 
-import { Avatar, Box, Button, Link, List, ListItem, ListItemIcon, ListItemText, Skeleton, Stack, Tooltip, Typography } from "@mui/material"
+import { Avatar, Box, Button, Link, List, ListItem, ListItemIcon, ListItemText, Skeleton, Stack, SvgIcon, Typography } from "@mui/material"
 import { useTheme } from "@mui/material/styles"
 import { styled } from "@mui/system"
 
 import useCheckViewport from "@/hooks/useCheckViewport"
 import { commafy, formatLargeNumber, generateExploreLink, toPrecision, truncateHash } from "@/utils"
 
+import MarksTooltip from "../components/MarksTooltip"
 import Statistic from "../components/Statistic"
 
 const TOKEN_BASE_URL = "https://scrollscan.com"
@@ -17,21 +17,10 @@ export enum MarksType {
   GAS_SPENT,
 }
 
-const useStyles = makeStyles()(theme => ({
-  tooltip: {
-    background: "linear-gradient(180deg, #262626 0%, #111 100%)",
-    padding: "1.2rem 1.4rem",
-    fontSize: "1.8rem",
-    lineHeight: "2.4rem",
-    fontFamily: "var(--developer-page-font-family)",
-  },
-}))
-
 const SectionTitle = styled(Typography)(({ theme }) => ({
   fontSize: "2rem",
   lineHeight: "2.8rem",
   fontWeight: 600,
-  marginBottom: "0.8rem",
   [theme.breakpoints.down("sm")]: {
     fontSize: "1.8rem",
   },
@@ -59,15 +48,17 @@ const ListAddressStyled = styled(Link)(({ theme }) => ({
   },
 }))
 
-const TokenList = props => {
-  const { title, data, description, type = MarksType.ELIGIBLE_ASSETS, isLoading } = props
-  const { classes } = useStyles()
+const MarkList = props => {
+  const { id, title, icon, data, description, type = MarksType.ELIGIBLE_ASSETS, isLoading } = props
   const theme = useTheme()
   const { isLandscape } = useCheckViewport()
 
   return (
     <>
-      <SectionTitle>{title}</SectionTitle>
+      <Stack id={id} className="session-section" direction="row" gap="0.8rem" sx={{ mb: [0, "0.8rem"] }} alignItems="center">
+        <SvgIcon sx={{ fontSize: "2.4rem" }} component={icon} inheritViewBox></SvgIcon>
+        <SectionTitle>{title}</SectionTitle>
+      </Stack>
       <SectionDescription>{description}</SectionDescription>
       <List
         sx={{
@@ -86,8 +77,8 @@ const TokenList = props => {
               gridTemplateColumns: ["repeat(2, max-content) 1fr", "repeat(2, max-content) 1fr"],
               columnGap: ["0.8rem", "1.6rem"],
               rowGap: ["1.6rem"],
-              height: ["auto", "8.4rem"],
-              m: "2.4rem 0 !important",
+              height: ["auto", "5.6rem"],
+              m: ["2.4rem 0 !important", "3.2rem 0 !important"],
               p: [0],
             }}
           >
@@ -130,7 +121,7 @@ const TokenList = props => {
                   {isLandscape && item.containedTokens && (
                     <Stack direction="row">
                       {item.containedTokens.map(({ symbol, logoURI }) => (
-                        <Avatar sx={{ width: "2.4rem", height: "2.4rem" }} alt={symbol} src={logoURI}></Avatar>
+                        <Avatar key={symbol} sx={{ width: "2.4rem", height: "2.4rem" }} alt={symbol} src={logoURI}></Avatar>
                       ))}
                     </Stack>
                   )}
@@ -138,15 +129,7 @@ const TokenList = props => {
               )}
             </ListItemText>
 
-            <Tooltip
-              key={item.marks}
-              disableHoverListener={!item.marks}
-              disableFocusListener={!item.marks}
-              disableTouchListener={!item.marks}
-              title={item.marks ? commafy(item.marks) : "--"}
-              followCursor
-              classes={{ tooltip: classes.tooltip }}
-            >
+            <MarksTooltip key={item.marks} disabled={!item.marks} title={item.marks ? commafy(item.marks) : "--"}>
               <Box
                 sx={{
                   justifySelf: "flex-end",
@@ -159,9 +142,14 @@ const TokenList = props => {
                   },
                 }}
               >
-                <Statistic count={isNumber(item.marks) ? formatLargeNumber(item.marks, 2) : "--"} isLoading={isLoading}></Statistic>
+                <Statistic
+                  count={isNumber(item.marks) ? formatLargeNumber(item.marks, 2) : "--"}
+                  label="Marks earned"
+                  isLoading={isLoading}
+                  sx={{}}
+                ></Statistic>
               </Box>
-            </Tooltip>
+            </MarksTooltip>
 
             {type === MarksType.ELIGIBLE_ASSETS && (
               <Button
@@ -195,6 +183,7 @@ const TokenList = props => {
                   display: "flex",
                   flexDirection: ["row", "column"],
                   justifyContent: "space-between",
+                  textAlign: "right",
                   [theme.breakpoints.down("sm")]: {
                     gridColumn: "span 3",
                   },
@@ -220,13 +209,13 @@ const TokenList = props => {
           </ListItem>
         ))}
       </List>
-      {type === MarksType.ELIGIBLE_ASSETS && (
+      {/* {type === MarksType.ELIGIBLE_ASSETS && (
         <Typography sx={{ fontSize: ["1.8rem", "2rem"], lineHeight: ["2.8rem"], fontWeight: 600, mb: "2.4rem" }}>
           More eligible assets will be announced soon!
         </Typography>
-      )}
+      )} */}
     </>
   )
 }
 
-export default TokenList
+export default MarkList
