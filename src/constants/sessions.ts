@@ -33,3 +33,9 @@ export const SESSIONS_EXPLORER_LIST = [
     content: "All legal things",
   },
 ]
+
+export const SESSIONS_ZERO_ASSETS = "session-0-assets"
+export const SESSIONS_ZERO_GAS = "session-0-gas"
+export const SESSIONS_ONE_DEX = "session-1-dex"
+export const SESSIONS_ONE_LENDING = "session-1-lending"
+export const SESSIONS_ONE_ACTIVITIES = "session-1-activities"
