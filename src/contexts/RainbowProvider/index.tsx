@@ -1,14 +1,14 @@
 import { RainbowKitProvider, useConnectModal } from "@rainbow-me/rainbowkit"
 import "@rainbow-me/rainbowkit/styles.css"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { BrowserProvider } from "ethers"
+import { BrowserProvider, ethers } from "ethers"
 import { createContext, useCallback, useContext, useMemo } from "react"
-import { type Config, WagmiProvider, useAccount, useConnectorClient, useDisconnect } from "wagmi"
+import { WagmiProvider, useAccount, useDisconnect, useWalletClient } from "wagmi"
 
 import { config } from "./configs"
 
 type RainbowContextProps = {
-  provider: BrowserProvider | null
+  provider: ethers.BrowserProvider | null
   walletCurrentAddress?: `0x${string}`
   chainId?: number
   connect: () => void
@@ -21,7 +21,7 @@ const RainbowContext = createContext<RainbowContextProps | undefined>(undefined)
 
 const queryClient = new QueryClient()
 
-function clientToProvider(walletClient) {
+function walletClientToSigner(walletClient) {
   const { chain, transport } = walletClient
   const network = {
     chainId: chain.id,
@@ -45,22 +45,23 @@ const RainbowProvider = props => {
 }
 
 const Web3ContextProvider = props => {
-  const { connector: activeConnector, address, isConnected, chainId } = useAccount()
-  const { data: client } = useConnectorClient<Config>({ chainId })
+  const { data: walletClient } = useWalletClient()
 
   const { openConnectModal } = useConnectModal()
   const { disconnect } = useDisconnect()
 
+  const { connector: activeConnector, address, isConnected, chain } = useAccount()
+
   const provider = useMemo(() => {
-    if (client && chainId && chainId === client.chain.id) return clientToProvider(client)
+    if (walletClient && chain && chain.id === walletClient.chain.id) return walletClientToSigner(walletClient)
     return null
-  }, [client, chainId])
+  }, [walletClient, chain])
 
   const checkConnectedChainId = useCallback(
-    id => {
-      return isConnected && chainId === id
+    chainId => {
+      return isConnected && chain?.id === chainId
     },
-    [isConnected, chainId],
+    [isConnected, chain],
   )
 
   return (
@@ -69,7 +70,7 @@ const Web3ContextProvider = props => {
         provider,
         walletCurrentAddress: address,
         walletName: activeConnector?.name,
-        chainId,
+        chainId: chain?.id,
         connect: openConnectModal as () => void,
         disconnect,
         checkConnectedChainId,
