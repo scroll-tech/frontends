@@ -1,7 +1,7 @@
 import { isError } from "ethers"
 import { useMemo, useState } from "react"
 
-import { CHAIN_ID, NETWORKS, TX_STATUS } from "@/constants"
+import { BATCH_BRIDGE_GATEWAY_PROXY_ADDR, CHAIN_ID, NETWORKS, SCROLL_MESSENGER_ADDR, TX_STATUS } from "@/constants"
 import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
@@ -24,7 +24,7 @@ const LOWER_BOUND = 1e5
 
 export function useSendTransaction(props) {
   const { amount: fromTokenAmount, selectedToken, receiver, needApproval } = props
-  const { walletCurrentAddress } = useRainbowContext()
+  const { walletCurrentAddress, provider } = useRainbowContext()
   const { networksAndSigners, blockNumbers } = useBridgeContext()
   const { enlargedGasLimit: txGasLimit, maxFeePerGas, maxPriorityFeePerGas, gasLimitBatch } = useGasFee(selectedToken, needApproval)
   const { addTransaction, addEstimatedTimeMap, removeFrontTransactions, updateTransaction } = useTxStore()
@@ -41,37 +41,27 @@ export function useSendTransaction(props) {
     return amountToBN(fromTokenAmount, selectedToken.decimals)
   }, [fromTokenAmount, selectedToken?.decimals])
 
+  const checkIsContract = async contractAddress => {
+    if (!provider) throw new Error("provider is not defined")
+    const code = await provider.getCode(contractAddress)
+    if (code === "0x") throw new Error("You are connected to the wrong network. Please switch to the correct network and refresh.")
+  }
+
   const send = async () => {
     setIsLoading(true)
-    let tx, chainId
+    let tx
     const isBatchMode = bridgeSummaryType === BridgeSummaryType.Selector && depositBatchMode === DepositBatchMode.Economy
     // let currentBlockNumber
     try {
       if (isBatchMode) {
         // currentBlockNumber = await networksAndSigners[CHAIN_ID.L1].provider.getBlockNumber()
-        chainId = await networksAndSigners[CHAIN_ID.L1].provider.getNetwork().then(network => Number(network.chainId))
-        console.log("chainId", chainId)
-        if (chainId === CHAIN_ID.L1) {
-          tx = await batchSendL1ToL2()
-        } else {
-          throw new Error("Invalid chainId for transaction.")
-        }
+        tx = await batchSendL1ToL2()
       } else if (fromNetwork.isL1) {
         // currentBlockNumber = await networksAndSigners[CHAIN_ID.L1].provider.getBlockNumber()
-        chainId = await networksAndSigners[CHAIN_ID.L1].provider.getNetwork().then(network => Number(network.chainId))
-        if (chainId === CHAIN_ID.L1) {
-          tx = await sendl1ToL2()
-        } else {
-          throw new Error("Invalid chainId for transaction.")
-        }
+        tx = await sendl1ToL2()
       } else if (!fromNetwork.isL1 && toNetwork.isL1) {
         // currentBlockNumber = await networksAndSigners[CHAIN_ID.L2].provider.getBlockNumber()
-        chainId = await networksAndSigners[CHAIN_ID.L2].provider.getNetwork().then(network => Number(network.chainId))
-        if (chainId === CHAIN_ID.L2) {
-          tx = await sendl2ToL1()
-        } else {
-          throw new Error("Invalid chainId for transaction.")
-        }
+        tx = await sendl2ToL1()
       }
 
       // start to check tx replacement from current block number
@@ -217,6 +207,8 @@ export function useSendTransaction(props) {
   }
 
   const withdrawETH = async () => {
+    await checkIsContract(SCROLL_MESSENGER_ADDR[CHAIN_ID.L2])
+
     return networksAndSigners[CHAIN_ID.L2].scrollMessenger["sendMessage(address,uint256,bytes,uint256)"](
       receiver || walletCurrentAddress,
       parsedAmount,
@@ -247,6 +239,8 @@ export function useSendTransaction(props) {
   }
 
   const batchDepositETH = async () => {
+    await checkIsContract(BATCH_BRIDGE_GATEWAY_PROXY_ADDR[CHAIN_ID.L1])
+
     const options: TxOptions = {
       value: parsedAmount + batchDepositConfig.feeAmountPerTx,
       gasLimit: Math.max(Number(gasLimitBatch), LOWER_BOUND),
