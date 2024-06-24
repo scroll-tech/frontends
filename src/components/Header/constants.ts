@@ -187,9 +187,9 @@ const mainnetNavigations = [
             isExternal: true,
           },
           {
-            label: "Audits",
-            key: "audits",
-            href: "https://github.com/scroll-tech/scroll-audits",
+            label: "Security",
+            key: "security",
+            href: "https://docs.scroll.io/en/technology/security/audits-and-bug-bounty/",
             isExternal: true,
           },
         ],
