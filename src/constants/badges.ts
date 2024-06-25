@@ -1,3 +1,6 @@
+import { ethers } from "ethers"
+
+import GitcoinPassportDecoderABI from "@/assets/abis/GitcoinPassportDecoder.json"
 import { isMainnet, requireEnv } from "@/utils"
 
 export const BADGES_ADDRESS = {
@@ -22,6 +25,8 @@ export const BADGES_ADDRESS = {
     ZEBRA_BADGE_ADDRESS: "0x619a0A19203697f36C4092C757485734Ec23b2eB",
     ZEBRA_ATTESTER_PROXY_ADDRESS: "0xD528308D3f0c6CfF15C6D25193d77aFB123ABe82",
     Zebra_BASE_URL: "https://zktrade.net/api/badge",
+
+    PASSPORT_SCORE_BADGE_ADDRESS: "0x838B1Dd570D8d69C21ae16Fd865CE5D279760ba8",
 
     // COG_FINANCE_BADGE_ADDRESS : "0x919d0233B291c0f2e49f36D87bd8938559a4e938",
     // COG_FINANCE_ATTESTER_PROXY_ADDRESS : "0x93db06C5C0470e50327CBB16641a40750c1a5901",
@@ -54,6 +59,8 @@ export const BADGES_ADDRESS = {
     ZEBRA_ATTESTER_PROXY_ADDRESS: "0x69D872fbBdb71CF3599A0Ee29D4115C3FC31745E",
     Zebra_BASE_URL: "https://zebra.xyz/api/badge",
 
+    PASSPORT_SCORE_BADGE_ADDRESS: "0xc4858e4D177Bf0d14571F91401492d62aa608047",
+
     SCROLLY_BADGE_ADDRESS: "0x89b27e836BF46275e6D87cD55461D34ABaade51A",
     SCROLLY_ATTESTER_PROXY_ADDRESS: "0x47a49cCfa1924D5b59cb400708199b6Ae8543D31",
     Scrolly_BASE_URL: "https://api.scrolly.xyz/api/badge",
@@ -85,6 +92,7 @@ const {
   PENCILS_BADGE_ADDRESS,
   PENCILS_ATTESTER_PROXY_ADDRESS,
   Pencils_BASE_URL,
+  PASSPORT_SCORE_BADGE_ADDRESS,
 } = BADGES_ADDRESS[isMainnet ? "mainnet" : "sepolia"]
 
 const ETHEREUM_YEAR_BASE_URL = `${requireEnv("REACT_APP_CANVAS_BACKEND_URI")}/badge`
@@ -281,6 +289,31 @@ export const THIRD_PARTY_BADGES = isMainnet
         },
         baseUrl: Zebra_BASE_URL,
         native: false,
+      },
+      {
+        // TODO fix description and logo
+        name: "Passport",
+        badgeContract: PASSPORT_SCORE_BADGE_ADDRESS,
+        description: "Passport score",
+        image: "https://app.zebra.xyz/images/badge.png",
+        issuer: {
+          origin: "https://passport.xyz/",
+          name: "Passport",
+          logo: "https://scroll-eco-list.netlify.app/logos/Zebra.png",
+        },
+        native: false,
+        validator: async (provider, address) => {
+          console.log("provider", provider)
+          const passportDecoderContract = new ethers.Contract("0x8A5820030188346cC9532a1dD9FD2EF8d8F464de", GitcoinPassportDecoderABI, provider)
+
+          let score = 0
+          try {
+            const rawScore = await passportDecoderContract.getScore(address)
+            score = parseFloat(ethers.formatUnits(rawScore, 4))
+          } catch {}
+
+          return score > 0
+        },
       },
       // {
       //   name: "Cog Finance",
