@@ -10,14 +10,13 @@ import { ReactComponent as ShareSvg } from "@/assets/svgs/canvas/share.svg"
 import ScrollButton from "@/components/Button"
 import Link from "@/components/Link"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useBadgeListProxy from "@/hooks/useBadgeProxy"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useSnackbar from "@/hooks/useSnackbar"
 import Dialog from "@/pages/canvas/components/Dialog"
 import { mintBadge } from "@/services/canvasService"
 import useCanvasStore, { BadgeDetailDialogType } from "@/stores/canvasStore"
 import { generateShareTwitterURL, getBadgeImgURL, requireEnv } from "@/utils"
-
-import { badgeMap } from "../UpgradeDialog/Badges"
 
 const StyledScrollButton = styled(ScrollButton)(({ theme }) => ({
   // width: "24rem",
@@ -91,8 +90,21 @@ const BadgeDetailDialog = () => {
   const navigate = useNavigate()
   const alertWarning = useSnackbar()
   const { isMobile } = useCheckViewport()
+  const badgeListProxy = useBadgeListProxy()
   const [actionHeight, setActionHeight] = useState("auto")
   const actionsRef = useRef()
+
+  const badgeIssuer = useMemo(() => badgeListProxy[selectedBadge.badgeContract]?.issuer || {}, [selectedBadge, badgeListProxy])
+
+  const shareBadgeURL = useMemo(() => {
+    const viewURL = `${requireEnv("REACT_APP_FFRONTENDS_URL")}/scroll-canvas/badge/${selectedBadge.id}`
+    return generateShareTwitterURL(viewURL, `Here is my badge ${selectedBadge.name}`)
+  }, [selectedBadge])
+
+  const shareBadgeContractURL = useMemo(() => {
+    const viewURL = `${requireEnv("REACT_APP_FFRONTENDS_URL")}/scroll-canvas/badge-contract/${selectedBadge.badgeContract}`
+    return generateShareTwitterURL(viewURL, `I found badge ${selectedBadge.name}`)
+  }, [selectedBadge])
 
   useEffect(() => {
     if (badgeDetailDialogVisible !== BadgeDetailDialogType.HIDDEN && actionsRef?.current) {
@@ -158,18 +170,6 @@ const BadgeDetailDialog = () => {
     // changeUpgradeDialog(true)
   }
 
-  const badgeIssuer = useMemo(() => badgeMap[selectedBadge.badgeContract]?.issuer || {}, [selectedBadge])
-
-  const shareBadgeURL = useMemo(() => {
-    const viewURL = `${requireEnv("REACT_APP_FFRONTENDS_URL")}/scroll-canvas/badge/${selectedBadge.id}`
-    return generateShareTwitterURL(viewURL, `Here is my badge ${selectedBadge.name}`)
-  }, [selectedBadge])
-
-  const shareBadgeContractURL = useMemo(() => {
-    const viewURL = `${requireEnv("REACT_APP_FFRONTENDS_URL")}/scroll-canvas/badge-contract/${selectedBadge.badgeContract}`
-    return generateShareTwitterURL(viewURL, `I found badge ${selectedBadge.name}`)
-  }, [selectedBadge])
-
   return (
     <Dialog
       sx={{ zIndex: theme => theme.zIndex.modal + 1 }}
@@ -225,8 +225,8 @@ const BadgeDetailDialog = () => {
                   [theme.breakpoints.down("sm")]: {
                     display: "-webkit-box",
                     width: "100%",
-                    "-webkit-box-orient": "vertical",
-                    "-webkit-line-clamp": "4",
+                    WebkitBoxOrient: "vertical",
+                    WebkitLineClamp: "4",
                     overflow: "hidden",
                   },
                 }),

@@ -2,16 +2,16 @@ import React, { useEffect, useMemo, useState } from "react"
 
 import Canvas from "@/components/Canvas"
 import { CHAIN_ID } from "@/constants"
+import { type Badge, ETHEREUM_YEAR_BADGE } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import BadgeDetailDialog from "@/pages/canvas/Dashboard/BadgeDetailDialog"
-import Badges from "@/pages/canvas/Dashboard/UpgradeDialog/Badges"
 import { checkIfHasBadgeByAddress } from "@/services/canvasService"
 import useCanvasStore, { BadgeDetailDialogType } from "@/stores/canvasStore"
 
 //TODO: Scroll hasn’t issued a badge according to the bridge yet, so there’s no need to display Scrolly
 const MintBadge = () => {
   const { changeBadgeDetailDialog, changeSelectedBadge, profileMinted } = useCanvasStore()
-  const badge: any = Badges[3]
+  const badge: Badge = ETHEREUM_YEAR_BADGE
   const [canBeMint, setCanBeMint] = useState(false)
   const { chainId, provider, walletCurrentAddress } = useRainbowContext()
   //   const { hasMintedProfile } = useCanvasContext()
@@ -37,7 +37,7 @@ const MintBadge = () => {
   }
 
   const handleMintBadge = async () => {
-    changeSelectedBadge(Badges[3])
+    changeSelectedBadge(badge)
     if (profileMinted) {
       changeBadgeDetailDialog(BadgeDetailDialogType.MINT)
     } else {

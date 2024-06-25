@@ -10,6 +10,7 @@ import Skeleton from "@/components/Skeleton"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import { getBadgeImgURL } from "@/utils"
 
+import BadgeDesc from "../components/BadgeDesc"
 import Statistic from "../components/Statistic"
 
 const InfoBox = styled<any>(Box)(({ theme, count }) => ({
@@ -188,14 +189,13 @@ const BadgeDetail = props => {
                 ></Skeleton>
               ) : (
                 <Typography sx={{ fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.4rem", "2.8rem"], maxWidth: ["100%", "100%", "56rem"] }}>
-                  {detail.description}
+                  <BadgeDesc>{detail.description}</BadgeDesc>
                 </Typography>
               )}
             </Box>
 
             <InfoBox count={property.length}>
               {property.includes("owner") && (
-                // <RouterLink to={viewCanvasURL}>
                 <Statistic label="Owner" loading={loading} sx={{ "& *": { cursor: "pointer !important" } }}>
                   <Box
                     sx={{
@@ -208,7 +208,6 @@ const BadgeDetail = props => {
                     {detail.owner}
                   </Box>
                 </Statistic>
-                // </RouterLink>
               )}
               {property.includes("issuer") && (
                 <Statistic label="Issued by" loading={loading}>

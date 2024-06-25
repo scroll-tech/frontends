@@ -1,8 +1,7 @@
 import { Contract } from "ethers"
 import { create } from "zustand"
 
-import { ETHEREUM_YEAR_BADGE } from "@/constants/badges"
-import { Badge, default as badgeList } from "@/pages/canvas/Dashboard/UpgradeDialog/Badges"
+import { Badge, ETHEREUM_YEAR_BADGE, SCROLL_BADGES } from "@/constants"
 import {
   checkBadgeEligibility,
   fetchCanvasDetail,
@@ -10,6 +9,9 @@ import {
   queryCanvasUsername,
   queryUserBadgesWrapped,
 } from "@/services/canvasService"
+import { requireEnv } from "@/utils"
+
+const BADGE_LIST_URL = requireEnv("REACT_APP_BADGE_LIST_URL")
 
 // import { testAsyncFunc } from "@/services/canvasService"
 
@@ -77,6 +79,7 @@ interface CanvasStore {
   initialMint: boolean
 
   inputReferralCode: Array<string>
+  badgeList: Array<Badge>
 
   changeProfileName: (name: string) => void
   changeIsProfileMinting: (isProfileMinting: boolean) => void
@@ -91,6 +94,7 @@ interface CanvasStore {
   queryUsername: () => void
   queryAttachedBadges: () => void
   queryVisibleBadges: (provider, address) => void
+  queryUserBadges: (provider, address) => void
   pickMintableBadges: (provider, address, refresh?) => void
   addFirstBadge: (provider, badgeId, badgeImage, badgeContract) => void
   clearCanvas: () => void
@@ -99,6 +103,7 @@ interface CanvasStore {
   changeInitialMint: (initialMint: boolean) => void
   queryFirstMintUsername: (provider) => void
   changeInputReferralCode: (inputReferralCode) => void
+  jointBadgeList: () => Promise<void>
 }
 
 const useCanvasStore = create<CanvasStore>()((set, get) => ({
@@ -139,6 +144,8 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
   initialMint: false,
 
   inputReferralCode: ["", "", "", "", ""],
+
+  badgeList: SCROLL_BADGES,
 
   checkIfProfileMinted: async (registryInstance, userAddress, test) => {
     try {
@@ -335,6 +342,17 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
     })
   },
 
+  queryUserBadges: async (provider, walletAddress) => {
+    set({
+      queryUserBadgesLoading: true,
+    })
+    const userBadges = await queryUserBadgesWrapped(provider, walletAddress, false)
+    set({
+      userBadges,
+      queryUserBadgesLoading: false,
+    })
+  },
+
   // auto attach
   queryVisibleBadges: async (provider, walletAddress) => {
     set({
@@ -351,43 +369,12 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
     })
   },
 
-  // pickMintableBadges: async (provider, walletCurrentAddress, refresh) => {
-  //   const { userBadges, mintableBadges } = get()
-  //   const preMintableBadges = [...mintableBadges]
-  //   set({
-  //     pickMintableBadgesLoading: true,
-  //   })
-  //   const checkedBadges = await Promise.allSettled(
-  //     badgeList.map(async badge => {
-  //       const isUserBadge = userBadges.some(userBadge => userBadge.badgeContract === badge.badgeContract)
-  //       const preCheckedBadge = preMintableBadges?.find(item => item.badgeContract === badge.badgeContract)
-  //       if (preCheckedBadge && !isUserBadge && !refresh) {
-  //         return preCheckedBadge
-  //       }
-  //       const isEligibleBadge = await checkBadgeEligibility(provider, walletCurrentAddress, badge)
-
-  //       return {
-  //         ...badge,
-  //         mintable: !isUserBadge && isEligibleBadge,
-  //       }
-  //     }),
-  //   )
-  //   const filteredBadges = checkedBadges
-  //     .filter((item): item is PromiseFulfilledResult<MintableBadge> => item.status === "fulfilled" && item.value.mintable)
-  //     .map(item => item.value)
-
-  //   set({
-  //     pickMintableBadgesLoading: false,
-  //     mintableBadges: filteredBadges,
-  //   })
-  // },
-
   pickMintableBadges: async (provider, walletCurrentAddress, refresh) => {
     set({
       pickMintableBadgesLoading: true,
     })
 
-    const { userBadges, mintableBadges } = get()
+    const { userBadges, mintableBadges, badgeList } = get()
     const preMintableBadges = [...mintableBadges]
 
     const checkedBadgeList: Array<MintableBadge> = []
@@ -443,6 +430,13 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
     set({
       pickMintableBadgesLoading: false,
       mintableBadges: finalMintableBadges,
+    })
+  },
+
+  jointBadgeList: async () => {
+    const { badges } = await scrollRequest(BADGE_LIST_URL)
+    set({
+      badgeList: SCROLL_BADGES.concat(badges),
     })
   },
 

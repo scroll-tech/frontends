@@ -1,5 +1,5 @@
 // import { useSnackbar } from "notistack"
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import { Navigate, useNavigate, useParams } from "react-router-dom"
 
 import { CircularProgress, Stack, SvgIcon, Typography } from "@mui/material"
@@ -12,62 +12,70 @@ import Link from "@/components/Link"
 import { CHAIN_ID } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useAsyncMemo } from "@/hooks"
+import useBadgeListProxy from "@/hooks/useBadgeProxy"
 import useSnackbar from "@/hooks/useSnackbar"
 import { checkBadgeEligibility, checkIfHasBadgeByAddress, mintBadge } from "@/services/canvasService"
 import useCanvasStore from "@/stores/canvasStore"
 import { generateShareTwitterURL, requireEnv, switchNetwork } from "@/utils"
 
-import Badges, { badgeMap } from "../Dashboard/UpgradeDialog/Badges"
 import BadgeDetail from "../badge/BadgeDetail"
 import Back from "./Back"
 
 const BadgeContractDetail = props => {
   const { address } = useParams()
   const { walletCurrentAddress, connect, chainId, provider } = useRainbowContext()
-  const { profileMinted, changeIsBadgeMinting, isBadgeMinting } = useCanvasStore()
+  const { profileMinted, changeIsBadgeMinting, isBadgeMinting, userBadges, queryUserBadges, queryUserBadgesLoading } = useCanvasStore()
+  const badgeListProxy = useBadgeListProxy()
   // const [badgeMinted, setBadgeMinted] = useState(false)
   const navigate = useNavigate()
   const alertWarning = useSnackbar()
-  const detail = useMemo(() => {
-    return badgeMap[address]
-  }, [address])
+
+  const badgeForMint = useMemo(() => {
+    return badgeListProxy[address] || {}
+  }, [address, badgeListProxy])
 
   const isL2 = useMemo(() => chainId === CHAIN_ID.L2, [chainId])
 
   const isOwned = useAsyncMemo(async () => {
-    if (provider && isL2 && detail.badgeContract) {
-      const hasBadge = await checkIfHasBadgeByAddress(provider, walletCurrentAddress, detail.badgeContract)
+    if (provider && isL2 && badgeForMint.badgeContract) {
+      const hasBadge = await checkIfHasBadgeByAddress(provider, walletCurrentAddress, badgeForMint.badgeContract)
       return hasBadge
     }
-  }, [provider, isL2, walletCurrentAddress, detail])
+  }, [provider, isL2, walletCurrentAddress, badgeForMint])
 
   const isEligible = useAsyncMemo(async () => {
     if (provider && isL2) {
-      const badgeForMint = Badges.find(item => item?.badgeContract === address) as any
       const eligibility = await checkBadgeEligibility(provider, walletCurrentAddress, badgeForMint)
       return eligibility
     }
-  }, [provider, isL2, walletCurrentAddress, address])
+  }, [provider, isL2, walletCurrentAddress, badgeForMint])
 
   const shareBadgeURL = useMemo(() => {
     const viewURL = `${requireEnv("REACT_APP_FFRONTENDS_URL")}/scroll-canvas/badge-contract/${address}`
-    return generateShareTwitterURL(viewURL, `I found a badge called ${detail?.name} you may like`)
-  }, [address, detail])
+    return generateShareTwitterURL(viewURL, `I found a badge called ${badgeForMint.name} you may like`)
+  }, [address, badgeForMint])
 
   const metadata = useMemo(
     () => ({
-      title: `Canvas Badge - ${detail?.name}`,
-      description: `I found a badge called ${detail?.name} you may like`,
+      title: `Canvas Badge - ${badgeForMint.name}`,
+      description: `I found a badge called ${badgeForMint.name} you may like`,
       image: `${requireEnv("REACT_APP_CANVAS_BACKEND_URI")}/badge-contract/${address}.png`,
     }),
-    [detail],
+    [badgeForMint],
   )
+
+  const badgeId = useMemo(() => userBadges.find(item => item?.badgeContract === address)?.id, [userBadges, address])
+
+  useEffect(() => {
+    if (!userBadges.length && isOwned) {
+      queryUserBadges(provider, walletCurrentAddress)
+    }
+  }, [isOwned, userBadges])
 
   const handleMint = async () => {
     try {
       changeIsBadgeMinting(address, true)
 
-      const badgeForMint: any = Badges.find(item => item.badgeContract === address)
       let result = await mintBadge(provider, walletCurrentAddress, badgeForMint)
       if (result) {
         navigate(`/scroll-canvas/badge/${result}`, { replace: true })
@@ -107,7 +115,7 @@ const BadgeContractDetail = props => {
           </Typography>
         </>
       )
-    } else if (isEligible === undefined) {
+    } else if (isEligible === undefined || queryUserBadgesLoading) {
       return (
         <>
           <CircularProgress sx={{ color: "#A5A5A5" }} size={18}></CircularProgress>
@@ -116,7 +124,7 @@ const BadgeContractDetail = props => {
           </Typography>
         </>
       )
-    } else if (profileMinted && !isOwned && isEligible) {
+    } else if (profileMinted && isOwned === false && isEligible) {
       return (
         <>
           <SvgIcon sx={{ color: "#85E0D1", fontSize: "2.4rem" }} component={ValidSvg} inheritViewBox></SvgIcon>
@@ -125,7 +133,7 @@ const BadgeContractDetail = props => {
           </Typography>
         </>
       )
-    } else if (profileMinted && !isOwned && !isEligible) {
+    } else if (profileMinted && isOwned === false && !isEligible) {
       return (
         <>
           <SvgIcon sx={{ color: "primary.main", fontSize: "2.4rem" }} component={WarningSvg} inheritViewBox></SvgIcon>
@@ -134,6 +142,8 @@ const BadgeContractDetail = props => {
           </Typography>
         </>
       )
+    } else if (profileMinted && isOwned && badgeId) {
+      return <Navigate to={`/scroll-canvas/badge/${badgeId}`} replace></Navigate>
     }
     return null
   }
@@ -215,14 +225,14 @@ const BadgeContractDetail = props => {
     return null
   }
 
-  if (!detail) {
+  if (!badgeForMint) {
     return <Navigate to="/404"></Navigate>
   }
   return (
-    <BadgeDetail detail={detail} metadata={metadata} property={["issuer"]} breadcrumb={<Back></Back>}>
+    <BadgeDetail detail={badgeForMint} metadata={metadata} property={["issuer"]} breadcrumb={<Back></Back>}>
       {renderAction()}
 
-      {detail.native ? (
+      {badgeForMint.native ? (
         <ScrollButton
           color="secondary"
           sx={theme => ({
@@ -242,10 +252,10 @@ const BadgeContractDetail = props => {
               gridColumn: "span 2",
             },
           })}
-          href={detail.issuer?.origin}
+          href={badgeForMint.issuer?.origin}
           target="_blank"
         >
-          Visit {detail.issuer?.name}
+          Visit {badgeForMint.issuer?.name}
         </ScrollButton>
       )}
 

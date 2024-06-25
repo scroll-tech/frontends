@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 
 import { SvgIcon } from "@mui/material"
@@ -10,21 +10,13 @@ import Link from "@/components/Link"
 import { NFT_RARITY_MAP } from "@/constants"
 import { useCanvasContext } from "@/contexts/CanvasContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useBadgeListProxy from "@/hooks/useBadgeProxy"
 import useSnackbar from "@/hooks/useSnackbar"
 import { fillBadgeDetailWithPayload, queryBadgeDetailById, queryCanvasUsername } from "@/services/canvasService"
 import { formatDate, generateShareTwitterURL, requireEnv } from "@/utils"
 
-import { badgeMap } from "../Dashboard/UpgradeDialog/Badges"
 import BackToCanvas from "./BackToCanvas"
 import BadgeDetail from "./BadgeDetail"
-
-const isOriginsNFTBadge = badgeContract => {
-  return badgeMap[badgeContract]?.originsNFT
-}
-
-const isNativeBadge = badgeContract => {
-  return badgeMap[badgeContract]?.native
-}
 
 const BadgeDetailPage = () => {
   const { id } = useParams()
@@ -33,6 +25,21 @@ const BadgeDetailPage = () => {
   const { walletCurrentAddress } = useRainbowContext()
 
   const { unsignedProfileRegistryContract, publicProvider } = useCanvasContext()
+  const badgeListProxy = useBadgeListProxy()
+
+  const isOriginsNFTBadge = useCallback(
+    badgeContract => {
+      return badgeListProxy[badgeContract]?.originsNFT
+    },
+    [badgeListProxy],
+  )
+
+  const isNativeBadge = useCallback(
+    badgeContract => {
+      return badgeListProxy[badgeContract]?.native
+    },
+    [badgeListProxy],
+  )
 
   const alertWarning = useSnackbar()
 
@@ -89,8 +96,8 @@ const BadgeDetailPage = () => {
         ownerLogo: getSmallAvatarURL(recipient),
         mintedOn: formatDate(time * 1000),
         badgeContract,
-        issuer: badgeMap[badgeContract]?.issuer,
-        description: isOriginsNFTBadge(badgeContract) ? badgeMap[badgeContract].description : description,
+        issuer: badgeListProxy[badgeContract]?.issuer,
+        description: isOriginsNFTBadge(badgeContract) ? badgeListProxy[badgeContract].description : description,
         ...badgeMetadata,
       }
       if (isOriginsNFTBadge(badgeContract)) {

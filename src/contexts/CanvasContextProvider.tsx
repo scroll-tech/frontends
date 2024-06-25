@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react"
 import ProfileRegistryABI from "@/assets/abis/CanvasProfileRegistry.json"
 import { CHAIN_ID, RPC_URL } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useCanvasStore from "@/stores/canvasStore"
 import { requireEnv } from "@/utils"
 
 const PROFILE_REGISTRY_ADDRESS = requireEnv("REACT_APP_PROFILE_REGISTRY_ADDRESS")
@@ -19,6 +20,8 @@ const CanvasContext = createContext<CanvasContextProps | null>(null)
 // only include contract instance && public provider
 const CanvasContextProvider = ({ children }: any) => {
   const { provider, chainId } = useRainbowContext()
+
+  const { jointBadgeList } = useCanvasStore()
 
   const [publicProvider, setPublicProvider] = useState<JsonRpcProvider | BrowserProvider | null>(null)
 
@@ -37,6 +40,10 @@ const CanvasContextProvider = ({ children }: any) => {
     const instance = new ethers.Contract(PROFILE_REGISTRY_ADDRESS, ProfileRegistryABI, provider)
     setUnsignedProfileRegistryContract(instance)
   }
+
+  useEffect(() => {
+    jointBadgeList()
+  }, [])
 
   useEffect(() => {
     if (provider && chainId === CHAIN_ID.L2) {

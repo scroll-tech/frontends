@@ -246,6 +246,7 @@ const mainnetRoutes = [
     name: "Scroll Canvas",
     path: "/scroll-canvas/mint",
     element: <MintProfile />,
+    isHiddenFooter: true,
   },
   // {
   //   name: "Scroll Canvas",
@@ -256,21 +257,25 @@ const mainnetRoutes = [
     name: "Scroll Canvas",
     path: "/scroll-canvas/badge/:id",
     element: <CanvasBadge />,
+    isHiddenFooter: true,
   },
   {
     name: "Scroll Canvas",
     path: "/scroll-canvas/badge-contract/:address",
     element: <CanvasBadgeContract />,
+    isHiddenFooter: true,
   },
   {
     name: "Canvas Invite",
     path: "/scroll-canvas/invite/:code",
     element: <CanvasInvite />,
+    isHiddenFooter: true,
   },
   {
     name: "Scroll Canvas",
     path: "/scroll-canvas/:address",
     element: <CanvasDashboard />,
+    isHiddenFooter: true,
   },
 ]
 

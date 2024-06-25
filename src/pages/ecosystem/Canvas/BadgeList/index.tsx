@@ -6,8 +6,9 @@ import { styled } from "@mui/system"
 
 import { ReactComponent as LeftSvg } from "@/assets/svgs/canvas/arrow-left.svg"
 import { ReactComponent as RightSvg } from "@/assets/svgs/canvas/arrow-right.svg"
+import { type Badge } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
-import { Badge } from "@/pages/canvas/Dashboard/UpgradeDialog/Badges"
+import BadgeDesc from "@/pages/canvas/components/BadgeDesc"
 
 interface CarouselProps {
   items: Badge[]
@@ -121,12 +122,12 @@ const Carousel: React.FC<CarouselProps> = ({ items }) => {
 
                   display: "-webkit-box",
                   width: "100%",
-                  "-webkit-box-orient": "vertical",
-                  "-webkit-line-clamp": "4",
+                  WebkitBoxOrient: "vertical",
+                  WebkitLineClamp: "4",
                   overflow: "hidden",
                 }}
               >
-                {item.description}
+                <BadgeDesc>{item.description}</BadgeDesc>
               </Typography>
               <Typography sx={{ fontSize: ["1.8rem", "2.4rem"], lineHeight: ["2.8rem", "3.2rem"], fontWeight: 600, mt: [0, "2.8rem"] }}>
                 <img

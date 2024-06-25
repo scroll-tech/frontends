@@ -7,13 +7,14 @@ import Button from "@/components/Button"
 import SectionWrapper from "@/components/SectionWrapper"
 import { ECOSYSTEM_PAGE_SYMBOL } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
-import Badges from "@/pages/canvas/Dashboard/UpgradeDialog/Badges"
+import useCanvasStore from "@/stores/canvasStore"
 
 import BadgeList from "./BadgeList"
 
 const Canvas = () => {
   const { isMobile, isTablet } = useCheckViewport()
   const { hash } = useLocation()
+  const { badgeList } = useCanvasStore()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -42,7 +43,7 @@ const Canvas = () => {
           Go to Scroll Canvas
         </Button>
       </Stack>
-      <BadgeList items={Badges} />
+      <BadgeList items={badgeList} />
     </SectionWrapper>
   )
 }

@@ -133,14 +133,20 @@ const checkIfProfileMinted = async (registryInstance, userAddress) => {
 }
 
 // work with publicProvider
-const fillBadgeDetailWithPayload = async (provider, attestation) => {
+const fillBadgeDetailWithPayload = async (provider, attestation, withMetadata = true) => {
   const { data, id } = attestation
   try {
     const [badgeContract] = decodeBadgePayload(data)
-    const badgeMetadata = await getBadgeMetadata(provider, badgeContract, id)
+    if (withMetadata) {
+      const badgeMetadata = await getBadgeMetadata(provider, badgeContract, id)
+      return {
+        ...attestation,
+        badgeContract,
+        ...badgeMetadata,
+      }
+    }
     return {
       ...attestation,
-      ...badgeMetadata,
       badgeContract,
     }
   } catch (error) {
@@ -149,11 +155,11 @@ const fillBadgeDetailWithPayload = async (provider, attestation) => {
   }
 }
 
-const queryUserBadgesWrapped = async (provider, userAddress) => {
+const queryUserBadgesWrapped = async (provider, userAddress, withMetadata = true) => {
   try {
     const attestations = await queryUserBadges(userAddress)
     const formattedBadgesPromises = attestations.map(attestation => {
-      return fillBadgeDetailWithPayload(provider, attestation)
+      return fillBadgeDetailWithPayload(provider, attestation, withMetadata)
     })
     const formattedBadges = await Promise.all(formattedBadgesPromises)
     return formattedBadges
@@ -267,7 +273,8 @@ const checkBadgeEligibility = async (provider, walletAddress, badge: any) => {
     // third-party badge
     if (badge.attesterProxy) {
       const data = await scrollRequest(checkBadgeEligibilityURL(badge.baseUrl, walletAddress, badge.badgeContract))
-      return data.eligibility
+      // TODO: must return true or false
+      return data.eligibility ?? false
     }
     return false
   } catch (error) {
