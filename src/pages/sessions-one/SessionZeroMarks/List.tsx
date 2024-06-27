@@ -83,7 +83,11 @@ const MarkList = props => {
             }}
           >
             <ListItemIcon sx={{ minWidth: "unset" }}>
-              <Avatar variant="square" sx={{ width: ["4rem", "4.8rem", "5.6rem"], height: ["4rem", "4.8rem", "5.6rem"] }} src={item.logoURI}></Avatar>
+              <Avatar
+                variant="square"
+                sx={{ width: ["4rem", "4.8rem", "5.6rem"], height: ["4rem", "4.8rem", "5.6rem"], borderRadius: "0.6rem" }}
+                src={item.logoURI}
+              ></Avatar>
             </ListItemIcon>
             <ListItemText sx={{ mt: 0, mb: 0 }}>
               {type === MarksType.GAS_SPENT && (
