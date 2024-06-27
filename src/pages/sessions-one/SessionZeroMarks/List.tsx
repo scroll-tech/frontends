@@ -109,7 +109,7 @@ const MarkList = props => {
               {type === MarksType.ELIGIBLE_ASSETS && (
                 <>
                   <Typography
-                    sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: ["2.4rem", "3.2rem"], fontWeight: 600, maxWidth: ["12rem", "12rem", "unset"] }}
+                    sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: ["2.4rem", "3.2rem"], fontWeight: 600, maxWidth: ["12rem", "15rem", "unset"] }}
                   >
                     {item.name}
                   </Typography>

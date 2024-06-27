@@ -12,7 +12,7 @@ import ListItemText from "@mui/material/ListItemText"
 import { EXPLORER_URL } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useAddToken, { TOKEN_LEVEL } from "@/hooks/useAddToken"
-import { tokenList } from "@/pages/sessions/SessionZeroMarks/tokenList"
+import { tokenList } from "@/pages/sessions-one/SessionZeroMarks/tokenList"
 import useBridgeStore from "@/stores/bridgeStore"
 import { generateExploreLink, truncateHash } from "@/utils"
 
