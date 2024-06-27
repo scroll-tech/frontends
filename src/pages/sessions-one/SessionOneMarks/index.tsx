@@ -49,7 +49,7 @@ const SessionOneMarks = () => {
         id={SESSIONS_ONE_DEX}
         icon={SESSIONS_SECTION_MAP[SESSIONS_ONE_DEX].icon}
         title={SESSIONS_SECTION_MAP[SESSIONS_ONE_DEX].label}
-        description="Marks are rewarded to users who deposit eligible assets into selected DEXs’ liquidity pools. Liquidity deposits with tighter ranges or more market depth are awarded Marks at a higher rate. "
+        description="Marks are given to users who deposit eligible assets into selected DEXs’ liquidity pools. Liquidity deposits with tighter ranges or more market depth are given Marks at a higher rate. "
         data={marks?.dex}
         isLoading={isLoading}
       ></MarkList>
@@ -58,7 +58,7 @@ const SessionOneMarks = () => {
         id={SESSIONS_ONE_LENDING}
         icon={SESSIONS_SECTION_MAP[SESSIONS_ONE_LENDING].icon}
         title={SESSIONS_SECTION_MAP[SESSIONS_ONE_LENDING].label}
-        description="Marks are rewarded to users who deposit eligible assets into selected lending markets. Marks are not rewarded for recursive supplying/borrowing."
+        description="Marks are given to users who deposit eligible assets into selected lending markets. Marks are not given for recursive supplying/borrowing."
         data={marks?.lending}
         isLoading={isLoading}
       ></MarkList>
@@ -68,7 +68,7 @@ const SessionOneMarks = () => {
         id={SESSIONS_ONE_ACTIVITIES}
         icon={SESSIONS_SECTION_MAP[SESSIONS_ONE_ACTIVITIES].icon}
         title={SESSIONS_SECTION_MAP[SESSIONS_ONE_ACTIVITIES].label}
-        description="Marks are rewarded to users who participate in Scroll native projects."
+        description="Marks are given to users who participate in Scroll native projects."
         data={projectList?.activities}
         isLoading={isLoading}
       ></MarkList> */}

@@ -78,7 +78,7 @@ const BridgePoints = () => {
         type={MarksType.ELIGIBLE_ASSETS}
         icon={SESSIONS_SECTION_MAP[SESSIONS_ZERO_ASSETS].icon}
         title={SESSIONS_SECTION_MAP[SESSIONS_ZERO_ASSETS].label}
-        description="Marks are rewarded to all eligible bridged assets since Scroll's mainnet launch on October 10th, 2023, based on amount and time held on Scroll."
+        description="Marks are given to all eligible bridged assets since Scroll's mainnet launch on October 10th, 2023, based on amount and time held on Scroll."
         data={marks?.tokensMarks}
         isLoading={isLoading}
       ></MarkList>
@@ -89,7 +89,7 @@ const BridgePoints = () => {
         type={MarksType.GAS_SPENT}
         icon={SESSIONS_SECTION_MAP[SESSIONS_ZERO_GAS].icon}
         title={SESSIONS_SECTION_MAP[SESSIONS_ZERO_GAS].label}
-        description="Marks have been awarded to users with more than $5 total gas spent on Scroll from the mainnet launch on Oct 10th, 2023 to Apr 29th, 2024 12pm UTC."
+        description="Marks have been given to users with more than $5 total gas spent on Scroll from the mainnet launch on Oct 10th, 2023 to Apr 29th, 2024 12pm UTC."
         data={marks?.gasMarks}
         isLoading={isLoading}
       ></MarkList>
