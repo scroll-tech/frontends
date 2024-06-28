@@ -1,5 +1,6 @@
 import { orderBy } from "lodash"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
+import useStorage from "squirrel-gill"
 
 import { Tune as TuneIcon } from "@mui/icons-material"
 import { Box, Modal, Typography } from "@mui/material"
@@ -7,6 +8,8 @@ import { styled } from "@mui/system"
 
 import ArticleCard from "@/components/ArticleCard"
 import SectionWrapper from "@/components/SectionWrapper"
+import { LANGUAGE_MAP, getBlogCategoryList, getBlogSortList } from "@/constants"
+import { BLOG_LANGUAGE } from "@/constants/storageKey"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
 import blogSource from "./data.json"
@@ -159,8 +162,10 @@ const BlogList = styled("ul")(({ theme }) => ({
 
 const Blog = () => {
   const { isDesktop } = useCheckViewport()
-  const listType = ["Newest", "Oldest"]
-  const categories = ["All", "Announcement", "General", "Technical"]
+  const [language] = useStorage(localStorage, BLOG_LANGUAGE, "en")
+  const BLOG_CATEGORY_LIST = useMemo(() => getBlogCategoryList(language), [language])
+  const BLOG_SORT_LIST = useMemo(() => getBlogSortList(language), [language])
+  const BLOG_COPY = useMemo(() => LANGUAGE_MAP[language], [language])
   const [filterOpen, setFilterOpen] = useState(false)
   const handleFilterOpen = () => setFilterOpen(true)
   const handleFilterClose = () => setFilterOpen(false)
@@ -171,14 +176,29 @@ const Blog = () => {
     category: "All",
   })
 
+  const blogsWithLang = useMemo(() => {
+    if (language === "en") {
+      return blogSource.filter(item => item.language === language)
+    }
+    return blogSource.filter((item, index, arr) => {
+      const suffix = `_lang_${language}`
+      if (item.language === language) {
+        return true
+      } else if (!arr.find(i => i.slug.slice(0, -suffix.length) === item.slug)) {
+        return true
+      }
+      return false
+    })
+  }, [blogSource, language])
+
   useEffect(() => {
     const blogs = orderBy(
-      blogSource.filter(blog => blog.type === queryForm.category || queryForm.category === "All"),
+      blogsWithLang.filter(blog => blog.type === queryForm.category || queryForm.category === "All"),
       "date",
       queryForm.sort === "Newest" ? "desc" : "asc",
     )
     setBlogs(blogs)
-  }, [queryForm])
+  }, [queryForm, blogsWithLang])
 
   const hanleFilter = (attr: string, value: string) => {
     handleFilterClose()
@@ -192,7 +212,7 @@ const Blog = () => {
     return (
       <BlogList>
         {blogs.map(blog => (
-          <BlogBox key={blog.title}>
+          <BlogBox key={blog.slug}>
             <ArticleCard small={!isDesktop} blog={blog} />
           </BlogBox>
         ))}
@@ -204,17 +224,17 @@ const Blog = () => {
     if (isDesktop) {
       return (
         <FilterContainer>
-          <FilterTypeName>Category</FilterTypeName>
-          {categories.map(category => (
-            <FilterItem onClick={() => hanleFilter("category", category)} key={category} className={category === queryForm.category ? "active" : ""}>
-              {category}
+          <FilterTypeName>{BLOG_COPY.category}</FilterTypeName>
+          {BLOG_CATEGORY_LIST.map(({ label, key }) => (
+            <FilterItem onClick={() => hanleFilter("category", key)} key={key} className={key === queryForm.category ? "active" : ""}>
+              {label}
             </FilterItem>
           ))}
 
-          <FilterTypeName sx={{ marginTop: "6.8rem" }}>Order by</FilterTypeName>
-          {listType.map(type => (
-            <FilterItem onClick={() => hanleFilter("sort", type)} key={type} className={type === queryForm.sort ? "active" : ""}>
-              {type}
+          <FilterTypeName sx={{ marginTop: "6.8rem" }}>{BLOG_COPY.sort}</FilterTypeName>
+          {BLOG_SORT_LIST.map(({ label, key }) => (
+            <FilterItem onClick={() => hanleFilter("sort", key)} key={key} className={key === queryForm.sort ? "active" : ""}>
+              {label}
             </FilterItem>
           ))}
         </FilterContainer>
@@ -224,7 +244,7 @@ const Blog = () => {
       <FilterContainer>
         <MobileFilter display="flex" justifyContent="flex-end" alignItems="center" onClick={handleFilterOpen}>
           <TuneIcon sx={{ marginRight: "1rem", fontSize: "" }} />
-          <Typography>Filters</Typography>
+          <Typography>{BLOG_COPY.filters}</Typography>
         </MobileFilter>
         <Modal open={filterOpen} onClose={handleFilterClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
           <FilterModal>
@@ -242,19 +262,15 @@ const Blog = () => {
               </Box>
 
               <FilterTypeName>Category</FilterTypeName>
-              {categories.map(category => (
-                <FilterItem
-                  onClick={() => hanleFilter("category", category)}
-                  key={category}
-                  className={category === queryForm.category ? "active" : ""}
-                >
-                  {category}
+              {BLOG_CATEGORY_LIST.map(({ label, key }) => (
+                <FilterItem onClick={() => hanleFilter("category", key)} key={key} className={key === queryForm.category ? "active" : ""}>
+                  {label}
                 </FilterItem>
               ))}
               <FilterTypeName sx={{ marginTop: "5rem" }}>Order by</FilterTypeName>
-              {listType.map(type => (
-                <FilterItem onClick={() => hanleFilter("sort", type)} key={type} className={type === queryForm.sort ? "active" : ""}>
-                  {type}
+              {BLOG_SORT_LIST.map(({ label, key }) => (
+                <FilterItem onClick={() => hanleFilter("sort", key)} key={key} className={key === queryForm.sort ? "active" : ""}>
+                  {label}
                 </FilterItem>
               ))}
             </FilterModalContent>
@@ -268,8 +284,8 @@ const Blog = () => {
     <BlogContainer>
       <SectionWrapper sx={{ pt: 0 }}>
         <Header>
-          <Title>Scroll Blog</Title>
-          <Summary>Learn about Scroll’s technology, research, and latest developments.</Summary>
+          <Title>{BLOG_COPY.title}</Title>
+          <Summary>{BLOG_COPY.sub_title}</Summary>
         </Header>
         <BlogBody>
           {renderFilter()}
