@@ -1,4 +1,4 @@
-import { isNumber } from "lodash"
+import { isNull, isNumber } from "lodash"
 
 import { Avatar, Box, Button, Link, List, ListItem, ListItemIcon, ListItemText, Skeleton, Stack, SvgIcon, Typography } from "@mui/material"
 import { useTheme } from "@mui/material/styles"
@@ -83,7 +83,11 @@ const MarkList = props => {
             }}
           >
             <ListItemIcon sx={{ minWidth: "unset" }}>
-              <Avatar variant="square" sx={{ width: ["4rem", "4.8rem", "5.6rem"], height: ["4rem", "4.8rem", "5.6rem"] }} src={item.logoURI}></Avatar>
+              <Avatar
+                variant="square"
+                sx={{ width: ["4rem", "4.8rem", "5.6rem"], height: ["4rem", "4.8rem", "5.6rem"], borderRadius: "0.6rem" }}
+                src={item.logoURI}
+              ></Avatar>
             </ListItemIcon>
             <ListItemText sx={{ mt: 0, mb: 0 }}>
               {type === MarksType.GAS_SPENT && (
@@ -109,7 +113,7 @@ const MarkList = props => {
               {type === MarksType.ELIGIBLE_ASSETS && (
                 <>
                   <Typography
-                    sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: ["2.4rem", "3.2rem"], fontWeight: 600, maxWidth: ["12rem", "12rem", "unset"] }}
+                    sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: ["2.4rem", "3.2rem"], fontWeight: 600, maxWidth: ["12rem", "15rem", "unset"] }}
                   >
                     {item.name}
                   </Typography>
@@ -129,7 +133,7 @@ const MarkList = props => {
               )}
             </ListItemText>
 
-            <MarksTooltip key={item.marks} disabled={!item.marks} title={item.marks ? commafy(item.marks) : "--"}>
+            {isNull(item.marks) ? (
               <Box
                 sx={{
                   justifySelf: "flex-end",
@@ -138,18 +142,34 @@ const MarkList = props => {
                     position: "absolute",
                     left: "50%",
                     transform: "translateX(-50%)",
-                    // p: "0.8rem 1.6rem",
                   },
                 }}
               >
-                <Statistic
-                  count={isNumber(item.marks) ? formatLargeNumber(item.marks, 2) : "--"}
-                  label="Marks earned"
-                  isLoading={isLoading}
-                  sx={{}}
-                ></Statistic>
+                <Typography sx={{ fontSize: ["1.4rem", "1.6rem"] }}>Coming soon</Typography>
               </Box>
-            </MarksTooltip>
+            ) : (
+              <MarksTooltip key={item.marks} disabled={!item.marks} title={item.marks ? commafy(item.marks) : "--"}>
+                <Box
+                  sx={{
+                    justifySelf: "flex-end",
+                    // will replace responsive css in Statistic
+                    [theme.breakpoints.up("sm")]: {
+                      position: "absolute",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                      // p: "0.8rem 1.6rem",
+                    },
+                  }}
+                >
+                  <Statistic
+                    count={isNumber(item.marks) && item.marks >= 0 ? formatLargeNumber(item.marks, 2) : "--"}
+                    label="Marks earned"
+                    isLoading={isLoading}
+                    sx={{}}
+                  ></Statistic>
+                </Box>
+              </MarksTooltip>
+            )}
 
             {type === MarksType.ELIGIBLE_ASSETS && (
               <Button

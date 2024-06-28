@@ -1,3 +1,4 @@
+import { isUndefined } from "lodash"
 import useSWR from "swr"
 
 import { Divider, Typography } from "@mui/material"
@@ -14,11 +15,11 @@ import MarkList, { MarksType } from "./List"
 import { gasList, tokenList } from "./tokenList"
 
 const defaultMarks = {
-  tokensMarks: tokenList.map(item => ({ ...item, marks: null })),
+  tokensMarks: tokenList.map(item => ({ ...item, marks: -1 })),
   gasMarks: gasList.map(item => ({
     ...item,
     amount: null,
-    marks: null,
+    marks: -1,
   })),
 }
 
@@ -36,8 +37,10 @@ const BridgePoints = () => {
 
         const list = await scrollRequest(url)
         const tokensMarks = tokenList.map(item => {
-          const withMarks = list.filter(item => item.points).find(i => i.bridge_asset.toUpperCase() === item.key.toUpperCase())
-          let marks = withMarks?.points ?? 0
+          const withMarks = list
+            .filter(item => Object.keys(item).includes("points"))
+            .find(i => i.bridge_asset.toUpperCase() === item.key.toUpperCase())
+          let marks = isUndefined(withMarks?.points) ? 0 : withMarks?.points
 
           return {
             ...item,
