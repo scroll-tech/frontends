@@ -73,7 +73,7 @@ export const tokenList = [
   {
     name: "SolvBTC.b",
     symbol: "SolvBTC.b",
-    key: "SolvBTC.b",
+    key: "solvBTC",
     logoURI: "/imgs/sessions/tokens/solvBTC.png",
     address: "0x3Ba89d490AB1C0c9CC2313385b30710e838370a4",
     thirdPartyBridge: {
@@ -108,7 +108,7 @@ export const tokenList = [
   },
   {
     name: "Assets on Pencils’ Vaults",
-    key: "Pencils",
+    key: "PENCILS",
     logoURI: "/imgs/sessions/tokens/Pencils.jpeg",
     containedTokens: [
       { logoURI: ETHSvg, symbol: ETH_SYMBOL },
@@ -122,7 +122,7 @@ export const tokenList = [
       { logoURI: "/imgs/sessions/tokens/stone-white.svg", symbol: "STONE" },
     ],
     thirdPartyBridge: {
-      url: "https://pencilsprotocol.io/",
+      url: "https://pencilsprotocol.io/staking",
       name: "Pencils",
     },
   },
