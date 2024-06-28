@@ -34,6 +34,18 @@ export const tokenList = [
     address: "0xf55BEC9cafDbE8730f096Aa55dad6D22d44099Df",
   },
   {
+    name: "weETH",
+    symbol: "weETH",
+    key: "weETH",
+    logoURI: "/imgs/sessions/tokens/weETH.png",
+    address: "0xcA0bFd5f735924e34Cc567146989e467fFbbCe1a",
+    thirdPartyBridge: {
+      url: "https://stargate.finance/bridge",
+      name: "Stargate",
+      // name:"etherfi"
+    },
+  },
+  {
     name: "wrsETH",
     symbol: "wrsETH",
     key: "wrsETH",
@@ -50,6 +62,24 @@ export const tokenList = [
     key: "wstETH",
     logoURI: "/imgs/sessions/tokens/wstETH.svg",
     address: "0xf610A9dfB7C89644979b4A0f27063E9e7d7Cda32",
+  },
+  {
+    name: "WBTC",
+    symbol: "WBTC",
+    key: "WBTC",
+    logoURI: "/imgs/sessions/tokens/WBTC.svg",
+    address: "0x3C1BCa5a656e69edCD0D4E36BEbb3FcDAcA60Cf1",
+  },
+  {
+    name: "SolvBTC.b",
+    symbol: "SolvBTC.b",
+    key: "solvBTC",
+    logoURI: "/imgs/sessions/tokens/solvBTC.png",
+    address: "0x3Ba89d490AB1C0c9CC2313385b30710e838370a4",
+    thirdPartyBridge: {
+      url: "https://free.tech/",
+      name: "Free",
+    },
   },
   {
     name: "STONE",
@@ -74,6 +104,26 @@ export const tokenList = [
     thirdPartyBridge: {
       url: "https://tranchess.com",
       name: "Tranchess",
+    },
+  },
+  {
+    name: "Assets on Pencils’ Vaults",
+    key: "PENCILS",
+    logoURI: "/imgs/sessions/tokens/Pencils.jpeg",
+    containedTokens: [
+      { logoURI: ETHSvg, symbol: ETH_SYMBOL },
+      { logoURI: "https://scroll-tech.github.io/token-list/data/USDC/logo.svg", symbol: "USDC" },
+      { logoURI: "https://scroll-tech.github.io/token-list/data/USDT/logo.svg", symbol: "USDT" },
+      { logoURI: "/imgs/sessions/tokens/weETH.png", symbol: "weETH" },
+      { logoURI: "/imgs/sessions/tokens/wrsETH.svg", symbol: "wrsETH" },
+      { logoURI: "https://scroll-tech.github.io/token-list/data/wstETH/logo.svg", symbol: "wstETH" },
+      { logoURI: "/imgs/sessions/tokens/WBTC.svg", symbol: "WBTC" },
+      { logoURI: "/imgs/sessions/tokens/solvBTC.png", symbol: "SolvBTC.b" },
+      { logoURI: "/imgs/sessions/tokens/stone-white.svg", symbol: "STONE" },
+    ],
+    thirdPartyBridge: {
+      url: "https://pencilsprotocol.io/staking",
+      name: "Pencils",
     },
   },
 ]
