@@ -214,6 +214,11 @@ const mainnetNavigations = [
     ],
   },
   {
+    label: "Community",
+    key: "community",
+    href: "/community",
+  },
+  {
     label: "Resources",
     key: "resources",
     children: [
