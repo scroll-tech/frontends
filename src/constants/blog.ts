@@ -46,6 +46,7 @@ export const LANGUAGE_MAP = {
     newest: "Newest",
     oldest: "Oldest",
     filters: "Filters",
+    more_articles: "More articles from Scroll",
   },
   tr: {
     title: "Scroll Blog",
@@ -59,5 +60,6 @@ export const LANGUAGE_MAP = {
     newest: "En yeni",
     oldest: "En eski",
     filters: "Filtreler",
+    more_articles: "Scroll'dan daha fazla makale",
   },
 }

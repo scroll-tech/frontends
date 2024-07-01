@@ -69,6 +69,7 @@ const LanguageSelect = props => {
 
   const handleChangeLanguage = key => {
     setLanguage(key)
+    handleClose()
   }
 
   return (

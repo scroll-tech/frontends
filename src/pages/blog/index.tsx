@@ -11,6 +11,7 @@ import SectionWrapper from "@/components/SectionWrapper"
 import { LANGUAGE_MAP, getBlogCategoryList, getBlogSortList } from "@/constants"
 import { BLOG_LANGUAGE } from "@/constants/storageKey"
 import useCheckViewport from "@/hooks/useCheckViewport"
+import { filterBlogsByLanguage } from "@/utils"
 
 import blogSource from "./data.json"
 
@@ -176,20 +177,7 @@ const Blog = () => {
     category: "All",
   })
 
-  const blogsWithLang = useMemo(() => {
-    if (language === "en") {
-      return blogSource.filter(item => item.language === language)
-    }
-    return blogSource.filter((item, index, arr) => {
-      const suffix = `_lang_${language}`
-      if (item.language === language) {
-        return true
-      } else if (!arr.find(i => i.slug.slice(0, -suffix.length) === item.slug)) {
-        return true
-      }
-      return false
-    })
-  }, [blogSource, language])
+  const blogsWithLang = useMemo(() => filterBlogsByLanguage(blogSource, language), [blogSource, language])
 
   useEffect(() => {
     const blogs = orderBy(

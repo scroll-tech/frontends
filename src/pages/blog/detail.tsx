@@ -1,5 +1,5 @@
 import { shuffle } from "lodash"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Helmet } from "react-helmet-async"
 import ReactMarkdown from "react-markdown"
 import { useNavigate, useParams } from "react-router-dom"
@@ -7,12 +7,16 @@ import rehypeKatex from "rehype-katex"
 import rehypeRaw from "rehype-raw"
 import remarkGfm from "remark-gfm"
 import remarkMath from "remark-math"
+import useStorage from "squirrel-gill"
 
 import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import LoadingPage from "@/components/LoadingPage"
+import { LANGUAGE_MAP } from "@/constants"
+import { BLOG_LANGUAGE } from "@/constants/storageKey"
 import useCheckViewport from "@/hooks/useCheckViewport"
+import { filterBlogsByLanguage } from "@/utils"
 
 import Articles from "./articles"
 import TOC from "./components/tableOfContents"
@@ -43,50 +47,60 @@ const BlogNavbar = styled(Box)(({ theme }) => ({
 
 const BlogDetail = () => {
   const navigate = useNavigate()
-  const [blog, setBlog] = useState<null | string>(null)
+  const [language] = useStorage(localStorage, BLOG_LANGUAGE, "en")
+  const [blogContent, setBlogContent] = useState<null | string>(null)
   const [moreBlog, setMoreBlog] = useState<any>([])
   const [currentBlog, setCurrentBlog] = useState<any>({
     title: "",
-    content: "",
     posterImg: "",
   })
 
   const [loading, setLoading] = useState(true)
   const params = useParams()
 
+  const blogsWithLang = useMemo(() => filterBlogsByLanguage(blogSource, language), [blogSource, language])
+
   useEffect(() => {
-    getCurrentBlog()
-    // @ts-ignore
-    let anchors = [...document.querySelectorAll("a")]
-    anchors.map(anchor => {
-      if (anchor.href.includes("/blog/")) {
-        anchor.setAttribute("target", "")
+    const regex = /([^_]*?)_lang_[^_]+/g
+    const blogId = params.blogId.toLowerCase()
+    const blogIdMatch = blogId.match(regex)
+
+    const blogItem = blogSource.find(item => item.id === blogId)
+    const blogItemWithLang = blogSource.find(item => item.id === `${blogId}_lang_${language}`)
+
+    if ((!blogIdMatch && language === "en") || (blogIdMatch && language !== "en") || (!blogIdMatch && language !== "en" && !blogItemWithLang)) {
+      setCurrentBlog(blogItem)
+      let anchors = [...document.querySelectorAll("a")]
+      anchors.map(anchor => {
+        if (anchor.href.includes("/Content/")) {
+          anchor.setAttribute("target", "")
+        }
+        return anchor
+      })
+      try {
+        const blogPath = `https://misc-pages-ghost-relay.vercel.app/api/post/${blogId}.md?title=1`
+        setLoading(true)
+        fetch(blogPath)
+          .then(response => response.text())
+          .then(text => {
+            setLoading(false)
+            setBlogContent(text)
+          })
+      } catch (error) {
+        navigate("/404")
       }
-      return anchor
-    })
-    try {
-      const blogPath = `https://misc-pages-ghost-relay.vercel.app/api/post/${params.blogId.toLowerCase()}.md?title=1`
-      fetch(blogPath)
-        .then(response => response.text())
-        .then(text => {
-          setLoading(false)
-          setBlog(text)
-        })
-    } catch (error) {
-      navigate("/404")
+    } else if (blogIdMatch && language === "en") {
+      const nextBlogId = blogId.replace(regex, "$1")
+      navigate(`/blog/${nextBlogId}`)
+    } else if (blogItemWithLang) {
+      navigate(`/blog/${params.blogId}_lang_${language}`)
     }
-    getMoreBlog()
-  }, [params.blogId])
+  }, [params.blogId, language])
 
-  const getMoreBlog = () => {
-    const blogs = shuffle(blogSource.filter(blog => blog.id !== params.blogId.toLowerCase())).slice(0, 3)
+  useEffect(() => {
+    const blogs = shuffle(blogsWithLang.filter(blog => blog.id !== params.blogId.toLowerCase())).slice(0, 3)
     setMoreBlog(blogs)
-  }
-
-  const getCurrentBlog = () => {
-    const blog = blogSource.find(blog => blog.id === params.blogId.toLowerCase())
-    setCurrentBlog(blog)
-  }
+  }, [params.blogId, blogsWithLang])
 
   const { isPortrait } = useCheckViewport()
 
@@ -130,7 +144,7 @@ const BlogDetail = () => {
               </BlogNavbar>
             </Box>
             <ReactMarkdown
-              children={blog as string}
+              children={blogContent as string}
               remarkPlugins={[remarkMath, remarkGfm]}
               rehypePlugins={[rehypeKatex, rehypeRaw]}
               className="markdown-body"
@@ -146,7 +160,7 @@ const BlogDetail = () => {
                   mb: ["2rem", "3rem"],
                 }}
               >
-                More articles from Scroll
+                {LANGUAGE_MAP[language].more_articles}
               </Typography>
               <Articles blogs={moreBlog} />
             </Box>
