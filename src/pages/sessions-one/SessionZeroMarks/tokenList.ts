@@ -38,7 +38,7 @@ export const tokenList = [
     symbol: "weETH",
     key: "weETH",
     logoURI: "/imgs/sessions/tokens/weETH.png",
-    address: "0xcA0bFd5f735924e34Cc567146989e467fFbbCe1a",
+    address: "0x01f0a31698C4d065659b9bdC21B3610292a1c506",
     thirdPartyBridge: {
       url: "https://stargate.finance/bridge",
       name: "Stargate",
