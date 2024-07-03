@@ -10,7 +10,7 @@ import { useCanvasContext } from "@/contexts/CanvasContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useSnackbar from "@/hooks/useSnackbar"
 import { checkIfProfileMinted } from "@/services/canvasService"
-import useCanvasStore from "@/stores/canvasStore"
+import useCanvasStore, { BadgesDialogType } from "@/stores/canvasStore"
 import { requireEnv } from "@/utils"
 
 import GridBg from "../components/GridBg"
@@ -19,10 +19,10 @@ import ActionBox from "./ActionBox"
 import BadgeDetailDialog from "./BadgeDetailDialog"
 import BadgeWall from "./BadgeWall"
 import BadgesDialog from "./BadgesDialog"
+import CustomizeDisplayDialog from "./CustomizeDisplayDialog"
 import FirstBadgeMask from "./FirstBadgeMask"
 import NameDialog from "./NameDialog"
 import ReferDialog from "./ReferDialog"
-import UpgradeDialog from "./UpgradeDialog"
 
 const Dashboard = props => {
   const { walletCurrentAddress } = useRainbowContext()
@@ -40,13 +40,15 @@ const Dashboard = props => {
     profileAddress,
     changeProfileDetailLoading,
     profileDetailLoading,
-    changeUpgradeDialog,
+    changeBadgesDialogVisible,
     badgeAnimationVisible,
     initialMint,
-    upgradeDialogVisible,
+    badgesDialogVisible,
     mintableBadges,
+    upgradableBadges,
     pickMintableBadges,
-    pickMintableBadgesLoading,
+    pickUpgradableBadges,
+    badgesDialogLoading,
   } = useCanvasStore()
 
   const metadata = {
@@ -57,10 +59,12 @@ const Dashboard = props => {
 
   useEffect(() => {
     // recheck badge eligibility when openning badges dialog
-    if (upgradeDialogVisible) {
+    if (badgesDialogVisible === BadgesDialogType.MINT) {
       pickMintableBadges(publicProvider, walletCurrentAddress, true)
+    } else if (badgesDialogVisible === BadgesDialogType.UPGRADE) {
+      pickUpgradableBadges(publicProvider)
     }
-  }, [upgradeDialogVisible])
+  }, [badgesDialogVisible])
 
   const scrollyAlert = useMemo(() => {
     if (mintableBadges.length) {
@@ -68,7 +72,7 @@ const Dashboard = props => {
         title: "Mint eligible badges",
         content: "Welcome to Scroll Canvas where you can earn badges across the ecosystem. Mint your badges now!",
         action: () => {
-          changeUpgradeDialog(true)
+          changeBadgesDialogVisible(BadgesDialogType.MINT)
         },
       }
     }
@@ -108,7 +112,8 @@ const Dashboard = props => {
       const signer = await provider?.getSigner(0)
       await fetchCurrentCanvasDetail(signer, walletAddress, profileAddress)
       // initially check eligibility
-      await pickMintableBadges(provider, walletAddress, true)
+      pickMintableBadges(provider, walletAddress, true)
+      pickUpgradableBadges(provider)
     } catch (e) {
       alertWarning(e.message)
     } finally {
@@ -189,11 +194,14 @@ const Dashboard = props => {
             </>
           ) : (
             <>
-              <ActionBox mintableBadgeCount={mintableBadges.length} />
+              <ActionBox />
               <NameDialog />
-              <BadgesDialog mintableBadgeCount={mintableBadges.length} />
+              <CustomizeDisplayDialog />
               <ReferDialog />
-              <UpgradeDialog badges={mintableBadges} loading={pickMintableBadgesLoading} />
+              <BadgesDialog
+                badges={badgesDialogVisible === BadgesDialogType.MINT ? mintableBadges : upgradableBadges}
+                loading={badgesDialogLoading}
+              />
               <BadgeDetailDialog />
             </>
           )}

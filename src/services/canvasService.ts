@@ -187,13 +187,13 @@ const queryCanvasUsername = async (provider, profileAddress) => {
 const getOrderedAttachedBadges = async profileContract => {
   try {
     const badgesProxy = await profileContract!.getAttachedBadges()
-    const attachedBadges = Array.from(badgesProxy)
+    const attachedBadges: Array<string> = Array.from(badgesProxy)
     const badgeOrder = await getBadgeOrder(profileContract)
 
     const orderedAttachedBadges = badgeOrder
       .map((order, index) => [Number(order), attachedBadges[index]])
-      .sort((a: any, b: any) => a[0] - b[0])
-      .map(item => item[1])
+      .sort((a: (string | number)[], b: (string | number)[]) => (a[0] as number) - (b[0] as number))
+      .map(item => item[1] as string)
 
     // console.log(attachedBadges, "badges")
     // console.log(badgeOrder, "badgeOrder")
@@ -383,6 +383,28 @@ const mintBadge = async (provider, walletCurrentAddress, badge) => {
     }
   }
 }
+const upgradeBadge = async (provider, badge) => {
+  const { id, badgeContract } = badge
+  const badgeInstance = new ethers.Contract(badgeContract, BadgeABI, provider)
+  await badgeInstance.upgrade(id)
+  const badgeMetadataURI = await badgeInstance.badgeTokenURI(id)
+  const accessableURI = badgeMetadataURI.replace(/^ipfs:\/\/(.*)/, "https://ipfs.io/ipfs/$1")
+  const metadata = await scrollRequest(accessableURI)
+  return metadata
+}
+
+const checkBadgeUpgradable = async (provider, badge) => {
+  try {
+    const { id, badgeContract } = badge
+
+    const badgeInstance = new ethers.Contract(badgeContract, BadgeABI, provider)
+    const upgradable = await badgeInstance.canUpgrade(id)
+    return { ...badge, upgradable }
+  } catch (e) {
+    // TODO: upgradable badge contract
+    return { ...badge, upgradable: false }
+  }
+}
 
 const customiseDisplay = async ({ profileContract, attachBadges, detachBadges, order }) => {
   const calls: any = []
@@ -462,6 +484,8 @@ export {
   attachBadges,
   detachBadges,
   mintBadge,
+  upgradeBadge,
+  checkBadgeUpgradable,
   customiseDisplay,
   reorderBadges,
   checkIfHasBadgeByAddress,

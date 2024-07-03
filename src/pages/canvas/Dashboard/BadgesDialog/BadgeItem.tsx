@@ -1,11 +1,7 @@
-import { useEffect } from "react"
 import Img from "react-cool-img"
 
 import { Avatar, ListItem, ListItemAvatar, ListItemText, Typography } from "@mui/material"
 import { styled } from "@mui/system"
-
-// import Button from "@/pages/canvas/components/Button"
-import useCanvasStore, { BadgeDetailDialogType } from "@/stores/canvasStore"
 
 const StyledListItem = styled(ListItem)(({ theme }) => ({
   width: "100%",
@@ -58,22 +54,11 @@ const StyledListItemText = styled(ListItemText)(({ theme }) => ({
   },
 }))
 
-// const StyledButton = styled(Button)(({ theme }) => ({}))
-
-const BadgeItem = ({ badge }) => {
-  const { changeBadgeDetailDialog, changeSelectedBadge, userBadges } = useCanvasStore()
-
-  const handleViewBadge = async () => {
-    changeSelectedBadge(badge)
-    changeBadgeDetailDialog(BadgeDetailDialogType.MINT_WITH_BACK)
-  }
-
-  useEffect(() => {
-    console.log(userBadges, "userBadges")
-  }, [userBadges])
+const BadgeItem = props => {
+  const { badge, action, onClick } = props
 
   return (
-    <StyledListItem onClick={handleViewBadge}>
+    <StyledListItem onClick={onClick ?? "void 0"}>
       <StyledListItemAvatar>
         <Img
           src={badge.image}
@@ -102,6 +87,7 @@ const BadgeItem = ({ badge }) => {
           </Typography>
         }
       />
+      {action}
     </StyledListItem>
   )
 }

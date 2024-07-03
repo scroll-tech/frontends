@@ -15,7 +15,7 @@ import useCheckViewport from "@/hooks/useCheckViewport"
 import useSnackbar from "@/hooks/useSnackbar"
 import Dialog from "@/pages/canvas/components/Dialog"
 import { mintBadge } from "@/services/canvasService"
-import useCanvasStore, { BadgeDetailDialogType } from "@/stores/canvasStore"
+import useCanvasStore, { BadgeDetailDialogType, BadgesDialogType } from "@/stores/canvasStore"
 import { generateShareTwitterURL, getBadgeImgURL, requireEnv } from "@/utils"
 
 const StyledScrollButton = styled(ScrollButton)(({ theme }) => ({
@@ -81,7 +81,7 @@ const BadgeDetailDialog = () => {
     badgeDetailDialogVisible,
     changeBadgeDetailDialog,
     selectedBadge,
-    changeUpgradeDialog,
+    changeBadgesDialogVisible,
     queryVisibleBadges,
     isBadgeMinting,
     changeIsBadgeMinting,
@@ -114,7 +114,7 @@ const BadgeDetailDialog = () => {
 
   const handleClose = () => {
     changeBadgeDetailDialog(BadgeDetailDialogType.HIDDEN)
-    changeUpgradeDialog(false)
+    changeBadgesDialogVisible(BadgesDialogType.HIDDEN)
   }
 
   const handleMint = async () => {
@@ -155,19 +155,19 @@ const BadgeDetailDialog = () => {
 
   const handleViewBadge = () => {
     changeBadgeDetailDialog(BadgeDetailDialogType.HIDDEN)
-    changeUpgradeDialog(false)
+    changeBadgesDialogVisible(BadgesDialogType.HIDDEN)
     navigate(`/scroll-canvas/badge/${selectedBadge.id}`)
   }
 
   const handleViewBadgeContract = () => {
     changeBadgeDetailDialog(BadgeDetailDialogType.HIDDEN)
-    changeUpgradeDialog(false)
+    changeBadgesDialogVisible(BadgesDialogType.HIDDEN)
     navigate(`/scroll-canvas/badge-contract/${selectedBadge.badgeContract}`)
   }
 
   const handleBack = () => {
     changeBadgeDetailDialog(BadgeDetailDialogType.HIDDEN)
-    // changeUpgradeDialog(true)
+    // changeBadgesDialogVisible(true)
   }
 
   return (

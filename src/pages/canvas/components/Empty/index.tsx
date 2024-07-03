@@ -5,23 +5,23 @@ import { Stack, Typography } from "@mui/material"
 
 import Button from "@/components/Button"
 import useCheckViewport from "@/hooks/useCheckViewport"
-import useCanvasStore from "@/stores/canvasStore"
+import useCanvasStore, { BadgesDialogType } from "@/stores/canvasStore"
 
 const Empty = props => {
   const { sx, title, mintableBadgeCount } = props
   const navigate = useNavigate()
   const { isMobile } = useCheckViewport()
-  const { changeUpgradeDialog, changeBadgesDialog } = useCanvasStore()
+  const { changeBadgesDialogVisible, changeCustomizeDisplayDialogVisible } = useCanvasStore()
 
   const moveToEcosystem = () => {
     navigate("/ecosystem")
-    changeUpgradeDialog(false)
-    changeBadgesDialog(false)
+    changeBadgesDialogVisible(BadgesDialogType.HIDDEN)
+    changeCustomizeDisplayDialogVisible(false)
   }
 
   const handleOpenMintBadge = () => {
-    changeUpgradeDialog(true)
-    changeBadgesDialog(false)
+    changeBadgesDialogVisible(BadgesDialogType.MINT)
+    changeCustomizeDisplayDialogVisible(false)
   }
   return (
     <Stack justifyContent="center" alignItems="center" height="100%" sx={sx}>

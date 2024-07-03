@@ -14,7 +14,7 @@ import { ReactComponent as TwitterSvg } from "@/assets/svgs/nft/twitter.svg"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import Button from "@/pages/canvas/components/Button"
-import useCanvasStore from "@/stores/canvasStore"
+import useCanvasStore, { BadgesDialogType } from "@/stores/canvasStore"
 import { requireEnv } from "@/utils"
 
 interface Action {
@@ -103,7 +103,7 @@ const CustomiseItem = styled(MenuItem)(({ theme }) => ({
   },
 }))
 
-const MintableCount = styled("span")(({ theme }) => ({
+const BadgeCount = styled("span")(({ theme }) => ({
   display: "inline-block",
   height: "1.6rem",
   minWidth: "1.6rem",
@@ -121,12 +121,14 @@ const MintableCount = styled("span")(({ theme }) => ({
   },
 }))
 
-const ActionBox = props => {
-  const { mintableBadgeCount } = props
+const ActionBox = () => {
   const { address: othersWalletAddress } = useParams()
   const navigate = useNavigate()
 
   const { walletCurrentAddress } = useRainbowContext()
+  const { changeCustomizeDisplayDialogVisible, changeProfileDialog, changeReferDialog, changeBadgesDialogVisible, upgradableBadges, mintableBadges } =
+    useCanvasStore()
+
   const { isPortrait } = useCheckViewport()
 
   const [copied, setCopied] = useState(false)
@@ -142,8 +144,6 @@ const ActionBox = props => {
       canvasUrl,
     )}&text=${encodeURIComponent(text)}&via=Scroll_ZKP`
   }, [canvasUrl])
-
-  const { changeBadgesDialog, changeProfileDialog, changeReferDialog, changeUpgradeDialog } = useCanvasStore()
 
   const handleCopyLink = useCallback(() => {
     copy(canvasUrl)
@@ -161,7 +161,7 @@ const ActionBox = props => {
   const [badgesAnchorEl, setBadgesAnchorEl] = useState<null | HTMLElement>(null)
   const badgesOpen = Boolean(badgesAnchorEl)
 
-  const handleCloseBadges = () => {
+  const handleCloseMenu = () => {
     setBadgesAnchorEl(null)
   }
 
@@ -190,34 +190,45 @@ const ActionBox = props => {
           }
         },
         visible: !othersWalletAddress,
-        withBadge: !!mintableBadgeCount,
+        withBadge: !!mintableBadges.length || !!upgradableBadges.length,
         menu: {
           anchorEl: badgesAnchorEl,
           open: badgesOpen,
-          onClose: handleCloseBadges,
+          onClose: handleCloseMenu,
           items: [
             {
               label: "Customize display",
               onClick: () => {
-                handleCloseBadges()
-                changeBadgesDialog(true)
+                handleCloseMenu()
+                changeCustomizeDisplayDialogVisible(true)
               },
             },
             {
               label: "Mint eligible badges",
-              extra: mintableBadgeCount ? <MintableCount>{mintableBadgeCount > 99 ? "99+" : mintableBadgeCount}</MintableCount> : null,
+              extra: mintableBadges.length ? <BadgeCount>{mintableBadges.length > 99 ? "99+" : mintableBadges.length}</BadgeCount> : null,
               onClick: () => {
-                handleCloseBadges()
-                changeUpgradeDialog(true)
+                handleCloseMenu()
+                changeBadgesDialogVisible(BadgesDialogType.MINT)
               },
             },
+            ...(!upgradableBadges.length
+              ? [
+                  {
+                    label: "Upgrade badges",
+                    extra: upgradableBadges.length ? <BadgeCount>{upgradableBadges.length > 99 ? "99+" : upgradableBadges.length}</BadgeCount> : null,
+                    onClick: () => {
+                      handleCloseMenu()
+                      changeBadgesDialogVisible(BadgesDialogType.UPGRADE)
+                    },
+                  },
+                ]
+              : []),
             {
               label: "Explore badges",
               onClick: () => {
                 navigate("/ecosystem#badges")
               },
             },
-            // TODO: upgrage badges
           ],
         },
       },
@@ -270,7 +281,18 @@ const ActionBox = props => {
         },
       },
     ]
-  }, [othersWalletAddress, shareTwitterURL, badgesAnchorEl, badgesOpen, shareAnchorEl, shareOpen, handleCopyLink, copied, mintableBadgeCount])
+  }, [
+    othersWalletAddress,
+    shareTwitterURL,
+    badgesAnchorEl,
+    badgesOpen,
+    shareAnchorEl,
+    shareOpen,
+    handleCopyLink,
+    copied,
+    mintableBadges.length,
+    upgradableBadges.length,
+  ])
 
   return (
     <Slide in direction="up">

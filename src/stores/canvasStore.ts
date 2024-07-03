@@ -1,13 +1,16 @@
 import { Contract } from "ethers"
+import produce from "immer"
 import { create } from "zustand"
 
 import { Badge, ETHEREUM_YEAR_BADGE, SCROLL_BADGES } from "@/constants"
 import {
   checkBadgeEligibility,
+  checkBadgeUpgradable,
   fetchCanvasDetail,
   getOrderedAttachedBadges,
   queryCanvasUsername,
   queryUserBadgesWrapped,
+  upgradeBadge,
 } from "@/services/canvasService"
 import { requireEnv } from "@/utils"
 
@@ -30,16 +33,25 @@ export enum BadgeDetailDialogType {
   NO_PROFILE = "noProfile", // no badge
 }
 
+export enum BadgesDialogType {
+  HIDDEN = "",
+  MINT = "mint",
+  UPGRADE = "upgrade",
+}
+
 type MintableBadge = Badge & { mintable: boolean }
+
+type UpgradableBadge = Badge & { upgradable: boolean }
 
 interface CanvasStore {
   // /invite/referralCode
   referralCode: string
   profileDialogVisible: boolean
   referDialogVisible: boolean
-  badgesDialogVisible: boolean
-  upgradeDialogVisible: boolean
+  customizeDisplayDialogVisible: boolean
   badgeDetailDialogVisible: BadgeDetailDialogType
+  badgesDialogVisible: BadgesDialogType
+
   mintFlowVisible: boolean
   sortedBadges: any
   selectedBadge: any
@@ -48,30 +60,33 @@ interface CanvasStore {
   changeMintFlowVisible: (visible: boolean) => void
   changeProfileDialog: (visible: boolean) => void
   changeReferDialog: (visible: boolean) => void
-  changeBadgesDialog: (visible: boolean) => void
+  changeCustomizeDisplayDialogVisible: (visible: boolean) => void
   changeSortedBadges: (badges: any) => void
-  changeUpgradeDialog: (visible: boolean) => void
+  changeBadgesDialogVisible: (visible: BadgesDialogType) => void
   changeBadgeDetailDialog: (visible: BadgeDetailDialogType) => void
   changeSelectedBadge: (badge: any) => void
 
   profileName: string
   isProfileMinting: boolean
   isBadgeMinting: Map<string, boolean>
+  isBadgeUpgrading: Map<string, boolean>
   isFirstBadgeMinting: boolean
   profileMintedChecking: boolean
   profileDetailLoading: boolean
   walletDetailLoading: boolean
   queryUsernameLoading: boolean
   queryUserBadgesLoading: boolean
-  pickMintableBadgesLoading: boolean
+  badgesDialogLoading: boolean
+  pickUpgradableBadgesLoading: boolean
   profileAddress: string | null
   profileMinted: boolean | null
   username: string
   canvasUsername: string
   userBadges: Array<any>
-  attachedBadges: Array<any>
-  orderedAttachedBadges: Array<any>
+  attachedBadges: Array<string>
+  orderedAttachedBadges: Array<string>
   mintableBadges: Array<MintableBadge>
+  upgradableBadges: Array<UpgradableBadge>
   badgeOrder: Array<any>
   profileContract: Contract | null
   firstBadgeWithPosition: any
@@ -85,6 +100,7 @@ interface CanvasStore {
   changeIsProfileMinting: (isProfileMinting: boolean) => void
   changeIsFirstBadgeMinting: (isFirstBadgeMinting: boolean) => void
   changeIsBadgeMinting: (id, loading) => void
+  changeIsBadgeUpgrading: (id, loading) => void
   checkIfProfileMinted: (instance: Contract, address: string, test?: boolean) => Promise<any>
   fetchCurrentCanvasDetail: (signer, walletAddress, profileAddress) => void
   checkAndFetchCurrentWalletCanvas: (prividerOrSigner, unsignedProfileRegistryContract, walletAddress) => Promise<any>
@@ -96,6 +112,7 @@ interface CanvasStore {
   queryVisibleBadges: (provider, address) => void
   queryUserBadges: (provider, address) => void
   pickMintableBadges: (provider, address, refresh?) => void
+  pickUpgradableBadges: (provider) => void
   addFirstBadge: (provider, badgeId, badgeImage, badgeContract) => void
   clearCanvas: () => void
   recordFirstBadgePosition: (position) => void
@@ -110,9 +127,9 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
   referralCode: "",
   profileDialogVisible: false,
   referDialogVisible: false,
-  badgesDialogVisible: false,
-  upgradeDialogVisible: false,
+  customizeDisplayDialogVisible: false,
   badgeDetailDialogVisible: BadgeDetailDialogType.HIDDEN,
+  badgesDialogVisible: BadgesDialogType.HIDDEN,
   sortedBadges: [],
   selectedBadge: {},
 
@@ -125,19 +142,22 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
   profileName: "",
   isProfileMinting: false,
   isBadgeMinting: new Map(),
+  isBadgeUpgrading: new Map(),
   isFirstBadgeMinting: false,
   profileMintedChecking: false,
   profileDetailLoading: false,
   queryUsernameLoading: false,
   walletDetailLoading: false,
   queryUserBadgesLoading: false,
-  pickMintableBadgesLoading: false,
+  badgesDialogLoading: false,
+  pickUpgradableBadgesLoading: false,
   username: "",
   canvasUsername: "",
   userBadges: [],
   attachedBadges: [],
   orderedAttachedBadges: [],
   mintableBadges: [],
+  upgradableBadges: [],
   badgeOrder: [],
   firstBadgeWithPosition: {},
   badgeAnimationVisible: false,
@@ -261,6 +281,19 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
       isBadgeMinting: newIsBadgeMinting,
     })
   },
+
+  changeIsBadgeUpgrading: (id, loading) => {
+    const newIsBadgeUpgrading = new Map(get().isBadgeUpgrading)
+    if (loading) {
+      newIsBadgeUpgrading.set(id, true)
+    } else {
+      newIsBadgeUpgrading.delete(id)
+    }
+    set({
+      isBadgeUpgrading: newIsBadgeUpgrading,
+    })
+  },
+
   changeIsFirstBadgeMinting: isFirstBadgeMinting => {
     set({
       isFirstBadgeMinting,
@@ -286,9 +319,9 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
       mintFlowVisible: false,
       profileDialogVisible: false,
       referDialogVisible: false,
-      badgesDialogVisible: false,
-      upgradeDialogVisible: false,
+      customizeDisplayDialogVisible: false,
       badgeDetailDialogVisible: BadgeDetailDialogType.HIDDEN,
+      badgesDialogVisible: BadgesDialogType.HIDDEN,
       initialMint: false,
       // reset profile mint status
       profileMinted: null,
@@ -371,7 +404,7 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
 
   pickMintableBadges: async (provider, walletCurrentAddress, refresh) => {
     set({
-      pickMintableBadgesLoading: true,
+      badgesDialogLoading: true,
     })
 
     const { userBadges, mintableBadges, badgeList } = get()
@@ -428,8 +461,25 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
       .map(item => ({ ...item, mintable: true }))
 
     set({
-      pickMintableBadgesLoading: false,
+      badgesDialogLoading: false,
       mintableBadges: finalMintableBadges,
+    })
+  },
+
+  pickUpgradableBadges: async provider => {
+    set({
+      pickUpgradableBadgesLoading: true,
+    })
+    const { userBadges } = get()
+    const checkPromiseList = userBadges.map(badge => checkBadgeUpgradable(provider, badge))
+    const asyncCheckedBadges = await Promise.allSettled(checkPromiseList)
+    const finalUpgradableBadges = asyncCheckedBadges
+      .filter((item): item is PromiseFulfilledResult<UpgradableBadge> => item.status === "fulfilled" && item.value.upgradable)
+      .map(item => item.value)
+
+    set({
+      pickUpgradableBadgesLoading: false,
+      upgradableBadges: finalUpgradableBadges,
     })
   },
 
@@ -440,7 +490,6 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
     })
   },
 
-  // for test
   addFirstBadge: async (providerOrSigner, badgeId, badgeImage, badgeContract) => {
     set({
       // queryUsernameLoading: true,
@@ -449,19 +498,25 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
       orderedAttachedBadges: [badgeId],
       badgeOrder: [1],
     })
-    // const { profileContract, name }: any = await testAsyncFunc({ name: "Lalala", profileContract: "0x4444" })
-    // const { profileContract, name } = await queryCanvasUsername(providerOrSigner, get().profileAddress)
-    // set({
-    //   username: name,
-    //   canvasUsername: name,
-    //   profileContract,
-    //   queryUserBadgesLoading: false,
-    // })
   },
 
-  // getReferrerData: async ()=>{
-  //   ge
-  // },
+  upgradeBadge: async (provider, badge) => {
+    const { changeIsBadgeUpgrading, userBadges } = get()
+    changeIsBadgeUpgrading(badge.id, true)
+    const metadata = await upgradeBadge(provider, badge)
+    const nextUserBadges = produce(userBadges, draft => {
+      let upgradedBadge = draft.find(item => item.id === badge.id)
+      // eslint-disable-next-line
+      upgradedBadge = {
+        ...upgradedBadge,
+        ...metadata,
+      }
+    })
+    set({
+      userBadges: nextUserBadges,
+    })
+    changeIsBadgeUpgrading(badge.id, false)
+  },
 
   changeSortedBadges: (badges: any) => {
     set({
@@ -492,15 +547,15 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
     })
   },
 
-  changeBadgesDialog: visible => {
+  changeCustomizeDisplayDialogVisible: visible => {
     set({
-      badgesDialogVisible: visible,
+      customizeDisplayDialogVisible: visible,
     })
   },
 
-  changeUpgradeDialog: visible => {
+  changeBadgesDialogVisible: visible => {
     set({
-      upgradeDialogVisible: visible,
+      badgesDialogVisible: visible,
     })
   },
 
