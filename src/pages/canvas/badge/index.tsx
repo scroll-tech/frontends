@@ -12,8 +12,9 @@ import { useCanvasContext } from "@/contexts/CanvasContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useBadgeListProxy from "@/hooks/useBadgeProxy"
 import useSnackbar from "@/hooks/useSnackbar"
-import { fillBadgeDetailWithPayload, queryBadgeDetailById, queryCanvasUsername } from "@/services/canvasService"
-import { formatDate, generateShareTwitterURL, requireEnv } from "@/utils"
+import { checkBadgeUpgradable, fillBadgeDetailWithPayload, queryBadgeDetailById, queryCanvasUsername, upgradeBadge } from "@/services/canvasService"
+import useCanvasStore from "@/stores/canvasStore"
+import { formatDate, generateShareTwitterURL, requireEnv, sentryDebug } from "@/utils"
 
 import BackToCanvas from "./BackToCanvas"
 import BadgeDetail from "./BadgeDetail"
@@ -25,6 +26,7 @@ const BadgeDetailPage = () => {
   const { walletCurrentAddress } = useRainbowContext()
 
   const { unsignedProfileRegistryContract, publicProvider } = useCanvasContext()
+  const { changeIsBadgeUpgrading } = useCanvasStore()
   const badgeListProxy = useBadgeListProxy()
 
   const isOriginsNFTBadge = useCallback(
@@ -90,6 +92,12 @@ const BadgeDetailPage = () => {
 
       const { badgeContract, description, ...badgeMetadata } = await fillBadgeDetailWithPayload(publicProvider, { id, data })
       const name = await fetchProfileUsername(publicProvider, recipient)
+      let upgradable = false
+      if (walletCurrentAddress === recipient) {
+        const checkedBadge = await checkBadgeUpgradable(publicProvider, { id, badgeContract })
+        upgradable = checkedBadge.upgradable
+        // upgradable = true
+      }
       const badgeDetail = {
         walletAddress: recipient,
         owner: name,
@@ -98,6 +106,7 @@ const BadgeDetailPage = () => {
         badgeContract,
         issuer: badgeListProxy[badgeContract]?.issuer,
         description: isOriginsNFTBadge(badgeContract) ? badgeListProxy[badgeContract].description : description,
+        upgradable,
         ...badgeMetadata,
       }
       if (isOriginsNFTBadge(badgeContract)) {
@@ -120,6 +129,22 @@ const BadgeDetailPage = () => {
     return `/scroll-canvas/${detail.walletAddress}`
   }, [walletCurrentAddress, detail])
 
+  const handleUpgradeBadge = async () => {
+    try {
+      const preBadgeName = detail.name
+      changeIsBadgeUpgrading(id, true)
+      const metadata = await upgradeBadge(publicProvider, { id, badgeContract: detail.badgeContract })
+      const checkedBadge = await checkBadgeUpgradable(publicProvider, { id, badgeContract: detail.badgeContract })
+      setDetail(pre => ({ ...pre, ...metadata, upgradable: checkedBadge.upgradable }))
+      alertWarning(`You have successfully upgraded ${preBadgeName} to ${metadata.name}`, "success")
+    } catch (e) {
+      alertWarning(`Something wrong, try again later`)
+      sentryDebug(`upgrade badge: ${id}-${e.message}`)
+    } finally {
+      changeIsBadgeUpgrading(id, false)
+    }
+  }
+
   return (
     <>
       <BadgeDetail
@@ -128,6 +153,7 @@ const BadgeDetailPage = () => {
         loading={loading}
         property={["owner", "issuer", "mintedOn", isOriginsNFTBadge(detail.badgeContract) ? "rarity" : undefined]}
         breadcrumb={<BackToCanvas username={detail.owner} loading={loading} href={viewCanvasURL}></BackToCanvas>}
+        onUpgrade={handleUpgradeBadge}
       >
         <ScrollButton color="primary" href={viewEASScanURL(id)} sx={{ gridColumn: ["span 2", "unset"] }} target="_blank">
           View on EAS

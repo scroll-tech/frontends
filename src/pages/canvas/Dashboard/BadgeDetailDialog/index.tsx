@@ -14,9 +14,11 @@ import useBadgeListProxy from "@/hooks/useBadgeProxy"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useSnackbar from "@/hooks/useSnackbar"
 import Dialog from "@/pages/canvas/components/Dialog"
-import { mintBadge } from "@/services/canvasService"
+import { checkBadgeUpgradable, mintBadge } from "@/services/canvasService"
 import useCanvasStore, { BadgeDetailDialogType, BadgesDialogType } from "@/stores/canvasStore"
-import { generateShareTwitterURL, getBadgeImgURL, requireEnv } from "@/utils"
+import { generateShareTwitterURL, getBadgeImgURL, requireEnv, sentryDebug } from "@/utils"
+
+import UpgradeAction from "./UpgradeAction"
 
 const StyledScrollButton = styled(ScrollButton)(({ theme }) => ({
   // width: "24rem",
@@ -48,33 +50,6 @@ const ButtonContainer = styled(forwardRef<any, any>((props, ref) => <Box {...pro
   },
 }))
 
-// const UpgradedBox = styled(Box)(({ theme }) => ({
-//   position: "absolute",
-//   top: 0,
-//   left: 0,
-//   right: 0,
-//   display: "flex",
-//   backgroundColor: "#FF6F43",
-//   height: "4.8rem",
-//   justifyContent: "center",
-//   alignItems: "center",
-//   color: "#fff",
-//   fontSize: "1.6rem",
-//   fontWeight: 600,
-// }))
-
-// const UpgradedButton = styled(Button)(({ theme }) => ({
-//   borderRadius: "0.8rem",
-//   fontSize: "1.6rem",
-//   fontWeight: 600,
-//   lineHeight: "2.4rem",
-//   height: "3.2rem",
-//   width: "12.4rem",
-//   border: "1px solid #Fff",
-//   padding: "0",
-//   marginLeft: "1.6rem",
-// }))
-
 const BadgeDetailDialog = () => {
   const { walletCurrentAddress, provider } = useRainbowContext()
   const {
@@ -84,8 +59,12 @@ const BadgeDetailDialog = () => {
     changeBadgesDialogVisible,
     queryVisibleBadges,
     isBadgeMinting,
+    isBadgeUpgrading,
     changeIsBadgeMinting,
+    changeIsBadgeUpgrading,
     pickMintableBadges,
+    changeSelectedBadge,
+    upgradeBadgeAndRefreshUserBadges,
   } = useCanvasStore()
   const navigate = useNavigate()
   const alertWarning = useSnackbar()
@@ -137,6 +116,7 @@ const BadgeDetailDialog = () => {
         changeBadgeDetailDialog(BadgeDetailDialogType.HIDDEN)
       }
     } catch (e) {
+      sentryDebug(`mint badge: ${walletCurrentAddress}-${selectedBadge.badgeContract}-${e.message}`)
       alertWarning(e.message)
     } finally {
       changeIsBadgeMinting(selectedBadge.badgeContract, false)
@@ -170,12 +150,36 @@ const BadgeDetailDialog = () => {
     // changeBadgesDialogVisible(true)
   }
 
+  const handleUpgradeBadge = async () => {
+    try {
+      const metadata = await upgradeBadgeAndRefreshUserBadges(provider, selectedBadge)
+      const checkedBadge = await checkBadgeUpgradable(provider, selectedBadge)
+      // const checkedBadge: any = await testAsyncFunc({ upgradable: false })
+      changeSelectedBadge({ ...selectedBadge, ...metadata, upgradable: checkedBadge.upgradable })
+      alertWarning(`You have successfully upgraded ${selectedBadge.name} to ${metadata.name}`, "success")
+    } catch (e) {
+      alertWarning(`Something wrong, try again later`)
+      sentryDebug(`upgrade badge: ${selectedBadge.id}-${e.message}`)
+    } finally {
+      changeIsBadgeUpgrading(selectedBadge.id, false)
+    }
+  }
+
   return (
     <Dialog
       sx={{ zIndex: theme => theme.zIndex.modal + 1 }}
       disablePortal={isMobile}
       open={badgeDetailDialogVisible !== BadgeDetailDialogType.HIDDEN}
       allowBack={[BadgeDetailDialogType.MINT_WITH_BACK].includes(badgeDetailDialogVisible)}
+      roof={
+        selectedBadge.upgradable && (
+          <UpgradeAction
+            sx={{ width: "100%", justifyContent: "center" }}
+            loading={isBadgeUpgrading.get(selectedBadge.id)}
+            onClick={handleUpgradeBadge}
+          ></UpgradeAction>
+        )
+      }
       onBack={handleBack}
       onClose={handleClose}
     >
@@ -183,7 +187,7 @@ const BadgeDetailDialog = () => {
         direction="column"
         alignItems="center"
         justifyContent={isMobile ? "flex-start" : "center"}
-        sx={{ width: ["100%", "57.6rem"], height: [`calc(100% - ${actionHeight})`, "auto", "auto", "64.2rem"] }}
+        sx={{ width: ["100%", "57.6rem"], height: [`calc(100% - ${actionHeight})`, "auto", "auto", "54.6rem"] }}
       >
         <Img
           alt="img"
@@ -221,15 +225,7 @@ const BadgeDetailDialog = () => {
                   textAlign: ["left", "center"],
                   marginBottom: "1.2rem",
                 },
-                theme => ({
-                  [theme.breakpoints.down("sm")]: {
-                    display: "-webkit-box",
-                    width: "100%",
-                    WebkitBoxOrient: "vertical",
-                    WebkitLineClamp: "4",
-                    overflow: "hidden",
-                  },
-                }),
+                theme => theme.multilineEllipsis,
               ]}
             >
               {selectedBadge.description}

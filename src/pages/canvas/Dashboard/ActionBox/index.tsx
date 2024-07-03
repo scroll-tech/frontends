@@ -178,8 +178,6 @@ const ActionBox = () => {
   const shareOpen = Boolean(shareAnchorEl)
 
   const actions: Action[] = useMemo(() => {
-    console.log(pickMintableBadgesLoading, "pickMintableBadgesLoading")
-
     return [
       {
         label: "Invite & Earn",

@@ -12,7 +12,6 @@ import useSnackbar from "@/hooks/useSnackbar"
 import Button from "@/pages/canvas/components/Button"
 import Dialog from "@/pages/canvas/components/Dialog"
 import Empty from "@/pages/canvas/components/Empty"
-import { upgradeBadge } from "@/services/canvasService"
 import useCanvasStore, { BadgeDetailDialogType, BadgesDialogType } from "@/stores/canvasStore"
 
 import BadgeItem from "./BadgeItem"
@@ -60,7 +59,14 @@ const BadgesDialog = props => {
   const { isMobile } = useCheckViewport()
   const alertWarning = useSnackbar()
 
-  const { isBadgeUpgrading, badgesDialogVisible, changeBadgesDialogVisible, changeBadgeDetailDialog, changeSelectedBadge } = useCanvasStore()
+  const {
+    isBadgeUpgrading,
+    badgesDialogVisible,
+    changeBadgesDialogVisible,
+    changeBadgeDetailDialog,
+    changeSelectedBadge,
+    upgradeBadgeAndRefreshUserBadges,
+  } = useCanvasStore()
 
   const dialogTitle = useMemo(
     () => (badgesDialogVisible === BadgesDialogType.MINT ? "Mint eligible badges" : "Upgrade badges"),
@@ -77,7 +83,7 @@ const BadgesDialog = props => {
   }
 
   const handleUpgradeBadge = async badge => {
-    await upgradeBadge(provider, badge)
+    await upgradeBadgeAndRefreshUserBadges(provider, badge)
     alertWarning(
       <>
         {badge.name} upgraded successfully!<br></br>

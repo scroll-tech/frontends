@@ -8,6 +8,8 @@ import { styled } from "@mui/material/styles"
 import SectionWrapper from "@/components/SectionWrapper"
 import Skeleton from "@/components/Skeleton"
 import useCheckViewport from "@/hooks/useCheckViewport"
+import UpgradeAction from "@/pages/canvas/Dashboard/BadgeDetailDialog/UpgradeAction"
+import useCanvasStore from "@/stores/canvasStore"
 import { getBadgeImgURL } from "@/utils"
 
 import BadgeDesc from "../components/BadgeDesc"
@@ -28,33 +30,9 @@ const InfoBox = styled<any>(Box)(({ theme, count }) => ({
   // justifyItems: "center",
 }))
 
-// const UpgradedBox = styled(Box)(({ theme }) => ({
-//   display: "flex",
-//   backgroundColor: "#FF6F43",
-//   width: "33.8rem",
-//   height: "4.8rem",
-//   justifyContent: "center",
-//   alignItems: "center",
-//   color: "#fff",
-//   fontSize: "1.6rem",
-//   fontWeight: 600,
-//   borderRadius: "0.8rem",
-// }))
-
-// const UpgradedButton = styled(Button)(({ theme }) => ({
-//   borderRadius: "0.8rem",
-//   fontSize: "1.6rem",
-//   fontWeight: 600,
-//   lineHeight: "2.4rem",
-//   height: "3.2rem",
-//   width: "12.4rem",
-//   border: "1px solid #Fff",
-//   padding: "0",
-//   marginLeft: "1.6rem",
-// }))
-
 const BadgeDetail = props => {
-  const { detail, metadata, loading, breadcrumb, property, children } = props
+  const { detail, metadata, loading, breadcrumb, property, onUpgrade, children } = props
+  const { isBadgeUpgrading } = useCanvasStore()
   const { isLandscape } = useCheckViewport()
   const [actionHeight, setActionHeight] = useState("auto")
   const [isOverflow, setIsOverflow] = useState(false)
@@ -154,12 +132,13 @@ const BadgeDetail = props => {
             alignItems={isLandscape ? "flex-start" : "center"}
           >
             <Box sx={{ width: "100%", textAlign: ["center", "center", "left"] }}>
-              {/* <UpgradedBox>
-            UPGRADE AVAILABLE
-            <UpgradedButton variant="contained" color="primary" onClick={handleMint}>
-              Upgrade now
-            </UpgradedButton>
-          </UpgradedBox> */}
+              {!loading && detail.upgradable && (
+                <UpgradeAction
+                  sx={{ mb: "0.8rem", borderRadius: "0.4rem" }}
+                  loading={isBadgeUpgrading.get(detail.id)}
+                  onClick={onUpgrade}
+                ></UpgradeAction>
+              )}
               {loading ? (
                 <Skeleton
                   dark

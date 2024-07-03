@@ -41,7 +41,7 @@ export enum BadgesDialogType {
 
 type MintableBadge = Badge & { mintable: boolean }
 
-type UpgradableBadge = Badge & { upgradable: boolean }
+export type UpgradableBadge = Badge & { upgradable: boolean; id: string }
 
 interface CanvasStore {
   // /invite/referralCode
@@ -121,6 +121,7 @@ interface CanvasStore {
   queryFirstMintUsername: (provider) => void
   changeInputReferralCode: (inputReferralCode) => void
   jointBadgeList: () => Promise<void>
+  upgradeBadgeAndRefreshUserBadges: (provider, badge: { id: string; badgeContract: string }) => Promise<any>
 }
 
 const useCanvasStore = create<CanvasStore>()((set, get) => ({
@@ -479,6 +480,7 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
 
     set({
       pickUpgradableBadgesLoading: false,
+      // upgradableBadges: userBadges.slice(0, 2).map(item => ({ ...item, upgradable: true })),
       upgradableBadges: finalUpgradableBadges,
     })
   },
@@ -500,22 +502,22 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
     })
   },
 
-  upgradeBadge: async (provider, badge) => {
-    const { changeIsBadgeUpgrading, userBadges } = get()
+  upgradeBadgeAndRefreshUserBadges: async (provider, badge) => {
+    const { changeIsBadgeUpgrading } = get()
     changeIsBadgeUpgrading(badge.id, true)
     const metadata = await upgradeBadge(provider, badge)
-    const nextUserBadges = produce(userBadges, draft => {
-      let upgradedBadge = draft.find(item => item.id === badge.id)
-      // eslint-disable-next-line
-      upgradedBadge = {
-        ...upgradedBadge,
-        ...metadata,
-      }
-    })
-    set({
-      userBadges: nextUserBadges,
-    })
+
+    set(
+      produce(state => {
+        const upgradedBadge = state.userBadges.find(item => item.id === badge.id)
+        const { name, image, description } = metadata
+        upgradedBadge.name = name
+        upgradedBadge.image = image
+        upgradedBadge.description = description
+      }),
+    )
     changeIsBadgeUpgrading(badge.id, false)
+    return metadata
   },
 
   changeSortedBadges: (badges: any) => {

@@ -1,10 +1,10 @@
-import { Dialog, DialogContent, DialogTitle, IconButton, SvgIcon, Typography } from "@mui/material"
+import { Box, Dialog, DialogContent, DialogTitle, IconButton, SvgIcon, Typography } from "@mui/material"
 
 import { ReactComponent as BackSvg } from "@/assets/svgs/canvas/back.svg"
 import { ReactComponent as CloseSvg } from "@/assets/svgs/canvas/close.svg"
 
 const ScrollDialog = props => {
-  const { title, sx, fullWidth, allowBack, noClose, onClose, onBack, children, extra, ...restProps } = props
+  const { title, sx, fullWidth, allowBack, noClose, onClose, onBack, children, extra, roof, ...restProps } = props
 
   return (
     <Dialog
@@ -15,12 +15,13 @@ const ScrollDialog = props => {
             backgroundColor: "rgba(16, 16, 16, 0.60)",
           },
           "& .MuiDialog-paper": {
+            position: "relative",
             background: "linear-gradient(127deg, #2A2A2A 0.6%, #101010 100%)",
             // // width: "64rem",
             width: fullWidth ? "100%" : "auto",
             minWidth: "64rem",
             maxWidth: "120rem",
-            padding: "3rem 3.2rem 3.2rem",
+            padding: roof ? "5.9rem 3.2rem 3.2rem" : "3rem 3.2rem 3.2rem",
             borderRadius: "1.6rem",
           },
         },
@@ -34,7 +35,7 @@ const ScrollDialog = props => {
               maxHeight: "unset",
               minWidth: "unset",
               width: "100%",
-              padding: "1.1rem 2rem 2.4rem",
+              padding: roof ? "5.9rem 2rem 2.4rem" : "1.1rem 2rem 2.4rem",
             },
           },
         }),
@@ -42,6 +43,7 @@ const ScrollDialog = props => {
       onClose={onClose}
       {...restProps}
     >
+      <Box sx={{ position: "absolute", top: 0, left: 0, width: "100%", height: "4.8rem" }}>{roof}</Box>
       <DialogTitle sx={{ padding: 0, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         {allowBack && (
           <IconButton sx={{ p: 0, "&:hover": { backgroundColor: "unset" } }} onClick={onBack}>

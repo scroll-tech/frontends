@@ -1,6 +1,7 @@
+import { useMemo } from "react"
 import Img from "react-cool-img"
 
-import { Box } from "@mui/material"
+import { Box, Badge as MuiBadge } from "@mui/material"
 
 import useCanvasStore, { BadgeDetailDialogType } from "@/stores/canvasStore"
 import { getBadgeImgURL } from "@/utils"
@@ -8,14 +9,14 @@ import { getBadgeImgURL } from "@/utils"
 import ToolTip from "../../components/Tooltip"
 
 const Badge = ({ badge, index, badgewidth }) => {
-  // const { isMobile } = useCheckViewport()
-  const { changeBadgeDetailDialog, changeSelectedBadge } = useCanvasStore()
+  const { changeBadgeDetailDialog, changeSelectedBadge, upgradableBadges } = useCanvasStore()
 
   const handleShowBadgeDetailDialog = () => {
-    changeSelectedBadge(badge.metadata)
-    // console.log(badge.metadata, "badge.metadata")
+    changeSelectedBadge({ ...badge.metadata, upgradable: upgradableBadge })
     changeBadgeDetailDialog(BadgeDetailDialogType.VIEW)
   }
+
+  const upgradableBadge = useMemo(() => upgradableBadges.find(item => item.id === badge.metadata.id)?.upgradable, [upgradableBadges, badge])
 
   return (
     <ToolTip title={<Box sx={{ fontWeight: 600 }}>{badge.metadata?.name}</Box>}>
@@ -69,13 +70,15 @@ const Badge = ({ badge, index, badgewidth }) => {
         }}
         onClick={handleShowBadgeDetailDialog}
       >
-        {/* <BadgeGlowBox></BadgeGlowBox> */}
-        <Img
-          alt={badge.metadata?.name}
-          style={{ width: "100%", borderRadius: "0.8rem" }}
-          src={getBadgeImgURL(badge.metadata?.image)}
-          placeholder="/imgs/canvas/badgePlaceholder.svg"
-        />
+        <MuiBadge invisible={!upgradableBadge} color="primary" variant="dot">
+          {/* <BadgeGlowBox></BadgeGlowBox> */}
+          <Img
+            alt={badge.metadata?.name}
+            style={{ width: "100%", borderRadius: "0.8rem" }}
+            src={getBadgeImgURL(badge.metadata?.image)}
+            placeholder="/imgs/canvas/badgePlaceholder.svg"
+          />
+        </MuiBadge>
       </Box>
     </ToolTip>
   )

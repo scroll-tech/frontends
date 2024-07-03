@@ -398,6 +398,10 @@ const checkBadgeUpgradable = async (provider, badge) => {
     const { id, badgeContract } = badge
 
     const badgeInstance = new ethers.Contract(badgeContract, BadgeABI, provider)
+    // if (test) {
+    //   const upgradable = await testAsyncFunc(true)
+    //   return { ...badge, upgradable }
+    // }
     const upgradable = await badgeInstance.canUpgrade(id)
     return { ...badge, upgradable }
   } catch (e) {
