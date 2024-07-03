@@ -25,6 +25,10 @@ export const defaultProjectList = {
           project: "SyncSwap",
         },
         {
+          name: "Wombat",
+          project: "Wombat",
+        },
+        {
           name: "Zebra",
           project: "Zebra",
         },
@@ -97,6 +101,12 @@ const PROJECT_LIST = [
     key: "SyncSwap",
     logo: "https://scroll-eco-list.netlify.app/logos/Syncswap.png",
     website: "https://syncswap.xyz/",
+  },
+  {
+    name: "Wombat",
+    key: "Wombat",
+    logo: "https://scroll-eco-list.netlify.app/logos/Wombat%20Exchange.png",
+    website: "https://www.wombat.exchange/",
   },
   {
     name: "Zebra",
