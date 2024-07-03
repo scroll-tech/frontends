@@ -34,7 +34,7 @@ export const ECOSYSTEM_EXPLORER_LIST = [
     icon: NoteIcon,
     href: GET_IN_TOUCH_LINK,
     title: "Get in touch",
-    content: "Reach out directly if you need more support for hour project.",
+    content: "Reach out directly if you need more support for your project.",
   },
   {
     icon: HeartIcon,
