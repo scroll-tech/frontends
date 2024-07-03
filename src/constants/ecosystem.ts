@@ -1,5 +1,6 @@
 import { ReactComponent as DoubleEyesIcon } from "@/assets/svgs/ecosystem/double-eyes.svg"
 import { ReactComponent as HeartIcon } from "@/assets/svgs/ecosystem/heart.svg"
+import { ReactComponent as NoteIcon } from "@/assets/svgs/ecosystem/note.svg"
 import { ReactComponent as SettingsIcon } from "@/assets/svgs/ecosystem/settings.svg"
 
 export const DIVERGENT_CATEGORY_MAP = {
@@ -16,6 +17,8 @@ export const DIVERGENT_CATEGORY_MAP = {
 
 export const LIST_YOUR_DAPP_LINK = "https://tally.so/r/nGppyZ"
 
+export const GET_IN_TOUCH_LINK = ""
+
 export const REQUEST_A_DAPP_LINK = "https://tally.so/r/3jlj59"
 
 export const LEARN_BUILD_LINK = "https://docs.scroll.io/en/getting-started/overview/"
@@ -26,6 +29,12 @@ export const ECOSYSTEM_EXPLORER_LIST = [
     href: LIST_YOUR_DAPP_LINK,
     title: "List your Dapp",
     content: "Join a supportive, collaborative ecosystem with a greater purpose.",
+  },
+  {
+    icon: NoteIcon,
+    href: GET_IN_TOUCH_LINK,
+    title: "Get in touch",
+    content: "Reach out directly if you need more support for hour project.",
   },
   {
     icon: HeartIcon,
