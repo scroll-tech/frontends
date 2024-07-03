@@ -48,7 +48,8 @@ const Dashboard = props => {
     upgradableBadges,
     pickMintableBadges,
     pickUpgradableBadges,
-    badgesDialogLoading,
+    pickMintableBadgesLoading,
+    pickUpgradableBadgesLoading,
   } = useCanvasStore()
 
   const metadata = {
@@ -200,7 +201,7 @@ const Dashboard = props => {
               <ReferDialog />
               <BadgesDialog
                 badges={badgesDialogVisible === BadgesDialogType.MINT ? mintableBadges : upgradableBadges}
-                loading={badgesDialogLoading}
+                loading={pickMintableBadgesLoading || pickUpgradableBadgesLoading}
               />
               <BadgeDetailDialog />
             </>

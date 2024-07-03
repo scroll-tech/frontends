@@ -2,7 +2,7 @@ import copy from "copy-to-clipboard"
 import { Fragment, useCallback, useMemo, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 
-import { Badge, Box, Menu, MenuItem, Slide, Stack, SvgIcon } from "@mui/material"
+import { Badge, Box, CircularProgress, Menu, MenuItem, Slide, Stack, SvgIcon } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { ReactComponent as BadgesSvg } from "@/assets/svgs/canvas/badges.svg"
@@ -15,7 +15,7 @@ import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import Button from "@/pages/canvas/components/Button"
 import useCanvasStore, { BadgesDialogType } from "@/stores/canvasStore"
-import { requireEnv } from "@/utils"
+import { generateShareTwitterURL, requireEnv } from "@/utils"
 
 interface Action {
   label: string | (() => React.ReactNode)
@@ -67,6 +67,7 @@ const ActionButton = styled(Button)(({ theme }) => ({
     fontSize: "2rem",
   },
   ".MuiButton-startIcon": {
+    position: "relative",
     [theme.breakpoints.down("sm")]: {
       marginRight: "4px",
     },
@@ -126,8 +127,16 @@ const ActionBox = () => {
   const navigate = useNavigate()
 
   const { walletCurrentAddress } = useRainbowContext()
-  const { changeCustomizeDisplayDialogVisible, changeProfileDialog, changeReferDialog, changeBadgesDialogVisible, upgradableBadges, mintableBadges } =
-    useCanvasStore()
+  const {
+    changeCustomizeDisplayDialogVisible,
+    changeProfileDialog,
+    changeReferDialog,
+    changeBadgesDialogVisible,
+    upgradableBadges,
+    mintableBadges,
+    pickMintableBadgesLoading,
+    pickUpgradableBadgesLoading,
+  } = useCanvasStore()
 
   const { isPortrait } = useCheckViewport()
 
@@ -140,9 +149,7 @@ const ActionBox = () => {
 
   const shareTwitterURL = useMemo(() => {
     const text = "I have minted a Scroll Canvas!"
-    return `https://twitter.com/intent/tweet?original_referer=${encodeURIComponent(window.location.href)}&url=${encodeURIComponent(
-      canvasUrl,
-    )}&text=${encodeURIComponent(text)}&via=Scroll_ZKP`
+    return generateShareTwitterURL(canvasUrl, text)
   }, [canvasUrl])
 
   const handleCopyLink = useCallback(() => {
@@ -171,6 +178,8 @@ const ActionBox = () => {
   const shareOpen = Boolean(shareAnchorEl)
 
   const actions: Action[] = useMemo(() => {
+    console.log(pickMintableBadgesLoading, "pickMintableBadgesLoading")
+
     return [
       {
         label: "Invite & Earn",
@@ -191,6 +200,7 @@ const ActionBox = () => {
         },
         visible: !othersWalletAddress,
         withBadge: !!mintableBadges.length || !!upgradableBadges.length,
+        loading: pickMintableBadgesLoading || pickUpgradableBadgesLoading,
         menu: {
           anchorEl: badgesAnchorEl,
           open: badgesOpen,
@@ -211,7 +221,7 @@ const ActionBox = () => {
                 changeBadgesDialogVisible(BadgesDialogType.MINT)
               },
             },
-            ...(!upgradableBadges.length
+            ...(upgradableBadges.length
               ? [
                   {
                     label: "Upgrade badges",
@@ -292,7 +302,27 @@ const ActionBox = () => {
     copied,
     mintableBadges.length,
     upgradableBadges.length,
+    pickMintableBadgesLoading,
+    pickUpgradableBadgesLoading,
   ])
+
+  const renderActionIcon = action => {
+    if (action.withBadge) {
+      return (
+        <Badge color="primary" variant="dot">
+          <SvgIcon sx={{ fontSize: "2.4rem" }} component={action.icon} inheritViewBox></SvgIcon>
+        </Badge>
+      )
+    } else if (action.loading) {
+      return (
+        <>
+          <SvgIcon sx={{ fontSize: "2.4rem !important" }} component={action.icon} inheritViewBox></SvgIcon>
+          <CircularProgress sx={{ position: "absolute", right: "-3px", top: "-3px" }} size={10} thickness={8} color="inherit"></CircularProgress>
+        </>
+      )
+    }
+    return <SvgIcon sx={{ fontSize: "2.4rem !important" }} component={action.icon} inheritViewBox></SvgIcon>
+  }
 
   return (
     <Slide in direction="up">
@@ -301,20 +331,7 @@ const ActionBox = () => {
           .filter(action => action.visible)
           .map((action, index) => (
             <Fragment key={index}>
-              <ActionButton
-                key={index}
-                color={action.color as any}
-                onClick={action.onClick}
-                startIcon={
-                  action.withBadge ? (
-                    <Badge color="primary" variant="dot">
-                      <SvgIcon sx={{ fontSize: "2.4rem" }} component={action.icon} inheritViewBox></SvgIcon>
-                    </Badge>
-                  ) : (
-                    <SvgIcon component={action.icon} inheritViewBox></SvgIcon>
-                  )
-                }
-              >
+              <ActionButton key={index} color={action.color as any} onClick={action.onClick} startIcon={(() => renderActionIcon(action))()}>
                 {typeof action.label === "function" ? action.label() : action.label}
               </ActionButton>
               {action.menu && (

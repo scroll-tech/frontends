@@ -76,7 +76,7 @@ interface CanvasStore {
   walletDetailLoading: boolean
   queryUsernameLoading: boolean
   queryUserBadgesLoading: boolean
-  badgesDialogLoading: boolean
+  pickMintableBadgesLoading: boolean
   pickUpgradableBadgesLoading: boolean
   profileAddress: string | null
   profileMinted: boolean | null
@@ -149,7 +149,7 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
   queryUsernameLoading: false,
   walletDetailLoading: false,
   queryUserBadgesLoading: false,
-  badgesDialogLoading: false,
+  pickMintableBadgesLoading: false,
   pickUpgradableBadgesLoading: false,
   username: "",
   canvasUsername: "",
@@ -404,7 +404,7 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
 
   pickMintableBadges: async (provider, walletCurrentAddress, refresh) => {
     set({
-      badgesDialogLoading: true,
+      pickMintableBadgesLoading: true,
     })
 
     const { userBadges, mintableBadges, badgeList } = get()
@@ -461,7 +461,7 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
       .map(item => ({ ...item, mintable: true }))
 
     set({
-      badgesDialogLoading: false,
+      pickMintableBadgesLoading: false,
       mintableBadges: finalMintableBadges,
     })
   },

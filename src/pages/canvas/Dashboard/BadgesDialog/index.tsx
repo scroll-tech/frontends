@@ -91,7 +91,7 @@ const BadgesDialog = props => {
 
   if (loading) {
     return (
-      <Dialog title={dialogTitle} open={badgesDialogVisible} onClose={handleClose}>
+      <Dialog title={dialogTitle} open={!!badgesDialogVisible} onClose={handleClose}>
         <StyledList>
           <LoadingPage
             height="100%"
@@ -105,14 +105,14 @@ const BadgesDialog = props => {
   // only for mint dialog
   if (!badges.length) {
     return (
-      <Dialog onClose={handleClose} open={badgesDialogVisible}>
+      <Dialog onClose={handleClose} open={!!badgesDialogVisible}>
         <Empty title="No eligible badges for minting" sx={{ width: "57.6rem", height: ["auto", "62.7rem"] }}></Empty>
       </Dialog>
     )
   }
 
   return (
-    <Dialog title={dialogTitle} open={badgesDialogVisible} onClose={handleClose}>
+    <Dialog title={dialogTitle} open={!!badgesDialogVisible} onClose={handleClose}>
       <StyledList>
         {badges.map((badge, index) => (
           <>
