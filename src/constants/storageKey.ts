@@ -28,3 +28,5 @@ export const SIGNED_TERMS = "signedTerms"
 export const WALLET_MARKS = "walletMarks"
 
 export const BRIDGE_BALANCES = "bridgeBalances"
+
+export const BLOG_LANGUAGE = "blogLanguage"

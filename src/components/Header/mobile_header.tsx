@@ -5,7 +5,9 @@ import { ExpandMore } from "@mui/icons-material"
 import { Box, Collapse, Link, List, ListItemButton, Stack, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
+import LanguageSelect from "@/components/LanguageSelect"
 import WalletToolkit from "@/components/WalletToolkit"
+import useShowLanguageSelect from "@/hooks/useShowLanguageSelect"
 import useShowWalletConnector from "@/hooks/useShowWalletToolkit"
 
 import Logo from "../ScrollLogo"
@@ -133,6 +135,7 @@ const ExpandMoreIcon = styled(ExpandMore)(({ theme }) => ({
 const App = ({ currentMenu }) => {
   const navbarBg = useCheckCustomNavBarBg()
   const showWalletConnector = useShowWalletConnector()
+  const showLanguageSelect = useShowLanguageSelect()
 
   const dark = useCheckTheme()
   const [open, setOpen] = useState(false)
@@ -242,6 +245,8 @@ const App = ({ currentMenu }) => {
         </NavLink>
         <Stack direction="row" spacing="1.6rem" alignItems="center">
           {showWalletConnector && <WalletToolkit dark={dark}></WalletToolkit>}
+          {showLanguageSelect && <LanguageSelect></LanguageSelect>}
+
           <Menu onClick={() => toggleDrawer(!open)} className={open ? "active" : ""}>
             <Bar dark={dark}></Bar>
             <Bar dark={dark}></Bar>

@@ -6,9 +6,11 @@ import { Box, Container, Fade, Link, Popper, Stack, SvgIcon, Typography } from "
 import { styled } from "@mui/system"
 
 import { ReactComponent as TriangleDownSvg } from "@/assets/svgs/common/header-triangle-down.svg"
+import LanguageSelect from "@/components/LanguageSelect"
 import Logo from "@/components/ScrollLogo"
 import WalletToolkit from "@/components/WalletToolkit"
 import useCheckViewport from "@/hooks/useCheckViewport"
+import useShowLanguageSelect from "@/hooks/useShowLanguageSelect"
 import useShowWalletConnector from "@/hooks/useShowWalletToolkit"
 
 // import Announcement from "./announcement"
@@ -166,6 +168,7 @@ const App = ({ currentMenu }) => {
   const [checked, setChecked] = useState("")
 
   const showWalletConnector = useShowWalletConnector()
+  const showLanguageSelect = useShowLanguageSelect()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
@@ -286,6 +289,7 @@ const App = ({ currentMenu }) => {
           <Stack direction="row" spacing={isDesktop ? "4.4rem" : "2rem"} alignItems="center">
             <Box>{renderNavigationList()}</Box>
             {showWalletConnector && <WalletToolkit dark={dark}></WalletToolkit>}
+            {showLanguageSelect && <LanguageSelect></LanguageSelect>}
           </Stack>
         </HeaderContainer>
       </Container>
