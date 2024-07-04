@@ -17,7 +17,7 @@ export const DIVERGENT_CATEGORY_MAP = {
 
 export const LIST_YOUR_DAPP_LINK = "https://tally.so/r/nGppyZ"
 
-export const GET_IN_TOUCH_LINK = ""
+export const GET_IN_TOUCH_LINK = "https://tally.so/r/waxLBW"
 
 export const REQUEST_A_DAPP_LINK = "https://tally.so/r/3jlj59"
 
