@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react"
+import Img from "react-cool-img"
 import { useNavigate } from "react-router-dom"
 
 import { Box, Card, CardContent, IconButton, Stack, SvgIcon, Typography } from "@mui/material"
@@ -130,10 +131,16 @@ const Carousel: React.FC<CarouselProps> = ({ items }) => {
                 <BadgeDesc>{item.description}</BadgeDesc>
               </Typography>
               <Typography sx={{ fontSize: ["1.8rem", "2.4rem"], lineHeight: ["2.8rem", "3.2rem"], fontWeight: 600, mt: [0, "2.8rem"] }}>
-                <img
-                  alt="issuer logo"
+                <Img
+                  alt={item.issuer.name}
                   src={item.issuer.logo}
-                  style={{ height: isMobile ? "3.2rem" : "4.8rem", borderRadius: "0.5rem", marginRight: "1.4rem" }}
+                  style={{
+                    backgroundColor: "white",
+                    width: isMobile ? "3.2rem" : "4.8rem",
+                    height: isMobile ? "3.2rem" : "4.8rem",
+                    borderRadius: "0.5rem",
+                    marginRight: "1.4rem",
+                  }}
                 />
                 {item.issuer.name}
               </Typography>
