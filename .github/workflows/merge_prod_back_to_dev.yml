@@ -5,7 +5,7 @@ name: "Merge Prod Back to Dev"
 on:
   push:
     branches:
-      - mainnet
+      - disabled-mainnet
 
 jobs:
   merge-back:

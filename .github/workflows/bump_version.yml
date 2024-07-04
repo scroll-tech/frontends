@@ -6,7 +6,7 @@ name: "Bump Version on sepolia"
 on:
   push:
     branches:
-      - sepolia
+      - disabled-sepolia
 
 jobs:
   bump-version:
