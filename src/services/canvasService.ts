@@ -140,13 +140,13 @@ const fillBadgeDetailWithPayload = async (provider, attestation, withMetadata = 
     if (withMetadata) {
       const badgeMetadata = await getBadgeMetadata(provider, badgeContract, id)
       return {
-        ...attestation,
+        id,
         badgeContract,
         ...badgeMetadata,
       }
     }
     return {
-      ...attestation,
+      id,
       badgeContract,
     }
   } catch (error) {

@@ -64,10 +64,10 @@ const BadgeDetailPage = () => {
   }, [id, detail])
 
   useEffect(() => {
-    if (publicProvider && unsignedProfileRegistryContract) {
+    if (unsignedProfileRegistryContract) {
       fetchBadgeDetailByBadgeId(id)
     }
-  }, [unsignedProfileRegistryContract, publicProvider, id])
+  }, [unsignedProfileRegistryContract, id])
 
   const fetchProfileUsername = async (provider, walletAddress) => {
     try {
@@ -99,6 +99,7 @@ const BadgeDetailPage = () => {
         // upgradable = true
       }
       const badgeDetail = {
+        ...badgeMetadata,
         walletAddress: recipient,
         owner: name,
         ownerLogo: getSmallAvatarURL(recipient),
@@ -107,7 +108,6 @@ const BadgeDetailPage = () => {
         issuer: badgeListProxy[badgeContract]?.issuer,
         description: isOriginsNFTBadge(badgeContract) ? badgeListProxy[badgeContract].description : description,
         upgradable,
-        ...badgeMetadata,
       }
       if (isOriginsNFTBadge(badgeContract)) {
         const rarityNum = badgeMetadata.attributes.find(item => item.trait_type === "Rarity").value
