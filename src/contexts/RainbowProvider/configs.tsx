@@ -1,6 +1,7 @@
 import { getDefaultConfig } from "@rainbow-me/rainbowkit"
 import {
   bitgetWallet,
+  coin98Wallet,
   coinbaseWallet,
   metaMaskWallet,
   nestWallet,
@@ -26,7 +27,7 @@ const wallets = [
   },
   {
     groupName: "More",
-    wallets: [bitgetWallet, nestWallet, walletConnectWallet],
+    wallets: [bitgetWallet, nestWallet, coin98Wallet, walletConnectWallet],
   },
 ]
 
