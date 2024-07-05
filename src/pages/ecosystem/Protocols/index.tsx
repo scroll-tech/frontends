@@ -7,7 +7,7 @@ import useScrollTrigger from "@mui/material/useScrollTrigger"
 
 import Button from "@/components/Button"
 import SectionWrapper from "@/components/SectionWrapper"
-import { ECOSYSTEM_NETWORK_LIST, GET_IN_TOUCH_LINK, LIST_YOUR_DAPP_LINK, NORMAL_HEADER_HEIGHT } from "@/constants"
+import { ECOSYSTEM_NETWORK_LIST, GET_IN_TOUCH_LINK, NORMAL_HEADER_HEIGHT } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
 import Category from "./Category"
@@ -100,7 +100,7 @@ const Protocols = () => {
 
   return (
     <SectionWrapper sx={{ pt: ["4rem", "5.5rem", "6rem"] }}>
-      <Stack direction={["column", "row"]} justifyContent="space-between" alignItems="center" gap="2rem">
+      <Stack direction="row" justifyContent="space-between" alignItems="center" gap="2rem">
         <Typography
           className="ecosystem-protocols-title"
           sx={{ fontSize: ["2.4rem", "4.4rem"], lineHeight: ["3.6rem", "5.6rem"], fontWeight: [600, 500], flex: 1 }}
@@ -108,14 +108,11 @@ const Protocols = () => {
           Browse all protocols
         </Typography>
 
-        <Stack direction={["row", "row"]} justifyContent="space-between" alignItems="center" gap="1.6rem">
-          <Button width={isMobile ? "15.4rem" : isTablet ? "21.5rem" : "25rem"} href={LIST_YOUR_DAPP_LINK} target="_blank" color="primary">
-            List your Dapp
-          </Button>
-          <Button width={isMobile ? "15.4rem" : isTablet ? "21.5rem" : "25rem"} href={GET_IN_TOUCH_LINK} target="_blank">
+        {isMobile ? null : (
+          <Button width={isTablet ? "21.5rem" : "25rem"} href={GET_IN_TOUCH_LINK} target="_blank" color="primary">
             Get in touch
           </Button>
-        </Stack>
+        )}
       </Stack>
       <Grid>
         <Category top={stickyTop} value={searchParams.category} onChange={handleChangeCategory}></Category>
