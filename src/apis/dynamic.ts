@@ -1,1 +1,1 @@
-export const tokenListUrl = "https://scroll-semi-static-assets.vercel.app/token-list.json"
+export const tokenListUrl = "https://assets.scroll.cat/token-list.json"
