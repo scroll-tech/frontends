@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import Img from "react-cool-img"
 import { Helmet } from "react-helmet-async"
 
-import { Box, Stack, Typography } from "@mui/material"
+import { Avatar, Box, Stack, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
 import SectionWrapper from "@/components/SectionWrapper"
@@ -197,14 +197,8 @@ const BadgeDetail = props => {
                       gap: "0.8rem",
                     }}
                   >
-                    <Img
-                      width={32}
-                      height={32}
-                      style={{ borderRadius: "0.4rem" }}
-                      placeholder="/imgs/canvas/avatarPlaceholder.svg"
-                      src={detail.issuer?.logo}
-                    ></Img>
-                    {detail.issuer?.name}
+                    <Avatar variant="square" src={detail.issuer?.logo} sx={{ width: "3.2rem", height: "3.2rem", borderRadius: "0.4rem" }}></Avatar>
+                    {detail.issuer?.name || "Unknown"}
                   </Box>
                 </Statistic>
               )}

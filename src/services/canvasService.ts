@@ -35,7 +35,7 @@ const queryUserBadges = async userAddress => {
           where: {
             schemaId: { equals: "${BADGE_SCHEMA}" },
             recipient: { equals: "${userAddress}" },
-            revoked: { equals: false }
+            revoked: { equals: false },
           }
         ) {
           attester
@@ -74,9 +74,7 @@ const queryBadgeDetailById = async badgeId => {
       query Attestation {
         attestations(
           where: {
-            schemaId: { equals: "${BADGE_SCHEMA}" },
             id: { equals: "${badgeId}" },
-            revoked: { equals: false }
           }
         ) {
           data

@@ -233,7 +233,9 @@ const BadgeDetailDialog = () => {
             {/* TODO: how to get badge contract address from a user's badge */}
             <Stack direction="row" alignItems="center" gap="0.8rem" mb={isMobile ? "0.8rem" : "3.2rem"}>
               <Avatar variant="square" src={badgeIssuer.logo} sx={{ width: "3.2rem", height: "3.2rem", borderRadius: "0.4rem" }}></Avatar>
-              <Typography sx={{ fontSize: ["1.8rem", "2rem"], fontWeight: 600, color: "primary.contrastText" }}>{badgeIssuer.name}</Typography>
+              <Typography sx={{ fontSize: ["1.8rem", "2rem"], fontWeight: 600, color: "primary.contrastText" }}>
+                {badgeIssuer.name || "Unknown"}
+              </Typography>
             </Stack>
           </>
         )}
