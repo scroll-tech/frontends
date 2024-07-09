@@ -7,6 +7,7 @@ import {
   nestWallet,
   okxWallet,
   rabbyWallet,
+  tokenPocketWallet,
   trustWallet,
   walletConnectWallet,
   zerionWallet,
@@ -27,7 +28,7 @@ const wallets = [
   },
   {
     groupName: "More",
-    wallets: [bitgetWallet, nestWallet, coin98Wallet, walletConnectWallet],
+    wallets: [bitgetWallet, nestWallet, coin98Wallet, tokenPocketWallet, walletConnectWallet],
   },
 ]
 

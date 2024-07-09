@@ -78,7 +78,7 @@ const BlogDetail = () => {
         return anchor
       })
       try {
-        const blogPath = `https://misc-pages-ghost-relay.vercel.app/api/post/${blogId}.md?title=1`
+        const blogPath = `https://blog.scroll.cat/api/post/${blogId}.md?title=1`
         setLoading(true)
         fetch(blogPath)
           .then(response => response.text())
