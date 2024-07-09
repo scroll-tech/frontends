@@ -69,7 +69,7 @@ const ArticleInfo = styled(Box)(({ theme }) => ({
 const ArticlePoster = styled(WebpImage)(({ theme }) => ({
   width: "100%",
   maxWidth: "51.7rem",
-  height: "auto",
+  height: "fit-content",
   borderRadius: "2.5rem",
   justifySelf: "flex-end",
   overflow: "hidden",
