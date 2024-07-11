@@ -4,10 +4,11 @@ import Img from "react-cool-img"
 import { useSwiper } from "swiper/react"
 import useSWR from "swr"
 
-import { Box, Skeleton } from "@mui/material"
+import { Box, Skeleton, Stack, Typography } from "@mui/material"
 
 import { fetchSignByCode, getAvatarURL, getHeartrate } from "@/apis/canvas"
 import Button from "@/components/Button"
+import TextButton from "@/components/TextButton"
 import { useCanvasContext } from "@/contexts/CanvasContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
@@ -18,6 +19,7 @@ import { isUserRejected, sentryDebug } from "@/utils"
 
 import InsufficientDialog from "./InsufficientDialog"
 import StepWrapper from "./StepWrapper"
+import TermsAndConditionsDialog from "./TermsAndConditionsDialog"
 
 const MintStep = props => {
   const { scrollTarget } = props
@@ -31,6 +33,7 @@ const MintStep = props => {
   const alertWarning = useSnackbar()
 
   const [insufficientDialogOpen, setInsufficientDialogOpen] = useState(false)
+  const [tAndODialogVisible, setTAndODialogVisible] = useState(false)
 
   const heartbeatURL = useMemo(() => getAvatarURL(walletCurrentAddress), [walletCurrentAddress])
 
@@ -97,6 +100,14 @@ const MintStep = props => {
     setInsufficientDialogOpen(false)
   }
 
+  const handleOpenTAndODialog = () => {
+    setTAndODialogVisible(true)
+  }
+
+  const handleCloseTAndODialog = () => {
+    setTAndODialogVisible(false)
+  }
+
   return (
     <StepWrapper
       title={
@@ -125,17 +136,27 @@ const MintStep = props => {
           It beats faster when you are more active onchain.
         </>
       }
-      sx={{ mt: "2.8rem", mb: "10.2rem" }}
+      sx={{ mt: "2.8rem", mb: [0, "10.2rem"] }}
       action={
-        <Button color="primary" width="28.2rem" loading={isProfileMinting} onClick={handleMintCanvas}>
-          {isProfileMinting ? "Minting my Canvas" : "Mint my Canvas"}
-        </Button>
+        <Stack direction="column" alignItems="center" sx={{ gap: ["0.8rem", "1.6rem"] }}>
+          <Button color="primary" width={isMobile ? "100%" : "28.2rem"} loading={isProfileMinting} onClick={handleMintCanvas}>
+            {isProfileMinting ? "Minting my Canvas" : "Mint my Canvas"}
+          </Button>
+          <Typography sx={{ fontSize: "1.6rem", lineHeight: "2.4rem", fontWeight: 600, color: "#A0A0A0 !important" }}>
+            By continuing to mint Scroll Canvas,
+            <br /> you agree to the{" "}
+            <TextButton underline="always" sx={{ color: "inherit !important" }} onClick={handleOpenTAndODialog}>
+              Terms & Conditions
+            </TextButton>
+          </Typography>
+        </Stack>
       }
     >
       <Box sx={{ width: ["20rem", "28rem"] }}>
         <Img src={heartbeatURL} placeholder="/imgs/canvas/avatarPlaceholder.svg" alt="avatar" width="100%"></Img>
       </Box>
       <InsufficientDialog open={insufficientDialogOpen} onClose={handleCloseInsufficientDialog} />
+      <TermsAndConditionsDialog open={tAndODialogVisible} onClose={handleCloseTAndODialog}></TermsAndConditionsDialog>
     </StepWrapper>
   )
 }

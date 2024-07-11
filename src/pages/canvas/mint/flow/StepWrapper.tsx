@@ -10,7 +10,7 @@ const StepWrapper = props => {
         pb: ["9.6rem", "6rem"],
         display: "flex",
         flexDirection: "column",
-        height: ["calc(100vh - 5.6rem)", "calc(100vh - 6.5rem)"],
+        height: ["calc(100vh - 6.2rem)", "calc(100vh - 6.5rem)"],
         justifyContent: ["flex-start", "center"],
         overflowY: "auto",
         alignItems: "center",
