@@ -19,12 +19,14 @@ import produce from "immer"
 import { RPC_URL } from "@/constants"
 import { requireEnv } from "@/utils"
 
+import { BinanceWallet } from "./walletConnectors/binanceWallet/binanceWallet"
+
 const projectId = requireEnv("REACT_APP_CONNECT_WALLET_PROJECT_ID")
 
 const wallets = [
   {
     groupName: "Popular",
-    wallets: [metaMaskWallet, coinbaseWallet, rabbyWallet, okxWallet, zerionWallet, trustWallet],
+    wallets: [metaMaskWallet, coinbaseWallet, rabbyWallet, okxWallet, zerionWallet, trustWallet, BinanceWallet],
   },
   {
     groupName: "More",

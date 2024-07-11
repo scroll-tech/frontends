@@ -112,3 +112,7 @@ export function generateShareTwitterURL(url, text, via = "Scroll_ZKP") {
     url,
   )}&text=${encodeURIComponent(text)}&via=${via}`
 }
+
+export function isAndroid(): boolean {
+  return typeof navigator !== "undefined" && /android/i.test(navigator.userAgent)
+}
