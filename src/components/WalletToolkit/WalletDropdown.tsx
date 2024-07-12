@@ -141,9 +141,9 @@ const WalletDropdown = props => {
         label: "Scroll Canvas",
         action: () => {
           if (profileMinted) {
-            navigate("/scroll-canvas")
+            navigate("/canvas")
           } else {
-            navigate("/scroll-canvas/mint")
+            navigate("/canvas/mint")
           }
           handleClose()
         },

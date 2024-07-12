@@ -87,7 +87,7 @@ const BadgesDialog = props => {
     alertWarning(
       <>
         {badge.name} upgraded successfully!<br></br>
-        <Link underline="always" sx={{ color: "inherit", fontSize: "inherit" }} href={`/scroll-canvas/badge/${badge.id}`}>
+        <Link underline="always" sx={{ color: "inherit", fontSize: "inherit" }} href={`/canvas/badge/${badge.id}`}>
           View badge details
         </Link>
       </>,

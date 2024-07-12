@@ -165,7 +165,7 @@ const Dashboard = props => {
   }, [windowDimensions, gridNum])
 
   if (othersWalletAddress === walletCurrentAddress) {
-    return <Navigate to="/scroll-canvas" replace></Navigate>
+    return <Navigate to="/canvas" replace></Navigate>
   }
   return (
     <>

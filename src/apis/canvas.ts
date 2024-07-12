@@ -16,7 +16,7 @@ export const fetchCodeByAdd = add => `${baseUrl}/acc/${add}/code`
 
 export const checkCodeValidation = code => `${baseUrl}/code/${code}/active`
 
-export const getInviteUrlByCode = code => `${requireEnv("REACT_APP_FFRONTENDS_URL")}/scroll-canvas/invite/${code}`
+export const getInviteUrlByCode = code => `${requireEnv("REACT_APP_FFRONTENDS_URL")}/canvas/invite/${code}`
 
 export const viewEASScanURL = id => `${requireEnv("REACT_APP_EAS_EXPLORER_URL")}/attestation/view/${id}`
 

@@ -17,7 +17,7 @@ const CanvasInvite = props => {
     return <LoadingPage></LoadingPage>
   }
   if (!mintFlowVisible && profileMinted) {
-    return <Navigate to="/scroll-canvas"></Navigate>
+    return <Navigate to="/canvas"></Navigate>
   }
 
   return <ReadyToMint code={code}></ReadyToMint>

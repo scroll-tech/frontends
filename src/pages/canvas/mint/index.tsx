@@ -16,7 +16,7 @@ const CanvasMint = props => {
     if (!mintFlowVisible && walletCurrentAddress && (profileMintedChecking || profileMinted === null)) {
       return <LoadingPage></LoadingPage>
     } else if (!mintFlowVisible && profileMinted) {
-      return <Navigate to="/scroll-canvas" replace></Navigate>
+      return <Navigate to="/canvas" replace></Navigate>
     }
     return <ReadyToMint code={code}></ReadyToMint>
   }

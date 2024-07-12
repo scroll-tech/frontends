@@ -51,7 +51,7 @@ const BadgeContractDetail = props => {
   }, [provider, isL2, walletCurrentAddress, badgeForMint])
 
   const shareBadgeURL = useMemo(() => {
-    const viewURL = `${requireEnv("REACT_APP_FFRONTENDS_URL")}/scroll-canvas/badge-contract/${address}`
+    const viewURL = `${requireEnv("REACT_APP_FFRONTENDS_URL")}/canvas/badge-contract/${address}`
     return generateShareTwitterURL(viewURL, `I found a badge called ${badgeForMint.name} you may like`)
   }, [address, badgeForMint])
 
@@ -78,7 +78,7 @@ const BadgeContractDetail = props => {
 
       let result = await mintBadge(provider, walletCurrentAddress, badgeForMint)
       if (result) {
-        navigate(`/scroll-canvas/badge/${result}`, { replace: true })
+        navigate(`/canvas/badge/${result}`, { replace: true })
       }
     } catch (e) {
       alertWarning(e.message)
@@ -143,7 +143,7 @@ const BadgeContractDetail = props => {
         </>
       )
     } else if (profileMinted && isOwned && badgeId) {
-      return <Navigate to={`/scroll-canvas/badge/${badgeId}`} replace></Navigate>
+      return <Navigate to={`/canvas/badge/${badgeId}`} replace></Navigate>
     }
     return null
   }
@@ -186,7 +186,7 @@ const BadgeContractDetail = props => {
             },
           })}
           color="primary"
-          href="/scroll-canvas/mint"
+          href="/canvas/mint"
         >
           Mint Scroll Canvas
         </ScrollButton>
@@ -200,7 +200,7 @@ const BadgeContractDetail = props => {
             },
           })}
           color="primary"
-          href="/scroll-canvas"
+          href="/canvas"
         >
           Visit Scroll Canvas
         </ScrollButton>
@@ -240,7 +240,7 @@ const BadgeContractDetail = props => {
               gridColumn: "span 2",
             },
           })}
-          href="/scroll-canvas"
+          href="/canvas"
         >
           Visit my canvas
         </ScrollButton>

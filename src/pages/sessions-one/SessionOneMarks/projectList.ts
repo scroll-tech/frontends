@@ -145,7 +145,7 @@ const PROJECT_LIST = [
   //   name: "Mint Scroll Canvas",
   //   key: "canvas",
   //   logo: "/imgs/canvas/ScrollCanvas.svg",
-  //   website: "/scroll-canvas",
+  //   website: "/canvas",
   // },
 ]
 

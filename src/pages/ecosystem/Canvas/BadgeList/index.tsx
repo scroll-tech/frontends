@@ -77,7 +77,7 @@ const Carousel: React.FC<CarouselProps> = ({ items }) => {
   const handleCardClick = (e, item) => {
     // if a link in badge description is clicked, then do not open detail page
     if (e.target.tagName !== "A") {
-      navigate(`/scroll-canvas/badge-contract/${item.badgeContract}`)
+      navigate(`/canvas/badge-contract/${item.badgeContract}`)
     }
   }
 

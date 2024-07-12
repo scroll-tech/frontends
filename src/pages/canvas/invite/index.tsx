@@ -16,7 +16,7 @@ const CanvasCoupon = () => {
 
   const title = "Scroll Canvas - your unique space for onchain presence on Scroll"
   const description = "Use my referral code to save 50% on Scroll Canvas mint!"
-  const url = `${requireEnv("REACT_APP_FFRONTENDS_URL")}/scroll-canvas?code=${code}`
+  const url = `${requireEnv("REACT_APP_FFRONTENDS_URL")}/canvas?code=${code}`
 
   return (
     <>

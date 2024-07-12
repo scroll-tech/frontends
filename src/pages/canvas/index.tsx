@@ -10,8 +10,8 @@ import LoadingPage from "./loading"
 import WrongNetwork from "./wrongNetwork"
 
 const CanvasIndex = props => {
-  const isOthersCanvas = useMatch("/scroll-canvas/:address")
-  const isBadgeDetail = useMatch("/scroll-canvas/badge/:id")
+  const isOthersCanvas = useMatch("/canvas/:address")
+  const isBadgeDetail = useMatch("/canvas/badge/:id")
 
   const { walletCurrentAddress, chainId } = useRainbowContext()
   const { profileMintedChecking, profileMinted } = useCanvasStore()
@@ -22,14 +22,14 @@ const CanvasIndex = props => {
   const renderCanvas = () => {
     // return <LoadingPage></LoadingPage>
     if (!walletCurrentAddress) {
-      return <Navigate to="/scroll-canvas/mint" replace={true}></Navigate>
+      return <Navigate to="/canvas/mint" replace={true}></Navigate>
     } else if (profileMintedChecking || profileMinted === null) {
       return <LoadingPage></LoadingPage>
     } else if (profileMinted) {
       // if connected user views the invite link, then redirect to canvas
       return <Dashboard />
     }
-    return <Navigate to="/scroll-canvas/mint" replace={true}></Navigate>
+    return <Navigate to="/canvas/mint" replace={true}></Navigate>
   }
 
   return (

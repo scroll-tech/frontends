@@ -59,7 +59,7 @@ const BadgeDetailPage = () => {
   )
 
   const shareBadgeURL = useMemo(() => {
-    const viewURL = `${requireEnv("REACT_APP_FFRONTENDS_URL")}/scroll-canvas/badge/${id}`
+    const viewURL = `${requireEnv("REACT_APP_FFRONTENDS_URL")}/canvas/badge/${id}`
     return generateShareTwitterURL(viewURL, `Here is my badge ${detail.name}`)
   }, [id, detail])
 
@@ -124,9 +124,9 @@ const BadgeDetailPage = () => {
   const viewCanvasURL = useMemo(() => {
     // console.log("walletCurrentAddress", walletCurrentAddress, detail)
     if (walletCurrentAddress === detail.walletAddress) {
-      return "/scroll-canvas"
+      return "/canvas"
     }
-    return `/scroll-canvas/${detail.walletAddress}`
+    return `/canvas/${detail.walletAddress}`
   }, [walletCurrentAddress, detail])
 
   const handleUpgradeBadge = async () => {
@@ -160,7 +160,7 @@ const BadgeDetailPage = () => {
         </ScrollButton>
 
         {isNativeBadge(detail.badgeContract) ? (
-          <ScrollButton color="secondary" href="/scroll-canvas">
+          <ScrollButton color="secondary" href="/canvas">
             Visit my canvas
           </ScrollButton>
         ) : (

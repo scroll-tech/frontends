@@ -76,12 +76,12 @@ const BadgeDetailDialog = () => {
   const badgeIssuer = useMemo(() => badgeListProxy[selectedBadge.badgeContract]?.issuer || {}, [selectedBadge, badgeListProxy])
 
   const shareBadgeURL = useMemo(() => {
-    const viewURL = `${requireEnv("REACT_APP_FFRONTENDS_URL")}/scroll-canvas/badge/${selectedBadge.id}`
+    const viewURL = `${requireEnv("REACT_APP_FFRONTENDS_URL")}/canvas/badge/${selectedBadge.id}`
     return generateShareTwitterURL(viewURL, `Here is my badge ${selectedBadge.name}`)
   }, [selectedBadge])
 
   const shareBadgeContractURL = useMemo(() => {
-    const viewURL = `${requireEnv("REACT_APP_FFRONTENDS_URL")}/scroll-canvas/badge-contract/${selectedBadge.badgeContract}`
+    const viewURL = `${requireEnv("REACT_APP_FFRONTENDS_URL")}/canvas/badge-contract/${selectedBadge.badgeContract}`
     return generateShareTwitterURL(viewURL, `I found badge ${selectedBadge.name}`)
   }, [selectedBadge])
 
@@ -107,7 +107,7 @@ const BadgeDetailDialog = () => {
         alertWarning(
           <>
             {selectedBadge.name} minted successfully!<br></br>
-            <Link underline="always" sx={{ color: "inherit", fontSize: "inherit" }} href={`/scroll-canvas/badge/${result}`}>
+            <Link underline="always" sx={{ color: "inherit", fontSize: "inherit" }} href={`/canvas/badge/${result}`}>
               View badge details
             </Link>
           </>,
@@ -125,29 +125,23 @@ const BadgeDetailDialog = () => {
 
   const handleViewCanvas = () => {
     changeBadgeDetailDialog(BadgeDetailDialogType.HIDDEN)
-    navigate("/scroll-canvas")
+    navigate("/canvas")
   }
-
-  // const handleViewEAS = () => {
-  //   changeBadgeDetailDialog(BadgeDetailDialogType.HIDDEN)
-  //   navigate("/scroll-canvas/eas")
-  // }
 
   const handleViewBadge = () => {
     changeBadgeDetailDialog(BadgeDetailDialogType.HIDDEN)
     changeBadgesDialogVisible(BadgesDialogType.HIDDEN)
-    navigate(`/scroll-canvas/badge/${selectedBadge.id}`)
+    navigate(`/canvas/badge/${selectedBadge.id}`)
   }
 
   const handleViewBadgeContract = () => {
     changeBadgeDetailDialog(BadgeDetailDialogType.HIDDEN)
     changeBadgesDialogVisible(BadgesDialogType.HIDDEN)
-    navigate(`/scroll-canvas/badge-contract/${selectedBadge.badgeContract}`)
+    navigate(`/canvas/badge-contract/${selectedBadge.badgeContract}`)
   }
 
   const handleBack = () => {
     changeBadgeDetailDialog(BadgeDetailDialogType.HIDDEN)
-    // changeBadgesDialogVisible(true)
   }
 
   const handleUpgradeBadge = async () => {

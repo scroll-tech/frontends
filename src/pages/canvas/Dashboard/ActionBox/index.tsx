@@ -143,7 +143,7 @@ const ActionBox = () => {
   const [copied, setCopied] = useState(false)
 
   const canvasUrl = useMemo(
-    () => `${requireEnv("REACT_APP_FFRONTENDS_URL")}/scroll-canvas/${othersWalletAddress || walletCurrentAddress}`,
+    () => `${requireEnv("REACT_APP_FFRONTENDS_URL")}/canvas/${othersWalletAddress || walletCurrentAddress}`,
     [othersWalletAddress, walletCurrentAddress],
   )
 
