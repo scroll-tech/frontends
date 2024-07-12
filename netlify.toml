@@ -214,6 +214,11 @@ REACT_APP_ETHEREUM_YEAR_BADGE_API_URI = "https://genesis-nft-backend-git-sepolia
 REACT_APP_BADGE_LIST_URL="https://raw.githubusercontent.com/scroll-tech/canvas-badges/main/scroll.badgelist.sepolia.json"
 
 
+[context.scroll-canvas-mainnet.redirects]
+from = "/*"
+to = "/404"
+status = 404
+
 
 [context.scroll-canvas-mainnet.environment]
 REACT_APP_SCROLL_ENVIRONMENT = "Mainnet"
@@ -371,8 +376,8 @@ REACT_APP_L1_BATCH_BRIDGE_GATEWAY_PROXY_ADDR = "0x5Bcfd99c34cf7E06fc756f6f5aE740
 REACT_APP_OPEN_BLOCK_URI = "https://kx58j6x5me.execute-api.us-east-1.amazonaws.com"
 
 REACT_APP_EAS_ADDRESS="0xC47300428b6AD2c7D03BB76D05A176058b47E6B0"
-REACT_APP_BADGE_SCHEMA="0xba4934720e4c7fc2978acd7c8b4e9cb72288e72f835bd19b2eb4cac99d79d220"
-REACT_APP_PROFILE_REGISTRY_ADDRESS="0x19bA366e708006dF04B1aA42057b0aCb55F6960E"
+REACT_APP_BADGE_SCHEMA="0xd57de4f41c3d3cc855eadef68f98c0d4edd22d57161d96b7c06d2f4336cc3b49"
+REACT_APP_PROFILE_REGISTRY_ADDRESS="0xB23AF8707c442f59BDfC368612Bd8DbCca8a7a5a"
 REACT_APP_EAS_GRAPHQL_URL="https://scroll.easscan.org/graphql"
 REACT_APP_CANVAS_BACKEND_URI="https://skelly-backend.vercel.app"
 REACT_APP_FFRONTENDS_URL = "https://scroll.io"
