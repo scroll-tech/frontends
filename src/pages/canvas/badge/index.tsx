@@ -14,7 +14,7 @@ import useBadgeListProxy from "@/hooks/useBadgeProxy"
 import useSnackbar from "@/hooks/useSnackbar"
 import { checkBadgeUpgradable, fillBadgeDetailWithPayload, queryBadgeDetailById, queryCanvasUsername, upgradeBadge } from "@/services/canvasService"
 import useCanvasStore from "@/stores/canvasStore"
-import { formatDate, generateShareTwitterURL, requireEnv, sentryDebug } from "@/utils"
+import { formatDate, generateShareTwitterURL, requireEnv } from "@/utils"
 
 import BackToCanvas from "./BackToCanvas"
 import BadgeDetail from "./BadgeDetail"
@@ -134,12 +134,13 @@ const BadgeDetailPage = () => {
       const preBadgeName = detail.name
       changeIsBadgeUpgrading(id, true)
       const metadata = await upgradeBadge(publicProvider, { id, badgeContract: detail.badgeContract })
-      const checkedBadge = await checkBadgeUpgradable(publicProvider, { id, badgeContract: detail.badgeContract })
-      setDetail(pre => ({ ...pre, ...metadata, upgradable: checkedBadge.upgradable }))
-      alertWarning(`You have successfully upgraded ${preBadgeName} to ${metadata.name}`, "success")
-    } catch (e) {
-      alertWarning(`Something wrong, try again later`)
-      sentryDebug(`upgrade badge: ${id}-${e.message}`)
+      if (metadata) {
+        const checkedBadge = await checkBadgeUpgradable(publicProvider, { id, badgeContract: detail.badgeContract })
+        setDetail(pre => ({ ...pre, ...metadata, upgradable: checkedBadge.upgradable }))
+        alertWarning(`You have successfully upgraded ${preBadgeName} to ${metadata.name}`, "success")
+      }
+    } catch (error) {
+      alertWarning(error.message)
     } finally {
       changeIsBadgeUpgrading(id, false)
     }

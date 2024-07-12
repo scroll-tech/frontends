@@ -1,12 +1,12 @@
 // canvasService.js
-import { AbiCoder, ethers, isError } from "ethers"
+import { AbiCoder, ethers } from "ethers"
 
 import { checkBadgeEligibilityURL, claimBadgeURL } from "@/apis/canvas"
 import AttestProxyABI from "@/assets/abis/CanvasAttestProxy.json"
 import BadgeABI from "@/assets/abis/CanvasBadge.json"
 import ProfileABI from "@/assets/abis/CanvasProfile.json"
 import ProfileRegistryABI from "@/assets/abis/CanvasProfileRegistry.json"
-import { checkDelegatedAttestation, decodeBadgePayload, requireEnv, sentryDebug, trimErrorMessage } from "@/utils"
+import { checkDelegatedAttestation, decodeBadgePayload, isUserRejected, requireEnv, sentryDebug, trimErrorMessage } from "@/utils"
 
 const EAS_GRAPHQL_URL = requireEnv("REACT_APP_EAS_GRAPHQL_URL")
 const BADGE_SCHEMA = requireEnv("REACT_APP_BADGE_SCHEMA")
@@ -124,7 +124,7 @@ const checkIfProfileMinted = async (registryInstance, userAddress) => {
     const minted = await registryInstance!.isProfileMinted(profileAddress)
     return { profileAddress, minted }
   } catch (error) {
-    sentryDebug(`check minted: ${error.message}`)
+    sentryDebug(`check minted:${userAddress}-${error.message}`)
     console.log("Failed to check if profile minted:", error)
     return { profileAddress: null, minted: null }
   }
@@ -148,7 +148,7 @@ const fillBadgeDetailWithPayload = async (provider, attestation, withMetadata = 
       badgeContract,
     }
   } catch (error) {
-    sentryDebug(`fill badges detail: ${error.message}`)
+    sentryDebug(`fill badges detail:${error.message}`)
     console.error("Failed to decode badge payload:", error)
   }
 }
@@ -163,8 +163,6 @@ const queryUserBadgesWrapped = async (provider, userAddress, withMetadata = true
     return formattedBadges
   } catch (error) {
     throw new Error("Failed to query user badges")
-    // console.log("Failed to query user badges:", error)
-    // return []
   }
 }
 
@@ -193,16 +191,10 @@ const getOrderedAttachedBadges = async profileContract => {
       .sort((a: (string | number)[], b: (string | number)[]) => (a[0] as number) - (b[0] as number))
       .map(item => item[1] as string)
 
-    // console.log(attachedBadges, "badges")
-    // console.log(badgeOrder, "badgeOrder")
-    // console.log(orderedAttachedBadges, "orderedAttachedBadges")
-
     return { orderedAttachedBadges, attachedBadges, badgeOrder }
   } catch (error) {
     sentryDebug(`query attached badges: ${error.message}`)
     throw new Error("Failed to query attached badges")
-    // console.error("Failed to query attached badges:", error)
-    // return { orderedAttachedBadges: [], badgeOrder: [] }
   }
 }
 
@@ -227,34 +219,34 @@ const fetchCanvasDetail = async (privider, othersAddress, profileAddress) => {
 }
 
 // no use
-const attachBadges = async (profileContract, badgeAddresses) => {
-  try {
-    const tx = await profileContract!["attach(bytes32[])"](badgeAddresses)
-    const txReceipt = await tx.wait()
-    if (txReceipt.status === 1) {
-      return true
-    } else {
-      return "due to any operation that can cause the transaction or top-level call to revert"
-    }
-  } catch (error) {
-    console.log("Badges attached error!", error, badgeAddresses)
-  }
-}
+// const attachBadges = async (profileContract, badgeAddresses) => {
+//   try {
+//     const tx = await profileContract!["attach(bytes32[])"](badgeAddresses)
+//     const txReceipt = await tx.wait()
+//     if (txReceipt.status === 1) {
+//       return true
+//     } else {
+//       return "due to any operation that can cause the transaction or top-level call to revert"
+//     }
+//   } catch (error) {
+//     console.log("Badges attached error!", error, badgeAddresses)
+//   }
+// }
 
 // no use
-const detachBadges = async (profileContract, badgeAddresses) => {
-  try {
-    const tx = await profileContract!.detach(badgeAddresses)
-    const txReceipt = await tx.wait()
-    if (txReceipt.status === 1) {
-      return true
-    } else {
-      return "due to any operation that can cause the transaction or top-level call to revert"
-    }
-  } catch (error) {
-    console.log("Badge detached error!", error)
-  }
-}
+// const detachBadges = async (profileContract, badgeAddresses) => {
+//   try {
+//     const tx = await profileContract!.detach(badgeAddresses)
+//     const txReceipt = await tx.wait()
+//     if (txReceipt.status === 1) {
+//       return true
+//     } else {
+//       return "due to any operation that can cause the transaction or top-level call to revert"
+//     }
+//   } catch (error) {
+//     console.log("Badge detached error!", error)
+//   }
+// }
 
 const checkBadgeEligibility = async (provider, walletAddress, badge: any) => {
   try {
@@ -372,23 +364,36 @@ const mintBadge = async (provider, walletCurrentAddress, badge) => {
 
     return await mintPermissionlessBadge(signer, walletCurrentAddress, badgeContract)
   } catch (error) {
-    if (isError(error, "ACTION_REJECTED")) {
+    if (isUserRejected(error)) {
       return false
     } else {
-      sentryDebug(`mint badge: ${error.message}`)
-      console.log("Failed to mint badge:", error)
+      sentryDebug(`mint badge:${walletCurrentAddress}-${badge.badgeContract}-${error.message}`)
       throw new Error(trimErrorMessage(error.message))
     }
   }
 }
 const upgradeBadge = async (provider, badge) => {
-  const { id, badgeContract } = badge
-  const badgeInstance = new ethers.Contract(badgeContract, BadgeABI, provider)
-  await badgeInstance.upgrade(id)
-  const badgeMetadataURI = await badgeInstance.badgeTokenURI(id)
-  const accessableURI = badgeMetadataURI.replace(/^ipfs:\/\/(.*)/, "https://ipfs.io/ipfs/$1")
-  const metadata = await scrollRequest(accessableURI)
-  return metadata
+  try {
+    const { id, badgeContract } = badge
+    const badgeInstance = new ethers.Contract(badgeContract, BadgeABI, provider)
+    const tx = await badgeInstance.upgrade(id)
+    const txReceipt = await tx.wait()
+    if (txReceipt.status === 1) {
+      const badgeMetadataURI = await badgeInstance.badgeTokenURI(id)
+      const accessableURI = badgeMetadataURI.replace(/^ipfs:\/\/(.*)/, "https://ipfs.io/ipfs/$1")
+      const metadata = await scrollRequest(accessableURI)
+      return metadata
+    } else {
+      throw new Error("due to any operation that can cause the transaction or top-level call to revert")
+    }
+  } catch (error) {
+    if (isUserRejected(error)) {
+      return false
+    } else {
+      sentryDebug(`upgrade badge:${badge.id}-${error.message}`)
+      throw new Error(trimErrorMessage(error.message))
+    }
+  }
 }
 
 const checkBadgeUpgradable = async (provider, badge) => {
@@ -433,19 +438,19 @@ const customiseDisplay = async ({ profileContract, attachBadges, detachBadges, o
   }
 }
 
-const reorderBadges = async (profileContract, badgeOrder) => {
-  try {
-    const tx = await profileContract!.reorderBadges(badgeOrder)
-    const txReceipt = await tx.wait()
-    if (txReceipt.status === 1) {
-      return true
-    } else {
-      return "due to any operation that can cause the transaction or top-level call to revert"
-    }
-  } catch (error) {
-    console.log("Badges reordered error!", error)
-  }
-}
+// const reorderBadges = async (profileContract, badgeOrder) => {
+//   try {
+//     const tx = await profileContract!.reorderBadges(badgeOrder)
+//     const txReceipt = await tx.wait()
+//     if (txReceipt.status === 1) {
+//       return true
+//     } else {
+//       return "due to any operation that can cause the transaction or top-level call to revert"
+//     }
+//   } catch (error) {
+//     console.log("Badges reordered error!", error)
+//   }
+// }
 
 const checkIfHasBadgeByAddress = async (provider, userAddress, badgeAddress) => {
   try {
@@ -483,13 +488,13 @@ export {
   getOrderedAttachedBadges,
   getBadgeOrder,
   fetchCanvasDetail,
-  attachBadges,
-  detachBadges,
+  // attachBadges,
+  // detachBadges,
   mintBadge,
   upgradeBadge,
   checkBadgeUpgradable,
   customiseDisplay,
-  reorderBadges,
+  // reorderBadges,
   checkIfHasBadgeByAddress,
   getReferrerData,
   fillBadgeDetailWithPayload,

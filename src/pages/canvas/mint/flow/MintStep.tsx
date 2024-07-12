@@ -15,7 +15,7 @@ import useCheckViewport from "@/hooks/useCheckViewport"
 import useSnackbar from "@/hooks/useSnackbar"
 // import { testAsyncFunc } from "@/services/canvasService"
 import useCanvasStore from "@/stores/canvasStore"
-import { isUserRejected, sentryDebug } from "@/utils"
+import { isUserRejected, sentryDebug, trimErrorMessage } from "@/utils"
 
 import InsufficientDialog from "./InsufficientDialog"
 import StepWrapper from "./StepWrapper"
@@ -83,13 +83,12 @@ const MintStep = props => {
           behavior: "smooth",
         })
       } else {
-        // return "due to any operation that can cause the transaction or top-level call to revert"
-        alertWarning("Failed to mint canvas")
+        throw new Error("due to any operation that can cause the transaction or top-level call to revert")
       }
     } catch (error) {
       if (!isUserRejected(error)) {
-        alertWarning("Failed to mint canvas")
-        sentryDebug(`mint canvas error: ${walletCurrentAddress}-${error.message}`)
+        alertWarning(trimErrorMessage(error.message))
+        sentryDebug(`mint canvas:${walletCurrentAddress}-${error.message}`)
       }
     } finally {
       changeIsProfileMinting(false)

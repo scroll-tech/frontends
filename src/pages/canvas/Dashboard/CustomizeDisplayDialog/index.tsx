@@ -5,13 +5,14 @@ import { Box, Dialog, DialogContent, DialogTitle, IconButton, Stack, SvgIcon, Ty
 import { styled } from "@mui/system"
 
 import { ReactComponent as CloseSvg } from "@/assets/svgs/canvas/close.svg"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useSnackbar from "@/hooks/useSnackbar"
 import Button from "@/pages/canvas/components/Button"
 import { default as CanvasDialog } from "@/pages/canvas/components/Dialog"
 import { customiseDisplay } from "@/services/canvasService"
 // import { attachBadges, detachBadges, reorderBadges } from "@/services/canvasService"
 import useCanvasStore from "@/stores/canvasStore"
-import { isUserRejected, sentryDebug } from "@/utils"
+import { isUserRejected, sentryDebug, trimErrorMessage } from "@/utils"
 
 import Empty from "../../components/Empty"
 import Transfer from "./Transfer"
@@ -49,6 +50,7 @@ const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
 // TODO:
 const CustomizeDisplayDialog = props => {
   // const { mintableBadgeCount } = props
+  const { walletCurrentAddress } = useRainbowContext()
   const {
     userBadges,
     attachedBadges,
@@ -113,7 +115,7 @@ const CustomizeDisplayDialog = props => {
 
       const nextAttachedBadges = simulateThenAttachedBadges(attachedBadges, hiddenToDisplayed, displayedToHidden)
       const newBadgeOrder = calculateBadgeOrder(sortedBadges, nextAttachedBadges)
-      console.log(newBadgeOrder, "newBadgeOrder")
+      // console.log(newBadgeOrder, "newBadgeOrder")
 
       // if (hiddenToDisplayed.length > 0) {
       //   setLoading(true)
@@ -160,8 +162,8 @@ const CustomizeDisplayDialog = props => {
       queryAttachedBadges()
     } catch (error) {
       if (!isUserRejected(error)) {
-        sentryDebug(`customise display: ${error.message}`)
-        alertWarning(`Failed to customise display: ${error.message}`)
+        sentryDebug(`customise display:${walletCurrentAddress}-${error.message}`)
+        alertWarning(trimErrorMessage(error.message))
       }
     } finally {
       setLoading(false)

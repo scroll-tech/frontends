@@ -116,7 +116,6 @@ const BadgeDetailDialog = () => {
         changeBadgeDetailDialog(BadgeDetailDialogType.HIDDEN)
       }
     } catch (e) {
-      sentryDebug(`mint badge: ${walletCurrentAddress}-${selectedBadge.badgeContract}-${e.message}`)
       alertWarning(e.message)
     } finally {
       changeIsBadgeMinting(selectedBadge.badgeContract, false)

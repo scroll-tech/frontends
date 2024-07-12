@@ -13,7 +13,7 @@ import useSnackbar from "@/hooks/useSnackbar"
 import { mintBadge } from "@/services/canvasService"
 // import { testAsyncFunc } from "@/services/canvasService"
 import useCanvasStore from "@/stores/canvasStore"
-import { isUserRejected, truncateAddress } from "@/utils"
+import { truncateAddress } from "@/utils"
 
 import StepWrapper from "./StepWrapper"
 
@@ -70,9 +70,7 @@ const FirstBadgeStep = props => {
         changeMintFlowVisible(false)
       }
     } catch (error) {
-      if (!isUserRejected(error)) {
-        alertWarning("Failed to mint Ethereum Year Badge")
-      }
+      alertWarning(error.message)
     } finally {
       changeIsFirstBadgeMinting(false)
     }
