@@ -53,6 +53,12 @@ const TermsAndConditionsDialog = props => {
             "& p": {
               marginTop: "1rem",
             },
+            "& a": {
+              fontWeight: 600,
+              textDecoration: "underline",
+              whiteSpace: "nowrap",
+              textUnderlineOffset: "2px",
+            },
           }}
         >
           <ul>
@@ -63,8 +69,15 @@ const TermsAndConditionsDialog = props => {
                 foundation organized under the laws of the Seychelles, and its subsidiaries and affiliates, as the case may be, from time to time
                 (collectively referred to as “<b>Scroll</b>”, “<b>we</b>”, or “<b>us</b>”). These Scroll Canvas Terms shall govern your access to and
                 activities in relation to the use of Scroll Canvas, as defined in Clause 2 (“<b>Canvas</b>”), our website, our technological
-                platforms, and the services we provide on them (collectively, our “<b>Platform</b>”). They should also be read in conjunction with our
-                [Terms of Service] and [Privacy Policy]. By using our website, you agree to be bound by all of the aforementioned agreements.
+                platforms, and the services we provide on them (collectively, our “<b>Platform</b>”). They should also be read in conjunction with our{" "}
+                <a href="/terms-of-service" target="_blank">
+                  Terms of Service
+                </a>{" "}
+                and{" "}
+                <a href="/privacy-policy" target="_blank">
+                  Privacy Policy
+                </a>
+                . By using our website, you agree to be bound by all of the aforementioned agreements.
               </p>
             </li>
 
