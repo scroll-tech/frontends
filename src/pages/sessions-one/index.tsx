@@ -1,7 +1,5 @@
 import { Container, Stack } from "@mui/material"
 
-import GlobalComponents from "@/components/GlobalComponents"
-import BridgeContextProvider from "@/contexts/BridgeContextProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
 import AnchorNavigation from "./AnchorNavigation"
@@ -16,8 +14,7 @@ import TotalMarks from "./TotalMarks"
 const Sessions = () => {
   const { isPortrait } = useCheckViewport()
   return (
-    <BridgeContextProvider>
-      <GlobalComponents></GlobalComponents>
+    <>
       <Header></Header>
       <Container
         sx={{
@@ -54,7 +51,7 @@ const Sessions = () => {
           <SignatureRequestDialog />
         </Stack>
       </Container>
-    </BridgeContextProvider>
+    </>
   )
 }
 

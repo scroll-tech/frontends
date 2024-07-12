@@ -54,7 +54,7 @@ const Header = () => {
             <Statistic label="Total value locked" loading={isTVLLoading}>
               {totalTVL}
             </Statistic>
-            <Statistic label="Transaction counts" loading={isTxCountLoading}>
+            <Statistic label="Transaction count" loading={isTxCountLoading}>
               {totalTxCount}
             </Statistic>
             <Statistic label="Batches settled to L1" loading={isBatchesLoading}>

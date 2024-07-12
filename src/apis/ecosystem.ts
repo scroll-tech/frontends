@@ -7,7 +7,6 @@ export const l2beatOrigin = "https://l2beat.com"
 // lack of the latest day
 export const ecosystemTVLUrl = l2beatOrigin + "/api/tvl/scroll.json"
 export const ecosystemActivityUrl = l2beatOrigin + "/api/activity/scroll.json"
-export const ecosystemUniqueWalletCountUrl = "https://scroll.l2scan.co/api/trpc/address.getUniqueWalletCount"
 
 // cross origin
 // export const l2beatOrigin = "https://api.l2beat.com"
