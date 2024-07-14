@@ -11,7 +11,7 @@ const useShowWalletConnector = () => {
     [pathname],
   )
 
-  return showWalletConnector
+  return showWalletConnector || true
 }
 
 export default useShowWalletConnector
