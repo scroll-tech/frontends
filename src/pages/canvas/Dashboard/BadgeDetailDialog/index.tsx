@@ -82,7 +82,7 @@ const BadgeDetailDialog = () => {
   const shareBadgeURL = useMemo(() => {
     const viewURL = `${requireEnv("REACT_APP_FFRONTENDS_URL")}/canvas/badge/${selectedBadge.id}`
     const myText = `I just minted ${selectedBadge.name} badge. Find out your eligibility on Scroll Canvas, too!`
-    const othersText = `${canvasUsername} just minted ${selectedBadge.name} badge. Find out your eligibility on Scroll Canvas, too! `
+    const othersText = "Checkout this badge and check your eligibility!"
     return generateShareTwitterURL(viewURL, othersWalletAddress ? othersText : myText)
   }, [selectedBadge, othersWalletAddress, canvasUsername])
 
