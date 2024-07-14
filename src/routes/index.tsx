@@ -237,26 +237,28 @@ const mainnetRoutes = [
     element: <SessionsRestricted />,
   },
   {
-    name: "Scroll Canvas",
+    name: "Canvas",
     path: "/canvas",
     element: <ScrollCanvas />,
+    description: "Earn attestation badges across the ecosystem.",
     isHiddenFooter: true,
   },
   {
-    name: "Scroll Canvas",
+    name: "Canvas",
     path: "/canvas/mint",
     element: <MintProfile />,
+    description: "Earn attestation badges across the ecosystem.",
     isHiddenFooter: true,
   },
 
   {
-    name: "Scroll Canvas",
+    name: "Canvas",
     path: "/canvas/badge/:id",
     element: <CanvasBadge />,
     isHiddenFooter: true,
   },
   {
-    name: "Scroll Canvas",
+    name: "Canvas",
     path: "/canvas/badge-contract/:address",
     element: <CanvasBadgeContract />,
     isHiddenFooter: true,
@@ -268,7 +270,7 @@ const mainnetRoutes = [
     isHiddenFooter: true,
   },
   {
-    name: "Scroll Canvas",
+    name: "Canvas",
     path: "/canvas/:address",
     element: <CanvasDashboard />,
     isHiddenFooter: true,

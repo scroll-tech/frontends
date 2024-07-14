@@ -82,10 +82,9 @@ const Carousel: React.FC<CarouselProps> = ({ items }) => {
   }
 
   return (
-    <Box sx={{ overflow: "hidden" }}>
+    <Box sx={{ overflow: "hidden", pb: "9.5rem" }}>
       <Stack
         direction="row"
-        justifyContent="space-between"
         sx={[
           { margin: ["1.6rem 0 3rem", "5rem 0"], gap: ["0.8rem", "1.6rem", "3rem"] },
           theme => ({
@@ -148,8 +147,8 @@ const Carousel: React.FC<CarouselProps> = ({ items }) => {
           </BadgeCard>
         ))}
       </Stack>
-      {isLandscape && (
-        <Box display="flex" justifyContent="flex-end" gap={"1.6rem"} marginTop={2} paddingBottom="9.5rem">
+      {isLandscape && items.length > 3 && (
+        <Box display="flex" justifyContent="flex-end" gap={"1.6rem"} marginTop={2}>
           <ArrorButton onClick={handlePrev} disabled={isPrevDisabled} aria-label="previous">
             <SvgIcon sx={{ fontSize: "1.6rem" }} component={LeftSvg} inheritViewBox />
           </ArrorButton>
