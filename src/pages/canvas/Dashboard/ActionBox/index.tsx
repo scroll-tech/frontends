@@ -148,9 +148,11 @@ const ActionBox = () => {
   )
 
   const shareTwitterURL = useMemo(() => {
-    const text = "I have minted a Scroll Canvas!"
+    const myText = "Check out my Scroll Canvas and badges I’ve minted!"
+    const othersText = "Check out this Scroll Canvas!"
+    const text = othersWalletAddress ? othersText : myText
     return generateShareTwitterURL(canvasUrl, text)
-  }, [canvasUrl])
+  }, [canvasUrl, othersWalletAddress])
 
   const handleCopyLink = useCallback(() => {
     copy(canvasUrl)

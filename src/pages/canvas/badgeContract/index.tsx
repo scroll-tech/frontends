@@ -52,7 +52,7 @@ const BadgeContractDetail = props => {
 
   const shareBadgeURL = useMemo(() => {
     const viewURL = `${requireEnv("REACT_APP_FFRONTENDS_URL")}/canvas/badge-contract/${address}`
-    return generateShareTwitterURL(viewURL, `I found a badge called ${badgeForMint.name} you may like`)
+    return generateShareTwitterURL(viewURL, `Find out your eligibility to mint a ${badgeForMint.name} badge on Scroll Canvas.`)
   }, [address, badgeForMint])
 
   const metadata = useMemo(
