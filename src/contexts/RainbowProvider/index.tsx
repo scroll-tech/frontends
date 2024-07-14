@@ -52,7 +52,7 @@ const Web3ContextProvider = props => {
   const { disconnect } = useDisconnect()
 
   const provider = useMemo(() => {
-    if (client && chainId && chainId === client.chain.id) return clientToProvider(client)
+    if (client && chainId && chainId === client.chain?.id) return clientToProvider(client)
     return null
   }, [client, chainId])
 
