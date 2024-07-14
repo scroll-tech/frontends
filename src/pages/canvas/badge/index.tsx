@@ -26,7 +26,7 @@ const BadgeDetailPage = () => {
   const { walletCurrentAddress } = useRainbowContext()
 
   const { unsignedProfileRegistryContract, publicProvider } = useCanvasContext()
-  const { changeIsBadgeUpgrading } = useCanvasStore()
+  const { changeIsBadgeUpgrading, username } = useCanvasStore()
   const badgeListProxy = useBadgeListProxy()
 
   const isOriginsNFTBadge = useCallback(
@@ -60,7 +60,10 @@ const BadgeDetailPage = () => {
 
   const shareBadgeURL = useMemo(() => {
     const viewURL = `${requireEnv("REACT_APP_FFRONTENDS_URL")}/canvas/badge/${id}`
-    return generateShareTwitterURL(viewURL, `Here is my badge ${detail.name}`)
+    const myText = `I just minted ${detail.name} badge. Find out your eligibility on Scroll Canvas, too!`
+    const othersText = "Checkout this badge and check your eligibility!"
+    const text = username && detail.owner && detail.owner === username ? myText : othersText
+    return generateShareTwitterURL(viewURL, text)
   }, [id, detail])
 
   useEffect(() => {

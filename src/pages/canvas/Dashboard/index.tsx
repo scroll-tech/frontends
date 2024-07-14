@@ -54,7 +54,7 @@ const Dashboard = props => {
 
   const metadata = {
     title: `Scroll -  ${canvasUsername}'s Canvas`,
-    description: "Hi, I've minted Scroll Canvas!",
+    description: "Earn attestation badges across the ecosystem.",
     image: `${requireEnv("REACT_APP_CANVAS_BACKEND_URI")}/canvas/${othersWalletAddress || walletCurrentAddress}.png`,
   }
 

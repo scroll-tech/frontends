@@ -1,6 +1,6 @@
 import { forwardRef, useEffect, useMemo, useRef, useState } from "react"
 import Img from "react-cool-img"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined"
 import { Avatar, Box, Stack, SvgIcon, Typography } from "@mui/material"
@@ -54,6 +54,7 @@ const ButtonContainer = styled(forwardRef<any, any>((props, ref) => <Box {...pro
 const BadgeDetailDialog = () => {
   const { walletCurrentAddress, provider } = useRainbowContext()
   const {
+    canvasUsername,
     badgeDetailDialogVisible,
     changeBadgeDetailDialog,
     selectedBadge,
@@ -68,6 +69,8 @@ const BadgeDetailDialog = () => {
     upgradeBadgeAndRefreshUserBadges,
   } = useCanvasStore()
   const navigate = useNavigate()
+  const { address: othersWalletAddress } = useParams()
+
   const alertWarning = useSnackbar()
   const { isMobile } = useCheckViewport()
   const badgeListProxy = useBadgeListProxy()
@@ -78,12 +81,14 @@ const BadgeDetailDialog = () => {
 
   const shareBadgeURL = useMemo(() => {
     const viewURL = `${requireEnv("REACT_APP_FFRONTENDS_URL")}/canvas/badge/${selectedBadge.id}`
-    return generateShareTwitterURL(viewURL, `Here is my badge ${selectedBadge.name}`)
-  }, [selectedBadge])
+    const myText = `I just minted ${selectedBadge.name} badge. Find out your eligibility on Scroll Canvas, too!`
+    const othersText = "Checkout this badge and check your eligibility!"
+    return generateShareTwitterURL(viewURL, othersWalletAddress ? othersText : myText)
+  }, [selectedBadge, othersWalletAddress, canvasUsername])
 
   const shareBadgeContractURL = useMemo(() => {
     const viewURL = `${requireEnv("REACT_APP_FFRONTENDS_URL")}/canvas/badge-contract/${selectedBadge.badgeContract}`
-    return generateShareTwitterURL(viewURL, `I found badge ${selectedBadge.name}`)
+    return generateShareTwitterURL(viewURL, `Find out your eligibility to mint a ${selectedBadge.name} badge on Scroll Canvas.`)
   }, [selectedBadge])
 
   useEffect(() => {

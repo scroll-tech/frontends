@@ -17,6 +17,7 @@ import Skeleton from "@/components/Skeleton"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useSnackbar from "@/hooks/useSnackbar"
 import useCanvasStore from "@/stores/canvasStore"
+import { generateShareTwitterURL } from "@/utils"
 
 const CouponBox = styled(Box)(({ theme }) => ({
   background: `url(${couponBackground}) no-repeat center center`,
@@ -146,10 +147,8 @@ const Coupon = props => {
 
   const handleShareToX = () => {
     const inviteUrl = getInviteUrlByCode(code)
-
-    const shareUrl = `https://twitter.com/intent/tweet?original_referer=${encodeURIComponent(window.location.href)}&url=${encodeURIComponent(
-      inviteUrl,
-    )}&via=Scroll_ZKP`
+    const text = "Use my invite code to save 50% on Scroll Canvas mint!"
+    const shareUrl = generateShareTwitterURL(inviteUrl, text)
     window.open(shareUrl)
     handleClose()
   }
