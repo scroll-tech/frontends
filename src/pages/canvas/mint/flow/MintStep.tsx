@@ -48,6 +48,7 @@ const MintStep = props => {
   const { data, isLoading } = useSWR(getHeartrate(walletCurrentAddress), (url: string) => scrollRequest(url))
 
   const checkIsContract = async contractAddress => {
+    const provider = profileRegistryContract.runner.provider
     if (!provider) throw new Error("provider is not defined")
     const code = await provider.getCode(contractAddress)
     if (code === "0x") throw new Error("You are connected to the wrong network. Please switch to the correct network and refresh.")
