@@ -15,11 +15,13 @@ import useCheckViewport from "@/hooks/useCheckViewport"
 import useSnackbar from "@/hooks/useSnackbar"
 // import { testAsyncFunc } from "@/services/canvasService"
 import useCanvasStore from "@/stores/canvasStore"
-import { isUserRejected, sentryDebug, trimErrorMessage } from "@/utils"
+import { isUserRejected, requireEnv, sentryDebug, trimErrorMessage } from "@/utils"
 
 import InsufficientDialog from "./InsufficientDialog"
 import StepWrapper from "./StepWrapper"
 import TermsAndConditionsDialog from "./TermsAndConditionsDialog"
+
+const PROFILE_REGISTRY_ADDRESS = requireEnv("REACT_APP_PROFILE_REGISTRY_ADDRESS")
 
 const MintStep = props => {
   const { scrollTarget } = props
@@ -45,6 +47,12 @@ const MintStep = props => {
 
   const { data, isLoading } = useSWR(getHeartrate(walletCurrentAddress), (url: string) => scrollRequest(url))
 
+  const checkIsContract = async contractAddress => {
+    if (!provider) throw new Error("provider is not defined")
+    const code = await provider.getCode(contractAddress)
+    if (code === "0x") throw new Error("You are connected to the wrong network. Please switch to the correct network and refresh.")
+  }
+
   const checkBalance = async mintFee => {
     const balance = await provider?.getBalance(walletCurrentAddress as `0x${string}`)
     if (balance && mintFee < balance) {
@@ -55,7 +63,10 @@ const MintStep = props => {
 
   const handleMintCanvas = async () => {
     changeIsProfileMinting(true)
+
     try {
+      await checkIsContract(PROFILE_REGISTRY_ADDRESS)
+
       let codeSignature = "0x"
       if (referralCode) {
         const { signature } = await scrollRequest(fetchSignByCode(referralCode, walletCurrentAddress))
