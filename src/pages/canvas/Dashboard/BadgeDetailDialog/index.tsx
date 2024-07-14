@@ -18,6 +18,7 @@ import { checkBadgeUpgradable, mintBadge } from "@/services/canvasService"
 import useCanvasStore, { BadgeDetailDialogType, BadgesDialogType } from "@/stores/canvasStore"
 import { generateShareTwitterURL, getBadgeImgURL, requireEnv, sentryDebug } from "@/utils"
 
+import BadgeDesc from "../../components/BadgeDesc"
 import UpgradeAction from "./UpgradeAction"
 
 const StyledScrollButton = styled(ScrollButton)(({ theme }) => ({
@@ -221,7 +222,7 @@ const BadgeDetailDialog = () => {
                 theme => theme.multilineEllipsis,
               ]}
             >
-              {selectedBadge.description}
+              <BadgeDesc>{selectedBadge.description}</BadgeDesc>
             </Typography>
             {/* TODO: how to get badge contract address from a user's badge */}
             <Stack direction="row" alignItems="center" gap="0.8rem" mb={isMobile ? "0.8rem" : "3.2rem"}>
