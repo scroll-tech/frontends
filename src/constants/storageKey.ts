@@ -30,3 +30,5 @@ export const WALLET_MARKS = "walletMarks"
 export const BRIDGE_BALANCES = "bridgeBalances"
 
 export const BLOG_LANGUAGE = "blogLanguage"
+
+export const DISPLAYED_CANVAS = "displayedCanvas"

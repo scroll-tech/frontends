@@ -1,0 +1,40 @@
+
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 368 368"  xml:space="preserve">
+      <filter id="blurMe">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="5 2" />
+      </filter>
+      <g filter="url(#blurMe)">
+       <rect width="368" height="368" fill="rgba(256, 256, 256, 0.05)"/>
+      </g>
+      <g transform="translate(107.01, 95.71)"> 
+        <circle fill="#FFF8F3" stroke="none" cx="52.81" cy="76.81" r="6">
+          <animateTransform 
+            attributeName="transform" 
+            dur="1s" 
+            type="translate" 
+            values="0 15 ; 0 -15; 0 15" 
+            repeatCount="indefinite" 
+            begin="0.1"/>
+        </circle>
+        <circle fill="#FFF8F3" stroke="none" cx="76.81" cy="76.81" r="6">
+          <animateTransform 
+            attributeName="transform" 
+            dur="1s" 
+            type="translate" 
+            values="0 10 ; 0 -10; 0 10" 
+            repeatCount="indefinite" 
+            begin="0.2"/>
+        </circle>
+        <circle fill="#FFF8F3" stroke="none" cx="100.81" cy="76.81" r="6">
+          <animateTransform 
+            attributeName="transform" 
+            dur="1s" 
+            type="translate" 
+            values="0 5 ; 0 -5; 0 5" 
+            repeatCount="indefinite" 
+            begin="0.3"/>
+        </circle>
+          
+      </g>
+    </svg> 
+  

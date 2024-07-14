@@ -181,6 +181,11 @@ const mainnetNavigations = [
             rootKey: "resources",
           },
           {
+            label: "Our Story",
+            key: "story",
+            href: "/story",
+          },
+          {
             label: "Forum",
             key: "forum",
             href: "https://community.scroll.io",
