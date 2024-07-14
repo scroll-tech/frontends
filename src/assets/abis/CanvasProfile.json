@@ -1,0 +1,181 @@
+[
+  { "type": "constructor", "inputs": [{ "name": "resolver_", "type": "address", "internalType": "address" }], "stateMutability": "nonpayable" },
+  {
+    "type": "function",
+    "name": "attach",
+    "inputs": [{ "name": "_uids", "type": "bytes32[]", "internalType": "bytes32[]" }],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "autoAttach",
+    "inputs": [{ "name": "_uid", "type": "bytes32", "internalType": "bytes32" }],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "avatar",
+    "inputs": [],
+    "outputs": [
+      { "name": "token", "type": "address", "internalType": "address" },
+      { "name": "tokenId", "type": "uint256", "internalType": "uint256" }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "changeAvatar",
+    "inputs": [
+      { "name": "token", "type": "address", "internalType": "address" },
+      { "name": "tokenId", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "changeUsername",
+    "inputs": [{ "name": "newUsername", "type": "string", "internalType": "string" }],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "detach",
+    "inputs": [{ "name": "_uids", "type": "bytes32[]", "internalType": "bytes32[]" }],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "getAndValidateBadge",
+    "inputs": [{ "name": "uid", "type": "bytes32", "internalType": "bytes32" }],
+    "outputs": [
+      {
+        "name": "",
+        "type": "tuple",
+        "internalType": "struct Attestation",
+        "components": [
+          { "name": "uid", "type": "bytes32", "internalType": "bytes32" },
+          { "name": "schema", "type": "bytes32", "internalType": "bytes32" },
+          { "name": "time", "type": "uint64", "internalType": "uint64" },
+          { "name": "expirationTime", "type": "uint64", "internalType": "uint64" },
+          { "name": "revocationTime", "type": "uint64", "internalType": "uint64" },
+          { "name": "refUID", "type": "bytes32", "internalType": "bytes32" },
+          { "name": "recipient", "type": "address", "internalType": "address" },
+          { "name": "attester", "type": "address", "internalType": "address" },
+          { "name": "revocable", "type": "bool", "internalType": "bool" },
+          { "name": "data", "type": "bytes", "internalType": "bytes" }
+        ]
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getAttachedBadges",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "bytes32[]", "internalType": "bytes32[]" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getAvatar",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "string", "internalType": "string" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getBadgeOrder",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256[]", "internalType": "uint256[]" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getValidBadges",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "bytes32[]", "internalType": "bytes32[]" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "initialize",
+    "inputs": [
+      { "name": "owner_", "type": "address", "internalType": "address" },
+      { "name": "username_", "type": "string", "internalType": "string" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "isBadgeValid",
+    "inputs": [{ "name": "uid", "type": "bytes32", "internalType": "bytes32" }],
+    "outputs": [{ "name": "", "type": "bool", "internalType": "bool" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "multicall",
+    "inputs": [{ "name": "data", "type": "bytes[]", "internalType": "bytes[]" }],
+    "outputs": [{ "name": "results", "type": "bytes[]", "internalType": "bytes[]" }],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "owner",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "registry",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "reorderBadges",
+    "inputs": [{ "name": "_orders", "type": "uint256[]", "internalType": "uint256[]" }],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "resolver",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "username",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "string", "internalType": "string" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "event",
+    "name": "Initialized",
+    "inputs": [{ "name": "version", "type": "uint8", "indexed": false, "internalType": "uint8" }],
+    "anonymous": false
+  },
+  { "type": "error", "name": "AttestationOwnerMismatch", "inputs": [{ "name": "uid", "type": "bytes32", "internalType": "bytes32" }] },
+  { "type": "error", "name": "BadgeCountReached", "inputs": [] },
+  { "type": "error", "name": "LengthMismatch", "inputs": [] },
+  {
+    "type": "error",
+    "name": "TokenNotOwnedByUser",
+    "inputs": [
+      { "name": "token", "type": "address", "internalType": "address" },
+      { "name": "tokenId", "type": "uint256", "internalType": "uint256" }
+    ]
+  },
+  { "type": "error", "name": "Unauthorized", "inputs": [] }
+]

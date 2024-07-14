@@ -89,7 +89,7 @@ const ProtocolList = props => {
         } else {
           const anchorEl = document.querySelector(".ecosystem-protocols-title")
           if (isAboveScreen(anchorEl)) {
-            anchorEl?.scrollIntoView({ behavior: "smooth", block: "start" })
+            anchorEl?.scrollIntoView({ behavior: "smooth" })
           }
           setEcosystemList(data)
         }

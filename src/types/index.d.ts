@@ -70,14 +70,6 @@ declare module "@mui/material/styles" {
     border: {
       main: string
     }
-    scaleBackground: {
-      primary: string
-      secondary: string
-      disabled: string
-      select: string
-      disabledSecondary: string
-      gradient: string
-    }
     tagSuccess: {
       light: string
       main: string
@@ -127,14 +119,6 @@ declare module "@mui/material/styles" {
     border?: {
       main?: string
     }
-    scaleBackground?: {
-      primary?: string
-      secondary?: string
-      disabled?: string
-      select?: string
-      disabledSecondary?: string
-      gradient?: string
-    }
     tagSuccess?: {
       light?: string
       main?: string
@@ -178,5 +162,11 @@ declare module "@mui/material/Typography" {
     Body1: true
     Body2: true
     Body3: true
+  }
+}
+
+declare module "@mui/material/Button" {
+  interface ButtonPropsColorOverrides {
+    tertiary?: boolean
   }
 }

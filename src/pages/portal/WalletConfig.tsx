@@ -8,7 +8,7 @@ import Link from "@/components/Link"
 import TextButton from "@/components/TextButton"
 import { NETWORKS } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { isProduction, switchNetwork } from "@/utils"
+import { isMainnet, switchNetwork } from "@/utils"
 
 import Descriptions, { DescriptionItem } from "./Descriptions"
 
@@ -59,7 +59,7 @@ const WalletConfig = () => {
 
   return (
     <>
-      <Descriptions title={`Configure for ${isProduction ? "Scroll mainnet" : "our Sepolia testnet"}`}>
+      <Descriptions title={`Configure for ${isMainnet ? "Scroll mainnet" : "our Sepolia testnet"}`}>
         {NETWORKS.map((item, index) => (
           <DescriptionItem key={item.name}>
             <Typography bold>Layer{index + 1}</Typography>

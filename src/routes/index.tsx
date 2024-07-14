@@ -4,6 +4,12 @@ import BlogDetail from "@/pages/blog/detail"
 import BrandKit from "@/pages/brand-kit"
 import Bridge from "@/pages/bridge"
 import BridgeFAQ from "@/pages/bridge/FAQ"
+import ScrollCanvas from "@/pages/canvas"
+import CanvasDashboard from "@/pages/canvas/Dashboard"
+import CanvasBadge from "@/pages/canvas/badge"
+import CanvasBadgeContract from "@/pages/canvas/badgeContract"
+import CanvasInvite from "@/pages/canvas/invite"
+import MintProfile from "@/pages/canvas/mint"
 import Career from "@/pages/career"
 // import ComingSoon from "@/pages/developer-nft/coming-soon"
 import DeveloperNFT from "@/pages/developer-nft/index"
@@ -229,6 +235,45 @@ const mainnetRoutes = [
     name: "Scroll Sessions Restricted",
     path: "/sessions-restricted",
     element: <SessionsRestricted />,
+  },
+  {
+    name: "Canvas",
+    path: "/canvas",
+    element: <ScrollCanvas />,
+    description: "Earn attestation badges across the ecosystem.",
+    isHiddenFooter: true,
+  },
+  {
+    name: "Canvas",
+    path: "/canvas/mint",
+    element: <MintProfile />,
+    description: "Earn attestation badges across the ecosystem.",
+    isHiddenFooter: true,
+  },
+
+  {
+    name: "Canvas",
+    path: "/canvas/badge/:id",
+    element: <CanvasBadge />,
+    isHiddenFooter: true,
+  },
+  {
+    name: "Canvas",
+    path: "/canvas/badge-contract/:address",
+    element: <CanvasBadgeContract />,
+    isHiddenFooter: true,
+  },
+  {
+    name: "Canvas Invite",
+    path: "/canvas/invite/:code",
+    element: <CanvasInvite />,
+    isHiddenFooter: true,
+  },
+  {
+    name: "Canvas",
+    path: "/canvas/:address",
+    element: <CanvasDashboard />,
+    isHiddenFooter: true,
   },
 ]
 
