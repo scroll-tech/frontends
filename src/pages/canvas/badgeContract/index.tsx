@@ -111,7 +111,7 @@ const BadgeContractDetail = props => {
         <>
           <SvgIcon sx={{ color: "#FAD880", fontSize: "2.4rem" }} component={WarningSvg} inheritViewBox></SvgIcon>
           <Typography sx={{ color: "#FAD880 !important", fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.4rem", "2.8rem"], fontWeight: 500 }}>
-            You need a Scroll Canvas in order to mint your Zebra Badge.
+            You need a Scroll Canvas before minting a badge.
           </Typography>
         </>
       )
