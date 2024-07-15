@@ -1,11 +1,12 @@
-// import { ethers } from "ethers"
-// import ScrollOriginsNFTABI from "@/assets/abis/ScrollOriginsNFT.json"
+import { ethers } from "ethers"
+
+import ScrollOriginsNFTABI from "@/assets/abis/ScrollOriginsNFT.json"
 import { isMainnet, requireEnv } from "@/utils"
 
-// import { ANNOUNCING_SCROLL_ORIGINS_NFT, DESIGNING_SCROLL_ORIGINS } from "./nft"
+import { ANNOUNCING_SCROLL_ORIGINS_NFT, DESIGNING_SCROLL_ORIGINS } from "./nft"
 
-// const SCROLL_ORIGINS_NFT = requireEnv("REACT_APP_SCROLL_ORIGINS_NFT")
-// const SCROLL_ORIGINS_NFT_V2 = requireEnv("REACT_APP_SCROLL_ORIGINS_NFT_V2")
+const SCROLL_ORIGINS_NFT = requireEnv("REACT_APP_SCROLL_ORIGINS_NFT")
+const SCROLL_ORIGINS_NFT_V2 = requireEnv("REACT_APP_SCROLL_ORIGINS_NFT_V2")
 
 export interface Badge {
   name: string
@@ -61,7 +62,7 @@ const {
   SCROLL_SIMPLE_BADGE_A_ADDRESS,
   SCROLL_SIMPLE_BADGE_B_ADDRESS,
   SCROLL_SIMPLE_BADGE_C_ADDRESS,
-  // SCROLL_ORIGINS_BADGE_ADDRESS,
+  SCROLL_ORIGINS_BADGE_ADDRESS,
   ETHEREUM_YEAR_BADGE_ADDRESS,
   ETHEREUM_YEAR_ATTESTER_PROXY_ADDRESS,
 } = BADGES_ADDRESS[isMainnet ? "mainnet" : "sepolia"]
@@ -126,35 +127,35 @@ export const EAMPLE_BADGES = [
 ]
 
 export const SCROLL_BADGES = [
-  //   {
-  //     name: "Scroll Origins NFT",
-  //     nftAddress: [SCROLL_ORIGINS_NFT, SCROLL_ORIGINS_NFT_V2],
-  //     nftAbi: ScrollOriginsNFTABI,
-  //     badgeContract: SCROLL_ORIGINS_BADGE_ADDRESS,
-  //     metaDescription:
-  //       "The Scroll Origins NFT is a soulbound NFT that serves to recognize the early builders of Scroll. Eligible minters have deployed a smart contract to Scroll Mainnetwithin 60 days of the Genesis Block. Higher levels of rarity are are rewarded to smart contracts that have contributed significant levels of interaction or value to the network.",
-  //     description: `
-  // [Scroll Origins](${ANNOUNCING_SCROLL_ORIGINS_NFT}) is a [specially designed NFT](${DESIGNING_SCROLL_ORIGINS})
-  // program to celebrate alongside early developers building on Scroll within 60 days of Genesis Block (Before December 9, 2023 10:59PM GMT).
-  // `,
-  //     image: "/imgs/canvas/OriginsNFT.svg",
-  //     native: true,
-  //     originsNFT: true,
-  //     issuer: {
-  //       origin: "https://scroll.io",
-  //       name: "Scroll",
-  //       logo: "https://scroll.io/static/media/Scroll_Logomark.673577c8260b63ae56867bc9af6af514.svg",
-  //     },
-  //     validator: async (provider, address) => {
-  //       const nftContract = new ethers.Contract(SCROLL_ORIGINS_NFT, ScrollOriginsNFTABI, provider)
-  //       const nftV2Contract = new ethers.Contract(SCROLL_ORIGINS_NFT_V2, ScrollOriginsNFTABI, provider)
+  {
+    name: "Scroll Origins NFT",
+    nftAddress: [SCROLL_ORIGINS_NFT, SCROLL_ORIGINS_NFT_V2],
+    nftAbi: ScrollOriginsNFTABI,
+    badgeContract: SCROLL_ORIGINS_BADGE_ADDRESS,
+    metaDescription:
+      "The Scroll Origins NFT is a soulbound NFT that serves to recognize the early builders of Scroll. Eligible minters have deployed a smart contract to Scroll Mainnetwithin 60 days of the Genesis Block. Higher levels of rarity are are rewarded to smart contracts that have contributed significant levels of interaction or value to the network.",
+    description: `
+  [Scroll Origins](${ANNOUNCING_SCROLL_ORIGINS_NFT}) is a [specially designed NFT](${DESIGNING_SCROLL_ORIGINS})
+  program to celebrate alongside early developers building on Scroll within 60 days of Genesis Block (Before December 9, 2023 10:59PM GMT).
+  `,
+    image: "/imgs/canvas/OriginsNFT.svg",
+    native: true,
+    originsNFT: true,
+    issuer: {
+      origin: "https://scroll.io",
+      name: "Scroll",
+      logo: "https://scroll.io/static/media/Scroll_Logomark.673577c8260b63ae56867bc9af6af514.svg",
+    },
+    validator: async (provider, address) => {
+      const nftContract = new ethers.Contract(SCROLL_ORIGINS_NFT, ScrollOriginsNFTABI, provider)
+      const nftV2Contract = new ethers.Contract(SCROLL_ORIGINS_NFT_V2, ScrollOriginsNFTABI, provider)
 
-  //       let balance = await nftContract.balanceOf(address)
-  //       if (!balance) {
-  //         balance = await nftV2Contract.balanceOf(address)
-  //       }
-  //       return !!balance
-  //     },
-  //   },
+      let balance = await nftContract.balanceOf(address)
+      if (!balance) {
+        balance = await nftV2Contract.balanceOf(address)
+      }
+      return !!balance
+    },
+  },
   ETHEREUM_YEAR_BADGE,
 ]
