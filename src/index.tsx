@@ -1,6 +1,4 @@
 import * as Sentry from "@sentry/react"
-import { BrowserTracing } from "@sentry/tracing"
-import React from "react"
 import { isMobile } from "react-device-detect"
 import ReactDOM from "react-dom/client"
 import ReactGA from "react-ga4"
@@ -18,22 +16,34 @@ import ScrollThemeProvider from "./theme"
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 
+window.onerror = function (message, source, lineno, colno, error) {
+  console.log("Global error captured:", error)
+}
+
+window.addEventListener("unhandledrejection", function (event) {
+  console.log("Unhandled rejection captured:", event.reason)
+})
+
 if (requireEnv("NODE_ENV") === "production") {
   Sentry.init({
     environment: requireEnv("REACT_APP_SCROLL_ENVIRONMENT"),
     dsn: requireEnv("REACT_APP_SENTRY_DSN"),
-    integrations: [new BrowserTracing()],
+    autoSessionTracking: false,
+    integrations: [
+      new Sentry.Integrations.Breadcrumbs({
+        console: false,
+        dom: false,
+        fetch: false,
+        history: false,
+        sentry: false,
+        xhr: false,
+      }),
+    ],
     tracesSampleRate: 1.0,
     beforeSend(event) {
-      const exception = event?.exception?.values?.[0]
-      if (!exception) return event
-      // Unexpected token '<'
-      // if (exception.type === "SyntaxError" && exception.value?.includes("'<'")) return null
-      // error when user reject a transaction in wallet
-      if (exception.type === "Error" && exception.value?.includes("user rejected transaction")) return null
-      // error from browser extension wallets that want to redefine window.ethereum
-      if (exception.type === "TypeError" && exception.stacktrace?.frames?.[0]?.filename?.startsWith("chrome-extension")) return null
-
+      if (!event.exception) {
+        return null
+      }
       return event
     },
   })
