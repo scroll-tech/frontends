@@ -187,7 +187,7 @@ const Coupon = props => {
           {isLoading ? (
             <Skeleton size="small" white sx={{ width: "60%", height: "3rem" }}></Skeleton>
           ) : (
-            <Typography sx={{ fontSize: ["2rem", "4rem"], fontWeight: 500 }}>{code}</Typography>
+            <Typography sx={{ fontSize: ["2rem", "4rem"], fontFamily: "var(--developer-page-font-family)" }}>{code}</Typography>
           )}
         </Stack>
 
