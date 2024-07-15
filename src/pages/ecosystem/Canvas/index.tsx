@@ -37,7 +37,7 @@ const Canvas = () => {
         gap={isMobile ? "1.6rem" : "2rem"}
       >
         <Typography sx={{ color: "#fff", fontSize: ["2.4rem", "4.4rem"], lineHeight: ["3.6rem", "5.6rem"], fontWeight: [600, 500], flex: 1 }}>
-          Earn badges for Scroll Canvas
+          Discover Badges on Scroll Canvas
         </Typography>
         <Button width={isMobile ? "19.7rem" : isTablet ? "21.5rem" : "25rem"} onClick={() => navigate("/canvas")} color="primary">
           Go to Scroll Canvas

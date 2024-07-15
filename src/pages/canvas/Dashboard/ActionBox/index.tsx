@@ -148,7 +148,7 @@ const ActionBox = () => {
   )
 
   const shareTwitterURL = useMemo(() => {
-    const myText = "Check out my Scroll Canvas and badges I’ve minted!"
+    const myText = "Build your onchain story. I just minted my Scroll Canvas and collected my first badge!"
     const othersText = "Check out this Scroll Canvas!"
     const text = othersWalletAddress ? othersText : myText
     return generateShareTwitterURL(canvasUrl, text)
@@ -182,7 +182,7 @@ const ActionBox = () => {
   const actions: Action[] = useMemo(() => {
     return [
       {
-        label: "Invite & Earn",
+        label: "Invite & Give",
         icon: EthSvg,
         color: "primary",
         onClick: () => changeReferDialog(true),
