@@ -18,14 +18,15 @@ const RecordBox = styled(Box)(({ theme }) => ({
   flexDirection: "row",
   alignItems: "center",
   justifyContent: "center",
-  maxWidth: "40rem",
-  width: "100%",
+  width: "max-content",
   margin: "0 auto 6rem",
   gap: "4rem",
   [theme.breakpoints.down("sm")]: {
+    flexDirection: "column",
     justifyContent: "space-between",
     gap: "1.8rem",
     margin: "0 0 2.4rem",
+    width: "100%",
   },
 }))
 
@@ -35,7 +36,7 @@ const Item = styled(Box)(({ theme }) => ({
   gap: "1.6rem",
   flex: 1,
   [theme.breakpoints.down("sm")]: {
-    flex: "unset",
+    width: "100%",
   },
 }))
 
@@ -54,6 +55,8 @@ const Value = styled(Typography)(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     fontSize: "3.2rem",
     lineHeight: "4.8rem",
+    textAlign: "center",
+    width: "100%",
   },
 }))
 
@@ -101,7 +104,7 @@ const Record = () => {
         <Description variant="body1">
           ETH
           <br />
-          Earned
+          Received
         </Description>
         {loading ? (
           <Skeleton size="small" sx={{ my: ["1rem", "1.7rem"], height: ["2.4rem", "3rem"], width: "3em" }}></Skeleton>
