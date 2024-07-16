@@ -268,7 +268,7 @@ const checkBadgeEligibility = async (provider, walletAddress, badge: any) => {
     }
     return false
   } catch (error) {
-    sentryDebug(`check badge eligibility: ${error.message}`)
+    sentryDebug(`check badge eligibility: ${badge.badgeContract}-${error.message}`)
     return false
   }
 }
