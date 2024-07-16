@@ -25,6 +25,10 @@ export const defaultProjectList = {
           project: "SyncSwap",
         },
         {
+          name: "Wombat",
+          project: "Wombat",
+        },
+        {
           name: "Zebra",
           project: "Zebra",
         },
@@ -99,6 +103,12 @@ const PROJECT_LIST = [
     website: "https://syncswap.xyz/",
   },
   {
+    name: "Wombat",
+    key: "Wombat",
+    logo: "https://scroll-eco-list.netlify.app/logos/Wombat%20Exchange.png",
+    website: "https://www.wombat.exchange/",
+  },
+  {
     name: "Zebra",
     key: "Zebra",
     logo: "https://scroll-eco-list.netlify.app/logos/Zebra.png",
@@ -140,6 +150,12 @@ const PROJECT_LIST = [
     key: "Synonym",
     logo: "https://scroll-eco-list.netlify.app/logos/Synonym%20Finance.jpg",
     website: "https://www.synonym.finance/",
+  },
+  {
+    name: "Wombat",
+    key: "Wombat",
+    logo: "https://scroll-eco-list.netlify.app/logos/Wombat%20Exchange.png",
+    website: "https://app.wombat.exchange/pool?chain=scroll",
   },
   // {
   //   name: "Mint Scroll Canvas",
