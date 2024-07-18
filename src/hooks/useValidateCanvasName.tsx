@@ -40,21 +40,21 @@ const useValidateName = value => {
   }
 
   const validateName = async name => {
-    let helpText: string | JSX.Element = ""
+    let nextHelpText: string | JSX.Element = ""
     if (controller.current) {
       controller.current.abort("user input")
     }
 
     if (!name) {
-      helpText = "Please enter your name"
+      nextHelpText = "Please enter your name"
     } else if (!/^[\dA-Za-z_]{4,15}$/g.test(name)) {
-      helpText = (
+      nextHelpText = (
         <>
           Your name must consist of 4 to 15 characters,<br></br>comprising only letters, numbers or underline.
         </>
       )
     } else if (SensitiveWord.some(word => name.toLowerCase().includes(word.toLowerCase()))) {
-      helpText = "This name is not allowed" as string
+      nextHelpText = "This name is not allowed"
     } else {
       // const isUsernameUsedCallData = encodeFunctionData({
       //   abi: ProfileRegistryABI,
@@ -82,10 +82,10 @@ const useValidateName = value => {
       })
       const isUsernameUsed = hexToBool(result.result)
       if (isUsernameUsed) {
-        helpText = "This name is already taken"
+        nextHelpText = "This name is already taken"
       }
     }
-    return helpText
+    return nextHelpText
   }
 
   const renderValidation = () => {
