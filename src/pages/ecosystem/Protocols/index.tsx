@@ -7,7 +7,7 @@ import useScrollTrigger from "@mui/material/useScrollTrigger"
 
 import Button from "@/components/Button"
 import SectionWrapper from "@/components/SectionWrapper"
-import { ECOSYSTEM_NETWORK_LIST, GET_IN_TOUCH_LINK, NORMAL_HEADER_HEIGHT } from "@/constants"
+import { ECOSYSTEM_NETWORK_LIST, ECOSYSTEM_PAGE_SYMBOL, GET_IN_TOUCH_LINK, NORMAL_HEADER_HEIGHT } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
 import Category from "./Category"
@@ -114,7 +114,7 @@ const Protocols = () => {
           </Button>
         )}
       </Stack>
-      <Grid>
+      <Grid id={`${ECOSYSTEM_PAGE_SYMBOL}-protocols`}>
         <Category top={stickyTop} value={searchParams.category} onChange={handleChangeCategory}></Category>
         <SearchInput top={stickyTop} sticky={isSticky} value={searchInput} onChange={handleChangeKeyword}></SearchInput>
         <NetworkSelect top={stickyTop} sticky={isSticky} value={searchParams.network} onChange={handleChangeNetwork}></NetworkSelect>
