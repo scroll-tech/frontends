@@ -124,12 +124,21 @@ const BadgeContractDetail = props => {
           </Typography>
         </>
       )
-    } else if (profileMinted && isOwned === false && isEligible) {
+    } else if (profileMinted && isOwned === false && isEligible && !badgeForMint.airdrop) {
       return (
         <>
           <SvgIcon sx={{ color: "#85E0D1", fontSize: "2.4rem" }} component={ValidSvg} inheritViewBox></SvgIcon>
           <Typography sx={{ color: "#85E0D1 !important", fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.4rem", "2.8rem"], fontWeight: 500 }}>
             You are eligible to mint the badge
+          </Typography>
+        </>
+      )
+    } else if (profileMinted && isOwned === false && isEligible && badgeForMint.airdrop) {
+      return (
+        <>
+          <SvgIcon sx={{ color: "#85E0D1", fontSize: "2.4rem" }} component={ValidSvg} inheritViewBox></SvgIcon>
+          <Typography sx={{ color: "#85E0D1 !important", fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.4rem", "2.8rem"], fontWeight: 500 }}>
+            This is an airdrop-only badge and you will receive it once the issuer mint for you.
           </Typography>
         </>
       )
@@ -216,7 +225,7 @@ const BadgeContractDetail = props => {
           color="primary"
           onClick={handleMint}
           loading={isBadgeMinting.get(address)}
-          gloomy={!isEligible}
+          gloomy={!isEligible || badgeForMint.airdrop}
         >
           {isBadgeMinting.get(address) ? "Minting" : "Mint now"}
         </ScrollButton>

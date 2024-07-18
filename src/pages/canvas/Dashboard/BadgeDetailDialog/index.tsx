@@ -29,6 +29,7 @@ const StyledScrollButton = styled(ScrollButton)(({ theme }) => ({
 }))
 
 const ButtonContainer = styled(forwardRef<any, any>((props, ref) => <Box {...props} ref={ref} />))(({ theme }) => ({
+  position: "relative",
   display: "flex",
   gap: "1.6rem",
   alignItems: "center",
@@ -164,6 +165,15 @@ const BadgeDetailDialog = () => {
     }
   }
 
+  const renderButtonText = () => {
+    if (isMobile && selectedBadge.airdrop) {
+      return "Waiting for issuer to mint"
+    } else if (isBadgeMinting.get(selectedBadge.badgeContract)) {
+      return "Minting"
+    }
+    return "Mint badge"
+  }
+
   return (
     <Dialog
       sx={{ zIndex: theme => theme.zIndex.modal + 1 }}
@@ -186,7 +196,7 @@ const BadgeDetailDialog = () => {
         direction="column"
         alignItems="center"
         justifyContent={isMobile ? "flex-start" : "center"}
-        sx={{ width: ["100%", "57.6rem"], height: [`calc(100% - ${actionHeight})`, "auto", "auto", "54.6rem"] }}
+        sx={{ width: ["100%", "57.6rem"], height: [`calc(100% - ${actionHeight})`, "54.6rem", "54.6rem", "54.6rem"] }}
       >
         <Img
           alt="img"
@@ -250,9 +260,31 @@ const BadgeDetailDialog = () => {
 
         <ButtonContainer ref={actionsRef}>
           {[BadgeDetailDialogType.MINT, BadgeDetailDialogType.MINT_WITH_BACK].includes(badgeDetailDialogVisible) && (
-            <StyledScrollButton className="mintBtn" loading={isBadgeMinting.get(selectedBadge.badgeContract)} color="primary" onClick={handleMint}>
-              {isBadgeMinting.get(selectedBadge.badgeContract) ? "Minting" : "Mint badge"}
+            <StyledScrollButton
+              className="mintBtn"
+              loading={isBadgeMinting.get(selectedBadge.badgeContract)}
+              gloomy={selectedBadge.airdrop}
+              color="primary"
+              onClick={handleMint}
+            >
+              {renderButtonText()}
             </StyledScrollButton>
+          )}
+          {!isMobile && selectedBadge.airdrop && (
+            <Typography
+              sx={{
+                fontSize: "1.6rem",
+                position: "absolute",
+                color: "#85E0D1",
+                width: ["100%", "max-content"],
+                bottom: ["unser", "-1.6em"],
+                top: ["-2.6rem", "unset"],
+                px: ["2rem", 0],
+                textAlign: "center",
+              }}
+            >
+              This is an airdrop-only badge and you will receive it once the issuer mint for you.
+            </Typography>
           )}
 
           {/* {[BadgeDetailDialogType.UPGRADE].includes(badgeDetailDialogVisible) && (
