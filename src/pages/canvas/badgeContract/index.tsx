@@ -31,7 +31,7 @@ const BadgeContractDetail = props => {
   const alertWarning = useSnackbar()
 
   const badgeForMint = useMemo(() => {
-    return badgeListProxy[address] || {}
+    return badgeListProxy(address) || ({} as any)
   }, [address, badgeListProxy])
 
   const isL2 = useMemo(() => chainId === CHAIN_ID.L2, [chainId])

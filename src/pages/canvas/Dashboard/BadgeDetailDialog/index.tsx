@@ -78,7 +78,7 @@ const BadgeDetailDialog = () => {
   const [actionHeight, setActionHeight] = useState("auto")
   const actionsRef = useRef()
 
-  const badgeIssuer = useMemo(() => badgeListProxy[selectedBadge.badgeContract]?.issuer || {}, [selectedBadge, badgeListProxy])
+  const badgeIssuer = useMemo(() => badgeListProxy(selectedBadge.badgeContract)?.issuer || ({} as any), [selectedBadge, badgeListProxy])
 
   const shareBadgeURL = useMemo(() => {
     const viewURL = `${requireEnv("REACT_APP_FFRONTENDS_URL")}/canvas/badge/${selectedBadge.id}`

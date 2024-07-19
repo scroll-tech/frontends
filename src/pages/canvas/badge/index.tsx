@@ -31,14 +31,14 @@ const BadgeDetailPage = () => {
 
   const isOriginsNFTBadge = useCallback(
     badgeContract => {
-      return badgeListProxy[badgeContract]?.originsNFT
+      return badgeListProxy(badgeContract)?.originsNFT
     },
     [badgeListProxy],
   )
 
   const isNativeBadge = useCallback(
     badgeContract => {
-      return badgeListProxy[badgeContract]?.native
+      return badgeListProxy(badgeContract)?.native
     },
     [badgeListProxy],
   )
@@ -94,6 +94,7 @@ const BadgeDetailPage = () => {
       const [{ recipient, time, data }] = badges
 
       const { badgeContract, description, ...badgeMetadata } = await fillBadgeDetailWithPayload(publicProvider, { id, data })
+
       const name = await fetchProfileUsername(publicProvider, recipient)
       let upgradable = false
       if (walletCurrentAddress === recipient) {
@@ -108,8 +109,8 @@ const BadgeDetailPage = () => {
         ownerLogo: getSmallAvatarURL(recipient),
         mintedOn: formatDate(time * 1000),
         badgeContract,
-        issuer: badgeListProxy[badgeContract]?.issuer,
-        description: isOriginsNFTBadge(badgeContract) ? badgeListProxy[badgeContract].description : description,
+        issuer: badgeListProxy(badgeContract)?.issuer,
+        description: isOriginsNFTBadge(badgeContract) ? badgeListProxy(badgeContract)?.description : description,
         upgradable,
       }
       if (isOriginsNFTBadge(badgeContract)) {
