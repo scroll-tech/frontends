@@ -7,7 +7,7 @@ import { getSmallAvatarURL, viewEASScanURL } from "@/apis/canvas"
 import { ReactComponent as ShareSvg } from "@/assets/svgs/canvas/share.svg"
 import ScrollButton from "@/components/Button"
 import Link from "@/components/Link"
-import { NFT_RARITY_MAP } from "@/constants"
+import { NFT_RARITY_MAP, SCROLL_BADGES } from "@/constants"
 import { useCanvasContext } from "@/contexts/CanvasContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useBadgeListProxy from "@/hooks/useBadgeProxy"
@@ -26,7 +26,7 @@ const BadgeDetailPage = () => {
   const { walletCurrentAddress } = useRainbowContext()
 
   const { unsignedProfileRegistryContract, publicProvider } = useCanvasContext()
-  const { changeIsBadgeUpgrading, username } = useCanvasStore()
+  const { changeIsBadgeUpgrading, username, badgeList } = useCanvasStore()
   const badgeListProxy = useBadgeListProxy()
 
   const isOriginsNFTBadge = useCallback(
@@ -67,10 +67,10 @@ const BadgeDetailPage = () => {
   }, [id, detail])
 
   useEffect(() => {
-    if (unsignedProfileRegistryContract) {
+    if (unsignedProfileRegistryContract && badgeList.length > SCROLL_BADGES.length) {
       fetchBadgeDetailByBadgeId(id)
     }
-  }, [unsignedProfileRegistryContract, id])
+  }, [unsignedProfileRegistryContract, id, badgeList])
 
   const fetchProfileUsername = async (provider, walletAddress) => {
     try {
