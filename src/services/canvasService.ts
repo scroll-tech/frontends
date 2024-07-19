@@ -375,7 +375,8 @@ const mintBadge = async (provider, walletCurrentAddress, badge) => {
 const upgradeBadge = async (provider, badge) => {
   try {
     const { id, badgeContract } = badge
-    const badgeInstance = new ethers.Contract(badgeContract, BadgeABI, provider)
+    const signer = await provider!.getSigner(0)
+    const badgeInstance = new ethers.Contract(badgeContract, BadgeABI, signer)
     const tx = await badgeInstance.upgrade(id)
     const txReceipt = await tx.wait()
     if (txReceipt.status === 1) {
