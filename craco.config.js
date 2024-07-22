@@ -86,8 +86,6 @@ module.exports = {
 
       if (env === "production" && process.env.CI) {
         const sentryPlugin = new SentryWebpackPlugin({
-          org: "scroll-zkp",
-          project: "scroll-io",
           include: "./build",
           release: process.env.REACT_APP_VERSION,
         })
