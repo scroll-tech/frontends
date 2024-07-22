@@ -162,5 +162,4 @@ export const SCROLL_BADGES = [
     },
   },
   ETHEREUM_YEAR_BADGE,
-  ...EAMPLE_BADGES,
 ]
