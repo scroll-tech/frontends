@@ -20,9 +20,10 @@ export interface Badge {
   }
   badgeContract: string
 
-  // third party
+  // Backend-authorized
   attesterProxy?: string
-  eligibilityAPI?: string
+  baseUrl?: string
+  eligibilityCheck?: boolean
 
   // Origin NFT
   originsNFT?: boolean
@@ -30,8 +31,10 @@ export interface Badge {
   nftAddress?: string[]
   nftAbi?: object
 
-  // view third party badge website
+  // issued by Scroll
   native: boolean
+
+  airdrop?: boolean
 }
 
 // TODO: only keep OriginsNFTBadge and EthereumYearBadge
@@ -93,6 +96,7 @@ export const EAMPLE_BADGES = [
     description: "A collection 8888 Cute Chubby Pudgy Penquins sliding around on the freezing ETH blockchain.",
     image: "/imgs/canvas/Penguin1.webp",
     native: true,
+    eligibilityCheck: true,
     issuer: {
       origin: "https://scroll.io",
       name: "Scroll",
@@ -158,4 +162,5 @@ export const SCROLL_BADGES = [
     },
   },
   ETHEREUM_YEAR_BADGE,
+  ...EAMPLE_BADGES,
 ]

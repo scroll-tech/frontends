@@ -255,13 +255,17 @@ const checkBadgeEligibility = async (provider, walletAddress, badge: any) => {
       const eligibility = await badge.validator(provider, walletAddress)
       return eligibility
     }
-
-    // scroll native
-    if (badge.native) {
+    if (!badge.baseUrl && !badge.eligibilityCheck) {
       return true
     }
-    // third-party badge
-    if (badge.attesterProxy) {
+    // permissionless
+    if (!badge.baseUrl && badge.eligibilityCheck) {
+      const badgeInstance = new ethers.Contract(badge.badgeContract, BadgeABI, provider)
+      const eligibility = await badgeInstance.isEligible(walletAddress)
+      return eligibility
+    }
+    // backend authorized / airdropped
+    if (badge.baseUrl) {
       const data = await scrollRequest(checkBadgeEligibilityURL(badge.baseUrl, walletAddress, badge.badgeContract))
       // TODO: must return true or false
       return data.eligibility ?? false
@@ -273,7 +277,7 @@ const checkBadgeEligibility = async (provider, walletAddress, badge: any) => {
   }
 }
 
-const mintThirdBadge = async (signer, walletAddress, badgeAddress, attesterProxyAddress, claimBaseUrl) => {
+const mintBackendAuthorizedBadge = async (signer, walletAddress, badgeAddress, attesterProxyAddress, claimBaseUrl) => {
   const { tx: unsignedTx } = await scrollRequest(claimBadgeURL(claimBaseUrl, walletAddress, badgeAddress))
   console.log(unsignedTx, "unsignedTx")
   checkDelegatedAttestation(unsignedTx, attesterProxyAddress)
@@ -359,7 +363,7 @@ const mintBadge = async (provider, walletCurrentAddress, badge) => {
     }
     // Third Party Badge
     if (attesterProxy) {
-      return await mintThirdBadge(signer, walletCurrentAddress, badgeContract, attesterProxy, baseUrl)
+      return await mintBackendAuthorizedBadge(signer, walletCurrentAddress, badgeContract, attesterProxy, baseUrl)
     }
 
     return await mintPermissionlessBadge(signer, walletCurrentAddress, badgeContract)
