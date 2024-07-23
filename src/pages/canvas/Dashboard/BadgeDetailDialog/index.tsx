@@ -49,6 +49,9 @@ const ButtonContainer = styled(forwardRef<any, any>((props, ref) => <Box {...pro
     "& .mintBtn": {
       gridColumn: "span 2",
     },
+    "& .tip": {
+      gridColumn: "span 2",
+    },
   },
 }))
 
@@ -165,13 +168,27 @@ const BadgeDetailDialog = () => {
     }
   }
 
-  const renderButtonText = () => {
-    if (isMobile && selectedBadge.airdrop) {
-      return "Waiting for issuer to mint"
-    } else if (isBadgeMinting.get(selectedBadge.badgeContract)) {
-      return "Minting"
-    }
-    return "Mint badge"
+  const renderMintTip = () => {
+    return (
+      <>
+        {[BadgeDetailDialogType.NO_PROFILE].includes(badgeDetailDialogVisible) && (
+          <Stack className="tip" direction="row" gap="0.8rem" alignItems="center" sx={{ mb: [0, "2.4rem"], px: [0, "4rem"] }}>
+            <InfoOutlinedIcon sx={{ color: "#FAD880", fontSize: ["1.8rem", "2.4rem"] }} />
+            <Typography sx={{ color: "#FAD880", fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.4rem", "2.8rem"] }}>
+              You need a Scroll Canvas in order to mint your {selectedBadge.name} Badge.
+            </Typography>
+          </Stack>
+        )}
+        {[BadgeDetailDialogType.MINT, BadgeDetailDialogType.MINT_WITH_BACK].includes(badgeDetailDialogVisible) && selectedBadge.airdrop && (
+          <Stack className="tip" direction="row" gap="0.8rem" alignItems="center" sx={{ mb: [0, "2.4rem"], px: [0, "4rem"] }}>
+            <InfoOutlinedIcon sx={{ color: "#85E0D1", fontSize: ["1.8rem", "2.4rem"] }} />
+            <Typography sx={{ color: "#85E0D1", fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.4rem", "2.8rem"] }}>
+              You are eligible. Your badge will be airdroped by the issuer.
+            </Typography>
+          </Stack>
+        )}
+      </>
+    )
   }
 
   return (
@@ -248,15 +265,7 @@ const BadgeDetailDialog = () => {
             </Stack>
           </>
         )}
-
-        {[BadgeDetailDialogType.NO_PROFILE].includes(badgeDetailDialogVisible) && (
-          <Stack direction="row" gap="0.8rem" alignItems="center" sx={{ mb: [0, "2.4rem"], px: [0, "4rem"] }}>
-            <InfoOutlinedIcon sx={{ color: "#FAD880", fontSize: ["1.8rem", "2.4rem"] }} />
-            <Typography sx={{ color: "#FAD880", fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.4rem", "2.8rem"] }}>
-              You need a Scroll Canvas in order to mint your {selectedBadge.name} Badge.
-            </Typography>
-          </Stack>
-        )}
+        {!isMobile && renderMintTip()}
 
         <ButtonContainer ref={actionsRef}>
           {[BadgeDetailDialogType.MINT, BadgeDetailDialogType.MINT_WITH_BACK].includes(badgeDetailDialogVisible) && (
@@ -267,31 +276,10 @@ const BadgeDetailDialog = () => {
               color="primary"
               onClick={handleMint}
             >
-              {renderButtonText()}
+              {isBadgeMinting.get(selectedBadge.badgeContract) ? "Minting" : "Mint badge"}
             </StyledScrollButton>
           )}
-          {!isMobile && selectedBadge.airdrop && (
-            <Typography
-              sx={{
-                fontSize: "1.6rem",
-                position: "absolute",
-                color: "#85E0D1",
-                width: ["100%", "max-content"],
-                bottom: ["unser", "-1.6em"],
-                top: ["-2.6rem", "unset"],
-                px: ["2rem", 0],
-                textAlign: "center",
-              }}
-            >
-              This is an airdrop-only badge and you will receive it once the issuer mint for you.
-            </Typography>
-          )}
-
-          {/* {[BadgeDetailDialogType.UPGRADE].includes(badgeDetailDialogVisible) && (
-            <StyledScrollButton color="primary" onClick={handleViewEAS}>
-              View on EAS
-            </StyledScrollButton>
-          )} */}
+          {isMobile && renderMintTip()}
 
           {[BadgeDetailDialogType.NO_PROFILE].includes(badgeDetailDialogVisible) && (
             <StyledScrollButton className="viewBtn" color="primary" target="_blank" onClick={handleViewCanvas}>
