@@ -124,7 +124,17 @@ const BadgeContractDetail = props => {
           </Typography>
         </>
       )
-    } else if (profileMinted && isOwned === false && isEligible && !badgeForMint.airdrop) {
+    } else if (profileMinted && isOwned === false && isEligible) {
+      if (badgeForMint.airdrop) {
+        return (
+          <>
+            <SvgIcon sx={{ color: "#85E0D1", fontSize: "2.4rem" }} component={ValidSvg} inheritViewBox></SvgIcon>
+            <Typography sx={{ color: "#85E0D1 !important", fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.4rem", "2.8rem"], fontWeight: 500 }}>
+              You are eligible. Your badge will be airdroped by the issuer.
+            </Typography>
+          </>
+        )
+      }
       return (
         <>
           <SvgIcon sx={{ color: "#85E0D1", fontSize: "2.4rem" }} component={ValidSvg} inheritViewBox></SvgIcon>
@@ -133,16 +143,17 @@ const BadgeContractDetail = props => {
           </Typography>
         </>
       )
-    } else if (profileMinted && isOwned === false && isEligible && badgeForMint.airdrop) {
-      return (
-        <>
-          <SvgIcon sx={{ color: "#85E0D1", fontSize: "2.4rem" }} component={ValidSvg} inheritViewBox></SvgIcon>
-          <Typography sx={{ color: "#85E0D1 !important", fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.4rem", "2.8rem"], fontWeight: 500 }}>
-            This is an airdrop-only badge and you will receive it once the issuer mint for you.
-          </Typography>
-        </>
-      )
     } else if (profileMinted && isOwned === false && !isEligible) {
+      if (badgeForMint.airdrop) {
+        return (
+          <>
+            <SvgIcon sx={{ color: "primary.main", fontSize: "2.4rem" }} component={WarningSvg} inheritViewBox></SvgIcon>
+            <Typography sx={{ color: "#FF684B !important", fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.4rem", "2.8rem"], fontWeight: 500 }}>
+              This is an airdrop-only badge. Selected account is not eligible.
+            </Typography>
+          </>
+        )
+      }
       return (
         <>
           <SvgIcon sx={{ color: "primary.main", fontSize: "2.4rem" }} component={WarningSvg} inheritViewBox></SvgIcon>

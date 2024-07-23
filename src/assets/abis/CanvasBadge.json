@@ -67,5 +67,22 @@
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "recipient",
+        "type": "address"
+      }
+    ],
+    "name": "isEligible",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
   }
 ]
