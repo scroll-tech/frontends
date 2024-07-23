@@ -266,7 +266,9 @@ const checkBadgeEligibility = async (provider, walletAddress, badge: any) => {
     }
     // backend authorized / airdropped
     if (badge.baseUrl) {
-      const data = await scrollRequest(checkBadgeEligibilityURL(badge.baseUrl, walletAddress, badge.badgeContract))
+      const data = await scrollRequest(checkBadgeEligibilityURL(badge.baseUrl, walletAddress, badge.badgeContract), {
+        timeout: 1e4,
+      })
       // TODO: must return true or false
       return data.eligibility ?? false
     }
