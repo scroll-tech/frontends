@@ -6,7 +6,7 @@ import AttestProxyABI from "@/assets/abis/CanvasAttestProxy.json"
 import BadgeABI from "@/assets/abis/CanvasBadge.json"
 import ProfileABI from "@/assets/abis/CanvasProfile.json"
 import ProfileRegistryABI from "@/assets/abis/CanvasProfileRegistry.json"
-import { checkDelegatedAttestation, decodeBadgePayload, isUserRejected, requireEnv, sentryDebug, trimErrorMessage } from "@/utils"
+import { checkDelegatedAttestation, decodeBadgePayload, isUserRejected, recognizeError, requireEnv, sentryDebug, trimErrorMessage } from "@/utils"
 
 const EAS_GRAPHQL_URL = requireEnv("REACT_APP_EAS_GRAPHQL_URL")
 const BADGE_SCHEMA = requireEnv("REACT_APP_BADGE_SCHEMA")
@@ -373,8 +373,9 @@ const mintBadge = async (provider, walletCurrentAddress, badge) => {
     if (isUserRejected(error)) {
       return false
     } else {
-      sentryDebug(`mint badge:${walletCurrentAddress}-${badge.badgeContract}-${error.message}`)
-      throw new Error(trimErrorMessage(error.message))
+      const message = recognizeError(error)
+      sentryDebug(`mint badge:${walletCurrentAddress}-${badge.badgeContract}-${message}`)
+      throw new Error(trimErrorMessage(message))
     }
   }
 }
@@ -397,8 +398,9 @@ const upgradeBadge = async (provider, badge) => {
     if (isUserRejected(error)) {
       return false
     } else {
-      sentryDebug(`upgrade badge:${badge.id}-${error.message}`)
-      throw new Error(trimErrorMessage(error.message))
+      const message = recognizeError(error)
+      sentryDebug(`upgrade badge:${badge.id}-${message}`)
+      throw new Error(trimErrorMessage(message))
     }
   }
 }
