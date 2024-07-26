@@ -15,7 +15,7 @@ import useCheckViewport from "@/hooks/useCheckViewport"
 import useSnackbar from "@/hooks/useSnackbar"
 // import { testAsyncFunc } from "@/services/canvasService"
 import useCanvasStore from "@/stores/canvasStore"
-import { isUserRejected, requireEnv, sentryDebug, trimErrorMessage } from "@/utils"
+import { isUserRejected, recognizeError, requireEnv, sentryDebug, trimErrorMessage } from "@/utils"
 
 import InsufficientDialog from "./InsufficientDialog"
 import StepWrapper from "./StepWrapper"
@@ -99,8 +99,9 @@ const MintStep = props => {
       }
     } catch (error) {
       if (!isUserRejected(error)) {
-        alertWarning(trimErrorMessage(error.message))
-        sentryDebug(`mint canvas:${walletCurrentAddress}-${error.message}`)
+        const message = recognizeError(error)
+        alertWarning(trimErrorMessage(message))
+        sentryDebug(`mint canvas:${walletCurrentAddress}-${message}`)
       }
     } finally {
       changeIsProfileMinting(false)
