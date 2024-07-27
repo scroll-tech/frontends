@@ -80,8 +80,8 @@ const TransactionSummary: FC<Props> = props => {
 
   const getDisplayedPrice = useCallback(
     (amount = "", tokenAddress = "ethereum") => {
-      if (allowDisplayValue && tokenPrice.price?.[tokenAddress.toLowerCase()]) {
-        return (+amount * tokenPrice.price[tokenAddress.toLowerCase()].usd).toFixed(2)
+      if (allowDisplayValue && tokenPrice.price?.[tokenAddress]) {
+        return (+amount * tokenPrice.price[tokenAddress].usd).toFixed(2)
       }
       return ""
     },
@@ -96,7 +96,8 @@ const TransactionSummary: FC<Props> = props => {
         getDisplayedValue((l1GasFee ?? BigInt(0)) + l2GasFee + (l1DataFee ?? BigInt(0)))
 
       let displayedPrice = ""
-      if (tokenPrice.price?.[selectedToken.address.toLowerCase()]) {
+
+      if (tokenPrice.price?.[selectedToken.address]) {
         displayedPrice = (
           Number(getDisplayedPrice(amount, selectedToken.address)) +
           Number(getDisplayedPrice(BNToAmount((l1GasFee ?? BigInt(0)) + l2GasFee + (l1DataFee ?? BigInt(0)))))
