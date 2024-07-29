@@ -48,10 +48,10 @@ const abi = [
 ]
 
 const IDENTIFIED_ERROR_MAP = {
-  AccessDenied: issuer => `Failed to mint the badge. Please reach out to ${issuer}’ community for help`,
+  AccessDenied: issuer => `Minting failed. Please reach out to ${issuer}’s community channels for help`,
   SingletonBadge: "You have already minted this badge. Please wait for a while for Canvas to be updated",
   ExpiredSignature: "Something went wrong. Please try again later",
-  InvalidSignature: issuer => `Failed to mint the badge. Please reach out to ${issuer}’ community for help`,
+  InvalidSignature: issuer => `Minting failed. Please reach out to ${issuer}’s community channels for help`,
   DeadlineExpired: "Something went wrong. Please try again later",
   ProfileAlreadyMinted: "You have already minted your Canvas. Please wait for a while for Canvas to be updated",
 }
