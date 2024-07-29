@@ -98,7 +98,7 @@ const CustomMenu = styled<any>(Menu, { shouldForwardProp: prop => prop !== "drop
   },
 }))
 
-const CustomiseItem = styled<any>(AnimatedMenuItem)(({ theme, external }) => ({
+const CustomiseItem = styled<any>(AnimatedMenuItem, { shouldForwardProp: prop => prop !== "external" })(({ theme, external }) => ({
   position: "relative",
   display: "flex",
   justifyContent: external ? "flex-start" : "space-between",

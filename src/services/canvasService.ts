@@ -373,7 +373,7 @@ const mintBadge = async (provider, walletCurrentAddress, badge) => {
     if (isUserRejected(error)) {
       return false
     } else {
-      const message = recognizeError(error)
+      const message = recognizeError(error, badge.issuer.name)
       sentryDebug(`mint badge:${walletCurrentAddress}-${badge.badgeContract}-${message}`)
       throw new Error(trimErrorMessage(message))
     }
@@ -398,7 +398,7 @@ const upgradeBadge = async (provider, badge) => {
     if (isUserRejected(error)) {
       return false
     } else {
-      const message = recognizeError(error)
+      const message = recognizeError(error, badge.issuer.name)
       sentryDebug(`upgrade badge:${badge.id}-${message}`)
       throw new Error(trimErrorMessage(message))
     }

@@ -48,12 +48,12 @@ const abi = [
 ]
 
 const IDENTIFIED_ERROR_MAP = {
-  AccessDenied: "Access Denied. Please contact the badge issuer for assistance",
-  SingletonBadge: "You have minted this badge before. Please wait for EAS to sync the data",
-  ExpiredSignature: "Invitation code signature has expired. Please refresh the page and try again",
-  InvalidSignature: "Invalid signature. Please contact the badge issuer for assistance",
-  DeadlineExpired: "The signature has expired. Please try again",
-  ProfileAlreadyMinted: "You have minted Canvas before. Please refresh the page to sync the latest data.",
+  AccessDenied: issuer => `Failed to mint the badge. Please reach out to ${issuer}’ community for help`,
+  SingletonBadge: "You have already minted this badge. Please wait for a while for Canvas to be updated",
+  ExpiredSignature: "Something went wrong. Please try again later",
+  InvalidSignature: issuer => `Failed to mint the badge. Please reach out to ${issuer}’ community for help`,
+  DeadlineExpired: "Something went wrong. Please try again later",
+  ProfileAlreadyMinted: "You have already minted your Canvas. Please wait for a while for Canvas to be updated",
 }
 
 export const decodeErrorData = errSelector => {
@@ -62,21 +62,28 @@ export const decodeErrorData = errSelector => {
   return parsedError?.name
 }
 
-export const recognizeError = error => {
+// AccessDenied / InvalidSignature only for minting a badge
+export const recognizeError = (error, issuerName?) => {
   if (error.code === "INSUFFICIENT_FUNDS") {
-    return "Transaction failed due to insufficient funds. Please ensure your account has enough balance."
+    return "Transaction failed due to insufficient funds. Please ensure your wallet has enough ETH"
   }
   if (error.code === "CALL_EXCEPTION") {
-    const unrecognized = "Transaction failed due to an unknown error. Please try again later."
+    const unrecognized = "Something went wrong. Please try again later"
     // execution reverted
     if (error.data) {
       const type = decodeErrorData(error.data)
-      return type ? `${IDENTIFIED_ERROR_MAP[type] ? IDENTIFIED_ERROR_MAP[type] : "Execution reverted due to " + type}` : unrecognized
+      if (type) {
+        if (IDENTIFIED_ERROR_MAP[type]) {
+          return typeof IDENTIFIED_ERROR_MAP[type] === "function" ? IDENTIFIED_ERROR_MAP[type](issuerName) : IDENTIFIED_ERROR_MAP[type]
+        }
+        return "Execution reverted due to " + type
+      }
+      return unrecognized
     }
     return unrecognized
   }
   if (error.code === "UNKNOWN_ERROR" && error.message.startsWith("could not coalesce error")) {
-    return error.error?.message || error.error?.data?.error?.message || "The PRC is busy, please try again later."
+    return error.error?.message || error.error?.data?.error?.message || "RPC service is busy. Please try again later"
   }
   return error.message
 }
