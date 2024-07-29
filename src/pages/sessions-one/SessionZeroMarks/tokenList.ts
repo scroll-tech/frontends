@@ -107,7 +107,7 @@ export const tokenList = [
     },
   },
   {
-    name: "Assets on Pencils’ Vaults",
+    name: "Assets on Pencils Protocol",
     key: "PENCILS",
     logoURI: "/imgs/sessions/tokens/Pencils.jpeg",
     containedTokens: [
