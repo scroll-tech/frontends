@@ -1,4 +1,5 @@
 import copy from "copy-to-clipboard"
+import { motion } from "framer-motion"
 import { Fragment, useCallback, useMemo, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 
@@ -10,12 +11,16 @@ import { ReactComponent as CopySuccessSvg } from "@/assets/svgs/canvas/copy-succ
 import { ReactComponent as EditSvg } from "@/assets/svgs/canvas/edit.svg"
 import { ReactComponent as EthSvg } from "@/assets/svgs/canvas/eth.svg"
 import { ReactComponent as ShareSvg } from "@/assets/svgs/canvas/share.svg"
+import { ReactComponent as ExternalLinkSvg } from "@/assets/svgs/common/external-link.svg"
 import { ReactComponent as TwitterSvg } from "@/assets/svgs/nft/twitter.svg"
+import { BADGE_INTEGRATION_GUIDE } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import Button from "@/pages/canvas/components/Button"
 import useCanvasStore, { BadgesDialogType } from "@/stores/canvasStore"
 import { generateShareTwitterURL, requireEnv } from "@/utils"
+
+const AnimatedMenuItem = motion(MenuItem)
 
 interface Action {
   label: string | (() => React.ReactNode)
@@ -29,8 +34,10 @@ interface Action {
     open: boolean
     onClose: () => void
     items: Array<{
+      key: string
       label: string | (() => React.ReactNode)
       extra?: React.ReactNode
+      external?: boolean
       onClick: () => void
     }>
   }
@@ -91,9 +98,11 @@ const CustomMenu = styled<any>(Menu, { shouldForwardProp: prop => prop !== "drop
   },
 }))
 
-const CustomiseItem = styled(MenuItem)(({ theme }) => ({
+const CustomiseItem = styled<any>(AnimatedMenuItem)(({ theme, external }) => ({
+  position: "relative",
   display: "flex",
-  justifyContent: "space-between",
+  justifyContent: external ? "flex-start" : "space-between",
+  gap: "0.8rem",
   padding: "0.8rem",
   backgroundColor: "#FFFFFF",
   color: "#000000",
@@ -101,6 +110,7 @@ const CustomiseItem = styled(MenuItem)(({ theme }) => ({
   fontWeight: 600,
   "&:hover": {
     backgroundColor: "#FFFFFF",
+    color: theme.palette.primary.main,
   },
 }))
 
@@ -168,6 +178,8 @@ const ActionBox = () => {
   }
 
   const [badgesAnchorEl, setBadgesAnchorEl] = useState<null | HTMLElement>(null)
+  const [isHovering, setIsHovering] = useState("")
+
   const badgesOpen = Boolean(badgesAnchorEl)
 
   const handleCloseMenu = () => {
@@ -207,6 +219,7 @@ const ActionBox = () => {
           onClose: handleCloseMenu,
           items: [
             {
+              key: "customize",
               label: "Customize display",
               onClick: () => {
                 handleCloseMenu()
@@ -214,6 +227,7 @@ const ActionBox = () => {
               },
             },
             {
+              key: "mint",
               label: "Mint eligible badges",
               extra: mintableBadges.length ? <BadgeCount>{mintableBadges.length > 99 ? "99+" : mintableBadges.length}</BadgeCount> : null,
               onClick: () => {
@@ -224,6 +238,7 @@ const ActionBox = () => {
             ...(upgradableBadges.length
               ? [
                   {
+                    key: "upgrade",
                     label: "Upgrade badges",
                     extra: upgradableBadges.length ? <BadgeCount>{upgradableBadges.length > 99 ? "99+" : upgradableBadges.length}</BadgeCount> : null,
                     onClick: () => {
@@ -234,9 +249,18 @@ const ActionBox = () => {
                 ]
               : []),
             {
+              key: "explore",
               label: "Explore badges",
               onClick: () => {
                 navigate("/ecosystem#badges")
+              },
+            },
+            {
+              key: "issue",
+              label: "Issue badges",
+              external: true,
+              onClick: () => {
+                window.open(BADGE_INTEGRATION_GUIDE)
               },
             },
           ],
@@ -267,6 +291,7 @@ const ActionBox = () => {
           onClose: handleCloseShare,
           items: [
             {
+              key: "twitter",
               label: () => (
                 <Stack direction="row" gap="0.6rem" alignItems="center">
                   <>Share to</>
@@ -279,10 +304,11 @@ const ActionBox = () => {
               },
             },
             {
+              key: "link",
               label: () => (
                 <>
                   {copied ? "Link copied" : "Copy link"}
-                  {copied && <SvgIcon sx={{ ml: "0.6rem" }} component={CopySuccessSvg} inheritViewBox></SvgIcon>}{" "}
+                  {copied && <SvgIcon sx={{ ml: "0.6rem" }} component={CopySuccessSvg} inheritViewBox></SvgIcon>}
                 </>
               ),
               onClick: handleCopyLink,
@@ -305,6 +331,17 @@ const ActionBox = () => {
     pickMintableBadgesLoading,
     pickUpgradableBadgesLoading,
   ])
+
+  const handleMouseEnter = item => {
+    if (item.external) {
+      console.log(item, "???")
+      setIsHovering(item.key)
+    }
+  }
+
+  const handleMouseLeave = () => {
+    setIsHovering("")
+  }
 
   const renderActionIcon = action => {
     if (action.withBadge) {
@@ -350,9 +387,32 @@ const ActionBox = () => {
                   onClose={action.menu.onClose}
                 >
                   {action.menu.items.map((item, index) => (
-                    <CustomiseItem key={index} onClick={item.onClick}>
+                    <CustomiseItem
+                      key={index}
+                      onClick={item.onClick}
+                      external={item.external}
+                      onHoverStart={() => handleMouseEnter(item)}
+                      onHoverEnd={handleMouseLeave}
+                      animate={isHovering === item.key ? "active" : "inactive"}
+                    >
                       {typeof item.label === "function" ? item.label() : item.label}
                       {item.extra}
+                      {item.external && (
+                        <motion.div
+                          variants={{
+                            active: {
+                              x: 0,
+                              opacity: 1,
+                            },
+                            inactive: {
+                              x: -8,
+                              opacity: 0,
+                            },
+                          }}
+                        >
+                          <SvgIcon component={ExternalLinkSvg} sx={{ fontSize: "1.2rem", color: "primary.main" }}></SvgIcon>
+                        </motion.div>
+                      )}
                     </CustomiseItem>
                   ))}
                 </CustomMenu>
