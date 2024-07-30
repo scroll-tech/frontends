@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import { Stack, SvgIcon } from "@mui/material"
 import { styled } from "@mui/system"
 
-import { ReactComponent as LinkSvg } from "@/assets/svgs/bridge/external-link.svg"
+import { ReactComponent as LinkSvg } from "@/assets/svgs/common/external-link.svg"
 import { isMainnet } from "@/utils"
 
 const FAQsLink = styled(Link)(({ theme }) => ({

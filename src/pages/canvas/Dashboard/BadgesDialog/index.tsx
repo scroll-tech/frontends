@@ -1,4 +1,4 @@
-import { useMemo } from "react"
+import { Fragment, useMemo } from "react"
 import Img from "react-cool-img"
 
 import { List } from "@mui/material"
@@ -121,12 +121,11 @@ const BadgesDialog = props => {
     <Dialog title={dialogTitle} open={!!badgesDialogVisible} onClose={handleClose}>
       <StyledList>
         {badges.map((badge, index) => (
-          <>
+          <Fragment key={index}>
             {badgesDialogVisible === BadgesDialogType.MINT ? (
-              <BadgeItem key={index} badge={badge} onClick={() => handleViewBadge(badge)} />
+              <BadgeItem badge={badge} onClick={() => handleViewBadge(badge)} />
             ) : (
               <BadgeItem
-                key={index}
                 badge={badge}
                 action={
                   <Button
@@ -141,7 +140,7 @@ const BadgesDialog = props => {
                 }
               />
             )}
-          </>
+          </Fragment>
         ))}
       </StyledList>
     </Dialog>
