@@ -98,9 +98,9 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
 
   useEffect(() => {
     if (userBadges.length < orderedAttachedBadges.length) {
-      sentryDebug(`EAS data loss:${walletCurrentAddress}`)
+      sentryDebug(`EAS data loss:${othersWalletAddress || walletCurrentAddress}`)
     }
-  }, [orderedAttachedBadges, userBadges, walletCurrentAddress])
+  }, [orderedAttachedBadges, userBadges, walletCurrentAddress, othersWalletAddress])
 
   const generateBadgePositions = (divRect: DOMRect, badgewidth: number, badges: BadgeType[]): BadgePosition[] => {
     const positions: BadgePosition[] = []
