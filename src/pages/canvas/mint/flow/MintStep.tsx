@@ -101,7 +101,7 @@ const MintStep = props => {
       if (!isUserRejected(error)) {
         const message = recognizeError(error)
         alertWarning(trimErrorMessage(message))
-        sentryDebug(`mint canvas:${walletCurrentAddress}-${message}`)
+        sentryDebug(`mint canvas:${walletCurrentAddress}-${error.message}`)
       }
     } finally {
       changeIsProfileMinting(false)

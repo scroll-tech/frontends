@@ -11,6 +11,7 @@ import Skeleton from "@/components/Skeleton"
 // import { BADGES_VISIBLE_TYPE } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCanvasStore from "@/stores/canvasStore"
+import { sentryDebug } from "@/utils"
 
 import Tooltip from "../../components/Tooltip"
 import Badge from "./Badge"
@@ -94,6 +95,12 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
   useEffect(() => {
     setBadges(generatedBadges())
   }, [badgewidth, windowDimensions, visibleBadges, userBadges])
+
+  useEffect(() => {
+    if (userBadges.length < orderedAttachedBadges.length) {
+      sentryDebug(`EAS data loss:${walletCurrentAddress}`)
+    }
+  }, [orderedAttachedBadges, userBadges, walletCurrentAddress])
 
   const generateBadgePositions = (divRect: DOMRect, badgewidth: number, badges: BadgeType[]): BadgePosition[] => {
     const positions: BadgePosition[] = []
