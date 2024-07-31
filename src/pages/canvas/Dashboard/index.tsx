@@ -46,9 +46,7 @@ const Dashboard = props => {
     badgesDialogVisible,
     mintableBadges,
     upgradableBadges,
-    pickMintableBadges,
     pickUpgradableBadges,
-    pickMintableBadgesLoading,
     pickUpgradableBadgesLoading,
   } = useCanvasStore()
 
@@ -59,10 +57,7 @@ const Dashboard = props => {
   }
 
   useEffect(() => {
-    // recheck badge eligibility when openning badges dialog
-    if (badgesDialogVisible === BadgesDialogType.MINT) {
-      pickMintableBadges(publicProvider, walletCurrentAddress, true)
-    } else if (badgesDialogVisible === BadgesDialogType.UPGRADE) {
+    if (badgesDialogVisible === BadgesDialogType.UPGRADE) {
       pickUpgradableBadges(publicProvider)
     }
   }, [badgesDialogVisible])
@@ -112,8 +107,6 @@ const Dashboard = props => {
       changeProfileDetailLoading(true)
       const signer = await provider?.getSigner(0)
       await fetchCurrentCanvasDetail(signer, walletAddress, profileAddress)
-      // initially check eligibility
-      pickMintableBadges(provider, walletAddress, true)
       pickUpgradableBadges(provider)
     } catch (e) {
       alertWarning(e.message)
@@ -201,7 +194,7 @@ const Dashboard = props => {
               <ReferDialog />
               <BadgesDialog
                 badges={badgesDialogVisible === BadgesDialogType.MINT ? mintableBadges : upgradableBadges}
-                loading={pickMintableBadgesLoading || pickUpgradableBadgesLoading}
+                loading={pickUpgradableBadgesLoading}
               />
               <BadgeDetailDialog />
             </>

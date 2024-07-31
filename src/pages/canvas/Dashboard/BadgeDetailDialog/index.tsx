@@ -68,7 +68,6 @@ const BadgeDetailDialog = () => {
     isBadgeUpgrading,
     changeIsBadgeMinting,
     changeIsBadgeUpgrading,
-    pickMintableBadges,
     changeSelectedBadge,
     upgradeBadgeAndRefreshUserBadges,
   } = useCanvasStore()
@@ -113,7 +112,6 @@ const BadgeDetailDialog = () => {
       // const result: any = await testAsyncFunc("0x11cfb299dda2ae8b1fccf9a055394de9a7f953e8b8f115295dc0f2325e8b2130")
       if (result) {
         await queryVisibleBadges(provider, walletCurrentAddress)
-        await pickMintableBadges(provider, walletCurrentAddress, false)
         alertWarning(
           <>
             {selectedBadge.name} minted successfully!<br></br>
