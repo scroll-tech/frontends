@@ -13,6 +13,7 @@ import useCheckViewport from "@/hooks/useCheckViewport"
 import useShowLanguageSelect from "@/hooks/useShowLanguageSelect"
 import useShowWalletConnector from "@/hooks/useShowWalletToolkit"
 
+import SubmenuLink from "./SubmenuLink"
 // import Announcement from "./announcement"
 import { navigations } from "./constants"
 import useCheckCustomNavBarBg from "./useCheckCustomNavBarBg"
@@ -27,10 +28,18 @@ const StyledBox = styled<any>(Stack, { shouldForwardProp: prop => prop !== "dark
 }))
 
 const StyledPopper = styled<any>(Popper, { shouldForwardProp: prop => prop !== "dark" && prop !== "bgColor" })(({ theme, bgColor, dark }) => ({
-  backgroundColor: bgColor ? theme.palette.themeBackground[bgColor] : dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.light,
-  padding: "0 2rem 1rem",
+  // backgroundColor: bgColor ? theme.palette.themeBackground[bgColor] : dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.light,
   marginLeft: "-2rem !important",
   zIndex: theme.zIndex.appBar,
+}))
+
+const StyledFade = styled(Fade)(({ theme }) => ({
+  padding: "2.4rem",
+  background: "#FFF0DD",
+  borderRadius: "1rem",
+  minWidth: "16.8rem",
+  transform: "scale(0.99) translateY(-0.7em)",
+  transformOrigin: "top",
 }))
 
 const HeaderContainer = styled(Box)(({ theme }) => ({
@@ -54,20 +63,6 @@ const MenuLinkButton = styled<any>(Link, { shouldForwardProp: prop => prop !== "
   },
 }))
 
-const ExternalLink = styled<any>("p", { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
-  fontWeight: 400,
-  fontSize: "1.8rem",
-  height: "2.1rem",
-  lineHeight: "2.1rem",
-  color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
-  display: "flex",
-  alignItems: "center",
-  width: "100%",
-  "&:hover": {
-    fontWeight: 500,
-  },
-}))
-
 const LinkStyledButton = styled<any>(NavLink, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   fontSize: "1.8rem",
   fontWeight: 400,
@@ -79,9 +74,11 @@ const LinkStyledButton = styled<any>(NavLink, { shouldForwardProp: prop => prop 
   whiteSpace: "nowrap",
   "&:hover": {
     fontWeight: 500,
+    color: theme.palette.primary.main,
   },
   "&.active": {
     fontWeight: 600,
+    color: theme.palette.primary.main,
   },
 }))
 
@@ -96,6 +93,7 @@ const SubMenuButton = styled<any>(Stack, { shouldForwardProp: prop => prop !== "
   color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
   "&.active": {
     fontWeight: 600,
+    color: theme.palette.primary.main,
   },
   "& .expand-more": {
     willChange: "transform",
@@ -109,7 +107,7 @@ const SubMenuButton = styled<any>(Stack, { shouldForwardProp: prop => prop !== "
 
 const SubMenuList = styled(Box)(({ theme }) => ({
   display: "flex",
-  flexDirection: "column",
+  flexDirection: "row",
   overflow: "hidden",
 }))
 
@@ -117,44 +115,11 @@ const SectionList = styled<any>(Box, { shouldForwardProp: prop => prop !== "dark
   display: "flex",
   flexDirection: "column",
   width: "100%",
-  padding: "1.8rem 0",
-  "&:nth-of-type(1)": {
-    paddingTop: 0,
-  },
+  gap: "1.6rem",
   "&:nth-of-type(n+2)": {
-    borderTop: `1px solid ${dark ? theme.palette.primary.contrastText : theme.palette.text.primary}`,
-  },
-  "&:nth-last-of-type(1)": {
-    paddingBottom: "0.8rem",
-  },
-}))
-
-const LinkButton = styled<any>(Link, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
-  "& p": {
-    lineHeight: "2.9rem",
-    height: "2.9rem",
-    fontSize: "1.8rem",
-    color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
-    fontWeight: 400,
-    cursor: "pointer",
-    "&:hover": {
-      color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
-    },
-  },
-}))
-
-const LinkStyledSubButton = styled<any>(NavLink, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
-  lineHeight: "2.9rem",
-  height: "2.9rem",
-  fontSize: "1.8rem",
-  fontWeight: 400,
-  cursor: "pointer",
-  color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
-  "&:hover": {
-    fontWeight: 500,
-  },
-  "&.active": {
-    fontWeight: 600,
+    borderLeft: `1px solid ${dark ? theme.palette.primary.contrastText : theme.palette.text.primary}`,
+    paddingLeft: "2.4rem",
+    marginLeft: "2.4rem",
   },
 }))
 
@@ -185,33 +150,18 @@ const App = ({ currentMenu }) => {
   const renderSubMenuList = children => {
     return children.map((section, idx) => (
       <SectionList key={idx} dark={dark}>
-        <Typography sx={{ fontSize: "1.4rem", fontWeight: "bold", lineHeight: "3rem", color: dark ? "primary.contrastText" : "text.primary" }}>
-          {section.label}
-        </Typography>
+        {section.label && (
+          <Typography sx={{ fontSize: "1.4rem", fontWeight: "bold", lineHeight: "2rem", color: dark ? "primary.contrastText" : "text.primary" }}>
+            {section.label}
+          </Typography>
+        )}
+
         {section.children
           // only show sub menu item when the href is set
           ?.filter(subItem => subItem.href)
-          .map(subItem =>
-            subItem.isExternal ? (
-              <LinkButton target="_blank" underline="none" dark={dark} key={subItem.label} href={subItem.href}>
-                <Stack direction="row" alignItems="center" spacing={1} sx={{ width: "100%" }}>
-                  <ExternalLink dark={dark}>
-                    {subItem.label}
-                    <svg style={{ marginLeft: "0.5rem" }} xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none">
-                      <path
-                        d="M9 1V7.86538L7.83812 6.7035V2.96385C5.46463 5.26924 3.29542 7.77999 0.853849 10L0 9.16344C2.42536 6.94344 4.5762 4.46728 6.93347 2.1781H3.31272L2.13462 1H9Z"
-                        fill="currentColor"
-                      />
-                    </svg>
-                  </ExternalLink>
-                </Stack>
-              </LinkButton>
-            ) : (
-              <LinkStyledSubButton key={subItem.label} to={subItem.href} dark={dark}>
-                {subItem.label}
-              </LinkStyledSubButton>
-            ),
-          )}
+          .map(subItem => (
+            <SubmenuLink key={subItem.label} {...subItem}></SubmenuLink>
+          ))}
       </SectionList>
     ))
   }
@@ -238,9 +188,16 @@ const App = ({ currentMenu }) => {
           {item.key === checked && (
             <StyledPopper open={true} placement="bottom-start" anchorEl={anchorEl} transition bgColor={navbarBg} dark={dark}>
               {({ TransitionProps }) => (
-                <Fade {...TransitionProps}>
+                <StyledFade
+                  {...TransitionProps}
+                  timeout={{ enter: 300 }}
+                  onEntering={node => {
+                    node.style.transition = "transform 300ms ease-in-out"
+                    node.style.transform = "scale(1) translateY(0)"
+                  }}
+                >
                   <SubMenuList onClick={handleMouseLeave}>{renderSubMenuList(item.children)}</SubMenuList>
-                </Fade>
+                </StyledFade>
               )}
             </StyledPopper>
           )}
