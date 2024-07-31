@@ -143,8 +143,6 @@ const ActionBox = () => {
     changeReferDialog,
     changeBadgesDialogVisible,
     upgradableBadges,
-    mintableBadges,
-    pickMintableBadgesLoading,
     pickUpgradableBadgesLoading,
   } = useCanvasStore()
 
@@ -211,8 +209,8 @@ const ActionBox = () => {
           }
         },
         visible: !othersWalletAddress,
-        withBadge: !!mintableBadges.length || !!upgradableBadges.length,
-        loading: pickMintableBadgesLoading || pickUpgradableBadgesLoading,
+        withBadge: !!upgradableBadges.length,
+        loading: pickUpgradableBadgesLoading,
         menu: {
           anchorEl: badgesAnchorEl,
           open: badgesOpen,
@@ -224,15 +222,6 @@ const ActionBox = () => {
               onClick: () => {
                 handleCloseMenu()
                 changeCustomizeDisplayDialogVisible(true)
-              },
-            },
-            {
-              key: "mint",
-              label: "Mint eligible badges",
-              extra: mintableBadges.length ? <BadgeCount>{mintableBadges.length > 99 ? "99+" : mintableBadges.length}</BadgeCount> : null,
-              onClick: () => {
-                handleCloseMenu()
-                changeBadgesDialogVisible(BadgesDialogType.MINT)
               },
             },
             ...(upgradableBadges.length
@@ -326,9 +315,7 @@ const ActionBox = () => {
     shareOpen,
     handleCopyLink,
     copied,
-    mintableBadges.length,
     upgradableBadges.length,
-    pickMintableBadgesLoading,
     pickUpgradableBadgesLoading,
   ])
 

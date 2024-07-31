@@ -403,6 +403,7 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
     })
   },
 
+  // not in use
   pickMintableBadges: async (provider, walletCurrentAddress, refresh) => {
     set({
       pickMintableBadgesLoading: true,
