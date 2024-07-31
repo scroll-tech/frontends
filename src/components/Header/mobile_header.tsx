@@ -161,12 +161,18 @@ const App = ({ currentMenu }) => {
             <List component="div" disablePadding>
               {item.children?.map((section, idx) => (
                 <SectionList onClick={() => toggleDrawer(false)} key={idx} dark={dark}>
-                  {section.label && <Typography sx={{ fontSize: "1.4rem", fontWeight: "bold", lineHeight: "3rem" }}>{section.label}</Typography>}
+                  {section.label && (
+                    <Typography
+                      sx={{ fontSize: "1.4rem", fontWeight: "bold", lineHeight: "3rem", color: dark ? "primary.contrastText" : "text.primary" }}
+                    >
+                      {section.label}
+                    </Typography>
+                  )}
                   {section.children
                     // only show sub items with href
                     ?.filter(subItem => subItem.href)
                     .map(subItem => (
-                      <SubmenuLink key={subItem.label} {...subItem}></SubmenuLink>
+                      <SubmenuLink key={subItem.label} dark={dark} {...subItem}></SubmenuLink>
                     ))}
                 </SectionList>
               ))}

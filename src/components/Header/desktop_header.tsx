@@ -117,7 +117,7 @@ const SectionList = styled<any>(Box, { shouldForwardProp: prop => prop !== "dark
   width: "100%",
   gap: "1.6rem",
   "&:nth-of-type(n+2)": {
-    borderLeft: `1px solid ${dark ? theme.palette.primary.contrastText : theme.palette.text.primary}`,
+    borderLeft: `1px solid ${theme.palette.text.primary}`,
     paddingLeft: "2.4rem",
     marginLeft: "2.4rem",
   },
@@ -151,9 +151,7 @@ const App = ({ currentMenu }) => {
     return children.map((section, idx) => (
       <SectionList key={idx} dark={dark}>
         {section.label && (
-          <Typography sx={{ fontSize: "1.4rem", fontWeight: "bold", lineHeight: "2rem", color: dark ? "primary.contrastText" : "text.primary" }}>
-            {section.label}
-          </Typography>
+          <Typography sx={{ fontSize: "1.4rem", fontWeight: "bold", lineHeight: "2rem", color: "text.primary" }}>{section.label}</Typography>
         )}
 
         {section.children

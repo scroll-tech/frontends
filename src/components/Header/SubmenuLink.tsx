@@ -74,14 +74,28 @@ const SubmenuLinkContent = ({ icon, label, text, isExternal }: { icon: any; labe
   </Stack>
 )
 
-const SubmenuLink = ({ label, text, href, isExternal, icon }: { label: string; text?: string; href: string; isExternal?: boolean; icon?: any }) => (
+const SubmenuLink = ({
+  label,
+  text,
+  href,
+  isExternal,
+  icon,
+  dark,
+}: {
+  label: string
+  text?: string
+  href: string
+  isExternal?: boolean
+  icon?: any
+  dark?: boolean
+}) => (
   <>
     {isExternal ? (
-      <StyledLink href={href} target="_blank" rel="noopener noreferrer">
+      <StyledLink dark={dark} href={href} target="_blank" rel="noopener noreferrer">
         <SubmenuLinkContent icon={icon} label={label} text={text} isExternal={isExternal} />
       </StyledLink>
     ) : (
-      <StyledNavLink to={href}>
+      <StyledNavLink dark={dark} to={href}>
         <SubmenuLinkContent icon={icon} label={label} text={text} isExternal={isExternal} />
       </StyledNavLink>
     )}
