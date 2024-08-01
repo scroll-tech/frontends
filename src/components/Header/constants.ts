@@ -127,7 +127,7 @@ const mainnetNavigations = [
             icon: StatusSvg,
           },
           {
-            label: "Learn, connect and build",
+            label: "Learn, build and innovate",
             text: "Level Up",
             key: "lelvel-up",
             href: "https://levelupweb3.xyz",
