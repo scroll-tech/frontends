@@ -29,17 +29,18 @@ const StyledBox = styled<any>(Stack, { shouldForwardProp: prop => prop !== "dark
 
 const StyledPopper = styled<any>(Popper, { shouldForwardProp: prop => prop !== "dark" && prop !== "bgColor" })(({ theme, bgColor, dark }) => ({
   // backgroundColor: bgColor ? theme.palette.themeBackground[bgColor] : dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.light,
-  marginLeft: "-2rem !important",
+  marginLeft: "-2.4rem !important",
   zIndex: theme.zIndex.appBar,
 }))
 
 const StyledFade = styled(Fade)(({ theme }) => ({
   padding: "2.4rem",
-  background: "#FFF0DD",
+  background: "#FFFFFF",
   borderRadius: "1rem",
   minWidth: "16.8rem",
-  transform: "scale(0.99) translateY(-0.7em)",
   transformOrigin: "top",
+  boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0.10)",
+  marginTop: "-0.4rem",
 }))
 
 const HeaderContainer = styled(Box)(({ theme }) => ({
@@ -186,14 +187,7 @@ const App = ({ currentMenu }) => {
           {item.key === checked && (
             <StyledPopper open={true} placement="bottom-start" anchorEl={anchorEl} transition bgColor={navbarBg} dark={dark}>
               {({ TransitionProps }) => (
-                <StyledFade
-                  {...TransitionProps}
-                  timeout={{ enter: 300 }}
-                  onEntering={node => {
-                    node.style.transition = "transform 300ms ease-in-out"
-                    node.style.transform = "scale(1) translateY(0)"
-                  }}
-                >
+                <StyledFade {...TransitionProps}>
                   <SubMenuList onClick={handleMouseLeave}>{renderSubMenuList(item.children)}</SubMenuList>
                 </StyledFade>
               )}
