@@ -17,9 +17,13 @@ import { createPortal } from "react-dom"
 
 import { Box } from "@mui/material"
 
+import useSnackbar from "@/hooks/useSnackbar"
+
 import TransferItemDragOverlay from "./Overlay"
 import TransferItem from "./TransferItem"
 import TransferList from "./TransferList"
+
+const BADGE_MAX_NUMBER = 48
 
 const dropAnimation: DropAnimation = {
   sideEffects: defaultDropAnimationSideEffects({
@@ -39,6 +43,8 @@ const BadgeTransfer = props => {
     right: value,
   }
 
+  const alertWarning = useSnackbar()
+
   const dataMap = new Proxy(data, {
     get(target, prop) {
       return target.find(item => item.id === prop)
@@ -54,7 +60,14 @@ const BadgeTransfer = props => {
   const lastOverId = useRef<UniqueIdentifier | null>(null)
   const recentlyMovedToNewContainer = useRef(false)
 
+  const [disabledDisplayed, setDisabledDisplayed] = useState(false)
+
   useEffect(() => {
+    if (items.right.length < BADGE_MAX_NUMBER) {
+      setDisabledDisplayed(false)
+    } else {
+      setDisabledDisplayed(true)
+    }
     onChange(items.right)
     requestAnimationFrame(() => {
       recentlyMovedToNewContainer.current = false
@@ -237,10 +250,15 @@ const BadgeTransfer = props => {
           const overIndex = items[overContainer].indexOf(overId)
 
           if (activeIndex !== overIndex) {
+            const overContainerIds = arrayMove(items[overContainer], activeIndex, overIndex)
+
             setItems(items => ({
               ...items,
-              [overContainer]: arrayMove(items[overContainer], activeIndex, overIndex),
+              [overContainer]: overContainerIds,
             }))
+            if (overContainer === "right" && overContainerIds.length >= BADGE_MAX_NUMBER) {
+              alertWarning("The maximum number of badges that Canvas can display has been reached.", "success")
+            }
           }
         }
 
@@ -253,7 +271,7 @@ const BadgeTransfer = props => {
           {
             display: "grid",
             gridTemplateColumns: ["1fr", "repeat(2, 1fr)"],
-            gridTemplateRows: ["repeat(2, 1fr)", "1fr"],
+            gridTemplateRows: ["repeat(2, 50%)", "1fr"],
             gridGap: ["1.6rem", "3rem"],
             width: "100%",
             ...sx,
@@ -271,6 +289,7 @@ const BadgeTransfer = props => {
               <TransferItem
                 key={item}
                 id={item}
+                disabled={containerId === "left" && disabledDisplayed}
                 containerId={containerId}
                 name={dataMap[item]?.name}
                 image={dataMap[item]?.image}
