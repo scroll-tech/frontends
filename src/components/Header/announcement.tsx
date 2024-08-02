@@ -4,7 +4,7 @@ import { useMatch } from "react-router-dom"
 import { Stack } from "@mui/material"
 import { styled } from "@mui/system"
 
-import { isMainnet, requireEnv } from "@/utils"
+import { isMainnet } from "@/utils"
 
 const AnnouncementStack = styled<any>(Stack, { shouldForwardProp: prop => prop !== "production" })(({ theme, production }) => ({
   lineHeight: "2.6rem",
@@ -22,33 +22,24 @@ const AnnouncementStack = styled<any>(Stack, { shouldForwardProp: prop => prop !
 
 const Announcement = () => {
   const isHome = useMatch("/")
-  const isPortal = useMatch("/portal")
 
   const announcementContent = useMemo(() => {
-    if (isMainnet && (isHome || isPortal)) {
+    if (isMainnet && isHome) {
       return (
         <>
-          Scroll {requireEnv("REACT_APP_SCROLL_ENVIRONMENT")} is now live. <strong>Try it!</strong>
-        </>
-      )
-    } else if (!isMainnet) {
-      return (
-        <>
-          You are on the Scroll {requireEnv("REACT_APP_SCROLL_ENVIRONMENT")} Testnet website. Return to <strong>Mainnet</strong>
+          🔥 Applications for the Level Up Grants Program are open until August 26.<strong> Apply now!</strong>
         </>
       )
     }
     return null
-  }, [isMainnet, isHome, isPortal])
+  }, [isMainnet, isHome])
 
   const rightHref = useMemo(() => {
-    if (isMainnet && (isHome || isPortal)) {
-      return "/portal"
-    } else if (!isMainnet) {
-      return "https://scroll.io/"
+    if (isMainnet && isHome) {
+      return "https://levelupweb3.xyz/"
     }
     return ""
-  }, [isMainnet, isHome, isPortal])
+  }, [isMainnet, isHome])
 
   return (
     announcementContent && (
