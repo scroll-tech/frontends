@@ -131,6 +131,7 @@ export const EAMPLE_BADGES = [
 ]
 
 export const SCROLL_BADGES = [
+  ETHEREUM_YEAR_BADGE,
   {
     name: "Scroll Origins NFT",
     nftAddress: [SCROLL_ORIGINS_NFT, SCROLL_ORIGINS_NFT_V2],
@@ -161,5 +162,4 @@ export const SCROLL_BADGES = [
       return !!balance
     },
   },
-  ETHEREUM_YEAR_BADGE,
 ]

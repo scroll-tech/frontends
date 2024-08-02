@@ -43,7 +43,7 @@ const Canvas = () => {
           Go to Scroll Canvas
         </Button>
       </Stack>
-      <BadgeList items={badgeList.filter(item => !item.originsNFT)} />
+      <BadgeList items={badgeList} />
     </SectionWrapper>
   )
 }
