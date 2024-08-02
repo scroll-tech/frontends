@@ -489,7 +489,7 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
   jointBadgeList: async () => {
     const { badges } = await scrollRequest(BADGE_LIST_URL)
     set({
-      badgeList: SCROLL_BADGES.concat(badges),
+      badgeList: [...SCROLL_BADGES.slice(0, SCROLL_BADGES.length - 1), ...badges, SCROLL_BADGES[SCROLL_BADGES.length - 1]],
     })
   },
 

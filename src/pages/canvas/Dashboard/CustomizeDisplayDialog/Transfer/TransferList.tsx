@@ -48,18 +48,22 @@ const TransferList = props => {
               gridTemplateColumns: ["repeat(auto-fill, minmax(50px, 1fr))", "repeat(auto-fill, minmax(100px, 1fr))"],
               gridAutoRows: "min-content",
               gridGap: "2rem",
-              minHeight: ["unset", "40rem"],
-              height: ["calc(100% - 3.2rem)", "60rem", "auto"],
+              height: ["calc(100% - 3.2rem)", "calc(var(--vh, 1vh) * 60)", "calc(var(--vh, 1vh) * 50)"],
               border: "1px solid rgba(255, 255, 255, 0.4)",
               borderRadius: "1.6rem",
               padding: "2.4rem",
               overflowY: "auto",
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: "rgba(209, 205, 204, 0.30)",
+                borderRadius: "8px",
+              },
+              "&::-webkit-scrollbar": {
+                width: "6px",
+              },
+              // Firefox
+              scrollbarWidth: "thin",
+              scrollbarColor: "rgba(209, 205, 204, 0.30) transparent",
             },
-            // theme => ({
-            //   [theme.breakpoints.down("sm")]: {
-            //     height: "calc(100% - 3.2rem)",
-            //   },
-            // }),
           ]}
         >
           {children}
