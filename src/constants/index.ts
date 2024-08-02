@@ -11,3 +11,4 @@ export * from "./blog"
 
 export * from "./canvas"
 export * from "./badge"
+export * from "./canvas-badge"
