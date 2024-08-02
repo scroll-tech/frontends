@@ -9,10 +9,11 @@ import ToolTip from "@/pages/canvas/components/Tooltip"
 import Item from "./Item"
 
 const TransferItem = props => {
-  const { id, name, image, dragOverlay, containerId } = props
+  const { id, disabled, name, image, dragOverlay, containerId } = props
 
   const { setNodeRef, listeners, isDragging, transform, transition } = useSortable({
     id,
+    disabled,
   })
   const { isDesktop } = useCheckViewport()
 
