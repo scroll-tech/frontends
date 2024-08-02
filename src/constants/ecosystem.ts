@@ -14,6 +14,7 @@ export const DIVERGENT_CATEGORY_MAP = {
   Social: ["Social"],
   Tooling: ["Tooling"],
   Wallet: ["Wallet", "Hardware Wallet"],
+  Bridge: ["Bridge"],
 }
 
 export const GET_IN_TOUCH_LINK = "https://tally.so/r/waxLBW"
