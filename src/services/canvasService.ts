@@ -374,8 +374,8 @@ const mintBadge = async (provider, walletCurrentAddress, badge) => {
       return false
     } else {
       const message = recognizeError(error, badge.issuer.name)
-      sentryDebug(`mint badge:${walletCurrentAddress}-${badge.badgeContract}-${message}`)
-      throw new Error(trimErrorMessage(error.message))
+      sentryDebug(`mint badge:${walletCurrentAddress}-${badge.badgeContract}-${error.message}`)
+      throw new Error(trimErrorMessage(message))
     }
   }
 }
@@ -399,8 +399,8 @@ const upgradeBadge = async (provider, badge) => {
       return false
     } else {
       const message = recognizeError(error, badge.issuer.name)
-      sentryDebug(`upgrade badge:${badge.id}-${message}`)
-      throw new Error(trimErrorMessage(error.message))
+      sentryDebug(`upgrade badge:${badge.id}-${error.message}`)
+      throw new Error(trimErrorMessage(message))
     }
   }
 }
