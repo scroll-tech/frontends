@@ -1,3 +1,9 @@
+import { ReactComponent as BuildSvg } from "@/assets/svgs/header/Build.svg"
+import { ReactComponent as DocsSvg } from "@/assets/svgs/header/Doc.svg"
+import { ReactComponent as EthereumSvg } from "@/assets/svgs/header/Eth.svg"
+import { ReactComponent as IssuesSvg } from "@/assets/svgs/header/Issues.svg"
+import { ReactComponent as LevelUpSvg } from "@/assets/svgs/header/LevelUp.svg"
+import { ReactComponent as StatusSvg } from "@/assets/svgs/header/Status.svg"
 import { isSepolia, requireEnv } from "@/utils"
 
 const sepoliaNavigations = [
@@ -88,35 +94,53 @@ const mainnetNavigations = [
         label: "",
         children: [
           {
-            label: "Mainnet",
+            text: "Mainnet Deployment",
+            label: "Let’s go live now!",
             key: "mainnet-resources",
             rootKey: "develop",
             href: "/portal",
+            icon: EthereumSvg,
           },
           {
-            label: "Sepolia Testnet",
+            label: "Try and test it out",
+            text: "Sepolia Testnet",
             key: "sepolia-resources",
             rootKey: "develop",
             href: "https://sepolia.scroll.io/portal",
             isExternal: true,
+            icon: BuildSvg,
           },
           {
-            label: "Docs",
+            label: "Understand all the details to build",
+            text: "Docs",
             key: "docs",
             href: "https://docs.scroll.io/en/home/",
             isExternal: true,
+            icon: DocsSvg,
           },
           {
-            label: "Status",
+            label: "Scroll network health indicator",
+            text: "Status",
             key: "status",
             href: "https://status.scroll.io/",
             isExternal: true,
+            icon: StatusSvg,
           },
           {
-            label: "Bug Bounty",
+            label: "Learn, build and innovate",
+            text: "Level Up",
+            key: "lelvel-up",
+            href: "https://levelupweb3.xyz",
+            isExternal: true,
+            icon: LevelUpSvg,
+          },
+          {
+            label: "Help Scroll get better",
+            text: "Bug Bounty",
             key: "bug-bounty",
             href: "https://immunefi.com/bounty/scroll/",
             isExternal: true,
+            icon: IssuesSvg,
           },
         ],
       },
