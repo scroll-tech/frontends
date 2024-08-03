@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { NavLink } from "react-router-dom"
 
 import { ExpandMore } from "@mui/icons-material"
-import { Box, Collapse, Link, List, ListItemButton, Stack, Typography } from "@mui/material"
+import { Box, Collapse, List, ListItemButton, Stack, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import LanguageSelect from "@/components/LanguageSelect"
@@ -11,6 +11,7 @@ import useShowLanguageSelect from "@/hooks/useShowLanguageSelect"
 import useShowWalletConnector from "@/hooks/useShowWalletToolkit"
 
 import Logo from "../ScrollLogo"
+import SubmenuLink from "./SubmenuLink"
 // import Announcement from "./announcement"
 import { navigations } from "./constants"
 import useCheckCustomNavBarBg from "./useCheckCustomNavBarBg"
@@ -50,7 +51,7 @@ const MenuContent = styled<any>(Box, { shouldForwardProp: prop => prop !== "dark
 
 const ListItem = styled<any>(ListItemButton, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   fontWeight: 600,
-  fontSize: "2rem",
+  fontSize: "1.8rem",
   height: "5.5rem",
   lineHeight: "5.5rem",
   color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
@@ -75,44 +76,14 @@ const MenuLinkStyledButton = styled<any>(NavLink, { shouldForwardProp: prop => p
   color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
   width: "100%",
   "&.active": {
-    color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
+    color: theme.palette.primary.main,
   },
-}))
-
-const SubListItem = styled(ListItemButton)(({ theme }) => ({
-  height: "4rem",
-  lineHeight: "4rem",
-  margin: "0 !important",
-  display: "flex",
-  justifyContent: "space-between",
-  padding: "0  !important",
-}))
-
-const LinkStyledButton = styled<any>(NavLink, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
-  fontWeight: 500,
-  fontSize: "1.8rem",
-  height: "4rem",
-  lineHeight: "4rem",
-  color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
-  width: "100%",
-  "&.active": {
-    color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
-    fontWeight: 500,
-  },
-}))
-
-const ExternalLink = styled<any>(Link, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
-  fontWeight: 500,
-  fontSize: "1.8rem",
-  height: "4rem",
-  lineHeight: "4rem",
-  color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
-  display: "flex",
-  alignItems: "center",
-  width: "100%",
 }))
 
 const SectionList = styled<any>("div", { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
+  display: "flex",
+  flexDirection: "column",
+  gap: "1.6rem",
   "&:last-of-type": {
     paddingBottom: "2.5rem",
   },
@@ -189,39 +160,20 @@ const App = ({ currentMenu }) => {
           <Collapse key={item.key} in={activeCollapse === item.key} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
               {item.children?.map((section, idx) => (
-                <SectionList key={idx} dark={dark}>
-                  <Typography sx={{ fontSize: "1.4rem", fontWeight: "bold", lineHeight: "3rem" }}>{section.label}</Typography>
+                <SectionList onClick={() => toggleDrawer(false)} key={idx} dark={dark}>
+                  {section.label && (
+                    <Typography
+                      sx={{ fontSize: "1.4rem", fontWeight: "bold", lineHeight: "3rem", color: dark ? "primary.contrastText" : "text.primary" }}
+                    >
+                      {section.label}
+                    </Typography>
+                  )}
                   {section.children
                     // only show sub items with href
                     ?.filter(subItem => subItem.href)
-                    .map(subItem =>
-                      subItem.isExternal ? (
-                        <SubListItem onClick={() => toggleDrawer(false)} sx={{ mx: 4 }} key={subItem.key + idx}>
-                          <ExternalLink underline="none" href={subItem.href} dark={dark}>
-                            {subItem.label}
-                            <svg
-                              style={{ marginLeft: "0.5rem" }}
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="10"
-                              height="10"
-                              viewBox="0 0 10 10"
-                              fill="none"
-                            >
-                              <path
-                                d="M9 1V7.86538L7.83812 6.7035V2.96385C5.46463 5.26924 3.29542 7.77999 0.853849 10L0 9.16344C2.42536 6.94344 4.5762 4.46728 6.93347 2.1781H3.31272L2.13462 1H9Z"
-                                fill="currentColor"
-                              />
-                            </svg>
-                          </ExternalLink>
-                        </SubListItem>
-                      ) : (
-                        <SubListItem onClick={() => toggleDrawer(false)} sx={{ mx: 4 }} key={subItem.key}>
-                          <LinkStyledButton to={subItem.href} dark={dark}>
-                            {subItem.label}
-                          </LinkStyledButton>
-                        </SubListItem>
-                      ),
-                    )}
+                    .map(subItem => (
+                      <SubmenuLink key={subItem.label} dark={dark} {...subItem}></SubmenuLink>
+                    ))}
                 </SectionList>
               ))}
             </List>
@@ -258,7 +210,6 @@ const App = ({ currentMenu }) => {
         <Box
           sx={{
             background: theme => (dark ? theme.palette.themeBackground.dark : theme.palette.themeBackground.light),
-            paddingTop: "5rem",
             height: "calc(100vh - 6.2rem)",
             overflowY: "auto",
           }}
