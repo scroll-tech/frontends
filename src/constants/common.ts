@@ -46,6 +46,22 @@ export const USDC_GATEWAY_PROXY_ADDR = {
   [CHAIN_ID.L2]: requireEnv("REACT_APP_L2_USDC_GATEWAY_PROXY_ADDR"),
 }
 
+export const GAS_TOKEN_ADDR = {
+  [CHAIN_ID.L1]: requireEnv("REACT_APP_L1_GAS_TOKEN_ADDR"),
+}
+
+export const WETH_ADDR = {
+  [CHAIN_ID.L1]: requireEnv("REACT_APP_L1_WETH_ADDR"),
+}
+
+export const WRAPPED_TOKEN_GATEWAY_ADDR = {
+  [CHAIN_ID.L1]: requireEnv("REACT_APP_L1_WRAPPED_TOKEN_GATEWAY"),
+}
+
+export const GAS_TOKEN_GATEWAY = {
+  [CHAIN_ID.L1]: requireEnv("REACT_APP_L1_GAS_TOKEN_GATEWAY"),
+}
+
 export const DOCUMENTATION_URL = {
   Mainnet: "https://docs.scroll.io/en/developers/developer-quickstart/",
   Sepolia: "https://docs.scroll.io/en/user-guide/",

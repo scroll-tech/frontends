@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
 
-import { CHAIN_ID } from "@/constants"
+import { CHAIN_ID, GAS_TOKEN_ADDR } from "@/constants"
 import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import { isAlternativeGasTokenEnabled } from "@/utils"
 
 export function useEstimateSendTransaction(props) {
   const { fromNetwork, toNetwork, selectedToken } = props
@@ -26,9 +27,22 @@ export function useEstimateSendTransaction(props) {
   }, [networksAndSigners, fromNetwork, selectedToken.native])
 
   const depositETH = async () => {
+    if (isAlternativeGasTokenEnabled) {
+      const wrappedTokenGateway = networksAndSigners[CHAIN_ID.L1].wrappedTokenGateway
+      return wrappedTokenGateway.deposit.estimateGas(walletCurrentAddress, minimumAmount, {
+        value: minimumAmount,
+      })
+    }
+
     const fee = gasPrice * gasLimit
     return instance["sendMessage(address,uint256,bytes,uint256)"].estimateGas(walletCurrentAddress, minimumAmount, "0x", gasLimit, {
       value: minimumAmount + fee,
+    })
+  }
+
+  const depositGasToken = async () => {
+    return networksAndSigners[CHAIN_ID.L1].gasTokenGateway.depositETH.estimateGas(walletCurrentAddress, minimumAmount, 300000, {
+      value: minimumAmount,
     })
   }
 
@@ -41,6 +55,12 @@ export function useEstimateSendTransaction(props) {
   }
 
   const withdrawETH = async () => {
+    if (isAlternativeGasTokenEnabled) {
+      return networksAndSigners[CHAIN_ID.L2].gateway["withdrawETH(uint256,uint256)"].estimateGas(minimumAmount, 0, {
+        value: minimumAmount,
+      })
+    }
+
     return instance["sendMessage(address,uint256,bytes,uint256)"].estimateGas(walletCurrentAddress, minimumAmount, "0x", 0, {
       value: minimumAmount,
     })
@@ -67,6 +87,8 @@ export function useEstimateSendTransaction(props) {
   const estimateSendL1ToL2 = () => {
     if (selectedToken.native) {
       return depositETH()
+    } else if (selectedToken.address === GAS_TOKEN_ADDR[CHAIN_ID.L1]) {
+      return depositGasToken()
     } else {
       return depositERC20()
     }

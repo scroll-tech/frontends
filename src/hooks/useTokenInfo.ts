@@ -2,13 +2,13 @@ import { ethers } from "ethers"
 import useSWR from "swr"
 
 import L1_erc20ABI from "@/assets/abis/L1_erc20ABI.json"
-import { CHAIN_ID, ETH_SYMBOL } from "@/constants"
+import { CHAIN_ID } from "@/constants"
 import { TOKEN_INFO_MAP } from "@/constants/storageKey"
 import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import { loadState, saveState } from "@/utils/localStorage"
 
 const useTokenInfo = (address: string, isL1: boolean) => {
-  const { networksAndSigners } = useBridgeContext()
+  const { networksAndSigners, tokenList } = useBridgeContext()
   const { data, isLoading } = useSWR(
     () => {
       const provider = networksAndSigners[isL1 ? CHAIN_ID.L1 : CHAIN_ID.L2].provider
@@ -22,8 +22,9 @@ const useTokenInfo = (address: string, isL1: boolean) => {
     },
     async ({ address, provider }) => {
       if (!address) {
+        const nativeTokenInfo = tokenList.find(token => token.chainId === (isL1 ? CHAIN_ID.L1 : CHAIN_ID.L2) && (token as any).native)
         return {
-          symbol: ETH_SYMBOL,
+          symbol: nativeTokenInfo?.symbol,
           decimals: 18,
         }
       }

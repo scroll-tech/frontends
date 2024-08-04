@@ -1,5 +1,4 @@
 import { getPublicClient } from "@wagmi/core"
-import { isNumber } from "lodash"
 import { useCallback, useEffect, useState } from "react"
 import { useBlockNumber } from "wagmi"
 
@@ -32,12 +31,7 @@ const useGasFee = (selectedToken, needApproval) => {
   const { data: blockNumber } = useBlockNumber({ watch: true })
 
   const calculateGasFee = useCallback(async () => {
-    if (
-      (needApproval === false || (isNumber(needApproval) && needApproval !== 3)) &&
-      instance &&
-      ((priceFeeGasPrice && priceFeeGasLimit) || !fromNetwork.isL1) &&
-      blockNumber
-    ) {
+    if (needApproval === false && instance && ((priceFeeGasPrice && priceFeeGasLimit) || !fromNetwork.isL1) && blockNumber) {
       let gasPrice
       let priorityFee
       // scroll not support EIP-1559
@@ -52,7 +46,6 @@ const useGasFee = (selectedToken, needApproval) => {
         priorityFee = null
       }
       const gasLimit = await estimateSend()
-
       if (gasLimit === null) {
         return {
           gasLimit: null,

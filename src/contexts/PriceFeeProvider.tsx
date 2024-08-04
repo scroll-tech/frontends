@@ -3,11 +3,11 @@ import React, { createContext, useContext, useEffect, useMemo, useState } from "
 import { useSearchParams } from "react-router-dom"
 import { useBlockNumber } from "wagmi"
 
-import { CHAIN_ID, ETH_SYMBOL } from "@/constants"
+import { CHAIN_ID, ETH_SYMBOL, WETH_SYMBOL } from "@/constants"
 import { BRIDGE_TOKEN } from "@/constants/searchParamsKey"
 import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { requireEnv, trimErrorMessage } from "@/utils"
+import { isAlternativeGasTokenEnabled, requireEnv, trimErrorMessage } from "@/utils"
 
 const OFFSET = "0x1111000000000000000000000000000000001111"
 const amount = BigInt(1)
@@ -21,6 +21,8 @@ enum MIN_GASLIMIT {
   DAI_GATEWAY = 15e4,
   LIDO_GATEWAY = 15e4,
   PUFFER_GATEWAY = 15e4,
+  GAS_TOKEN_GATEWAY = 14e4,
+  WRAPPED_TOKEN_GATEWAY = 17e4,
 }
 
 type Props = {
@@ -163,7 +165,11 @@ export const PriceFeeProvider = ({ children }) => {
   const getGasPrice = async () => {
     try {
       const L1MessageQueueWithGasPriceOracleContract = getContract("L1_MESSAGE_QUEUE_WITH_GAS_PRICE_ORACLE", networksAndSigners[CHAIN_ID.L1].provider)
-      const gasPrice = await L1MessageQueueWithGasPriceOracleContract.l2BaseFee()
+      let gasPrice = await L1MessageQueueWithGasPriceOracleContract.l2BaseFee()
+      if (gasPrice === 0n) {
+        // set minimum gas price to 1 gwei
+        gasPrice = 1n
+      }
       return (gasPrice * BigInt(120)) / BigInt(100)
     } catch (err) {
       console.log("err", err)
@@ -172,7 +178,25 @@ export const PriceFeeProvider = ({ children }) => {
   }
 
   const getGasLimit = async () => {
-    if (l2Token.symbol === ETH_SYMBOL) {
+    // ETH and alternative gas token is enabled
+    if (isAlternativeGasTokenEnabled && l1Token.symbol === ETH_SYMBOL) {
+      const { provider } = networksAndSigners[CHAIN_ID.L2]
+      const WETH_L2_ADDR = (tokenList.find(item => item.chainId === CHAIN_ID.L2 && item.symbol === WETH_SYMBOL) as any)?.address
+
+      const code = WETH_L2_ADDR ? await provider.getCode(WETH_L2_ADDR) : "0x"
+      // This address does not have a contract deployed.
+      if (code === "0x") {
+        return BigInt(7e5)
+      }
+      return BigInt(MIN_GASLIMIT.WRAPPED_TOKEN_GATEWAY)
+    }
+
+    // Gas token
+    if (isAlternativeGasTokenEnabled && l1Token.symbol !== ETH_SYMBOL && (l2Token as any).native) {
+      return BigInt(MIN_GASLIMIT.GAS_TOKEN_GATEWAY)
+    }
+
+    if (l1Token.symbol === ETH_SYMBOL) {
       return await getGasLimitGeneric("ETH_GATEWAY")
     }
 
@@ -275,7 +299,7 @@ export const PriceFeeProvider = ({ children }) => {
 
   const buildUnsignedSerializedTransaction = async (selectedToken, amount, gasLimit) => {
     const { gateway } = networksAndSigners[CHAIN_ID.L2]
-    if (selectedToken.symbol === ETH_SYMBOL) {
+    if (selectedToken.symbol === ETH_SYMBOL || !selectedToken.address) {
       const data = gateway.interface.encodeFunctionData("withdrawETH(uint256,uint256)", [amount, 0])
       return Transaction.from({
         to: walletCurrentAddress,

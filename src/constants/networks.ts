@@ -1,6 +1,7 @@
 import ETHSvg from "@/assets/svgs/bridge/network-mainnet.svg"
 import { ReactComponent as MainnetSvg } from "@/assets/svgs/bridge/network-mainnet.svg"
 import { ReactComponent as ScrollSvg } from "@/assets/svgs/bridge/network-scroll.svg"
+import { isAlternativeGasTokenEnabled } from "@/utils"
 
 import { CHAIN_ID, ETH_SYMBOL, EXPLORER_URL, L1_NAME, L2_NAME, RPC_URL } from "./common"
 
@@ -36,12 +37,16 @@ export const NATIVE_TOKEN_LIST: Token[] = [
     native: true,
     logoURI: ETHSvg,
   },
-  {
-    chainId: CHAIN_ID.L2,
-    name: "Ether",
-    symbol: ETH_SYMBOL,
-    decimals: BigInt(18),
-    native: true,
-    logoURI: ETHSvg,
-  },
+  ...(isAlternativeGasTokenEnabled
+    ? []
+    : [
+        {
+          chainId: CHAIN_ID.L2,
+          name: "Ether",
+          symbol: ETH_SYMBOL,
+          decimals: BigInt(18),
+          native: true,
+          logoURI: ETHSvg,
+        } as Token,
+      ]),
 ]

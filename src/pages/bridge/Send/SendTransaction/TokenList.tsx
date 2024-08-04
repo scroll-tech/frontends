@@ -274,7 +274,7 @@ function List(props: TokenListProps) {
 
   const listedbyScroll = useMemo(() => {
     return filteredTokens
-      ?.filter((token: any) => !token.tokenLevel)
+      ?.filter((token: any) => !token.tokenLevel || token.tokenLevel === TOKEN_LEVEL.offical)
       .map((token: any) => {
         return {
           ...token,

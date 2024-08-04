@@ -2,11 +2,20 @@ import { ethers } from "ethers"
 import { useCallback, useEffect, useMemo, useState } from "react"
 
 import L1_erc20ABI from "@/assets/abis/L1_erc20ABI.json"
-import { GATEWAY_ROUTE_PROXY_ADDR, USDC_GATEWAY_PROXY_ADDR, USDC_SYMBOL, WETH_GATEWAY_PROXY_ADDR, WETH_SYMBOL } from "@/constants"
+import {
+  GAS_TOKEN_ADDR,
+  GAS_TOKEN_GATEWAY,
+  GATEWAY_ROUTE_PROXY_ADDR,
+  USDC_GATEWAY_PROXY_ADDR,
+  USDC_SYMBOL,
+  WETH_GATEWAY_PROXY_ADDR,
+  WETH_SYMBOL,
+} from "@/constants"
 import { CHAIN_ID } from "@/constants"
 import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { amountToBN } from "@/utils"
+import { isAlternativeGasTokenEnabled } from "@/utils"
 
 const useApprove = (fromNetwork, selectedToken, amount) => {
   const { walletCurrentAddress, chainId } = useRainbowContext()
@@ -19,17 +28,24 @@ const useApprove = (fromNetwork, selectedToken, amount) => {
   const [isNeeded, setIsNeeded] = useState<boolean>()
 
   const approveAddress = useMemo(() => {
-    if (!fromNetwork.isL1 && selectedToken.symbol === WETH_SYMBOL) return WETH_GATEWAY_PROXY_ADDR[fromNetwork.chainId]
+    if (isAlternativeGasTokenEnabled && fromNetwork.isL1 && selectedToken.address === GAS_TOKEN_ADDR[CHAIN_ID.L1])
+      return GAS_TOKEN_GATEWAY[fromNetwork.chainId]
+
+    if (!fromNetwork.isL1 && selectedToken.symbol === WETH_SYMBOL && !isAlternativeGasTokenEnabled)
+      return WETH_GATEWAY_PROXY_ADDR[fromNetwork.chainId]
     if (!fromNetwork.isL1 && selectedToken.symbol === USDC_SYMBOL) return USDC_GATEWAY_PROXY_ADDR[fromNetwork.chainId]
 
     return GATEWAY_ROUTE_PROXY_ADDR[fromNetwork.chainId]
   }, [fromNetwork, selectedToken])
 
   const tokenInstance = useMemo(() => {
+    if (!selectedToken.chainId) return null
     // ETH & L2 ERC20 don't need approval
     const hasSigner = networksAndSigners[chainId as number]?.signer
     const isNativeToken = selectedToken.native
-    const isL2Erc20 = selectedToken.chainId === CHAIN_ID.L2 && selectedToken.symbol !== WETH_SYMBOL && selectedToken.symbol !== USDC_SYMBOL
+    const isL2Erc20 =
+      selectedToken.chainId === CHAIN_ID.L2 &&
+      (isAlternativeGasTokenEnabled || (selectedToken.symbol !== WETH_SYMBOL && selectedToken.symbol !== USDC_SYMBOL))
 
     if (hasSigner && !isNativeToken && !isL2Erc20) {
       const { address } = selectedToken as ERC20Token

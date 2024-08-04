@@ -1,12 +1,13 @@
 import { ethers } from "ethers"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import L1_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L1_GATEWAY_ROUTER_PROXY_ADDR.json"
 import L1_erc20ABI from "@/assets/abis/L1_erc20ABI.json"
 import L2_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L2_GATEWAY_ROUTER_PROXY_ADDR.json"
-import { CHAIN_ID, GATEWAY_ROUTE_PROXY_ADDR } from "@/constants"
+import { CHAIN_ID, GAS_TOKEN_ADDR, GATEWAY_ROUTE_PROXY_ADDR, WETH_ADDR } from "@/constants"
 import { USER_TOKEN_LIST } from "@/constants/storageKey"
 import { useBridgeContext } from "@/contexts/BridgeContextProvider"
+import { isAlternativeGasTokenEnabled } from "@/utils"
 import { loadState, saveState } from "@/utils/localStorage"
 
 export enum TOKEN_LEVEL {
@@ -32,7 +33,41 @@ const useAddToken = () => {
     }
   }
 
-  const addToken = async (address, isL1) => {
+  useEffect(() => {
+    if (isAlternativeGasTokenEnabled) {
+      addToken(WETH_ADDR[CHAIN_ID.L1], true, TOKEN_LEVEL.offical)
+      addGasToken()
+    }
+  }, [networksAndSigners[CHAIN_ID.L1].provider])
+
+  const addGasToken = async () => {
+    try {
+      const l1Provider = getProvider(CHAIN_ID.L1)
+      const l1TokenAddress = GAS_TOKEN_ADDR[CHAIN_ID.L1]
+      const l1TokenContract = getContract(l1TokenAddress, L1_erc20ABI, l1Provider)
+      const l1TokenDetails = await getTokenDetails(l1TokenContract)
+
+      const l1Token = {
+        ...l1TokenDetails,
+        chainId: CHAIN_ID.L1,
+        address: l1TokenAddress,
+        tokenLevel: TOKEN_LEVEL.offical,
+      }
+
+      const l2Token = {
+        ...l1TokenDetails,
+        chainId: CHAIN_ID.L2,
+        native: true,
+        decimals: 18,
+        tokenLevel: TOKEN_LEVEL.offical,
+      }
+
+      storeNewToken(l1Token)
+      storeNewToken(l2Token)
+    } catch (error) {}
+  }
+
+  const addToken = async (address, isL1, level = TOKEN_LEVEL.local) => {
     setIsLoading(true)
     const l1Provider = getProvider(CHAIN_ID.L1)
     const l2Provider = getProvider(CHAIN_ID.L2)
@@ -57,13 +92,13 @@ const useAddToken = () => {
         ...l1TokenDetails,
         chainId: CHAIN_ID.L1,
         address: l1TokenAddress,
-        tokenLevel: TOKEN_LEVEL.local,
+        tokenLevel: level,
       }
       const l2Token = {
         ...(l2TokenDetails ? l2TokenDetails : l1TokenDetails),
         chainId: CHAIN_ID.L2,
         address: l2TokenAddress,
-        tokenLevel: TOKEN_LEVEL.local,
+        tokenLevel: level,
       }
 
       storeNewToken(l1Token)
@@ -77,8 +112,9 @@ const useAddToken = () => {
   const storeNewToken = token => {
     const currentUserTokens = loadState(USER_TOKEN_LIST) || []
     const existingTokenIndex = currentUserTokens.findIndex(
-      t => t.address.toLowerCase() === token.address.toLowerCase() && t.chainId === token.chainId,
+      t => t.address?.toLowerCase() === token.address?.toLowerCase() && t.chainId === token.chainId,
     )
+
     if (existingTokenIndex !== -1) {
       currentUserTokens[existingTokenIndex] = token
     } else {

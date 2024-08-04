@@ -1,7 +1,7 @@
 import { isError } from "ethers"
 import { useMemo, useState } from "react"
 
-import { CHAIN_ID, NETWORKS, TX_STATUS } from "@/constants"
+import { CHAIN_ID, GAS_TOKEN_ADDR, NETWORKS, TX_STATUS } from "@/constants"
 import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
@@ -9,6 +9,7 @@ import useBridgeStore from "@/stores/bridgeStore"
 import useTxStore from "@/stores/txStore"
 import { isValidOffsetTime } from "@/stores/utils"
 import { amountToBN } from "@/utils"
+import { isAlternativeGasTokenEnabled } from "@/utils"
 
 import useGasFee from "./useGasFee"
 
@@ -137,11 +138,17 @@ export function useSendTransaction(props) {
   }
 
   const depositETH = async () => {
+    if (isAlternativeGasTokenEnabled) {
+      const wrappedTokenGateway = networksAndSigners[CHAIN_ID.L1].wrappedTokenGateway
+      return wrappedTokenGateway.deposit(receiver || walletCurrentAddress, parsedAmount, {
+        value: parsedAmount,
+      })
+    }
+
     const fee = gasPrice * gasLimit
     const options: TxOptions = {
       value: parsedAmount + fee,
     }
-
     return networksAndSigners[CHAIN_ID.L1].scrollMessenger["sendMessage(address,uint256,bytes,uint256)"](
       receiver || walletCurrentAddress,
       parsedAmount,
@@ -149,6 +156,12 @@ export function useSendTransaction(props) {
       gasLimit,
       options,
     )
+  }
+
+  const depositGasToken = async () => {
+    return networksAndSigners[CHAIN_ID.L1].gasTokenGateway.depositETH(receiver || walletCurrentAddress, parsedAmount, gasLimit, {
+      value: parsedAmount,
+    })
   }
 
   const depositERC20 = async () => {
@@ -171,6 +184,13 @@ export function useSendTransaction(props) {
   }
 
   const withdrawETH = async () => {
+    if (isAlternativeGasTokenEnabled) {
+      return networksAndSigners[CHAIN_ID.L2].gateway["withdrawETH(address,uint256,uint256)"](receiver || walletCurrentAddress, parsedAmount, 0, {
+        value: parsedAmount,
+        gasLimit: txGasLimit,
+      })
+    }
+
     return networksAndSigners[CHAIN_ID.L2].scrollMessenger["sendMessage(address,uint256,bytes,uint256)"](
       receiver || walletCurrentAddress,
       parsedAmount,
@@ -203,6 +223,8 @@ export function useSendTransaction(props) {
   const sendl1ToL2 = () => {
     if (selectedToken.native) {
       return depositETH()
+    } else if (selectedToken.address === GAS_TOKEN_ADDR[CHAIN_ID.L1]) {
+      return depositGasToken()
     } else {
       return depositERC20()
     }

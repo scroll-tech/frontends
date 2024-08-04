@@ -6,7 +6,7 @@ import { Box, Stack, SvgIcon, Typography } from "@mui/material"
 import { ReactComponent as WarningSvg } from "@/assets/svgs/bridge/warning.svg"
 import Button from "@/components/Button"
 import TextButton from "@/components/TextButton"
-import { ETH_SYMBOL } from "@/constants"
+import { ETH_SYMBOL, WETH_SYMBOL } from "@/constants"
 import { BRIDGE_TOKEN } from "@/constants/searchParamsKey"
 import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
@@ -20,6 +20,7 @@ import { useSendTransaction } from "@/hooks/useSendTransaction"
 import useSufficientBalance from "@/hooks/useSufficientBalance"
 import useBridgeStore from "@/stores/bridgeStore"
 import { amountToBN, switchNetwork, trimErrorMessage } from "@/utils"
+import { isAlternativeGasTokenEnabled } from "@/utils"
 
 import ApprovalDialog from "./ApprovalDialog"
 import BalanceInput from "./BalanceInput"
@@ -57,7 +58,12 @@ const SendTransaction = props => {
     return fromNetwork.chainId ? tokenList.filter(item => item.chainId === fromNetwork.chainId) : []
   }, [tokenList, fromNetwork])
 
-  const selectedToken: any = useMemo(() => tokenOptions.find(item => item.symbol === tokenSymbol) ?? {}, [tokenOptions, tokenSymbol])
+  const selectedToken: any = useMemo(() => {
+    if (isAlternativeGasTokenEnabled && tokenSymbol === ETH_SYMBOL && txType === "Withdraw") {
+      return tokenOptions.find(item => item.symbol === WETH_SYMBOL)
+    }
+    return tokenOptions.find(item => item.symbol === tokenSymbol) ?? {}
+  }, [tokenOptions, tokenSymbol])
 
   // const { balance, isLoading: balanceLoading } = useBalance(selectedToken.address)
   const { balance, loading: balanceLoading } = useBalance(selectedToken, fromNetwork)
@@ -68,6 +74,7 @@ const SendTransaction = props => {
     isRequested: isRequestedApproval,
     isLoading: approveLoading,
   } = useApprove(fromNetwork, selectedToken, validAmount)
+
   const {
     send: sendTransaction,
     isLoading: sendLoading,

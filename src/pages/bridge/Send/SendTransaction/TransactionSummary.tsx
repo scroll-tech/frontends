@@ -4,9 +4,8 @@ import { makeStyles } from "tss-react/mui"
 import { Box, Typography } from "@mui/material"
 
 import { ETH_SYMBOL } from "@/constants"
-import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import useBridgeStore from "@/stores/bridgeStore"
-import { BNToAmount, amountToBN, toTokenDisplay } from "@/utils"
+import { amountToBN, toTokenDisplay } from "@/utils"
 
 import DetailRow from "./InfoTooltip/DetailRow"
 
@@ -55,7 +54,6 @@ const CustomTypography = ({ isError, ...props }) => <Typography sx={{ color: isE
 const TransactionSummary: FC<Props> = props => {
   const { classes: styles } = useStyles()
   const { txType, isNetworkCorrect } = useBridgeStore()
-  const { tokenPrice } = useBridgeContext()
 
   const { amount, feeError, selectedToken, l1GasFee, l2GasFee, l1DataFee, needApproval } = props
 
@@ -77,16 +75,6 @@ const TransactionSummary: FC<Props> = props => {
     [allowDisplayValue, showFeeError],
   )
 
-  const getDisplayedPrice = useCallback(
-    (amount = "", tokenAddress = "ethereum") => {
-      if (allowDisplayValue && tokenPrice.price?.[tokenAddress.toLowerCase()]) {
-        return (+amount * tokenPrice.price[tokenAddress.toLowerCase()].usd).toFixed(2)
-      }
-      return ""
-    },
-    [allowDisplayValue, showFeeError, tokenPrice],
-  )
-
   const getDisplayedMultiplex = useCallback(() => {
     if (allowDisplayValue) {
       const displayedValue =
@@ -94,68 +82,53 @@ const TransactionSummary: FC<Props> = props => {
         " + " +
         getDisplayedValue((l1GasFee ?? BigInt(0)) + l2GasFee + (l1DataFee ?? BigInt(0)))
 
-      let displayedPrice = ""
-      if (tokenPrice.price?.[selectedToken.address.toLowerCase()]) {
-        displayedPrice = (
-          Number(getDisplayedPrice(amount, selectedToken.address)) +
-          Number(getDisplayedPrice(BNToAmount((l1GasFee ?? BigInt(0)) + l2GasFee + (l1DataFee ?? BigInt(0)))))
-        ).toFixed(2)
-      }
-
-      return { value: displayedValue, price: displayedPrice }
+      return { value: displayedValue }
     }
 
     return {
       value: <CustomTypography isError={showFeeError}>-</CustomTypography>,
-      price: "",
     }
-  }, [allowDisplayValue, showFeeError, amount, selectedToken, l1GasFee, l2GasFee, l1DataFee, tokenPrice, getDisplayedValue, getDisplayedPrice])
+  }, [allowDisplayValue, showFeeError, amount, selectedToken, l1GasFee, l2GasFee, l1DataFee, getDisplayedValue])
 
   const displayedAmount = useMemo(() => {
     const valueBN = amountToBN(amount, selectedToken.decimals)
     const displayedValue = getDisplayedValue(valueBN, selectedToken.decimals, selectedToken.symbol)
-    const displayedPrice = getDisplayedPrice(amount, selectedToken.address)
 
-    return { value: displayedValue, price: displayedPrice }
-  }, [amount, selectedToken, getDisplayedValue, getDisplayedPrice])
+    return { value: displayedValue }
+  }, [amount, selectedToken, getDisplayedValue])
 
   const displayedL1Fee = useMemo(() => {
     const fee = txType === "Deposit" ? l1GasFee : l2GasFee
     const displayedFee = getDisplayedValue(fee)
-    const displayedPrice = getDisplayedPrice(BNToAmount(fee as bigint))
 
-    return { value: displayedFee, price: displayedPrice }
-  }, [txType, l1GasFee, l2GasFee, getDisplayedValue, getDisplayedPrice])
+    return { value: displayedFee }
+  }, [txType, l1GasFee, l2GasFee, getDisplayedValue])
 
   const displayedL2Fee = useMemo(() => {
     const fee = txType === "Deposit" ? l2GasFee : l1GasFee
     const displayedFee = getDisplayedValue(fee)
-    const displayedPrice = getDisplayedPrice(BNToAmount(fee as bigint))
 
-    return { value: displayedFee, price: displayedPrice }
-  }, [txType, l1GasFee, l2GasFee, getDisplayedValue, getDisplayedPrice])
+    return { value: displayedFee }
+  }, [txType, l1GasFee, l2GasFee, getDisplayedValue])
 
   const displayedL1DataFee = useMemo(() => {
     const displayedFee = getDisplayedValue(l1DataFee)
-    const displayedPrice = getDisplayedPrice(BNToAmount(l1DataFee as bigint))
 
-    return { value: displayedFee, price: displayedPrice }
-  }, [l1DataFee, getDisplayedValue, getDisplayedPrice])
+    return { value: displayedFee }
+  }, [l1DataFee, getDisplayedValue])
 
   const displayedTotalCost = useMemo(() => {
     if (selectedToken.symbol === ETH_SYMBOL) {
       const totalCostBN = (l1GasFee ?? BigInt(0)) + l2GasFee + (l1DataFee ?? BigInt(0)) + amountToBN(amount)
       const displayedTotalCost = getDisplayedValue(totalCostBN)
-      const displayedTotalPrice = getDisplayedPrice(BNToAmount(totalCostBN))
 
-      return { value: displayedTotalCost, price: displayedTotalPrice }
+      return { value: displayedTotalCost }
     }
 
     return {
       value: getDisplayedMultiplex().value,
-      price: getDisplayedMultiplex().price,
     }
-  }, [l1GasFee, l2GasFee, l1DataFee, amount, selectedToken, getDisplayedValue, getDisplayedPrice, getDisplayedMultiplex])
+  }, [l1GasFee, l2GasFee, l1DataFee, amount, selectedToken, getDisplayedValue, getDisplayedMultiplex])
 
   return (
     <div className={styles.root}>
@@ -171,21 +144,16 @@ const TransactionSummary: FC<Props> = props => {
       >
         <table className={styles.table}>
           <tbody>
-            <DetailRow
-              title={`You're ${txType === "Deposit" ? "depositing" : "withdrawing"}`}
-              value={displayedAmount.value}
-              price={displayedAmount.price}
-              large
-            />
-            {txType === "Deposit" && <DetailRow title="Ethereum gas fee" value={displayedL1Fee.value} price={displayedL1Fee.price} large />}
-            <DetailRow title="Scroll gas fee" value={displayedL2Fee.value} price={displayedL2Fee.price} large />
-            {txType === "Withdraw" && <DetailRow title="Ethereum data fee" value={displayedL1DataFee.value} price={displayedL1DataFee.price} large />}
+            <DetailRow title={`You're ${txType === "Deposit" ? "depositing" : "withdrawing"}`} value={displayedAmount.value} large />
+            {txType === "Deposit" && <DetailRow title="Ethereum gas fee" value={displayedL1Fee.value} large />}
+            <DetailRow title="Scroll gas fee" value={displayedL2Fee.value} large />
+            {txType === "Withdraw" && <DetailRow title="Ethereum data fee" value={displayedL1DataFee.value} large />}
             <tr className={styles.hr}>
               <td></td>
               <td></td>
               <td></td>
             </tr>
-            <DetailRow title="Total" value={displayedTotalCost.value} price={displayedTotalCost.price} large />
+            <DetailRow title="Total" value={displayedTotalCost.value} large />
           </tbody>
         </table>
       </Box>
