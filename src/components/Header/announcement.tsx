@@ -36,7 +36,7 @@ const Announcement = () => {
 
   const rightHref = useMemo(() => {
     if (isMainnet && isHome) {
-      return "https://levelupweb3.xyz/"
+      return "https://tally.so/r/mYdQP5"
     }
     return ""
   }, [isMainnet, isHome])
