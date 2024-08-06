@@ -8,7 +8,7 @@ import { isMainnet } from "@/utils"
 
 const AnnouncementStack = styled<any>(Stack, { shouldForwardProp: prop => prop !== "production" })(({ theme, production }) => ({
   lineHeight: "2.6rem",
-  background: production ? "#62e6d4" : theme.palette.primary.main,
+  background: production ? "rgb(181, 245, 236)" : theme.palette.primary.main,
   textAlign: "center",
   color: production ? theme.palette.text.primary : theme.palette.primary.contrastText,
   fontSize: "1.6rem",
@@ -27,7 +27,7 @@ const Announcement = () => {
     if (isMainnet && isHome) {
       return (
         <>
-          🔥 Applications for the Level Up Grants Program are open until August 26.<strong> Apply now!</strong>
+          🔥 Applications for the Level Up Grants Program are open until August 26. <strong className="underline"> Apply now!</strong>
         </>
       )
     }

@@ -33,7 +33,7 @@ export const generateExploreLink = (explorer, hash, type = "tx") => {
   return `${explorer}/${type}/${hash}`
 }
 
-export const isMainnet = requireEnv("REACT_APP_SCROLL_ENVIRONMENT") === requireEnv("REACT_APP_MAIN_ENVIRONMENT")
+export const isMainnet = requireEnv("REACT_APP_SCROLL_ENVIRONMENT") !== requireEnv("REACT_APP_MAIN_ENVIRONMENT")
 export const isSepolia = requireEnv("REACT_APP_SCROLL_ENVIRONMENT") === "Sepolia"
 export const networkType = isMainnet ? "mainnet" : "testnet"
 
