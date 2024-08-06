@@ -38,9 +38,7 @@ const useTxHistory = () => {
   // fetch to hash/blockNumber from backend
   const { data } = useSWR<any>(
     () => {
-      const needToRefreshTransactions = pageTransactions.filter(
-        item => item.txStatus !== TX_STATUS.Relayed && item.txStatus !== TX_STATUS.BatchDepositRelayed,
-      )
+      const needToRefreshTransactions = pageTransactions.filter(item => item.txStatus !== TX_STATUS.Relayed)
 
       if (needToRefreshTransactions.length && walletCurrentAddress && historyVisible) {
         const txs = needToRefreshTransactions.map(item => item.hash).filter((item, index, arr) => index === arr.indexOf(item))

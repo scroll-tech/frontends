@@ -46,10 +46,6 @@ export const USDC_GATEWAY_PROXY_ADDR = {
   [CHAIN_ID.L2]: requireEnv("REACT_APP_L2_USDC_GATEWAY_PROXY_ADDR"),
 }
 
-export const BATCH_BRIDGE_GATEWAY_PROXY_ADDR = {
-  [CHAIN_ID.L1]: requireEnv("REACT_APP_L1_BATCH_BRIDGE_GATEWAY_PROXY_ADDR"),
-}
-
 export const DOCUMENTATION_URL = {
   Mainnet: "https://docs.scroll.io/en/developers/developer-quickstart/",
   Sepolia: "https://docs.scroll.io/en/user-guide/",
