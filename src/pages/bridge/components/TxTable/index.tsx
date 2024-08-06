@@ -214,7 +214,7 @@ const TxRow = props => {
   const { estimatedTimeMap } = useTxStore()
 
   const toTip = useMemo(() => {
-    if ([TX_STATUS.Dropped, TX_STATUS.FailedRelayed, TX_STATUS.SentFailed, TX_STATUS.Skipped, TX_STATUS.BatchDepositFailed].includes(tx.txStatus)) {
+    if ([TX_STATUS.Dropped, TX_STATUS.FailedRelayed, TX_STATUS.SentFailed, TX_STATUS.Skipped].includes(tx.txStatus)) {
       return "-"
     }
 

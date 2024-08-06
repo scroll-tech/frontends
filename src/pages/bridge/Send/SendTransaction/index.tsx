@@ -18,17 +18,14 @@ import useCheckViewport from "@/hooks/useCheckViewport"
 import useGasFee from "@/hooks/useGasFee"
 import { useSendTransaction } from "@/hooks/useSendTransaction"
 import useSufficientBalance from "@/hooks/useSufficientBalance"
-import useBatchBridgeStore, { BridgeSummaryType, DepositBatchMode } from "@/stores/batchBridgeStore"
 import useBridgeStore from "@/stores/bridgeStore"
-import { amountToBN, checkApproved, switchNetwork, trimErrorMessage } from "@/utils"
+import { amountToBN, switchNetwork, trimErrorMessage } from "@/utils"
 
 import ApprovalDialog from "./ApprovalDialog"
 import BalanceInput from "./BalanceInput"
 import CustomiseRecipient from "./CustomiseRecipient"
-import DepositSelector from "./DepositSelector"
 import NetworkDirection from "./NetworkDirection"
 import TransactionSummary from "./TransactionSummary"
-import useBatchDeposit from "./hooks/useBatchDeposit"
 
 const SendTransaction = props => {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -43,7 +40,6 @@ const SendTransaction = props => {
   const { gasLimit, gasPrice, errorMessage: relayFeeErrorMessage, fetchData: fetchPriceFee, getL1DataFee } = usePriceFeeContext()
 
   const { txType, isNetworkCorrect, fromNetwork, changeTxResult } = useBridgeStore()
-  const { bridgeSummaryType, depositBatchMode, batchDepositConfig } = useBatchBridgeStore()
 
   const [amount, setAmount] = useState<string>("")
 
@@ -72,7 +68,6 @@ const SendTransaction = props => {
     isRequested: isRequestedApproval,
     isLoading: approveLoading,
   } = useApprove(fromNetwork, selectedToken, validAmount)
-
   const {
     send: sendTransaction,
     isLoading: sendLoading,
@@ -81,19 +76,10 @@ const SendTransaction = props => {
     amount: validAmount,
     selectedToken,
     receiver: recipient,
-    needApproval,
   })
 
-  const { depositAmountIsVaild } = useBatchDeposit({ selectedToken, amount: validAmount })
-
   // fee start
-  const {
-    gasFee: estimatedGasCost,
-    batchDepositGasFee: estimatedBatchDepositGasCost,
-    gasLimit: txGasLimit,
-    error: gasFeeErrorMessage,
-    calculateGasFee,
-  } = useGasFee(selectedToken, needApproval)
+  const { gasFee: estimatedGasCost, gasLimit: txGasLimit, error: gasFeeErrorMessage, calculateGasFee } = useGasFee(selectedToken, needApproval)
 
   const l1DataFee = useAsyncMemo(
     async () =>
@@ -102,25 +88,11 @@ const SendTransaction = props => {
         : BigInt(0),
     [amount, selectedToken, txGasLimit, txType],
   )
+
   const relayFee = useMemo(() => gasLimit * gasPrice, [gasLimit, gasPrice])
-
-  const l1GasFee = useMemo(() => {
-    if (depositBatchMode === DepositBatchMode.Economy && bridgeSummaryType === BridgeSummaryType.Selector) {
-      return estimatedBatchDepositGasCost
-    }
-    return estimatedGasCost
-  }, [depositBatchMode, bridgeSummaryType, estimatedBatchDepositGasCost, estimatedGasCost])
-
-  const l2GasFee = useMemo(() => {
-    if (depositBatchMode === DepositBatchMode.Economy && bridgeSummaryType === BridgeSummaryType.Selector) {
-      return batchDepositConfig.feeAmountPerTx
-    }
-    return relayFee
-  }, [depositBatchMode, bridgeSummaryType, batchDepositConfig, relayFee])
-
   const totalFee = useMemo(
-    () => (l1GasFee && !relayFeeErrorMessage ? l1GasFee + l2GasFee + (l1DataFee ?? BigInt(0)) : null),
-    [l1GasFee, relayFeeErrorMessage, l2GasFee, l1DataFee],
+    () => (estimatedGasCost && !relayFeeErrorMessage ? estimatedGasCost + relayFee + (l1DataFee ?? BigInt(0)) : null),
+    [estimatedGasCost, relayFeeErrorMessage, relayFee, l1DataFee],
   )
 
   const { insufficientWarning } = useSufficientBalance(
@@ -180,8 +152,8 @@ const SendTransaction = props => {
   // fee end
 
   const necessaryCondition = useMemo(() => {
-    return validAmount && !bridgeWarning && (depositAmountIsVaild || (!depositAmountIsVaild && depositBatchMode === DepositBatchMode.Fast))
-  }, [validAmount, bridgeWarning, depositAmountIsVaild, depositBatchMode])
+    return validAmount && !bridgeWarning
+  }, [validAmount, bridgeWarning])
 
   const sendText = useMemo(() => {
     if (txType === "Deposit" && sendLoading) {
@@ -264,11 +236,7 @@ const SendTransaction = props => {
       )
     }
 
-    if (
-      needApproval === true ||
-      (!checkApproved(needApproval, DepositBatchMode.Economy) && depositBatchMode === DepositBatchMode.Economy) ||
-      (!checkApproved(needApproval, DepositBatchMode.Fast) && depositBatchMode === DepositBatchMode.Fast)
-    ) {
+    if (needApproval) {
       return (
         <Button
           key="approve"
@@ -343,42 +311,24 @@ const SendTransaction = props => {
         )}
       </Box>
 
-      {bridgeSummaryType === BridgeSummaryType.Selector && (
-        <DepositSelector
-          selectedToken={selectedToken}
-          amount={validAmount}
-          feeError={relayFeeErrorMessage || gasFeeErrorMessage}
-          // totalFee={displayedEstimatedGasCost}
-          l2GasFee={relayFee}
-          l1GasFee={estimatedGasCost}
-          l1EconomyGasFee={estimatedBatchDepositGasCost}
-          l2EconomyGasFee={batchDepositConfig.feeAmountPerTx}
-          l1DataFee={l1DataFee}
-          needApproval={needApproval}
-          isVaild={depositAmountIsVaild}
-        />
-      )}
-      {!(bridgeSummaryType === BridgeSummaryType.Selector && depositBatchMode === DepositBatchMode.Economy) && (
-        <CustomiseRecipient
-          readOnly={approveLoading || sendLoading}
-          disabled={fromNetwork.chainId !== chainId}
-          bridgeWarning={bridgeWarning}
-          handleChangeRecipient={handleChangeRecipient}
-        />
-      )}
+      <CustomiseRecipient
+        readOnly={approveLoading || sendLoading}
+        disabled={fromNetwork.chainId !== chainId}
+        bridgeWarning={bridgeWarning}
+        handleChangeRecipient={handleChangeRecipient}
+      />
 
-      {bridgeSummaryType === BridgeSummaryType.Summary && (
-        <TransactionSummary
-          selectedToken={selectedToken}
-          amount={validAmount}
-          feeError={relayFeeErrorMessage || gasFeeErrorMessage}
-          // totalFee={displayedEstimatedGasCost}
-          l2GasFee={relayFee}
-          l1GasFee={estimatedGasCost}
-          l1DataFee={l1DataFee}
-          needApproval={!!needApproval}
-        />
-      )}
+      <TransactionSummary
+        selectedToken={selectedToken}
+        amount={validAmount}
+        feeError={relayFeeErrorMessage || gasFeeErrorMessage}
+        // totalFee={displayedEstimatedGasCost}
+        l2GasFee={relayFee}
+        l1GasFee={estimatedGasCost}
+        l1DataFee={l1DataFee}
+        needApproval={needApproval}
+      />
+
       <Box
         sx={{
           mt: ["2.4rem", "2.8rem"],

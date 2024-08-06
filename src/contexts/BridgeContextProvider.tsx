@@ -4,12 +4,11 @@ import useStorage from "squirrel-gill"
 
 import { Alert, Snackbar } from "@mui/material"
 
-import BATCH_BRIDGE_GATEWAY_PROXY_ABI from "@/assets/abis/L1BatchBridgeGateway.json"
 import L1_SCROLL_MESSENGER_ABI from "@/assets/abis/L1ScrollMessenger.json"
 import L1_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L1_GATEWAY_ROUTER_PROXY_ADDR.json"
 import L2_SCROLL_MESSENGER_ABI from "@/assets/abis/L2ScrollMessenger.json"
 import L2_GATEWAY_ROUTER_PROXY_ABI from "@/assets/abis/L2_GATEWAY_ROUTER_PROXY_ADDR.json"
-import { BATCH_BRIDGE_GATEWAY_PROXY_ADDR, CHAIN_ID, GATEWAY_ROUTE_PROXY_ADDR, NATIVE_TOKEN_LIST, RPC_URL, SCROLL_MESSENGER_ADDR } from "@/constants"
+import { CHAIN_ID, GATEWAY_ROUTE_PROXY_ADDR, NATIVE_TOKEN_LIST, RPC_URL, SCROLL_MESSENGER_ADDR } from "@/constants"
 import { BLOCK_NUMBERS, USER_TOKEN_LIST } from "@/constants/storageKey"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useBlockNumbers from "@/hooks/useBlockNumbers"
@@ -59,16 +58,7 @@ const BridgeContextProvider = ({ children }: any) => {
 
   // TODO: need refactoring inspired by publicClient and walletClient
   const update = async (walletProvider: BrowserProvider, address: string) => {
-    let l1signer,
-      l2signer,
-      l1Gateway,
-      l2Gateway,
-      l1Provider,
-      l2Provider,
-      l1ProviderForSafeBlock,
-      l1ScrollMessenger,
-      l2ScrollMessenger,
-      l1BatchBridgeGateway
+    let l1signer, l2signer, l1Gateway, l2Gateway, l1Provider, l2Provider, l1ProviderForSafeBlock, l1ScrollMessenger, l2ScrollMessenger
     if (chainId === CHAIN_ID.L1) {
       l1Provider = walletProvider
       l2Provider = await new JsonRpcProvider(RPC_URL.L2)
@@ -89,7 +79,6 @@ const BridgeContextProvider = ({ children }: any) => {
     l1ProviderForSafeBlock = await new JsonRpcProvider(RPC_URL.L1)
     l1ScrollMessenger = new ethers.Contract(SCROLL_MESSENGER_ADDR[CHAIN_ID.L1], L1_SCROLL_MESSENGER_ABI, l1signer)
     l2ScrollMessenger = new ethers.Contract(SCROLL_MESSENGER_ADDR[CHAIN_ID.L2], L2_SCROLL_MESSENGER_ABI, l2signer)
-    l1BatchBridgeGateway = new ethers.Contract(BATCH_BRIDGE_GATEWAY_PROXY_ADDR[CHAIN_ID.L1], BATCH_BRIDGE_GATEWAY_PROXY_ABI, l1signer)
 
     setNetworksAndSigners({
       [CHAIN_ID.L1]: {
@@ -97,7 +86,6 @@ const BridgeContextProvider = ({ children }: any) => {
         signer: l1signer,
         gateway: l1Gateway,
         scrollMessenger: l1ScrollMessenger,
-        batchBridgeGateway: l1BatchBridgeGateway,
       },
       [`${CHAIN_ID.L1}ForSafeBlock`]: {
         provider: l1ProviderForSafeBlock,

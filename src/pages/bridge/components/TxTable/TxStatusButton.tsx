@@ -92,7 +92,7 @@ const TxStatus = props => {
     )
   }
 
-  if (tx.txStatus === TX_STATUS.Sent || tx.txStatus === TX_STATUS.BatchDepositSent) {
+  if (tx.txStatus === TX_STATUS.Sent) {
     if (tx.claimInfo?.claimable) {
       return <ActiveButton type="Claim" tx={tx} />
     } else if (tx.isL1) {
@@ -111,7 +111,7 @@ const TxStatus = props => {
     }
   }
 
-  if ([TX_STATUS.Dropped, TX_STATUS.SentFailed, TX_STATUS.Skipped, TX_STATUS.BatchDepositFailed].includes(tx.txStatus)) {
+  if ([TX_STATUS.Dropped, TX_STATUS.SentFailed, TX_STATUS.Skipped].includes(tx.txStatus)) {
     return (
       <Tooltip placement="top" title="Please click on the transaction hash to view the error reason.">
         <Chip
@@ -126,7 +126,7 @@ const TxStatus = props => {
     )
   }
 
-  if (tx.txStatus === TX_STATUS.Relayed || tx.txStatus === TX_STATUS.BatchDepositRelayed) {
+  if (tx.txStatus === TX_STATUS.Relayed) {
     return <Chip className={cx(classes.chip, classes.successChip)} label="Success"></Chip>
   }
 

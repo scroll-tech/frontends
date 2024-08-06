@@ -64,8 +64,7 @@ export const formatBackTxList = (backList, estimatedTimeMap) => {
     return { txList: [], estimatedTimeMap: nextEstimatedTimeMap }
   }
   const txList = backList.map(tx => {
-    //message_type: 1 =>  deposit  2 => withdraw  3 => batch deposit
-    const amount = tx.message_type === 3 ? (tx.token_amounts[0] - tx.batch_deposit_fee).toString() : tx.token_amounts[0]
+    const amount = tx.token_amounts[0]
     const toHash = tx.counterpart_chain_tx?.hash
     const initiatedAt = tx.block_timestamp
 
@@ -76,7 +75,7 @@ export const formatBackTxList = (backList, estimatedTimeMap) => {
     // 5. if the second deal succeeded, then the first should succeed too.
 
     // deposit
-    if (tx.message_type !== 2) {
+    if (tx.message_type === 1) {
       if (tx.block_number > blockNumbers[0] && blockNumbers[0] !== -1 && !nextEstimatedTimeMap[`from_${tx.hash}`]) {
         const estimatedOffsetTime = (tx.block_number - blockNumbers[0]) * 12 * 1000
         if (isValidOffsetTime(estimatedOffsetTime)) {
@@ -96,8 +95,8 @@ export const formatBackTxList = (backList, estimatedTimeMap) => {
       toHash,
       toBlockNumber: tx.counterpart_chain_tx?.block_number,
       amount,
-      isL1: tx.message_type !== 2,
-      symbolToken: tx.message_type !== 2 ? tx.l1_token_address : tx.l2_token_address,
+      isL1: tx.message_type === 1,
+      symbolToken: tx.message_type === 1 ? tx.l1_token_address : tx.l2_token_address,
       claimInfo: tx.claim_info,
       initiatedAt,
       txStatus: tx.tx_status,
