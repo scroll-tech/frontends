@@ -51,7 +51,7 @@ const MenuContent = styled<any>(Box, { shouldForwardProp: prop => prop !== "dark
 
 const ListItem = styled<any>(ListItemButton, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   fontWeight: 600,
-  fontSize: "1.8rem",
+  fontSize: "2rem",
   height: "5.5rem",
   lineHeight: "5.5rem",
   color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
