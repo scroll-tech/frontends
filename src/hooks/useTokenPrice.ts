@@ -11,9 +11,9 @@ const useTokenPrice = tokenList => {
       const tokens = tokenList.filter(token => token.chainId === CHAIN_ID.L1 && token.address).map(token => token.address)
       const tokenAddresses = tokens.join("%2C")
 
-      const fetchEthPrice = fetch(`https://token-price-api-inky.vercel.app/simple/price?ids=ethereum&vs_currencies=usd`)
+      const fetchEthPrice = fetch(`https://token-price.scroll.cat/simple/price?ids=ethereum&vs_currencies=usd`)
       const fetchErc20Price = fetch(
-        `https://token-price-api-inky.vercel.app/simple/token_price/ethereum?contract_addresses=${tokenAddresses}&vs_currencies=usd`,
+        `https://token-price.scroll.cat/simple/token_price/ethereum?contract_addresses=${tokenAddresses}&vs_currencies=usd`,
       )
 
       const results = await Promise.allSettled([fetchEthPrice, fetchErc20Price])
