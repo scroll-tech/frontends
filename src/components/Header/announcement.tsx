@@ -27,7 +27,7 @@ const Announcement = () => {
     if (isMainnet && isHome) {
       return (
         <>
-          🔥 Applications for the Level Up Grants Program are open until August 26. <strong className="underline"> Apply now!</strong>
+          🔥 Applications for the Level Up Grants Program are open until August 25. <strong className="underline"> Apply now!</strong>
         </>
       )
     }
