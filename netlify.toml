@@ -79,6 +79,16 @@ from = "/*"
 to = "/"
 status = 200
 
+[[redirects]]
+from = "/*"
+to = "/"
+status = 200
+
+[[redirects]]
+from = "/_next/*"
+to = "https://badge-registry.canvas.scroll.cat/_next/:splat"
+status = 200
+
 # we use content based hash for filenames
 # 31536000 is 1 year, recommended by cra
 # cra doc https://create-react-app.dev/docs/production-build/
