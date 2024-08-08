@@ -68,7 +68,16 @@ from = "/sticker-vote"
 to = "/sticker-winners"
 status = 301
 
+[[redirects]]
+from = "/canvas/listing"
+to = "https://badge-registry.canvas.scroll.cat/"
+status = 200
+force = true
 
+[[redirects]]
+from = "/_next/*"
+to = "https://badge-registry.canvas.scroll.cat/_next/:splat"
+status = 200
 
 [[redirects]]
 from = "/*"
