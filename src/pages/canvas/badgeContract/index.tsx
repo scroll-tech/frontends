@@ -81,7 +81,16 @@ const BadgeContractDetail = props => {
         navigate(`/canvas/badge/${result}`, { replace: true })
       }
     } catch (e) {
-      alertWarning(e.message)
+      alertWarning(
+        <>
+          {e.message}{" "}
+          {e.link && (
+            <a href={e.link} target="_blank" rel="noopener noreferrer">
+              🔗
+            </a>
+          )}
+        </>,
+      )
     } finally {
       changeIsBadgeMinting(address, false)
     }

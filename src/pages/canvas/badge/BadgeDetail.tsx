@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import Img from "react-cool-img"
 import { Helmet } from "react-helmet-async"
 
-import { Avatar, Box, Stack, Typography } from "@mui/material"
+import { Avatar, Box, Link, Stack, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
 import SectionWrapper from "@/components/SectionWrapper"
@@ -52,6 +52,18 @@ const BadgeDetail = props => {
       setIsOverflow(detailContainerEl.clientHeight < detailContainerEl.scrollHeight)
     }
   }, [loading, actionHeight])
+
+  const getCommunityLogo = (communityURL): string => {
+    if (communityURL.includes("x.com") || communityURL.includes("twitter.com")) {
+      return "/imgs/canvas/support/x.svg"
+    } else if (communityURL.includes("discord.com") || communityURL.includes("discord.gg")) {
+      return "/imgs/canvas/support/discord.svg"
+    } else if (communityURL.includes("t.me") || communityURL.includes("telegram.me")) {
+      return "/imgs/canvas/support/telegram.svg"
+    } else {
+      return "/imgs/canvas/support/contact.svg"
+    }
+  }
 
   return (
     <>
@@ -173,7 +185,7 @@ const BadgeDetail = props => {
               )}
             </Box>
 
-            <InfoBox count={property.length}>
+            <InfoBox count={property.length + (detail.issuer?.communityURL ? 1 : 0)}>
               {property.includes("owner") && (
                 <Statistic label="Owner" loading={loading} sx={{ "& *": { cursor: "pointer !important" } }}>
                   <Box
@@ -189,18 +201,41 @@ const BadgeDetail = props => {
                 </Statistic>
               )}
               {property.includes("issuer") && (
-                <Statistic label="Issued by" loading={loading}>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "0.8rem",
-                    }}
-                  >
-                    <Avatar variant="square" src={detail.issuer?.logo} sx={{ width: "3.2rem", height: "3.2rem", borderRadius: "0.4rem" }}></Avatar>
-                    {detail.issuer?.name || "Unknown"}
-                  </Box>
-                </Statistic>
+                <>
+                  <Statistic label="Issued by" loading={loading}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.8rem",
+                      }}
+                    >
+                      <Avatar variant="square" src={detail.issuer?.logo} sx={{ width: "3.2rem", height: "3.2rem", borderRadius: "0.4rem" }}></Avatar>
+                      {detail.issuer?.name || "Unknown"}
+                    </Box>
+                  </Statistic>
+                  {detail.issuer?.communityURL && (
+                    <Statistic label="Need support?" loading={loading}>
+                      <Link
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "0.8rem",
+                        }}
+                        underline="none"
+                        href={detail.issuer.communityURL}
+                        target="_blank"
+                      >
+                        <Avatar
+                          variant="square"
+                          src={getCommunityLogo(detail.issuer.communityURL)}
+                          sx={{ width: "3.2rem", height: "3.2rem" }}
+                        ></Avatar>
+                        Contact
+                      </Link>
+                    </Statistic>
+                  )}
+                </>
               )}
               {property.includes("mintedOn") && (
                 <Statistic label="Minted on" loading={loading}>
