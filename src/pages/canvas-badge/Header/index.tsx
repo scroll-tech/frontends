@@ -1,11 +1,12 @@
 import { motion, useTime, useTransform } from "framer-motion"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Img from "react-cool-img"
 
 import { Box, Container, Stack, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
 import Button from "@/components/Button"
+import useCheckViewport from "@/hooks/useCheckViewport"
 
 import Counter from "./Counter"
 import Statistic from "./Statistic"
@@ -22,7 +23,6 @@ const BADGES = [
     key: "Ambient",
     width: "13.9rem",
     top: 0,
-    // left: "3.2rem",
   },
   {
     image: "/imgs/canvas-badge/Zebra.webp",
@@ -112,6 +112,9 @@ const BADGES = [
 
 const BadgesButton = styled(Button)(({ theme }) => ({
   backgroundColor: theme.palette.themeBackground.dark,
+  [theme.breakpoints.down("sm")]: {
+    width: "100%",
+  },
 }))
 
 function pickRandomNumbers(excludeNumbers: number[] = []) {
@@ -127,10 +130,14 @@ function pickRandomNumbers(excludeNumbers: number[] = []) {
 }
 
 const Header = () => {
+  const { isMobile } = useCheckViewport()
   const [totalCanvasCount, setTotalCanvasCount] = useState(0)
   const [totalBadgeCount, setTotalBadgeCount] = useState(0)
+  const [badgesScale, setBadgesScale] = useState(1)
 
   const [randomNumbers, setRandomNumbers] = useState(pickRandomNumbers())
+  const badgesContainerRef = useRef<any>()
+
   const time = useTime()
   const transform = useTransform(time, value => Math.floor(value / 3000))
   useEffect(() => {
@@ -153,30 +160,63 @@ const Header = () => {
     }
   }, [])
 
+  useEffect(() => {
+    const handleWindowResize = () => {
+      console.log(badgesContainerRef.current?.clientWidth, "vvv")
+      if (badgesContainerRef.current?.clientWidth && badgesContainerRef.current.clientWidth < 1328) {
+        setBadgesScale(badgesContainerRef.current.clientWidth / 1328)
+      } else {
+        setBadgesScale(1)
+      }
+    }
+    handleWindowResize()
+
+    window.addEventListener("resize", handleWindowResize)
+
+    return () => {
+      window.removeEventListener("resize", handleWindowResize)
+    }
+  }, [])
+
   return (
     <Box
-      sx={{
-        width: "100%",
-        aspectRatio: "1512 / 850",
-        maxHeight: ["72vw", "72vw", "53.4vw"],
-        backgroundSize: "auto 100%",
-        position: "relative",
-        textAlign: "center",
-        backgroundColor: "themeBackground.dark",
-        background: "url(/imgs/canvas-badge/header_bg.webp) center/100% no-repeat",
-        pt: "6.4vw",
-        "& p": {
-          color: "#FFF8F3 !important",
+      sx={[
+        {
+          width: "100%",
+          aspectRatio: ["unset", "unset", "1512 / 850"],
+          height: "53.4vw",
+          backgroundSize: "auto 100%",
+          position: "relative",
+          textAlign: "center",
+          backgroundColor: "themeBackground.dark",
+          background: "url(/imgs/canvas-badge/header_bg.webp) center bottom / 100% no-repeat",
+          pt: ["5.6rem", "6.4vw"],
+          px: ["2rem"],
+          "& p": {
+            color: "#FFF8F3 !important",
+          },
+          "@media(max-width: 1600px)": {
+            height: "72vw",
+          },
         },
-      }}
+        theme => ({
+          [theme.breakpoints.down("md")]: {
+            height: "72vh",
+          },
+          [theme.breakpoints.down("sm")]: {
+            height: "62rem",
+          },
+        }),
+      ]}
     >
-      {/* <Box> */}
-      <Typography sx={{ fontSize: ["4rem", "7.8rem"], lineHeight: ["7rem", "8.8rem"], fontWeight: 600, mb: "1.6rem" }}>Canvas and Badge</Typography>
-      <Stack alignItems="center" gap="3.2rem">
-        <Typography sx={{ fontSize: ["2rem", "2.4rem"], lineHeight: ["2.4rem", "3.6rem"], fontWeight: 500 }}>
+      <Typography sx={{ fontSize: ["3.8rem", "7.8rem"], lineHeight: ["5.6rem", "8.8rem"], fontWeight: 600, mb: [0, "1.6rem"] }}>
+        Canvas and Badge
+      </Typography>
+      <Stack alignItems="center" gap={isMobile ? "2.4rem" : "3.2rem"}>
+        <Typography sx={{ fontSize: ["1.6rem", "2.4rem"], lineHeight: ["1.8rem", "3.6rem"], fontWeight: 500 }}>
           Map your journey and earn badges across Scroll’s ecosystem.
         </Typography>
-        <Stack direction="row" gap="2.4rem" sx={{ width: "62.4rem" }}>
+        <Stack direction="row" gap={isMobile ? "0.8rem" : "2.4rem"} sx={{ width: ["100%", "62.4rem"], mt: ["1.2rem", 0] }}>
           <Statistic label="Total Canvas Minted">
             <Counter number={totalCanvasCount}></Counter>
           </Statistic>
@@ -184,13 +224,22 @@ const Header = () => {
             <Counter number={totalBadgeCount}></Counter>
           </Statistic>
         </Stack>
-        <Stack direction="row" gap="1.6rem">
+        <Stack direction={isMobile ? "column" : "row"} gap="1.6rem" sx={{ width: ["100%", "auto"] }}>
           <BadgesButton color="primary">Visit Canvas</BadgesButton>
           <BadgesButton color="tertiary">Issue Badges</BadgesButton>
         </Stack>
       </Stack>
-      <AnimatedContainer sx={{ mt: ["", "2.8rem"], px: ["", "", "3rem"] }}>
-        <Box sx={{ position: "relative", maxWidth: "132.8rem", height: "33.7rem", mx: "auto" }}>
+      <AnimatedContainer sx={{ mt: ["9.5rem", "6rem", "2.8rem"], px: "0 !important" }} ref={badgesContainerRef}>
+        <Box
+          sx={{
+            position: "relative",
+            width: "132.8rem",
+            height: ["auto", "33.7rem"],
+            mx: "auto",
+            transform: `scale(${badgesScale})`,
+            transformOrigin: "top left",
+          }}
+        >
           {BADGES.map(({ image, top, left, width }, index) => (
             <ImageWrapper
               style={{ willChange: "opacity", zIndex: randomNumbers.includes(index) ? 1 : 0 }}

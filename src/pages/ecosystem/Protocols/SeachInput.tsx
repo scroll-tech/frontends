@@ -4,7 +4,7 @@ import { useTheme } from "@mui/material/styles"
 import { ReactComponent as SearchSvg } from "@/assets/svgs/ecosystem/search.svg"
 
 const SearchInput = props => {
-  const { sticky, top, dark, ...restProps } = props
+  const { sticky, top, dark, className, ...restProps } = props
   const theme = useTheme()
 
   return (
@@ -30,8 +30,10 @@ const SearchInput = props => {
         },
         [theme.breakpoints.down("sm")]: {
           padding: "0.8rem 1.6rem",
+          maxWidth: "100%",
         },
       }}
+      className={className}
     >
       <SvgIcon
         sx={{ fontSize: "2rem", color: theme => (dark ? theme.palette.background.default : theme.palette.text.primary) }}

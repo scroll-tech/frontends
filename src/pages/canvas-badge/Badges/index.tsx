@@ -20,19 +20,40 @@ const useStyles = makeStyles()(theme => ({
     rowGap: "4rem",
     columnGap: "1.6rem",
     alignItems: "center",
-    justifyItems: "flex-end",
 
     [theme.breakpoints.down("md")]: {
-      gridTemplateColumns: "1fr max-content",
-      gridTemplateRows: "unset",
-      rowGap: "2rem",
+      gridTemplateColumns: "max-content 1fr",
+      gridTemplateRows: "repeat(3, min-content) 1fr",
+      rowGap: "2.4rem",
       columnGap: "0.8rem",
-      marginTop: "2rem",
+    },
+  },
+  search: {
+    justifySelf: "flex-end",
+    [theme.breakpoints.down("md")]: {
+      justifySelf: "stretch",
+      gridColumn: "1 / 3",
+    },
+  },
+  sort: {
+    [theme.breakpoints.down("md")]: {
+      gridColumn: "1 / 1",
+    },
+  },
+  category: {
+    [theme.breakpoints.down("md")]: {
+      gridColumn: "2 / 3",
+    },
+    [theme.breakpoints.down("sm")]: {
+      width: "12.9rem",
     },
   },
   badgeList: {
     gridColumn: "1 / 5",
     justifySelf: "stretch",
+    [theme.breakpoints.down("md")]: {
+      gridColumn: "1 / 3",
+    },
   },
 }))
 
@@ -58,7 +79,7 @@ const Badges = () => {
     setSearchParams(pre => ({
       ...pre,
       page: 1,
-      network: value,
+      [field]: value,
     }))
   }
 
@@ -70,26 +91,35 @@ const Badges = () => {
   }
 
   return (
-    <SectionWrapper dark sx={{ py: "12rem" }}>
+    <SectionWrapper dark sx={{ py: ["4rem", "12rem"] }}>
       <Box className={classes.grid}>
         <Typography
           className="canvas-badge-title"
           sx={{
             fontSize: ["2.4rem", "4.8rem"],
             lineHeight: ["3.6rem", "6.4rem"],
-            fontWeight: [600, 500],
+            fontWeight: 500,
             color: "primary.contrastText",
+            gridColumn: ["span 2", "span 1"],
           }}
         >
           Discover Badges
         </Typography>
-        <SearchInput dark top={stickyTop} sticky value={searchInput} onChange={handleChangeKeyword}></SearchInput>
-        <Select top={stickyTop} sticky value={searchParams.sort} onChange={value => handleChangeSelect(value, "sort")} items={SORT_LIST}></Select>
+        <SearchInput className={classes.search} dark top={stickyTop} sticky value={searchInput} onChange={handleChangeKeyword}></SearchInput>
         <Select
+          className={classes.sort}
+          top={stickyTop}
+          sticky
+          value={searchParams.sort}
+          onChange={e => handleChangeSelect(e.target.value, "sort")}
+          items={SORT_LIST}
+        ></Select>
+        <Select
+          className={classes.category}
           top={stickyTop}
           sticky
           value={searchParams.category}
-          onChange={value => handleChangeSelect(value, "category")}
+          onChange={e => handleChangeSelect(e.target.value, "category")}
           items={CATEGORY_LIST}
         ></Select>
         <BadgeList className={classes.badgeList} searchParams={searchParams} onAddPage={handleChangePage}></BadgeList>

@@ -18,13 +18,17 @@ const useStyles = makeStyles<any>()((theme, { sticky, top }) => ({
   },
   select: {
     padding: "0.6rem 2.4rem 0.6rem 2.4rem !important",
-    [theme.breakpoints.down("sm")]: {
-      padding: "1.1rem 3.6rem 1.1rem 1.6rem !important",
-    },
+
     backgroundColor: `${theme.palette.themeBackground.tag} !important`,
     borderRadius: "2.4rem !important",
     p: {
       color: theme.palette.primary.contrastText,
+      overflow: "hidden",
+      whiteSpace: "nowrap",
+      textOverflow: "ellipsis",
+    },
+    [theme.breakpoints.down("sm")]: {
+      padding: "1.1rem 4.2rem 1.1rem 1.6rem !important",
     },
   },
   icon: {
@@ -81,7 +85,14 @@ const Select = props => {
             "&:hover": { backgroundColor: "#eee" },
           }}
         >
-          <Typography sx={{ fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.4rem", "3.6rem"], fontWeight: 600, cursor: "inherit" }}>
+          <Typography
+            sx={{
+              fontSize: ["1.6rem", "1.8rem"],
+              lineHeight: ["2.4rem", "3.6rem"],
+              fontWeight: 600,
+              cursor: "inherit",
+            }}
+          >
             {label}
           </Typography>
         </MenuItem>

@@ -1,6 +1,5 @@
 import { Skeleton, Stack, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
-import { useTheme } from "@mui/material/styles"
 
 import NumberTypography from "@/components/NumberTypography"
 
@@ -12,7 +11,6 @@ const StatisticSkeleton = styled(Skeleton)(({ theme }) => ({
 
 const Statistic = props => {
   const { label, children, loading } = props
-  const theme = useTheme()
 
   return (
     <Stack
@@ -20,9 +18,9 @@ const Statistic = props => {
       sx={{
         flex: 1,
         width: "30rem",
-        borderRadius: "1.6rem",
+        borderRadius: ["0.8rem", "1.6rem"],
         backgroundColor: "rgba(38, 38, 38, 0.50)",
-        p: ["0.8rem 1.2rem", "1.6rem 2.4rem"],
+        p: ["1.6rem", "1.6rem 2.4rem"],
       }}
     >
       <Typography
@@ -31,12 +29,6 @@ const Statistic = props => {
           lineHeight: ["2rem", "2.8rem"],
           fontWeight: 600,
           textAlign: "center",
-          [theme.breakpoints.down("md")]: {
-            flex: 1,
-            display: "inline-flex",
-            alignItems: "center",
-            alignSelf: "center",
-          },
         }}
       >
         {label}
