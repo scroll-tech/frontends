@@ -138,17 +138,16 @@ export function useSendTransaction(props) {
   }
 
   const depositETH = async () => {
-    if (isAlternativeGasTokenEnabled) {
-      const wrappedTokenGateway = networksAndSigners[CHAIN_ID.L1].wrappedTokenGateway
-      return wrappedTokenGateway.deposit(receiver || walletCurrentAddress, parsedAmount, {
-        value: parsedAmount,
-      })
-    }
-
     const fee = gasPrice * gasLimit
     const options: TxOptions = {
       value: parsedAmount + fee,
     }
+
+    if (isAlternativeGasTokenEnabled) {
+      const wrappedTokenGateway = networksAndSigners[CHAIN_ID.L1].wrappedTokenGateway
+      return wrappedTokenGateway.deposit(receiver || walletCurrentAddress, parsedAmount, options)
+    }
+
     return networksAndSigners[CHAIN_ID.L1].scrollMessenger["sendMessage(address,uint256,bytes,uint256)"](
       receiver || walletCurrentAddress,
       parsedAmount,
@@ -159,9 +158,11 @@ export function useSendTransaction(props) {
   }
 
   const depositGasToken = async () => {
-    return networksAndSigners[CHAIN_ID.L1].gasTokenGateway.depositETH(receiver || walletCurrentAddress, parsedAmount, gasLimit, {
-      value: parsedAmount,
-    })
+    const fee = gasPrice * gasLimit
+    const options: TxOptions = {
+      value: fee,
+    }
+    return networksAndSigners[CHAIN_ID.L1].gasTokenGateway.depositETH(receiver || walletCurrentAddress, parsedAmount, gasLimit, options)
   }
 
   const depositERC20 = async () => {

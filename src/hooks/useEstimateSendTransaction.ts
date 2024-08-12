@@ -27,22 +27,24 @@ export function useEstimateSendTransaction(props) {
   }, [networksAndSigners, fromNetwork, selectedToken.native])
 
   const depositETH = async () => {
+    const fee = gasPrice * gasLimit
+
     if (isAlternativeGasTokenEnabled) {
       const wrappedTokenGateway = networksAndSigners[CHAIN_ID.L1].wrappedTokenGateway
       return wrappedTokenGateway.deposit.estimateGas(walletCurrentAddress, minimumAmount, {
-        value: minimumAmount,
+        value: minimumAmount + fee,
       })
     }
 
-    const fee = gasPrice * gasLimit
     return instance["sendMessage(address,uint256,bytes,uint256)"].estimateGas(walletCurrentAddress, minimumAmount, "0x", gasLimit, {
       value: minimumAmount + fee,
     })
   }
 
   const depositGasToken = async () => {
+    const fee = gasPrice * gasLimit
     return networksAndSigners[CHAIN_ID.L1].gasTokenGateway.depositETH.estimateGas(walletCurrentAddress, minimumAmount, 300000, {
-      value: minimumAmount,
+      value: fee,
     })
   }
 
