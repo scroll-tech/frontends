@@ -20,6 +20,7 @@ const BadgeList = props => {
   const {
     searchParams: { category, sort, keyword, page },
     onAddPage,
+    ...restProps
   } = props
   const [loading, setLoading] = useState(false)
   const prePage = usePrevious(page)
@@ -78,35 +79,39 @@ const BadgeList = props => {
 
   const renderList = () => {
     if (loading && !badgeList.length) {
-      return <LoadingPage height="26rem" sx={{ gridColumn: ["1 / 3", "1 / 3", "2 / 4"] }}></LoadingPage>
+      return <LoadingPage height="26rem" {...restProps}></LoadingPage>
     } else if (isError && !badgeList.length) {
       return (
         <Error
-          sx={{ height: "26rem", gridColumn: ["1 / 3", "1 / 3", "2 / 4"] }}
+          dark
+          sx={{ height: "26rem" }}
           title="Oops! Something went wrong"
           action={
             <LoadingButton loading={loading} onClick={handleReQuest}>
               Try again
             </LoadingButton>
           }
+          {...restProps}
         ></Error>
       )
     } else if (!badgeList.length) {
       return (
         <NoData
-          sx={{ height: "26rem", gridColumn: ["1 / 3", "1 / 3", "2 / 4"] }}
+          dark
+          sx={{ height: "26rem" }}
           title="No matches found"
           description="Please change your key words and search again"
+          {...restProps}
         ></NoData>
       )
     }
 
     return (
-      <>
+      <Box {...restProps}>
         <Masonry data={badgeList} ItemComponent={BadgeCard}></Masonry>
 
         {!hasMore && (
-          <Box sx={{ gridColumn: ["1 / 3", "1 / 3", "2 / 4"], textAlign: "center", mt: "1.6rem" }}>
+          <Box sx={{ textAlign: "center", mt: "1.6rem" }}>
             <Button
               variant="contained"
               sx={{
@@ -127,7 +132,7 @@ const BadgeList = props => {
             </Button>
           </Box>
         )}
-      </>
+      </Box>
     )
   }
 
