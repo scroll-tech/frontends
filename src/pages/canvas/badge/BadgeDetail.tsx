@@ -226,7 +226,7 @@ const BadgeDetail = props => {
               )}
             </InfoBox>
 
-            {!property.includes("owner") && (
+            {!property.includes("owner") && !detail.native && (
               <DisclaimerBox>
                 <Img src="/imgs/canvas/warning.png" style={{ width: "1.4rem", height: "1.4rem", marginRight: "0.8rem" }} alt="warning image" />
                 Issuing badge is permissionless - perform due diligence and interact with dApps at your own risk.
