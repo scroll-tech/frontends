@@ -1,4 +1,4 @@
-import { Stack, SvgIcon, Typography } from "@mui/material"
+import { Box, Stack, SvgIcon, Typography } from "@mui/material"
 
 import Button from "@/components/Button"
 import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
@@ -12,7 +12,12 @@ const Introduction = () => {
       <SectionHeader
         dark
         title="Attested Badges, Not Tokens"
-        content="Unlike NFTs, badges are non-transferable proofs of your unique traits, status and achievements, thanks to integration with Ethereum Attestation Service."
+        content={
+          <Box sx={{ maxWidth: "110rem" }}>
+            Unlike NFTs, badges are non-transferable proofs of your unique traits, status and achievements, thanks to integration with Ethereum
+            Attestation Service.
+          </Box>
+        }
       ></SectionHeader>
       <Stack direction="row" gap="11.2rem" sx={{ mt: "6.4rem", "& p": { color: "primary.contrastText" } }}>
         {CANVAS_BADGE_INTRODUCTIONS.map(({ key, icon, label, items }) => (

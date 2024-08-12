@@ -51,3 +51,14 @@ export const CANVAS_BADGE_INTRODUCTIONS = [
     ],
   },
 ]
+
+export const SORT_LIST = [
+  { key: "minted", label: "Sort by most minted" },
+  { key: "added", label: "Sort by latest added" },
+]
+
+export const CATEGORY_LIST = [
+  { key: "all", label: "All " },
+  { key: "Achievements", label: "🏆 Achievements" },
+  { key: "Identities", label: "👤 Identities " },
+]

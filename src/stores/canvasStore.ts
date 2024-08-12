@@ -12,9 +12,6 @@ import {
   queryUserBadgesWrapped,
   upgradeBadge,
 } from "@/services/canvasService"
-import { requireEnv } from "@/utils"
-
-const BADGE_LIST_URL = requireEnv("REACT_APP_BADGE_LIST_URL")
 
 // import { testAsyncFunc } from "@/services/canvasService"
 
@@ -120,7 +117,7 @@ interface CanvasStore {
   changeInitialMint: (initialMint: boolean) => void
   queryFirstMintUsername: (provider) => void
   changeInputReferralCode: (inputReferralCode) => void
-  jointBadgeList: () => Promise<void>
+  // jointBadgeList: () => Promise<void>
   upgradeBadgeAndRefreshUserBadges: (provider, badge: { id: string; badgeContract: string }) => Promise<any>
 }
 
@@ -486,12 +483,12 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
     })
   },
 
-  jointBadgeList: async () => {
-    const { badges } = await scrollRequest(BADGE_LIST_URL)
-    set({
-      badgeList: [...SCROLL_BADGES.slice(0, SCROLL_BADGES.length - 1), ...badges, SCROLL_BADGES[SCROLL_BADGES.length - 1]],
-    })
-  },
+  // jointBadgeList: async () => {
+  //   const { badges } = await scrollRequest(BADGE_LIST_URL)
+  //   set({
+  //     badgeList: [...SCROLL_BADGES.slice(0, SCROLL_BADGES.length - 1), ...badges, SCROLL_BADGES[SCROLL_BADGES.length - 1]],
+  //   })
+  // },
 
   addFirstBadge: async (providerOrSigner, badgeId, badgeImage, badgeContract) => {
     set({
