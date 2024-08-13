@@ -21,7 +21,10 @@ const useTxStore = create<TxStore>()(
       // when user send a transaction
       addTransaction: (walletAddress, newTx) => {
         const frontTransactions = get().frontTransactions
-        const txList = frontTransactions[walletAddress] ?? []
+        let txList = frontTransactions[walletAddress] ?? []
+        if (!Object.isExtensible(txList)) {
+          txList = [...txList]
+        }
         txList.unshift(newTx)
         set({
           frontTransactions: { ...frontTransactions, [walletAddress]: txList },
