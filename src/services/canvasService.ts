@@ -373,9 +373,9 @@ const mintBadge = async (provider, walletCurrentAddress, badge) => {
     if (isUserRejected(error)) {
       return false
     } else {
-      const message = recognizeError(error, badge.issuer.name)
+      const message = recognizeError(error, badge.issuer)
       sentryDebug(`mint badge:${walletCurrentAddress}-${badge.badgeContract}-${error.message}`)
-      throw new Error(trimErrorMessage(message))
+      throw typeof message === "string" ? new Error(trimErrorMessage(message)) : message
     }
   }
 }
@@ -398,9 +398,9 @@ const upgradeBadge = async (provider, badge) => {
     if (isUserRejected(error)) {
       return false
     } else {
-      const message = recognizeError(error, badge.issuer.name)
+      const message = recognizeError(error, badge.issuer)
       sentryDebug(`upgrade badge:${badge.id}-${error.message}`)
-      throw new Error(trimErrorMessage(message))
+      throw typeof message === "string" ? new Error(trimErrorMessage(message)) : message
     }
   }
 }
