@@ -67,7 +67,6 @@ const Web3ContextProvider = props => {
     <RainbowContext.Provider
       value={{
         provider,
-        // walletCurrentAddress: "0x78f218b168964dcF899fA8f2F49B95ee640e843A",
         walletCurrentAddress: address,
         walletName: activeConnector?.name,
         chainId,

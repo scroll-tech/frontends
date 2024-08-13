@@ -5,7 +5,7 @@ import BrandKit from "@/pages/brand-kit"
 import Bridge from "@/pages/bridge"
 import BridgeFAQ from "@/pages/bridge/FAQ"
 import ScrollCanvas from "@/pages/canvas"
-import CanvasAndBadge from "@/pages/canvas-badge"
+import CanvasAndBadges from "@/pages/canvas-badge"
 import CanvasDashboard from "@/pages/canvas/Dashboard"
 import CanvasBadge from "@/pages/canvas/badge"
 import CanvasBadgeContract from "@/pages/canvas/badgeContract"
@@ -279,7 +279,7 @@ const mainnetRoutes = [
   {
     name: "Canvas And Badges",
     path: "/canvas-and-badges",
-    element: <CanvasAndBadge />,
+    element: <CanvasAndBadges />,
   },
 ]
 
