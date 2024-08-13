@@ -17,12 +17,13 @@ export interface Badge {
     origin: string
     name: string
     logo: string
+    communityURL?: string
   }
   badgeContract: string
 
   // Backend-authorized
   attesterProxy?: string
-  baseUrl?: string
+  baseURL?: string
   eligibilityCheck?: boolean
 
   // Origin NFT
@@ -32,9 +33,7 @@ export interface Badge {
   nftAbi?: object
 
   // issued by Scroll
-  native: boolean
-
-  airdrop?: boolean
+  native?: boolean
 }
 
 // TODO: only keep OriginsNFTBadge and EthereumYearBadge
@@ -85,7 +84,7 @@ export const ETHEREUM_YEAR_BADGE = {
     name: "Scroll",
     logo: "https://scroll.io/static/media/Scroll_Logomark.673577c8260b63ae56867bc9af6af514.svg",
   },
-  baseUrl: ETHEREUM_YEAR_BASE_URL,
+  baseURL: ETHEREUM_YEAR_BASE_URL,
 }
 
 // TODO: delete

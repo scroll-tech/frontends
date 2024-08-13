@@ -6,7 +6,7 @@ const useCheckTheme = () => {
   // TODO:
   const isCanvas = useMatch("/canvas/*")
   const dark = useMemo(() => {
-    return ["/developer-nft/check-eligibility", "/developer-nft/mint", "/canvas-badge"].includes(pathname) || isCanvas
+    return ["/developer-nft/check-eligibility", "/developer-nft/mint", "/canvas-and-badges"].includes(pathname) || isCanvas
   }, [pathname])
 
   return dark

@@ -1,4 +1,5 @@
 // import { useSnackbar } from "notistack"
+import { useQuery } from "@tanstack/react-query"
 import { useEffect, useMemo } from "react"
 import { Navigate, useNavigate, useParams } from "react-router-dom"
 
@@ -12,9 +13,8 @@ import Link from "@/components/Link"
 import { CHAIN_ID } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useAsyncMemo } from "@/hooks"
-import useBadgeListProxy from "@/hooks/useBadgeProxy"
 import useSnackbar from "@/hooks/useSnackbar"
-import { checkBadgeEligibility, checkIfHasBadgeByAddress, mintBadge } from "@/services/canvasService"
+import { checkBadgeEligibility, checkIfHasBadgeByAddress, fetchNotionBadgeByAddr, mintBadge } from "@/services/canvasService"
 import useCanvasStore from "@/stores/canvasStore"
 import { generateShareTwitterURL, requireEnv, switchNetwork } from "@/utils"
 
@@ -25,14 +25,22 @@ const BadgeContractDetail = props => {
   const { address } = useParams()
   const { walletCurrentAddress, connect, chainId, provider } = useRainbowContext()
   const { profileMinted, changeIsBadgeMinting, isBadgeMinting, userBadges, queryUserBadges, queryUserBadgesLoading } = useCanvasStore()
-  const badgeListProxy = useBadgeListProxy()
-  // const [badgeMinted, setBadgeMinted] = useState(false)
+
+  const {
+    data: badgeForMint,
+    isFetching,
+    isFetched,
+  } = useQuery({
+    queryKey: ["notionBadge", address],
+    queryFn: async () => {
+      const badge = await fetchNotionBadgeByAddr(address)
+      return badge
+    },
+    initialData: {},
+  })
+
   const navigate = useNavigate()
   const alertWarning = useSnackbar()
-
-  const badgeForMint = useMemo(() => {
-    return badgeListProxy(address) || ({} as any)
-  }, [address, badgeListProxy])
 
   const isL2 = useMemo(() => chainId === CHAIN_ID.L2, [chainId])
 
@@ -44,7 +52,7 @@ const BadgeContractDetail = props => {
   }, [provider, isL2, walletCurrentAddress, badgeForMint])
 
   const isEligible = useAsyncMemo(async () => {
-    if (provider && isL2) {
+    if (provider && isL2 && badgeForMint.badgeContract) {
       const eligibility = await checkBadgeEligibility(provider, walletCurrentAddress, badgeForMint)
       return eligibility
     }
@@ -254,11 +262,11 @@ const BadgeContractDetail = props => {
     return null
   }
 
-  if (!badgeForMint) {
+  if (isFetched && !badgeForMint.badgeContract) {
     return <Navigate to="/404"></Navigate>
   }
   return (
-    <BadgeDetail detail={badgeForMint} metadata={metadata} property={["issuer"]} breadcrumb={<Back></Back>}>
+    <BadgeDetail detail={badgeForMint} metadata={metadata} loading={isFetching} property={["issuer"]} breadcrumb={<Back></Back>}>
       {renderAction()}
 
       {badgeForMint.native ? (

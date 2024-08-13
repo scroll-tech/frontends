@@ -27,10 +27,10 @@ const SearchInput = props => {
         padding: "0.8rem 2.4rem",
         [theme.breakpoints.down("md")]: {
           gridRow: "2 / 3",
+          maxWidth: "100%",
         },
         [theme.breakpoints.down("sm")]: {
           padding: "0.8rem 1.6rem",
-          maxWidth: "100%",
         },
       }}
       className={className}

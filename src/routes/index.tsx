@@ -277,8 +277,8 @@ const mainnetRoutes = [
     isHiddenFooter: true,
   },
   {
-    name: "Canvas & Badge",
-    path: "/canvas-badge",
+    name: "Canvas And Badges",
+    path: "/canvas-and-badges",
     element: <CanvasAndBadge />,
   },
 ]

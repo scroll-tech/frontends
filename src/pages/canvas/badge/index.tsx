@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 
 import { SvgIcon } from "@mui/material"
@@ -7,12 +7,18 @@ import { getSmallAvatarURL, viewEASScanURL } from "@/apis/canvas"
 import { ReactComponent as ShareSvg } from "@/assets/svgs/canvas/share.svg"
 import ScrollButton from "@/components/Button"
 import Link from "@/components/Link"
-import { NFT_RARITY_MAP, SCROLL_BADGES } from "@/constants"
+import { NFT_RARITY_MAP } from "@/constants"
 import { useCanvasContext } from "@/contexts/CanvasContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import useBadgeListProxy from "@/hooks/useBadgeProxy"
 import useSnackbar from "@/hooks/useSnackbar"
-import { checkBadgeUpgradable, fillBadgeDetailWithPayload, queryBadgeDetailById, queryCanvasUsername, upgradeBadge } from "@/services/canvasService"
+import {
+  checkBadgeUpgradable,
+  fetchNotionBadgeByAddr,
+  fillBadgeDetailWithPayload,
+  queryBadgeDetailById,
+  queryCanvasUsername,
+  upgradeBadge,
+} from "@/services/canvasService"
 import useCanvasStore from "@/stores/canvasStore"
 import { formatDate, generateShareTwitterURL, requireEnv } from "@/utils"
 
@@ -26,28 +32,12 @@ const BadgeDetailPage = () => {
   const { walletCurrentAddress } = useRainbowContext()
 
   const { unsignedProfileRegistryContract, publicProvider } = useCanvasContext()
-  const { changeIsBadgeUpgrading, username, badgeList } = useCanvasStore()
-  const badgeListProxy = useBadgeListProxy()
-
-  const isOriginsNFTBadge = useCallback(
-    badgeContract => {
-      return badgeListProxy(badgeContract)?.originsNFT
-    },
-    [badgeListProxy],
-  )
-
-  const isNativeBadge = useCallback(
-    badgeContract => {
-      return badgeListProxy(badgeContract)?.native
-    },
-    [badgeListProxy],
-  )
+  const { changeIsBadgeUpgrading, username } = useCanvasStore()
 
   const alertWarning = useSnackbar()
 
   const [detail, setDetail] = useState<any>({})
   const [loading, setLoading] = useState(false)
-  // const [errorMessage, setErrorMessage] = useState("")
 
   const metadata = useMemo(
     () => ({
@@ -67,10 +57,10 @@ const BadgeDetailPage = () => {
   }, [id, detail])
 
   useEffect(() => {
-    if (unsignedProfileRegistryContract && badgeList.length > SCROLL_BADGES.length) {
+    if (unsignedProfileRegistryContract) {
       fetchBadgeDetailByBadgeId(id)
     }
-  }, [unsignedProfileRegistryContract, id, badgeList])
+  }, [unsignedProfileRegistryContract, id])
 
   const fetchProfileUsername = async (provider, walletAddress) => {
     try {
@@ -95,6 +85,7 @@ const BadgeDetailPage = () => {
 
       const { badgeContract, description, ...badgeMetadata } = await fillBadgeDetailWithPayload(publicProvider, { id, data })
 
+      const notionBadge = await fetchNotionBadgeByAddr(badgeContract)
       const name = await fetchProfileUsername(publicProvider, recipient)
       let upgradable = false
       if (walletCurrentAddress === recipient) {
@@ -109,11 +100,13 @@ const BadgeDetailPage = () => {
         ownerLogo: getSmallAvatarURL(recipient),
         mintedOn: formatDate(time * 1000),
         badgeContract,
-        issuer: badgeListProxy(badgeContract)?.issuer,
-        description: isOriginsNFTBadge(badgeContract) ? badgeListProxy(badgeContract)?.description : description,
+        issuer: notionBadge.issuer,
+        description: notionBadge.originsNFT ? notionBadge.description : description,
         upgradable,
+        originsNFT: notionBadge.originsNFT,
+        native: notionBadge.native,
       }
-      if (isOriginsNFTBadge(badgeContract)) {
+      if (notionBadge.originsNFT) {
         const rarityNum = badgeMetadata.attributes.find(item => item.trait_type === "Rarity").value
         badgeDetail.rarity = NFT_RARITY_MAP[rarityNum]
       }
@@ -156,7 +149,7 @@ const BadgeDetailPage = () => {
         detail={detail}
         metadata={metadata}
         loading={loading}
-        property={["owner", "issuer", "mintedOn", isOriginsNFTBadge(detail.badgeContract) ? "rarity" : undefined]}
+        property={["owner", "issuer", "mintedOn", detail.originsNFT ? "rarity" : undefined]}
         breadcrumb={<BackToCanvas username={detail.owner} loading={loading} href={viewCanvasURL}></BackToCanvas>}
         onUpgrade={handleUpgradeBadge}
       >
@@ -164,7 +157,7 @@ const BadgeDetailPage = () => {
           View on EAS
         </ScrollButton>
 
-        {isNativeBadge(detail.badgeContract) ? (
+        {detail.native ? (
           <ScrollButton color="secondary" href="/canvas">
             Visit my canvas
           </ScrollButton>

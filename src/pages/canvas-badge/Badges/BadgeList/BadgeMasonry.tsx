@@ -85,48 +85,51 @@ function createCellPositioner({ cellMeasurerCache, columnCount, columnWidth, spa
   return cellPositioner
 }
 
-const cache = new CellMeasurerCache({
-  defaultHeight: 320,
-  defaultWidth: 330,
-  fixedWidth: true,
-})
-
-const GridExample = props => {
-  const { data, columnWidth = 330, gutterSize = 24, overscanByPixels = 600, ItemComponent } = props
+const BadgeMasonry = props => {
+  const { data, columnWidth = 330, gutterSize = 24, overscanByPixels = 600, ItemComponent, onItemClick } = props
   const { classes } = useStyles()
-
-  const masonryRef = useRef<any>(null)
 
   const windowScrollerRef = useRef<any>(null)
 
   const columnCountRef = useRef(0)
-  const cellPositionerRef = useRef<any>()
+
+  const cacheRef = useRef(
+    new CellMeasurerCache({
+      defaultHeight: 320,
+      defaultWidth: 330,
+      fixedWidth: true,
+    }),
+  )
+  const cellPositionerRef = useRef<any>(null)
+  const masonryRef = useRef<any>(null)
 
   // useEffect(() => {
-  //   if (preData?.length) {
-  //     windowScrollerRef.current?.updatePosition()
-  //   }
-  // }, [data, preData])
+  //   cacheRef.current.clearAll()
+  //   masonryRef.current.recomputeCellPositions()
+  //   // console.log(data.length, "data length")
+  // }, [data])
 
   const calculateColumnCount = containerWidth => {
     columnCountRef.current = Math.floor((containerWidth + gutterSize) / (columnWidth + gutterSize))
   }
 
-  const resetCellPositioner = () => {
+  const initCellPositioner = () => {
     if (!cellPositionerRef.current) {
       cellPositionerRef.current = createCellPositioner({
-        cellMeasurerCache: cache,
-        columnCount: columnCountRef.current,
-        columnWidth,
-        spacer: gutterSize,
-      })
-    } else {
-      cellPositionerRef.current?.reset({
+        cellMeasurerCache: cacheRef.current,
         columnCount: columnCountRef.current,
         columnWidth,
         spacer: gutterSize,
       })
     }
+  }
+
+  const resetCellPositioner = () => {
+    cellPositionerRef.current?.reset({
+      columnCount: columnCountRef.current,
+      columnWidth,
+      spacer: gutterSize,
+    })
   }
 
   const onResize = ({ width }) => {
@@ -135,25 +138,23 @@ const GridExample = props => {
     masonryRef.current?.recomputeCellPositions()
   }
 
-  const onAutoSizerResize = ({ width }) => {}
-
-  const onWindowResize = ({ width, height }) => {
-    resetCellPositioner()
-    masonryRef.current?.recomputeCellPositions()
-  }
-
   const cellRenderer = ({ index, key, parent, style }) => {
     return (
-      <CellMeasurer cache={cache} index={index} key={key} parent={parent}>
-        <div style={style} className={classes.item}>
-          <ItemComponent {...data[index]}></ItemComponent>
-        </div>
-      </CellMeasurer>
+      <>
+        {data[index]?.badgeContract ? (
+          <CellMeasurer cache={cacheRef.current} index={index} key={key} parent={parent}>
+            <div style={style} className={classes.item}>
+              <ItemComponent {...data[index]} onClick={() => onItemClick(data[index])}></ItemComponent>
+            </div>
+          </CellMeasurer>
+        ) : null}
+      </>
     )
   }
 
   const renderMasonry = ({ width, height, scrollTop, isScrolling, onChildScroll }) => {
-    onResize({ width })
+    calculateColumnCount(width)
+    initCellPositioner()
 
     const masonryWidth = (columnWidth + gutterSize) * (columnCountRef.current - 1) + columnWidth
 
@@ -161,7 +162,7 @@ const GridExample = props => {
       <Masonry
         autoHeight
         cellCount={data.length}
-        cellMeasurerCache={cache}
+        cellMeasurerCache={cacheRef.current}
         cellPositioner={cellPositionerRef.current}
         cellRenderer={cellRenderer}
         height={height}
@@ -170,8 +171,7 @@ const GridExample = props => {
         scrollTop={scrollTop}
         onScroll={onChildScroll}
         isScrolling={isScrolling}
-        deferredMeasurementCache={cache}
-        keyMapper={index => data[index].name}
+        keyMapper={index => data[index]?.badgeContract}
         width={masonryWidth}
         style={{ margin: "0 auto" }}
       />
@@ -180,29 +180,13 @@ const GridExample = props => {
 
   const renderAutoSizer = ({ height, scrollTop, isScrolling, onChildScroll }) => {
     return (
-      <AutoSizer disableHeight onResize={onAutoSizerResize} style={{ width: "min-content !important", overflow: "unset !important" }}>
+      <AutoSizer disableHeight onResize={onResize} style={{ width: "100% !important", overflow: "unset !important" }}>
         {({ width }) => renderMasonry({ width, height, scrollTop, isScrolling, onChildScroll })}
       </AutoSizer>
     )
   }
 
-  // const _resetList = () => {
-  //   const ROW_HEIGHTS = [25, 50, 75, 100]
-
-  //   data.forEach(datum => {
-  //     datum.size = ROW_HEIGHTS[Math.floor(Math.random() * ROW_HEIGHTS.length)]
-  //   })
-
-  //   cache.clearAll()
-  //   _resetCellPositioner()
-  //   _masonryRef.current.clearCellPositions()
-  // }
-
-  return (
-    <WindowScroller onResize={onWindowResize} ref={windowScrollerRef}>
-      {renderAutoSizer}
-    </WindowScroller>
-  )
+  return <WindowScroller ref={windowScrollerRef}>{renderAutoSizer}</WindowScroller>
 }
 
-export default GridExample
+export default BadgeMasonry

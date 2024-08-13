@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query"
 import { motion, useTime, useTransform } from "framer-motion"
 import { useEffect, useRef, useState } from "react"
 import Img from "react-cool-img"
@@ -5,7 +6,9 @@ import Img from "react-cool-img"
 import { Box, Container, Stack, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
+import { retrieveCanvasBadgeURL } from "@/apis/canvas-badge"
 import Button from "@/components/Button"
+import { CANVAS_URL, ISSUE_BADGES_URL } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
 import Counter from "./Counter"
@@ -14,9 +17,8 @@ import Statistic from "./Statistic"
 const AnimatedContainer = motion(Container)
 
 const ImageWrapper = motion(Box)
-// wrapper 1328x337
-// use scale value instead of absolute value
 
+// wrapper 1328x337
 const BADGES = [
   {
     image: "/imgs/canvas-badge/Ambient.webp",
@@ -131,8 +133,6 @@ function pickRandomNumbers(excludeNumbers: number[] = []) {
 
 const Header = () => {
   const { isMobile } = useCheckViewport()
-  const [totalCanvasCount, setTotalCanvasCount] = useState(0)
-  const [totalBadgeCount, setTotalBadgeCount] = useState(0)
   const [badgesScale, setBadgesScale] = useState(1)
 
   const [randomNumbers, setRandomNumbers] = useState(pickRandomNumbers())
@@ -148,21 +148,24 @@ const Header = () => {
     return () => unsubscribe()
   }, [transform])
 
-  useEffect(() => {
-    setTotalCanvasCount(444232)
-    setTotalBadgeCount(910946)
-    const counterTimer = setInterval(() => {
-      setTotalCanvasCount(pre => pre + ~~(Math.random() * 100))
-      setTotalBadgeCount(pre => pre + ~~(Math.random() * 500))
-    }, 5e3)
-    return () => {
-      clearInterval(counterTimer)
-    }
-  }, [])
+  const { data } = useQuery({
+    queryKey: ["totalCount"],
+    queryFn: async () => {
+      const data = await scrollRequest(retrieveCanvasBadgeURL, {
+        method: "POST",
+        body: JSON.stringify({
+          canvas: true,
+          badges: true,
+        }),
+      })
+      return data
+    },
+    refetchInterval: 18e4, // 3 mins
+    placeholderData: { canvasCount: 100000, badgesCount: 100000 },
+  })
 
   useEffect(() => {
     const handleWindowResize = () => {
-      console.log(badgesContainerRef.current?.clientWidth, "vvv")
       if (badgesContainerRef.current?.clientWidth && badgesContainerRef.current.clientWidth < 1328) {
         setBadgesScale(badgesContainerRef.current.clientWidth / 1328)
       } else {
@@ -184,7 +187,7 @@ const Header = () => {
         {
           width: "100%",
           aspectRatio: ["unset", "unset", "1512 / 850"],
-          height: "53.4vw",
+          height: "52vw",
           backgroundSize: "auto 100%",
           position: "relative",
           textAlign: "center",
@@ -196,12 +199,16 @@ const Header = () => {
             color: "#FFF8F3 !important",
           },
           "@media(max-width: 1600px)": {
-            height: "72vw",
+            height: "64vw",
+            // backgroundPosition: "center bottom",
           },
         },
         theme => ({
+          [theme.breakpoints.down("lg")]: {
+            height: "76vw",
+          },
           [theme.breakpoints.down("md")]: {
-            height: "72vh",
+            height: "75rem",
           },
           [theme.breakpoints.down("sm")]: {
             height: "62rem",
@@ -210,23 +217,27 @@ const Header = () => {
       ]}
     >
       <Typography sx={{ fontSize: ["3.8rem", "7.8rem"], lineHeight: ["5.6rem", "8.8rem"], fontWeight: 600, mb: [0, "1.6rem"] }}>
-        Canvas and Badge
+        Canvas and Badges
       </Typography>
       <Stack alignItems="center" gap={isMobile ? "2.4rem" : "3.2rem"}>
         <Typography sx={{ fontSize: ["1.6rem", "2.4rem"], lineHeight: ["1.8rem", "3.6rem"], fontWeight: 500 }}>
-          Map your journey and earn badges across Scroll’s ecosystem.
+          Build your on-chain persona and collect badges across Scroll’s ecosystem
         </Typography>
         <Stack direction="row" gap={isMobile ? "0.8rem" : "2.4rem"} sx={{ width: ["100%", "62.4rem"], mt: ["1.2rem", 0] }}>
           <Statistic label="Total Canvas Minted">
-            <Counter number={totalCanvasCount}></Counter>
+            <Counter number={data?.canvasCount}></Counter>
           </Statistic>
           <Statistic label="Total Badges Minted">
-            <Counter number={totalBadgeCount}></Counter>
+            <Counter number={data?.badgesCount}></Counter>
           </Statistic>
         </Stack>
         <Stack direction={isMobile ? "column" : "row"} gap="1.6rem" sx={{ width: ["100%", "auto"] }}>
-          <BadgesButton color="primary">Visit Canvas</BadgesButton>
-          <BadgesButton color="tertiary">Issue Badges</BadgesButton>
+          <BadgesButton color="primary" href={CANVAS_URL}>
+            Visit Canvas
+          </BadgesButton>
+          <BadgesButton color="tertiary" href={ISSUE_BADGES_URL} target="_blank">
+            Issue Badges
+          </BadgesButton>
         </Stack>
       </Stack>
       <AnimatedContainer sx={{ mt: ["9.5rem", "6rem", "2.8rem"], px: "0 !important" }} ref={badgesContainerRef}>
@@ -257,7 +268,6 @@ const Header = () => {
           ))}
         </Box>
       </AnimatedContainer>
-      {/* </Box> */}
     </Box>
   )
 }

@@ -1,4 +1,3 @@
-import { motion } from "framer-motion"
 import Img from "react-cool-img"
 import { makeStyles } from "tss-react/mui"
 
@@ -25,22 +24,17 @@ const useStyles = makeStyles()(theme => ({
     overflow: "hidden",
     willChange: "width, transform",
     cursor: "default",
-    // width: "max-content",
 
-    width: "3.2rem",
-    transform: "translateX(calc(100% - 3.2rem))",
-    transition: "all 0.3s ease",
+    maxWidth: "3.2rem",
+    transition: "all 0.3s cubic-bezier(0.34, 1.1, 0.64, 1)",
     "&:hover": {
-      width: "max-content",
-      transform: "translateX(0)",
+      maxWidth: "20rem",
     },
   },
 }))
 
-const Category = motion(Box)
-
 const BadgeCard = props => {
-  const { name, image, description, issuer, category, count, onResize, className, onClick, ...restProps } = props
+  const { name, image, description, issuer, category, count, onResize, className, ...restProps } = props
   const { classes } = useStyles()
   const { isMobile } = useCheckViewport()
 
@@ -53,8 +47,11 @@ const BadgeCard = props => {
         backgroundColor: "#323232",
         boxShadow: "none",
         border: "none",
+        cursor: "pointer",
+        "& p": {
+          cursor: "pointer !important",
+        },
       }}
-      onClick={onClick}
       {...restProps}
     >
       <CardContent
@@ -71,21 +68,9 @@ const BadgeCard = props => {
           },
         }}
       >
-        {category === CATEGORY_LIST[1].key && (
-          <Category
-            // layout
-            // initial={{ width: "3.2rem", x: "100% - 3.2rem" }}
-            // whileHover={{
-            //   width: "max-content",
-            //   x: 0,
-            //   transition: { duration: 0.3, ease: "easeIn" },
-            // }}
-            className={classes.category}
-          >
-            {CATEGORY_LIST[1].label}
-          </Category>
-        )}
-        {category === CATEGORY_LIST[2].key && <Category className={classes.category}>{CATEGORY_LIST[2].label}</Category>}
+        {category === CATEGORY_LIST[1].key && <Box className={classes.category}>{CATEGORY_LIST[1].label}</Box>}
+        {category === CATEGORY_LIST[2].key && <Box className={classes.category}>{CATEGORY_LIST[2].label}</Box>}
+        {category === CATEGORY_LIST[3].key && <Box className={classes.category}>{CATEGORY_LIST[3].label}</Box>}
         <Img
           alt="logo"
           src={image}
@@ -93,7 +78,7 @@ const BadgeCard = props => {
         />
         <Typography sx={{ fontSize: ["1.8rem", "2rem"], lineHeight: "3.2rem", fontWeight: 600 }}>{name}</Typography>
 
-        <Typography sx={{ fontSize: ["1.4rem", "1.6rem"], lineHeight: "2.4rem", fontWeight: 600 }}>
+        <Typography sx={{ fontSize: ["1.4rem", "1.6rem"], lineHeight: "2.4rem", fontWeight: 500, fontFamily: "var(--developer-page-font-family)" }}>
           <SvgIcon sx={{ fontSize: "0.6rem", mr: "0.8rem" }} component={TotalMintedSvg} inheritViewBox></SvgIcon>
           Total Minted: {count}
         </Typography>

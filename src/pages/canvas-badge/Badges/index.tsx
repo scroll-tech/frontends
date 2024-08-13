@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react"
+import { useDebounce } from "react-use"
 import { makeStyles } from "tss-react/mui"
 
 import { Box, Typography } from "@mui/material"
@@ -21,8 +22,15 @@ const useStyles = makeStyles()(theme => ({
     columnGap: "1.6rem",
     alignItems: "center",
 
+    [theme.breakpoints.down("lg")]: {
+      gridTemplateColumns: "1fr repeat(2, max-content)",
+      gridTemplateRows: "min-content max-content",
+      rowGap: "2.4rem",
+      columnGap: "0.8rem",
+    },
+
     [theme.breakpoints.down("md")]: {
-      gridTemplateColumns: "max-content 1fr",
+      gridTemplateColumns: "max-content minmax(12.9rem, 1fr)",
       gridTemplateRows: "repeat(3, min-content) 1fr",
       rowGap: "2.4rem",
       columnGap: "0.8rem",
@@ -30,7 +38,11 @@ const useStyles = makeStyles()(theme => ({
   },
   search: {
     justifySelf: "flex-end",
+    [theme.breakpoints.down("lg")]: {
+      justifySelf: "stretch",
+    },
     [theme.breakpoints.down("md")]: {
+      // width: "100%",
       justifySelf: "stretch",
       gridColumn: "1 / 3",
     },
@@ -44,9 +56,7 @@ const useStyles = makeStyles()(theme => ({
     [theme.breakpoints.down("md")]: {
       gridColumn: "2 / 3",
     },
-    [theme.breakpoints.down("sm")]: {
-      width: "12.9rem",
-    },
+    [theme.breakpoints.down("sm")]: {},
   },
   badgeList: {
     gridColumn: "1 / 5",
@@ -71,7 +81,20 @@ const Badges = () => {
 
   const stickyTop = useMemo(() => (trigger ? "2rem" : NORMAL_HEADER_HEIGHT), [trigger])
 
+  useDebounce(
+    () => {
+      setSearchParams(pre => ({
+        ...pre,
+        page: 1,
+        keyword: searchInput.trim(),
+      }))
+    },
+    5e2,
+    [searchInput],
+  )
+
   const handleChangeKeyword = e => {
+    e.preventDefault()
     setSearchInput(e.target.value)
   }
 
@@ -100,7 +123,7 @@ const Badges = () => {
             lineHeight: ["3.6rem", "6.4rem"],
             fontWeight: 500,
             color: "primary.contrastText",
-            gridColumn: ["span 2", "span 1"],
+            gridColumn: ["span 2", "span 2", "span 4", "span 1"],
           }}
         >
           Discover Badges

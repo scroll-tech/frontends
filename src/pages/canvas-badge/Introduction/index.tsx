@@ -3,7 +3,7 @@ import { Box, Stack, SvgIcon, Typography } from "@mui/material"
 import Button from "@/components/Button"
 import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
 import SectionWrapper from "@/components/SectionWrapper"
-import { CANVAS_BADGE_INTRODUCTIONS } from "@/constants"
+import { CANVAS_BADGE_INTRODUCTIONS, CANVAS_URL, ISSUE_BADGES_URL } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
 const Introduction = () => {
@@ -50,12 +50,12 @@ const Introduction = () => {
               ))}
               <SuccessionItem sx={{ mt: ["2.4rem", "3.2rem"] }}>
                 {key === "user" ? (
-                  <Button width={isMobile ? "100%" : "28rem"} color="primary">
+                  <Button width={isMobile ? "100%" : "28rem"} color="primary" href={CANVAS_URL}>
                     Visit Canvas
                   </Button>
                 ) : (
-                  <Button width={isMobile ? "100%" : "28rem"} color="primary">
-                    Issue a Badge
+                  <Button width={isMobile ? "100%" : "28rem"} color="primary" href={ISSUE_BADGES_URL} target="_blank">
+                    Issue Badges
                   </Button>
                 )}
               </SuccessionItem>
