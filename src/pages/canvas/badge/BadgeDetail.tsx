@@ -221,6 +221,7 @@ const BadgeDetail = props => {
                           display: "flex",
                           alignItems: "center",
                           gap: "0.8rem",
+                          fontSize: "inherit",
                         }}
                         underline="none"
                         href={detail.issuer.communityURL}
