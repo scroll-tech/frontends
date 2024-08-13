@@ -30,6 +30,18 @@ const InfoBox = styled<any>(Box)(({ theme, count }) => ({
   // justifyItems: "center",
 }))
 
+const DisclaimerBox = styled(Box)(({ theme }) => ({
+  padding: "0.8rem 1.2rem",
+  color: "#FFF",
+  fontSize: "1.4rem",
+  lineHeight: "2rem",
+  borderRadius: "0.4rem",
+  background: "#262626",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+}))
+
 const BadgeDetail = props => {
   const { detail, metadata, loading, breadcrumb, property, onUpgrade, children } = props
   const { isBadgeUpgrading } = useCanvasStore()
@@ -213,6 +225,13 @@ const BadgeDetail = props => {
                 </Statistic>
               )}
             </InfoBox>
+
+            {!property.includes("owner") && !detail.native && (
+              <DisclaimerBox>
+                <Img src="/imgs/canvas/warning.png" style={{ width: "1.4rem", height: "1.4rem", marginRight: "0.8rem" }} alt="warning image" />
+                Issuing badge is permissionless - perform due diligence and interact with dApps at your own risk.
+              </DisclaimerBox>
+            )}
 
             <Box
               ref={actionsRef}
