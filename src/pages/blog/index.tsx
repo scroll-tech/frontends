@@ -1,5 +1,6 @@
 import { orderBy } from "lodash"
 import { useEffect, useMemo, useState } from "react"
+import { useLocation } from "react-router-dom"
 import useStorage from "squirrel-gill"
 
 import { Tune as TuneIcon } from "@mui/icons-material"
@@ -162,6 +163,7 @@ const BlogList = styled("ul")(({ theme }) => ({
 }))
 
 const Blog = () => {
+  const location = useLocation()
   const { isDesktop } = useCheckViewport()
   const [language] = useStorage(localStorage, BLOG_LANGUAGE, "en")
   const BLOG_CATEGORY_LIST = useMemo(() => getBlogCategoryList(language), [language])
@@ -171,10 +173,12 @@ const Blog = () => {
   const handleFilterOpen = () => setFilterOpen(true)
   const handleFilterClose = () => setFilterOpen(false)
 
+  const category = location.state?.category ?? "All"
+
   const [blogs, setBlogs] = useState(blogSource)
   const [queryForm, setQueryForm] = useState({
     sort: "Newest",
-    category: "All",
+    category,
   })
 
   const blogsWithLang = useMemo(() => filterBlogsByLanguage(blogSource, language), [blogSource, language])
