@@ -2,8 +2,10 @@
 import { readItem } from "squirrel-gill/lib/storage"
 
 import { fetchClaimableTxListUrl, fetchTxListUrl, fetchWithdrawalListUrl } from "@/apis/bridge"
+import { CHAIN_ID, GAS_TOKEN_ADDR } from "@/constants/common"
 import { BLOCK_NUMBERS } from "@/constants/storageKey"
 import { TX_TYPE } from "@/constants/transaction"
+import { isAlternativeGasTokenEnabled } from "@/utils"
 
 export interface FrontendTxDB {
   [key: string]: Transaction[]
@@ -96,7 +98,12 @@ export const formatBackTxList = (backList, estimatedTimeMap) => {
       toBlockNumber: tx.counterpart_chain_tx?.block_number,
       amount,
       isL1: tx.message_type === 1,
-      symbolToken: tx.message_type === 1 ? tx.l1_token_address : tx.l2_token_address,
+      symbolToken:
+        tx.token_type === 1 && tx.message_type === 1 && isAlternativeGasTokenEnabled
+          ? GAS_TOKEN_ADDR[CHAIN_ID.L1]
+          : tx.message_type === 1
+          ? tx.l1_token_address
+          : tx.l2_token_address,
       claimInfo: tx.claim_info,
       initiatedAt,
       txStatus: tx.tx_status,
