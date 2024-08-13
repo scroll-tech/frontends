@@ -24,6 +24,7 @@ import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useBlockNumbers from "@/hooks/useBlockNumbers"
 import useClaimHistory from "@/hooks/useClaimHistory"
 import useTxHistory, { TxHistory } from "@/hooks/useTxHistory"
+import { isAlternativeGasTokenEnabled } from "@/utils/common"
 import { loadState } from "@/utils/localStorage"
 
 type BridgeContextProps = {
@@ -88,8 +89,10 @@ const BridgeContextProvider = ({ children }: any) => {
     l1ScrollMessenger = new ethers.Contract(SCROLL_MESSENGER_ADDR[CHAIN_ID.L1], L1_SCROLL_MESSENGER_ABI, l1signer)
     l2ScrollMessenger = new ethers.Contract(SCROLL_MESSENGER_ADDR[CHAIN_ID.L2], L2_SCROLL_MESSENGER_ABI, l2signer)
 
-    l1WrappedTokenGateway = new ethers.Contract(WRAPPED_TOKEN_GATEWAY_ADDR[CHAIN_ID.L1], L1_WRAPPED_TOKEN_GATEWAY_ABI, l1signer)
-    l1GasTokenGateway = new ethers.Contract(GAS_TOKEN_GATEWAY[CHAIN_ID.L1], L1_GAS_TOKEN_GATEWAY_ABI, l1signer)
+    if (isAlternativeGasTokenEnabled) {
+      l1WrappedTokenGateway = new ethers.Contract(WRAPPED_TOKEN_GATEWAY_ADDR[CHAIN_ID.L1], L1_WRAPPED_TOKEN_GATEWAY_ABI, l1signer)
+      l1GasTokenGateway = new ethers.Contract(GAS_TOKEN_GATEWAY[CHAIN_ID.L1], L1_GAS_TOKEN_GATEWAY_ABI, l1signer)
+    }
 
     setNetworksAndSigners({
       [CHAIN_ID.L1]: {

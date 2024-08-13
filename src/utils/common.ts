@@ -33,7 +33,10 @@ export const generateExploreLink = (explorer, hash, type = "tx") => {
   return `${explorer}/${type}/${hash}`
 }
 
-export const isAlternativeGasTokenEnabled = Boolean(requireEnv("REACT_APP_L1_GAS_TOKEN_ADDR"))
+export const isAlternativeGasTokenEnabled = (() => {
+  const gasTokenAddr = requireEnv("REACT_APP_L1_GAS_TOKEN_ADDR")
+  return Boolean(gasTokenAddr) && gasTokenAddr !== "0x0000000000000000000000000000000000000000"
+})()
 
 export const isValidEmail = (email: string): boolean => {
   const emailRegex: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/

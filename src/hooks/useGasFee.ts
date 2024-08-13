@@ -46,6 +46,7 @@ const useGasFee = (selectedToken, needApproval) => {
         priorityFee = null
       }
       const gasLimit = await estimateSend()
+
       if (gasLimit === null) {
         return {
           gasLimit: null,
