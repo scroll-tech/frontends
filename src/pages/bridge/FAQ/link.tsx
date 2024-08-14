@@ -4,7 +4,6 @@ import { Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { ReactComponent as LinkSvg } from "@/assets/svgs/bridge/external-link.svg"
-import { requireEnv } from "@/utils"
 
 const FAQsLink = styled(Link)(({ theme }) => ({
   color: "#6D6D6D",
@@ -28,7 +27,7 @@ const BridgeLinks = () => {
         Terms of Service
         <SvgIcon component={LinkSvg} inheritViewBox></SvgIcon>
       </FAQsLink>
-      <Typography> © Version {requireEnv("REACT_APP_VERSION")}</Typography>
+      <Typography> © Version V2.2.16</Typography>
     </Stack>
   )
 }

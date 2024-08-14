@@ -1,7 +1,6 @@
 #!/bin/sh
 
 cat <<EOF > /usr/share/nginx/html/runtime-env.js
-window.REACT_APP_VERSION = "$REACT_APP_VERSION";
 window.REACT_APP_ETH_SYMBOL = "$REACT_APP_ETH_SYMBOL";
 window.REACT_APP_BASE_CHAIN = "$REACT_APP_BASE_CHAIN";
 window.REACT_APP_ROLLUP = "$REACT_APP_ROLLUP";
