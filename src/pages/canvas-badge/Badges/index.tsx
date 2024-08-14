@@ -38,12 +38,11 @@ const useStyles = makeStyles()(theme => ({
   },
   search: {
     justifySelf: "flex-end",
+    width: "100%",
     [theme.breakpoints.down("lg")]: {
       justifySelf: "stretch",
     },
     [theme.breakpoints.down("md")]: {
-      // width: "100%",
-      justifySelf: "stretch",
       gridColumn: "1 / 3",
     },
   },
