@@ -45,7 +45,7 @@ const ReferDialog = () => {
   return (
     <Dialog open={referDialogVisible} onClose={handleClose}>
       <Box sx={{ width: ["100%", "auto"], height: ["80%", "auto"] }}>
-        <Title>Invite friends & you both received</Title>
+        <Title>Invite friends & you both receive</Title>
         <SubTitle>
           Your friend gets 50% off the Canvas mint fee <br></br> and you receive 0.0005 ETH per successful referral
         </SubTitle>

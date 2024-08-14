@@ -279,6 +279,7 @@ const mainnetRoutes = [
   {
     name: "Canvas And Badges",
     path: "/canvas-and-badges",
+    description: "Build your on-chain persona and collect badges across Scroll’s ecosystem",
     element: <CanvasAndBadges />,
   },
 ]

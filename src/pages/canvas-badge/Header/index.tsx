@@ -139,7 +139,7 @@ const Header = () => {
   const badgesContainerRef = useRef<any>()
 
   const time = useTime()
-  const transform = useTransform(time, value => Math.floor(value / 3000))
+  const transform = useTransform(time, value => Math.floor(value / 1000))
   useEffect(() => {
     const unsubscribe = transform.onChange(() => {
       setRandomNumbers(pre => pickRandomNumbers(pre))
@@ -259,7 +259,7 @@ const Header = () => {
                 duration: 1,
                 ease: "easeOut",
                 repeat: Infinity,
-                repeatDelay: 2,
+                // repeatDelay: 2,
               }}
               sx={{ position: "absolute", top, left }}
             >
