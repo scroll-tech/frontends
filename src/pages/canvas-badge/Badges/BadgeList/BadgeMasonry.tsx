@@ -1,6 +1,8 @@
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
+import { usePrevious } from "react-use"
 import { AutoSizer, CellMeasurer, CellMeasurerCache, Masonry, WindowScroller } from "react-virtualized"
-import { makeStyles } from "tss-react/mui"
+
+// import { makeStyles } from "tss-react/mui"
 
 // import { keyframes } from "@mui/system"
 
@@ -21,22 +23,13 @@ type resetParams = {
 //   to {opacity:1;transform: translateY(0);}
 // `
 
-const useStyles = makeStyles()(theme => ({
-  listRoot: {
-    gridRow: "2 / 3",
-    gridColumn: "2 / 4",
-
-    [theme.breakpoints.down("md")]: {
-      gridRow: "3 / 4",
-      gridColumn: "1 / 3",
-    },
-  },
-  item: {
-    // opacity: 0,
-    // transform: "translateY(20px)",
-    // animation: `${Fade} 0.2s forwards`,
-  },
-}))
+// const useStyles = makeStyles()(theme => ({
+//   item: {
+//     opacity: 0,
+//     transform: "translateY(20px)",
+//     animation: `${Fade} 0.2s forwards`,
+//   },
+// }))
 
 function createCellPositioner({ cellMeasurerCache, columnCount, columnWidth, spacer = 0 }: createCellPositionerParams) {
   let columnHeights
@@ -87,7 +80,7 @@ function createCellPositioner({ cellMeasurerCache, columnCount, columnWidth, spa
 
 const BadgeMasonry = props => {
   const { data, columnWidth = 330, gutterSize = 24, overscanByPixels = 600, ItemComponent, onItemClick } = props
-  const { classes } = useStyles()
+  // const { classes, cx } = useStyles()
 
   const windowScrollerRef = useRef<any>(null)
 
@@ -103,11 +96,16 @@ const BadgeMasonry = props => {
   const cellPositionerRef = useRef<any>(null)
   const masonryRef = useRef<any>(null)
 
-  // useEffect(() => {
-  //   cacheRef.current.clearAll()
-  //   masonryRef.current.recomputeCellPositions()
-  //   // console.log(data.length, "data length")
-  // }, [data])
+  const preData = usePrevious(data)
+
+  useEffect(() => {
+    if (data?.length < preData?.length) {
+      cacheRef.current.clearAll()
+      resetCellPositioner()
+      masonryRef.current.clearCellPositions()
+      masonryRef.current.recomputeCellPositions()
+    }
+  }, [data])
 
   const calculateColumnCount = containerWidth => {
     columnCountRef.current = Math.floor((containerWidth + gutterSize) / (columnWidth + gutterSize))
@@ -138,12 +136,16 @@ const BadgeMasonry = props => {
     masonryRef.current?.recomputeCellPositions()
   }
 
+  const onWindowResize = ({ height }) => {
+    // masonryRef.current?.recomputeCellPositions()
+  }
+
   const cellRenderer = ({ index, key, parent, style }) => {
     return (
       <>
         {data[index]?.badgeContract ? (
           <CellMeasurer cache={cacheRef.current} index={index} key={key} parent={parent}>
-            <div style={style} className={classes.item}>
+            <div style={style}>
               <ItemComponent {...data[index]} onClick={() => onItemClick(data[index])}></ItemComponent>
             </div>
           </CellMeasurer>
@@ -163,6 +165,7 @@ const BadgeMasonry = props => {
         autoHeight
         cellCount={data.length}
         cellMeasurerCache={cacheRef.current}
+        deferredMeasurementCache={cacheRef.current}
         cellPositioner={cellPositionerRef.current}
         cellRenderer={cellRenderer}
         height={height}
@@ -180,13 +183,17 @@ const BadgeMasonry = props => {
 
   const renderAutoSizer = ({ height, scrollTop, isScrolling, onChildScroll }) => {
     return (
-      <AutoSizer disableHeight onResize={onResize} style={{ width: "100% !important", overflow: "unset !important" }}>
+      <AutoSizer disableHeight height={height} onResize={onResize} style={{ width: "100% !important", overflow: "unset !important" }}>
         {({ width }) => renderMasonry({ width, height, scrollTop, isScrolling, onChildScroll })}
       </AutoSizer>
     )
   }
 
-  return <WindowScroller ref={windowScrollerRef}>{renderAutoSizer}</WindowScroller>
+  return (
+    <WindowScroller ref={windowScrollerRef} onWindowResize={onWindowResize}>
+      {renderAutoSizer}
+    </WindowScroller>
+  )
 }
 
 export default BadgeMasonry

@@ -7,6 +7,7 @@ import { ReactComponent as TotalMintedSvg } from "@/assets/svgs/canvas-badge/tot
 import { CATEGORY_LIST } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import BadgeDesc from "@/pages/canvas/components/BadgeDesc"
+import { commafy } from "@/utils"
 
 const useStyles = makeStyles()(theme => ({
   category: {
@@ -81,7 +82,7 @@ const BadgeCard = props => {
 
         <Typography sx={{ fontSize: ["1.4rem", "1.6rem"], lineHeight: "2.4rem", fontWeight: 500, fontFamily: "var(--developer-page-font-family)" }}>
           <SvgIcon sx={{ fontSize: "0.6rem", mr: "0.8rem" }} component={TotalMintedSvg} inheritViewBox></SvgIcon>
-          Total Minted: {count}
+          Total Minted: {commafy(count, 0)}
         </Typography>
         <Typography
           sx={{

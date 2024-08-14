@@ -7,7 +7,7 @@ import { CANVAS_BADGE_INTRODUCTIONS, CANVAS_URL, ISSUE_BADGES_URL } from "@/cons
 import useCheckViewport from "@/hooks/useCheckViewport"
 
 const Introduction = () => {
-  const { isMobile } = useCheckViewport()
+  const { isMobile, isPortrait } = useCheckViewport()
   return (
     <SectionWrapper dark sx={{ pt: ["2.4rem", "6.4rem"] }}>
       <Box>
@@ -28,12 +28,12 @@ const Introduction = () => {
         </Typography>
       </Box>
       <Stack
-        direction={isMobile ? "column" : "row"}
-        gap={isMobile ? "4rem" : "11.2rem"}
+        direction={isPortrait ? "column" : "row"}
+        gap={isPortrait ? "4rem" : "11.2rem"}
         sx={{ mt: ["4rem", "6.4rem"], "& p": { color: "primary.contrastText" } }}
       >
         {CANVAS_BADGE_INTRODUCTIONS.map(({ key, icon, label, items }) => (
-          <Stack direction="column" gap={isMobile ? "2.4rem" : "3.2rem"} sx={{ flex: [0, 1] }} key={key}>
+          <Stack direction="column" gap={isPortrait ? "2.4rem" : "3.2rem"} sx={{ flex: [0, 1] }} key={key}>
             <Typography sx={{ fontSize: ["3.2rem", "4rem"], lineHeight: ["3.2rem", "4rem"] }}>{icon}</Typography>
             <Typography sx={{ fontSize: ["2rem", "2.4rem"], lineHeight: ["3.2rem", "3.6rem"], fontWeight: 600 }}>{label}</Typography>
             <SuccessionToView>
