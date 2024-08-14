@@ -13,7 +13,7 @@ const useBlockNumbers = () => {
   const [isL2Available, setIsL2Available] = useState(true)
 
   const fetchBlockNumber = async () => {
-    const fetchL1BlockNumber = getPublicClient(config, { chainId: CHAIN_ID.L1 })!.getBlock({ blockTag: "finalized" })
+    const fetchL1BlockNumber = getPublicClient(config, { chainId: CHAIN_ID.L1 })!.getBlock({ blockTag: "latest" })
     const fetchL2BlockNumber = getPublicClient(config, { chainId: CHAIN_ID.L2 })!.getBlock({ blockTag: "latest" })
     const blockNumbers = await Promise.allSettled([fetchL1BlockNumber, fetchL2BlockNumber])
     return blockNumbers.map(item => (item.status === "fulfilled" ? Number(item.value.number) : item.reason))
