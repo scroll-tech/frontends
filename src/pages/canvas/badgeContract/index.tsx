@@ -269,19 +269,7 @@ const BadgeContractDetail = props => {
     <BadgeDetail detail={badgeForMint} metadata={metadata} loading={isFetching} property={["issuer"]} breadcrumb={<Back></Back>}>
       {renderAction()}
 
-      {badgeForMint.native ? (
-        <ScrollButton
-          color="secondary"
-          sx={theme => ({
-            [theme.breakpoints.down("sm")]: {
-              gridColumn: "span 2",
-            },
-          })}
-          href="/canvas"
-        >
-          Visit my canvas
-        </ScrollButton>
-      ) : (
+      {badgeForMint.thirdParty ? (
         <ScrollButton
           color="secondary"
           sx={theme => ({
@@ -293,6 +281,18 @@ const BadgeContractDetail = props => {
           target="_blank"
         >
           Visit {badgeForMint.issuer?.name}
+        </ScrollButton>
+      ) : (
+        <ScrollButton
+          color="secondary"
+          sx={theme => ({
+            [theme.breakpoints.down("sm")]: {
+              gridColumn: "span 2",
+            },
+          })}
+          href="/canvas"
+        >
+          Visit my canvas
         </ScrollButton>
       )}
 

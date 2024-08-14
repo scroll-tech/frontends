@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { usePrevious } from "react-use"
 import "react-virtualized/styles.css"
 
-import { Box, Button, SvgIcon } from "@mui/material"
+import { Box, Button, CircularProgress, SvgIcon } from "@mui/material"
 
 import { fetchBadgesURL } from "@/apis/canvas-badge"
 import { ReactComponent as ArrowDownSvg } from "@/assets/svgs/canvas-badge/arrow-down.svg"
@@ -133,7 +133,13 @@ const BadgeList = props => {
               },
             }}
             onClick={onAddPage}
-            endIcon={<SvgIcon component={ArrowDownSvg} sx={{ fontSize: "1.6rem !important" }} inheritViewBox></SvgIcon>}
+            endIcon={
+              loading ? (
+                <CircularProgress sx={{ color: "inherit" }} size={18} thickness={4} />
+              ) : (
+                <SvgIcon component={ArrowDownSvg} sx={{ fontSize: "1.6rem !important", width: "1.8rem" }} inheritViewBox></SvgIcon>
+              )
+            }
           >
             Load more
           </Button>

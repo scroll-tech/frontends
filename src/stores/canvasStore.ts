@@ -2,7 +2,7 @@ import { Contract } from "ethers"
 import produce from "immer"
 import { create } from "zustand"
 
-import { Badge, ETHEREUM_YEAR_BADGE, SCROLL_BADGES } from "@/constants"
+import { Badge, ETHEREUM_YEAR_BADGE } from "@/constants"
 import {
   checkBadgeEligibility,
   checkBadgeUpgradable,
@@ -163,7 +163,7 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
 
   inputReferralCode: ["", "", "", "", ""],
 
-  badgeList: SCROLL_BADGES,
+  badgeList: [],
 
   checkIfProfileMinted: async (registryInstance, userAddress, test) => {
     try {
@@ -478,21 +478,12 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
 
     set({
       pickUpgradableBadgesLoading: false,
-      // upgradableBadges: userBadges.slice(0, 2).map(item => ({ ...item, upgradable: true })),
       upgradableBadges: finalUpgradableBadges,
     })
   },
 
-  // jointBadgeList: async () => {
-  //   const { badges } = await scrollRequest(BADGE_LIST_URL)
-  //   set({
-  //     badgeList: [...SCROLL_BADGES.slice(0, SCROLL_BADGES.length - 1), ...badges, SCROLL_BADGES[SCROLL_BADGES.length - 1]],
-  //   })
-  // },
-
   addFirstBadge: async (providerOrSigner, badgeId, badgeImage, badgeContract) => {
     set({
-      // queryUsernameLoading: true,
       userBadges: [{ id: badgeId, name: ETHEREUM_YEAR_BADGE.name, description: ETHEREUM_YEAR_BADGE.description, image: badgeImage, badgeContract }],
       attachedBadges: [badgeId],
       orderedAttachedBadges: [badgeId],
