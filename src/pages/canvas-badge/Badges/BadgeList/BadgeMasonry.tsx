@@ -171,7 +171,7 @@ const BadgeMasonry = props => {
         scrollTop={scrollTop}
         onScroll={onChildScroll}
         isScrolling={isScrolling}
-        keyMapper={index => data[index]?.badgeContract}
+        keyMapper={index => (data[index] ? data[index].badgeContract : index)}
         width={masonryWidth}
         style={{ margin: "0 auto" }}
       />

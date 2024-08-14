@@ -34,7 +34,7 @@ const useStyles = makeStyles()(theme => ({
 }))
 
 const BadgeCard = props => {
-  const { name, image, description, issuer, category, count, onResize, className, ...restProps } = props
+  const { name, image, description, issuer, category, count, className, onClick } = props
   const { classes } = useStyles()
   const { isMobile } = useCheckViewport()
 
@@ -52,7 +52,8 @@ const BadgeCard = props => {
           cursor: "pointer !important",
         },
       }}
-      {...restProps}
+      className={className}
+      onClick={onClick}
     >
       <CardContent
         sx={{

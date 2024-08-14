@@ -28,7 +28,7 @@ const linkStyles = (theme: Theme, dark: boolean): CSSObject => ({
     },
   },
   "&.active": {
-    color: dark ? theme.palette.primary.contrastText : theme.palette.primary.main,
+    color: theme.palette.primary.main,
   },
 })
 
@@ -81,6 +81,7 @@ const SubmenuLink = ({
   isExternal,
   icon,
   dark,
+  reload,
 }: {
   label: string
   text?: string
@@ -88,6 +89,7 @@ const SubmenuLink = ({
   isExternal?: boolean
   icon?: any
   dark?: boolean
+  reload?: boolean
 }) => (
   <>
     {isExternal ? (
@@ -95,7 +97,7 @@ const SubmenuLink = ({
         <SubmenuLinkContent icon={icon} label={label} text={text} isExternal={isExternal} />
       </StyledLink>
     ) : (
-      <StyledNavLink dark={dark} to={href}>
+      <StyledNavLink dark={dark} to={href} reloadDocument={reload}>
         <SubmenuLinkContent icon={icon} label={label} text={text} isExternal={isExternal} />
       </StyledNavLink>
     )}

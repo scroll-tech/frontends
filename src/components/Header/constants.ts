@@ -1,8 +1,11 @@
 import { ReactComponent as BuildSvg } from "@/assets/svgs/header/Build.svg"
+import { ReactComponent as CanvasAndBadgesSvg } from "@/assets/svgs/header/CanvasAndBadges.svg"
 import { ReactComponent as DocsSvg } from "@/assets/svgs/header/Doc.svg"
 import { ReactComponent as EthereumSvg } from "@/assets/svgs/header/Eth.svg"
 import { ReactComponent as IssuesSvg } from "@/assets/svgs/header/Issues.svg"
 import { ReactComponent as LevelUpSvg } from "@/assets/svgs/header/LevelUp.svg"
+import { ReactComponent as ProjectsSvg } from "@/assets/svgs/header/Projects.svg"
+import { ReactComponent as SessionsSvg } from "@/assets/svgs/header/Sessions.svg"
 import { ReactComponent as StatusSvg } from "@/assets/svgs/header/Status.svg"
 import { isSepolia, requireEnv } from "@/utils"
 
@@ -178,7 +181,37 @@ const mainnetNavigations = [
   {
     label: "Ecosystem",
     key: "ecosystem",
-    href: "/ecosystem",
+    children: [
+      {
+        children: [
+          {
+            text: "Projects",
+            label: "Find interesting dApps on Scroll",
+            key: "projects",
+            rootKey: "ecosystem",
+            href: "/ecosystem",
+            icon: ProjectsSvg,
+          },
+          {
+            text: "Canvas & Badges",
+            label: "Build your persona and collect badges",
+            key: "canvas-and-badges",
+            rootKey: "ecosystem",
+            href: "/canvas-and-badges",
+            icon: CanvasAndBadgesSvg,
+          },
+          {
+            text: "Sessions",
+            label: "Receive Marks for your contributions",
+            key: "sessions",
+            rootKey: "ecosystem",
+            href: "/sessions",
+            icon: SessionsSvg,
+            reload: true,
+          },
+        ],
+      },
+    ],
   },
   {
     label: "Resources",
@@ -224,12 +257,6 @@ const mainnetNavigations = [
     label: "Bridge",
     key: "bridge",
     href: "/bridge",
-  },
-  {
-    label: "Sessions",
-    key: "sessions",
-    href: "/sessions",
-    reload: true,
   },
 ]
 
