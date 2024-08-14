@@ -150,7 +150,7 @@ export const PriceFeeProvider = ({ children }) => {
         // setGasPrice(null)
         setErrorMessage(trimErrorMessage(error.message))
       })
-  }, [blockNumber])
+  }, [blockNumber, networksAndSigners])
 
   const l1Token = useMemo(
     () => tokenList.find(item => item.chainId === CHAIN_ID.L1 && item.symbol === tokenSymbol) ?? ({} as any as Token),
