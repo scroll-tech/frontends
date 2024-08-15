@@ -12,28 +12,38 @@ import SearchInput from "@/pages/ecosystem/Protocols/SeachInput"
 import Select from "../components/Select"
 import BadgeList from "./BadgeList"
 
-const useStyles = makeStyles()(theme => ({
+const useStyles = makeStyles<any>()((theme, { stickyTop }) => ({
   grid: {
     width: "100%",
     display: "grid",
     gridTemplateColumns: "max-content 1fr max-content max-content",
-    gridTemplateRows: "max-content 1fr",
+    gridTemplateRows: "max-content",
     rowGap: "4rem",
     columnGap: "1.6rem",
     alignItems: "center",
+    marginBottom: "1.4rem",
+    backgroundColor: theme.palette.themeBackground.dark,
+    padding: "1.8rem 0",
 
     [theme.breakpoints.down("lg")]: {
       gridTemplateColumns: "1fr repeat(2, max-content)",
-      gridTemplateRows: "min-content max-content",
+      gridTemplateRows: "repeat(2, min-content)",
       rowGap: "2.4rem",
       columnGap: "0.8rem",
+      marginBottom: "0.6rem",
     },
 
     [theme.breakpoints.down("md")]: {
       gridTemplateColumns: "max-content minmax(12.9rem, 1fr)",
-      gridTemplateRows: "repeat(3, min-content) 1fr",
-      rowGap: "2.4rem",
+      gridTemplateRows: "repeat(3, min-content)",
+      // rowGap: "2.4rem",
       columnGap: "0.8rem",
+    },
+
+    [theme.breakpoints.up("md")]: {
+      position: "sticky",
+      top: stickyTop,
+      zIndex: 1,
     },
   },
   search: {
@@ -58,17 +68,19 @@ const useStyles = makeStyles()(theme => ({
     [theme.breakpoints.down("sm")]: {},
   },
   badgeList: {
-    gridColumn: "1 / 5",
-    justifySelf: "stretch",
-    [theme.breakpoints.down("md")]: {
-      gridColumn: "1 / 3",
-    },
+    // gridColumn: "1 / 5",
+    // justifySelf: "stretch",
+    // [theme.breakpoints.down("md")]: {
+    //   gridColumn: "1 / 3",
+    // },
   },
 }))
 
 const Badges = () => {
   const trigger = useScrollTrigger()
-  const { classes } = useStyles()
+  const stickyTop = useMemo(() => (trigger ? 0 : NORMAL_HEADER_HEIGHT), [trigger])
+
+  const { classes } = useStyles({ stickyTop })
   const [searchInput, setSearchInput] = useState("")
 
   const [searchParams, setSearchParams] = useState({
@@ -77,8 +89,6 @@ const Badges = () => {
     keyword: "",
     page: 1,
   })
-
-  const stickyTop = useMemo(() => (trigger ? "2rem" : NORMAL_HEADER_HEIGHT), [trigger])
 
   useDebounce(
     () => {
@@ -113,7 +123,7 @@ const Badges = () => {
   }
 
   return (
-    <SectionWrapper dark sx={{ py: ["4rem", "12rem"] }}>
+    <SectionWrapper dark sx={{ pt: ["2.2rem", "10.2rem"], pb: ["2.2rem", "12rem"] }}>
       <Box className={classes.grid}>
         <Typography
           className="canvas-badge-title"
@@ -130,22 +140,18 @@ const Badges = () => {
         <SearchInput className={classes.search} dark top={stickyTop} sticky value={searchInput} onChange={handleChangeKeyword}></SearchInput>
         <Select
           className={classes.sort}
-          top={stickyTop}
-          sticky
           value={searchParams.sort}
           onChange={e => handleChangeSelect(e.target.value, "sort")}
           items={SORT_LIST}
         ></Select>
         <Select
           className={classes.category}
-          top={stickyTop}
-          sticky
           value={searchParams.category}
           onChange={e => handleChangeSelect(e.target.value, "category")}
           items={CATEGORY_LIST}
         ></Select>
-        <BadgeList className={classes.badgeList} searchParams={searchParams} onAddPage={handleChangePage}></BadgeList>
       </Box>
+      <BadgeList className={classes.badgeList} searchParams={searchParams} onAddPage={handleChangePage}></BadgeList>
     </SectionWrapper>
   )
 }

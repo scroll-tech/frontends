@@ -43,14 +43,17 @@ const BadgeCard = props => {
     <Card
       sx={{
         position: "relative",
-        aspectRatio: "330 / 320",
+        aspectRatio: "330 / 336",
         borderRadius: "2rem",
-        backgroundColor: "#323232",
+        backgroundColor: "themeBackground.tag",
         boxShadow: "none",
         border: "none",
         cursor: "pointer",
         "& p": {
           cursor: "pointer !important",
+        },
+        "&:hover": {
+          backgroundColor: "#323232",
         },
       }}
       className={className}
@@ -73,7 +76,7 @@ const BadgeCard = props => {
         {category === CATEGORY_LIST[1].key && <Box className={classes.category}>{CATEGORY_LIST[1].label}</Box>}
         {category === CATEGORY_LIST[2].key && <Box className={classes.category}>{CATEGORY_LIST[2].label}</Box>}
         {category === CATEGORY_LIST[3].key && <Box className={classes.category}>{CATEGORY_LIST[3].label}</Box>}
-        <Img alt="logo" src={image} style={{ height: isMobile ? "4.8rem" : "6.4rem", aspectRatio: "1 / 1", borderRadius: "0.45rem" }} />
+        <Img alt="logo" src={image} style={{ height: isMobile ? "4.8rem" : "8rem", aspectRatio: "1 / 1", borderRadius: "0.45rem" }} />
         <Typography sx={{ fontSize: ["1.8rem", "2rem"], lineHeight: "3.2rem", fontWeight: 600 }}>{name}</Typography>
 
         <Typography sx={{ fontSize: ["1.4rem", "1.6rem"], lineHeight: "2.4rem", fontWeight: 500, fontFamily: "var(--developer-page-font-family)" }}>
@@ -88,6 +91,7 @@ const BadgeCard = props => {
             flex: 1,
             display: "-webkit-box",
             width: "100%",
+            textAlign: "center",
             WebkitBoxOrient: "vertical",
             WebkitLineClamp: "3",
             overflow: "hidden",

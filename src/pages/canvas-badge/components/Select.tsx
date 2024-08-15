@@ -4,16 +4,11 @@ import { MenuItem, Select as MuiSelect, Typography } from "@mui/material"
 
 import { ReactComponent as TriangleDownIcon } from "@/assets/svgs/common/triangle-down.svg"
 
-const useStyles = makeStyles<any>()((theme, { sticky, top }) => ({
+const useStyles = makeStyles()(theme => ({
   root: {
     width: "24rem",
     [theme.breakpoints.down("sm")]: {
       width: "100%",
-    },
-    [theme.breakpoints.up("md")]: {
-      position: sticky ? "sticky" : "static",
-      top,
-      zIndex: 1,
     },
   },
   select: {
@@ -55,8 +50,8 @@ const useStyles = makeStyles<any>()((theme, { sticky, top }) => ({
 }))
 
 const Select = props => {
-  const { sticky, top, className, items = [], ...restProps } = props
-  const { classes, cx } = useStyles({ sticky, top })
+  const { className, items = [], ...restProps } = props
+  const { classes, cx } = useStyles()
 
   return (
     <MuiSelect

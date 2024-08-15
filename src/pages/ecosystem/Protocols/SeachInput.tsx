@@ -22,7 +22,7 @@ const SearchInput = props => {
         maxWidth: "32rem",
         height: "4.8rem",
         borderRadius: "2.4rem",
-        border: theme => `1px solid ${theme.palette.text.primary}`,
+        border: theme => (dark ? "none" : `1px solid ${theme.palette.text.primary}`),
         backgroundColor: theme => (dark ? theme.palette.themeBackground.tag : theme.palette.background.default),
         padding: "0.8rem 2.4rem",
         [theme.breakpoints.down("md")]: {

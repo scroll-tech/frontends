@@ -88,7 +88,7 @@ const BadgeMasonry = props => {
 
   const cacheRef = useRef(
     new CellMeasurerCache({
-      defaultHeight: 320,
+      defaultHeight: 336,
       defaultWidth: 330,
       fixedWidth: true,
     }),
