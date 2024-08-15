@@ -15,7 +15,7 @@ const useStyles = makeStyles()(theme => ({
     top: "0.8rem",
     right: "0.8rem",
     borderRadius: "1.4rem",
-    padding: "0 0.7rem",
+
     fontSize: "1.4rem",
     fontWeight: 500,
     lineHeight: "2.8rem",
@@ -25,11 +25,12 @@ const useStyles = makeStyles()(theme => ({
     overflow: "hidden",
     willChange: "width, transform",
     cursor: "default",
-
+    textAlign: "center",
     maxWidth: "2.8rem",
     transition: "all 0.3s cubic-bezier(0.34, 1.1, 0.64, 1)",
     "&:hover": {
       maxWidth: "20rem",
+      padding: "0 0.7rem",
     },
   },
 }))
