@@ -100,7 +100,8 @@ const MintStep = props => {
     } catch (error) {
       if (!isUserRejected(error)) {
         const message = recognizeError(error)
-        alertWarning(trimErrorMessage(message))
+        const errorMessage = typeof message === "string" ? trimErrorMessage(message) : message?.message
+        alertWarning(errorMessage)
         sentryDebug(`mint canvas:${walletCurrentAddress}-${error.message}`)
       }
     } finally {

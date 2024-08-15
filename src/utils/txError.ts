@@ -48,12 +48,26 @@ const abi = [
 ]
 
 const IDENTIFIED_ERROR_MAP = {
-  AccessDenied: issuer => `Minting failed. Please reach out to ${issuer}’s community channels for help`,
-  SingletonBadge: "You have already minted this badge. Please wait for a while for Canvas to be updated",
-  ExpiredSignature: "Something went wrong. Please try again later",
-  InvalidSignature: issuer => `Minting failed. Please reach out to ${issuer}’s community channels for help`,
-  DeadlineExpired: "Something went wrong. Please try again later",
-  ProfileAlreadyMinted: "You have already minted your Canvas. Please wait for a while for Canvas to be updated",
+  AccessDenied: issuer => ({
+    message: `Oops something went wrong. Please reach out to ${issuer.name}’s community for help.`,
+    link: issuer.communityURL,
+  }),
+  SingletonBadge: {
+    message: "You have already minted this badge. Please wait for a while for Canvas to be updated",
+  },
+  ExpiredSignature: {
+    message: "Something went wrong. Please try again later",
+  },
+  InvalidSignature: issuer => ({
+    message: `Oops something went wrong. Please reach out to ${issuer.name}’s community for help.`,
+    link: issuer.communityURL,
+  }),
+  DeadlineExpired: {
+    message: "Something went wrong. Please try again later",
+  },
+  ProfileAlreadyMinted: {
+    message: "You have already minted your Canvas. Please wait for a while for Canvas to be updated",
+  },
 }
 
 export const decodeErrorData = errSelector => {
@@ -63,7 +77,7 @@ export const decodeErrorData = errSelector => {
 }
 
 // AccessDenied / InvalidSignature only for minting a badge
-export const recognizeError = (error, issuerName?) => {
+export const recognizeError = (error, issuer?) => {
   if (error.code === "INSUFFICIENT_FUNDS") {
     return "Transaction failed due to insufficient funds. Please ensure your wallet has enough ETH"
   }
@@ -74,7 +88,7 @@ export const recognizeError = (error, issuerName?) => {
       const type = decodeErrorData(error.data)
       if (type) {
         if (IDENTIFIED_ERROR_MAP[type]) {
-          return typeof IDENTIFIED_ERROR_MAP[type] === "function" ? IDENTIFIED_ERROR_MAP[type](issuerName) : IDENTIFIED_ERROR_MAP[type]
+          return typeof IDENTIFIED_ERROR_MAP[type] === "function" ? IDENTIFIED_ERROR_MAP[type](issuer) : IDENTIFIED_ERROR_MAP[type]
         }
         return "Execution reverted due to " + type
       }
