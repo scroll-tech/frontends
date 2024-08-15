@@ -78,7 +78,7 @@ const BadgeList = props => {
   }
 
   const handleReQuest = () => {
-    fetchBadgeList(queryStr)
+    fetchBadgeList(`${queryStr}&page_size=${PAGE_SIZE}`)
   }
 
   const handleClickBadge = ({ badgeContract }) => {
