@@ -2,6 +2,8 @@ import { useEffect, useRef } from "react"
 import { usePrevious } from "react-use"
 import { AutoSizer, CellMeasurer, CellMeasurerCache, Masonry, WindowScroller } from "react-virtualized"
 
+import useCheckViewport from "@/hooks/useCheckViewport"
+
 // import { makeStyles } from "tss-react/mui"
 
 // import { keyframes } from "@mui/system"
@@ -80,15 +82,14 @@ function createCellPositioner({ cellMeasurerCache, columnCount, columnWidth, spa
 
 const BadgeMasonry = props => {
   const { data, columnWidth = 330, gutterSize = 24, overscanByPixels = 600, ItemComponent, onItemClick } = props
-  // const { classes, cx } = useStyles()
-
+  const { isMobile } = useCheckViewport()
   const windowScrollerRef = useRef<any>(null)
 
   const columnCountRef = useRef(0)
 
   const cacheRef = useRef(
     new CellMeasurerCache({
-      defaultHeight: 336,
+      defaultHeight: isMobile ? 320 : 336,
       defaultWidth: 330,
       fixedWidth: true,
     }),
