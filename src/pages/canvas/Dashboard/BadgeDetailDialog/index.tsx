@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query"
 import { forwardRef, useEffect, useMemo, useRef, useState } from "react"
 import Img from "react-cool-img"
 import { useNavigate, useParams } from "react-router-dom"
@@ -9,12 +10,12 @@ import { styled } from "@mui/system"
 import { ReactComponent as ShareSvg } from "@/assets/svgs/canvas/share.svg"
 import ScrollButton from "@/components/Button"
 import Link from "@/components/Link"
+import Skeleton from "@/components/Skeleton"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import useBadgeListProxy from "@/hooks/useBadgeProxy"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useSnackbar from "@/hooks/useSnackbar"
 import Dialog from "@/pages/canvas/components/Dialog"
-import { checkBadgeUpgradable, mintBadge } from "@/services/canvasService"
+import { checkBadgeUpgradable, fetchNotionBadgeByAddr, mintBadge } from "@/services/canvasService"
 import useCanvasStore, { BadgeDetailDialogType, BadgesDialogType } from "@/stores/canvasStore"
 import { generateShareTwitterURL, getBadgeImgURL, requireEnv, sentryDebug } from "@/utils"
 
@@ -76,11 +77,18 @@ const BadgeDetailDialog = () => {
 
   const alertWarning = useSnackbar()
   const { isMobile } = useCheckViewport()
-  const badgeListProxy = useBadgeListProxy()
+
   const [actionHeight, setActionHeight] = useState("auto")
   const actionsRef = useRef()
 
-  const badgeIssuer = useMemo(() => badgeListProxy(selectedBadge.badgeContract)?.issuer || ({} as any), [selectedBadge, badgeListProxy])
+  const { data: badgeIssuer, isFetching } = useQuery({
+    queryKey: ["notionBadge", selectedBadge.badgeContract],
+    queryFn: async () => {
+      const badge = await fetchNotionBadgeByAddr(selectedBadge.badgeContract)
+      return badge.issuer ?? {}
+    },
+    initialData: {},
+  })
 
   const shareBadgeURL = useMemo(() => {
     const viewURL = `${requireEnv("REACT_APP_FFRONTENDS_URL")}/canvas/badge/${selectedBadge.id}`
@@ -254,12 +262,18 @@ const BadgeDetailDialog = () => {
             >
               <BadgeDesc>{selectedBadge.description}</BadgeDesc>
             </Typography>
-            {/* TODO: how to get badge contract address from a user's badge */}
+
             <Stack direction="row" alignItems="center" gap="0.8rem" mb={isMobile ? "0.8rem" : "3.2rem"}>
-              <Avatar variant="square" src={badgeIssuer.logo} sx={{ width: "3.2rem", height: "3.2rem", borderRadius: "0.4rem" }}></Avatar>
-              <Typography sx={{ fontSize: ["1.8rem", "2rem"], fontWeight: 600, color: "primary.contrastText" }}>
-                {badgeIssuer.name || "Unknown"}
-              </Typography>
+              {isFetching ? (
+                <Skeleton dark sx={{ width: "6.2rem", height: "3.2rem" }}></Skeleton>
+              ) : (
+                <>
+                  <Avatar variant="square" src={badgeIssuer.logo} sx={{ width: "3.2rem", height: "3.2rem", borderRadius: "0.4rem" }}></Avatar>
+                  <Typography sx={{ fontSize: ["1.8rem", "2rem"], fontWeight: 600, color: "primary.contrastText" }}>
+                    {badgeIssuer.name || "Unknown"}
+                  </Typography>
+                </>
+              )}
             </Stack>
           </>
         )}

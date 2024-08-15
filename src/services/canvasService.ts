@@ -2,17 +2,27 @@
 import { AbiCoder, ethers } from "ethers"
 
 import { checkBadgeEligibilityURL, claimBadgeURL } from "@/apis/canvas"
+import { fetchBadgeByAddrURL } from "@/apis/canvas-badge"
 import AttestProxyABI from "@/assets/abis/CanvasAttestProxy.json"
 import BadgeABI from "@/assets/abis/CanvasBadge.json"
 import ProfileABI from "@/assets/abis/CanvasProfile.json"
 import ProfileRegistryABI from "@/assets/abis/CanvasProfileRegistry.json"
-import { checkDelegatedAttestation, decodeBadgePayload, isUserRejected, recognizeError, requireEnv, sentryDebug, trimErrorMessage } from "@/utils"
+import { ORIGINS_NFT_BADGE } from "@/constants"
+import {
+  checkDelegatedAttestation,
+  decodeBadgePayload,
+  isOriginsNFTBadge,
+  isUserRejected,
+  recognizeError,
+  requireEnv,
+  sentryDebug,
+  trimErrorMessage,
+} from "@/utils"
 
 const EAS_GRAPHQL_URL = requireEnv("REACT_APP_EAS_GRAPHQL_URL")
-const BADGE_SCHEMA = requireEnv("REACT_APP_BADGE_SCHEMA")
 
-const SCROLL_SEPOLIA_EAS_ADDRESS = requireEnv("REACT_APP_EAS_ADDRESS")
-const SCROLL_SEPOLIA_BADGE_SCHEMA = requireEnv("REACT_APP_BADGE_SCHEMA")
+const SCROLL_EAS_ADDRESS = requireEnv("REACT_APP_EAS_ADDRESS")
+const SCROLL_BADGE_SCHEMA = requireEnv("REACT_APP_BADGE_SCHEMA")
 
 const PROFILE_REGISTRY_ADDRESS = requireEnv("REACT_APP_PROFILE_REGISTRY_ADDRESS")
 
@@ -33,7 +43,7 @@ const queryUserBadges = async userAddress => {
       query Attestation {
         attestations(
           where: {
-            schemaId: { equals: "${BADGE_SCHEMA}" },
+            schemaId: { equals: "${SCROLL_BADGE_SCHEMA}" },
             recipient: { equals: "${userAddress}" },
             revoked: { equals: false },
           }
@@ -110,7 +120,7 @@ const getBadgeMetadata = async (provider, badgeContractAddress, badgeUID = ether
     const contract = new ethers.Contract(badgeContractAddress, BadgeABI, provider)
     const badgeMetadataURI = await contract.badgeTokenURI(badgeUID)
     let badgeImageURI = badgeMetadataURI.replace(/^ipfs:\/\/(.*)/, "https://ipfs.io/ipfs/$1")
-    const metadata = await scrollRequest(badgeImageURI)
+    const metadata = await scrollRequest(badgeImageURI, { timeout: 5e3 })
     return metadata
   } catch (error) {
     // console.log("Failed to get badge image URI:", error)
@@ -251,22 +261,24 @@ const fetchCanvasDetail = async (privider, othersAddress, profileAddress) => {
 const checkBadgeEligibility = async (provider, walletAddress, badge: any) => {
   try {
     // originsNFT
-    if (badge.validator) {
-      const eligibility = await badge.validator(provider, walletAddress)
+    if (isOriginsNFTBadge(badge.badgeContract)) {
+      const { validator } = ORIGINS_NFT_BADGE
+      const eligibility = await validator(provider, walletAddress)
       return eligibility
     }
-    if (!badge.baseUrl && !badge.eligibilityCheck) {
+
+    if (!badge.baseURL && !badge.eligibilityCheck) {
       return true
     }
     // permissionless
-    if (!badge.baseUrl && badge.eligibilityCheck) {
+    if (!badge.baseURL && badge.eligibilityCheck) {
       const badgeInstance = new ethers.Contract(badge.badgeContract, BadgeABI, provider)
       const eligibility = await badgeInstance.isEligible(walletAddress)
       return eligibility
     }
     // backend authorized / airdropped
-    if (badge.baseUrl) {
-      const data = await scrollRequest(checkBadgeEligibilityURL(badge.baseUrl, walletAddress, badge.badgeContract), {
+    if (badge.baseURL) {
+      const data = await scrollRequest(checkBadgeEligibilityURL(badge.baseURL, walletAddress, badge.badgeContract), {
         timeout: 1e4,
       })
       // TODO: must return true or false
@@ -308,9 +320,9 @@ const mintOriginNFTBadge = async (signer, walletCurrentAddress, badgeAddress, nf
   const abiCoder = new AbiCoder()
   const originsBadgePayload = abiCoder.encode(["address", "uint256"], [nftAddress[nftVersion], tokenId])
   const badgePayload = abiCoder.encode(["address", "bytes"], [badgeAddress, originsBadgePayload])
-  const easContract = new ethers.Contract(SCROLL_SEPOLIA_EAS_ADDRESS, AttestProxyABI, signer)
+  const easContract = new ethers.Contract(SCROLL_EAS_ADDRESS, AttestProxyABI, signer)
   const attestParams = {
-    schema: SCROLL_SEPOLIA_BADGE_SCHEMA,
+    schema: SCROLL_BADGE_SCHEMA,
     data: {
       recipient: walletCurrentAddress,
       expirationTime: 0,
@@ -332,9 +344,9 @@ const mintOriginNFTBadge = async (signer, walletCurrentAddress, badgeAddress, nf
 const mintPermissionlessBadge = async (signer, walletCurrentAddress, badgeAddress) => {
   const abiCoder = new AbiCoder()
   const badgePayload = abiCoder.encode(["address", "bytes"], [badgeAddress, "0x"])
-  const easContract = new ethers.Contract(SCROLL_SEPOLIA_EAS_ADDRESS, AttestProxyABI, signer)
+  const easContract = new ethers.Contract(SCROLL_EAS_ADDRESS, AttestProxyABI, signer)
   const attestParams = {
-    schema: SCROLL_SEPOLIA_BADGE_SCHEMA,
+    schema: SCROLL_BADGE_SCHEMA,
     data: {
       recipient: walletCurrentAddress,
       expirationTime: 0,
@@ -356,16 +368,17 @@ const mintPermissionlessBadge = async (signer, walletCurrentAddress, badgeAddres
 
 const mintBadge = async (provider, walletCurrentAddress, badge) => {
   try {
-    const { badgeContract, nftAddress, nftAbi, attesterProxy, baseUrl } = badge
+    const { badgeContract, attesterProxy, baseURL } = badge
     const signer = await provider!.getSigner(0)
 
     // Origins NFT Badge
-    if (nftAddress) {
+    if (isOriginsNFTBadge(badgeContract)) {
+      const { nftAddress, nftAbi } = ORIGINS_NFT_BADGE
       return await mintOriginNFTBadge(signer, walletCurrentAddress, badgeContract, nftAddress, nftAbi)
     }
-    // Third Party Badge
+    // Backend-authorized Badges
     if (attesterProxy) {
-      return await mintBackendAuthorizedBadge(signer, walletCurrentAddress, badgeContract, attesterProxy, baseUrl)
+      return await mintBackendAuthorizedBadge(signer, walletCurrentAddress, badgeContract, attesterProxy, baseURL)
     }
 
     return await mintPermissionlessBadge(signer, walletCurrentAddress, badgeContract)
@@ -477,6 +490,18 @@ const getReferrerData = async (registryInstance, userAddress) => {
   return referrerData
 }
 
+const fetchNotionBadgeByAddr = async addr => {
+  try {
+    if (!addr) {
+      return {}
+    }
+    const data = await scrollRequest(fetchBadgeByAddrURL(addr))
+    return data
+  } catch (e) {
+    return {}
+  }
+}
+
 const testAsyncFunc = value => {
   return new Promise(resolve => {
     setTimeout(() => {
@@ -508,5 +533,6 @@ export {
   getReferrerData,
   fillBadgeDetailWithPayload,
   checkBadgeEligibility,
+  fetchNotionBadgeByAddr,
   testAsyncFunc,
 }

@@ -222,7 +222,11 @@ const BadgeDetail = props => {
                         gap: "0.8rem",
                       }}
                     >
-                      <Avatar variant="square" src={detail.issuer?.logo} sx={{ width: "3.2rem", height: "3.2rem", borderRadius: "0.4rem" }}></Avatar>
+                      <Avatar
+                        variant="square"
+                        src={detail.issuer?.logo}
+                        sx={{ width: "3.2rem", height: "3.2rem", borderRadius: "0.4rem", backgroundColor: "background.default" }}
+                      ></Avatar>
                       {detail.issuer?.name || "Unknown"}
                     </Box>
                   </Statistic>
@@ -262,7 +266,7 @@ const BadgeDetail = props => {
               )}
             </InfoBox>
 
-            {!property.includes("owner") && !detail.native && (
+            {!property.includes("owner") && detail.thirdParty && (
               <DisclaimerBox>
                 <Img src="/imgs/canvas/warning.png" style={{ width: "1.4rem", height: "1.4rem", marginRight: "0.8rem" }} alt="warning image" />
                 Issuing badge is permissionless - perform due diligence and interact with dApps at your own risk.

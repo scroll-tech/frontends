@@ -7,6 +7,8 @@ import { requireEnv } from "@/utils"
 
 const SCROLL_SEPOLIA_BADGE_SCHEMA = requireEnv("REACT_APP_BADGE_SCHEMA")
 
+const SCROLL_ORIGINS_BADGE_ADDRESS = "0x2dBce60ebeAafb77e5472308f432F78aC3AE07d9"
+
 export const getBadgeImgURL = image => {
   if (!image) return ""
   return image.replace(/^ipfs:\/\/(.*)/, "https://cloudflare-ipfs.com/ipfs/$1")
@@ -92,4 +94,8 @@ export const checkDelegatedAttestation = (tx, proxyAddress) => {
     throw new Error("Unexpected transaction value")
   }
   return
+}
+
+export const isOriginsNFTBadge = badgeContract => {
+  return badgeContract === SCROLL_ORIGINS_BADGE_ADDRESS
 }
