@@ -1,6 +1,7 @@
 import { Box, Stack, SvgIcon, Typography } from "@mui/material"
 
 import Button from "@/components/Button"
+import Link from "@/components/Link"
 import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
 import SectionWrapper from "@/components/SectionWrapper"
 import { CANVAS_BADGE_INTRODUCTIONS, CANVAS_URL, ISSUE_BADGES_URL } from "@/constants"
@@ -23,8 +24,11 @@ const Introduction = () => {
             color: "primary.contrastText",
           }}
         >
-          Unlike NFTs, badges are non-transferable proofs of your unique traits, status and achievements, thanks to integration with Ethereum
-          Attestation Service.
+          Unlike NFTs, badges are non-transferable proofs of your unique traits, status and achievements, thanks to integration with{" "}
+          <Link underline="always" href="https://attest.org/" external sx={{ fontSize: "inherit" }}>
+            Ethereum Attestation Service
+          </Link>
+          .
         </Typography>
       </Box>
       <Stack

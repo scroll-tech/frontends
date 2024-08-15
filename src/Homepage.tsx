@@ -65,6 +65,8 @@ function Homepage() {
       return window.location.origin + `/${type}_scroll_sessions.png`
     } else if (["/canvas", "/canvas/mint"].includes(window.location.pathname)) {
       return window.location.origin + `/${type}_canvas.png`
+    } else if (window.location.pathname.startsWith("/canvas-and-badges")) {
+      return window.location.origin + `/${type}_canvas_and_badges.png`
     }
     return window.location.origin + "/og_scroll.png"
   }

@@ -106,14 +106,7 @@ const BadgeContractDetail = props => {
 
   const renderTip = () => {
     if (!isL2) {
-      return (
-        <>
-          <SvgIcon sx={{ color: "primary.main", fontSize: "2.4rem" }} component={WarningSvg} inheritViewBox></SvgIcon>
-          <Typography sx={{ color: "#FF684B !important", fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.4rem", "2.8rem"], fontWeight: 500 }}>
-            Please switch to Scroll.
-          </Typography>
-        </>
-      )
+      return null
     } else if (isBadgeMinting.get(address)) {
       return (
         <>
