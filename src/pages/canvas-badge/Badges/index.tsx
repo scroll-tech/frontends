@@ -6,7 +6,7 @@ import { Box, Typography } from "@mui/material"
 import useScrollTrigger from "@mui/material/useScrollTrigger"
 
 import SectionWrapper from "@/components/SectionWrapper"
-import { CATEGORY_LIST, NORMAL_HEADER_HEIGHT, SORT_LIST } from "@/constants"
+import { CANVAS_AND_BADGES_PAGE_SYMBOL, CATEGORY_LIST, NORMAL_HEADER_HEIGHT, SORT_LIST } from "@/constants"
 import SearchInput from "@/pages/ecosystem/Protocols/SeachInput"
 
 import Select from "../components/Select"
@@ -67,13 +67,6 @@ const useStyles = makeStyles<any>()((theme, { stickyTop }) => ({
     },
     [theme.breakpoints.down("sm")]: {},
   },
-  badgeList: {
-    // gridColumn: "1 / 5",
-    // justifySelf: "stretch",
-    // [theme.breakpoints.down("md")]: {
-    //   gridColumn: "1 / 3",
-    // },
-  },
 }))
 
 const Badges = () => {
@@ -124,9 +117,9 @@ const Badges = () => {
 
   return (
     <SectionWrapper dark sx={{ pt: ["2.2rem", "10.2rem"], pb: ["2.2rem", "12rem"] }}>
+      <div id={`${CANVAS_AND_BADGES_PAGE_SYMBOL}-discover`}></div>
       <Box className={classes.grid}>
         <Typography
-          className="canvas-badge-title"
           sx={{
             fontSize: ["2.4rem", "4.8rem"],
             lineHeight: ["3.6rem", "6.4rem"],
@@ -151,7 +144,7 @@ const Badges = () => {
           items={CATEGORY_LIST}
         ></Select>
       </Box>
-      <BadgeList className={classes.badgeList} searchParams={searchParams} onAddPage={handleChangePage}></BadgeList>
+      <BadgeList searchParams={searchParams} onAddPage={handleChangePage}></BadgeList>
     </SectionWrapper>
   )
 }

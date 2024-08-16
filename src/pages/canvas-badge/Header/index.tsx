@@ -2,13 +2,14 @@ import { useQuery } from "@tanstack/react-query"
 import { motion } from "framer-motion"
 import { useEffect, useRef, useState } from "react"
 import Img from "react-cool-img"
+import { useLocation } from "react-router-dom"
 
 import { Box, Container, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
 import { retrieveCanvasBadgeURL } from "@/apis/canvas-badge"
 import Button from "@/components/Button"
-import { CANVAS_URL, HEADER_BADGES, HEADER_STARS, ISSUE_BADGES_URL } from "@/constants"
+import { CANVAS_AND_BADGES_PAGE_SYMBOL, CANVAS_URL, HEADER_BADGES, HEADER_STARS, ISSUE_BADGES_URL } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
 import Counter from "./Counter"
@@ -24,6 +25,7 @@ const BadgesButton = styled(Button)(({ theme }) => ({
 }))
 
 const Header = () => {
+  const { hash } = useLocation()
   const { isMobile } = useCheckViewport()
   const [badgesScale, setBadgesScale] = useState(1)
   const [starsScale, setStarsScale] = useState(1)
@@ -47,14 +49,25 @@ const Header = () => {
   })
 
   useEffect(() => {
+    if (hash) {
+      const targetEl = document.getElementById(`${CANVAS_AND_BADGES_PAGE_SYMBOL}-${hash.slice(1)}`)
+      if (targetEl) {
+        targetEl.scrollIntoView({
+          behavior: "instant",
+        })
+      }
+    }
+  }, [hash])
+
+  useEffect(() => {
     const handleWindowResize = () => {
       if (badgesContainerRef.current?.clientWidth && badgesContainerRef.current.clientWidth < 1328) {
         setBadgesScale(badgesContainerRef.current.clientWidth / 1328)
       } else {
         setBadgesScale(1)
       }
-      if (window.innerWidth < 1512) {
-        setStarsScale((window.innerWidth - 120) / 1512)
+      if (window.screen.width < 1512) {
+        setStarsScale((window.screen.width - 120) / 1512)
       } else {
         setStarsScale(1)
       }
@@ -163,12 +176,14 @@ const Header = () => {
         >
           {HEADER_BADGES.map(({ image, top, left, width }, index) => (
             <ImageWrapper
+              key={index}
               style={{ willChange: "opacity", zIndex: 1 }}
               animate={{ opacity: [0.2, 1, 0.2] }}
               transition={{
                 duration: 3,
                 repeat: Infinity,
-                delay: Math.random() * 3,
+                delay: Math.random() * 12,
+                repeatDelay: 6 + Math.random() * 6,
                 times: [0, 0.5, 1],
               }}
               sx={{ position: "absolute", top, left }}

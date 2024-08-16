@@ -19,6 +19,8 @@ import { ReactComponent as StarDiamond1Svg } from "@/assets/svgs/canvas-badge/st
 import { ReactComponent as StarDiamond2Svg } from "@/assets/svgs/canvas-badge/star-diamond-2.svg"
 import { ReactComponent as TreasureSvg } from "@/assets/svgs/canvas-badge/treasure.svg"
 
+export const CANVAS_AND_BADGES_PAGE_SYMBOL = "canvas-badges"
+
 export const CANVAS_BADGE_INTRODUCTIONS = [
   {
     label: "For Users",
