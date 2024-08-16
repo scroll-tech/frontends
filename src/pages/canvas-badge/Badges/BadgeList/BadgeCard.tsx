@@ -77,8 +77,17 @@ const BadgeCard = props => {
         {category === CATEGORY_LIST[1].key && <Box className={classes.category}>{CATEGORY_LIST[1].label}</Box>}
         {category === CATEGORY_LIST[2].key && <Box className={classes.category}>{CATEGORY_LIST[2].label}</Box>}
         {category === CATEGORY_LIST[3].key && <Box className={classes.category}>{CATEGORY_LIST[3].label}</Box>}
-        <Img alt="logo" src={image} style={{ height: isMobile ? "6.4rem" : "8rem", aspectRatio: "1 / 1", borderRadius: "0.45rem" }} />
-        <Typography sx={{ fontSize: ["1.8rem", "2rem"], lineHeight: "3.2rem", fontWeight: 600 }}>{name}</Typography>
+        <Img
+          alt="logo"
+          src={image}
+          placeholder="/imgs/canvas-badge/badgePlaceholder.svg"
+          style={{ height: isMobile ? "6.4rem" : "8rem", aspectRatio: "1 / 1", borderRadius: "0.45rem" }}
+        />
+        <Typography
+          sx={[{ fontSize: ["1.8rem", "2rem"], lineHeight: "3.2rem", fontWeight: 600, maxWidth: "100%" }, theme => theme.singleLineEllipsis]}
+        >
+          {name}
+        </Typography>
 
         <Typography sx={{ fontSize: ["1.4rem", "1.6rem"], lineHeight: "2.4rem", fontWeight: 500, fontFamily: "var(--developer-page-font-family)" }}>
           <SvgIcon sx={{ fontSize: "0.6rem", mr: "0.8rem" }} component={TotalMintedSvg} inheritViewBox></SvgIcon>

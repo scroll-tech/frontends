@@ -150,7 +150,7 @@ const Header = () => {
           </BadgesButton>
         </Stack>
       </Stack>
-      <Box sx={{ mt: ["9.5rem", "6rem", "2.8rem"] }} ref={badgesContainerRef}>
+      <Box sx={{ mt: ["9.5rem", "6rem", "6rem"] }} ref={badgesContainerRef}>
         <Box
           sx={{
             position: "relative",
