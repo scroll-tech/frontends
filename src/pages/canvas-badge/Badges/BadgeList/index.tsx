@@ -9,7 +9,7 @@ import { fetchBadgesURL } from "@/apis/canvas-badge"
 import { ReactComponent as ArrowDownSvg } from "@/assets/svgs/canvas-badge/arrow-down.svg"
 import LoadingButton from "@/components/LoadingButton"
 import LoadingPage from "@/components/LoadingPage"
-import { CATEGORY_LIST, SORT_LIST } from "@/constants"
+import { CANVAS_AND_BADGES_PAGE_SYMBOL, CATEGORY_LIST, SORT_LIST } from "@/constants"
 import { isAboveScreen } from "@/utils/dom"
 
 import BadgeCard from "./BadgeCard"
@@ -61,7 +61,7 @@ const BadgeList = props => {
         if (prePage && page - prePage === 1) {
           setBadgeList(pre => pre.concat(data))
         } else {
-          const anchorEl = document.querySelector(".canvas-badge-title")
+          const anchorEl = document.getElementById(`${CANVAS_AND_BADGES_PAGE_SYMBOL}-discover`)
           if (isAboveScreen(anchorEl)) {
             anchorEl?.scrollIntoView({ behavior: "smooth" })
           }

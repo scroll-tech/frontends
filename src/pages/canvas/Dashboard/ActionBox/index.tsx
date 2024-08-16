@@ -241,7 +241,7 @@ const ActionBox = () => {
               key: "explore",
               label: "Explore badges",
               onClick: () => {
-                navigate("/canvas-and-badges")
+                navigate("/canvas-and-badges#discover")
               },
             },
             {

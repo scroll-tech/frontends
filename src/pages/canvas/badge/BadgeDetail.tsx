@@ -18,7 +18,6 @@ import Statistic from "../components/Statistic"
 const InfoBox = styled<any>(Box)(({ theme, count }) => ({
   display: "grid",
   gridTemplateColumns: count === 1 ? "1fr" : "repeat(3, 1fr)",
-  // gridAutoColumns: "min-content",
   rowGap: "3.2rem",
   columnGap: "4.8rem",
   [theme.breakpoints.down("sm")]: {
@@ -27,7 +26,6 @@ const InfoBox = styled<any>(Box)(({ theme, count }) => ({
     columnGap: "2.4rem",
     rowGap: "1.6rem",
   },
-  // justifyItems: "center",
 }))
 
 const DisclaimerBox = styled(Box)(({ theme }) => ({
@@ -52,15 +50,23 @@ const BadgeDetail = props => {
   const actionsRef = useRef()
 
   useEffect(() => {
-    if (actionsRef?.current) {
-      setActionHeight((actionsRef.current as HTMLElement).getBoundingClientRect().height + "px")
+    const actionBoxObserver = new ResizeObserver(entries => {
+      // this will get called whenever div dimension changes
+      entries.forEach(entry => {
+        setActionHeight(entry.target.getBoundingClientRect().height + "px")
+      })
+    })
+    if (actionsRef.current) {
+      actionBoxObserver.observe(actionsRef.current as HTMLElement)
+    }
+    return () => {
+      actionBoxObserver.disconnect()
     }
   }, [])
 
   useEffect(() => {
     if (actionHeight !== "auto") {
       const detailContainerEl = document.querySelector(".detail-container") as HTMLElement
-      // console.log(detailContainerEl.clientHeight, detailContainerEl.scrollHeight)
       setIsOverflow(detailContainerEl.clientHeight < detailContainerEl.scrollHeight)
     }
   }, [loading, actionHeight])
