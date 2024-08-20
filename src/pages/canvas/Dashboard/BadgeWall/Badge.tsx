@@ -4,7 +4,7 @@ import Img from "react-cool-img"
 import { Box, Badge as MuiBadge } from "@mui/material"
 
 import useCanvasStore, { BadgeDetailDialogType } from "@/stores/canvasStore"
-import { getBadgeImgURL } from "@/utils"
+import { ipfsToBrowserURL } from "@/utils"
 
 import ToolTip from "../../components/Tooltip"
 
@@ -75,7 +75,7 @@ const Badge = ({ badge, index, badgewidth }) => {
           <Img
             alt={badge.metadata?.name}
             style={{ width: "100%", borderRadius: "0.8rem" }}
-            src={getBadgeImgURL(badge.metadata?.image)}
+            src={ipfsToBrowserURL(badge.metadata?.image)}
             placeholder="/imgs/canvas/badgePlaceholder.svg"
           />
         </MuiBadge>
