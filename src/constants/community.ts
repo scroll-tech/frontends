@@ -3,8 +3,8 @@ import { ReactComponent as DiscordIcon } from "@/assets/svgs/community/discord.s
 import { ReactComponent as ForumIcon } from "@/assets/svgs/community/forum.svg"
 
 export const DISCORD_LINK = "https://discord.gg/scroll"
-export const COMMUNITY_FORUM_LINK = "https://tally.so/r/3jlj59"
-export const CONTRIBUTE_TO_SCROLL_LINK = "https://docs.scroll.io/en/getting-started/overview/"
+export const COMMUNITY_FORUM_LINK = "https://community.scroll.io/"
+export const CONTRIBUTE_TO_SCROLL_LINK = "https://github.com/scroll-tech/contribute-to-scroll"
 
 export const COMMUNITY_EXPLORER_LIST = [
   {
