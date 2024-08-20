@@ -1,0 +1,24 @@
+[
+  {
+    "name": "China",
+    "city": "Beijing",
+    "N": 39.55,
+    "E": 116.2,
+    "text": "ETH Beijing"
+  },
+  {
+    "name": "United States",
+    "city": "United States of America",
+    "N": 39.73,
+    "E": -104.98,
+    "text": "ETH Denver"
+  },
+
+  {
+    "name": "Central African Republic",
+    "city": "Central African Republic",
+    "N": 1.65,
+    "E": 17.44,
+    "text": "Eth Bangui"
+  }
+]

@@ -49,7 +49,7 @@ const EventCard = props => {
         <Stack direction="row" gap="1rem">
           <Typography
             sx={{
-              fontSize: ["1.6rem"],
+              fontSize: ["1.4rem", "1.6rem"],
               fontWeight: 600,
               lineHeight: ["2"],
               cursor: "inherit",
@@ -63,7 +63,7 @@ const EventCard = props => {
           </Typography>
           <Typography
             sx={{
-              fontSize: ["1.6rem"],
+              fontSize: ["1.4rem", "1.6rem"],
               fontWeight: 600,
               lineHeight: ["2"],
               cursor: "inherit",

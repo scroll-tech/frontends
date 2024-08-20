@@ -3,6 +3,7 @@ import { makeStyles } from "tss-react/mui"
 
 import { Box, Typography } from "@mui/material"
 
+import Data from "./data.json"
 import { initCityLabels, renderer, resizeRender } from "./mainscene/scene"
 
 const useStyles = makeStyles()(theme => ({
@@ -19,36 +20,12 @@ const useStyles = makeStyles()(theme => ({
       lineHeight: "5rem",
       marginTop: "6rem",
       marginBottom: "3rem",
+      padding: "0 1.6rem",
     },
   },
 }))
 
 const MAX_SIZE = 700
-
-let Data = [
-  {
-    name: "China",
-    city: "Beijing",
-    N: 39.55,
-    E: 116.2,
-    text: "ETH Beijing",
-  },
-  {
-    name: "United States",
-    city: "United States of America",
-    N: 39.73,
-    E: -104.98,
-    text: "ETH Denver",
-  },
-
-  {
-    name: "Central African Republic",
-    city: "Central African Republic",
-    N: 1.65,
-    E: 17.44,
-    text: "Eth Bangui",
-  },
-]
 
 function Earth() {
   const threeDomRef = useRef<HTMLDivElement | null>(null)
