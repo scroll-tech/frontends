@@ -17,7 +17,7 @@ import useSnackbar from "@/hooks/useSnackbar"
 import Dialog from "@/pages/canvas/components/Dialog"
 import { checkBadgeUpgradable, fetchNotionBadgeByAddr, mintBadge } from "@/services/canvasService"
 import useCanvasStore, { BadgeDetailDialogType, BadgesDialogType } from "@/stores/canvasStore"
-import { generateShareTwitterURL, getBadgeImgURL, requireEnv, sentryDebug } from "@/utils"
+import { generateShareTwitterURL, ipfsToBrowserURL, requireEnv, sentryDebug } from "@/utils"
 
 import BadgeDesc from "../../components/BadgeDesc"
 import UpgradeAction from "./UpgradeAction"
@@ -223,7 +223,7 @@ const BadgeDetailDialog = () => {
       >
         <Img
           alt="img"
-          src={getBadgeImgURL(selectedBadge.image)}
+          src={ipfsToBrowserURL(selectedBadge.image)}
           placeholder="/imgs/canvas/badgePlaceholder.svg"
           style={{
             width: isMobile ? "12rem" : "20rem",

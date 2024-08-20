@@ -4,7 +4,7 @@ import { makeStyles } from "tss-react/mui"
 
 import { Box } from "@mui/material"
 
-import { getBadgeImgURL } from "@/utils"
+import { ipfsToBrowserURL } from "@/utils"
 
 const getTranslateX = transform => {
   return transform ? `${Math.round(transform.x)}px` : undefined
@@ -106,7 +106,7 @@ const Item = forwardRef((props: any, ref) => {
       }}
     >
       <Box className={cx(classes.item, dragging && classes.dragging, dragOverlay && "dragOverlay")} {...listeners}>
-        <Img alt={name} style={{ borderRadius: "0.8rem" }} src={getBadgeImgURL(image)} placeholder="/imgs/canvas/badgePlaceholder.svg" />
+        <Img alt={name} style={{ borderRadius: "0.8rem" }} src={ipfsToBrowserURL(image)} placeholder="/imgs/canvas/badgePlaceholder.svg" />
       </Box>
     </Box>
   )
