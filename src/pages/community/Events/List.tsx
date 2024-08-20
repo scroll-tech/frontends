@@ -85,7 +85,7 @@ const Join = props => {
       searchParams.set("region", region)
     }
     if (time !== COMMUNITY_TIME_LIST[0]) {
-      searchParams.set("time", time)
+      searchParams.set("when", time.toLowerCase())
     }
 
     const searchParamsStr = searchParams.toString()
@@ -143,8 +143,8 @@ const Join = props => {
       return (
         <NoData
           sx={{ height: "26rem", gridColumn: ["1 / 3", "1 / 3", "2 / 4"] }}
-          title="No matches found"
-          description="Please choose your search keywords and search again"
+          title="No events on the horizon right now."
+          description="Stay tuned for future updates!"
         ></NoData>
       )
     }

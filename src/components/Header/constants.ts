@@ -1,5 +1,6 @@
 import { ReactComponent as BuildSvg } from "@/assets/svgs/header/Build.svg"
 import { ReactComponent as CanvasAndBadgesSvg } from "@/assets/svgs/header/CanvasAndBadges.svg"
+import { ReactComponent as CommunitySvg } from "@/assets/svgs/header/Community.svg"
 import { ReactComponent as DocsSvg } from "@/assets/svgs/header/Doc.svg"
 import { ReactComponent as EthereumSvg } from "@/assets/svgs/header/Eth.svg"
 import { ReactComponent as IssuesSvg } from "@/assets/svgs/header/Issues.svg"
@@ -209,14 +210,17 @@ const mainnetNavigations = [
             icon: SessionsSvg,
             reload: true,
           },
+          {
+            text: "Community",
+            label: "Explore events and global communities",
+            key: "community",
+            rootKey: "ecosystem",
+            href: "/community",
+            icon: CommunitySvg,
+          },
         ],
       },
     ],
-  },
-  {
-    label: "Community",
-    key: "community",
-    href: "/community",
   },
   {
     label: "Resources",

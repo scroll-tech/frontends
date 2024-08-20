@@ -19,6 +19,7 @@ const RegionSelect = props => {
         [theme.breakpoints.down("md")]: {
           gridRow: "2 / 3",
         },
+        width: ["24rem"],
       }}
       value={value}
       onChange={handleChangeNetwork}
