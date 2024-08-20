@@ -18,7 +18,7 @@ const Community = () => {
   const { classes } = useStyles()
 
   return (
-    <Box className={classes.container}>
+    <Box className={classes.container} id="community-container">
       <Globe />
       <Events />
       <Join />

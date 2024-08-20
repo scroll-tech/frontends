@@ -42,7 +42,10 @@ function initLabelRenderer(width: number, height: number, top: number, left: num
   labelRenderer.domElement.style.position = "absolute"
   labelRenderer.domElement.style.top = `${top - 16}px`
   labelRenderer.domElement.style.left = `${left}px`
-  document.body.insertBefore(labelRenderer.domElement, document.body.firstChild)
+  setTimeout(() => {
+    const labelElement = document.querySelector("#community-container")!
+    labelElement.insertBefore(labelRenderer.domElement, labelElement.firstChild)
+  }, 1000)
   return labelRenderer
 }
 
@@ -244,4 +247,4 @@ function resizeRender(width: number, height: number, left: number, top: number) 
   labelRenderer.domElement.style.overflow = "visible"
 }
 
-export { renderer, resizeRender, initCityLabels }
+export { renderer, resizeRender, initCityLabels, initLabelRenderer }
