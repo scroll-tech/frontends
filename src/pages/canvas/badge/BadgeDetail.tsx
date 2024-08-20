@@ -10,7 +10,7 @@ import Skeleton from "@/components/Skeleton"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import UpgradeAction from "@/pages/canvas/Dashboard/BadgeDetailDialog/UpgradeAction"
 import useCanvasStore from "@/stores/canvasStore"
-import { getBadgeImgURL } from "@/utils"
+import { ipfsToBrowserURL } from "@/utils"
 
 import BadgeDesc from "../components/BadgeDesc"
 import Statistic from "../components/Statistic"
@@ -148,7 +148,7 @@ const BadgeDetail = props => {
               <Skeleton dark sx={{ height: "100%" }}></Skeleton>
             ) : (
               <Img
-                src={getBadgeImgURL(detail.image)}
+                src={ipfsToBrowserURL(detail.image)}
                 placeholder="/imgs/canvas/badgePlaceholder.svg"
                 style={{ borderRadius: "0.8rem" }}
                 alt="badge image"

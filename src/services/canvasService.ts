@@ -11,6 +11,7 @@ import { ORIGINS_NFT_BADGE } from "@/constants"
 import {
   checkDelegatedAttestation,
   decodeBadgePayload,
+  ipfsToBrowserURL,
   isOriginsNFTBadge,
   isUserRejected,
   recognizeError,
@@ -118,9 +119,9 @@ const queryBadgeDetailById = async badgeId => {
 const getBadgeMetadata = async (provider, badgeContractAddress, badgeUID = ethers.encodeBytes32String("0x0")) => {
   try {
     const contract = new ethers.Contract(badgeContractAddress, BadgeABI, provider)
-    const badgeMetadataURI = await contract.badgeTokenURI(badgeUID)
-    let badgeImageURI = badgeMetadataURI.replace(/^ipfs:\/\/(.*)/, "https://ipfs.io/ipfs/$1")
-    const metadata = await scrollRequest(badgeImageURI, { timeout: 5e3 })
+    const badgeTokenURI = await contract.badgeTokenURI(badgeUID)
+    const badgeTokenBrowserURL = ipfsToBrowserURL(badgeTokenURI)
+    const metadata = await scrollRequest(badgeTokenBrowserURL, { timeout: 5e3 })
     return metadata
   } catch (error) {
     // console.log("Failed to get badge image URI:", error)
@@ -401,8 +402,8 @@ const upgradeBadge = async (provider, badge) => {
     const txReceipt = await tx.wait()
     if (txReceipt.status === 1) {
       const badgeMetadataURI = await badgeInstance.badgeTokenURI(id)
-      const accessableURI = badgeMetadataURI.replace(/^ipfs:\/\/(.*)/, "https://ipfs.io/ipfs/$1")
-      const metadata = await scrollRequest(accessableURI)
+      const badgeTokenBrowserURL = ipfsToBrowserURL(badgeMetadataURI)
+      const metadata = await scrollRequest(badgeTokenBrowserURL)
       return metadata
     } else {
       throw new Error("due to any operation that can cause the transaction or top-level call to revert")

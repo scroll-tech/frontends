@@ -8,7 +8,7 @@ import { tooltipClasses } from "@mui/material/Tooltip"
 import { keyframes, styled } from "@mui/system"
 
 import NameTip from "@/pages/canvas/components/NameTip"
-import { getBadgeImgURL } from "@/utils/canvas"
+import { ipfsToBrowserURL } from "@/utils/canvas"
 
 // import styles from "./Item.module.css"
 const CustomTooltip = styled(Tooltip)(({ theme }) => ({}))
@@ -249,7 +249,7 @@ export const Item = React.memo(
               <Img
                 alt={(value as any)?.name}
                 style={{ borderRadius: "0.8rem" }}
-                src={getBadgeImgURL((value as any)?.image)}
+                src={ipfsToBrowserURL((value as any)?.image)}
                 placeholder="/imgs/canvas/badgePlaceholder.svg"
               />
             </StyledItem>
