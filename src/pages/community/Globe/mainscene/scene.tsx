@@ -43,7 +43,8 @@ function initLabelRenderer(width: number, height: number, top: number, left: num
   labelRenderer.domElement.style.top = `${top - 16}px`
   labelRenderer.domElement.style.left = `${left}px`
   setTimeout(() => {
-    const labelElement = document.querySelector("#community-container")!
+    const labelElement = document.querySelector("#community-container")
+    if (!labelElement) return
     labelElement.insertBefore(labelRenderer.domElement, labelElement.firstChild)
   }, 1000)
   return labelRenderer
@@ -53,7 +54,7 @@ function initCamera(width: number, height: number) {
   const k = width / height
   const s = 120
   const camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, 1000)
-  camera.position.set(-102, 205, -342)
+  camera.position.set(-102, 205, 360)
   camera.lookAt(0, 0, 0)
   return camera
 }
@@ -142,8 +143,6 @@ async function chooseLabel(chooseLabel: any, event: any) {
   const x = event.clientX - rect.left
   const y = event.clientY - rect.top
 
-  console.log(x, y)
-
   const direction = getDirection(x, y, rendererWidth, rendererWidth)
 
   labelTitle = await createTag({
@@ -189,8 +188,10 @@ function createTag({ data, direction }: any): Promise<CSS2DObject | null> {
           resolve(obj)
           setTimeout(() => {
             root.unmount()
-            if (document.body.contains(container)) {
+            try {
               document.body.removeChild(container)
+            } catch (error) {
+              console.error("Failed to remove child node:", error)
             }
           }, 0)
         }}
@@ -205,8 +206,8 @@ function setPosition(label: CSS2DObject, position: THREE.Vector3) {
 
 function initCityLabels(citydatas: any[]) {
   citydatas.forEach(obj => {
-    const mesh: any = createPointMesh(R, obj.E, obj.N)
-    const label = createPointLabel(R, obj.E, obj.N)
+    const mesh: any = createPointMesh(R, obj.longitude, obj.latitude)
+    const label = createPointLabel(R, obj.longitude, obj.latitude)
     mesh.linkLabel = label
     cityslabels.add(label)
     cityslabels.add(mesh)
@@ -214,6 +215,9 @@ function initCityLabels(citydatas: any[]) {
     mesh.name = obj.name
     mesh.visible = false
     mesh.eventName = obj.text
+    mesh.cover = obj.pictures
+    mesh.city = obj.city
+    mesh.eventInfo = obj
 
     label.element.addEventListener("click", e => chooseLabel(mesh, e))
   })
@@ -242,7 +246,7 @@ function resizeRender(width: number, height: number, left: number, top: number) 
   labelRenderer.setSize(width, height)
   renderer.setSize(width, height)
 
-  labelRenderer.domElement.style.top = `${top - 20}px`
+  labelRenderer.domElement.style.top = `${top - 10}px`
   labelRenderer.domElement.style.left = `${left}px`
   labelRenderer.domElement.style.overflow = "visible"
 }

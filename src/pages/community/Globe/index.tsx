@@ -29,12 +29,12 @@ const MAX_SIZE = 700
 
 function Earth() {
   const threeDomRef = useRef<HTMLDivElement | null>(null)
-  const [size, setSize] = useState(Math.min(window.innerWidth, MAX_SIZE))
+  const [size, setSize] = useState(Math.min(window.innerWidth - 16, MAX_SIZE))
   const { classes } = useStyles()
 
   useEffect(() => {
     const handleResize = () => {
-      const newSize = Math.min(window.innerWidth, MAX_SIZE)
+      const newSize = Math.min(window.innerWidth - 16, MAX_SIZE)
       setSize(newSize)
       if (threeDomRef.current) {
         const { left, top } = threeDomRef.current.getBoundingClientRect()

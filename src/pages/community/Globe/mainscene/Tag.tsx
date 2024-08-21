@@ -1,12 +1,18 @@
 import React, { useEffect, useRef } from "react"
 import { CSS2DObject } from "three/examples/jsm/renderers/CSS2DRenderer.js"
 
+import SvgIcon from "@mui/material/SvgIcon"
 import { styled } from "@mui/material/styles"
+
+import { ReactComponent as ExternalSvg } from "@/assets/svgs/header/External.svg"
 
 interface TagProps {
   data: {
     name?: string
     eventName?: string
+    cover?: string
+    city?: string
+    eventInfo: any
   }
   direction?: "up" | "down" | "left" | "right"
   onTagReady?: (tag: CSS2DObject) => void
@@ -16,7 +22,7 @@ const EventContainer = styled("div")({
   position: "relative",
   width: "9px",
   height: "9px",
-  zIndex: 20,
+  zIndex: "999 !important",
 })
 
 const Circle = styled("div")({
@@ -29,7 +35,7 @@ const Circle = styled("div")({
   zIndex: 99,
 })
 
-const Title = styled("div")({
+const Title = styled("div")(({ theme }) => ({
   position: "absolute",
   width: "fit-content",
   fontSize: "14px",
@@ -40,7 +46,8 @@ const Title = styled("div")({
   background: "#d2fcf6",
   whiteSpace: "nowrap",
   transform: "translate(-50%, -60px)",
-})
+  fontFamily: "var(--developer-page-font-family)",
+}))
 
 const Line = styled("div")<{ direction?: string }>(({ direction }) => ({
   position: "absolute",
@@ -88,23 +95,35 @@ const EndDiv = styled("div")<{ direction?: string }>(({ direction }) => ({
 const EndDivImage = styled("img")({
   margin: 0,
   padding: 0,
-  objectFit: "cover",
+  objectFit: "contain",
   width: "183px",
   height: "110px",
   borderBottom: "1px solid #101010",
   outline: "none",
   display: "block",
+  background: "#fff",
 })
 
-const EndDivText = styled("p")({
+const EndDivText = styled("a")(({ theme }) => ({
   margin: 0,
+  display: "block",
   textAlign: "center",
   lineHeight: "30px",
   whiteSpace: "nowrap",
   overflow: "hidden",
   textOverflow: "ellipsis",
   padding: "0 6px",
-})
+  fontFamily: "var(--developer-page-font-family)",
+  "&:hover": {
+    cursor: "pointer",
+    color: "#ff684b",
+    "& svg": {
+      opacity: 1,
+      marginLeft: "0.8rem !important",
+      // left: "0.8rem",
+    },
+  },
+}))
 
 const Tag: React.FC<TagProps> = ({ data, direction, onTagReady }) => {
   const divRef = useRef<HTMLDivElement>(null)
@@ -121,12 +140,26 @@ const Tag: React.FC<TagProps> = ({ data, direction, onTagReady }) => {
   return (
     <EventContainer ref={divRef}>
       <Circle>
-        <Title>{data?.name || ""}</Title>
+        <Title>{data?.city || data?.name}</Title>
       </Circle>
       <Line direction={direction} />
       <EndDiv direction={direction}>
-        <EndDivImage alt="image" src="https://scroll.ghost.io/content/images/2024/06/Blog-Banner--_-Session-One--DeFi-on--Scroll-6.png" />
-        <EndDivText>{data?.eventName || ""}</EndDivText>
+        <EndDivImage alt="image" src={`/imgs/community/globe/${data?.cover}`} />
+        <EndDivText href={data?.eventInfo.website}>
+          {data?.eventName || ""}{" "}
+          <SvgIcon
+            sx={{
+              fontSize: "1.2rem",
+              marginLeft: "0 !important",
+              transition: "all 0.3s ease",
+              position: "absolute",
+              bottom: "6px",
+              opacity: 0,
+            }}
+            component={ExternalSvg}
+            inheritViewBox
+          ></SvgIcon>
+        </EndDivText>
       </EndDiv>
     </EventContainer>
   )
