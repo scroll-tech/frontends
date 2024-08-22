@@ -3,6 +3,7 @@ import { AbiCoder, ethers } from "ethers"
 
 import { checkBadgeEligibilityURL, claimBadgeURL } from "@/apis/canvas"
 import { fetchBadgeByAddrURL } from "@/apis/canvas-badge"
+import { fetchEcosystemProtocolByNameURL, fetchEcosystemProtocolLogo } from "@/apis/ecosystem"
 import AttestProxyABI from "@/assets/abis/CanvasAttestProxy.json"
 import BadgeABI from "@/assets/abis/CanvasBadge.json"
 import ProfileABI from "@/assets/abis/CanvasProfile.json"
@@ -124,8 +125,7 @@ const getBadgeMetadata = async (provider, badgeContractAddress, badgeUID = ether
     const metadata = await scrollRequest(badgeTokenBrowserURL, { timeout: 5e3 })
     return metadata
   } catch (error) {
-    // console.log("Failed to get badge image URI:", error)
-    return ""
+    return {}
   }
 }
 
@@ -499,6 +499,25 @@ const fetchNotionBadgeByAddr = async addr => {
     const data = await scrollRequest(fetchBadgeByAddrURL(addr))
     return data
   } catch (e) {
+    return {}
+  }
+}
+
+export const fetchIssuer = async issuerName => {
+  try {
+    const { data } = await scrollRequest(fetchEcosystemProtocolByNameURL(issuerName))
+    if (!data.length) {
+      return {}
+    }
+    const [{ name: issuerFullName, ext, website }] = data
+    const issuerLogo = fetchEcosystemProtocolLogo(issuerFullName, ext)
+    const issuer = {
+      name: issuerFullName,
+      logo: issuerLogo,
+      origin: website,
+    }
+    return issuer
+  } catch (error) {
     return {}
   }
 }
