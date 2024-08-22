@@ -48,7 +48,6 @@ const useStyles = makeStyles()((theme, { transform }) => ({
     })`,
     transformOrigin: "0 0",
     touchAction: "manipulation",
-    // cursor: "pointer",
     "&.dragOverlay": {
       zIndex: 999,
     },

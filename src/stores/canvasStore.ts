@@ -4,7 +4,6 @@ import { create } from "zustand"
 
 import { Badge, ETHEREUM_YEAR_BADGE } from "@/constants"
 import {
-  checkBadgeEligibility,
   checkBadgeUpgradable,
   fetchCanvasDetail,
   getOrderedAttachedBadges,
@@ -12,8 +11,6 @@ import {
   queryUserBadgesWrapped,
   upgradeBadge,
 } from "@/services/canvasService"
-
-// import { testAsyncFunc } from "@/services/canvasService"
 
 export enum MintedStatus {
   MINTED = "MINTED",
@@ -23,20 +20,16 @@ export enum MintedStatus {
 
 export enum BadgeDetailDialogType {
   HIDDEN = "",
-  MINT = "mint", // no badge
-  MINT_WITH_BACK = "mintWithBack", // no badge
+  MINT = "mint", //  not in use, only for third party badge example
   UPGRADE = "upgrade",
   VIEW = "view",
-  NO_PROFILE = "noProfile", // no badge
+  NO_CANVAS = "noCanvas",
 }
 
 export enum BadgesDialogType {
   HIDDEN = "",
-  MINT = "mint",
   UPGRADE = "upgrade",
 }
-
-type MintableBadge = Badge & { mintable: boolean }
 
 export type UpgradableBadge = Badge & { upgradable: boolean; id: string }
 
@@ -73,7 +66,6 @@ interface CanvasStore {
   walletDetailLoading: boolean
   queryUsernameLoading: boolean
   queryUserBadgesLoading: boolean
-  pickMintableBadgesLoading: boolean
   pickUpgradableBadgesLoading: boolean
   profileAddress: string | null
   profileMinted: boolean | null
@@ -82,7 +74,6 @@ interface CanvasStore {
   userBadges: Array<any>
   attachedBadges: Array<string>
   orderedAttachedBadges: Array<string>
-  mintableBadges: Array<MintableBadge>
   upgradableBadges: Array<UpgradableBadge>
   badgeOrder: Array<any>
   profileContract: Contract | null
@@ -108,7 +99,6 @@ interface CanvasStore {
   queryAttachedBadges: () => void
   queryVisibleBadges: (provider, address) => void
   queryUserBadges: (provider, address) => void
-  pickMintableBadges: (provider, address, refresh?) => void
   pickUpgradableBadges: (provider) => void
   addFirstBadge: (provider, badgeId, badgeImage, badgeContract) => void
   clearCanvas: () => void
@@ -117,7 +107,6 @@ interface CanvasStore {
   changeInitialMint: (initialMint: boolean) => void
   queryFirstMintUsername: (provider) => void
   changeInputReferralCode: (inputReferralCode) => void
-  // jointBadgeList: () => Promise<void>
   upgradeBadgeAndRefreshUserBadges: (provider, badge: { id: string; badgeContract: string }) => Promise<any>
 }
 
@@ -147,14 +136,12 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
   queryUsernameLoading: false,
   walletDetailLoading: false,
   queryUserBadgesLoading: false,
-  pickMintableBadgesLoading: false,
   pickUpgradableBadgesLoading: false,
   username: "",
   canvasUsername: "",
   userBadges: [],
   attachedBadges: [],
   orderedAttachedBadges: [],
-  mintableBadges: [],
   upgradableBadges: [],
   badgeOrder: [],
   firstBadgeWithPosition: {},
@@ -327,7 +314,6 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
       username: "",
       canvasUsername: "",
       userBadges: [],
-      mintableBadges: [],
       attachedBadges: [],
       orderedAttachedBadges: [],
       badgeOrder: [],
@@ -397,71 +383,6 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
       orderedAttachedBadges,
       badgeOrder,
       queryUserBadgesLoading: false,
-    })
-  },
-
-  // not in use
-  pickMintableBadges: async (provider, walletCurrentAddress, refresh) => {
-    set({
-      pickMintableBadgesLoading: true,
-    })
-
-    const { userBadges, mintableBadges, badgeList } = get()
-    const preMintableBadges = [...mintableBadges]
-
-    const checkedBadgeList: Array<MintableBadge> = []
-    const checkPromiseList: Array<any> = []
-    const checkingList: Array<any> = []
-    const LIMIT = 3
-
-    for (const badge of badgeList) {
-      const isUserBadge = userBadges.some(userBadge => userBadge.badgeContract === badge.badgeContract)
-      const preCheckedBadge = preMintableBadges.find(item => item.badgeContract === badge.badgeContract)
-
-      if (isUserBadge) {
-        continue
-      }
-
-      if (preCheckedBadge && !refresh) {
-        checkedBadgeList.push(preCheckedBadge)
-        continue
-      }
-
-      const checking = new Promise(async resolve => {
-        const isEligibleBadge = await checkBadgeEligibility(provider, walletCurrentAddress, badge)
-        resolve({
-          ...badge,
-          mintable: isEligibleBadge,
-        })
-      })
-      checkPromiseList.push(checking)
-
-      if (checkPromiseList.length >= LIMIT) {
-        const c: any = checking.then(() => checkingList.splice(checkingList.indexOf(c), 1))
-        checkingList.push(c)
-        if (checkingList.length >= LIMIT) {
-          await Promise.race(checkingList)
-        }
-      }
-    }
-    const asyncCheckedBadges = await Promise.allSettled(checkPromiseList)
-
-    checkedBadgeList.push(
-      ...asyncCheckedBadges
-        .filter((item): item is PromiseFulfilledResult<MintableBadge> => item.status === "fulfilled" && item.value.mintable)
-        .map(item => item.value),
-    )
-
-    const finalMintableBadges = badgeList
-      .filter(({ badgeContract }) => {
-        const curBadge = checkedBadgeList.find(item => item.badgeContract === badgeContract)
-        return curBadge?.mintable
-      })
-      .map(item => ({ ...item, mintable: true }))
-
-    set({
-      pickMintableBadgesLoading: false,
-      mintableBadges: finalMintableBadges,
     })
   },
 

@@ -1,4 +1,3 @@
-// canvasService.js
 import { AbiCoder, ethers } from "ethers"
 
 import { checkBadgeEligibilityURL, claimBadgeURL } from "@/apis/canvas"
@@ -76,8 +75,6 @@ const queryUserBadges = async userAddress => {
   } catch (error) {
     sentryDebug(`query user's badges: ${error.message}`)
     throw new Error("Failed to query user badges:")
-    // console.log("Failed to query user badges:", error)
-    // return []
   }
 }
 
@@ -112,7 +109,6 @@ const queryBadgeDetailById = async badgeId => {
     return attestations
   } catch (error) {
     sentryDebug(`query badge detail: ${error.message}`)
-    console.log(`Failed to query badge: ${badgeId}:`, error)
     return []
   }
 }
@@ -136,7 +132,6 @@ const checkIfProfileMinted = async (registryInstance, userAddress) => {
     return { profileAddress, minted }
   } catch (error) {
     sentryDebug(`check minted:${userAddress}-${error.message}`)
-    console.log("Failed to check if profile minted:", error)
     return { profileAddress: null, minted: null }
   }
 }
@@ -185,9 +180,7 @@ const queryCanvasUsername = async (provider, profileAddress) => {
     return { profileContract, name }
   } catch (error) {
     sentryDebug(`query username: ${error.message}`)
-    console.log(error, "queryCanvasUsername")
     throw new Error("Failed to fetch username")
-    // return { profileContract: null, name: null }
   }
 }
 
@@ -213,7 +206,6 @@ const getBadgeOrder = async profileContract => {
   try {
     const badgeOrder = await profileContract.getBadgeOrder()
     const badgeOrderArray = Array.from(badgeOrder)
-    // console.log("badgeOrder", badgeOrderArray)
     return badgeOrderArray
   } catch (error) {
     sentryDebug(`query badge order: ${error.message}`)
@@ -228,36 +220,6 @@ const fetchCanvasDetail = async (privider, othersAddress, profileAddress) => {
   const { orderedAttachedBadges, attachedBadges, badgeOrder } = await getOrderedAttachedBadges(profileContract)
   return { name, profileContract, userBadges, attachedBadges, orderedAttachedBadges, badgeOrder }
 }
-
-// no use
-// const attachBadges = async (profileContract, badgeAddresses) => {
-//   try {
-//     const tx = await profileContract!["attach(bytes32[])"](badgeAddresses)
-//     const txReceipt = await tx.wait()
-//     if (txReceipt.status === 1) {
-//       return true
-//     } else {
-//       return "due to any operation that can cause the transaction or top-level call to revert"
-//     }
-//   } catch (error) {
-//     console.log("Badges attached error!", error, badgeAddresses)
-//   }
-// }
-
-// no use
-// const detachBadges = async (profileContract, badgeAddresses) => {
-//   try {
-//     const tx = await profileContract!.detach(badgeAddresses)
-//     const txReceipt = await tx.wait()
-//     if (txReceipt.status === 1) {
-//       return true
-//     } else {
-//       return "due to any operation that can cause the transaction or top-level call to revert"
-//     }
-//   } catch (error) {
-//     console.log("Badge detached error!", error)
-//   }
-// }
 
 const checkBadgeEligibility = async (provider, walletAddress, badge: any) => {
   try {
@@ -282,7 +244,6 @@ const checkBadgeEligibility = async (provider, walletAddress, badge: any) => {
       const data = await scrollRequest(checkBadgeEligibilityURL(badge.baseURL, walletAddress, badge.badgeContract), {
         timeout: 1e4,
       })
-      // TODO: must return true or false
       return data.eligibility ?? false
     }
     return false
@@ -294,7 +255,6 @@ const checkBadgeEligibility = async (provider, walletAddress, badge: any) => {
 
 const mintBackendAuthorizedBadge = async (signer, walletAddress, badgeAddress, attesterProxyAddress, claimBaseUrl) => {
   const { tx: unsignedTx } = await scrollRequest(claimBadgeURL(claimBaseUrl, walletAddress, badgeAddress))
-  console.log(unsignedTx, "unsignedTx")
   checkDelegatedAttestation(unsignedTx, attesterProxyAddress)
   const tx = await signer.sendTransaction(unsignedTx)
   const txReceipt = await tx.wait()
@@ -424,14 +384,9 @@ const checkBadgeUpgradable = async (provider, badge) => {
     const { id, badgeContract } = badge
 
     const badgeInstance = new ethers.Contract(badgeContract, BadgeABI, provider)
-    // if (test) {
-    //   const upgradable = await testAsyncFunc(true)
-    //   return { ...badge, upgradable }
-    // }
     const upgradable = await badgeInstance.canUpgrade(id)
     return { ...badge, upgradable }
   } catch (e) {
-    // TODO: upgradable badge contract
     return { ...badge, upgradable: false }
   }
 }
@@ -454,26 +409,11 @@ const customiseDisplay = async ({ profileContract, attachBadges, detachBadges, o
   }
   const txResponse = await profileContract.multicall(calls)
   const txReceipt = await txResponse.wait()
-  // console.log(txReceipt, "txReceipt")
 
   if (txReceipt.status !== 1) {
     throw new Error("due to any operation that can cause the transaction or top-level call to revert")
   }
 }
-
-// const reorderBadges = async (profileContract, badgeOrder) => {
-//   try {
-//     const tx = await profileContract!.reorderBadges(badgeOrder)
-//     const txReceipt = await tx.wait()
-//     if (txReceipt.status === 1) {
-//       return true
-//     } else {
-//       return "due to any operation that can cause the transaction or top-level call to revert"
-//     }
-//   } catch (error) {
-//     console.log("Badges reordered error!", error)
-//   }
-// }
 
 const checkIfHasBadgeByAddress = async (provider, userAddress, badgeAddress) => {
   try {
@@ -481,7 +421,6 @@ const checkIfHasBadgeByAddress = async (provider, userAddress, badgeAddress) => 
     const hasBadge = await badgeContract.hasBadge(userAddress)
     return hasBadge
   } catch (error) {
-    console.log("Failed to check if has badge by address:", error)
     return false
   }
 }
@@ -542,13 +481,10 @@ export {
   getOrderedAttachedBadges,
   getBadgeOrder,
   fetchCanvasDetail,
-  // attachBadges,
-  // detachBadges,
   mintBadge,
   upgradeBadge,
   checkBadgeUpgradable,
   customiseDisplay,
-  // reorderBadges,
   checkIfHasBadgeByAddress,
   getReferrerData,
   fillBadgeDetailWithPayload,

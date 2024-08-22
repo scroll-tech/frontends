@@ -126,7 +126,6 @@ const BadgeDetail = props => {
             },
             "@media (max-width: 1280px)": {
               gap: "4rem",
-              // gridTemplateColumns: "minmax(min-content, 1fr) 1fr",
               gridTemplateColumns: "min-content 1fr",
               justifyItems: "center",
             },
@@ -155,12 +154,7 @@ const BadgeDetail = props => {
               />
             )}
           </Box>
-          <Stack
-            sx={{ width: "100%", gap: ["1.6rem", "2.4rem", "3.2rem"] }}
-            direction="column"
-            // spacing={isPortrait ? "2.4rem" : "3.2rem"}
-            alignItems={isLandscape ? "flex-start" : "center"}
-          >
+          <Stack sx={{ width: "100%", gap: ["1.6rem", "2.4rem", "3.2rem"] }} direction="column" alignItems={isLandscape ? "flex-start" : "center"}>
             <Box sx={{ width: "100%", textAlign: ["center", "center", "left"] }}>
               {!loading && detail.upgradable && (
                 <UpgradeAction

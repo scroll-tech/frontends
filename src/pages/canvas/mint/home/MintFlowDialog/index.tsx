@@ -1,16 +1,7 @@
 import { useRef } from "react"
 import { makeStyles } from "tss-react/mui"
 
-import {
-  AppBar, // Slide,useScrollTrigger
-  CircularProgress,
-  Dialog,
-  IconButton,
-  Stack,
-  SvgIcon,
-  Toolbar,
-  Typography,
-} from "@mui/material"
+import { AppBar, CircularProgress, Dialog, IconButton, Stack, SvgIcon, Toolbar, Typography } from "@mui/material"
 
 import { ReactComponent as CloseSvg } from "@/assets/svgs/nft/flow-close.svg"
 import ScrollLogo from "@/components/ScrollLogo"
@@ -34,11 +25,8 @@ const MintFlowDialog = props => {
   const { classes } = useStyles()
   const { isProfileMinting, isFirstBadgeMinting } = useCanvasStore()
 
-  // const trigger = useScrollTrigger({ target: scrollRef?.current })
-  // console.log(trigger, "trigger")
   return (
     <Dialog PaperProps={{ ref: scrollRef }} classes={{ paper: classes.paper }} fullScreen {...props}>
-      {/* <Slide appear={false} direction="down" in={!trigger}> */}
       <AppBar sx={{ position: "sticky", top: 0, backgroundColor: theme => theme.palette.text.primary, paddingRight: "0 !important" }}>
         <Toolbar sx={{ justifyContent: "space-between", px: ["2rem", "2rem", "6rem"], minHeight: "unset", height: ["6.2rem", "6.5rem"] }}>
           <ScrollLogo light></ScrollLogo>
@@ -56,7 +44,6 @@ const MintFlowDialog = props => {
           </Stack>
         </Toolbar>
       </AppBar>
-      {/* </Slide> */}
 
       <MintFlow scrollTarget={scrollRef.current}></MintFlow>
     </Dialog>

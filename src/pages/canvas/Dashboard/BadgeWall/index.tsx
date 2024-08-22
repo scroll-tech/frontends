@@ -7,8 +7,6 @@ import { styled } from "@mui/system"
 
 import { getAvatarURL } from "@/apis/canvas"
 import Skeleton from "@/components/Skeleton"
-// import { ReactComponent as DefaultAvatarSvg } from "@/assets/svgs/canvas/default-avatar.svg"
-// import { BADGES_VISIBLE_TYPE } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCanvasStore from "@/stores/canvasStore"
 import { sentryDebug } from "@/utils"
@@ -79,8 +77,6 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
   const { badgewidth, gridNum, windowDimensions } = props
   const divRef = useRef<HTMLDivElement>(null)
 
-  // console.log(badgewidth, "badgewidth")
-
   const { profileMinted, canvasUsername, queryUsernameLoading, userBadges, orderedAttachedBadges } = useCanvasStore()
   const [badges, setBadges] = useState<BadgePosition[]>([])
   const { walletCurrentAddress } = useRainbowContext()
@@ -107,22 +103,6 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
     let cursor = { x: divRect.left, y: divRect.top - badgewidth }
     let direction = 0 // 0: right, 1: down, 2: left, 3: up
     const limits = { left: divRect.left, right: divRect.right, top: divRect.top - badgewidth, bottom: divRect.bottom }
-    // const tempBadges = [
-    //   ...badges,
-    //   ...badges,
-    //   ...badges,
-    //   ...badges,
-    //   ...badges,
-    //   ...badges,
-    //   ...badges,
-    //   ...badges,
-    //   ...badges,
-    //   ...badges,
-    //   ...badges,
-    //   ...badges,
-    //   ...badges,
-    //   ...badges,
-    // ]
 
     badges.slice(0, 48).forEach(badge => {
       positions.push({ metadata: badge, left: cursor.x, top: cursor.y })
@@ -165,8 +145,6 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
   const generatedBadges = (): BadgePosition[] => {
     if (divRef.current) {
       const divRect = divRef.current.getBoundingClientRect()
-      // console.log(divRect, "divRect")
-
       return generateBadgePositions(divRect, badgewidth, visibleBadges)
     }
     return []

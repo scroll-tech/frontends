@@ -135,10 +135,8 @@ const ReferralCode = ({ isChecking, setIsChecking, code, codeStatus, setCodeStat
 
   const handleInputChange = (index: number, event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setCodeStatus(CodeStatus.UNKNOWN)
-    // changeReferralCode("")
     const newCodes = [...codes]
     newCodes[index] = (event.target as HTMLInputElement).value
-    console.log(newCodes, "newCodes")
     setCodes(newCodes)
 
     if (event.target.value && index < INVITE_CODE_LENGTH - 1) {
@@ -164,7 +162,7 @@ const ReferralCode = ({ isChecking, setIsChecking, code, codeStatus, setCodeStat
       setCodes(pasteArray)
     }
   }
-  // 6T1XL
+
   return (
     <Box sx={{ position: "relative" }}>
       <Stack direction="row" gap="0.8rem" alignItems="center">
@@ -179,7 +177,6 @@ const ReferralCode = ({ isChecking, setIsChecking, code, codeStatus, setCodeStat
             key={index}
             value={code}
             onPaste={handlePaste}
-            // autoFocus={index === 0}
             onChange={(e: any) => handleInputChange(index, e)}
             onKeyDown={(e: any) => handleBackspace(index, e)}
             inputProps={{ maxLength: 1 }}

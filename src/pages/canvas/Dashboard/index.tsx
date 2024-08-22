@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet-async"
 import { Navigate, useNavigate, useParams } from "react-router-dom"
 
 import Canvas from "@/components/Canvas"
-// import { BADGES_VISIBLE_TYPE } from "@/constants"
+import { EXPLORE_BADGES_URL } from "@/constants"
 import { useCanvasContext } from "@/contexts/CanvasContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useSnackbar from "@/hooks/useSnackbar"
@@ -40,11 +40,9 @@ const Dashboard = props => {
     profileAddress,
     changeProfileDetailLoading,
     profileDetailLoading,
-    changeBadgesDialogVisible,
     badgeAnimationVisible,
     initialMint,
     badgesDialogVisible,
-    mintableBadges,
     upgradableBadges,
     pickUpgradableBadges,
     pickUpgradableBadgesLoading,
@@ -63,30 +61,20 @@ const Dashboard = props => {
   }, [badgesDialogVisible])
 
   const scrollyAlert = useMemo(() => {
-    if (mintableBadges.length) {
-      return {
-        title: "Mint eligible badges",
-        content: "Welcome to Scroll Canvas where you can earn badges across the ecosystem. Mint your badges now!",
-        action: () => {
-          changeBadgesDialogVisible(BadgesDialogType.MINT)
-        },
-      }
-    }
     return {
       title: "Explore badges",
       content: "Welcome to Scroll Canvas where you can earn badges across the ecosystem. Explore protocols offering badges now!",
       action: () => {
-        navigate("/ecosystem")
+        navigate(EXPLORE_BADGES_URL)
       },
     }
-  }, [mintableBadges.length])
+  }, [])
 
   const [windowDimensions, setWindowDimensions] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
   })
 
-  // TODO: fetchOther does not depend on a connected wallet
   useEffect(() => {
     if (unsignedProfileRegistryContract && othersWalletAddress) {
       fetchOthers(publicProvider, unsignedProfileRegistryContract, othersWalletAddress)
@@ -192,10 +180,7 @@ const Dashboard = props => {
               <NameDialog />
               <CustomizeDisplayDialog />
               <ReferDialog />
-              <BadgesDialog
-                badges={badgesDialogVisible === BadgesDialogType.MINT ? mintableBadges : upgradableBadges}
-                loading={pickUpgradableBadgesLoading}
-              />
+              <BadgesDialog badges={upgradableBadges} loading={pickUpgradableBadgesLoading} />
               <BadgeDetailDialog />
             </>
           )}
