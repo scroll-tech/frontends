@@ -15,7 +15,7 @@ import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useSnackbar from "@/hooks/useSnackbar"
 import Dialog from "@/pages/canvas/components/Dialog"
-import { checkBadgeUpgradable, fetchNotionBadgeByAddr, mintBadge } from "@/services/canvasService"
+import { checkBadgeUpgradable, fetchIssuer, fetchNotionBadgeByAddr, mintBadge } from "@/services/canvasService"
 import useCanvasStore, { BadgeDetailDialogType, BadgesDialogType } from "@/stores/canvasStore"
 import { generateShareTwitterURL, ipfsToBrowserURL, requireEnv, sentryDebug } from "@/utils"
 
@@ -85,7 +85,13 @@ const BadgeDetailDialog = () => {
     queryKey: ["notionBadge", selectedBadge.badgeContract],
     queryFn: async () => {
       const badge = await fetchNotionBadgeByAddr(selectedBadge.badgeContract)
-      return badge.issuer ?? {}
+      if (badge.issuer) {
+        return badge.issuer
+      } else if (selectedBadge.issuerName) {
+        const issuer = await fetchIssuer(selectedBadge.issuerName)
+        return issuer
+      }
+      return {}
     },
     initialData: {},
   })
