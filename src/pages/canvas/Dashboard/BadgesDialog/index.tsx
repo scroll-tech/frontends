@@ -1,4 +1,4 @@
-import { Fragment, useMemo } from "react"
+import { Fragment } from "react"
 import Img from "react-cool-img"
 
 import { List } from "@mui/material"
@@ -11,19 +11,9 @@ import useCheckViewport from "@/hooks/useCheckViewport"
 import useSnackbar from "@/hooks/useSnackbar"
 import Button from "@/pages/canvas/components/Button"
 import Dialog from "@/pages/canvas/components/Dialog"
-import Empty from "@/pages/canvas/components/Empty"
-import useCanvasStore, { BadgeDetailDialogType, BadgesDialogType } from "@/stores/canvasStore"
+import useCanvasStore, { BadgesDialogType } from "@/stores/canvasStore"
 
 import BadgeItem from "./BadgeItem"
-
-// const BADGES_COPY = {
-//   [BadgesDialogType.MINT]: {
-//     title: "Mint eligible badges",
-//   },
-//   [BadgesDialogType.UPGRADE]: {
-//     title: "Upgrade badges",
-//   },
-// }
 
 const StyledList = styled(List)(({ theme }) => ({
   width: "57.6rem",
@@ -59,27 +49,10 @@ const BadgesDialog = props => {
   const { isMobile } = useCheckViewport()
   const alertWarning = useSnackbar()
 
-  const {
-    isBadgeUpgrading,
-    badgesDialogVisible,
-    changeBadgesDialogVisible,
-    changeBadgeDetailDialog,
-    changeSelectedBadge,
-    upgradeBadgeAndRefreshUserBadges,
-  } = useCanvasStore()
-
-  const dialogTitle = useMemo(
-    () => (badgesDialogVisible === BadgesDialogType.MINT ? "Mint eligible badges" : "Upgrade badges"),
-    [badgesDialogVisible],
-  )
+  const { isBadgeUpgrading, badgesDialogVisible, changeBadgesDialogVisible, upgradeBadgeAndRefreshUserBadges } = useCanvasStore()
 
   const handleClose = () => {
     changeBadgesDialogVisible(BadgesDialogType.HIDDEN)
-  }
-
-  const handleViewBadge = async badge => {
-    changeSelectedBadge(badge)
-    changeBadgeDetailDialog(BadgeDetailDialogType.MINT_WITH_BACK)
   }
 
   const handleUpgradeBadge = async badge => {
@@ -97,7 +70,7 @@ const BadgesDialog = props => {
 
   if (loading) {
     return (
-      <Dialog title={dialogTitle} open={!!badgesDialogVisible} onClose={handleClose}>
+      <Dialog title="Upgrade badges" open={!!badgesDialogVisible} onClose={handleClose}>
         <StyledList>
           <LoadingPage
             height="100%"
@@ -108,38 +81,25 @@ const BadgesDialog = props => {
     )
   }
 
-  // only for mint dialog
-  if (!badges.length) {
-    return (
-      <Dialog onClose={handleClose} open={!!badgesDialogVisible}>
-        <Empty title="No eligible badges for minting" sx={{ width: "57.6rem", height: ["auto", "62.7rem"] }}></Empty>
-      </Dialog>
-    )
-  }
-
   return (
-    <Dialog title={dialogTitle} open={!!badgesDialogVisible} onClose={handleClose}>
+    <Dialog title="Upgrade badges" open={!!badgesDialogVisible} onClose={handleClose}>
       <StyledList>
         {badges.map((badge, index) => (
           <Fragment key={index}>
-            {badgesDialogVisible === BadgesDialogType.MINT ? (
-              <BadgeItem badge={badge} onClick={() => handleViewBadge(badge)} />
-            ) : (
-              <BadgeItem
-                badge={badge}
-                action={
-                  <Button
-                    color="secondary"
-                    variant="contained"
-                    sx={{ borderRadius: "0.8rem", width: ["100%", "18.5rem"], fontSize: "1.6rem", padding: 0, borderColor: "#fff !important" }}
-                    loading={isBadgeUpgrading.get(badge.id)}
-                    onClick={handleUpgradeBadge}
-                  >
-                    Upgrade now
-                  </Button>
-                }
-              />
-            )}
+            <BadgeItem
+              badge={badge}
+              action={
+                <Button
+                  color="secondary"
+                  variant="contained"
+                  sx={{ borderRadius: "0.8rem", width: ["100%", "18.5rem"], fontSize: "1.6rem", padding: 0, borderColor: "#fff !important" }}
+                  loading={isBadgeUpgrading.get(badge.id)}
+                  onClick={handleUpgradeBadge}
+                >
+                  Upgrade now
+                </Button>
+              }
+            />
           </Fragment>
         ))}
       </StyledList>

@@ -42,9 +42,6 @@ const FirstBadgeMask = props => {
       style={{
         position: "fixed",
         aspectRatio: "1/1",
-        // left: firstBadgeWithPosition.left, // window
-        // top: firstBadgeWithPosition.top,
-        // width: 200,
       }}
     >
       <Img

@@ -71,7 +71,6 @@ const Badge = ({ badge, index, badgewidth }) => {
         onClick={handleShowBadgeDetailDialog}
       >
         <MuiBadge invisible={!upgradableBadge} color="primary" variant="dot">
-          {/* <BadgeGlowBox></BadgeGlowBox> */}
           <Img
             alt={badge.metadata?.name}
             style={{ width: "100%", borderRadius: "0.8rem" }}

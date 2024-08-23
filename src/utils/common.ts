@@ -116,3 +116,7 @@ export function generateShareTwitterURL(url, text, via = "Scroll_ZKP") {
 export function isAndroid(): boolean {
   return typeof navigator !== "undefined" && /android/i.test(navigator.userAgent)
 }
+
+export function normalizeAddress(address) {
+  return address.toLowerCase()
+}

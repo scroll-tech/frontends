@@ -14,6 +14,7 @@ import { ReactComponent as ShareSvg } from "@/assets/svgs/canvas/share.svg"
 import { ReactComponent as ExternalLinkSvg } from "@/assets/svgs/common/external-link.svg"
 import { ReactComponent as TwitterSvg } from "@/assets/svgs/nft/twitter.svg"
 import { BADGE_INTEGRATION_GUIDE } from "@/constants"
+import { EXPLORE_BADGES_URL } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import Button from "@/pages/canvas/components/Button"
@@ -241,7 +242,7 @@ const ActionBox = () => {
               key: "explore",
               label: "Explore badges",
               onClick: () => {
-                navigate("/canvas-and-badges#discover")
+                navigate(EXPLORE_BADGES_URL)
               },
             },
             {
@@ -321,7 +322,6 @@ const ActionBox = () => {
 
   const handleMouseEnter = item => {
     if (item.external) {
-      console.log(item, "???")
       setIsHovering(item.key)
     }
   }

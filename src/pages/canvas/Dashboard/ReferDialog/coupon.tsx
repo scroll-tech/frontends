@@ -51,23 +51,10 @@ const DescriptionBox = styled(Box)(({ theme }) => ({
   flexDirection: "column",
   [theme.breakpoints.down("sm")]: {
     height: "13.4rem",
-    // width: "max-content",
     flex: 110,
     padding: "1rem 1rem 0",
   },
 }))
-
-// const ReferralLink = styled(Typography)(({ theme }) => ({
-//   borderRadius: "0.6rem",
-//   border: "0.15rem solid #000",
-//   background: "#FFF",
-//   fontSize: "4rem",
-//   textAlign: "center",
-//   width: "34rem",
-//   height: "7.2rem",
-//   lineHeight: "7.2rem",
-//   fontWeight: 500,
-// }))
 
 const useStyles = makeStyles<any>()((theme, { dropdownWidth }) => ({
   paper: {

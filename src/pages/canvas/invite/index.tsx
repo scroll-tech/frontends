@@ -7,7 +7,7 @@ import { requireEnv } from "@/utils"
 
 import CanvasMint from "../mint"
 
-// TODO: if currentWallectAddress has minted Canvas then display Canvas profile
+// if currentWallectAddress has minted Canvas then display Canvas profile
 // else display input referral code page (the default unminted page)
 
 const CanvasCoupon = () => {

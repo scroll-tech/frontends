@@ -13,7 +13,6 @@ import { useCanvasContext } from "@/contexts/CanvasContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useSnackbar from "@/hooks/useSnackbar"
-// import { testAsyncFunc } from "@/services/canvasService"
 import useCanvasStore from "@/stores/canvasStore"
 import { isUserRejected, recognizeError, requireEnv, sentryDebug, trimErrorMessage } from "@/utils"
 
@@ -73,7 +72,6 @@ const MintStep = props => {
         const { signature } = await scrollRequest(fetchSignByCode(referralCode, walletCurrentAddress))
         codeSignature = signature
       }
-      console.log(codeSignature, "signature")
       const mintFee = ethers.parseEther(codeSignature === "0x" ? "0.001" : "0.0005")
       const isValidBalance = await checkBalance(mintFee)
       if (!isValidBalance) {
@@ -84,7 +82,6 @@ const MintStep = props => {
       const tx = await profileRegistryContract.mint(profileName, codeSignature, { value: mintFee })
       const txReceipt = await tx.wait()
 
-      // const txReceipt: any = await testAsyncFunc({ status: 1 })
       if (txReceipt.status === 1) {
         changeReferralCode("")
         changeInitialMint(true)

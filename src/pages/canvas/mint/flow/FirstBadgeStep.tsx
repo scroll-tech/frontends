@@ -11,7 +11,6 @@ import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useAsyncMemo } from "@/hooks"
 import useSnackbar from "@/hooks/useSnackbar"
 import { mintBadge } from "@/services/canvasService"
-// import { testAsyncFunc } from "@/services/canvasService"
 import useCanvasStore from "@/stores/canvasStore"
 import { truncateAddress } from "@/utils"
 
@@ -54,9 +53,7 @@ const FirstBadgeStep = props => {
 
     try {
       const result = await mintBadge(provider, walletCurrentAddress, ETHEREUM_YEAR_BADGE)
-      // defaultBadge.id
 
-      // const result = await testAsyncFunc("0x11cfb299dda2ae8b1fccf9a055394de9a7f953e8b8f115295dc0f2325e8b2130")
       if (result) {
         const { left, top } = firstBadgeRef.current!.getBoundingClientRect()
         recordFirstBadgePosition({
