@@ -4,25 +4,21 @@ import { useNavigate } from "react-router-dom"
 import { Stack, Typography } from "@mui/material"
 
 import Button from "@/components/Button"
+import { EXPLORE_BADGES_URL } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
-import useCanvasStore, { BadgesDialogType } from "@/stores/canvasStore"
+import useCanvasStore from "@/stores/canvasStore"
 
 const Empty = props => {
-  const { sx, title, mintableBadgeCount } = props
+  const { sx, title } = props
   const navigate = useNavigate()
   const { isMobile } = useCheckViewport()
-  const { changeBadgesDialogVisible, changeCustomizeDisplayDialogVisible } = useCanvasStore()
+  const { changeCustomizeDisplayDialogVisible } = useCanvasStore()
 
-  const moveToEcosystem = () => {
-    navigate("/ecosystem")
-    changeBadgesDialogVisible(BadgesDialogType.HIDDEN)
+  const toCanvasAndBadges = () => {
+    navigate(EXPLORE_BADGES_URL)
     changeCustomizeDisplayDialogVisible(false)
   }
 
-  const handleOpenMintBadge = () => {
-    changeBadgesDialogVisible(BadgesDialogType.MINT)
-    changeCustomizeDisplayDialogVisible(false)
-  }
   return (
     <Stack justifyContent="center" alignItems="center" height="100%" sx={sx}>
       <Img style={{ width: isMobile ? "12rem" : "20rem", height: isMobile ? "12rem" : "20rem" }} src="/imgs/canvas/Scrolly_Wen.webp" alt="Empty" />
@@ -40,17 +36,12 @@ const Empty = props => {
           color: "primary.contrastText",
         }}
       >
-        Mint eligible badges or explore badges on the ecosystem page
+        Mint eligible badges or explore badges on the canvas and badges page
       </Typography>
       <Stack direction={isMobile ? "column" : "row"} gap="1.6rem">
-        <Button color="primary" width="20rem" onClick={moveToEcosystem}>
+        <Button color="primary" width="20rem" onClick={toCanvasAndBadges}>
           Explore badges
         </Button>
-        {!!mintableBadgeCount && (
-          <Button color="secondary" width="20rem" onClick={handleOpenMintBadge}>
-            Mint badges ({mintableBadgeCount})
-          </Button>
-        )}
       </Stack>
     </Stack>
   )

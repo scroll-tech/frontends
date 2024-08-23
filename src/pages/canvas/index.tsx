@@ -20,7 +20,6 @@ const CanvasIndex = props => {
   }, [chainId, isOthersCanvas, isBadgeDetail])
 
   const renderCanvas = () => {
-    // return <LoadingPage></LoadingPage>
     if (!walletCurrentAddress) {
       return <Navigate to="/canvas/mint" replace={true}></Navigate>
     } else if (profileMintedChecking || profileMinted === null) {

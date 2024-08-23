@@ -17,7 +17,6 @@ const ScrollDialog = props => {
           "& .MuiDialog-paper": {
             position: "relative",
             background: "linear-gradient(127deg, #2A2A2A 0.6%, #101010 100%)",
-            // // width: "64rem",
             width: fullWidth ? "100%" : "auto",
             minWidth: "64rem",
             maxWidth: "120rem",
@@ -63,7 +62,6 @@ const ScrollDialog = props => {
           </IconButton>
         )}
       </DialogTitle>
-      {/* <Stack direction="row" alignItems="center" sx={{ position: "absolute" }}></Stack> */}
       <DialogContent
         sx={[
           {

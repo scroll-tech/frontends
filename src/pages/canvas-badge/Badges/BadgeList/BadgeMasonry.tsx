@@ -4,10 +4,6 @@ import { AutoSizer, CellMeasurer, CellMeasurerCache, Masonry, WindowScroller } f
 
 import useCheckViewport from "@/hooks/useCheckViewport"
 
-// import { makeStyles } from "tss-react/mui"
-
-// import { keyframes } from "@mui/system"
-
 type createCellPositionerParams = {
   cellMeasurerCache: CellMeasurerCache
   columnCount: number
@@ -20,18 +16,6 @@ type resetParams = {
   columnWidth: number
   spacer: number
 }
-
-// const Fade = keyframes`
-//   to {opacity:1;transform: translateY(0);}
-// `
-
-// const useStyles = makeStyles()(theme => ({
-//   item: {
-//     opacity: 0,
-//     transform: "translateY(20px)",
-//     animation: `${Fade} 0.2s forwards`,
-//   },
-// }))
 
 function createCellPositioner({ cellMeasurerCache, columnCount, columnWidth, spacer = 0 }: createCellPositionerParams) {
   let columnHeights

@@ -8,13 +8,12 @@ import BadgeDetailDialog from "@/pages/canvas/Dashboard/BadgeDetailDialog"
 import { checkIfHasBadgeByAddress } from "@/services/canvasService"
 import useCanvasStore, { BadgeDetailDialogType } from "@/stores/canvasStore"
 
-//TODO: Scroll hasn’t issued a badge according to the badge yet, so there’s no need to display Scrolly
+// not in use, an example for third party badges
 const MintBadge = () => {
   const { changeBadgeDetailDialog, changeSelectedBadge, profileMinted } = useCanvasStore()
   const badge: Badge = ETHEREUM_YEAR_BADGE
   const [canBeMint, setCanBeMint] = useState(false)
   const { chainId, provider, walletCurrentAddress } = useRainbowContext()
-  //   const { hasMintedProfile } = useCanvasContext()
 
   const isL2 = useMemo(() => chainId === CHAIN_ID.L2, [chainId])
 
@@ -41,7 +40,7 @@ const MintBadge = () => {
     if (profileMinted) {
       changeBadgeDetailDialog(BadgeDetailDialogType.MINT)
     } else {
-      changeBadgeDetailDialog(BadgeDetailDialogType.NO_PROFILE)
+      changeBadgeDetailDialog(BadgeDetailDialogType.NO_CANVAS)
     }
   }
 

@@ -147,8 +147,5 @@ const BadgeList = props => {
       )}
     </Box>
   )
-  // }
-
-  // return <>{renderList()}</>
 }
 export default BadgeList

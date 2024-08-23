@@ -10,7 +10,6 @@ import useSnackbar from "@/hooks/useSnackbar"
 import Button from "@/pages/canvas/components/Button"
 import { default as CanvasDialog } from "@/pages/canvas/components/Dialog"
 import { customiseDisplay } from "@/services/canvasService"
-// import { attachBadges, detachBadges, reorderBadges } from "@/services/canvasService"
 import useCanvasStore from "@/stores/canvasStore"
 import { isUserRejected, sentryDebug, trimErrorMessage } from "@/utils"
 
@@ -41,15 +40,12 @@ const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  // justifyContent: "center",
   [theme.breakpoints.down("sm")]: {
-    // flexDirection: "row",
     padding: "0 2rem 2.4rem",
   },
 }))
-// TODO:
+
 const CustomizeDisplayDialog = props => {
-  // const { mintableBadgeCount } = props
   const { walletCurrentAddress } = useRainbowContext()
   const {
     userBadges,
@@ -62,7 +58,6 @@ const CustomizeDisplayDialog = props => {
     profileContract,
     queryAttachedBadges,
     changeSortedBadges,
-    mintableBadges,
   } = useCanvasStore()
   const alertWarning = useSnackbar()
 
@@ -115,41 +110,6 @@ const CustomizeDisplayDialog = props => {
 
       const nextAttachedBadges = simulateThenAttachedBadges(attachedBadges, hiddenToDisplayed, displayedToHidden)
       const newBadgeOrder = calculateBadgeOrder(sortedBadges, nextAttachedBadges)
-      // console.log(newBadgeOrder, "newBadgeOrder")
-
-      // if (hiddenToDisplayed.length > 0) {
-      //   setLoading(true)
-
-      //   const result = await attachBadges(profileContract, hiddenToDisplayed)
-      //   if (result! !== true) {
-      //     console.log("mintBadge failed", result)
-      //   } else {
-      //     queryAttachedBadges()
-      //     // handleClose()
-      //   }
-      //   setLoading(false)
-      // }
-
-      // if (displayedToHidden.length > 0) {
-      //   const result = await detachBadges(profileContract, displayedToHidden)
-      //   if (result! !== true) {
-      //     console.log("mintBadge failed", result)
-      //   } else {
-      //     queryAttachedBadges()
-      //     // handleClose()
-      //   }
-      //   setLoading(false)
-      // }
-
-      // if (!isEqual(badgeOrder, newBadgeOrder)) {
-      //   const result = await reorderBadges(profileContract, newBadgeOrder)
-      //   if (result! !== true) {
-      //     console.log("mintBadge failed", result)
-      //   } else {
-      //     queryAttachedBadges()
-      //     // handleClose()
-      //   }
-      // }
 
       await customiseDisplay({
         profileContract: profileContract!,
@@ -174,7 +134,7 @@ const CustomizeDisplayDialog = props => {
     return (
       <CanvasDialog onClose={handleClose} open={customizeDisplayDialogVisible}>
         <Box sx={{ my: [0, "8rem"] }}>
-          <Empty title="No badges for customisation" mintableBadgeCount={mintableBadges.length} />
+          <Empty title="No badges for customisation" />
         </Box>
       </CanvasDialog>
     )

@@ -7,6 +7,7 @@ import { requireEnv } from "@/utils"
 
 const SCROLL_SEPOLIA_BADGE_SCHEMA = requireEnv("REACT_APP_BADGE_SCHEMA")
 
+// TODO: vercel env
 const SCROLL_ORIGINS_BADGE_ADDRESS = "0x2dBce60ebeAafb77e5472308f432F78aC3AE07d9"
 
 export const ipfsToBrowserURL = ipfsAddress => {
@@ -66,7 +67,6 @@ export const generateAttestParams = async (signer, walletAddress, attesterProxyA
     attester: attestation.attester,
     deadline: attestation.deadline,
   }
-  console.log(attestParams, "attestParams")
   const tx = await easContract.attestByDelegation.populateTransaction(attestParams)
   return tx
 }
