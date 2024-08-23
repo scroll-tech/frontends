@@ -13,6 +13,7 @@ import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useSnackbar from "@/hooks/useSnackbar"
 import {
   checkBadgeUpgradable,
+  fetchIssuer,
   fetchNotionBadgeByAddr,
   fillBadgeDetailWithPayload,
   queryBadgeDetailById,
@@ -85,8 +86,14 @@ const BadgeDetailPage = () => {
 
       const { badgeContract, description, ...badgeMetadata } = await fillBadgeDetailWithPayload(publicProvider, { id, data })
 
-      const notionBadge = await fetchNotionBadgeByAddr(badgeContract)
-      console.log(notionBadge, "notionBadge")
+      let badgeWidthIssuer = await fetchNotionBadgeByAddr(badgeContract)
+      if (!badgeWidthIssuer.issuer) {
+        const issuer = await fetchIssuer(badgeMetadata.issuerName)
+        badgeWidthIssuer = {
+          issuer,
+          thirdParty: true,
+        }
+      }
 
       const name = await fetchProfileUsername(publicProvider, recipient)
       let upgradable = false
@@ -101,12 +108,12 @@ const BadgeDetailPage = () => {
         ownerLogo: getSmallAvatarURL(recipient),
         mintedOn: formatDate(time * 1000),
         badgeContract,
-        issuer: notionBadge.issuer,
-        description: isOriginsNFTBadge(notionBadge.badgeContract) ? notionBadge.description : description,
+        issuer: badgeWidthIssuer.issuer,
+        description: isOriginsNFTBadge(badgeContract) ? badgeWidthIssuer.description : description,
         upgradable,
-        thirdParty: notionBadge.thirdParty,
+        thirdParty: badgeWidthIssuer.thirdParty,
       }
-      if (isOriginsNFTBadge(notionBadge.badgeContract)) {
+      if (isOriginsNFTBadge(badgeContract)) {
         const rarityNum = badgeMetadata.attributes.find(item => item.trait_type === "Rarity").value
         badgeDetail.rarity = NFT_RARITY_MAP[rarityNum]
       }

@@ -4,7 +4,7 @@ import { makeStyles } from "tss-react/mui"
 
 import { Box, Button, Stack, SvgIcon, Typography } from "@mui/material"
 
-import { ecosystemListLogoUrl } from "@/apis/ecosystem"
+import { fetchEcosystemProtocolLogo } from "@/apis/ecosystem"
 import { ReactComponent as ArrowSvg } from "@/assets/svgs/ecosystem/arrow.svg"
 import { ReactComponent as TwitterSvg } from "@/assets/svgs/ecosystem/twitter.svg"
 import LinesEllipsis from "@/components/LinesEllipsis"
@@ -155,7 +155,7 @@ const ProtocolCard = props => {
           gridArea: "logo",
         }}
       >
-        <Img alt={name} src={`${ecosystemListLogoUrl}${name}${ext}`} placeholder={hash} width={isMobile ? 48 : 88} height={isMobile ? 48 : 88}></Img>
+        <Img alt={name} src={fetchEcosystemProtocolLogo(name, ext)} placeholder={hash} width={isMobile ? 48 : 88} height={isMobile ? 48 : 88}></Img>
       </Stack>
       <Stack direction="row" alignItems="center" gap="0.8rem" className={classes.name}>
         <Typography sx={{ fontSize: ["2rem", "2.4rem"], lineHeight: ["2.8rem", "3.2rem"], fontWeight: 600 }}>{name}</Typography>
