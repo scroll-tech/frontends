@@ -1,10 +1,18 @@
 import ReactMarkdown from "react-markdown"
-import rehypeRaw from "rehype-raw"
+import rehypeSanitize, { defaultSchema } from "rehype-sanitize"
 import remarkGfm from "remark-gfm"
 
 import { styled } from "@mui/material/styles"
 
 import Link from "@/components/Link"
+
+const allowOnlyLinksSchema = {
+  ...defaultSchema,
+  tagNames: ["p", "a"],
+  attributes: {
+    a: ["href", "title", "target", "rel"],
+  },
+}
 
 const CustomLink = styled(Link)(({ theme }) => ({
   color: `${theme.palette.primary.main} !important`,
@@ -21,7 +29,7 @@ const BadgeDesc = props => {
     <ReactMarkdown
       className="badge-desc"
       remarkPlugins={[remarkGfm]}
-      rehypePlugins={[rehypeRaw]}
+      rehypePlugins={[[rehypeSanitize, allowOnlyLinksSchema]]}
       components={{
         a(props) {
           const { href, children } = props
