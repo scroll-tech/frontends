@@ -154,7 +154,7 @@ const Send = () => {
             <Alert severity="success">
               <>
                 Submitted successfully! <br />
-                {txType === "Deposit" ? `Funds take up to ${isEconomyDeposit ? "1h" : "20 mins"} to be ready` : "Funds take up to 1h to be claimable"}
+                {txType === "Deposit" ? `Funds take up to ${isEconomyDeposit ? "1h" : "20 mins"} to be ready` : "Funds take up to 2h to be claimable"}
                 <br />
                 <TextButton underline="always" sx={{ color: "inherit" }} onClick={handleOpenHistory}>
                   View transaction history
