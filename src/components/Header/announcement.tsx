@@ -21,6 +21,7 @@ const AnnouncementStack = styled<any>(Stack, { shouldForwardProp: prop => prop !
 }))
 
 const Announcement = () => {
+  const displayAnnouncement = false
   const isHome = useMatch("/")
 
   const announcementContent = useMemo(() => {
@@ -41,13 +42,11 @@ const Announcement = () => {
     return ""
   }, [isMainnet, isHome])
 
-  return (
-    announcementContent && (
-      <a href={rightHref} rel="noopener noreferrer">
-        <AnnouncementStack production={isMainnet}>{announcementContent}</AnnouncementStack>
-      </a>
-    )
-  )
+  return displayAnnouncement && announcementContent ? (
+    <a href={rightHref} rel="noopener noreferrer">
+      <AnnouncementStack production={isMainnet}>{announcementContent}</AnnouncementStack>
+    </a>
+  ) : null
 }
 
 export default Announcement
