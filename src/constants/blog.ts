@@ -20,6 +20,10 @@ export const getBlogCategoryList = lang => [
     label: LANGUAGE_MAP[lang].technical,
     key: "Technical",
   },
+  {
+    label: LANGUAGE_MAP[lang].ecosystem_highlights,
+    key: "Ecosystem highlights",
+  },
 ]
 
 export const getBlogSortList = lang => [
@@ -42,6 +46,7 @@ export const LANGUAGE_MAP = {
     announcement: "Announcement",
     general: "General",
     technical: "Technical",
+    ecosystem_highlights: "Ecosystem highlights",
     sort: "Order by",
     newest: "Newest",
     oldest: "Oldest",
@@ -56,6 +61,7 @@ export const LANGUAGE_MAP = {
     announcement: "Duyuru",
     general: "Genel",
     technical: "Teknik",
+    ecosystem_highlights: "Ekosistem vurguları",
     sort: "Şuna göre sırala",
     newest: "En yeni",
     oldest: "En eski",
