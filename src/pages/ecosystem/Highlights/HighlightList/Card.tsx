@@ -64,7 +64,7 @@ const BlogCard = ({ blog }) => {
 
   return (
     <Card onClick={handleClick}>
-      <BlogPoster src={blog.posterImg}></BlogPoster>
+      <BlogPoster src={blog.twitter_image || blog.posterImg}></BlogPoster>
       <BlogTitle>{blog.title}</BlogTitle>
       <ReadButton endIcon={<SvgIcon sx={{ fontSize: ["1.2rem !important", "1.4rem !important"] }} component={ArrowSvg} inheritViewBox></SvgIcon>}>
         Read
