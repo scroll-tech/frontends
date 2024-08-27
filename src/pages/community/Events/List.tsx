@@ -74,7 +74,7 @@ const Join = props => {
   const [total, setTotal] = useState(false)
   const [eventList, setEventList] = useState<any>([])
   const [isError, setIsError] = useState(false)
-  const [pageSize] = useState(6)
+  const [pageSize] = useState(9)
 
   const queryStr = useMemo(() => {
     const searchParams = new URLSearchParams({

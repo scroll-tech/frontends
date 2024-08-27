@@ -41,7 +41,7 @@ const ContributeCard = props => {
         <Stack direction="column">
           <Box className={classes.header}>
             <SvgIcon
-              sx={{ fontSize: ["1.6rem", "2rem"], alignSelf: ["flex-start", "flex-end"] }}
+              sx={{ fontSize: ["1.4rem", "1.6rem"], alignSelf: ["flex-start", "flex-end"] }}
               component={ExternaLinkIcon}
               inheritViewBox
             ></SvgIcon>

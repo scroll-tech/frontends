@@ -61,7 +61,7 @@ function Earth() {
 
   return (
     <Box>
-      <Typography className={classes.title}>Scroll around the World</Typography>
+      <Typography className={classes.title}>Scroll Around the World</Typography>
       <Box sx={{ display: "flex", height: size + "px", justifyContent: "center" }}>
         <Box
           ref={threeDomRef}

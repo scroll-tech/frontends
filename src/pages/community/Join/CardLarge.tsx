@@ -65,7 +65,7 @@ const ContributeCard = props => {
                 cursor: "inherit",
               }}
             >
-              Are you a serious developer?
+              Are you a developer?
             </Typography>
             <Typography
               sx={{
@@ -82,7 +82,7 @@ const ContributeCard = props => {
               href={"https://levelupweb3.xyz/"}
               target="_blank"
               classes={{ root: classes.action }}
-              endIcon={<SvgIcon sx={{ fontSize: ["1.2rem !important", "1.4rem !important"] }} component={ArrowSvg} inheritViewBox></SvgIcon>}
+              endIcon={<SvgIcon sx={{ fontSize: ["1.2rem !important", "1.3rem !important"] }} component={ArrowSvg} inheritViewBox></SvgIcon>}
             >
               Visit Level Up Site
             </Button>
