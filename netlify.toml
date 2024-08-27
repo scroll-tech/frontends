@@ -82,7 +82,7 @@ status = 200
 [[redirects]]
 from = "/events"
 to = "https://community.scroll.cat/events"
-status = 301
+status = 200
 query = { page_number = ":page_number", page_size = ":page_size" }
 force = true
 
