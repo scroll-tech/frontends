@@ -54,7 +54,7 @@ function initCamera(width: number, height: number) {
   const k = width / height
   const s = 120
   const camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, 1000)
-  camera.position.set(-102, 205, 360)
+  camera.position.set(300, 185, -200)
   camera.lookAt(0, 0, 0)
   return camera
 }
