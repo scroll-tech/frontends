@@ -12,6 +12,7 @@ import CanvasBadgeContract from "@/pages/canvas/badgeContract"
 import CanvasInvite from "@/pages/canvas/invite"
 import MintProfile from "@/pages/canvas/mint"
 import Career from "@/pages/career"
+import Community from "@/pages/community"
 // import ComingSoon from "@/pages/developer-nft/coming-soon"
 import DeveloperNFT from "@/pages/developer-nft/index"
 import MintNFT from "@/pages/developer-nft/mint"
@@ -281,6 +282,11 @@ const mainnetRoutes = [
     path: "/canvas-and-badges",
     description: "Build your on-chain persona and collect badges across Scroll’s ecosystem",
     element: <CanvasAndBadges />,
+  },
+  {
+    name: "Community",
+    path: "/community",
+    element: <Community />,
   },
 ]
 

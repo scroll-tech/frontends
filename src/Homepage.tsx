@@ -67,6 +67,8 @@ function Homepage() {
       return window.location.origin + `/${type}_canvas.png`
     } else if (window.location.pathname.startsWith("/canvas-and-badges")) {
       return window.location.origin + `/${type}_canvas_and_badges.png`
+    } else if (window.location.pathname.startsWith("/community")) {
+      return window.location.origin + `/${type}_community.png`
     }
     return window.location.origin + "/og_scroll.png"
   }
