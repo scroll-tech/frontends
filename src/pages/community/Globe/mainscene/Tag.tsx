@@ -149,11 +149,11 @@ const Tag: React.FC<TagProps> = ({ data, direction, onTagReady }) => {
           {data?.eventName || ""}{" "}
           <SvgIcon
             sx={{
-              fontSize: "1.2rem",
+              fontSize: "1rem",
               marginLeft: "0 !important",
               transition: "all 0.3s ease",
               position: "absolute",
-              bottom: "6px",
+              bottom: "8px",
               opacity: 0,
             }}
             component={ExternalSvg}
