@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react"
-import { useNavigate } from "react-router-dom"
 import { usePrevious } from "react-use"
 import "react-virtualized/styles.css"
 
@@ -25,7 +24,6 @@ const BadgeList = props => {
     onAddPage,
     ...restProps
   } = props
-  const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
   const prePage = usePrevious(page)
   const [badgeList, setBadgeList] = useState([])
@@ -82,7 +80,8 @@ const BadgeList = props => {
   }
 
   const handleClickBadge = ({ badgeContract }) => {
-    navigate(`/canvas/badge-contract/${badgeContract}`)
+    // Open the link in a new tab
+    window.open(`/canvas/badge-contract/${badgeContract}`, '_blank')
   }
 
   if (loading && !badgeList.length) {
