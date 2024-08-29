@@ -51,6 +51,7 @@ const BadgeCard = props => {
           backgroundColor: "themeBackground.tag",
           boxShadow: "none",
           border: "none",
+          userSelect: "none",
           cursor: "pointer",
           "& p": {
             cursor: "pointer !important",
