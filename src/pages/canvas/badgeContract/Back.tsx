@@ -4,8 +4,8 @@ import { Stack, SvgIcon, Typography } from "@mui/material"
 
 import { ReactComponent as BackSvg } from "@/assets/svgs/canvas/back.svg"
 
-const BackToCanvas = props => {
-  const { username, sx, loading, ...restProps } = props
+const Back = props => {
+  const { sx, ...restProps } = props
   const navigate = useNavigate()
 
   const handleGoBack = () => {
@@ -24,4 +24,4 @@ const BackToCanvas = props => {
     </Stack>
   )
 }
-export default BackToCanvas
+export default Back

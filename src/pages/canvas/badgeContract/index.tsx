@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 import { useEffect, useMemo } from "react"
-import { Navigate, useNavigate, useParams } from "react-router-dom"
+import { Navigate, useNavigate, useNavigationType, useParams } from "react-router-dom"
 
 import { CircularProgress, Stack, SvgIcon, Typography } from "@mui/material"
 
@@ -22,6 +22,7 @@ import Back from "./Back"
 
 const BadgeContractDetail = props => {
   const { address } = useParams()
+  const navigationType = useNavigationType()
   const { walletCurrentAddress, connect, chainId, provider } = useRainbowContext()
   const { profileMinted, changeIsBadgeMinting, isBadgeMinting, userBadges, queryUserBadges, queryUserBadgesLoading } = useCanvasStore()
 
@@ -42,6 +43,8 @@ const BadgeContractDetail = props => {
   const alertWarning = useSnackbar()
 
   const isL2 = useMemo(() => chainId === CHAIN_ID.L2, [chainId])
+
+  const isNewTab = useMemo(() => navigationType === "POP", [navigationType])
 
   const isOwned = useAsyncMemo(async () => {
     if (provider && isL2 && badgeForMint.badgeContract) {
@@ -258,7 +261,7 @@ const BadgeContractDetail = props => {
     return <Navigate to="/404"></Navigate>
   }
   return (
-    <BadgeDetail detail={badgeForMint} metadata={metadata} loading={isFetching} property={["issuer"]} breadcrumb={<Back></Back>}>
+    <BadgeDetail detail={badgeForMint} metadata={metadata} loading={isFetching} property={["issuer"]} breadcrumb={isNewTab ? null : <Back></Back>}>
       {renderAction()}
 
       {badgeForMint.thirdParty ? (
