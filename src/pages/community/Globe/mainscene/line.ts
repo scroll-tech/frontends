@@ -12,7 +12,7 @@ function countryLine(R: number) {
   var allPointArr: any[] = []
 
   loader.load("./files/world.json", function (data: any) {
-    data.features.forEach(function (country: { geometry: { type: string; coordinates: any[] }; properties: { name: string } }) {
+    data?.features.forEach(function (country: { geometry: { type: string; coordinates: any[] }; properties: { name: string } }) {
       if (country.geometry.type === "Polygon") {
         country.geometry.coordinates = [country.geometry.coordinates]
       }
