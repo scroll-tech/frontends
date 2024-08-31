@@ -1,13 +1,13 @@
-import { useState } from "react"
 import useSWR from "swr"
 
 import { CHAIN_ID } from "@/constants"
 
-const useTokenPrice = tokenList => {
-  const [prices, setPrices] = useState({})
+let PRICES = {}
 
+const useTokenPrice = tokenList => {
   const fetchPrice = async () => {
     try {
+      if (typeof window === "object" && !window.location.pathname.startsWith("/bridge")) return { ...PRICES }
       const tokens = tokenList.filter(token => token.chainId === CHAIN_ID.L1 && token.address).map(token => token.address)
       const tokenAddresses = tokens.join("%2C")
 
@@ -29,9 +29,8 @@ const useTokenPrice = tokenList => {
         erc20Price = await results[1].value.json()
       }
 
-      const newPrices = { ...prices, ...ethPrice, ...erc20Price }
-      setPrices(newPrices)
-      return newPrices
+      PRICES = { ...PRICES, ...ethPrice, ...erc20Price }
+      return { ...PRICES }
     } catch (error) {
       throw error
     }
@@ -41,7 +40,7 @@ const useTokenPrice = tokenList => {
 
   return {
     loading: isValidating,
-    price: data || prices,
+    price: data || {},
     error,
   }
 }
