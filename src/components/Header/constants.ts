@@ -1,5 +1,7 @@
 import { requireEnv } from "@/utils"
 
+const L2_NAME = requireEnv("REACT_APP_ROLLUP") || "ScrollSDK"
+
 const navigations = [
   {
     label: "Develop",
@@ -21,8 +23,8 @@ const navigations = [
             rootKey: "develop",
           },
           {
-            label: "Scroll Stack Explorer",
-            key: "scroll-stack-explorer",
+            label: `${L2_NAME} Explorer`,
+            key: "scroll-sdk-explorer",
             href: requireEnv("REACT_APP_EXTERNAL_EXPLORER_URI_L2"),
             isExternal: true,
             rootKey: "develop",
