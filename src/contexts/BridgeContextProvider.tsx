@@ -56,7 +56,7 @@ const BridgeContextProvider = ({ children }: any) => {
   const claimHistory = useClaimHistory()
 
   // TODO: need refactoring inspired by publicClient and walletClient
-  const update = async (walletProvider: BrowserProvider, address: string) => {
+  const update = async (walletProvider?: BrowserProvider, address?: string) => {
     let l1signer,
       l2signer,
       l1Gateway,
@@ -68,7 +68,10 @@ const BridgeContextProvider = ({ children }: any) => {
       l2ScrollMessenger,
       l1WrappedTokenGateway,
       l1GasTokenGateway
-    if (chainId === CHAIN_ID.L1) {
+    if (!walletProvider || !address || (chainId !== CHAIN_ID.L1 && chainId !== CHAIN_ID.L2)) {
+      l1Provider = await new JsonRpcProvider(RPC_URL.L1)
+      l2Provider = await new JsonRpcProvider(RPC_URL.L2)
+    } else if (chainId === CHAIN_ID.L1) {
       l1Provider = walletProvider
       l2Provider = await new JsonRpcProvider(RPC_URL.L2)
       l1signer = await walletProvider.getSigner(0)
@@ -80,9 +83,6 @@ const BridgeContextProvider = ({ children }: any) => {
       l1signer = new JsonRpcSigner(l1Provider, address)
       l2signer = await walletProvider.getSigner(0)
       l2Gateway = new ethers.Contract(GATEWAY_ROUTE_PROXY_ADDR[CHAIN_ID.L2], L2_GATEWAY_ROUTER_PROXY_ABI, l2signer)
-    } else {
-      l1Provider = await new JsonRpcProvider(RPC_URL.L1)
-      l2Provider = await new JsonRpcProvider(RPC_URL.L2)
     }
     // TODO: publicProvider
     l1ProviderForSafeBlock = await new JsonRpcProvider(RPC_URL.L1)
@@ -151,6 +151,8 @@ const BridgeContextProvider = ({ children }: any) => {
   useEffect(() => {
     if (provider && walletCurrentAddress) {
       update(provider, walletCurrentAddress)
+    } else {
+      update()
     }
   }, [provider, walletCurrentAddress, chainId])
 

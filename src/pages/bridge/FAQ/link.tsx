@@ -27,7 +27,7 @@ const BridgeLinks = () => {
         Terms of Service
         <SvgIcon component={LinkSvg} inheritViewBox></SvgIcon>
       </FAQsLink>
-      <Typography> © Version V2.2.16</Typography>
+      <Typography> © Version V2.2.18</Typography>
     </Stack>
   )
 }
