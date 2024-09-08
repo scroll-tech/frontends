@@ -1,6 +1,7 @@
 import { Box, Container, Stack, Typography } from "@mui/material"
 
 import { L2_NAME } from "@/constants"
+import useAddToken from "@/hooks/useAddToken"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
 // import SendFeedback from "./SendFeedback"
@@ -9,6 +10,7 @@ import WalletConfig from "./WalletConfig"
 
 const Portal = () => {
   const { isMobile } = useCheckViewport()
+  useAddToken()
   return (
     <Container>
       <Box sx={{ textAlign: "center", mt: ["6.8rem", "13.8rem"] }}>

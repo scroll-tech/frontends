@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet-async"
 import { Route, Routes } from "react-router-dom"
 
 import Header from "@/components/Header"
+import BridgeContextProvider from "@/contexts/BridgeContextProvider"
 import RainbowProvider from "@/contexts/RainbowProvider"
 import ScrollToTop from "@/hooks/useScrollToTop"
 import NotFound from "@/pages/404"
@@ -41,15 +42,17 @@ function Homepage() {
         <meta name="twitter:image" content={getImageUrl("twitter")} />
       </Helmet>
       <RainbowProvider>
-        <ScrollToTop>
-          <Header />
-          <Routes>
-            {routes.map((route, key) => (
-              <Route key={key} path={route.path} element={route.element} />
-            ))}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </ScrollToTop>
+        <BridgeContextProvider>
+          <ScrollToTop>
+            <Header />
+            <Routes>
+              {routes.map((route, key) => (
+                <Route key={key} path={route.path} element={route.element} />
+              ))}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </ScrollToTop>
+        </BridgeContextProvider>
       </RainbowProvider>
     </div>
   )

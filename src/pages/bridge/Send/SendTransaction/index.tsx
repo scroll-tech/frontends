@@ -60,7 +60,7 @@ const SendTransaction = props => {
 
   const selectedToken: any = useMemo(() => {
     if (isAlternativeGasTokenEnabled && tokenSymbol === ETH_SYMBOL && txType === "Withdraw") {
-      return tokenOptions.find(item => item.symbol === WETH_SYMBOL)
+      return tokenOptions.find(item => item.symbol === WETH_SYMBOL) ?? {}
     }
     return tokenOptions.find(item => item.symbol === tokenSymbol) ?? {}
   }, [tokenOptions, tokenSymbol])
