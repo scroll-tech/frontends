@@ -66,7 +66,7 @@ export const formatBackTxList = (backList, estimatedTimeMap) => {
   }
   const txList = backList.map(tx => {
     //message_type: 1 =>  deposit  2 => withdraw  3 => batch deposit
-    const amount = tx.message_type === 3 ? (tx.token_amounts[0] - tx.batch_deposit_fee).toString() : tx.token_amounts[0]
+    const amount = tx.message_type === 3 ? (BigInt(tx.token_amounts[0]) - BigInt(tx.batch_deposit_fee)).toString() : tx.token_amounts[0]
     const toHash = tx.counterpart_chain_tx?.hash
     const initiatedAt = tx.block_timestamp
 
