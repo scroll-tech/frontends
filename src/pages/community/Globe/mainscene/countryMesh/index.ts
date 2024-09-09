@@ -32,7 +32,6 @@ function countryMesh(R: number, polygonArr: any[]) {
   if (geometryArr.length === 1) {
     newGeometry = geometryArr[0]
   } else {
-    console.log(BufferGeometryUtils.mergeBufferGeometries)
     newGeometry = BufferGeometryUtils.mergeBufferGeometries(geometryArr)
   }
   newGeometry.computeVertexNormals()
