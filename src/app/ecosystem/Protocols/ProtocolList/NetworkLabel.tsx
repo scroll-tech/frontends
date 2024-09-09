@@ -19,8 +19,8 @@ const useStyles = makeStyles<any>()(theme => ({
 }))
 
 const NetworkLabel = props => {
-  const { children, primary, ...restProps } = props
-  const { classes } = useStyles({ primary })
+  const { children, ...restProps } = props
+  const { classes } = useStyles()
   return <Chip classes={{ root: classes.root, label: classes.label }} label={children} {...restProps}></Chip>
 }
 export default NetworkLabel

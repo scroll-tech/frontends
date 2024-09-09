@@ -3,7 +3,7 @@
 import { Experimental_CssVarsProvider as CssVarsProvider, experimental_extendTheme as extendTheme } from "@mui/material/styles"
 import { getInitColorSchemeScript } from "@mui/material/styles"
 
-import darkTheme from "./dark"
+// import darkTheme from "./dark"
 import lightTheme from "./light"
 
 const ScrollThemeProvider = ({ children }) => {

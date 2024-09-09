@@ -4,7 +4,7 @@ import { makeStyles } from "tss-react/mui"
 
 import { Box, Button, Stack, SvgIcon, Typography } from "@mui/material"
 
-import { ecosystemListLogoUrl } from "@/apis/ecosystem"
+import { fetchEcosystemProtocolLogo } from "@/apis/ecosystem"
 import ArrowSvg from "@/assets/svgs/ecosystem/arrow.svg"
 import TwitterSvg from "@/assets/svgs/ecosystem/twitter.svg"
 import LinesEllipsis from "@/components/LinesEllipsis"
@@ -155,7 +155,7 @@ const ProtocolCard = props => {
           gridArea: "logo",
         }}
       >
-        <Img alt={name} src={`${ecosystemListLogoUrl}${name}${ext}`} placeholder={hash} width={isMobile ? 48 : 88} height={isMobile ? 48 : 88}></Img>
+        <Img alt={name} src={fetchEcosystemProtocolLogo(name, ext)} placeholder={hash} width={isMobile ? 48 : 88} height={isMobile ? 48 : 88}></Img>{" "}
       </Stack>
       <Stack direction="row" alignItems="center" gap="0.8rem" className={classes.name}>
         <Typography
@@ -191,21 +191,25 @@ const ProtocolCard = props => {
           </Box>
         )}
       </Stack>
-      <LinesEllipsis
-        className={classes.desc}
-        text={desc}
-        maxLine={isExpended ? 100 : isMobile ? 4 : 2}
-        ellipsis={
-          <>
-            &thinsp;...&thinsp;
-            <TextButton sx={{ fontWeight: 400, color: "#5b5b5b" }} underline="always" onClick={handleClickMore}>
-              More
-            </TextButton>
-          </>
-        }
-        basedOn="words"
-        onReflow={handleReflow}
-      />
+      {desc ? (
+        <LinesEllipsis
+          className={classes.desc}
+          text={desc}
+          maxLine={isExpended ? 100 : isMobile ? 4 : 2}
+          ellipsis={
+            <>
+              &thinsp;...&thinsp;
+              <TextButton sx={{ fontWeight: 400, color: "#5b5b5b" }} underline="always" onClick={handleClickMore}>
+                More
+              </TextButton>
+            </>
+          }
+          basedOn="words"
+          onReflow={handleReflow}
+        />
+      ) : (
+        <Typography className={classes.desc}>(empty)</Typography>
+      )}
 
       {!isDesktop && (
         <Box className={classes.tagWrapper}>

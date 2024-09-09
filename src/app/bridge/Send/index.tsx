@@ -1,4 +1,5 @@
-import { useEffect } from "react"
+import { useSearchParams } from "next/navigation"
+import { useEffect, useMemo } from "react"
 import { makeStyles } from "tss-react/mui"
 
 import { TabContext, TabList, TabPanel } from "@mui/lab"
@@ -6,8 +7,10 @@ import { Box, Snackbar, Tab } from "@mui/material"
 
 import Alert from "@/components/Alert"
 import TextButton from "@/components/TextButton"
-import { CHAIN_ID } from "@/constants"
+import { CHAIN_ID, ETH_SYMBOL } from "@/constants"
+import { BRIDGE_TOKEN } from "@/constants/searchParamsKey"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useBatchBridgeStore, { DepositBatchMode } from "@/stores/batchBridgeStore"
 import useBridgeStore from "@/stores/bridgeStore"
 
 import Deposit from "./Deposit"
@@ -86,6 +89,14 @@ const Send = () => {
   const { chainId } = useRainbowContext()
   const { txType, txResult, fromNetwork, withDrawStep, changeTxType, changeTxResult, changeHistoryVisible, changeIsNetworkCorrect } = useBridgeStore()
 
+  const { depositBatchMode } = useBatchBridgeStore()
+
+  const searchParams = useSearchParams()
+  const token = searchParams.get(BRIDGE_TOKEN)
+  const tokenSymbol = useMemo(() => token || ETH_SYMBOL, [token])
+
+  const isEconomyDeposit = useMemo(() => depositBatchMode === DepositBatchMode.Economy && tokenSymbol === ETH_SYMBOL, [depositBatchMode, tokenSymbol])
+
   useEffect(() => {
     let networkCorrect
     if (txType === "Deposit") {
@@ -143,7 +154,9 @@ const Send = () => {
             <Alert severity="success">
               <>
                 Submitted successfully! <br />
-                {txType === "Deposit" ? "Funds take up to 20 mins to be ready" : "Funds take up to 1h to be claimable"}
+                {txType === "Deposit"
+                  ? `Funds take up to ${isEconomyDeposit ? "1h" : "20 mins"} to be ready`
+                  : "Funds take up to 2h to be claimable"}{" "}
                 <br />
                 <TextButton underline="always" sx={{ color: "inherit" }} onClick={handleOpenHistory}>
                   View transaction history

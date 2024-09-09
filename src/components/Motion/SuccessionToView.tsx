@@ -2,7 +2,11 @@
 
 import { motion } from "framer-motion"
 
+import { Box } from "@mui/material"
+
 import useCheckViewport from "@/hooks/useCheckViewport"
+
+const AnimatedBox = motion(Box)
 
 const SuccessionToView = props => {
   const { children, threshold, animate, once = true, ...restProps } = props
@@ -19,7 +23,7 @@ const SuccessionToView = props => {
   }
 
   return (
-    <motion.div
+    <AnimatedBox
       initial="hidden"
       whileInView="show"
       animate={animate}
@@ -28,7 +32,7 @@ const SuccessionToView = props => {
       {...restProps}
     >
       {children}
-    </motion.div>
+    </AnimatedBox>
   )
 }
 
@@ -49,9 +53,9 @@ const SuccessionItem = props => {
   }
 
   return (
-    <motion.div variants={item} {...restProps}>
+    <AnimatedBox variants={item} {...restProps}>
       {children}
-    </motion.div>
+    </AnimatedBox>
   )
 }
 

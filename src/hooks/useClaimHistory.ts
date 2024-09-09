@@ -9,8 +9,8 @@ import useClaimHistoryStore from "@/stores/claimStore"
 
 export interface TxHistory {
   errorMessage: string
-  refreshPageTransactions: (page) => void
-  changeErrorMessage: (value) => void
+  refreshPageTransactions: (_page) => void
+  changeErrorMessage: (_value) => void
 }
 
 const useClaimHistory = () => {
@@ -46,7 +46,7 @@ const useClaimHistory = () => {
     },
     fetchTxList,
     {
-      onError: (error, key) => {
+      onError: error => {
         setErrorMessage(`${error.status}:${error.message}`)
       },
       refreshInterval: 2000,

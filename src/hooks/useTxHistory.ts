@@ -9,8 +9,8 @@ import useTxStore from "@/stores/txStore"
 
 export interface TxHistory {
   errorMessage: string
-  refreshPageTransactions: (page) => void
-  changeErrorMessage: (value) => void
+  refreshPageTransactions: (_page) => void
+  changeErrorMessage: (_value) => void
 }
 
 const useTxHistory = () => {
@@ -38,7 +38,9 @@ const useTxHistory = () => {
   // fetch to hash/blockNumber from backend
   const { data } = useSWR<any>(
     () => {
-      const needToRefreshTransactions = pageTransactions.filter(item => item.txStatus !== TX_STATUS.Relayed)
+      const needToRefreshTransactions = pageTransactions.filter(
+        item => item.txStatus !== TX_STATUS.Relayed && item.txStatus !== TX_STATUS.BatchDepositRelayed,
+      )
 
       if (needToRefreshTransactions.length && walletCurrentAddress && historyVisible) {
         const txs = needToRefreshTransactions.map(item => item.hash).filter((item, index, arr) => index === arr.indexOf(item))
@@ -48,7 +50,7 @@ const useTxHistory = () => {
     },
     fetchTxList,
     {
-      onError: (error, key) => {
+      onError: error => {
         setErrorMessage(`${error.status}:${error.message}`)
       },
       refreshInterval: 2000,

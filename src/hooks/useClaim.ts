@@ -37,7 +37,7 @@ export function useClaim(props) {
         .then(() => {
           addEstimatedTimeMap(`progress_${tx.hash}`, Date.now() + CLAIM_OFFSET_TIME)
         })
-        .catch(error => {
+        .catch(() => {
           // TRANSACTION_REPLACED or TIMEOUT
           addEstimatedTimeMap(`progress_${tx.hash}`, 0)
         })

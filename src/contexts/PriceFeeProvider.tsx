@@ -1,12 +1,13 @@
 import { AbiCoder, Transaction, ethers } from "ethers"
-import React, { createContext, useContext, useMemo, useState } from "react"
-import useStorage from "squirrel-gill"
+import { useSearchParams } from "next/navigation"
+import React, { createContext, useContext, useEffect, useMemo, useState } from "react"
 import { useBlockNumber } from "wagmi"
 
 import { CHAIN_ID, ETH_SYMBOL } from "@/constants"
-import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
+import { BRIDGE_TOKEN } from "@/constants/searchParamsKey"
 import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useBridgeStore from "@/stores/bridgeStore"
 import { trimErrorMessage } from "@/utils"
 
 const OFFSET = "0x1111000000000000000000000000000000001111"
@@ -56,14 +57,8 @@ const Address2GatewayType = {
 
 // Contracts
 const Contracts = {
-  [GatewayType.ETH_GATEWAY]: {
-    abi: require("@/assets/abis/L2ETHGateway.json"),
-    env: process.env.NEXT_PUBLIC_L2_ETH_GATEWAY_PROXY_ADDR,
-  },
-  [GatewayType.WETH_GATEWAY]: {
-    abi: require("@/assets/abis/L2WETHGateway.json"),
-    env: process.env.NEXT_PUBLIC_L2_WETH_GATEWAY_PROXY_ADDR,
-  },
+  [GatewayType.ETH_GATEWAY]: { abi: require("@/assets/abis/L2ETHGateway.json"), env: process.env.NEXT_PUBLIC_L2_ETH_GATEWAY_PROXY_ADDR },
+  [GatewayType.WETH_GATEWAY]: { abi: require("@/assets/abis/L2WETHGateway.json"), env: process.env.NEXT_PUBLIC_L2_WETH_GATEWAY_PROXY_ADDR },
   [GatewayType.STANDARD_ERC20_GATEWAY]: {
     abi: require("@/assets/abis/L2StandardERC20Gateway.json"),
     env: process.env.NEXT_PUBLIC_L2_STANDARD_ERC20_GATEWAY_PROXY_ADDR,
@@ -88,14 +83,8 @@ const Contracts = {
     abi: require("@/assets/abis/L2StandardERC20Gateway.json"),
     env: process.env.NEXT_PUBLIC_L2_PUFFER_GATEWAY_PROXY_ADDR,
   },
-  SCROLL_MESSENGER: {
-    abi: require("@/assets/abis/L2ScrollMessenger.json"),
-    env: process.env.NEXT_PUBLIC_L2_SCROLL_MESSENGER,
-  },
-  L1_GAS_PRICE_ORACLE: {
-    abi: require("@/assets/abis/L1GasPriceOracle.json"),
-    env: process.env.NEXT_PUBLIC_L1_GAS_PRICE_ORACLE,
-  },
+  SCROLL_MESSENGER: { abi: require("@/assets/abis/L2ScrollMessenger.json"), env: process.env.NEXT_PUBLIC_L2_SCROLL_MESSENGER },
+  L1_GAS_PRICE_ORACLE: { abi: require("@/assets/abis/L1GasPriceOracle.json"), env: process.env.NEXT_PUBLIC_L1_GAS_PRICE_ORACLE },
   L1_MESSAGE_QUEUE_WITH_GAS_PRICE_ORACLE: {
     abi: require("@/assets/abis/L1_MESSAGE_QUEUE_WITH_GAS_PRICE_ORACLE.json"),
     env: process.env.NEXT_PUBLIC_L1_MESSAGE_QUEUE_WITH_GAS_PRICE_ORACLE,
@@ -122,8 +111,13 @@ export const usePriceFeeContext = () => {
 
 export const PriceFeeProvider = ({ children }) => {
   const { walletCurrentAddress, chainId } = useRainbowContext()
-  const [tokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
-  const { networksAndSigners, tokenList } = useBridgeContext()
+  const searchParams: any = useSearchParams()
+
+  const token = searchParams.get(BRIDGE_TOKEN)
+  const tokenSymbol = useMemo(() => token || ETH_SYMBOL, [token])
+
+  const { networksAndSigners } = useBridgeContext()
+  const { tokenList } = useBridgeStore()
   const [gasLimit, setGasLimit] = useState(BigInt(0))
   const [gasPrice, setGasPrice] = useState(BigInt(0))
   const [errorMessage, setErrorMessage] = useState("")
@@ -134,7 +128,6 @@ export const PriceFeeProvider = ({ children }) => {
       if (chainId === CHAIN_ID.L1) {
         const price = await getGasPrice()
         const limit = await getGasLimit()
-        // console.log(price, limit, "gas price/limit")
         setGasPrice(price)
         setGasLimit(limit)
       } else {
@@ -146,21 +139,21 @@ export const PriceFeeProvider = ({ children }) => {
     }
   }
 
-  useBlockNumber({
-    // enabled: !!(networksAndSigners[CHAIN_ID.L1].signer && networksAndSigners[CHAIN_ID.L2].provider),
-    onBlock(blockNumber) {
-      fetchData()
-        .then(() => {
-          setErrorMessage("")
-        })
-        .catch(error => {
-          //TODO:
-          // setGasLimit(null)
-          // setGasPrice(null)
-          setErrorMessage(trimErrorMessage(error.message))
-        })
-    },
-  })
+  const { data: blockNumber } = useBlockNumber({ watch: true })
+
+  useEffect(() => {
+    fetchData()
+      .then(() => {
+        setErrorMessage("")
+      })
+      .catch(error => {
+        console.log("error", error)
+        //TODO:
+        // setGasLimit(null)
+        // setGasPrice(null)
+        setErrorMessage(trimErrorMessage(error.message))
+      })
+  }, [blockNumber])
 
   const l1Token = useMemo(
     () => tokenList.find(item => item.chainId === CHAIN_ID.L1 && item.symbol === tokenSymbol) ?? ({} as any as Token),
@@ -178,6 +171,7 @@ export const PriceFeeProvider = ({ children }) => {
       const gasPrice = await L1MessageQueueWithGasPriceOracleContract.l2BaseFee()
       return (gasPrice * BigInt(120)) / BigInt(100)
     } catch (err) {
+      console.log("err", err)
       throw new Error("Failed to get gas price")
     }
   }

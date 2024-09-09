@@ -1,3 +1,13 @@
+import BuildSvg from "@/assets/svgs/header/Build.svg"
+import CanvasAndBadgesSvg from "@/assets/svgs/header/CanvasAndBadges.svg"
+import CommunitySvg from "@/assets/svgs/header/Community.svg"
+import DocsSvg from "@/assets/svgs/header/Doc.svg"
+import EthereumSvg from "@/assets/svgs/header/Eth.svg"
+import IssuesSvg from "@/assets/svgs/header/Issues.svg"
+import LevelUpSvg from "@/assets/svgs/header/LevelUp.svg"
+import ProjectsSvg from "@/assets/svgs/header/Projects.svg"
+import SessionsSvg from "@/assets/svgs/header/Sessions.svg"
+import StatusSvg from "@/assets/svgs/header/Status.svg"
 import { isSepolia } from "@/utils"
 
 const sepoliaNavigations = [
@@ -88,35 +98,53 @@ const mainnetNavigations = [
         label: "",
         children: [
           {
-            label: "Mainnet",
+            text: "Mainnet Deployment",
+            label: "Let’s go live now!",
             key: "mainnet-resources",
             rootKey: "develop",
             href: "/portal",
+            icon: EthereumSvg,
           },
           {
-            label: "Sepolia Testnet",
+            label: "Try and test it out",
+            text: "Sepolia Testnet",
             key: "sepolia-resources",
             rootKey: "develop",
             href: "https://sepolia.scroll.io/portal",
             isExternal: true,
+            icon: BuildSvg,
           },
           {
-            label: "Docs",
+            label: "Understand all the details to build",
+            text: "Docs",
             key: "docs",
             href: "https://docs.scroll.io/en/home/",
             isExternal: true,
+            icon: DocsSvg,
           },
           {
-            label: "Status",
+            label: "Scroll network health indicator",
+            text: "Status",
             key: "status",
             href: "https://status.scroll.io/",
             isExternal: true,
+            icon: StatusSvg,
           },
           {
-            label: "Bug Bounty",
+            label: "Are you a developer?",
+            text: "Level Up",
+            key: "lelvel-up",
+            href: "https://levelupweb3.xyz",
+            isExternal: true,
+            icon: LevelUpSvg,
+          },
+          {
+            label: "Help Scroll get better",
+            text: "Bug Bounty",
             key: "bug-bounty",
             href: "https://immunefi.com/bounty/scroll/",
             isExternal: true,
+            icon: IssuesSvg,
           },
         ],
       },
@@ -141,6 +169,12 @@ const mainnetNavigations = [
             href: process.env.NEXT_PUBLIC_EXTERNAL_EXPLORER_URI_DORA,
             isExternal: true,
           },
+          {
+            label: "OKX Explorer",
+            key: "okx",
+            href: process.env.NEXT_PUBLIC_OKX_URI,
+            isExternal: true,
+          },
         ],
       },
     ],
@@ -148,7 +182,46 @@ const mainnetNavigations = [
   {
     label: "Ecosystem",
     key: "ecosystem",
-    href: "/ecosystem",
+    children: [
+      {
+        children: [
+          {
+            text: "Projects",
+            label: "Find interesting dApps on Scroll",
+            key: "projects",
+            rootKey: "ecosystem",
+            href: "/ecosystem",
+            icon: ProjectsSvg,
+          },
+          {
+            text: "Canvas & Badges",
+            label: "Build your persona and collect badges",
+            key: "canvas-and-badges",
+            rootKey: "ecosystem",
+            href: "/canvas-and-badges",
+            icon: CanvasAndBadgesSvg,
+          },
+          {
+            text: "Sessions",
+            label: "Receive Marks for your contributions",
+            key: "sessions",
+            rootKey: "ecosystem",
+            href: "/sessions",
+            icon: SessionsSvg,
+            reload: true,
+          },
+          {
+            text: "Community",
+            label: "Explore events and global communities",
+            key: "community",
+            rootKey: "ecosystem",
+            href: "/community",
+            icon: CommunitySvg,
+            reload: true,
+          },
+        ],
+      },
+    ],
   },
   {
     label: "Resources",
@@ -181,9 +254,9 @@ const mainnetNavigations = [
             isExternal: true,
           },
           {
-            label: "Audits",
-            key: "audits",
-            href: "https://github.com/scroll-tech/scroll-audits",
+            label: "Security",
+            key: "security",
+            href: "https://docs.scroll.io/en/technology/security/audits-and-bug-bounty/",
             isExternal: true,
           },
         ],

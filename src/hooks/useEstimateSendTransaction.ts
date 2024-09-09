@@ -81,5 +81,6 @@ export function useEstimateSendTransaction(props) {
 
   return {
     estimateSend,
+    instance,
   }
 }

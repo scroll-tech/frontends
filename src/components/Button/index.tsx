@@ -4,14 +4,14 @@ import { motion, useCycle } from "framer-motion"
 import { useMemo } from "react"
 import { makeStyles } from "tss-react/mui"
 
-import { ButtonBase, ButtonProps, CircularProgress, IconButton, SvgIcon } from "@mui/material"
+import { Box, ButtonBase, ButtonProps, CircularProgress, IconButton, SvgIcon } from "@mui/material"
 
 import ArrowRightIcon from "@/assets/svgs/common/arrow-right.svg"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
 interface ScrollButtonProps extends ButtonProps {
   width?: string | number
-  color?: "primary" | "secondary"
+  color?: "primary" | "secondary" | "tertiary"
   gloomy?: boolean
   loading?: boolean
   disabled?: boolean
@@ -29,6 +29,8 @@ const gColor = (color, theme) => {
       return (theme as any).vars.palette.primary.main
     case "secondary":
       return (theme as any).vars.palette.primary.contrastText
+    case "tertiary":
+      return "#ffffff"
     default:
       return (theme as any).vars.palette.text.primary
   }
@@ -40,19 +42,23 @@ const cColor = (color, theme) => {
       return (theme as any).vars.palette.primary.contrastText
     case "secondary":
       return (theme as any).vars.palette.text.primary
+    case "tertiary":
+      return "#000000"
     default:
       return (theme as any).vars.palette.primary.contrastText
   }
 }
 
+const ButtonContainer = motion(Box)
+
 const useStyles = makeStyles<any>()((theme, { width, color, whiteButton }) => ({
   wrapper: {
     position: "relative",
-    height: "5.4rem",
+    height: "4.8rem",
     overflow: "hidden",
     borderRadius: "1rem",
     backgroundColor: whiteButton ? "#ffffff" : "transparent",
-    width: width ?? "25rem",
+    width: width ?? "24rem",
     [theme.breakpoints.down("sm")]: {
       width: width ?? "18.5rem",
       height: "4.8rem",
@@ -71,11 +77,11 @@ const useStyles = makeStyles<any>()((theme, { width, color, whiteButton }) => ({
     pointerEvents: "none",
   },
   button: {
-    fontSize: "2rem",
+    fontSize: "1.8rem",
     fontWeight: 600,
     height: "100%",
     width: "100%",
-    paddingLeft: "5.4rem",
+    paddingLeft: "4.8rem",
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: gColor(color, theme),
@@ -101,7 +107,7 @@ const useStyles = makeStyles<any>()((theme, { width, color, whiteButton }) => ({
     color: cColor(color, theme),
   },
   mask: {
-    width: "5.4rem",
+    width: "4.8rem",
     height: "100%",
     position: "absolute",
     backgroundColor: gColor(color, theme),
@@ -118,7 +124,7 @@ const useStyles = makeStyles<any>()((theme, { width, color, whiteButton }) => ({
   },
 
   icon: {
-    width: "5.4rem",
+    width: "4.8rem",
     height: "100%",
     position: "absolute",
     zIndex: 1,
@@ -131,7 +137,7 @@ const useStyles = makeStyles<any>()((theme, { width, color, whiteButton }) => ({
 
 const maskDesktop = {
   normal: {
-    width: "5.4rem",
+    width: "4.8rem",
   },
   expanding: {
     width: "100%",
@@ -147,7 +153,7 @@ const maskMobile = {
   },
 }
 const Button = (props: ScrollButtonProps) => {
-  const { width, color, loading, disabled, gloomy, children, whiteButton, ...restProps } = props
+  const { id, className, width, sx, color, loading, disabled, gloomy, children, whiteButton, ...restProps } = props
   const { classes, cx } = useStyles({
     color,
     width,
@@ -172,8 +178,16 @@ const Button = (props: ScrollButtonProps) => {
   return (
     // TODO: allow sx, allow size=small/medium
     // avoid setting both 'disabled' and 'loading' to true.
-    <motion.div
-      className={cx(classes.wrapper, innerDisabled && classes.wrapperDisabled, loading && classes.wrapperLoading, gloomy && classes.wrapperGloomy)}
+    <ButtonContainer
+      id={id}
+      className={cx(
+        classes.wrapper,
+        innerDisabled && classes.wrapperDisabled,
+        loading && classes.wrapperLoading,
+        gloomy && classes.wrapperGloomy,
+        className,
+      )}
+      sx={sx}
       onHoverStart={handleHover}
       onHoverEnd={handleHover}
       animate={isHover ? "expanding" : "normal"}
@@ -201,7 +215,7 @@ const Button = (props: ScrollButtonProps) => {
       >
         {children} {loading && <CircularProgress sx={{ color: "inherit" }} size={isMobile ? 18 : 24} thickness={4}></CircularProgress>}
       </ButtonBase>
-    </motion.div>
+    </ButtonContainer>
   )
 }
 

@@ -7,7 +7,7 @@ import { useNFTContext } from "@/contexts/NFTContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useNFTStore from "@/stores/nftStore"
 
-import MyNFT from "./MyNFT"
+// import MyNFT from "./MyNFT"
 import ReadyToMint from "./ReadyToMint"
 
 const MintHome = () => {

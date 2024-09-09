@@ -3,12 +3,13 @@ import _ from "lodash"
 import Image from "next/image"
 import React, { useEffect, useMemo, useState } from "react"
 
-import { Link, SvgIcon, Typography, styled } from "@mui/material"
-import { Box, CircularProgress, DialogContent, InputBase, ListItemIcon, MenuItem } from "@mui/material"
+import { Link, Typography, styled } from "@mui/material"
+import { Box, CircularProgress, DialogContent, InputBase, ListItemIcon, MenuItem, SvgIcon } from "@mui/material"
 import Dialog from "@mui/material/Dialog"
 import DialogTitle from "@mui/material/DialogTitle"
 import ListItemText from "@mui/material/ListItemText"
 
+import { tokenList } from "@/app/sessions-one/SessionZeroMarks/tokenList"
 import CloseSvg from "@/assets/svgs/bridge/token-list-close.svg"
 import SearchSvg from "@/assets/svgs/bridge/token-list-search.svg"
 import { EXPLORER_URL } from "@/constants"
@@ -112,6 +113,21 @@ const ListAddressStyled = styled(Link)(() => ({
   textDecorationLine: "underline",
   textDecorationColor: "unset",
 }))
+const EarnMarksLabel = styled(Typography)(() => ({
+  display: "inline",
+  color: "#0F8E7E",
+  textAlign: "center",
+  fontFamily: "var(--developer-page-font-family)",
+  fontSize: "12px",
+  fontStyle: "normal",
+  fontWeight: 600,
+  lineHeight: "16px",
+  letterSpacing: "0.12px",
+  marginLeft: "4px",
+  padding: "4px 8px",
+  borderRadius: "12px",
+  background: "#DFFCF8",
+}))
 
 const ListItemTextStyled = styled(ListItemText)(({ theme }) => ({
   fontSize: "2.4rem",
@@ -175,6 +191,7 @@ const MenuItemComponent = ({ token, isSelected, selectToken, txType }) => (
         <>
           <ListSymbolStyled>{token.symbol}</ListSymbolStyled>
           <ListNameStyled>{token.name}</ListNameStyled>
+          {token.earnMarks && <EarnMarksLabel>Earn marks</EarnMarksLabel>}
         </>
       }
       secondary={
@@ -259,7 +276,14 @@ function List(props: TokenListProps) {
   }, [newToken, filteredTokens])
 
   const listedbyScroll = useMemo(() => {
-    return filteredTokens?.filter((token: any) => !token.tokenLevel)
+    return filteredTokens
+      ?.filter((token: any) => !token.tokenLevel)
+      .map((token: any) => {
+        return {
+          ...token,
+          earnMarks: tokenList.some(t => t.symbol === token.symbol || t.additionalToken === token.symbol),
+        }
+      })
   }, [filteredTokens])
 
   const listedbyUser = useMemo(() => {

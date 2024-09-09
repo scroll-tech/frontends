@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { makeStyles } from "tss-react/mui"
 
-import { Select as MuiSelect, Stack, Typography } from "@mui/material"
+import { Select as MuiSelect, Stack, SvgIcon, Typography } from "@mui/material"
 
 import TriangleDownIcon from "@/assets/svgs/common/triangle-down.svg"
 
@@ -64,7 +64,7 @@ const useStyles = makeStyles()(theme => ({
 }))
 
 const Select = props => {
-  const { className, ...restProps } = props
+  const { className, icon, ...restProps } = props
   const { classes, cx } = useStyles()
 
   const [isUnderneath, setIsUnderneath] = useState(true)
@@ -114,6 +114,7 @@ const Select = props => {
                 cursor: "inherit",
               }}
             >
+              {icon && <SvgIcon sx={{ fontSize: ["1.6rem", "2rem"], marginRight: ["0.8rem"] }} component={icon} inheritViewBox></SvgIcon>}
               {selected as string}
             </Typography>
           </Stack>

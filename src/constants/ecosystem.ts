@@ -1,21 +1,23 @@
-import DoubleEyesIcon from "@/assets/svgs/ecosystem/double-eyes.svg"
 import HeartIcon from "@/assets/svgs/ecosystem/heart.svg"
+import NoteIcon from "@/assets/svgs/ecosystem/note.svg"
 import SettingsIcon from "@/assets/svgs/ecosystem/settings.svg"
-import { isProduction } from "@/utils"
+
+export const ECOSYSTEM_PAGE_SYMBOL = "ecosystem"
 
 export const DIVERGENT_CATEGORY_MAP = {
   Community: ["Community", "DAO", "Governance"],
   DeFi: ["DEX", "DeFi", "Launchpad", "Lending", "Marketplace", "Payment"],
   Gaming: ["Gaming"],
-  Infra: ["Bridge", "Gateway", "Indexer", "Infrastructure", "Node Provider", "Oracle"],
+  Infra: ["Gateway", "Indexer", "Infrastructure", "Node Provider", "Oracle"],
   NFT: ["NFT"],
   Privacy: ["Privacy", "Identity"],
   Social: ["Social"],
   Tooling: ["Tooling"],
   Wallet: ["Wallet", "Hardware Wallet"],
+  Bridge: ["Bridge"],
 }
 
-export const LIST_YOUR_DAPP_LINK = "https://tally.so/r/nGppyZ"
+export const GET_IN_TOUCH_LINK = "https://tally.so/r/waxLBW"
 
 export const REQUEST_A_DAPP_LINK = "https://tally.so/r/3jlj59"
 
@@ -23,10 +25,10 @@ export const LEARN_BUILD_LINK = "https://docs.scroll.io/en/getting-started/overv
 
 export const ECOSYSTEM_EXPLORER_LIST = [
   {
-    icon: DoubleEyesIcon,
-    href: LIST_YOUR_DAPP_LINK,
-    title: "List your Dapp",
-    content: "Join a supportive, collaborative ecosystem with a greater purpose.",
+    icon: NoteIcon,
+    href: GET_IN_TOUCH_LINK,
+    title: "Get in touch",
+    content: "Reach out directly if you need more support for your project.",
   },
   {
     icon: HeartIcon,
@@ -46,4 +48,4 @@ export const TWITTER_ORIGIN = "https://twitter.com/"
 
 export const ECOSYSTEM_NETWORK_LIST = ["All networks", "Mainnet", "Testnet"]
 
-export const NORMAL_HEADER_HEIGHT = isProduction ? "6.5rem" : "11.5rem"
+export const NORMAL_HEADER_HEIGHT = "6.5rem"

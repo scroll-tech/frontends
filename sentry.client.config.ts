@@ -3,12 +3,21 @@
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 import * as Sentry from "@sentry/nextjs"
 
+window.onerror = function (message, source, lineno, colno, error) {
+  console.log("Global error captured:", error)
+}
+
+window.addEventListener("unhandledrejection", function (event) {
+  console.log("Unhandled rejection captured:", event.reason)
+})
+
 Sentry.init({
   enabled: ["Staging", "Sepolia", "Mainnet"].includes(process.env.NEXT_PUBLIC_SCROLL_ENVIRONMENT),
   environment: process.env.NEXT_PUBLIC_SCROLL_ENVIRONMENT,
 
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
   release: process.env.NEXT_PUBLIC_VERSION,
+  autoSessionTracking: false,
   // Adjust this value in production, or use tracesSampler for greater control
   tracesSampleRate: 1,
 
@@ -23,6 +32,14 @@ Sentry.init({
 
   // You can remove this option if you're not planning to use the Sentry Session Replay feature:
   integrations: [
+    new Sentry.Integrations.Breadcrumbs({
+      console: false,
+      dom: false,
+      fetch: false,
+      history: false,
+      sentry: false,
+      xhr: false,
+    }),
     new Sentry.Replay({
       // Additional Replay configuration goes in here, for example:
       maskAllText: true,
@@ -30,15 +47,9 @@ Sentry.init({
     }),
   ],
   beforeSend(event) {
-    const exception = event?.exception?.values?.[0]
-    if (!exception) return event
-    // Unexpected token '<'
-    // if (exception.type === "SyntaxError" && exception.value?.includes("'<'")) return null
-    // error when user reject a transaction in wallet
-    if (exception.type === "Error" && exception.value?.includes("user rejected transaction")) return null
-    // error from browser extension wallets that want to redefine window.ethereum
-    if (exception.type === "TypeError" && exception.stacktrace?.frames?.[0]?.filename?.startsWith("chrome-extension")) return null
-
+    if (!event.exception) {
+      return null
+    }
     return event
   },
 })

@@ -80,7 +80,7 @@ const MintHome = props => {
           {isMinting ? "Minting" : loading ? "Checking" : "Mint now"}
         </Button>
       )
-    } else if (chainId) {
+    } else if (walletCurrentAddress) {
       return (
         <Button color="primary" width={isMobile ? "23rem" : "28.2rem"} onClick={() => switchNetwork(CHAIN_ID.L2)}>
           Switch to {L2_NAME}

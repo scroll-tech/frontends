@@ -9,7 +9,7 @@ const useBalance = (token: any, network?: any) => {
   const { walletCurrentAddress } = useRainbowContext()
   const { networksAndSigners } = useBridgeContext()
 
-  async function fetchBalance({ provider, token, network, address }) {
+  async function fetchBalance({ provider, token, address }) {
     try {
       if (!address || !provider || !token.chainId) {
         return null

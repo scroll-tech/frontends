@@ -48,22 +48,27 @@ export const toTokenDisplay = (num, decimals: bigint = BigInt(18), symbol?: stri
   }
 
   const formattedNum = formatUnits(num, decimals)
-  const nonDecimalNum = formattedNum.split(".")[0]
-  let significantDecimals = 0
-  if (nonDecimalNum.length < 8) {
-    significantDecimals = 8 - nonDecimalNum.length
-  }
 
-  let formatted = commafy(formatUnits(num, decimals), significantDecimals)
-
-  // Remove trailing zeros after decimal point
-  formatted = formatted.replace(/(\.\d*?)0+$/, "$1").replace(/(\.\d+?)0+$/, "$10")
+  let formatted = toPrecision(formattedNum)
 
   if (symbol) {
     formatted += ` ${symbol}`
   }
 
   return formatted
+}
+
+export const toPrecision = (amount, precise = 6) => {
+  const [nonDecimalNum] = String(amount).split(".")
+  let significantDecimals = 0
+  if (nonDecimalNum.length < precise) {
+    // significantDecimals = precise - nonDecimalNum.length > decimalNum.length ? decimalNum.length : precise - nonDecimalNum.length
+    significantDecimals = precise - nonDecimalNum.length
+  }
+  const withPrecision = commafy(amount, significantDecimals)
+  // Remove trailing zeros after decimal point
+  const withoutTrailingZero = withPrecision.replace(/(\.\d*?)0+$/, "$1").replace(/(\.\d+?)0+$/, "$10")
+  return withoutTrailingZero
 }
 
 export function sanitizeNumericalString(numStr: string) {

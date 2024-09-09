@@ -15,7 +15,7 @@ const L2_SCAN_URI = process.env.REACT_APP_L2_SCAN_URI
 const UNIFRA_API_KEY = process.env.REACT_APP_UNIFRA_API_KEY
 
 const CheckElegbility = () => {
-  const { connect, chainId, walletCurrentAddress } = useRainbowContext()
+  const { connect, walletCurrentAddress } = useRainbowContext()
 
   const { isMobile } = useCheckViewport()
 
@@ -70,7 +70,7 @@ const CheckElegbility = () => {
         <Collapse in={!!isEligible}>{renderCheck()}</Collapse>
       ) : (
         <>
-          {chainId ? (
+          {walletCurrentAddress ? (
             <Button color="primary" width={isMobile ? "21rem" : "25rem"} loading={loading} onClick={handleCheck}>
               {loading ? "Checking" : "Check"} eligibility
             </Button>

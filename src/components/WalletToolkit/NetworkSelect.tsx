@@ -11,7 +11,7 @@ import { switchNetwork } from "@/utils"
 
 const useStyles = makeStyles<any>()((theme, { dark }) => ({
   button: {
-    height: "3.6rem",
+    height: "4rem",
     padding: "0 1.2rem",
     border: dark ? `1px solid ${(theme as any).vars.palette.primary.contrastText}` : "none",
     backgroundColor: dark ? "unset" : (theme as any).vars.palette.themeBackground.normal,

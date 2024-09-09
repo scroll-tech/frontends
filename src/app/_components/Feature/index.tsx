@@ -10,7 +10,6 @@ import FeatureIcon2 from "@/assets/images/home/feature_icon_2.png"
 import FeatureIcon3 from "@/assets/images/home/feature_icon_3.png"
 import FeatureIcon4 from "@/assets/images/home/feature_icon_4.png"
 import { FadeInUp, SlideInLeft, SlideInRight } from "@/components/Animation"
-import Button from "@/components/Button"
 import SectionHeader from "@/components/SectionHeader"
 import SectionWrapper from "@/components/SectionWrapper"
 import useCheckViewport from "@/hooks/useCheckViewport"
@@ -155,11 +154,6 @@ const Feature = () => {
         <SectionHeader
           title="Zero knowledge required"
           content="Scroll’s mission is to provide an accessible scaling solution that preserves the essence of Ethereum – trust-minimized, secure and open source. Like a scroll, our story is constantly evolving in our quest to secure Ethereum’s future and making the developer experience as easy as possible."
-          action={
-            <Button href="/story" color="primary">
-              Read our story
-            </Button>
-          }
         />
       </FadeInUp>
       <Spacer />

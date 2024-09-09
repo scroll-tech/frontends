@@ -1,12 +1,12 @@
-import { isProduction } from "@/utils"
+import { isMainnet } from "@/utils"
 
 export const ETH_SYMBOL = process.env.NEXT_PUBLIC_ETH_SYMBOL
 export const WETH_SYMBOL = "WETH"
 export const USDC_SYMBOL = "USDC"
 
-export const L1_NAME = `Ethereum ${isProduction ? "" : process.env.NEXT_PUBLIC_SCROLL_ENVIRONMENT}`
+export const L1_NAME = `Ethereum ${isMainnet ? "" : process.env.NEXT_PUBLIC_SCROLL_ENVIRONMENT}`
 
-export const L2_NAME = `Scroll ${isProduction ? "" : process.env.NEXT_PUBLIC_SCROLL_ENVIRONMENT}`
+export const L2_NAME = `Scroll ${isMainnet ? "" : process.env.NEXT_PUBLIC_SCROLL_ENVIRONMENT}`
 
 export const CHAIN_ID = {
   L1: parseInt(process.env.NEXT_PUBLIC_CHAIN_ID_L1 as string),
@@ -46,6 +46,10 @@ export const SCROLL_MESSENGER_ADDR = {
 
 export const USDC_GATEWAY_PROXY_ADDR = {
   [CHAIN_ID.L2]: process.env.NEXT_PUBLIC_L2_USDC_GATEWAY_PROXY_ADDR,
+}
+
+export const BATCH_BRIDGE_GATEWAY_PROXY_ADDR = {
+  [CHAIN_ID.L1]: process.env.NEXT_PUBLIC_L1_BATCH_BRIDGE_GATEWAY_PROXY_ADDR,
 }
 
 export const DOCUMENTATION_URL = {

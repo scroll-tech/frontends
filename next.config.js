@@ -103,6 +103,8 @@ const nextConfig = {
 
     fileLoaderRule.exclude = /\.svg$/i
 
+    config.externals.push("pino-pretty", "lokijs", "encoding")
+
     return config
   },
   sentry: {

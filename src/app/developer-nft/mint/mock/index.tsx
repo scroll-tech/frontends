@@ -40,7 +40,7 @@ const Mock = () => {
           )}
         </>
       )
-    } else if (chainId) {
+    } else if (walletCurrentAddress) {
       return (
         <Button color="primary" onClick={() => switchNetwork(CHAIN_ID.L2)}>
           Switch to {L2_NAME}

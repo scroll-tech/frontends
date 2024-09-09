@@ -15,10 +15,10 @@ import Button from "@/components/Button"
 import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
 import SectionHeader from "@/components/SectionHeader"
 import { NETWORKS } from "@/constants"
-import { isProduction } from "@/utils"
+import { isMainnet } from "@/utils"
 
-const tokenName = isProduction ? "ETH" : "testnet ETH"
-const l2NetworkName = isProduction ? NETWORKS[1].name : NETWORKS[1].name + " testnet"
+const tokenName = isMainnet ? "ETH" : "testnet ETH"
+const l2NetworkName = isMainnet ? NETWORKS[1].name : NETWORKS[1].name + " testnet"
 
 const STEPS = [
   {

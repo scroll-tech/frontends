@@ -50,7 +50,8 @@ const Header = () => {
       <SectionWrapper sx={{ pt: "6.4rem" }}>
         <Stack direction="column" alignItems="center">
           <Typography sx={{ fontSize: ["4rem", "7.8rem"], lineHeight: ["5rem", "8.8rem"], fontWeight: 600, maxWidth: "66rem", textAlign: "center" }}>
-            Scroll Ecosystem
+            An Ecosystem <br />
+            Forever in Motion
           </Typography>
           <Stack direction="row" gap="2.4rem" sx={{ width: "94.8rem", maxWidth: "100%", mt: "4rem", mb: "5.2rem" }}>
             <Statistic label="Total value locked" loading={isTVLLoading}>

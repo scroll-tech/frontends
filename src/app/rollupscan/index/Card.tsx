@@ -42,7 +42,7 @@ const CardTitle = styled(Typography)(({ theme }) => ({
   },
 }))
 
-const BatchIndex = styled(Typography)(({ theme }) => ({
+const BatchIndex = styled(Typography)(() => ({
   fontWeight: 500,
   marginRight: "0.6rem",
   display: "inline-block",

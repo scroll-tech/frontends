@@ -9,13 +9,13 @@ import useScrollTrigger from "@mui/material/useScrollTrigger"
 
 import Button from "@/components/Button"
 import SectionWrapper from "@/components/SectionWrapper"
-import { ECOSYSTEM_NETWORK_LIST, LIST_YOUR_DAPP_LINK, NORMAL_HEADER_HEIGHT } from "@/constants"
+import { ECOSYSTEM_NETWORK_LIST, ECOSYSTEM_PAGE_SYMBOL, GET_IN_TOUCH_LINK, NORMAL_HEADER_HEIGHT } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
 import Category from "./Category"
 import NetworkSelect from "./NetworkSelect"
 import ProtocolList from "./ProtocolList"
-import SearchInput from "./SeachInput"
+import SearchInput from "./SearchInput"
 
 const Grid = withStyles(Box, theme => ({
   root: {
@@ -109,11 +109,13 @@ const Protocols = () => {
         >
           Browse all protocols
         </Typography>
-        <Button width={isMobile ? "15.4rem" : isTablet ? "21.5rem" : "25rem"} href={LIST_YOUR_DAPP_LINK} target="_blank" color="primary">
-          List your Dapp
-        </Button>
+        {isMobile ? null : (
+          <Button width={isTablet ? "21.5rem" : "25rem"} href={GET_IN_TOUCH_LINK} target="_blank" color="primary">
+            Get in touch
+          </Button>
+        )}
       </Stack>
-      <Grid>
+      <Grid id={`${ECOSYSTEM_PAGE_SYMBOL}-protocols`}>
         <Category top={stickyTop} value={searchParams.category} onChange={handleChangeCategory}></Category>
         <SearchInput top={stickyTop} sticky={isSticky} value={searchInput} onChange={handleChangeKeyword}></SearchInput>
         <NetworkSelect top={stickyTop} sticky={isSticky} value={searchParams.network} onChange={handleChangeNetwork}></NetworkSelect>

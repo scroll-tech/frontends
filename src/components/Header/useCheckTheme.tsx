@@ -1,9 +1,15 @@
 import { usePathname } from "next/navigation"
 import { useMemo } from "react"
 
+import useMatch from "@/hooks/useMatch"
+
 const useCheckTheme = () => {
   const pathname = usePathname()
-  const dark = useMemo(() => ["/developer-nft/check-eligibility", "/developer-nft/mint"].includes(pathname!), [pathname])
+  // TODO:
+  const isCanvas = useMatch("/canvas(.*)")
+  const dark = useMemo(() => {
+    return ["/developer-nft/check-eligibility", "/developer-nft/mint"].includes(pathname) || isCanvas
+  }, [pathname])
 
   return dark
 }

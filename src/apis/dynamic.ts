@@ -1,1 +1,1 @@
-export const tokenListUrl = "https://scroll-tech.github.io/token-list/scroll.tokenlist.json"
+export const tokenListUrl = "https://assets.scroll.cat/token-list.json"

@@ -1,4 +1,4 @@
-import { lighten } from "@mui/material/styles"
+import { alpha, lighten } from "@mui/material/styles"
 
 import { boxShadowOptions, paletteOptions, typographyOptions } from "./options"
 
@@ -81,7 +81,7 @@ const lightTheme = {
           padding: "0 3.5rem",
           height: "4.6rem",
           textTransform: "inherit",
-          borderRadius: "2.3rem",
+          borderRadius: "0.6rem",
           backgroundColor: "#f0f0f0",
           boxShadow: boxShadowOptions.none,
           "&:hover": {
@@ -101,6 +101,21 @@ const lightTheme = {
             backgroundColor: paletteOptions.primary.main,
             "&:hover": {
               backgroundColor: paletteOptions.primary.main,
+            },
+          },
+        },
+        {
+          props: { variant: "contained", color: "secondary" },
+          style: {
+            backgroundColor: paletteOptions.themeBackground.dark,
+            color: paletteOptions.primary.contrastText,
+            "&:hover": {
+              backgroundColor: paletteOptions.themeBackground.dark,
+            },
+            "&.Mui-disabled": {
+              backgroundColor: paletteOptions.themeBackground.dark,
+              color: alpha(paletteOptions.primary.contrastText, 0.6),
+              opacity: 0.8,
             },
           },
         },

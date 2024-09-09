@@ -9,11 +9,11 @@ import WalletDropdown from "./WalletDropdown"
 const WalletToolkit = props => {
   const { dark } = props
   const { isMobile } = useCheckViewport()
-  const { chainId } = useRainbowContext()
+  const { walletCurrentAddress } = useRainbowContext()
 
   return (
     <Stack direction="row" spacing="0.8rem">
-      {chainId && !isMobile && <NetworkIndicator dark={dark}></NetworkIndicator>}
+      {walletCurrentAddress && !isMobile && <NetworkIndicator dark={dark}></NetworkIndicator>}
       <WalletDropdown dark={dark}></WalletDropdown>
     </Stack>
   )

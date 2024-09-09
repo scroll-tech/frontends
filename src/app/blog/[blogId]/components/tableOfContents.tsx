@@ -1,11 +1,12 @@
 import { default as RouterLink } from "next/link"
-import { usePathname, useRouter } from "next/navigation"
+import { usePathname } from "next/navigation"
 import type { FC } from "react"
 import { useEffect, useRef, useState } from "react"
 
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos"
-import { Typography } from "@mui/material"
+import { SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
+
+import BackSvg from "@/assets/svgs/common/back.svg"
 
 const Link = styled(RouterLink)({
   display: "flex",
@@ -106,8 +107,8 @@ const TableOfContents: FC = () => {
       <ul ref={tableOfContents}>
         <li className="header-link hover:bg-transparent">
           <Link href="/blog">
-            <ArrowBackIosIcon />
-            <Typography sx={{ color: "inherit", cursor: "inherit", fontWeight: 500 }}>All Articles</Typography>
+            <SvgIcon sx={{ fontSize: "1.6rem" }} component={BackSvg} inheritViewBox></SvgIcon>
+            <Typography sx={{ color: "inherit", cursor: "inherit", fontWeight: 500 }}>All blogs</Typography>
           </Link>
         </li>
         {headings.map(header => (

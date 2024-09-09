@@ -48,15 +48,15 @@ const useStyles = makeStyles()(theme => {
     },
     claimButton: {
       borderRadius: "0.5rem",
-      backgroundColor: (theme as any).vars.palette.primary.main,
-      color: (theme as any).vars.palette.primary.contrastText,
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.primary.contrastText,
     },
     pagination: {
       ".MuiPaginationItem-text": {
         fontSize: "1.6rem",
       },
       ".MuiPaginationItem-root": {
-        color: (theme as any).vars.palette.text.primary,
+        color: theme.palette.text.primary,
       },
       ".MuiPaginationItem-root.Mui-selected": {
         fontWeight: 700,
@@ -81,18 +81,20 @@ const TxStatus = props => {
     return <>Pending</>
   }
 
-  const renderCountDown = ({ minutes, seconds, completed }) => {
+  const renderCountDown = ({ hours, minutes, seconds, completed }) => {
     if (completed) {
       return <>Pending</>
     }
     return (
       <>
-        {tx.isL1 ? "Ready" : "Claimable"} in ~{minutes ? `${minutes}m` : `${seconds}s`}
+        {tx.isL1 ? "Ready" : "Claimable"} in ~{hours ? `${hours}h ` : ""}
+        {minutes ? `${minutes}m` : ""}
+        {!minutes && seconds ? `${seconds}s` : ""}
       </>
     )
   }
 
-  if (tx.txStatus === TX_STATUS.Sent) {
+  if (tx.txStatus === TX_STATUS.Sent || tx.txStatus === TX_STATUS.BatchDepositSent) {
     if (tx.claimInfo?.claimable) {
       return <ActiveButton type="Claim" tx={tx} />
     } else if (tx.isL1) {
@@ -101,17 +103,17 @@ const TxStatus = props => {
       return (
         <Tooltip
           placement="top"
-          title="Scroll provers are still finalizing your transaction, this can take up to 1 hour. Once done, you'll be able to claim it here for use on the target network."
+          title="Scroll provers are still finalizing your transaction, this can take up to 2 hours. Once done, you'll be able to claim it here for use on the target network."
         >
           <ButtonBase className={cx(classes.chip, classes.waitingClaimChip)}>
-            {renderEstimatedWaitingTime(tx.initiatedAt ? dayjs.unix(tx.initiatedAt).add(1, "h").valueOf() : null)}
+            {renderEstimatedWaitingTime(tx.initiatedAt ? dayjs.unix(tx.initiatedAt).add(2, "h").valueOf() : null)}
           </ButtonBase>
         </Tooltip>
       )
     }
   }
 
-  if ([TX_STATUS.Dropped, TX_STATUS.SentFailed, TX_STATUS.Skipped].includes(tx.txStatus)) {
+  if ([TX_STATUS.Dropped, TX_STATUS.SentFailed, TX_STATUS.Skipped, TX_STATUS.BatchDepositFailed].includes(tx.txStatus)) {
     return (
       <Tooltip placement="top" title="Please click on the transaction hash to view the error reason.">
         <Chip
@@ -126,7 +128,7 @@ const TxStatus = props => {
     )
   }
 
-  if (tx.txStatus === TX_STATUS.Relayed) {
+  if (tx.txStatus === TX_STATUS.Relayed || tx.txStatus === TX_STATUS.BatchDepositRelayed) {
     return <Chip className={cx(classes.chip, classes.successChip)} label="Success"></Chip>
   }
 

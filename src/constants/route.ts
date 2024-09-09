@@ -178,8 +178,71 @@ const mainnetRoutes: PageMetadata[] = [
     name: "Scroll Sticker Winners",
     path: "/sticker-winners",
     description: "Congratulations to the winners of the sticker contest.",
-    ogImg: "/og_sticker_vote.png",
-    twitterImg: "/twitter_sticker_vote.png",
+  },
+  {
+    name: "Scroll Sessions",
+    path: "/sessions",
+    description: "Receive Marks for your engagement with Scroll. Join Sessions now!",
+    ogImg: "/og_scroll_sessions.png",
+    twitterImg: "/twitter_scroll_sessions.png",
+  },
+  {
+    name: "Scroll Sessions Terms of Use",
+    path: "/sessions-terms-of-use",
+  },
+  {
+    name: "Scroll Sessions Restricted",
+    path: "/sessions-restricted",
+  },
+  {
+    name: "Canvas",
+    path: "/canvas",
+    description: "Earn attestation badges across the ecosystem.",
+    isHiddenFooter: true,
+    ogImg: "/og_canvas.png",
+    twitterImg: "/twitter_canvas.png",
+  },
+  {
+    name: "Canvas",
+    path: "/canvas/mint",
+    description: "Earn attestation badges across the ecosystem.",
+    isHiddenFooter: true,
+    ogImg: "/og_canvas.png",
+    twitterImg: "/twitter_canvas.png",
+  },
+
+  {
+    name: "Canvas",
+    path: "/canvas/badge/:id",
+    isHiddenFooter: true,
+  },
+  {
+    name: "Canvas",
+    path: "/canvas/badge-contract/:address",
+    isHiddenFooter: true,
+  },
+  {
+    name: "Canvas Invite",
+    path: "/canvas/invite/:code",
+    isHiddenFooter: true,
+  },
+  {
+    name: "Canvas",
+    path: "/canvas/:address",
+    isHiddenFooter: true,
+  },
+  {
+    name: "Canvas And Badges",
+    path: "/canvas-and-badges",
+    description: "Build your on-chain persona and collect badges across Scroll’s ecosystem",
+    ogImg: "/og_canvas_and_badges.png",
+    twitterImg: "/twitter_canvas_and_badges.png",
+  },
+  {
+    name: "Community",
+    path: "/community",
+    ogImg: "/og_community.png",
+    twitterImg: "/twitter_community.png",
   },
 ]
 

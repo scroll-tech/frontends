@@ -1,19 +1,19 @@
-import { useState } from "react"
 import useSWR from "swr"
 
 import { CHAIN_ID } from "@/constants"
 
-const useTokenPrice = tokenList => {
-  const [prices, setPrices] = useState({})
+let PRICES = {}
 
+const useTokenPrice = tokenList => {
   const fetchPrice = async () => {
     try {
+      if (typeof window === "object" && !window.location.pathname.startsWith("/bridge")) return { ...PRICES }
       const tokens = tokenList.filter(token => token.chainId === CHAIN_ID.L1 && token.address).map(token => token.address)
       const tokenAddresses = tokens.join("%2C")
 
-      const fetchEthPrice = fetch(`https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd`)
+      const fetchEthPrice = fetch(`https://token-price.scroll.cat/simple/price?ids=ethereum&vs_currencies=usd`)
       const fetchErc20Price = fetch(
-        `https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=${tokenAddresses}&vs_currencies=usd`,
+        `https://token-price.scroll.cat/simple/token_price/ethereum?contract_addresses=${tokenAddresses}&vs_currencies=usd`,
       )
 
       const results = await Promise.allSettled([fetchEthPrice, fetchErc20Price])
@@ -29,9 +29,8 @@ const useTokenPrice = tokenList => {
         erc20Price = await results[1].value.json()
       }
 
-      const newPrices = { ...prices, ...ethPrice, ...erc20Price }
-      setPrices(newPrices)
-      return newPrices
+      PRICES = { ...PRICES, ...ethPrice, ...erc20Price }
+      return { ...PRICES }
     } catch (error) {
       throw error
     }
@@ -41,7 +40,7 @@ const useTokenPrice = tokenList => {
 
   return {
     loading: isValidating,
-    price: data || prices,
+    price: data || {},
     error,
   }
 }

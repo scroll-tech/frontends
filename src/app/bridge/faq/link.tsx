@@ -3,8 +3,8 @@ import Link from "next/link"
 import { Stack, SvgIcon } from "@mui/material"
 import { styled } from "@mui/system"
 
-import LinkSvg from "@/assets/svgs/bridge/external-link.svg"
-import { isProduction } from "@/utils"
+import LinkSvg from "@/assets/svgs/common/external-link.svg"
+import { isMainnet } from "@/utils"
 
 const FAQsLink = styled(Link)(() => ({
   color: "#6D6D6D",
@@ -24,7 +24,7 @@ const BridgeLinks = () => {
         FAQs
         <SvgIcon component={LinkSvg} inheritViewBox></SvgIcon>
       </FAQsLink>
-      {isProduction && (
+      {isMainnet && (
         <FAQsLink target="_blank" href="https://sepolia.scroll.io/bridge">
           Testnet Bridge
           <SvgIcon component={LinkSvg} inheritViewBox></SvgIcon>

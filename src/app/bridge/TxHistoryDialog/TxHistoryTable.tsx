@@ -24,7 +24,7 @@ const TransactionsList = () => {
   const {
     txHistory: { refreshPageTransactions },
   } = useBridgeContext()
-  const { chainId } = useRainbowContext()
+  const { walletCurrentAddress } = useRainbowContext()
 
   const { page, total, pageTransactions, loading } = useTxStore()
 
@@ -34,7 +34,7 @@ const TransactionsList = () => {
 
   return (
     <TableBox>
-      {chainId ? (
+      {walletCurrentAddress ? (
         <TxTable
           data={pageTransactions}
           loading={loading}

@@ -1,6 +1,6 @@
 "use client"
 
-import * as Sentry from "@sentry/react"
+import * as Sentry from "@sentry/nextjs"
 import { usePathname } from "next/navigation"
 import { useEffect } from "react"
 

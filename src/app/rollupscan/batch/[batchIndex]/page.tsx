@@ -66,7 +66,7 @@ const BoxItem = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
     height: "7.4rem",
     justifyContent: "space-between",
-    "& > *:nth-last-of-type(1)": {
+    "& > *:last-child": {
       textAlign: "right",
       marginLeft: "0.4rem",
       marginRight: "1.6rem",

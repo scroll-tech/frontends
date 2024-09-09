@@ -1,40 +1,31 @@
 "use client"
 
-import { RainbowKitProvider, connectorsForWallets, useConnectModal } from "@rainbow-me/rainbowkit"
+import { RainbowKitProvider, getDefaultConfig, useConnectModal } from "@rainbow-me/rainbowkit"
 import "@rainbow-me/rainbowkit/styles.css"
-import { type WalletClient } from "@wagmi/core"
-import { BrowserProvider, ethers } from "ethers"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { BrowserProvider } from "ethers"
 import { createContext, useCallback, useContext, useMemo } from "react"
-import { WagmiConfig, createConfig, useAccount, useDisconnect, useNetwork, useWalletClient } from "wagmi"
+import { type Config, WagmiProvider, useAccount, useConnectorClient, useDisconnect } from "wagmi"
 
-import { Wallets, chains, publicClient } from "./configs"
+import { configs } from "./configs"
 
 type RainbowContextProps = {
-  provider: ethers.BrowserProvider | null
+  provider: BrowserProvider | null
   walletCurrentAddress?: `0x${string}`
   chainId?: number
   connect: () => void
   disconnect: () => void
   walletName: string | undefined
-  checkConnectedChainId: (chainId: number) => boolean
+  checkConnectedChainId: (_chainId: number) => boolean
 }
+
+export const defaultConfig = getDefaultConfig(configs)
 
 const RainbowContext = createContext<RainbowContextProps | undefined>(undefined)
 
-const connectors = connectorsForWallets([
-  {
-    groupName: "Popular",
-    wallets: Wallets,
-  },
-])
+const queryClient = new QueryClient()
 
-const wagmiConfig = createConfig({
-  autoConnect: true,
-  connectors,
-  publicClient,
-})
-
-function walletClientToSigner(walletClient: WalletClient) {
+function clientToProvider(walletClient) {
   const { chain, transport } = walletClient
   const network = {
     chainId: chain.id,
@@ -47,33 +38,33 @@ function walletClientToSigner(walletClient: WalletClient) {
 
 const RainbowProvider = props => {
   return (
-    <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider modalSize="compact" chains={chains}>
-        <Web3ContextProvider>{props.children}</Web3ContextProvider>
-      </RainbowKitProvider>
-    </WagmiConfig>
+    <WagmiProvider config={defaultConfig}>
+      <QueryClientProvider client={queryClient}>
+        <RainbowKitProvider locale="en" modalSize="compact">
+          <Web3ContextProvider>{props.children}</Web3ContextProvider>
+        </RainbowKitProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
   )
 }
 
 const Web3ContextProvider = props => {
-  const { data: walletClient } = useWalletClient()
+  const { connector: activeConnector, address, isConnected, chainId } = useAccount()
+  const { data: client } = useConnectorClient<Config>({ chainId })
 
   const { openConnectModal } = useConnectModal()
   const { disconnect } = useDisconnect()
 
-  const { connector: activeConnector, address, isConnected } = useAccount()
-  const { chain } = useNetwork()
-
   const provider = useMemo(() => {
-    if (walletClient && chain && chain.id === walletClient.chain.id) return walletClientToSigner(walletClient)
+    if (client && chainId && chainId === client.chain?.id) return clientToProvider(client)
     return null
-  }, [walletClient, chain])
+  }, [client, chainId])
 
   const checkConnectedChainId = useCallback(
-    chainId => {
-      return isConnected && chain?.id === chainId
+    id => {
+      return isConnected && chainId === id
     },
-    [isConnected, chain],
+    [isConnected, chainId],
   )
 
   return (
@@ -82,7 +73,7 @@ const Web3ContextProvider = props => {
         provider,
         walletCurrentAddress: address,
         walletName: activeConnector?.name,
-        chainId: chain?.id,
+        chainId,
         connect: openConnectModal as () => void,
         disconnect,
         checkConnectedChainId,

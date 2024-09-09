@@ -4,11 +4,14 @@ import React from "react"
 
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter"
 
+import GlobalComponents from "@/components/GlobalComponents"
 import GoogleAnalytics from "@/components/GoogleAnalytics"
 import ScrollToTop from "@/components/ScrollToTop"
 import SentrySetting from "@/components/SentrySetting"
 import WebVitals from "@/components/WebVitals"
 import { DEFAULT_METADATA } from "@/constants/route"
+import BridgeContextProvider from "@/contexts/BridgeContextProvider"
+import CanvasContextProvider from "@/contexts/CanvasContextProvider"
 import RainbowProvider from "@/contexts/RainbowProvider"
 import { VersionChecker } from "@/hooks/useVersionCheck"
 import ScrollThemeProvider from "@/theme"
@@ -57,12 +60,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="preconnect" href={process.env.NEXT_PUBLIC_API_BASE_URI} crossOrigin="anonymous" />
         <link rel="dns-prefetch" href={process.env.NEXT_PUBLIC_API_BASE_URI} crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,600;8..144,700;8..144,800&display=swap"
-          rel="stylesheet"
-        />
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap" rel="stylesheet" />
         {/* TODO: only on blog detail page */}
-        <link
+        {/* <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css"
           integrity="sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn"
@@ -72,14 +72,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.9.0/github-markdown.min.css"
           crossOrigin="anonymous"
-        />
+        /> */}
       </head>
       <body>
         <AppRouterCacheProvider options={{ key: "css" }}>
           {/* <NextAppDirEmotionCacheProvider > */}
           <ScrollThemeProvider>
             <VersionChecker>
-              <RainbowProvider>{children}</RainbowProvider>
+              <RainbowProvider>
+                <BridgeContextProvider>
+                  <CanvasContextProvider>{children}</CanvasContextProvider>
+                  <GlobalComponents></GlobalComponents>
+                </BridgeContextProvider>
+              </RainbowProvider>
             </VersionChecker>
             <ScrollToTop />
           </ScrollThemeProvider>

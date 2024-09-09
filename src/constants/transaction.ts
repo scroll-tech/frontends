@@ -24,4 +24,9 @@ export enum TX_STATUS {
   RelayedReverted,
   Skipped,
   Dropped,
+  BatchDepositSent,
+  BatchDepositRelayed,
+  BatchDepositFailed,
 }
+
+export const BATCH_DEPOSIT_TOKENS = ["ETH"]

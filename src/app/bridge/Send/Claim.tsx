@@ -40,7 +40,7 @@ const useStyles = makeStyles()(theme => ({
 
 const Claim = () => {
   const { classes } = useStyles()
-  const { walletCurrentAddress, chainId } = useRainbowContext()
+  const { walletCurrentAddress } = useRainbowContext()
   const {
     claimHistory: { refreshPageTransactions },
   } = useBridgeContext()
@@ -63,7 +63,7 @@ const Claim = () => {
 
   return (
     <Box className={classes.tableBox}>
-      {chainId ? (
+      {walletCurrentAddress ? (
         <TxTable
           data={pageTransactions}
           loading={loading}

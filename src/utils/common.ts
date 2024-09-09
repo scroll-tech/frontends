@@ -1,4 +1,5 @@
 import { isHexString } from "ethers"
+import { isNil } from "lodash"
 import find from "lodash/find"
 import { DependencyList } from "react"
 
@@ -24,10 +25,10 @@ export const generateExploreLink = (explorer, hash, type = "tx") => {
   return `${explorer}/${type}/${hash}`
 }
 
-// TODO: should be isMainnet
-export const isProduction = process.env.NEXT_PUBLIC_SCROLL_ENVIRONMENT === process.env.NEXT_PUBLIC_MAIN_ENVIRONMENT
+export const isMainnet = process.env.NEXT_PUBLIC_SCROLL_ENVIRONMENT === process.env.NEXT_PUBLIC_MAIN_ENVIRONMENT
 export const isSepolia = process.env.NEXT_PUBLIC_SCROLL_ENVIRONMENT === "Sepolia"
-export const networkType = isProduction ? "mainnet" : "testnet"
+export const networkType = isMainnet ? "mainnet" : "testnet"
+
 export const isValidEmail = (email: string): boolean => {
   const emailRegex: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
   return emailRegex.test(email)
@@ -70,12 +71,12 @@ export const convertDateToTimestamp = (dateString: string, isMilliseconds: boole
   return Math.floor(timestamp)
 }
 
-export const formatLargeNumber = (value: number): string => {
+export const formatLargeNumber = (value: number, decimal: number = 1): string => {
   if (value.toString().length <= 6) {
     return new Intl.NumberFormat("en-US").format(value)
   }
   return new Intl.NumberFormat("en-US", {
-    maximumFractionDigits: 1,
+    maximumFractionDigits: decimal,
     notation: "compact",
   }).format(value)
 }
@@ -88,4 +89,26 @@ export function isValidTransactionHash(txHash: string): boolean {
   // A valid transaction hash is a hex string of length 66 characters (including the '0x' prefix)
   const isValidLength = txHash.length === 66
   return isValidLength && isHexString(txHash)
+}
+
+export const testAsyncFunc = value => {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve(value)
+    }, 1000)
+  })
+}
+
+export function generateShareTwitterURL(url, text, via = "Scroll_ZKP") {
+  return `https://twitter.com/intent/tweet?original_referer=${encodeURIComponent(window.location.href)}&url=${encodeURIComponent(
+    url,
+  )}&text=${encodeURIComponent(text)}&via=${via}`
+}
+
+export function isAndroid(): boolean {
+  return typeof navigator !== "undefined" && /android/i.test(navigator.userAgent)
+}
+
+export function normalizeAddress(address) {
+  return address.toLowerCase()
 }

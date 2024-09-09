@@ -3,7 +3,7 @@ import { useMemo } from "react"
 
 import useScrollTrigger from "@mui/material/useScrollTrigger"
 
-const TRANSPARENT_BG_PAGE_LIST = ["/story"]
+const TRANSPARENT_BG_PAGE_LIST = ["/story", "/sessions"]
 // themeBackground
 const CUSTOM_BG_PAGE_MAP = {
   "/brand-kit": "brand",
@@ -12,7 +12,8 @@ const CUSTOM_BG_PAGE_MAP = {
   "/sticker-winners": "brand",
 }
 
-const useCheckCustomNavBarBg = () => {
+const useCheckCustomNavBarBg = (props = { isHover: false }) => {
+  const { isHover } = props
   const isScrolling = useScrollTrigger({ disableHysteresis: true, threshold: 10 })
 
   const pathname = usePathname()
@@ -20,11 +21,10 @@ const useCheckCustomNavBarBg = () => {
 
   const navbarBg = useMemo(() => {
     if (isNoBgPage) {
-      return isScrolling ? "" : "transparent"
+      return isScrolling || isHover ? "" : "transparent"
     }
-    return CUSTOM_BG_PAGE_MAP[pathname!] || ""
-  }, [isNoBgPage, isScrolling, pathname])
-
+    return CUSTOM_BG_PAGE_MAP[pathname] || ""
+  }, [isNoBgPage, isScrolling, pathname, isHover])
   return navbarBg
 }
 

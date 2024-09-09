@@ -1,21 +1,59 @@
 {
   "extends": ["next/core-web-vitals", "prettier"],
-  "plugins": ["prettier"],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "prettier"],
   "rules": {
     "prettier/prettier": "error",
     "no-template-curly-in-string": "off",
     "no-useless-escape": "off",
-    "no-unused-vars":"warn",
     "jsx-a11y/anchor-is-valid": "off",
     "no-extend-native": "off",
     "no-sequences": "off",
     "react-hooks/exhaustive-deps": "off",
     "react/jsx-pascal-case": "off",
+    "react/display-name": "off",
 
     // TODO:
-    "react/no-unescaped-entities":"off",
-    "@next/next/no-img-element":"off",
-    "@next/next/no-page-custom-font":"off",
-    "react/no-children-prop":"off"
+    "react/no-unescaped-entities": "off",
+    "@next/next/no-img-element": "off",
+    "@next/next/no-page-custom-font": "off",
+    "react/no-children-prop": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+
+    // Add TypeScript specific rules (and turn off ESLint equivalents)
+    "@typescript-eslint/consistent-type-assertions": "warn",
+    "no-array-constructor": "off",
+    "@typescript-eslint/no-array-constructor": "warn",
+    "no-redeclare": "off",
+    "@typescript-eslint/no-redeclare": "warn",
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": [
+      "warn",
+      {
+        "functions": false,
+        "classes": false,
+        "variables": false,
+        "typedefs": false
+      }
+    ],
+    "no-unused-expressions": "off",
+    "@typescript-eslint/no-unused-expressions": [
+      "error",
+      {
+        "allowShortCircuit": true,
+        "allowTernary": true,
+        "allowTaggedTemplates": true
+      }
+    ],
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "args": "none",
+        "ignoreRestSiblings": true
+      }
+    ],
+    "no-useless-constructor": "off",
+    "@typescript-eslint/no-useless-constructor": "warn"
   }
 }

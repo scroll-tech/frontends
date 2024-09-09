@@ -5,6 +5,9 @@ import useSWR from "swr"
 
 import { CHAIN_ID } from "@/constants"
 import { BLOCK_NUMBERS } from "@/constants/storageKey"
+import { defaultConfig } from "@/contexts/RainbowProvider"
+
+// TODO: defaultConfig is the config of WagmiProvider
 
 const useBlockNumbers = () => {
   const [blockNumbers, setBlockNumbers] = useStorage(localStorage, BLOCK_NUMBERS, [-1, -1])
@@ -12,8 +15,8 @@ const useBlockNumbers = () => {
   const [isL2Available, setIsL2Available] = useState(true)
 
   const fetchBlockNumber = async () => {
-    const fetchL1BlockNumber = getPublicClient({ chainId: CHAIN_ID.L1 }).getBlock({ blockTag: "finalized" })
-    const fetchL2BlockNumber = getPublicClient({ chainId: CHAIN_ID.L2 }).getBlock({ blockTag: "latest" })
+    const fetchL1BlockNumber = getPublicClient(defaultConfig, { chainId: CHAIN_ID.L1 })!.getBlock({ blockTag: "finalized" })
+    const fetchL2BlockNumber = getPublicClient(defaultConfig, { chainId: CHAIN_ID.L2 })!.getBlock({ blockTag: "latest" })
     const blockNumbers = await Promise.allSettled([fetchL1BlockNumber, fetchL2BlockNumber])
     return blockNumbers.map(item => (item.status === "fulfilled" ? Number(item.value.number) : item.reason))
   }

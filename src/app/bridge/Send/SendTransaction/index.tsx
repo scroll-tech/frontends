@@ -1,14 +1,13 @@
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useMemo, useState } from "react"
-import useStorage from "squirrel-gill"
 
 import { Box, Stack, SvgIcon, Typography } from "@mui/material"
 
 import WarningSvg from "@/assets/svgs/bridge/warning.svg"
 import Button from "@/components/Button"
 import TextButton from "@/components/TextButton"
-import { ETH_SYMBOL } from "@/constants"
-import { BRIDGE_TOKEN_SYMBOL } from "@/constants/storageKey"
-import { useBridgeContext } from "@/contexts/BridgeContextProvider"
+import { ETH_SYMBOL, NATIVE_TOKEN_LIST } from "@/constants"
+import { BRIDGE_TOKEN } from "@/constants/searchParamsKey"
 import { usePriceFeeContext } from "@/contexts/PriceFeeProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useAsyncMemo, useBalance } from "@/hooks"
@@ -18,25 +17,32 @@ import useCheckViewport from "@/hooks/useCheckViewport"
 import useGasFee from "@/hooks/useGasFee"
 import { useSendTransaction } from "@/hooks/useSendTransaction"
 import useSufficientBalance from "@/hooks/useSufficientBalance"
+import useBatchBridgeStore, { BridgeSummaryType, DepositBatchMode } from "@/stores/batchBridgeStore"
 import useBridgeStore from "@/stores/bridgeStore"
-import { amountToBN, switchNetwork, trimErrorMessage } from "@/utils"
+import { amountToBN, checkApproved, switchNetwork, trimErrorMessage } from "@/utils"
 
 import ApprovalDialog from "./ApprovalDialog"
 import BalanceInput from "./BalanceInput"
 import CustomiseRecipient from "./CustomiseRecipient"
+import DepositSelector from "./DepositSelector"
 import NetworkDirection from "./NetworkDirection"
 import TransactionSummary from "./TransactionSummary"
+import useBatchDeposit from "./hooks/useBatchDeposit"
 
 const SendTransaction = () => {
-  const { chainId, connect } = useRainbowContext()
-  // TODO: extract tokenList
-  const { tokenList } = useBridgeContext()
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams: any = useSearchParams()
+  const token = searchParams.get(BRIDGE_TOKEN)
+  const tokenSymbol = useMemo(() => token || ETH_SYMBOL, [token])
+
+  const { chainId, connect, walletCurrentAddress } = useRainbowContext()
   const { isMobile } = useCheckViewport()
-  const [tokenSymbol, setTokenSymbol] = useStorage(localStorage, BRIDGE_TOKEN_SYMBOL, ETH_SYMBOL)
 
   const { gasLimit, gasPrice, errorMessage: relayFeeErrorMessage, fetchData: fetchPriceFee, getL1DataFee } = usePriceFeeContext()
 
-  const { txType, isNetworkCorrect, fromNetwork, changeTxResult } = useBridgeStore()
+  const { txType, isNetworkCorrect, fromNetwork, changeTxResult, tokenList } = useBridgeStore()
+  const { bridgeSummaryType, depositBatchMode, batchDepositConfig } = useBatchBridgeStore()
 
   const [amount, setAmount] = useState<string>("")
 
@@ -54,8 +60,10 @@ const SendTransaction = () => {
     return fromNetwork.chainId ? tokenList.filter(item => item.chainId === fromNetwork.chainId) : []
   }, [tokenList, fromNetwork])
 
-  const selectedToken: any = useMemo(() => tokenOptions.find(item => item.symbol === tokenSymbol) ?? {}, [tokenOptions, tokenSymbol])
-
+  const selectedToken: any = useMemo(
+    () => tokenOptions.find(item => item.symbol === tokenSymbol) ?? NATIVE_TOKEN_LIST.find(item => item.chainId === fromNetwork.chainId),
+    [tokenOptions, tokenSymbol, fromNetwork],
+  )
   // const { balance, isLoading: balanceLoading } = useBalance(selectedToken.address)
   const { balance, loading: balanceLoading } = useBalance(selectedToken, fromNetwork)
 
@@ -65,6 +73,7 @@ const SendTransaction = () => {
     isRequested: isRequestedApproval,
     isLoading: approveLoading,
   } = useApprove(fromNetwork, selectedToken, validAmount)
+
   const {
     send: sendTransaction,
     isLoading: sendLoading,
@@ -73,10 +82,19 @@ const SendTransaction = () => {
     amount: validAmount,
     selectedToken,
     receiver: recipient,
+    needApproval,
   })
 
+  const { depositAmountIsVaild } = useBatchDeposit({ selectedToken, amount: validAmount })
+
   // fee start
-  const { gasFee: estimatedGasCost, gasLimit: txGasLimit, error: gasFeeErrorMessage, calculateGasFee } = useGasFee(selectedToken, needApproval)
+  const {
+    gasFee: estimatedGasCost,
+    batchDepositGasFee: estimatedBatchDepositGasCost,
+    gasLimit: txGasLimit,
+    error: gasFeeErrorMessage,
+    calculateGasFee,
+  } = useGasFee(selectedToken, needApproval)
 
   const l1DataFee = useAsyncMemo(
     async () =>
@@ -85,11 +103,25 @@ const SendTransaction = () => {
         : BigInt(0),
     [amount, selectedToken, txGasLimit, txType],
   )
-
   const relayFee = useMemo(() => gasLimit * gasPrice, [gasLimit, gasPrice])
+
+  const l1GasFee = useMemo(() => {
+    if (depositBatchMode === DepositBatchMode.Economy && bridgeSummaryType === BridgeSummaryType.Selector) {
+      return estimatedBatchDepositGasCost
+    }
+    return estimatedGasCost
+  }, [depositBatchMode, bridgeSummaryType, estimatedBatchDepositGasCost, estimatedGasCost])
+
+  const l2GasFee = useMemo(() => {
+    if (depositBatchMode === DepositBatchMode.Economy && bridgeSummaryType === BridgeSummaryType.Selector) {
+      return batchDepositConfig.feeAmountPerTx
+    }
+    return relayFee
+  }, [depositBatchMode, bridgeSummaryType, batchDepositConfig, relayFee])
+
   const totalFee = useMemo(
-    () => (estimatedGasCost && !relayFeeErrorMessage ? estimatedGasCost + relayFee + (l1DataFee ?? BigInt(0)) : null),
-    [estimatedGasCost, relayFeeErrorMessage, relayFee, l1DataFee],
+    () => (l1GasFee && !relayFeeErrorMessage ? l1GasFee + l2GasFee + (l1DataFee ?? BigInt(0)) : null),
+    [l1GasFee, relayFeeErrorMessage, l2GasFee, l1DataFee],
   )
 
   const { insufficientWarning } = useSufficientBalance(
@@ -102,7 +134,7 @@ const SendTransaction = () => {
   useEffect(() => {
     let nextBridgeWarning
     let nextInputError = false
-    if (!chainId) {
+    if (!walletCurrentAddress) {
       nextBridgeWarning = (
         <TextButton underline="always" sx={{ fontSize: "1.4rem" }} onClick={connect}>
           Connect wallet
@@ -149,8 +181,8 @@ const SendTransaction = () => {
   // fee end
 
   const necessaryCondition = useMemo(() => {
-    return validAmount && !bridgeWarning
-  }, [validAmount, bridgeWarning])
+    return validAmount && !bridgeWarning && (depositAmountIsVaild || (!depositAmountIsVaild && depositBatchMode === DepositBatchMode.Fast))
+  }, [validAmount, bridgeWarning, depositAmountIsVaild, depositBatchMode])
 
   const sendText = useMemo(() => {
     if (txType === "Deposit" && sendLoading) {
@@ -189,7 +221,7 @@ const SendTransaction = () => {
   }, [isRequestedApproval])
 
   const handleChangeTokenSymbol = symbol => {
-    setTokenSymbol(symbol)
+    router.push(`${pathname}?${BRIDGE_TOKEN}=${symbol}`)
   }
 
   const handleChangeAmount = value => {
@@ -217,7 +249,7 @@ const SendTransaction = () => {
   }
 
   const renderButton = () => {
-    if (!chainId) {
+    if (!walletCurrentAddress) {
       return (
         <Button key="connect" width={isMobile ? "100%" : "25rem"} color="primary" onClick={connect} whiteButton>
           Connect Wallet
@@ -233,7 +265,11 @@ const SendTransaction = () => {
       )
     }
 
-    if (needApproval) {
+    if (
+      needApproval === true ||
+      (!checkApproved(needApproval, DepositBatchMode.Economy) && depositBatchMode === DepositBatchMode.Economy) ||
+      (!checkApproved(needApproval, DepositBatchMode.Fast) && depositBatchMode === DepositBatchMode.Fast)
+    ) {
       return (
         <Button
           key="approve"
@@ -297,49 +333,53 @@ const SendTransaction = () => {
             color="primary"
           >
             <SvgIcon
-              sx={{
-                fontSize: "1.6rem",
-                mr: "0.8rem",
-                verticalAlign: "middle",
-                color: "#FF684B",
-              }}
+              sx={{ fontSize: "1.6rem", mr: "0.8rem", verticalAlign: "middle", color: "#FF684B" }}
               component={WarningSvg}
               inheritViewBox
             ></SvgIcon>
-            <Stack
-              component="span"
-              direction="row"
-              style={{
-                display: "inline-flex",
-                verticalAlign: "middle",
-                alignItems: "center",
-                gap: "0.2rem",
-              }}
-            >
+            <Stack component="span" direction="row" style={{ display: "inline-flex", verticalAlign: "middle", alignItems: "center", gap: "0.2rem" }}>
               {bridgeWarning}
             </Stack>
           </Typography>
         )}
       </Box>
 
-      <CustomiseRecipient
-        readOnly={approveLoading || sendLoading}
-        disabled={fromNetwork.chainId !== chainId}
-        bridgeWarning={bridgeWarning}
-        handleChangeRecipient={handleChangeRecipient}
-      />
+      {bridgeSummaryType === BridgeSummaryType.Selector && (
+        <DepositSelector
+          selectedToken={selectedToken}
+          amount={validAmount}
+          feeError={relayFeeErrorMessage || gasFeeErrorMessage}
+          // totalFee={displayedEstimatedGasCost}
+          l2GasFee={relayFee}
+          l1GasFee={estimatedGasCost}
+          l1EconomyGasFee={estimatedBatchDepositGasCost}
+          l2EconomyGasFee={batchDepositConfig.feeAmountPerTx}
+          l1DataFee={l1DataFee}
+          needApproval={needApproval}
+          isVaild={depositAmountIsVaild}
+        />
+      )}
+      {!(bridgeSummaryType === BridgeSummaryType.Selector && depositBatchMode === DepositBatchMode.Economy) && (
+        <CustomiseRecipient
+          readOnly={approveLoading || sendLoading}
+          disabled={fromNetwork.chainId !== chainId}
+          bridgeWarning={bridgeWarning}
+          handleChangeRecipient={handleChangeRecipient}
+        />
+      )}
 
-      <TransactionSummary
-        selectedToken={selectedToken}
-        amount={validAmount}
-        feeError={relayFeeErrorMessage || gasFeeErrorMessage}
-        // totalFee={displayedEstimatedGasCost}
-        l2GasFee={relayFee}
-        l1GasFee={estimatedGasCost}
-        l1DataFee={l1DataFee}
-        needApproval={needApproval}
-      />
-
+      {bridgeSummaryType === BridgeSummaryType.Summary && (
+        <TransactionSummary
+          selectedToken={selectedToken}
+          amount={validAmount}
+          feeError={relayFeeErrorMessage || gasFeeErrorMessage}
+          // totalFee={displayedEstimatedGasCost}
+          l2GasFee={relayFee}
+          l1GasFee={estimatedGasCost}
+          l1DataFee={l1DataFee}
+          needApproval={!!needApproval}
+        />
+      )}
       <Box
         sx={{
           mt: ["2.4rem", "2.8rem"],
@@ -347,9 +387,7 @@ const SendTransaction = () => {
           alignItems: "flex-end",
           width: "100%",
           justifyContent: "center",
-          "& .MuiButtonBase-root": {
-            fontFamily: "var(--default-font-family) !important",
-          },
+          "& .MuiButtonBase-root": { fontFamily: "var(--default-font-family) !important" },
         }}
       >
         {renderButton()}
