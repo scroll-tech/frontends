@@ -29,16 +29,16 @@ After clicking the button, there are two ways to show the badge introduction:
 - Redirect to badge introduction page 【officially used】
   ![CleanShot 2024-09-11 at 13 58 01@2x](https://github.com/user-attachments/assets/62a21eb5-3bbf-49a5-8599-8d1c2fc71805)
   [Reference code](https://github.com/scroll-tech/frontends/blob/mainnet/src/pages/canvas/badgeContract/index.tsx)
-- Show a mint pop-up displaying the default badge information
+- Show a mint pop-up displaying badge introduction
   ![BadgeDetailDialog](https://github.com/user-attachments/assets/8a664aa2-9d17-4f38-a170-11bb0f413e20)
-  [Reference code](https://github.com/scroll-tech/frontends/blob/add-canvas-doc/src/pages/canvas/Dashboard/BadgeDetailDialog/index.tsx)
+  [Reference code](https://github.com/scroll-tech/frontends/blob/mainnet/src/pages/canvas/Dashboard/BadgeDetailDialog/index.tsx)
 
 ##### Main actions:
 
-1. Retrieve the badge description information from the badgeTokenURI and display it to the user.
+1. Retrieve the badge description information according to [badgeTokenURI](https://github.com/scroll-tech/canvas-contracts/blob/master/src/badge/extensions/ScrollBadgeDefaultURI.sol) and display it to the user.
 2. Check if the user already has this badge
 3. Check user eligibility for minting
-4. Handle ineligibility based on badge type
+4. Display an ineligibility message according to the badge type
 5. Disable the mint button for ineligible users
 6. Enable the mint button for eligible users
 
@@ -52,7 +52,7 @@ Badges and Canvas are not inherently linked, meaning a user can mint a badge wit
 - On a badge introduction modal  
   ![BadgeDetailDialog without Canvas](https://github.com/user-attachments/assets/56d92a81-81c8-42fc-98e1-4f6df729bc67)
 
-[Reference Code](https://github.com/scroll-tech/frontends/blob/mainnet/src/pages/canvas/badgeContract/index.tsx#L121)
+[Reference Code](https://github.com/scroll-tech/frontends/blob/mainnet/src/services/canvasService.ts#L128)
 
 ### Step 5: Execute Mint Operation
 
@@ -60,10 +60,14 @@ Scroll supports 3 different types of badges, each with its corresponding minting
 
 ### Step 6: Post-Mint Process
 
-After minting successfully, redirect to the user’s badge detail page and display the badge details.
+After minting successfully,
 
-![BadgeDetailPage](https://github.com/user-attachments/assets/4a0d53ae-7a24-4c1c-abdf-d6c7716a2a4c)
-[Reference code](https://github.com/scroll-tech/frontends/blob/mainnet/src/pages/canvas/badge/index.tsx)
+- Redirect to the user’s badge detail page and display the badge details.
+  ![BadgeDetailPage](https://github.com/user-attachments/assets/4a0d53ae-7a24-4c1c-abdf-d6c7716a2a4c)
+  [Reference code](https://github.com/scroll-tech/frontends/blob/mainnet/src/pages/canvas/badge/index.tsx)
+
+- Only display a success notification.
+  [Reference code](https://github.com/scroll-tech/frontends/blob/mainnet/src/pages/canvas/Dashboard/BadgeDetailDialog/index.tsx#L121)
 
 ## Conclusion
 
