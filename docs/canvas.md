@@ -18,66 +18,59 @@ Before initiating any minting operations, verify that the platform is connected 
 
 Check for compliance with predefined minting rules set by your platform. These rules are defined by partners and should be verified before proceeding.
 
-### Step 3: User Mint Status
+### Step 3: Mint Prompt
 
-Check if user has already minted the badge. [Related doc](https://github.com/scroll-tech/canvas-contracts/blob/master/docs/canvas-interaction-guide.md#how-to-check-if-a-user-has-minted-their-profile-yet)
+A scrolly can be placed in the corner of the page to remind the user to mint a badge.
+![Canvas on Bridge](https://github.com/user-attachments/assets/3b8445f5-8890-453f-b92c-4834dad5846c)
+[Reference code](https://github.com/scroll-tech/frontends/blob/mainnet/src/pages/bridge/components/MintBadge/index.tsx)
 
-### Step 4: Mint Prompt
+After clicking the button, there are two ways to show the badge introduction:
 
-- If the user has not yet minted the badge, display a scrolly animation. - Design example
-  ![Canvas on Bridge](https://github.com/user-attachments/assets/3b8445f5-8890-453f-b92c-4834dad5846c) - After the user clicks on the mint badge, show a mint pop-up displaying the default badge information.
-  [Example code](https://github.com/scroll-tech/frontends/blob/mainnet/src/pages/bridge/components/MintBadge/index.tsx) (The `Canvas` component is the scrolly animation component, and the `BadgeDetailDialog` is the pop-up component.)
+- Redirect to badge introduction page 【officially used】
+  ![CleanShot 2024-09-11 at 13 58 01@2x](https://github.com/user-attachments/assets/62a21eb5-3bbf-49a5-8599-8d1c2fc71805)
+  [Reference code](https://github.com/scroll-tech/frontends/blob/mainnet/src/pages/canvas/badgeContract/index.tsx)
+- Show a mint pop-up displaying the default badge information
+  ![BadgeDetailDialog](https://github.com/user-attachments/assets/8a664aa2-9d17-4f38-a170-11bb0f413e20)
+  [Reference code](https://github.com/scroll-tech/frontends/blob/add-canvas-doc/src/pages/canvas/Dashboard/BadgeDetailDialog/index.tsx)
 
-- If the badge has already been minted, terminate the process.
+##### Main actions:
 
-### Step 5: Additional Conditions
+1. Retrieve the badge description information from the badgeTokenURI and display it to the user.
+2. Check if the user already has this badge
+3. Check user eligibility for minting
+4. Handle ineligibility based on badge type
+5. Disable the mint button for ineligible users
+6. Enable the mint button for eligible users
 
-Check if the user has minted canvas. Based on the minting status:
+### Step 4: Additional Conditions
 
-- If already minted, allow minting of the badge.
-  - Design example
-    ![BadgeDetailDialog](https://github.com/user-attachments/assets/8a664aa2-9d17-4f38-a170-11bb0f413e20)
-- If not minted, disallow and redirect the user to the Scroll canvas mint page.
-  - Design example
-    ![BadgeDetailDialog without Canvas](https://github.com/user-attachments/assets/56d92a81-81c8-42fc-98e1-4f6df729bc67)
+Badges and Canvas are not inherently linked, meaning a user can mint a badge without minting a Canvas. However, if you want to require the user to mint the Canvas first before minting the badge (so that the minted badge can be automatically attached to the Scroll Canvas), you can add an extra check for this.
 
-### Step 6: Execute Mint Operation
+- On a badge introduction page  
+  ![BadgeDetailPage without Canvas](https://github.com/user-attachments/assets/6c6e1dfe-cac1-4e82-8e8d-02c3e88ae148)
 
-- Implement a button that, when clicked, triggers the mint interface. This action calls the mint contract. Scroll supports 3 different types of badges, each with its corresponding minting method. You can refer to [the document](https://github.com/scroll-tech/canvas-contracts/blob/master/docs/badge-examples.md) for details.
+- On a badge introduction modal  
+  ![BadgeDetailDialog without Canvas](https://github.com/user-attachments/assets/56d92a81-81c8-42fc-98e1-4f6df729bc67)
 
-### Step 7: Post-Mint Process
+[Reference Code](https://github.com/scroll-tech/frontends/blob/mainnet/src/pages/canvas/badgeContract/index.tsx#L121)
 
-After successfully minting, redirect to the user’s badge detail page and display the badge information.
+### Step 5: Execute Mint Operation
 
-- Design example
-  ![BadgeDetailPage](https://github.com/user-attachments/assets/4a0d53ae-7a24-4c1c-abdf-d6c7716a2a4c)
+Scroll supports 3 different types of badges, each with its corresponding minting method except for gifted badge which would be minted by the issuer. You can refer to [the function](https://github.com/scroll-tech/frontends/blob/mainnet/src/services/canvasService.ts#L330) for details.
+
+### Step 6: Post-Mint Process
+
+After minting successfully, redirect to the user’s badge detail page and display the badge details.
+
+![BadgeDetailPage](https://github.com/user-attachments/assets/4a0d53ae-7a24-4c1c-abdf-d6c7716a2a4c)
+[Reference code](https://github.com/scroll-tech/frontends/blob/mainnet/src/pages/canvas/badge/index.tsx)
 
 ## Conclusion
 
-This guide should assist you in successfully integrating the Canvas mint functionality within your platform. If you need additional support or have any questions, please contact our developer support team.
+[canvasService](https://github.com/scroll-tech/frontends/blob/mainnet/src/services/canvasService.ts) includes many useful methods for interacting with Canvas-related contracts, like: `getBadgeMetadata`, `checkIfHasBadgeByAddress`, `mintBadge`.
 
-## Reference
+[badgeContract](https://github.com/scroll-tech/frontends/blob/mainnet/src/pages/canvas/badgeContract/index.tsx) and [badge](https://github.com/scroll-tech/frontends/blob/mainnet/src/pages/canvas/badge/index.tsx) are the two important parts currently used in the Scroll frontend's mint badge process.
 
-All the methods used in the frontend
+Additionally, if you want a more lightweight way to integrate the mint badge process into your website, [BadgeDetailDialog](https://github.com/scroll-tech/frontends/blob/mainnet/src/pages/canvas/Dashboard/BadgeDetailDialog/index.tsx) is a solution worth trying.
 
-https://github.com/scroll-tech/frontends/blob/mainnet/src/services/canvasService.ts
-
-Mint badge pop-up
-https://github.com/scroll-tech/frontends/blob/mainnet/src/pages/canvas/Dashboard/BadgeDetailDialog/index.tsx
-
-For third parties, the possible statuses include
-
-```
-BadgeDetailDialogType {
- 	HIDDEN = "",
- 	MINT = "mint",
- 	UPGRADE = "upgrade",
- 	VIEW = "view",
- 	NO_CANVAS = "noCanvas",
- }
-```
-
-Note that when a badge has not been minted, it is necessary to set default information and a preview image.
-
-Scrolly animation
-https://github.com/scroll-tech/frontends/blob/mainnet/src/pages/bridge/components/MintBadge/index.tsx
+This guide should assist you in integrating the Canvas mint functionality within your platform. If you need additional support or have some questions, please contact our developer support team.
