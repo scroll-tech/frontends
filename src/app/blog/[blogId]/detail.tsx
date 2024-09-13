@@ -1,7 +1,7 @@
 "use client"
 
 import { shuffle } from "lodash"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { useEffect, useMemo, useState } from "react"
 import ReactMarkdown from "react-markdown"
 import rehypeKatex from "rehype-katex"
@@ -48,6 +48,7 @@ const BlogNavbar = styled(Box)(({ theme }) => ({
 
 const BlogDetail = () => {
   const params = useParams<{ blogId: string }>()
+  const router = useRouter()
 
   const [language] = useStorage(localStorage, BLOG_LANGUAGE, "en")
   const [blogContent, setBlogContent] = useState<null | string>(null)
@@ -82,13 +83,13 @@ const BlogDetail = () => {
             setBlogContent(text)
           })
       } catch (error) {
-        navigate("/404")
+        router.push("/404")
       }
     } else if (blogIdMatch && language === "en") {
       const nextBlogId = blogId.replace(regex, "$1")
-      navigate(`/blog/${nextBlogId}`)
+      router.push(`/blog/${nextBlogId}`)
     } else if (blogItemWithLang) {
-      navigate(`/blog/${params.blogId}_lang_${language}`)
+      router.push(`/blog/${params.blogId}_lang_${language}`)
     }
   }, [params.blogId, language])
 

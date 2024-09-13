@@ -142,7 +142,8 @@ module.exports = withSentryConfig(nextConfig, {
 
   // Suppresses source map uploading logs during build
   silent: true,
-  org: "scroll-zkp",
-  project: "scroll-io",
+  url: process.env.SENTRY_URL,
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
   authToken: process.env.SENTRY_AUTH_TOKEN,
 })
