@@ -11,7 +11,7 @@ export async function generateMetadata({ params }): Promise<Metadata> {
 
   const title = `${currentBlog?.title} - Scroll`
   const description = currentBlog?.summary
-  const imgUrl = currentBlog?.ogImg || currentBlog?.posterImg
+  const imgUrl = currentBlog?.ogImg || currentBlog?.posterImg || ""
 
   const url = currentBlog?.canonical || `https://scroll.io/blog/${currentBlog?.id}`
 
