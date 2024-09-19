@@ -20,7 +20,8 @@ const Container = styled(Box)(({ theme }) => ({
 const Title = styled(Typography)(({ theme }) => ({
   marginBottom: "2.4rem",
   [theme.breakpoints.down("md")]: {
-    marginBottom: "0.4rem",
+    marginBottom: "2rem",
+    textAlign: "center",
   },
 }))
 
