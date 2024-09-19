@@ -25,7 +25,7 @@ export default function useBatchDeposit(props) {
   const depositAmountIsVaild = useMemo(() => {
     const minAmount = BNToAmount(batchDepositConfig.minAmountPerTx, selectedToken.decimals)
     if (amount && txType === "Deposit" && enableBatchDeposit) {
-      return amount >= minAmount
+      return Number(amount) >= Number(minAmount)
     }
     return true
   }, [batchDepositConfig, amount, selectedToken, txType, enableBatchDeposit])
