@@ -139,7 +139,7 @@ const Header = () => {
           </ImageWrapper>
         ))}
       </Container>
-      <Typography sx={{ fontSize: ["3.8rem", "7.8rem"], lineHeight: ["5.6rem", "8.8rem"], fontWeight: 600, mb: [0, "1.6rem"] }}>
+      <Typography sx={{ fontSize: ["3.6rem", "6.4rem"], lineHeight: ["5.6rem", "8.8rem"], fontWeight: 600, mb: [0, "1.6rem"] }}>
         Canvas and Badges
       </Typography>
       <Stack alignItems="center" gap={isMobile ? "2.4rem" : "3.2rem"}>

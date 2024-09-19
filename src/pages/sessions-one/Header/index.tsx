@@ -126,7 +126,7 @@ const Header = () => {
       )}
       <Typography
         sx={{
-          fontSize: ["3rem", "7.8rem"],
+          fontSize: ["3rem", "6.4rem"],
           lineHeight: ["4rem", "8.8rem"],
           paddingTop: ["6rem", "11rem", "10.5vw"],
           marginBottom: ["1.5rem"],

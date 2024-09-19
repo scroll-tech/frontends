@@ -65,7 +65,7 @@ const Header = () => {
           width: ["26rem", "31.2rem"],
         }}
       ></NFTCard>
-      <Typography sx={{ fontSize: ["4rem", "7.8rem"], lineHeight: ["5.6rem", "8.5rem"], fontWeight: 600 }}>{SCROLL_ORIGINS_NFT}</Typography>
+      <Typography sx={{ fontSize: ["3.6rem", "6.4rem"], lineHeight: ["5.6rem", "8.5rem"], fontWeight: 600 }}>{SCROLL_ORIGINS_NFT}</Typography>
       <Typography sx={{ fontSize: ["1.6rem", "2.4rem"], fontWeight: 600 }}>
         {phrase === "in-progress" ? "Program ends in" : "NFT releases in"}
       </Typography>

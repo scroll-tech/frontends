@@ -45,11 +45,11 @@ const Header = styled(Box)(({ theme }) => ({
 }))
 
 const Title = styled(Typography)(({ theme }) => ({
-  fontSize: "7.8rem",
+  fontSize: "6.4rem",
   lineHeight: 1,
   fontWeight: 600,
   [theme.breakpoints.down("sm")]: {
-    fontSize: "4rem",
+    fontSize: "3.6rem",
   },
 }))
 

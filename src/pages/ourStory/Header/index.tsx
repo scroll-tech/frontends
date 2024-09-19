@@ -59,7 +59,7 @@ const Header = () => {
     <Box className={classes.bg}>
       <Stack direction="column" spacing={isMobile ? "2rem" : "1.4rem"} alignItems="center">
         <OrientationToView>
-          <Typography sx={{ fontSize: ["4rem", "7.8rem"], lineHeight: 1, fontWeight: 600 }}>Our Story</Typography>
+          <Typography sx={{ fontSize: ["3.6rem", "6.4rem"], lineHeight: 1, fontWeight: 600 }}>Our Story</Typography>
         </OrientationToView>
         <OrientationToView delay={0.3}>
           <Typography sx={{ fontSize: ["2rem", "2.6rem"], maxWidth: ["24.8rem", "68rem"] }}>
