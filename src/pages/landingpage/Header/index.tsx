@@ -5,31 +5,27 @@ import { styled } from "@mui/system"
 import { FadeInUp } from "@/components/Animation"
 import Button from "@/components/Button"
 
-import TextMarquee from "./components/TextMarquee"
-
 const Container = styled(Box)(({ theme }) => ({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
   flexDirection: "column",
-  paddingTop: "13.8rem",
-  paddingBottom: "15.5rem",
+  paddingTop: "11rem",
+  paddingBottom: "6.6rem",
   [theme.breakpoints.down("md")]: {
     padding: "6.8rem 2rem 10rem",
   },
 }))
 
 const Title = styled(Typography)(({ theme }) => ({
-  marginBottom: "1rem",
+  marginBottom: "2.4rem",
   [theme.breakpoints.down("md")]: {
     marginBottom: "0.4rem",
   },
 }))
 
 const SubTitle = styled(Typography)(({ theme }) => ({
-  marginTop: "2rem",
-  marginBottom: "5rem",
-  maxWidth: "77rem",
+  marginBottom: "4rem",
   [theme.breakpoints.down("md")]: {
     marginBottom: "4rem",
   },
@@ -49,13 +45,11 @@ const Header = () => {
     <Container>
       <FadeInUp duration={700} sx={{ display: "flex" }}>
         <Title variant="H1" data-aos="fade-up">
-          Scroll is
+          Ethereum, Extended.
         </Title>
 
-        <TextMarquee />
         <SubTitle variant="Body1" textAlign="center">
-          Scroll seamlessly extends Ethereum’s capabilities through zero knowledge tech and EVM compatibility. The L2 network built by Ethereum devs
-          for Ethereum devs.
+          Scroll is the leading zero-knowledge rollup. Scaling Ethereum for good.
         </SubTitle>
         <ButtonContainer>
           <Button href="/bridge" color="primary">
