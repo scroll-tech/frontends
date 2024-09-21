@@ -2,11 +2,9 @@ import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import FeatureIcon1 from "@/assets/images/home/feature_icon_1.png"
-import FeatureIcon2 from "@/assets/images/home/feature_icon_2.png"
 import FeatureIcon3 from "@/assets/images/home/feature_icon_3.png"
 import FeatureIcon4 from "@/assets/images/home/feature_icon_4.png"
 import { FadeInUp, SlideInLeft, SlideInRight } from "@/components/Animation"
-import SectionHeader from "@/components/SectionHeader"
 import SectionWrapper from "@/components/SectionWrapper"
 import WebpImage from "@/components/WebpImage"
 import useCheckViewport from "@/hooks/useCheckViewport"
@@ -14,27 +12,21 @@ import useCheckViewport from "@/hooks/useCheckViewport"
 const FEATURES = [
   {
     icon: FeatureIcon1,
-    title: "EVM-compatibility for seamless scaling",
+    title: "By builders, for builders.",
     description:
-      "Scroll is designed by and for Ethereum developers. A swift, reliable and scalable Layer 2 blockchain, Scroll extends Ethereum's capabilities, enabling apps to scale without any surprises. Thanks to bytecode-level compatibility, existing Ethereum apps can migrate onto Scroll as-is, and at a significantly reduced cost.",
-  },
-  {
-    icon: FeatureIcon2,
-    title: "Collective vision for Ethereum’s future",
-    description:
-      "We’ve been building in the open since day one with the Ethereum community. Our open development approach combines the best ideas among value-aligned contributors and leads to more secure and better-designed systems. Scroll is forging a community-driven path to redefine and evolve Ethereum’s roadmap.",
-  },
-  {
-    icon: FeatureIcon3,
-    title: "Unwavering security at every layer",
-    description:
-      "Scroll uses advanced zero knowledge proof technology, battle-tested EVM models, and rigorous audits to ensure that our foundation is rooted in security and reliability. By prioritizing code security through open source collaboration, Scroll protects our developers and users against vulnerabilities.",
+      "Scroll is designed from the ground-up to maximize compatibility with Ethereum Virtual Machine. Thanks to bytecode-level compatibility with EVM, your existing applications and favorite tools are compatible with Scroll out-of-the-box. Being the most popular virtual machine for blockchains, EVM enables new developers to easily pick up Solidity or Vyper through countless tutorials, open-source code, and online communities.",
   },
   {
     icon: FeatureIcon4,
-    title: "Rooted in technical rigor and credibility",
+    title: "Open-source and transparent.",
     description:
-      "Stability and trustworthiness are the building blocks to our network’s growth. Scroll is steadfast in maintaining credible neutrality to reduce imbalances of power within our ecosystem. In pursuit of our long-term vision, we immerse ourselves in solving meaningful and challenging research problems with a focus on technical detail, accuracy, and results.",
+      "Since day one, Scroll has been built in the open by our core team and many others within the Ethereum community. Open-source building has empowered us to embrace the best ideas of the vast Ethereum community and to ensure that we have many eyes on the code to improve its security.",
+  },
+  {
+    icon: FeatureIcon3,
+    title: "Security above everything else.",
+    description:
+      "Scroll utilizes battle-tested code and rigorous audits to ensure the utmost security of the protocol. We are constantly improving our practices to harden the protocol’s infrastructure through all available means.",
   },
 ]
 
@@ -44,7 +36,7 @@ const FeatureBox = styled(Box)(({ theme }) => ({
   justifyContent: "center",
   gap: "10rem",
   paddingBottom: "16rem",
-  "&:nth-of-type(even)": {
+  "&:nth-of-type(odd)": {
     flexDirection: "row-reverse",
   },
   [theme.breakpoints.down("md")]: {
@@ -99,8 +91,7 @@ const FeatureTextBox = styled(Box)(({ theme }) => ({
 }))
 
 const Spacer = styled(Box)(({ theme }) => ({
-  height: "6.6vw",
-  minHeight: "10rem",
+  height: "1.6rem",
 }))
 
 const FeatureDescription = styled(Typography)(({ theme }) => ({
@@ -147,12 +138,6 @@ const Feature = () => {
 
   return (
     <SectionWrapper>
-      <FadeInUp>
-        <SectionHeader
-          title="Zero knowledge required"
-          content="Scroll’s mission is to provide an accessible scaling solution that preserves the essence of Ethereum – trust-minimized, secure and open source. Like a scroll, our story is constantly evolving in our quest to secure Ethereum’s future and making the developer experience as easy as possible."
-        />
-      </FadeInUp>
       <Spacer />
       {renderFeatures()}
     </SectionWrapper>

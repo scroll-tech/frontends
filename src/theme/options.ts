@@ -178,11 +178,11 @@ export const typographyOptions = {
   // },
 
   H1: {
-    fontSize: "7.8rem",
+    fontSize: "6.4rem",
     lineHeight: "normal",
     fontWeight: 600,
     [theme.breakpoints.down("sm")]: {
-      fontSize: "4rem",
+      fontSize: "3.6rem",
     },
   },
 

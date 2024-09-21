@@ -6,7 +6,7 @@ const HeaderContainer = styled(Container)(({ theme }) => ({
 }))
 
 const Title = styled(Typography)(({ theme }) => ({
-  fontSize: "7.8rem",
+  fontSize: "6.4rem",
   lineHeight: 1,
   fontWeight: 600,
   marginTop: "13.8rem",
@@ -16,7 +16,7 @@ const Title = styled(Typography)(({ theme }) => ({
     marginBottom: "2rem",
   },
   [theme.breakpoints.down("sm")]: {
-    fontSize: "4rem",
+    fontSize: "3.6rem",
   },
 }))
 
