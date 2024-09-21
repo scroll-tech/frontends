@@ -25,7 +25,9 @@ const Header = () => {
     <>
       <SectionWrapper sx={{ pt: "6.4rem" }}>
         <Stack direction="column" alignItems="center">
-          <Typography sx={{ fontSize: ["4rem", "7.8rem"], lineHeight: ["5rem", "8.8rem"], fontWeight: 600, maxWidth: "66rem", textAlign: "center" }}>
+          <Typography
+            sx={{ fontSize: ["3.6rem", "6.4rem"], lineHeight: ["5rem", "8.8rem"], fontWeight: 600, maxWidth: "66rem", textAlign: "center" }}
+          >
             An Ecosystem <br />
             Forever in Motion
           </Typography>
