@@ -55,10 +55,10 @@ const StyledListItemText = styled(ListItemText)(({ theme }) => ({
 }))
 
 const BadgeItem = props => {
-  const { badge, action, onClick } = props
+  const { badge, action } = props
 
   return (
-    <StyledListItem onClick={onClick ?? "void 0"}>
+    <StyledListItem>
       <StyledListItemAvatar>
         <Img
           src={badge.image}
