@@ -82,14 +82,15 @@ const TxStatus = props => {
   }
 
   const renderCountDown = ({ total, hours, minutes, seconds, completed }) => {
-    if (completed) {
-      return <>Pending</>
-    }
-    return (
-      <>
-        {tx.isL1 ? "Ready" : "Claimable"} in ~{minutes ? `${minutes}m` : `${seconds}s`}
-      </>
-    )
+    return <>Pending</>
+    // if (completed) {
+    //   return <>Pending</>
+    // }
+    // return (
+    //   <>
+    //     {tx.isL1 ? "Ready" : "Claimable"} in ~{minutes ? `${minutes}m` : `${seconds}s`}
+    //   </>
+    // )
   }
 
   if (tx.txStatus === TX_STATUS.Sent) {
@@ -101,7 +102,7 @@ const TxStatus = props => {
       return (
         <Tooltip
           placement="top"
-          title="Scroll provers are still finalizing your transaction, this can take up to 1 hour. Once done, you'll be able to claim it here for use on the target network."
+          title="Withdrawals are claimable only after the transaction has been included in a finalized bundle. This will depend on the Scroll SDK chain's configuration and transaction volume, but may take up to 10 hours. Once done, you'll be able to claim it here for use on the target network."
         >
           <ButtonBase className={cx(classes.chip, classes.waitingClaimChip)}>
             {renderEstimatedWaitingTime(tx.initiatedAt ? dayjs.unix(tx.initiatedAt).add(1, "h").valueOf() : null)}

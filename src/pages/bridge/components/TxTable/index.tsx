@@ -18,7 +18,7 @@ import {
 } from "@mui/material"
 
 import Link from "@/components/Link"
-import { NETWORKS, TX_STATUS } from "@/constants"
+import { L1_NAME, L2_NAME, NETWORKS, TX_STATUS } from "@/constants"
 import useTokenInfo from "@/hooks/useTokenInfo"
 import useTxStore from "@/stores/txStore"
 import { formatDate, generateExploreLink, toTokenDisplay, truncateHash } from "@/utils"
@@ -241,13 +241,13 @@ const TxRow = props => {
     if (tx.isL1) {
       return (
         <>
-          Deposit <span style={{ whiteSpace: "nowrap" }}>to Scroll</span>
+          Deposit <span style={{ whiteSpace: "nowrap" }}>to {L2_NAME}</span>
         </>
       )
     } else {
       return (
         <>
-          Withdraw <span style={{ whiteSpace: "nowrap" }}>to Ethereum</span>
+          Withdraw <span style={{ whiteSpace: "nowrap" }}>to {L1_NAME}</span>
         </>
       )
     }
