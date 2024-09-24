@@ -36,7 +36,7 @@ const Header = () => {
               {data?.tvl}
             </Statistic>
             <Statistic label="Transaction count" loading={isLoading}>
-              {data?.txCount}
+              {data?.txAll}
             </Statistic>
             <Statistic label="Batches settled to L1" loading={isBatchesLoading}>
               {totalBatches}
