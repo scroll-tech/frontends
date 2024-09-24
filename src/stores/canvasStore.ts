@@ -6,6 +6,8 @@ import { Badge, ETHEREUM_YEAR_BADGE } from "@/constants"
 import {
   checkBadgeUpgradable,
   fetchCanvasDetail,
+  fetchIssuer,
+  fetchNotionBadgeByAddr,
   getOrderedAttachedBadges,
   queryCanvasUsername,
   queryUserBadgesWrapped,
@@ -397,9 +399,25 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
       .filter((item): item is PromiseFulfilledResult<UpgradableBadge> => item.status === "fulfilled" && item.value.upgradable)
       .map(item => item.value)
 
+    const fetchIssuerPromiseList = finalUpgradableBadges.map(async item => {
+      let issuer
+      try {
+        const badge = await fetchNotionBadgeByAddr(item.badgeContract)
+
+        if (badge.issuer) {
+          issuer = badge.issuer
+        } else if (item.issuerName) {
+          issuer = await fetchIssuer(item.issuerName)
+        }
+        return { ...item, issuer }
+      } catch (e) {
+        return { ...item }
+      }
+    })
+    const upgradableBadgesWithIssuer = await Promise.all(fetchIssuerPromiseList)
     set({
       pickUpgradableBadgesLoading: false,
-      upgradableBadges: finalUpgradableBadges,
+      upgradableBadges: upgradableBadgesWithIssuer,
     })
   },
 

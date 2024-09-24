@@ -16,7 +16,7 @@ const Badge = ({ badge, index, badgewidth }) => {
     changeBadgeDetailDialog(BadgeDetailDialogType.VIEW)
   }
 
-  const upgradableBadge = useMemo(() => upgradableBadges.find(item => item.id === badge.metadata.id)?.upgradable, [upgradableBadges, badge])
+  const upgradableBadge = useMemo(() => upgradableBadges.find(item => item.id === badge.metadata?.id)?.upgradable, [upgradableBadges, badge])
 
   return (
     <ToolTip title={<Box sx={{ fontWeight: 600 }}>{badge.metadata?.name}</Box>}>
