@@ -14,7 +14,8 @@ export interface Badge {
   name: string
   description: string
   image: string
-  issuer: {
+  issuerName?: string
+  issuer?: {
     origin: string
     name: string
     logo: string
