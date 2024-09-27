@@ -11,25 +11,6 @@ const ToolTip = props => {
       title={title}
       disableFocusListener={!isDesktop}
       disableTouchListener={!isDesktop}
-      followCursor
-      PopperProps={{
-        popperOptions: {
-          modifiers: [
-            {
-              name: "offset",
-              options: {
-                offset: ({ placement, reference, popper }) => {
-                  if (placement === "bottom") {
-                    return [popper.width / 4, 27]
-                  } else {
-                    return [popper.width / 4, 12]
-                  }
-                },
-              },
-            },
-          ],
-        },
-      }}
       slotProps={{
         tooltip: {
           sx: {

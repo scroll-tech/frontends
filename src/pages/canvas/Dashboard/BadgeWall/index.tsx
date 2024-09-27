@@ -13,6 +13,7 @@ import { sentryDebug } from "@/utils"
 
 import Tooltip from "../../components/Tooltip"
 import Badge from "./Badge"
+import EditProfile from "./EditProfile"
 
 interface BadgeType {
   attester: string
@@ -162,10 +163,12 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
       <Profile
         ref={divRef}
         sx={{
+          position: "relative",
           width: `${profileSize}px`,
           height: `${profileSize}px`,
         }}
       >
+        <EditProfile sx={{ position: "absolute", top: "1.6rem", right: "1.6rem" }}></EditProfile>
         <Tooltip
           title={
             <Box sx={{ width: "21.4rem" }}>
@@ -174,6 +177,25 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
               Heart beats faster when you are more active on Scroll
             </Box>
           }
+          followCursor
+          PopperProps={{
+            popperOptions: {
+              modifiers: [
+                {
+                  name: "offset",
+                  options: {
+                    offset: ({ placement, reference, popper }) => {
+                      if (placement === "bottom") {
+                        return [popper.width / 4, 27]
+                      } else {
+                        return [popper.width / 4, 12]
+                      }
+                    },
+                  },
+                },
+              ],
+            },
+          }}
         >
           <Box sx={{ width: "66.67%" }}>
             <Img src={userInfo.avatar} placeholder="/imgs/canvas/avatarPlaceholder.svg" alt="avatar" width="100%"></Img>
