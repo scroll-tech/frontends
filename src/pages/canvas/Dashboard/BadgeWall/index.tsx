@@ -61,14 +61,43 @@ const Name = styled(Typography)(({ theme }) => ({
   fontSize: "3.2rem",
   fontStyle: "normal",
   fontWeight: 600,
-  lineHeight: "3.2rem",
-  height: "3.2rem",
+  lineHeight: "4.4rem",
   alignSelf: "center",
   flexShrink: 0,
   [theme.breakpoints.down("sm")]: {
     fontSize: "1.6rem",
     lineHeight: "2.4rem",
     height: "2.4rem",
+  },
+}))
+
+const ENSName = styled(Typography)(({ theme }) => ({
+  textAlign: "center",
+  fontSize: "1.8rem",
+  fontStyle: "normal",
+  fontWeight: 600,
+  lineHeight: "2.4rem",
+  alignSelf: "center",
+  flexShrink: 0,
+  background: "linear-gradient(90deg, #FF684B, #FCE595, #4BFFE7)",
+  backgroundSize: "400%",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+  animation: "gradientAnimation 5s infinite",
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1.2rem",
+    lineHeight: "1.8rem",
+  },
+  "@keyframes gradientAnimation": {
+    "0%": {
+      backgroundPosition: "0% 50%",
+    },
+    "50%": {
+      backgroundPosition: "100% 50%",
+    },
+    "100%": {
+      backgroundPosition: "0% 50%",
+    },
   },
 }))
 
@@ -172,7 +201,14 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
         <Box sx={{ width: "54%" }}>
           <Avatar src={userInfo.avatar}></Avatar>
         </Box>
-        {queryUsernameLoading ? <Skeleton dark sx={{ width: "6em", height: ["2.4rem", "3.2rem"] }}></Skeleton> : <Name>{userInfo.name}</Name>}
+        {queryUsernameLoading ? (
+          <Skeleton dark sx={{ width: "6em", height: ["2.4rem", "3.2rem"] }}></Skeleton>
+        ) : (
+          <Name>
+            {userInfo.name}
+            <ENSName>{userInfo.name}.scroll.eth</ENSName>
+          </Name>
+        )}
       </Profile>
       {badges.map((badge, index) => (
         <Badge key={badge.metadata?.id} badge={badge} index={index} badgewidth={badgewidth} />

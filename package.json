@@ -41,6 +41,7 @@
     "@types/node": "^20.10.6",
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
+    "canvas-confetti": "^1.9.3",
     "copy-to-clipboard": "^3.3.2",
     "dayjs": "^1.11.5",
     "ethers": "6.12.0",

@@ -53,7 +53,7 @@ const ScrollDialog = props => {
           </IconButton>
         )}
 
-        <Typography sx={{ fontSize: ["1.8rem", "2.4rem"], lineHeight: ["2.8rem", "4.8rem"], color: "primary.contrastText", fontWeight: 600 }}>
+        <Typography sx={{ fontSize: ["2.4rem", "3.2rem"], lineHeight: ["2.8rem", "4.8rem"], color: "primary.contrastText", fontWeight: 600 }}>
           {title}
         </Typography>
         {!noClose && (

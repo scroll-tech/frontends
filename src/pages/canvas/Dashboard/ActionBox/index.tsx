@@ -8,8 +8,8 @@ import { styled } from "@mui/system"
 
 import { ReactComponent as BadgesSvg } from "@/assets/svgs/canvas/badges.svg"
 import { ReactComponent as CopySuccessSvg } from "@/assets/svgs/canvas/copy-success.svg"
-import { ReactComponent as EditSvg } from "@/assets/svgs/canvas/edit.svg"
 import { ReactComponent as EthSvg } from "@/assets/svgs/canvas/eth.svg"
+import { ReactComponent as GiftSvg } from "@/assets/svgs/canvas/gift.svg"
 import { ReactComponent as ShareSvg } from "@/assets/svgs/canvas/share.svg"
 import { ReactComponent as ExternalLinkSvg } from "@/assets/svgs/common/external-link.svg"
 import { ReactComponent as TwitterSvg } from "@/assets/svgs/nft/twitter.svg"
@@ -140,7 +140,7 @@ const ActionBox = () => {
   const { walletCurrentAddress } = useRainbowContext()
   const {
     changeCustomizeDisplayDialogVisible,
-    changeProfileDialog,
+    changePerksDialogVisible,
     changeReferDialog,
     changeBadgesDialogVisible,
     upgradableBadges,
@@ -257,10 +257,10 @@ const ActionBox = () => {
         },
       },
       {
-        label: "Name",
-        icon: EditSvg,
+        label: "Scroll Perks",
+        icon: GiftSvg,
         color: "secondary",
-        onClick: () => changeProfileDialog(true),
+        onClick: () => changePerksDialogVisible(true),
         visible: !othersWalletAddress,
       },
 

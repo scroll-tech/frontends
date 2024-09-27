@@ -33,6 +33,13 @@ export enum BadgesDialogType {
   UPGRADE = "upgrade",
 }
 
+export enum EnsSubdomainDialogType {
+  HIDDEN = "",
+  CLAIM = "claim",
+  CONFIRM = "confirm",
+  SUCCESS = "success",
+}
+
 export type UpgradableBadge = Badge & { upgradable: boolean; id: string }
 
 interface CanvasStore {
@@ -41,6 +48,8 @@ interface CanvasStore {
   profileDialogVisible: boolean
   referDialogVisible: boolean
   customizeDisplayDialogVisible: boolean
+  perksDialogVisible: boolean
+  ensSubdomainDialogVisible: EnsSubdomainDialogType
   badgeDetailDialogVisible: BadgeDetailDialogType
   badgesDialogVisible: BadgesDialogType
 
@@ -53,6 +62,8 @@ interface CanvasStore {
   changeProfileDialog: (visible: boolean) => void
   changeReferDialog: (visible: boolean) => void
   changeCustomizeDisplayDialogVisible: (visible: boolean) => void
+  changePerksDialogVisible: (visible: boolean) => void
+  changeEnsSubdomainDialogVisible: (visible: EnsSubdomainDialogType) => void
   changeSortedBadges: (badges: any) => void
   changeBadgesDialogVisible: (visible: BadgesDialogType) => void
   changeBadgeDetailDialog: (visible: BadgeDetailDialogType) => void
@@ -117,6 +128,8 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
   profileDialogVisible: false,
   referDialogVisible: false,
   customizeDisplayDialogVisible: false,
+  perksDialogVisible: false,
+  ensSubdomainDialogVisible: EnsSubdomainDialogType.HIDDEN,
   badgeDetailDialogVisible: BadgeDetailDialogType.HIDDEN,
   badgesDialogVisible: BadgesDialogType.HIDDEN,
   sortedBadges: [],
@@ -307,6 +320,7 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
       profileDialogVisible: false,
       referDialogVisible: false,
       customizeDisplayDialogVisible: false,
+      perksDialogVisible: false,
       badgeDetailDialogVisible: BadgeDetailDialogType.HIDDEN,
       badgesDialogVisible: BadgesDialogType.HIDDEN,
       initialMint: false,
@@ -480,6 +494,18 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
   changeCustomizeDisplayDialogVisible: visible => {
     set({
       customizeDisplayDialogVisible: visible,
+    })
+  },
+
+  changePerksDialogVisible: visible => {
+    set({
+      perksDialogVisible: visible,
+    })
+  },
+
+  changeEnsSubdomainDialogVisible: visible => {
+    set({
+      ensSubdomainDialogVisible: visible,
     })
   },
 

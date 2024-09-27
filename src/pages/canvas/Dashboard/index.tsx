@@ -21,9 +21,11 @@ import BadgeWall from "./BadgeWall"
 import BadgesDialog from "./BadgesDialog"
 import CropAvatarDialog from "./CropAvatarDialog"
 import CustomizeDisplayDialog from "./CustomizeDisplayDialog"
+import ENSSubdomainDialog from "./ENSSubdomainDialog"
 import FirstBadgeMask from "./FirstBadgeMask"
 import NFTsDialog from "./NFTsDialog"
 import NameDialog from "./NameDialog"
+import PerksDialog from "./PerksDialog"
 import ReferDialog from "./ReferDialog"
 
 const Dashboard = props => {
@@ -186,6 +188,8 @@ const Dashboard = props => {
               <ReferDialog />
               <BadgesDialog badges={upgradableBadges} loading={pickUpgradableBadgesLoading} />
               <BadgeDetailDialog />
+              <PerksDialog />
+              <ENSSubdomainDialog />
             </>
           )}
         </GridBg>
