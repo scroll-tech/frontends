@@ -3,7 +3,7 @@ import { makeStyles } from "tss-react/mui"
 
 import { Box, Typography } from "@mui/material"
 
-import { ETH_SYMBOL } from "@/constants"
+import { ETH_SYMBOL, L1_NAME, L2_NAME } from "@/constants"
 import useBridgeStore from "@/stores/bridgeStore"
 import { amountToBN, toTokenDisplay } from "@/utils"
 
@@ -145,9 +145,9 @@ const TransactionSummary: FC<Props> = props => {
         <table className={styles.table}>
           <tbody>
             <DetailRow title={`You're ${txType === "Deposit" ? "depositing" : "withdrawing"}`} value={displayedAmount.value} large />
-            {txType === "Deposit" && <DetailRow title="Ethereum gas fee" value={displayedL1Fee.value} large />}
-            <DetailRow title="Scroll gas fee" value={displayedL2Fee.value} large />
-            {txType === "Withdraw" && <DetailRow title="Ethereum data fee" value={displayedL1DataFee.value} large />}
+            {txType === "Deposit" && <DetailRow title={`${L1_NAME} gas fee`} value={displayedL1Fee.value} large />}
+            <DetailRow title={`${L2_NAME} gas fee`} value={displayedL2Fee.value} large />
+            {txType === "Withdraw" && <DetailRow title={`${L1_NAME} data fee`} value={displayedL1DataFee.value} large />}
             <tr className={styles.hr}>
               <td></td>
               <td></td>
