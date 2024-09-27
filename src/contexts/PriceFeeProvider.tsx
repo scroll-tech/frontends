@@ -21,7 +21,7 @@ enum MIN_GASLIMIT {
   DAI_GATEWAY = 15e4,
   LIDO_GATEWAY = 15e4,
   PUFFER_GATEWAY = 15e4,
-  GAS_TOKEN_GATEWAY = 14e4,
+  GAS_TOKEN_GATEWAY = 30e4,
   WRAPPED_TOKEN_GATEWAY = 17e4,
 }
 
@@ -201,9 +201,14 @@ export const PriceFeeProvider = ({ children }) => {
     }
 
     const { provider } = networksAndSigners[CHAIN_ID.L2]
-    const code = await provider.getCode((l2Token as ERC20Token).address)
-    // This address does not have a contract deployed.
-    if (code === "0x") {
+
+    try {
+      const code = await provider.getCode((l2Token as ERC20Token).address)
+      // This address does not have a contract deployed.
+      if (code === "0x") {
+        return BigInt(7e5)
+      }
+    } catch (error) {
       return BigInt(7e5)
     }
 
