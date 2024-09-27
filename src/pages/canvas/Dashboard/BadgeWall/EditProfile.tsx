@@ -41,10 +41,10 @@ const EditMenu = styled<any>(Menu)(({ theme }) => ({
 }))
 
 const EditProfile = props => {
-  const { isNFTEligible = false, sx } = props
+  const { isNFTEligible = true, sx } = props
 
   const { changeProfileDialog } = useCanvasStore()
-  const { changePreviewAvatarURL, changeCropAvatarDialogVisible } = useCanvasProfileStore()
+  const { changePreviewAvatarURL, changeCropAvatarDialogVisible, changePickNFTDialogVisible } = useCanvasProfileStore()
 
   const [editAnchorEl, setEditAnchorEl] = useState<null | HTMLElement>(null)
 
@@ -58,7 +58,7 @@ const EditProfile = props => {
     changeProfileDialog(true)
     handleCloseEditMenu()
   }
-  const handleStoreAvatar = event => {
+  const handlePickPicture = event => {
     const reader = new FileReader()
     reader.addEventListener(
       "load",
@@ -74,7 +74,10 @@ const EditProfile = props => {
       reader.readAsDataURL(file)
     }
   }
-  const handlePickNFTAsAvatar = () => {}
+  const handleOpenPickNFTDialog = () => {
+    changePickNFTDialogVisible(true)
+    handleCloseEditMenu()
+  }
 
   const editMenuItems = [
     {
@@ -86,7 +89,7 @@ const EditProfile = props => {
       upload: true,
       action: () => void 0,
     },
-    { label: "Set an NFT as profile", disabled: !isNFTEligible, action: handlePickNFTAsAvatar },
+    { label: "Set an NFT as profile", disabled: !isNFTEligible, action: handleOpenPickNFTDialog },
   ]
   return (
     <>
@@ -152,7 +155,7 @@ const EditProfile = props => {
               onClick={action}
             >
               {label}
-              {!!upload && <VisuallyHiddenInput id="canvas-avatar" name="file" type="file" accept="image/*" onChange={handleStoreAvatar} />}
+              {!!upload && <VisuallyHiddenInput id="canvas-avatar" name="file" type="file" accept="image/*" onChange={handlePickPicture} />}
               {disabled && (
                 <Stack
                   direction="row"

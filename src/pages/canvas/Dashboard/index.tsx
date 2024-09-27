@@ -23,6 +23,7 @@ import CropAvatarDialog from "./CropAvatarDialog"
 import CustomizeDisplayDialog from "./CustomizeDisplayDialog"
 import FirstBadgeMask from "./FirstBadgeMask"
 import NameDialog from "./NameDialog"
+import PickNFTDialog from "./PickNFTDialog"
 import ReferDialog from "./ReferDialog"
 
 const Dashboard = props => {
@@ -180,6 +181,7 @@ const Dashboard = props => {
               <ActionBox />
               <NameDialog />
               <CropAvatarDialog />
+              <PickNFTDialog />
               <CustomizeDisplayDialog />
               <ReferDialog />
               <BadgesDialog badges={upgradableBadges} loading={pickUpgradableBadgesLoading} />
