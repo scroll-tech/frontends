@@ -19,6 +19,7 @@ import ActionBox from "./ActionBox"
 import BadgeDetailDialog from "./BadgeDetailDialog"
 import BadgeWall from "./BadgeWall"
 import BadgesDialog from "./BadgesDialog"
+import CropAvatarDialog from "./CropAvatarDialog"
 import CustomizeDisplayDialog from "./CustomizeDisplayDialog"
 import FirstBadgeMask from "./FirstBadgeMask"
 import NameDialog from "./NameDialog"
@@ -178,6 +179,7 @@ const Dashboard = props => {
             <>
               <ActionBox />
               <NameDialog />
+              <CropAvatarDialog />
               <CustomizeDisplayDialog />
               <ReferDialog />
               <BadgesDialog badges={upgradableBadges} loading={pickUpgradableBadgesLoading} />

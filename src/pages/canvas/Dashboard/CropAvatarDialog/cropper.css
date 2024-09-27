@@ -1,0 +1,8 @@
+.canvas-avatar-cropper.advanced-cropper-boundary {
+  width: 320px;
+  height: 320px;
+  overflow: hidden;
+}
+.canvas-avatar-cropper .advanced-cropper-stencil-overlay {
+  color: rgba(16, 16, 16, 0.6);
+}

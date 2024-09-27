@@ -4726,6 +4726,13 @@ adm-zip@^0.4.16:
   resolved "https://registry.yarnpkg.com/adm-zip/-/adm-zip-0.4.16.tgz#cf4c508fdffab02c269cbc7f471a875f05570365"
   integrity sha512-TFi4HBKSGfIKsK5YCkKaaFG2m4PEDyViZmEwof3MTIgzimHLto6muaHVpbrljdIvIrFZzEq/p4nafOeLcYegrg==
 
+advanced-cropper@~0.17.1:
+  version "0.17.1"
+  resolved "https://registry.yarnpkg.com/advanced-cropper/-/advanced-cropper-0.17.1.tgz#fedb73d9f48a3eae53a3a80de575a4e5c1febade"
+  integrity sha512-Z1P0sYOXa2tqZjeY742QtNERofXh1AuOa27LEurO9rbx3IfzLrGQlzy7sWEc5VN9hRg+J/qCiMmnB6tUDLb1TA==
+  dependencies:
+    tslib "^2.4.0"
+
 aes-js@4.0.0-beta.5:
   version "4.0.0-beta.5"
   resolved "https://registry.yarnpkg.com/aes-js/-/aes-js-4.0.0-beta.5.tgz#8d2452c52adedebc3a3e28465d858c11ca315873"
@@ -5777,6 +5784,11 @@ cjs-module-lexer@^1.0.0:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/cjs-module-lexer/-/cjs-module-lexer-1.2.2.tgz#9f84ba3244a512f3a54e5277e8eef4c489864e40"
   integrity sha512-cOU9usZw8/dXIXKtwa8pM0OTJQuJkxMN6w30csNRUerHfeQ5R6U3kkU/FtJeIf3M202OHfY2U8ccInBG7/xogA==
+
+classnames@^2.2.6:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.5.1.tgz#ba774c614be0f016da105c858e7159eae8e7687b"
+  integrity sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==
 
 clean-css@^5.2.2:
   version "5.3.2"
@@ -12979,6 +12991,15 @@ raw-body@^2.4.1:
     http-errors "2.0.0"
     iconv-lite "0.4.24"
     unpipe "1.0.0"
+
+react-advanced-cropper@^0.20.0:
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/react-advanced-cropper/-/react-advanced-cropper-0.20.0.tgz#be998018f1506b9216d239e36c17fc151a3dc9c6"
+  integrity sha512-9X5B+1IwFRzNb92xl58iMgrcdDSsQN/hw7048L0tnmL3CdpRXEo4vs+ahmoCM1OtFYf2IT8PE6fTPXTuADsQmg==
+  dependencies:
+    advanced-cropper "~0.17.1"
+    classnames "^2.2.6"
+    tslib "^2.4.0"
 
 react-app-polyfill@^3.0.0:
   version "3.0.0"
