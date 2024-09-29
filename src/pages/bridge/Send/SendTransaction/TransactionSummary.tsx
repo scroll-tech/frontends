@@ -3,9 +3,11 @@ import { makeStyles } from "tss-react/mui"
 
 import { Box, Typography } from "@mui/material"
 
-import { ETH_SYMBOL, L1_NAME, L2_NAME } from "@/constants"
+import { CHAIN_ID, ETH_SYMBOL, L1_NAME, L2_NAME } from "@/constants"
+import { useBridgeContext } from "@/contexts/BridgeContextProvider"
 import useBridgeStore from "@/stores/bridgeStore"
 import { amountToBN, toTokenDisplay } from "@/utils"
+import { isAlternativeGasTokenEnabled } from "@/utils"
 
 import DetailRow from "./InfoTooltip/DetailRow"
 
@@ -56,6 +58,7 @@ const TransactionSummary: FC<Props> = props => {
   const { txType, isNetworkCorrect } = useBridgeStore()
 
   const { amount, feeError, selectedToken, l1GasFee, l2GasFee, l1DataFee, needApproval } = props
+  const { tokenList } = useBridgeContext()
 
   const allowDisplayValue = useMemo(() => {
     return isNetworkCorrect && amount && needApproval === false && !feeError
@@ -64,6 +67,10 @@ const TransactionSummary: FC<Props> = props => {
   const showFeeError = useMemo(() => {
     return !!feeError && amount && !needApproval
   }, [feeError, amount, needApproval])
+
+  const l2NativeToken = useMemo(() => {
+    return tokenList.find(token => (token as any).native && token.chainId === CHAIN_ID.L2)
+  }, [tokenList])
 
   const getDisplayedValue = useCallback(
     (value: TransactionValue = BigInt(0), decimals = BigInt(18), symbol = ETH_SYMBOL) => {
@@ -77,10 +84,28 @@ const TransactionSummary: FC<Props> = props => {
 
   const getDisplayedMultiplex = useCallback(() => {
     if (allowDisplayValue) {
-      const displayedValue =
-        getDisplayedValue(amountToBN(amount, selectedToken.decimals), selectedToken.decimals, selectedToken.symbol) +
-        " + " +
-        getDisplayedValue((l1GasFee ?? BigInt(0)) + l2GasFee + (l1DataFee ?? BigInt(0)))
+      let displayedValue
+      if (isAlternativeGasTokenEnabled && txType === "Withdraw") {
+        if (selectedToken.symbol === l2NativeToken?.symbol) {
+          displayedValue =
+            getDisplayedValue(
+              amountToBN(amount, selectedToken.decimals) + (l1GasFee ?? BigInt(0)) + l2GasFee,
+              selectedToken.decimals,
+              selectedToken.symbol,
+            ) + (l1DataFee ? " + " + getDisplayedValue(l1DataFee) : "")
+        } else {
+          displayedValue =
+            getDisplayedValue(amountToBN(amount, selectedToken.decimals), selectedToken.decimals, selectedToken.symbol) +
+            " + " +
+            getDisplayedValue((l1GasFee ?? BigInt(0)) + l2GasFee, l2NativeToken?.decimals, l2NativeToken?.symbol) +
+            (l1DataFee ? " + " + getDisplayedValue(l1DataFee) : "")
+        }
+      } else {
+        displayedValue =
+          getDisplayedValue(amountToBN(amount, selectedToken.decimals), selectedToken.decimals, selectedToken.symbol) +
+          " + " +
+          getDisplayedValue((l1GasFee ?? BigInt(0)) + l2GasFee + (l1DataFee ?? BigInt(0)))
+      }
 
       return { value: displayedValue }
     }
@@ -106,8 +131,13 @@ const TransactionSummary: FC<Props> = props => {
 
   const displayedL2Fee = useMemo(() => {
     const fee = txType === "Deposit" ? l2GasFee : l1GasFee
-    const displayedFee = getDisplayedValue(fee)
 
+    if (isAlternativeGasTokenEnabled) {
+      const displayedFee = getDisplayedValue(fee, l2NativeToken?.decimals, l2NativeToken?.symbol)
+      return { value: displayedFee }
+    }
+
+    const displayedFee = getDisplayedValue(fee)
     return { value: displayedFee }
   }, [txType, l1GasFee, l2GasFee, getDisplayedValue])
 
