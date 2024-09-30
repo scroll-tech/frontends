@@ -147,7 +147,7 @@ export const tokenList = [
   {
     name: "Assets on Mitosis",
     key: "MITOSIS",
-    logoURI: "https://scroll-eco-list.netlify.app/logos/Mitosis.jpg",
+    logoURI: "/imgs/sessions/tokens/Mitosis.png",
     containedTokens: [{ logoURI: "/imgs/sessions/tokens/weETH.png", symbol: "weETH" }],
     thirdPartyBridge: {
       url: "https://app.mitosis.org/?asset=weETH&type=deposit&to=scroll",
