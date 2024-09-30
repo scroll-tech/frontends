@@ -34,6 +34,24 @@ export const tokenList = [
     address: "0xf55BEC9cafDbE8730f096Aa55dad6D22d44099Df",
   },
   {
+    name: "sUSDe / USDe",
+    symbol: "sUSDe",
+    key: "sUSDe",
+    logoURI: "/imgs/sessions/tokens/sUSDe.svg",
+    additionalToken: "USDe",
+    thirdPartyBridge: {
+      url: "https://stargate.finance/bridge",
+      name: "Stargate",
+    },
+  },
+  {
+    name: "pufETH",
+    symbol: "pufETH",
+    key: "pufETH",
+    logoURI: "https://scroll-tech.github.io/token-list/data/PufETH/logo.svg",
+    address: "0xc4d46E8402F476F269c379677C99F18E22Ea030e",
+  },
+  {
     name: "weETH",
     symbol: "weETH",
     key: "weETH",
@@ -125,6 +143,12 @@ export const tokenList = [
       url: "https://pencilsprotocol.io/staking",
       name: "Pencils",
     },
+  },
+  {
+    name: "Assets on Mitosis",
+    key: "MITOSIS",
+    logoURI: "https://scroll-eco-list.netlify.app/logos/Mitosis.jpg",
+    containedTokens: [{ logoURI: "/imgs/sessions/tokens/weETH.png", symbol: "weETH" }],
   },
 ]
 

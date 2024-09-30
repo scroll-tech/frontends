@@ -9,6 +9,14 @@ export const defaultProjectList = {
       project: "Nuri",
     },
     {
+      name: "Vessel",
+      project: "Vessel",
+    },
+    {
+      name: "Maverick",
+      project: "Maverick",
+    },
+    {
       name: "Others",
       project: "Others",
       items: [
@@ -40,7 +48,10 @@ export const defaultProjectList = {
       name: "Aave",
       project: "Aave",
     },
-
+    {
+      name: "Huma",
+      project: "Huma",
+    },
     {
       name: "Rho Markets",
       project: "Rho Markets",
@@ -157,6 +168,24 @@ const PROJECT_LIST = [
   //   logo: "/imgs/canvas/ScrollCanvas.svg",
   //   website: "/canvas",
   // },
+  {
+    name: "Vessel",
+    key: "Vessel",
+    logo: "https://scroll-eco-list.netlify.app/logos/Vessel.jpg",
+    website: "https://www.vessel.finance/",
+  },
+  {
+    name: "Maverick",
+    key: "Maverick",
+    logo: "https://scroll-eco-list.netlify.app/logos/Maverick%20Protocol.jpg",
+    website: "https://www.mav.xyz/",
+  },
+  {
+    name: "Huma",
+    key: "Huma",
+    logo: "/imgs/sessions/tokens/Huma.svg",
+    website: "https://huma.finance/",
+  },
 ]
 
 export const PROJECT_MAP = new Proxy(PROJECT_LIST, {
