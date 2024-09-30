@@ -9,12 +9,12 @@ export const defaultProjectList = {
       project: "Nuri",
     },
     {
-      name: "Vessel",
-      project: "Vessel",
-    },
-    {
       name: "Maverick",
       project: "Maverick",
+    },
+    {
+      name: "Vessel",
+      project: "Vessel",
     },
     {
       name: "Others",
@@ -33,12 +33,12 @@ export const defaultProjectList = {
           project: "SyncSwap",
         },
         {
-          name: "Wombat",
-          project: "Wombat",
-        },
-        {
           name: "Zebra",
           project: "Zebra",
+        },
+        {
+          name: "Wombat",
+          project: "Wombat",
         },
       ],
     },
@@ -172,19 +172,19 @@ const PROJECT_LIST = [
     name: "Vessel",
     key: "Vessel",
     logo: "https://scroll-eco-list.netlify.app/logos/Vessel.jpg",
-    website: "https://www.vessel.finance/",
+    website: "https://vessel.finance/",
   },
   {
     name: "Maverick",
     key: "Maverick",
     logo: "https://scroll-eco-list.netlify.app/logos/Maverick%20Protocol.jpg",
-    website: "https://www.mav.xyz/",
+    website: "https://app.mav.xyz/add-liquidity?chain=534352",
   },
   {
     name: "Huma",
     key: "Huma",
     logo: "/imgs/sessions/tokens/Huma.svg",
-    website: "https://huma.finance/",
+    website: "https://app.huma.finance/#/",
   },
 ]
 
