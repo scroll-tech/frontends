@@ -44,7 +44,7 @@ const EditProfile = props => {
   const { isNFTEligible = true, sx } = props
 
   const { changeProfileDialog } = useCanvasStore()
-  const { changePreviewAvatarURL, changeCropAvatarDialogVisible, changePickNFTDialogVisible } = useCanvasProfileStore()
+  const { changePreviewAvatarURL, changeCropAvatarDialogVisible, changeNFTsDialogVisible } = useCanvasProfileStore()
 
   const [editAnchorEl, setEditAnchorEl] = useState<null | HTMLElement>(null)
 
@@ -75,7 +75,7 @@ const EditProfile = props => {
     }
   }
   const handleOpenPickNFTDialog = () => {
-    changePickNFTDialogVisible(true)
+    changeNFTsDialogVisible(true)
     handleCloseEditMenu()
   }
 

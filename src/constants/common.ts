@@ -58,3 +58,8 @@ export const DOCUMENTATION_URL = {
 }
 
 export const BRANCH_NAME = requireEnv("REACT_APP_SCROLL_ENVIRONMENT").toLocaleLowerCase()
+
+export const TOEKN_TYPE = {
+  721: "ERC721",
+  1155: "ERC1155",
+}

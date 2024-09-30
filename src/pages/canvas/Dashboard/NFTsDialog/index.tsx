@@ -18,9 +18,9 @@ import Error from "./Error"
 import NFT from "./NFT"
 import NoData from "./NoData"
 
-const PickNFTDialog = () => {
+const NFTsDialog = () => {
   const { walletCurrentAddress } = useRainbowContext()
-  const { pickNFTDialogVisible, changePickNFTDialogVisible } = useCanvasProfileStore()
+  const { NFTsDialogVisible, changeNFTsDialogVisible, changeNFT } = useCanvasProfileStore()
   const { isMobile } = useCheckViewport()
 
   const { data, isFetching, error, refetch } = useQuery({
@@ -47,7 +47,7 @@ const PickNFTDialog = () => {
     initialData: [],
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
-    enabled: pickNFTDialogVisible,
+    enabled: NFTsDialogVisible,
   })
 
   const handleReQuest = () => {
@@ -57,15 +57,20 @@ const PickNFTDialog = () => {
   const handleApplyNFT = () => {}
 
   const handleClose = () => {
-    changePickNFTDialogVisible(false)
+    changeNFTsDialogVisible(false)
   }
 
   const handlePickNFT = item => {
+    changeNFT({
+      contractType: item.contractType,
+      contractAddress: item.contractAddress,
+      tokenId: item.tokenId,
+    })
     console.log(item.contractType, item.contractAddress, item.tokenId)
   }
 
   return (
-    <Dialog title="Choose an NFT" open={!!pickNFTDialogVisible} onClose={handleClose}>
+    <Dialog title="Choose an NFT" open={!!NFTsDialogVisible} onClose={handleClose}>
       {isFetching && (
         <LoadingPage
           height="62.8rem"
@@ -103,7 +108,7 @@ const PickNFTDialog = () => {
             }}
           >
             {data.map(item => (
-              <NFT {...item} onClick={() => handlePickNFT(item)}></NFT>
+              <NFT sx={{ cursor: "pointer" }} {...item} onClick={() => handlePickNFT(item)}></NFT>
             ))}
           </Box>
           <Button
@@ -120,4 +125,4 @@ const PickNFTDialog = () => {
   )
 }
 
-export default PickNFTDialog
+export default NFTsDialog

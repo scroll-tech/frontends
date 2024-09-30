@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useRef, useState } from "react"
-import Img from "react-cool-img"
 import { useParams } from "react-router-dom"
 
 import { Box, Typography } from "@mui/material"
@@ -12,6 +11,7 @@ import useCanvasStore from "@/stores/canvasStore"
 import { sentryDebug } from "@/utils"
 
 import Tooltip from "../../components/Tooltip"
+import Avatar from "./Avatar"
 import Badge from "./Badge"
 import EditProfile from "./EditProfile"
 
@@ -198,7 +198,7 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
           }}
         >
           <Box sx={{ width: "66.67%" }}>
-            <Img src={userInfo.avatar} placeholder="/imgs/canvas/avatarPlaceholder.svg" alt="avatar" width="100%"></Img>
+            <Avatar type="NFT" src={userInfo.avatar}></Avatar>
           </Box>
         </Tooltip>
         {queryUsernameLoading ? <Skeleton dark sx={{ width: "6em", height: ["2.4rem", "3.2rem"] }}></Skeleton> : <Name>{userInfo.name}</Name>}
