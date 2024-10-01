@@ -59,7 +59,9 @@ const SendTransaction = props => {
   }, [tokenList, fromNetwork])
 
   const selectedToken: any = useMemo(
-    () => tokenOptions.find(item => item.symbol === tokenSymbol) ?? NATIVE_TOKEN_LIST.find(item => item.chainId === fromNetwork.chainId),
+    () =>
+      tokenOptions.find(item => item.symbol.toLowerCase() === tokenSymbol.toLowerCase()) ??
+      NATIVE_TOKEN_LIST.find(item => item.chainId === fromNetwork.chainId),
     [tokenOptions, tokenSymbol, fromNetwork],
   )
   // const { balance, isLoading: balanceLoading } = useBalance(selectedToken.address)
