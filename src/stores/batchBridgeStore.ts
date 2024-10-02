@@ -22,12 +22,12 @@ interface BatchBridgeStore {
   bridgeSummaryType: BridgeSummaryType
   depositBatchMode: DepositBatchMode
   batchDepositConfig: BatchDepositConfig
-  depositAmountIsVaild: boolean
+  depositAmountIsValid: boolean
 
-  changeBridgeSummaryType: (depositTpye: BridgeSummaryType) => void
+  changeBridgeSummaryType: (depositType: BridgeSummaryType) => void
   changeDepositBatchMode: (depositBatchMode: DepositBatchMode) => void
   changeBatchDepositConfig: (batchDepositConfig: BatchDepositConfig) => void
-  changeDepositAmountIsVaild: (depositAmountIsVaild: boolean) => void
+  changeDepositAmountIsValid: (depositAmountIsValid: boolean) => void
 }
 
 const useBatchBridgeStore = create<BatchBridgeStore>()((set, get) => ({
@@ -40,11 +40,11 @@ const useBatchBridgeStore = create<BatchBridgeStore>()((set, get) => ({
     maxDelayPerBatch: 0n,
     safeBridgeGasLimit: 0n,
   },
-  depositAmountIsVaild: true,
+  depositAmountIsValid: true,
 
-  changeBridgeSummaryType: bridgeSummaryType => {
+  changeBridgeSummaryType: depositType => {
     set({
-      bridgeSummaryType,
+      bridgeSummaryType: depositType,
     })
   },
 
@@ -58,9 +58,9 @@ const useBatchBridgeStore = create<BatchBridgeStore>()((set, get) => ({
       batchDepositConfig,
     })
   },
-  changeDepositAmountIsVaild: depositAmountIsVaild => {
+  changeDepositAmountIsValid: depositAmountIsValid => {
     set({
-      depositAmountIsVaild,
+      depositAmountIsValid,
     })
   },
 }))

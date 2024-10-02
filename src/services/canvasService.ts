@@ -214,9 +214,9 @@ const getBadgeOrder = async profileContract => {
   }
 }
 
-const fetchCanvasDetail = async (privider, othersAddress, profileAddress) => {
-  const { profileContract, name } = await queryCanvasUsername(privider, profileAddress)
-  const userBadges = await queryUserBadgesWrapped(privider, othersAddress)
+const fetchCanvasDetail = async (provider, othersAddress, profileAddress) => {
+  const { profileContract, name } = await queryCanvasUsername(provider, profileAddress)
+  const userBadges = await queryUserBadgesWrapped(provider, othersAddress)
   const { orderedAttachedBadges, attachedBadges, badgeOrder } = await getOrderedAttachedBadges(profileContract)
   return { name, profileContract, userBadges, attachedBadges, orderedAttachedBadges, badgeOrder }
 }
