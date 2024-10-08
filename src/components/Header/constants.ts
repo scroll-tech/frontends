@@ -259,6 +259,12 @@ const mainnetNavigations = [
             href: "https://docs.scroll.io/en/technology/security/audits-and-bug-bounty/",
             isExternal: true,
           },
+          {
+            label: "Whitepaper",
+            key: "whitepaper.pdf",
+            href: "/files/whitepaper.pdf",
+            isExternal: true,
+          },
         ],
       },
     ],
