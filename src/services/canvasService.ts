@@ -139,6 +139,15 @@ const checkIfProfileMinted = async (registryInstance, userAddress) => {
   }
 }
 
+const checkHasBadge = async (provider, userAddress, badgeContract) => {
+  try {
+    const badgeInstance = new ethers.Contract(badgeContract, BadgeABI, provider)
+    return badgeInstance.hasBadge(userAddress)
+  } catch (e) {
+    return false
+  }
+}
+
 // work with publicProvider
 const fillBadgeDetailWithPayload = async (provider, attestation, withMetadata = true) => {
   const { data, id } = attestation
@@ -476,6 +485,7 @@ export {
   initializeInstance,
   initializePublicInstance,
   checkIfProfileMinted,
+  checkHasBadge,
   getBadgeMetadata,
   queryUserBadges,
   queryUserBadgesWrapped,

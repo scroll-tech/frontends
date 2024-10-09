@@ -2,15 +2,21 @@ import Img from "react-cool-img"
 
 import { Box, Typography } from "@mui/material"
 
-const NFT = props => {
-  const { name, collectionName, tokenId, imageUrl, sx, ...restProps } = props
+const NFTCard = props => {
+  const { name, collectionName, tokenId, imageUrl, sx, active, ...restProps } = props
 
   return (
     <Box sx={{ width: "100%", ...sx }} {...restProps}>
       <Img
         src={imageUrl || "/imgs/canvas/NFTPlaceholder.svg"}
         alt={name}
-        style={{ aspectRatio: "1 / 1", width: "100%", borderRadius: "0.8rem", objectFit: "contain" }}
+        style={{
+          aspectRatio: "1 / 1",
+          width: "100%",
+          borderRadius: "0.8rem",
+          objectFit: "contain",
+          ...(active ? { outline: "3px solid #fff", outlineOffset: "-3px" } : {}),
+        }}
         placeholder="/imgs/canvas/badgePlaceholder.svg"
       ></Img>
       <Typography
@@ -34,4 +40,4 @@ const NFT = props => {
   )
 }
 
-export default NFT
+export default NFTCard
