@@ -21,8 +21,8 @@ const useCanvasProfileStore = create<CanvasProfileStore>()((set, get) => ({
   NFTsDialogVisible: false,
   NFT: {
     contractType: "ERC1155",
-    contractAddress: "0x495f947276749ce646f68ac8c248420045cb7b5e",
-    tokenId: "31703445546616290914096692282728113635967647495258376160375559125425176182874",
+    contractAddress: "0x574344045f02405959895404afde61ebb11a27e9",
+    tokenId: "4",
   },
 
   changeCropAvatarDialogVisible: cropAvatarDialogVisible => {

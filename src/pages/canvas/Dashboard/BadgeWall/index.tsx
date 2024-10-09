@@ -197,7 +197,7 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
             },
           }}
         >
-          <Box sx={{ width: "66.67%" }}>
+          <Box sx={{ width: "54%" }}>
             <Avatar type="NFT" src={userInfo.avatar}></Avatar>
           </Box>
         </Tooltip>

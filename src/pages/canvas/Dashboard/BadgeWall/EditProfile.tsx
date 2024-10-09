@@ -6,6 +6,9 @@ import { styled } from "@mui/material/styles"
 import { ReactComponent as EditProfileSvg } from "@/assets/svgs/canvas/edit-profile.svg"
 import { ReactComponent as LockSvg } from "@/assets/svgs/canvas/lock.svg"
 import Link from "@/components/Link"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
+import { useAsyncMemo } from "@/hooks"
+import { checkHasBadge } from "@/services/canvasService"
 import useCanvasProfileStore from "@/stores/canvasProfileStore"
 import useCanvasStore from "@/stores/canvasStore"
 
@@ -41,10 +44,16 @@ const EditMenu = styled<any>(Menu)(({ theme }) => ({
 }))
 
 const EditProfile = props => {
-  const { isNFTEligible = true, sx } = props
+  const { sx } = props
+
+  const { walletCurrentAddress, provider } = useRainbowContext()
 
   const { changeProfileDialog } = useCanvasStore()
   const { changePreviewAvatarURL, changeCropAvatarDialogVisible, changeNFTsDialogVisible } = useCanvasProfileStore()
+
+  const isNFTEligible = useAsyncMemo(() => {
+    return checkHasBadge(provider, walletCurrentAddress, "0x3dacAd961e5e2de850F5E027c70b56b5Afa5DfeD")
+  }, [walletCurrentAddress, provider])
 
   const [editAnchorEl, setEditAnchorEl] = useState<null | HTMLElement>(null)
 
@@ -150,8 +159,13 @@ const EditProfile = props => {
                 fontWeight: 600,
                 "&:hover": {
                   color: "primary.main",
+                  backgroundColor: "unset",
+                },
+                "&.Mui-disabled": {
+                  opacity: 1,
                 },
               }}
+              disabled={disabled}
               onClick={action}
             >
               {label}
