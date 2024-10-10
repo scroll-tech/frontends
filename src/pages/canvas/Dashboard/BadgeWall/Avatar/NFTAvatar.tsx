@@ -6,17 +6,15 @@ import ERC721ABI from "@/assets/abis/ERC721ABI.json"
 import ERC1155ABI from "@/assets/abis/ERC1155ABI.json"
 import { TOEKN_TYPE } from "@/constants"
 import { useCanvasContext } from "@/contexts/CanvasContextProvider"
-import useCanvasProfileStore from "@/stores/canvasProfileStore"
 import { ipfsToBrowserURL } from "@/utils"
 
-const NFTAvatar = () => {
+const NFTAvatar = props => {
+  const { contractType, contractAddress, tokenId } = props
   const { publicProvider } = useCanvasContext()
-  const { NFT } = useCanvasProfileStore()
 
   const { data } = useQuery({
-    queryKey: [NFT],
+    queryKey: [tokenId, contractAddress, contractType],
     queryFn: async () => {
-      const { contractType, contractAddress, tokenId } = NFT
       const currentTokenId = BigInt(tokenId)
       let tokenURI
       if (contractType === TOEKN_TYPE[721]) {
@@ -25,11 +23,10 @@ const NFTAvatar = () => {
       } else {
         const tokenInstance = new ethers.Contract(contractAddress, ERC1155ABI, publicProvider)
         const tokenURI1155 = await tokenInstance.uri(currentTokenId)
-        console.log(tokenURI1155, "tokenURI1155")
-        tokenURI = tokenURI1155.replace(/0x{id}/, tokenId)
-      }
 
-      console.log(tokenURI, "tokenURI")
+        // tokenURI = tokenURI1155.replace(/0x{id}/, tokenId)
+        tokenURI = tokenURI1155.replace(/{id}/, tokenId)
+      }
 
       const metadataURL = ipfsToBrowserURL(tokenURI)
       const { image } = await scrollRequest(metadataURL)

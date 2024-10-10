@@ -1,5 +1,3 @@
-import { useState } from "react"
-
 import { Box, IconButton, Menu, MenuItem, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
@@ -49,19 +47,17 @@ const EditProfile = props => {
   const { walletCurrentAddress, provider } = useRainbowContext()
 
   const { changeProfileDialog } = useCanvasStore()
-  const { changePreviewAvatarURL, changeCropAvatarDialogVisible, changeNFTsDialogVisible } = useCanvasProfileStore()
+  const { changePreviewAvatarURL, changeCropAvatarDialogVisible, changeNFTsDialogVisible, editAnchorEl, changeEditAnchorEl } = useCanvasProfileStore()
 
   const isNFTEligible = useAsyncMemo(() => {
     return checkHasBadge(provider, walletCurrentAddress, "0x3dacAd961e5e2de850F5E027c70b56b5Afa5DfeD")
   }, [walletCurrentAddress, provider])
 
-  const [editAnchorEl, setEditAnchorEl] = useState<null | HTMLElement>(null)
-
   const handleOpenEditMenu = e => {
-    setEditAnchorEl(e.currentTarget)
+    changeEditAnchorEl(e.currentTarget)
   }
   const handleCloseEditMenu = () => {
-    setEditAnchorEl(null)
+    changeEditAnchorEl(null)
   }
   const handleOpenNameDialog = () => {
     changeProfileDialog(true)
@@ -96,7 +92,7 @@ const EditProfile = props => {
     {
       label: "Upload a profile picture",
       upload: true,
-      action: () => void 0,
+      // action: handleCloseEditMenu,
     },
     { label: "Set an NFT as profile", disabled: !isNFTEligible, action: handleOpenPickNFTDialog },
   ]
