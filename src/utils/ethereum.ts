@@ -2,6 +2,7 @@ import { getWalletClient } from "@wagmi/core"
 import { isError } from "ethers"
 import { isNumber } from "lodash"
 
+import { CHAIN_ID } from "@/constants"
 import { config } from "@/contexts/RainbowProvider/configs"
 import { DepositBatchMode } from "@/stores/batchBridgeStore"
 
@@ -30,4 +31,35 @@ export const checkApproved = (needApproval, mode: DepositBatchMode) => {
 
 export const isUserRejected = error => {
   return isError(error, "ACTION_REJECTED")
+}
+
+export function generateTypedData(address, sha256 = "", nftContract = "0x0000000000000000000000000000000000000000", tokenID = "") {
+  const domain = {
+    name: "Scroll Avatar",
+    version: "1",
+    chainId: CHAIN_ID.L2,
+    verifyingContract: "0x0000000000000000000000000000000000000000",
+  }
+
+  const types = {
+    Avatar: [
+      { name: "address", type: "address" },
+      { name: "sha256", type: "string" },
+      { name: "nftContract", type: "address" },
+      { name: "tokenID", type: "string" },
+    ],
+  }
+
+  return {
+    domain,
+    types,
+    account: address,
+    primaryType: "Avatar",
+    message: {
+      address,
+      nftContract,
+      sha256,
+      tokenID,
+    },
+  }
 }

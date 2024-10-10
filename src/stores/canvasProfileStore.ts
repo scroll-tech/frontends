@@ -3,27 +3,20 @@ import { create } from "zustand"
 interface CanvasProfileStore {
   cropAvatarDialogVisible: boolean
   previewAvatarURL: any
-
   NFTsDialogVisible: boolean
-  NFT: any
+  editAnchorEl: HTMLElement | null
 
   changeCropAvatarDialogVisible: (visible: boolean) => void
   changePreviewAvatarURL: (base64: any) => void
-
   changeNFTsDialogVisible: (visible: boolean) => void
-
-  changeNFT: (NFT: any) => void
+  changeEditAnchorEl: (editAnchorEl: HTMLElement | null) => void
 }
 
 const useCanvasProfileStore = create<CanvasProfileStore>()((set, get) => ({
   cropAvatarDialogVisible: false,
   previewAvatarURL: null,
   NFTsDialogVisible: false,
-  NFT: {
-    contractType: "ERC1155",
-    contractAddress: "0x574344045f02405959895404afde61ebb11a27e9",
-    tokenId: "4",
-  },
+  editAnchorEl: null,
 
   changeCropAvatarDialogVisible: cropAvatarDialogVisible => {
     set({
@@ -40,11 +33,9 @@ const useCanvasProfileStore = create<CanvasProfileStore>()((set, get) => ({
       NFTsDialogVisible,
     })
   },
-
-  // TODO: delete
-  changeNFT: NFT => {
+  changeEditAnchorEl: (editAnchorEl: HTMLElement | null) => {
     set({
-      NFT,
+      editAnchorEl,
     })
   },
 }))

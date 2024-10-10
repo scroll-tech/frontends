@@ -27,4 +27,10 @@ export const claimBadgeURL = (baseUrl, walletAddress, badgeContract) => `${baseU
 
 export const EthereumYearBadgeURL = year => `${requireEnv("REACT_APP_ETHEREUM_YEAR_BADGE_API_URI")}/canvas/year/${year}.webp`
 
-export const fetchUserNFTsURL = `https://enterprise.onerpc.com/aapi_v2?apikey=${requireEnv("REACT_APP_ANKR_API_KEY")}`
+export const fetchUserNFTsURL = (walletAddress, page, pageSize) => `${baseUrl}/acc/${walletAddress}/nfts?page_size=${pageSize}&page_number=${page}`
+
+export const setCanvasAvatarURL = walletAddress => `${baseUrl}/acc/${walletAddress}/avatar`
+
+export const fetchAvatarURL = walletAddress => `${baseUrl}/acc/${walletAddress}/avatar`
+
+export const generateAvatarURL = avatar => `${baseUrl}/avatar/${avatar}`

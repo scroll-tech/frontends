@@ -11,7 +11,7 @@ const useStyles = makeStyles()(theme => ({
 }))
 
 const ScrollLoadingButton = props => {
-  const { children, loadingText, ...restProps } = props
+  const { children, loadingText, sx, ...restProps } = props
   const { classes } = useStyles()
 
   const renderLoadingText = () => {
@@ -27,6 +27,14 @@ const ScrollLoadingButton = props => {
   return (
     <LoadingButton
       classes={{ loadingIndicator: classes.loadingIndicator }}
+      sx={{
+        "&.Mui-disabled": {
+          backgroundColor: "primary.main",
+          color: "primary.contrastText",
+          opacity: 0.4,
+        },
+        ...sx,
+      }}
       loadingIndicator={
         <Stack direction="row" alignItems="center" spacing={1}>
           <span>{renderLoadingText()}</span>
