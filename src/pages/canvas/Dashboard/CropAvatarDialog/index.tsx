@@ -25,7 +25,7 @@ const CropAvatarDialog = () => {
   const { data: client } = useWalletClient()
   const queryClient = useQueryClient()
   // const { data: client } = useConnectorClient<Config>()
-  const { cropAvatarDialogVisible, previewAvatarURL, changeCropAvatarDialogVisible, changeEditAnchorEl } = useCanvasProfileStore()
+  const { cropAvatarDialogVisible, previewAvatarURL, changeCropAvatarDialogVisible, changeEditProfileVisible } = useCanvasProfileStore()
 
   const alertWarning = useSnackbar()
 
@@ -55,7 +55,7 @@ const CropAvatarDialog = () => {
     },
     onSuccess: data => {
       handleCloseCropAvatarDialog()
-      changeEditAnchorEl(null)
+      changeEditProfileVisible(false)
       queryClient.invalidateQueries({
         queryKey: ["canvasAvatar"],
       })

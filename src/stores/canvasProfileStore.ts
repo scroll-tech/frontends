@@ -4,19 +4,19 @@ interface CanvasProfileStore {
   cropAvatarDialogVisible: boolean
   previewAvatarURL: any
   NFTsDialogVisible: boolean
-  editAnchorEl: HTMLElement | null
+  editProfileVisible: boolean
 
   changeCropAvatarDialogVisible: (visible: boolean) => void
   changePreviewAvatarURL: (base64: any) => void
   changeNFTsDialogVisible: (visible: boolean) => void
-  changeEditAnchorEl: (editAnchorEl: HTMLElement | null) => void
+  changeEditProfileVisible: (editProfileVisible: boolean) => void
 }
 
 const useCanvasProfileStore = create<CanvasProfileStore>()((set, get) => ({
   cropAvatarDialogVisible: false,
   previewAvatarURL: null,
   NFTsDialogVisible: false,
-  editAnchorEl: null,
+  editProfileVisible: false,
 
   changeCropAvatarDialogVisible: cropAvatarDialogVisible => {
     set({
@@ -33,9 +33,9 @@ const useCanvasProfileStore = create<CanvasProfileStore>()((set, get) => ({
       NFTsDialogVisible,
     })
   },
-  changeEditAnchorEl: (editAnchorEl: HTMLElement | null) => {
+  changeEditProfileVisible: (editProfileVisible: boolean) => {
     set({
-      editAnchorEl,
+      editProfileVisible,
     })
   },
 }))
