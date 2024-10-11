@@ -1,3 +1,5 @@
+import { useRef } from "react"
+
 import { Box, IconButton, Menu, MenuItem, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
@@ -43,17 +45,20 @@ const EditProfile = props => {
   const { walletCurrentAddress, provider } = useRainbowContext()
 
   const { changeProfileDialog } = useCanvasStore()
-  const { changePreviewAvatarURL, changeCropAvatarDialogVisible, changeNFTsDialogVisible, editAnchorEl, changeEditAnchorEl } = useCanvasProfileStore()
+  const { changePreviewAvatarURL, changeCropAvatarDialogVisible, changeNFTsDialogVisible, editProfileVisible, changeEditProfileVisible } =
+    useCanvasProfileStore()
+
+  const editButtonRef = useRef<null | HTMLButtonElement>(null)
 
   const isNFTEligible = useAsyncMemo(() => {
     return checkHasBadge(provider, walletCurrentAddress, "0x3dacAd961e5e2de850F5E027c70b56b5Afa5DfeD")
   }, [walletCurrentAddress, provider])
 
   const handleOpenEditMenu = e => {
-    changeEditAnchorEl(e.currentTarget)
+    changeEditProfileVisible(true)
   }
   const handleCloseEditMenu = () => {
-    changeEditAnchorEl(null)
+    changeEditProfileVisible(false)
   }
   const handleOpenNameDialog = () => {
     changeProfileDialog(true)
@@ -93,11 +98,11 @@ const EditProfile = props => {
   ]
   return (
     <>
-      <IconButton sx={{ backgroundColor: "#262626 !important", ...sx }} onClick={handleOpenEditMenu}>
+      <IconButton ref={editButtonRef} sx={{ backgroundColor: "#262626 !important", ...sx }} onClick={handleOpenEditMenu}>
         <SvgIcon sx={{ fontSize: "2.4rem" }} component={EditProfileSvg} inheritViewBox></SvgIcon>
       </IconButton>
       <EditMenu
-        anchorEl={editAnchorEl}
+        anchorEl={editButtonRef.current}
         anchorOrigin={{
           vertical: "bottom",
           horizontal: "right",
@@ -106,7 +111,7 @@ const EditProfile = props => {
           vertical: "top",
           horizontal: "right",
         }}
-        open={Boolean(editAnchorEl)}
+        open={editProfileVisible}
         onClose={handleCloseEditMenu}
       >
         {editMenuItems.map(({ label, action, upload, disabled }) => (

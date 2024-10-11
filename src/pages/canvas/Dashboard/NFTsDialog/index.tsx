@@ -123,6 +123,7 @@ const NFTsDialog = () => {
   }
 
   const handleCloseNFTsDialog = () => {
+    changeNFTsDialogVisible(false)
     setPage(1)
     setSelectedNFT({
       contractType: "",
@@ -130,7 +131,6 @@ const NFTsDialog = () => {
       tokenId: "",
     })
     queryClient.removeQueries({ queryKey: ["userNFTs", walletCurrentAddress], exact: true })
-    changeNFTsDialogVisible(false)
   }
 
   const handlePickNFT = item => {
