@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom"
 
 import { SvgIcon } from "@mui/material"
 
-import { getSmallAvatarURL, viewEASScanURL } from "@/apis/canvas"
+import { getSmallHeartbeatURL, viewEASScanURL } from "@/apis/canvas"
 import { ReactComponent as ShareSvg } from "@/assets/svgs/canvas/share.svg"
 import ScrollButton from "@/components/Button"
 import Link from "@/components/Link"
@@ -105,7 +105,7 @@ const BadgeDetailPage = () => {
         ...badgeMetadata,
         walletAddress: recipient,
         owner: name,
-        ownerLogo: getSmallAvatarURL(recipient),
+        ownerLogo: getSmallHeartbeatURL(recipient),
         mintedOn: formatDate(time * 1000),
         badgeContract,
         issuer: badgeWidthIssuer.issuer,

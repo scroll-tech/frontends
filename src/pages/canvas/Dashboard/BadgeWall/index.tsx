@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom"
 import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
-import { getAvatarURL } from "@/apis/canvas"
+import { getHeartbeatURL } from "@/apis/canvas"
 import Skeleton from "@/components/Skeleton"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCanvasStore from "@/stores/canvasStore"
@@ -153,7 +153,7 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
   const userInfo = useMemo(() => {
     return {
       name: canvasUsername,
-      avatar: getAvatarURL(realWalletAddress),
+      avatar: getHeartbeatURL(realWalletAddress),
     }
   }, [realWalletAddress, canvasUsername, profileMinted])
 

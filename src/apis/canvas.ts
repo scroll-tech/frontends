@@ -2,11 +2,11 @@ import { requireEnv } from "@/utils"
 
 const baseUrl = requireEnv("REACT_APP_CANVAS_BACKEND_URI")
 
-export const getAvatarURL = add => `${baseUrl}/heartbeat/${add}.svg`
+export const getHeartbeatURL = add => `${baseUrl}/heartbeat/${add}.svg`
 
 export const getHeartrate = add => `${baseUrl}/heartbeat/${add}`
 
-export const getSmallAvatarURL = add => `${baseUrl}/heartbeat/${add}/s.svg`
+export const getSmallHeartbeatURL = add => `${baseUrl}/heartbeat/${add}/s.svg`
 
 export const getImgByCode = code => `${baseUrl}/code/${code}.png`
 
@@ -29,7 +29,7 @@ export const EthereumYearBadgeURL = year => `${requireEnv("REACT_APP_ETHEREUM_YE
 
 export const fetchUserNFTsURL = (walletAddress, page, pageSize) => `${baseUrl}/acc/${walletAddress}/nfts?page_size=${pageSize}&page_number=${page}`
 
-export const setCanvasAvatarURL = walletAddress => `${baseUrl}/acc/${walletAddress}/avatar`
+export const setCanvasAvatarURL = walletAddress => `${baseUrl}/acc/${walletAddress}/set-avatar`
 
 export const fetchAvatarURL = walletAddress => `${baseUrl}/acc/${walletAddress}/avatar`
 

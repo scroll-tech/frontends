@@ -6,7 +6,7 @@ import useSWR from "swr"
 
 import { Box, Skeleton, Stack, Typography } from "@mui/material"
 
-import { fetchSignByCode, getAvatarURL, getHeartrate } from "@/apis/canvas"
+import { fetchSignByCode, getHeartbeatURL, getHeartrate } from "@/apis/canvas"
 import Button from "@/components/Button"
 import TextButton from "@/components/TextButton"
 import { useCanvasContext } from "@/contexts/CanvasContextProvider"
@@ -36,7 +36,7 @@ const MintStep = props => {
   const [insufficientDialogOpen, setInsufficientDialogOpen] = useState(false)
   const [tAndODialogVisible, setTAndODialogVisible] = useState(false)
 
-  const heartbeatURL = useMemo(() => getAvatarURL(walletCurrentAddress), [walletCurrentAddress])
+  const heartbeatURL = useMemo(() => getHeartbeatURL(walletCurrentAddress), [walletCurrentAddress])
 
   useEffect(() => {
     if (heartbeatURL) {

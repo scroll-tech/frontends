@@ -42,6 +42,8 @@ const CropAvatarDialog = () => {
             formData.append("sha256", sha256)
             formData.append("signature", signature || "")
             formData.append("image", blob)
+            formData.append("timestamp", Date.now().toString())
+
             const { avatar } = await scrollRequest(setCanvasAvatarURL(walletAddress), {
               method: "POST",
               body: formData,
@@ -50,7 +52,7 @@ const CropAvatarDialog = () => {
           } catch (e) {
             reject(e)
           }
-        })
+        }, "image/webp")
       })
     },
     onSuccess: data => {

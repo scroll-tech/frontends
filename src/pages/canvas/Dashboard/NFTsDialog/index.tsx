@@ -78,6 +78,8 @@ const NFTsDialog = () => {
       formData.append("nftContractType", contractType)
       formData.append("signature", signature || "")
       formData.append("tokenID", tokenId)
+      formData.append("timestamp", Date.now().toString())
+
       return await scrollRequest(setCanvasAvatarURL(walletAddress), {
         method: "POST",
         body: formData,
