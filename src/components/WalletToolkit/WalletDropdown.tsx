@@ -6,7 +6,7 @@ import { makeStyles } from "tss-react/mui"
 
 import { Box, ButtonBase, Fade, LinearProgress, ListItemIcon, ListItemText, Menu, MenuItem, SvgIcon } from "@mui/material"
 
-import { getSmallAvatarURL } from "@/apis/canvas"
+import { getSmallHeartbeatURL } from "@/apis/canvas"
 import { ReactComponent as CopySuccessSvg } from "@/assets/svgs/bridge/copy-success.svg"
 import { ReactComponent as HistorySvg } from "@/assets/svgs/bridge/history.svg"
 import { ReactComponent as BlockSvg } from "@/assets/svgs/wallet-connector/block.svg"
@@ -189,7 +189,7 @@ const WalletDropdown = props => {
       return (
         <ButtonBase classes={{ root: classes.button }} sx={sx} onClick={handleClick}>
           <Img
-            src={getSmallAvatarURL(walletCurrentAddress)}
+            src={getSmallHeartbeatURL(walletCurrentAddress)}
             style={{ width: 24, height: 24, marginRight: "0.8rem" }}
             placeholder="/imgs/canvas/avatarPlaceholder.svg"
           ></Img>

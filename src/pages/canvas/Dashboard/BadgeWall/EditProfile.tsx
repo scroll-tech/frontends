@@ -6,8 +6,10 @@ import { styled } from "@mui/material/styles"
 import { ReactComponent as EditProfileSvg } from "@/assets/svgs/canvas/edit-profile.svg"
 import { ReactComponent as LockSvg } from "@/assets/svgs/canvas/lock.svg"
 import Link from "@/components/Link"
+import { CANVAS_AVATAR_MAX_SIZE } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useAsyncMemo } from "@/hooks"
+import useSnackbar from "@/hooks/useSnackbar"
 import { checkHasBadge } from "@/services/canvasService"
 import useCanvasProfileStore from "@/stores/canvasProfileStore"
 import useCanvasStore from "@/stores/canvasStore"
@@ -43,6 +45,7 @@ const EditProfile = props => {
   const { sx } = props
 
   const { walletCurrentAddress, provider } = useRainbowContext()
+  const alertWarning = useSnackbar()
 
   const { changeProfileDialog } = useCanvasStore()
   const { changePreviewAvatarURL, changeCropAvatarDialogVisible, changeNFTsDialogVisible, editProfileVisible, changeEditProfileVisible } =
@@ -65,6 +68,17 @@ const EditProfile = props => {
     handleCloseEditMenu()
   }
   const handlePickPicture = event => {
+    const file = event.target.files[0]
+
+    if (!file) {
+      return
+    }
+
+    if (file.size > CANVAS_AVATAR_MAX_SIZE) {
+      alertWarning("File size is too large. Please upload a file less than 1MB.")
+      return
+    }
+
     const reader = new FileReader()
     reader.addEventListener(
       "load",
@@ -74,10 +88,8 @@ const EditProfile = props => {
       },
       false,
     )
-    const file = event.target.files[0]
-    if (file) {
-      reader.readAsDataURL(file)
-    }
+
+    reader.readAsDataURL(file)
   }
   const handleOpenPickNFTDialog = () => {
     changeNFTsDialogVisible(true)
