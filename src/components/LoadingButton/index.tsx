@@ -8,6 +8,9 @@ const useStyles = makeStyles()(theme => ({
     color: theme.palette.primary.contrastText,
     width: "max-content",
   },
+  loading: {
+    color: "transparent !important",
+  },
 }))
 
 const ScrollLoadingButton = props => {
@@ -26,7 +29,7 @@ const ScrollLoadingButton = props => {
 
   return (
     <LoadingButton
-      classes={{ loadingIndicator: classes.loadingIndicator }}
+      classes={{ loadingIndicator: classes.loadingIndicator, loading: classes.loading }}
       sx={{
         "&.Mui-disabled": {
           backgroundColor: "primary.main",
