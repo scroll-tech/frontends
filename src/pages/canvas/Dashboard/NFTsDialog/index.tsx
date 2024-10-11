@@ -221,7 +221,6 @@ const NFTsDialog = () => {
             )}
           </Box>
           <LoadingButton
-            // loadingText={null}
             loading={isPending}
             disabled={!selectedNFT.contractAddress}
             sx={{ borderRadius: "1rem", width: "100%", height: "5.6rem", fontSize: "2rem" }}

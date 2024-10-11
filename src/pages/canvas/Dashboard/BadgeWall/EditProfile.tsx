@@ -29,10 +29,6 @@ const EditMenu = styled<any>(Menu)(({ theme }) => ({
     borderRadius: "0.5rem",
     padding: "0 0.8rem",
     marginTop: "0.6rem",
-    // minWidth: "15.6rem",
-    // [theme.breakpoints.down("sm")]: {
-    //   minWidth: dropdownWidth,
-    // },
   },
   "& .MuiMenu-list": {
     [theme.breakpoints.down("sm")]: {
@@ -74,7 +70,6 @@ const EditProfile = props => {
       false,
     )
     const file = event.target.files[0]
-    console.log(file, "file")
     if (file) {
       reader.readAsDataURL(file)
     }
@@ -153,16 +148,16 @@ const EditProfile = props => {
                 fontSize: "1.6rem",
                 lineHeight: "2.4rem",
                 fontWeight: 600,
+                cursor: disabled ? "default" : "pointer",
                 "&:hover": {
-                  color: "primary.main",
+                  color: disabled ? "inherit" : "primary.main",
                   backgroundColor: "unset",
                 },
                 "&.Mui-disabled": {
                   opacity: 1,
                 },
               }}
-              disabled={disabled}
-              onClick={action}
+              onClick={disabled ? () => void 0 : action}
             >
               {label}
               {!!upload && <VisuallyHiddenInput id="canvas-avatar" name="file" type="file" accept="image/*" onChange={handlePickPicture} />}

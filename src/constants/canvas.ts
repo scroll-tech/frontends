@@ -3,6 +3,12 @@ export enum BADGES_VISIBLE_TYPE {
   INVISIBLE = "Not displayed",
 }
 
+export enum CANVAS_AVATAR_TYPE {
+  NFT = "NFT",
+  PICTURE = "Picture",
+  HEARTBEAT = "Heartbeat",
+}
+
 export const BADGE_INTEGRATION_GUIDE =
   "https://scrollzkp.notion.site/Introducing-Scroll-Canvas-Badge-Integration-Guide-8656463ab63b42e8baf924763ed8c9d5"
 

@@ -10,7 +10,6 @@ import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCanvasStore from "@/stores/canvasStore"
 import { sentryDebug } from "@/utils"
 
-import Tooltip from "../../components/Tooltip"
 import Avatar from "./Avatar"
 import Badge from "./Badge"
 import EditProfile from "./EditProfile"
@@ -169,38 +168,10 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
         }}
       >
         <EditProfile sx={{ position: "absolute", top: "1.6rem", right: "1.6rem" }}></EditProfile>
-        <Tooltip
-          title={
-            <Box sx={{ width: "21.4rem" }}>
-              <b>Activity Heartbeat:</b>
-              <br></br>
-              Heart beats faster when you are more active on Scroll
-            </Box>
-          }
-          followCursor
-          PopperProps={{
-            popperOptions: {
-              modifiers: [
-                {
-                  name: "offset",
-                  options: {
-                    offset: ({ placement, reference, popper }) => {
-                      if (placement === "bottom") {
-                        return [popper.width / 4, 27]
-                      } else {
-                        return [popper.width / 4, 12]
-                      }
-                    },
-                  },
-                },
-              ],
-            },
-          }}
-        >
-          <Box sx={{ width: "54%" }}>
-            <Avatar type="NFT" src={userInfo.avatar}></Avatar>
-          </Box>
-        </Tooltip>
+
+        <Box sx={{ width: "54%" }}>
+          <Avatar src={userInfo.avatar}></Avatar>
+        </Box>
         {queryUsernameLoading ? <Skeleton dark sx={{ width: "6em", height: ["2.4rem", "3.2rem"] }}></Skeleton> : <Name>{userInfo.name}</Name>}
       </Profile>
       {badges.map((badge, index) => (
