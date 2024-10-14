@@ -25,7 +25,8 @@ const CropAvatarDialog = () => {
   const { data: client } = useWalletClient()
   const queryClient = useQueryClient()
   // const { data: client } = useConnectorClient<Config>()
-  const { cropAvatarDialogVisible, previewAvatarURL, changeCropAvatarDialogVisible, changeEditProfileVisible } = useCanvasProfileStore()
+  const { cropAvatarDialogVisible, previewAvatarURL, changeCropAvatarDialogVisible, changeEditProfileVisible, changeNFTImageURL } =
+    useCanvasProfileStore()
 
   const alertWarning = useSnackbar()
 
@@ -37,12 +38,13 @@ const CropAvatarDialog = () => {
         cropperRef.current.getCanvas()?.toBlob(async blob => {
           try {
             const sha256 = await calculateSHA256FromBlob(blob)
-            const signature = await client?.signTypedData(generateTypedData(walletAddress, sha256) as any)
+            const timestamp = Date.now().toString()
+            const signature = await client?.signTypedData(generateTypedData(walletAddress, sha256, undefined, undefined, timestamp) as any)
             const formData = new FormData()
             formData.append("sha256", sha256)
             formData.append("signature", signature || "")
             formData.append("image", blob)
-            formData.append("timestamp", Date.now().toString())
+            formData.append("timestamp", timestamp)
 
             const { avatar } = await scrollRequest(setCanvasAvatarURL(walletAddress), {
               method: "POST",
@@ -56,14 +58,17 @@ const CropAvatarDialog = () => {
       })
     },
     onSuccess: data => {
+      changeNFTImageURL("")
       handleCloseCropAvatarDialog()
-      changeEditProfileVisible(false)
       queryClient.invalidateQueries({
         queryKey: ["canvasAvatar"],
       })
+      changeEditProfileVisible(false)
     },
     onError: error => {
-      alertWarning("Something went wrong, please try again later.")
+      if (error.name !== "UserRejectedRequestError") {
+        alertWarning("Something went wrong, please try again later.")
+      }
     },
   })
 

@@ -7,6 +7,7 @@ import { Box } from "@mui/material"
 import { fetchAvatarURL, generateAvatarURL } from "@/apis/canvas"
 import { CANVAS_AVATAR_TYPE } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useCanvasProfileStore from "@/stores/canvasProfileStore"
 
 import Tooltip from "../../../components/Tooltip"
 import NFTAvatar from "./NFTAvatar"
@@ -16,6 +17,7 @@ const Avatar = props => {
   const { src } = props
 
   const { walletCurrentAddress } = useRainbowContext()
+  const { NFTImageURL } = useCanvasProfileStore()
 
   const { data, isFetching } = useQuery({
     queryKey: ["canvasAvatar", walletCurrentAddress],
@@ -25,6 +27,7 @@ const Avatar = props => {
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
+    enabled: !NFTImageURL,
   })
 
   const avatarType = useMemo(() => {
@@ -38,6 +41,10 @@ const Avatar = props => {
   }, [data])
 
   const renderAvatar = () => {
+    if (NFTImageURL) {
+      return <Img src={NFTImageURL} placeholder="/imgs/canvas/avatarPlaceholder.svg" alt="avatar" width="100%"></Img>
+    }
+
     if (isFetching) {
       return <Img src="/imgs/canvas/badgePlaceholder.svg" alt="avatar-loading" width="100%"></Img>
     }

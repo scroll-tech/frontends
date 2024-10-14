@@ -29,11 +29,18 @@ interface NFTMutationVariables {
   tokenId: string
 }
 
+interface NFTAvatar {
+  contractType: string
+  contractAddress: string
+  tokenId: string
+  imageUrl: string
+}
+
 const NFTsDialog = () => {
   const { walletCurrentAddress } = useRainbowContext()
   const { data: client } = useWalletClient()
 
-  const { NFTsDialogVisible, changeNFTsDialogVisible } = useCanvasProfileStore()
+  const { NFTsDialogVisible, changeNFTsDialogVisible, changeNFTImageURL } = useCanvasProfileStore()
   const { ref, inView } = useInView()
   const { isMobile } = useCheckViewport()
 
@@ -44,11 +51,7 @@ const NFTsDialog = () => {
 
   const pageSize = useRef(8)
 
-  const [selectedNFT, setSelectedNFT] = useState<{ contractType: string; contractAddress: string; tokenId: string }>({
-    contractType: "",
-    contractAddress: "",
-    tokenId: "",
-  })
+  const [selectedNFT, setSelectedNFT] = useState<NFTAvatar | Partial<NFTAvatar>>({})
 
   const queryClient = useQueryClient()
   const { data, isLoading, isFetching, isFetchingNextPage, error, refetch, hasNextPage, fetchNextPage } = useInfiniteQuery({
@@ -72,13 +75,14 @@ const NFTsDialog = () => {
 
   const { mutateAsync: setNFTAvatarMutation, isPending } = useMutation({
     mutationFn: async ({ walletAddress, contractAddress, contractType, tokenId }: NFTMutationVariables) => {
-      const signature = await client?.signTypedData(generateTypedData(walletAddress, "", contractAddress, tokenId) as any)
+      const timestamp = Date.now().toString()
+      const signature = await client?.signTypedData(generateTypedData(walletAddress, undefined, contractAddress, tokenId, timestamp) as any)
       const formData = new FormData()
       formData.append("nftContract", contractAddress)
       formData.append("nftContractType", contractType)
       formData.append("signature", signature || "")
       formData.append("tokenID", tokenId)
-      formData.append("timestamp", Date.now().toString())
+      formData.append("timestamp", timestamp)
 
       return await scrollRequest(setCanvasAvatarURL(walletAddress), {
         method: "POST",
@@ -86,13 +90,16 @@ const NFTsDialog = () => {
       })
     },
     onSuccess: data => {
+      changeNFTImageURL(selectedNFT.imageUrl as string)
       handleCloseNFTsDialog()
       queryClient.invalidateQueries({
         queryKey: ["canvasAvatar"],
       })
     },
     onError: error => {
-      alertWarning("Something went wrong, please try again later.")
+      if (error.name !== "UserRejectedRequestError") {
+        alertWarning("Something went wrong, please try again later.")
+      }
     },
   })
 
@@ -115,7 +122,7 @@ const NFTsDialog = () => {
   }
 
   const handleApplyNFT = () => {
-    const { contractType, contractAddress, tokenId } = selectedNFT
+    const { contractType, contractAddress, tokenId } = selectedNFT as NFTAvatar
     setNFTAvatarMutation({
       walletAddress: walletCurrentAddress,
       contractType,
@@ -127,27 +134,20 @@ const NFTsDialog = () => {
   const handleCloseNFTsDialog = () => {
     changeNFTsDialogVisible(false)
     setPage(1)
-    setSelectedNFT({
-      contractType: "",
-      contractAddress: "",
-      tokenId: "",
-    })
+    setSelectedNFT({})
     queryClient.removeQueries({ queryKey: ["userNFTs", walletCurrentAddress], exact: true })
   }
 
   const handlePickNFT = item => {
     if (isSelectedNFT(item)) {
-      setSelectedNFT({
-        contractType: "",
-        contractAddress: "",
-        tokenId: "",
-      })
+      setSelectedNFT({})
       return
     }
     setSelectedNFT({
       contractType: item.contractType,
       contractAddress: item.contractAddress,
       tokenId: item.tokenId,
+      imageUrl: item.imageUrl,
     })
   }
 
@@ -204,6 +204,7 @@ const NFTsDialog = () => {
                     sx={{
                       cursor: "pointer",
                       filter: isSelectedNFT(item) || !selectedNFT.contractAddress ? "opacity(1)" : "opacity(0.5)",
+                      pointerEvents: isPending ? "none" : "all",
                     }}
                     active={isSelectedNFT(item)}
                     {...item}

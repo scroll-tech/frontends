@@ -12,7 +12,7 @@ const NFTAvatar = props => {
   const { contractType, contractAddress, tokenId } = props
   const { publicProvider } = useCanvasContext()
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: [tokenId, contractAddress, contractType],
     queryFn: async () => {
       const currentTokenId = BigInt(tokenId)
@@ -36,7 +36,7 @@ const NFTAvatar = props => {
 
   return (
     <Img
-      src={data || "/imgs/canvas/NFTPlaceholder.svg"}
+      src={isLoading ? "/imgs/canvas/badgePlaceholder.svg" : data || "/imgs/canvas/NFTPlaceholder.svg"}
       alt="NFT avatar"
       style={{ aspectRatio: "1 / 1", width: "100%", borderRadius: "0.8rem", objectFit: "contain" }}
       placeholder="/imgs/canvas/badgePlaceholder.svg"
