@@ -33,7 +33,7 @@ export const isUserRejected = error => {
   return isError(error, "ACTION_REJECTED")
 }
 
-export function generateTypedData(address, sha256 = "", nftContract = "0x0000000000000000000000000000000000000000", tokenID = "") {
+export function generateTypedData(address, sha256 = "", nftContract = "0x0000000000000000000000000000000000000000", tokenID = "", timestamp) {
   const domain = {
     name: "Scroll Avatar",
     version: "1",
@@ -47,6 +47,7 @@ export function generateTypedData(address, sha256 = "", nftContract = "0x0000000
       { name: "sha256", type: "string" },
       { name: "nftContract", type: "address" },
       { name: "tokenID", type: "string" },
+      { name: "timestamp", type: "string" },
     ],
   }
 
@@ -60,6 +61,7 @@ export function generateTypedData(address, sha256 = "", nftContract = "0x0000000
       nftContract,
       sha256,
       tokenID,
+      timestamp,
     },
   }
 }
