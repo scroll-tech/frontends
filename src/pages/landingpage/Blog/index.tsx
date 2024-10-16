@@ -1,5 +1,7 @@
 import { makeStyles } from "tss-react/mui"
 
+import { Typography } from "@mui/material"
+
 import Button from "@/components/Button"
 import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
 import SectionHeader from "@/components/SectionHeader"
@@ -8,48 +10,74 @@ import StoryCard from "@/pages/ourStory/BuildingStory/StoryCard"
 
 const STORIES = [
   {
-    cover: "/imgs/homepage/blog-cover-1.svg",
+    cover: "/imgs/homepage/landing-blog-1.webp",
     title: "Build with Scroll: Quickstart Guide",
     content:
       "Check out our documentation and start developing and deploying on Scroll right away with all of your favorite tools for building and testing smart contracts.",
     href: "https://docs.scroll.io/en/home/",
     imageTitle: (
       <>
-        Build <br></br>
-        with Scroll
+        <Typography sx={{ fontSize: ["2.4rem", "4rem"], lineHeight: ["2.4rem", "4rem"], fontWeight: 600, color: "primary.contrastText" }}>
+          Build with Scroll
+        </Typography>
+        <Typography
+          sx={{
+            fontSize: ["2rem", "3.2rem"],
+            lineHeight: ["2.4rem", "4rem"],
+            fontWeight: 600,
+            color: "primary.contrastText",
+            mt: ["0.6rem", "1.2rem"],
+          }}
+        >
+          Quickstart Guide
+        </Typography>
       </>
     ),
   },
   {
-    title: "Scroll's Security Measures",
-    content: "At Scroll, security has always been our top priority guiding every decision we make.",
-    href: "/blog/scrolls-security-measures",
+    title: "Navigating the Future of Scroll",
+    content: "Dive into our latest reflections, strategic advancements and plans for the future of Scroll.",
+    href: "/blog/scroll-everyone-everywhere",
   },
   {
-    title: "A Letter from Scroll: Mainnet is Here!",
-    content: "As we open the doors to Mainnet, our co-founders share what it took to reach this milestone and where we go from here. ",
-    href: "/blog/founderLetter",
+    title: "Latest Tech Updates",
+    content: "Explore how Scroll's Darwin upgrade is redefining efficiency by reducing gas fees with advanced proof aggregation.",
+    href: "/blog/proof-recursion-scrolls-darwin-upgrade",
   },
   {
-    title: "Announcing the Scroll Origins NFT",
+    title: "Explore Scroll's Thriving Ecosystem",
     content:
-      "To commemorate our launch, we are unveiling Scroll Origins, an NFT mint to celebrate our earliest builders who have been a part of our journey from the beginning.",
-    href: "/developer-nft",
+      "Join the growing network of developers and innovators building on Scroll, where over 500 projects leverage our zk-tech and the fastest finality in the market.",
+    href: "/ecosystem",
   },
   {
-    title: "Scroll’s Architecture Overview",
+    title: "Level Up your Developer Skills",
+    content: "Level up your Solidity skills and development expertise through a series of challenges and enriching developer content.",
+    href: "https://www.levelup.xyz/",
+  },
+  {
+    cover: "/imgs/homepage/landing-blog-2.webp",
+    title: "Build Your Onchain Story",
     content:
-      "This post provides insights into Scroll's architecture evolution, highlighting the transformation of our zkEVM into a comprehensive zkRollup solution for Ethereum.",
-    href: "/blog/architecture",
-  },
-  {
-    cover: "/imgs/homepage/blog-cover-2.svg",
-    title: "Mainnet Launch Livestream",
-    content: "Hear from Scroll co-founders, engineering and research teams, ecosystem projects, and more. Join us!",
-    href: "https://launch.scroll.io/",
+      "Create your unique on-chain identity on Scroll Canvas, where you can collect and display badges that celebrate your achievements and contributions within the Scroll ecosystem.",
+    href: "/canvas-and-badges",
     imageTitle: (
       <>
-        Mainnet <br></br>Housewarming<br></br> Party
+        <Typography sx={{ fontSize: ["2.4rem", "4rem"], lineHeight: ["2.4rem", "4rem"], fontWeight: 600, color: "primary.contrastText" }}>
+          Scroll Canvas
+        </Typography>
+        <Typography
+          sx={{
+            fontSize: ["2rem", "3.2rem"],
+            lineHeight: ["2.4rem", "4rem"],
+            fontWeight: 600,
+            color: "primary.contrastText",
+            mt: ["0.6rem", "1.2rem"],
+          }}
+        >
+          Build Your <br></br>
+          Onchain Story
+        </Typography>
       </>
     ),
   },
@@ -107,7 +135,7 @@ const BuildingStory = () => {
     <SectionWrapper sx={{ pt: ["11rem", "18rem", "26rem"], pb: ["12rem", "13rem"] }}>
       <SectionHeader
         title="Begin your journey with Scroll"
-        content="Learn more about zero knowledge proofs, zkEVMs, and the future of scaling Ethereum."
+        content="Learn more about building on Scroll, our latest updates, initiatives, ecosystem additions, and the future of scaling Ethereum."
         action={
           <Button href="/blog" color="primary">
             Read more
