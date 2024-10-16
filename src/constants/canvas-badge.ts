@@ -80,7 +80,7 @@ export const CATEGORY_LIST = [
   { key: "Others", label: "👽 Others" },
 ]
 
-export const ISSUE_BADGES_URL = "https://www.notion.so/scrollzkp/Introducing-Scroll-Canvas-Badge-Integration-Guide-8656463ab63b42e8baf924763ed8c9d5"
+export const ISSUE_BADGES_URL = "https://docs.scroll.xyz/en/developers/guides/canvas-badge-integration/"
 
 export const CANVAS_URL = "/canvas"
 
