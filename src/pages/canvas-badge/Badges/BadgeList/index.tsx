@@ -10,6 +10,9 @@ import { ReactComponent as ArrowDownSvg } from "@/assets/svgs/canvas-badge/arrow
 import LoadingButton from "@/components/LoadingButton"
 import LoadingPage from "@/components/LoadingPage"
 import { CANVAS_AND_BADGES_PAGE_SYMBOL, CATEGORY_LIST, SORT_LIST } from "@/constants"
+import { CHAIN_ID } from "@/constants"
+import { useRainbowContext } from "@/contexts/RainbowProvider"
+import { checkIfHasBadgeByAddress } from "@/services/canvasService"
 import { isAboveScreen } from "@/utils/dom"
 
 import BadgeCard from "./BadgeCard"
@@ -20,6 +23,8 @@ import NoData from "./NoData"
 const PAGE_SIZE = 20
 
 const BadgeList = props => {
+  const { walletCurrentAddress, chainId, provider } = useRainbowContext()
+  const isL2 = useMemo(() => chainId === CHAIN_ID.L2, [chainId])
   const {
     searchParams: { category, sort, keyword, page },
     onAddPage,
@@ -48,16 +53,24 @@ const BadgeList = props => {
     const searchParamsStr = searchParams.toString()
     return searchParamsStr ? `?${searchParamsStr}` : ""
   }, [category, sort, keyword, page])
-
+  const setBadgesMintStatus = function (data) {
+    if (provider && isL2) {
+      data.forEach((badge, index) => {
+        checkIfHasBadgeByAddress(provider, walletCurrentAddress, badge.badgeContract).then(mintStatus => {
+          data[index].minted = mintStatus
+        })
+      })
+    }
+  }
   useEffect(() => {
     fetchBadgeList(`${queryStr}&page_size=${PAGE_SIZE}`)
-  }, [queryStr])
-
+  }, [queryStr, provider, walletCurrentAddress])
   const fetchBadgeList = value => {
     setLoading(true)
     scrollRequest(`${fetchBadgesURL}${value}`)
       .then(({ data, total }) => {
         setHasMore((page - 1) * PAGE_SIZE + data.length < total)
+        setBadgesMintStatus(data)
         if (prePage && page - prePage === 1) {
           setBadgeList(pre => pre.concat(data))
         } else {
