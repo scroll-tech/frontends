@@ -77,9 +77,17 @@ const useStyles = makeStyles<any>()((theme, { cover }) => ({
   withCover: {
     gridTemplateAreas: ` 
     "title icon"
-    "content content"
+    "content ."
     `,
     gridTemplateRows: "min-content 1fr",
+
+    [theme.breakpoints.down("md")]: {
+      gridTemplateAreas: ` 
+      "title icon"
+      "content content"
+      `,
+    },
+
     ".building-story-card-icon": {
       alignSelf: "flex-start",
       marginTop: "8px",
