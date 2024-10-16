@@ -4,7 +4,6 @@ import { Box, Card, CardContent, CardMedia, SvgIcon, Typography } from "@mui/mat
 
 import { ReactComponent as ExternaLinkIcon } from "@/assets/svgs/common/external-link.svg"
 import Link from "@/components/Link"
-import ScrollLogo from "@/components/ScrollLogo"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
 const useStyles = makeStyles<any>()((theme, { cover }) => ({
@@ -23,17 +22,13 @@ const useStyles = makeStyles<any>()((theme, { cover }) => ({
 
   cardMediaTitle: {
     position: "absolute",
-    top: "2.4rem",
+    top: "50%",
+    transform: "translateY(-50%)",
     left: "3rem",
     color: theme.palette.primary.contrastText,
     fontWeight: 600,
-    fontSize: "5rem",
+    fontSize: "4rem",
     lineHeight: 1,
-    [theme.breakpoints.down("sm")]: {
-      fontSize: "3.2rem",
-      top: "1.6rem",
-      left: "2rem",
-    },
   },
   cardMediaLogo: {
     position: "absolute",
@@ -112,13 +107,12 @@ const StoryCard = props => {
   const { isPortrait } = useCheckViewport()
 
   return (
-    <Link href={href} external>
+    <Link href={href} external={href.startsWith("http")}>
       <Card {...restProps} elevation={0} className={classes.card}>
         {cover && (
           <Box className={classes.cardMediaWrapper}>
             <CardMedia sx={{ height: ["13rem", "23rem"] }} classes={{ root: classes.cardMedia }} image={cover} />
             <Typography className={classes.cardMediaTitle}>{imageTitle}</Typography>
-            <ScrollLogo light className={classes.cardMediaLogo}></ScrollLogo>
           </Box>
         )}
 
