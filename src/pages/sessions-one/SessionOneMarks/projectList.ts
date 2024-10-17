@@ -40,6 +40,10 @@ export const defaultProjectList = {
           name: "Wombat",
           project: "Wombat",
         },
+        {
+          name: "Scribe",
+          project: "Scribe",
+        },
       ],
     },
   ],
@@ -185,6 +189,12 @@ const PROJECT_LIST = [
     key: "Huma",
     logo: "/imgs/sessions/tokens/Huma.svg",
     website: "https://app.huma.finance/#/",
+  },
+  {
+    name: "Scribe",
+    key: "Scribe",
+    logo: "/imgs/sessions/tokens/Scribe.png",
+    website: "https://app.scribe.exchange/pools",
   },
 ]
 
