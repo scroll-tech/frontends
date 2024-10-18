@@ -37,7 +37,7 @@ const useStyles = makeStyles()(theme => ({
 }))
 
 const BadgeCard = props => {
-  const { name, image, description, badgeContract, issuer, category, count, className } = props
+  const { name, minted, image, description, badgeContract, issuer, category, count, className } = props
   const { classes } = useStyles()
   const { isMobile } = useCheckViewport()
 
@@ -50,7 +50,7 @@ const BadgeCard = props => {
           borderRadius: "2rem",
           backgroundColor: "themeBackground.tag",
           boxShadow: "none",
-          border: "none",
+          border: minted ? "2px solid green" : "none",
           userSelect: "none",
           cursor: "pointer",
           "& p": {
