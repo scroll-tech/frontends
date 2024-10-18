@@ -88,6 +88,18 @@ const MarkList = props => {
                 sx={{ width: ["4rem", "4.8rem", "5.6rem"], height: ["4rem", "4.8rem", "5.6rem"], borderRadius: "0.6rem" }}
                 src={item.logoURI}
               ></Avatar>
+              {item.withTokens && (
+                <Stack direction="row" sx={{ ml: "0.8rem" }}>
+                  {item.withTokens.map(({ key, logoURI }) => (
+                    <Avatar
+                      key={key}
+                      sx={{ width: ["4rem", "4.8rem", "5.6rem"], height: ["4rem", "4.8rem", "5.6rem"], borderRadius: "0.6rem" }}
+                      alt={key}
+                      src={logoURI}
+                    ></Avatar>
+                  ))}
+                </Stack>
+              )}
             </ListItemIcon>
             <ListItemText sx={{ mt: 0, mb: 0 }}>
               {type === MarksType.GAS_SPENT && (
