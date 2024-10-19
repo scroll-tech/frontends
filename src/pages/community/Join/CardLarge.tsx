@@ -65,7 +65,7 @@ const ContributeCard = props => {
                 cursor: "inherit",
               }}
             >
-              Are you a developer?
+              Learn, build and innovate
             </Typography>
             <Typography
               sx={{

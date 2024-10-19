@@ -131,7 +131,7 @@ const mainnetNavigations = [
             icon: StatusSvg,
           },
           {
-            label: "Are you a developer?",
+            label: "Learn, build and innovate",
             text: "Level Up",
             key: "lelvel-up",
             href: "https://levelupweb3.xyz",
@@ -246,12 +246,6 @@ const mainnetNavigations = [
             key: "brand kit",
             href: "/brand-kit",
             rootKey: "resources",
-          },
-          {
-            label: "Forum",
-            key: "forum",
-            href: "https://community.scroll.io",
-            isExternal: true,
           },
           {
             label: "Security",
