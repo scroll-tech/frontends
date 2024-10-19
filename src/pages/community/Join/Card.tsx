@@ -10,6 +10,7 @@ const useStyles = makeStyles()(theme => ({
     backgroundColor: theme.palette.themeBackground.normal,
     height: "100%",
     padding: "2.4rem",
+    paddingBottom: "5.4rem",
     borderRadius: "2.5rem",
     cursor: "pointer",
     "&:hover": {
@@ -71,7 +72,7 @@ const ContributeCard = props => {
               {title}
             </Typography>
           </Stack>
-          <Typography sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: [1.5, "normal"], cursor: "inherit", maxWidth: ["100%", "28rem"] }}>
+          <Typography sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: [1.5, "normal"], cursor: "inherit", maxWidth: ["100%", "42rem"] }}>
             {content}
           </Typography>
         </Stack>
