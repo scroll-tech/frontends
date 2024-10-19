@@ -22,7 +22,7 @@ const useStyles = makeStyles()(theme => ({
     },
   },
   large: {
-    gridColumn: "span 3",
+    gridColumn: "span 2",
     [theme.breakpoints.down("md")]: {
       gridColumn: "span 1",
     },
