@@ -2,7 +2,7 @@ const CracoLessPlugin = require("craco-less")
 const webpack = require("webpack")
 const path = require("path")
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
-const SentryWebpackPlugin = require("@sentry/webpack-plugin")
+// const SentryWebpackPlugin = require("@sentry/webpack-plugin")
 require("./scripts/download-blog-posts.data.json.js")
 
 module.exports = {
@@ -85,11 +85,11 @@ module.exports = {
       })
 
       if (env === "production" && process.env.CI) {
-        const sentryPlugin = new SentryWebpackPlugin({
-          include: "./build",
-          release: process.env.REACT_APP_VERSION,
-        })
-        webpackConfig.plugins.push(sentryPlugin)
+        // const sentryPlugin = new SentryWebpackPlugin({
+        //   include: "./build",
+        //   release: process.env.REACT_APP_VERSION,
+        // })
+        // webpackConfig.plugins.push(sentryPlugin)
 
         const instanceOfMiniCssExtractPlugin = webpackConfig.plugins.find(plugin => plugin instanceof MiniCssExtractPlugin)
         instanceOfMiniCssExtractPlugin.options.ignoreOrder = true
