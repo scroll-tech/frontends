@@ -1,4 +1,4 @@
-import * as Sentry from "@sentry/react"
+// import * as Sentry from "@sentry/react"
 import { isMobile } from "react-device-detect"
 import ReactDOM from "react-dom/client"
 import ReactGA from "react-ga4"
@@ -25,28 +25,28 @@ window.addEventListener("unhandledrejection", function (event) {
 })
 
 if (requireEnv("NODE_ENV") === "production") {
-  Sentry.init({
-    environment: requireEnv("REACT_APP_SCROLL_ENVIRONMENT"),
-    dsn: requireEnv("REACT_APP_SENTRY_DSN"),
-    autoSessionTracking: false,
-    integrations: [
-      new Sentry.Integrations.Breadcrumbs({
-        console: false,
-        dom: false,
-        fetch: false,
-        history: false,
-        sentry: false,
-        xhr: false,
-      }),
-    ],
-    tracesSampleRate: 1.0,
-    beforeSend(event) {
-      if (!event.exception) {
-        return null
-      }
-      return event
-    },
-  })
+  // Sentry.init({
+  //   environment: requireEnv("REACT_APP_SCROLL_ENVIRONMENT"),
+  //   dsn: requireEnv("REACT_APP_SENTRY_DSN"),
+  //   autoSessionTracking: false,
+  //   integrations: [
+  //     new Sentry.Integrations.Breadcrumbs({
+  //       console: false,
+  //       dom: false,
+  //       fetch: false,
+  //       history: false,
+  //       sentry: false,
+  //       xhr: false,
+  //     }),
+  //   ],
+  //   tracesSampleRate: 1.0,
+  //   beforeSend(event) {
+  //     if (!event.exception) {
+  //       return null
+  //     }
+  //     return event
+  //   },
+  // })
 
   const GOOGLE_ANALYTICS_ID: string | undefined = requireEnv("REACT_APP_GOOGLE_ANALYTICS_ID")
   if (typeof GOOGLE_ANALYTICS_ID === "string") {
