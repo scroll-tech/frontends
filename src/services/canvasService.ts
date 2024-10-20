@@ -118,6 +118,9 @@ const getBadgeMetadata = async (provider, badgeContractAddress, badgeUID = ether
     const contract = new ethers.Contract(badgeContractAddress, BadgeABI, provider)
     const badgeTokenURI = await contract.badgeTokenURI(badgeUID)
     const badgeTokenBrowserURL = ipfsToBrowserURL(badgeTokenURI)
+    if (badgeTokenBrowserURL.includes("ambient")) {
+      return {}
+    }
     const metadata = await scrollRequest(badgeTokenBrowserURL, { timeout: 5e3 })
     return metadata
   } catch (error) {
