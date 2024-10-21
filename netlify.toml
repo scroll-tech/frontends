@@ -87,6 +87,12 @@ query = { page_number = ":page_number", page_size = ":page_size" }
 force = true
 
 [[redirects]]
+from = "/airdrop-faq"
+to = "https://scroll-faqs.gitbook.io/faqs"
+status = 200
+force = true
+
+[[redirects]]
 from = "/*"
 to = "/"
 status = 200
