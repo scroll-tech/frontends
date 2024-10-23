@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import ReactGA from "react-ga4"
 import { NavLink } from "react-router-dom"
 import { useStyles } from "tss-react/mui"
 
@@ -210,6 +211,12 @@ const App = ({ currentMenu }) => {
           end={item.end}
           key={item.key}
           reloadDocument={item.reload}
+          onClick={() =>
+            ReactGA.event("click_menu", {
+              label: item.label,
+              device: "desktop",
+            })
+          }
         >
           {item.label}
         </LinkStyledButton>

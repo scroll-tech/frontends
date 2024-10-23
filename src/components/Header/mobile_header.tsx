@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react"
+import ReactGA from "react-ga4"
 import { NavLink } from "react-router-dom"
 
 import { ExpandMore } from "@mui/icons-material"
@@ -151,7 +152,17 @@ const App = ({ currentMenu }) => {
             </ListItem>
           ) : (
             <ListItem dark={dark} className={activeCollapse === item.key ? "active" : ""} sx={{ py: "1rem" }} onClick={() => toggleDrawer(false)}>
-              <MenuLinkStyledButton to={item.href} dark={dark} reloadDocument={item.reload}>
+              <MenuLinkStyledButton
+                to={item.href}
+                dark={dark}
+                reloadDocument={item.reload}
+                onClick={() =>
+                  ReactGA.event("click_menu", {
+                    label: item.label,
+                    device: "mobile",
+                  })
+                }
+              >
                 {item.label}
               </MenuLinkStyledButton>
             </ListItem>
