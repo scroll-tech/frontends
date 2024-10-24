@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react"
-import useStorage from "squirrel-gill"
 import { makeStyles } from "tss-react/mui"
 
 import { ButtonBase, Fade, ListItemIcon, ListItemText, Menu, MenuItem, SvgIcon, Typography } from "@mui/material"
@@ -8,7 +7,7 @@ import { ReactComponent as GlobalSvg } from "@/assets/svgs/common/global.svg"
 import { ReactComponent as LanguageCheckedSvg } from "@/assets/svgs/common/language-checked.svg"
 import { ReactComponent as LanguageUncheckSvg } from "@/assets/svgs/common/language-uncheck.svg"
 import { BLOG_LANGUAGE_LIST } from "@/constants"
-import { BLOG_LANGUAGE } from "@/constants/storageKey"
+import useUserLanguage from "@/hooks/useUserLanguage"
 
 const useStyles = makeStyles<any>()((theme, { dark }) => ({
   button: {
@@ -51,7 +50,7 @@ const LanguageSelect = props => {
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
-  const [language, setLanguage] = useStorage(localStorage, BLOG_LANGUAGE, "en")
+  const [language, setLanguage] = useUserLanguage()
 
   const currentLanguage = useMemo(() => {
     return BLOG_LANGUAGE_LIST.find(item => item.key === language)?.label

@@ -7,15 +7,14 @@ import rehypeKatex from "rehype-katex"
 import rehypeRaw from "rehype-raw"
 import remarkGfm from "remark-gfm"
 import remarkMath from "remark-math"
-import useStorage from "squirrel-gill"
 
 import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import LoadingPage from "@/components/LoadingPage"
 import { LANGUAGE_MAP } from "@/constants"
-import { BLOG_LANGUAGE } from "@/constants/storageKey"
 import useCheckViewport from "@/hooks/useCheckViewport"
+import useUserLanguage from "@/hooks/useUserLanguage"
 import { filterBlogsByLanguage } from "@/utils"
 
 import Articles from "./articles"
@@ -47,7 +46,7 @@ const BlogNavbar = styled(Box)(({ theme }) => ({
 
 const BlogDetail = () => {
   const navigate = useNavigate()
-  const [language] = useStorage(localStorage, BLOG_LANGUAGE, "en")
+  const [language] = useUserLanguage()
   const [blogContent, setBlogContent] = useState<null | string>(null)
   const [moreBlog, setMoreBlog] = useState<any>([])
   const [currentBlog, setCurrentBlog] = useState<any>({

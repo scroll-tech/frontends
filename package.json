@@ -1,6 +1,6 @@
 {
   "name": "scroll.io",
-  "version": "5.2.0",
+  "version": "5.3.0",
   "private": false,
   "license": "MIT",
   "scripts": {
@@ -14,22 +14,11 @@
     "test": "npx lint-staged"
   },
   "lint-staged": {
-    "**/*.{ts,tsx}": [
-      "npm run lint",
-      "prettier --write"
-    ]
+    "**/*.{ts,tsx}": ["npm run lint", "prettier --write"]
   },
   "browserslist": {
-    "production": [
-      ">0.5%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "production": [">0.5%", "not dead", "not op_mini all"],
+    "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
   },
   "resolutions": {
     "@sentry/webpack-plugin/**/node-fetch": "^2.6.11",

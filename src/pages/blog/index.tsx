@@ -1,7 +1,6 @@
 import { orderBy } from "lodash"
 import { useEffect, useMemo, useState } from "react"
 import { useLocation } from "react-router-dom"
-import useStorage from "squirrel-gill"
 
 import { Tune as TuneIcon } from "@mui/icons-material"
 import { Box, Modal, Typography } from "@mui/material"
@@ -10,8 +9,8 @@ import { styled } from "@mui/system"
 import ArticleCard from "@/components/ArticleCard"
 import SectionWrapper from "@/components/SectionWrapper"
 import { LANGUAGE_MAP, getBlogCategoryList, getBlogSortList } from "@/constants"
-import { BLOG_LANGUAGE } from "@/constants/storageKey"
 import useCheckViewport from "@/hooks/useCheckViewport"
+import useUserLanguage from "@/hooks/useUserLanguage"
 import { filterBlogsByLanguage } from "@/utils"
 
 import blogSource from "./data.json"
@@ -165,7 +164,7 @@ const BlogList = styled("ul")(({ theme }) => ({
 const Blog = () => {
   const location = useLocation()
   const { isDesktop } = useCheckViewport()
-  const [language] = useStorage(localStorage, BLOG_LANGUAGE, "en")
+  const [language] = useUserLanguage()
   const BLOG_CATEGORY_LIST = useMemo(() => getBlogCategoryList(language), [language])
   const BLOG_SORT_LIST = useMemo(() => getBlogSortList(language), [language])
   const BLOG_COPY = useMemo(() => LANGUAGE_MAP[language], [language])
