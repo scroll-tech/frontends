@@ -5,7 +5,7 @@ import { config } from "@/contexts/RainbowProvider/configs"
 import { isAlternativeGasTokenEnabled } from "@/utils"
 import { loadState } from "@/utils/localStorage"
 
-export const switchNetwork = async (chainId: number) => {
+export const switchNetwork = async (chainId: number, callback?) => {
   const walletClient = await getWalletClient(config)
   try {
     await walletClient?.switchChain({
@@ -18,6 +18,11 @@ export const switchNetwork = async (chainId: number) => {
       const chains = config.chains
       const chainToAdd = {
         ...chains.find(item => item.id === chainId)!,
+      }
+
+      if (!chainToAdd.rpcUrls.default.http[0].startsWith("https://")) {
+        //Networks on local networks must be manually added to wallet.
+        callback("Networks on local networks must be manually added to wallet.")
       }
 
       if (isAlternativeGasTokenEnabled) {

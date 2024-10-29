@@ -17,22 +17,6 @@ interface TypographyProps extends MuiTypographyProps {
   primary?: boolean
 }
 
-const AddNetworkButton = props => {
-  const { chainId, onReadd } = props
-
-  const { walletName, chainId: currentChainId } = useRainbowContext()
-
-  const addToWallet = async () => {
-    if (currentChainId === chainId) {
-      onReadd()
-      return
-    }
-    await switchNetwork(chainId)
-  }
-
-  return <TextButton onClick={addToWallet}>Add to {walletName}</TextButton>
-}
-
 const Typography = styled(MuiTypography, {
   shouldForwardProp: prop => prop !== "bold" && prop !== "primary",
 })<TypographyProps>(({ theme, bold, primary }) => ({
@@ -55,6 +39,22 @@ const WalletConfig = () => {
 
   const handleClose = () => {
     setTip(null)
+  }
+
+  const AddNetworkButton = props => {
+    const { chainId, onReadd } = props
+
+    const { walletName, chainId: currentChainId } = useRainbowContext()
+
+    const addToWallet = async () => {
+      if (currentChainId === chainId) {
+        onReadd()
+        return
+      }
+      await switchNetwork(chainId, setTip)
+    }
+
+    return <TextButton onClick={addToWallet}>Add to {walletName}</TextButton>
   }
 
   return (
