@@ -1,4 +1,3 @@
-import { isAddress } from "ethers"
 import { useEffect, useMemo, useState } from "react"
 import { makeStyles } from "tss-react/mui"
 
@@ -8,6 +7,7 @@ import { ReactComponent as EditSvg } from "@/assets/svgs/bridge/edit.svg"
 import { ReactComponent as RemoveSvg } from "@/assets/svgs/bridge/remove.svg"
 import { ReactComponent as WarningSvg } from "@/assets/svgs/bridge/warning.svg"
 import TextButton from "@/components/TextButton"
+import useInputAddress from "@/hooks/useInputAddress"
 
 const useStyles = makeStyles()(theme => ({
   title: {
@@ -33,44 +33,47 @@ const useStyles = makeStyles()(theme => ({
 const CustomiseRecipient = props => {
   const { handleChangeRecipient, bridgeWarning, disabled, readOnly } = props
   const { classes, cx } = useStyles()
-
-  const [isEditing, setIsEditing] = useState(false)
-
-  const [recipient, setRecipient] = useState("")
-  const [isValidate, setIsValidate] = useState(false)
-
-  const handleChangeAddress = recipient => {
-    setRecipient(recipient.trim())
-  }
-
-  useEffect(() => {
-    if (isAddress(recipient)) {
-      handleChangeRecipient(recipient)
-      setIsValidate(true)
-    } else {
-      handleChangeRecipient(null)
-      setIsValidate(false)
-    }
-  }, [recipient])
+  const [enableCustomRecipient, setEnableCustomRecipient] = useState(false)
+  const {
+    ens,
+    inputValue: addressInputValue,
+    isValidInput,
+    isValidEns,
+    isValidAddress,
+    resolvingEns,
+    ensServerError,
+    setInputValue: setAddressInputValue,
+  } = useInputAddress({
+    onAddressChange: handleChangeRecipient,
+  })
 
   useEffect(() => {
-    if (!isEditing) {
-      setRecipient("")
-    }
-  }, [isEditing])
+    if (!enableCustomRecipient) setAddressInputValue("")
+  }, [enableCustomRecipient])
+
+  const invalidUseInputAddressErrorMessage = useMemo(() => {
+    if (isValidInput) return
+    if (resolvingEns) return "Resolving ENS..."
+    if (ensServerError) return ensServerError
+    if (ens && !isValidEns) return "Invalid ENS name"
+    if (!isValidAddress && !isValidEns) return "Invalid wallet address or ENS name"
+    if (!isValidAddress) return "Invalid wallet address"
+    if (!isValidEns) return "Invalid ENS name"
+  }, [resolvingEns, isValidInput, isValidAddress, isValidEns, ensServerError])
 
   const showErrorMessage = useMemo(() => {
-    return recipient && !isValidate && !(!!bridgeWarning && bridgeWarning !== ">0")
-  }, [isValidate, recipient, bridgeWarning])
+    return resolvingEns || (!isValidInput && !(!!bridgeWarning && bridgeWarning !== ">0"))
+  }, [isValidInput, bridgeWarning, resolvingEns])
+
   return (
     <Box sx={{ width: "100%", opacity: !!bridgeWarning && bridgeWarning !== ">0" ? "0.3" : 1 }}>
-      {isEditing ? (
+      {enableCustomRecipient ? (
         <Box>
           <Stack direction="row" justifyContent="space-between" sx={{ mb: "0.4rem" }}>
             <Typography className={classes.title} variant="h5">
               Customise recipient
             </Typography>
-            <Typography onClick={() => setIsEditing(false)} className={classes.title}>
+            <Typography onClick={() => setEnableCustomRecipient(false)} className={classes.title}>
               <SvgIcon sx={{ fontSize: "1.6rem", marginRight: "0.4rem" }} component={RemoveSvg} inheritViewBox />
               <span style={{ color: "#FF684B" }}>Remove</span>
             </Typography>
@@ -88,9 +91,9 @@ const CustomiseRecipient = props => {
                 borderRadius: "1rem",
               }}
               disabled={disabled}
-              onChange={v => handleChangeAddress(v.target.value)}
-              placeholder="Enter a different wallet address"
-              value={recipient}
+              onChange={v => setAddressInputValue(v.target.value)}
+              placeholder="Enter a different wallet address or ENS name"
+              value={addressInputValue}
             />
           </Stack>
         </Box>
@@ -99,7 +102,7 @@ const CustomiseRecipient = props => {
           className={cx(disabled && classes.disabledButton, readOnly && classes.readOnlyButton, classes.title)}
           disabled={disabled}
           readOnly={readOnly}
-          onClick={() => setIsEditing(true)}
+          onClick={() => setEnableCustomRecipient(true)}
         >
           Customise recipient
           <SvgIcon sx={{ fontSize: "1.6rem", marginLeft: "0.4rem" }} component={EditSvg} inheritViewBox></SvgIcon>
@@ -117,7 +120,7 @@ const CustomiseRecipient = props => {
             direction="row"
             style={{ fontSize: "1.6rem", display: "inline-flex", verticalAlign: "middle", alignItems: "center", color: "#FF684B" }}
           >
-            Invalid wallet address
+            {invalidUseInputAddressErrorMessage}
           </Stack>
         </Box>
       ) : null}

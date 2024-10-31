@@ -127,6 +127,7 @@ REACT_APP_NFT_VIEWER_URL="https://nft.scroll.io"
 REACT_APP_NFT_API_URI="https://nft.scroll.io"
 REACT_APP_OKX_URI="https://www.okx.com/web3/explorer/scroll?channelId=scroll"
 REACT_APP_BLOCKSCOUT_URI="https://scroll.blockscout.com"
+REACT_APP_ENS_API_URL="https://ens.scroll.cat"
 
 [context.deploy-preview.environment]
 REACT_APP_SCROLL_ENVIRONMENT = "Staging"
@@ -298,5 +299,3 @@ REACT_APP_EAS_EXPLORER_URL = "https://scroll.easscan.org"
 REACT_APP_ETHEREUM_YEAR_BADGE_API_URI = "https://nft.scroll.io"
 REACT_APP_BADGE_REGISTRY_URL="https://badge-registry.canvas.scroll.cat"
 REACT_APP_BADGE_INDEXER_URL="https://canvas-indexer.scroll.cat"
-
-
