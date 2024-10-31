@@ -202,6 +202,12 @@ const mainnetNavigations = [
             href: requireEnv("REACT_APP_OKX_URI"),
             isExternal: true,
           },
+          {
+            label: "Blockscout Explorer",
+            key: "blockscout",
+            href: requireEnv("REACT_APP_BLOCKSCOUT_URI"),
+            isExternal: true,
+          },
         ],
       },
     ],
