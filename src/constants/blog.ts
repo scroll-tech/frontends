@@ -1,5 +1,6 @@
 export const BLOG_LANGUAGE_LIST = [
   { label: "English", key: "en" },
+  { label: "Español", key: "es" },
   { label: "Türkçe", key: "tr" },
 ]
 
@@ -52,6 +53,21 @@ export const LANGUAGE_MAP = {
     oldest: "Oldest",
     filters: "Filters",
     more_articles: "More articles from Scroll",
+  },
+  es: {
+    title: "Scroll Blog",
+    sub_title: "Aprende sobre la tecnología, las investigaciones y los últimos desarrollos de Scroll.",
+    category: "Categoría",
+    all: "Todo",
+    announcement: "Anuncio",
+    general: "General",
+    technical: "Técnico",
+    ecosystem_highlights: "Lo mejor del ecosistema",
+    sort: "Ordenar por",
+    newest: "Más reciente",
+    oldest: "Más antiguo",
+    filters: "Filtros",
+    more_articles: "Más artículos de Scroll",
   },
   tr: {
     title: "Scroll Blog",

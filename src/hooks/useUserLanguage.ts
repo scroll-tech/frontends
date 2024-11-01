@@ -9,6 +9,8 @@ function getUserLanguage() {
   // Check if the language is Turkish
   if (userLanguage.startsWith("tr")) {
     return "tr" // Return 'tr' for Turkish
+  } else if (userLanguage.startsWith("es")) {
+    return "es" // Return 'es' for Español
   } else {
     return "en" // Return 'en' for any other language
   }
