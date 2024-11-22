@@ -70,13 +70,13 @@ status = 301
 
 [[redirects]]
 from = "/canvas/listing"
-to = "https://badge-registry.canvas.scroll.cat/"
+to = "https://badge-registry-redirect.canvas.scroll.cat/badge-registry"
 status = 200
 force = true
 
 [[redirects]]
-from = "/_next/*"
-to = "https://badge-registry.canvas.scroll.cat/_next/:splat"
+from = "/badge-registry/*"
+to = "https://badge-registry-redirect.canvas.scroll.cat/badge-registry/:splat"
 status = 200
 
 [[redirects]]

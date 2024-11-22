@@ -31,3 +31,6 @@ yarn-error.log*
 next-env.d.ts
 
 /src/pages/blog/data.json
+
+# Local Netlify folder
+.netlify
