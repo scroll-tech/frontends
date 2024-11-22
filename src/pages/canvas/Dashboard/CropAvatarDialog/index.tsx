@@ -6,7 +6,7 @@ import { useWalletClient } from "wagmi"
 
 import { Stack } from "@mui/material"
 
-import { setCanvasAvatarURL } from "@/apis/canvas"
+import { setCanvasAvatarURL } from "@/apis/canvas-profile"
 import LoadingButton from "@/components/LoadingButton"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useSnackbar from "@/hooks/useSnackbar"

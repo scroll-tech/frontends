@@ -1,15 +1,35 @@
 import { create } from "zustand"
 
+export enum NFTsDialogTypeEnum {
+  HIDDEN = "",
+  CLAIM = "claim",
+  SET_UP = "set-up",
+}
+
+export enum EnsSubdomainDialogTypeEnum {
+  HIDDEN = "",
+  CLAIM = "claim",
+  CREATE_SUBDOMAIN = "create",
+  UPDATE_SUBDOMAIN = "update",
+  SUCCESS = "success",
+}
+
 interface CanvasProfileStore {
   cropAvatarDialogVisible: boolean
   previewAvatarURL: any
-  NFTsDialogVisible: boolean
+
+  ensSubdomainDialogType: EnsSubdomainDialogTypeEnum
+  ensSubdomainDialogAllowBack: boolean
+
+  NFTsDialogType: NFTsDialogTypeEnum
+  NFTsDialogAllowBack: boolean
   editProfileVisible: boolean
   NFTImageURL: string
 
   changeCropAvatarDialogVisible: (visible: boolean) => void
   changePreviewAvatarURL: (base64: any) => void
-  changeNFTsDialogVisible: (visible: boolean) => void
+  changeEnsSubdomainDialogType: (type: EnsSubdomainDialogTypeEnum, allowBack?: boolean) => void
+  changeNFTsDialogType: (type: NFTsDialogTypeEnum, allowBack?: boolean) => void
   changeEditProfileVisible: (editProfileVisible: boolean) => void
   changeNFTImageURL: (NFTImageURL: string) => void
 }
@@ -17,7 +37,10 @@ interface CanvasProfileStore {
 const useCanvasProfileStore = create<CanvasProfileStore>()((set, get) => ({
   cropAvatarDialogVisible: false,
   previewAvatarURL: null,
-  NFTsDialogVisible: false,
+  ensSubdomainDialogType: EnsSubdomainDialogTypeEnum.HIDDEN,
+  ensSubdomainDialogAllowBack: false,
+  NFTsDialogType: NFTsDialogTypeEnum.HIDDEN,
+  NFTsDialogAllowBack: false,
   editProfileVisible: false,
   NFTImageURL: "",
 
@@ -31,11 +54,21 @@ const useCanvasProfileStore = create<CanvasProfileStore>()((set, get) => ({
       previewAvatarURL,
     })
   },
-  changeNFTsDialogVisible: NFTsDialogVisible => {
+
+  changeNFTsDialogType: (NFTsDialogType: NFTsDialogTypeEnum, allowBack: boolean = false) => {
     set({
-      NFTsDialogVisible,
+      NFTsDialogType,
+      NFTsDialogAllowBack: allowBack,
     })
   },
+
+  changeEnsSubdomainDialogType: (visible: EnsSubdomainDialogTypeEnum, allowBack: boolean = false) => {
+    set({
+      ensSubdomainDialogType: visible,
+      ensSubdomainDialogAllowBack: allowBack,
+    })
+  },
+
   changeEditProfileVisible: (editProfileVisible: boolean) => {
     set({
       editProfileVisible,

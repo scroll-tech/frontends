@@ -1,11 +1,9 @@
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { useParams } from "react-router-dom"
 
-import { Box, Typography } from "@mui/material"
+import { Box } from "@mui/material"
 import { styled } from "@mui/system"
 
-import { getHeartbeatURL } from "@/apis/canvas"
-import Skeleton from "@/components/Skeleton"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCanvasStore from "@/stores/canvasStore"
 import { sentryDebug } from "@/utils"
@@ -13,6 +11,7 @@ import { sentryDebug } from "@/utils"
 import Avatar from "./Avatar"
 import Badge from "./Badge"
 import EditProfile from "./EditProfile"
+import Name from "./Name"
 
 interface BadgeType {
   attester: string
@@ -55,62 +54,15 @@ const Profile = styled(Box)(({ theme }) => ({
   },
 }))
 
-const Name = styled(Typography)(({ theme }) => ({
-  color: "#FFFFFF",
-  textAlign: "center",
-  fontSize: "3.2rem",
-  fontStyle: "normal",
-  fontWeight: 600,
-  lineHeight: "4.4rem",
-  alignSelf: "center",
-  flexShrink: 0,
-  [theme.breakpoints.down("sm")]: {
-    fontSize: "1.6rem",
-    lineHeight: "2.4rem",
-    height: "2.4rem",
-  },
-}))
-
-const ENSName = styled(Typography)(({ theme }) => ({
-  textAlign: "center",
-  fontSize: "1.8rem",
-  fontStyle: "normal",
-  fontWeight: 600,
-  lineHeight: "2.4rem",
-  alignSelf: "center",
-  flexShrink: 0,
-  background: "linear-gradient(90deg, #FF684B, #FCE595, #4BFFE7)",
-  backgroundSize: "400%",
-  WebkitBackgroundClip: "text",
-  WebkitTextFillColor: "transparent",
-  animation: "gradientAnimation 5s infinite",
-  [theme.breakpoints.down("sm")]: {
-    fontSize: "1.2rem",
-    lineHeight: "1.8rem",
-  },
-  "@keyframes gradientAnimation": {
-    "0%": {
-      backgroundPosition: "0% 50%",
-    },
-    "50%": {
-      backgroundPosition: "100% 50%",
-    },
-    "100%": {
-      backgroundPosition: "0% 50%",
-    },
-  },
-}))
-
 const BadgeWall: React.FC<BadgeWallProps> = props => {
   const { address: othersWalletAddress } = useParams()
   const { badgewidth, gridNum, windowDimensions } = props
   const divRef = useRef<HTMLDivElement>(null)
 
-  const { profileMinted, canvasUsername, queryUsernameLoading, userBadges, orderedAttachedBadges } = useCanvasStore()
+  const { canvasUsername, queryUsernameLoading, userBadges, orderedAttachedBadges } = useCanvasStore()
   const [badges, setBadges] = useState<BadgePosition[]>([])
   const { walletCurrentAddress } = useRainbowContext()
 
-  const realWalletAddress = useMemo(() => othersWalletAddress || walletCurrentAddress, [othersWalletAddress, walletCurrentAddress])
   const profileSize = useMemo(() => (badgewidth * gridNum) / 2 - 1, [badgewidth, gridNum])
 
   const visibleBadges = useMemo(() => {
@@ -179,13 +131,6 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
     return []
   }
 
-  const userInfo = useMemo(() => {
-    return {
-      name: canvasUsername,
-      avatar: getHeartbeatURL(realWalletAddress),
-    }
-  }, [realWalletAddress, canvasUsername, profileMinted])
-
   return (
     <>
       <Profile
@@ -198,17 +143,8 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
       >
         <EditProfile sx={{ position: "absolute", top: "1.6rem", right: "1.6rem" }}></EditProfile>
 
-        <Box sx={{ width: "54%" }}>
-          <Avatar src={userInfo.avatar}></Avatar>
-        </Box>
-        {queryUsernameLoading ? (
-          <Skeleton dark sx={{ width: "6em", height: ["2.4rem", "3.2rem"] }}></Skeleton>
-        ) : (
-          <Name>
-            {userInfo.name}
-            <ENSName>{userInfo.name}.scroll.eth</ENSName>
-          </Name>
-        )}
+        <Avatar sx={{ width: "57%" }}></Avatar>
+        <Name loading={queryUsernameLoading} defaultValue={canvasUsername}></Name>
       </Profile>
       {badges.map((badge, index) => (
         <Badge key={badge.metadata?.id} badge={badge} index={index} badgewidth={badgewidth} />

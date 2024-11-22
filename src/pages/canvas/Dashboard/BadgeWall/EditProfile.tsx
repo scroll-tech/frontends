@@ -1,4 +1,5 @@
-import { useRef } from "react"
+import { useQueryClient } from "@tanstack/react-query"
+import { useMemo, useRef } from "react"
 
 import { Box, IconButton, Menu, MenuItem, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
@@ -8,11 +9,10 @@ import { ReactComponent as LockSvg } from "@/assets/svgs/canvas/lock.svg"
 import Link from "@/components/Link"
 import { CANVAS_AVATAR_MAX_SIZE } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { useAsyncMemo } from "@/hooks"
 import useSnackbar from "@/hooks/useSnackbar"
-import { checkHasBadge } from "@/services/canvasService"
-import useCanvasProfileStore from "@/stores/canvasProfileStore"
+import useCanvasProfileStore, { EnsSubdomainDialogTypeEnum, NFTsDialogTypeEnum } from "@/stores/canvasProfileStore"
 import useCanvasStore from "@/stores/canvasStore"
+import usePerkStore from "@/stores/perksStore"
 
 import Tooltip from "../../components/Tooltip"
 
@@ -44,18 +44,29 @@ const EditMenu = styled<any>(Menu)(({ theme }) => ({
 const EditProfile = props => {
   const { sx } = props
 
-  const { walletCurrentAddress, provider } = useRainbowContext()
+  const { walletCurrentAddress } = useRainbowContext()
   const alertWarning = useSnackbar()
 
+  const queryClient = useQueryClient()
+
   const { changeProfileDialog } = useCanvasStore()
-  const { changePreviewAvatarURL, changeCropAvatarDialogVisible, changeNFTsDialogVisible, editProfileVisible, changeEditProfileVisible } =
-    useCanvasProfileStore()
+  const { perks } = usePerkStore()
+  const {
+    changePreviewAvatarURL,
+    changeCropAvatarDialogVisible,
+    changeNFTsDialogType,
+    changeEnsSubdomainDialogType,
+    editProfileVisible,
+    changeEditProfileVisible,
+  } = useCanvasProfileStore()
 
   const editButtonRef = useRef<null | HTMLButtonElement>(null)
 
-  const isNFTEligible = useAsyncMemo(() => {
-    return checkHasBadge(provider, walletCurrentAddress, "0x3dacAd961e5e2de850F5E027c70b56b5Afa5DfeD")
-  }, [walletCurrentAddress, provider])
+  const ensSubdomain = queryClient.getQueryData(["ensSubdomain", walletCurrentAddress])
+
+  const isNFTEligible = useMemo(() => {
+    return perks.find(item => item.id === "nft-profile-setup")?.claimable
+  }, [perks])
 
   const handleOpenEditMenu = e => {
     changeEditProfileVisible(true)
@@ -63,7 +74,7 @@ const EditProfile = props => {
   const handleCloseEditMenu = () => {
     changeEditProfileVisible(false)
   }
-  const handleOpenNameDialog = () => {
+  const handleOpenUserNameDialog = () => {
     changeProfileDialog(true)
     handleCloseEditMenu()
   }
@@ -92,22 +103,38 @@ const EditProfile = props => {
     reader.readAsDataURL(file)
   }
   const handleOpenPickNFTDialog = () => {
-    changeNFTsDialogVisible(true)
+    changeNFTsDialogType(NFTsDialogTypeEnum.CLAIM)
     handleCloseEditMenu()
   }
 
-  const editMenuItems = [
-    {
-      label: "Edit name",
-      action: handleOpenNameDialog,
-    },
-    {
-      label: "Upload a profile picture",
-      upload: true,
-      // action: handleCloseEditMenu,
-    },
-    { label: "Set an NFT as profile", disabled: !isNFTEligible, action: handleOpenPickNFTDialog },
-  ]
+  const handleOpenChangeENSSubdomainNameDialog = () => {
+    changeEnsSubdomainDialogType(EnsSubdomainDialogTypeEnum.UPDATE_SUBDOMAIN)
+  }
+
+  const editMenuItems = useMemo(
+    () => [
+      // {
+      //   label: "Change subdomain name",
+      //   action: handleOpenChangeENSSubdomainNameDialog,
+      // },
+      ensSubdomain
+        ? {
+            label: "Change subdomain name",
+            action: handleOpenChangeENSSubdomainNameDialog,
+          }
+        : {
+            label: "Change name",
+            action: handleOpenUserNameDialog,
+          },
+      {
+        label: "Upload a profile picture",
+        upload: true,
+      },
+      { label: "Set an NFT as profile", disabled: !isNFTEligible, action: handleOpenPickNFTDialog },
+    ],
+    [ensSubdomain, isNFTEligible],
+  )
+
   return (
     <>
       <IconButton ref={editButtonRef} sx={{ backgroundColor: "#262626 !important", ...sx }} onClick={handleOpenEditMenu}>
@@ -132,6 +159,7 @@ const EditProfile = props => {
             disableFocusListener={!disabled}
             disableTouchListener={!disabled}
             // leaveDelay={500}
+            key={label}
             title={
               <Box sx={{ width: "24.4rem" }}>
                 <Typography sx={{ fontSize: "1.6rem", lineHeight: "2.4rem", fontWeight: 500, color: "primary.contrastText" }}>
@@ -178,6 +206,7 @@ const EditProfile = props => {
             >
               {label}
               {!!upload && <VisuallyHiddenInput id="canvas-avatar" name="file" type="file" accept="image/*" onChange={handlePickPicture} />}
+              {/* {loading && <CircularProgress sx={{ color: "#aaa", ml: "1rem" }} size={18}></CircularProgress>} */}
               {disabled && (
                 <Stack
                   direction="row"

@@ -1,37 +1,34 @@
-import { useMemo } from "react"
+import Img from "react-cool-img"
 
 import { Stack, Typography } from "@mui/material"
 
-const PerkItem = ({ perk }) => {
-  const { title, description, onClick, requires, isClaimed } = perk
-
-  const status = useMemo(() => {
-    const data = requires.map(require => require())
-    return {
-      badges: data.map(item => item.badge),
-    }
-  }, [requires])
+const PerkItem = props => {
+  const { perk, onClick } = props
+  const { title, description, claimed, imageURL } = perk
 
   return (
     <Stack
       textAlign="center"
       p="2.4rem"
-      gap="2.4rem"
+      gap="1.6rem"
       sx={{
         background: "rgba(255, 255, 255, 0.10)",
         borderRadius: "2rem",
         cursor: "pointer",
         position: "relative",
+        alignItems: "center",
         "*:hover": {
-          cursor: "pointer",
+          cursor: "inherit",
         },
       }}
+      role="button"
       onClick={onClick}
     >
-      {isClaimed && (
+      {claimed && (
         <Typography
           sx={{
             fontSize: ["1.2rem"],
+            lineHeight: "1.6rem",
             fontWeight: 600,
             color: "#90F8EA",
             padding: "0.4rem 0.8rem",
@@ -45,12 +42,12 @@ const PerkItem = ({ perk }) => {
           Claimed
         </Typography>
       )}
-      <Typography sx={{ fontSize: ["2.4rem"], fontWeight: 600, color: "primary.contrastText" }}>{title}</Typography>
-      <Typography sx={{ fontSize: ["1.8rem"], color: "primary.contrastText" }}>{description}</Typography>
-      <Stack direction="row" justifyContent="center" gap={"2.4rem"}>
-        {status.badges.map((badge, index) => {
-          return <img alt="" src={badge} style={{ width: "6.4rem", height: "6.4rem" }} key={index} />
-        })}
+      <Typography sx={{ fontSize: ["2.4rem"], lineHeight: ["4rem"], fontWeight: 600, color: "primary.contrastText" }}>{title}</Typography>
+      <Typography sx={{ fontSize: ["1.8rem"], lineHeight: ["2.8rem"], color: "primary.contrastText" }}>{description}</Typography>
+      <Stack direction="row" gap="1.6rem" justifyContent="center">
+        {imageURL.map((url, index) => (
+          <Img src={url} alt="" width="64px" height="64px" />
+        ))}
       </Stack>
     </Stack>
   )

@@ -26,11 +26,3 @@ export const checkBadgeEligibilityURL = (baseUrl, walletAddress, badgeContract) 
 export const claimBadgeURL = (baseUrl, walletAddress, badgeContract) => `${baseUrl}/claim?badge=${badgeContract}&recipient=${walletAddress}`
 
 export const EthereumYearBadgeURL = year => `${requireEnv("REACT_APP_ETHEREUM_YEAR_BADGE_API_URI")}/canvas/year/${year}.webp`
-
-export const fetchUserNFTsURL = (walletAddress, page, pageSize) => `${baseUrl}/acc/${walletAddress}/nfts?page_size=${pageSize}&page_number=${page}`
-
-export const setCanvasAvatarURL = walletAddress => `${baseUrl}/acc/${walletAddress}/set-avatar`
-
-export const fetchAvatarURL = walletAddress => `${baseUrl}/acc/${walletAddress}/avatar`
-
-export const generateAvatarURL = avatar => `${baseUrl}/avatar/${avatar}`

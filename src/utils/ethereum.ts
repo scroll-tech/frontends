@@ -65,3 +65,26 @@ export function generateTypedData(address, sha256 = "", nftContract = "0x0000000
     },
   }
 }
+
+export function generateENSSubdomainTypedData(address, name, timestamp) {
+  const domain = {
+    name: "Scroll Subdomain",
+    version: "1",
+    chainId: CHAIN_ID.L2,
+    verifyingContract: "0xb4f49224c3eb5b2360bdad83ef0f6bf5d5b29702",
+  }
+  const types = {
+    UserSubDomainRegistrationRequest: [
+      { name: "address", type: "address" },
+      { name: "name", type: "string" },
+      { name: "timestamp", type: "string" },
+    ],
+  }
+  return {
+    domain,
+    types,
+    account: address,
+    primaryType: "UserSubDomainRegistrationRequest",
+    message: { address, name, timestamp },
+  }
+}

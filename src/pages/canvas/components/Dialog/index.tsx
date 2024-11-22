@@ -4,7 +4,7 @@ import { ReactComponent as BackSvg } from "@/assets/svgs/canvas/back.svg"
 import { ReactComponent as CloseSvg } from "@/assets/svgs/canvas/close.svg"
 
 const ScrollDialog = props => {
-  const { title, sx, fullWidth, allowBack, noClose, onClose, onBack, children, extra, roof, ...restProps } = props
+  const { title, sx, contentSx = {}, fullWidth, allowBack, noClose, onClose, onBack, children, extra, roof, ...restProps } = props
 
   return (
     <Dialog
@@ -76,6 +76,7 @@ const ScrollDialog = props => {
             // Firefox
             scrollbarWidth: "thin",
             scrollbarColor: "rgba(209, 205, 204, 0.30) transparent",
+            ...contentSx,
           },
           theme => ({
             [theme.breakpoints.down("sm")]: {

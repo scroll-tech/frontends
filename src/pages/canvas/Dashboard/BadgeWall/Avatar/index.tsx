@@ -1,20 +1,20 @@
 import { useQuery } from "@tanstack/react-query"
-import { useMemo } from "react"
 import Img from "react-cool-img"
 
 import { Box } from "@mui/material"
 
-import { fetchAvatarURL, generateAvatarURL } from "@/apis/canvas"
-import { CANVAS_AVATAR_TYPE } from "@/constants"
+import { fetchAvatarURL, generateAvatarURL, generateNFTURL } from "@/apis/canvas-profile"
+import FlipCard from "@/components/FlipCard"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCanvasProfileStore from "@/stores/canvasProfileStore"
 
-import Tooltip from "../../../components/Tooltip"
+import AvatarTooltip from "./AvatarTooltip"
+import HeartbeatAvatar from "./HeartbeatAvatar"
 import NFTAvatar from "./NFTAvatar"
 import PictureAvatar from "./PictureAvatar"
 
 const Avatar = props => {
-  const { src } = props
+  const { sx } = props
 
   const { walletCurrentAddress } = useRainbowContext()
   const { NFTImageURL } = useCanvasProfileStore()
@@ -30,19 +30,19 @@ const Avatar = props => {
     enabled: !NFTImageURL,
   })
 
-  const avatarType = useMemo(() => {
-    if (data?.tokenID) {
-      return CANVAS_AVATAR_TYPE.NFT
-    }
-    if (data?.avatar) {
-      return CANVAS_AVATAR_TYPE.PICTURE
-    }
-    return CANVAS_AVATAR_TYPE.HEARTBEAT
-  }, [data])
-
   const renderAvatar = () => {
     if (NFTImageURL) {
-      return <Img src={NFTImageURL} placeholder="/imgs/canvas/avatarPlaceholder.svg" alt="avatar" width="100%"></Img>
+      return (
+        <FlipCard
+          sx={{ width: "100%", aspectRatio: "1/1" }}
+          frontContent={
+            <AvatarTooltip title="click to view heartbeat">
+              <NFTAvatar src={NFTImageURL}></NFTAvatar>
+            </AvatarTooltip>
+          }
+          backContent={<HeartbeatAvatar></HeartbeatAvatar>}
+        ></FlipCard>
+      )
     }
 
     if (isFetching) {
@@ -50,53 +50,37 @@ const Avatar = props => {
     }
 
     if (data?.tokenID) {
-      return <NFTAvatar contractType={data?.contractType} contractAddress={data?.contract} tokenId={data?.tokenID}></NFTAvatar>
+      return (
+        <FlipCard
+          sx={{ width: "100%", aspectRatio: "1/1" }}
+          frontContent={
+            <AvatarTooltip title="click to view heartbeat">
+              <NFTAvatar src={generateNFTURL(walletCurrentAddress)}></NFTAvatar>
+            </AvatarTooltip>
+          }
+          backContent={<HeartbeatAvatar></HeartbeatAvatar>}
+        ></FlipCard>
+      )
     }
 
     if (data?.avatar) {
-      return <PictureAvatar src={generateAvatarURL(data.avatar)}></PictureAvatar>
+      return (
+        <FlipCard
+          sx={{ width: "100%", aspectRatio: "1/1" }}
+          frontContent={
+            <AvatarTooltip title="click to view heartbeat">
+              <PictureAvatar src={generateAvatarURL(data.avatar)}></PictureAvatar>
+            </AvatarTooltip>
+          }
+          backContent={<HeartbeatAvatar></HeartbeatAvatar>}
+        ></FlipCard>
+      )
     }
 
-    return <Img src={src} placeholder="/imgs/canvas/avatarPlaceholder.svg" alt="avatar" width="100%"></Img>
+    return <HeartbeatAvatar />
   }
 
-  return (
-    <Tooltip
-      title={
-        <>
-          {avatarType !== CANVAS_AVATAR_TYPE.HEARTBEAT && <>click to view heartbeat</>}
-          {avatarType === CANVAS_AVATAR_TYPE.HEARTBEAT && (
-            <Box sx={{ width: "21.4rem" }}>
-              <b>Activity Heartbeat:</b>
-              <br></br>
-              Heart beats faster when you are more active on Scroll
-            </Box>
-          )}
-        </>
-      }
-      followCursor
-      PopperProps={{
-        popperOptions: {
-          modifiers: [
-            {
-              name: "offset",
-              options: {
-                offset: ({ placement, reference, popper }) => {
-                  if (placement === "bottom") {
-                    return [popper.width / 4, 27]
-                  } else {
-                    return [popper.width / 4, 12]
-                  }
-                },
-              },
-            },
-          ],
-        },
-      }}
-    >
-      <Box>{renderAvatar()}</Box>
-    </Tooltip>
-  )
+  return <Box sx={sx}>{renderAvatar()}</Box>
 }
 
 export default Avatar

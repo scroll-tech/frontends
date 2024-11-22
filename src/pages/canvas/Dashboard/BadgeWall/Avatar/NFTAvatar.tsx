@@ -1,46 +1,36 @@
-import { useQuery } from "@tanstack/react-query"
-import { ethers } from "ethers"
+import { motion } from "framer-motion"
 import Img from "react-cool-img"
 
-import ERC721ABI from "@/assets/abis/ERC721ABI.json"
-import ERC1155ABI from "@/assets/abis/ERC1155ABI.json"
-import { TOEKN_TYPE } from "@/constants"
-import { useCanvasContext } from "@/contexts/CanvasContextProvider"
-import { ipfsToBrowserURL } from "@/utils"
+import { Box } from "@mui/material"
+
+const MotionBox = motion(Box)
 
 const NFTAvatar = props => {
-  const { contractType, contractAddress, tokenId } = props
-  const { publicProvider } = useCanvasContext()
-
-  const { data, isLoading } = useQuery({
-    queryKey: [tokenId, contractAddress, contractType],
-    queryFn: async () => {
-      const currentTokenId = BigInt(tokenId)
-      let tokenURI
-      if (contractType === TOEKN_TYPE[721]) {
-        const tokenInstance = new ethers.Contract(contractAddress, ERC721ABI, publicProvider)
-        tokenURI = await tokenInstance.tokenURI(currentTokenId)
-      } else {
-        const tokenInstance = new ethers.Contract(contractAddress, ERC1155ABI, publicProvider)
-        const tokenURI1155 = await tokenInstance.uri(currentTokenId)
-
-        // tokenURI = tokenURI1155.replace(/0x{id}/, tokenId)
-        tokenURI = tokenURI1155.replace(/{id}/, tokenId)
-      }
-
-      const metadataURL = ipfsToBrowserURL(tokenURI)
-      const { image } = await scrollRequest(metadataURL)
-      return ipfsToBrowserURL(image)
-    },
-  })
+  const { src, sx } = props
 
   return (
-    <Img
-      src={isLoading ? "/imgs/canvas/badgePlaceholder.svg" : data || "/imgs/canvas/NFTPlaceholder.svg"}
-      alt="NFT avatar"
-      style={{ aspectRatio: "1 / 1", width: "100%", borderRadius: "0.8rem", objectFit: "contain" }}
-      placeholder="/imgs/canvas/badgePlaceholder.svg"
-    ></Img>
+    <Box sx={{ position: "relative", ...sx }}>
+      <MotionBox
+        sx={{
+          position: "absolute",
+          width: "100%",
+          height: "100%",
+          zIndex: -1,
+          background: "conic-gradient(from 70deg at 36.44% 52.76%, #FF684B 67.75817334651947deg, #FCE595 183.59999656677246deg, #4BFFE7 360deg)",
+          filter: "blur(40px)",
+        }}
+        animate={{ scale: [1, 0.8, 1] }}
+        transition={{ ease: "easeOut", duration: 4, repeat: Infinity }}
+      ></MotionBox>
+      <Img
+        src={src}
+        alt="NFT avatar"
+        style={{ aspectRatio: "1 / 1", width: "100%", borderRadius: "0.8rem", objectFit: "contain" }}
+        placeholder="/imgs/canvas/badgePlaceholder.svg"
+        error="/imgs/canvas/NFTPlaceholder.svg"
+        retry={{ count: 2, delay: 1, acc: "*" }}
+      ></Img>
+    </Box>
   )
 }
 

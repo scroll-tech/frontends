@@ -8,7 +8,7 @@ const NFTCard = props => {
   return (
     <Box sx={{ width: "100%", ...sx }} {...restProps}>
       <Img
-        src={imageUrl || "/imgs/canvas/NFTPlaceholder.svg"}
+        src={imageUrl || "/imgs/canvas/NFTCardPlaceholder.svg"}
         alt={name}
         style={{
           aspectRatio: "1 / 1",
@@ -18,6 +18,7 @@ const NFTCard = props => {
           ...(active ? { outline: "3px solid #fff", outlineOffset: "-3px" } : {}),
         }}
         placeholder="/imgs/canvas/badgePlaceholder.svg"
+        error="/imgs/canvas/NFTCardPlaceholder.svg"
       ></Img>
       <Typography
         sx={{
