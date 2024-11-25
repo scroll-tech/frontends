@@ -175,7 +175,7 @@ REACT_APP_CANVAS_BACKEND_URI="https://skelly-backend-git-sepolia-scroll-tech.ver
 REACT_APP_FFRONTENDS_URL = "https://scroll-skelly.env.scroll.io"
 REACT_APP_EAS_EXPLORER_URL = "https://scroll-sepolia.easscan.org"
 REACT_APP_ETHEREUM_YEAR_BADGE_API_URI = "https://genesis-nft-backend-git-sepolia-scroll-tech.vercel.app"
-REACT_APP_BADGE_REGISTRY_URL="https://badge-registry.canvas.scroll.cat"
+REACT_APP_BADGE_REGISTRY_URL="https://badge-registry.canvas.scroll.cat/badge-registry"
 REACT_APP_BADGE_INDEXER_URL="https://canvas-indexer.scroll.cat"
 
 
@@ -234,7 +234,7 @@ REACT_APP_CANVAS_BACKEND_URI="https://skelly-backend-git-sepolia-scroll-tech.ver
 REACT_APP_FFRONTENDS_URL = "https://sepolia.env.scroll.io"
 REACT_APP_EAS_EXPLORER_URL = "https://scroll-sepolia.easscan.org"
 REACT_APP_ETHEREUM_YEAR_BADGE_API_URI = "https://genesis-nft-backend-git-sepolia-scroll-tech.vercel.app"
-REACT_APP_BADGE_REGISTRY_URL="https://badge-registry.canvas.scroll.cat"
+REACT_APP_BADGE_REGISTRY_URL="https://badge-registry.canvas.scroll.cat/badge-registry"
 REACT_APP_BADGE_INDEXER_URL="https://canvas-indexer.scroll.cat"
 
 
@@ -290,5 +290,5 @@ REACT_APP_CANVAS_BACKEND_URI="https://canvas.scroll.cat"
 REACT_APP_FFRONTENDS_URL = "https://scroll.io"
 REACT_APP_EAS_EXPLORER_URL = "https://scroll.easscan.org"
 REACT_APP_ETHEREUM_YEAR_BADGE_API_URI = "https://nft.scroll.io"
-REACT_APP_BADGE_REGISTRY_URL="https://badge-registry.canvas.scroll.cat"
+REACT_APP_BADGE_REGISTRY_URL="https://badge-registry.canvas.scroll.cat/badge-registry"
 REACT_APP_BADGE_INDEXER_URL="https://canvas-indexer.scroll.cat"
