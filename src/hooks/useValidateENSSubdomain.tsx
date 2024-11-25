@@ -44,7 +44,7 @@ const useValidateENSSubdomain = value => {
       nextHelpText = "Please enter your subdomain name"
     } else if (name.length < 4 || name.length > 15) {
       nextHelpText = <>The subdomain name must consist of 4 to 15 characters.</>
-    } else if (SensitiveWord.some(word => name.toLowerCase().includes(word.toLowerCase()))) {
+    } else if (name.includes(".") || SensitiveWord.some(word => name.toLowerCase().includes(word.toLowerCase()))) {
       nextHelpText = "This subdomain is not allowed"
     } else {
       const ensSubdomain = name + ".scroll.eth"

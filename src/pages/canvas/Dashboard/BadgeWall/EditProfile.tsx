@@ -10,7 +10,7 @@ import Link from "@/components/Link"
 import { CANVAS_AVATAR_MAX_SIZE } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useSnackbar from "@/hooks/useSnackbar"
-import useCanvasProfileStore, { EnsSubdomainDialogTypeEnum, NFTsDialogTypeEnum } from "@/stores/canvasProfileStore"
+import useCanvasProfileStore, { ENSSubdomainDialogTypeEnum, NFTsDialogTypeEnum } from "@/stores/canvasProfileStore"
 import useCanvasStore from "@/stores/canvasStore"
 import usePerkStore from "@/stores/perksStore"
 
@@ -31,13 +31,11 @@ const VisuallyHiddenInput = styled("input")({
 const EditMenu = styled<any>(Menu)(({ theme }) => ({
   "& .MuiPaper-root": {
     borderRadius: "0.5rem",
-    padding: "0 0.8rem",
+    padding: "0.8rem",
     marginTop: "0.6rem",
   },
   "& .MuiMenu-list": {
-    [theme.breakpoints.down("sm")]: {
-      padding: 0,
-    },
+    padding: 0,
   },
 }))
 
@@ -55,7 +53,7 @@ const EditProfile = props => {
     changePreviewAvatarURL,
     changeCropAvatarDialogVisible,
     changeNFTsDialogType,
-    changeEnsSubdomainDialogType,
+    changeENSSubdomainDialogType,
     editProfileVisible,
     changeEditProfileVisible,
   } = useCanvasProfileStore()
@@ -96,6 +94,7 @@ const EditProfile = props => {
       () => {
         changePreviewAvatarURL(reader.result)
         changeCropAvatarDialogVisible(true)
+        handleCloseEditMenu()
       },
       false,
     )
@@ -108,7 +107,8 @@ const EditProfile = props => {
   }
 
   const handleOpenChangeENSSubdomainNameDialog = () => {
-    changeEnsSubdomainDialogType(EnsSubdomainDialogTypeEnum.UPDATE_SUBDOMAIN)
+    changeENSSubdomainDialogType(ENSSubdomainDialogTypeEnum.UPDATE_SUBDOMAIN)
+    handleCloseEditMenu()
   }
 
   const editMenuItems = useMemo(
@@ -137,8 +137,8 @@ const EditProfile = props => {
 
   return (
     <>
-      <IconButton ref={editButtonRef} sx={{ backgroundColor: "#262626 !important", ...sx }} onClick={handleOpenEditMenu}>
-        <SvgIcon sx={{ fontSize: "2.4rem" }} component={EditProfileSvg} inheritViewBox></SvgIcon>
+      <IconButton ref={editButtonRef} sx={{ backgroundColor: "#262626 !important", p: ["5px", "8px"], ...sx }} onClick={handleOpenEditMenu}>
+        <SvgIcon sx={{ fontSize: ["1.4rem", "2.4rem"] }} component={EditProfileSvg} inheritViewBox></SvgIcon>
       </IconButton>
       <EditMenu
         anchorEl={editButtonRef.current}
@@ -192,6 +192,7 @@ const EditProfile = props => {
                 p: "0.8rem",
                 fontSize: "1.6rem",
                 lineHeight: "2.4rem",
+                minHeight: "unset",
                 fontWeight: 600,
                 cursor: disabled ? "default" : "pointer",
                 "&:hover": {

@@ -6,3 +6,11 @@
 .canvas-avatar-cropper .advanced-cropper-stencil-overlay {
   color: rgba(16, 16, 16, 0.6);
 }
+
+@media screen and (max-width: 600px) {
+  .canvas-avatar-cropper.advanced-cropper-boundary {
+    width: 240px;
+    height: 240px;
+    overflow: hidden;
+  }
+}

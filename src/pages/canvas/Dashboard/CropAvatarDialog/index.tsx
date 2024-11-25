@@ -4,16 +4,17 @@ import { CircleStencil } from "react-advanced-cropper"
 import "react-advanced-cropper/dist/style.css"
 import { useWalletClient } from "wagmi"
 
-import { Stack } from "@mui/material"
+import { Stack, Typography } from "@mui/material"
 
 import { setCanvasAvatarURL } from "@/apis/canvas-profile"
-import LoadingButton from "@/components/LoadingButton"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useCheckViewport from "@/hooks/useCheckViewport"
 import useSnackbar from "@/hooks/useSnackbar"
 import Dialog from "@/pages/canvas/components/Dialog"
 import useCanvasProfileStore from "@/stores/canvasProfileStore"
 import { calculateSHA256FromBlob, generateTypedData } from "@/utils"
 
+import PerksButton from "../../components/PerksButton"
 import AvatarCropper from "./AvatarCropper"
 
 interface MutationVariables {
@@ -24,6 +25,8 @@ const CropAvatarDialog = () => {
   const { walletCurrentAddress } = useRainbowContext()
   const { data: client } = useWalletClient()
   const queryClient = useQueryClient()
+
+  const { isMobile } = useCheckViewport()
   // const { data: client } = useConnectorClient<Config>()
   const { cropAvatarDialogVisible, previewAvatarURL, changeCropAvatarDialogVisible, changeEditProfileVisible, changeNFTImageURL } =
     useCanvasProfileStore()
@@ -61,7 +64,7 @@ const CropAvatarDialog = () => {
       changeNFTImageURL("")
       handleCloseCropAvatarDialog()
       queryClient.invalidateQueries({
-        queryKey: ["canvasAvatar"],
+        queryKey: ["canvasAvatar", walletCurrentAddress],
       })
       changeEditProfileVisible(false)
     },
@@ -81,23 +84,47 @@ const CropAvatarDialog = () => {
   }
 
   return (
-    <Dialog title="Edit profile" open={!!cropAvatarDialogVisible} onClose={handleCloseCropAvatarDialog}>
-      <Stack justifyContent="center" alignItems="center" sx={{ mt: "7.2rem", mb: "8.8rem" }}>
-        <AvatarCropper
-          src={previewAvatarURL}
-          ref={cropperRef}
-          stencilComponent={CircleStencil}
-          stencilSize={{
-            width: 320,
-            height: 320,
-          }}
-          boundaryClassName="canvas-avatar-cropper"
-          stencilProps={{ aspectRatio: 1 / 1 }}
-        ></AvatarCropper>
+    <Dialog
+      sx={{
+        "& .MuiDialog-paper": {
+          height: "76rem",
+          width: "64rem",
+          padding: "2.4rem 3.2rem 3.2rem",
+        },
+      }}
+      open={!!cropAvatarDialogVisible}
+      onClose={handleCloseCropAvatarDialog}
+    >
+      <Stack
+        direction="column"
+        sx={{
+          height: "100%",
+          width: "100%",
+          py: "0.8rem",
+          alignItems: "center",
+        }}
+        textAlign="center"
+      >
+        <Typography sx={{ fontSize: ["2rem", "3.2rem"], lineHeight: ["3.2rem", "4.8rem"], fontWeight: 600, color: "primary.contrastText" }}>
+          Edit profile
+        </Typography>
+        <Stack justifyContent="center" alignItems="center" sx={{ flex: 1 }}>
+          <AvatarCropper
+            src={previewAvatarURL}
+            ref={cropperRef}
+            stencilComponent={CircleStencil}
+            stencilSize={{
+              width: isMobile ? 240 : 320,
+              height: isMobile ? 240 : 320,
+            }}
+            boundaryClassName="canvas-avatar-cropper"
+            stencilProps={{ aspectRatio: 1 / 1 }}
+          ></AvatarCropper>
+        </Stack>
+        <PerksButton sx={{ mt: ["3.2rem", "1.6rem"] }} loading={isPending} onClick={handleApplyAvatar}>
+          Sign and Apply
+        </PerksButton>
       </Stack>
-      <LoadingButton loading={isPending} sx={{ borderRadius: "0.8rem", width: "100%", fontSize: "2rem", padding: 0 }} onClick={handleApplyAvatar}>
-        Sign and Apply
-      </LoadingButton>
     </Dialog>
   )
 }

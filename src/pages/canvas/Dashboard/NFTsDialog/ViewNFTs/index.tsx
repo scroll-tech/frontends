@@ -4,8 +4,7 @@ import Img from "react-cool-img"
 import { useInView } from "react-intersection-observer"
 import { useWalletClient } from "wagmi"
 
-import { Box, Skeleton, Typography } from "@mui/material"
-import { Stack } from "@mui/system"
+import { Box, Skeleton, Stack, Typography } from "@mui/material"
 
 import { fetchUserNFTsURL, setCanvasAvatarURL } from "@/apis/canvas-profile"
 import LoadingButton from "@/components/LoadingButton"
@@ -13,6 +12,7 @@ import LoadingPage from "@/components/LoadingPage"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useSnackbar from "@/hooks/useSnackbar"
+import PerksButton from "@/pages/canvas/components/PerksButton"
 import useCanvasProfileStore, { NFTsDialogTypeEnum } from "@/stores/canvasProfileStore"
 import { generateTypedData } from "@/utils"
 
@@ -63,12 +63,12 @@ const ViewNFTs = () => {
       }
       return { assets, nextPage }
     },
-    // initialData: { pages: [{ assets: [], nextPageToken: "" }], pageParams: [undefined] },
     initialPageParam: 1,
     getNextPageParam: lastPage => lastPage?.nextPage || undefined,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     enabled: NFTsDialogType === NFTsDialogTypeEnum.SET_UP,
+    gcTime: 2e3,
   })
 
   const { mutateAsync: setNFTAvatarMutation, isPending } = useMutation({
@@ -91,7 +91,7 @@ const ViewNFTs = () => {
       changeNFTImageURL(selectedNFT.imageUrl as string)
       handleCloseNFTsDialog()
       queryClient.invalidateQueries({
-        queryKey: ["canvasAvatar"],
+        queryKey: ["canvasAvatar", walletCurrentAddress],
       })
     },
     onError: error => {
@@ -159,22 +159,24 @@ const ViewNFTs = () => {
 
   return (
     <>
-      <Typography sx={{ fontSize: "3.2rem", lineHeight: "4.8rem", fontWeight: 600, textAlign: "center", color: "primary.contrastText" }}>
+      <Typography
+        sx={{ fontSize: ["2rem", "3.2rem"], lineHeight: ["3.2rem", "4.8rem"], fontWeight: 600, textAlign: "center", color: "primary.contrastText" }}
+      >
         Choose an NFT
       </Typography>
       {isLoading && (
         <LoadingPage
-          height="62.8rem"
+          sx={{ flex: 1 }}
           component={<Img src="/imgs/canvas/Scrolly_Coding_s.webp" alt="Coding Scrolly" width={isMobile ? "120" : "200"} />}
         ></LoadingPage>
       )}
       {!isFetching && data?.pages.every(page => !page.assets.length) && (
-        <Stack justifyContent="center" sx={{ height: "62.8rem" }}>
+        <Stack justifyContent="center" sx={{ flex: 1 }}>
           <NoData title="No NFTs"></NoData>
         </Stack>
       )}
       {error && !data?.pages.length && (
-        <Stack justifyContent="center" sx={{ height: "62.8rem" }}>
+        <Stack justifyContent="center" sx={{ flex: 1 }}>
           <Error
             title="Oops! Something went wrong"
             action={
@@ -190,11 +192,13 @@ const ViewNFTs = () => {
           <Box
             sx={{
               display: "grid",
-              gridTemplateColumns: "repeat(3, 18rem)",
+              gridTemplateColumns: ["1fr", "repeat(3, 18rem)"],
               gap: "1.6rem",
               mt: "2.4rem",
-              mb: "3.6rem",
-              height: "49.4rem",
+              mb: ["2.4rem", "3.6rem"],
+              width: ["calc(100% + 4rem)", "calc(100% + 6.4rem)"],
+              px: ["2rem", "3.2rem"],
+              flex: 1,
               overflowY: "auto",
             }}
           >
@@ -215,23 +219,18 @@ const ViewNFTs = () => {
               </>
             ))}
             {(hasNextPage || isFetchingNextPage) && (
-              <Stack ref={ref} direction="column" alignItems="center" gap="1.6rem" sx={{ width: "100%" }}>
+              <Stack ref={ref} alignItems="center" gap="1.6rem" sx={{ flexDirection: ["row", "column"], width: "100%" }}>
                 <Skeleton
                   variant="rounded"
-                  sx={{ width: "100%", height: "auto", aspectRatio: "1 / 1", backgroundColor: "#383838", borderRadius: "0.8rem" }}
+                  sx={{ width: ["8rem", "100%"], height: "auto", aspectRatio: "1 / 1", backgroundColor: "#383838", borderRadius: "0.8rem" }}
                 ></Skeleton>
-                <Typography sx={{ fontSize: "1.8rem", fontWeight: 600, color: "primary.contrastText" }}>loading{dots}</Typography>
+                <Typography sx={{ fontSize: ["1.6rem", "1.8rem"], fontWeight: 600, color: "primary.contrastText" }}>loading{dots}</Typography>
               </Stack>
             )}
           </Box>
-          <LoadingButton
-            loading={isPending}
-            disabled={!selectedNFT.contractAddress}
-            sx={{ borderRadius: "1rem", width: "100%", height: "5.6rem", fontSize: "2rem" }}
-            onClick={handleApplyNFT}
-          >
+          <PerksButton loading={isPending} disabled={!selectedNFT.contractAddress} onClick={handleApplyNFT}>
             Sign and Apply
-          </LoadingButton>
+          </PerksButton>
         </>
       )}
     </>

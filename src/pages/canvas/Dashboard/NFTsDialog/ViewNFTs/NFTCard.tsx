@@ -1,18 +1,21 @@
 import Img from "react-cool-img"
 
-import { Box, Typography } from "@mui/material"
+import { Stack, Typography } from "@mui/material"
+
+import useCheckViewport from "@/hooks/useCheckViewport"
 
 const NFTCard = props => {
   const { name, collectionName, tokenId, imageUrl, sx, active, ...restProps } = props
+  const { isMobile } = useCheckViewport()
 
   return (
-    <Box sx={{ width: "100%", ...sx }} {...restProps}>
+    <Stack sx={{ width: "100%", flexDirection: ["row", "column"], gap: ["1.6rem", 0], alignItems: "center", ...sx }} {...restProps}>
       <Img
         src={imageUrl || "/imgs/canvas/NFTCardPlaceholder.svg"}
         alt={name}
         style={{
           aspectRatio: "1 / 1",
-          width: "100%",
+          width: isMobile ? "8rem" : "100%",
           borderRadius: "0.8rem",
           objectFit: "contain",
           ...(active ? { outline: "3px solid #fff", outlineOffset: "-3px" } : {}),
@@ -22,22 +25,22 @@ const NFTCard = props => {
       ></Img>
       <Typography
         sx={{
-          fontSize: "1.8rem",
-          lineHeight: "2.8rem",
+          fontSize: ["1.6rem", "1.8rem"],
+          lineHeight: ["2.4rem", "2.8rem"],
           fontWeight: 600,
-          textAlign: "center",
+          textAlign: ["left", "center"],
           display: "-webkit-box",
           WebkitBoxOrient: "vertical",
           WebkitLineClamp: "2",
           overflow: "hidden",
           color: "primary.contrastText",
           cursor: "inherit",
-          mt: "1.6rem",
+          mt: [0, "1.6rem"],
         }}
       >
         {name || `${collectionName} ${tokenId}`}
       </Typography>
-    </Box>
+    </Stack>
   )
 }
 

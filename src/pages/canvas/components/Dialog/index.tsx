@@ -53,7 +53,7 @@ const ScrollDialog = props => {
           </IconButton>
         )}
 
-        <Typography sx={{ fontSize: ["2.4rem", "3.2rem"], lineHeight: ["2.8rem", "4.8rem"], color: "primary.contrastText", fontWeight: 600 }}>
+        <Typography sx={{ fontSize: ["2.4rem", "3.2rem"], lineHeight: ["2.8rem", "4rem"], color: "primary.contrastText", fontWeight: 600 }}>
           {title}
         </Typography>
         {!noClose && (
@@ -65,6 +65,7 @@ const ScrollDialog = props => {
       <DialogContent
         sx={[
           {
+            height: "calc(100% - 4rem)",
             padding: 0,
             "&::-webkit-scrollbar-thumb": {
               backgroundColor: "rgba(209, 205, 204, 0.30)",

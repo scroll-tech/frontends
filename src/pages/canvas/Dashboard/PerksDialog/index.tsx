@@ -5,7 +5,7 @@ import { Stack } from "@mui/material"
 
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import Dialog from "@/pages/canvas/components/Dialog"
-import useCanvasProfileStore, { EnsSubdomainDialogTypeEnum, NFTsDialogTypeEnum } from "@/stores/canvasProfileStore"
+import useCanvasProfileStore, { ENSSubdomainDialogTypeEnum, NFTsDialogTypeEnum } from "@/stores/canvasProfileStore"
 import useCanvasStore from "@/stores/canvasStore"
 import usePerkStore from "@/stores/perksStore"
 
@@ -14,7 +14,7 @@ import PerkItem from "./PerkItem"
 const PerksDialog = () => {
   const { perksDialogVisible, changePerksDialogVisible, userBadges } = useCanvasStore()
 
-  const { changeNFTsDialogType, changeEnsSubdomainDialogType } = useCanvasProfileStore()
+  const { changeNFTsDialogType, changeENSSubdomainDialogType } = useCanvasProfileStore()
   const { walletCurrentAddress } = useRainbowContext()
   const { perks, generatePerks } = usePerkStore()
   const queryClient = useQueryClient()
@@ -29,7 +29,7 @@ const PerksDialog = () => {
     {
       id: "claim-ens-subdomain",
       action: () => {
-        changeEnsSubdomainDialogType(EnsSubdomainDialogTypeEnum.CLAIM, true)
+        changeENSSubdomainDialogType(ENSSubdomainDialogTypeEnum.CLAIM, true)
         handleClosePerksDialog()
       },
     },
@@ -60,12 +60,20 @@ const PerksDialog = () => {
       sx={{
         "& .MuiDialog-paper": {
           height: "76rem",
+          width: "64rem",
+          padding: "2.4rem 3.2rem 3.2rem",
         },
       }}
       onClose={handleClosePerksDialog}
       open={perksDialogVisible}
     >
-      <Stack maxWidth="57.6rem" mt={"2.4rem"} gap={"2.4rem"}>
+      <Stack
+        sx={{
+          height: "100%",
+          pt: ["0.8rem", "2.4rem"],
+          gap: "2.4rem",
+        }}
+      >
         {perks.map((perk, index) => (
           <PerkItem perk={perk} key={index} onClick={pickPerkAction(perk.id)} />
         ))}

@@ -1,3 +1,5 @@
+import { Stack } from "@mui/material"
+
 import Dialog from "@/pages/canvas/components/Dialog"
 import useCanvasProfileStore, { NFTsDialogTypeEnum } from "@/stores/canvasProfileStore"
 import useCanvasStore from "@/stores/canvasStore"
@@ -24,6 +26,8 @@ const NFTsDialog = () => {
       sx={{
         "& .MuiDialog-paper": {
           height: "76rem",
+          width: "64rem",
+          padding: "2.4rem 3.2rem 3.2rem",
         },
       }}
       allowBack={NFTsDialogAllowBack}
@@ -32,8 +36,19 @@ const NFTsDialog = () => {
       open={NFTsDialogType !== NFTsDialogTypeEnum.HIDDEN}
       onClose={handleCloseNFTsDialog}
     >
-      {NFTsDialogType === NFTsDialogTypeEnum.CLAIM && <SetUpNFTProfile></SetUpNFTProfile>}
-      {NFTsDialogType === NFTsDialogTypeEnum.SET_UP && <ViewNFTs></ViewNFTs>}
+      <Stack
+        direction="column"
+        sx={{
+          height: "100%",
+          width: "100%",
+          py: "0.8rem",
+          alignItems: "center",
+        }}
+        textAlign="center"
+      >
+        {NFTsDialogType === NFTsDialogTypeEnum.CLAIM && <SetUpNFTProfile></SetUpNFTProfile>}
+        {NFTsDialogType === NFTsDialogTypeEnum.SET_UP && <ViewNFTs></ViewNFTs>}
+      </Stack>
     </Dialog>
   )
 }

@@ -21,15 +21,15 @@ const Avatar = props => {
 
   const { data, isFetching } = useQuery({
     queryKey: ["canvasAvatar", walletCurrentAddress],
-    queryFn: async () => {
-      return await scrollRequest(fetchAvatarURL(walletCurrentAddress))
+    queryFn: () => {
+      return scrollRequest(fetchAvatarURL(walletCurrentAddress))
     },
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     enabled: !NFTImageURL,
   })
-
+  // alert(failureReason)
   const renderAvatar = () => {
     if (NFTImageURL) {
       return (

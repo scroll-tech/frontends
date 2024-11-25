@@ -19,9 +19,8 @@ const UserName = styled(Typography)(({ theme }) => ({
   alignSelf: "center",
   flexShrink: 0,
   [theme.breakpoints.down("sm")]: {
-    fontSize: "1.6rem",
-    lineHeight: "2.4rem",
-    height: "2.4rem",
+    fontSize: "1.4rem",
+    lineHeight: "2rem",
   },
 }))
 
@@ -48,11 +47,14 @@ const Name = props => {
   })
 
   if (loading || isFetching) {
-    return <Skeleton dark sx={{ width: "8em", height: ["2.4rem", "3.2rem"] }}></Skeleton>
+    return <Skeleton dark sx={{ width: "8em", height: ["2rem", "2.4rem"] }}></Skeleton>
   }
 
   if (ensSubdomain) {
-    return <ENSSubdomain>{ensSubdomain}</ENSSubdomain>
+    const [name] = ensSubdomain.split(".")
+    return (
+      <ENSSubdomain sx={{ maxWidth: "100%", px: "1.5rem", whiteSpace: "pre-wrap", wordBreak: "keep-all" }}>{name}.&#8203;scroll.eth</ENSSubdomain>
+    )
   }
 
   if (isError) {

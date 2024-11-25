@@ -6,7 +6,7 @@ export enum NFTsDialogTypeEnum {
   SET_UP = "set-up",
 }
 
-export enum EnsSubdomainDialogTypeEnum {
+export enum ENSSubdomainDialogTypeEnum {
   HIDDEN = "",
   CLAIM = "claim",
   CREATE_SUBDOMAIN = "create",
@@ -18,8 +18,8 @@ interface CanvasProfileStore {
   cropAvatarDialogVisible: boolean
   previewAvatarURL: any
 
-  ensSubdomainDialogType: EnsSubdomainDialogTypeEnum
-  ensSubdomainDialogAllowBack: boolean
+  ENSSubdomainDialogType: ENSSubdomainDialogTypeEnum
+  ENSSubdomainDialogAllowBack: boolean
 
   NFTsDialogType: NFTsDialogTypeEnum
   NFTsDialogAllowBack: boolean
@@ -28,7 +28,7 @@ interface CanvasProfileStore {
 
   changeCropAvatarDialogVisible: (visible: boolean) => void
   changePreviewAvatarURL: (base64: any) => void
-  changeEnsSubdomainDialogType: (type: EnsSubdomainDialogTypeEnum, allowBack?: boolean) => void
+  changeENSSubdomainDialogType: (type: ENSSubdomainDialogTypeEnum, allowBack?: boolean) => void
   changeNFTsDialogType: (type: NFTsDialogTypeEnum, allowBack?: boolean) => void
   changeEditProfileVisible: (editProfileVisible: boolean) => void
   changeNFTImageURL: (NFTImageURL: string) => void
@@ -37,8 +37,8 @@ interface CanvasProfileStore {
 const useCanvasProfileStore = create<CanvasProfileStore>()((set, get) => ({
   cropAvatarDialogVisible: false,
   previewAvatarURL: null,
-  ensSubdomainDialogType: EnsSubdomainDialogTypeEnum.HIDDEN,
-  ensSubdomainDialogAllowBack: false,
+  ENSSubdomainDialogType: ENSSubdomainDialogTypeEnum.HIDDEN,
+  ENSSubdomainDialogAllowBack: false,
   NFTsDialogType: NFTsDialogTypeEnum.HIDDEN,
   NFTsDialogAllowBack: false,
   editProfileVisible: false,
@@ -62,10 +62,10 @@ const useCanvasProfileStore = create<CanvasProfileStore>()((set, get) => ({
     })
   },
 
-  changeEnsSubdomainDialogType: (visible: EnsSubdomainDialogTypeEnum, allowBack: boolean = false) => {
+  changeENSSubdomainDialogType: (visible: ENSSubdomainDialogTypeEnum, allowBack: boolean = false) => {
     set({
-      ensSubdomainDialogType: visible,
-      ensSubdomainDialogAllowBack: allowBack,
+      ENSSubdomainDialogType: visible,
+      ENSSubdomainDialogAllowBack: allowBack,
     })
   },
 

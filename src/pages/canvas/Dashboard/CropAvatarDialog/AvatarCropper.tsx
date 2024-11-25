@@ -23,7 +23,7 @@ const AvatarCropper = forwardRef<FixedCropperRef, FixedCropperProps>((props: Fix
       }}
       imageRestriction={ImageRestriction.stencil}
       wrapperComponent={CustomWrapper}
-      style={{ height: "32rem" }}
+      // style={{ height: "32rem" }}
       {...restProps}
     />
   )
@@ -67,7 +67,7 @@ const Navigation = props => {
   }
 
   return (
-    <Stack direction="row" alignItems="center" gap="1.6rem" sx={{ width: "32rem", mt: "3.6rem" }}>
+    <Stack direction="row" alignItems="center" gap="1.6rem" sx={{ width: ["24rem", "32rem"], mt: "3.2rem" }}>
       <IconButton sx={{ p: 0 }} onClick={handleZoomOut}>
         <SvgIcon sx={{ fontSize: "2.4rem" }} component={ZoomOutSvg} inheritViewBox></SvgIcon>
       </IconButton>

@@ -239,7 +239,6 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
       walletAddress,
       profileAddress,
     )
-    console.log(name, "??????")
     set({
       username: name,
       canvasUsername: name,

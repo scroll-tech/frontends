@@ -11,9 +11,11 @@ const defaultGridNum = 4
 const LoadingText: any = styled(Typography)(({ theme }) => ({
   color: theme.palette.primary.contrastText,
   fontSize: "3.2rem",
+  lineHeight: "4.4rem",
   fontWeight: 600,
   [theme.breakpoints.down("sm")]: {
-    fontSize: "1.6rem",
+    fontSize: "1.4rem",
+    lineHeight: "2rem",
   },
 }))
 
@@ -56,15 +58,15 @@ const LoadingPage = () => {
       <Stack
         direction="column"
         alignItems="center"
-        justifyContent="space-evenly"
         sx={{
           width: `${badgewidth * 2 - 1}px`,
           aspectRatio: "1/1",
           backgroundColor: "text.primary",
+          justifyContent: ["space-evenly", "center"],
           transform: ["translate(0.25px, 0.25px)", "translate(0.5px, 0.5px)", "translate(0.5px, 0.5px)", "translate(0.25px, 0.25px)"],
         }}
       >
-        <Box sx={{ width: "66.67%" }}>
+        <Box sx={{ width: "57%", mb: [0, "calc((43% - 3.2rem) / 5)"] }}>
           <Img
             src="/imgs/canvas/Scrolly_Coding.webp"
             placeholder="/imgs/canvas/avatarPlaceholder.svg"

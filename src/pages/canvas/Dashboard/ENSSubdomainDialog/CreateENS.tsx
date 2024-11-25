@@ -5,11 +5,11 @@ import { useWalletClient } from "wagmi"
 import { Box, InputBase, Stack, Typography } from "@mui/material"
 
 import { claimENSNameURL } from "@/apis/canvas-profile"
-import ScrollLoadingButton from "@/components/LoadingButton"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useSnackbar from "@/hooks/useSnackbar"
 import useValidateENSSubdomain from "@/hooks/useValidateENSSubdomain"
-import useCanvasProfileStore, { EnsSubdomainDialogTypeEnum } from "@/stores/canvasProfileStore"
+import PerksButton from "@/pages/canvas/components/PerksButton"
+import useCanvasProfileStore, { ENSSubdomainDialogTypeEnum } from "@/stores/canvasProfileStore"
 import { generateENSSubdomainTypedData } from "@/utils"
 
 interface MutationVariables {
@@ -17,11 +17,22 @@ interface MutationVariables {
   name: string
 }
 
+const EDIT_SUBDOMAIN_COPY = {
+  [ENSSubdomainDialogTypeEnum.CREATE_SUBDOMAIN]: {
+    title: "Create your subdomain name",
+    description: "Your Canvas username will be replaced by your subdomain, which you can change for free anytime.",
+  },
+  [ENSSubdomainDialogTypeEnum.UPDATE_SUBDOMAIN]: {
+    title: "Change your subdomain name",
+    description: "You can change for free anytime.",
+  },
+}
+
 const CreateENS = () => {
   const { data: client } = useWalletClient()
 
   const { walletCurrentAddress } = useRainbowContext()
-  const { changeEnsSubdomainDialogType } = useCanvasProfileStore()
+  const { changeENSSubdomainDialogType, ENSSubdomainDialogType } = useCanvasProfileStore()
 
   const queryClient = useQueryClient()
 
@@ -50,11 +61,16 @@ const CreateENS = () => {
         }),
       })
     },
-    onSuccess: data => {
-      queryClient.invalidateQueries({
-        queryKey: ["ensSubdomain"],
+    onSuccess: async data => {
+      await queryClient.invalidateQueries({
+        queryKey: ["ensSubdomain", walletCurrentAddress],
       })
-      changeEnsSubdomainDialogType(EnsSubdomainDialogTypeEnum.SUCCESS)
+      if (ENSSubdomainDialogType === ENSSubdomainDialogTypeEnum.CREATE_SUBDOMAIN) {
+        changeENSSubdomainDialogType(ENSSubdomainDialogTypeEnum.SUCCESS)
+      } else {
+        alertWarning(`Your subdomain has been successfully updated to ${subdomainName}.scroll.eth`, "success")
+        changeENSSubdomainDialogType(ENSSubdomainDialogTypeEnum.HIDDEN)
+      }
     },
     onError: error => {
       if (error.name !== "UserRejectedRequestError") {
@@ -75,40 +91,43 @@ const CreateENS = () => {
     <>
       <Typography
         sx={{
-          fontSize: ["3.2rem"],
-          lineHeight: ["4.8rem"],
+          fontSize: ["2rem", "3.2rem"],
+          lineHeight: ["3.2rem", "4.8rem"],
           fontWeight: 600,
           color: "primary.contrastText",
           mb: ["0.8rem"],
         }}
       >
-        Create your subdomain name
+        {EDIT_SUBDOMAIN_COPY[ENSSubdomainDialogType].title}
       </Typography>
       <Typography sx={{ fontSize: ["1.8rem"], lineHeight: ["2.8rem"], color: "primary.contrastText" }}>
-        Your Canvas username will be replaced by your subdomain, which you can change for free anytime.
+        {EDIT_SUBDOMAIN_COPY[ENSSubdomainDialogType].description}
       </Typography>
       <Stack justifyContent="center" alignItems="center" sx={{ flex: 1 }}>
-        <Box sx={{ position: "relative", pb: "5.2rem" }}>
+        <Box sx={{ position: "relative", pb: ["4rem", "5.2rem"] }}>
           <InputBase
             value={subdomainName}
+            inputRef={input => input?.focus()}
+            disabled={isPending}
             placeholder="name"
             inputProps={{
               maxLength: 15,
               minLength: 4,
             }}
             sx={{
-              fontSize: "4.8rem",
-              lineHeight: "5.6rem",
+              fontSize: ["2.4rem", "4.8rem"],
+              lineHeight: ["4rem", "5.6rem"],
               fontWeight: 600,
               color: "primary.contrastText",
               ".MuiInputBase-input": {
-                // textAlign: "right",
-                // minWidth: "4em",
+                textAlign: "center",
               },
             }}
-            endAdornment=".scroll.eth"
             onChange={handleChangeSubdomainName}
           ></InputBase>
+          <Typography sx={{ fontSize: ["2.4rem", "4.8rem"], lineHeight: ["4rem", "5.6rem"], fontWeight: 600, color: "primary.contrastText" }}>
+            .scroll.eth
+          </Typography>
           <Stack
             direction="row"
             gap="0.5rem"
@@ -124,14 +143,9 @@ const CreateENS = () => {
           </Stack>
         </Box>
       </Stack>
-      <ScrollLoadingButton
-        sx={{ borderRadius: "1rem", width: "100%", height: "5.6rem", fontSize: "2rem", mt: "2.8rem" }}
-        loading={isPending}
-        disabled={validating || !!helpText || !subdomainName}
-        onClick={handleClaimENSSubdomain}
-      >
+      <PerksButton sx={{ mt: "6.8rem" }} loading={isPending} disabled={validating || !!helpText || !subdomainName} onClick={handleClaimENSSubdomain}>
         Confirm
-      </ScrollLoadingButton>
+      </PerksButton>
     </>
   )
 }

@@ -15,8 +15,8 @@ const ENSName = styled(Typography)(({ theme }) => ({
   WebkitTextFillColor: "transparent",
   animation: "gradientAnimation 5s infinite",
   [theme.breakpoints.down("sm")]: {
-    fontSize: "1.2rem",
-    lineHeight: "1.8rem",
+    fontSize: "1.4rem",
+    lineHeight: "2rem",
   },
   "@keyframes gradientAnimation": {
     "0%": {

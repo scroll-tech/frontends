@@ -2,6 +2,7 @@ import { create } from "zustand"
 
 import BadgeEthereumYearSvg from "@/assets/svgs/canvas-perks/badge-ethereum-year.svg"
 import BadgePlaceholderSvg from "@/assets/svgs/canvas-perks/badge-placeholder.svg"
+// eslint-disable-next-line
 import { ETHEREUM_YEAR_BADGE_ADDRESS, ORIGINS_NFT_BADGE_ADDRESS } from "@/constants/badge"
 import { truncateAddress } from "@/utils"
 
@@ -38,10 +39,10 @@ const usePerkStore = create<EnsSubdomainStore>()(set => ({
         // TODO: SCR holding badge
         checkClaimableFunc: () => {
           const yearBadge = userBadges.find(badge => badge.badgeContract === ETHEREUM_YEAR_BADGE_ADDRESS)
-          const scrBadge = userBadges.find(badge => badge.badgeContract === ORIGINS_NFT_BADGE_ADDRESS)
+          const scrBadge = userBadges.find(badge => badge.badgeContract === ETHEREUM_YEAR_BADGE_ADDRESS)
           return {
             claimable: !!yearBadge && !!scrBadge,
-            imageURL: [yearBadge?.image ?? BadgeEthereumYearSvg, scrBadge?.image ?? BadgePlaceholderSvg],
+            imageURL: [yearBadge ? yearBadge.image : BadgeEthereumYearSvg, scrBadge ? scrBadge.image : BadgePlaceholderSvg],
           }
         },
 
@@ -53,10 +54,10 @@ const usePerkStore = create<EnsSubdomainStore>()(set => ({
         description: "Set your profile picture to an NFT you own to show off your prized possessions.",
         imageURL: [BadgeEthereumYearSvg],
         checkClaimableFunc: () => {
-          const badge = userBadges.find(badge => badge.badgeContract === ETHEREUM_YEAR_BADGE_ADDRESS)
+          const yearBadge = userBadges.find(badge => badge.badgeContract === ETHEREUM_YEAR_BADGE_ADDRESS)
           return {
-            claimable: !!badge,
-            imageURL: [badge?.image ?? BadgeEthereumYearSvg],
+            claimable: !!yearBadge,
+            imageURL: [yearBadge ? yearBadge.image : BadgeEthereumYearSvg],
           }
         },
         claimed: false,
@@ -66,7 +67,6 @@ const usePerkStore = create<EnsSubdomainStore>()(set => ({
       const checkResult = perk.checkClaimableFunc()
       return { ...perk, ...checkResult }
     })
-    console.log(perkListWithClaimable, "perkListWithClaimable")
     set({ perks: perkListWithClaimable.sort((a, b) => (a.claimed === b.claimed ? 0 : a.claimed ? 1 : -1)) })
   },
 

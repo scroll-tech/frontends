@@ -2,14 +2,18 @@ import Img from "react-cool-img"
 
 import { Stack, Typography } from "@mui/material"
 
+import BadgePlaceholderSvg from "@/assets/svgs/canvas-perks/badge-placeholder.svg"
+import useCheckViewport from "@/hooks/useCheckViewport"
+
 const PerkItem = props => {
   const { perk, onClick } = props
   const { title, description, claimed, imageURL } = perk
 
+  const { isMobile } = useCheckViewport()
+
   return (
     <Stack
       textAlign="center"
-      p="2.4rem"
       gap="1.6rem"
       sx={{
         background: "rgba(255, 255, 255, 0.10)",
@@ -17,6 +21,7 @@ const PerkItem = props => {
         cursor: "pointer",
         position: "relative",
         alignItems: "center",
+        p: ["2.4rem 1.6rem", "2.4rem"],
         "*:hover": {
           cursor: "inherit",
         },
@@ -42,11 +47,13 @@ const PerkItem = props => {
           Claimed
         </Typography>
       )}
-      <Typography sx={{ fontSize: ["2.4rem"], lineHeight: ["4rem"], fontWeight: 600, color: "primary.contrastText" }}>{title}</Typography>
-      <Typography sx={{ fontSize: ["1.8rem"], lineHeight: ["2.8rem"], color: "primary.contrastText" }}>{description}</Typography>
+      <Typography sx={{ fontSize: ["1.8rem", "2.4rem"], lineHeight: ["2.4rem", "4rem"], fontWeight: 600, color: "primary.contrastText" }}>
+        {title}
+      </Typography>
+      <Typography sx={{ fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.4rem", "2.8rem"], color: "primary.contrastText" }}>{description}</Typography>
       <Stack direction="row" gap="1.6rem" justifyContent="center">
         {imageURL.map((url, index) => (
-          <Img src={url} alt="" width="64px" height="64px" />
+          <Img src={url} alt="" placeholder={BadgePlaceholderSvg} width={isMobile ? "48px" : "64px"} height={isMobile ? "48px" : "64px"} />
         ))}
       </Stack>
     </Stack>

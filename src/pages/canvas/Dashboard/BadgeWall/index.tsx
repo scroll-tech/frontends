@@ -42,7 +42,7 @@ const Profile = styled(Box)(({ theme }) => ({
   backgroundColor: "#101010",
   display: "flex",
   flexDirection: "column",
-  justifyContent: "space-evenly",
+  justifyContent: "center",
   alignItems: "center",
   // TODO: ???
   transform: "translate(0.25px, 0.25px)",
@@ -51,6 +51,8 @@ const Profile = styled(Box)(({ theme }) => ({
   },
   [theme.breakpoints.down("sm")]: {
     transform: "translate(0.25px, 0.25px)",
+    justifyContent: "space-evenly",
+    paddingTop: "0.8rem",
   },
 }))
 
@@ -141,9 +143,8 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
           height: `${profileSize}px`,
         }}
       >
-        <EditProfile sx={{ position: "absolute", top: "1.6rem", right: "1.6rem" }}></EditProfile>
-
-        <Avatar sx={{ width: "57%" }}></Avatar>
+        <EditProfile sx={{ position: "absolute", top: ["0.4rem", "1.6rem"], right: ["0.4rem", "1.6rem"] }}></EditProfile>
+        <Avatar sx={{ width: "57%", mb: [0, "calc((43% - 3.2rem) / 5)"] }}></Avatar>
         <Name loading={queryUsernameLoading} defaultValue={canvasUsername}></Name>
       </Profile>
       {badges.map((badge, index) => (
