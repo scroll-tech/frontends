@@ -1,16 +1,17 @@
 import { ethers } from "ethers"
 
 import ScrollOriginsNFTABI from "@/assets/abis/ScrollOriginsNFT.json"
-import { requireEnv } from "@/utils"
+import { isMainnet, requireEnv } from "@/utils"
 
 const SCROLL_ORIGINS_NFT = requireEnv("REACT_APP_SCROLL_ORIGINS_NFT")
 const SCROLL_ORIGINS_NFT_V2 = requireEnv("REACT_APP_SCROLL_ORIGINS_NFT_V2")
 
-export const ETHEREUM_YEAR_BADGE_ADDRESS = "0x3dacAd961e5e2de850F5E027c70b56b5Afa5DfeD"
+export const ETHEREUM_YEAR_BADGE_ADDRESS = isMainnet ? "0x3dacAd961e5e2de850F5E027c70b56b5Afa5DfeD" : "0xB59B6466B21a089c93B14030AF88b164905a58fd"
+
 const ETHEREUM_YEAR_ATTESTER_PROXY_ADDRESS = "0x39fb5E85C7713657c2D9E869E974FF1e0B06F20C"
 const ETHEREUM_YEAR_BASE_URL = `${requireEnv("REACT_APP_CANVAS_BACKEND_URI")}/badge`
 
-export const ORIGINS_NFT_BADGE_ADDRESS = "0x2dBce60ebeAafb77e5472308f432F78aC3AE07d9"
+export const ORIGINS_NFT_BADGE_ADDRESS = isMainnet ? "0x2dBce60ebeAafb77e5472308f432F78aC3AE07d9" : "0x2A3aC1337845f8C02d2dD7f80Dada22f01b569f9"
 
 export interface Badge {
   name: string
