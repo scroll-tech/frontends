@@ -3,7 +3,7 @@ import Img from "react-cool-img"
 
 import { Box } from "@mui/material"
 
-import { fetchAvatarURL, generateAvatarURL, generateNFTURL } from "@/apis/canvas-profile"
+import { fetchAvatarURL, generateNFTURL } from "@/apis/canvas-profile"
 import FlipCard from "@/components/FlipCard"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCanvasProfileStore from "@/stores/canvasProfileStore"
@@ -69,7 +69,7 @@ const Avatar = props => {
           sx={{ width: "100%", aspectRatio: "1/1" }}
           frontContent={
             <AvatarTooltip title="click to view heartbeat">
-              <PictureAvatar src={generateAvatarURL(data.avatar)}></PictureAvatar>
+              <PictureAvatar src={data.avatar}></PictureAvatar>
             </AvatarTooltip>
           }
           backContent={<HeartbeatAvatar></HeartbeatAvatar>}
