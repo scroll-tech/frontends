@@ -108,7 +108,7 @@ const CreateENS = () => {
           <InputBase
             value={subdomainName}
             inputRef={input => input?.focus()}
-            disabled={isPending}
+            readOnly={isPending}
             placeholder="name"
             inputProps={{
               maxLength: 15,
