@@ -46,7 +46,7 @@ const Avatar = props => {
     }
 
     if (isFetching) {
-      return <Img src="/imgs/canvas/badgePlaceholder.svg" alt="avatar-loading" width="100%"></Img>
+      return <Img src="/imgs/canvas/avatarPlaceholder.svg" alt="avatar-loading" width="100%"></Img>
     }
 
     if (data?.tokenID) {
