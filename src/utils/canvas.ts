@@ -99,3 +99,9 @@ export const checkDelegatedAttestation = (tx, proxyAddress) => {
 export const isOriginsNFTBadge = badgeContract => {
   return badgeContract === SCROLL_ORIGINS_BADGE_ADDRESS
 }
+
+export function restoreAllEmojis(input) {
+  return input.replace(/[\u2600-\u26FF\u2700-\u27BF\u1F000-\u1FAFF]/g, match => {
+    return match.endsWith("\uFE0F") ? match : match + "\uFE0F"
+  })
+}

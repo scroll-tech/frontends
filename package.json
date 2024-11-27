@@ -14,11 +14,22 @@
     "test": "npx lint-staged"
   },
   "lint-staged": {
-    "**/*.{ts,tsx}": ["npm run lint", "prettier --write"]
+    "**/*.{ts,tsx}": [
+      "npm run lint",
+      "prettier --write"
+    ]
   },
   "browserslist": {
-    "production": [">0.5%", "not dead", "not op_mini all"],
-    "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
+    "production": [
+      ">0.5%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
   "resolutions": {
     "@sentry/webpack-plugin/**/node-fetch": "^2.6.11",
@@ -44,6 +55,7 @@
     "canvas-confetti": "^1.9.3",
     "copy-to-clipboard": "^3.3.2",
     "dayjs": "^1.11.5",
+    "emoji-regex": "^10.4.0",
     "ethers": "6.12.0",
     "framer-motion": "^9.0.4",
     "lodash": "^4.17.21",

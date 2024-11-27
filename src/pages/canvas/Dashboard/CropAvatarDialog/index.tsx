@@ -69,7 +69,8 @@ const CropAvatarDialog = () => {
     },
     onError: error => {
       if (error.name !== "UserRejectedRequestError") {
-        alertWarning("Something went wrong, please try again later.")
+        alertWarning(error.message)
+        // alertWarning("Something went wrong, please try again later.")
       }
     },
   })

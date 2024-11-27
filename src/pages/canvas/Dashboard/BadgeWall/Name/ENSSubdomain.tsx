@@ -1,3 +1,6 @@
+import emojiRegex from "emoji-regex"
+import { useEffect } from "react"
+
 import { Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
@@ -33,7 +36,18 @@ const ENSName = styled(Typography)(({ theme }) => ({
 
 const ENSSubdomain = props => {
   const { children, ...restProps } = props
-  return <ENSName {...restProps}>{children}</ENSName>
+
+  useEffect(() => {
+    const element = document.querySelector(".ens-subdomain")
+    if (!element) return
+    element.innerHTML = element.textContent?.replace(emojiRegex(), match => `<span style="-webkit-text-fill-color:white;">${match}</span>`) as string
+  }, [])
+
+  return (
+    <ENSName className="ens-subdomain" {...restProps}>
+      {children}
+    </ENSName>
+  )
 }
 
 export default ENSSubdomain

@@ -6,6 +6,7 @@ import { styled } from "@mui/material/styles"
 import { fetchENSNameURL } from "@/apis/canvas-profile"
 import Skeleton from "@/components/Skeleton"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import { restoreAllEmojis } from "@/utils"
 
 import ENSSubdomain from "./ENSSubdomain"
 
@@ -37,7 +38,7 @@ const Name = props => {
     queryKey: ["ensSubdomain", walletCurrentAddress],
     queryFn: async () => {
       const result = await scrollRequest(fetchENSNameURL(walletCurrentAddress))
-      return result?.name
+      return result?.name ? restoreAllEmojis(result.name) : null
       // return null
     },
     refetchOnMount: false,
