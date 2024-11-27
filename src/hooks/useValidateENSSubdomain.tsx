@@ -44,14 +44,14 @@ const useValidateENSSubdomain = value => {
       nextHelpText = "Please enter your subdomain name"
     } else if (name.length < 4 || name.length > 15) {
       nextHelpText = <>The subdomain name must consist of 4 to 15 characters.</>
-    } else if (/[./_]+/g.test(name) || SensitiveWord.some(word => name.toLowerCase().includes(word.toLowerCase()))) {
-      nextHelpText = "This subdomain is not allowed"
+    } else if (/[/]+/g.test(name) || SensitiveWord.some(word => name.toLowerCase().includes(word.toLowerCase()))) {
+      nextHelpText = "This subdomain name is not allowed"
     } else {
       const ensSubdomain = name + ".scroll.eth"
       try {
         namehash(normalize(ensSubdomain))
       } catch (err) {
-        nextHelpText = "This subdomain name is not available"
+        nextHelpText = "This subdomain name is not allowed"
       } finally {
         controller.current = new AbortController()
 
