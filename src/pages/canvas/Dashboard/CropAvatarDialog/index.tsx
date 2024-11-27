@@ -28,8 +28,7 @@ const CropAvatarDialog = () => {
 
   const { isMobile } = useCheckViewport()
   // const { data: client } = useConnectorClient<Config>()
-  const { cropAvatarDialogVisible, previewAvatarURL, changeCropAvatarDialogVisible, changeEditProfileVisible, changeNFTImageURL } =
-    useCanvasProfileStore()
+  const { cropAvatarDialogVisible, previewAvatarURL, changeCropAvatarDialogVisible, changeEditProfileVisible } = useCanvasProfileStore()
 
   const alertWarning = useSnackbar()
 
@@ -61,8 +60,8 @@ const CropAvatarDialog = () => {
       })
     },
     onSuccess: data => {
-      changeNFTImageURL("")
       handleCloseCropAvatarDialog()
+      queryClient.setQueryData(["canvasAvatar", walletCurrentAddress], { avatar: data })
       queryClient.invalidateQueries({
         queryKey: ["canvasAvatar", walletCurrentAddress],
       })

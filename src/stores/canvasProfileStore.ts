@@ -24,14 +24,12 @@ interface CanvasProfileStore {
   NFTsDialogType: NFTsDialogTypeEnum
   NFTsDialogAllowBack: boolean
   editProfileVisible: boolean
-  NFTImageURL: string
 
   changeCropAvatarDialogVisible: (visible: boolean) => void
   changePreviewAvatarURL: (base64: any) => void
   changeENSSubdomainDialogType: (type: ENSSubdomainDialogTypeEnum, allowBack?: boolean) => void
   changeNFTsDialogType: (type: NFTsDialogTypeEnum, allowBack?: boolean) => void
   changeEditProfileVisible: (editProfileVisible: boolean) => void
-  changeNFTImageURL: (NFTImageURL: string) => void
 }
 
 const useCanvasProfileStore = create<CanvasProfileStore>()((set, get) => ({
@@ -42,7 +40,6 @@ const useCanvasProfileStore = create<CanvasProfileStore>()((set, get) => ({
   NFTsDialogType: NFTsDialogTypeEnum.HIDDEN,
   NFTsDialogAllowBack: false,
   editProfileVisible: false,
-  NFTImageURL: "",
 
   changeCropAvatarDialogVisible: cropAvatarDialogVisible => {
     set({
@@ -72,11 +69,6 @@ const useCanvasProfileStore = create<CanvasProfileStore>()((set, get) => ({
   changeEditProfileVisible: (editProfileVisible: boolean) => {
     set({
       editProfileVisible,
-    })
-  },
-  changeNFTImageURL: (NFTImageURL: string) => {
-    set({
-      NFTImageURL,
     })
   },
 }))

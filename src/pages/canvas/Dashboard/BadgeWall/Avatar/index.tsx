@@ -6,7 +6,6 @@ import { Box } from "@mui/material"
 import { fetchAvatarURL, generateNFTURL } from "@/apis/canvas-profile"
 import FlipCard from "@/components/FlipCard"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import useCanvasProfileStore from "@/stores/canvasProfileStore"
 
 import AvatarTooltip from "./AvatarTooltip"
 import HeartbeatAvatar from "./HeartbeatAvatar"
@@ -17,9 +16,8 @@ const Avatar = props => {
   const { sx } = props
 
   const { walletCurrentAddress } = useRainbowContext()
-  const { NFTImageURL } = useCanvasProfileStore()
 
-  const { data, isFetching } = useQuery({
+  const { data: avatarObj, isLoading } = useQuery({
     queryKey: ["canvasAvatar", walletCurrentAddress],
     queryFn: () => {
       return scrollRequest(fetchAvatarURL(walletCurrentAddress))
@@ -27,35 +25,31 @@ const Avatar = props => {
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
-    enabled: !NFTImageURL,
   })
-  // alert(failureReason)
-  const renderAvatar = () => {
-    if (NFTImageURL) {
-      return (
-        <FlipCard
-          sx={{ width: "100%", aspectRatio: "1/1" }}
-          frontContent={
-            <AvatarTooltip title="click to view heartbeat">
-              <NFTAvatar src={NFTImageURL}></NFTAvatar>
-            </AvatarTooltip>
-          }
-          backContent={<HeartbeatAvatar></HeartbeatAvatar>}
-        ></FlipCard>
-      )
-    }
 
-    if (isFetching) {
+  const { data: avatarNFT, isLoading: avatarNFTLoading } = useQuery({
+    queryKey: ["NFTAvatarImageURL", walletCurrentAddress],
+    queryFn: () => {
+      return scrollRequest(generateNFTURL(walletCurrentAddress))
+    },
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    enabled: !!avatarObj?.tokenID,
+  })
+
+  const renderAvatar = () => {
+    if (isLoading) {
       return <Img src="/imgs/canvas/avatarPlaceholder.svg" alt="avatar-loading" width="100%"></Img>
     }
 
-    if (data?.tokenID) {
+    if (avatarObj?.tokenID) {
       return (
         <FlipCard
           sx={{ width: "100%", aspectRatio: "1/1" }}
           frontContent={
             <AvatarTooltip title="click to view heartbeat">
-              <NFTAvatar src={generateNFTURL(walletCurrentAddress)}></NFTAvatar>
+              <NFTAvatar src={avatarNFTLoading ? undefined : avatarNFT?.image || "/imgs/canvas/NFTPlaceholder.svg"}></NFTAvatar>
             </AvatarTooltip>
           }
           backContent={<HeartbeatAvatar></HeartbeatAvatar>}
@@ -63,13 +57,13 @@ const Avatar = props => {
       )
     }
 
-    if (data?.avatar) {
+    if (avatarObj?.avatar) {
       return (
         <FlipCard
           sx={{ width: "100%", aspectRatio: "1/1" }}
           frontContent={
             <AvatarTooltip title="click to view heartbeat">
-              <PictureAvatar src={data.avatar}></PictureAvatar>
+              <PictureAvatar src={avatarObj.avatar}></PictureAvatar>
             </AvatarTooltip>
           }
           backContent={<HeartbeatAvatar></HeartbeatAvatar>}

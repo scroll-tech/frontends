@@ -84,7 +84,7 @@ const EditProfile = props => {
     }
 
     if (file.size > CANVAS_AVATAR_MAX_SIZE) {
-      alertWarning("File size is too large. Please upload a file less than 1MB.")
+      alertWarning("File size is too large. Please upload a file less than 5MB.")
       return
     }
 

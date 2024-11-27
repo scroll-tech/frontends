@@ -38,7 +38,7 @@ const ViewNFTs = () => {
   const { walletCurrentAddress } = useRainbowContext()
   const { data: client } = useWalletClient()
 
-  const { NFTsDialogType, changeNFTsDialogType, changeNFTImageURL } = useCanvasProfileStore()
+  const { NFTsDialogType, changeNFTsDialogType } = useCanvasProfileStore()
   const { ref, inView } = useInView()
   const { isMobile } = useCheckViewport()
 
@@ -88,8 +88,13 @@ const ViewNFTs = () => {
       })
     },
     onSuccess: data => {
-      changeNFTImageURL(selectedNFT.imageUrl as string)
       handleCloseNFTsDialog()
+      queryClient.setQueryData(["canvasAvatar", walletCurrentAddress], {
+        tokenID: selectedNFT.tokenId,
+        contract: selectedNFT.contractAddress,
+        contractType: selectedNFT.contractType,
+      })
+      queryClient.setQueryData(["NFTAvatarImageURL", walletCurrentAddress], { image: selectedNFT.imageUrl })
       queryClient.invalidateQueries({
         queryKey: ["canvasAvatar", walletCurrentAddress],
       })

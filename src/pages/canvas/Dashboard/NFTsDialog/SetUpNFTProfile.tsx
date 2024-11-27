@@ -27,6 +27,7 @@ const SetUpNFTProfile = props => {
   const { perks } = usePerkStore()
 
   const NFTPerk = useMemo(() => perks.find(perk => perk.id === "nft-profile-setup")!, [perks])
+  console.log(NFTPerk, "NFTPerk")
 
   const handleGoToConfirm = () => {
     changeNFTsDialogType(NFTsDialogTypeEnum.SET_UP)
@@ -52,6 +53,7 @@ const SetUpNFTProfile = props => {
         <Stack direction="row" sx={{ mt: ["5rem", "6.8rem"] }}>
           {ADVERTISING_NFT_LIST.map(({ url, rotate, x, y, zIndex }) => (
             <NFTAvatar
+              key={url}
               sx={{
                 width: ["9rem", "15.6rem"],
                 aspectRatio: "1/1",
@@ -68,7 +70,12 @@ const SetUpNFTProfile = props => {
         >
           Collect Ethereum year badge to qualify.
         </Typography>
-        <Img src={NFTPerk?.imageURL[0] ?? BadgePlaceholderSvg} width={isMobile ? "56px" : "100px"} height={isMobile ? "56px" : "100px"}></Img>
+        <Img
+          src={NFTPerk?.imageURL[0] ?? BadgePlaceholderSvg}
+          placeholder={BadgePlaceholderSvg}
+          width={isMobile ? "56px" : "100px"}
+          height={isMobile ? "56px" : "100px"}
+        ></Img>
       </Stack>
       <PerksButton sx={{ mt: [0, "4.8rem"] }} disabled={!NFTPerk.claimable} onClick={handleGoToConfirm}>
         Claim Now
