@@ -28,7 +28,7 @@ const Avatar = props => {
   })
 
   const { data: avatarNFT, isLoading: avatarNFTLoading } = useQuery({
-    queryKey: ["NFTAvatarImageURL", walletCurrentAddress],
+    queryKey: ["NFTAvatarImageURL", walletCurrentAddress, avatarObj],
     queryFn: () => {
       return scrollRequest(generateNFTURL(walletCurrentAddress))
     },

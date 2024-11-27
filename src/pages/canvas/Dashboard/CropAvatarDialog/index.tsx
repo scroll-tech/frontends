@@ -62,9 +62,9 @@ const CropAvatarDialog = () => {
     onSuccess: data => {
       handleCloseCropAvatarDialog()
       queryClient.setQueryData(["canvasAvatar", walletCurrentAddress], { avatar: data })
-      queryClient.invalidateQueries({
-        queryKey: ["canvasAvatar", walletCurrentAddress],
-      })
+      // queryClient.invalidateQueries({
+      //   queryKey: ["canvasAvatar", walletCurrentAddress],
+      // })
       changeEditProfileVisible(false)
     },
     onError: error => {

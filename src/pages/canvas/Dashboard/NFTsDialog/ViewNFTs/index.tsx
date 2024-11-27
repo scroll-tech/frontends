@@ -95,9 +95,9 @@ const ViewNFTs = () => {
         contractType: selectedNFT.contractType,
       })
       queryClient.setQueryData(["NFTAvatarImageURL", walletCurrentAddress], { image: selectedNFT.imageUrl })
-      queryClient.invalidateQueries({
-        queryKey: ["canvasAvatar", walletCurrentAddress],
-      })
+      // queryClient.invalidateQueries({
+      //   queryKey: ["canvasAvatar", walletCurrentAddress],
+      // })
     },
     onError: error => {
       if (error.name !== "UserRejectedRequestError") {
