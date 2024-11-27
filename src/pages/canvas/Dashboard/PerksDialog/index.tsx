@@ -12,10 +12,10 @@ import usePerkStore from "@/stores/perksStore"
 import PerkItem from "./PerkItem"
 
 const PerksDialog = () => {
-  const { perksDialogVisible, changePerksDialogVisible, userBadges } = useCanvasStore()
-
-  const { changeNFTsDialogType, changeENSSubdomainDialogType } = useCanvasProfileStore()
   const { walletCurrentAddress } = useRainbowContext()
+
+  const { perksDialogVisible, changePerksDialogVisible, userBadges } = useCanvasStore()
+  const { changeNFTsDialogType, changeENSSubdomainDialogType } = useCanvasProfileStore()
   const { perks, generatePerks } = usePerkStore()
   const queryClient = useQueryClient()
 

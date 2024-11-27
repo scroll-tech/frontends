@@ -3,7 +3,7 @@ import { create } from "zustand"
 import BadgeEthereumYearSvg from "@/assets/svgs/canvas-perks/badge-ethereum-year.svg"
 import BadgePlaceholderSvg from "@/assets/svgs/canvas-perks/badge-placeholder.svg"
 // eslint-disable-next-line
-import { ETHEREUM_YEAR_BADGE_ADDRESS, ORIGINS_NFT_BADGE_ADDRESS } from "@/constants/badge"
+import { ETHEREUM_YEAR_BADGE_ADDRESS, SCR_HOLDING_BADGE_ADDRESS } from "@/constants"
 import { truncateAddress } from "@/utils"
 
 interface Perk {
