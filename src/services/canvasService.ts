@@ -1,4 +1,5 @@
 import { AbiCoder, ethers } from "ethers"
+import { pad } from "viem"
 
 import { checkBadgeEligibilityURL, claimBadgeURL } from "@/apis/canvas"
 import { fetchBadgeByAddrURL } from "@/apis/canvas-badge"
@@ -7,7 +8,7 @@ import AttestProxyABI from "@/assets/abis/CanvasAttestProxy.json"
 import BadgeABI from "@/assets/abis/CanvasBadge.json"
 import ProfileABI from "@/assets/abis/CanvasProfile.json"
 import ProfileRegistryABI from "@/assets/abis/CanvasProfileRegistry.json"
-import { ORIGINS_NFT_BADGE } from "@/constants"
+import { ORIGINS_NFT_BADGE, SCR_HOLDING_BADGE_ADDRESS } from "@/constants"
 import {
   checkDelegatedAttestation,
   decodeBadgePayload,
@@ -27,6 +28,16 @@ const SCROLL_BADGE_SCHEMA = requireEnv("REACT_APP_BADGE_SCHEMA")
 
 const PROFILE_REGISTRY_ADDRESS = requireEnv("REACT_APP_PROFILE_REGISTRY_ADDRESS")
 
+const SELF_ATTESTATION_BADGE_LIST = [SCR_HOLDING_BADGE_ADDRESS]
+
+interface Attestation {
+  attester: string
+  data: string
+  id: string
+  time: string
+  txid: string
+}
+
 const initializeInstance = async provider => {
   const signer = await provider.getSigner(0)
   const profileRegistryContract = new ethers.Contract(PROFILE_REGISTRY_ADDRESS, ProfileRegistryABI, signer)
@@ -38,6 +49,12 @@ const initializePublicInstance = async provider => {
   const unsignedProfileRegistryContract = new ethers.Contract(PROFILE_REGISTRY_ADDRESS, ProfileRegistryABI, provider)
   return unsignedProfileRegistryContract
 }
+
+// const queryAllUserBadges = async (provider, userAddress, badgeContractList) => {
+//   const easBadges = await queryUserBadges(userAddress)
+//   const selfAttestationBadges = await querySelfAttestationBadges(provider, userAddress, badgeContractList)
+//   return [...easBadges, ...selfAttestationBadges]
+// }
 
 const queryUserBadges = async userAddress => {
   const query = `
@@ -76,6 +93,29 @@ const queryUserBadges = async userAddress => {
     sentryDebug(`query user's badges: ${error.message}`)
     throw new Error("Failed to query user badges:")
   }
+}
+
+const querySelfAttestationBadges = async (provider, userAddress, badgeContractList) => {
+  async function fetchAttestation(userAddress, badgeContract) {
+    const badgeContractInstance = new ethers.Contract(badgeContract, BadgeABI, provider)
+    const hasBadge = await badgeContractInstance.hasBadge(userAddress)
+    if (hasBadge) {
+      const attestation = await badgeContractInstance.getAttestation(pad(userAddress, { size: 32 }))
+      return {
+        attester: attestation.attester,
+        data: attestation.data,
+        id: attestation.uid,
+        time: attestation.time,
+        txid: attestation.txid,
+      }
+    }
+    return null
+  }
+  const selfAttestationListResult = await Promise.allSettled(badgeContractList.map(badgeContract => fetchAttestation(userAddress, badgeContract)))
+  return selfAttestationListResult
+    .filter((item): item is PromiseFulfilledResult<Attestation | null> => item.status === "fulfilled" && item.value)
+    .map(item => item.value)
+    .filter(item => item)
 }
 
 const queryBadgeDetailById = async badgeId => {
@@ -174,7 +214,9 @@ const fillBadgeDetailWithPayload = async (provider, attestation, withMetadata = 
 const queryUserBadgesWrapped = async (provider, userAddress, withMetadata = true) => {
   try {
     const attestations = await queryUserBadges(userAddress)
-    const formattedBadgesPromises = attestations.map(attestation => {
+    const selfAttestations = await querySelfAttestationBadges(provider, userAddress, SELF_ATTESTATION_BADGE_LIST)
+    const allAttestations = [...attestations, ...selfAttestations]
+    const formattedBadgesPromises = allAttestations.map(attestation => {
       return fillBadgeDetailWithPayload(provider, attestation, withMetadata)
     })
     const formattedBadges = await Promise.all(formattedBadgesPromises)

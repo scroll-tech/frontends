@@ -2,7 +2,6 @@ import { create } from "zustand"
 
 import BadgeEthereumYearSvg from "@/assets/svgs/canvas-perks/badge-ethereum-year.svg"
 import BadgePlaceholderSvg from "@/assets/svgs/canvas-perks/badge-placeholder.svg"
-// eslint-disable-next-line
 import { ETHEREUM_YEAR_BADGE_ADDRESS, SCR_HOLDING_BADGE_ADDRESS } from "@/constants"
 import { truncateAddress } from "@/utils"
 
@@ -27,6 +26,8 @@ const usePerkStore = create<EnsSubdomainStore>()(set => ({
   perks: [],
   generatePerks: async props => {
     const { walletCurrentAddress, userBadges, ensClaimed } = props
+
+    console.log(userBadges, "userBadges")
     const perkList = [
       {
         id: "claim-ens-subdomain",
@@ -36,10 +37,10 @@ const usePerkStore = create<EnsSubdomainStore>()(set => ({
         )} address readable for free! This is your personalized address that people can send crypto to.`,
 
         imageURL: [BadgeEthereumYearSvg, BadgePlaceholderSvg],
-        // TODO: SCR holding badge
+
         checkClaimableFunc: () => {
           const yearBadge = userBadges.find(badge => badge.badgeContract === ETHEREUM_YEAR_BADGE_ADDRESS)
-          const scrBadge = userBadges.find(badge => badge.badgeContract === ETHEREUM_YEAR_BADGE_ADDRESS)
+          const scrBadge = userBadges.find(badge => badge.badgeContract === SCR_HOLDING_BADGE_ADDRESS)
           return {
             claimable: !!yearBadge && !!scrBadge,
             imageURL: [yearBadge ? yearBadge.image : BadgeEthereumYearSvg, scrBadge ? scrBadge.image : BadgePlaceholderSvg],

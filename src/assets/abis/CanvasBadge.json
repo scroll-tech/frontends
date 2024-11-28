@@ -84,5 +84,71 @@
     ],
     "stateMutability": "view",
     "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "bytes32", "name": "uid", "type": "bytes32" }],
+    "name": "getAndValidateBadge",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "bytes32", "name": "uid", "type": "bytes32" },
+          { "internalType": "bytes32", "name": "schema", "type": "bytes32" },
+          { "internalType": "uint64", "name": "time", "type": "uint64" },
+          {
+            "internalType": "uint64",
+            "name": "expirationTime",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint64",
+            "name": "revocationTime",
+            "type": "uint64"
+          },
+          { "internalType": "bytes32", "name": "refUID", "type": "bytes32" },
+          { "internalType": "address", "name": "recipient", "type": "address" },
+          { "internalType": "address", "name": "attester", "type": "address" },
+          { "internalType": "bool", "name": "revocable", "type": "bool" },
+          { "internalType": "bytes", "name": "data", "type": "bytes" }
+        ],
+        "internalType": "struct Attestation",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "bytes32", "name": "uid", "type": "bytes32" }],
+    "name": "getAttestation",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "bytes32", "name": "uid", "type": "bytes32" },
+          { "internalType": "bytes32", "name": "schema", "type": "bytes32" },
+          { "internalType": "uint64", "name": "time", "type": "uint64" },
+          {
+            "internalType": "uint64",
+            "name": "expirationTime",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint64",
+            "name": "revocationTime",
+            "type": "uint64"
+          },
+          { "internalType": "bytes32", "name": "refUID", "type": "bytes32" },
+          { "internalType": "address", "name": "recipient", "type": "address" },
+          { "internalType": "address", "name": "attester", "type": "address" },
+          { "internalType": "bool", "name": "revocable", "type": "bool" },
+          { "internalType": "bytes", "name": "data", "type": "bytes" }
+        ],
+        "internalType": "struct Attestation",
+        "name": "attestation",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
   }
 ]

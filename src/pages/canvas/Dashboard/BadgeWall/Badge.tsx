@@ -1,11 +1,11 @@
 import { useMemo } from "react"
-import Img from "react-cool-img"
 
 import { Box, Badge as MuiBadge } from "@mui/material"
 
 import useCanvasStore, { BadgeDetailDialogType } from "@/stores/canvasStore"
 import { ipfsToBrowserURL } from "@/utils"
 
+import BadgeImage from "../../components/BadgeImage"
 import ToolTip from "../../components/Tooltip"
 
 const Badge = ({ badge, index, badgewidth }) => {
@@ -71,9 +71,9 @@ const Badge = ({ badge, index, badgewidth }) => {
         onClick={handleShowBadgeDetailDialog}
       >
         <MuiBadge invisible={!upgradableBadge} color="primary" variant="dot">
-          <Img
+          <BadgeImage
             alt={badge.metadata?.name}
-            style={{ width: "100%", borderRadius: "0.8rem" }}
+            style={{ width: "100%" }}
             src={ipfsToBrowserURL(badge.metadata?.image)}
             placeholder="/imgs/canvas/badgePlaceholder.svg"
           />

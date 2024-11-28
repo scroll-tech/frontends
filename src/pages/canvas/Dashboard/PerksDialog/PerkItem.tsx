@@ -1,9 +1,9 @@
-import Img from "react-cool-img"
-
 import { Stack, Typography } from "@mui/material"
 
 import BadgePlaceholderSvg from "@/assets/svgs/canvas-perks/badge-placeholder.svg"
 import useCheckViewport from "@/hooks/useCheckViewport"
+
+import BadgeImage from "../../components/BadgeImage"
 
 const PerkItem = props => {
   const { perk, onClick } = props
@@ -53,7 +53,13 @@ const PerkItem = props => {
       <Typography sx={{ fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.4rem", "2.8rem"], color: "primary.contrastText" }}>{description}</Typography>
       <Stack direction="row" gap="1.6rem" justifyContent="center">
         {imageURL.map((url, index) => (
-          <Img src={url} alt="" placeholder={BadgePlaceholderSvg} width={isMobile ? "48px" : "64px"} height={isMobile ? "48px" : "64px"} />
+          <BadgeImage
+            src={url}
+            alt={`required-badge-${index}`}
+            placeholder={BadgePlaceholderSvg}
+            width={isMobile ? "48px" : "64px"}
+            height={isMobile ? "48px" : "64px"}
+          />
         ))}
       </Stack>
     </Stack>

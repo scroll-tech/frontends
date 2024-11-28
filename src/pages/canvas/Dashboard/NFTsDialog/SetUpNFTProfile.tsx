@@ -1,5 +1,4 @@
 import { useMemo } from "react"
-import Img from "react-cool-img"
 
 import { Stack, Typography } from "@mui/material"
 
@@ -11,6 +10,7 @@ import useCheckViewport from "@/hooks/useCheckViewport"
 import useCanvasProfileStore, { NFTsDialogTypeEnum } from "@/stores/canvasProfileStore"
 import usePerkStore from "@/stores/perksStore"
 
+import BadgeImage from "../../components/BadgeImage"
 import PerksButton from "../../components/PerksButton"
 import NFTAvatar from "../BadgeWall/Avatar/NFTAvatar"
 
@@ -27,7 +27,6 @@ const SetUpNFTProfile = props => {
   const { perks } = usePerkStore()
 
   const NFTPerk = useMemo(() => perks.find(perk => perk.id === "nft-profile-setup")!, [perks])
-  console.log(NFTPerk, "NFTPerk")
 
   const handleGoToConfirm = () => {
     changeNFTsDialogType(NFTsDialogTypeEnum.SET_UP)
@@ -70,12 +69,12 @@ const SetUpNFTProfile = props => {
         >
           Collect Ethereum year badge to qualify.
         </Typography>
-        <Img
+        <BadgeImage
           src={NFTPerk?.imageURL[0] ?? BadgePlaceholderSvg}
           placeholder={BadgePlaceholderSvg}
           width={isMobile ? "56px" : "100px"}
           height={isMobile ? "56px" : "100px"}
-        ></Img>
+        ></BadgeImage>
       </Stack>
       <PerksButton sx={{ mt: [0, "4.8rem"] }} disabled={!NFTPerk.claimable} onClick={handleGoToConfirm}>
         Claim Now
