@@ -178,7 +178,7 @@ REACT_APP_ETHEREUM_YEAR_BADGE_API_URI = "https://genesis-nft-backend-git-sepolia
 REACT_APP_BADGE_REGISTRY_URL="https://badge-registry.canvas.scroll.cat/badge-registry"
 REACT_APP_BADGE_INDEXER_URL="https://canvas-indexer.scroll.cat"
 REACT_APP_ETHEREUM_YEAR_BADGE_ADDRESS = "0xB59B6466B21a089c93B14030AF88b164905a58fd"
-REACT_APP_SCR_HOLDING_BADGE_ADDRESS="0xef071708e09becfeac1e3d8afa1602bb6eb57922"
+REACT_APP_SCR_HOLDING_BADGE_ADDRESS="0xeF071708e09BECFEac1e3d8AfA1602BB6eB57922"
 
 
 [context.sepolia.environment]
@@ -237,7 +237,7 @@ REACT_APP_ETHEREUM_YEAR_BADGE_API_URI = "https://genesis-nft-backend-git-sepolia
 REACT_APP_BADGE_REGISTRY_URL="https://badge-registry.canvas.scroll.cat/badge-registry"
 REACT_APP_BADGE_INDEXER_URL="https://canvas-indexer.scroll.cat"
 REACT_APP_ETHEREUM_YEAR_BADGE_ADDRESS = "0xB59B6466B21a089c93B14030AF88b164905a58fd"
-REACT_APP_SCR_HOLDING_BADGE_ADDRESS="0xef071708e09becfeac1e3d8afa1602bb6eb57922"
+REACT_APP_SCR_HOLDING_BADGE_ADDRESS="0xeF071708e09BECFEac1e3d8AfA1602BB6eB57922"
 
 
 [context.mainnet.environment]

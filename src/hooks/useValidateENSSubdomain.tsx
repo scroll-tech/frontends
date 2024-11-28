@@ -17,7 +17,7 @@ const useValidateENSSubdomain = value => {
   const controller = useRef<any>()
 
   useEffect(() => {
-    if (preValue) {
+    if (preValue !== undefined) {
       handleValidateName(value)
     }
   }, [value])

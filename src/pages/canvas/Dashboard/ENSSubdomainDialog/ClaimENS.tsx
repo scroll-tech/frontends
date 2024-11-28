@@ -1,5 +1,4 @@
 import { useMemo } from "react"
-import Img from "react-cool-img"
 
 import { Box, Stack, SvgIcon, Typography } from "@mui/material"
 
@@ -11,6 +10,7 @@ import useCanvasProfileStore, { ENSSubdomainDialogTypeEnum } from "@/stores/canv
 import usePerkStore from "@/stores/perksStore"
 import { truncateAddress } from "@/utils"
 
+import BadgeImage from "../../components/BadgeImage"
 import PerksButton from "../../components/PerksButton"
 
 const ClaimENS = () => {
@@ -114,7 +114,8 @@ const ClaimENS = () => {
         </Typography>
         <Stack direction="row" gap={["1.6rem", "2.4rem"]} justifyContent="center">
           {perk.imageURL.map((imageURL, index) => (
-            <Img
+            <BadgeImage
+              key={imageURL}
               src={imageURL}
               alt=""
               style={{ width: isMobile ? "5.6rem" : "10rem", height: isMobile ? "5.6rem" : "10rem" }}

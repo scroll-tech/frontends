@@ -54,11 +54,11 @@ const PerkItem = props => {
       <Stack direction="row" gap="1.6rem" justifyContent="center">
         {imageURL.map((url, index) => (
           <BadgeImage
+            key={url}
             src={url}
             alt={`required-badge-${index}`}
             placeholder={BadgePlaceholderSvg}
-            width={isMobile ? "48px" : "64px"}
-            height={isMobile ? "48px" : "64px"}
+            style={{ width: isMobile ? "4.8rem" : "6.4rem", height: isMobile ? "4.8rem" : "6.4rem" }}
           />
         ))}
       </Stack>

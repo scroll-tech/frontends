@@ -18,7 +18,7 @@ const MintScr = () => {
   const alertWarning = useSnackbar()
   const [scrAmount, setSCRAmount] = useState("")
   const [mintLoading, setMintLoading] = useState(false)
-  const [burnLoading, setBurnLoading] = useState(false)
+  // const [burnLoading, setBurnLoading] = useState(false)
 
   const handleChangeSCRAmount = e => {
     setSCRAmount(sanitizeNumericalString(e.target.value))
@@ -49,30 +49,30 @@ const MintScr = () => {
     }
   }
 
-  const handleBurnToken = async () => {
-    if (chainId !== CHAIN_ID.L2) {
-      alertWarning("please switch to L2")
-      return
-    }
-    try {
-      setBurnLoading(true)
-      const signer = await provider?.getSigner(0)
-      const tokenInterface = new ethers.Contract(SCR_TOKEN_ADDRESS, ERC20ABI, signer)
-      const amount = amountToBN(scrAmount)
-      const tx = await tokenInterface.burn(walletCurrentAddress, amount)
-      const txReceipt = await tx.wait()
-      if (txReceipt?.status === 1) {
-        alertWarning(`Burned ${scrAmount} SCR successfully`, "success")
-        setSCRAmount("")
-      }
-    } catch (e) {
-      if (!isUserRejected(e)) {
-        alertWarning(e.message)
-      }
-    } finally {
-      setBurnLoading(false)
-    }
-  }
+  // const handleBurnToken = async () => {
+  //   if (chainId !== CHAIN_ID.L2) {
+  //     alertWarning("please switch to L2")
+  //     return
+  //   }
+  //   try {
+  //     setBurnLoading(true)
+  //     const signer = await provider?.getSigner(0)
+  //     const tokenInterface = new ethers.Contract(SCR_TOKEN_ADDRESS, ERC20ABI, signer)
+  //     const amount = amountToBN(scrAmount)
+  //     const tx = await tokenInterface.burn(walletCurrentAddress, amount)
+  //     const txReceipt = await tx.wait()
+  //     if (txReceipt?.status === 1) {
+  //       alertWarning(`Burned ${scrAmount} SCR successfully`, "success")
+  //       setSCRAmount("")
+  //     }
+  //   } catch (e) {
+  //     if (!isUserRejected(e)) {
+  //       alertWarning(e.message)
+  //     }
+  //   } finally {
+  //     setBurnLoading(false)
+  //   }
+  // }
   return (
     <Stack direction="column" justifyContent="center" alignItems="center" sx={{ width: "100%", height: `calc(100vh - ${NORMAL_HEADER_HEIGHT})` }}>
       <TextField
@@ -85,12 +85,12 @@ const MintScr = () => {
         onChange={handleChangeSCRAmount}
       />
       <Stack sx={{ width: "25rem", mt: "2rem" }} gap="2rem">
-        <PerksButton loading={mintLoading} onClick={handleMintToken}>
+        <PerksButton loading={mintLoading} disabled={!scrAmount} onClick={handleMintToken}>
           Mint
         </PerksButton>
-        <PerksButton loading={burnLoading} onClick={handleBurnToken}>
+        {/* <PerksButton loading={burnLoading} onClick={handleBurnToken}>
           Burn
-        </PerksButton>
+        </PerksButton> */}
       </Stack>
     </Stack>
   )
