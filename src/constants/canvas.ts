@@ -14,4 +14,4 @@ export const BADGE_INTEGRATION_GUIDE =
 
 export const EXPLORE_BADGES_URL = "/canvas-and-badges#discover"
 
-export const CANVAS_AVATAR_MAX_SIZE = 5 * 1024 * 1024 // 1MB
+export const CANVAS_AVATAR_MAX_SIZE = 4.5 * 1024 * 1024 // 4.5MB

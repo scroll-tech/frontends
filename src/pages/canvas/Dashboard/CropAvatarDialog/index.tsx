@@ -7,6 +7,7 @@ import { useWalletClient } from "wagmi"
 import { Stack, Typography } from "@mui/material"
 
 import { setCanvasAvatarURL } from "@/apis/canvas-profile"
+import { CANVAS_AVATAR_MAX_SIZE } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useSnackbar from "@/hooks/useSnackbar"
@@ -27,7 +28,7 @@ const CropAvatarDialog = () => {
   const queryClient = useQueryClient()
 
   const { isMobile } = useCheckViewport()
-  // const { data: client } = useConnectorClient<Config>()
+
   const { cropAvatarDialogVisible, previewAvatarURL, changeCropAvatarDialogVisible, changeEditProfileVisible } = useCanvasProfileStore()
 
   const alertWarning = useSnackbar()
@@ -39,6 +40,9 @@ const CropAvatarDialog = () => {
       return new Promise((resolve, reject) => {
         cropperRef.current.getCanvas()?.toBlob(async blob => {
           try {
+            if (blob.size > CANVAS_AVATAR_MAX_SIZE) {
+              reject(new Error("The image size is too large. please try again with a smaller image."))
+            }
             const sha256 = await calculateSHA256FromBlob(blob)
             const timestamp = Date.now().toString()
             const signature = await client?.signTypedData(generateTypedData(walletAddress, sha256, undefined, undefined, timestamp) as any)

@@ -7,9 +7,7 @@ import { styled } from "@mui/material/styles"
 import { ReactComponent as EditProfileSvg } from "@/assets/svgs/canvas/edit-profile.svg"
 import { ReactComponent as LockSvg } from "@/assets/svgs/canvas/lock.svg"
 import Link from "@/components/Link"
-import { CANVAS_AVATAR_MAX_SIZE } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import useSnackbar from "@/hooks/useSnackbar"
 import useCanvasProfileStore, { ENSSubdomainDialogTypeEnum, NFTsDialogTypeEnum } from "@/stores/canvasProfileStore"
 import useCanvasStore from "@/stores/canvasStore"
 import usePerkStore from "@/stores/perksStore"
@@ -43,7 +41,6 @@ const EditProfile = props => {
   const { sx } = props
 
   const { walletCurrentAddress } = useRainbowContext()
-  const alertWarning = useSnackbar()
 
   const queryClient = useQueryClient()
 
@@ -83,11 +80,6 @@ const EditProfile = props => {
       return
     }
 
-    if (file.size > CANVAS_AVATAR_MAX_SIZE) {
-      alertWarning("File size is too large. Please upload a file less than 5MB.")
-      return
-    }
-
     const reader = new FileReader()
     reader.addEventListener(
       "load",
@@ -113,10 +105,6 @@ const EditProfile = props => {
 
   const editMenuItems = useMemo(
     () => [
-      // {
-      //   label: "Change subdomain name",
-      //   action: handleOpenChangeENSSubdomainNameDialog,
-      // },
       ensSubdomain
         ? {
             label: "Change subdomain name",
