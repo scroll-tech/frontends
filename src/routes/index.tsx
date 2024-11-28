@@ -11,6 +11,7 @@ import CanvasBadge from "@/pages/canvas/badge"
 import CanvasBadgeContract from "@/pages/canvas/badgeContract"
 import CanvasInvite from "@/pages/canvas/invite"
 import MintProfile from "@/pages/canvas/mint"
+import MintSCRMock from "@/pages/canvas/mint-scr"
 import Career from "@/pages/career"
 import Community from "@/pages/community"
 // import ComingSoon from "@/pages/developer-nft/coming-soon"
@@ -275,6 +276,13 @@ const mainnetRoutes = [
     name: "Canvas",
     path: "/canvas/:address",
     element: <CanvasDashboard />,
+    isHiddenFooter: true,
+  },
+  // TODO: delete this route
+  {
+    name: "Mint SCR",
+    path: "/canvas/mint-scr",
+    element: <MintSCRMock />,
     isHiddenFooter: true,
   },
   {

@@ -27,7 +27,7 @@ const usePerkStore = create<EnsSubdomainStore>()(set => ({
   generatePerks: async props => {
     const { walletCurrentAddress, userBadges, ensClaimed } = props
 
-    console.log(userBadges, "userBadges")
+    // console.log(userBadges, "userBadges")
     const perkList = [
       {
         id: "claim-ens-subdomain",

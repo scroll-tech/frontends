@@ -91,8 +91,8 @@ const CustomizeDisplayDialog = props => {
     return badgesAfterAttach
   }
 
-  const calculateBadgeOrder = (curAttachedBadges, preAttachedBadges) => {
-    return preAttachedBadges.map((id, index) => {
+  const calculateBadgeOrder = (curAttachedBadges, nextAttachedBadges) => {
+    return nextAttachedBadges.map((id, index) => {
       return BigInt(curAttachedBadges.indexOf(id) + 1)
     })
   }

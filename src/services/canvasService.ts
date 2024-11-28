@@ -50,12 +50,6 @@ const initializePublicInstance = async provider => {
   return unsignedProfileRegistryContract
 }
 
-// const queryAllUserBadges = async (provider, userAddress, badgeContractList) => {
-//   const easBadges = await queryUserBadges(userAddress)
-//   const selfAttestationBadges = await querySelfAttestationBadges(provider, userAddress, badgeContractList)
-//   return [...easBadges, ...selfAttestationBadges]
-// }
-
 const queryUserBadges = async userAddress => {
   const query = `
       query Attestation {
@@ -95,7 +89,7 @@ const queryUserBadges = async userAddress => {
   }
 }
 
-const querySelfAttestationBadges = async (provider, userAddress, badgeContractList) => {
+const querySelfAttestationAttestations = async (provider, userAddress, badgeContractList) => {
   async function fetchAttestation(userAddress, badgeContract) {
     const badgeContractInstance = new ethers.Contract(badgeContract, BadgeABI, provider)
     const hasBadge = await badgeContractInstance.hasBadge(userAddress)
@@ -214,7 +208,7 @@ const fillBadgeDetailWithPayload = async (provider, attestation, withMetadata = 
 const queryUserBadgesWrapped = async (provider, userAddress, withMetadata = true) => {
   try {
     const attestations = await queryUserBadges(userAddress)
-    const selfAttestations = await querySelfAttestationBadges(provider, userAddress, SELF_ATTESTATION_BADGE_LIST)
+    const selfAttestations = await querySelfAttestationAttestations(provider, userAddress, SELF_ATTESTATION_BADGE_LIST)
     const allAttestations = [...attestations, ...selfAttestations]
     const formattedBadgesPromises = allAttestations.map(attestation => {
       return fillBadgeDetailWithPayload(provider, attestation, withMetadata)
@@ -241,13 +235,17 @@ const queryCanvasUsername = async (provider, profileAddress) => {
 const getOrderedAttachedBadges = async profileContract => {
   try {
     const badgesProxy = await profileContract!.getAttachedBadges()
+    const validBadgesProxy = await profileContract!.getValidBadges()
+    const validBadges = Array.from(validBadgesProxy)
     const attachedBadges: Array<string> = Array.from(badgesProxy)
+
     const badgeOrder = await getBadgeOrder(profileContract)
 
     const orderedAttachedBadges = badgeOrder
       .map((order, index) => [Number(order), attachedBadges[index]])
       .sort((a: (string | number)[], b: (string | number)[]) => (a[0] as number) - (b[0] as number))
       .map(item => item[1] as string)
+      .filter(item => validBadges.includes(item))
 
     return { orderedAttachedBadges, attachedBadges, badgeOrder }
   } catch (error) {

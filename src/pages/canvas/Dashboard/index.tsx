@@ -38,7 +38,7 @@ const Dashboard = props => {
 
   const {
     canvasUsername,
-    attachedBadges,
+    orderedAttachedBadges,
     fetchCurrentCanvasDetail,
     fetchOthersCanvasDetail,
     profileAddress,
@@ -138,7 +138,7 @@ const Dashboard = props => {
     return () => window.removeEventListener("resize", handleResize)
   }, [handleResize])
 
-  const gridNum = useMemo(() => (attachedBadges.length > 12 ? 8 : 4), [attachedBadges])
+  const gridNum = useMemo(() => (orderedAttachedBadges.length > 12 ? 8 : 4), [orderedAttachedBadges])
 
   const badgewidth = useMemo(() => {
     const { width, height } = windowDimensions

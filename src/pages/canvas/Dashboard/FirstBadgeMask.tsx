@@ -11,18 +11,18 @@ const FirstBadgeMask = props => {
   const { isMobile, isPortrait } = useCheckViewport()
 
   const { provider } = useRainbowContext()
-  const { firstBadgeWithPosition, changeBadgeAnimationVisible, addFirstBadge, queryFirstMintUsername, attachedBadges } = useCanvasStore()
+  const { firstBadgeWithPosition, changeBadgeAnimationVisible, addFirstBadge, queryFirstMintUsername, orderedAttachedBadges } = useCanvasStore()
   const headerHeight = isPortrait ? 0 : 65
   const left = window.innerWidth / 2 - badgeWidth + badgeWidth * 0.15
   const top = (window.innerHeight - headerHeight) / 2 + headerHeight - 2 * badgeWidth + badgeWidth * 0.15
 
   useEffect(() => {
-    if (attachedBadges.includes(firstBadgeWithPosition.id)) {
+    if (orderedAttachedBadges.includes(firstBadgeWithPosition.id)) {
       setTimeout(() => {
         changeBadgeAnimationVisible(false)
       }, 1000)
     }
-  }, [attachedBadges])
+  }, [orderedAttachedBadges])
 
   const handleAnimationComplete = async () => {
     addFirstBadge(provider, firstBadgeWithPosition.id, firstBadgeWithPosition.image, firstBadgeWithPosition.badgeContract)
