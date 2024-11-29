@@ -27,7 +27,7 @@ const NFTAvatar = props => {
         alt="NFT avatar"
         style={{ aspectRatio: "1 / 1", width: "100%", borderRadius: "0.8rem", objectFit: "contain" }}
         placeholder="/imgs/canvas/avatarPlaceholder.svg"
-        error="/imgs/canvas/NFTPlaceholder.svg"
+        error="/imgs/canvas/NFTCardPlaceholder.svg"
         retry={{ count: 2, delay: 1, acc: "*" }}
       ></Img>
     </Box>

@@ -6,9 +6,11 @@ import { fetchBadgeByAddrURL } from "@/apis/canvas-badge"
 import { fetchEcosystemProtocolByNameURL, fetchEcosystemProtocolLogo } from "@/apis/ecosystem"
 import AttestProxyABI from "@/assets/abis/CanvasAttestProxy.json"
 import BadgeABI from "@/assets/abis/CanvasBadge.json"
+import CanvasBadgeResolverABI from "@/assets/abis/CanvasBadgeResolver.json"
 import ProfileABI from "@/assets/abis/CanvasProfile.json"
 import ProfileRegistryABI from "@/assets/abis/CanvasProfileRegistry.json"
-import { ORIGINS_NFT_BADGE, SCR_HOLDING_BADGE_ADDRESS } from "@/constants"
+import BadgePlaceholderSvg from "@/assets/svgs/canvas-perks/badge-placeholder.svg"
+import { BADGE_TYPE, ORIGINS_NFT_BADGE, SCR_HOLDING_BADGE_ADDRESS, SELF_ATTESTATION_BADGE_ADDRESS_LIST } from "@/constants"
 import {
   checkDelegatedAttestation,
   decodeBadgePayload,
@@ -28,7 +30,25 @@ const SCROLL_BADGE_SCHEMA = requireEnv("REACT_APP_BADGE_SCHEMA")
 
 const PROFILE_REGISTRY_ADDRESS = requireEnv("REACT_APP_PROFILE_REGISTRY_ADDRESS")
 
-const SELF_ATTESTATION_BADGE_LIST = [SCR_HOLDING_BADGE_ADDRESS]
+const SCROLL_BADGE_RESOLVER_ADDRESS = requireEnv("REACT_APP_BADGE_RESOLVER_ADDRESS")
+
+// TODO: need to be stored in Badge Registry
+export const SELF_ATTESTATION_BADGE_LIST = [
+  {
+    name: "SCR Holding Badge",
+    image: BadgePlaceholderSvg,
+    description: "This badge is awarded to users who hold SCR tokens, recognizing your active involvement and support for the SCR ecosystem",
+    badgeContract: SCR_HOLDING_BADGE_ADDRESS,
+    category: BADGE_TYPE.SELF_ATTESTATION,
+    thirdParty: false,
+    issuer: {
+      name: "Scroll",
+      logo: "https://scroll.io/static/media/Scroll_Logomark.673577c8260b63ae56867bc9af6af514.svg",
+      origin: "https://scroll.io",
+      communityURL: "https://discord.gg/scroll",
+    },
+  },
+]
 
 interface Attestation {
   attester: string
@@ -50,7 +70,7 @@ const initializePublicInstance = async provider => {
   return unsignedProfileRegistryContract
 }
 
-const queryUserBadges = async userAddress => {
+const queryEASAttestationsByWalletAddress = async userAddress => {
   const query = `
       query Attestation {
         attestations(
@@ -89,7 +109,7 @@ const queryUserBadges = async userAddress => {
   }
 }
 
-const querySelfAttestationAttestations = async (provider, userAddress, badgeContractList) => {
+const querySelfAttestationsByWalletAddress = async (provider, userAddress, badgeContractList) => {
   async function fetchAttestation(userAddress, badgeContract) {
     const badgeContractInstance = new ethers.Contract(badgeContract, BadgeABI, provider)
     const hasBadge = await badgeContractInstance.hasBadge(userAddress)
@@ -112,38 +132,19 @@ const querySelfAttestationAttestations = async (provider, userAddress, badgeCont
     .filter(item => item)
 }
 
-const queryBadgeDetailById = async badgeId => {
-  const query = `
-      query Attestation {
-        attestations(
-          where: {
-            id: { equals: "${badgeId}" },
-          }
-        ) {
-          data
-          time
-          recipient
-        }
-      }
-    `
-
+const queryAttestationByUID = async (provider, badgeUID) => {
   try {
-    const response = await fetch(EAS_GRAPHQL_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ query }),
-    })
-
-    const {
-      data: { attestations },
-    } = await response.json()
-
-    return attestations
+    const badgeResolverInterface = new ethers.Contract(SCROLL_BADGE_RESOLVER_ADDRESS, CanvasBadgeResolverABI, provider)
+    const attestation = await badgeResolverInterface.getAndValidateBadge(badgeUID)
+    return {
+      id: attestation.uid,
+      data: attestation.data,
+      time: attestation.time,
+      recipient: attestation.recipient,
+    }
   } catch (error) {
-    sentryDebug(`query badge detail: ${error.message}`)
-    return []
+    sentryDebug(`query attestation by uid: ${error.message}`)
+    return {}
   }
 }
 
@@ -207,8 +208,8 @@ const fillBadgeDetailWithPayload = async (provider, attestation, withMetadata = 
 
 const queryUserBadgesWrapped = async (provider, userAddress, withMetadata = true) => {
   try {
-    const attestations = await queryUserBadges(userAddress)
-    const selfAttestations = await querySelfAttestationAttestations(provider, userAddress, SELF_ATTESTATION_BADGE_LIST)
+    const attestations = await queryEASAttestationsByWalletAddress(userAddress)
+    const selfAttestations = await querySelfAttestationsByWalletAddress(provider, userAddress, SELF_ATTESTATION_BADGE_ADDRESS_LIST)
     const allAttestations = [...attestations, ...selfAttestations]
     const formattedBadgesPromises = allAttestations.map(attestation => {
       return fillBadgeDetailWithPayload(provider, attestation, withMetadata)
@@ -280,6 +281,9 @@ const checkBadgeEligibility = async (provider, walletAddress, badge: any) => {
       const { validator } = ORIGINS_NFT_BADGE
       const eligibility = await validator(provider, walletAddress)
       return eligibility
+    }
+    if (badge.category === BADGE_TYPE.SELF_ATTESTATION) {
+      return null
     }
 
     if (!badge.baseURL && !badge.eligibilityCheck) {
@@ -490,7 +494,9 @@ const fetchNotionBadgeByAddr = async addr => {
     const data = await scrollRequest(fetchBadgeByAddrURL(addr))
     return data
   } catch (e) {
-    return {}
+    // TODO: delete
+    const badge = SELF_ATTESTATION_BADGE_LIST.find(item => item.badgeContract === addr)
+    return badge ?? {}
   }
 }
 
@@ -527,9 +533,9 @@ export {
   checkIfProfileMinted,
   checkHasBadge,
   getBadgeMetadata,
-  queryUserBadges,
+  queryEASAttestationsByWalletAddress,
   queryUserBadgesWrapped,
-  queryBadgeDetailById,
+  queryAttestationByUID,
   queryCanvasUsername,
   getOrderedAttachedBadges,
   getBadgeOrder,

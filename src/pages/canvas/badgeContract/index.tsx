@@ -9,7 +9,7 @@ import { ReactComponent as WarningSvg } from "@/assets/svgs/canvas/circle-warnin
 import { ReactComponent as ShareSvg } from "@/assets/svgs/canvas/share.svg"
 import ScrollButton from "@/components/Button"
 import Link from "@/components/Link"
-import { CHAIN_ID } from "@/constants"
+import { BADGE_TYPE, CHAIN_ID } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { useAsyncMemo } from "@/hooks"
 import useSnackbar from "@/hooks/useSnackbar"
@@ -24,7 +24,8 @@ const BadgeContractDetail = props => {
   const { address } = useParams()
   const navigationType = useNavigationType()
   const { walletCurrentAddress, connect, chainId, provider } = useRainbowContext()
-  const { profileMinted, changeIsBadgeMinting, isBadgeMinting, userBadges, queryUserBadges, queryUserBadgesLoading } = useCanvasStore()
+  const { profileMinted, changeIsBadgeMinting, isBadgeMinting, userBadges, queryEASAttestationsByWalletAddress, queryUserBadgesLoading } =
+    useCanvasStore()
 
   const {
     data: badgeForMint,
@@ -78,7 +79,7 @@ const BadgeContractDetail = props => {
 
   useEffect(() => {
     if (!userBadges.length && isOwned) {
-      queryUserBadges(provider, walletCurrentAddress)
+      queryEASAttestationsByWalletAddress(provider, walletCurrentAddress)
     }
   }, [isOwned, userBadges])
 
@@ -166,6 +167,16 @@ const BadgeContractDetail = props => {
           </>
         )
       }
+      if (badgeForMint.category === BADGE_TYPE.SELF_ATTESTATION) {
+        return (
+          <>
+            <SvgIcon sx={{ color: "primary.main", fontSize: "2.4rem" }} component={WarningSvg} inheritViewBox></SvgIcon>
+            <Typography sx={{ color: "#FF684B !important", fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.4rem", "2.8rem"], fontWeight: 500 }}>
+              This is the badge that is automatically attestated. Selected account is not eligible.
+            </Typography>
+          </>
+        )
+      }
       return (
         <>
           <SvgIcon sx={{ color: "primary.main", fontSize: "2.4rem" }} component={WarningSvg} inheritViewBox></SvgIcon>
@@ -223,7 +234,7 @@ const BadgeContractDetail = props => {
           Mint Scroll Canvas
         </ScrollButton>
       )
-    } else if (isOwned) {
+    } else if (isOwned && badgeForMint.thirdParty) {
       return (
         <ScrollButton
           sx={theme => ({
@@ -248,7 +259,7 @@ const BadgeContractDetail = props => {
           color="primary"
           onClick={handleMint}
           loading={isBadgeMinting.get(address)}
-          gloomy={!isEligible || badgeForMint.airdrop}
+          gloomy={!isEligible || [BADGE_TYPE.SELF_ATTESTATION, BADGE_TYPE.GIFTED].includes(badgeForMint.category)}
         >
           {isBadgeMinting.get(address) ? "Minting" : "Mint now"}
         </ScrollButton>

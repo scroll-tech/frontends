@@ -7,7 +7,7 @@ import { getSmallHeartbeatURL, viewEASScanURL } from "@/apis/canvas"
 import { ReactComponent as ShareSvg } from "@/assets/svgs/canvas/share.svg"
 import ScrollButton from "@/components/Button"
 import Link from "@/components/Link"
-import { NFT_RARITY_MAP } from "@/constants"
+import { BADGE_TYPE, NFT_RARITY_MAP } from "@/constants"
 import { useCanvasContext } from "@/contexts/CanvasContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useSnackbar from "@/hooks/useSnackbar"
@@ -16,7 +16,7 @@ import {
   fetchIssuer,
   fetchNotionBadgeByAddr,
   fillBadgeDetailWithPayload,
-  queryBadgeDetailById,
+  queryAttestationByUID,
   queryCanvasUsername,
   upgradeBadge,
 } from "@/services/canvasService"
@@ -76,13 +76,13 @@ const BadgeDetailPage = () => {
   const fetchBadgeDetailByBadgeId = async id => {
     setLoading(true)
     try {
-      const badges = await queryBadgeDetailById(id)
-      if (!badges.length) {
+      const attestation = await queryAttestationByUID(publicProvider, id)
+      if (!attestation.id) {
         navigate("/404")
         return
       }
 
-      const [{ recipient, time, data }] = badges
+      const { recipient, time, data } = attestation
 
       const { badgeContract, description, ...badgeMetadata } = await fillBadgeDetailWithPayload(publicProvider, { id, data })
 
@@ -103,10 +103,11 @@ const BadgeDetailPage = () => {
       }
       const badgeDetail = {
         ...badgeMetadata,
+        category: badgeWidthIssuer.category,
         walletAddress: recipient,
         owner: name,
         ownerLogo: getSmallHeartbeatURL(recipient),
-        mintedOn: formatDate(time * 1000),
+        mintedOn: formatDate(Number(time) * 1000),
         badgeContract,
         issuer: badgeWidthIssuer.issuer,
         description: isOriginsNFTBadge(badgeContract) ? badgeWidthIssuer.description : description,
@@ -160,9 +161,11 @@ const BadgeDetailPage = () => {
         breadcrumb={<BackToCanvas username={detail.owner} loading={loading} href={viewCanvasURL}></BackToCanvas>}
         onUpgrade={handleUpgradeBadge}
       >
-        <ScrollButton color="primary" href={viewEASScanURL(id)} sx={{ gridColumn: ["span 2", "unset"] }} target="_blank">
-          View on EAS
-        </ScrollButton>
+        {[BADGE_TYPE.GIFTED, BADGE_TYPE.BACKEND_AUTHORIZED, BADGE_TYPE.PERMISSIONLESS].includes(detail.category) && (
+          <ScrollButton color="primary" href={viewEASScanURL(id)} sx={{ gridColumn: ["span 2", "unset"] }} target="_blank">
+            View on EAS
+          </ScrollButton>
+        )}
 
         {detail.thirdParty && detail.issuer?.name ? (
           <ScrollButton color="secondary" href={detail.issuer?.origin} target="_blank">

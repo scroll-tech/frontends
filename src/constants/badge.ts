@@ -13,6 +13,8 @@ const ETHEREUM_YEAR_BASE_URL = `${requireEnv("REACT_APP_CANVAS_BACKEND_URI")}/ba
 
 export const SCR_HOLDING_BADGE_ADDRESS = requireEnv("REACT_APP_SCR_HOLDING_BADGE_ADDRESS")
 
+export const SELF_ATTESTATION_BADGE_ADDRESS_LIST = [SCR_HOLDING_BADGE_ADDRESS]
+
 export interface Badge {
   name: string
   description: string
@@ -69,4 +71,12 @@ export const ORIGINS_NFT_BADGE = {
     }
     return !!balance
   },
+}
+
+export enum BADGE_TYPE {
+  GIFTED = "Gifted",
+  BACKEND_AUTHORIZED = "Backend-authorized",
+  PERMISSIONLESS = "Permissionless",
+  // TODO: need to be stored in Badge Registry
+  SELF_ATTESTATION = "Self-attestation",
 }

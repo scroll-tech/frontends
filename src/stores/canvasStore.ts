@@ -102,7 +102,7 @@ interface CanvasStore {
   queryUsername: () => void
   queryAttachedBadges: () => void
   queryVisibleBadges: (provider, address) => void
-  queryUserBadges: (provider, address) => void
+  queryEASAttestationsByWalletAddress: (provider, address) => void
   pickUpgradableBadges: (provider) => void
   addFirstBadge: (provider, badgeId, badgeImage, badgeContract) => void
   clearCanvas: () => void
@@ -365,7 +365,7 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
     })
   },
 
-  queryUserBadges: async (provider, walletAddress) => {
+  queryEASAttestationsByWalletAddress: async (provider, walletAddress) => {
     set({
       queryUserBadgesLoading: true,
     })

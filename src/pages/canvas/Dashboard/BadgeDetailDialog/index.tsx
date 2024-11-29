@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
 import { forwardRef, useEffect, useMemo, useRef, useState } from "react"
-import Img from "react-cool-img"
 import { useNavigate, useParams } from "react-router-dom"
 
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined"
@@ -20,6 +19,7 @@ import useCanvasStore, { BadgeDetailDialogType, BadgesDialogType } from "@/store
 import { generateShareTwitterURL, ipfsToBrowserURL, requireEnv, sentryDebug } from "@/utils"
 
 import BadgeDesc from "../../components/BadgeDesc"
+import BadgeImage from "../../components/BadgeImage"
 import UpgradeAction from "./UpgradeAction"
 
 const ButtonContainer = styled(forwardRef<any, any>((props, ref) => <Box {...props} ref={ref} />))(({ theme }) => ({
@@ -217,7 +217,7 @@ const BadgeDetailDialog = () => {
         justifyContent={isMobile ? "flex-start" : "center"}
         sx={{ width: ["100%", "57.6rem"], height: [`calc(100% - ${actionHeight})`, "54.6rem", "54.6rem", "54.6rem"] }}
       >
-        <Img
+        <BadgeImage
           alt="img"
           src={ipfsToBrowserURL(selectedBadge.image)}
           placeholder="/imgs/canvas/badgePlaceholder.svg"
@@ -225,7 +225,6 @@ const BadgeDetailDialog = () => {
             width: isMobile ? "12rem" : "20rem",
             height: isMobile ? "12rem" : "20rem",
             marginBottom: isMobile ? "1.6rem" : "3.2rem",
-            borderRadius: "0.8rem",
           }}
         />
         {[BadgeDetailDialogType.MINT, BadgeDetailDialogType.VIEW, BadgeDetailDialogType.NO_CANVAS].includes(badgeDetailDialogVisible) && (

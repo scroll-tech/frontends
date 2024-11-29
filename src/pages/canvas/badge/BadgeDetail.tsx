@@ -13,6 +13,7 @@ import useCanvasStore from "@/stores/canvasStore"
 import { ipfsToBrowserURL } from "@/utils"
 
 import BadgeDesc from "../components/BadgeDesc"
+import BadgeImage from "../components/BadgeImage"
 import Statistic from "../components/Statistic"
 
 const InfoBox = styled<any>(Box)(({ theme, count }) => ({
@@ -146,10 +147,10 @@ const BadgeDetail = props => {
             {loading ? (
               <Skeleton dark sx={{ height: "100%" }}></Skeleton>
             ) : (
-              <Img
+              <BadgeImage
                 src={ipfsToBrowserURL(detail.image)}
                 placeholder="/imgs/canvas/badgePlaceholder.svg"
-                style={{ borderRadius: "0.8rem" }}
+                style={{ width: "100%" }}
                 alt="badge image"
               />
             )}
