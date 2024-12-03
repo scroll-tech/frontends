@@ -49,7 +49,7 @@ const Avatar = props => {
           sx={{ width: "100%", aspectRatio: "1/1" }}
           frontContent={
             <AvatarTooltip title="click to view heartbeat">
-              <NFTAvatar src={avatarNFTLoading ? undefined : avatarNFT?.image || "/imgs/canvas/NFTPlaceholder.svg"}></NFTAvatar>
+              <NFTAvatar src={avatarNFTLoading ? undefined : avatarNFT?.image || "/imgs/canvas/NFTCardPlaceholder.svg"}></NFTAvatar>
             </AvatarTooltip>
           }
           backContent={<HeartbeatAvatar></HeartbeatAvatar>}

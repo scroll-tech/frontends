@@ -1,3 +1,4 @@
+// import { type Address } from "viem"
 import { create } from "zustand"
 
 import BadgeEthereumYearSvg from "@/assets/svgs/canvas-perks/badge-ethereum-year.svg"
@@ -5,11 +6,21 @@ import BadgePlaceholderSvg from "@/assets/svgs/canvas-perks/badge-placeholder.sv
 import { ETHEREUM_YEAR_BADGE_ADDRESS, SCR_HOLDING_BADGE_ADDRESS } from "@/constants"
 import { truncateAddress } from "@/utils"
 
+const SCR_HOLDING_BADGE_NAME = "SCR Holding Badge"
+const ETHEREUM_YEAR_BADGE_NAME = "Ethereum Year Badge"
+
+interface PerkMetadata {
+  name: string
+  badgeContract: string
+  imageURL: string
+}
+
 interface Perk {
   id: string
   title: string
   description: string
-  imageURL: string[]
+  // imageURL: string[]
+  metadata: PerkMetadata[]
   claimable: boolean
   claimed: boolean
 
@@ -27,6 +38,8 @@ const usePerkStore = create<EnsSubdomainStore>()(set => ({
   generatePerks: async props => {
     const { walletCurrentAddress, userBadges, ensClaimed } = props
 
+    console.log(userBadges, "userBadges")
+
     const perkList = [
       {
         id: "claim-ens-subdomain",
@@ -35,14 +48,37 @@ const usePerkStore = create<EnsSubdomainStore>()(set => ({
           walletCurrentAddress,
         )} address readable for free! This is your personalized address that people can send crypto to.`,
 
-        imageURL: [BadgeEthereumYearSvg, BadgePlaceholderSvg],
+        metadata: [
+          {
+            name: ETHEREUM_YEAR_BADGE_NAME,
+            badgeContract: ETHEREUM_YEAR_BADGE_ADDRESS,
+            imageURL: BadgeEthereumYearSvg,
+          },
+          {
+            name: SCR_HOLDING_BADGE_NAME,
+            badgeContract: SCR_HOLDING_BADGE_ADDRESS,
+            imageURL: BadgePlaceholderSvg,
+          },
+        ],
 
         checkClaimableFunc: () => {
           const yearBadge = userBadges.find(badge => badge.badgeContract === ETHEREUM_YEAR_BADGE_ADDRESS)
           const scrBadge = userBadges.find(badge => badge.badgeContract === SCR_HOLDING_BADGE_ADDRESS)
           return {
             claimable: !!yearBadge && !!scrBadge,
-            imageURL: [yearBadge ? yearBadge.image : BadgeEthereumYearSvg, scrBadge ? scrBadge.image : BadgePlaceholderSvg],
+
+            metadata: [
+              {
+                name: ETHEREUM_YEAR_BADGE_NAME,
+                badgeContract: ETHEREUM_YEAR_BADGE_ADDRESS,
+                imageURL: yearBadge ? yearBadge.image : BadgeEthereumYearSvg,
+              },
+              {
+                name: SCR_HOLDING_BADGE_NAME,
+                badgeContract: SCR_HOLDING_BADGE_ADDRESS,
+                imageURL: scrBadge ? scrBadge.image : BadgePlaceholderSvg,
+              },
+            ],
           }
         },
 
@@ -57,7 +93,13 @@ const usePerkStore = create<EnsSubdomainStore>()(set => ({
           const yearBadge = userBadges.find(badge => badge.badgeContract === ETHEREUM_YEAR_BADGE_ADDRESS)
           return {
             claimable: !!yearBadge,
-            imageURL: [yearBadge ? yearBadge.image : BadgeEthereumYearSvg],
+            metadata: [
+              {
+                name: ETHEREUM_YEAR_BADGE_NAME,
+                badgeContract: ETHEREUM_YEAR_BADGE_ADDRESS,
+                imageURL: yearBadge ? yearBadge.image : BadgeEthereumYearSvg,
+              },
+            ],
           }
         },
         claimed: false,

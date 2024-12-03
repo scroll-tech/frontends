@@ -3,14 +3,13 @@ import { useMemo } from "react"
 import { Box, Stack, SvgIcon, Typography } from "@mui/material"
 
 import { ReactComponent as ArrowlSvg } from "@/assets/svgs/canvas-perks/arrow.svg"
-import BadgePlaceholderSvg from "@/assets/svgs/canvas-perks/badge-placeholder.svg"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useCanvasProfileStore, { ENSSubdomainDialogTypeEnum } from "@/stores/canvasProfileStore"
 import usePerkStore from "@/stores/perksStore"
 import { truncateAddress } from "@/utils"
 
-import BadgeImage from "../../components/BadgeImage"
+import PerksBadge from "../../components/PerksBadge"
 import PerksButton from "../../components/PerksButton"
 
 const ClaimENS = () => {
@@ -110,16 +109,16 @@ const ClaimENS = () => {
             mb: ["1.6rem"],
           }}
         >
-          Collect Ethereum year and SCR holding badge to qualify.
+          Collect the following badge(s) to qualify:
         </Typography>
         <Stack direction="row" gap={["1.6rem", "2.4rem"]} justifyContent="center">
-          {perk.imageURL.map((imageURL, index) => (
-            <BadgeImage
-              key={imageURL}
-              src={imageURL}
-              alt=""
+          {perk.metadata.map(({ imageURL, badgeContract, name }, index) => (
+            <PerksBadge
+              key={badgeContract}
+              imageURL={imageURL}
+              badgeContract={badgeContract}
+              name={name}
               style={{ width: isMobile ? "5.6rem" : "10rem", height: isMobile ? "5.6rem" : "10rem" }}
-              placeholder={BadgePlaceholderSvg}
             />
           ))}
         </Stack>

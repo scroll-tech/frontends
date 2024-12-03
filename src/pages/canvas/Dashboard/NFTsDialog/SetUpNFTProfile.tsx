@@ -5,12 +5,11 @@ import { Stack, Typography } from "@mui/material"
 import AdvertisingNFT1 from "@/assets/images/canvas/advertising-nft-1.webp"
 import AdvertisingNFT2 from "@/assets/images/canvas/advertising-nft-2.png"
 import AdvertisingNFT3 from "@/assets/images/canvas/advertising-nft-3.webp"
-import BadgePlaceholderSvg from "@/assets/svgs/canvas-perks/badge-placeholder.svg"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useCanvasProfileStore, { NFTsDialogTypeEnum } from "@/stores/canvasProfileStore"
 import usePerkStore from "@/stores/perksStore"
 
-import BadgeImage from "../../components/BadgeImage"
+import PerksBadge from "../../components/PerksBadge"
 import PerksButton from "../../components/PerksButton"
 import NFTAvatar from "../BadgeWall/Avatar/NFTAvatar"
 
@@ -67,14 +66,9 @@ const SetUpNFTProfile = props => {
         <Typography
           sx={{ fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.4rem", "2.8rem"], color: "primary.contrastText", mt: "6.4rem", mb: "1.6rem" }}
         >
-          Collect Ethereum year badge to qualify.
+          Collect the following badge(s) to qualify:
         </Typography>
-        <BadgeImage
-          src={NFTPerk?.imageURL[0] ?? BadgePlaceholderSvg}
-          placeholder={BadgePlaceholderSvg}
-          width={isMobile ? "56px" : "100px"}
-          height={isMobile ? "56px" : "100px"}
-        ></BadgeImage>
+        <PerksBadge {...NFTPerk.metadata[0]} width={isMobile ? "56px" : "100px"} height={isMobile ? "56px" : "100px"}></PerksBadge>
       </Stack>
       <PerksButton sx={{ mt: [0, "4.8rem"] }} disabled={!NFTPerk.claimable} onClick={handleGoToConfirm}>
         Claim Now

@@ -7,7 +7,7 @@ import BadgeImage from "../../components/BadgeImage"
 
 const PerkItem = props => {
   const { perk, onClick } = props
-  const { title, description, claimed, imageURL } = perk
+  const { title, description, claimed, metadata } = perk
 
   const { isMobile } = useCheckViewport()
 
@@ -52,11 +52,11 @@ const PerkItem = props => {
       </Typography>
       <Typography sx={{ fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.4rem", "2.8rem"], color: "primary.contrastText" }}>{description}</Typography>
       <Stack direction="row" gap="1.6rem" justifyContent="center">
-        {imageURL.map((url, index) => (
+        {metadata.map(({ imageURL, name }) => (
           <BadgeImage
-            key={url}
-            src={url}
-            alt={`required-badge-${index}`}
+            key={imageURL}
+            src={imageURL}
+            alt={name}
             placeholder={BadgePlaceholderSvg}
             style={{ width: isMobile ? "4.8rem" : "6.4rem", height: isMobile ? "4.8rem" : "6.4rem" }}
           />
