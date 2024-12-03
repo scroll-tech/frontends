@@ -10,7 +10,7 @@ import CanvasBadgeResolverABI from "@/assets/abis/CanvasBadgeResolver.json"
 import ProfileABI from "@/assets/abis/CanvasProfile.json"
 import ProfileRegistryABI from "@/assets/abis/CanvasProfileRegistry.json"
 import BadgePlaceholderSvg from "@/assets/svgs/canvas-perks/badge-placeholder.svg"
-import { BADGE_TYPE, ORIGINS_NFT_BADGE, SCR_HOLDING_BADGE_ADDRESS, SELF_ATTESTATION_BADGE_ADDRESS_LIST } from "@/constants"
+import { BADGE_TYPE, ETHEREUM_YEAR_BADGE, ORIGINS_NFT_BADGE, SCR_HOLDING_BADGE_ADDRESS, SELF_ATTESTATION_BADGE_ADDRESS_LIST } from "@/constants"
 import {
   checkDelegatedAttestation,
   decodeBadgePayload,
@@ -48,6 +48,7 @@ export const SELF_ATTESTATION_BADGE_LIST = [
       communityURL: "https://discord.gg/scroll",
     },
   },
+  ETHEREUM_YEAR_BADGE,
 ]
 
 interface Attestation {
