@@ -165,7 +165,7 @@ const ViewNFTs = () => {
   return (
     <>
       <Typography
-        sx={{ fontSize: ["2rem", "3.2rem"], lineHeight: ["3.2rem", "4.8rem"], fontWeight: 600, textAlign: "center", color: "primary.contrastText" }}
+        sx={{ fontSize: ["2rem", "2.4rem"], lineHeight: ["3.2rem", "4.8rem"], fontWeight: 600, textAlign: "center", color: "primary.contrastText" }}
       >
         Choose an NFT
       </Typography>

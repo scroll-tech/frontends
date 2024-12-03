@@ -118,7 +118,7 @@ const EditProfile = props => {
         label: "Upload a profile picture",
         upload: true,
       },
-      { label: "Set an NFT as profile", disabled: !isNFTEligible, action: handleOpenPickNFTDialog },
+      { label: "Set an NFT as profile", disabled: !isNFTEligible, perk: true, action: handleOpenPickNFTDialog },
     ],
     [ensSubdomain, isNFTEligible],
   )
@@ -141,7 +141,7 @@ const EditProfile = props => {
         open={editProfileVisible}
         onClose={handleCloseEditMenu}
       >
-        {editMenuItems.map(({ label, action, upload, disabled }) => (
+        {editMenuItems.map(({ label, action, upload, perk, disabled }) => (
           <Tooltip
             disableHoverListener={!disabled}
             disableFocusListener={!disabled}
@@ -195,15 +195,14 @@ const EditProfile = props => {
             >
               {label}
               {!!upload && <VisuallyHiddenInput id="canvas-avatar" name="file" type="file" accept="image/*" onChange={handlePickPicture} />}
-              {/* {loading && <CircularProgress sx={{ color: "#aaa", ml: "1rem" }} size={18}></CircularProgress>} */}
-              {disabled && (
+              {perk && (
                 <Stack
                   direction="row"
                   alignItems="center"
                   gap="0.4rem"
                   sx={{ ml: "1.6rem", px: "0.8rem", height: "2rem", borderRadius: "0.4rem", backgroundColor: "#B5F5EC" }}
                 >
-                  <SvgIcon sx={{ fontSize: "1.2rem" }} component={LockSvg} inheritViewBox></SvgIcon>
+                  {disabled && <SvgIcon sx={{ fontSize: "1.2rem" }} component={LockSvg} inheritViewBox></SvgIcon>}
                   <Typography sx={{ fontSize: "1.2rem", fontWeight: 600, cursor: "inherit" }}>Scroll Perk</Typography>
                 </Stack>
               )}

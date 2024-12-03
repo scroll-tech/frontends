@@ -47,7 +47,7 @@ const PerkItem = props => {
           Claimed
         </Typography>
       )}
-      <Typography sx={{ fontSize: ["1.8rem", "2.4rem"], lineHeight: ["2.4rem", "4rem"], fontWeight: 600, color: "primary.contrastText" }}>
+      <Typography sx={{ fontSize: ["1.8rem", "2rem"], lineHeight: ["2.4rem", "2.8rem"], fontWeight: 600, color: "primary.contrastText" }}>
         {title}
       </Typography>
       <Typography sx={{ fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.4rem", "2.8rem"], color: "primary.contrastText" }}>{description}</Typography>

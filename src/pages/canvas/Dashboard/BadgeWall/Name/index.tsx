@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query"
+import copy from "copy-to-clipboard"
+import { useRef, useState } from "react"
 
-import { Typography } from "@mui/material"
+import { Tooltip, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
 import { fetchENSNameURL } from "@/apis/canvas-profile"
@@ -9,6 +11,11 @@ import { useRainbowContext } from "@/contexts/RainbowProvider"
 
 // import { restoreAllEmojis } from "@/utils"
 import ENSSubdomain from "./ENSSubdomain"
+
+const COPY_TIP_MAP = {
+  "to-copy": "Click to copy",
+  copied: "ENS subdomain copied",
+}
 
 const UserName = styled(Typography)(({ theme }) => ({
   color: "#FFFFFF",
@@ -29,6 +36,9 @@ const Name = props => {
   const { defaultValue, loading } = props
 
   const { walletCurrentAddress } = useRainbowContext()
+  const [copyTipVisible, setCopyTipVisible] = useState(false)
+  const [copyTipType, setCopyTipType] = useState("to-copy")
+  const timer = useRef<any>(null)
 
   const {
     data: ensSubdomain,
@@ -47,6 +57,29 @@ const Name = props => {
     staleTime: 5e3,
   })
 
+  const handleCopySubdomainName = () => {
+    copy(ensSubdomain)
+    setCopyTipType("copied")
+    setCopyTipVisible(true)
+    timer.current = setTimeout(() => {
+      setCopyTipType("to-copy")
+      setCopyTipVisible(false)
+    }, 6e3)
+  }
+
+  const handelOpenCopyTip = () => {
+    setCopyTipType("to-copy")
+    setCopyTipVisible(true)
+  }
+
+  const handleCloseCopyTip = () => {
+    if (timer.current) {
+      clearTimeout(timer.current)
+      timer.current = null
+    }
+    setCopyTipVisible(false)
+  }
+
   if (loading || isFetching) {
     return <Skeleton dark sx={{ width: "8em", height: ["2rem", "2.4rem"] }}></Skeleton>
   }
@@ -54,7 +87,27 @@ const Name = props => {
   if (ensSubdomain) {
     const [name] = ensSubdomain.split(".")
     return (
-      <ENSSubdomain sx={{ maxWidth: "100%", px: "1.5rem", whiteSpace: "pre-wrap", wordBreak: "keep-all" }}>{name}.&#8203;scroll.eth</ENSSubdomain>
+      <Tooltip
+        title={COPY_TIP_MAP[copyTipType]}
+        placement="bottom"
+        disableFocusListener
+        disableHoverListener
+        disableTouchListener
+        open={copyTipVisible}
+        onClose={handleCloseCopyTip}
+      >
+        <div>
+          <ENSSubdomain
+            role="button"
+            sx={{ maxWidth: "100%", px: "1.5rem", whiteSpace: "pre-wrap", wordBreak: "keep-all" }}
+            onMouseEnter={handelOpenCopyTip}
+            onMouseLeave={handleCloseCopyTip}
+            onClick={handleCopySubdomainName}
+          >
+            {name}.&#8203;scroll.eth
+          </ENSSubdomain>
+        </div>
+      </Tooltip>
     )
   }
 

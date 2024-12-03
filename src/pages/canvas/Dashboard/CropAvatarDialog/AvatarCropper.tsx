@@ -23,7 +23,6 @@ const AvatarCropper = forwardRef<FixedCropperRef, FixedCropperProps>((props: Fix
       }}
       imageRestriction={ImageRestriction.stencil}
       wrapperComponent={CustomWrapper}
-      // style={{ height: "32rem" }}
       {...restProps}
     />
   )
