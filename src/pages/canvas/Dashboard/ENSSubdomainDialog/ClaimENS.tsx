@@ -113,12 +113,13 @@ const ClaimENS = () => {
           Collect the following badge(s) to qualify:
         </Typography>
         <Stack direction="row" gap={["1.6rem", "2.4rem"]} justifyContent="center">
-          {perk.metadata.map(({ imageURL, badgeContract, name }, index) => (
+          {perk.metadata.map(({ imageURL, badgeContract, name, owned }, index) => (
             <PerksBadge
               key={badgeContract}
               imageURL={imageURL}
               badgeContract={badgeContract}
               name={name}
+              gray={!owned}
               style={{ width: isMobile ? "5.6rem" : "10rem", height: isMobile ? "5.6rem" : "10rem" }}
             />
           ))}

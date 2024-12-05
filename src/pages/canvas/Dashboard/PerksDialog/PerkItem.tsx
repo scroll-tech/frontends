@@ -1,9 +1,8 @@
 import { Stack, Typography } from "@mui/material"
 
-import BadgePlaceholderSvg from "@/assets/svgs/canvas-perks/badge-placeholder.svg"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
-import BadgeImage from "../../components/BadgeImage"
+import PerksBadge from "../../components/PerksBadge"
 
 const PerkItem = props => {
   const { perk, onClick } = props
@@ -52,14 +51,14 @@ const PerkItem = props => {
       </Typography>
       <Typography sx={{ fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.4rem", "2.8rem"], color: "primary.contrastText" }}>{description}</Typography>
       <Stack direction="row" gap="1.6rem" justifyContent="center">
-        {metadata.map(({ imageURL, name }) => (
-          <BadgeImage
+        {metadata.map(({ imageURL, owned }) => (
+          <PerksBadge
             key={imageURL}
-            src={imageURL}
-            alt={name}
-            placeholder={BadgePlaceholderSvg}
+            imageURL={imageURL}
+            viewOnly
+            gray={!owned}
             style={{ width: isMobile ? "4.8rem" : "6.4rem", height: isMobile ? "4.8rem" : "6.4rem" }}
-          />
+          ></PerksBadge>
         ))}
       </Stack>
     </Stack>

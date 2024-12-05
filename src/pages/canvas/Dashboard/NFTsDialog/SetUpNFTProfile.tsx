@@ -57,10 +57,10 @@ const SetUpNFTProfile = props => {
               sx={{
                 width: ["9rem", "15.6rem"],
                 aspectRatio: "1/1",
-                borderRadius: ["1rem", "1.6rem"],
                 zIndex: zIndex ?? 0,
                 transform: `translate(${x},${y}) rotate(${rotate})`,
               }}
+              imgStyle={{ borderRadius: isMobile ? "1rem" : "1.6rem" }}
               src={url}
             ></NFTAvatar>
           ))}
@@ -70,7 +70,12 @@ const SetUpNFTProfile = props => {
         >
           Collect the following badge(s) to qualify:
         </Typography>
-        <PerksBadge {...NFTPerk.metadata[0]} width={isMobile ? "56px" : "100px"} height={isMobile ? "56px" : "100px"}></PerksBadge>
+        <PerksBadge
+          {...NFTPerk.metadata[0]}
+          gray={!NFTPerk.metadata[0]?.owned}
+          width={isMobile ? "56px" : "100px"}
+          height={isMobile ? "56px" : "100px"}
+        ></PerksBadge>
       </Stack>
 
       {NFTPerk.claimed && NFTsDialogAllowBack ? (

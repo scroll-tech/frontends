@@ -1,10 +1,10 @@
-// import { type Address } from "viem"
 import { create } from "zustand"
 
-import BadgeEthereumYearSvg from "@/assets/svgs/canvas-perks/badge-ethereum-year.svg"
-import BadgePlaceholderSvg from "@/assets/svgs/canvas-perks/badge-placeholder.svg"
 import { ETHEREUM_YEAR_BADGE_ADDRESS, SCR_HOLDING_BADGE_ADDRESS } from "@/constants"
 import { truncateAddress } from "@/utils"
+
+const DEFAULT_ETHEREUM_YEAR_BADGE_IMAGE = "/imgs/canvas/Badge_Ethereum_Year.png"
+export const DEFAULT_SCR_HOLDING_BADGE_IMAGE = "/imgs/canvas/SCR_Holding_Badge.png"
 
 const SCR_HOLDING_BADGE_NAME = "SCR Holding Badge"
 const ETHEREUM_YEAR_BADGE_NAME = "Ethereum Year Badge"
@@ -13,6 +13,7 @@ interface PerkMetadata {
   name: string
   badgeContract: string
   imageURL: string
+  owned: boolean
 }
 
 interface Perk {
@@ -52,12 +53,14 @@ const usePerkStore = create<EnsSubdomainStore>()(set => ({
           {
             name: ETHEREUM_YEAR_BADGE_NAME,
             badgeContract: ETHEREUM_YEAR_BADGE_ADDRESS,
-            imageURL: BadgeEthereumYearSvg,
+            imageURL: DEFAULT_ETHEREUM_YEAR_BADGE_IMAGE,
+            owned: false,
           },
           {
             name: SCR_HOLDING_BADGE_NAME,
             badgeContract: SCR_HOLDING_BADGE_ADDRESS,
-            imageURL: BadgePlaceholderSvg,
+            imageURL: DEFAULT_SCR_HOLDING_BADGE_IMAGE,
+            owned: false,
           },
         ],
 
@@ -71,12 +74,14 @@ const usePerkStore = create<EnsSubdomainStore>()(set => ({
               {
                 name: ETHEREUM_YEAR_BADGE_NAME,
                 badgeContract: ETHEREUM_YEAR_BADGE_ADDRESS,
-                imageURL: yearBadge ? yearBadge.image : BadgeEthereumYearSvg,
+                imageURL: yearBadge ? yearBadge.image : DEFAULT_ETHEREUM_YEAR_BADGE_IMAGE,
+                owned: !!yearBadge,
               },
               {
                 name: SCR_HOLDING_BADGE_NAME,
                 badgeContract: SCR_HOLDING_BADGE_ADDRESS,
-                imageURL: scrBadge ? scrBadge.image : BadgePlaceholderSvg,
+                imageURL: scrBadge ? scrBadge.image : DEFAULT_SCR_HOLDING_BADGE_IMAGE,
+                owned: !!scrBadge,
               },
             ],
           }
@@ -88,7 +93,13 @@ const usePerkStore = create<EnsSubdomainStore>()(set => ({
         id: "nft-profile-setup",
         title: "Set up an NFT profile",
         description: "Set your profile picture to an NFT you own to show off your prized possessions.",
-        imageURL: [BadgeEthereumYearSvg],
+        metadata: [
+          {
+            name: ETHEREUM_YEAR_BADGE_NAME,
+            badgeContract: ETHEREUM_YEAR_BADGE_ADDRESS,
+            imageURL: DEFAULT_ETHEREUM_YEAR_BADGE_IMAGE,
+          },
+        ],
         checkClaimableFunc: () => {
           const yearBadge = userBadges.find(badge => badge.badgeContract === ETHEREUM_YEAR_BADGE_ADDRESS)
           return {
@@ -97,7 +108,8 @@ const usePerkStore = create<EnsSubdomainStore>()(set => ({
               {
                 name: ETHEREUM_YEAR_BADGE_NAME,
                 badgeContract: ETHEREUM_YEAR_BADGE_ADDRESS,
-                imageURL: yearBadge ? yearBadge.image : BadgeEthereumYearSvg,
+                imageURL: yearBadge ? yearBadge.image : DEFAULT_ETHEREUM_YEAR_BADGE_IMAGE,
+                owned: !!yearBadge,
               },
             ],
           }

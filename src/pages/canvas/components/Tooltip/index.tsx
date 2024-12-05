@@ -4,13 +4,14 @@ import { tooltipClasses } from "@mui/material/Tooltip"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
 const ToolTip = props => {
-  const { title, children, ...restProps } = props
+  const { title, children, disabled, ...restProps } = props
   const { isDesktop } = useCheckViewport()
   return (
     <MuiTooltip
       title={title}
-      disableFocusListener={!isDesktop}
-      disableTouchListener={!isDesktop}
+      disableFocusListener={disabled || !isDesktop}
+      disableTouchListener={disabled || !isDesktop}
+      disableHoverListener={disabled}
       slotProps={{
         tooltip: {
           sx: {

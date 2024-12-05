@@ -9,18 +9,18 @@ import useCheckViewport from "@/hooks/useCheckViewport"
 const MotionBox = motion(Box)
 
 const NFTAvatar = props => {
-  const { src, sx } = props
+  const { src, sx, imgStyle } = props
   const { isMobile } = useCheckViewport()
 
-  const [imgStyle, setImgStyle] = useState({ width: "100%", height: "auto" })
+  const [layoutStyle, setLayoutStyle] = useState({ width: "100%", height: "auto" })
 
   const handleLoadNFTImage = event => {
     const { naturalWidth, naturalHeight } = event.target
 
     if (naturalWidth > naturalHeight) {
-      setImgStyle({ width: "100%", height: "auto" })
+      setLayoutStyle({ width: "100%", height: "auto" })
     } else {
-      setImgStyle({ width: "auto", height: "100%" })
+      setLayoutStyle({ width: "auto", height: "100%" })
     }
   }
 
@@ -42,7 +42,7 @@ const NFTAvatar = props => {
         <Img
           src={src}
           alt="NFT avatar"
-          style={{ borderRadius: isMobile ? "0.8rem" : "2.4rem", ...imgStyle }}
+          style={{ borderRadius: isMobile ? "0.8rem" : "2.4rem", ...imgStyle, ...layoutStyle }}
           placeholder="/imgs/canvas/avatarPlaceholder.svg"
           error="/imgs/canvas/NFTCardPlaceholder.svg"
           retry={{ count: 2, delay: 1, acc: "*" }}

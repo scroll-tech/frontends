@@ -9,8 +9,8 @@ import BadgeABI from "@/assets/abis/CanvasBadge.json"
 import CanvasBadgeResolverABI from "@/assets/abis/CanvasBadgeResolver.json"
 import ProfileABI from "@/assets/abis/CanvasProfile.json"
 import ProfileRegistryABI from "@/assets/abis/CanvasProfileRegistry.json"
-import BadgePlaceholderSvg from "@/assets/svgs/canvas-perks/badge-placeholder.svg"
 import { BADGE_TYPE, ETHEREUM_YEAR_BADGE, ORIGINS_NFT_BADGE, SCR_HOLDING_BADGE_ADDRESS, SELF_ATTESTATION_BADGE_ADDRESS_LIST } from "@/constants"
+import { DEFAULT_SCR_HOLDING_BADGE_IMAGE } from "@/stores/perksStore"
 import {
   checkDelegatedAttestation,
   decodeBadgePayload,
@@ -36,7 +36,7 @@ const SCROLL_BADGE_RESOLVER_ADDRESS = requireEnv("REACT_APP_BADGE_RESOLVER_ADDRE
 export const SELF_ATTESTATION_BADGE_LIST = [
   {
     name: "SCR Holding Badge",
-    image: BadgePlaceholderSvg,
+    image: DEFAULT_SCR_HOLDING_BADGE_IMAGE,
     description: "This badge is awarded to users who hold SCR tokens, recognizing your active involvement and support for the SCR ecosystem",
     badgeContract: SCR_HOLDING_BADGE_ADDRESS,
     category: BADGE_TYPE.SELF_ATTESTATION,
