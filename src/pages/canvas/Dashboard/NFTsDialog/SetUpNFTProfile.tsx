@@ -11,6 +11,7 @@ import usePerkStore from "@/stores/perksStore"
 
 import PerksBadge from "../../components/PerksBadge"
 import PerksButton from "../../components/PerksButton"
+import PerksClaimedLabel from "../../components/PerksClaimedLabel"
 import NFTAvatar from "../BadgeWall/Avatar/NFTAvatar"
 
 const ADVERTISING_NFT_LIST = [
@@ -20,7 +21,8 @@ const ADVERTISING_NFT_LIST = [
 ]
 
 const SetUpNFTProfile = props => {
-  const { changeNFTsDialogType } = useCanvasProfileStore()
+  // NFTsDialogAllowBack means from PerksDialog then prevent from re-claiming
+  const { changeNFTsDialogType, NFTsDialogAllowBack } = useCanvasProfileStore()
   const { isMobile } = useCheckViewport()
 
   const { perks } = usePerkStore()
@@ -70,9 +72,14 @@ const SetUpNFTProfile = props => {
         </Typography>
         <PerksBadge {...NFTPerk.metadata[0]} width={isMobile ? "56px" : "100px"} height={isMobile ? "56px" : "100px"}></PerksBadge>
       </Stack>
-      <PerksButton sx={{ mt: [0, "4.8rem"] }} disabled={!NFTPerk.claimable} onClick={handleGoToConfirm}>
-        Claim Now
-      </PerksButton>
+
+      {NFTPerk.claimed && NFTsDialogAllowBack ? (
+        <PerksClaimedLabel sx={{ mt: [0, "4.8rem"] }}></PerksClaimedLabel>
+      ) : (
+        <PerksButton sx={{ mt: [0, "4.8rem"] }} disabled={!NFTPerk.claimable} onClick={handleGoToConfirm}>
+          Claim Now
+        </PerksButton>
+      )}
     </>
   )
 }

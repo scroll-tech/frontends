@@ -12,7 +12,7 @@ const ScrollDialog = props => {
       sx={[
         {
           "& .MuiBackdrop-root": {
-            backgroundColor: allowBack ? "transparent" : "rgba(16, 16, 16, 0.60)",
+            backgroundColor: "rgba(16, 16, 16, 0.60)",
           },
           "& .MuiDialog-paper": {
             position: "relative",
@@ -20,7 +20,7 @@ const ScrollDialog = props => {
             width: fullWidth ? "100%" : "auto",
             minWidth: "64rem",
             maxWidth: "120rem",
-            padding: roof ? "5.9rem 3.2rem 3.2rem" : "3rem 3.2rem 3.2rem",
+            padding: roof ? "7.2rem 3.2rem 3.2rem" : "2.4rem 3.2rem 3.2rem",
             borderRadius: "1.6rem",
           },
         },

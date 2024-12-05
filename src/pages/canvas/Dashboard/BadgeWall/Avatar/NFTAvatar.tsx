@@ -1,15 +1,31 @@
 import { motion } from "framer-motion"
+import { useState } from "react"
 import Img from "react-cool-img"
 
-import { Box } from "@mui/material"
+import { Box, Stack } from "@mui/material"
+
+import useCheckViewport from "@/hooks/useCheckViewport"
 
 const MotionBox = motion(Box)
 
 const NFTAvatar = props => {
   const { src, sx } = props
+  const { isMobile } = useCheckViewport()
+
+  const [imgStyle, setImgStyle] = useState({ width: "100%", height: "auto" })
+
+  const handleLoadNFTImage = event => {
+    const { naturalWidth, naturalHeight } = event.target
+
+    if (naturalWidth > naturalHeight) {
+      setImgStyle({ width: "100%", height: "auto" })
+    } else {
+      setImgStyle({ width: "auto", height: "100%" })
+    }
+  }
 
   return (
-    <Box sx={{ position: "relative", ...sx }}>
+    <Box sx={{ position: "relative", width: "100%", ...sx }}>
       <MotionBox
         sx={{
           position: "absolute",
@@ -22,14 +38,17 @@ const NFTAvatar = props => {
         animate={{ scale: [1, 0.8, 1] }}
         transition={{ ease: "easeOut", duration: 4, repeat: Infinity }}
       ></MotionBox>
-      <Img
-        src={src}
-        alt="NFT avatar"
-        style={{ aspectRatio: "1 / 1", width: "100%", borderRadius: "0.8rem", objectFit: "contain" }}
-        placeholder="/imgs/canvas/avatarPlaceholder.svg"
-        error="/imgs/canvas/NFTCardPlaceholder.svg"
-        retry={{ count: 2, delay: 1, acc: "*" }}
-      ></Img>
+      <Stack justifyContent="center" alignItems="center" sx={{ width: "100%", aspectRatio: "1/1" }}>
+        <Img
+          src={src}
+          alt="NFT avatar"
+          style={{ borderRadius: isMobile ? "0.8rem" : "2.4rem", ...imgStyle }}
+          placeholder="/imgs/canvas/avatarPlaceholder.svg"
+          error="/imgs/canvas/NFTCardPlaceholder.svg"
+          retry={{ count: 2, delay: 1, acc: "*" }}
+          onLoad={handleLoadNFTImage}
+        ></Img>
+      </Stack>
     </Box>
   )
 }

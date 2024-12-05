@@ -36,9 +36,9 @@ interface EnsSubdomainStore {
 const usePerkStore = create<EnsSubdomainStore>()(set => ({
   perks: [],
   generatePerks: async props => {
-    const { walletCurrentAddress, userBadges, ensClaimed } = props
+    const { walletCurrentAddress, userBadges, ensClaimed, nftClaimed } = props
 
-    console.log(userBadges, "userBadges")
+    // console.log(userBadges, "userBadges")
 
     const perkList = [
       {
@@ -102,7 +102,7 @@ const usePerkStore = create<EnsSubdomainStore>()(set => ({
             ],
           }
         },
-        claimed: false,
+        claimed: nftClaimed,
       },
     ]
     const perkListWithClaimable = perkList.map(perk => {

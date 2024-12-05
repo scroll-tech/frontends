@@ -21,10 +21,12 @@ const EDIT_SUBDOMAIN_COPY = {
   [ENSSubdomainDialogTypeEnum.CREATE_SUBDOMAIN]: {
     title: "Create your subdomain name",
     description: "Your Canvas username will be replaced by your subdomain, which you can change for free anytime.",
+    actionText: "Create for free",
   },
   [ENSSubdomainDialogTypeEnum.UPDATE_SUBDOMAIN]: {
     title: "Change your subdomain name",
     description: "You can change for free anytime.",
+    actionText: "Change for free",
   },
 }
 
@@ -144,7 +146,7 @@ const CreateENS = () => {
         </Box>
       </Stack>
       <PerksButton sx={{ mt: "6.8rem" }} loading={isPending} disabled={validating || !!helpText || !subdomainName} onClick={handleClaimENSSubdomain}>
-        Confirm
+        {EDIT_SUBDOMAIN_COPY[ENSSubdomainDialogType].actionText}
       </PerksButton>
     </>
   )

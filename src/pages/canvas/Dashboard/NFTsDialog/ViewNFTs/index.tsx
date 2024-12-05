@@ -93,6 +93,7 @@ const ViewNFTs = () => {
         tokenID: selectedNFT.tokenId,
         contract: selectedNFT.contractAddress,
         contractType: selectedNFT.contractType,
+        nftAvatarClaimed: true,
       })
       queryClient.setQueryData(["NFTAvatarImageURL", walletCurrentAddress], { image: selectedNFT.imageUrl })
       // queryClient.invalidateQueries({

@@ -11,6 +11,7 @@ import { truncateAddress } from "@/utils"
 
 import PerksBadge from "../../components/PerksBadge"
 import PerksButton from "../../components/PerksButton"
+import PerksClaimedLabel from "../../components/PerksClaimedLabel"
 
 const ClaimENS = () => {
   const { walletCurrentAddress } = useRainbowContext()
@@ -124,28 +125,7 @@ const ClaimENS = () => {
         </Stack>
       </Box>
       {perk.claimed ? (
-        <Box
-          sx={{
-            backgroundColor: "rgba(144, 248, 234, 0.20)",
-
-            borderRadius: "2.8rem",
-            width: "100%",
-            mt: "6.4rem",
-          }}
-        >
-          <Typography
-            sx={{
-              fontSize: ["1.6rem", "2rem"],
-              height: ["4rem", "5.6rem"],
-              lineHeight: ["4rem", "5.6rem"],
-              fontWeight: 600,
-              color: "#90F8EA",
-              cursor: "not-allowed",
-            }}
-          >
-            This perk has been claimed
-          </Typography>
-        </Box>
+        <PerksClaimedLabel sx={{ mt: "6.4rem" }}></PerksClaimedLabel>
       ) : (
         <PerksButton disabled={!perk.claimable} onClick={handleGoToConfirm}>
           Claim Now

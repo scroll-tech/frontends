@@ -1,4 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query"
+import "@tanstack/react-query"
 import { useEffect } from "react"
 
 import { Stack } from "@mui/material"
@@ -21,9 +22,11 @@ const PerksDialog = () => {
 
   const ensSubdomain = queryClient.getQueryData(["ensSubdomain", walletCurrentAddress])
 
+  const avatarObj = queryClient.getQueryData(["canvasAvatar", walletCurrentAddress])
+
   useEffect(() => {
-    generatePerks({ walletCurrentAddress, userBadges, ensClaimed: !!ensSubdomain })
-  }, [walletCurrentAddress, userBadges, ensSubdomain])
+    generatePerks({ walletCurrentAddress, userBadges, ensClaimed: !!ensSubdomain, nftClaimed: Boolean((avatarObj as any)?.nftAvatarClaimed) })
+  }, [walletCurrentAddress, userBadges, ensSubdomain, avatarObj])
 
   const actionList = [
     {

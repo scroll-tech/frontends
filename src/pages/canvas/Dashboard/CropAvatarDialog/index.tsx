@@ -65,7 +65,11 @@ const CropAvatarDialog = () => {
     },
     onSuccess: data => {
       handleCloseCropAvatarDialog()
-      queryClient.setQueryData(["canvasAvatar", walletCurrentAddress], { avatar: data })
+      const canvasAvatar = queryClient.getQueryData(["canvasAvatar", walletCurrentAddress])
+      queryClient.setQueryData(["canvasAvatar", walletCurrentAddress], {
+        avatar: data,
+        nftAvatarClaimed: Boolean((canvasAvatar as any)?.nftAvatarClaimed),
+      })
       // queryClient.invalidateQueries({
       //   queryKey: ["canvasAvatar", walletCurrentAddress],
       // })
