@@ -94,7 +94,12 @@ const EditProfile = props => {
     reader.readAsDataURL(file)
   }
   const handleOpenPickNFTDialog = () => {
-    changeNFTsDialogType(NFTsDialogTypeEnum.CLAIM)
+    const avatarObj: any = queryClient.getQueryData(["canvasAvatar", walletCurrentAddress])
+    if (avatarObj?.nftAvatarClaimed) {
+      changeNFTsDialogType(NFTsDialogTypeEnum.SET_UP)
+    } else {
+      changeNFTsDialogType(NFTsDialogTypeEnum.CLAIM)
+    }
     handleCloseEditMenu()
   }
 
