@@ -41,7 +41,6 @@ interface CanvasStore {
   profileDialogVisible: boolean
   referDialogVisible: boolean
   customizeDisplayDialogVisible: boolean
-  perksDialogVisible: boolean
   badgeDetailDialogVisible: BadgeDetailDialogType
   badgesDialogVisible: BadgesDialogType
 
@@ -54,7 +53,6 @@ interface CanvasStore {
   changeProfileDialog: (visible: boolean) => void
   changeReferDialog: (visible: boolean) => void
   changeCustomizeDisplayDialogVisible: (visible: boolean) => void
-  changePerksDialogVisible: (visible: boolean) => void
   changeSortedBadges: (badges: any) => void
   changeBadgesDialogVisible: (visible: BadgesDialogType) => void
   changeBadgeDetailDialog: (visible: BadgeDetailDialogType) => void
@@ -119,7 +117,6 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
   profileDialogVisible: false,
   referDialogVisible: false,
   customizeDisplayDialogVisible: false,
-  perksDialogVisible: false,
   badgeDetailDialogVisible: BadgeDetailDialogType.HIDDEN,
   badgesDialogVisible: BadgesDialogType.HIDDEN,
   sortedBadges: [],
@@ -310,7 +307,6 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
       profileDialogVisible: false,
       referDialogVisible: false,
       customizeDisplayDialogVisible: false,
-      perksDialogVisible: false,
       badgeDetailDialogVisible: BadgeDetailDialogType.HIDDEN,
       badgesDialogVisible: BadgesDialogType.HIDDEN,
       initialMint: false,
@@ -484,12 +480,6 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
   changeCustomizeDisplayDialogVisible: visible => {
     set({
       customizeDisplayDialogVisible: visible,
-    })
-  },
-
-  changePerksDialogVisible: visible => {
-    set({
-      perksDialogVisible: visible,
     })
   },
 

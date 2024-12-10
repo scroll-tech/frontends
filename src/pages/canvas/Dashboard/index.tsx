@@ -4,13 +4,13 @@ import { isDesktop } from "react-device-detect"
 import { Helmet } from "react-helmet-async"
 import { Navigate, useNavigate, useParams } from "react-router-dom"
 
-import Canvas from "@/components/Canvas"
-import { EXPLORE_BADGES_URL } from "@/constants"
+import Scrolly from "@/components/Scrolly"
 import { useCanvasContext } from "@/contexts/CanvasContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useSnackbar from "@/hooks/useSnackbar"
 import { checkIfProfileMinted } from "@/services/canvasService"
 import useCanvasStore, { BadgesDialogType } from "@/stores/canvasStore"
+import usePerkStore from "@/stores/perksStore"
 import { requireEnv } from "@/utils"
 
 import GridBg from "../components/GridBg"
@@ -52,6 +52,8 @@ const Dashboard = props => {
     pickUpgradableBadgesLoading,
   } = useCanvasStore()
 
+  const { changePerksDialogVisible, firstSeePerks } = usePerkStore()
+
   const metadata = {
     title: `Scroll -  ${canvasUsername}'s Canvas`,
     description: "Collect onchain badges and build your story on Scroll",
@@ -66,10 +68,10 @@ const Dashboard = props => {
 
   const scrollyAlert = useMemo(() => {
     return {
-      title: "Explore badges",
-      content: "Welcome to Scroll Canvas where you can earn badges across the ecosystem. Explore protocols offering badges now!",
+      title: "View perks",
+      content: "Discover the exciting benefits you can unlock with your badges in our new feature: Perks!",
       action: () => {
-        navigate(EXPLORE_BADGES_URL)
+        changePerksDialogVisible(true)
       },
     }
   }, [])
@@ -171,7 +173,13 @@ const Dashboard = props => {
           <BadgeWall badgewidth={badgewidth} gridNum={gridNum} windowDimensions={windowDimensions} />
 
           {isDesktop && !othersWalletAddress && (
-            <Canvas visible buttonText={scrollyAlert.title} title={scrollyAlert.content} onClick={scrollyAlert.action} canvasId="dashboardCanvas" />
+            <Scrolly
+              visible={firstSeePerks}
+              buttonText={scrollyAlert.title}
+              title={scrollyAlert.content}
+              onClick={scrollyAlert.action}
+              canvasId="dashboardCanvas"
+            />
           )}
           {!!othersWalletAddress ? (
             <>

@@ -15,9 +15,9 @@ import PerkItem from "./PerkItem"
 const PerksDialog = () => {
   const { walletCurrentAddress } = useRainbowContext()
 
-  const { perksDialogVisible, changePerksDialogVisible, userBadges } = useCanvasStore()
+  const { userBadges } = useCanvasStore()
   const { changeNFTsDialogType, changeENSSubdomainDialogType } = useCanvasProfileStore()
-  const { perks, generatePerks } = usePerkStore()
+  const { perksDialogVisible, changePerksDialogVisible, perks, generatePerks, appendNewPerksIds, newPerksIds } = usePerkStore()
   const queryClient = useQueryClient()
 
   const ensSubdomain = queryClient.getQueryData(["ensSubdomain", walletCurrentAddress])
@@ -55,6 +55,9 @@ const PerksDialog = () => {
 
   const handleClosePerksDialog = () => {
     changePerksDialogVisible(false)
+    if (newPerksIds.length > 0) {
+      appendNewPerksIds()
+    }
   }
 
   return (
@@ -67,14 +70,19 @@ const PerksDialog = () => {
           padding: "2.4rem 3.2rem 3.2rem",
         },
       }}
+      contentSx={{ overflow: "visible", pt: ["0.8rem !important", "2.4rem !important"] }}
       onClose={handleClosePerksDialog}
       open={perksDialogVisible}
     >
       <Stack
         sx={{
           height: "100%",
-          pt: ["0.8rem", "2.4rem"],
+
+          width: ["calc(100% + 4rem)", "calc(100% + 6.4rem)"],
+          px: ["2rem", "3.2rem"],
+          ml: ["-2rem", "-3.2rem"],
           gap: "2.4rem",
+          overflowY: "auto",
         }}
       >
         {perks.map((perk, index) => (

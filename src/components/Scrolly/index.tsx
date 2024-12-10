@@ -1,12 +1,10 @@
-import React, { useEffect, useMemo, useRef, useState } from "react"
-import useStorage from "squirrel-gill"
+import React, { useEffect, useRef, useState } from "react"
 
 import { Box, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { ReactComponent as CloseSvg } from "@/assets/svgs/canvas/close.svg"
 import TriangleSvg from "@/assets/svgs/canvas/triangle.svg"
-import { DISPLAYED_CANVAS } from "@/constants/storageKey"
 import Button from "@/pages/canvas/components/Button"
 
 import SuperGif from "./libgif.js"
@@ -83,29 +81,25 @@ const MintButton = styled(Button)(({ theme }) => ({
   height: "4rem",
 }))
 
-const Canvas = props => {
+const Scrolly = props => {
   const {
     title,
     buttonText,
-    onClick,
+    onClick, // for scrolly action
     visible,
     canvasId = "canvasId",
     canvasUrl = "/imgs/canvas/canvas.gif",
     startFrame = 16,
     targetFrame = 54,
+    onClosed, // callback after Scrolly closed
   } = props
   const [open, setOpen] = useState(false)
   const [tooltipVisible, setTooltipVisible] = useState(false)
   const tooltipVisibleRef = useRef(false)
   const [loading] = useState(false)
-  const [displayedCanvas, setDisplayedCanvas] = useStorage(localStorage, DISPLAYED_CANVAS, [])
-
-  const canvasVisible = useMemo(() => {
-    return !displayedCanvas.includes(canvasId) && visible
-  }, [displayedCanvas, visible])
 
   useEffect(() => {
-    if (canvasVisible) {
+    if (visible) {
       setTimeout(() => {
         setOpen(true)
         setTimeout(() => {
@@ -115,7 +109,7 @@ const Canvas = props => {
     } else {
       handleCloseTooltip()
     }
-  }, [canvasVisible])
+  }, [visible])
 
   const playGif = () => {
     const gif = document.getElementById(canvasId)
@@ -148,14 +142,9 @@ const Canvas = props => {
     tooltipVisibleRef.current = false
   }
 
-  const handleCanvasClick = () => {
-    setDisplayedCanvas([...displayedCanvas, canvasId])
-    onClick()
-  }
-
   const handleCloseClick = () => {
-    setDisplayedCanvas([...displayedCanvas, canvasId])
     handleCloseTooltip()
+    onClosed?.()
   }
 
   return (
@@ -168,7 +157,7 @@ const Canvas = props => {
                 <SvgIcon sx={{ fontSize: "1.3rem", color: "#000" }} onClick={handleCloseClick} component={CloseSvg} inheritViewBox />
               </Typography>
               <Typography sx={{ fontSize: "1.6rem", fontWeight: 500, marginBottom: "1.2rem" }}>{title}</Typography>
-              <MintButton variant="contained" color="primary" sx={{ width: "100%" }} loading={loading} onClick={handleCanvasClick}>
+              <MintButton variant="contained" color="primary" sx={{ width: "100%" }} loading={loading} onClick={onClick}>
                 {buttonText}
               </MintButton>
             </Tooltip>
@@ -182,4 +171,4 @@ const Canvas = props => {
   )
 }
 
-export default Canvas
+export default Scrolly

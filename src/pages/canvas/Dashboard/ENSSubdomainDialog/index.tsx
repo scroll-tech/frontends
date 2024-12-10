@@ -2,7 +2,7 @@ import { Stack } from "@mui/material"
 
 import Dialog from "@/pages/canvas/components/Dialog"
 import useCanvasProfileStore, { ENSSubdomainDialogTypeEnum } from "@/stores/canvasProfileStore"
-import useCanvasStore from "@/stores/canvasStore"
+import usePerkStore from "@/stores/perksStore"
 
 import ClaimENS from "./ClaimENS"
 import CongratsENS from "./CongratsENS"
@@ -10,7 +10,7 @@ import CreateENS from "./CreateENS"
 
 const ENSSubdomainDialog = () => {
   const { changeENSSubdomainDialogType, ENSSubdomainDialogType, ENSSubdomainDialogAllowBack } = useCanvasProfileStore()
-  const { changePerksDialogVisible } = useCanvasStore()
+  const { changePerksDialogVisible } = usePerkStore()
 
   const handleClose = () => {
     changeENSSubdomainDialogType(ENSSubdomainDialogTypeEnum.HIDDEN)

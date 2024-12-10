@@ -32,3 +32,5 @@ export const BRIDGE_BALANCES = "bridgeBalances"
 export const BLOG_LANGUAGE = "blogLanguage"
 
 export const DISPLAYED_CANVAS = "displayedCanvas"
+
+export const CANVAS_PERKS = "canvasPerks"

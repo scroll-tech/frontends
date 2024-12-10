@@ -2,7 +2,7 @@ import { Stack } from "@mui/material"
 
 import Dialog from "@/pages/canvas/components/Dialog"
 import useCanvasProfileStore, { NFTsDialogTypeEnum } from "@/stores/canvasProfileStore"
-import useCanvasStore from "@/stores/canvasStore"
+import usePerkStore from "@/stores/perksStore"
 
 import SetUpNFTProfile from "./SetUpNFTProfile"
 import ViewNFTs from "./ViewNFTs"
@@ -10,7 +10,7 @@ import ViewNFTs from "./ViewNFTs"
 const NFTsDialog = () => {
   const { NFTsDialogType, NFTsDialogAllowBack, changeNFTsDialogType } = useCanvasProfileStore()
 
-  const { changePerksDialogVisible } = useCanvasStore()
+  const { changePerksDialogVisible } = usePerkStore()
 
   const handleCloseNFTsDialog = () => {
     changeNFTsDialogType(NFTsDialogTypeEnum.HIDDEN)

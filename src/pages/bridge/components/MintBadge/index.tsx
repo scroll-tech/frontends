@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react"
 
-import Canvas from "@/components/Canvas"
+import Scrolly from "@/components/Scrolly"
 import { CHAIN_ID } from "@/constants"
 import { type Badge, ETHEREUM_YEAR_BADGE } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
@@ -46,7 +46,7 @@ const MintBadge = () => {
 
   return (
     <>
-      <Canvas
+      <Scrolly
         visible={canBeMint}
         buttonText="Mint badge"
         title={`Heya! Congratulations! You can mint ${badge.name} on Scroll Canvas.`}

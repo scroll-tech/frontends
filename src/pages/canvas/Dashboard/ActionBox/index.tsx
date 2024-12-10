@@ -19,6 +19,7 @@ import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import Button from "@/pages/canvas/components/Button"
 import useCanvasStore, { BadgesDialogType } from "@/stores/canvasStore"
+import usePerkStore from "@/stores/perksStore"
 import { generateShareTwitterURL, requireEnv } from "@/utils"
 
 const AnimatedMenuItem = motion(MenuItem)
@@ -140,12 +141,13 @@ const ActionBox = () => {
   const { walletCurrentAddress } = useRainbowContext()
   const {
     changeCustomizeDisplayDialogVisible,
-    changePerksDialogVisible,
+
     changeReferDialog,
     changeBadgesDialogVisible,
     upgradableBadges,
     pickUpgradableBadgesLoading,
   } = useCanvasStore()
+  const { changePerksDialogVisible, newPerksIds } = usePerkStore()
 
   const { isPortrait } = useCheckViewport()
 
@@ -260,6 +262,7 @@ const ActionBox = () => {
         label: "Scroll Perks",
         icon: GiftSvg,
         color: "secondary",
+        withBadge: !!newPerksIds.length,
         onClick: () => changePerksDialogVisible(true),
         visible: !othersWalletAddress,
       },
