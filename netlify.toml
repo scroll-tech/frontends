@@ -97,6 +97,13 @@ status = 200
 # we use content based hash for filenames
 # 31536000 is 1 year, recommended by cra
 # cra doc https://create-react-app.dev/docs/production-build/
+
+[[headers]]
+  for = "/*"
+[headers.values]
+X-Frame-Options = "DENY"
+Content-Security-Policy = "frame-ancestors 'none';"
+
 [[headers]]
 for = "/static/*"
 
