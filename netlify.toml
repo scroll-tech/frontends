@@ -99,7 +99,7 @@ status = 200
 # cra doc https://create-react-app.dev/docs/production-build/
 
 [[headers]]
-  for = "/*"
+for = "/*"
 [headers.values]
 X-Frame-Options = "DENY"
 Content-Security-Policy = "frame-ancestors 'none';"
