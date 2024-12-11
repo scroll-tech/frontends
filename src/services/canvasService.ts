@@ -1,4 +1,5 @@
 import { AbiCoder, ethers } from "ethers"
+import { readItem, writeItem } from "squirrel-gill/lib/storage"
 import { pad } from "viem"
 
 import { checkBadgeEligibilityURL, claimBadgeURL } from "@/apis/canvas"
@@ -10,6 +11,7 @@ import CanvasBadgeResolverABI from "@/assets/abis/CanvasBadgeResolver.json"
 import ProfileABI from "@/assets/abis/CanvasProfile.json"
 import ProfileRegistryABI from "@/assets/abis/CanvasProfileRegistry.json"
 import { BADGE_TYPE, ETHEREUM_YEAR_BADGE, ORIGINS_NFT_BADGE, SCR_HOLDING_BADGE_ADDRESS, SELF_ATTESTATION_BADGE_ADDRESS_LIST } from "@/constants"
+import { CANVAS_USER_BADGES } from "@/constants/storageKey"
 import { DEFAULT_SCR_HOLDING_BADGE_IMAGE } from "@/stores/perksStore"
 import {
   checkDelegatedAttestation,
@@ -520,12 +522,22 @@ export const fetchIssuer = async issuerName => {
   }
 }
 
-const testAsyncFunc = value => {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve(value)
-    }, 1000)
-  })
+const pickNewObtainedBadges = (walletAddress, userBadgeIds: string[]) => {
+  let newObtainedBadges: string[] = []
+  const preUserBadgesMap = readItem(localStorage, CANVAS_USER_BADGES)
+
+  if (preUserBadgesMap?.[walletAddress]) {
+    newObtainedBadges = userBadgeIds.filter(id => !preUserBadgesMap[walletAddress].includes(id))
+  } else {
+    newObtainedBadges = userBadgeIds
+    writeItem(localStorage, CANVAS_USER_BADGES, { ...preUserBadgesMap, [walletAddress]: userBadgeIds })
+  }
+  return newObtainedBadges
+}
+
+const persistUserBadges = (walletAddress, userBadgeIds: string[]) => {
+  const preUserBadgesMap = readItem(localStorage, CANVAS_USER_BADGES)
+  writeItem(localStorage, CANVAS_USER_BADGES, { ...preUserBadgesMap, [walletAddress]: userBadgeIds })
 }
 
 export {
@@ -550,5 +562,6 @@ export {
   fillBadgeDetailWithPayload,
   checkBadgeEligibility,
   fetchNotionBadgeByAddr,
-  testAsyncFunc,
+  pickNewObtainedBadges,
+  persistUserBadges,
 }

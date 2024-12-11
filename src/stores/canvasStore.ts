@@ -2,17 +2,20 @@ import { Contract } from "ethers"
 import produce from "immer"
 import { create } from "zustand"
 
-import { Badge, ETHEREUM_YEAR_BADGE } from "@/constants"
+import { Badge, ETHEREUM_YEAR_BADGE, SCR_HOLDING_BADGE_ADDRESS } from "@/constants"
 import {
   checkBadgeUpgradable,
   fetchCanvasDetail,
   fetchIssuer,
   fetchNotionBadgeByAddr,
   getOrderedAttachedBadges,
+  persistUserBadges,
+  pickNewObtainedBadges,
   queryCanvasUsername,
   queryUserBadgesWrapped,
   upgradeBadge,
 } from "@/services/canvasService"
+import { testAsyncFunc } from "@/utils"
 
 export enum MintedStatus {
   MINTED = "MINTED",
@@ -32,6 +35,15 @@ export enum BadgesDialogType {
   HIDDEN = "",
   UPGRADE = "upgrade",
 }
+
+// interface UserBadge {
+//   badgeContract: string
+//   description: string
+//   id: string
+//   image: string
+//   name: string
+//   attributes?: any[]
+// }
 
 export type UpgradableBadge = Badge & { upgradable: boolean; id: string }
 
@@ -69,6 +81,8 @@ interface CanvasStore {
   queryUsernameLoading: boolean
   queryUserBadgesLoading: boolean
   pickUpgradableBadgesLoading: boolean
+  notifiableBadgesLoading: boolean
+
   profileAddress: string | null
   profileMinted: boolean | null
   username: string
@@ -77,6 +91,7 @@ interface CanvasStore {
   attachedBadges: Array<string>
   orderedAttachedBadges: Array<string>
   upgradableBadges: Array<UpgradableBadge>
+  notifiableBadges: Array<string>
   badgeOrder: Array<any>
   profileContract: Contract | null
   firstBadgeWithPosition: any
@@ -93,6 +108,7 @@ interface CanvasStore {
   changeIsBadgeUpgrading: (id, loading) => void
   checkIfProfileMinted: (instance: Contract, address: string, test?: boolean) => Promise<any>
   fetchCurrentCanvasDetail: (signer, walletAddress, profileAddress) => void
+  queryNotifiableBadges: (walletAddress) => void
   checkAndFetchCurrentWalletCanvas: (prividerOrSigner, unsignedProfileRegistryContract, walletAddress) => Promise<any>
   fetchOthersCanvasDetail: (prividerOrSigner, othersAddress, profileAddress) => void
   changeProfileMintedLoading: (loading: boolean) => void
@@ -110,6 +126,7 @@ interface CanvasStore {
   queryFirstMintUsername: (provider) => void
   changeInputReferralCode: (inputReferralCode) => void
   upgradeBadgeAndRefreshUserBadges: (provider, badge: { id: string; badgeContract: string }) => Promise<any>
+  repersistUserBadges: (address) => void
 }
 
 const useCanvasStore = create<CanvasStore>()((set, get) => ({
@@ -139,12 +156,15 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
   walletDetailLoading: false,
   queryUserBadgesLoading: false,
   pickUpgradableBadgesLoading: false,
+  notifiableBadgesLoading: false,
+
   username: "",
   canvasUsername: "",
   userBadges: [],
   attachedBadges: [],
   orderedAttachedBadges: [],
   upgradableBadges: [],
+  notifiableBadges: [],
   badgeOrder: [],
   firstBadgeWithPosition: {},
   badgeAnimationVisible: false,
@@ -236,6 +256,7 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
       walletAddress,
       profileAddress,
     )
+
     set({
       username: name,
       canvasUsername: name,
@@ -244,6 +265,52 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
       attachedBadges,
       orderedAttachedBadges,
       badgeOrder,
+    })
+  },
+
+  queryNotifiableBadges: async walletAddress => {
+    set({ notifiableBadgesLoading: true })
+    const { userBadges } = get()
+    const newObtainedBadges = pickNewObtainedBadges(
+      walletAddress,
+      userBadges.map(badge => badge.id),
+    )
+    console.log(newObtainedBadges, "newObtainedBadges")
+    if (!newObtainedBadges.length) {
+      set({
+        notifiableBadges: [],
+        notifiableBadgesLoading: false,
+      })
+      return
+    }
+    // TODO: request whitelist and recognizedlist from server
+    const { whitelistBadges, recognizedBadges } = (await testAsyncFunc(
+      {
+        whitelistBadges: [SCR_HOLDING_BADGE_ADDRESS],
+        recognizedBadges: [SCR_HOLDING_BADGE_ADDRESS],
+      },
+      2e3,
+    )) as { whitelistBadges: string[]; recognizedBadges: string[] }
+
+    const notifiableBadges = newObtainedBadges
+      .map(badgeId => userBadges.find(badge => badge.id === badgeId)!)
+      .filter(item => whitelistBadges.includes(item.badgeContract) && !recognizedBadges.includes(item.badgeContract))
+      .map(item => item.id)
+
+    set({
+      notifiableBadges,
+      notifiableBadgesLoading: false,
+    })
+  },
+
+  repersistUserBadges: walletAddress => {
+    const { userBadges } = get()
+    persistUserBadges(
+      walletAddress,
+      userBadges.map(item => item.id),
+    )
+    set({
+      notifiableBadges: [],
     })
   },
 
@@ -319,6 +386,7 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
       attachedBadges: [],
       orderedAttachedBadges: [],
       badgeOrder: [],
+      notifiableBadges: [],
     })
   },
 

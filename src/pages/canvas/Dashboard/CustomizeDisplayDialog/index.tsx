@@ -58,6 +58,7 @@ const CustomizeDisplayDialog = props => {
     profileContract,
     queryAttachedBadges,
     changeSortedBadges,
+    repersistUserBadges,
   } = useCanvasStore()
   const alertWarning = useSnackbar()
 
@@ -71,6 +72,7 @@ const CustomizeDisplayDialog = props => {
 
   const handleClose = () => {
     changeCustomizeDisplayDialogVisible(false)
+    repersistUserBadges(walletCurrentAddress)
   }
 
   const handleSave = () => {

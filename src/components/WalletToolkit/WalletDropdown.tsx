@@ -20,6 +20,7 @@ import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useSnackbar from "@/hooks/useSnackbar"
 import useBridgeStore from "@/stores/bridgeStore"
 import useCanvasStore from "@/stores/canvasStore"
+import usePerkStore from "@/stores/perksStore"
 import { generateExploreLink, truncateAddress } from "@/utils"
 
 const useStyles = makeStyles<any>()((theme, { dark }) => ({
@@ -93,6 +94,7 @@ const WalletDropdown = props => {
 
   const { unsignedProfileRegistryContract, publicProvider } = useCanvasContext()
   const { username, profileMinted, walletDetailLoading, checkAndFetchCurrentWalletCanvas, clearCanvas } = useCanvasStore()
+  const { clearPerks } = usePerkStore()
   const alertWarning = useSnackbar()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -101,7 +103,7 @@ const WalletDropdown = props => {
   const open = useMemo(() => Boolean(anchorEl), [anchorEl])
 
   useEffect(() => {
-    clearCanvas()
+    clearCanvasData()
   }, [walletCurrentAddress])
 
   useEffect(() => {
@@ -115,6 +117,11 @@ const WalletDropdown = props => {
 
     // re check&&fetch walletCurrentAddress's canvas when switching address on Wallet
   }, [unsignedProfileRegistryContract, walletCurrentAddress])
+
+  const clearCanvasData = () => {
+    clearCanvas()
+    clearPerks()
+  }
 
   const handleClick = e => {
     setAnchorEl(e.currentTarget)
@@ -168,8 +175,7 @@ const WalletDropdown = props => {
         action: () => {
           disconnect()
           // clear Canvas states
-          clearCanvas()
-          handleClose()
+          clearCanvasData()
         },
       },
     ],

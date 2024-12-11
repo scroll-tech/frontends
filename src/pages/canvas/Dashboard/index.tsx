@@ -50,6 +50,7 @@ const Dashboard = props => {
     upgradableBadges,
     pickUpgradableBadges,
     pickUpgradableBadgesLoading,
+    queryNotifiableBadges,
   } = useCanvasStore()
 
   const { changePerksDialogVisible, firstSeePerks } = usePerkStore()
@@ -101,6 +102,7 @@ const Dashboard = props => {
       changeProfileDetailLoading(true)
       const signer = await provider?.getSigner(0)
       await fetchCurrentCanvasDetail(signer, walletAddress, profileAddress)
+      queryNotifiableBadges(walletAddress)
       pickUpgradableBadges(provider)
     } catch (e) {
       alertWarning(e.message)

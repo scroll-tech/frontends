@@ -99,11 +99,11 @@ export function isValidTransactionHash(txHash: string): boolean {
   return isValidLength && isHexString(txHash)
 }
 
-export const testAsyncFunc = value => {
+export const testAsyncFunc = (value, timeout = 1e3) => {
   return new Promise(resolve => {
     setTimeout(() => {
       resolve(value)
-    }, 5000)
+    }, timeout)
   })
 }
 

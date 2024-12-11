@@ -116,22 +116,19 @@ const CustomiseItem = styled<any>(AnimatedMenuItem, { shouldForwardProp: prop =>
   },
 }))
 
-const BadgeCount = styled("span")(({ theme }) => ({
+const BadgeCount = styled<any>("span")(({ theme, round }) => ({
   display: "inline-block",
-  height: "1.6rem",
+  // height: "1.6rem",
   minWidth: "1.6rem",
-  borderRadius: "0.8rem",
-  padding: "0 3px",
+  borderRadius: round ? "0.8rem" : "0.4rem",
+  padding: round ? "0 3px" : "4px 8px",
   backgroundColor: theme.palette.primary.main,
   color: theme.palette.primary.contrastText,
   fontFamily: "var(--developer-page-font-family)",
   fontSize: "1rem",
   lineHeight: "1.6rem",
   textAlign: "center",
-  marginLeft: "1.6rem",
-  [theme.breakpoints.down("sm")]: {
-    marginLeft: "0.8rem",
-  },
+  marginLeft: "0.8rem",
 }))
 
 const ActionBox = () => {
@@ -146,6 +143,8 @@ const ActionBox = () => {
     changeBadgesDialogVisible,
     upgradableBadges,
     pickUpgradableBadgesLoading,
+    notifiableBadgesLoading,
+    notifiableBadges,
   } = useCanvasStore()
   const { changePerksDialogVisible, newPerksIds } = usePerkStore()
 
@@ -212,8 +211,8 @@ const ActionBox = () => {
           }
         },
         visible: !othersWalletAddress,
-        withBadge: !!upgradableBadges.length,
-        loading: pickUpgradableBadgesLoading,
+        withBadge: !!upgradableBadges.length || !!notifiableBadges.length,
+        loading: pickUpgradableBadgesLoading || notifiableBadgesLoading,
         menu: {
           anchorEl: badgesAnchorEl,
           open: badgesOpen,
@@ -222,6 +221,12 @@ const ActionBox = () => {
             {
               key: "customize",
               label: "Customize display",
+              extra: notifiableBadgesLoading ? (
+                <CircularProgress size={16} thickness={4} sx={{ color: "#888" }}></CircularProgress>
+              ) : notifiableBadges.length ? (
+                <BadgeCount>{notifiableBadges.length} Gifted</BadgeCount>
+              ) : null,
+              disabled: notifiableBadgesLoading,
               onClick: () => {
                 handleCloseMenu()
                 changeCustomizeDisplayDialogVisible(true)
@@ -232,7 +237,9 @@ const ActionBox = () => {
                   {
                     key: "upgrade",
                     label: "Upgrade badges",
-                    extra: upgradableBadges.length ? <BadgeCount>{upgradableBadges.length > 99 ? "99+" : upgradableBadges.length}</BadgeCount> : null,
+                    extra: upgradableBadges.length ? (
+                      <BadgeCount round>{upgradableBadges.length > 99 ? "99+" : upgradableBadges.length}</BadgeCount>
+                    ) : null,
                     onClick: () => {
                       handleCloseMenu()
                       changeBadgesDialogVisible(BadgesDialogType.UPGRADE)
@@ -321,6 +328,8 @@ const ActionBox = () => {
     copied,
     upgradableBadges.length,
     pickUpgradableBadgesLoading,
+    notifiableBadgesLoading,
+    notifiableBadges,
   ])
 
   const handleMouseEnter = item => {

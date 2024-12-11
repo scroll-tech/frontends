@@ -1,10 +1,11 @@
 import { useSortable } from "@dnd-kit/sortable"
 import { useEffect, useState } from "react"
 
-import { Box } from "@mui/material"
+import { Badge, Box } from "@mui/material"
 
 import useCheckViewport from "@/hooks/useCheckViewport"
 import ToolTip from "@/pages/canvas/components/Tooltip"
+import useCanvasStore from "@/stores/canvasStore"
 
 import Item from "./Item"
 
@@ -20,6 +21,8 @@ const TransferItem = props => {
   const mounted = useMountStatus()
   const mountedWhileDragging = isDragging && !mounted
 
+  const { notifiableBadges } = useCanvasStore()
+
   useEffect(() => {
     if (!dragOverlay) {
       return
@@ -34,19 +37,21 @@ const TransferItem = props => {
 
   return (
     <ToolTip title={<Box sx={{ fontWeight: 600 }}>{name}</Box>} disableHoverListener={!isDesktop}>
-      <Box sx={{ cursor: "grab" }}>
-        <Item
-          sx={{ opacity: containerId === "left" ? 0.6 : 1 }}
-          ref={setNodeRef}
-          fadeIn={mountedWhileDragging}
-          dragging={isDragging}
-          listeners={listeners}
-          transition={transition}
-          transform={transform}
-          name={name}
-          image={image}
-        ></Item>
-      </Box>
+      <Badge invisible={!notifiableBadges.includes(id)} color="primary" variant="dot">
+        <Box sx={{ cursor: "grab" }}>
+          <Item
+            sx={{ opacity: containerId === "left" ? 0.6 : 1 }}
+            ref={setNodeRef}
+            fadeIn={mountedWhileDragging}
+            dragging={isDragging}
+            listeners={listeners}
+            transition={transition}
+            transform={transform}
+            name={name}
+            image={image}
+          ></Item>
+        </Box>
+      </Badge>
     </ToolTip>
   )
 }
