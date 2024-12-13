@@ -1,9 +1,14 @@
 import { forwardRef, useEffect } from "react"
 import { makeStyles } from "tss-react/mui"
 
-import { Box } from "@mui/material"
+import {
+  // Avatar,
+  Box,
+} from "@mui/material"
 
+import GracePeriodGif from "@/assets/images/canvas/grace-period.gif"
 import BadgeImage from "@/pages/canvas/components/BadgeImage"
+import { isInGracePeriod } from "@/services/canvasService"
 import { ipfsToBrowserURL } from "@/utils"
 
 const getTranslateX = transform => {
@@ -82,7 +87,20 @@ const useStyles = makeStyles()((theme, { transform }) => ({
 }))
 
 const Item = forwardRef((props: any, ref) => {
-  const { sx, className, fadeIn, dragging, transition, transform, listeners, name, image, dragOverlay } = props
+  const {
+    sx,
+    className,
+    fadeIn,
+    dragging,
+    transition,
+    transform,
+    listeners,
+    name,
+    // id,
+    image,
+    revokeTime,
+    dragOverlay,
+  } = props
   const { cx, classes } = useStyles({ transform })
   useEffect(() => {
     if (!dragOverlay) {
@@ -105,7 +123,26 @@ const Item = forwardRef((props: any, ref) => {
       }}
     >
       <Box className={cx(classes.item, dragging && classes.dragging, dragOverlay && "dragOverlay")} {...listeners}>
-        <BadgeImage alt={name} src={ipfsToBrowserURL(image)} placeholder="/imgs/canvas/badgePlaceholder.svg" />
+        {isInGracePeriod({ revokeTime }) && (
+          <Box
+            sx={{
+              position: "absolute",
+              width: "1.6rem",
+              height: "1.6rem",
+              background: `url(${GracePeriodGif}) center/cover no-repeat`,
+              top: 0,
+              right: 0,
+            }}
+          ></Box>
+        )}
+
+        <BadgeImage
+          style={{ width: "100%", opacity: isInGracePeriod({ revokeTime }) ? 0.6 : 1 }}
+          alt={name}
+          src={ipfsToBrowserURL(image)}
+          placeholder="/imgs/canvas/badgePlaceholder.svg"
+        />
+        {/* <Avatar sx={{ width: "100px", height: "100px", fontSize: "4rem" }}>{id.slice(0, 4)}</Avatar> */}
       </Box>
     </Box>
   )

@@ -1,3 +1,4 @@
+import dayjs from "dayjs"
 import { AbiCoder, ethers } from "ethers"
 import { readItem, writeItem } from "squirrel-gill/lib/storage"
 import { pad } from "viem"
@@ -11,6 +12,7 @@ import CanvasBadgeResolverABI from "@/assets/abis/CanvasBadgeResolver.json"
 import ProfileABI from "@/assets/abis/CanvasProfile.json"
 import ProfileRegistryABI from "@/assets/abis/CanvasProfileRegistry.json"
 import { BADGE_TYPE, ETHEREUM_YEAR_BADGE, ORIGINS_NFT_BADGE, SCR_HOLDING_BADGE_ADDRESS, SELF_ATTESTATION_BADGE_ADDRESS_LIST } from "@/constants"
+import { FORCE_PAY_GAS_FEE_BADGE_LIST, GRACE_PERIOD_DURATION } from "@/constants"
 import { CANVAS_USER_BADGES } from "@/constants/storageKey"
 import { DEFAULT_SCR_HOLDING_BADGE_IMAGE } from "@/stores/perksStore"
 import {
@@ -33,6 +35,8 @@ const SCROLL_BADGE_SCHEMA = requireEnv("REACT_APP_BADGE_SCHEMA")
 const PROFILE_REGISTRY_ADDRESS = requireEnv("REACT_APP_PROFILE_REGISTRY_ADDRESS")
 
 const SCROLL_BADGE_RESOLVER_ADDRESS = requireEnv("REACT_APP_BADGE_RESOLVER_ADDRESS")
+
+const REVOKE_TIME = dayjs("2024-12-11 21:34:44").valueOf()
 
 // TODO: need to be stored in Badge Registry
 export const SELF_ATTESTATION_BADGE_LIST = [
@@ -112,6 +116,7 @@ const queryEASAttestationsByWalletAddress = async userAddress => {
   }
 }
 
+// TODO: fetch from backend
 const querySelfAttestationsByWalletAddress = async (provider, userAddress, badgeContractList) => {
   async function fetchAttestation(userAddress, badgeContract) {
     const badgeContractInstance = new ethers.Contract(badgeContract, BadgeABI, provider)
@@ -124,6 +129,20 @@ const querySelfAttestationsByWalletAddress = async (provider, userAddress, badge
         id: attestation.uid,
         time: attestation.time,
         txid: attestation.txid,
+        revokeTime: REVOKE_TIME,
+        // attached: true,
+      }
+    }
+
+    if (isInGracePeriod({ revokeTime: REVOKE_TIME })) {
+      return {
+        attester: "0xeF071708e09BECFEac1e3d8AfA1602BB6eB57922",
+        data: "0x000000000000000000000000ef071708e09becfeac1e3d8afa1602bb6eb57922000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000006",
+        id: "0x000000000000000000000000524e8087c964634625163a50eca80db748cc1388",
+        revokeTime: REVOKE_TIME, // the time when grace period starts
+        // attached: true,
+        badgeTokenURI: "https://nft.scroll.io/canvas/scr-holding/1.json",
+        time: 1733921850,
       }
     }
     return null
@@ -151,11 +170,15 @@ const queryAttestationByUID = async (provider, badgeUID) => {
   }
 }
 
-const getBadgeMetadata = async (provider, badgeContractAddress, badgeUID = ethers.encodeBytes32String("0x0")) => {
+const getBadgeMetadata = async (provider, { badgeContract, badgeId, badgeTokenURI }) => {
   try {
-    const contract = new ethers.Contract(badgeContractAddress, BadgeABI, provider)
-    const badgeTokenURI = await contract.badgeTokenURI(badgeUID)
-    const badgeTokenBrowserURL = ipfsToBrowserURL(badgeTokenURI)
+    let tmpBadgeTokenURI = badgeTokenURI
+    if (!tmpBadgeTokenURI) {
+      const contract = new ethers.Contract(badgeContract, BadgeABI, provider)
+      tmpBadgeTokenURI = await contract.badgeTokenURI(badgeId)
+    }
+
+    const badgeTokenBrowserURL = ipfsToBrowserURL(tmpBadgeTokenURI)
     if (badgeTokenBrowserURL.includes("ambient")) {
       return {}
     }
@@ -187,15 +210,17 @@ const checkHasBadge = async (provider, userAddress, badgeContract) => {
 }
 
 // work with publicProvider
-const fillBadgeDetailWithPayload = async (provider, attestation, withMetadata = true) => {
-  const { data, id } = attestation
+const generateBadgeFromAttestation = async (provider, attestation, withMetadata = true) => {
+  const { data, id, badgeTokenURI, revokeTime, attached } = attestation
   try {
     const [badgeContract] = decodeBadgePayload(data)
     if (withMetadata) {
-      const badgeMetadata = await getBadgeMetadata(provider, badgeContract, id)
+      const badgeMetadata = await getBadgeMetadata(provider, { badgeContract, badgeId: id, badgeTokenURI })
       return {
         id,
         badgeContract,
+        revokeTime,
+        attached,
         ...badgeMetadata,
       }
     }
@@ -209,16 +234,17 @@ const fillBadgeDetailWithPayload = async (provider, attestation, withMetadata = 
   }
 }
 
-const queryUserBadgesWrapped = async (provider, userAddress, withMetadata = true) => {
+const queryUserBadges = async (provider, userAddress, withMetadata = true) => {
   try {
     const attestations = await queryEASAttestationsByWalletAddress(userAddress)
     const selfAttestations = await querySelfAttestationsByWalletAddress(provider, userAddress, SELF_ATTESTATION_BADGE_ADDRESS_LIST)
+    // console.log(selfAttestations, "selfAttestations")
     const allAttestations = [...attestations, ...selfAttestations]
-    const formattedBadgesPromises = allAttestations.map(attestation => {
-      return fillBadgeDetailWithPayload(provider, attestation, withMetadata)
+    const generateBadgesPromises = allAttestations.map(attestation => {
+      return generateBadgeFromAttestation(provider, attestation, withMetadata)
     })
-    const formattedBadges = await Promise.all(formattedBadgesPromises)
-    return formattedBadges
+    const badges = await Promise.all(generateBadgesPromises)
+    return badges
   } catch (error) {
     throw new Error("Failed to query user badges")
   }
@@ -236,7 +262,28 @@ const queryCanvasUsername = async (provider, profileAddress) => {
   }
 }
 
-const getOrderedAttachedBadges = async profileContract => {
+const isAttachedBadge = badge => {
+  if (!FORCE_PAY_GAS_FEE_BADGE_LIST.includes(badge.badgeContract)) {
+    return true
+  }
+  if (FORCE_PAY_GAS_FEE_BADGE_LIST.includes(badge.badgeContract) && badge.attached) {
+    return true
+  }
+  return false
+}
+
+const isInGracePeriod = badge => {
+  const { revokeTime } = badge
+  if (!revokeTime) {
+    return false
+  }
+  if (dayjs(revokeTime).add(GRACE_PERIOD_DURATION, "m").isBefore(dayjs())) {
+    return false
+  }
+  return true
+}
+
+const getOrderedAttachedBadges = async (profileContract, userBadges) => {
   try {
     const badgesProxy = await profileContract!.getAttachedBadges()
     const validBadgesProxy = await profileContract!.getValidBadges()
@@ -249,7 +296,19 @@ const getOrderedAttachedBadges = async profileContract => {
       .map((order, index) => [Number(order), attachedBadges[index]])
       .sort((a: (string | number)[], b: (string | number)[]) => (a[0] as number) - (b[0] as number))
       .map(item => item[1] as string)
-      .filter(item => validBadges.includes(item))
+      .filter(badgeId => {
+        const badge = userBadges.find(badge => badge.id === badgeId)
+        if (!badge) return false
+
+        if (validBadges.includes(badgeId) && isAttachedBadge(badge)) {
+          return true
+        }
+
+        if (isInGracePeriod(badge)) {
+          return true
+        }
+        return false
+      })
 
     return { orderedAttachedBadges, attachedBadges, badgeOrder }
   } catch (error) {
@@ -270,10 +329,10 @@ const getBadgeOrder = async profileContract => {
   }
 }
 
-const fetchCanvasDetail = async (privider, othersAddress, profileAddress) => {
+const fetchCanvasDetail = async (privider, walletAddress, profileAddress) => {
   const { profileContract, name } = await queryCanvasUsername(privider, profileAddress)
-  const userBadges = await queryUserBadgesWrapped(privider, othersAddress)
-  const { orderedAttachedBadges, attachedBadges, badgeOrder } = await getOrderedAttachedBadges(profileContract)
+  const userBadges = await queryUserBadges(privider, walletAddress)
+  const { orderedAttachedBadges, attachedBadges, badgeOrder } = await getOrderedAttachedBadges(profileContract, userBadges)
   return { name, profileContract, userBadges, attachedBadges, orderedAttachedBadges, badgeOrder }
 }
 
@@ -545,9 +604,9 @@ export {
   initializePublicInstance,
   checkIfProfileMinted,
   checkHasBadge,
-  getBadgeMetadata,
+  // getBadgeMetadata,
   queryEASAttestationsByWalletAddress,
-  queryUserBadgesWrapped,
+  queryUserBadges,
   queryAttestationByUID,
   queryCanvasUsername,
   getOrderedAttachedBadges,
@@ -559,9 +618,10 @@ export {
   customiseDisplay,
   checkIfHasBadgeByAddress,
   getReferrerData,
-  fillBadgeDetailWithPayload,
+  generateBadgeFromAttestation,
   checkBadgeEligibility,
   fetchNotionBadgeByAddr,
   pickNewObtainedBadges,
   persistUserBadges,
+  isInGracePeriod,
 }

@@ -15,7 +15,7 @@ import {
   checkBadgeUpgradable,
   fetchIssuer,
   fetchNotionBadgeByAddr,
-  fillBadgeDetailWithPayload,
+  generateBadgeFromAttestation,
   queryAttestationByUID,
   queryCanvasUsername,
   upgradeBadge,
@@ -84,7 +84,7 @@ const BadgeDetailPage = () => {
 
       const { recipient, time, data } = attestation
 
-      const { badgeContract, description, ...badgeMetadata } = await fillBadgeDetailWithPayload(publicProvider, { id, data })
+      const { badgeContract, description, ...badgeMetadata } = await generateBadgeFromAttestation(publicProvider, { id, data })
 
       let badgeWidthIssuer = await fetchNotionBadgeByAddr(badgeContract)
       if (!badgeWidthIssuer.issuer) {

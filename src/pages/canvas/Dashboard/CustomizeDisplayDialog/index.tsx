@@ -113,9 +113,16 @@ const CustomizeDisplayDialog = props => {
       const nextAttachedBadges = simulateThenAttachedBadges(attachedBadges, hiddenToDisplayed, displayedToHidden)
       const newBadgeOrder = calculateBadgeOrder(sortedBadges, nextAttachedBadges)
 
+      // if the badge that is decided to be displayed is in attachedBadges but not in the Displayed panel, still needs to be trigger "AttachBadge".
+      const fakeHiddenToDisplayed = sortedBadges.filter(id => attachedBadges.includes(id) && !orderedAttachedBadges.includes(id))
+
+      const finalHiddeToDisplayed = [...hiddenToDisplayed, ...fakeHiddenToDisplayed]
+      console.log(userBadges, attachedBadges, badgeOrder, "now data")
+      console.log(finalHiddeToDisplayed, nextAttachedBadges, newBadgeOrder, "updateDataAndOrder")
+      // return
       await customiseDisplay({
         profileContract: profileContract!,
-        attachBadges: hiddenToDisplayed.length > 0 ? hiddenToDisplayed : null,
+        attachBadges: finalHiddeToDisplayed.length > 0 ? finalHiddeToDisplayed : null,
         detachBadges: displayedToHidden.length > 0 ? displayedToHidden : null,
         order: isEqual(badgeOrder, newBadgeOrder) ? null : newBadgeOrder,
       })

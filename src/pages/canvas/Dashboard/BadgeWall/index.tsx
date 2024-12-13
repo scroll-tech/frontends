@@ -9,7 +9,7 @@ import useCanvasStore from "@/stores/canvasStore"
 import { sentryDebug } from "@/utils"
 
 import Avatar from "./Avatar"
-import Badge from "./Badge"
+import Badge from "./Badge/index"
 import EditProfile from "./EditProfile"
 import Name from "./Name"
 
@@ -64,6 +64,8 @@ const BadgeWall: React.FC<BadgeWallProps> = props => {
   const { canvasUsername, queryUsernameLoading, userBadges, orderedAttachedBadges } = useCanvasStore()
   const [badges, setBadges] = useState<BadgePosition[]>([])
   const { walletCurrentAddress } = useRainbowContext()
+
+  console.log(userBadges, "userBadges")
 
   const profileSize = useMemo(() => (badgewidth * gridNum) / 2 - 1, [badgewidth, gridNum])
 

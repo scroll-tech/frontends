@@ -12,7 +12,7 @@ import {
   persistUserBadges,
   pickNewObtainedBadges,
   queryCanvasUsername,
-  queryUserBadgesWrapped,
+  queryUserBadges,
   upgradeBadge,
 } from "@/services/canvasService"
 import { testAsyncFunc } from "@/utils"
@@ -275,7 +275,6 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
       walletAddress,
       userBadges.map(badge => badge.id),
     )
-    console.log(newObtainedBadges, "newObtainedBadges")
     if (!newObtainedBadges.length) {
       set({
         notifiableBadges: [],
@@ -287,7 +286,7 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
     const { whitelistBadges, recognizedBadges } = (await testAsyncFunc(
       {
         whitelistBadges: [SCR_HOLDING_BADGE_ADDRESS],
-        recognizedBadges: [SCR_HOLDING_BADGE_ADDRESS],
+        recognizedBadges: [],
       },
       2e3,
     )) as { whitelistBadges: string[]; recognizedBadges: string[] }
@@ -417,10 +416,11 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
   },
 
   queryAttachedBadges: async () => {
+    const { userBadges, profileContract } = get()
     set({
       queryUserBadgesLoading: true,
     })
-    const { orderedAttachedBadges, badgeOrder, attachedBadges } = await getOrderedAttachedBadges(get().profileContract)
+    const { orderedAttachedBadges, badgeOrder, attachedBadges } = await getOrderedAttachedBadges(profileContract, userBadges)
     set({
       attachedBadges,
       orderedAttachedBadges,
@@ -433,7 +433,7 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
     set({
       queryUserBadgesLoading: true,
     })
-    const userBadges = await queryUserBadgesWrapped(provider, walletAddress, false)
+    const userBadges = await queryUserBadges(provider, walletAddress, false)
     set({
       userBadges,
       queryUserBadgesLoading: false,
@@ -445,8 +445,8 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
     set({
       queryUserBadgesLoading: true,
     })
-    const userBadges = await queryUserBadgesWrapped(provider, walletAddress)
-    const { orderedAttachedBadges, badgeOrder, attachedBadges } = await getOrderedAttachedBadges(get().profileContract)
+    const userBadges = await queryUserBadges(provider, walletAddress)
+    const { orderedAttachedBadges, badgeOrder, attachedBadges } = await getOrderedAttachedBadges(get().profileContract, userBadges)
     set({
       userBadges,
       attachedBadges,

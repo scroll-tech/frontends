@@ -1,3 +1,5 @@
+import { SCR_HOLDING_BADGE_ADDRESS } from "./badge"
+
 export enum BADGES_VISIBLE_TYPE {
   VISIBLE = "Displayed",
   INVISIBLE = "Not displayed",
@@ -15,3 +17,7 @@ export const BADGE_INTEGRATION_GUIDE =
 export const EXPLORE_BADGES_URL = "/canvas-and-badges#discover"
 
 export const CANVAS_AVATAR_MAX_SIZE = 4.5 * 1024 * 1024 // 4.5MB
+
+export const GRACE_PERIOD_DURATION = 60 // min
+
+export const FORCE_PAY_GAS_FEE_BADGE_LIST = [SCR_HOLDING_BADGE_ADDRESS]

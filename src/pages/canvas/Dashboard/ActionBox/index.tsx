@@ -22,7 +22,7 @@ import useCanvasStore, { BadgesDialogType } from "@/stores/canvasStore"
 import usePerkStore from "@/stores/perksStore"
 import { generateShareTwitterURL, requireEnv } from "@/utils"
 
-const AnimatedMenuItem = motion(MenuItem)
+const MotionMenuItem = motion(MenuItem)
 
 interface Action {
   label: string | (() => React.ReactNode)
@@ -39,6 +39,7 @@ interface Action {
       key: string
       label: string | (() => React.ReactNode)
       extra?: React.ReactNode
+      disabled?: boolean
       external?: boolean
       onClick: () => void
     }>
@@ -100,7 +101,7 @@ const CustomMenu = styled<any>(Menu, { shouldForwardProp: prop => prop !== "drop
   },
 }))
 
-const CustomiseItem = styled<any>(AnimatedMenuItem, { shouldForwardProp: prop => prop !== "external" })(({ theme, external }) => ({
+const CustomiseItem = styled<any>(MotionMenuItem, { shouldForwardProp: prop => prop !== "external" })(({ theme, external }) => ({
   position: "relative",
   display: "flex",
   justifyContent: external ? "flex-start" : "space-between",
@@ -113,6 +114,9 @@ const CustomiseItem = styled<any>(AnimatedMenuItem, { shouldForwardProp: prop =>
   "&:hover": {
     backgroundColor: "#FFFFFF",
     color: theme.palette.primary.main,
+  },
+  "&.Mui-disabled": {
+    opacity: 0.6,
   },
 }))
 
@@ -392,6 +396,7 @@ const ActionBox = () => {
                       external={item.external}
                       onHoverStart={() => handleMouseEnter(item)}
                       onHoverEnd={handleMouseLeave}
+                      disabled={item.disabled}
                       animate={isHovering === item.key ? "active" : "inactive"}
                     >
                       {typeof item.label === "function" ? item.label() : item.label}

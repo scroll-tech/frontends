@@ -293,6 +293,7 @@ const BadgeTransfer = props => {
                 containerId={containerId}
                 name={dataMap[item]?.name}
                 image={dataMap[item]?.image}
+                revokeTime={dataMap[item]?.revokeTime}
                 getIndex={getIndex}
               ></TransferItem>
             ))}
@@ -303,7 +304,11 @@ const BadgeTransfer = props => {
         <DragOverlay zIndex={1500} dropAnimation={dropAnimation}>
           {activeId ? (
             containers.includes(activeId) ? null : (
-              <TransferItemDragOverlay name={dataMap[activeId].name} image={dataMap[activeId].image}></TransferItemDragOverlay>
+              <TransferItemDragOverlay
+                id={dataMap[activeId].id}
+                name={dataMap[activeId].name}
+                image={dataMap[activeId].image}
+              ></TransferItemDragOverlay>
             )
           ) : null}
         </DragOverlay>,

@@ -10,7 +10,7 @@ import useCanvasStore from "@/stores/canvasStore"
 import Item from "./Item"
 
 const TransferItem = props => {
-  const { id, disabled, name, image, dragOverlay, containerId } = props
+  const { id, disabled, name, image, revokeTime, dragOverlay, containerId } = props
 
   const { setNodeRef, listeners, isDragging, transform, transition } = useSortable({
     id,
@@ -49,6 +49,8 @@ const TransferItem = props => {
             transform={transform}
             name={name}
             image={image}
+            id={id}
+            revokeTime={revokeTime}
           ></Item>
         </Box>
       </Badge>
