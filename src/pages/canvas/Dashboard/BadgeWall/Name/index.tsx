@@ -49,7 +49,6 @@ const Name = props => {
     queryFn: async () => {
       const result = await scrollRequest(fetchENSNameURL(walletCurrentAddress))
       return result?.name ?? ""
-      // return null
     },
     refetchOnMount: false,
     refetchOnReconnect: false,

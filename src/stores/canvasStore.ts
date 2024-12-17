@@ -2,7 +2,8 @@ import { Contract } from "ethers"
 import produce from "immer"
 import { create } from "zustand"
 
-import { Badge, ETHEREUM_YEAR_BADGE, SCR_HOLDING_BADGE_ADDRESS } from "@/constants"
+import { Badge, ETHEREUM_YEAR_BADGE } from "@/constants"
+import { fetchWhiteListBadges } from "@/services/badgeService"
 import {
   checkBadgeUpgradable,
   fetchCanvasDetail,
@@ -282,14 +283,12 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
       })
       return
     }
+
+    const fetchWhiteListBadgesPromise = fetchWhiteListBadges()
     // TODO: request whitelist and recognizedlist from server
-    const { whitelistBadges, recognizedBadges } = (await testAsyncFunc(
-      {
-        whitelistBadges: [SCR_HOLDING_BADGE_ADDRESS],
-        recognizedBadges: [],
-      },
-      2e3,
-    )) as { whitelistBadges: string[]; recognizedBadges: string[] }
+    const fetchRecognizedBadgesPromise = testAsyncFunc([], 2e3) as Promise<any[]>
+
+    const [whitelistBadges, recognizedBadges] = await Promise.all([fetchWhiteListBadgesPromise, fetchRecognizedBadgesPromise])
 
     const notifiableBadges = newObtainedBadges
       .map(badgeId => userBadges.find(badge => badge.id === badgeId)!)
