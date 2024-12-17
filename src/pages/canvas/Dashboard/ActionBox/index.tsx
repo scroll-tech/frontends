@@ -270,7 +270,7 @@ const ActionBox = () => {
         },
       },
       {
-        label: "Scroll Perks",
+        label: "Perks",
         icon: GiftSvg,
         color: "secondary",
         withBadge: !!newPerksIds.length,

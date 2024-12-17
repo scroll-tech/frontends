@@ -2,6 +2,7 @@ import copy from "copy-to-clipboard"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import Img from "react-cool-img"
 import { useLocation, useNavigate } from "react-router-dom"
+import { writeItem } from "squirrel-gill/lib/storage"
 import { makeStyles } from "tss-react/mui"
 
 import { Box, ButtonBase, Fade, LinearProgress, ListItemIcon, ListItemText, Menu, MenuItem, SvgIcon } from "@mui/material"
@@ -15,6 +16,7 @@ import { ReactComponent as DisconnectSvg } from "@/assets/svgs/wallet-connector/
 import { ReactComponent as DownTriangleSvg } from "@/assets/svgs/wallet-connector/down-triangle.svg"
 import { ReactComponent as ProfileSvg } from "@/assets/svgs/wallet-connector/profile.svg"
 import { CHAIN_ID, EXPLORER_URL } from "@/constants"
+import { CANVAS_SCROLLY_ID } from "@/constants/storageKey"
 import { useCanvasContext } from "@/contexts/CanvasContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useSnackbar from "@/hooks/useSnackbar"
@@ -121,6 +123,7 @@ const WalletDropdown = props => {
   const clearCanvasData = () => {
     clearCanvas()
     clearPerks()
+    writeItem(localStorage, CANVAS_SCROLLY_ID, null)
   }
 
   const handleClick = e => {

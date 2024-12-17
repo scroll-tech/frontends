@@ -31,8 +31,12 @@ export const BRIDGE_BALANCES = "bridgeBalances"
 
 export const BLOG_LANGUAGE = "blogLanguage"
 
-export const DISPLAYED_CANVAS = "displayedCanvas"
+export const FIRST_SEE_CANVAS = "firstSeeCanvas"
 
 export const CANVAS_PERKS = "canvasPerks"
 
 export const CANVAS_USER_BADGES = "canvasUserBadges"
+
+export const CANVAS_AVATAR_REMINDER = "canvasAvatarReminder"
+
+export const CANVAS_SCROLLY_ID = "canvasScrollyId"

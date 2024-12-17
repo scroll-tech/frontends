@@ -48,7 +48,7 @@ const Name = props => {
     queryKey: ["ensSubdomain", walletCurrentAddress],
     queryFn: async () => {
       const result = await scrollRequest(fetchENSNameURL(walletCurrentAddress))
-      return result?.name
+      return result?.name ?? ""
       // return null
     },
     refetchOnMount: false,

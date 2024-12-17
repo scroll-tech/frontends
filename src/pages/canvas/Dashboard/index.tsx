@@ -7,10 +7,10 @@ import { Navigate, useNavigate, useParams } from "react-router-dom"
 import Scrolly from "@/components/Scrolly"
 import { useCanvasContext } from "@/contexts/CanvasContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
+import useShowScrolly from "@/hooks/useShowScrolly"
 import useSnackbar from "@/hooks/useSnackbar"
 import { checkIfProfileMinted } from "@/services/canvasService"
 import useCanvasStore, { BadgesDialogType } from "@/stores/canvasStore"
-import usePerkStore from "@/stores/perksStore"
 import { requireEnv } from "@/utils"
 
 import GridBg from "../components/GridBg"
@@ -53,7 +53,7 @@ const Dashboard = props => {
     queryNotifiableBadges,
   } = useCanvasStore()
 
-  const { changePerksDialogVisible, firstSeePerks } = usePerkStore()
+  const { open: scrollyOpen, data: scrollyAlert } = useShowScrolly()
 
   const metadata = {
     title: `Scroll -  ${canvasUsername}'s Canvas`,
@@ -66,16 +66,6 @@ const Dashboard = props => {
       pickUpgradableBadges(publicProvider)
     }
   }, [badgesDialogVisible])
-
-  const scrollyAlert = useMemo(() => {
-    return {
-      title: "View perks",
-      content: "Discover the exciting benefits you can unlock with your badges in our new feature: Perks!",
-      action: () => {
-        changePerksDialogVisible(true)
-      },
-    }
-  }, [])
 
   const [windowDimensions, setWindowDimensions] = useState({
     width: window.innerWidth,
@@ -173,13 +163,13 @@ const Dashboard = props => {
       ) : (
         <GridBg badgewidth={badgewidth} gridNum={gridNum}>
           <BadgeWall badgewidth={badgewidth} gridNum={gridNum} windowDimensions={windowDimensions} />
-
           {isDesktop && !othersWalletAddress && (
             <Scrolly
-              visible={firstSeePerks}
-              buttonText={scrollyAlert.title}
-              title={scrollyAlert.content}
-              onClick={scrollyAlert.action}
+              visible={scrollyOpen}
+              buttonText={scrollyAlert?.acitonText}
+              title={scrollyAlert?.content}
+              onClick={scrollyAlert?.action}
+              onClosed={() => scrollyAlert?.clearData?.()}
               canvasId="dashboardCanvas"
             />
           )}

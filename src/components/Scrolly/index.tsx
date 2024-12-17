@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react"
+import { usePrevious } from "react-use"
 
 import { Box, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
@@ -93,6 +94,8 @@ const Scrolly = props => {
     targetFrame = 54,
     onClosed, // callback after Scrolly closed
   } = props
+
+  const preVisible = usePrevious(visible)
   const [open, setOpen] = useState(false)
   const [tooltipVisible, setTooltipVisible] = useState(false)
   const tooltipVisibleRef = useRef(false)
@@ -106,7 +109,7 @@ const Scrolly = props => {
           playGif()
         }, 4)
       }, 1500)
-    } else {
+    } else if (preVisible && !visible) {
       handleCloseTooltip()
     }
   }, [visible])
@@ -140,11 +143,11 @@ const Scrolly = props => {
   const handleCloseTooltip = () => {
     setTooltipVisible(false)
     tooltipVisibleRef.current = false
+    onClosed?.()
   }
 
   const handleCloseClick = () => {
     handleCloseTooltip()
-    onClosed?.()
   }
 
   return (

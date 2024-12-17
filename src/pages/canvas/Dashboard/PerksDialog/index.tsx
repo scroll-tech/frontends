@@ -1,5 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query"
 import "@tanstack/react-query"
+import { isNil } from "lodash"
 import { useEffect } from "react"
 
 import { Stack } from "@mui/material"
@@ -25,7 +26,9 @@ const PerksDialog = () => {
   const avatarObj = queryClient.getQueryData(["canvasAvatar", walletCurrentAddress])
 
   useEffect(() => {
-    generatePerks({ walletCurrentAddress, userBadges, ensClaimed: !!ensSubdomain, nftClaimed: Boolean((avatarObj as any)?.nftAvatarClaimed) })
+    if (!isNil(ensSubdomain) && avatarObj) {
+      generatePerks({ walletCurrentAddress, userBadges, ensClaimed: !!ensSubdomain, nftClaimed: Boolean((avatarObj as any)?.nftAvatarClaimed) })
+    }
   }, [walletCurrentAddress, userBadges, ensSubdomain, avatarObj])
 
   const actionList = [
