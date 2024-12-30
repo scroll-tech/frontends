@@ -202,7 +202,7 @@ const RollupTable = forwardRef<any, any>(function RollupTable(props, ref) {
               {data.map((row: any) => (
                 <CustomTableRow key={row.id} className={cx(`rollup-batch-${row.index}`, currentClickedBatch === row.index && "rowActive")}>
                   <TableCell>
-                    <Link component={RouterLink} href={`batch/${row.index}`}>
+                    <Link component={RouterLink} href={`/rollupscan/batch/${row.index}`}>
                       {row.index}
                     </Link>
                   </TableCell>
