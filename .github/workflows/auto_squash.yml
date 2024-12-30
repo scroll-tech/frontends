@@ -34,7 +34,7 @@ jobs:
     steps:
       - id: automerge-squash
         name: automerge-squash
-        uses: pascalgn/automerge-action@22948e0bc22f0aa673800da838595a3e7347e584
+        uses: pascalgn/automerge-action@7961b8b5eec56cc088c140b56d864285eabd3f67
         continue-on-error: true
         env:
           GITHUB_TOKEN: "${{ secrets.WRITE_TOKEN }}"
