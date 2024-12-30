@@ -42,4 +42,6 @@ next-env.d.ts
 
 .turbo
 
-/src/app/blog/data.json
+/src/app/blog/[blogId]/data.json
+/src/assets/blog/main.data.json
+/src/assets/blog/research.data.json

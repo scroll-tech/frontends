@@ -8,14 +8,13 @@ import { Tune as TuneIcon } from "@mui/icons-material"
 import { Box, Modal, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
+import blogSource from "@/assets/blog/main.data.json"
 import ArticleCard from "@/components/ArticleCard"
 import SectionWrapper from "@/components/SectionWrapper"
 import { LANGUAGE_MAP, getBlogCategoryList, getBlogSortList } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useUserLanguage from "@/hooks/useUserLanguage"
 import { filterBlogsByLanguage } from "@/utils"
-
-import blogSource from "./[blogId]/data.json"
 
 const BlogContainer = styled(Box)(({ theme }) => ({
   padding: "0 6rem 14rem",

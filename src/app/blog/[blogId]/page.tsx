@@ -1,6 +1,6 @@
+import blogSource from "@/assets/blog/main.data.json"
 import { genMeta } from "@/utils/route"
 
-import blogSource from "./data.json"
 import Detail from "./detail"
 
 export const generateMetadata = genMeta(({ params }) => {

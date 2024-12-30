@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react"
 
 import { styled } from "@mui/system"
 
-import Data from "@/app/blog/[blogId]/data.json"
+import Data from "@/assets/blog/main.data.json"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
 import BlogCard from "./Card"

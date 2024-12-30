@@ -12,6 +12,7 @@ import remarkMath from "remark-math"
 import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
+import blogSource from "@/assets/blog/main.data.json"
 import LoadingPage from "@/components/LoadingPage"
 import { LANGUAGE_MAP } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
@@ -20,7 +21,6 @@ import { filterBlogsByLanguage } from "@/utils"
 
 import Articles from "./articles"
 import TOC from "./components/tableOfContents"
-import blogSource from "./data.json"
 
 const BlogContainer = styled(Box)(
   ({ theme }) => `
