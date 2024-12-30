@@ -31,7 +31,7 @@ jobs:
           git checkout sepolia
           git merge --no-ff origin/mainnet -m "Auto-merge prod back to dev [bot]"
       - name: Create Pull Request for dev
-        uses: peter-evans/create-pull-request@2b011faafdcbc9ceb11414d64d0573f37c774b04
+        uses: peter-evans/create-pull-request@67ccf781d68cd99b580ae25a5c18a1cc84ffff1f
         with:
           token: ${{ secrets.WRITE_TOKEN }}
           delete-branch: true

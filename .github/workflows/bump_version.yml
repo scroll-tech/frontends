@@ -46,7 +46,7 @@ jobs:
         id: get-version-bump-commit-message
 
       - name: Create Pull Request for production
-        uses: peter-evans/create-pull-request@2b011faafdcbc9ceb11414d64d0573f37c774b04
+        uses: peter-evans/create-pull-request@67ccf781d68cd99b580ae25a5c18a1cc84ffff1f
         with:
           token: ${{ secrets.WRITE_TOKEN }}
           delete-branch: true
