@@ -10,6 +10,7 @@ const CUSTOM_BG_PAGE_MAP = {
   "/join-us": "normal",
   "/sticker-vote": "brand",
   "/sticker-winners": "brand",
+  "/builder-portal": "builder",
 }
 
 const useCheckCustomNavBarBg = (props = { isHover: false }) => {

@@ -124,9 +124,9 @@ const SectionList = styled<any>(Box)(({ theme }) => ({
   flex: 1,
   gap: "1.6rem",
   "&:nth-of-type(n+2)": {
-    borderLeft: `1px solid ${(theme as any).vars.palette.text.primary}`,
-    paddingLeft: "2.4rem",
-    marginLeft: "2.4rem",
+    borderLeft: `1px solid #0000001A`,
+    paddingLeft: "6rem",
+    marginLeft: "6rem",
   },
 }))
 
@@ -175,7 +175,7 @@ const DesktopHeader = ({ currentMenu }) => {
           >
             {section.children.map((item, index) => (
               <Stack key={item.key} direction="column" spacing="2.4rem" sx={{ gridRow: !index ? "1/3" : "unset", height: "min-content" }}>
-                <Typography sx={{ fontSize: "1.4rem", fontWeight: 700 }}>{item.label}</Typography>
+                {!!item.label && <Typography sx={{ fontSize: "1.4rem", fontWeight: 700 }}>{item.label}</Typography>}
                 {item.items.map(item => (
                   <SubmenuLink
                     key={item.key}

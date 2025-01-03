@@ -67,6 +67,7 @@ declare module "@mui/material/styles" {
       tag: string
       transparent: string
       brand: string
+      builder: string
     }
     link: {
       main: string
@@ -116,6 +117,7 @@ declare module "@mui/material/styles" {
       tag: string
       transparent: string
       brand: string
+      builder: string
     }
     link?: {
       main?: string

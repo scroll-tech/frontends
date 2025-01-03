@@ -205,7 +205,7 @@ const MobileHeader = ({ currentMenu }) => {
                           {/* <Divider textAlign="left" sx={{ color: "text.primary",  }}>
                             {item.label}
                           </Divider> */}
-                          <Typography sx={{ fontSize: "1.4rem", fontWeight: 700 }}>{item.label}</Typography>
+                          {item.label && <Typography sx={{ fontSize: "1.4rem", fontWeight: 700 }}>{item.label}</Typography>}
                           {item.items.map(item => (
                             <SubmenuLink className={cx(item.key === currentMenu[0] && "active")} key={item.label} {...item}></SubmenuLink>
                           ))}

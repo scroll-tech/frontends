@@ -52,6 +52,7 @@ export const paletteOptions = {
     tag: "#262626",
     transparent: "transparent",
     brand: "#FFEEDA",
+    builder: "#FFF3E5",
   },
   border: {
     main: "#000",

@@ -1,14 +1,12 @@
-import BuildSvg from "@/assets/svgs/header/Build.svg"
+import BuilderPortalSvg from "@/assets/svgs/header/BuilderPortal.svg"
 import CanvasAndBadgesSvg from "@/assets/svgs/header/CanvasAndBadges.svg"
 import CommunitySvg from "@/assets/svgs/header/Community.svg"
 import DocsSvg from "@/assets/svgs/header/Doc.svg"
-import EthereumSvg from "@/assets/svgs/header/Eth.svg"
 import ForumSvg from "@/assets/svgs/header/Forum.svg"
 import HomeSvg from "@/assets/svgs/header/Home.svg"
 import IssuesSvg from "@/assets/svgs/header/Issues.svg"
 import LevelUpSvg from "@/assets/svgs/header/LevelUp.svg"
 import ProjectsSvg from "@/assets/svgs/header/Projects.svg"
-import SDKSvg from "@/assets/svgs/header/SDK.svg"
 import SessionsSvg from "@/assets/svgs/header/Sessions.svg"
 import StatusSvg from "@/assets/svgs/header/Status.svg"
 import { isSepolia } from "@/utils"
@@ -102,24 +100,14 @@ const mainnetNavigations = [
         type: "grid",
         children: [
           {
-            label: "DEPLOY AN APP",
             items: [
               {
-                text: "Mainnet Deployment",
-                label: "Let’s go live now!",
-                key: "mainnet-resources",
+                label: "Start building on Scroll",
+                text: "Get started",
+                key: "builder-portal",
                 rootKey: "develop",
-                href: "/portal",
-                icon: EthereumSvg,
-              },
-              {
-                label: "Try and test it out",
-                text: "Sepolia Testnet",
-                key: "sepolia-resources",
-                rootKey: "develop",
-                href: "https://sepolia.scroll.io/portal",
-                isExternal: true,
-                icon: BuildSvg,
+                href: "/builder-portal",
+                icon: BuilderPortalSvg,
               },
               {
                 label: "Understand all the details to build",
@@ -129,32 +117,6 @@ const mainnetNavigations = [
                 isExternal: true,
                 icon: DocsSvg,
               },
-              {
-                label: "Scroll network health indicator",
-                text: "Status",
-                key: "status",
-                href: "https://status.scroll.io/",
-                isExternal: true,
-                icon: StatusSvg,
-              },
-            ],
-          },
-          {
-            label: "DEPLOY A CHAIN",
-            items: [
-              {
-                label: "Own your blockspace",
-                text: "Scroll SDK",
-                key: "sdk",
-                href: "https://docs.scroll.io/en/sdk",
-                isExternal: true,
-                icon: SDKSvg,
-              },
-            ],
-          },
-          {
-            label: "MORE",
-            items: [
               {
                 label: "Learn, build and innovate",
                 text: "Level Up",
@@ -170,6 +132,14 @@ const mainnetNavigations = [
                 href: "https://immunefi.com/bounty/scroll/",
                 isExternal: true,
                 icon: IssuesSvg,
+              },
+              {
+                label: "Scroll network health indicator",
+                text: "Status",
+                key: "status",
+                href: "https://status.scroll.io/",
+                isExternal: true,
+                icon: StatusSvg,
               },
             ],
           },
