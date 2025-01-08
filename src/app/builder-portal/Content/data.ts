@@ -6,6 +6,7 @@ import FifthSvg from "@/assets/svgs/builder-portal/5.svg"
 import SDKSvg from "@/assets/svgs/builder-portal/SDK.svg"
 import AppsSvg from "@/assets/svgs/builder-portal/apps.svg"
 import BeakerSvg from "@/assets/svgs/builder-portal/beaker.svg"
+import BugBountySvg from "@/assets/svgs/builder-portal/bug-bounty.svg"
 import CalenderSvg from "@/assets/svgs/builder-portal/calender.svg"
 import ChatSvg from "@/assets/svgs/builder-portal/chat.svg"
 import DiscordSvg from "@/assets/svgs/builder-portal/discord.svg"
@@ -17,7 +18,6 @@ import LevelupSvg from "@/assets/svgs/builder-portal/levelup.svg"
 import OpenSvg from "@/assets/svgs/builder-portal/open.svg"
 import PencilSvg from "@/assets/svgs/builder-portal/pencil.svg"
 import RocketSvg from "@/assets/svgs/builder-portal/rocket.svg"
-import SearchSvg from "@/assets/svgs/builder-portal/search.svg"
 import SepoliaSvg from "@/assets/svgs/builder-portal/sepolia.svg"
 import StatusSvg from "@/assets/svgs/builder-portal/status.svg"
 import TwitterSvg from "@/assets/svgs/builder-portal/x.svg"
@@ -29,11 +29,18 @@ const data = [
     children: [
       {
         icon: ChatSvg,
-        title: "Chat with our ecosystem team",
+        title: "Chat with our partnership team",
         description: "Connect with experts for quick support.",
         href: "https://tally.so/r/waxLBW",
       },
-      { icon: OpenSvg, title: "Involve in Scroll Open programme", description: "Description of Scroll Open here.", href: "https://scrollopen.xyz" },
+      // TODO: scroll open url
+      {
+        icon: OpenSvg,
+        title: "Involve in Scroll Open programme",
+        description: "Description of Scroll Open here.",
+        upcoming: true,
+        href: "https://open.scroll.io",
+      },
       {
         icon: FellowshipSvg,
         title: "Scroll Fellowship",
@@ -98,7 +105,7 @@ const data = [
       },
       {
         icon: ChatSvg,
-        title: "Get in touch with Ecosystem Team",
+        title: "Chat with our ecosystem team",
         description: "Reach out for insights, support, and collaboration opportunities.",
         href: "https://tally.so/r/waxLBW",
       },
@@ -132,7 +139,7 @@ const data = [
         description: "Connect, learn, and grow with us.",
         href: "/community",
       },
-      { icon: AppsSvg, title: "Try Apps in Ecosystem", description: "Discover and test innovative dApps.", href: "/ecosystem" },
+      { icon: AppsSvg, title: "Explore our ecosystem", description: "Discover and test innovative dApps.", href: "/ecosystem" },
     ],
   },
   {
@@ -147,7 +154,7 @@ const data = [
       },
       {
         icon: PencilSvg,
-        title: "Test Your Skills",
+        title: "Test your skills",
         description: "Challenge yourself and level up your expertise.",
         href: "https://www.levelup.xyz/content",
       },
@@ -158,8 +165,8 @@ const data = [
         href: "https://www.levelup.xyz/content",
       },
       {
-        icon: SearchSvg,
-        title: "Submit Bug Bounty",
+        icon: BugBountySvg,
+        title: "Submit bug bounty",
         description: "Spot issues, share insights, and earn rewards.",
         href: "https://immunefi.com/bug-bounty/scroll/information/",
       },

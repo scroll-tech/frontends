@@ -1,10 +1,7 @@
-import Image from "next/image"
-
 import { Box, Container, Stack, Typography } from "@mui/material"
 
-import PhoneSvg from "@/assets/svgs/builder-portal/phone.svg?url"
-
 import CONTENT_DATA from "../Content/data"
+import CallBox from "./CallBox"
 import StepItem from "./StepItem"
 
 const BuilderPortalHeader = () => {
@@ -13,39 +10,52 @@ const BuilderPortalHeader = () => {
       sx={{
         backgroundColor: "themeBackground.builder",
         position: "relative",
-        height: ["120rem", "75rem", "auto"],
-        aspectRatio: ["auto", "auto", "16 / 9"],
-        marginTop: [0, 0, "-6.5rem"],
+        height: ["max-content", "auto"],
+        aspectRatio: ["auto", "auto", "auto", "16 / 9"],
+        marginTop: [0, 0, 0, "-6.5rem"],
       }}
     >
       <Container
         sx={{
           height: "100%",
-          pt: "6.5rem",
-          // background: [`url(${PhoneSvg.src}) center right / 460px auto no-repeat`],
+          pt: ["5rem", "6.5rem"],
           display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-around",
+          flexDirection: ["column", "column", "column", "row"],
+          justifyContent: ["flex-start", "flex-start", "flex-start", "space-around"],
           alignItems: "center",
-          gap: "14%",
+          gap: ["4.8rem", "15.5rem"],
+          px: ["2rem", "2rem", "6rem", "18rem"],
+          overflow: "hidden",
         }}
       >
-        <Stack direction={["column"]} alignItems={["center", "center", "flex-start"]} sx={{ gap: ["1.6rem"], width: "46%" }}>
+        <Stack
+          direction="column"
+          alignItems={["center", "center", "center", "flex-start"]}
+          sx={{
+            gap: "1.6rem",
+            flex: 4,
+            width: ["100%", "auto"],
+            minWidth: ["auto", "40rem"],
+          }}
+        >
           <Typography
             sx={{
               fontSize: ["4rem", "6.4rem"],
               lineHeight: ["4.8rem", "7.8rem"],
               fontWeight: 600,
+              textAlign: ["center", "center", "center", "left"],
             }}
           >
             Welcome to<br></br>Builder Portal
           </Typography>
-          <Typography sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: ["2.4rem", "3.2rem"], fontWeight: 500 }}>How can we help you?</Typography>
-          {CONTENT_DATA.map(item => (
-            <StepItem key={item.title} {...item} />
+          <Typography sx={{ fontSize: ["1.6rem", "2rem"], lineHeight: "3.2rem", fontWeight: 500 }}>How can we help you?</Typography>
+          {CONTENT_DATA.map(({ title }, index) => (
+            <StepItem key={title} title={title} index={index + 1} />
           ))}
         </Stack>
-        <Image src={PhoneSvg} alt="PhoneSvg" width={100} height={100} className="w-[40%]"></Image>
+        <CallBox
+          sx={{ alignSelf: ["center", "center", "center", "flex-end"], width: ["calc(100% + 7rem)", "auto"], flex: 5, height: "auto" }}
+        ></CallBox>
       </Container>
     </Box>
   )

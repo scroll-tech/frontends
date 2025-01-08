@@ -5,11 +5,11 @@ import BUILDER_PORTAL_DATA from "./data"
 
 const BuilderPortalContent = () => {
   return (
-    <Box sx={{ backgroundColor: "background.default", py: "6rem" }}>
+    <Box sx={{ backgroundColor: "background.default", py: ["2.4em", "6rem"] }}>
       <Container>
-        <Stack direction="column" spacing="4.8rem">
-          {BUILDER_PORTAL_DATA.map(item => (
-            <ContentSection key={item.title} {...item}></ContentSection>
+        <Stack direction="column" gap={["2.4rem", "4.8rem"]}>
+          {BUILDER_PORTAL_DATA.map((item, index) => (
+            <ContentSection key={item.title} {...item} index={index + 1}></ContentSection>
           ))}
         </Stack>
       </Container>

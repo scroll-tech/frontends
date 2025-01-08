@@ -102,8 +102,8 @@ const mainnetNavigations = [
           {
             items: [
               {
-                label: "Start building on Scroll",
-                text: "Get started",
+                label: "Journey to build starts now",
+                text: "Enter the Builder Portal",
                 key: "builder-portal",
                 rootKey: "develop",
                 href: "/builder-portal",
