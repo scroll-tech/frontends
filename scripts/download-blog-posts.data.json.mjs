@@ -1,7 +1,6 @@
-import fs from "node:fs"
 import fetch from "node-fetch"
+import fs from "node:fs"
 import path from "node:path"
-
 import { fileURLToPath } from "url"
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -29,4 +28,4 @@ async function fetchPosts() {
   ])
 }
 
-fetchPosts()
+await fetchPosts()
