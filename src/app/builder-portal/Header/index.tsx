@@ -20,10 +20,10 @@ const BuilderPortalHeader = () => {
           height: "100%",
           pt: ["5rem", "6.5rem"],
           display: "flex",
-          flexDirection: ["column", "column", "column", "row"],
+          flexDirection: ["column", "column", "row"],
           justifyContent: ["flex-start", "flex-start", "flex-start", "space-around"],
           alignItems: "center",
-          gap: ["4.8rem", "15.5rem"],
+          gap: ["1.6rem", "4rem", 0, "15.5rem"],
           px: ["2rem", "2rem", "6rem", "18rem"],
           overflow: "hidden",
         }}
@@ -32,7 +32,7 @@ const BuilderPortalHeader = () => {
           direction="column"
           alignItems={["center", "center", "center", "flex-start"]}
           sx={{
-            gap: "1.6rem",
+            gap: ["0.8rem", "1.6rem"],
             flex: 4,
             width: ["100%", "auto"],
             minWidth: ["auto", "40rem"],
@@ -53,9 +53,7 @@ const BuilderPortalHeader = () => {
             <StepItem key={title} title={title} index={index + 1} />
           ))}
         </Stack>
-        <CallBox
-          sx={{ alignSelf: ["center", "center", "center", "flex-end"], width: ["calc(100% + 7rem)", "auto"], flex: 5, height: "auto" }}
-        ></CallBox>
+        <CallBox sx={{ alignSelf: ["center", "center", "center", "flex-end"], width: ["100%", "auto"], flex: 5, height: "auto" }}></CallBox>
       </Container>
     </Box>
   )

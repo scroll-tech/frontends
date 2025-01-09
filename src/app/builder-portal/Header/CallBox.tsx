@@ -290,9 +290,13 @@ const CallBox = props => {
             <path d="M400.314 106.582H362.133V114.007H400.314V106.582Z" fill="#E8F628" stroke="#101010" strokeWidth="2" />
           </g>
           <path d={`M328 461H230V${calculatedHeight}H328V461Z`} fill="#C69960" stroke="#101010" strokeWidth="2" />
-          <path d={`M510 ${calculatedHeight}L510 15L490 15L490 ${calculatedHeight}H510Z`} fill="#E6CAAA" stroke="#101010" strokeWidth="2" />
-          <path d={`M68 ${calculatedHeight}L68 15L48 15L48 ${calculatedHeight}H68Z`} fill="#E6CAAA" stroke="#101010" strokeWidth="2" />
-          <path d="M555.741 1H1V21H555.741V1Z" fill="#101010" stroke="#101010" strokeWidth="2" />
+          {isDesktop && (
+            <>
+              <path d={`M510 ${calculatedHeight}L510 15L490 15L490 ${calculatedHeight}H510Z`} fill="#E6CAAA" stroke="#101010" strokeWidth="2" />
+              <path d={`M68 ${calculatedHeight}L68 15L48 15L48 ${calculatedHeight}H68Z`} fill="#E6CAAA" stroke="#101010" strokeWidth="2" />
+              <path d="M555.741 1H1V21H555.741V1Z" fill="#101010" stroke="#101010" strokeWidth="2" />
+            </>
+          )}
         </g>
       </svg>
       <DeveloperTip ref={developerTipRef}></DeveloperTip>
