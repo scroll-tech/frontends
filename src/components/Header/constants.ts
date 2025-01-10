@@ -310,6 +310,12 @@ const mainnetNavigations = [
     ],
   },
   {
+    label: "Research",
+    key: "research",
+    href: "/research",
+    isExternal: true,
+  },
+  {
     label: "Resources",
     key: "resources",
     children: [
