@@ -55,7 +55,7 @@ const nextConfig = {
       { source: "/blog/scrollsFreshCoat", destination: "/blog/scrolls-fresh-coat", permanent: true },
 
       { source: "/sticker-vote", destination: "/sticker-winners", permanent: true },
-      { source: "/airdrop-faq", destination: "https://scroll-faqs.gitbook.io/faqs", permanent: false},
+      // { source: "/airdrop-faq", destination: "https://scroll-faqs.gitbook.io/faqs", permanent: false},
 
     ]
   },
