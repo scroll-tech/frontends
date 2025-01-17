@@ -47,7 +47,7 @@ No gas is required to claim the second type of allocation. However, we strongly 
 
 If an address has been allocated \$SCR, and you wish to claim the \$SCR on behalf of the address (e.g. because it is a smart contract that cannot connect with the claim.scroll.io UI, then you can use a different wallet/address and claim the tokens on behalf of another address. This will transfer \$SCR to the address to which the $SCR was originally allocated. To do so:
 
-1. Visit https://scrollscan.com/token/0xd29687c813d741e2f938f4ac377128810e217b1b
+1. Visit https://scrollscan.com/address/0xE8bE8eB940c0ca3BD19D911CD3bEBc97Bea0ED62
 2. Connect with an EOA wallet
 3. Visit the contract's Write Functions
 4. Call the claim function, passing in the recipient's address You can verify that the transaction occurred successfully by checking the recipient's address on Scrollscan.
