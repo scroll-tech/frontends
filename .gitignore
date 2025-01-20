@@ -45,3 +45,6 @@ next-env.d.ts
 /src/app/blog/[blogId]/data.json
 /src/assets/blog/main.data.json
 /src/assets/blog/research.data.json
+
+# Sentry Config File
+.env.sentry-build-plugin
