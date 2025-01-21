@@ -24,8 +24,7 @@ import { amountToBN, checkApproved, switchNetwork, trimErrorMessage } from "@/ut
 import ApprovalDialog from "./ApprovalDialog"
 import BalanceInput from "./BalanceInput"
 import CustomiseRecipient from "./CustomiseRecipient"
-import DepositSelector from "./DepositSelector"
-import NetworkDirection from "./NetworkDirection"
+import ExternalBridge from "./ExternalBridge"
 import TransactionSummary from "./TransactionSummary"
 import useBatchDeposit from "./hooks/useBatchDeposit"
 
@@ -68,6 +67,10 @@ const SendTransaction = () => {
   )
   // const { balance, isLoading: balanceLoading } = useBalance(selectedToken.address)
   const { balance, loading: balanceLoading } = useBalance(selectedToken, fromNetwork)
+
+  const externalBridge = useMemo(() => {
+    return selectedToken.extensions?.bridgeInfo
+  }, [selectedToken])
 
   const {
     isNeeded: needApproval,
@@ -136,22 +139,7 @@ const SendTransaction = () => {
   useEffect(() => {
     let nextBridgeWarning
     let nextInputError = false
-    if (!walletCurrentAddress) {
-      nextBridgeWarning = (
-        <TextButton underline="always" sx={{ fontSize: "1.4rem" }} onClick={connect}>
-          Connect wallet
-        </TextButton>
-      )
-    } else if (chainId !== fromNetwork.chainId) {
-      nextBridgeWarning = (
-        <>
-          Wrong network.{" "}
-          <TextButton underline="always" sx={{ fontSize: "1.4rem" }} onClick={() => switchNetwork(fromNetwork.chainId)}>
-            Switch to {fromNetwork.name}
-          </TextButton>
-        </>
-      )
-    } else if (maxWarning && maxWarning !== "FeeError") {
+    if (maxWarning && maxWarning !== "FeeError") {
       nextBridgeWarning = <>{maxWarning}</>
       nextInputError = true
     } else if (gasFeeErrorMessage && (validAmount || maxWarning) && needApproval === false) {
@@ -188,13 +176,13 @@ const SendTransaction = () => {
 
   const sendText = useMemo(() => {
     if (txType === "Deposit" && sendLoading) {
-      return "Depositing funds"
+      return "Depositing to Scroll"
     } else if (txType === "Deposit" && !sendLoading) {
-      return "Deposit funds"
+      return "Deposit to Scroll"
     } else if (txType === "Withdraw" && sendLoading) {
-      return "Withdrawing funds"
+      return "Withdrawing to Ethereum"
     }
-    return "Withdraw funds"
+    return "Withdraw to Ethereum"
   }, [txType, sendLoading])
 
   useEffect(() => {
@@ -304,99 +292,103 @@ const SendTransaction = () => {
   }
 
   return (
-    <Stack direction="column" alignItems="center">
-      <NetworkDirection></NetworkDirection>
-      <BalanceInput
-        sx={{ mt: "1.6rem" }}
-        value={amount}
-        onChange={handleChangeAmount}
-        error={inputError}
-        token={selectedToken}
-        fee={totalFee}
-        balance={balance}
-        balanceLoading={balanceLoading}
-        disabled={fromNetwork.chainId !== chainId}
-        readOnly={approveLoading || sendLoading}
-        tokenOptions={tokenOptions}
-        onError={handleError}
-        onChangeToken={handleChangeTokenSymbol}
-      ></BalanceInput>
-      <Box sx={{ height: "2rem", width: "100%" }}>
-        {!!bridgeWarning && bridgeWarning !== ">0" && (
-          <Typography
-            sx={{
-              fontSize: "1.4rem",
-              fontWeight: 500,
-              width: ["calc(100% + 1rem)", "100%"],
-              "@media (max-width: 600px)": {
-                marginLeft: "-0.5rem",
-              },
-              color: "primary.main",
-            }}
-          >
-            <SvgIcon sx={{ fontSize: "1.6rem", mr: "0.8rem", verticalAlign: "middle" }} component={WarningSvg} inheritViewBox></SvgIcon>
-            <Stack component="span" direction="row" style={{ display: "inline-flex", verticalAlign: "middle", alignItems: "center", gap: "0.2rem" }}>
-              {bridgeWarning}
-            </Stack>
-          </Typography>
+    <Stack direction="column" alignItems="center" gap={externalBridge ? "0" : txType === "Deposit" ? "2.4rem" : "1.6rem"}>
+      <Box sx={{ width: "100%" }}>
+        <BalanceInput
+          value={amount}
+          onChange={handleChangeAmount}
+          error={inputError}
+          token={selectedToken}
+          fee={totalFee}
+          balance={balance}
+          balanceLoading={balanceLoading}
+          disabled={fromNetwork.chainId !== chainId}
+          readOnly={approveLoading || sendLoading}
+          tokenOptions={tokenOptions}
+          onError={handleError}
+          onChangeToken={handleChangeTokenSymbol}
+        ></BalanceInput>
+        <Box sx={{ height: "2.4rem", width: "100%" }}>
+          {!!bridgeWarning && bridgeWarning !== ">0" && (
+            <Typography
+              sx={{
+                fontSize: "1.4rem",
+                fontWeight: 500,
+                width: ["calc(100% + 1rem)", "100%"],
+                "@media (max-width: 600px)": {
+                  marginLeft: "-0.5rem",
+                },
+              }}
+              color="primary"
+            >
+              <SvgIcon
+                sx={{ fontSize: "1.6rem", mr: "0.8rem", verticalAlign: "middle", color: "#FF684B" }}
+                component={WarningSvg}
+                inheritViewBox
+              ></SvgIcon>
+              <Stack
+                component="span"
+                direction="row"
+                style={{
+                  display: "inline-flex",
+                  verticalAlign: "middle",
+                  alignItems: "center",
+                  gap: "0.2rem",
+                  color: "#FF684B",
+                  fontFamily: "var(--developer-page-font-family) !important",
+                }}
+              >
+                {bridgeWarning}
+              </Stack>
+            </Typography>
+          )}
+        </Box>
+        {!externalBridge && (
+          <CustomiseRecipient
+            readOnly={approveLoading || sendLoading}
+            disabled={fromNetwork.chainId !== chainId}
+            bridgeWarning={bridgeWarning}
+            handleChangeRecipient={handleChangeRecipient}
+          />
         )}
       </Box>
 
-      {bridgeSummaryType === BridgeSummaryType.Selector && (
-        <DepositSelector
-          selectedToken={selectedToken}
-          amount={validAmount}
-          feeError={relayFeeErrorMessage || gasFeeErrorMessage}
-          // totalFee={displayedEstimatedGasCost}
-          l2GasFee={relayFee}
-          l1GasFee={estimatedGasCost}
-          l1EconomyGasFee={estimatedBatchDepositGasCost}
-          l2EconomyGasFee={batchDepositConfig.feeAmountPerTx}
-          l1DataFee={l1DataFee}
-          needApproval={needApproval}
-          isVaild={depositAmountIsValid}
-        />
+      {externalBridge ? (
+        <ExternalBridge selectedToken={selectedToken} txType={txType} />
+      ) : (
+        <>
+          {bridgeSummaryType === BridgeSummaryType.Summary && (
+            <TransactionSummary
+              selectedToken={selectedToken}
+              amount={validAmount}
+              feeError={relayFeeErrorMessage || gasFeeErrorMessage}
+              // totalFee={displayedEstimatedGasCost}
+              l2GasFee={relayFee}
+              l1GasFee={estimatedGasCost}
+              l1DataFee={l1DataFee}
+              needApproval={!!needApproval}
+            />
+          )}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "flex-end",
+              width: "100%",
+              justifyContent: "center",
+              "& .MuiButtonBase-root": { fontFamily: "var(--default-font-family) !important" },
+            }}
+          >
+            {renderButton()}
+          </Box>
+          <ApprovalDialog
+            open={approvalVisible}
+            token={selectedToken}
+            loading={approveLoading && !isRequestedApproval}
+            onApprove={handleApprove}
+            onClose={handleCloseApprovalDialog}
+          ></ApprovalDialog>
+        </>
       )}
-      {!(bridgeSummaryType === BridgeSummaryType.Selector && depositBatchMode === DepositBatchMode.Economy) && (
-        <CustomiseRecipient
-          readOnly={approveLoading || sendLoading}
-          disabled={fromNetwork.chainId !== chainId}
-          bridgeWarning={bridgeWarning}
-          handleChangeRecipient={handleChangeRecipient}
-        />
-      )}
-
-      {bridgeSummaryType === BridgeSummaryType.Summary && (
-        <TransactionSummary
-          selectedToken={selectedToken}
-          amount={validAmount}
-          feeError={relayFeeErrorMessage || gasFeeErrorMessage}
-          // totalFee={displayedEstimatedGasCost}
-          l2GasFee={relayFee}
-          l1GasFee={estimatedGasCost}
-          l1DataFee={l1DataFee}
-          needApproval={!!needApproval}
-        />
-      )}
-      <Box
-        sx={{
-          mt: ["2.4rem", "2.8rem"],
-          display: "flex",
-          alignItems: "flex-end",
-          width: "100%",
-          justifyContent: "center",
-          "& .MuiButtonBase-root": { fontFamily: "var(--default-font-family) !important" },
-        }}
-      >
-        {renderButton()}
-      </Box>
-      <ApprovalDialog
-        open={approvalVisible}
-        token={selectedToken}
-        loading={approveLoading && !isRequestedApproval}
-        onApprove={handleApprove}
-        onClose={handleCloseApprovalDialog}
-      ></ApprovalDialog>
     </Stack>
   )
 }

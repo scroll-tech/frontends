@@ -4,6 +4,13 @@ type BaseToken = {
   symbol: string
   decimals: bigint
   logoURI: string
+  extensions?: {
+    bridgeInfo: {
+      bridgeUrl: string
+      bridgeName: string
+      bridgeIcon: string
+    }
+  }
 }
 
 type NativeToken = BaseToken & {

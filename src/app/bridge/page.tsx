@@ -42,7 +42,7 @@ const Bridge = () => {
         sx={{
           pt: ["4.8rem", "8.4rem"],
           pb: "6rem",
-          minHeight: "calc(100vh - 69.2rem)",
+          minHeight: "calc(100vh - 38.8rem)",
           display: "flex",
           flexDirection: "column",
           alignItems: ["flex-start", "center"],
@@ -51,7 +51,7 @@ const Bridge = () => {
       >
         <Stack
           direction="row"
-          sx={{ mb: "2.4rem", width: "64rem", maxWidth: "100%" }}
+          sx={{ mb: "2.4rem", width: "66rem", maxWidth: "100%" }}
           spacing="2rem"
           justifyContent="space-between"
           alignItems="center"
@@ -74,7 +74,6 @@ const Bridge = () => {
         <Send></Send>
         <FAQsLink />
       </SectionWrapper>
-      {/* <MintBadge /> */}
     </PriceFeeProvider>
   )
 }
