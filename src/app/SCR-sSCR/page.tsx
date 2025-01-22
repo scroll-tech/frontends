@@ -1,9 +1,15 @@
 import { promises as fs } from "fs"
 
-import { BNToAmount } from "@/utils"
+import { BNToAmount, genMeta } from "@/utils"
 
 import Explaination from "./Explaination"
 import Header from "./Header"
+
+export const generateMetadata = genMeta(() => ({
+  titleSuffix: "SCR & sSCR",
+  relativeURL: "/SCR-sSCR",
+  description: "Governance token and its LRT",
+}))
 
 const ScrAndsSCRPage = async () => {
   const circulatingSupplyStr = await fs.readFile(process.cwd() + "/public/tokenomics/circulatingSupply.txt", "utf8")

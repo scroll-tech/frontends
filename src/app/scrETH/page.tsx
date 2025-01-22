@@ -1,7 +1,15 @@
+import { genMeta } from "@/utils"
+
 import Explaination from "./Explaination"
 import Header from "./Header"
 
-const ScrAndsSCRPage = () => {
+export const generateMetadata = genMeta(() => ({
+  titleSuffix: "scrETH",
+  relativeURL: "/scrETH",
+  description: "Scroll's ecosystem native ETH LRT",
+}))
+
+const ScrETHPage = () => {
   return (
     <>
       <Header></Header>
@@ -10,4 +18,4 @@ const ScrAndsSCRPage = () => {
   )
 }
 
-export default ScrAndsSCRPage
+export default ScrETHPage
