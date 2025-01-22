@@ -1,7 +1,7 @@
 import dayjs from "dayjs"
 import { makeStyles } from "tss-react/mui"
 
-import { Card, Stack, SvgIcon, Typography } from "@mui/material"
+import { Card, Stack, Typography } from "@mui/material"
 
 import { communityOrigin } from "@/apis/community"
 import RegionIcon from "@/assets/svgs/community/region.svg"

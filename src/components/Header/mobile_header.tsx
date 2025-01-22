@@ -1,5 +1,5 @@
+import { sendGAEvent } from "@next/third-parties/google"
 import React, { useEffect, useState } from "react"
-import ReactGA from "react-ga4"
 import { useStyles } from "tss-react/mui"
 
 import { ExpandMore } from "@mui/icons-material"
@@ -176,7 +176,7 @@ const MobileHeader = ({ currentMenu }) => {
                 className={cx(currentMenu.includes(item.key) && "active")}
                 reloadDocument={item.reload}
                 onClick={() =>
-                  ReactGA.event("click_menu", {
+                  sendGAEvent("event", "click_menu", {
                     label: item.label,
                     device: "mobile",
                   })

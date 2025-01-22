@@ -1,3 +1,5 @@
+"use client"
+
 import { makeStyles } from "tss-react/mui"
 
 import { Tooltip } from "@mui/material"

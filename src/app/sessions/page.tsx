@@ -1,43 +1,35 @@
-"use client"
+import { Stack } from "@mui/material"
 
-import { Container, Stack } from "@mui/material"
-
+import EligibleAssets from "./EligibleAssets"
 import Guidance from "./Guidance"
 import Header from "./Header"
+import Protocols from "./Protocols"
 import SignatureRequestDialog from "./SignatureRequestDialog"
-import TotalMarks from "./TotalMarks"
 
 const Sessions = () => {
   return (
     <>
       <Header></Header>
-      <Container
-        sx={{
-          maxWidth: ["100% !important", "100% !important", "1272px !important"],
-        }}
+      <Stack
+        sx={[
+          {
+            gap: ["2.4rem", "3.2rem"],
+            maxWidth: "88.4rem",
+            mx: "auto",
+            mt: [0, "5.6rem"],
+            mb: ["-32rem", "12rem"],
+            width: ["calc(100% - 4rem)", "calc(100% - 4rem)", "auto"],
+
+            position: ["relative", "static"],
+            top: ["-38rem", 0],
+          },
+        ]}
       >
-        <Stack
-          sx={[
-            { maxWidth: "88.4rem", mx: "auto", mt: "3.2rem", mb: "3.4rem" },
-            theme => ({
-              [theme.breakpoints.down("md")]: {
-                "& > *:nth-of-type(n + 4)": {
-                  marginTop: "2.4rem",
-                },
-              },
-              [theme.breakpoints.down("sm")]: {
-                "& > *:nth-of-type(n + 4)": {
-                  marginTop: "1.6rem",
-                },
-              },
-            }),
-          ]}
-        >
-          <TotalMarks></TotalMarks>
-          <Guidance />
-          <SignatureRequestDialog />
-        </Stack>
-      </Container>
+        <EligibleAssets></EligibleAssets>
+        <Protocols></Protocols>
+        <Guidance />
+        <SignatureRequestDialog />
+      </Stack>
     </>
   )
 }

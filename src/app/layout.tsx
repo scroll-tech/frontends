@@ -1,10 +1,11 @@
+import { GoogleAnalytics } from "@next/third-parties/google"
 import { Metadata } from "next"
 import React, { Suspense } from "react"
 
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter"
 
 import GlobalComponents from "@/components/GlobalComponents"
-import GoogleAnalytics from "@/components/GoogleAnalytics"
+// import GoogleAnalytics from "@/components/GoogleAnalytics"
 import ScrollToTop from "@/components/ScrollToTop"
 import WebVitals from "@/components/WebVitals"
 // import SentrySetting from "@/components/SentrySetting"
@@ -44,7 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {process.env.NODE_ENV === "production" && (
           <>
             <Suspense fallback={null}>
-              <GoogleAnalytics></GoogleAnalytics>
+              <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID} />
             </Suspense>
             <WebVitals></WebVitals>
             {/* <SentrySetting></SentrySetting> */}

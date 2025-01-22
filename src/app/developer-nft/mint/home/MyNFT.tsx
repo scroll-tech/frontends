@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react"
-import ReactGA from "react-ga4"
 
 import { Box, Stack, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
@@ -86,11 +85,7 @@ const MyNFT = props => {
     setErrorMessage("")
   }
 
-  const handleShare = () => {
-    ReactGA.event("share_twitter", {
-      tokenId,
-    })
-  }
+  const handleShare = () => {}
 
   return (
     <Box

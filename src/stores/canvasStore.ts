@@ -410,7 +410,7 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
           issuer = await fetchIssuer(item.issuerName)
         }
         return { ...item, issuer }
-      } catch (e) {
+      } catch (_error) {
         return { ...item }
       }
     })

@@ -1,10 +1,11 @@
 "use client"
 
+import { sendGAEvent } from "@next/third-parties/google"
 import { RainbowKitProvider, getDefaultConfig, useConnectModal } from "@rainbow-me/rainbowkit"
 import "@rainbow-me/rainbowkit/styles.css"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { BrowserProvider } from "ethers"
-import { createContext, useCallback, useContext, useMemo } from "react"
+import { createContext, useCallback, useContext, useEffect, useMemo } from "react"
 import { type Config, WagmiProvider, useAccount, useConnectorClient, useDisconnect } from "wagmi"
 
 import { configs } from "./configs"
@@ -51,9 +52,16 @@ const RainbowProvider = props => {
 const Web3ContextProvider = props => {
   const { connector: activeConnector, address, isConnected, chainId } = useAccount()
   const { data: client } = useConnectorClient<Config>({ chainId })
-
   const { openConnectModal } = useConnectModal()
   const { disconnect } = useDisconnect()
+
+  useEffect(() => {
+    if (isConnected && activeConnector?.name) {
+      sendGAEvent("event", "wallet_connected", {
+        wallet_type: activeConnector.name,
+      })
+    }
+  }, [isConnected, activeConnector?.name])
 
   const provider = useMemo(() => {
     if (client && chainId && chainId === client.chain?.id) return clientToProvider(client)

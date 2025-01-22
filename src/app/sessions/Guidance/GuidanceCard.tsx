@@ -1,70 +1,49 @@
-import { makeStyles } from "tss-react/mui"
+import Link from "next/link"
 
-import { Box, Card, Stack, SvgIcon, Typography } from "@mui/material"
+import { Card, Stack, Typography } from "@mui/material"
 
 import ExternaLinkIcon from "@/assets/svgs/common/external-link.svg"
-import Link from "@/components/Link"
-
-const useStyles = makeStyles()(theme => ({
-  card: {
-    backgroundColor: theme.palette.themeBackground.normal,
-    height: "100%",
-    padding: "2.4rem",
-    borderRadius: "1.6rem",
-    cursor: "pointer",
-    "&:hover": {
-      backgroundColor: theme.palette.themeBackground.highlight,
-    },
-    [theme.breakpoints.down("md")]: {
-      padding: "1.6rem 1.6rem 3.2rem 1.6rem",
-    },
-  },
-  header: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "6.2rem",
-    [theme.breakpoints.down("md")]: {
-      flexDirection: "row-reverse",
-      justifyContent: "space-between",
-    },
-  },
-}))
 
 const GuidanceCard = props => {
-  const { title, content, icon, href, ...restProps } = props
-
-  const { classes } = useStyles()
+  const { title, content, icon: IconSvg, href, ...restProps } = props
 
   return (
-    <Link href={href} external>
-      <Card {...restProps} elevation={0} classes={{ root: classes.card }}>
+    <Link href={href} target={href.includes("http") ? "_blank" : "_self"} rel="noopener noreferrer">
+      <Card
+        {...restProps}
+        elevation={0}
+        sx={{
+          backgroundColor: "background.default",
+          height: "100%",
+          borderRadius: "1.6rem",
+          cursor: "pointer",
+          p: ["1.6rem 1.6rem 3.2rem 1.6rem", "1.6rem 1.6rem 3.2rem 1.6rem", "2.4rem"],
+          "&:hover": {
+            backgroundColor: "themeBackground.normal",
+          },
+        }}
+      >
         <Stack direction="column">
-          <Box className={classes.header}>
-            <SvgIcon
-              sx={{
-                fontSize: ["1.6rem"],
-                alignSelf: ["flex-start", "flex-end"],
-              }}
-              component={ExternaLinkIcon}
-              inheritViewBox
-            ></SvgIcon>
-          </Box>
+          <Stack direction="row" justifyContent="flex-end">
+            <ExternaLinkIcon className="w-[1.6rem]"></ExternaLinkIcon>
+          </Stack>
           <Typography
             sx={{
               fontSize: ["1.8rem", "2rem"],
               fontWeight: 600,
-              lineHeight: [1.6, "normal"],
-              mt: ["0.4rem", "1.6rem"],
+              lineHeight: [1.6, "2.8rem"],
+              mt: ["0.4rem", "2.4rem"],
               mb: ["0.4rem", "0.8rem"],
               cursor: "inherit",
             }}
           >
-            <SvgIcon sx={{ fontSize: ["2.2rem", "2.4rem"] }} component={icon} inheritViewBox></SvgIcon> {title}
+            <IconSvg className="w-[2.2rem] sm:w-[2.4rem] mr-[0.8rem]"></IconSvg>
+            <span>{title}</span>
           </Typography>
           <Typography
             sx={{
               fontSize: ["1.4rem", "1.6rem", "2rem"],
-              lineHeight: [1.5, "2.8rem"],
+              lineHeight: [1.5, "normal"],
               cursor: "inherit",
             }}
           >

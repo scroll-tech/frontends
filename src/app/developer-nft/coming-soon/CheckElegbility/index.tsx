@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import ReactGA from "react-ga4"
 
 import { Collapse, Stack, Typography } from "@mui/material"
 
@@ -41,9 +40,6 @@ const CheckElegbility = () => {
         } else {
           setIsEligible(-1)
         }
-        ReactGA.event("check_eligibility", {
-          contractsNumber: items.length,
-        })
       })
       .catch(() => {
         setIsEligible(-2)

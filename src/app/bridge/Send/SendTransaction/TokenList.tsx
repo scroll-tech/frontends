@@ -9,7 +9,6 @@ import Dialog from "@mui/material/Dialog"
 import DialogTitle from "@mui/material/DialogTitle"
 import ListItemText from "@mui/material/ListItemText"
 
-import { tokenList } from "@/app/sessions/SessionZeroMarks/tokenList"
 import CloseSvg from "@/assets/svgs/bridge/token-list-close.svg"
 import SearchSvg from "@/assets/svgs/bridge/token-list-search.svg"
 import { EXPLORER_URL } from "@/constants"
@@ -191,7 +190,6 @@ const MenuItemComponent = ({ token, isSelected, selectToken, txType }) => (
         <>
           <ListSymbolStyled>{token.symbol}</ListSymbolStyled>
           <ListNameStyled>{token.name}</ListNameStyled>
-          {token.earnMarks && <EarnMarksLabel>Earn marks</EarnMarksLabel>}
         </>
       }
       secondary={
@@ -276,14 +274,7 @@ function List(props: TokenListProps) {
   }, [newToken, filteredTokens])
 
   const listedbyScroll = useMemo(() => {
-    return filteredTokens
-      ?.filter((token: any) => !token.tokenLevel)
-      .map((token: any) => {
-        return {
-          ...token,
-          earnMarks: tokenList.some(t => t.symbol === token.symbol || t.additionalToken === token.symbol),
-        }
-      })
+    return filteredTokens?.filter((token: any) => !token.tokenLevel)
   }, [filteredTokens])
 
   const listedbyUser = useMemo(() => {

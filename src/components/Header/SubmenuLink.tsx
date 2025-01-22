@@ -1,4 +1,4 @@
-import ReactGA from "react-ga4"
+import { sendGAEvent } from "@next/third-parties/google"
 
 import { Box, Stack, SvgIcon, Typography } from "@mui/material"
 import { CSSObject, Theme, styled } from "@mui/material/styles"
@@ -48,7 +48,7 @@ const SubmenuLinkContent = ({ icon, label, text, isExternal }: { icon: any; labe
   const { isDesktop } = useCheckViewport()
 
   const handleClick = () => {
-    ReactGA.event("click_menu", {
+    sendGAEvent("event", "click_menu", {
       label: text || label,
       device: isDesktop ? "desktop" : "mobile",
     })

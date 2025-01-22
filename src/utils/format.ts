@@ -20,7 +20,7 @@ export const commafy = (value: string | number | undefined, decimals: number = 2
       optionalMantissa: true,
       mantissa: decimals,
     })
-  } catch (err) {
+  } catch (_error) {
     return value.toString()
   }
 }
@@ -103,7 +103,7 @@ export function amountToBN(amount: string | number | undefined, decimals: bigint
   try {
     const fixedAmount = fixedDecimals(amount ? amount.toString() : "", decimals)
     return parseUnits(fixedAmount || "0", decimals)
-  } catch (e) {
+  } catch (_error) {
     return BigInt(0)
   }
 }
@@ -111,7 +111,7 @@ export function amountToBN(amount: string | number | undefined, decimals: bigint
 export function BNToAmount(value: bigint, decimals: bigint = BigInt(18)): string {
   try {
     return formatUnits(value.toString(), decimals)
-  } catch (e) {
+  } catch (_error) {
     return "0"
   }
 }
@@ -124,7 +124,7 @@ export const checkAmountOverflow = (inputAmount, decimals: bigint = BigInt(18)) 
     const clipDecimals = maxDecimals(inputAmount, decimals)
     parseUnits(clipDecimals, decimals)
     return true
-  } catch (e) {
+  } catch (_error) {
     return false
   }
 }

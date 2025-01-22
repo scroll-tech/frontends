@@ -109,6 +109,11 @@ const config: Config = {
           DEFAULT: "#FFD7E2",
           dark: "#FFD7E2",
         },
+        // theme
+        primary: {
+          DEFAULT: "#FF684B",
+          dark: "#FFF8F3",
+        },
       },
       fontSize: {
         sm: ["12px", "18px"],
@@ -121,8 +126,8 @@ const config: Config = {
       },
     },
     fontFamily: {
-      sans: ['"TransSansPremium"', ...defaultTheme.fontFamily.sans],
-      display: ['"TransSansPremium"', ...defaultTheme.fontFamily.sans],
+      default: ["TransSansPremium", ...defaultTheme.fontFamily.sans],
+      developer: ["Roboto", ...defaultTheme.fontFamily.sans],
     },
     screens: {
       sm: "600px",

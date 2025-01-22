@@ -1,3 +1,5 @@
+"use client"
+
 import { useEffect } from "react"
 import useStorage from "squirrel-gill"
 import { makeStyles } from "tss-react/mui"

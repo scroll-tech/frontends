@@ -1,5 +1,7 @@
 "use client"
 
+import { useMemo } from "react"
+
 import { Box, Stack, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
@@ -12,8 +14,19 @@ const ActionWrapper = styled(Box)(() => ({
 }))
 
 const SectionHeader = props => {
-  const { dark, title, content, action, ...rest } = props
+  const { dark, title, content, action, maxWidth, ...rest } = props
   const { isPortrait } = useCheckViewport()
+
+  const maxWidthValue = useMemo(() => {
+    if (Array.isArray(maxWidth)) {
+      return ["100%", ...maxWidth]
+    } else if (maxWidth) {
+      return ["100%", maxWidth]
+    } else if (action) {
+      return ["100%", "60rem"]
+    }
+    return "100%"
+  }, [maxWidth])
 
   return (
     <Stack
@@ -23,7 +36,7 @@ const SectionHeader = props => {
       alignItems={isPortrait ? "flex-start" : "flex-end"}
       {...rest}
     >
-      <Stack direction="column" sx={{ maxWidth: ["100%", action ? "60rem" : "100%"] }}>
+      <Stack direction="column" sx={{ maxWidth: maxWidthValue }}>
         <Typography
           sx={{
             fontSize: ["3.2rem", "4.6rem"],
@@ -43,7 +56,7 @@ const SectionHeader = props => {
           {content}
         </Typography>
       </Stack>
-      <ActionWrapper>{action}</ActionWrapper>
+      {action && <ActionWrapper>{action}</ActionWrapper>}
     </Stack>
   )
 }

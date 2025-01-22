@@ -1,3 +1,4 @@
+import BridgeSvg from "@/assets/svgs/header/Bridge.svg"
 import BuildSvg from "@/assets/svgs/header/Build.svg"
 import CanvasAndBadgesSvg from "@/assets/svgs/header/CanvasAndBadges.svg"
 import CommunitySvg from "@/assets/svgs/header/Community.svg"
@@ -8,9 +9,11 @@ import HomeSvg from "@/assets/svgs/header/Home.svg"
 import IssuesSvg from "@/assets/svgs/header/Issues.svg"
 import LevelUpSvg from "@/assets/svgs/header/LevelUp.svg"
 import ProjectsSvg from "@/assets/svgs/header/Projects.svg"
+import SCRsSCRSvg from "@/assets/svgs/header/SCRsSCR.svg"
 import SDKSvg from "@/assets/svgs/header/SDK.svg"
 import SessionsSvg from "@/assets/svgs/header/Sessions.svg"
 import StatusSvg from "@/assets/svgs/header/Status.svg"
+import scrETHSvg from "@/assets/svgs/header/scrETH.svg"
 import { isSepolia } from "@/utils"
 
 const sepoliaNavigations = [
@@ -213,16 +216,24 @@ const mainnetNavigations = [
     ],
   },
   {
-    label: "Ecosystem",
-    key: "ecosystem",
+    label: "Use",
+    key: "use",
     children: [
       {
         children: [
           {
+            text: "Bridge",
+            label: "Deposit your assets to Scroll",
+            key: "bridge",
+            rootKey: "use",
+            href: "/bridge",
+            icon: BridgeSvg,
+          },
+          {
             text: "Projects",
             label: "Find interesting dApps on Scroll",
             key: "projects",
-            rootKey: "ecosystem",
+            rootKey: "use",
             href: "/ecosystem",
             icon: ProjectsSvg,
           },
@@ -230,26 +241,54 @@ const mainnetNavigations = [
             text: "Canvas & Badges",
             label: "Build your persona and collect badges",
             key: "canvas-and-badges",
-            rootKey: "ecosystem",
+            rootKey: "use",
             href: "/canvas-and-badges",
             icon: CanvasAndBadgesSvg,
-          },
-          {
-            text: "Sessions",
-            label: "Receive Marks for your contributions",
-            key: "sessions",
-            rootKey: "ecosystem",
-            href: "/sessions",
-            icon: SessionsSvg,
-            reload: true,
           },
           {
             text: "Community",
             label: "Explore events and global communities",
             key: "community",
-            rootKey: "ecosystem",
+            rootKey: "use",
             href: "/community",
             icon: CommunitySvg,
+          },
+        ],
+      },
+    ],
+  },
+
+  {
+    label: "Defi",
+    key: "defi",
+    new: true,
+    children: [
+      {
+        children: [
+          {
+            text: "Sessions",
+            label: "Receive Marks for your contributions",
+            key: "sessions",
+            rootKey: "defi",
+            href: "/sessions",
+            icon: SessionsSvg,
+            reload: true,
+          },
+          {
+            text: "SCR & sSCR",
+            label: "Governance token and its LRT",
+            key: "SCR-sSCR",
+            rootKey: "defi",
+            href: "/SCR-sSCR",
+            icon: SCRsSCRSvg,
+          },
+          {
+            text: "scrETH",
+            label: "Scroll's ecosystem native ETH LRT",
+            key: "scrETH",
+            rootKey: "defi",
+            href: "/scrETH",
+            icon: scrETHSvg,
           },
         ],
       },
@@ -258,7 +297,6 @@ const mainnetNavigations = [
   {
     label: "Governance",
     key: "governance",
-    new: true,
     children: [
       {
         children: [
@@ -332,11 +370,6 @@ const mainnetNavigations = [
         ],
       },
     ],
-  },
-  {
-    label: "Bridge",
-    key: "bridge",
-    href: "/bridge",
   },
 ]
 

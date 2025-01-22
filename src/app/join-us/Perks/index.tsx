@@ -2,7 +2,7 @@
 
 import { makeStyles } from "tss-react/mui"
 
-import { SvgIcon, Typography } from "@mui/material"
+import { Typography } from "@mui/material"
 
 import IconSVG1 from "@/assets/svgs/career/perks/icon-1.svg"
 import IconSVG2 from "@/assets/svgs/career/perks/icon-2.svg"

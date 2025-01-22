@@ -39,3 +39,18 @@ export const SESSIONS_ZERO_GAS = "session-0-gas"
 export const SESSIONS_ONE_DEX = "session-1-dex"
 export const SESSIONS_ONE_LENDING = "session-1-lending"
 export const SESSIONS_ONE_ACTIVITIES = "session-1-activities"
+
+export const SCROLL_NATIVE_ASSET_LIST = [
+  {
+    name: "scrETH",
+    description: "Multiply Marks and earn extra project rewards",
+    imageURL: "/imgs/token/scrETH.svg",
+    href: "/scrETH",
+  },
+  {
+    name: "sSCR",
+    description: "Multiply Marks and maintain voting power",
+    imageURL: "/imgs/token/sSCR.svg",
+    href: "/SCR-sSCR",
+  },
+]

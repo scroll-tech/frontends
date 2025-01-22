@@ -1,6 +1,5 @@
 import { useState } from "react"
 import Countdown, { zeroPad } from "react-countdown"
-import ReactGA from "react-ga4"
 
 import { Box, Stack, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
@@ -44,16 +43,8 @@ const MintHome = props => {
       .then(data => {
         if (data.proof) {
           changeIsEligible(1)
-          ReactGA.event("mint_now", {
-            walletAddress: walletCurrentAddress,
-            isEligible: 1,
-          })
         } else if (!data.error) {
           changeIsEligible(-1)
-          ReactGA.event("mint_now", {
-            walletAddress: walletCurrentAddress,
-            isEligible: -1,
-          })
         } else {
           throw new Error("Netword error, try again later")
         }

@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { makeStyles } from "tss-react/mui"
 
-import { Select as MuiSelect, Stack, SvgIcon, Typography } from "@mui/material"
+import { Select as MuiSelect, Stack, Typography } from "@mui/material"
 
 import TriangleDownIcon from "@/assets/svgs/common/triangle-down.svg"
 

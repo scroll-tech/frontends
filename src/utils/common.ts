@@ -70,14 +70,14 @@ export const convertDateToTimestamp = (dateString: string, isMilliseconds: boole
   return Math.floor(timestamp)
 }
 
-export const formatLargeNumber = (value: number, decimal: number = 1): string => {
+export const formatLargeNumber = (value: number | string, decimal: number = 1): string => {
   if (value.toString().length <= 6) {
-    return new Intl.NumberFormat("en-US").format(value)
+    return new Intl.NumberFormat("en-US").format(+value)
   }
   return new Intl.NumberFormat("en-US", {
     maximumFractionDigits: decimal,
     notation: "compact",
-  }).format(value)
+  }).format(+value)
 }
 
 export const formatAmount = (value: number | string): string => {

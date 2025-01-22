@@ -83,6 +83,12 @@ const nextConfig = {
         port: "",
         pathname: "/token-list/data/**",
       },
+      {
+        protocol: "https",
+        hostname: "scroll-eco-list.netlify.app",
+        port: "",
+        pathname: "/logos/**",
+      },
     ],
   },
   // eslint-disable-next-line
