@@ -31,4 +31,5 @@ export const BRIDGE_BALANCES = "bridgeBalances"
 
 export const BLOG_LANGUAGE = "blogLanguage"
 
+// not in use
 export const DISPLAYED_CANVAS = "displayedCanvas"

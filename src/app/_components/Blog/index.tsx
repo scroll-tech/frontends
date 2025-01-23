@@ -60,29 +60,9 @@ const STORIES = [
   },
   {
     cover: "/imgs/homepage/landing-blog-2.webp",
-    title: "Build Your Onchain Story",
-    content:
-      "Create your unique on-chain identity on Scroll Canvas, where you can collect and display badges that celebrate your achievements and contributions within the Scroll ecosystem.",
-    href: "/canvas-and-badges",
-    imageTitle: (
-      <>
-        <Typography sx={{ fontSize: ["2.4rem", "4rem"], lineHeight: ["2.4rem", "4rem"], fontWeight: 600, color: "primary.contrastText" }}>
-          Scroll Canvas
-        </Typography>
-        <Typography
-          sx={{
-            fontSize: ["2rem", "3.2rem"],
-            lineHeight: ["2.4rem", "4rem"],
-            fontWeight: 600,
-            color: "primary.contrastText",
-            mt: ["0.6rem", "1.2rem"],
-          }}
-        >
-          Build Your <br></br>
-          Onchain Story
-        </Typography>
-      </>
-    ),
+    title: "Scroll Open: Forge the Open Economy",
+    content: "A six-week program empowering builders to create impactful dApps and shape the future of the Open Economy.",
+    href: "https://open.scroll.io/",
   },
 ]
 

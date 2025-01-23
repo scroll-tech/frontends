@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react"
 
-import BadgeDetailDialog from "@/app/canvas/Dashboard/BadgeDetailDialog"
+import BadgeDetailDialog from "@/app/_canvas/Dashboard/BadgeDetailDialog"
 import Canvas from "@/components/Canvas"
 import { CHAIN_ID } from "@/constants"
 import { type Badge, ETHEREUM_YEAR_BADGE } from "@/constants"

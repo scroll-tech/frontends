@@ -4,7 +4,7 @@ import useStorage from "squirrel-gill"
 import { Box, SvgIcon, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
-import Button from "@/app/canvas/components/Button"
+import Button from "@/app/_canvas/components/Button"
 import CloseSvg from "@/assets/svgs/canvas/close.svg"
 import TriangleSvg from "@/assets/svgs/canvas/triangle.svg"
 import { DISPLAYED_CANVAS } from "@/constants/storageKey"

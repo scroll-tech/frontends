@@ -62,14 +62,6 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/canvas/listing',
-        destination: 'https://badge-registry.canvas.scroll.cat/badge-registry'
-      },
-      {
-        source: '/badge-registry/:path*',
-        destination: 'https://badge-registry.canvas.scroll.cat/badge-registry/:path*'
-      },
-      {
         source: '/gov-docs/:path*',
         destination: 'https://scroll-governance-documentation.vercel.app/:path*'
       }

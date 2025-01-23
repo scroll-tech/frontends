@@ -5,7 +5,9 @@ import { makeStyles } from "tss-react/mui"
 
 import { Button } from "@mui/material"
 
-const useStyles = makeStyles()(theme => {
+import useCheckTheme from "@/components/Header/useCheckTheme"
+
+const useStyles = makeStyles<any>()((theme, { dark }) => {
   return {
     wrapper: {
       width: "100%",
@@ -29,6 +31,7 @@ const useStyles = makeStyles()(theme => {
       gridColumnGap: "2.6rem",
       gridRowGap: "4rem",
       alignItems: "center",
+      color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
       [theme.breakpoints.down("sm")]: {
         gridTemplateColumns: "1fr",
         gridTemplateRows: "repeat(3, min-content)",
@@ -66,7 +69,8 @@ const useStyles = makeStyles()(theme => {
 })
 
 const NotFound = () => {
-  const { classes } = useStyles()
+  const dark = useCheckTheme()
+  const { classes } = useStyles({ dark })
   const pathname = usePathname()
 
   const router = useRouter()

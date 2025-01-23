@@ -1,25 +1,19 @@
 import copy from "copy-to-clipboard"
-import { usePathname, useRouter } from "next/navigation"
-import { useCallback, useEffect, useMemo, useState } from "react"
-import Img from "react-cool-img"
+import { usePathname } from "next/navigation"
+import { useCallback, useMemo, useState } from "react"
 import { makeStyles } from "tss-react/mui"
 
-import { Box, ButtonBase, Fade, LinearProgress, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material"
+import { ButtonBase, Fade, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material"
 
-import { getSmallAvatarURL } from "@/apis/canvas"
 import CopySuccessSvg from "@/assets/svgs/bridge/copy-success.svg"
 import HistorySvg from "@/assets/svgs/bridge/history.svg"
 import BlockSvg from "@/assets/svgs/wallet-connector/block.svg"
 import CopySvg from "@/assets/svgs/wallet-connector/copy.svg"
 import DisconnectSvg from "@/assets/svgs/wallet-connector/disconnect.svg"
 import DownTriangleSvg from "@/assets/svgs/wallet-connector/down-triangle.svg"
-import ProfileSvg from "@/assets/svgs/wallet-connector/profile.svg"
 import { CHAIN_ID, EXPLORER_URL } from "@/constants"
-import { useCanvasContext } from "@/contexts/CanvasContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import useSnackbar from "@/hooks/useSnackbar"
 import useBridgeStore from "@/stores/bridgeStore"
-import useCanvasStore from "@/stores/canvasStore"
 import { generateExploreLink, truncateAddress } from "@/utils"
 
 const useStyles = makeStyles<any>()((theme, { dark }) => ({
@@ -86,35 +80,14 @@ const WalletDropdown = props => {
   const { sx, dark } = props
   const { classes, cx } = useStyles({ dark })
   const pathname = usePathname()
-  const router = useRouter()
 
   const { walletCurrentAddress, connect, disconnect, chainId } = useRainbowContext()
   const { changeHistoryVisible } = useBridgeStore()
-
-  const { unsignedProfileRegistryContract, publicProvider } = useCanvasContext()
-  const { username, profileMinted, walletDetailLoading, checkAndFetchCurrentWalletCanvas, clearCanvas } = useCanvasStore()
-  const alertWarning = useSnackbar()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [copied, setCopied] = useState(false)
 
   const open = useMemo(() => Boolean(anchorEl), [anchorEl])
-
-  useEffect(() => {
-    clearCanvas()
-  }, [walletCurrentAddress])
-
-  useEffect(() => {
-    if (unsignedProfileRegistryContract && walletCurrentAddress) {
-      checkAndFetchCurrentWalletCanvas(publicProvider, unsignedProfileRegistryContract, walletCurrentAddress).then(res => {
-        if (res !== true) {
-          alertWarning(res)
-        }
-      })
-    }
-
-    // re check&&fetch walletCurrentAddress's canvas when switching address on Wallet
-  }, [unsignedProfileRegistryContract, walletCurrentAddress])
 
   const handleClick = e => {
     setAnchorEl(e.currentTarget)
@@ -137,18 +110,6 @@ const WalletDropdown = props => {
   const operations = useMemo(
     () => [
       {
-        icon: ProfileSvg,
-        label: "Scroll Canvas",
-        action: () => {
-          if (profileMinted) {
-            router.push("/canvas")
-          } else {
-            router.push("/canvas/mint")
-          }
-          handleClose()
-        },
-      },
-      {
         icon: HistorySvg,
         label: "Transaction history",
         action: () => {
@@ -168,39 +129,14 @@ const WalletDropdown = props => {
         action: () => {
           disconnect()
           // clear Canvas states
-          clearCanvas()
           handleClose()
         },
       },
     ],
-    [pathname, viewScan, copyAddress, copied, disconnect, profileMinted],
+    [pathname, viewScan, copyAddress, copied, disconnect],
   )
 
   const renderCurrentWallet = () => {
-    if (walletDetailLoading) {
-      return (
-        <ButtonBase classes={{ root: classes.button }} sx={{ position: "relative", overflow: "hidden", ...sx }} onClick={handleClick}>
-          {truncateAddress(walletCurrentAddress as string)}
-          <DownTriangleSvg className={cx(classes.endIcon, open && classes.reverseEndIcon)}></DownTriangleSvg>
-          {<LinearProgress sx={{ position: "absolute", width: "100%", bottom: 0, height: "2px" }} />}
-        </ButtonBase>
-      )
-    } else if (profileMinted) {
-      return (
-        <ButtonBase classes={{ root: classes.button }} sx={sx} onClick={handleClick}>
-          <Img
-            src={getSmallAvatarURL(walletCurrentAddress)}
-            style={{ width: 24, height: 24, marginRight: "0.8rem" }}
-            placeholder="/imgs/canvas/avatarPlaceholder.svg"
-          ></Img>
-          <Box sx={{ lineHeight: "1.6rem", textAlign: "left" }}>
-            <strong style={{ fontSize: "1.2rem", lineHeight: "1.6rem" }}>{username}</strong>
-            <p style={{ fontSize: "1.2rem", lineHeight: "1.6rem" }}>{truncateAddress(walletCurrentAddress as string)}</p>
-          </Box>
-          <DownTriangleSvg className={cx(classes.endIcon, open && classes.reverseEndIcon)}></DownTriangleSvg>
-        </ButtonBase>
-      )
-    }
     return (
       <ButtonBase classes={{ root: classes.button }} sx={sx} onClick={handleClick}>
         {truncateAddress(walletCurrentAddress as string)}

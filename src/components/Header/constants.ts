@@ -1,6 +1,5 @@
 import BridgeSvg from "@/assets/svgs/header/Bridge.svg"
 import BuildSvg from "@/assets/svgs/header/Build.svg"
-import CanvasAndBadgesSvg from "@/assets/svgs/header/CanvasAndBadges.svg"
 import CommunitySvg from "@/assets/svgs/header/Community.svg"
 import DocsSvg from "@/assets/svgs/header/Doc.svg"
 import EthereumSvg from "@/assets/svgs/header/Eth.svg"
@@ -236,14 +235,6 @@ const mainnetNavigations = [
             rootKey: "use",
             href: "/ecosystem",
             icon: ProjectsSvg,
-          },
-          {
-            text: "Canvas & Badges",
-            label: "Build your persona and collect badges",
-            key: "canvas-and-badges",
-            rootKey: "use",
-            href: "/canvas-and-badges",
-            icon: CanvasAndBadgesSvg,
           },
           {
             text: "Community",

@@ -6,7 +6,6 @@ import { Box, Card, CardContent, CardMedia, SvgIcon, Typography } from "@mui/mat
 
 import ExternaLinkIcon from "@/assets/svgs/common/external-link.svg"
 import Link from "@/components/Link"
-import ScrollLogo from "@/components/ScrollLogo"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
 const useStyles = makeStyles<any>()((theme, { cover }) => ({
@@ -25,11 +24,12 @@ const useStyles = makeStyles<any>()((theme, { cover }) => ({
 
   cardMediaTitle: {
     position: "absolute",
-    top: "2.4rem",
-    left: "3rem",
+    top: "50%",
+    left: "2rem",
+    transform: "translateY(-50%)",
     color: (theme as any).vars.palette.primary.contrastText,
     fontWeight: 600,
-    fontSize: "5rem",
+    fontSize: "4rem",
     lineHeight: 1,
     [theme.breakpoints.down("sm")]: {
       fontSize: "3.2rem",
@@ -52,9 +52,7 @@ const useStyles = makeStyles<any>()((theme, { cover }) => ({
     borderRadius: "2.5rem",
     backgroundColor: (theme as any).vars.palette.text.primary,
     position: "relative",
-    [theme.breakpoints.between("md", "lg")]: {
-      backgroundPosition: "right",
-    },
+    backgroundPosition: "left",
   },
   cardContent: {
     height: cover ? "calc(100% - 23rem)" : "100%",
@@ -107,7 +105,7 @@ const useStyles = makeStyles<any>()((theme, { cover }) => ({
 }))
 
 const StoryCard = props => {
-  const { title, imageTitle, cover, content, href, ...restProps } = props
+  const { title, cover, content, href, ...restProps } = props
 
   const { classes, cx } = useStyles({ cover })
 
@@ -119,8 +117,7 @@ const StoryCard = props => {
         {cover && (
           <Box className={classes.cardMediaWrapper}>
             <CardMedia sx={{ height: ["13rem", "23rem"] }} classes={{ root: classes.cardMedia }} image={cover} />
-            <Typography className={classes.cardMediaTitle}>{imageTitle}</Typography>
-            <ScrollLogo light className={classes.cardMediaLogo}></ScrollLogo>
+            {/* <Typography className={classes.cardMediaTitle}>{imageTitle}</Typography> */}
           </Box>
         )}
 
@@ -144,7 +141,10 @@ const StoryCard = props => {
           >
             {title}
           </Typography>
-          <Typography sx={{ fontSize: ["1.6rem", "2rem"], cursor: "inherit" }} className={classes.content}>
+          <Typography
+            sx={{ fontSize: ["1.6rem", "2rem"], cursor: "inherit", minHeight: ["auto", "auto", cover ? "10.4rem" : "auto"] }}
+            className={classes.content}
+          >
             {content}
           </Typography>
         </CardContent>
