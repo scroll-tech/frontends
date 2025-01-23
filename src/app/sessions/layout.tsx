@@ -6,8 +6,8 @@ export const generateMetadata = genMeta(() => ({
   titleSuffix: "Scroll Sessions",
   relativeURL: "/sessions",
   description: "Receive Marks for your engagement with Scroll. Join Sessions now!",
-  ogImg: "/og_scroll_sessions.png",
-  twitterImg: "/twitter_scroll_sessions.png",
+  ogImg: "/og_sessions.png",
+  twitterImg: "/twitter_sessions.png",
 }))
 
 export default function SessionsLayout({ children }) {

@@ -9,6 +9,8 @@ export const generateMetadata = genMeta(() => ({
   titleSuffix: "SCR & sSCR",
   relativeURL: "/SCR-sSCR",
   description: "Governance token and its LRT",
+  ogImg: "/og_sSCR.png",
+  twitterImg: "/twitter_sSCR.png",
 }))
 
 const ScrAndsSCRPage = async () => {
