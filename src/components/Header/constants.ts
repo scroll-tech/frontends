@@ -142,19 +142,6 @@ const mainnetNavigations = [
             ],
           },
           {
-            label: "DEPLOY A CHAIN",
-            items: [
-              {
-                label: "Own your blockspace",
-                text: "Scroll SDK",
-                key: "sdk",
-                href: "https://docs.scroll.io/en/sdk",
-                isExternal: true,
-                icon: SDKSvg,
-              },
-            ],
-          },
-          {
             label: "MORE",
             items: [
               {

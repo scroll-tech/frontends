@@ -73,15 +73,7 @@ const Header = () => {
           <OrientationToView>
             <Stack direction="column" alignItems="center" gap={isMobile ? "2.4rem" : "3.2rem"}>
               <Title data-aos="fade-up">
-                {isMobile ? (
-                  <>
-                    Homepage of the<br></br> Multichain World
-                  </>
-                ) : (
-                  <>
-                    The Homepage of the<br></br> Multichain World
-                  </>
-                )}
+                We are building the<br></br> Open Economy
               </Title>
               <Typography sx={{ fontSize: ["1.8rem", "2.4rem"], lineHeight: ["2.8rem", "3.6rem"], textAlign: "center", mt: "-1.8rem" }}>
                 Scroll is the leading zero-knowledge rollup.<br></br>Scaling Ethereum for good.{" "}

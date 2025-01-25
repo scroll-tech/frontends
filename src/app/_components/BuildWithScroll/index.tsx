@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 
-import { Stack, SvgIcon, Typography } from "@mui/material"
+import { Box, Stack, SvgIcon, Typography } from "@mui/material"
 import { Button as MuiButton } from "@mui/material"
 
 import FeatureImage1 from "@/assets/images/home/feature-img-1.webp"
@@ -23,9 +23,10 @@ const FEATURES = [
   },
   {
     icon: FeatureImage2,
-    title: "Deploy a chain",
-    description: "Scroll SDK makes the process of launching a chain seamless. Own your blockspace, we'll take care of the rest.",
-    href: "https://docs.scroll.io/en/sdk",
+    title: "Explore Session 2",
+    description:
+      "Created to promote the sustained growth of assets and protocols on Scroll. Discover our new Marks Dashboard and join Session 2, the program designed for everyone, everywhere.",
+    href: "/sessions",
   },
 ]
 
@@ -35,10 +36,12 @@ const Feature = () => {
     return FEATURES.map((feature, featureIdx) => {
       return (
         <OrientationToView key={feature.title}>
-          <Stack key={featureIdx} direction="column" spacing="2.4rem" sx={{ maxWidth: "56rem" }}>
-            <Image src={feature.icon} alt={feature.title} width={isMobile ? 320 : 400} height={isMobile ? 320 : 400}></Image>
-            <Typography sx={{ fontSize: ["2rem", "2.4rem"], fontWeight: 600 }}>{feature.title}</Typography>
-            <Typography sx={{ fontSize: ["1.6rem", "2rem"], mt: ["0.8rem !important", 0] }}>{feature.description}</Typography>
+          <Stack key={featureIdx} justifyContent="space-between" direction="column" spacing="2.4rem" sx={{ maxWidth: "56rem", height: "100%" }}>
+            <Box>
+              <Image src={feature.icon} alt={feature.title} width={isMobile ? 320 : 400} height={isMobile ? 320 : 400}></Image>
+              <Typography sx={{ fontSize: ["2rem", "2.4rem"], fontWeight: 600 }}>{feature.title}</Typography>
+              <Typography sx={{ fontSize: ["1.6rem", "2rem"], mt: ["0.8rem !important", 0] }}>{feature.description}</Typography>
+            </Box>
             <MuiButton
               href={feature.href}
               target="_blank"
