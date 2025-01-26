@@ -1,5 +1,5 @@
 import copy from "copy-to-clipboard"
-import { motion } from "framer-motion"
+import { motion } from "motion/react"
 import { useParams, useRouter } from "next/navigation"
 import { Fragment, useCallback, useMemo, useState } from "react"
 

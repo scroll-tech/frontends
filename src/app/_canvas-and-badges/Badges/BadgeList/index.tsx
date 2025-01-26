@@ -1,3 +1,6 @@
+"use client"
+
+import dynamic from "next/dynamic"
 import { useRouter } from "next/navigation"
 import { useEffect, useMemo, useState } from "react"
 import { usePrevious } from "react-use"
@@ -12,9 +15,11 @@ import { CANVAS_AND_BADGES_PAGE_SYMBOL, CATEGORY_LIST, SORT_LIST } from "@/const
 import { isAboveScreen } from "@/utils/dom"
 
 import BadgeCard from "./BadgeCard"
-import BadgeMasonry from "./BadgeMasonry"
+// import BadgeMasonry from "./BadgeMasonry"
 import Error from "./Error"
 import NoData from "./NoData"
+
+const BadgeMasonry = dynamic(() => import("./BadgeMasonry"), { ssr: false })
 
 const PAGE_SIZE = 20
 

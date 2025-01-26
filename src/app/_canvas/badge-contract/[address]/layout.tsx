@@ -2,13 +2,14 @@ import { fetchBadgeByAddrURL } from "@/apis/canvas-badge"
 import { genMeta } from "@/utils/route"
 
 export const generateMetadata = genMeta(async ({ params }) => {
-  const badge = await fetch(fetchBadgeByAddrURL(params.address)).then(res => res.json())
+  const { address } = await params
+  const badge = await fetch(fetchBadgeByAddrURL(address)).then(res => res.json())
   return {
     title: `Canvas Badge - ${badge.name}`,
     description: `I found a badge called ${badge.name} you may like`,
-    relativeURL: `/canvas/badge-contract/${params.address}`,
-    ogImg: `${process.env.NEXT_PUBLIC_CANVAS_BACKEND_URI}/badge-contract/${params.address}.png`,
-    twitterImg: `${process.env.NEXT_PUBLIC_CANVAS_BACKEND_URI}/badge-contract/${params.address}.png`,
+    relativeURL: `/canvas/badge-contract/${address}`,
+    ogImg: `${process.env.NEXT_PUBLIC_CANVAS_BACKEND_URI}/badge-contract/${address}.png`,
+    twitterImg: `${process.env.NEXT_PUBLIC_CANVAS_BACKEND_URI}/badge-contract/${address}.png`,
   }
 })
 

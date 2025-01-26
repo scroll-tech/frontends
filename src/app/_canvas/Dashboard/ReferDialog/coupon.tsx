@@ -38,7 +38,7 @@ const CouponBox = styled(Box)(({ theme }) => ({
     margin: 0,
     gap: "3rem",
   },
-}))
+})) as typeof Box
 
 const DescriptionBox = styled(Box)(({ theme }) => ({
   border: "1px solid #000",
@@ -54,7 +54,7 @@ const DescriptionBox = styled(Box)(({ theme }) => ({
     flex: 110,
     padding: "1rem 1rem 0",
   },
-}))
+})) as typeof Box
 
 const useStyles = makeStyles<any>()((theme, { dropdownWidth }) => ({
   paper: {

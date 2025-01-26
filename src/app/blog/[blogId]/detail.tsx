@@ -1,7 +1,7 @@
 "use client"
 
 import { shuffle } from "lodash"
-import { useParams, useRouter } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { useEffect, useMemo, useState } from "react"
 import ReactMarkdown from "react-markdown"
 import rehypeKatex from "rehype-katex"
@@ -12,6 +12,7 @@ import remarkMath from "remark-math"
 import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
+import { fetchBlogDetailURL } from "@/apis/blog"
 import blogSource from "@/assets/blog/main.data.json"
 import LoadingPage from "@/components/LoadingPage"
 import { LANGUAGE_MAP } from "@/constants"
@@ -34,7 +35,7 @@ const BlogContainer = styled(Box)(
     overflow: hidden;
   };
   `,
-)
+) as typeof Box
 
 const BlogNavbar = styled(Box)(({ theme }) => ({
   position: "sticky",
@@ -43,10 +44,10 @@ const BlogNavbar = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
     display: "none",
   },
-}))
+})) as typeof Box
 
-const BlogDetail = () => {
-  const params = useParams<{ blogId: string }>()
+const BlogDetail = props => {
+  const { blogId } = props
   const router = useRouter()
 
   const [language] = useUserLanguage()
@@ -59,8 +60,7 @@ const BlogDetail = () => {
 
   useEffect(() => {
     const regex = /([^_]*?)_lang_[^_]+/g
-    const blogId = params.blogId.toLowerCase()
-    const blogIdMatch = blogId.match(regex)
+    const blogIdMatch = blogId?.match(regex)
 
     const blogItemWithLang = blogSource.find(item => item.id === `${blogId}_lang_${language}`)
 
@@ -73,9 +73,8 @@ const BlogDetail = () => {
         return anchor
       })
       try {
-        const blogPath = `https://blog.scroll.cat/api/post/${blogId}.md?title=1`
         setLoading(true)
-        fetch(blogPath)
+        fetch(fetchBlogDetailURL(blogId))
           .then(response => response.text())
           .then(text => {
             setLoading(false)
@@ -88,14 +87,14 @@ const BlogDetail = () => {
       const nextBlogId = blogId.replace(regex, "$1")
       router.push(`/blog/${nextBlogId}`)
     } else if (blogItemWithLang) {
-      router.push(`/blog/${params.blogId}_lang_${language}`)
+      router.push(`/blog/${blogId}_lang_${language}`)
     }
-  }, [params.blogId, language])
+  }, [blogId, language])
 
   useEffect(() => {
-    const blogs = shuffle(blogsWithLang.filter(blog => blog.id !== params.blogId.toLowerCase())).slice(0, 3)
+    const blogs = shuffle(blogsWithLang.filter(blog => blog.id !== blogId)).slice(0, 3)
     setMoreBlog(blogs)
-  }, [params.blogId, blogsWithLang])
+  }, [blogId, blogsWithLang])
 
   const { isPortrait } = useCheckViewport()
 

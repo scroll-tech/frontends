@@ -21,8 +21,8 @@ const StyledButton = styled(ButtonBase)(({ theme }) => ({
   justifyContent: "center",
   alignItems: "center",
 
-  color: (theme as any).vars.palette.primary.contrastText,
-  background: (theme as any).vars.palette.primary.main,
+  color: theme.vars.palette.primary.contrastText,
+  background: theme.vars.palette.primary.main,
 }))
 
 const StyledChip = styled(Chip)(({ theme }) => ({
@@ -43,7 +43,7 @@ const StyledChip = styled(Chip)(({ theme }) => ({
     borderRadius: "0.5rem",
     // TODO:
     backgroundColor: `${alpha("#FF684B", 0.6)}`,
-    color: (theme as any).vars.palette.primary.contrastText,
+    color: theme.vars.palette.primary.contrastText,
   },
 }))
 

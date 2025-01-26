@@ -133,7 +133,7 @@ const Marquee = styled(Box)(({ theme }) => ({
   overflow: "hidden",
   position: "relative",
   width: "100%",
-}))
+})) as typeof Box
 
 const CarouselBox = styled(Box)(({ theme }) => ({
   position: "relative",
@@ -156,7 +156,7 @@ const CarouselBox = styled(Box)(({ theme }) => ({
       right: 0,
     },
   },
-}))
+})) as typeof Box
 
 const TrackLeft = styled("div")(({ theme }) => ({
   display: "flex",

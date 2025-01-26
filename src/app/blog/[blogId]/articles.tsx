@@ -15,7 +15,7 @@ const ArticleBox = styled(Box)(
             justify-content: center;
         };
         `,
-)
+) as typeof Box
 
 const Articles = props => {
   const { isPortrait, isTabletLandscape } = useCheckViewport()

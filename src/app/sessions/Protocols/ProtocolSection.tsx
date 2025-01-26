@@ -42,9 +42,7 @@ const ProtocolSection = (props: ProtocolSectionProps) => {
               <span>{tag}</span>
               {!!PROTOCOL_MARKS_TOOLTIP_MAP[title] && (
                 <QATooltip disabled={!PROTOCOL_MARKS_TOOLTIP_MAP[title]} title={PROTOCOL_MARKS_TOOLTIP_MAP[title]}>
-                  <span className="text-[0] cursor-pointer">
-                    <QaSvg className="w-[1.6rem]"></QaSvg>
-                  </span>
+                  <QaSvg className="w-[1.6rem] cursor-pointer"></QaSvg>
                 </QATooltip>
               )}
             </Stack>

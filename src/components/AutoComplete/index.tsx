@@ -22,7 +22,7 @@ const useStyles = makeStyles()(theme => {
       userSelect: "none",
     },
     inputRoot: {
-      backgroundColor: (theme as any).vars.palette.background.default,
+      backgroundColor: theme.vars.palette.background.default,
     },
     option: {
       // paddingLeft: "0.6rem !important",

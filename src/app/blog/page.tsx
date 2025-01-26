@@ -21,7 +21,7 @@ const BlogContainer = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
     padding: "0 2rem 9rem",
   },
-}))
+})) as typeof Box
 
 const BlogBox = styled(Box)(({ theme }) => ({
   marginBottom: "9rem",
@@ -29,20 +29,20 @@ const BlogBox = styled(Box)(({ theme }) => ({
     marginBottom: "0",
     padding: "3rem 0",
     "&:not(:last-of-type)": {
-      borderBottom: `1px solid ${(theme as any).vars.palette.themeBackground.highlight}`,
+      borderBottom: `1px solid ${theme.vars.palette.themeBackground.highlight}`,
     },
     "&:first-of-type": {
       padding: "0 0 3rem",
     },
   },
-}))
+})) as typeof Box
 
 const Header = styled(Box)(({ theme }) => ({
   padding: "15.5rem 0",
   [theme.breakpoints.down("md")]: {
     padding: "6.8rem 0 8rem",
   },
-}))
+})) as typeof Box
 
 const Title = styled(Typography)(({ theme }) => ({
   fontSize: "6.4rem",
@@ -70,36 +70,36 @@ const FilterContainer = styled(Box)(({ theme }) => ({
     display: "flex",
     justifyContent: "flex-end",
   },
-}))
+})) as typeof Box
 
 const MobileFilter = styled(Box)(({ theme }) => ({
   marginBottom: "1.7rem",
   fontSize: "1.6rem",
   fontWeight: 500,
-  color: (theme as any).vars.palette.text.primary,
+  color: theme.vars.palette.text.primary,
   cursor: "pointer",
   borderRadius: "20px",
-  border: `1px solid ${(theme as any).vars.palette.text.primary}`,
+  border: `1px solid ${theme.vars.palette.text.primary}`,
   width: "fit-content",
   padding: "0.5rem 1.2rem",
   [theme.breakpoints.between("sm", "lg")]: {
     marginBottom: "3rem",
   },
-}))
+})) as typeof Box
 
 const FilterModal = styled(Box)({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
   height: "100vh",
-})
+}) as typeof Box
 
 const FilterModalContent = styled(Box)(({ theme }) => ({
-  background: (theme as any).vars.palette.background.default,
+  background: theme.vars.palette.background.default,
   borderRadius: "2rem",
   width: "35.8rem",
   padding: "1.4rem 1.8rem",
-}))
+})) as typeof Box
 
 const BlogBody = styled(Box)(({ theme }) => ({
   display: "grid",
@@ -109,10 +109,10 @@ const BlogBody = styled(Box)(({ theme }) => ({
     gridTemplateColumns: "1fr",
     gap: "0",
   },
-}))
+})) as typeof Box
 
 const FilterTypeName = styled(Typography)(({ theme }) => ({
-  color: (theme as any).vars.palette.text.primary,
+  color: theme.vars.palette.text.primary,
   fontSize: "1.6rem",
   fontWeight: 600,
   marginBottom: "2rem",
@@ -131,7 +131,7 @@ const FilterTypeName = styled(Typography)(({ theme }) => ({
 }))
 
 const FilterItem = styled(Typography)(({ theme }) => ({
-  color: (theme as any).vars.palette.text.primary,
+  color: theme.vars.palette.text.primary,
   cursor: "pointer",
   fontSize: "1.6rem",
   marginBottom: "1.2rem",

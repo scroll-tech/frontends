@@ -51,7 +51,7 @@ const CanvasContextProvider = ({ children }: any) => {
   }, [provider, chainId])
 
   return (
-    <CanvasContext.Provider
+    <CanvasContext
       value={{
         unsignedProfileRegistryContract,
         profileRegistryContract,
@@ -59,7 +59,7 @@ const CanvasContextProvider = ({ children }: any) => {
       }}
     >
       {children}
-    </CanvasContext.Provider>
+    </CanvasContext>
   )
 }
 

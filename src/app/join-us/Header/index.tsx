@@ -12,9 +12,9 @@ import useCheckViewport from "@/hooks/useCheckViewport"
 const useStyles = makeStyles()(theme => ({
   container: {
     height: "calc(100vh - 6.5rem)",
-    background: (theme as any).vars.palette.themeBackground.normal,
+    background: theme.vars.palette.themeBackground.normal,
     "& > .MuiBox-root": {
-      background: (theme as any).vars.palette.themeBackground.normal,
+      background: theme.vars.palette.themeBackground.normal,
     },
     [theme.breakpoints.down("sm")]: {
       height: "auto",

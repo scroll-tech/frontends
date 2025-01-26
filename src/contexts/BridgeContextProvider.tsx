@@ -118,7 +118,7 @@ const BridgeContextProvider = ({ children }: any) => {
   }, [provider, walletCurrentAddress, chainId])
 
   return (
-    <BridgeContext.Provider
+    <BridgeContext
       value={{
         networksAndSigners,
         txHistory,
@@ -142,7 +142,7 @@ const BridgeContextProvider = ({ children }: any) => {
           </Alert>
         </Snackbar>
       )}
-    </BridgeContext.Provider>
+    </BridgeContext>
   )
 }
 

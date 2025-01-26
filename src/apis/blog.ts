@@ -1,3 +1,3 @@
-export const blogOrigin = "https://scroll-blog-list.netlify.app"
-export const blogListUrl = blogOrigin + "/docs/"
-export const blogListLogoUrl = blogOrigin + "/covers/"
+export const blogOrigin = "https://blog.scroll.cat"
+
+export const fetchBlogDetailURL = (blogId: string) => `${blogOrigin}/api/post/${blogId}.md?title=1`

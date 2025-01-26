@@ -34,7 +34,7 @@ const FirstBadgeStep = () => {
     await fetch(EthereumYearBadgeURL(data.year))
     return data
   }, [provider, walletCurrentAddress])
-  const firstBadgeRef = useRef<HTMLElement>()
+  const firstBadgeRef = useRef<HTMLElement>(null)
 
   const renderTip = () => {
     if (!badgeChecked) {

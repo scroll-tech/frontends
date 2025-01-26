@@ -2,7 +2,8 @@ import { GoogleAnalytics } from "@next/third-parties/google"
 import { Metadata } from "next"
 import React, { Suspense } from "react"
 
-import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter"
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter"
+import InitColorSchemeScript from "@mui/material/InitColorSchemeScript"
 
 import GlobalComponents from "@/components/GlobalComponents"
 // import GoogleAnalytics from "@/components/GoogleAnalytics"
@@ -21,13 +22,14 @@ export const metadata: Metadata = ROOT_METADATA
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href={process.env.NEXT_PUBLIC_API_BASE_URI} crossOrigin="anonymous" />
         <link rel="dns-prefetch" href={process.env.NEXT_PUBLIC_API_BASE_URI} crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap" rel="stylesheet" />
       </head>
       <body>
+        <InitColorSchemeScript attribute="class"></InitColorSchemeScript>
         <AppRouterCacheProvider options={{ key: "css" }}>
           <ScrollThemeProvider>
             <VersionChecker>

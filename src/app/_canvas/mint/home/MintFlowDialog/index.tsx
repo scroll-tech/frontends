@@ -21,7 +21,7 @@ const useStyles = makeStyles()(theme => ({
 
 const MintFlowDialog = props => {
   const { onClose } = props
-  const scrollRef = useRef()
+  const scrollRef = useRef(undefined)
   const { classes } = useStyles()
   const { isProfileMinting, isFirstBadgeMinting } = useCanvasStore()
 

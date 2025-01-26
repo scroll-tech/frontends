@@ -35,7 +35,7 @@ const Container = styled(Box)(({ theme }) => ({
       height: "6rem",
     },
   },
-}))
+})) as typeof Box
 
 const Tooltip = styled(Box)(({}) => ({
   padding: "1rem 1.4rem 1.4rem",
@@ -73,7 +73,7 @@ const Tooltip = styled(Box)(({}) => ({
     zIndex: -1,
     marginTop: "-0.6rem",
   },
-}))
+})) as typeof Box
 
 const MintButton = styled(Button)(({}) => ({
   borderRadius: "0.8rem",

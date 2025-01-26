@@ -14,6 +14,7 @@ import Table from "./Table"
 
 const Blocks = () => {
   const params = useParams()
+
   const blocksType = !!params!.chunkIndex ? BLOCK_LIST_TYPE.CHUNK : BLOCK_LIST_TYPE.BATCH
   const index = params!.chunkIndex || params!.batchIndex
   const fn = blocksType === BLOCK_LIST_TYPE.CHUNK ? useChunkBlocks : useBatchBlocks

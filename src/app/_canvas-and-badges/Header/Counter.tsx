@@ -7,7 +7,7 @@ import { usePrevious } from "react-use"
 const Counter = props => {
   const { number } = props
   const numberNodeRef = useRef<HTMLDivElement | null>(null)
-  const numberFlipRef = useRef<any>()
+  const numberFlipRef = useRef<any>(null)
   const preNumber = usePrevious(number)
 
   useEffect(() => {

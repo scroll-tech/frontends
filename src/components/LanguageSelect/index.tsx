@@ -81,7 +81,11 @@ const LanguageSelect = props => {
         {BLOG_LANGUAGE_LIST.map(({ label, key }) => (
           <MenuItem key={key} classes={{ root: classes.listItem }} onClick={() => handleChangeLanguage(key)}>
             <ListItemIcon classes={{ root: classes.listItemIcon }}>
-              <SvgIcon sx={{ fontSize: "1.6rem" }} component={language === key ? LanguageCheckedSvg : LanguageUncheckSvg} inheritViewBox></SvgIcon>
+              {language === key ? (
+                <LanguageCheckedSvg className="w-[1.6rem] h-auto"></LanguageCheckedSvg>
+              ) : (
+                <LanguageUncheckSvg className="w-[1.6rem] h-auto"></LanguageUncheckSvg>
+              )}
             </ListItemIcon>
             <ListItemText classes={{ primary: classes.listItemText }}>{label}</ListItemText>
           </MenuItem>

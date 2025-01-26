@@ -18,7 +18,7 @@ const StyledDialogContent = styled(Box)(() => ({
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "center",
-}))
+})) as typeof Box
 
 const ButtonContainer = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -30,7 +30,7 @@ const ButtonContainer = styled(Box)(({ theme }) => ({
     gap: "2rem",
     marginTop: "1.6rem",
   },
-}))
+})) as typeof Box
 
 const InsufficientDialog = ({ open, onClose }) => {
   const { chainId, connect } = useRainbowContext()

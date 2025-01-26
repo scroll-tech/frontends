@@ -27,16 +27,16 @@ const StyledBox = styled<any>(Stack, { shouldForwardProp: prop => prop !== "dark
   width: "100%",
   zIndex: 10,
   backgroundColor: bgColor
-    ? (theme as any).vars.palette.themeBackground[bgColor]
+    ? theme.vars.palette.themeBackground[bgColor]
     : dark
-      ? (theme as any).vars.palette.themeBackground.dark
-      : (theme as any).vars.palette.themeBackground.light,
+      ? theme.vars.palette.themeBackground.dark
+      : theme.vars.palette.themeBackground.light,
 }))
 
 const StyledPopper = styled<any>(Popper, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
-  // backgroundColor: bgColor ? (theme as any).vars.palette.themeBackground[bgColor] : dark ? (theme as any).vars.palette.themeBackground.dark : (theme as any).vars.palette.themeBackground.light,
+  // backgroundColor: bgColor ? theme.vars.palette.themeBackground[bgColor] : dark ? theme.vars.palette.themeBackground.dark : theme.vars.palette.themeBackground.light,
   marginLeft: "-2.4rem !important",
-  zIndex: (theme as any).vars.zIndex.appBar,
+  zIndex: theme.vars.zIndex.appBar,
 }))
 
 const StyledFade = styled(Fade)(({}) => ({
@@ -53,7 +53,7 @@ const HeaderContainer = styled(Box)(({}) => ({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-}))
+})) as typeof Box
 
 const MenuLinkButton = styled<any>(Link, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   fontSize: "1.8rem",
@@ -64,7 +64,7 @@ const MenuLinkButton = styled<any>(Link, { shouldForwardProp: prop => prop !== "
   marginRight: "4px",
   lineHeight: "65px",
   position: "relative",
-  color: dark ? (theme as any).vars.palette.primary.contrastText : (theme as any).vars.palette.text.primary,
+  color: dark ? theme.vars.palette.primary.contrastText : theme.vars.palette.text.primary,
   "&:hover": {
     fontWeight: 500,
   },
@@ -77,15 +77,15 @@ const LinkStyledButton = styled<any>(ScrollLink, { shouldForwardProp: prop => pr
   marginRight: "0.5rem",
   lineHeight: "65px",
   position: "relative",
-  color: dark ? (theme as any).vars.palette.primary.contrastText : (theme as any).vars.palette.text.primary,
+  color: dark ? theme.vars.palette.primary.contrastText : theme.vars.palette.text.primary,
   whiteSpace: "nowrap",
   "&:hover": {
     fontWeight: 500,
-    color: (theme as any).vars.palette.primary.main,
+    color: theme.vars.palette.primary.main,
   },
   "&.active": {
     fontWeight: 600,
-    color: (theme as any).vars.palette.primary.main,
+    color: theme.vars.palette.primary.main,
   },
 }))
 
@@ -97,10 +97,10 @@ const SubMenuButton = styled<any>(Stack, { shouldForwardProp: prop => prop !== "
   lineHeight: "65px",
   position: "relative",
   cursor: "pointer",
-  color: dark ? (theme as any).vars.palette.primary.contrastText : (theme as any).vars.palette.text.primary,
+  color: dark ? theme.vars.palette.primary.contrastText : theme.vars.palette.text.primary,
   "&.active": {
     fontWeight: 600,
-    color: (theme as any).vars.palette.primary.main,
+    color: theme.vars.palette.primary.main,
   },
   "& .expand-more": {
     willChange: "transform",
@@ -116,7 +116,7 @@ const SubMenuList = styled(Box)(({}) => ({
   display: "flex",
   flexDirection: "row",
   overflow: "hidden",
-}))
+})) as typeof Box
 
 const SectionList = styled<any>(Box)(({ theme }) => ({
   display: "flex",
@@ -124,7 +124,7 @@ const SectionList = styled<any>(Box)(({ theme }) => ({
   flex: 1,
   gap: "1.6rem",
   "&:nth-of-type(n+2)": {
-    borderLeft: `1px solid ${(theme as any).vars.palette.text.primary}`,
+    borderLeft: `1px solid ${theme.vars.palette.text.primary}`,
     paddingLeft: "2.4rem",
     marginLeft: "2.4rem",
   },

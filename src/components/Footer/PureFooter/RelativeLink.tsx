@@ -6,13 +6,13 @@ const LinkText = props => {
   return (
     <Typography
       sx={{
-        color: theme => (theme as any).vars.palette.primary.contrastText,
+        color: theme => theme.vars.palette.primary.contrastText,
         fontSize: ["1.6rem", "1.5rem"],
         lineHeight: "normal",
         marginBottom: ["3rem"],
         cursor: "pointer",
         "&:hover": {
-          color: theme => (theme as any).vars.palette.primary.dark,
+          color: theme => theme.vars.palette.primary.dark,
         },
       }}
     >

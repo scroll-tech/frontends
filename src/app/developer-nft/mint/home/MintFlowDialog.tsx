@@ -20,7 +20,7 @@ import MintFlow from "../flow"
 
 const useStyles = makeStyles()(theme => ({
   paper: {
-    backgroundColor: (theme as any).vars.palette.text.primary,
+    backgroundColor: theme.vars.palette.text.primary,
 
     [theme.breakpoints.down("sm")]: {
       margin: 0,
@@ -29,7 +29,7 @@ const useStyles = makeStyles()(theme => ({
 }))
 
 const MintFlowDialog = props => {
-  const scrollRef = useRef()
+  const scrollRef = useRef<HTMLDivElement>(null)
   const { classes } = useStyles()
 
   // const trigger = useScrollTrigger({ target: scrollRef?.current })
@@ -41,7 +41,7 @@ const MintFlowDialog = props => {
         sx={{
           position: "sticky",
           top: 0,
-          backgroundColor: theme => (theme as any).vars.palette.text.primary,
+          backgroundColor: "text.primary",
           paddingRight: "0 !important",
         }}
       >
@@ -51,7 +51,7 @@ const MintFlowDialog = props => {
             sx={{
               fontSize: ["1.6rem", "1.8rem"],
               fontWeight: 600,
-              color: theme => (theme as any).vars.palette.primary.contrastText,
+              color: theme => "primary.contrastText",
             }}
           >
             Mint {SCROLL_ORIGINS_NFT}

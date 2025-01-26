@@ -4,7 +4,7 @@ import { shallowEquals } from "@/utils"
 
 function useAsyncMemo<T>(factory: () => Promise<T>, deps: DependencyList | undefined): T | undefined {
   const [res, setRes] = useState<T>()
-  const prevDependencies = useRef<DependencyList>()
+  const prevDependencies = useRef<DependencyList>(undefined)
   const lastCallId = useRef(0)
 
   useEffect(() => {

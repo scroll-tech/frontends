@@ -7,7 +7,7 @@ const useStyles = makeStyles()(theme => ({
     height: "auto",
     padding: "0.4rem 1.2rem",
     borderRadius: "1.6rem",
-    backgroundColor: (theme as any).vars.palette.themeBackground.light,
+    backgroundColor: theme.vars.palette.themeBackground.light,
   },
   label: {
     fontSize: "1.6rem",

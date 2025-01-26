@@ -2,7 +2,7 @@
 
 import dayjs from "dayjs"
 import { default as RouterLink } from "next/link"
-import { useEffect } from "react"
+import { use, useEffect } from "react"
 
 import { InfoOutlined, NavigateNext, OpenInNew } from "@mui/icons-material"
 import { Box, Breadcrumbs, Chip, Container, Divider, Stack, Tooltip, Typography } from "@mui/material"
@@ -22,27 +22,27 @@ dayjs.extend(relativeTime)
 dayjs.extend(utc)
 
 const StatusChip = styled(Chip)(({ theme }) => ({
-  color: (theme as any).vars.palette.primary.contrastText,
+  color: theme.vars.palette.primary.contrastText,
   textTransform: "capitalize",
   "&.precommitted": {
-    backgroundColor: (theme as any).vars.palette.tagWarning.light,
-    color: (theme as any).vars.palette.tagWarning.main,
+    backgroundColor: theme.vars.palette.tagWarning.light,
+    color: theme.vars.palette.tagWarning.main,
   },
   "&.committed": {
-    backgroundColor: (theme as any).vars.palette.tagCommitted.light,
-    color: (theme as any).vars.palette.tagCommitted.main,
+    backgroundColor: theme.vars.palette.tagCommitted.light,
+    color: theme.vars.palette.tagCommitted.main,
   },
   "&.finalized": {
     backgroundColor: "#DFFCF8",
     color: "#0F8E7E",
   },
   "&.skipped": {
-    backgroundColor: (theme as any).vars.palette.tagCommitted.light,
-    color: (theme as any).vars.palette.tagCommitted.main,
+    backgroundColor: theme.vars.palette.tagCommitted.light,
+    color: theme.vars.palette.tagCommitted.main,
   },
   "&.unknown": {
-    backgroundColor: (theme as any).vars.palette.tagUnknown.light,
-    color: (theme as any).vars.palette.tagUnknown.main,
+    backgroundColor: theme.vars.palette.tagUnknown.light,
+    color: theme.vars.palette.tagUnknown.main,
   },
   "& > .MuiChip-label": {
     fontWeight: 500,
@@ -72,9 +72,10 @@ const BoxItem = styled(Box)(({ theme }) => ({
       marginRight: "1.6rem",
     },
   },
-}))
+})) as typeof Box
 
-const Batch = ({ params }) => {
+const Batch = props => {
+  const params: any = use(props.params)
   const { batch, isLoading } = useBatchDetail(params.batchIndex)
   const { isLandscape } = useCheckViewport()
 
@@ -136,9 +137,7 @@ const Batch = ({ params }) => {
       >
         <Breadcrumbs aria-label="breadcrumb" sx={{ fontWeight: 600 }} separator={<NavigateNext fontSize="large" />}>
           <RouterLink href="/rollupscan?page=1&per_page=10">Batches</RouterLink>
-          <Typography sx={{ fontWeight: 600 }} color="text.primary">
-            Batch {params.batchIndex}
-          </Typography>
+          <Typography sx={{ fontWeight: 600, color: "text.primary" }}>Batch {params.batchIndex}</Typography>
         </Breadcrumbs>
         {isLoading ? (
           <Spinning></Spinning>
@@ -148,7 +147,7 @@ const Batch = ({ params }) => {
               <Box
                 sx={{
                   width: "100%",
-                  border: theme => `1px solid ${(theme as any).vars.palette.border.main}`,
+                  border: theme => `1px solid ${theme.vars.palette.border.main}`,
                   borderRadius: "27px",
                   marginTop: "2.2rem",
                 }}

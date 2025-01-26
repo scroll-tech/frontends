@@ -7,14 +7,14 @@ import Link from "@/components/Link"
 
 const useStyles = makeStyles()(theme => ({
   card: {
-    backgroundColor: (theme as any).vars.palette.themeBackground.normal,
+    backgroundColor: theme.vars.palette.themeBackground.normal,
     height: "100%",
     padding: "2.4rem",
     borderRadius: "2.5rem",
     cursor: "pointer",
 
     "&:hover": {
-      backgroundColor: (theme as any).vars.palette.themeBackground.highlight,
+      backgroundColor: theme.vars.palette.themeBackground.highlight,
     },
   },
   header: {

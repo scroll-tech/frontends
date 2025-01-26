@@ -53,7 +53,7 @@ const Profile = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     transform: "translate(0.25px, 0.25px)",
   },
-}))
+})) as typeof Box
 
 const Name = styled(Typography)(({ theme }) => ({
   color: "#FFFFFF",

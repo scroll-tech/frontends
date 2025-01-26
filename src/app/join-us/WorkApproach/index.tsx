@@ -53,7 +53,7 @@ const Container = styled(Box)(({ theme }) => ({
     paddingBottom: "0",
     margin: "0 auto 4rem",
   },
-}))
+})) as typeof Box
 
 const InnerBox = styled(MuiContainer)(() => ({
   position: "relative",
@@ -68,7 +68,7 @@ const Background = styled(Box)(() => ({
   background: "#101010",
   willChange: "width, height",
   borderRadius: "40px 40px 0px 0px",
-}))
+})) as typeof Box
 
 const PhotoContainer = styled("div")(() => ({
   display: "grid",

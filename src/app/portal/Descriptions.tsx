@@ -12,7 +12,7 @@ const useStyles = makeStyles()(theme => ({
   },
   cardHeader: {
     padding: "2.2rem 3rem",
-    backgroundColor: (theme as any).vars.palette.themeBackground.normal,
+    backgroundColor: theme.vars.palette.themeBackground.normal,
     [theme.breakpoints.down("sm")]: {
       padding: "2rem 1.6rem",
     },
@@ -23,7 +23,7 @@ const useStyles = makeStyles()(theme => ({
   cardContent: {
     padding: 0,
     marginTop: "1px",
-    backgroundColor: (theme as any).vars.palette.themeBackground.normal,
+    backgroundColor: theme.vars.palette.themeBackground.normal,
     "&:last-child": {
       paddingBottom: 0,
     },

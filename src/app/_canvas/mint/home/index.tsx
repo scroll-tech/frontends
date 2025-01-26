@@ -30,7 +30,7 @@ const Container = styled(Box)(({ theme }) => ({
     padding: "0 1rem",
     overflowY: "auto",
   },
-}))
+})) as typeof Box
 
 const Title = styled(Typography)(({ theme }) => ({
   color: theme.palette.primary.contrastText,
@@ -72,7 +72,7 @@ const StickyBox = styled(Box)(({ theme }) => ({
       width: "100%",
     },
   },
-}))
+})) as typeof Box
 
 const MintHome = props => {
   const { code } = props

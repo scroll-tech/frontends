@@ -2,7 +2,7 @@
 
 import dayjs from "dayjs"
 import { default as RouterLink } from "next/link"
-import { useMemo } from "react"
+import { use, useMemo } from "react"
 
 import { InfoOutlined, NavigateNext } from "@mui/icons-material"
 import { Box, Breadcrumbs, Divider, Tooltip, Typography } from "@mui/material"
@@ -42,9 +42,10 @@ const BoxItem = styled(Box)(({ theme }) => ({
       marginRight: "1.6rem",
     },
   },
-}))
+})) as typeof Box
 
-const Chunk = ({ params }) => {
+const Chunk = props => {
+  const params: any = use(props.params)
   const { chunks = [], isLoading } = useChunkList(params.batchIndex)
 
   const { isLandscape } = useCheckViewport()
@@ -68,7 +69,15 @@ const Chunk = ({ params }) => {
   return (
     <Box>
       <Header />
-      <Box className="wrapper mx-auto" sx={{ marginBottom: "16rem" }}>
+      <Box
+        className="wrapper mx-auto"
+        sx={{
+          marginBottom: "16rem",
+          "& *": {
+            fontFamily: "var(--developer-page-font-family) !important",
+          },
+        }}
+      >
         <Breadcrumbs aria-label="breadcrumb" sx={{ fontWeight: 600 }} separator={<NavigateNext fontSize="large" />}>
           <RouterLink href="/rollupscan?page=1&per_page=10">Batches</RouterLink>
           <RouterLink href={`/rollupscan/batch/${params.batchIndex}`}> Batch {params.batchIndex}</RouterLink>
@@ -85,7 +94,7 @@ const Chunk = ({ params }) => {
               <Box
                 sx={{
                   width: "100%",
-                  border: theme => `1px solid ${(theme as any).vars.palette.border.main}`,
+                  border: theme => `1px solid ${theme.vars.palette.border.main}`,
                   borderRadius: "10px",
                   marginTop: "2.2rem",
                 }}

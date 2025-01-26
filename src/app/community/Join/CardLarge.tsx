@@ -9,14 +9,14 @@ import ArrowSvg from "@/assets/svgs/ecosystem/arrow.svg"
 
 const useStyles = makeStyles()(theme => ({
   card: {
-    backgroundColor: (theme as any).vars.palette.themeBackground.normal,
+    backgroundColor: theme.vars.palette.themeBackground.normal,
     height: "100%",
     padding: "4.1rem",
     borderRadius: "2.5rem",
     cursor: "pointer",
     gridColumn: "span 3",
     "&:hover": {
-      backgroundColor: (theme as any).vars.palette.themeBackground.highlight,
+      backgroundColor: theme.vars.palette.themeBackground.highlight,
     },
     [theme.breakpoints.down("md")]: {
       padding: "2rem",

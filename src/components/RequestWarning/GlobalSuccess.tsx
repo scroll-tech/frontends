@@ -1,4 +1,3 @@
-import { forwardRef } from "react"
 import { makeStyles } from "tss-react/mui"
 
 import { Alert, SvgIcon } from "@mui/material"
@@ -28,8 +27,8 @@ const useStyles = makeStyles()(theme => ({
   },
 }))
 
-const GlobalSuccess = forwardRef((props: any, ref) => {
-  const { severity = "success", message, style, ...restProps } = props
+const GlobalSuccess = (props: any) => {
+  const { severity = "success", message, style, ref, ...restProps } = props
   const { classes } = useStyles()
 
   return (
@@ -52,7 +51,7 @@ const GlobalSuccess = forwardRef((props: any, ref) => {
       {message}
     </Alert>
   )
-})
+}
 
 GlobalSuccess.displayName = "GlobalSuccess"
 

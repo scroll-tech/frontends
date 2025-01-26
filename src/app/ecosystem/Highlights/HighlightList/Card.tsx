@@ -18,7 +18,7 @@ const Card = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down("lg")]: {
     gap: "2rem",
   },
-}))
+})) as typeof Box
 
 const BlogTitle = styled(Typography)(() => ({
   fontWeight: 600,

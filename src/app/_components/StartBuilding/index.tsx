@@ -37,7 +37,7 @@ const Container = styled(Box)(({ theme }) => ({
     paddingTop: "5.4rem",
     paddingBottom: "6rem",
   },
-}))
+})) as typeof Box
 
 const ButtonContainer = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -46,7 +46,7 @@ const ButtonContainer = styled(Box)(({ theme }) => ({
     flexDirection: "column",
     gap: "2rem",
   },
-}))
+})) as typeof Box
 
 const StartBuilding = () => {
   return (

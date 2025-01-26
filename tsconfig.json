@@ -31,6 +31,14 @@
     "allowSyntheticDefaultImports": true,
     "noImplicitThis": true,
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/types/*.d.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "src/types/*.d.ts",
+    "next.config.mjs",
+    "scripts/download-blog-posts.data.json.mjs",
+  ],
   "exclude": ["node_modules"],
 }

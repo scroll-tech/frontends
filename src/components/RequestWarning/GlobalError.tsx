@@ -1,4 +1,3 @@
-import { forwardRef } from "react"
 import { makeStyles } from "tss-react/mui"
 
 import { Alert, SvgIcon } from "@mui/material"
@@ -26,8 +25,8 @@ const useStyles = makeStyles()(theme => ({
   },
 }))
 
-const GlobalWarning = forwardRef((props: any, ref) => {
-  const { severity = "error", message, style, ...restProps } = props
+const GlobalWarning = (props: any) => {
+  const { severity = "error", message, style, ref, ...restProps } = props
   const { classes } = useStyles()
 
   return (
@@ -50,6 +49,6 @@ const GlobalWarning = forwardRef((props: any, ref) => {
       {message}
     </Alert>
   )
-})
+}
 GlobalWarning.displayName = "GlobalWarning"
 export default GlobalWarning

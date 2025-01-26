@@ -6,10 +6,11 @@ import { genMeta } from "@/utils/route"
 import CanvasMint from "../../mint/page"
 
 export const generateMetadata = genMeta(async ({ params }) => {
-  const imgUrl = getImgByCode(params.code)
+  const { code } = await params
+  const imgUrl = getImgByCode(code)
   const title = "Scroll Canvas - your unique space for onchain presence on Scroll"
   const description = "Use my referral code to save 50% on Scroll Canvas mint!"
-  const relativeURL = `/canvas?code=${params.code}`
+  const relativeURL = `/canvas?code=${code}`
 
   return {
     title,

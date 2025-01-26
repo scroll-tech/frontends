@@ -15,7 +15,7 @@ const Statistic = props => {
         borderRadius: ["0.8rem", "1.6rem"],
         p: ["0.8rem 1.2rem", "1.6rem 1.6rem"],
         minWidth: ["auto", "20rem"],
-        backgroundColor: theme => (theme as any).vars.palette.themeBackground.normal,
+        backgroundColor: theme => theme.vars.palette.themeBackground.normal,
       }}
     >
       <Typography

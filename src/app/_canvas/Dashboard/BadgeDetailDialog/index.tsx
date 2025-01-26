@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 import { useParams, useRouter } from "next/navigation"
-import { forwardRef, useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import Img from "react-cool-img"
 
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined"
@@ -22,7 +22,7 @@ import { generateShareTwitterURL, ipfsToBrowserURL, sentryDebug } from "@/utils"
 import BadgeDesc from "../../components/BadgeDesc"
 import UpgradeAction from "./UpgradeAction"
 
-const ButtonContainer = styled(forwardRef<any, any>((props, ref) => <Box {...props} ref={ref} />))(({ theme }) => ({
+const ButtonContainer = styled(({ ref, ...props }: any) => <Box {...props} ref={ref} />)(({ theme }) => ({
   position: "relative",
   display: "flex",
   gap: "1.6rem",
@@ -72,7 +72,7 @@ const BadgeDetailDialog = () => {
   const { isMobile } = useCheckViewport()
 
   const [actionHeight, setActionHeight] = useState("auto")
-  const actionsRef = useRef()
+  const actionsRef = useRef<HTMLDivElement>(null)
 
   const { data: badgeIssuer, isFetching } = useQuery({
     queryKey: ["notionBadge", selectedBadge.badgeContract],
@@ -251,7 +251,7 @@ const BadgeDetailDialog = () => {
                   textAlign: ["left", "center"],
                   marginBottom: "1.2rem",
                 },
-                theme => (theme as any).vars.multilineEllipsis,
+                theme => theme.multilineEllipsis,
               ]}
             >
               <BadgeDesc>{selectedBadge.description}</BadgeDesc>

@@ -41,14 +41,14 @@ const Menu = styled("div")(() => ({
 const Bar = styled<any>("div", { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   width: "2rem",
   height: ".2rem",
-  backgroundColor: dark ? (theme as any).vars.palette.primary.contrastText : (theme as any).vars.palette.text.primary,
+  backgroundColor: dark ? theme.vars.palette.primary.contrastText : theme.vars.palette.text.primary,
   margin: " 5px 0",
   transition: "0.4s",
 }))
 
 const MenuContent = styled<any>(Box, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   margin: "0.5rem 1.6rem 0",
-  background: dark ? (theme as any).vars.palette.themeBackground.dark : (theme as any).vars.palette.themeBackground.light,
+  background: dark ? theme.vars.palette.themeBackground.dark : theme.vars.palette.themeBackground.light,
 }))
 
 const ListItem = styled<any>(ListItemButton, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
@@ -56,7 +56,7 @@ const ListItem = styled<any>(ListItemButton, { shouldForwardProp: prop => prop !
   fontSize: "2rem",
   height: "5.5rem",
   lineHeight: "5.5rem",
-  color: dark ? (theme as any).vars.palette.primary.contrastText : (theme as any).vars.palette.text.primary,
+  color: dark ? theme.vars.palette.primary.contrastText : theme.vars.palette.text.primary,
   margin: "0",
   display: "flex",
   justifyContent: "space-between",
@@ -66,7 +66,7 @@ const ListItem = styled<any>(ListItemButton, { shouldForwardProp: prop => prop !
     background: "transparent",
   },
   "&:not(:first-of-type)": {
-    borderTop: `1px solid ${dark ? (theme as any).vars.palette.primary.contrastText : (theme as any).vars.palette.text.primary}`,
+    borderTop: `1px solid ${dark ? theme.vars.palette.primary.contrastText : theme.vars.palette.text.primary}`,
   },
 }))
 
@@ -75,10 +75,10 @@ const MenuItemLink = styled<any>(Link, { shouldForwardProp: prop => prop !== "da
   fontSize: "2rem",
   height: "5.5rem",
   lineHeight: "5.5rem",
-  color: dark ? (theme as any).vars.palette.primary.contrastText : (theme as any).vars.palette.text.primary,
+  color: dark ? theme.vars.palette.primary.contrastText : theme.vars.palette.text.primary,
   width: "100%",
   "&.active": {
-    color: (theme as any).vars.palette.primary.main,
+    color: theme.vars.palette.primary.main,
   },
 }))
 
@@ -93,7 +93,7 @@ const SectionList = styled<any>("div", { shouldForwardProp: prop => prop !== "da
     paddingBottom: "1.6rem",
   },
   "&:nth-of-type(n+2)": {
-    borderTop: `1px solid ${dark ? (theme as any).vars.palette.primary.contrastText : (theme as any).vars.palette.text.primary}`,
+    borderTop: `1px solid ${dark ? theme.vars.palette.primary.contrastText : theme.vars.palette.text.primary}`,
     paddingTop: "1.6rem",
   },
 }))
@@ -262,7 +262,7 @@ const MobileHeader = ({ currentMenu }) => {
       {open && (
         <Box
           sx={{
-            background: theme => (dark ? (theme as any).vars.palette.themeBackground.dark : (theme as any).vars.palette.themeBackground.light),
+            background: theme => (dark ? theme.vars.palette.themeBackground.dark : theme.vars.palette.themeBackground.light),
             height: "calc(100vh - 6.2rem)",
             overflowY: "auto",
           }}

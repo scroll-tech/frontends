@@ -13,8 +13,9 @@ export const generateMetadata = genMeta(async ({ params }) => {
     chain: process.env.NEXT_PUBLIC_SCROLL_ENVIRONMENT === "Mainnet" ? scroll : scrollSepolia,
     transport: http(),
   })
+  const { id } = await params
 
-  const badges = await queryBadgeDetailById(params.id)
+  const badges = await queryBadgeDetailById(id)
 
   const [{ recipient, data }] = badges
   const [badgeContract] = decodeBadgePayload(data)

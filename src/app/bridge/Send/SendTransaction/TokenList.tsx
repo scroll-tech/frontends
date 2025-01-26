@@ -35,7 +35,7 @@ const DialogStyled = styled(Dialog)(({ theme }) => ({
 const InputBaseStyled = styled(InputBase)(({ theme }) => ({
   width: "100%",
   borderRadius: "1rem",
-  border: `1px solid ${(theme as any).vars.palette.text.primary}`,
+  border: `1px solid ${theme.vars.palette.text.primary}`,
   fontFamily: "var(--developer-page-font-family)",
   height: "4.8rem",
   [theme.breakpoints.down("sm")]: {
@@ -155,7 +155,7 @@ const ErrorBoxStyled = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     margin: "1rem 2rem 0",
   },
-}))
+})) as typeof Box
 
 const TokenListWrapper = styled(Box)(() => ({
   maxHeight: "50rem",
@@ -170,7 +170,7 @@ const TokenListWrapper = styled(Box)(() => ({
   // Firefox
   scrollbarWidth: "thin",
   scrollbarColor: "rgba(209, 205, 204, 0.30) transparent",
-}))
+})) as typeof Box
 
 export interface TokenListProps {
   open: boolean

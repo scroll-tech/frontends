@@ -1,3 +1,5 @@
+import type {} from "@mui/material/themeCssVarsAugmentation"
+
 export {}
 
 declare global {
@@ -13,50 +15,32 @@ declare global {
 }
 
 declare module "@mui/material/styles" {
-  // interface Theme {
-  //   vars: {
-  //     boxShadows: {
-  //       none: string
-  //       sharp: string
-  //       buttonHover: string
-  //       select: string
-  //       tile: string
-  //     }
-  //     singleLineEllipsis: {
-  //       overflow: string
-  //       whiteSpace: string
-  //       textOverflow: string
-  //     }
-  //     multilineEllipsis: {
-  //       display: string
-  //       WebkitBoxOrient: BoxOrient
-  //       WebkitLineClamp: string
-  //       overflow: string
-  //     }
-  //   }
-  // }
-  // interface ThemeOptions {
-  //   vars: {
-  //     boxShadows?: {
-  //       none: string
-  //       sharp: string
-  //       buttonHover: string
-  //       select: string
-  //       tile: string
-  //     }
-  //     singleLineEllipsis?: {
-  //       overflow: string
-  //       whiteSpace: string
-  //       textOverflow: string
-  //     }
-  //     multilineEllipsis?: {
-  //       display: string
-  //       WebkitBoxOrient: BoxOrient
-  //       WebkitLineClamp: string
-  //       overflow: string
-  //     }
-  //   }
-  // }
+  interface Theme {
+    singleLineEllipsis: {
+      overflow: string
+      whiteSpace: string
+      textOverflow: string
+    }
+    multilineEllipsis: {
+      display: string
+      WebkitBoxOrient: BoxOrient
+      WebkitLineClamp: string
+      overflow: string
+    }
+  }
+  interface ThemeOptions {
+    singleLineEllipsis?: {
+      overflow: string
+      whiteSpace: string
+      textOverflow: string
+    }
+    multilineEllipsis?: {
+      display: string
+      WebkitBoxOrient: BoxOrient
+      WebkitLineClamp: string
+      overflow: string
+    }
+  }
   interface Palette {
     themeBackground: {
       light: string

@@ -1,12 +1,9 @@
-import { useEffect, useMemo, useState } from "react"
+import { useWindowVirtualizer } from "@tanstack/react-virtual"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { usePrevious } from "react-use"
-import { CellMeasurer, CellMeasurerCache, List, WindowScroller } from "react-virtualized"
-import "react-virtualized/styles.css"
 import { makeStyles } from "tss-react/mui"
 
 import { Box } from "@mui/material"
-import useScrollTrigger from "@mui/material/useScrollTrigger"
-import { keyframes } from "@mui/system"
 
 import { ecosystemListUrl } from "@/apis/ecosystem"
 import LoadingButton from "@/components/LoadingButton"
@@ -19,15 +16,6 @@ import Error from "./Error"
 import NoData from "./NoData"
 import ProtocolCard from "./ProtocolCard"
 
-const Fade = keyframes`
-  to {opacity:1;transform: translateY(0);}
-`
-
-const cache = new CellMeasurerCache({
-  fixedWidth: true,
-  defaultHeight: 156,
-})
-
 const useStyles = makeStyles()(theme => ({
   listRoot: {
     gridRow: "2 / 3",
@@ -38,11 +26,6 @@ const useStyles = makeStyles()(theme => ({
       gridColumn: "1 / 3",
     },
   },
-  listItem: {
-    opacity: 0,
-    transform: "translateY(20px)",
-    animation: `${Fade} 0.2s forwards`,
-  },
 }))
 
 const ProtocolList = props => {
@@ -50,13 +33,22 @@ const ProtocolList = props => {
     searchParams: { category, network, keyword, page },
     onAddPage,
   } = props
-  const { classes, cx } = useStyles()
-  const isScrollDown = useScrollTrigger()
+  const { classes } = useStyles()
   const [loading, setLoading] = useState(false)
   const prePage = usePrevious(page)
   const [ecosystemList, setEcosystemList] = useState([])
   const [isError, setIsError] = useState(false)
   const [hasMore, setHasMore] = useState(false)
+
+  const listRef = useRef<HTMLDivElement>(null)
+  const virtualizer = useWindowVirtualizer({
+    count: ecosystemList.length,
+    estimateSize: () => 136,
+    overscan: 5,
+    gap: 20,
+    scrollMargin: listRef.current?.offsetTop ?? 0,
+  })
+  const rows = virtualizer.getVirtualItems()
 
   const queryStr = useMemo(() => {
     const searchParams = new URLSearchParams({
@@ -107,19 +99,6 @@ const ProtocolList = props => {
     fetchEcosystemList(queryStr)
   }
 
-  const rowRenderer = ({ index, style, parent }) => {
-    const uniqueKey = (ecosystemList[index] as any).name
-    return (
-      <CellMeasurer key={uniqueKey} cache={cache} parent={parent} columnIndex={0} rowIndex={index}>
-        {({ measure, registerChild }) => (
-          <div ref={registerChild} style={style} className={cx(isScrollDown && classes.listItem)}>
-            <ProtocolCard {...(ecosystemList[index] as object)} onResize={measure}></ProtocolCard>
-          </div>
-        )}
-      </CellMeasurer>
-    )
-  }
-
   const renderList = () => {
     if (loading && !ecosystemList.length) {
       return <LoadingPage height="26rem" sx={{ gridColumn: ["1 / 3", "1 / 3", "2 / 4"] }}></LoadingPage>
@@ -146,25 +125,32 @@ const ProtocolList = props => {
     }
     return (
       <>
-        <WindowScroller>
-          {({ height, isScrolling, onChildScroll, scrollTop }) => (
-            <List
-              autoHeight
-              height={height}
-              isScrolling={isScrolling}
-              onScroll={onChildScroll}
-              rowCount={ecosystemList.length}
-              rowHeight={cache.rowHeight}
-              rowRenderer={rowRenderer}
-              scrollTop={scrollTop}
-              width={100}
-              containerStyle={{ width: "100%", maxWidth: "100%" }}
-              style={{ width: "100%" }}
-              className={classes.listRoot}
-              deferredMeasurementCache={cache}
-            />
-          )}
-        </WindowScroller>
+        <div ref={listRef} className={classes.listRoot}>
+          <Box
+            sx={{
+              height: virtualizer.getTotalSize(),
+              width: "100%",
+              position: "relative",
+            }}
+          >
+            {rows.map(row => (
+              <Box
+                key={row.key}
+                data-index={row.index}
+                ref={virtualizer.measureElement}
+                sx={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  transform: `translateY(${row.start - virtualizer.options.scrollMargin}px)`,
+                }}
+              >
+                <ProtocolCard {...(ecosystemList[row.index] as object)}></ProtocolCard>
+              </Box>
+            ))}
+          </Box>
+        </div>
 
         {hasMore && (
           <Box sx={{ gridColumn: ["1 / 3", "1 / 3", "2 / 4"], textAlign: "center", mt: "1.6rem" }}>

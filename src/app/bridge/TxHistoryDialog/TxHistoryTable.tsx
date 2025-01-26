@@ -18,7 +18,7 @@ const TableBox = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     padding: "0 2rem 2rem",
   },
-}))
+})) as typeof Box
 
 const TransactionsList = () => {
   const {

@@ -3,36 +3,61 @@
 // eslint-disable-next-line prettier/prettier
 import packageJson from "./package.json" with { type: "json" };
 import "./scripts/download-blog-posts.data.json.mjs"
+import createMDX from "@next/mdx"
+import rehypeRaw from "rehype-raw"
+import rehypeKatex from "rehype-katex"
+import remarkGfm from "remark-gfm"
+import remarkMath from "remark-math"
 
 // const { withSentryConfig } = require("@sentry/nextjs")
 
 const nextConfig = {
   env: {
     NEXT_PUBLIC_VERSION: packageJson.version,
-    NEXT_PUBLIC_FRONTENDS_URL: process.env.VERCEL_ENV === "production" ? "https://scroll.io" : process.env.VERCEL_BRANCH_URL?`https://${process.env.VERCEL_BRANCH_URL}`:"http://localhost:3000",
+    NEXT_PUBLIC_FRONTENDS_URL:
+      process.env.VERCEL_ENV === "production"
+        ? "https://scroll.io"
+        : process.env.VERCEL_BRANCH_URL
+          ? `https://${process.env.VERCEL_BRANCH_URL}`
+          : "http://localhost:3000",
   },
   images: {
     deviceSizes: [600, 900, 1200, 1536],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "scroll-tech.github.io",
+        port: "",
+        pathname: "/token-list/data/**",
+      },
+      {
+        protocol: "https",
+        hostname: "scroll-eco-list.netlify.app",
+        port: "",
+        pathname: "/logos/**",
+      },
+    ],
   },
+  pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
   // trailingSlash: true,
   async headers() {
     return [
       {
-        source: '/(.*)',
+        source: "/(.*)",
         headers: [
           {
-            key: 'X-Frame-Options',
-            value: 'DENY'
+            key: "X-Frame-Options",
+            value: "DENY",
           },
           {
-            key: 'Content-Security-Policy',
-            value: "frame-ancestors 'none'"
-          }
-        ]
-      }
+            key: "Content-Security-Policy",
+            value: "frame-ancestors 'none'",
+          },
+        ],
+      },
     ]
   },
-  
+
   async redirects() {
     return [
       {
@@ -56,7 +81,6 @@ const nextConfig = {
 
       { source: "/sticker-vote", destination: "/sticker-winners", permanent: true },
       // { source: "/airdrop-faq", destination: "https://scroll-faqs.gitbook.io/faqs", permanent: false},
-
     ]
   },
   async rewrites() {
@@ -66,22 +90,6 @@ const nextConfig = {
         destination: 'https://scroll-governance-documentation.vercel.app/:path*'
       }
     ]
-  },
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "scroll-tech.github.io",
-        port: "",
-        pathname: "/token-list/data/**",
-      },
-      {
-        protocol: "https",
-        hostname: "scroll-eco-list.netlify.app",
-        port: "",
-        pathname: "/logos/**",
-      },
-    ],
   },
   // eslint-disable-next-line
   webpack: (config, { buildId, dev, isServer, defaultLoaders, nextRuntime, webpack }) => {
@@ -131,11 +139,6 @@ const nextConfig = {
             },
           ],
         },
-        // .md
-        {
-          test: /\.md$/,
-          use: "raw-loader",
-        },
       ],
     )
 
@@ -171,7 +174,6 @@ const nextConfig = {
   //   automaticVercelMonitors: true,
   // },
 }
-export default nextConfig
 // Injected content via Sentry wizard below
 
 // module.exports = withSentryConfig(nextConfig, {
@@ -185,3 +187,14 @@ export default nextConfig
 //   project: process.env.SENTRY_PROJECT,
 //   authToken: process.env.SENTRY_AUTH_TOKEN,
 // })
+
+const withMDX = createMDX({
+  // Add markdown plugins here, as desired
+  options: {
+    remarkPlugins: [remarkGfm, remarkMath],
+    rehypePlugins: [rehypeKatex, rehypeRaw],
+  },
+})
+
+// Merge MDX config with Next.js config
+export default withMDX(nextConfig)

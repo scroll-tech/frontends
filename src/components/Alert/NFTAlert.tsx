@@ -20,11 +20,11 @@ const useStyles = makeStyles<any>()((theme, { type }) => ({
   },
   standardSuccess: {
     backgroundColor: "#62E3D1",
-    color: (theme as any).vars.palette.text.primary,
+    color: theme.vars.palette.text.primary,
   },
   standardInfo: {
-    backgroundColor: (theme as any).vars.palette.themeBackground.highlight,
-    color: (theme as any).vars.palette.text.primary,
+    backgroundColor: theme.vars.palette.themeBackground.highlight,
+    color: theme.vars.palette.text.primary,
   },
   icon: {
     marginRight: 8,
@@ -47,7 +47,7 @@ const CheckAlert = props => {
           <SvgIcon
             sx={{
               fontSize: "2.4rem",
-              color: theme => (theme as any).vars.palette.text.primary,
+              color: theme => theme.vars.palette.text.primary,
             }}
             component={SuccessSvg}
             inheritViewBox
@@ -58,7 +58,7 @@ const CheckAlert = props => {
           <SvgIcon
             sx={{
               fontSize: "2.4rem",
-              color: theme => (theme as any).vars.palette.text.primary,
+              color: theme => theme.vars.palette.text.primary,
             }}
             component={ErrorSvg}
             inheritViewBox

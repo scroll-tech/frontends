@@ -8,7 +8,7 @@ import { styled } from "@mui/material/styles"
 
 const StyledFab = styled(Fab)(({ theme }) => ({
   "&:hover": {
-    background: (theme as any).vars.palette.primary.light,
+    background: theme.vars.palette.primary.light,
   },
 }))
 

@@ -8,6 +8,7 @@ import { genMeta } from "@/utils/route"
 import CanvasDashboard from "../Dashboard"
 
 export const generateMetadata = genMeta(async ({ params }) => {
+  const { address } = await params
   const publicClient = createPublicClient({
     chain: process.env.NEXT_PUBLIC_SCROLL_ENVIRONMENT === "Mainnet" ? scroll : scrollSepolia,
     transport: http(),
@@ -17,7 +18,7 @@ export const generateMetadata = genMeta(async ({ params }) => {
     address: process.env.NEXT_PUBLIC_PROFILE_REGISTRY_ADDRESS as Address,
     abi: CanvasProfileRegistryABI,
     functionName: "getProfile",
-    args: [params.address],
+    args: [address],
   })
 
   const canvasName = await publicClient.readContract({

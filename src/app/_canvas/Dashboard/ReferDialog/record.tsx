@@ -28,7 +28,7 @@ const RecordBox = styled(Box)(({ theme }) => ({
     margin: "0 0 2.4rem",
     width: "100%",
   },
-}))
+})) as typeof Box
 
 const Item = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -38,7 +38,7 @@ const Item = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     width: "100%",
   },
-}))
+})) as typeof Box
 
 const Description = styled(Typography)(({ theme }) => ({
   color: theme.palette.primary.contrastText,

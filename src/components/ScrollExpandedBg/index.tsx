@@ -7,7 +7,7 @@ import { styled } from "@mui/material/styles"
 
 const Wrapper = styled<any>(Box, { shouldForwardProp: prop => prop !== "bgColor" })(({ theme, bgColor }) => ({
   position: "relative",
-  backgroundColor: bgColor ? (theme as any).vars.palette.themeBackground[bgColor] : "transparent",
+  backgroundColor: bgColor ? theme.vars.palette.themeBackground[bgColor] : "transparent",
   width: "100%",
   overflow: "hidden",
 }))
@@ -22,7 +22,7 @@ const Container = styled(Box)(({ theme }) => ({
   maxWidth: "152rem",
   margin: "0 auto",
   [theme.breakpoints.down("sm")]: {},
-}))
+})) as typeof Box
 
 const Background = styled(Box)(({ theme }) => ({
   position: "absolute",
@@ -30,7 +30,7 @@ const Background = styled(Box)(({ theme }) => ({
   bottom: "0",
   width: "60%",
   minWidth: "152rem",
-  backgroundColor: (theme as any).vars.palette.themeBackground.dark,
+  backgroundColor: theme.vars.palette.themeBackground.dark,
   willChange: "width, height",
   borderRadius: "40px 40px 0px 0px",
   left: "50%",
@@ -41,7 +41,7 @@ const Background = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down("xl")]: {
     minWidth: "100%",
   },
-}))
+})) as typeof Box
 const ScrollExpandedBg = props => {
   const { anchorEl, children, bottomColor, fastScrollIn, ...restProps } = props
   const [, setScrollPosition] = useState(0)

@@ -74,23 +74,23 @@ const DetailRow: FC<DetailRowProps & BoxProps> = props => {
   return (
     <tr className={styles.rowItem}>
       <td>
-        <Typography variant={variant} color="textPrimary" className={styles.detailLabel}>
+        <Typography variant={variant} className={styles.detailLabel}>
           {title}
         </Typography>
       </td>
       <td>
-        <Typography variant={variant} color="textPrimary" className={styles.amount}>
+        <Typography variant={variant} className={styles.amount}>
           {value || "•"}
         </Typography>
         {isMobile ? (
-          <Typography variant={variant} color="textPrimary" className={styles.price}>
+          <Typography variant={variant} className={styles.price}>
             {price ? ` $${formatAmount(price)}` : ""}
           </Typography>
         ) : null}
       </td>
       {isMobile ? null : (
         <td>
-          <Typography variant={variant} color="textPrimary" className={styles.price}>
+          <Typography variant={variant} className={styles.price}>
             {price ? ` $${formatAmount(price)}` : ""}
           </Typography>
         </td>

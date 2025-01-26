@@ -308,5 +308,5 @@ export const PriceFeeProvider = ({ children }) => {
     return l1DateFee
   }
 
-  return <PriceFeeContext.Provider value={{ gasLimit, gasPrice, errorMessage, fetchData, getL1DataFee }}>{children}</PriceFeeContext.Provider>
+  return <PriceFeeContext value={{ gasLimit, gasPrice, errorMessage, fetchData, getL1DataFee }}>{children}</PriceFeeContext>
 }

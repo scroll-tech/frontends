@@ -93,29 +93,29 @@ const Faq = props => {
         {backText}
       </Link>
       <FaqItem title="How do I get started?" id="start">
-        <Typography variant="Body3" color="textSecondary">
+        <Typography variant="Body3" sx={{ color: "text.secondary" }}>
           Welcome to {NETWORKS[1].name}.
         </Typography>
-        <Typography variant="Body3" color="textSecondary">
+        <Typography variant="Body3" sx={{ color: "text.secondary" }}>
           Here is how to explore the platform:
         </Typography>
-        <Typography variant="Body3" color="textSecondary" className={classes.orderedParagraph}>
+        <Typography variant="Body3" sx={{ color: "text.secondary" }} className={classes.orderedParagraph}>
           1. Transfer and withdraw tokens in <Link href={SITE_MAP.Bridge}>Bridge</Link>.
         </Typography>
-        <Typography variant="Body3" color="textSecondary" className={classes.orderedParagraph}>
+        <Typography variant="Body3" sx={{ color: "text.secondary" }} className={classes.orderedParagraph}>
           2. View the statuses of transactions and blocks in the{" "}
           <Link href={SITE_MAP.L2Explorer} external>
             Scroll Block Explorers{" "}
           </Link>
           and the <Link href={SITE_MAP.RollupExplorer}>Rollup Explorer</Link>.
         </Typography>
-        <Typography variant="Body3" color="textSecondary">
+        <Typography variant="Body3" sx={{ color: "text.secondary" }}>
           More instructions <Link href={SITE_MAP.Home}>here</Link>.
         </Typography>
       </FaqItem>
       {children}
       <FaqItem title="Where can I find the Scroll architecture overview?">
-        <Typography variant="Body3" color="textSecondary">
+        <Typography variant="Body3" sx={{ color: "text.secondary" }}>
           Check our <Link href={SITE_MAP.Architecture}>architecture blog article</Link>.
         </Typography>
       </FaqItem>

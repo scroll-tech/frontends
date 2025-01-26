@@ -13,7 +13,7 @@ import SectionHeader from "@/components/SectionHeader"
 import data from "./data"
 
 const Explaination = () => {
-  const wrapperRef = useRef()
+  const wrapperRef = useRef<HTMLDivElement>(null)
 
   return (
     <ScrollExpandedBg sx={{ pt: ["6.4rem", "9.6rem"], pb: ["8rem", "14rem"] }} anchorEl={wrapperRef} fastScrollIn>

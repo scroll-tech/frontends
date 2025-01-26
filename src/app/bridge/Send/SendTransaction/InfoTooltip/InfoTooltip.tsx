@@ -1,11 +1,11 @@
-import React, { FC, ReactFragment } from "react"
+import React, { FC, ReactNode } from "react"
 import { makeStyles } from "tss-react/mui"
 
 import { Help as HelpIcon } from "@mui/icons-material"
 import Tooltip, { TooltipProps } from "@mui/material/Tooltip"
 
 type Props = {
-  title: ReactFragment
+  title: ReactNode
   children?: any
 } & Partial<TooltipProps>
 

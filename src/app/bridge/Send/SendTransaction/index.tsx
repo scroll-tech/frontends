@@ -331,14 +331,10 @@ const SendTransaction = () => {
               "@media (max-width: 600px)": {
                 marginLeft: "-0.5rem",
               },
+              color: "primary.main",
             }}
-            color="primary"
           >
-            <SvgIcon
-              sx={{ fontSize: "1.6rem", mr: "0.8rem", verticalAlign: "middle", color: "#FF684B" }}
-              component={WarningSvg}
-              inheritViewBox
-            ></SvgIcon>
+            <SvgIcon sx={{ fontSize: "1.6rem", mr: "0.8rem", verticalAlign: "middle" }} component={WarningSvg} inheritViewBox></SvgIcon>
             <Stack component="span" direction="row" style={{ display: "inline-flex", verticalAlign: "middle", alignItems: "center", gap: "0.2rem" }}>
               {bridgeWarning}
             </Stack>

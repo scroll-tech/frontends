@@ -58,7 +58,7 @@ const Container = styled(Box)(({ theme }) => ({
       },
     },
   },
-}))
+})) as typeof Box
 
 const LinkStyled = styled(Link)(({ theme }) => ({
   fontSize: "2rem",

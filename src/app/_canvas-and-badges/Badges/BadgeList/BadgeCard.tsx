@@ -86,10 +86,7 @@ const BadgeCard = props => {
             style={{ height: isMobile ? "6.4rem" : "8rem", aspectRatio: "1 / 1", borderRadius: "0.45rem" }}
           />
           <Typography
-            sx={[
-              { fontSize: ["1.8rem", "2rem"], lineHeight: "3.2rem", fontWeight: 600, maxWidth: "100%" },
-              theme => (theme as any).vars.singleLineEllipsis,
-            ]}
+            sx={[{ fontSize: ["1.8rem", "2rem"], lineHeight: "3.2rem", fontWeight: 600, maxWidth: "100%" }, theme => theme.singleLineEllipsis]}
           >
             {name}
           </Typography>

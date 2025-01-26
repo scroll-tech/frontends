@@ -1,4 +1,4 @@
-import { animate, motion, useMotionValue } from "framer-motion"
+import { animate, motion, useMotionValue } from "motion/react"
 import { useEffect, useState } from "react"
 
 import { Box } from "@mui/material"

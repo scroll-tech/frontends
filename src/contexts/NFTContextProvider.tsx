@@ -47,7 +47,7 @@ const NFTContextProvider = ({ children }: any) => {
   }
 
   return (
-    <NFTContext.Provider
+    <NFTContext
       value={{
         NFTInstance,
         NFTV2Instance,
@@ -56,7 +56,7 @@ const NFTContextProvider = ({ children }: any) => {
       }}
     >
       {children}
-    </NFTContext.Provider>
+    </NFTContext>
   )
 }
 

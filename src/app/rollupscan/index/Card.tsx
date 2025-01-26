@@ -34,7 +34,7 @@ const Card = styled(Paper)(({ theme }) => ({
 const CardTitle = styled(Typography)(({ theme }) => ({
   fontWeight: 600,
   marginRight: "0.6rem",
-  color: (theme as any).vars.palette.text.primary,
+  color: theme.vars.palette.text.primary,
   [theme.breakpoints.down("sm")]: {
     fontSize: "1.4rem",
     lineHeight: "2rem",
@@ -63,7 +63,7 @@ const InfoCard = ({ title, value, description, onClickCard }: any) => {
   return (
     <Card onClick={onClickCard}>
       <Box display="flex" sx={{ marginBottom: "0.8rem" }}>
-        <CardTitle variant="body1" color="textSecondary" sx={{ cursor: "pointer" }}>
+        <CardTitle variant="body1" sx={{ cursor: "pointer", color: "text.secondary" }}>
           {title}
         </CardTitle>
         <Tooltip title={description}>

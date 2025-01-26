@@ -1,4 +1,4 @@
-import { forwardRef, useEffect } from "react"
+import { useEffect } from "react"
 import Img from "react-cool-img"
 import { makeStyles } from "tss-react/mui"
 
@@ -81,8 +81,8 @@ const useStyles = makeStyles<any>()((theme, { transform }) => ({
   },
 }))
 
-const Item = forwardRef((props: any, ref) => {
-  const { sx, className, fadeIn, dragging, transition, transform, listeners, name, image, dragOverlay } = props
+const Item = (props: any) => {
+  const { sx, className, fadeIn, dragging, transition, transform, listeners, name, image, dragOverlay, ref } = props
   const { cx, classes } = useStyles({ transform })
   useEffect(() => {
     if (!dragOverlay) {
@@ -109,6 +109,6 @@ const Item = forwardRef((props: any, ref) => {
       </Box>
     </Box>
   )
-})
+}
 Item.displayName = "Item"
 export default Item

@@ -1,4 +1,4 @@
-import { alpha, lighten } from "@mui/material/styles"
+import { alpha } from "@mui/material/styles"
 
 import { boxShadowOptions, paletteOptions, typographyOptions } from "./options"
 
@@ -164,38 +164,6 @@ const lightTheme = {
         },
       ],
     },
-    MuiLoadingButton: {
-      styleOverrides: {
-        root: {
-          width: "15rem",
-          height: "4.4rem",
-          fontSize: "1.6rem",
-          fontWeight: 600,
-          borderRadius: "0.5rem",
-        },
-      },
-      defaultProps: {
-        variant: "contained",
-        color: "primary",
-      },
-      variants: [
-        {
-          props: { variant: "contained", color: "primary" },
-          style: {
-            backgroundColor: paletteOptions.primary.main,
-            "&:hover": {
-              backgroundColor: lighten(paletteOptions.primary.main, 0.1),
-            },
-          },
-        },
-        {
-          props: { variant: "contained", color: "primary", loading: true },
-          style: {
-            backgroundColor: `${paletteOptions.primary.main} !important`,
-          },
-        },
-      ],
-    },
     MuiMenuItem: {
       styleOverrides: {
         root: {
@@ -301,7 +269,7 @@ const lightTheme = {
     MuiAccordion: {
       styleOverrides: {
         root: ({ theme }) => ({
-          borderBottom: `1px solid ${(theme as any).vars.palette.border.main}`,
+          borderBottom: `1px solid ${theme.vars.palette.border.main}`,
           "&:before": {
             backgroundColor: "unset",
           },
@@ -352,11 +320,18 @@ const lightTheme = {
     MuiLink: {
       styleOverrides: {
         root: ({ theme }) => ({
-          color: (theme as any).vars.palette.link.main,
+          color: theme.vars.palette.link.main,
           fontSize: "1.6rem",
           fontWeight: 600,
           cursor: "pointer",
         }),
+      },
+    },
+    MuiBreadcrumbs: {
+      styleOverrides: {
+        root: {
+          color: "var(--mui-palette-text-secondary)",
+        },
       },
     },
   },

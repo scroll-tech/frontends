@@ -12,7 +12,7 @@ const linkStyles = (theme: Theme, dark: boolean): CSSObject => ({
   fontWeight: 400,
   cursor: "pointer",
   whiteSpace: "nowrap",
-  color: dark ? (theme as any).vars.palette.primary.contrastText : (theme as any).vars.palette.text.primary,
+  color: dark ? theme.vars.palette.primary.contrastText : theme.vars.palette.text.primary,
   textDecoration: "none",
   minWidth: "16rem",
   "& p, & svg": {
@@ -22,7 +22,7 @@ const linkStyles = (theme: Theme, dark: boolean): CSSObject => ({
   },
   "&:hover": {
     cursor: "pointer",
-    color: dark ? (theme as any).vars.palette.primary.contrastText : (theme as any).vars.palette.primary.main,
+    color: dark ? theme.vars.palette.primary.contrastText : theme.vars.palette.primary.main,
     "& svg": {
       opacity: 1,
       left: "0.8rem",

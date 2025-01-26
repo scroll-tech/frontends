@@ -9,7 +9,7 @@ const SectionWrapper = props => {
       {...restProps}
       sx={{
         backgroundColor: theme =>
-          transparent ? "transparent" : dark ? (theme as any).vars.palette.themeBackground.dark : (theme as any).vars.palette.themeBackground.light,
+          transparent ? "transparent" : dark ? theme.vars.palette.themeBackground.dark : theme.vars.palette.themeBackground.light,
         borderRadius: round ? "4rem 4rem 0 0 " : "unset",
       }}
     >

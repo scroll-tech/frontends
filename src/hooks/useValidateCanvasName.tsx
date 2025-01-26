@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { ReactNode, useEffect, useRef, useState } from "react"
 import { usePrevious } from "react-use"
 import { useDebouncedCallback } from "use-debounce"
 import { hexToBool } from "viem"
@@ -17,9 +17,9 @@ const useValidateName = value => {
   const { username } = useCanvasStore()
 
   const preValue = usePrevious(value)
-  const [helpText, setHelpText] = useState<string | JSX.Element | null>(null)
+  const [helpText, setHelpText] = useState<string | ReactNode | null>(null)
   const [validating, setValidating] = useState(false)
-  const controller = useRef<any>()
+  const controller = useRef<any>(undefined)
 
   useEffect(() => {
     if ((preValue && !value) || value !== username) {
@@ -29,7 +29,7 @@ const useValidateName = value => {
 
   const handleValidateName = useDebouncedCallback(async value => {
     setValidating(true)
-    const nextHelpText: string | JSX.Element = await validateName(value)
+    const nextHelpText: string | ReactNode = await validateName(value)
     setHelpText(nextHelpText)
     setValidating(false)
     return nextHelpText
@@ -40,7 +40,7 @@ const useValidateName = value => {
   }
 
   const validateName = async name => {
-    let nextHelpText: string | JSX.Element = ""
+    let nextHelpText: string | ReactNode = ""
     if (controller.current) {
       controller.current.abort("user input")
     }

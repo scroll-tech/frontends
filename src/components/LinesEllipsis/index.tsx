@@ -42,9 +42,9 @@ const LinesEllipsis = props => {
   const [clamped, setClamped] = useState(false)
 
   const units = useRef([])
-  const shadowRef = useRef<HTMLElement>()
-  const targetRef = useRef()
-  const ellipsisRef = useRef()
+  const shadowRef = useRef<HTMLElement>(null)
+  const targetRef = useRef<HTMLElement>(null)
+  const ellipsisRef = useRef<HTMLSpanElement>(null)
 
   useEffect(() => {
     const handleSizeChanged = () => {

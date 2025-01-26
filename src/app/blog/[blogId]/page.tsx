@@ -3,8 +3,9 @@ import { genMeta } from "@/utils/route"
 
 import Detail from "./detail"
 
-export const generateMetadata = genMeta(({ params }) => {
-  const currentBlog = blogSource.find(blog => blog.id === params.blogId)
+export const generateMetadata = genMeta(async ({ params }) => {
+  const { blogId } = await params
+  const currentBlog = blogSource.find(blog => blog.id === blogId)
   const imgUrl = currentBlog?.ogImg || currentBlog?.posterImg || ""
 
   return {
@@ -19,7 +20,8 @@ export const generateMetadata = genMeta(({ params }) => {
   }
 })
 
-const BlogDetail = () => {
+const BlogDetail = async ({ params }) => {
+  const { blogId } = await params
   return (
     <>
       <link
@@ -33,7 +35,7 @@ const BlogDetail = () => {
         href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.9.0/github-markdown.min.css"
         crossOrigin="anonymous"
       />
-      <Detail></Detail>
+      <Detail blogId={blogId?.toLowerCase()}></Detail>
     </>
   )
 }

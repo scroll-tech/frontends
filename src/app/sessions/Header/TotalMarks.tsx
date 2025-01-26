@@ -1,7 +1,7 @@
 "use client"
 
 import { useQuery } from "@tanstack/react-query"
-import { motion } from "framer-motion"
+import { motion } from "motion/react"
 
 import { Box, Divider, Skeleton, Stack, Typography } from "@mui/material"
 
@@ -115,9 +115,7 @@ const TotalPoints = () => {
                 How does this work
               </Typography>
               <QATooltip title="Providing liquidity in listed DEXs boosts your accrual rate. The more useful and volatile your liquidity pair, the higher the boost. Additional boosts will be introduced by Scroll’s upcoming LRTs soon.">
-                <span className="text-[0] cursor-pointer">
-                  <QaSvg></QaSvg>
-                </span>
+                <QaSvg className="cursor-pointer"></QaSvg>
               </QATooltip>
             </Stack>
             <Typography></Typography>

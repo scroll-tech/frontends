@@ -36,7 +36,7 @@ const Container = styled(Box)(({ theme }) => ({
       margin: "0.8rem 0",
     },
   },
-}))
+})) as typeof Box
 
 const TitleTypography = styled(Typography)(() => ({
   textAlign: "center",

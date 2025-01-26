@@ -24,7 +24,7 @@ const Grid = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     columnGap: "2.4rem",
   },
-}))
+})) as typeof Box
 
 const MyNFT = props => {
   const { total } = props
@@ -95,7 +95,7 @@ const MyNFT = props => {
         alignItems: "center",
         gap: "1.6rem",
         "& .MuiTypography-root": {
-          color: theme => (theme as any).vars.palette.primary.contrastText,
+          color: theme => "primary.contrastText",
         },
         "@media (max-width: 1280px)": {
           gap: 0,

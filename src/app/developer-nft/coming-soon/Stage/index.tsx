@@ -70,7 +70,7 @@ const Stage = () => {
             <Statistic size="small" sx={{ width: ["12rem", "28rem", "41.8rem"] }} title={formatDate(date)} subTitle={title}></Statistic>
             {index < DEVELOPER_NFT_STEPS.length - 1 && (
               <Divider
-                sx={{ width: ["4rem", "6rem", "12rem"], borderWidth: 2, borderColor: theme => (theme as any).vars.palette.primary.contrastText }}
+                sx={{ width: ["4rem", "6rem", "12rem"], borderWidth: 2, borderColor: theme => theme.vars.palette.primary.contrastText }}
               ></Divider>
             )}
           </Fragment>

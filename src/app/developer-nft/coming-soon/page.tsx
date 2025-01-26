@@ -33,7 +33,7 @@ const ComingSoon = () => {
         alignItems: "center",
         pb: ["8rem", "16rem"],
         pt: 0,
-        "& .MuiTypography-root": { color: theme => (theme as any).vars.palette.primary.contrastText },
+        "& .MuiTypography-root": { color: theme => theme.vars.palette.primary.contrastText },
       }}
     >
       <Header></Header>

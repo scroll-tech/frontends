@@ -12,11 +12,7 @@ import QuestionStep from "./QuestionStep"
 
 const MintFlow = ({ scrollTarget }) => {
   return (
-    <SectionWrapper
-      dark
-      full
-      sx={{ p: "0 !important", "& .MuiTypography-root": { color: theme => (theme as any).vars.palette.primary.contrastText } }}
-    >
+    <SectionWrapper dark full sx={{ p: "0 !important", "& .MuiTypography-root": { color: theme => theme.vars.palette.primary.contrastText } }}>
       <Swiper
         style={{ zIndex: 0 }}
         pagination={{

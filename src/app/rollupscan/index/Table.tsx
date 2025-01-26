@@ -1,7 +1,7 @@
 import dayjs from "dayjs"
 import { default as RouterLink } from "next/link"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import React, { forwardRef, useMemo } from "react"
+import React, { useMemo } from "react"
 import { useStyles } from "tss-react/mui"
 
 import { Chip, Pagination, TableBody, TableContainer, TableHead, TablePagination, TableRow, Typography, alpha } from "@mui/material"
@@ -31,48 +31,48 @@ const StyledTablePagination: any = styled(TablePagination)(({ theme }) => ({
     fontWeight: "500 ",
   },
   ".MuiTablePagination-selectLabel": {
-    color: `${(theme as any).vars.palette.text.primary}`,
+    color: theme.vars.palette.text.primary,
     fontSize: "1.6rem",
     fontWeight: "500 ",
   },
   ".MuiTablePagination-selectIcon": {
     fontSize: "1.6rem",
-    color: `${(theme as any).vars.palette.text.primary}`,
+    color: theme.vars.palette.text.primary,
   },
   ".MuiTablePagination-displayedRows": {
     fontSize: "1.6rem",
     fontWeight: "500 ",
-    color: `${(theme as any).vars.palette.text.primary}`,
+    color: theme.vars.palette.text.primary,
   },
   // "*": {
   //   fontSize: "1.6rem !important",
   //   fontWeight: "500 !important",
-  //   color: `${(theme as any).vars.palette.text.primary} !important`,
+  //   color: `${theme.vars.palette.text.primary} !important`,
   // },
 }))
 
 const StatusChip = styled(Chip)(({ theme }) => ({
-  color: (theme as any).vars.palette.primary.contrastText,
+  color: theme.vars.palette.primary.contrastText,
   textTransform: "capitalize",
   "&.precommitted": {
-    backgroundColor: (theme as any).vars.palette.tagWarning.light,
-    color: (theme as any).vars.palette.tagWarning.main,
+    backgroundColor: theme.vars.palette.tagWarning.light,
+    color: theme.vars.palette.tagWarning.main,
   },
   "&.committed": {
-    backgroundColor: (theme as any).vars.palette.tagCommitted.light,
-    color: (theme as any).vars.palette.tagCommitted.main,
+    backgroundColor: theme.vars.palette.tagCommitted.light,
+    color: theme.vars.palette.tagCommitted.main,
   },
   "&.finalized": {
     backgroundColor: "#DFFCF8",
     color: "#0F8E7E",
   },
   "&.skipped": {
-    backgroundColor: (theme as any).vars.palette.tagCommitted.light,
-    color: (theme as any).vars.palette.tagCommitted.main,
+    backgroundColor: theme.vars.palette.tagCommitted.light,
+    color: theme.vars.palette.tagCommitted.main,
   },
   "&.unknown": {
-    backgroundColor: (theme as any).vars.palette.tagUnknown.light,
-    color: (theme as any).vars.palette.tagUnknown.main,
+    backgroundColor: theme.vars.palette.tagUnknown.light,
+    color: theme.vars.palette.tagUnknown.main,
   },
   "& > .MuiChip-label": {
     fontWeight: 500,
@@ -84,7 +84,7 @@ const CustomPagination = styled(Pagination)(({ theme }) => ({
     fontSize: "1.6rem",
   },
   ".MuiPaginationItem-root": {
-    color: (theme as any).vars.palette.text.primary,
+    color: theme.vars.palette.text.primary,
   },
   ".MuiPaginationItem-root.Mui-selected": {
     fontWeight: 700,
@@ -110,13 +110,13 @@ const CustomTableRow = styled(TableRow)(({ theme }) => ({
   "&.rowActive": {
     backgroundColor: `${alpha("#FF684B", 0.05)}`,
     "&:after": {
-      backgroundColor: (theme as any).vars.palette.primary.main,
+      backgroundColor: theme.vars.palette.primary.main,
     },
   },
 }))
 
-const RollupTable = forwardRef<any, any>(function RollupTable(props, ref) {
-  const { onPaginationChange } = props
+const RollupTable = function RollupTable(props) {
+  const { onPaginationChange, ref } = props
   const { cx } = useStyles()
   const { data, total, emptyBatch, searchLoading, batchLoading, currentClickedBatch } = useRollupStore()
   const router = useRouter()
@@ -251,6 +251,6 @@ const RollupTable = forwardRef<any, any>(function RollupTable(props, ref) {
       />
     </TableContainer>
   )
-})
+}
 
 export default RollupTable

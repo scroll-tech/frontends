@@ -26,7 +26,7 @@ const ButtonContainer = styled(Box)(({ theme }) => ({
     flexDirection: "column",
     gap: "2rem",
   },
-}))
+})) as typeof Box
 
 const Header = () => {
   const { isMobile, isLandscape } = useCheckViewport()

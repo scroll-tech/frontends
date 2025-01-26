@@ -76,7 +76,7 @@ const Web3ContextProvider = props => {
   )
 
   return (
-    <RainbowContext.Provider
+    <RainbowContext
       value={{
         provider,
         walletCurrentAddress: address,
@@ -88,7 +88,7 @@ const Web3ContextProvider = props => {
       }}
     >
       {props.children}
-    </RainbowContext.Provider>
+    </RainbowContext>
   )
 }
 

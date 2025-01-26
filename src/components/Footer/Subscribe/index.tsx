@@ -25,7 +25,7 @@ const SubscribeBox = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     gap: "1.8rem",
   },
-}))
+})) as typeof Box
 
 const Subscribe = () => {
   const [email, setEmail] = useState("")
@@ -55,7 +55,7 @@ const Subscribe = () => {
   return (
     <Box
       sx={{
-        backgroundColor: theme => (theme as any).vars.palette.themeBackground.highlight,
+        backgroundColor: theme => theme.vars.palette.themeBackground.highlight,
         py: ["6rem", "6rem", "3.2rem"],
       }}
     >

@@ -1,7 +1,8 @@
 "use client"
 
 import { useQuery } from "@tanstack/react-query"
-import { motion } from "framer-motion"
+import { motion } from "motion/react"
+import dynamic from "next/dynamic"
 import { useEffect, useRef, useState } from "react"
 import Img from "react-cool-img"
 
@@ -13,8 +14,10 @@ import Button from "@/components/Button"
 import { CANVAS_AND_BADGES_PAGE_SYMBOL, CANVAS_URL, HEADER_BADGES, HEADER_STARS, ISSUE_BADGES_URL } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
-import Counter from "./Counter"
+// import Counter from "./Counter"
 import Statistic from "./Statistic"
+
+const Counter = dynamic(() => import("./Counter"), { ssr: false })
 
 const ImageWrapper = motion(Box)
 
@@ -31,7 +34,7 @@ const Header = () => {
   const [badgesScale, setBadgesScale] = useState(1)
   const [starsScale, setStarsScale] = useState(1)
 
-  const badgesContainerRef = useRef<any>()
+  const badgesContainerRef = useRef<HTMLDivElement>(null)
 
   const { data } = useQuery({
     queryKey: ["totalCount"],

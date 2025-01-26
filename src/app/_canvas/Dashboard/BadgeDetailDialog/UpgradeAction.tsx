@@ -18,7 +18,7 @@ const UpgradedBox = styled(Box)(({ theme }) => ({
     fontSize: "1.4rem",
     gap: "0.8rem",
   },
-}))
+})) as typeof Box
 
 const UpgradedButton = styled(Button)(({ theme }) => ({
   borderRadius: "0.4rem",

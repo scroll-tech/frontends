@@ -26,7 +26,7 @@ const InfoBox = styled(Box)(({ theme }) => ({
     columnGap: "2rem",
     marginBottom: "3.5rem",
   },
-}))
+})) as typeof Box
 
 const Rollup = () => {
   const router = useRouter()
@@ -42,7 +42,7 @@ const Rollup = () => {
 
   const tableRowsRef = useRef<HTMLTableSectionElement | null>(null)
 
-  const timerRef = useRef<any>()
+  const timerRef = useRef<any>(undefined)
 
   useEffect(() => {
     if (page && pageSize) {

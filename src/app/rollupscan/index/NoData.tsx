@@ -5,7 +5,7 @@ const Container = styled(Box)(() => ({
   marginTop: "12rem",
   marginBottom: "60rem",
   textAlign: "center",
-}))
+})) as typeof Box
 
 const NoResultsTypography = styled(Typography)(({ theme }) => ({
   fontFamily: "TransSansPremium",
@@ -14,7 +14,7 @@ const NoResultsTypography = styled(Typography)(({ theme }) => ({
   lineHeight: "2.4rem",
   marginTop: "1rem",
   marginBottom: "1rem",
-  color: (theme as any).vars.palette.text.primary,
+  color: theme.vars.palette.text.primary,
 }))
 
 const NoData = () => {
@@ -22,7 +22,7 @@ const NoData = () => {
     <Container>
       <img alt="nodata" className="w-[100px]" src="/imgs/rollup/nodata.png" />
       <NoResultsTypography>No results found</NoResultsTypography>
-      <Typography variant="body1" color="textSecondary">
+      <Typography variant="body1" sx={{ color: "text.secondary" }}>
         We couldn’t find any result matching your search.
       </Typography>
       {/* <TryAgain> Try Again</TryAgain> */}

@@ -1,9 +1,9 @@
 "use client"
 
-import { Box, Typography } from "@mui/material"
+import { Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
-const Container = styled(Box)<any>(({ theme, isPopup }) => ({
+const Container = styled("div")<any>(({ theme, isPopup }) => ({
   padding: isPopup ? "1rem" : "14rem 6rem",
   overflow: "auto",
   "::-webkit-scrollbar-track": {

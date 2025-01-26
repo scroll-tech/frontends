@@ -21,7 +21,7 @@ const Card = styled(Box)(({ theme }) => ({
   margin: "0 auto",
   overflow: "hidden",
   cursor: "pointer",
-  color: (theme as any).vars.palette.text.primary,
+  color: theme.vars.palette.text.primary,
   transition: "all 0.3s ease-in-out",
   "&:hover": {
     transform: "scale(1.01)",
@@ -35,7 +35,7 @@ const Card = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     gridTemplateColumns: "1fr",
   },
-}))
+})) as typeof Box
 
 const ArticleDate = styled(Typography)(({ theme }) => ({
   marginBottom: "0.5rem",
@@ -64,7 +64,7 @@ const ArticleInfo = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     gridRow: 2,
   },
-}))
+})) as typeof Box
 
 const ArticlePoster = styled(WebpImage)(({ theme }) => ({
   width: "100%",
