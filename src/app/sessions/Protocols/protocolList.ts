@@ -1,3 +1,5 @@
+import QuillFinanceSvg from "@/assets/svgs/sessions/QuillFinance.svg?url"
+
 export interface ProtocolMarksMap {
   [key: string]: string
 }
@@ -154,6 +156,13 @@ const OTHERS_DATA: ProtocolData = {
     //   logoURL: "https://scroll-eco-list.netlify.app/logos/Pencils%20Protocol.png",
     //   href: "https://app.pencilsprotocol.io/farming",
     // },
+    {
+      name: "Quill Finance",
+      project: "Quill Finance",
+      logoURL: QuillFinanceSvg,
+      href: "https://www.quill.finance/",
+      upcoming: true,
+    },
     {
       name: "Rho Markets",
       project: "Rho Markets",

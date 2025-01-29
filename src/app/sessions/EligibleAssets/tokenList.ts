@@ -37,6 +37,11 @@ const TOKEN_LIST = [
     href: "/bridge?token=USDT",
   },
   {
+    name: "USDQ",
+    logoURI: "/imgs/sessions/tokens/USDQ.svg",
+    href: "https://app.quill.finance/borrow",
+  },
+  {
     name: "sUSDe/USDe",
     logoURI: "/imgs/sessions/tokens/sUSDe.svg",
     href: "https://app.ethena.fi/buy",
