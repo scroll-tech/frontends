@@ -88,6 +88,10 @@ const nextConfig = {
       {
         source: '/gov-docs/:path*',
         destination: 'https://scroll-governance-documentation.vercel.app/:path*'
+      },
+      {
+        source: '/research/:path*',
+        destination: 'https://scroll-research.vercel.app/research/:path*'
       }
     ]
   },
