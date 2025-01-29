@@ -58,8 +58,6 @@ const HeaderContainer = styled(Box)(({}) => ({
 const MenuLinkButton = styled<any>(Link, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   fontSize: "1.8rem",
   fontWeight: 400,
-  paddingLeft: "25px",
-  paddingRight: "25px",
   marginLeft: "4px",
   marginRight: "4px",
   lineHeight: "65px",
