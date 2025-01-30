@@ -110,6 +110,14 @@ const LENDING_BORROWING_DATA: ProtocolData = {
       logoURL: "https://scroll-eco-list.netlify.app/logos/Compound%20Finance.png",
       href: "https://app.compound.finance/?market=usdc-scroll",
     },
+    // Collateralized Debt Position
+    {
+      name: "Quill Finance",
+      project: "Quill Finance",
+      logoURL: QuillFinanceSvg,
+      href: "https://www.quill.finance/",
+      upcoming: true,
+    },
     // {
     //   name: "Huma",
     //   project: "Huma",
@@ -156,13 +164,6 @@ const OTHERS_DATA: ProtocolData = {
     //   logoURL: "https://scroll-eco-list.netlify.app/logos/Pencils%20Protocol.png",
     //   href: "https://app.pencilsprotocol.io/farming",
     // },
-    {
-      name: "Quill Finance",
-      project: "Quill Finance",
-      logoURL: QuillFinanceSvg,
-      href: "https://www.quill.finance/",
-      upcoming: true,
-    },
     {
       name: "Rho Markets",
       project: "Rho Markets",
