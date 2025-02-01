@@ -36,7 +36,7 @@ function prevSibling(node, count) {
 }
 
 const LinesEllipsis = props => {
-  const { component: Component = "div", ellipsis, trimRight = true, basedOn, maxLine = 1, text, className, onReflow, ...rest } = props
+  const { component: Component = "div", ellipsis, trimRight = true, basedOn, maxLine = 1, text, className, ...rest } = props
 
   const [displayedText, setDisplayedText] = useState(text)
   const [clamped, setClamped] = useState(false)
@@ -92,7 +92,7 @@ const LinesEllipsis = props => {
     const nextDisplayedText = nextClamped ? units.current.slice(0, ellipsisIndex).join("") : props.text
     setClamped(nextClamped)
     setDisplayedText(nextDisplayedText)
-    onReflow({ clamped: nextClamped, text: nextDisplayedText })
+    // onReflow({ clamped: nextClamped, text: nextDisplayedText })
   }
 
   // return the index of the first letter/word of each line

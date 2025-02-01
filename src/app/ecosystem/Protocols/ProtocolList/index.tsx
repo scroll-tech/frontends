@@ -14,7 +14,7 @@ import { isAboveScreen } from "@/utils/dom"
 
 import Error from "./Error"
 import NoData from "./NoData"
-import ProtocolCard from "./ProtocolCard"
+import ProtocolCard, { type Protocol } from "./ProtocolCard"
 
 const useStyles = makeStyles()(theme => ({
   listRoot: {
@@ -36,7 +36,7 @@ const ProtocolList = props => {
   const { classes } = useStyles()
   const [loading, setLoading] = useState(false)
   const prePage = usePrevious(page)
-  const [ecosystemList, setEcosystemList] = useState([])
+  const [ecosystemList, setEcosystemList] = useState<Protocol[]>([])
   const [isError, setIsError] = useState(false)
   const [hasMore, setHasMore] = useState(false)
 
@@ -46,7 +46,9 @@ const ProtocolList = props => {
     estimateSize: () => 136,
     overscan: 5,
     gap: 20,
+
     scrollMargin: listRef.current?.offsetTop ?? 0,
+    getItemKey: index => ecosystemList[index].name,
   })
   const rows = virtualizer.getVirtualItems()
 

@@ -1,5 +1,5 @@
+import Image from "next/image"
 import { useRef, useState } from "react"
-import Img from "react-cool-img"
 import { makeStyles } from "tss-react/mui"
 
 import { Box, Button, Stack, SvgIcon, Typography } from "@mui/material"
@@ -14,6 +14,18 @@ import { TWITTER_ORIGIN } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
 import NetworkLabel from "./NetworkLabel"
+
+export interface Protocol {
+  name: string
+  desc: string
+  ext: string
+  // networkLabel: "Mainnet" | "Testnet"
+  networkLabel: string
+  rank: object
+  tags: string[]
+  twitterHandle: string
+  website: string
+}
 
 const useStyles = makeStyles()(theme => ({
   grid: {
@@ -123,7 +135,7 @@ const useStyles = makeStyles()(theme => ({
 }))
 
 const ProtocolCard = props => {
-  const { name, hash, ext, tags, desc, website, twitterHandle, networkLabel, onResize, className, ...restProps } = props
+  const { name, ext, tags, desc, website, twitterHandle, networkLabel, onResize, className, ...restProps } = props
   const { classes, cx } = useStyles()
   const { isMobile, isDesktop } = useCheckViewport()
 
@@ -146,7 +158,13 @@ const ProtocolCard = props => {
           gridArea: "logo",
         }}
       >
-        <Img alt={name} src={fetchEcosystemProtocolLogo(name, ext)} placeholder={hash} width={isMobile ? 48 : 88} height={isMobile ? 48 : 88}></Img>{" "}
+        <Image
+          alt={name}
+          src={fetchEcosystemProtocolLogo(name, ext)}
+          placeholder="empty"
+          width={isMobile ? 48 : 88}
+          height={isMobile ? 48 : 88}
+        ></Image>
       </Stack>
       <Stack direction="row" alignItems="center" gap="0.8rem" className={classes.name}>
         <Typography
