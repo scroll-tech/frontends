@@ -93,8 +93,8 @@ interface CanvasStore {
   changeIsBadgeUpgrading: (id, loading) => void
   checkIfProfileMinted: (instance: Contract, address: string, test?: boolean) => Promise<any>
   fetchCurrentCanvasDetail: (signer, walletAddress, profileAddress) => void
-  checkAndFetchCurrentWalletCanvas: (prividerOrSigner, unsignedProfileRegistryContract, walletAddress) => Promise<any>
-  fetchOthersCanvasDetail: (prividerOrSigner, othersAddress, profileAddress) => void
+  checkAndFetchCurrentWalletCanvas: (providerOrSigner, unsignedProfileRegistryContract, walletAddress) => Promise<any>
+  fetchOthersCanvasDetail: (providerOrSigner, othersAddress, profileAddress) => void
   changeProfileMintedLoading: (loading: boolean) => void
   changeProfileDetailLoading: (loading: boolean) => void
   queryUsername: () => void
@@ -187,8 +187,8 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
       // return { profileAddress: null, minted: null }
     }
   },
-  fetchOthersCanvasDetail: async (privider, othersAddress, profileAddress) => {
-    const { name, userBadges, attachedBadges, orderedAttachedBadges, badgeOrder } = await fetchCanvasDetail(privider, othersAddress, profileAddress)
+  fetchOthersCanvasDetail: async (provider, othersAddress, profileAddress) => {
+    const { name, userBadges, attachedBadges, orderedAttachedBadges, badgeOrder } = await fetchCanvasDetail(provider, othersAddress, profileAddress)
     set({
       canvasUsername: name,
       userBadges,
@@ -199,7 +199,7 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
   },
 
   // fetch wallet profile when viewing others canvas
-  checkAndFetchCurrentWalletCanvas: async (prividerOrSigner, unsignedProfileRegistryContract, walletAddress) => {
+  checkAndFetchCurrentWalletCanvas: async (providerOrSigner, unsignedProfileRegistryContract, walletAddress) => {
     set({
       walletDetailLoading: true,
     })
@@ -207,7 +207,7 @@ const useCanvasStore = create<CanvasStore>()((set, get) => ({
       const { minted, profileAddress } = await get().checkIfProfileMinted(unsignedProfileRegistryContract, walletAddress)
 
       if (minted) {
-        const { profileContract, name } = await queryCanvasUsername(prividerOrSigner, profileAddress)
+        const { profileContract, name } = await queryCanvasUsername(providerOrSigner, profileAddress)
         set({
           username: name,
           profileContract,

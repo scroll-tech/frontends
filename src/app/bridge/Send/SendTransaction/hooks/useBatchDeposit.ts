@@ -22,7 +22,7 @@ export default function useBatchDeposit(props) {
   }, [selectedToken])
 
   // < 0.001 need special check for economy mode
-  const depositAmountIsVaild = useMemo(() => {
+  const depositAmountIsValid = useMemo(() => {
     const minAmount = BNToAmount(batchDepositConfig.minAmountPerTx, selectedToken.decimals)
     if (amount && txType === "Deposit" && enableBatchDeposit) {
       return Number(amount) >= Number(minAmount)
@@ -49,6 +49,6 @@ export default function useBatchDeposit(props) {
 
   return {
     getBatchDepositConfigsByToken,
-    depositAmountIsVaild,
+    depositAmountIsValid,
   }
 }

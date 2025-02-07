@@ -7,7 +7,7 @@ import { loadState } from "@/utils/localStorage"
 
 type TransactionType = "Deposit" | "Withdraw"
 
-type WithDrawStep = "1" | "2"
+type WithdrawStep = "1" | "2"
 
 interface TxSuccess {
   code: 1
@@ -26,7 +26,7 @@ interface BridgeStore {
   fromNetwork: Network
   toNetwork: Network
   txType: TransactionType
-  withDrawStep: WithDrawStep
+  withdrawStep: WithdrawStep
   txResult: TxResult
   isNetworkCorrect: boolean
   tokenList: Array<Token>
@@ -35,7 +35,7 @@ interface BridgeStore {
   changeToNetwork: (network: Network) => void
   changeTxType: (txType: TransactionType) => void
   changeTxResult: (txResult: TxResult | null) => void
-  changeWithdrawStep: (withDrawStep: WithDrawStep) => void
+  changeWithdrawStep: (withdrawStep: WithdrawStep) => void
   changeIsNetworkCorrect: (isNetworkCorrect: boolean) => void
   fetchTokenList: () => Promise<void>
 }
@@ -45,7 +45,7 @@ const useBridgeStore = create<BridgeStore>()((set, get) => ({
   fromNetwork: NETWORKS[0],
   toNetwork: NETWORKS[1],
   txType: "Deposit",
-  withDrawStep: "1",
+  withdrawStep: "1",
   txResult: null,
   isNetworkCorrect: true,
   tokenList: NATIVE_TOKEN_LIST,
@@ -114,9 +114,9 @@ const useBridgeStore = create<BridgeStore>()((set, get) => ({
     })
   },
 
-  changeWithdrawStep: withDrawStep => {
+  changeWithdrawStep: withdrawStep => {
     set({
-      withDrawStep,
+      withdrawStep,
     })
   },
 

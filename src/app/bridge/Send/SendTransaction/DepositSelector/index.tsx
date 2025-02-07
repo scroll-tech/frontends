@@ -51,7 +51,7 @@ const useStyles = makeStyles()(theme => ({
       justifyContent: "center",
     },
   },
-  invaildCard: {
+  invalidCard: {
     opacity: 0.6,
     pointerEvents: "none",
   },
@@ -205,7 +205,7 @@ const DepositSelector = props => {
             role="button"
             tabIndex={0}
             variant="outlined"
-            classes={{ root: cx(classes.cardRoot, !idx && !isVaild && classes.invaildCard, selectedType === item.type && classes.selectedCard) }}
+            classes={{ root: cx(classes.cardRoot, !idx && !isVaild && classes.invalidCard, selectedType === item.type && classes.selectedCard) }}
             onClick={() => handleSelect(item.type)}
           >
             {item.type === selectedType && <SvgIcon classes={{ root: classes.selectedIcon }} component={SelectedSvg} inheritViewBox></SvgIcon>}

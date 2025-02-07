@@ -49,7 +49,7 @@ const useStyles = makeStyles()(theme => ({
 
 const Withdraw = () => {
   const { classes } = useStyles()
-  const { withDrawStep, changeWithdrawStep } = useBridgeStore()
+  const { withdrawStep, changeWithdrawStep } = useBridgeStore()
 
   const handleChange = (e, newValue) => {
     changeWithdrawStep(newValue)
@@ -57,7 +57,7 @@ const Withdraw = () => {
 
   return (
     <Stack direction="column" sx={{ height: "100%" }}>
-      <TabContext value={withDrawStep}>
+      <TabContext value={withdrawStep}>
         <TabList
           onChange={handleChange}
           textColor="primary"

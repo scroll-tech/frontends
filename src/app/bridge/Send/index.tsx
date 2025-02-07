@@ -87,7 +87,7 @@ const useStyles = makeStyles()(theme => ({
 const Send = () => {
   const { classes, cx } = useStyles()
   const { chainId } = useRainbowContext()
-  const { txType, txResult, fromNetwork, withDrawStep, changeTxType, changeTxResult, changeHistoryVisible, changeIsNetworkCorrect } = useBridgeStore()
+  const { txType, txResult, fromNetwork, withdrawStep, changeTxType, changeTxResult, changeHistoryVisible, changeIsNetworkCorrect } = useBridgeStore()
 
   const { depositBatchMode } = useBatchBridgeStore()
 
@@ -101,13 +101,13 @@ const Send = () => {
     let networkCorrect
     if (txType === "Deposit") {
       networkCorrect = fromNetwork.isL1 && chainId === CHAIN_ID.L1
-    } else if (withDrawStep === "1") {
+    } else if (withdrawStep === "1") {
       networkCorrect = !fromNetwork.isL1 && chainId === CHAIN_ID.L2
     } else {
       networkCorrect = chainId === CHAIN_ID.L1
     }
     changeIsNetworkCorrect(networkCorrect)
-  }, [fromNetwork, txType, withDrawStep, chainId])
+  }, [fromNetwork, txType, withdrawStep, chainId])
 
   const handleChange = (e, newValue) => {
     changeTxType(newValue)
@@ -137,7 +137,7 @@ const Send = () => {
         <TabPanel value="Deposit" classes={{ root: classes.tabPanel }}>
           <Deposit></Deposit>
         </TabPanel>
-        <TabPanel value="Withdraw" className={withDrawStep === "2" ? "tx" : ""} classes={{ root: cx(classes.tabPanel, "withdraw") }}>
+        <TabPanel value="Withdraw" className={withdrawStep === "2" ? "tx" : ""} classes={{ root: cx(classes.tabPanel, "withdraw") }}>
           <Withdraw></Withdraw>
         </TabPanel>
       </TabContext>

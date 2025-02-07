@@ -87,7 +87,7 @@ const SendTransaction = () => {
     needApproval,
   })
 
-  const { depositAmountIsVaild } = useBatchDeposit({ selectedToken, amount: validAmount })
+  const { depositAmountIsValid } = useBatchDeposit({ selectedToken, amount: validAmount })
 
   // fee start
   const {
@@ -183,8 +183,8 @@ const SendTransaction = () => {
   // fee end
 
   const necessaryCondition = useMemo(() => {
-    return validAmount && !bridgeWarning && (depositAmountIsVaild || (!depositAmountIsVaild && depositBatchMode === DepositBatchMode.Fast))
-  }, [validAmount, bridgeWarning, depositAmountIsVaild, depositBatchMode])
+    return validAmount && !bridgeWarning && (depositAmountIsValid || (!depositAmountIsValid && depositBatchMode === DepositBatchMode.Fast))
+  }, [validAmount, bridgeWarning, depositAmountIsValid, depositBatchMode])
 
   const sendText = useMemo(() => {
     if (txType === "Deposit" && sendLoading) {
@@ -354,7 +354,7 @@ const SendTransaction = () => {
           l2EconomyGasFee={batchDepositConfig.feeAmountPerTx}
           l1DataFee={l1DataFee}
           needApproval={needApproval}
-          isVaild={depositAmountIsVaild}
+          isVaild={depositAmountIsValid}
         />
       )}
       {!(bridgeSummaryType === BridgeSummaryType.Selector && depositBatchMode === DepositBatchMode.Economy) && (
