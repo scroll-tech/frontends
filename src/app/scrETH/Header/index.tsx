@@ -1,5 +1,6 @@
 "use client"
 
+// import { sendGAEvent } from "@next/third-parties/google"
 import Image from "next/image"
 import { useEffect, useState } from "react"
 
@@ -25,6 +26,13 @@ const Header = () => {
       window.removeEventListener("resize", handleResize)
     }
   }, [])
+
+  // TODO:coming soon
+  // const handleEventTracking = () => {
+  //   sendGAEvent("event", "click_get_ethSCR", {
+  //     label: "",
+  //   })
+  // }
   return (
     <Container
       sx={{

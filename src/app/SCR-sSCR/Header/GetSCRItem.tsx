@@ -1,3 +1,4 @@
+import { sendGAEvent } from "@next/third-parties/google"
 import Image from "next/image"
 
 import { Button, Stack, Typography } from "@mui/material"
@@ -6,6 +7,13 @@ import ArrowSvg from "@/assets/svgs/ecosystem/arrow.svg"
 
 const GetSCRItem = props => {
   const { name, logoURL, href } = props
+
+  const handleEventTracking = () => {
+    sendGAEvent("event", "click_get_SCR_link", {
+      label: name,
+      link: href,
+    })
+  }
   return (
     <Stack sx={{ mt: ["2.4rem", "3.2rem"] }} direction="row" justifyContent="space-between" alignItems="center">
       <Stack direction="row" spacing="1.6rem" alignItems="center">
@@ -22,6 +30,7 @@ const GetSCRItem = props => {
           fontWeight: 600,
         }}
         target="_blank"
+        onClick={handleEventTracking}
       >
         Visit <ArrowSvg className="ml-[8px]"></ArrowSvg>
       </Button>

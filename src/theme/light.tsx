@@ -138,6 +138,7 @@ const lightTheme = {
             "&:hover": {
               color: paletteOptions.primary.main,
               backgroundColor: paletteOptions.background.default,
+              borderColor: paletteOptions.primary.main,
             },
           },
         },

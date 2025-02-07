@@ -1,5 +1,6 @@
 "use client"
 
+import { sendGAEvent } from "@next/third-parties/google"
 import Image from "next/image"
 import { useEffect, useState } from "react"
 
@@ -38,12 +39,18 @@ const Header = props => {
       values: [circulatingSupply, votableSupply],
       action: () => {
         setGetSCROpen(true)
+        sendGAEvent("event", "click_get_SCR", {
+          label: "Get SCR now",
+        })
       },
     },
     {
       id: "stake-scr",
       action: () => {
         // TODO: coming soon
+        // sendGAEvent("event", "click_stack_SCR", {
+        //   label: "Stack SCR now",
+        // })
       },
     },
   ]

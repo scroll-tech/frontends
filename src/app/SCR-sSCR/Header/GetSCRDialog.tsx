@@ -1,5 +1,7 @@
 "use client"
 
+import { Fragment } from "react"
+
 import { Box, Dialog, DialogContent, DialogTitle, Divider, IconButton, SvgIcon, Typography, alpha } from "@mui/material"
 
 import CloseSvg from "@/assets/svgs/bridge/close.svg"
@@ -85,7 +87,7 @@ const GetSCRDialog = props => {
           circumstances will we be responsible for any losses you may incur.
         </Typography>
         {GER_SCR_DATA.map(({ title, data }, index) => (
-          <>
+          <Fragment key={title}>
             {!!index && <Divider sx={{ my: ["2.4rem", "3.2rem"], borderColor: "#E9E9E9" }}></Divider>}
             <Box key={title}>
               <Typography sx={{ fontSize: ["1.6rem", "1.8rem"], lineHeight: "2.4rem", fontWeight: 600 }}>{title}</Typography>
@@ -95,7 +97,7 @@ const GetSCRDialog = props => {
                 ))}
               </Box>
             </Box>
-          </>
+          </Fragment>
         ))}
       </DialogContent>
     </Dialog>
