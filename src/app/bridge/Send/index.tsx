@@ -45,7 +45,7 @@ const useStyles = makeStyles()(theme => ({
     "&.Mui-selected": {
       color: theme.vars.palette.text.primary,
       fontWeight: 600,
-      backgroundColor: theme.vars.palette.themeBackground.optionHightlight,
+      backgroundColor: theme.vars.palette.themeBackground.optionHighlight,
     },
 
     [theme.breakpoints.down("sm")]: {
@@ -57,7 +57,7 @@ const useStyles = makeStyles()(theme => ({
     display: "none",
   },
   tabPanel: {
-    backgroundColor: theme.vars.palette.themeBackground.optionHightlight,
+    backgroundColor: theme.vars.palette.themeBackground.optionHighlight,
     padding: "3rem 5.4rem",
 
     "&.withdraw": {
