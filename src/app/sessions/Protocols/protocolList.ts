@@ -70,6 +70,13 @@ const DECENTRALIZED_EXCHANGES_DATA: ProtocolData = {
       href: "https://syncswap.xyz/",
       upcoming: true,
     },
+    {
+      name: "Tempest",
+      project: "Tempest",
+      logoURL: "https://scroll-eco-list.netlify.app/logos/Tempest%20Finance.png",
+      href: "https://app.tempestfinance.xyz/vaults",
+      upcoming: true,
+    },
     // {
     //   name: "Vessel",
     //   project: "Vessel",
@@ -169,13 +176,6 @@ const OTHERS_DATA: ProtocolData = {
       project: "Rho Markets",
       logoURL: "https://scroll-eco-list.netlify.app/logos/Rho%20Markets.png",
       href: "https://www.rhomarkets.xyz/",
-      upcoming: true,
-    },
-    {
-      name: "Tempest",
-      project: "Tempest",
-      logoURL: "https://scroll-eco-list.netlify.app/logos/Tempest%20Finance.png",
-      href: "https://app.tempestfinance.xyz/vaults",
       upcoming: true,
     },
     // {

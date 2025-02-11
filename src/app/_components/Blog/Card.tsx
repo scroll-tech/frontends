@@ -117,7 +117,6 @@ const StoryCard = props => {
         {cover && (
           <Box className={classes.cardMediaWrapper}>
             <CardMedia sx={{ height: ["13rem", "23rem"] }} classes={{ root: classes.cardMedia }} image={cover} />
-            {/* <Typography className={classes.cardMediaTitle}>{imageTitle}</Typography> */}
           </Box>
         )}
 

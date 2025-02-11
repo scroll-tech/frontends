@@ -2,8 +2,6 @@
 
 import { makeStyles } from "tss-react/mui"
 
-import { Typography } from "@mui/material"
-
 import Button from "@/components/Button"
 import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
 import SectionHeader from "@/components/SectionHeader"
@@ -18,24 +16,6 @@ const STORIES = [
     content:
       "Check out our documentation and start developing and deploying on Scroll right away with all of your favorite tools for building and testing smart contracts.",
     href: "https://docs.scroll.io/en/home/",
-    imageTitle: (
-      <>
-        <Typography sx={{ fontSize: ["2.4rem", "4rem"], lineHeight: ["2.4rem", "4rem"], fontWeight: 600, color: "primary.contrastText" }}>
-          Build with Scroll
-        </Typography>
-        <Typography
-          sx={{
-            fontSize: ["2rem", "3.2rem"],
-            lineHeight: ["2.4rem", "4rem"],
-            fontWeight: 600,
-            color: "primary.contrastText",
-            mt: ["0.6rem", "1.2rem"],
-          }}
-        >
-          Quickstart Guide
-        </Typography>
-      </>
-    ),
   },
   {
     title: "Navigating the Future of Scroll",
