@@ -12,7 +12,7 @@ import SectionHeader from "@/components/SectionHeader"
 
 import data from "./data"
 
-const Explaination = () => {
+const Explanation = () => {
   const wrapperRef = useRef<HTMLDivElement>(null)
 
   return (
@@ -55,4 +55,4 @@ const Explaination = () => {
   )
 }
 
-export default Explaination
+export default Explanation
