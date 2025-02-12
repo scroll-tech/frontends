@@ -6,8 +6,6 @@ import { styled } from "@mui/system"
 import LinkSvg from "@/assets/svgs/common/external-link.svg"
 import { isMainnet } from "@/utils"
 
-import HistoryButton from "../components/HistoryButton"
-
 const FAQsLink = styled(Link)(() => ({
   color: "#6D6D6D",
   fontSize: "1.4rem",
