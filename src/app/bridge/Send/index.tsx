@@ -118,6 +118,7 @@ const Send = () => {
 
   const handleSelectChange = event => {
     setTxType(event.target.value)
+    router.push(`${pathname}?${BRIDGE_TAB}=${event.target.value}`)
     sendGAEvent("event", "bridge_tab_change", {
       value: event.target.value,
     })
@@ -163,7 +164,7 @@ const Send = () => {
             <Tab key={option.value} label={option.label} value={option.value} classes={{ root: classes.tab }}></Tab>
           ))}
         </TabList>
-        <TabPanel value="OfficialBridge" classes={{ root: classes.tabPanel }} sx={{ padding: "0 !important" }}>
+        <TabPanel value="OfficialBridge" classes={{ root: classes.tabPanel }} sx={{ padding: ["1.6rem !important", "0 !important"] }}>
           <OfficialBridge></OfficialBridge>
         </TabPanel>
         <TabPanel value="ThirdParty" classes={{ root: classes.tabPanel }}>

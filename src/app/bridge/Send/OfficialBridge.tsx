@@ -28,7 +28,7 @@ const useStyles = makeStyles()(theme => ({
     width: "100%",
     justifyContent: "space-between",
     [theme.breakpoints.down("sm")]: {
-      display: "none",
+      borderBottom: "0.5px solid rgba(16, 16, 16, 0.20)",
     },
   },
   tab: {
@@ -49,16 +49,26 @@ const useStyles = makeStyles()(theme => ({
     [theme.breakpoints.down("sm")]: {
       width: "50%",
       fontSize: "1.4rem",
+      backgroundColor: (theme as any).vars.palette.themeBackground.normal,
+      // "&.Mui-selected": {
+      //   backgroundColor: (theme as any).vars.palette.themeBackground.normal,
+      // },
     },
   },
   indicator: {
     height: "0",
     backgroundColor: "#FF684B",
+    [theme.breakpoints.down("sm")]: {
+      height: "4px",
+    },
   },
   tabPanel: {
     padding: "2.4rem 3.2rem",
     backgroundColor: (theme as any).vars.palette.themeBackground.normal,
     borderRadius: "2rem",
+    [theme.breakpoints.down("sm")]: {
+      padding: "1.6rem 0",
+    },
   },
 
   snackbar: {
