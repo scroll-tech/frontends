@@ -4,7 +4,8 @@ const TOKEN_LIST = [
   {
     name: "SCR",
     logoURI: "/imgs/token/scr.svg",
-    href: "https://scrollscan.com/token/0xd29687c813d741e2f938f4ac377128810e217b1b",
+    // href: "https://scrollscan.com/token/0xd29687c813d741e2f938f4ac377128810e217b1b",
+    href: "/SCR-sSCR",
   },
   {
     name: "ETH/WETH",
