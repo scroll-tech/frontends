@@ -1,7 +1,11 @@
 "use client"
 
 // @ts-ignore
-import { ThemeProvider, createTheme } from "@mui/material/styles"
+import createCache from "@emotion/cache"
+import { CacheProvider } from "@emotion/react"
+
+import CssBaseline from "@mui/material/CssBaseline"
+import { StyledEngineProvider, ThemeProvider, createTheme } from "@mui/material/styles"
 
 // import darkTheme from "./dark"
 import lightTheme from "./light"
@@ -19,9 +23,12 @@ const ScrollThemeProvider = ({ children }) => {
 
   // not use StyledEngineProvider, so mui style > tailwind style
   return (
-    <ThemeProvider disableTransitionOnChange theme={theme}>
-      {children}
-    </ThemeProvider>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider disableTransitionOnChange theme={theme}>
+        {/* <CssBaseline /> */}
+        {children}
+      </ThemeProvider>
+    </StyledEngineProvider>
   )
 }
 

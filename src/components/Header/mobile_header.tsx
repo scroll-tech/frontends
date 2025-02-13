@@ -1,6 +1,5 @@
 import { sendGAEvent } from "@next/third-parties/google"
-import React, { useEffect, useState } from "react"
-import { useStyles } from "tss-react/mui"
+import { Fragment, useEffect, useState } from "react"
 
 import { ExpandMore } from "@mui/icons-material"
 import { Box, Collapse, List, ListItemButton, Stack, Typography } from "@mui/material"
@@ -13,30 +12,11 @@ import useShowLanguageSelect from "@/hooks/useShowLanguageSelect"
 import useShowWalletConnector from "@/hooks/useShowWalletToolkit"
 
 import Logo from "../ScrollLogo"
-import SubmenuLink from "./SubmenuLink"
+import MobileNavbarItem from "./MobileNavBarItem"
 import Announcement from "./announcement"
-import { navigations } from "./constants"
+import { navigations } from "./data"
 import useCheckCustomNavBarBg from "./useCheckCustomNavBarBg"
 import useCheckTheme from "./useCheckTheme"
-
-const NavStack = styled(Stack)(() => ({
-  height: "3rem",
-  lineHeight: "3rem",
-  margin: "1.6rem",
-}))
-
-const Menu = styled("div")(() => ({
-  display: "inline-block",
-  [`&.active > div:nth-of-type(1)`]: {
-    transform: "rotate(45deg) translate(5px, 5px)",
-  },
-  [`&.active > div:nth-of-type(2)`]: {
-    opacity: 0,
-  },
-  [`&.active > div:nth-of-type(3)`]: {
-    transform: "rotate(-45deg) translate(5px, -5px)",
-  },
-}))
 
 const Bar = styled<any>("div", { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   width: "2rem",
@@ -46,70 +26,10 @@ const Bar = styled<any>("div", { shouldForwardProp: prop => prop !== "dark" })((
   transition: "0.4s",
 }))
 
-const MenuContent = styled<any>(Box, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
-  margin: "0.5rem 1.6rem 0",
-  background: dark ? theme.vars.palette.themeBackground.dark : theme.vars.palette.themeBackground.light,
-}))
-
-const ListItem = styled<any>(ListItemButton, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
-  fontWeight: 600,
-  fontSize: "2rem",
-  height: "5.5rem",
-  lineHeight: "5.5rem",
-  color: dark ? theme.vars.palette.primary.contrastText : theme.vars.palette.text.primary,
-  margin: "0",
-  display: "flex",
-  justifyContent: "space-between",
-  padding: "0 !important",
-  "&.active": {},
-  "&:hover": {
-    background: "transparent",
-  },
-  "&:not(:first-of-type)": {
-    borderTop: `1px solid ${dark ? theme.vars.palette.primary.contrastText : theme.vars.palette.text.primary}`,
-  },
-}))
-
-const MenuItemLink = styled<any>(Link, { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
-  fontWeight: 600,
-  fontSize: "2rem",
-  height: "5.5rem",
-  lineHeight: "5.5rem",
-  color: dark ? theme.vars.palette.primary.contrastText : theme.vars.palette.text.primary,
-  width: "100%",
-  "&.active": {
-    color: theme.vars.palette.primary.main,
-  },
-}))
-
-const SectionList = styled<any>("div", { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
-  display: "flex",
-  flexDirection: "column",
-  gap: "1.6rem",
-  "&:last-of-type": {
-    paddingBottom: "2.5rem",
-  },
-  "&:nth-last-of-type(-n+2)": {
-    paddingBottom: "1.6rem",
-  },
-  "&:nth-of-type(n+2)": {
-    borderTop: `1px solid ${dark ? theme.vars.palette.primary.contrastText : theme.vars.palette.text.primary}`,
-    paddingTop: "1.6rem",
-  },
-}))
-
-const ExpandMoreIcon = styled(ExpandMore)(({}) => ({
-  transition: "transform 0.3s ease",
-  "&.active": {
-    transform: "rotate(180deg)",
-  },
-}))
-
 const MobileHeader = ({ currentMenu }) => {
   const navbarBg = useCheckCustomNavBarBg()
   const showWalletConnector = useShowWalletConnector()
   const showLanguageSelect = useShowLanguageSelect()
-  const { cx } = useStyles()
 
   const dark = useCheckTheme()
   const [open, setOpen] = useState(false)
@@ -142,16 +62,11 @@ const MobileHeader = ({ currentMenu }) => {
       component="nav"
     >
       {navigations.map(item => (
-        <React.Fragment key={item.key}>
+        <Fragment key={item.key}>
           {item.children ? (
-            <ListItem
-              dark={dark}
-              className={activeCollapse === item.key ? "active" : ""}
-              sx={{ py: "1rem" }}
-              onClick={() => toggleCollapse(item.key)}
-            >
+            <MobileNavbarItem dark={dark} onClick={() => toggleCollapse(item.key)}>
               <Stack direction="row" alignItems="center" spacing="0.8rem">
-                <span>{item.label} </span>
+                <span>{item.label}</span>
                 {item.new && (
                   <Box
                     sx={{
@@ -166,72 +81,53 @@ const MobileHeader = ({ currentMenu }) => {
                   </Box>
                 )}
               </Stack>
-              <ExpandMoreIcon fontSize="large" className={activeCollapse === item.key ? "active" : ""} />{" "}
-            </ListItem>
+              <ExpandMore
+                fontSize="large"
+                sx={{
+                  transition: "transform 0.3s ease",
+                  "&.active": {
+                    transform: "rotate(180deg)",
+                  },
+                }}
+              />
+            </MobileNavbarItem>
           ) : (
-            <ListItem dark={dark} className={cx(activeCollapse === item.key && "active")} sx={{ py: "1rem" }} onClick={() => toggleDrawer(false)}>
-              <MenuItemLink
-                href={item.href}
-                dark={dark}
-                className={cx(currentMenu.includes(item.key) && "active")}
-                reloadDocument={item.reload}
-                onClick={() =>
-                  sendGAEvent("event", "click_menu", {
-                    label: item.label,
-                    device: "mobile",
-                  })
-                }
-              >
+            <Link
+              href={item.href}
+              reloadDocument={item.reload}
+              onClick={() =>
+                sendGAEvent("event", "click_menu", {
+                  label: item.label,
+                  device: "mobile",
+                })
+              }
+            >
+              <MobileNavbarItem dark={dark} sx={{ py: "1rem" }} onClick={() => toggleDrawer(false)}>
                 {item.label}
-              </MenuItemLink>
-            </ListItem>
+              </MobileNavbarItem>
+            </Link>
           )}
 
           <Collapse key={item.key} in={activeCollapse === item.key} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              {item.children?.map((section, idx) => (
-                <SectionList onClick={() => toggleDrawer(false)} key={idx} dark={dark}>
-                  {section.label && (
+              {item.children?.map(i => (
+                <Link key={i.id} href={i.href}>
+                  <ListItemButton sx={{ p: 0, mb: "2.4rem" }} onClick={() => toggleDrawer(false)}>
                     <Typography
-                      sx={{ fontSize: "1.4rem", fontWeight: "bold", lineHeight: "3rem", color: dark ? "primary.contrastText" : "text.primary" }}
+                      sx={{
+                        fontSize: "1.6rem",
+                        lineHeight: "2.4rem",
+                        color: currentMenu[0] === i.key ? "primary.main" : dark ? "primary.contrastText" : "text.primary",
+                      }}
                     >
-                      {section.label}
+                      {i.label}
                     </Typography>
-                  )}
-                  {section.type === "grid" ? (
-                    <Stack direction="column" spacing="2rem">
-                      {section.children.map((item, index) => (
-                        <Stack key={item.label} direction="column" spacing="1.6rem">
-                          {/* <Divider textAlign="left" sx={{ color: "text.primary",  }}>
-                            {item.label}
-                          </Divider> */}
-                          <Typography sx={{ fontSize: "1.4rem", fontWeight: 700 }}>{item.label}</Typography>
-                          {item.items.map(item => (
-                            <SubmenuLink className={cx(item.key === currentMenu[0] && "active")} key={item.label} {...item}></SubmenuLink>
-                          ))}
-                        </Stack>
-                      ))}
-                    </Stack>
-                  ) : (
-                    <>
-                      {section.children
-                        // only show sub items with href
-                        ?.filter(subItem => subItem.href)
-                        .map(subItem => (
-                          <SubmenuLink
-                            key={subItem.label}
-                            className={cx(subItem.key === currentMenu[0] && "active")}
-                            dark={dark}
-                            {...subItem}
-                          ></SubmenuLink>
-                        ))}
-                    </>
-                  )}
-                </SectionList>
+                  </ListItemButton>
+                </Link>
               ))}
             </List>
           </Collapse>
-        </React.Fragment>
+        </Fragment>
       ))}
     </List>
   )
@@ -242,7 +138,7 @@ const MobileHeader = ({ currentMenu }) => {
       sx={{ backgroundColor: navbarBg && !open ? `themeBackground.${navbarBg}` : dark ? "themeBackground.dark" : "themeBackground.light" }}
     >
       <Announcement />
-      <NavStack direction="row" justifyContent="space-between" alignItems="center">
+      <Stack sx={{ height: "3rem", lineHeight: "3rem", margin: "1.6rem" }} direction="row" justifyContent="space-between" alignItems="center">
         <Link href="/" className="flex">
           <Box onClick={() => toggleDrawer(false)}>
             <Logo light={dark} />
@@ -252,13 +148,28 @@ const MobileHeader = ({ currentMenu }) => {
           {showWalletConnector && <WalletToolkit dark={dark}></WalletToolkit>}
           {showLanguageSelect && <LanguageSelect></LanguageSelect>}
 
-          <Menu onClick={() => toggleDrawer(!open)} className={open ? "active" : ""}>
+          <Box
+            sx={{
+              display: "inline-block",
+              [`&.active > div:nth-of-type(1)`]: {
+                transform: "rotate(45deg) translate(5px, 5px)",
+              },
+              [`&.active > div:nth-of-type(2)`]: {
+                opacity: 0,
+              },
+              [`&.active > div:nth-of-type(3)`]: {
+                transform: "rotate(-45deg) translate(5px, -5px)",
+              },
+            }}
+            onClick={() => toggleDrawer(!open)}
+            className={open ? "active" : ""}
+          >
             <Bar dark={dark}></Bar>
             <Bar dark={dark}></Bar>
             <Bar dark={dark}></Bar>
-          </Menu>
+          </Box>
         </Stack>
-      </NavStack>
+      </Stack>
       {open && (
         <Box
           sx={{
@@ -267,9 +178,13 @@ const MobileHeader = ({ currentMenu }) => {
             overflowY: "auto",
           }}
         >
-          <MenuContent role="presentation" dark={dark} onKeyDown={() => toggleDrawer(false)}>
+          <Box
+            sx={{ margin: "-0.8rem 1.6rem 0", background: dark ? "themeBackground.dark" : "themeBackground.light" }}
+            role="presentation"
+            onKeyDown={() => toggleDrawer(false)}
+          >
             {renderList()}
-          </MenuContent>
+          </Box>
         </Box>
       )}
     </Box>

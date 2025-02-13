@@ -9,7 +9,7 @@ import { styled } from "@mui/system"
 
 import useCheckViewport from "@/hooks/useCheckViewport"
 
-import { navigations } from "./constants"
+import { navigations } from "./data"
 import DesktopNav from "./desktop_header"
 import MobileNav from "./mobile_header"
 
@@ -58,8 +58,6 @@ export default function Header() {
         // return menuKey
       } else if (menuItem.children) {
         findRootMenu(pathname, menuItem.children, result)
-      } else if (menuItem.items) {
-        findRootMenu(pathname, menuItem.items, result)
       }
     }
     return result
