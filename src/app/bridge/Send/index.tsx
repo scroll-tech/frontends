@@ -56,7 +56,7 @@ const useStyles = makeStyles()(theme => ({
   },
   tabPanel: {
     padding: "3.2rem",
-    backgroundColor: (theme as any).vars.palette.themeBackground.normal,
+    backgroundColor: theme.vars.palette.themeBackground.normal,
     borderRadius: "2rem",
     marginTop: "2.4rem",
   },
@@ -105,7 +105,7 @@ const Send = () => {
     setTxType(newValue)
     router.push(`${pathname}?${BRIDGE_TAB}=${newValue}`)
     sendGAEvent("event", "bridge_tab_change", {
-      value: newValue,
+      event_label: newValue,
     })
   }
 
@@ -120,7 +120,7 @@ const Send = () => {
     setTxType(event.target.value)
     router.push(`${pathname}?${BRIDGE_TAB}=${event.target.value}`)
     sendGAEvent("event", "bridge_tab_change", {
-      value: event.target.value,
+      event_label: event.target.value,
     })
   }
 

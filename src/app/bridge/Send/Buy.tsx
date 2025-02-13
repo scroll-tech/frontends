@@ -20,7 +20,7 @@ const ThirdParty = () => {
           key={item.name}
           onClick={() => {
             sendGAEvent("event", "bridge_onramp_click", {
-              value: item.name,
+              event_label: item.name,
             })
           }}
           sx={{
@@ -33,7 +33,7 @@ const ThirdParty = () => {
             },
           }}
         >
-          <Image src={item.icon} width={48} height={48} alt="thirdparty" />
+          <Image src={item.icon} width={48} height={48} style={{ borderRadius: "0.8rem" }} alt={item.name} />
           <Box>
             <Typography sx={{ fontWeight: 600, cursor: "pointer", fontSize: ["1.6rem", "1.8rem"], lineHeight: ["2.8rem", "2.8rem"] }}>
               {item.name}

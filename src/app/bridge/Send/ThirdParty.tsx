@@ -22,7 +22,7 @@ const ThirdParty = () => {
           key={item.name}
           onClick={() => {
             sendGAEvent("event", "bridge_dex_click", {
-              value: item.name,
+              event_label: item.name,
             })
           }}
           sx={{
@@ -38,7 +38,7 @@ const ThirdParty = () => {
             },
           }}
         >
-          <Image src={item.icon} width={48} height={48} style={{ borderRadius: "0.8rem" }} alt="thirdparty" />
+          <Image src={item.icon} width={48} height={48} style={{ borderRadius: "0.8rem" }} alt={item.name} />
           <Box
             sx={{
               display: "flex",
