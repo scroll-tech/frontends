@@ -31,6 +31,12 @@ const DECENTRALIZED_EXCHANGES_DATA: ProtocolData = {
       project: "Ambient",
       logoURL: "https://scroll-eco-list.netlify.app/logos/Ambient%20Finance.png",
       href: "https://ambient.finance/",
+    },
+    {
+      name: "Izumi",
+      project: "Izumi",
+      logoURL: "https://scroll-eco-list.netlify.app/logos/iZUMi%20Finance.png",
+      href: "https://izumi.finance/trade/swap",
       upcoming: true,
     },
     {
@@ -51,12 +57,7 @@ const DECENTRALIZED_EXCHANGES_DATA: ProtocolData = {
       logoURL: "https://scroll-eco-list.netlify.app/logos/Oku%20Trade.jpeg",
       href: "https://oku.trade/",
     },
-    // {
-    //   name: "Izumi",
-    //   project: "Izumi",
-    //   logoURL: "https://scroll-eco-list.netlify.app/logos/iZUMi%20Finance.png",
-    //   href: "https://izumi.finance/trade/swap",
-    // },
+
     // {
     //   name: "Scribe",
     //   project: "Scribe",
@@ -163,7 +164,6 @@ const OTHERS_DATA: ProtocolData = {
       project: "Loopfi",
       logoURL: "https://scroll-eco-list.netlify.app/logos/Loop.jpg",
       href: "https://app.loopfi.xyz/",
-      upcoming: true,
     },
     // {
     //   name: "Pencils",
