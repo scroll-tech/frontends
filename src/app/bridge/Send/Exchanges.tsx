@@ -29,7 +29,7 @@ const Exchanges = () => {
             key={item.name}
             onClick={() => {
               sendGAEvent("event", "bridge_exchange_click", {
-                event_label: item.name,
+                label: item.name,
               })
             }}
             sx={{

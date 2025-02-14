@@ -22,7 +22,7 @@ const ThirdParty = () => {
           key={item.name}
           onClick={() => {
             sendGAEvent("event", "bridge_dex_click", {
-              event_label: item.name,
+              label: item.name,
             })
           }}
           sx={{

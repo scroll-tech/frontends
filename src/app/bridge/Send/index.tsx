@@ -105,7 +105,7 @@ const Send = () => {
     setTxType(newValue)
     router.push(`${pathname}?${BRIDGE_TAB}=${newValue}`)
     sendGAEvent("event", "bridge_tab_change", {
-      event_label: newValue,
+      label: newValue,
     })
   }
 
@@ -120,7 +120,7 @@ const Send = () => {
     setTxType(event.target.value)
     router.push(`${pathname}?${BRIDGE_TAB}=${event.target.value}`)
     sendGAEvent("event", "bridge_tab_change", {
-      event_label: event.target.value,
+      label: event.target.value,
     })
   }
 
