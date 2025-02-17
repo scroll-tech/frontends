@@ -32,7 +32,7 @@ const Header = () => {
       sx={[
         {
           position: "relative",
-          height: ["calc(100vh - 6.2rem)", "72rem", "auto"],
+          height: ["calc(100vh - 6.4rem)", "72rem", "auto"],
         },
         theme => ({
           [theme.breakpoints.up("md")]: {

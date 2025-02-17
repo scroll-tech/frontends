@@ -11,10 +11,12 @@ interface MenuItem {
 interface Navigation {
   label: string
   key: string
-  children: MenuItem[]
+
+  children?: MenuItem[]
+  new?: boolean
+
   href?: string
   reload?: boolean
-  new?: boolean
 }
 
 const sepoliaNavigations: Navigation[] = [
@@ -225,6 +227,11 @@ const mainnetNavigations: Navigation[] = [
         href: "https://scroll.io/files/whitepaper.pdf",
       },
     ],
+  },
+  {
+    label: "Whitepaper",
+    key: "whitepeeeaper",
+    href: "https://scroll.io/files/whitepaper.pdf",
   },
 ]
 

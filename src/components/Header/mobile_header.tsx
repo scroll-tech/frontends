@@ -1,9 +1,7 @@
 import { sendGAEvent } from "@next/third-parties/google"
-import { usePathname } from "next/navigation"
 import { Fragment, useEffect, useState } from "react"
 
-import { ExpandMore } from "@mui/icons-material"
-import { Box, Collapse, List, Stack, Typography } from "@mui/material"
+import { Box, Collapse, List, Stack } from "@mui/material"
 import { styled } from "@mui/system"
 
 import LanguageSelect from "@/components/LanguageSelect"
@@ -11,7 +9,6 @@ import Link from "@/components/Link"
 import WalletToolkit from "@/components/WalletToolkit"
 import useShowLanguageSelect from "@/hooks/useShowLanguageSelect"
 import useShowWalletConnector from "@/hooks/useShowWalletToolkit"
-import { isMainnet } from "@/utils"
 
 import Logo from "../ScrollLogo"
 import MenuItem from "./MenuItem"
@@ -21,6 +18,7 @@ import Announcement from "./announcement"
 import { navigations } from "./data"
 import useCheckCustomNavBarBg from "./useCheckCustomNavBarBg"
 import useCheckTheme from "./useCheckTheme"
+import useShowGasPriceViewer from "./useShowGasPriceViewer"
 
 const Bar = styled<any>("div", { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   width: "2rem",
@@ -34,11 +32,11 @@ const MobileHeader = ({ currentMenu }) => {
   const navbarBg = useCheckCustomNavBarBg()
   const showWalletConnector = useShowWalletConnector()
   const showLanguageSelect = useShowLanguageSelect()
+  const gasPriceViewerVisible = useShowGasPriceViewer()
 
   const dark = useCheckTheme()
   const [open, setOpen] = useState(false)
   const [activeCollapse, setActiveCollapse] = useState("")
-  const pathname = usePathname()
 
   useEffect(() => {
     setActiveCollapse(currentMenu[1])
@@ -72,50 +70,39 @@ const MobileHeader = ({ currentMenu }) => {
         padding: "0",
         fontSize: "16px",
         borderBottom: theme =>
-          pathname === "/" ? `1px solid ${dark ? theme.vars.palette.primary.contrastText : theme.vars.palette.text.primary}` : "none",
+          gasPriceViewerVisible ? `1px solid ${dark ? theme.vars.palette.primary.contrastText : theme.vars.palette.text.primary}` : "none",
+
+        ".navbar-item": {
+          borderTop: theme => `1px solid ${dark ? theme.vars.palette.primary.contrastText : theme.vars.palette.text.primary}`,
+        },
       }}
       component="nav"
     >
       {navigations.map(item => (
         <Fragment key={item.key}>
           {item.children ? (
-            <MobileNavbarItem dark={dark} onClick={() => toggleCollapse(item.key)}>
-              <Stack direction="row" alignItems="center" spacing="0.8rem">
-                <span>{item.label}</span>
-                {item.new && (
-                  <Box
-                    sx={{
-                      backgroundColor: "#B5F5EC",
-                      padding: "0 0.8rem",
-                      height: "2rem",
-                      lineHeight: "2rem",
-                      borderRadius: "0.4rem",
-                    }}
-                  >
-                    <Typography sx={{ fontSize: "1.2rem", lineHeight: "2rem", fontWeight: 600 }}>NEW</Typography>
-                  </Box>
-                )}
-              </Stack>
-              <ExpandMore
-                fontSize="large"
-                sx={{
-                  transition: "transform 0.3s ease",
-                  "&.active": {
-                    transform: "rotate(180deg)",
-                  },
-                }}
-              />
-            </MobileNavbarItem>
+            <MobileNavbarItem
+              dark={dark}
+              label={item.label}
+              isNew={item.new}
+              isActive={activeCollapse === item.key}
+              onClick={() => toggleCollapse(item.key)}
+            ></MobileNavbarItem>
           ) : (
-            <Link href={item.href} reloadDocument={item.reload}>
-              <MobileNavbarItem dark={dark} sx={{ py: "1rem" }} onClick={() => handleClickMenuItem(item.label)}>
-                {item.label}
-              </MobileNavbarItem>
+            <Link href={item.href} reloadDocument={item.reload} className="navbar-item " external={item.href?.startsWith("https")}>
+              <MobileNavbarItem
+                dark={dark}
+                label={item.label}
+                isNew={item.new}
+                isActive={activeCollapse === item.key}
+                expendMore={false}
+                onClick={() => handleClickMenuItem(item.label)}
+              ></MobileNavbarItem>
             </Link>
           )}
 
           <Collapse key={item.key} in={activeCollapse === item.key} timeout="auto" unmountOnExit>
-            <List component="div" sx={{}} disablePadding>
+            <List component="div" disablePadding>
               {item.children?.map(({ key, label, href, reload }) => (
                 <MenuItem
                   mode="mobile"
@@ -137,12 +124,18 @@ const MobileHeader = ({ currentMenu }) => {
   )
 
   return (
-    <Box
+    <Stack
       className={open ? "active" : ""}
-      sx={{ backgroundColor: navbarBg && !open ? `themeBackground.${navbarBg}` : dark ? "themeBackground.dark" : "themeBackground.light" }}
+      direction="column"
+      sx={{
+        "&.active": {
+          height: "100vh",
+        },
+        backgroundColor: navbarBg && !open ? `themeBackground.${navbarBg}` : dark ? "themeBackground.dark" : "themeBackground.light",
+      }}
     >
       <Announcement />
-      <Stack sx={{ height: "3rem", lineHeight: "3rem", margin: "1.6rem" }} direction="row" justifyContent="space-between" alignItems="center">
+      <Stack sx={{ height: "6.4rem", px: "2rem", lineHeight: "3rem" }} direction="row" justifyContent="space-between" alignItems="center">
         <Link href="/" className="flex">
           <Box onClick={() => toggleDrawer(false)}>
             <Logo light={dark} />
@@ -177,22 +170,18 @@ const MobileHeader = ({ currentMenu }) => {
       {open && (
         <Box
           sx={{
-            background: dark ? "themeBackground.dark" : "themeBackground.light",
-            height: `calc(100vh - 6.2rem - ${pathname === "/" && isMainnet ? "5.3rem" : "0rem"})`,
+            flex: 1,
+            backgroundColor: dark ? "themeBackground.dark" : "themeBackground.light",
             overflowY: "auto",
           }}
         >
-          <Box
-            sx={{ margin: "-0.8rem 1.6rem 0", background: dark ? "themeBackground.dark" : "themeBackground.light" }}
-            role="presentation"
-            // onKeyDown={() => toggleDrawer(false)}
-          >
+          <Box sx={{ margin: "-0.8rem 2rem 0" }}>
             {renderList()}
-            {pathname === "/" && <MobileGasPriceViewer dark={dark}></MobileGasPriceViewer>}
+            {gasPriceViewerVisible && <MobileGasPriceViewer dark={dark}></MobileGasPriceViewer>}
           </Box>
         </Box>
       )}
-    </Box>
+    </Stack>
   )
 }
 

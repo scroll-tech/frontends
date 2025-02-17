@@ -18,7 +18,7 @@ const SessionsRestricted = () => {
   return (
     <Container
       sx={{
-        height: ["calc(100vh - 6.2rem - 5rem)", "calc(100vh - 6.5rem - 13.4rem )"],
+        height: ["calc(100vh - 6.4rem - 5rem)", "calc(100vh - 6.5rem - 13.4rem )"],
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",

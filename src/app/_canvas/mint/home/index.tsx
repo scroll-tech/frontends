@@ -25,7 +25,7 @@ const Container = styled(Box)(({ theme }) => ({
   paddingBottom: "6rem",
   backgroundColor: "#101010",
   [theme.breakpoints.down("sm")]: {
-    height: "calc(var(--vh, 1vh) * 100 - 6.2rem - 9.6rem)",
+    height: "calc(var(--vh, 1vh) * 100 - 6.4rem - 9.6rem)",
     minHeight: "unset",
     padding: "0 1rem",
     overflowY: "auto",

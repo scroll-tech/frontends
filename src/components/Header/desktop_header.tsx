@@ -1,8 +1,7 @@
 import { sendGAEvent } from "@next/third-parties/google"
-import { usePathname } from "next/navigation"
 import React, { useState } from "react"
 
-import { Box, Container, Fade, Paper, Popper, Stack } from "@mui/material"
+import { Container, Fade, Paper, Popper, Stack } from "@mui/material"
 
 import LanguageSelect from "@/components/LanguageSelect"
 import ScrollLink from "@/components/Link"
@@ -19,6 +18,7 @@ import Announcement from "./announcement"
 import { navigations } from "./data"
 import useCheckCustomNavBarBg from "./useCheckCustomNavBarBg"
 import useCheckTheme from "./useCheckTheme"
+import useShowGasPriceViewer from "./useShowGasPriceViewer"
 
 const DesktopHeader = ({ currentMenu }) => {
   const [isHoveringNavbar, setIsHoveringNavbar] = useState(false)
@@ -26,7 +26,7 @@ const DesktopHeader = ({ currentMenu }) => {
   const { isDesktop } = useCheckViewport()
   const dark = useCheckTheme()
 
-  const pathname = usePathname()
+  const gasPriceViewerVisible = useShowGasPriceViewer()
 
   const [hoveringNavbarItemKey, setHoveringNavbarItemKey] = useState("")
 
@@ -39,7 +39,6 @@ const DesktopHeader = ({ currentMenu }) => {
     setHoveringNavbarItemKey(key)
     setAnchorEl(e.currentTarget)
   }
-
   const handleMouseLeave = () => {
     setHoveringNavbarItemKey("")
     setAnchorEl(null)
@@ -60,6 +59,7 @@ const DesktopHeader = ({ currentMenu }) => {
           <NavbarItem
             isActive={currentMenu.includes(item.key)}
             isHovering={hoveringNavbarItemKey === item.key}
+            isNew={item.new}
             dark={dark}
             onMouseEnter={e => handleMouseEnter(e, item.key)}
             onMouseLeave={handleMouseLeave}
@@ -105,21 +105,17 @@ const DesktopHeader = ({ currentMenu }) => {
     }
 
     return (
-      <ScrollLink href={item.href} reloadDocument={item.reload}>
-        <NavbarItem isActive={currentMenu.includes(item.key)} dark={dark} onClick={() => handleClickMenuItem(item.label)}>
+      <ScrollLink href={item.href} reloadDocument={item.reload} external={item.href?.startsWith("https")}>
+        <NavbarItem
+          isNew={item.new}
+          isActive={currentMenu.includes(item.key)}
+          dark={dark}
+          expendMore={false}
+          onClick={() => handleClickMenuItem(item.label)}
+        >
           {item.label}
         </NavbarItem>
       </ScrollLink>
-    )
-  }
-
-  const renderNavigationList = () => {
-    return (
-      <Stack direction="row" spacing={isDesktop ? "4rem" : "2rem"} justifyContent="space-between" alignItems="center">
-        {navigations.map(item => (
-          <React.Fragment key={item.key}>{renderNavigationItem(item)}</React.Fragment>
-        ))}
-      </Stack>
     )
   }
 
@@ -146,23 +142,30 @@ const DesktopHeader = ({ currentMenu }) => {
     >
       <Announcement />
       <Container>
-        <Stack direction="row" sx={{ position: "relative", height: "6.5rem" }} justifyContent="space-between" alignItems="center">
+        <Stack direction="row" sx={{ position: "relative", height: "6.5rem", justifyContent: "space-between", alignItems: "center" }}>
           <ScrollLink href="/" className="flex">
             <Logo light={dark} />
           </ScrollLink>
-          <Box
+          <Stack
+            direction="row"
             sx={{
               position: ["static", "static", "static", "absolute"],
               left: "50%",
               transform: ["translateX(0%)", "translateX(0%)", "translateX(0%)", "translateX(-50%)"],
+
+              justifyContent: "space-between",
+              alignItems: "center",
+              gap: ["2rem", "2rem", "2rem", "4rem"],
             }}
           >
-            {renderNavigationList()}
-          </Box>
+            {navigations.map(item => (
+              <React.Fragment key={item.key}>{renderNavigationItem(item)}</React.Fragment>
+            ))}
+          </Stack>
           <Stack direction="row" spacing={isDesktop ? "4rem" : "2rem"} alignItems="center">
             {showWalletConnector && <WalletToolkit dark={dark}></WalletToolkit>}
             {showLanguageSelect && <LanguageSelect></LanguageSelect>}
-            {pathname === "/" && <GasPriceViewer></GasPriceViewer>}
+            {gasPriceViewerVisible && <GasPriceViewer></GasPriceViewer>}
           </Stack>
         </Stack>
       </Container>

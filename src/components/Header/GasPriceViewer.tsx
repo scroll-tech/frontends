@@ -9,7 +9,7 @@ import RequestWarning from "@/components/RequestWarning"
 import { CHAIN_ID } from "@/constants"
 import { NETWORKS } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import { commafy, switchNetwork } from "@/utils"
+import { switchNetwork } from "@/utils"
 
 const GasPriceViewer = () => {
   const { chainId } = useRainbowContext()
@@ -25,14 +25,14 @@ const GasPriceViewer = () => {
 
   const displayedScrollGasPrice = useMemo(() => {
     if (scrollGasPrice) {
-      return commafy(formatUnits(scrollGasPrice, 6).toString(), 2)
+      return Number(formatUnits(scrollGasPrice, 6)).toFixed(2)
     }
     return "-"
   }, [scrollGasPrice])
 
   const displayedEthereumGasPrice = useMemo(() => {
     if (ethereumGasPrice) {
-      return commafy(formatUnits(ethereumGasPrice, 6).toString(), 2)
+      return Number(formatUnits(ethereumGasPrice, 6)).toFixed(2)
     }
     return "-"
   }, [ethereumGasPrice])
@@ -86,8 +86,7 @@ const GasPriceViewer = () => {
                 sx={{
                   borderRadius: "1rem",
                   zIndex: "var(--mui-zIndex-appBar)",
-                  transformOrigin: "top",
-                  boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0.10)",
+                  boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.10)",
                   mt: "1.2rem",
 
                   display: "grid",
@@ -100,7 +99,6 @@ const GasPriceViewer = () => {
                   lineHeight: "2.4rem",
                 }}
               >
-                {/* <Box sx={{}}> */}
                 <span className="font-[600]">Scroll</span>
                 <Typography sx={{ fontSize: "inherit", lineHeight: "inherit", textAlign: "right", fontFamily: "var(--developer-page-font-family)" }}>
                   {displayedScrollGasPrice}
@@ -123,7 +121,6 @@ const GasPriceViewer = () => {
                 >
                   Add Scroll to Wallet
                 </Button>
-                {/* </Box> */}
               </Paper>
             </Fade>
           )}
