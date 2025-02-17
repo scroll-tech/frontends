@@ -13,8 +13,6 @@ import DetailRow from "./InfoTooltip/DetailRow"
 const useStyles = makeStyles()(theme => ({
   root: {
     width: "100%",
-    marginTop: "1.2rem",
-    marginBottom: "1.2rem",
   },
   title: {
     fontSize: "1.8rem",
@@ -25,7 +23,7 @@ const useStyles = makeStyles()(theme => ({
   table: {
     borderRadius: "1rem",
     overflow: "hidden",
-    background: theme.vars.palette.themeBackground.normal,
+    backgroundColor: theme.vars.palette.themeBackground.light,
     width: "100%",
     border: `1.6rem solid ${theme.vars.palette.themeBackground.normal}`,
     borderTopWidth: " 1.2rem",

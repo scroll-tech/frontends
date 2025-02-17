@@ -1,30 +1,24 @@
-import { useSearchParams } from "next/navigation"
-import { useEffect, useMemo } from "react"
+import { sendGAEvent } from "@next/third-parties/google"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { useState } from "react"
 import { makeStyles } from "tss-react/mui"
 
 import { TabContext, TabList, TabPanel } from "@mui/lab"
-import { Box, Snackbar, Tab } from "@mui/material"
+import { Box, MenuItem, Select, Tab, useMediaQuery, useTheme } from "@mui/material"
 
-import Alert from "@/components/Alert"
-import TextButton from "@/components/TextButton"
-import { CHAIN_ID, ETH_SYMBOL } from "@/constants"
-import { BRIDGE_TOKEN } from "@/constants/searchParamsKey"
-import { useRainbowContext } from "@/contexts/RainbowProvider"
-import useBatchBridgeStore, { DepositBatchMode } from "@/stores/batchBridgeStore"
-import useBridgeStore from "@/stores/bridgeStore"
+import ArrowDownSvg from "@/assets/svgs/bridge/arrow-down.svg"
+import { BRIDGE_TAB } from "@/constants/searchParamsKey"
 
-import Deposit from "./Deposit"
-import Withdraw from "./Withdraw"
+import Buy from "./Buy"
+import Exchanges from "./Exchanges"
+import OfficialBridge from "./OfficialBridge"
+import ThirdParty from "./ThirdParty"
 
 const useStyles = makeStyles()(theme => ({
   sendWrapper: {
-    borderRadius: "2rem",
     overflow: "hidden",
-    maxWidth: "64rem",
+    maxWidth: "66rem",
     width: "100%",
-    "& *": {
-      fontFamily: "var(--developer-page-font-family) !important",
-    },
     position: "relative",
     [theme.breakpoints.down("sm")]: {
       maxWidth: "100%",
@@ -32,20 +26,23 @@ const useStyles = makeStyles()(theme => ({
   },
   tabList: {
     width: "100%",
+    justifyContent: "space-between",
+    borderBottom: "0.5px solid rgba(16, 16, 16, 0.20)",
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
   },
   tab: {
-    flex: 1,
+    width: "fit-content",
+    minWidth: "fit-content",
     height: "5.6rem",
-    fontSize: "2rem",
-    fontWeight: 500,
-    color: theme.vars.palette.text.primary,
+    fontSize: "1.8rem",
+    fontWeight: 600,
+    color: (theme as any).vars.palette.text.primary,
     padding: 0,
-    backgroundColor: theme.vars.palette.themeBackground.normal,
     textTransform: "unset",
     "&.Mui-selected": {
-      color: theme.vars.palette.text.primary,
-      fontWeight: 600,
-      backgroundColor: theme.vars.palette.themeBackground.optionHightlight,
+      color: "#FF684B",
     },
 
     [theme.breakpoints.down("sm")]: {
@@ -54,126 +51,132 @@ const useStyles = makeStyles()(theme => ({
     },
   },
   indicator: {
-    display: "none",
+    height: "4px",
+    backgroundColor: "#FF684B",
   },
   tabPanel: {
-    backgroundColor: theme.vars.palette.themeBackground.optionHightlight,
-    padding: "3rem 5.4rem",
-
-    "&.withdraw": {
-      padding: "1rem 3rem 3rem",
-    },
-
-    [theme.breakpoints.down("sm")]: {
-      padding: "3rem 2rem 2rem",
-
-      "&.withdraw": {
-        padding: "1rem 2rem 2rem",
-      },
-    },
+    padding: "3.2rem",
+    backgroundColor: theme.vars.palette.themeBackground.normal,
+    borderRadius: "2rem",
+    marginTop: "2.4rem",
   },
 
-  snackbar: {
-    width: "max-content",
-    maxWidth: "calc(100% - 1.6rem)",
-
-    [theme.breakpoints.down("sm")]: {
-      left: "50%",
-      transform: "translateX(-50%)",
+  mobileSelect: {
+    width: "100%",
+    borderRadius: "10px",
+    backgroundColor: "white",
+    border: "1px solid #473835",
+    "& .MuiSelect-select": {
+      fontSize: "1.8rem",
+      padding: "1rem 1.6rem",
+      height: "36px",
+      display: "flex",
+      alignItems: "center",
+      fontWeight: 600,
+      fontFamily: "var(--default-font-family) !important",
+    },
+    "& .MuiOutlinedInput-root": {
+      height: "36px",
+    },
+    "& .MuiOutlinedInput-notchedOutline": {
+      border: "none",
+    },
+    "& .MuiSelect-icon": {
+      right: "1rem",
+      top: "2rem",
     },
   },
 }))
 
 const Send = () => {
-  const { classes, cx } = useStyles()
-  const { chainId } = useRainbowContext()
-  const { txType, txResult, fromNetwork, withdrawStep, changeTxType, changeTxResult, changeHistoryVisible, changeIsNetworkCorrect } = useBridgeStore()
-
-  const { depositBatchMode } = useBatchBridgeStore()
+  const { classes } = useStyles()
+  const router = useRouter()
+  const pathname = usePathname()
 
   const searchParams = useSearchParams()
-  const token = searchParams.get(BRIDGE_TOKEN)
-  const tokenSymbol = useMemo(() => token || ETH_SYMBOL, [token])
+  const tab = searchParams.get(BRIDGE_TAB)
 
-  const isEconomyDeposit = useMemo(() => depositBatchMode === DepositBatchMode.Economy && tokenSymbol === ETH_SYMBOL, [depositBatchMode, tokenSymbol])
+  const [txType, setTxType] = useState(tab || "OfficialBridge")
 
-  useEffect(() => {
-    let networkCorrect
-    if (txType === "Deposit") {
-      networkCorrect = fromNetwork.isL1 && chainId === CHAIN_ID.L1
-    } else if (withdrawStep === "1") {
-      networkCorrect = !fromNetwork.isL1 && chainId === CHAIN_ID.L2
-    } else {
-      networkCorrect = chainId === CHAIN_ID.L1
-    }
-    changeIsNetworkCorrect(networkCorrect)
-  }, [fromNetwork, txType, withdrawStep, chainId])
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
 
   const handleChange = (e, newValue) => {
-    changeTxType(newValue)
-    handleClose()
+    setTxType(newValue)
+    router.push(`${pathname}?${BRIDGE_TAB}=${newValue}`)
+    sendGAEvent("event", "bridge_tab_change", {
+      label: newValue,
+    })
   }
 
-  const handleOpenHistory = () => {
-    changeHistoryVisible(true)
-    handleClose()
-  }
+  const options = [
+    { value: "OfficialBridge", label: "From/to Ethereum" },
+    { value: "ThirdParty", label: "From other chains" },
+    { value: "Exchanges", label: "Exchanges" },
+    { value: "Buy", label: "Buy with Fiat" },
+  ]
 
-  const handleClose = () => {
-    changeTxResult(null)
+  const handleSelectChange = event => {
+    setTxType(event.target.value)
+    router.push(`${pathname}?${BRIDGE_TAB}=${event.target.value}`)
+    sendGAEvent("event", "bridge_tab_change", {
+      label: event.target.value,
+    })
   }
 
   return (
     <Box className={classes.sendWrapper}>
       <TabContext value={txType}>
+        {isMobile && (
+          <Select
+            value={txType}
+            onChange={handleSelectChange}
+            className={classes.mobileSelect}
+            IconComponent={props => <ArrowDownSvg {...props} />}
+            MenuProps={{
+              PaperProps: {
+                style: {
+                  maxHeight: 300,
+                  borderRadius: "10px",
+                  marginTop: "8px",
+                },
+              },
+            }}
+          >
+            {options.map(option => (
+              <MenuItem
+                sx={{ fontSize: "1.8rem", fontWeight: 500, fontFamily: "var(--default-font-family) !important" }}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </MenuItem>
+            ))}
+          </Select>
+        )}
+
         <TabList
           onChange={handleChange}
           textColor="primary"
           classes={{ root: classes.tabList, fixed: classes.tabList, flexContainer: classes.tabList, indicator: classes.indicator }}
         >
-          <Tab label="Deposit to Scroll" value="Deposit" classes={{ root: classes.tab }}></Tab>
-          <Tab label="Withdraw to Ethereum" value="Withdraw" classes={{ root: classes.tab }}></Tab>
+          {options.map(option => (
+            <Tab key={option.value} label={option.label} value={option.value} classes={{ root: classes.tab }}></Tab>
+          ))}
         </TabList>
-        <TabPanel value="Deposit" classes={{ root: classes.tabPanel }}>
-          <Deposit></Deposit>
+        <TabPanel value="OfficialBridge" classes={{ root: classes.tabPanel }} sx={{ padding: ["1.6rem !important", "0 !important"] }}>
+          <OfficialBridge></OfficialBridge>
         </TabPanel>
-        <TabPanel value="Withdraw" className={withdrawStep === "2" ? "tx" : ""} classes={{ root: cx(classes.tabPanel, "withdraw") }}>
-          <Withdraw></Withdraw>
+        <TabPanel value="ThirdParty" classes={{ root: classes.tabPanel }}>
+          <ThirdParty></ThirdParty>
+        </TabPanel>
+        <TabPanel value="Exchanges" classes={{ root: classes.tabPanel }}>
+          <Exchanges></Exchanges>
+        </TabPanel>
+        <TabPanel value="Buy" classes={{ root: classes.tabPanel }}>
+          <Buy></Buy>
         </TabPanel>
       </TabContext>
-
-      <Snackbar
-        open={!!txResult}
-        autoHideDuration={6000}
-        classes={{ root: classes.snackbar }}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        onClose={handleClose}
-      >
-        <div>
-          {txResult?.code === 1 && (
-            <Alert severity="success">
-              <>
-                Submitted successfully! <br />
-                {txType === "Deposit"
-                  ? `Funds take up to ${isEconomyDeposit ? "1h" : "20 mins"} to be ready`
-                  : "Funds take up to 2h to be claimable"}{" "}
-                <br />
-                <TextButton underline="always" sx={{ color: "inherit" }} onClick={handleOpenHistory}>
-                  View transaction history
-                </TextButton>
-              </>
-            </Alert>
-          )}
-          {txResult?.code === 0 && (
-            <Alert severity="error" sx={{ maxWidth: "49rem" }}>
-              <>
-                Failed in submission.
-                <br /> {txResult?.message}
-              </>
-            </Alert>
-          )}
-        </div>
-      </Snackbar>
     </Box>
   )
 }

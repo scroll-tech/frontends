@@ -12,7 +12,7 @@ import useInputAddress from "@/hooks/useInputAddress"
 const useStyles = makeStyles()(theme => ({
   title: {
     fontSize: "1.8rem",
-    lineHeight: "3.6rem",
+    lineHeight: "2.4rem",
     fontWeight: 500,
     textAlign: "left",
     cursor: "pointer",
@@ -90,6 +90,7 @@ const CustomiseRecipient = props => {
                 background: "#ffffff",
                 border: showErrorMessage ? "2px solid #FF684B" : "1px solid #473835",
                 borderRadius: "1rem",
+                fontFamily: "var(--developer-page-font-family) !important",
               }}
               disabled={disabled}
               onChange={v => setAddressInputValue(v.target.value)}

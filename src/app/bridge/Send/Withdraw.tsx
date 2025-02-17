@@ -11,39 +11,43 @@ import SendTransaction from "./SendTransaction"
 const useStyles = makeStyles()(theme => ({
   tabList: {
     minHeight: "unset",
+    marginBottom: "1.6rem",
   },
   tabFlex: {
     width: "100%",
-    justifyContent: "center",
-    borderBottom: "1px solid #5b5b5b",
+    justifyContent: "flex-start",
     margin: "0 auto",
+    gap: "0.8rem",
   },
   tab: {
     minHeight: "unset",
     height: "4.4rem",
     fontSize: "1.6rem",
-    fontWeight: 600,
+    fontWeight: 500,
     textTransform: "unset",
     color: theme.vars.palette.text.primary,
     padding: 0,
-    flex: 1,
+    width: "16rem",
+    backgroundColor: "white",
+    borderRadius: "0.8rem",
     "&.Mui-selected": {
-      color: theme.vars.palette.text.primary,
+      backgroundColor: theme.vars.palette.text.primary,
+      color: "white",
+      fontWeight: 700,
     },
     [theme.breakpoints.down("sm")]: {
       fontSize: "1.4rem",
       padding: "0 1rem",
       width: "unset",
+      flex: 1,
     },
   },
   indicator: {
-    height: "4px",
-    backgroundColor: "#FF684B",
+    display: "none",
   },
   tabPanel: {
-    backgroundColor: theme.vars.palette.themeBackground.optionHightlight,
     flex: 1,
-    padding: "1.6rem 0 0",
+    padding: "0",
   },
 }))
 

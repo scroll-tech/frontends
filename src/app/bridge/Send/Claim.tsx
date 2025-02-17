@@ -21,6 +21,9 @@ const useStyles = makeStyles()(theme => ({
     [theme.breakpoints.down("sm")]: {
       height: "41.8rem",
     },
+    "& *": {
+      fontFamily: "var(--developer-page-font-family) !important",
+    },
   },
   loadingBox: {
     position: "absolute",

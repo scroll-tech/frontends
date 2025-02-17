@@ -1,7 +1,7 @@
 import { create } from "zustand"
 
 import { tokenListUrl } from "@/apis/dynamic"
-import { NATIVE_TOKEN_LIST, NETWORKS } from "@/constants"
+import { EXTERNAL_BRIDGE_TOKEN_LIST, NATIVE_TOKEN_LIST, NETWORKS } from "@/constants"
 import { USER_TOKEN_LIST } from "@/constants/storageKey"
 import { loadState } from "@/utils/localStorage"
 
@@ -55,7 +55,7 @@ const useBridgeStore = create<BridgeStore>()((set, get) => ({
       const { tokens: tokensListTokens } = await scrollRequest(tokenListUrl)
       const currentUserTokens = loadState(USER_TOKEN_LIST) || []
 
-      const combinedList = [...NATIVE_TOKEN_LIST, ...tokensListTokens, ...currentUserTokens]
+      const combinedList = [...NATIVE_TOKEN_LIST, ...tokensListTokens, ...currentUserTokens, ...EXTERNAL_BRIDGE_TOKEN_LIST]
       const uniqueList = combinedList.reduce(
         (accumulator, token) => {
           // If the token doesn't have an address, consider it a native token and add it directly

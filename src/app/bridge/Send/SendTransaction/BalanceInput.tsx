@@ -21,6 +21,7 @@ const useStyles = makeStyles()(theme => ({
     },
   },
   inputWrapper: {
+    fontFamily: "var(--developer-page-font-family) !important",
     "&.Mui-error": {
       ".MuiInputBase-input": {
         border: `1px solid ${theme.vars.palette.primary.main}`,
@@ -55,6 +56,7 @@ const useStyles = makeStyles()(theme => ({
     lineHeight: 2,
     color: "#A39B9A",
     whiteSpace: "nowrap",
+    fontFamily: "var(--developer-page-font-family) !important",
     [theme.breakpoints.down("sm")]: {
       fontSize: "1.2rem",
     },
