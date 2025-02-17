@@ -1,4 +1,5 @@
 import { sendGAEvent } from "@next/third-parties/google"
+import { usePathname } from "next/navigation"
 import { Fragment, useEffect, useState } from "react"
 
 import { ExpandMore } from "@mui/icons-material"
@@ -10,8 +11,10 @@ import Link from "@/components/Link"
 import WalletToolkit from "@/components/WalletToolkit"
 import useShowLanguageSelect from "@/hooks/useShowLanguageSelect"
 import useShowWalletConnector from "@/hooks/useShowWalletToolkit"
+import { isMainnet } from "@/utils"
 
 import Logo from "../ScrollLogo"
+import MobileGasPriceViewer from "./MobileGasPriceViewer"
 import MobileNavbarItem from "./MobileNavBarItem"
 import Announcement from "./announcement"
 import { navigations } from "./data"
@@ -34,6 +37,7 @@ const MobileHeader = ({ currentMenu }) => {
   const dark = useCheckTheme()
   const [open, setOpen] = useState(false)
   const [activeCollapse, setActiveCollapse] = useState("")
+  const pathname = usePathname()
 
   useEffect(() => {
     setActiveCollapse(currentMenu[1])
@@ -58,10 +62,11 @@ const MobileHeader = ({ currentMenu }) => {
       sx={{
         padding: "0",
         fontSize: "16px",
+        borderBottom: theme => `1px solid ${dark ? theme.vars.palette.primary.contrastText : theme.vars.palette.text.primary}`,
       }}
       component="nav"
     >
-      {navigations.map(item => (
+      {navigations.map((item, index) => (
         <Fragment key={item.key}>
           {item.children ? (
             <MobileNavbarItem dark={dark} onClick={() => toggleCollapse(item.key)}>
@@ -173,8 +178,8 @@ const MobileHeader = ({ currentMenu }) => {
       {open && (
         <Box
           sx={{
-            background: theme => (dark ? theme.vars.palette.themeBackground.dark : theme.vars.palette.themeBackground.light),
-            height: "calc(100vh - 6.2rem)",
+            background: dark ? "themeBackground.dark" : "themeBackground.light",
+            height: `calc(100vh - 6.2rem - ${pathname === "/" && isMainnet ? "5.3rem" : "0"})`,
             overflowY: "auto",
           }}
         >
@@ -184,6 +189,7 @@ const MobileHeader = ({ currentMenu }) => {
             onKeyDown={() => toggleDrawer(false)}
           >
             {renderList()}
+            <MobileGasPriceViewer></MobileGasPriceViewer>
           </Box>
         </Box>
       )}

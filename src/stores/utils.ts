@@ -5,6 +5,7 @@ import { fetchClaimableTxListUrl, fetchTxListUrl, fetchWithdrawalListUrl } from 
 import { BLOCK_NUMBERS } from "@/constants/storageKey"
 import { TX_TYPE } from "@/constants/transaction"
 import { sentryDebug } from "@/utils"
+import { scrollRequest } from "@/utils/request"
 
 export interface FrontendTxDB {
   [key: string]: Transaction[]

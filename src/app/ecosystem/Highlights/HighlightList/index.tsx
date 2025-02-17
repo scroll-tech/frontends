@@ -38,8 +38,6 @@ const Carousel = () => {
     slidesPerView = 1
   }
 
-  console.log(slidesPerView)
-
   const filteredData = Data.filter(blog => blog.type === "Ecosystem highlights" && blog.language === "en")
 
   return (

@@ -15,6 +15,7 @@ import useCheckViewport from "@/hooks/useCheckViewport"
 import useSnackbar from "@/hooks/useSnackbar"
 import useCanvasStore from "@/stores/canvasStore"
 import { isUserRejected, recognizeError, sentryDebug, trimErrorMessage } from "@/utils"
+import { scrollRequest } from "@/utils/request"
 
 import InsufficientDialog from "./InsufficientDialog"
 import StepWrapper from "./StepWrapper"

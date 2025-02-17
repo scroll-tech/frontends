@@ -18,6 +18,7 @@ import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useSnackbar from "@/hooks/useSnackbar"
 import useCanvasStore from "@/stores/canvasStore"
 import { generateShareTwitterURL } from "@/utils"
+import { scrollRequest } from "@/utils/request"
 
 const CouponBox = styled(Box)(({ theme }) => ({
   background: `url(${couponBackground.src}) no-repeat center center`,

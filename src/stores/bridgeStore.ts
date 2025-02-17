@@ -4,6 +4,7 @@ import { tokenListUrl } from "@/apis/dynamic"
 import { EXTERNAL_BRIDGE_TOKEN_LIST, NATIVE_TOKEN_LIST, NETWORKS } from "@/constants"
 import { USER_TOKEN_LIST } from "@/constants/storageKey"
 import { loadState } from "@/utils/localStorage"
+import { scrollRequest } from "@/utils/request"
 
 type TransactionType = "Deposit" | "Withdraw"
 

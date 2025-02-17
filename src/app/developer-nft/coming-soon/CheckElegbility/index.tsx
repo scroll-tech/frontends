@@ -9,6 +9,7 @@ import { MintableDate } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import { formatDate } from "@/utils"
+import { scrollRequest } from "@/utils/request"
 
 const L2_SCAN_URI = process.env.NEXT_PUBLIC_L2_SCAN_URI
 const UNIFRA_API_KEY = process.env.NEXT_PUBLIC_UNIFRA_API_KEY

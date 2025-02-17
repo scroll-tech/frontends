@@ -10,6 +10,7 @@ import Button from "@/components/Button"
 import { GET_IN_TOUCH_LINK } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import { formatLargeNumber } from "@/utils"
+import { scrollRequest } from "@/utils/request"
 
 import Statistic from "./Statistic"
 

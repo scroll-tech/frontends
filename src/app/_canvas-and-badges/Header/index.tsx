@@ -13,6 +13,7 @@ import { retrieveCanvasBadgeURL } from "@/apis/canvas-badge"
 import Button from "@/components/Button"
 import { CANVAS_AND_BADGES_PAGE_SYMBOL, CANVAS_URL, HEADER_BADGES, HEADER_STARS, ISSUE_BADGES_URL } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
+import { scrollRequest } from "@/utils/request"
 
 // import Counter from "./Counter"
 import Statistic from "./Statistic"

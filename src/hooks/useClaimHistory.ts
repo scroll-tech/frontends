@@ -6,6 +6,7 @@ import { CLAIM_TABLE_PAGE_SIZE, TX_STATUS } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useBridgeStore from "@/stores/bridgeStore"
 import useClaimHistoryStore from "@/stores/claimStore"
+import { scrollRequest } from "@/utils/request"
 
 export interface TxHistory {
   errorMessage: string

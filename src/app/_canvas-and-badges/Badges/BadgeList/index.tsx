@@ -13,6 +13,7 @@ import LoadingButton from "@/components/LoadingButton"
 import LoadingPage from "@/components/LoadingPage"
 import { CANVAS_AND_BADGES_PAGE_SYMBOL, CATEGORY_LIST, SORT_LIST } from "@/constants"
 import { isAboveScreen } from "@/utils/dom"
+import { scrollRequest } from "@/utils/request"
 
 import BadgeCard from "./BadgeCard"
 // import BadgeMasonry from "./BadgeMasonry"

@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query"
 import { fetchSession2PerProtocolMarksURL } from "@/apis/sessions"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useSessionsStore from "@/stores/sessionsStore"
+import { scrollRequest } from "@/utils/request"
 
 import Card from "../components/StepCard"
 import ProtocolSection from "./ProtocolSection"

@@ -7,6 +7,7 @@ import SectionWrapper from "@/components/SectionWrapper"
 import { CHAIN_ID, L2_NAME } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { switchNetwork } from "@/utils"
+import { scrollRequest } from "@/utils/request"
 
 const Mock = () => {
   const { walletCurrentAddress, chainId, connect } = useRainbowContext()

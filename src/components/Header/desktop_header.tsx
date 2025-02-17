@@ -1,4 +1,5 @@
 import { sendGAEvent } from "@next/third-parties/google"
+import { usePathname } from "next/navigation"
 import React, { useState } from "react"
 
 import { Box, Container, Fade, Paper, Popper, Stack } from "@mui/material"
@@ -11,10 +12,10 @@ import useCheckViewport from "@/hooks/useCheckViewport"
 import useShowLanguageSelect from "@/hooks/useShowLanguageSelect"
 import useShowWalletConnector from "@/hooks/useShowWalletToolkit"
 
+import GasPriceViewer from "./GasPriceViewer"
 import MenuItem from "./MenuItem"
 import NavbarItem from "./NavbarItem"
 import Announcement from "./announcement"
-// import { navigations } from "./constants"
 import { navigations } from "./data"
 import useCheckCustomNavBarBg from "./useCheckCustomNavBarBg"
 import useCheckTheme from "./useCheckTheme"
@@ -24,6 +25,8 @@ const DesktopHeader = ({ currentMenu }) => {
   const navbarBg = useCheckCustomNavBarBg({ isHover: isHoveringNavbar })
   const { isDesktop } = useCheckViewport()
   const dark = useCheckTheme()
+
+  const pathname = usePathname()
 
   const [hoveringNavbarItemKey, setHoveringNavbarItemKey] = useState("")
 
@@ -141,6 +144,7 @@ const DesktopHeader = ({ currentMenu }) => {
           </ScrollLink>
           <Stack direction="row" spacing={isDesktop ? "4.4rem" : "2rem"} alignItems="center">
             <Box>{renderNavigationList()}</Box>
+            {pathname === "/" && <GasPriceViewer></GasPriceViewer>}
             {showWalletConnector && <WalletToolkit dark={dark}></WalletToolkit>}
             {showLanguageSelect && <LanguageSelect></LanguageSelect>}
           </Stack>

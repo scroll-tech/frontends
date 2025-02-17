@@ -13,6 +13,7 @@ import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useSessionsStore from "@/stores/sessionsStore"
 import { commafy, formatLargeNumber } from "@/utils"
+import { scrollRequest } from "@/utils/request"
 
 import MarksTooltip from "../components/MarksTooltip"
 import QATooltip from "../components/QATooltip"

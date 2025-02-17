@@ -5,6 +5,7 @@ import { namehash, normalize } from "viem/ens"
 import { create } from "zustand"
 
 import { getEnsAddressURL } from "@/apis/ens"
+import { scrollRequest } from "@/utils/request"
 
 /**
  * Fetches Ethereum address for an ENS name

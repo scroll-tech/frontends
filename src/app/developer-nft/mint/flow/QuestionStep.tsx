@@ -18,6 +18,7 @@ import { useNFTContext } from "@/contexts/NFTContextProvider"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useNFTStore from "@/stores/nftStore"
 import { sentryDebug, trimErrorMessage } from "@/utils"
+import { scrollRequest } from "@/utils/request"
 
 import StepWrapper from "./StepWrapper"
 

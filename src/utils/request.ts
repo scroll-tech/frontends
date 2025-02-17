@@ -1,4 +1,4 @@
-const scrollRequest = (url: string, options?: RequestInit & { timeout?: number }) => {
+export const scrollRequest = (url: string, options?: RequestInit & { timeout?: number }) => {
   if (options?.timeout) {
     const controller = new AbortController()
     const { signal } = controller
@@ -36,8 +36,4 @@ const scrollRequest = (url: string, options?: RequestInit & { timeout?: number }
       throw error
     })
     .then(data => data)
-}
-
-if (typeof window !== "undefined") {
-  window.scrollRequest = scrollRequest
 }

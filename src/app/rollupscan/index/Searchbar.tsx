@@ -6,6 +6,7 @@ import { styled } from "@mui/material/styles"
 
 import { searchUrl } from "@/apis/rollupscan"
 import useRollupStore from "@/stores/rollupStore"
+import { scrollRequest } from "@/utils/request"
 
 const SearchbarContainer = styled(Paper)(({ theme }) => ({
   width: "100%",

@@ -16,6 +16,7 @@ import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useSessionsStore from "@/stores/sessionsStore"
 import { sentryDebug } from "@/utils"
+import { scrollRequest } from "@/utils/request"
 
 const useStyles = makeStyles()(theme => ({
   dialogPaper: {

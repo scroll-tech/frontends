@@ -18,6 +18,7 @@ import {
   sentryDebug,
   trimErrorMessage,
 } from "@/utils"
+import { scrollRequest } from "@/utils/request"
 
 const EAS_GRAPHQL_URL = process.env.NEXT_PUBLIC_EAS_GRAPHQL_URL
 

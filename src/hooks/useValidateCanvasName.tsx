@@ -11,6 +11,7 @@ import WarningSvg from "@/assets/svgs/canvas/warning.svg"
 import { RPC_URL } from "@/constants"
 import { useCanvasContext } from "@/contexts/CanvasContextProvider"
 import useCanvasStore from "@/stores/canvasStore"
+import { scrollRequest } from "@/utils/request"
 
 const useValidateName = value => {
   const { unsignedProfileRegistryContract } = useCanvasContext()
