@@ -47,12 +47,10 @@ const useStyles = makeStyles()(theme => ({
     },
 
     [theme.breakpoints.down("sm")]: {
+      fontWeight: 600,
       width: "50%",
-      fontSize: "1.4rem",
+      fontSize: "1.6rem",
       backgroundColor: (theme as any).vars.palette.themeBackground.normal,
-      // "&.Mui-selected": {
-      //   backgroundColor: (theme as any).vars.palette.themeBackground.normal,
-      // },
     },
   },
   indicator: {
@@ -78,32 +76,6 @@ const useStyles = makeStyles()(theme => ({
     [theme.breakpoints.down("sm")]: {
       left: "50%",
       transform: "translateX(-50%)",
-    },
-  },
-
-  mobileSelect: {
-    width: "100%",
-    borderRadius: "10px",
-    backgroundColor: "white",
-    border: "1px solid #473835",
-    "& .MuiSelect-select": {
-      fontSize: "1.8rem",
-      padding: "1rem 1.6rem",
-      height: "36px",
-      display: "flex",
-      alignItems: "center",
-      fontWeight: 600,
-      fontFamily: "var(--default-font-family) !important",
-    },
-    "& .MuiOutlinedInput-root": {
-      height: "36px",
-    },
-    "& .MuiOutlinedInput-notchedOutline": {
-      border: "none",
-    },
-    "& .MuiSelect-icon": {
-      right: "1rem",
-      top: "2rem",
     },
   },
 }))

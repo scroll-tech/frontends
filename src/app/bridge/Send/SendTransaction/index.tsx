@@ -292,7 +292,7 @@ const SendTransaction = () => {
   }
 
   return (
-    <Stack direction="column" alignItems="center" gap={externalBridge ? "0" : txType === "Deposit" ? "2.4rem" : "1.6rem"}>
+    <Stack direction="column" alignItems="center" gap={externalBridge ? "0" : txType === "Withdraw" || isMobile ? "1.6rem" : "2.4rem"}>
       <Box sx={{ width: "100%" }}>
         <BalanceInput
           value={amount}
@@ -308,16 +308,13 @@ const SendTransaction = () => {
           onError={handleError}
           onChangeToken={handleChangeTokenSymbol}
         ></BalanceInput>
-        <Box sx={{ height: "2.4rem", width: "100%" }}>
+        <Box sx={{ height: ["auto", "2.4rem"], width: "100%", marginBottom: ["1.6rem", "0"] }}>
           {!!bridgeWarning && bridgeWarning !== ">0" && (
             <Typography
               sx={{
                 fontSize: "1.4rem",
                 fontWeight: 500,
-                width: ["calc(100% + 1rem)", "100%"],
-                "@media (max-width: 600px)": {
-                  marginLeft: "-0.5rem",
-                },
+                width: "100%",
               }}
               color="primary"
             >

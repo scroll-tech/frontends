@@ -67,9 +67,9 @@ const useStyles = makeStyles()(theme => ({
     backgroundColor: "white",
     border: "1px solid #473835",
     "& .MuiSelect-select": {
-      fontSize: "1.8rem",
+      fontSize: "1.6rem",
       padding: "1rem 1.6rem",
-      height: "36px",
+      height: "28px",
       display: "flex",
       alignItems: "center",
       fontWeight: 600,
@@ -145,7 +145,7 @@ const Send = () => {
           >
             {options.map(option => (
               <MenuItem
-                sx={{ fontSize: "1.8rem", fontWeight: 500, fontFamily: "var(--default-font-family) !important" }}
+                sx={{ fontSize: "1.6rem", fontWeight: 500, fontFamily: "var(--default-font-family) !important" }}
                 key={option.value}
                 value={option.value}
               >
