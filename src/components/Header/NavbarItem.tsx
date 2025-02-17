@@ -13,7 +13,6 @@ const NavbarItem = props => {
         fontSize: "1.8rem",
         lineHeight: "6.5rem",
         fontWeight: 400,
-        px: "0.5rem",
         position: "relative",
         color: dark ? "primary.contrastText" : "text.primary",
         whiteSpace: "nowrap",

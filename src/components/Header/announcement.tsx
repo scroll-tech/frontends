@@ -33,7 +33,7 @@ const Announcement = () => {
   }, [isMainnet, isHome])
 
   return displayAnnouncement && announcementContent ? (
-    <a href={rightHref} rel="noopener noreferrer" className="mb-[1.6rem]">
+    <a href={rightHref} rel="noopener noreferrer">
       <Box
         sx={{
           backgroundColor: theme => (isMainnet ? theme.palette.common.white : theme.palette.primary.main),

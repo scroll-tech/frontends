@@ -45,8 +45,6 @@ const DesktopHeader = ({ currentMenu }) => {
     setAnchorEl(null)
   }
 
-  // console.log(currentMenu, "currentMenu")
-
   const handleClickMenuItem = label => {
     sendGAEvent("event", "click_menu", {
       label,
@@ -63,13 +61,12 @@ const DesktopHeader = ({ currentMenu }) => {
             isActive={currentMenu.includes(item.key)}
             isHovering={hoveringNavbarItemKey === item.key}
             dark={dark}
-            href={item.href}
             onMouseEnter={e => handleMouseEnter(e, item.key)}
             onMouseLeave={handleMouseLeave}
           >
             {item.label}
             {item.key === hoveringNavbarItemKey && (
-              <Popper open={true} anchorEl={anchorEl} placement="bottom-start" className="!-ml-[16px]" transition disablePortal>
+              <Popper open={true} anchorEl={anchorEl} placement="bottom-start" className="!-ml-[24px]" transition disablePortal>
                 {({ TransitionProps }) => (
                   <Fade {...TransitionProps} timeout={350}>
                     <Paper
@@ -82,8 +79,17 @@ const DesktopHeader = ({ currentMenu }) => {
                       }}
                     >
                       <Stack direction="column" onClick={handleMouseLeave}>
-                        {item.children.map(({ key, label, href }) => (
-                          <MenuItem key={key} isActive={key === currentMenu[0]} dark={dark} href={href} onClick={() => handleClickMenuItem(label)}>
+                        {item.children.map(({ key, label, href, reload }) => (
+                          <MenuItem
+                            mode="desktop"
+                            key={key}
+                            sx={{ p: "0.8rem" }}
+                            isActive={key === currentMenu[0]}
+                            label={label}
+                            dark={dark}
+                            href={href}
+                            reloadDocument={reload}
+                          >
                             {label}
                           </MenuItem>
                         ))}
@@ -99,15 +105,17 @@ const DesktopHeader = ({ currentMenu }) => {
     }
 
     return (
-      <NavbarItem isActive={currentMenu.includes(item.key)} dark={dark} href={item.href} onClick={() => handleClickMenuItem(item.label)}>
-        {item.label}
-      </NavbarItem>
+      <ScrollLink href={item.href} reloadDocument={item.reload}>
+        <NavbarItem isActive={currentMenu.includes(item.key)} dark={dark} onClick={() => handleClickMenuItem(item.label)}>
+          {item.label}
+        </NavbarItem>
+      </ScrollLink>
     )
   }
 
   const renderNavigationList = () => {
     return (
-      <Stack direction="row" spacing={isDesktop ? "4.4rem" : "2rem"} justifyContent="space-between" alignItems="center">
+      <Stack direction="row" spacing={isDesktop ? "4rem" : "2rem"} justifyContent="space-between" alignItems="center">
         {navigations.map(item => (
           <React.Fragment key={item.key}>{renderNavigationItem(item)}</React.Fragment>
         ))}
@@ -138,15 +146,23 @@ const DesktopHeader = ({ currentMenu }) => {
     >
       <Announcement />
       <Container>
-        <Stack direction="row" justifyContent="space-between" alignItems="center">
+        <Stack direction="row" sx={{ position: "relative", height: "6.5rem" }} justifyContent="space-between" alignItems="center">
           <ScrollLink href="/" className="flex">
             <Logo light={dark} />
           </ScrollLink>
-          <Stack direction="row" spacing={isDesktop ? "4.4rem" : "2rem"} alignItems="center">
-            <Box>{renderNavigationList()}</Box>
-            {pathname === "/" && <GasPriceViewer></GasPriceViewer>}
+          <Box
+            sx={{
+              position: ["static", "static", "static", "absolute"],
+              left: "50%",
+              transform: ["translateX(0%)", "translateX(0%)", "translateX(0%)", "translateX(-50%)"],
+            }}
+          >
+            {renderNavigationList()}
+          </Box>
+          <Stack direction="row" spacing={isDesktop ? "4rem" : "2rem"} alignItems="center">
             {showWalletConnector && <WalletToolkit dark={dark}></WalletToolkit>}
             {showLanguageSelect && <LanguageSelect></LanguageSelect>}
+            {pathname === "/" && <GasPriceViewer></GasPriceViewer>}
           </Stack>
         </Stack>
       </Container>

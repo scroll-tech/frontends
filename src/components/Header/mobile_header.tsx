@@ -3,7 +3,7 @@ import { usePathname } from "next/navigation"
 import { Fragment, useEffect, useState } from "react"
 
 import { ExpandMore } from "@mui/icons-material"
-import { Box, Collapse, List, ListItemButton, Stack, Typography } from "@mui/material"
+import { Box, Collapse, List, Stack, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import LanguageSelect from "@/components/LanguageSelect"
@@ -14,6 +14,7 @@ import useShowWalletConnector from "@/hooks/useShowWalletToolkit"
 import { isMainnet } from "@/utils"
 
 import Logo from "../ScrollLogo"
+import MenuItem from "./MenuItem"
 import MobileGasPriceViewer from "./MobileGasPriceViewer"
 import MobileNavbarItem from "./MobileNavBarItem"
 import Announcement from "./announcement"
@@ -57,16 +58,25 @@ const MobileHeader = ({ currentMenu }) => {
     setActiveCollapse(collapse === activeCollapse ? "" : collapse)
   }
 
+  const handleClickMenuItem = label => {
+    sendGAEvent("event", "click_menu", {
+      label,
+      device: "mobile",
+    })
+    toggleDrawer(false)
+  }
+
   const renderList = () => (
     <List
       sx={{
         padding: "0",
         fontSize: "16px",
-        borderBottom: theme => `1px solid ${dark ? theme.vars.palette.primary.contrastText : theme.vars.palette.text.primary}`,
+        borderBottom: theme =>
+          pathname === "/" ? `1px solid ${dark ? theme.vars.palette.primary.contrastText : theme.vars.palette.text.primary}` : "none",
       }}
       component="nav"
     >
-      {navigations.map((item, index) => (
+      {navigations.map(item => (
         <Fragment key={item.key}>
           {item.children ? (
             <MobileNavbarItem dark={dark} onClick={() => toggleCollapse(item.key)}>
@@ -97,38 +107,27 @@ const MobileHeader = ({ currentMenu }) => {
               />
             </MobileNavbarItem>
           ) : (
-            <Link
-              href={item.href}
-              reloadDocument={item.reload}
-              onClick={() =>
-                sendGAEvent("event", "click_menu", {
-                  label: item.label,
-                  device: "mobile",
-                })
-              }
-            >
-              <MobileNavbarItem dark={dark} sx={{ py: "1rem" }} onClick={() => toggleDrawer(false)}>
+            <Link href={item.href} reloadDocument={item.reload}>
+              <MobileNavbarItem dark={dark} sx={{ py: "1rem" }} onClick={() => handleClickMenuItem(item.label)}>
                 {item.label}
               </MobileNavbarItem>
             </Link>
           )}
 
           <Collapse key={item.key} in={activeCollapse === item.key} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              {item.children?.map(i => (
-                <Link key={i.id} href={i.href}>
-                  <ListItemButton sx={{ p: 0, mb: "2.4rem" }} onClick={() => toggleDrawer(false)}>
-                    <Typography
-                      sx={{
-                        fontSize: "1.6rem",
-                        lineHeight: "2.4rem",
-                        color: currentMenu[0] === i.key ? "primary.main" : dark ? "primary.contrastText" : "text.primary",
-                      }}
-                    >
-                      {i.label}
-                    </Typography>
-                  </ListItemButton>
-                </Link>
+            <List component="div" sx={{}} disablePadding>
+              {item.children?.map(({ key, label, href, reload }) => (
+                <MenuItem
+                  mode="mobile"
+                  key={key}
+                  sx={{ mb: "2.4rem" }}
+                  href={href}
+                  label={label}
+                  isActive={currentMenu[0] === key}
+                  reloadDocument={reload}
+                >
+                  {label}
+                </MenuItem>
               ))}
             </List>
           </Collapse>
@@ -179,17 +178,17 @@ const MobileHeader = ({ currentMenu }) => {
         <Box
           sx={{
             background: dark ? "themeBackground.dark" : "themeBackground.light",
-            height: `calc(100vh - 6.2rem - ${pathname === "/" && isMainnet ? "5.3rem" : "0"})`,
+            height: `calc(100vh - 6.2rem - ${pathname === "/" && isMainnet ? "5.3rem" : "0rem"})`,
             overflowY: "auto",
           }}
         >
           <Box
             sx={{ margin: "-0.8rem 1.6rem 0", background: dark ? "themeBackground.dark" : "themeBackground.light" }}
             role="presentation"
-            onKeyDown={() => toggleDrawer(false)}
+            // onKeyDown={() => toggleDrawer(false)}
           >
             {renderList()}
-            <MobileGasPriceViewer></MobileGasPriceViewer>
+            {pathname === "/" && <MobileGasPriceViewer dark={dark}></MobileGasPriceViewer>}
           </Box>
         </Box>
       )}

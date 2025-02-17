@@ -89,7 +89,7 @@ const MobileGasPriceViewer = props => {
         }}
       >
         <MotionBox
-          sx={{ position: "absolute", zIndex: 0, top: 0, width: "100%", left: 0, bottom: 0, backgroundColor: "background.default" }}
+          sx={{ position: "absolute", zIndex: 0, top: 0, width: "100%", left: 0, bottom: 0, backgroundColor: dark ? "#333" : "background.default" }}
           variants={{
             open: {
               clipPath: `polygon(0 0, ${gasPriceWidth}px 0, ${gasPriceWidth}px 216px, 0 216px)`,
@@ -98,7 +98,7 @@ const MobileGasPriceViewer = props => {
               },
             },
             closed: {
-              clipPath: `polygon(0 0, 100px 0, 100px 56px, 0 56px)`,
+              clipPath: `polygon(0 0, 100px 0, 100px 50px, 0 50px)`,
               transition: {
                 ease: [0.165, 0.84, 0.44, 1],
                 delay: 0.2,
@@ -114,16 +114,21 @@ const MobileGasPriceViewer = props => {
             zIndex: 1,
             width: "min-content",
             alignItems: "center",
+            borderRadius: "0.5rem",
             padding: "1.6rem",
-            backgroundColor: "background.default",
+            color: dark ? "primary.contrastText" : "text.primary",
+            backgroundColor: dark ? "#333" : "background.default",
           }}
           onClick={handleToggleGasPricePanel}
         >
           <GasPriveDotSvg></GasPriveDotSvg>
-          <Typography component="span" sx={{ fontFamily: "var(--developer-page-font-family)", fontSize: "1.6rem", lineHeight: "2.4rem" }}>
+          <Typography
+            component="span"
+            sx={{ color: "inherit", fontFamily: "var(--developer-page-font-family)", fontSize: "1.6rem", lineHeight: "2.4rem" }}
+          >
             {displayedScrollGasPrice}
           </Typography>
-          <Typography component="span" sx={{ fontSize: "1.6rem", lineHeight: "2.4rem" }}>
+          <Typography component="span" sx={{ color: "inherit", fontSize: "1.6rem", lineHeight: "2.4rem" }}>
             Mwei
           </Typography>
         </Stack>
@@ -137,19 +142,35 @@ const MobileGasPriceViewer = props => {
               padding: "0.8rem 1.6rem 1.6rem",
               fontSize: "1.6rem",
               lineHeight: "2.4rem",
-              color: "text.primary",
+              color: dark ? "primary.contrastText" : "text.primary",
 
               position: "relative",
               zIndex: 1,
             }}
           >
             <span className="font-[600]">Scroll</span>
-            <Typography sx={{ fontSize: "inherit", lineHeight: "inherit", textAlign: "right", fontFamily: "var(--developer-page-font-family)" }}>
+            <Typography
+              sx={{
+                fontSize: "inherit",
+                color: "inherit",
+                lineHeight: "inherit",
+                textAlign: "right",
+                fontFamily: "var(--developer-page-font-family)",
+              }}
+            >
               {displayedScrollGasPrice}
             </Typography>
             <span>Mwei</span>
             <span className="font-[600]">Ethereum</span>
-            <Typography sx={{ fontSize: "inherit", lineHeight: "inherit", textAlign: "right", fontFamily: "var(--developer-page-font-family)" }}>
+            <Typography
+              sx={{
+                fontSize: "inherit",
+                color: "inherit",
+                lineHeight: "inherit",
+                textAlign: "right",
+                fontFamily: "var(--developer-page-font-family)",
+              }}
+            >
               {displayedEthereumGasPrice}
             </Typography>
             <span>Mwei</span>

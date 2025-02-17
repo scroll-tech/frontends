@@ -1,100 +1,86 @@
-import BridgeSvg from "@/assets/svgs/header/Bridge.svg"
-import BuildSvg from "@/assets/svgs/header/Build.svg"
-import CommunitySvg from "@/assets/svgs/header/Community.svg"
-import DocsSvg from "@/assets/svgs/header/Doc.svg"
-import EthereumSvg from "@/assets/svgs/header/Eth.svg"
-import ForumSvg from "@/assets/svgs/header/Forum.svg"
-import HomeSvg from "@/assets/svgs/header/Home.svg"
-import IssuesSvg from "@/assets/svgs/header/Issues.svg"
-import LevelUpSvg from "@/assets/svgs/header/LevelUp.svg"
-import ProjectsSvg from "@/assets/svgs/header/Projects.svg"
-import SCRsSCRSvg from "@/assets/svgs/header/SCRsSCR.svg"
-import SDKSvg from "@/assets/svgs/header/SDK.svg"
-import SessionsSvg from "@/assets/svgs/header/Sessions.svg"
-import StatusSvg from "@/assets/svgs/header/Status.svg"
-import scrETHSvg from "@/assets/svgs/header/scrETH.svg"
 import { isSepolia } from "@/utils"
 
-const sepoliaNavigations = [
+interface MenuItem {
+  rootKey: string
+  label: string
+  key: string
+  href: string
+  reload?: boolean
+}
+
+interface Navigation {
+  label: string
+  key: string
+  children: MenuItem[]
+  href?: string
+  reload?: boolean
+  new?: boolean
+}
+
+const sepoliaNavigations: Navigation[] = [
   {
-    label: "Develop",
-    key: "develop",
+    label: "Build",
+    key: "build",
     children: [
       {
-        label: "",
-        children: [
-          {
-            label: "Mainnet",
-            key: "mainnet-resources",
-            rootKey: "develop",
-            href: "https://scroll.io/portal",
-            isExternal: true,
-          },
-          {
-            label: "Sepolia Testnet",
-            key: "sepolia-resources",
-            rootKey: "develop",
-            href: "/portal",
-          },
-          {
-            label: "Docs",
-            key: "docs",
-            href: "https://docs.scroll.io/en/home/",
-            isExternal: true,
-          },
-          {
-            label: "Status",
-            key: "status",
-            href: "https://status.scroll.io/",
-            isExternal: true,
-          },
-          {
-            label: "Bug Bounty",
-            key: "bug-bounty",
-            href: "https://immunefi.com/bounty/scroll/",
-            isExternal: true,
-          },
-        ],
+        rootKey: "build",
+        label: "Docs",
+        key: "docs",
+        href: "https://docs.scroll.io/en/home/",
       },
       {
-        label: "BLOCK EXPLORERS",
-        children: [
-          {
-            label: "Rollup Explorer",
-            key: "rollupscan",
-            href: "/rollupscan",
-            rootKey: "develop",
-          },
-          {
-            label: "Scrollscan",
-            key: "etherscan",
-            href: process.env.NEXT_PUBLIC_EXTERNAL_EXPLORER_URI_L2,
-            isExternal: true,
-          },
-          {
-            label: "L2 Scan",
-            key: "l2-scan",
-            href: process.env.NEXT_PUBLIC_L2_SCAN_URI,
-            isExternal: true,
-          },
-          {
-            label: "Dora Explorer",
-            key: "dora",
-            href: process.env.NEXT_PUBLIC_EXTERNAL_EXPLORER_URI_DORA,
-            isExternal: true,
-          },
-        ],
+        rootKey: "build",
+        label: "Block Explorer",
+        key: "block-explorer",
+        href: process.env.NEXT_PUBLIC_EXTERNAL_EXPLORER_URI_L2,
+      },
+      {
+        label: "Rollup Explorer",
+        key: "rollupscan",
+        href: "/rollupscan",
+        rootKey: "develop",
       },
     ],
   },
   {
-    label: "Bridge",
-    key: "bridge",
-    href: "/bridge",
+    label: "Explore",
+    key: "explore",
+    children: [
+      {
+        rootKey: "explore",
+        label: "Bridge",
+        key: "bridge",
+        href: "/bridge",
+      },
+    ],
+  },
+  {
+    label: "Participate",
+    key: "participate",
+    children: [
+      {
+        rootKey: "participate",
+        label: "Bug Bounty",
+        key: "bug-bounty",
+        href: "https://immunefi.com/bug-bounty/scroll/information/",
+      },
+    ],
+  },
+  {
+    label: "Vision",
+    key: "vision",
+    children: [
+      {
+        rootKey: "vision",
+        label: "Technology",
+        key: "technology",
+        href: "https://docs.scroll.io/en/technology/",
+      },
+    ],
   },
 ]
 
-const mainnetNavigations = [
+const mainnetNavigations: Navigation[] = [
   {
     label: "Build",
     key: "build",
@@ -115,15 +101,13 @@ const mainnetNavigations = [
         rootKey: "build",
         label: "Level Up",
         key: "level-up",
-        href: "https://levelupweb3.xyz",
+        href: "https://www.levelup.xyz/",
       },
       {
         rootKey: "build",
         label: "Block Explorer",
         key: "block-explorer",
-        href: "https://scrollscan.com/",
-        isExternal: true,
-        icon: StatusSvg,
+        href: process.env.NEXT_PUBLIC_EXTERNAL_EXPLORER_URI_L2,
       },
     ],
   },
@@ -142,7 +126,6 @@ const mainnetNavigations = [
         label: "Bridge",
         key: "bridge",
         href: "/bridge",
-        icon: ProjectsSvg,
       },
       {
         rootKey: "explore",
@@ -168,7 +151,6 @@ const mainnetNavigations = [
         label: "Governance",
         key: "governance",
         href: "https://gov.scroll.io/info",
-        isExternal: true,
       },
       {
         rootKey: "participate",
@@ -237,6 +219,7 @@ const mainnetNavigations = [
         href: "/join-us",
       },
       {
+        rootKey: "resources",
         label: "Whitepaper",
         key: "whitepaper",
         href: "https://scroll.io/files/whitepaper.pdf",
