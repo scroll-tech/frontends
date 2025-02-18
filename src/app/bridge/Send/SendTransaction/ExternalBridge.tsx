@@ -41,7 +41,7 @@ const ExternalBridge = ({ selectedToken, txType }: { selectedToken: Token; txTyp
           },
         }}
       >
-        <Image width={48} height={48} src={bridgeInfo?.bridgeIcon!} alt="bridge" />
+        <Image width={48} height={48} src={bridgeInfo?.bridgeIcon!} alt="bridge" className="rounded-[0.8rem]" />
         <Typography sx={{ fontSize: ["1.6rem", "1.8rem"], fontWeight: "700" }}>{bridgeInfo?.bridgeName}</Typography>
       </Box>
     </Box>

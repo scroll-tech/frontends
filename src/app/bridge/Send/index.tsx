@@ -8,6 +8,7 @@ import { Box, MenuItem, Select, Tab, useMediaQuery, useTheme } from "@mui/materi
 
 import ArrowDownSvg from "@/assets/svgs/bridge/arrow-down.svg"
 import { BRIDGE_TAB } from "@/constants/searchParamsKey"
+import { isSepolia } from "@/utils"
 
 import Buy from "./Buy"
 import Exchanges from "./Exchanges"
@@ -59,6 +60,9 @@ const useStyles = makeStyles()(theme => ({
     backgroundColor: theme.vars.palette.themeBackground.normal,
     borderRadius: "2rem",
     marginTop: "2.4rem",
+    [theme.breakpoints.down("sm")]: {
+      padding: "2.4rem 1.6rem",
+    },
   },
 
   mobileSelect: {
@@ -127,7 +131,7 @@ const Send = () => {
   return (
     <Box className={classes.sendWrapper}>
       <TabContext value={txType}>
-        {isMobile && (
+        {isMobile && !isSepolia && (
           <Select
             value={txType}
             onChange={handleSelectChange}
@@ -155,15 +159,17 @@ const Send = () => {
           </Select>
         )}
 
-        <TabList
-          onChange={handleChange}
-          textColor="primary"
-          classes={{ root: classes.tabList, fixed: classes.tabList, flexContainer: classes.tabList, indicator: classes.indicator }}
-        >
-          {options.map(option => (
-            <Tab key={option.value} label={option.label} value={option.value} classes={{ root: classes.tab }}></Tab>
-          ))}
-        </TabList>
+        {!isSepolia && (
+          <TabList
+            onChange={handleChange}
+            textColor="primary"
+            classes={{ root: classes.tabList, fixed: classes.tabList, flexContainer: classes.tabList, indicator: classes.indicator }}
+          >
+            {options.map(option => (
+              <Tab key={option.value} label={option.label} value={option.value} classes={{ root: classes.tab }}></Tab>
+            ))}
+          </TabList>
+        )}
         <TabPanel value="OfficialBridge" classes={{ root: classes.tabPanel }} sx={{ padding: ["1.6rem !important", "0 !important"] }}>
           <OfficialBridge></OfficialBridge>
         </TabPanel>
