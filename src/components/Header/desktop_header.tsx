@@ -10,6 +10,7 @@ import WalletToolkit from "@/components/WalletToolkit"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useShowLanguageSelect from "@/hooks/useShowLanguageSelect"
 import useShowWalletConnector from "@/hooks/useShowWalletToolkit"
+import { isSepolia } from "@/utils"
 
 import GasPriceViewer from "./GasPriceViewer"
 import MenuItem from "./MenuItem"
@@ -152,9 +153,9 @@ const DesktopHeader = ({ currentMenu }) => {
           <Stack
             direction="row"
             sx={{
-              position: ["static", "static", "static", "absolute"],
+              position: isSepolia ? "static" : ["static", "static", "static", "absolute"],
               left: "50%",
-              transform: ["translateX(0%)", "translateX(0%)", "translateX(0%)", "translateX(-50%)"],
+              transform: isSepolia ? "translateX(0%)" : ["translateX(0%)", "translateX(0%)", "translateX(0%)", "translateX(-50%)"],
 
               justifyContent: "space-between",
               alignItems: "center",
@@ -165,11 +166,13 @@ const DesktopHeader = ({ currentMenu }) => {
               <React.Fragment key={item.key}>{renderNavigationItem(item)}</React.Fragment>
             ))}
           </Stack>
-          <Stack direction="row" spacing={isDesktop ? "4rem" : "2rem"} alignItems="center">
-            {showWalletConnector && <WalletToolkit dark={dark}></WalletToolkit>}
-            {showLanguageSelect && <LanguageSelect></LanguageSelect>}
-            {gasPriceViewerVisible && <GasPriceViewer></GasPriceViewer>}
-          </Stack>
+          {!isSepolia && (
+            <Stack direction="row" spacing={isDesktop ? "4rem" : "2rem"} alignItems="center">
+              {showWalletConnector && <WalletToolkit dark={dark}></WalletToolkit>}
+              {showLanguageSelect && <LanguageSelect></LanguageSelect>}
+              {gasPriceViewerVisible && <GasPriceViewer></GasPriceViewer>}
+            </Stack>
+          )}
         </Stack>
       </Container>
     </Box>

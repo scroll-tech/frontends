@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation"
 
 import NFTContextProvider from "@/contexts/NFTContextProvider"
+import { isSepolia } from "@/utils"
 import { genMeta } from "@/utils/route"
 
 import MintHome from "./home"
@@ -13,7 +14,7 @@ export const generateMetadata = genMeta(() => ({
 }))
 
 const Mint = () => {
-  if (process.env.NEXT_PUBLIC_SCROLL_ENVIRONMENT === "Sepolia") {
+  if (isSepolia) {
     notFound()
   }
   return (

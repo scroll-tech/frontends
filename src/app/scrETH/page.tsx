@@ -1,4 +1,7 @@
+import { notFound } from "next/navigation"
+
 import { genMeta } from "@/utils"
+import { isSepolia } from "@/utils"
 
 import Explaination from "./Explaination"
 import Header from "./Header"
@@ -12,6 +15,9 @@ export const generateMetadata = genMeta(() => ({
 }))
 
 const ScrETHPage = () => {
+  if (isSepolia) {
+    notFound()
+  }
   return (
     <>
       <Header></Header>

@@ -1,4 +1,7 @@
+import { notFound } from "next/navigation"
+
 import blogSource from "@/assets/blog/main.data.json"
+import { isSepolia } from "@/utils"
 import { genMeta } from "@/utils/route"
 
 import Detail from "./detail"
@@ -21,6 +24,9 @@ export const generateMetadata = genMeta(async ({ params }) => {
 })
 
 const BlogDetail = async ({ params }) => {
+  if (isSepolia) {
+    notFound()
+  }
   const { blogId } = await params
   return (
     <>

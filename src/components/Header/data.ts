@@ -32,53 +32,34 @@ const sepoliaNavigations: Navigation[] = [
       },
       {
         rootKey: "build",
+        label: "Scroll Open",
+        key: "scroll-open",
+        href: "https://open.scroll.io",
+      },
+      {
+        rootKey: "build",
+        label: "Level Up",
+        key: "level-up",
+        href: "https://www.levelup.xyz/",
+      },
+      {
+        rootKey: "build",
         label: "Block Explorer",
         key: "block-explorer",
         href: process.env.NEXT_PUBLIC_EXTERNAL_EXPLORER_URI_L2,
       },
-      {
-        label: "Rollup Explorer",
-        key: "rollupscan",
-        href: "/rollupscan",
-        rootKey: "develop",
-      },
+      // {
+      //   label: "Rollup Explorer",
+      //   key: "rollupscan",
+      //   href: "/rollupscan",
+      //   rootKey: "develop",
+      // },
     ],
   },
   {
-    label: "Explore",
-    key: "explore",
-    children: [
-      {
-        rootKey: "explore",
-        label: "Bridge",
-        key: "bridge",
-        href: "/bridge",
-      },
-    ],
-  },
-  {
-    label: "Participate",
-    key: "participate",
-    children: [
-      {
-        rootKey: "participate",
-        label: "Bug Bounty",
-        key: "bug-bounty",
-        href: "https://immunefi.com/bug-bounty/scroll/information/",
-      },
-    ],
-  },
-  {
-    label: "Vision",
-    key: "vision",
-    children: [
-      {
-        rootKey: "vision",
-        label: "Technology",
-        key: "technology",
-        href: "https://docs.scroll.io/en/technology/",
-      },
-    ],
+    label: "Bridge",
+    key: "bridge",
+    href: "/bridge",
   },
 ]
 

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation"
 import { Container, Typography } from "@mui/material"
 
 import ScrollySad from "@/assets/images/common/scrolly-sad.png"
+import { isSepolia } from "@/utils"
 import { genMeta } from "@/utils/route"
 
 export const generateMetadata = genMeta(() => ({
@@ -12,7 +13,7 @@ export const generateMetadata = genMeta(() => ({
 }))
 
 const SessionsRestricted = () => {
-  if (process.env.NEXT_PUBLIC_SCROLL_ENVIRONMENT === "Sepolia") {
+  if (isSepolia) {
     notFound()
   }
   return (

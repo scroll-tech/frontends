@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation"
 
+import { isSepolia } from "@/utils"
 import { genMeta } from "@/utils/route"
 
 import Finalists from "./Finalists"
@@ -12,7 +13,7 @@ export const generateMetadata = genMeta(() => ({
 }))
 
 const StickerContest = () => {
-  if (process.env.NEXT_PUBLIC_SCROLL_ENVIRONMENT === "Sepolia") {
+  if (isSepolia) {
     notFound()
   }
   return (
