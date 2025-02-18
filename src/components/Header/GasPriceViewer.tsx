@@ -79,16 +79,30 @@ const GasPriceViewer = () => {
         <Typography component="span" sx={{ fontSize: "1.6rem", lineHeight: "2.4rem" }}>
           Mwei
         </Typography>
-        <Popper open={Boolean(anchorEl)} anchorEl={anchorEl} placement="bottom-end" transition disablePortal>
+        <Popper
+          open={Boolean(anchorEl)}
+          sx={{
+            zIndex: theme => theme.zIndex.appBar,
+          }}
+          modifiers={[
+            {
+              name: "offset",
+              options: {
+                offset: [0, 12],
+              },
+            },
+          ]}
+          anchorEl={anchorEl}
+          placement="bottom-end"
+          transition
+          disablePortal
+        >
           {({ TransitionProps }) => (
             <Fade {...TransitionProps} timeout={350}>
               <Paper
                 sx={{
                   borderRadius: "1rem",
-                  zIndex: "var(--mui-zIndex-appBar)",
                   boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.10)",
-                  mt: "1.2rem",
-
                   display: "grid",
                   gridTemplateColumns: "max-content 1fr max-content",
                   rowGap: "2.4rem",

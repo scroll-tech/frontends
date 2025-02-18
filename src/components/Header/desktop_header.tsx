@@ -1,7 +1,7 @@
 import { sendGAEvent } from "@next/third-parties/google"
 import React, { useState } from "react"
 
-import { Container, Fade, Paper, Popper, Stack } from "@mui/material"
+import { Box, Container, Fade, Paper, Popper, Stack } from "@mui/material"
 
 import LanguageSelect from "@/components/LanguageSelect"
 import ScrollLink from "@/components/Link"
@@ -14,7 +14,6 @@ import useShowWalletConnector from "@/hooks/useShowWalletToolkit"
 import GasPriceViewer from "./GasPriceViewer"
 import MenuItem from "./MenuItem"
 import NavbarItem from "./NavbarItem"
-import Announcement from "./announcement"
 import { navigations } from "./data"
 import useCheckCustomNavBarBg from "./useCheckCustomNavBarBg"
 import useCheckTheme from "./useCheckTheme"
@@ -22,8 +21,8 @@ import useShowGasPriceViewer from "./useShowGasPriceViewer"
 
 const DesktopHeader = ({ currentMenu }) => {
   const [isHoveringNavbar, setIsHoveringNavbar] = useState(false)
-  const navbarBg = useCheckCustomNavBarBg({ isHover: isHoveringNavbar })
-  const { isDesktop } = useCheckViewport()
+  useCheckCustomNavBarBg({ isHover: isHoveringNavbar })
+  const { isDesktop, isLandscape } = useCheckViewport()
   const dark = useCheckTheme()
 
   const gasPriceViewerVisible = useShowGasPriceViewer()
@@ -66,14 +65,28 @@ const DesktopHeader = ({ currentMenu }) => {
           >
             {item.label}
             {item.key === hoveringNavbarItemKey && (
-              <Popper open={true} anchorEl={anchorEl} placement="bottom-start" className="!-ml-[24px]" transition disablePortal>
+              <Popper
+                open={true}
+                anchorEl={anchorEl}
+                sx={{ zIndex: theme => theme.zIndex.appBar }}
+                modifiers={[
+                  {
+                    name: "offset",
+                    options: {
+                      offset: [-24, 0],
+                    },
+                  },
+                ]}
+                placement="bottom-start"
+                transition
+                disablePortal
+              >
                 {({ TransitionProps }) => (
                   <Fade {...TransitionProps} timeout={350}>
                     <Paper
                       sx={{
                         borderRadius: "1rem",
                         p: "16px",
-                        zIndex: "var(--mui-zIndex-appBar)",
                         transformOrigin: "top",
                         boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0.10)",
                       }}
@@ -86,7 +99,7 @@ const DesktopHeader = ({ currentMenu }) => {
                             sx={{ p: "0.8rem" }}
                             isActive={key === currentMenu[0]}
                             label={label}
-                            dark={dark}
+                            dark={isLandscape ? false : dark}
                             href={href}
                             reloadDocument={reload}
                           >
@@ -120,18 +133,9 @@ const DesktopHeader = ({ currentMenu }) => {
   }
 
   return (
-    <Stack
+    <Box
       sx={{
-        position: "sticky",
-        top: 0,
-        width: "100%",
-        zIndex: 10,
-        backgroundColor: theme =>
-          navbarBg
-            ? theme.vars.palette.themeBackground[navbarBg]
-            : dark
-              ? theme.vars.palette.themeBackground.dark
-              : theme.vars.palette.themeBackground.light,
+        backgroundColor: "var(--navbar-bg)",
       }}
       onMouseEnter={() => {
         setIsHoveringNavbar(true)
@@ -140,7 +144,6 @@ const DesktopHeader = ({ currentMenu }) => {
         setIsHoveringNavbar(false)
       }}
     >
-      <Announcement />
       <Container>
         <Stack direction="row" sx={{ position: "relative", height: "6.5rem", justifyContent: "space-between", alignItems: "center" }}>
           <ScrollLink href="/" className="flex">
@@ -169,7 +172,7 @@ const DesktopHeader = ({ currentMenu }) => {
           </Stack>
         </Stack>
       </Container>
-    </Stack>
+    </Box>
   )
 }
 

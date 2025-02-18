@@ -7,7 +7,7 @@ import Link from "@/components/Link"
 
 const MenuItem = props => {
   const { mode, children, label, href, reloadDocument, isActive, dark, sx } = props
-  const isExternal = href?.startsWith("http")
+  const isExternal = mode === "desktop" && href?.startsWith("http")
 
   const handleTrackEvent = () => {
     sendGAEvent("event", "click_menu", {
@@ -19,6 +19,7 @@ const MenuItem = props => {
   return (
     <Link href={href} target={isExternal ? "_blank" : "_self"} reloadDocument={reloadDocument}>
       <ListItemButton
+        className="group"
         sx={{
           p: 0,
           display: "flex",

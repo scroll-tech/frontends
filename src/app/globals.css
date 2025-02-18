@@ -17,6 +17,7 @@ object {
 
 :root {
   --vh: 100vh;
+  --theme-bg: #fff8f3;
 }
 
 html {
@@ -33,7 +34,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-variant-ligatures: no-contextual;
-  background-color: #fff8f3;
+  background-color: var(--theme-bg);
 }
 
 body.mobile-top-nav-open {

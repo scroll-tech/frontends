@@ -13,7 +13,6 @@ import { isSepolia } from "@/utils"
 import "./global"
 
 export default function RootTemplate({ children }: { children: ReactNode }) {
-  // const dark = useCheckTheme()
   const hideFooter = useHideFooter()
 
   // useEffect(() => {
@@ -29,7 +28,7 @@ export default function RootTemplate({ children }: { children: ReactNode }) {
   // }, [])
 
   return (
-    <Box sx={{ minHeight: "100vh", backgroundColor: "themeBackground.light" }}>
+    <Box sx={{ minHeight: "100vh" }}>
       <Header></Header>
       {children}
       {!(isSepolia || hideFooter) && <Footer />}

@@ -14,7 +14,6 @@ import Logo from "../ScrollLogo"
 import MenuItem from "./MenuItem"
 import MobileGasPriceViewer from "./MobileGasPriceViewer"
 import MobileNavbarItem from "./MobileNavBarItem"
-import Announcement from "./announcement"
 import { navigations } from "./data"
 import useCheckCustomNavBarBg from "./useCheckCustomNavBarBg"
 import useCheckTheme from "./useCheckTheme"
@@ -29,7 +28,7 @@ const Bar = styled<any>("div", { shouldForwardProp: prop => prop !== "dark" })((
 }))
 
 const MobileHeader = ({ currentMenu }) => {
-  const navbarBg = useCheckCustomNavBarBg()
+  useCheckCustomNavBarBg()
   const showWalletConnector = useShowWalletConnector()
   const showLanguageSelect = useShowLanguageSelect()
   const gasPriceViewerVisible = useShowGasPriceViewer()
@@ -108,9 +107,10 @@ const MobileHeader = ({ currentMenu }) => {
                   mode="mobile"
                   key={key}
                   sx={{ mb: "2.4rem" }}
-                  href={href}
+                  isActive={key === currentMenu[0]}
                   label={label}
-                  isActive={currentMenu[0] === key}
+                  dark={dark}
+                  href={href}
                   reloadDocument={reload}
                 >
                   {label}
@@ -131,10 +131,9 @@ const MobileHeader = ({ currentMenu }) => {
         "&.active": {
           height: "100vh",
         },
-        backgroundColor: navbarBg && !open ? `themeBackground.${navbarBg}` : dark ? "themeBackground.dark" : "themeBackground.light",
+        backgroundColor: open ? (dark ? "themeBackground.dark" : "themeBackground.light") : "var(--navbar-bg)",
       }}
     >
-      <Announcement />
       <Stack sx={{ height: "6.4rem", px: "2rem", lineHeight: "3rem" }} direction="row" justifyContent="space-between" alignItems="center">
         <Link href="/" className="flex">
           <Box onClick={() => toggleDrawer(false)}>

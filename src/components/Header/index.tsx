@@ -5,20 +5,13 @@ import React, { useEffect, useState } from "react"
 
 import { AppBar, Slide } from "@mui/material"
 import useScrollTrigger from "@mui/material/useScrollTrigger"
-import { styled } from "@mui/system"
 
 import useCheckViewport from "@/hooks/useCheckViewport"
 
+import Announcement from "./announcement"
 import { navigations } from "./data"
 import DesktopNav from "./desktop_header"
 import MobileNav from "./mobile_header"
-
-const AppBarStyled = styled(AppBar)(() => ({
-  boxShadow: "none",
-  position: "sticky",
-  backgroundColor: "transparent",
-  paddingRight: "0 !important",
-}))
 
 interface Props {
   window?: () => Window
@@ -66,16 +59,18 @@ export default function Header() {
   if (isLandscape) {
     return (
       <HideOnScroll>
-        <AppBarStyled>
+        <AppBar position="sticky" sx={{ boxShadow: "none", backgroundColor: "transparent" }}>
+          <Announcement />
           <DesktopNav currentMenu={currentMenu} />
-        </AppBarStyled>
+        </AppBar>
       </HideOnScroll>
     )
   } else {
     return (
-      <AppBarStyled>
+      <AppBar position="sticky" sx={{ boxShadow: "none", backgroundColor: "transparent" }}>
+        <Announcement />
         <MobileNav currentMenu={currentMenu} />
-      </AppBarStyled>
+      </AppBar>
     )
   }
 }

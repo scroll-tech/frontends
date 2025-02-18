@@ -228,11 +228,6 @@ const mainnetNavigations: Navigation[] = [
       },
     ],
   },
-  {
-    label: "Whitepaper",
-    key: "whitepeeeaper",
-    href: "https://scroll.io/files/whitepaper.pdf",
-  },
 ]
 
 const navigations = isSepolia ? sepoliaNavigations : mainnetNavigations
