@@ -7,7 +7,7 @@ import Link from "@/components/Link"
 
 const MenuItem = props => {
   const { mode, children, label, href, reloadDocument, isActive, dark, sx } = props
-  const isExternal = mode === "desktop" && href?.startsWith("http")
+  const isExternal = href?.startsWith("http")
 
   const handleTrackEvent = () => {
     sendGAEvent("event", "click_menu", {
@@ -39,7 +39,7 @@ const MenuItem = props => {
         onClick={handleTrackEvent}
       >
         {children}
-        {isExternal && (
+        {mode === "desktop" && isExternal && (
           <span className="invisible relative -translate-x-2 transition-transform group-hover:visible group-hover:translate-x-0">
             <ExternalLinkSvg className="w-[1rem] h-auto"></ExternalLinkSvg>
           </span>
