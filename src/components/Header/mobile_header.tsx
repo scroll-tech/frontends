@@ -17,7 +17,6 @@ import MobileNavbarItem from "./MobileNavBarItem"
 import { navigations } from "./data"
 import useCheckCustomNavBarBg from "./useCheckCustomNavBarBg"
 import useCheckTheme from "./useCheckTheme"
-import useShowGasPriceViewer from "./useShowGasPriceViewer"
 
 const Bar = styled<any>("div", { shouldForwardProp: prop => prop !== "dark" })(({ theme, dark }) => ({
   width: "2rem",
@@ -31,7 +30,6 @@ const MobileHeader = ({ currentMenu }) => {
   useCheckCustomNavBarBg()
   const showWalletConnector = useShowWalletConnector()
   const showLanguageSelect = useShowLanguageSelect()
-  const gasPriceViewerVisible = useShowGasPriceViewer()
 
   const dark = useCheckTheme()
   const [open, setOpen] = useState(false)
@@ -68,8 +66,7 @@ const MobileHeader = ({ currentMenu }) => {
       sx={{
         padding: "0",
         fontSize: "16px",
-        borderBottom: theme =>
-          gasPriceViewerVisible ? `1px solid ${dark ? theme.vars.palette.primary.contrastText : theme.vars.palette.text.primary}` : "none",
+        borderBottom: theme => `1px solid ${dark ? theme.vars.palette.primary.contrastText : theme.vars.palette.text.primary}`,
 
         ".navbar-item": {
           borderTop: theme => `1px solid ${dark ? theme.vars.palette.primary.contrastText : theme.vars.palette.text.primary}`,
@@ -176,7 +173,7 @@ const MobileHeader = ({ currentMenu }) => {
         >
           <Box sx={{ margin: "-0.8rem 2rem 0" }}>
             {renderList()}
-            {gasPriceViewerVisible && <MobileGasPriceViewer dark={dark}></MobileGasPriceViewer>}
+            <MobileGasPriceViewer dark={dark}></MobileGasPriceViewer>
           </Box>
         </Box>
       )}

@@ -14,7 +14,7 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
     height: "4rem",
     padding: "0 1.2rem",
     border: dark ? `1px solid ${theme.vars.palette.primary.contrastText}` : "none",
-    backgroundColor: dark ? "unset" : theme.vars.palette.themeBackground.normal,
+    backgroundColor: dark ? "unset" : theme.vars.palette.background.default,
     color: dark ? theme.vars.palette.primary.contrastText : "#473835",
     borderRadius: "0.5rem",
   },
@@ -42,7 +42,7 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
     marginTop: "0.5rem",
     borderRadius: "0.5rem",
     border: dark ? `1px solid ${theme.vars.palette.primary.contrastText}` : "none",
-    backgroundColor: dark ? theme.vars.palette.themeBackground.dark : theme.vars.palette.themeBackground.normal,
+    backgroundColor: dark ? theme.vars.palette.themeBackground.dark : theme.vars.palette.background.default,
   },
   list: {
     padding: 0,

@@ -26,7 +26,7 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
     borderRadius: "0.5rem",
     // width: "16rem",
     border: dark ? `1px solid ${theme.palette.primary.contrastText}` : "none",
-    backgroundColor: dark ? "unset" : theme.palette.themeBackground.normal,
+    backgroundColor: dark ? "unset" : theme.palette.background.default,
     color: dark ? theme.palette.primary.contrastText : "#473835",
     whiteSpace: "nowrap",
   },
@@ -52,7 +52,7 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
   paper: {
     borderRadius: "0.5rem",
     border: dark ? `1px solid ${theme.palette.primary.contrastText}` : "none",
-    backgroundColor: dark ? theme.palette.text.primary : theme.palette.themeBackground.normal,
+    backgroundColor: dark ? theme.palette.text.primary : theme.palette.background.default,
     marginTop: "0.5rem",
   },
   list: {

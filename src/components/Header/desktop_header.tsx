@@ -146,18 +146,22 @@ const DesktopHeader = ({ currentMenu }) => {
       }}
     >
       <Container>
-        <Stack direction="row" sx={{ position: "relative", height: "6.5rem", justifyContent: "space-between", alignItems: "center" }}>
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: isSepolia ? "1fr 1fr max-content" : "1fr max-content 1fr",
+            height: "6.5rem",
+            alignItems: "center",
+          }}
+        >
           <ScrollLink href="/" className="flex">
             <Logo light={dark} />
           </ScrollLink>
           <Stack
             direction="row"
             sx={{
-              position: isSepolia ? "static" : ["static", "static", "static", "absolute"],
-              left: "50%",
-              transform: isSepolia ? "translateX(0%)" : ["translateX(0%)", "translateX(0%)", "translateX(0%)", "translateX(-50%)"],
-
-              justifyContent: "space-between",
+              justifySelf: "flex-end",
+              px: isSepolia ? "4rem" : "2rem",
               alignItems: "center",
               gap: ["2rem", "2rem", "2rem", "4rem"],
             }}
@@ -166,14 +170,12 @@ const DesktopHeader = ({ currentMenu }) => {
               <React.Fragment key={item.key}>{renderNavigationItem(item)}</React.Fragment>
             ))}
           </Stack>
-          {!isSepolia && (
-            <Stack direction="row" spacing={isDesktop ? "4rem" : "2rem"} alignItems="center">
-              {showWalletConnector && <WalletToolkit dark={dark}></WalletToolkit>}
-              {showLanguageSelect && <LanguageSelect></LanguageSelect>}
-              {gasPriceViewerVisible && <GasPriceViewer></GasPriceViewer>}
-            </Stack>
-          )}
-        </Stack>
+          <Stack direction="row" spacing={["0.8rem"]} sx={{ justifySelf: "flex-end" }} alignItems="center">
+            {!isSepolia && <GasPriceViewer></GasPriceViewer>}
+            {showWalletConnector && <WalletToolkit dark={dark}></WalletToolkit>}
+            {showLanguageSelect && <LanguageSelect></LanguageSelect>}
+          </Stack>
+        </Box>
       </Container>
     </Box>
   )
