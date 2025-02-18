@@ -19,6 +19,7 @@ const useStyles = makeStyles()(theme => ({
     color: "#101010",
     [theme.breakpoints.down("md")]: {
       lineHeight: "1",
+      fontSize: "1.6rem",
     },
   },
   disabledButton: {

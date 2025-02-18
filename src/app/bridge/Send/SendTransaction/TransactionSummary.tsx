@@ -19,6 +19,10 @@ const useStyles = makeStyles()(theme => ({
     lineHeight: "3.6rem",
     fontWeight: 500,
     marginBottom: "0.4rem",
+    [theme.breakpoints.down("sm")]: {
+      lineHeight: "2.4rem",
+      marginBottom: "1rem",
+    },
   },
   table: {
     borderRadius: "1rem",

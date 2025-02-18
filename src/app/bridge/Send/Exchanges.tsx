@@ -53,7 +53,7 @@ const Exchanges = () => {
                 },
               }}
             >
-              <Image src={item.icon} width={48} height={48} alt={item.name} />
+              <Image src={item.icon} width={48} height={48} alt={item.name} className="rounded-[0.8rem]" />
             </Box>
             <Typography
               sx={{

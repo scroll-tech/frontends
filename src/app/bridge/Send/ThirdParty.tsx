@@ -60,8 +60,8 @@ const ThirdParty = () => {
                     height: isMobile ? "1.6rem" : "2.4rem",
                   }}
                   src={item}
-                  width={16}
-                  height={16}
+                  width={400}
+                  height={400}
                   alt="thirdparty"
                   key={idx}
                 />
