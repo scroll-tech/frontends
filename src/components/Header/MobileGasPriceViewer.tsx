@@ -16,7 +16,7 @@ const MotionBox = motion(Box)
 
 const MobileGasPriceViewer = props => {
   const { dark } = props
-  const { chainId } = useRainbowContext()
+  const { chainId, walletCurrentAddress, connect } = useRainbowContext()
 
   const gasPriceRef = useRef<HTMLDivElement>(null)
 
@@ -47,6 +47,28 @@ const MobileGasPriceViewer = props => {
     return "-"
   }, [ethereumGasPrice])
 
+  const actionData = useMemo(() => {
+    if (!walletCurrentAddress) {
+      return {
+        label: "Connect wallet to add Scroll",
+        onClick: connect,
+      }
+    } else if (chainId === CHAIN_ID.L2) {
+      return {
+        label: "Add Scroll to wallet",
+        onClick: () => {
+          setwarningVisible(true)
+        },
+      }
+    }
+    return {
+      label: "Add Scroll to wallet",
+      onClick: async () => {
+        await switchNetwork(CHAIN_ID.L2)
+      },
+    }
+  }, [chainId, walletCurrentAddress])
+
   useEffect(() => {
     const width = gasPriceRef.current?.offsetWidth
     setGasPriceWidth(width ?? 0)
@@ -54,14 +76,6 @@ const MobileGasPriceViewer = props => {
 
   const handleToggleGasPricePanel = () => {
     setGasPricePanelVisible(!gasPricePanelVisible)
-  }
-
-  const handleAddScrollToWallet = async () => {
-    if (chainId === CHAIN_ID.L2) {
-      setwarningVisible(true)
-    } else {
-      await switchNetwork(CHAIN_ID.L2)
-    }
   }
 
   const handleCloseWarning = () => {
@@ -182,9 +196,9 @@ const MobileGasPriceViewer = props => {
                 p: "0.8rem 2.4rem",
                 height: "4rem",
               }}
-              onClick={handleAddScrollToWallet}
+              onClick={actionData.onClick}
             >
-              Add Scroll to Wallet
+              {actionData.label}
             </Button>
           </Box>
         </Collapse>

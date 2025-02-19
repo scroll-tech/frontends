@@ -12,7 +12,7 @@ import { useRainbowContext } from "@/contexts/RainbowProvider"
 import { switchNetwork } from "@/utils"
 
 const GasPriceViewer = () => {
-  const { chainId } = useRainbowContext()
+  const { chainId, connect, walletCurrentAddress } = useRainbowContext()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
   const [warningVisible, setwarningVisible] = useState(false)
@@ -41,18 +41,37 @@ const GasPriceViewer = () => {
     setAnchorEl(event.currentTarget)
   }
 
-  const handleClosePopover = () => {
+  const handleClosePopover = e => {
+    // allow user to add network immediately after connecting wallet
+    if (e.relatedTarget && e.relatedTarget.getAttribute("aria-labelledby") === "rk_connect_title") {
+      return
+    }
     setAnchorEl(null)
   }
 
-  const handleAddScrollToWallet = async () => {
-    if (chainId === CHAIN_ID.L2) {
-      setwarningVisible(true)
-      setAnchorEl(null)
-    } else {
-      await switchNetwork(CHAIN_ID.L2)
+  const actionData = useMemo(() => {
+    if (!walletCurrentAddress) {
+      return {
+        label: "Connect wallet to add Scroll",
+        onClick: connect,
+      }
+    } else if (chainId === CHAIN_ID.L2) {
+      return {
+        label: "Add Scroll to wallet",
+        onClick: () => {
+          setwarningVisible(true)
+          setAnchorEl(null)
+        },
+      }
     }
-  }
+    return {
+      label: "Add Scroll to wallet",
+      onClick: async () => {
+        await switchNetwork(CHAIN_ID.L2)
+        setAnchorEl(null)
+      },
+    }
+  }, [chainId, walletCurrentAddress])
 
   const handleCloseWarning = () => {
     setwarningVisible(false)
@@ -108,7 +127,7 @@ const GasPriceViewer = () => {
                   rowGap: "2.4rem",
                   columnGap: "0.8rem",
                   padding: "2.4rem",
-                  width: "24.6rem",
+                  width: "26.8rem",
                   fontSize: "1.6rem",
                   lineHeight: "2.4rem",
                 }}
@@ -128,12 +147,12 @@ const GasPriceViewer = () => {
                     fontSize: "1.6rem",
                     lineHeight: "2.4rem",
                     gridColumn: "1 / -1",
-                    p: "0.8rem 2.4rem",
+                    p: "0.8rem",
                     height: "4rem",
                   }}
-                  onClick={handleAddScrollToWallet}
+                  onClick={actionData.onClick}
                 >
-                  Add Scroll to Wallet
+                  {actionData.label}
                 </Button>
               </Paper>
             </Fade>
