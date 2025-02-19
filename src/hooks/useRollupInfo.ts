@@ -1,6 +1,7 @@
 import useSWR from "swr"
 
 import { fetchBatchBlocksUrl, fetchBatchDetailUrl, fetchChunkBlocksUrl, fetchChunkListUrl, fetchLastBatchIndexesUrl } from "@/apis/rollupscan"
+import { scrollRequest } from "@/utils/request"
 
 export enum BLOCK_LIST_TYPE {
   BATCH = "Batch",

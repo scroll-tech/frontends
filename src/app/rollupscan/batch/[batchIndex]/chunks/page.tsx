@@ -23,6 +23,7 @@ const Blocks = () => {
       <Box
         className="wrapper mx-auto"
         sx={{
+          maxWidth: "130rem",
           marginBottom: "16rem",
           "& *": {
             fontFamily: "var(--developer-page-font-family) !important",
