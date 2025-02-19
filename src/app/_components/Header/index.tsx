@@ -7,6 +7,8 @@ import Button from "@/components/Button"
 import OrientationToView from "@/components/Motion/OrientationToView"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
+const ANNOUNCEMENT_HEIGHT = "0rem"
+
 const Title = styled(Typography)(({ theme }) => ({
   fontSize: "6.4rem",
   lineHeight: "8.8rem",
@@ -40,15 +42,15 @@ const Header = () => {
           theme => ({
             [theme.breakpoints.up("md")]: {
               background: "url(/imgs/homepage/landing-bg.webp) center / cover no-repeat",
-              aspectRatio: "16 / 9",
-              marginTop: "-6.5rem",
+              minHeight: "40rem",
+              marginTop: `calc(-6.5rem - ${ANNOUNCEMENT_HEIGHT})`,
             },
           }),
         ]}
       >
         {isLandscape && (
           <Box>
-            <video style={{ width: "100vw", objectFit: "cover" }} autoPlay muted loop playsInline preload="none">
+            <video style={{ width: "100vw", height: "100vh", objectFit: "cover" }} autoPlay muted loop playsInline preload="none">
               <source src="/videos/home-header-bg.mp4" type="video/mp4" />
               <source src="/videos/home-header-bg-264.mp4" type="video/mp4" />
               Not support video
@@ -60,13 +62,13 @@ const Header = () => {
             [theme.breakpoints.down("md")]: { paddingTop: "7.2rem" },
             [theme.breakpoints.up("md")]: {
               position: "absolute",
-              top: "10rem",
+              top: `calc(10rem + ${ANNOUNCEMENT_HEIGHT})`,
               left: "50%",
               transform: "translateX(-50%)",
               zIndex: 1,
             },
             "@media (min-width: 1680px)": {
-              top: "calc(100vw*0.06 + 6.5rem)",
+              top: `calc(100vw*0.06 + 6.5rem + ${ANNOUNCEMENT_HEIGHT})`,
             },
           })}
         >

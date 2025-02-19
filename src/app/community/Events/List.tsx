@@ -9,6 +9,7 @@ import LoadingButton from "@/components/LoadingButton"
 import LoadingPage from "@/components/LoadingPage"
 import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
 import { COMMUNITY_REGION_LIST, COMMUNITY_TIME_LIST } from "@/constants/community"
+import { scrollRequest } from "@/utils/request"
 
 import Error from "./Error"
 import Card from "./EventCard"

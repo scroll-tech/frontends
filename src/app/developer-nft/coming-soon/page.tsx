@@ -8,7 +8,7 @@ import Alert from "@/components/Alert/NFTAlert"
 import SectionWrapper from "@/components/SectionWrapper"
 import { MintableDate, SCROLL_ORIGINS_NFT } from "@/constants"
 import useNFTStore from "@/stores/nftStore"
-import { formatDate } from "@/utils"
+import { formatDate, isSepolia } from "@/utils"
 
 import CheckElegbility from "./CheckElegbility"
 import Header from "./Header"
@@ -19,7 +19,7 @@ import Stepper from "./Stepper"
 const ComingSoon = () => {
   const { phrase } = useNFTStore()
 
-  if (process.env.NEXT_PUBLIC_SCROLL_ENVIRONMENT === "Sepolia") {
+  if (isSepolia) {
     notFound()
   }
 

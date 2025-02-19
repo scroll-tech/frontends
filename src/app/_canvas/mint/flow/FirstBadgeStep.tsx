@@ -13,6 +13,7 @@ import useSnackbar from "@/hooks/useSnackbar"
 import { mintBadge } from "@/services/canvasService"
 import useCanvasStore from "@/stores/canvasStore"
 import { truncateAddress } from "@/utils"
+import { scrollRequest } from "@/utils/request"
 
 import StepWrapper from "./StepWrapper"
 

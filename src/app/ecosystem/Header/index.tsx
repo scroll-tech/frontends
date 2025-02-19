@@ -10,6 +10,7 @@ import Button from "@/components/Button"
 import { GET_IN_TOUCH_LINK } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import { formatLargeNumber } from "@/utils"
+import { scrollRequest } from "@/utils/request"
 
 import Statistic from "./Statistic"
 
@@ -31,7 +32,7 @@ const Header = () => {
       sx={[
         {
           position: "relative",
-          height: ["calc(100vh - 6.2rem)", "72rem", "auto"],
+          height: ["calc(100vh - 6.4rem)", "72rem", "auto"],
         },
         theme => ({
           [theme.breakpoints.up("md")]: {

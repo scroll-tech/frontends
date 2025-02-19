@@ -38,7 +38,7 @@ const GlobalSuccess = (props: any) => {
       severity={severity}
       sx={{ maxWidth: "49rem" }}
       iconMapping={{
-        success: <SvgIcon sx={{ fontSize: "2.4rem", color: "#0F8E7E" }} component={SuccessSvg} inheritViewBox></SvgIcon>,
+        success: <SuccessSvg className="w-[2.4rem] h-auto text-[#0F8E7E]"></SuccessSvg>,
       }}
       classes={{
         root: classes.alert,

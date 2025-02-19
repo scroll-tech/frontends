@@ -1,6 +1,7 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@layer base, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css" layer(utilities);
 
 img,
 svg,
@@ -16,6 +17,7 @@ object {
 
 :root {
   --vh: 100vh;
+  --theme-bg: #fff8f3;
 }
 
 html {
@@ -32,7 +34,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-variant-ligatures: no-contextual;
-  background-color: #fff8f3;
+  background-color: var(--theme-bg);
 }
 
 body.mobile-top-nav-open {

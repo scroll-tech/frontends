@@ -10,6 +10,7 @@ import { styled } from "@mui/material/styles"
 import { fetchBatchListUrl } from "@/apis/rollupscan"
 import { useLastBlockNums } from "@/hooks/useRollupInfo"
 import useRollupStore from "@/stores/rollupStore"
+import { scrollRequest } from "@/utils/request"
 
 import Header from "./components/Header"
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "./constants"

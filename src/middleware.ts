@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from "next/server"
 
 export function middleware(request: NextRequest) {
   if (request.nextUrl.pathname === "/" && process.env.NEXT_PUBLIC_SCROLL_ENVIRONMENT === "Sepolia") {
-    const response = NextResponse.rewrite(new URL("/portal", request.url))
+    const response = NextResponse.redirect(new URL("/bridge", request.url))
     return response
   }
 

@@ -1,3 +1,5 @@
+"use client"
+
 import dayjs from "dayjs"
 import { makeStyles } from "tss-react/mui"
 

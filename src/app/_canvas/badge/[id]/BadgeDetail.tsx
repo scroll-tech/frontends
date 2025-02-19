@@ -91,7 +91,7 @@ const BadgeDetail = props => {
           pb: [0, "6rem"],
           minHeight: ["unset", "calc(100vh - 6.5rem)"],
 
-          height: [`calc(var(--vh, 1vh) * 100 - 6.2rem - ${actionHeight})`, "auto"],
+          height: [`calc(var(--vh, 1vh) * 100 - 6.4rem - ${actionHeight})`, "auto"],
           display: "flex",
           alignItems: isOverflow ? "flex-start" : "center",
           overflowY: isOverflow ? "auto" : "unset",

@@ -8,6 +8,7 @@ import CheckSvg from "@/assets/svgs/canvas/check.svg"
 import ErrorSvg from "@/assets/svgs/canvas/error.svg"
 import LoadingSvg from "@/assets/svgs/canvas/loading.svg"
 import useCanvasStore from "@/stores/canvasStore"
+import { scrollRequest } from "@/utils/request"
 
 const INVITE_CODE_LENGTH = 5
 

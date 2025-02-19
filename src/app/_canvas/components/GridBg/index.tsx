@@ -44,7 +44,7 @@ const Container: any = styled<any>(Box, { shouldForwardProp: prop => prop !== "g
     },
   },
   [theme.breakpoints.down("md")]: {
-    marginTop: "-6.2rem",
+    marginTop: "-6.4rem",
     height: "calc(var(--vh, 1vh) * 100)",
   },
 }))

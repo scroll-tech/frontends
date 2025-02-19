@@ -36,7 +36,7 @@ const wallets = [
   },
 ]
 
-const sepoliaChain: Chain = produce(sepolia, draft => {
+export const sepoliaChain: Chain = produce(sepolia, draft => {
   draft.rpcUrls.default.http = [RPC_URL.L1 as any]
   draft.fees = {
     // adopt MetaMask params
@@ -47,7 +47,7 @@ const sepoliaChain: Chain = produce(sepolia, draft => {
   }
 })
 
-const mainnetChain: Chain = produce(mainnet, draft => {
+export const mainnetChain: Chain = produce(mainnet, draft => {
   draft.rpcUrls.default.http = [RPC_URL.L1 as any]
   draft.fees = {
     // adopt MetaMask params

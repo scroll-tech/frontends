@@ -11,6 +11,7 @@ import LoadingPage from "@/components/LoadingPage"
 import TextButton from "@/components/TextButton"
 import { ECOSYSTEM_NETWORK_LIST } from "@/constants"
 import { isAboveScreen } from "@/utils/dom"
+import { scrollRequest } from "@/utils/request"
 
 import Error from "./Error"
 import NoData from "./NoData"
@@ -75,6 +76,7 @@ const ProtocolList = props => {
 
   const fetchEcosystemList = value => {
     setLoading(true)
+
     scrollRequest(`${ecosystemListUrl}${value}`)
       .then(({ data, hasMore }) => {
         setHasMore(hasMore)

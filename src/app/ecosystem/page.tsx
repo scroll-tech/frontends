@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation"
 
+import { isSepolia } from "@/utils"
 import { genMeta } from "@/utils/route"
 
 import Contribute from "./Contribute"
@@ -13,7 +14,7 @@ export const generateMetadata = genMeta(() => ({
 }))
 
 const Ecosystem = () => {
-  if (process.env.NEXT_PUBLIC_SCROLL_ENVIRONMENT === "Sepolia") {
+  if (isSepolia) {
     notFound()
   }
   return (

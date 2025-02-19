@@ -19,8 +19,8 @@ const useStyles = makeStyles<any>()((theme, { type }) => ({
     color: "#FFEBD7",
   },
   standardSuccess: {
-    backgroundColor: "#62E3D1",
-    color: theme.vars.palette.text.primary,
+    backgroundColor: "#DFFCF8",
+    color: "#0F8E7E",
   },
   standardInfo: {
     backgroundColor: theme.vars.palette.themeBackground.highlight,
@@ -43,27 +43,9 @@ const CheckAlert = props => {
   return (
     <Alert
       iconMapping={{
-        success: (
-          <SvgIcon
-            sx={{
-              fontSize: "2.4rem",
-              color: theme => theme.vars.palette.text.primary,
-            }}
-            component={SuccessSvg}
-            inheritViewBox
-          ></SvgIcon>
-        ),
-        error: <SvgIcon sx={{ fontSize: "2.4rem", color: "#FFEBD7" }} component={ErrorSvg} inheritViewBox></SvgIcon>,
-        info: (
-          <SvgIcon
-            sx={{
-              fontSize: "2.4rem",
-              color: theme => theme.vars.palette.text.primary,
-            }}
-            component={ErrorSvg}
-            inheritViewBox
-          ></SvgIcon>
-        ),
+        success: <SuccessSvg className="w-[2.4rem]"></SuccessSvg>,
+        error: <ErrorSvg className="w-[2.4rem]"></ErrorSvg>,
+        info: <ErrorSvg className="w-[2.4rem]"></ErrorSvg>,
       }}
       classes={{
         root: classes.root,

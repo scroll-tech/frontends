@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation"
 
+import { isSepolia } from "@/utils"
 import { genMeta } from "@/utils/route"
 
 export const generateMetadata = genMeta(() => ({
@@ -11,7 +12,7 @@ export const generateMetadata = genMeta(() => ({
 }))
 
 export default function SessionsLayout({ children }) {
-  if (process.env.NEXT_PUBLIC_SCROLL_ENVIRONMENT === "Sepolia") {
+  if (isSepolia) {
     notFound()
   }
   return <>{children}</>

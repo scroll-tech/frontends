@@ -15,6 +15,7 @@ import { useRainbowContext } from "@/contexts/RainbowProvider"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useNFTStore from "@/stores/nftStore"
 import { formatDate, switchNetwork } from "@/utils"
+import { scrollRequest } from "@/utils/request"
 
 import NFTCard from "../../components/NFTCard"
 import Statistic from "../../components/Statistic"

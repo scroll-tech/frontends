@@ -4,7 +4,7 @@ import Marquee from "react-fast-marquee"
 
 import { Box } from "@mui/material"
 
-import { isMainnet } from "@/utils"
+import { isSepolia } from "@/utils"
 
 const Announcement = () => {
   const displayAnnouncement = true
@@ -12,7 +12,7 @@ const Announcement = () => {
   const isHome = pathname === "/"
 
   const announcementContent = useMemo(() => {
-    if (isMainnet && isHome) {
+    if (!isSepolia && isHome) {
       return (
         <>
           Join Scroll Open: Build the Future of the Open Economy{" "}
@@ -23,21 +23,21 @@ const Announcement = () => {
       )
     }
     return null
-  }, [isMainnet, isHome])
+  }, [isSepolia, isHome])
 
   const rightHref = useMemo(() => {
-    if (isMainnet && isHome) {
+    if (!isSepolia && isHome) {
       return "https://open.scroll.io"
     }
     return ""
-  }, [isMainnet, isHome])
+  }, [isSepolia, isHome])
 
   return displayAnnouncement && announcementContent ? (
-    <a href={rightHref} rel="noopener noreferrer" className="mb-[1.6rem]">
+    <a href={rightHref} rel="noopener noreferrer">
       <Box
         sx={{
-          backgroundColor: theme => (isMainnet ? theme.palette.common.white : theme.palette.primary.main),
-          color: theme => (isMainnet ? theme.palette.text.primary : theme.palette.primary.contrastText),
+          backgroundColor: theme => (!isSepolia ? theme.palette.common.white : theme.palette.primary.main),
+          color: theme => (!isSepolia ? theme.palette.text.primary : theme.palette.primary.contrastText),
           fontSize: "1.6rem",
           lineHeight: {
             xs: "2rem",

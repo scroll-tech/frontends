@@ -29,6 +29,8 @@ const BlogContainer = styled(Box)(
     padding: 6rem 4rem 14rem;
     overflow: visible;
     display: flex;
+    width: 100%;
+    margin: auto;
   ${theme.breakpoints.down("md")} {
     padding: 4rem 2rem;
     display: block;
@@ -104,7 +106,7 @@ const BlogDetail = props => {
         <LoadingPage height="80vh"></LoadingPage>
       ) : (
         <Box>
-          <BlogContainer className="wrapper">
+          <BlogContainer>
             <Box sx={{ width: "32rem", flexShrink: 0, position: "relative" }}>
               <BlogNavbar>
                 <TOC />

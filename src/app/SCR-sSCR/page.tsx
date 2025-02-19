@@ -1,6 +1,7 @@
 import { promises as fs } from "fs"
+import { notFound } from "next/navigation"
 
-import { BNToAmount, genMeta } from "@/utils"
+import { BNToAmount, genMeta, isSepolia } from "@/utils"
 
 import Explaination from "./Explaination"
 import Header from "./Header"
@@ -20,6 +21,10 @@ const ScrAndsSCRPage = async () => {
   const { votable_supply } = await fetch(`${process.env.NEXT_PUBLIC_AGORA_API_URI}/api/v1/votable_supply`, {
     next: { revalidate: 3600 },
   }).then(res => res.json())
+
+  if (isSepolia) {
+    notFound()
+  }
 
   return (
     <>

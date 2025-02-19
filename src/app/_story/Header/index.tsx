@@ -21,7 +21,7 @@ const useStyles = makeStyles()(theme => ({
       background: " url(/imgs/story/story-hero-bg-mobile.svg) no-repeat center",
       backgroundSize: "cover",
       paddingTop: "13rem",
-      marginTop: "-6.2rem",
+      marginTop: "-6.4rem",
     },
 
     "@media (max-width: 375px)": {
