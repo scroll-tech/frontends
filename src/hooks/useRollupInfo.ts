@@ -11,7 +11,7 @@ const fetcher = (url: string) => scrollRequest(url)
 
 export function useLastBlockNums() {
   const { data, error, isLoading } = useSWR(fetchLastBatchIndexesUrl, fetcher, {
-    refreshInterval: 3000,
+    refreshInterval: 4000,
   })
   return {
     lastBlockNums: data,
