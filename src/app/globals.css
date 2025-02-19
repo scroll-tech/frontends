@@ -191,12 +191,12 @@ div.markdown-body img {
 }
 
 .wrapper {
-  @apply max-w-7xl p-6 mx-auto w-full overflow-hidden;
+  @apply max-w-[1280px] p-[24px] mx-auto w-full overflow-hidden;
   padding-top: 3rem;
 }
 
 @media screen and (max-width: 900px) {
   .wrapper {
-    @apply p-4;
+    @apply p-[16px];
   }
 }

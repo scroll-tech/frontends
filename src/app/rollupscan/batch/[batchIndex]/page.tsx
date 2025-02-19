@@ -116,9 +116,9 @@ const Batch = props => {
   const renderStatusTooltip = () => {
     return (
       <>
-        <p className="mb-1">Precommitted: Batch included in Scroll L2</p>
-        <p className="mb-1">Committed: Batch transaction data submitted to Ethereum (L1)</p>
-        <p className="mb-1">Finalized: Batch validity proof submitted to and verified on Ethereum</p>
+        <p className="mb-[4px]">Precommitted: Batch included in Scroll L2</p>
+        <p className="mb-[4px]">Committed: Batch transaction data submitted to Ethereum (L1)</p>
+        <p className="mb-[4px]">Finalized: Batch validity proof submitted to and verified on Ethereum</p>
       </>
     )
   }
