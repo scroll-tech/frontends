@@ -228,4 +228,6 @@ export default withSentryConfig(configWithMDX, {
 
   // Enables automatic instrumentation of Vercel Cron Monitors
   automaticVercelMonitors: true,
+
+  tunnelRoute: "/monitoring",
 })
