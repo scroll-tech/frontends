@@ -35,6 +35,7 @@
     "@tanstack/react-virtual": "^3.11.2",
     "@types/mdx": "^2.0.13",
     "@typescript-eslint/parser": "^8.4.0",
+    "@vercel/speed-insights": "^1.2.0",
     "clsx": "^2.1.1",
     "copy-to-clipboard": "^3.3.2",
     "dayjs": "^1.11.5",

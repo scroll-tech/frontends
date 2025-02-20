@@ -1,4 +1,5 @@
 import { GoogleAnalytics } from "@next/third-parties/google"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Metadata } from "next"
 // import SentrySetting from "@/components/SentrySetting"
 import React, { Suspense } from "react"
@@ -45,6 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </AppRouterCacheProvider>
         {process.env.NODE_ENV === "production" && (
           <>
+            <SpeedInsights></SpeedInsights>
             <Suspense fallback={null}>
               <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID} />
             </Suspense>
