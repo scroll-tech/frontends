@@ -1,5 +1,6 @@
 import { promises as fs } from "fs"
 import { notFound } from "next/navigation"
+import path from "path"
 
 import { BNToAmount, genMeta, isSepolia } from "@/utils"
 
@@ -15,7 +16,8 @@ export const generateMetadata = genMeta(() => ({
 }))
 
 const ScrAndsSCRPage = async () => {
-  const circulatingSupplyStr = await fs.readFile(process.cwd() + "/public/tokenomics/circulatingSupply.txt", "utf8")
+  const circulatingSupplyFile = path.join(process.cwd(), "public/tokenomics/circulatingSupply.txt")
+  const circulatingSupplyStr = await fs.readFile(circulatingSupplyFile, "utf8")
   const circulatingSupply = +circulatingSupplyStr
 
   const { votable_supply } = await fetch(`${process.env.NEXT_PUBLIC_AGORA_API_URI}/api/v1/votable_supply`, {

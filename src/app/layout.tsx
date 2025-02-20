@@ -46,7 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </AppRouterCacheProvider>
         {process.env.NODE_ENV === "production" && (
           <>
-            <SpeedInsights></SpeedInsights>
+            <SpeedInsights sampleRate={0.8}></SpeedInsights>
             <Suspense fallback={null}>
               <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID} />
             </Suspense>
