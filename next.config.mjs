@@ -1,3 +1,4 @@
+import {withSentryConfig} from "@sentry/nextjs";
 /** @type {import('next').NextConfig} */
 
 // eslint-disable-next-line prettier/prettier
@@ -197,7 +198,6 @@ const nextConfig = {
 // })
 
 const withMDX = createMDX({
-  // Add markdown plugins here, as desired
   options: {
     remarkPlugins: [remarkGfm, remarkMath],
     rehypePlugins: [rehypeKatex, rehypeRaw],
@@ -205,4 +205,29 @@ const withMDX = createMDX({
 })
 
 // Merge MDX config with Next.js config
-export default withMDX(nextConfig)
+const configWithMDX = withMDX(nextConfig)
+
+// Add Sentry configuration
+export default withSentryConfig(configWithMDX, {
+  sentryUrl: process.env.SENTRY_URL,
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
+  authToken: process.env.SENTRY_AUTH_TOKEN,
+
+  // Only print logs for uploading source maps in CI
+  silent: !process.env.CI,
+
+  // Upload a larger set of source maps for prettier stack traces (increases build time)
+  widenClientFileUpload: true,
+
+  // Hides source maps from generated client bundles
+  hideSourceMaps: true,
+
+  // Automatically tree-shake Sentry logger statements to reduce bundle size
+  disableLogger: true,
+
+  // Enables automatic instrumentation of Vercel Cron Monitors
+  automaticVercelMonitors: true,
+
+  tunnelRoute: "/monitoring",
+})
