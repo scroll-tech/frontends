@@ -1,5 +1,5 @@
 import { sendGAEvent } from "@next/third-parties/google"
-import { Fragment, useEffect, useState } from "react"
+import { Fragment, useEffect, useLayoutEffect, useState } from "react"
 
 import { Box, Collapse, List, Stack } from "@mui/material"
 import { styled } from "@mui/system"
@@ -39,14 +39,22 @@ const MobileHeader = ({ currentMenu }) => {
     setActiveCollapse(currentMenu[1])
   }, [currentMenu])
 
-  const toggleDrawer = isOpen => {
-    setOpen(isOpen)
-    if (isOpen) {
+  useLayoutEffect(() => {
+    if (open) {
       window.document.body.classList.add("mobile-top-nav-open")
     } else {
       window.document.body.classList.remove("mobile-top-nav-open")
-      setActiveCollapse(currentMenu[1])
     }
+  }, [open])
+
+  const handleCloseMobileHeader = () => {
+    if (open) {
+      setOpen(false)
+    }
+  }
+
+  const handleToggleMobileHeader = () => {
+    setOpen(!open)
   }
 
   const toggleCollapse = collapse => {
@@ -58,7 +66,6 @@ const MobileHeader = ({ currentMenu }) => {
       label,
       device: "mobile",
     })
-    toggleDrawer(false)
   }
 
   const renderList = () => (
@@ -133,7 +140,7 @@ const MobileHeader = ({ currentMenu }) => {
     >
       <Stack sx={{ height: "6.4rem", px: "2rem", lineHeight: "3rem" }} direction="row" justifyContent="space-between" alignItems="center">
         <Link href="/" className="flex">
-          <Box onClick={() => toggleDrawer(false)}>
+          <Box onClick={handleCloseMobileHeader}>
             <Logo light={dark} />
           </Box>
         </Link>
@@ -154,7 +161,7 @@ const MobileHeader = ({ currentMenu }) => {
                 transform: "rotate(-45deg) translate(5px, -5px)",
               },
             }}
-            onClick={() => toggleDrawer(!open)}
+            onClick={handleToggleMobileHeader}
             className={open ? "active" : ""}
           >
             <Bar dark={dark}></Bar>
