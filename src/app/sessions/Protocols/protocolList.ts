@@ -33,7 +33,7 @@ const DECENTRALIZED_EXCHANGES_DATA: ProtocolData = {
       href: "https://ambient.finance/",
     },
     {
-      name: "Izumi",
+      name: "iZUMi",
       project: "Izumi",
       logoURL: "https://scroll-eco-list.netlify.app/logos/iZUMi%20Finance.png",
       href: "https://izumi.finance/trade/swap",
@@ -110,7 +110,6 @@ const LENDING_BORROWING_DATA: ProtocolData = {
       project: "Aave",
       logoURL: "https://scroll-eco-list.netlify.app/logos/Aave.svg",
       href: "https://app.aave.com/",
-      upcoming: true,
     },
     {
       name: "Compound",
