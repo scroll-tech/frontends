@@ -47,7 +47,7 @@ export const CROSS_CHAIN_BRIDGES = [
   {
     name: "Across",
     icon: "https://scroll-eco-list.netlify.app/logos/across.jpg",
-    url: "https://app.across.to/bridge",
+    url: "https://app.across.to/scroll",
     description: [
       "/imgs/logo/arbitrum.png",
       "/imgs/logo/base.png",
