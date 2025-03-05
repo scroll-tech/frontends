@@ -43,8 +43,10 @@ const GasPriceViewer = () => {
 
   const handleClosePopover = e => {
     // allow user to add network immediately after connecting wallet
-    if (e.relatedTarget && e.relatedTarget.getAttribute("aria-labelledby") === "rk_connect_title") {
-      return
+    if (e.relatedTarget && e.relatedTarget instanceof Element) {
+      if (e.relatedTarget.getAttribute("aria-labelledby") === "rk_connect_title") {
+        return
+      }
     }
     setAnchorEl(null)
   }
