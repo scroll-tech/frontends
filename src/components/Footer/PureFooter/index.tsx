@@ -1,115 +1,119 @@
 "use client"
 
-import dayjs from "dayjs"
-import { makeStyles } from "tss-react/mui"
+import Link from "next/link"
 
-import { Box, List, ListItem, Stack, SvgIcon, Typography } from "@mui/material"
+import { Box, Container, Stack, Typography } from "@mui/material"
 
-import Link from "@/components/Link"
+import DiscordIcon from "@/assets/svgs/footer/discord.svg"
+import GithubIcon from "@/assets/svgs/footer/github.svg"
+import TwitterIcon from "@/assets/svgs/footer/twitter.svg"
+import YoutubeIcon from "@/assets/svgs/footer/youtube.svg"
 import ScrollLogo from "@/components/ScrollLogo"
 
-import SectionWrapper from "../../SectionWrapper"
-import { aboutList, mediaList } from "../helper"
-import RelativeLink from "./RelativeLink"
+const CURRENT_YEAR = new Date().getFullYear()
 
-const useStyles = makeStyles()(theme => ({
-  footerLayout: {
-    display: "grid",
-    width: "100%",
-    gridTemplateColumns: " minmax(auto, 24rem) minmax(auto, 24rem) 1fr minmax(auto, 24rem)",
-    gridTemplateAreas: ` 
-      "logo about follow version"
-      `,
+const LEGAL_LIST = [
+  {
+    name: "Privacy Policy",
+    href: "/privacy-policy",
+  },
+  {
+    name: "Terms of Service",
+    href: "/terms-of-service",
+  },
+]
 
-    [theme.breakpoints.down("md")]: {
-      gridTemplateColumns: "repeat(2, 1fr)",
-      gridTemplateAreas: ` 
-      "logo version"
-      "about follow";
-      `,
-      gridRowGap: "5rem",
-    },
+export const SOCIAL_MEDIA_List = [
+  {
+    name: "Twitter",
+    icon: TwitterIcon,
+    href: "https://twitter.com/Scroll_ZKP",
   },
-  logo: {
-    gridArea: "logo",
+  {
+    name: "Discord",
+    icon: DiscordIcon,
+    href: "https://discord.gg/scroll",
   },
-  about: {
-    gridArea: "about",
+  {
+    name: "GitHub",
+    icon: GithubIcon,
+    href: "https://github.com/scroll-tech",
   },
-  follow: {
-    gridArea: "follow",
-    [theme.breakpoints.down("md")]: {
-      alignSelf: "center",
-    },
+  {
+    name: "YouTube",
+    icon: YoutubeIcon,
+    href: "https://www.youtube.com/@Scroll_ZKP",
   },
-  version: {
-    gridArea: "version",
-  },
-}))
+]
 
 const Footer = () => {
-  const { classes } = useStyles()
   return (
-    <SectionWrapper dark sx={{ pt: "6rem", pb: ["3rem"] }}>
-      <Box className={classes.footerLayout}>
-        <Link href="/" className={classes.logo}>
-          <ScrollLogo light></ScrollLogo>
-        </Link>
-        <Box className={classes.about}>
-          <List sx={{ py: 0 }}>
-            {aboutList.map(item => (
-              <ListItem key={item.name} disablePadding>
-                <RelativeLink {...item}></RelativeLink>
-              </ListItem>
-            ))}
-          </List>
-        </Box>
-        <Box className={classes.follow}>
-          <Typography
-            sx={{
-              fontSize: "1.8rem",
-              fontWeight: 600,
-              lineHeight: "normal",
-              color: theme => theme.vars.palette.primary.contrastText,
-              mb: "3rem",
-            }}
-          >
-            Follow Us
-          </Typography>
-          <Stack direction="row" spacing={"2.6rem"} sx={{ lineHeight: 1, marginBottom: "3rem" }}>
-            {mediaList.map(item => (
-              <Link external href={item.href} key={item.name}>
-                <SvgIcon
-                  component={item.icon}
-                  sx={{
-                    width: "auto",
-                    height: "auto",
-                    verticalAlign: "middle",
-                    color: theme => theme.vars.palette.primary.contrastText,
-                    "&:hover": {
-                      color: theme => theme.vars.palette.primary.dark,
-                    },
-                  }}
-                  titleAccess={item.name}
-                  inheritViewBox
-                ></SvgIcon>
+    <Box
+      sx={{
+        backgroundColor: "themeBackground.dark",
+      }}
+    >
+      <Container>
+        <Box
+          sx={{
+            py: "6rem",
+            display: "grid",
+            width: "100%",
+            gridTemplateColumns: ["repeat(2, 1fr)", "repeat(2, 1fr)", "minmax(auto, 24rem) minmax(auto, 24rem) 1fr minmax(auto, 24rem)"],
+            gridRowGap: "5rem",
+            gridTemplateAreas: [
+              ` 
+              "logo version"
+              "legal connect";
+              `,
+              ` 
+              "logo version"
+              "legal connect";
+              `,
+              ` 
+              "logo legal connect version"
+              `,
+            ],
+          }}
+        >
+          <Link href="/" style={{ gridArea: "logo" }}>
+            <ScrollLogo light></ScrollLogo>
+          </Link>
+          <Stack direction="column" spacing="2.4rem" sx={{ gridArea: "legal" }}>
+            {LEGAL_LIST.map(({ name, href }) => (
+              <Link
+                key={name}
+                href={href}
+                className="!text-[var(--mui-palette-primary-contrastText)] text-[1.5rem] hover:!text-[var(--mui-palette-primary-dark)]"
+              >
+                {name}
               </Link>
             ))}
           </Stack>
+          <Stack direction="column" sx={{ gridArea: "connect" }}>
+            <Typography sx={{ fontSize: "1.8rem", lineHeight: "2.6rem", mb: "3rem", color: "primary.contrastText" }}>Connect</Typography>
+            <Stack direction="row" spacing="3rem">
+              {SOCIAL_MEDIA_List.map(({ name, icon: Icon, href }) => (
+                <Link key={name} href={href}>
+                  <Icon className="!text-[var(--mui-palette-primary-contrastText)] hover:!text-[var(--mui-palette-primary-dark)]"></Icon>
+                </Link>
+              ))}
+            </Stack>
+          </Stack>
+          <Typography
+            sx={{
+              color: "primary.contrastText",
+              gridArea: "version",
+              fontSize: "1.5rem",
+              lineHeight: "2.5rem",
+              textAlign: ["left", "left", "right"],
+            }}
+          >
+            © Version {process.env.NEXT_PUBLIC_VERSION} Scroll Ltd {CURRENT_YEAR}
+          </Typography>
         </Box>
-        <Typography
-          className={classes.version}
-          sx={{
-            color: "#FFF8F3",
-            fontSize: "1.5rem",
-            lineHeight: "2.5rem",
-            textAlign: ["left", "left", "right"],
-          }}
-        >
-          © Version {process.env.NEXT_PUBLIC_VERSION} Scroll Ltd {dayjs().year()}
-        </Typography>
-      </Box>
-    </SectionWrapper>
+      </Container>
+    </Box>
   )
 }
 

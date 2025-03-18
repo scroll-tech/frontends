@@ -13,26 +13,3 @@ export const aboutList = [
     href: "/privacy-policy",
   },
 ]
-
-export const mediaList = [
-  {
-    name: "Twitter",
-    icon: TwitterIcon,
-    href: "https://twitter.com/Scroll_ZKP",
-  },
-  {
-    name: "Discord",
-    icon: DiscordIcon,
-    href: "https://discord.gg/scroll",
-  },
-  {
-    name: "GitHub",
-    icon: GithubIcon,
-    href: "https://github.com/scroll-tech",
-  },
-  {
-    name: "YouTube",
-    icon: YoutubeIcon,
-    href: "https://www.youtube.com/@Scroll_ZKP",
-  },
-]
