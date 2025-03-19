@@ -56,7 +56,8 @@ const Footer = () => {
       <Container>
         <Box
           sx={{
-            py: "6rem",
+            pt: "6rem",
+            pb: "6.5rem",
             display: "grid",
             width: "100%",
             gridTemplateColumns: ["repeat(2, 1fr)", "repeat(2, 1fr)", "minmax(auto, 24rem) minmax(auto, 24rem) 1fr minmax(auto, 24rem)"],
@@ -91,7 +92,9 @@ const Footer = () => {
             ))}
           </Stack>
           <Stack direction="column" sx={{ gridArea: "connect" }}>
-            <Typography sx={{ fontSize: "1.8rem", lineHeight: "2.6rem", mb: "3rem", color: "primary.contrastText" }}>Connect</Typography>
+            <Typography sx={{ typography: "title", fontSize: "1.8rem", lineHeight: "2.6rem", mb: "3rem", color: "primary.contrastText" }}>
+              Connect
+            </Typography>
             <Stack direction="row" spacing="3rem">
               {SOCIAL_MEDIA_List.map(({ name, icon: Icon, href }) => (
                 <Link key={name} href={href}>

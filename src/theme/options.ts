@@ -191,6 +191,12 @@ export const typographyOptions = {
   //   fontWeight: 700,
   //   textTransform: "capitalize",
   // },
+  title: {
+    fontFamily: "var(--font-title)",
+  },
+  developer: {
+    fontFamily: "var(--font-developer)",
+  },
 
   H1: {
     fontSize: "6.4rem",

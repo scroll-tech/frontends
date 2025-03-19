@@ -18,7 +18,7 @@ import { generateExploreLink, truncateAddress } from "@/utils"
 
 const useStyles = makeStyles<any>()((theme, { dark }) => ({
   button: {
-    fontFamily: "var(--developer-page-font-family)",
+    fontFamily: "var(--font-developer)",
     fontSize: "1.6rem",
     height: "4rem",
     width: "16rem",
@@ -70,7 +70,7 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
 
   listItemText: {
     fontSize: "1.6rem",
-    fontFamily: "var(--developer-page-font-family)",
+    fontFamily: "var(--font-developer)",
     cursor: "pointer",
     color: dark ? theme.palette.primary.contrastText : "#473835",
   },

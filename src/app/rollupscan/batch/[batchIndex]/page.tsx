@@ -131,7 +131,7 @@ const Batch = props => {
         sx={{
           marginBottom: "16rem",
           "& *": {
-            fontFamily: "var(--developer-page-font-family) !important",
+            fontFamily: "var(--font-developer) !important",
           },
         }}
       >

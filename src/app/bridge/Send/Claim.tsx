@@ -22,7 +22,7 @@ const useStyles = makeStyles()(theme => ({
       height: "41.8rem",
     },
     "& *": {
-      fontFamily: "var(--developer-page-font-family) !important",
+      fontFamily: "var(--font-developer) !important",
     },
   },
   loadingBox: {

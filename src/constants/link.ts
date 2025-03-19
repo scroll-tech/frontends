@@ -6,7 +6,7 @@ export const BRIDGE_URL = "/bridge"
 export const ECOSYSTEM_URL = "/ecosystem"
 export const SESSIONS_URL = "/sessions"
 
-export const VISION_URL = "https://scroll.io/blog/vision-and-values"
+export const VISION_URL = "/blog/vision-and-values"
 
 export const TECH_URL = "https://docs.scroll.io/en/technology/"
 export const FOUNDER_CLUB_URL = ""

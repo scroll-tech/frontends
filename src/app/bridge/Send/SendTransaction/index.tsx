@@ -332,7 +332,7 @@ const SendTransaction = () => {
                   alignItems: "center",
                   gap: "0.2rem",
                   color: "#FF684B",
-                  fontFamily: "var(--developer-page-font-family) !important",
+                  fontFamily: "var(--font-developer) !important",
                 }}
               >
                 {bridgeWarning}

@@ -25,26 +25,33 @@ const PROTOCOL_LIST = [
   { label: "Ambient", image: Ambient },
   { label: "Lido", image: Lido },
   { label: "Axiom", image: Axiom },
-  { label: "Aave", image: Aave, height: "20px" },
-  { label: "VIFI", image: VIFI, height: "24px" },
-  { label: "Quill Finance", image: QuillFinance, height: "24px" },
+  { label: "Aave", image: Aave, height: ["15px", "20px"] },
+  { label: "VIFI", image: VIFI, height: ["18px", "24px"] },
+  { label: "Quill Finance", image: QuillFinance, height: ["18px", "24px"] },
   { label: "Compound", image: Compound },
   { label: "Orbiter Finance", image: Orbiter },
   { label: "Mellow", image: Mellow },
-  { label: "Symbiotic", image: Symbiotic, height: "20px" },
+  { label: "Symbiotic", image: Symbiotic, height: ["15px", "20px"] },
   { label: "Kelp", image: Kelp },
   { label: "Puffer", image: Puffer },
   { label: "Ethena", image: Ethena },
-  { label: "Tempest", image: Tempest, height: "20px" },
+  { label: "Tempest", image: Tempest, height: ["15px", "20px"] },
   { label: "Circle", image: Circle },
 ]
 
 const Protocols = () => {
   return (
-    <Box sx={{ mt: "9.6rem" }}>
+    <Box sx={{ mt: ["3.2rem", "9.6rem"] }}>
       <Marquee autoFill>
         {PROTOCOL_LIST.map(({ label, image, height }) => (
-          <Image src={image} alt={label} key={label} style={{ height: height ?? "32px" }} title={label} className="w-auto mr-[64px]"></Image>
+          <Image
+            src={image}
+            alt={label}
+            key={label}
+            style={{ "--icon-height": height?.[1] ?? "32px", "--icon-height-xs": height?.[0] ?? "24px" }}
+            title={label}
+            className="h-[var(--icon-height-xs)] sm:h-[var(--icon-height)] w-auto mr-[48px] sm:mr-[64px]"
+          ></Image>
         ))}
       </Marquee>
     </Box>

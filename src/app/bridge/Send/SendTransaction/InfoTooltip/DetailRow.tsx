@@ -48,7 +48,7 @@ const useStyles = makeStyles()(theme => ({
     lineHeight: "3rem",
     whiteSpace: "nowrap",
     paddingRight: "2.4rem",
-    fontFamily: "var(--developer-page-font-family) !important",
+    fontFamily: "var(--font-developer) !important",
     [theme.breakpoints.down("sm")]: {
       fontSize: "1.4rem",
       lineHeight: "2.4rem",
@@ -59,7 +59,7 @@ const useStyles = makeStyles()(theme => ({
     fontWeight: 400,
     lineHeight: "3rem",
     color: "#5B5B5B",
-    fontFamily: "var(--developer-page-font-family) !important",
+    fontFamily: "var(--font-developer) !important",
     [theme.breakpoints.down("sm")]: {
       fontSize: "1.4rem",
       lineHeight: "2.4rem",

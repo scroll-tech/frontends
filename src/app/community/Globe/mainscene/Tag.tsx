@@ -46,7 +46,7 @@ const Title = styled("div")(() => ({
   background: "#d2fcf6",
   whiteSpace: "nowrap",
   transform: "translate(-50%, -60px)",
-  fontFamily: "var(--developer-page-font-family)",
+  fontFamily: "var(--font-developer)",
 }))
 
 const Line = styled("div")<{ direction?: string }>(({ direction }) => ({
@@ -113,7 +113,7 @@ const EndDivText = styled("a")(() => ({
   overflow: "hidden",
   textOverflow: "ellipsis",
   padding: "0 6px",
-  fontFamily: "var(--developer-page-font-family)",
+  fontFamily: "var(--font-developer)",
   "&:hover": {
     cursor: "pointer",
     color: "#ff684b",

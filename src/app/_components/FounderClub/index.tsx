@@ -6,18 +6,18 @@ import Protocols from "./Protocols"
 
 const FounderClub = () => {
   return (
-    <Box sx={{ backgroundColor: "background.default", py: "8.9rem" }}>
-      <Typography sx={{ fontSize: "3.6rem", lineHeight: "5.2rem", textAlign: "center" }}>
+    <Box sx={{ backgroundColor: "background.default", py: ["5.6rem", "8.9rem"] }}>
+      <Typography sx={{ fontSize: ["2.8rem", "3.6rem"], lineHeight: ["4.4rem", "5.2rem"], textAlign: "center", typography: "title" }}>
         Scale on a performant network
-        <br /> built for founders
+        <br className="hidden sm:inline" /> built for founders
       </Typography>
       <Protocols />
-      <Container sx={{ my: "8.1rem" }}>
-        <Box>TODO</Box>
+      <Container>
+        <Box sx={{ mt: ["3.2rem", "8.1rem"], mb: ["4rem", "8.1rem"] }}>TODO</Box>
+        <Button color="primary" className="!w-[240px] md:!w-[250px] md:mx-auto">
+          Join Founders’ club
+        </Button>
       </Container>
-      <Button color="primary" className="!w-[250px] mx-auto">
-        Join Founders’ club
-      </Button>
     </Box>
   )
 }

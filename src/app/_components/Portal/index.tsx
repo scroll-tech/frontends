@@ -32,11 +32,21 @@ const BUILDER_LIST = [
 const Portal = () => {
   return (
     <Box sx={{ backgroundColor: "themeBackground.light" }}>
-      <Container sx={{ py: "10.6rem" }}>
+      <Container sx={{ py: ["5.6rem", "10.6rem"] }}>
         {BUILDER_LIST.map(({ title, items }) => (
           <>
-            <Typography sx={{ fontSize: "3.6rem", lineHeight: "5.6rem", mb: "4rem", "&:nth-of-type(n+2)": { mt: "7.2rem" } }}>{title}</Typography>
-            <Box sx={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(33rem, 1fr))", gap: "2.8rem" }}>
+            <Typography
+              sx={{
+                typography: "title",
+                fontSize: ["2.8rem", "3.6rem"],
+                lineHeight: ["4.4rem", "5.6rem"],
+                mb: ["2.4rem", "4rem"],
+                "&:nth-of-type(n+2)": { mt: ["3.2rem", "7.2rem"] },
+              }}
+            >
+              {title}
+            </Typography>
+            <Box sx={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(33rem, 1fr))", gap: ["2.4rem", "2.8rem"] }}>
               {items.map(({ icon, label, content }) => (
                 <PortalCard key={label} icon={icon} label={label} content={content}></PortalCard>
               ))}

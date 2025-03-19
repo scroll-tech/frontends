@@ -1,6 +1,5 @@
 "use client"
 
-// import { motion, useCycle } from "motion/react"
 import { motion, useCycle } from "motion/react"
 import { useMemo } from "react"
 import { makeStyles } from "tss-react/mui"
@@ -83,7 +82,7 @@ const useStyles = makeStyles<any>()((theme, { width, color, whiteButton }) => ({
     height: "100%",
     width: "100%",
     paddingLeft: "4.8rem",
-    borderWidth: 1,
+    borderWidth: "1.5px",
     borderStyle: "solid",
     borderColor: gColor(color, theme),
     color: gColor(color, theme),

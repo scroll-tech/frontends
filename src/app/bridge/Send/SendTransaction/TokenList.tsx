@@ -36,7 +36,7 @@ const InputBaseStyled = styled(InputBase)(({ theme }) => ({
   width: "100%",
   borderRadius: "1rem",
   border: `1px solid ${theme.vars.palette.text.primary}`,
-  fontFamily: "var(--developer-page-font-family)",
+  fontFamily: "var(--font-developer)",
   height: "4.8rem",
   [theme.breakpoints.down("sm")]: {
     height: "4.8rem",
@@ -83,7 +83,7 @@ const ListItemIconStyled = styled(ListItemIcon)(() => ({
 const ListSymbolStyled = styled(Typography)(() => ({
   display: "inline",
   color: "#473835",
-  fontFamily: "var(--developer-page-font-family)",
+  fontFamily: "var(--font-developer)",
   fontSize: "1.7rem",
   fontStyle: "normal",
   fontWeight: 600,
@@ -94,7 +94,7 @@ const ListSymbolStyled = styled(Typography)(() => ({
 const ListNameStyled = styled(Typography)(() => ({
   display: "inline",
   color: "#756A67",
-  fontFamily: "var(--developer-page-font-family)",
+  fontFamily: "var(--font-developer)",
   fontSize: "1.5rem",
   fontStyle: "normal",
   fontWeight: 400,
@@ -103,7 +103,7 @@ const ListNameStyled = styled(Typography)(() => ({
 }))
 const ListAddressStyled = styled(Link)(() => ({
   color: "#756A67",
-  fontFamily: "var(--developer-page-font-family)",
+  fontFamily: "var(--font-developer)",
   fontSize: "1.5rem",
   fontStyle: "normal",
   fontWeight: 400,
@@ -116,7 +116,7 @@ const EarnMarksLabel = styled(Typography)(() => ({
   display: "inline",
   color: "#0F8E7E",
   textAlign: "center",
-  fontFamily: "var(--developer-page-font-family)",
+  fontFamily: "var(--font-developer)",
   fontSize: "12px",
   fontStyle: "normal",
   fontWeight: 600,

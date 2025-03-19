@@ -94,7 +94,7 @@ const GasPriceViewer = () => {
         onMouseLeave={handleClosePopover}
       >
         <GasPriveDotSvg></GasPriveDotSvg>
-        <Typography component="span" sx={{ fontFamily: "var(--developer-page-font-family)", fontSize: "1.6rem", lineHeight: "2.4rem" }}>
+        <Typography component="span" sx={{ fontFamily: "var(--font-developer)", fontSize: "1.6rem", lineHeight: "2.4rem" }}>
           {displayedScrollGasPrice}
         </Typography>
         <Typography component="span" sx={{ fontSize: "1.6rem", lineHeight: "2.4rem" }}>
@@ -135,12 +135,12 @@ const GasPriceViewer = () => {
                 }}
               >
                 <span className="font-[600]">Scroll</span>
-                <Typography sx={{ fontSize: "inherit", lineHeight: "inherit", textAlign: "right", fontFamily: "var(--developer-page-font-family)" }}>
+                <Typography sx={{ fontSize: "inherit", lineHeight: "inherit", textAlign: "right", fontFamily: "var(--font-developer)" }}>
                   {displayedScrollGasPrice}
                 </Typography>
                 <span>Gwei</span>
                 <span className="font-[600]">Ethereum</span>
-                <Typography sx={{ fontSize: "inherit", lineHeight: "inherit", textAlign: "right", fontFamily: "var(--developer-page-font-family)" }}>
+                <Typography sx={{ fontSize: "inherit", lineHeight: "inherit", textAlign: "right", fontFamily: "var(--font-developer)" }}>
                   {displayedEthereumGasPrice}
                 </Typography>
                 <span>Gwei</span>

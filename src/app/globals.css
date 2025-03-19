@@ -3,6 +3,8 @@
 @import "tailwindcss/preflight.css" layer(base);
 @import "tailwindcss/utilities.css" layer(utilities);
 
+@config "../../tailwind.config.ts";
+
 img,
 svg,
 video,
@@ -90,9 +92,6 @@ body.mobile-top-nav-open {
   /* semibold/light never been used  */
   --default-font-family: "TransSansPremium", "system-ui", "BlinkMacSystemFont", "Roboto", "Helvetica Neue", "Segoe UI", "Arial", "sans-serif",
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-
-  /* same as scroll documnet */
-  --developer-page-font-family: "Roboto", "trans-sans", "circular", Arial, "Helvetica Neue", Helvetica, sans-serif;
 }
 
 onboard-v2 .outer-container icon {
@@ -118,7 +117,7 @@ onboard-v2 .outer-container icon {
 
 div.markdown-body {
   max-width: 76rem;
-  font-family: var(--developer-page-font-family);
+  font-family: var(--font-developer);
   letter-spacing: 0.09px;
 }
 

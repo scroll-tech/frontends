@@ -91,7 +91,7 @@ const CustomiseRecipient = props => {
                 background: "#ffffff",
                 border: showErrorMessage ? "2px solid #FF684B" : "1px solid #473835",
                 borderRadius: "1rem",
-                fontFamily: "var(--developer-page-font-family) !important",
+                fontFamily: "var(--font-developer) !important",
               }}
               disabled={disabled}
               onChange={v => setAddressInputValue(v.target.value)}

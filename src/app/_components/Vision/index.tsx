@@ -1,4 +1,4 @@
-import { Box, Container, Stack } from "@mui/material"
+import { Box, Container } from "@mui/material"
 
 import GlobalSvg from "@/assets/svgs/landingpage/global.svg?url"
 import OpenSvg from "@/assets/svgs/landingpage/open.svg?url"
@@ -33,13 +33,13 @@ const VISION_LIST = [
 const Vision = () => {
   return (
     <Box sx={{ backgroundColor: "background.default" }}>
-      <Container sx={{ py: "10.3rem" }}>
-        <Box sx={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(33rem, 1fr))", gap: "2.8rem", mb: "6rem" }}>
+      <Container sx={{ py: ["56px", "103px"] }}>
+        <Box sx={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(33rem, 1fr))", gap: ["2.4rem", "4rem"], mb: ["2.4rem", "6rem"] }}>
           {VISION_LIST.map(({ key, ...vision }) => (
             <VisionCard key={key} {...vision} />
           ))}
         </Box>
-        <Button color="primary" href={VISION_URL} className="!w-[250px] mx-auto">
+        <Button color="primary" href={VISION_URL} className="!w-[240px] md:!w-[250px] justify-self-start md:justify-self-center">
           View vision details
         </Button>
       </Container>

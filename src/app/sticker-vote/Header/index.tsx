@@ -88,7 +88,7 @@ const Announcement = () => {
           fontSize: ["1.6rem", "3.2rem"],
           lineHeight: ["2.4rem", "4rem"],
           fontWeight: 500,
-          fontFamily: "var(--developer-page-font-family)",
+          fontFamily: "var(--font-developer)",
           whiteSpace: "nowrap",
         }}
       >
@@ -105,9 +105,7 @@ const Award = () => {
   return (
     <Container sx={{ mt: "2rem", pb: ["3.6rem", "4.2rem"] }}>
       <Stack direction="row" justifyContent="center" alignItems="center" className={classes.award}>
-        <Typography
-          sx={{ fontSize: ["1.8rem", "3.2rem"], lineHeight: ["2.4rem", "4rem"], fontWeight: 500, fontFamily: "var(--developer-page-font-family)" }}
-        >
+        <Typography sx={{ fontSize: ["1.8rem", "3.2rem"], lineHeight: ["2.4rem", "4rem"], fontWeight: 500, fontFamily: "var(--font-developer)" }}>
           Top 1 prize: <strong>1000 USD</strong> {isPortrait ? <br></br> : "|"} Top 2-5 prize: <strong>200 USD</strong> each
         </Typography>
       </Stack>

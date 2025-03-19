@@ -118,7 +118,7 @@ const Rollup = () => {
           mx: "auto",
           mb: ["12rem", "14rem"],
           "& *": {
-            fontFamily: "var(--developer-page-font-family) !important",
+            fontFamily: "var(--font-developer) !important",
           },
         }}
       >

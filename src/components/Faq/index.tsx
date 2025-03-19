@@ -14,7 +14,7 @@ const useStyles = makeStyles()((theme: Theme) => {
       width: "92rem",
       margin: "14rem auto",
       "& *": {
-        fontFamily: "var(--developer-page-font-family) !important",
+        fontFamily: "var(--font-developer) !important",
       },
       "& a": {
         fontSize: "2rem",

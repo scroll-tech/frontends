@@ -1,10 +1,10 @@
 import PureFooter from "./PureFooter"
-import Subscribe from "./Subscribe"
+import Support from "./Support"
 
 const Footer = () => {
   return (
     <>
-      <Subscribe />
+      <Support />
       <PureFooter></PureFooter>
     </>
   )
