@@ -21,7 +21,7 @@ const LandingHero = () => {
         pt: ["96px", "180px", "calc((100vh - 21.6rem) * 0.4)"],
       }}
     >
-      <Image src={HeroSvg} className="absolute -z-1 right-0 bottom-0 h-[88%] w-auto !hidden md:!inline-block" alt="Hero" />
+      <Image src={HeroSvg} priority className="absolute -z-1 right-0 bottom-0 h-[88%] w-auto !hidden md:!inline-block" alt="Hero" />
       <Container>
         <Typography
           sx={{ typography: "title", fontSize: ["28px", "44px"], lineHeight: ["44px", "64px"], letterSpacing: "-1.32px", mb: ["24px", "40px"] }}
@@ -40,7 +40,7 @@ const LandingHero = () => {
           </Button>
         </Stack>
       </Container>
-      <Image src={HeroMobileSvg} className="absolute bottom-0 w-full h-auto inline-block md:!hidden" alt="Hero" />
+      <Image src={HeroMobileSvg} priority className="absolute bottom-0 w-full h-auto inline-block md:!hidden" alt="Hero" />
     </Box>
   )
 }
