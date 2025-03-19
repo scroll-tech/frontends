@@ -2,13 +2,8 @@ import Image from "next/image"
 
 import { Box, Container, Stack, Typography } from "@mui/material"
 
-import TechLGGif from "@/assets/images/home/tech-lg.gif"
-import TechGif from "@/assets/images/home/tech.gif"
-import TechSvg from "@/assets/svgs/landingpage/tech.svg?url"
 import Button from "@/components/Button"
 import { TECH_URL } from "@/constants/link"
-
-import techBase64 from "./placeholder"
 
 const TECH_LIST = [
   { label: "<18m", desc: "Time to finality" },
@@ -53,7 +48,9 @@ const Tech = () => {
             </Stack>
           ))}
         </Stack>
-        <Image src={TechLGGif} alt="tech" className="max-sm:w-full max-md:w-[563px]" placeholder={`data:image/svg+xml;base64,${techBase64}`}></Image>
+        <video className="max-sm:w-full max-md:w-[563px]" autoPlay loop muted playsInline>
+          <source src="/videos/landing-tech.webm" type="video/webm" />
+        </video>
         <Button
           color="primary"
           href={TECH_URL}
