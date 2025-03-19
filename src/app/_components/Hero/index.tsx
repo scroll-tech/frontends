@@ -1,3 +1,5 @@
+import Image from "next/image"
+
 import { Box, Container, Stack, Typography } from "@mui/material"
 
 import HeroMobileSvg from "@/assets/svgs/landingpage/hero-bg-mobile.svg?url"
@@ -15,15 +17,11 @@ const LandingHero = () => {
         width: "100%",
         height: ["calc(364px + 100vw * 0.96)", "100svh"],
         minHeight: "100svh",
-        background: [
-          `url(${HeroMobileSvg.src}) bottom / contain no-repeat`,
-          `url(${HeroMobileSvg.src}) bottom / contain no-repeat`,
-          `url(${HeroSvg.src}) right bottom / auto 88vh no-repeat`,
-        ],
         marginTop: `calc(-6.5rem - ${ANNOUNCEMENT_HEIGHT})`,
         pt: ["96px", "180px", "calc((100vh - 21.6rem) * 0.4)"],
       }}
     >
+      <Image src={HeroSvg} className="absolute -z-1 right-0 bottom-0 h-[88%] w-auto !hidden md:!inline-block" alt="Hero" />
       <Container>
         <Typography
           sx={{ typography: "title", fontSize: ["28px", "44px"], lineHeight: ["44px", "64px"], letterSpacing: "-1.32px", mb: ["24px", "40px"] }}
@@ -42,6 +40,7 @@ const LandingHero = () => {
           </Button>
         </Stack>
       </Container>
+      <Image src={HeroMobileSvg} className="absolute bottom-0 w-full h-auto inline-block md:!hidden" alt="Hero" />
     </Box>
   )
 }
