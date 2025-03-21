@@ -15,7 +15,7 @@ const LandingHero = () => {
       sx={{
         position: "relative",
         width: "100%",
-        height: ["calc(364px + 100vw * 0.96)", "calc(442px + 100vw * 0.96)", "100svh"],
+        height: ["calc(364px + 100vw * 0.96)", "calc(442px + 100vw * 0.96)", "calc(442px + 100vw * 0.96)", "100svh"],
         minHeight: "100svh",
         marginTop: `calc(-6.5rem - ${ANNOUNCEMENT_HEIGHT})`,
         pt: ["9.6rem", "11.4rem", "16.2rem"],
@@ -24,7 +24,7 @@ const LandingHero = () => {
       <Image
         src={HeroSvg}
         priority
-        className="absolute -z-1 right-0 bottom-0  w-full h-auto landing-hero:h-[calc(100svh-6.5rem)] landing-hero:w-auto !hidden md:!inline-block"
+        className="absolute -z-1 right-0 bottom-0 h-[calc(100svh-6.5rem)] w-auto !hidden lg:!inline-block object-cover"
         alt="Hero"
       />
       <Container>
@@ -43,7 +43,7 @@ const LandingHero = () => {
           </Button>
         </Stack>
       </Container>
-      <Image src={HeroMobileSvg} priority className="absolute bottom-0 w-full h-auto inline-block md:!hidden" alt="Hero" />
+      <Image src={HeroMobileSvg} priority className="absolute bottom-0 w-full h-auto inline-block lg:!hidden" alt="Hero" />
     </Box>
   )
 }
