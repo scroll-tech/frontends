@@ -193,6 +193,8 @@ export const typographyOptions = {
   // },
   title: {
     fontFamily: "var(--font-title)",
+    letterSpacing: "-0.03em",
+    fontWeight: 500,
   },
   developer: {
     fontFamily: "var(--font-developer)",

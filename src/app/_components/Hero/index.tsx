@@ -23,9 +23,7 @@ const LandingHero = () => {
     >
       <Image src={HeroSvg} priority className="absolute -z-1 right-0 bottom-0 h-[88%] w-auto !hidden md:!inline-block" alt="Hero" />
       <Container>
-        <Typography
-          sx={{ typography: "title", fontSize: ["28px", "44px"], lineHeight: ["44px", "64px"], letterSpacing: "-1.32px", mb: ["24px", "40px"] }}
-        >
+        <Typography sx={{ typography: "title", fontSize: ["28px", "44px"], lineHeight: ["44px", "64px"], mb: ["24px", "40px"] }}>
           Secure and Performant:
           <br />
           Network for the Open Economy

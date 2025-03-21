@@ -17,7 +17,6 @@ const VisionCard = props => {
           lineHeight: ["32px", "38px"],
           mt: "auto",
           typography: "title",
-          letterSpacing: ["-0.6px", "-0.84px"],
         }}
       >
         {title}

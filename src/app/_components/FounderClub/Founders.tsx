@@ -122,7 +122,7 @@ const Founders = () => {
         <Typography sx={{ fontSize: ["2rem", "3.2rem"], lineHeight: ["3.6rem", "5.6rem"] }}>{currentFounder.content}</Typography>
         <Typography sx={{ fontSize: ["1.8rem", "2.4rem"], lineHeight: ["2.8rem", "3.6rem"], typography: "title", flex: 1 }}>
           {currentFounder.name}, Co-founder of{" "}
-          <a href={currentFounder.href} className="underline cursor-pointer" target="_blank" rel="noreferrer">
+          <a href={currentFounder.href} className="underline cursor-pointer whitespace-nowrap" target="_blank" rel="noreferrer">
             {currentFounder.prototol}
           </a>
         </Typography>

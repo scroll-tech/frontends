@@ -1,5 +1,3 @@
-import Image from "next/image"
-
 import { Box, Container, Stack, Typography } from "@mui/material"
 
 import Button from "@/components/Button"
@@ -44,7 +42,7 @@ const Tech = () => {
               }}
             >
               <Typography sx={{ fontSize: ["2.8rem", "3.2rem"], lineHeight: "4rem", fontWeight: 600, width: ["10rem", "12rem"] }}>{label}</Typography>
-              <Typography sx={{ fontSize: ["2rem", "2.4rem"], lineHeight: "4rem", typography: "title" }}>{desc}</Typography>
+              <Typography sx={{ fontSize: ["2rem", "2.4rem"], lineHeight: "4rem", typography: "title", fontWeight: 400 }}>{desc}</Typography>
             </Stack>
           ))}
         </Stack>
@@ -55,6 +53,7 @@ const Tech = () => {
         <Button
           color="primary"
           href={TECH_URL}
+          target="_blank"
           className="!w-[24rem] md:!w-[25rem] justify-self-start md:justify-self-center col-span-1 md:col-span-2"
         >
           View tech details
