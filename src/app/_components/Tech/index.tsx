@@ -49,7 +49,8 @@ const Tech = () => {
           ))}
         </Stack>
         <video className="max-sm:w-full max-md:w-[563px]" autoPlay loop muted playsInline>
-          <source src="/videos/landing-tech.webm" type="video/webm" />
+          <source media="(min-width: 1200px)" src="/videos/landing-tech.webm" type="video/webm" />
+          <source src="/videos/landing-tech.mp4" type="video/mp4" />
         </video>
         <Button
           color="primary"
