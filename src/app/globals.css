@@ -5,6 +5,15 @@
 
 @config "../../tailwind.config.ts";
 
+@theme {
+  --breakpoint-sm: 600px;
+  --breakpoint-md: 900px;
+  --breakpoint-lg: 1200px;
+  --breakpoint-xl: 1536px;
+
+  --breakpoint-landing-hero: 1678px;
+}
+
 img,
 svg,
 video,

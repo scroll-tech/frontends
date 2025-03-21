@@ -86,7 +86,6 @@ const Founders = () => {
       sx={{
         alignItems: ["center", "center", "center", "stretch"],
         minHeight: "100%",
-        mt: ["3.2rem", "8rem"],
         mb: ["4rem", "8rem"],
         gap: ["4rem", "6rem"],
       }}
@@ -98,7 +97,7 @@ const Founders = () => {
               key={index}
               initial={{ y: -index * OFFSET, x: -index * OFFSET }}
               animate={{ y: calc(index), x: calc(index) }}
-              transition={{ type: "spring", bounce: 0.4, duration: 0.6 }}
+              transition={{ type: "linear", duration: 0.6 }}
               sx={{
                 position: "absolute",
                 right: 0,
@@ -119,8 +118,8 @@ const Founders = () => {
       </MotionBox>
       <Stack direction="column" sx={{ gap: "2.4rem", pt: [0, "1.6rem"] }}>
         <Quota className="w-[4rem] sm:w-[6rem]"></Quota>
-        <Typography sx={{ fontSize: ["2rem", "3.2rem"], lineHeight: ["3.6rem", "5.6rem"] }}>{currentFounder.content}</Typography>
-        <Typography sx={{ fontSize: ["1.8rem", "2.4rem"], lineHeight: ["2.8rem", "3.6rem"], typography: "title", flex: 1 }}>
+        <Typography sx={{ fontSize: ["2rem", "2.8rem"], lineHeight: ["3.6rem", "5.6rem"] }}>{currentFounder.content}</Typography>
+        <Typography sx={{ fontSize: ["1.8rem", "2rem"], lineHeight: ["2.8rem", "3.6rem"], fontFamily: "var(--font-title)", flex: 1 }}>
           {currentFounder.name}, Co-founder of{" "}
           <a href={currentFounder.href} className="underline cursor-pointer whitespace-nowrap" target="_blank" rel="noreferrer">
             {currentFounder.prototol}

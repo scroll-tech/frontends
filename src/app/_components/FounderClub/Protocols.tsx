@@ -41,7 +41,7 @@ const PROTOCOL_LIST = [
 
 const Protocols = () => {
   return (
-    <Box sx={{ mt: ["3.2rem", "9.6rem"] }}>
+    <Box sx={{ my: ["3.2rem", "9.6rem"] }}>
       <Marquee autoFill>
         {PROTOCOL_LIST.map(({ label, image, height }) => (
           <Image

@@ -1,18 +1,13 @@
-import { SvgIcon } from "@mui/material"
-
-import ScrollLogoLightIcon from "@/assets/svgs/common/scroll-logo-light.svg"
-import ScrollLogoIcon from "@/assets/svgs/common/scroll-logo.svg"
+import ScrollLogoLightIcon from "@/assets/svgs/common/scroll-logo-icon-light.svg"
+import ScrollLogoIcon from "@/assets/svgs/common/scroll-logo-icon.svg"
 
 const ScrollLogo = props => {
-  const { light, ...restProps } = props
-  return (
-    <SvgIcon
-      sx={{ fontSize: "8rem", height: "auto", verticalAlign: "middle" }}
-      component={light ? ScrollLogoLightIcon : ScrollLogoIcon}
-      inheritViewBox
-      {...restProps}
-    ></SvgIcon>
-  )
+  const { light } = props
+
+  if (light) {
+    return <ScrollLogoLightIcon></ScrollLogoLightIcon>
+  }
+  return <ScrollLogoIcon></ScrollLogoIcon>
 }
 
 export default ScrollLogo

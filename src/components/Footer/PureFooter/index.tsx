@@ -4,11 +4,11 @@ import Link from "next/link"
 
 import { Box, Container, Stack, Typography } from "@mui/material"
 
+import ScrollLogoLightIcon from "@/assets/svgs/common/scroll-logo-light.svg"
 import DiscordIcon from "@/assets/svgs/footer/discord.svg"
 import GithubIcon from "@/assets/svgs/footer/github.svg"
 import TwitterIcon from "@/assets/svgs/footer/twitter.svg"
 import YoutubeIcon from "@/assets/svgs/footer/youtube.svg"
-import ScrollLogo from "@/components/ScrollLogo"
 
 const CURRENT_YEAR = new Date().getFullYear()
 
@@ -78,7 +78,7 @@ const Footer = () => {
           }}
         >
           <Link href="/" style={{ gridArea: "logo" }}>
-            <ScrollLogo light></ScrollLogo>
+            <ScrollLogoLightIcon></ScrollLogoLightIcon>
           </Link>
           <Stack direction="column" spacing="2.4rem" sx={{ gridArea: "legal" }}>
             {LEGAL_LIST.map(({ name, href }) => (

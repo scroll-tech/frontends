@@ -9,7 +9,7 @@ import Protocols from "./Protocols"
 const FounderClub = () => {
   return (
     <Box sx={{ backgroundColor: "background.default", py: ["5.6rem", "8.9rem"] }}>
-      <Typography sx={{ fontSize: ["2.8rem", "3.6rem"], lineHeight: ["4.4rem", "5.2rem"], textAlign: "center", typography: "title", px: "2rem" }}>
+      <Typography sx={{ fontSize: ["2.4rem", "3.2rem"], lineHeight: ["4rem", "5.6rem"], textAlign: "center", typography: "title", px: "2rem" }}>
         Scale on a performant network
         <br className="hidden sm:inline" /> built for founders
       </Typography>

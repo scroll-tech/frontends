@@ -40,8 +40,8 @@ const Portal = () => {
             <Typography
               sx={{
                 typography: "title",
-                fontSize: ["2.8rem", "3.6rem"],
-                lineHeight: ["4.4rem", "5.6rem"],
+                fontSize: ["2.4rem", "3.2rem"],
+                lineHeight: ["4rem", "5.6rem"],
                 mb: ["2.4rem", "4rem"],
                 "&:nth-of-type(n+2)": { mt: ["3.2rem", "7.2rem"] },
               }}
