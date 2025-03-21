@@ -1,3 +1,5 @@
+import Link from "next/link"
+
 import { Box, Container, Typography } from "@mui/material"
 
 import Bridge from "@/assets/svgs/landingpage/bridge.svg"
@@ -47,8 +49,10 @@ const Portal = () => {
               {title}
             </Typography>
             <Box sx={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(33rem, 1fr))", gap: ["2.4rem", "2.8rem"] }}>
-              {items.map(({ icon, label, content }) => (
-                <PortalCard key={label} icon={icon} label={label} content={content}></PortalCard>
+              {items.map(({ icon, label, content, href }) => (
+                <Link href={href} key={label} target={href.startsWith("https:") ? "_blank" : ""} className="cursor-pointer">
+                  <PortalCard icon={icon} label={label} content={content}></PortalCard>
+                </Link>
               ))}
             </Box>
           </>
