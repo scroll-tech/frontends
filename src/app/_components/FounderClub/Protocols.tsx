@@ -50,6 +50,7 @@ const Protocols = () => {
             key={label}
             style={{ "--icon-height": height?.[1] ?? "32px", "--icon-height-xs": height?.[0] ?? "24px" }}
             title={label}
+            loading="eager"
             className="h-[var(--icon-height-xs)] sm:h-[var(--icon-height)] w-auto mr-[48px] sm:mr-[64px]"
           ></Image>
         ))}
