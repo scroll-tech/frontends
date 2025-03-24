@@ -151,7 +151,7 @@ const DesktopHeader = ({ currentMenu }) => {
             alignItems: "center",
           }}
         >
-          <ScrollLink href="/" className="flex">
+          <ScrollLink href="/" className="flex" aria-label="Scroll Home">
             <Logo light={dark} />
           </ScrollLink>
           <Stack

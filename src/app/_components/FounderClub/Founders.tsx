@@ -126,10 +126,10 @@ const Founders = () => {
           </a>
         </Typography>
         <Stack direction="row" gap="2.4rem">
-          <IconButton sx={{ p: 0, "&:hover": { backgroundColor: "unset" } }} onClick={handlePrev}>
+          <IconButton aria-label="prev" sx={{ p: 0, "&:hover": { backgroundColor: "unset" } }} onClick={handlePrev}>
             <LeftButton></LeftButton>
           </IconButton>
-          <IconButton sx={{ p: 0, "&:hover": { backgroundColor: "unset" } }} onClick={handleNext}>
+          <IconButton aria-label="next" sx={{ p: 0, "&:hover": { backgroundColor: "unset" } }} onClick={handleNext}>
             <RightButton></RightButton>
           </IconButton>
         </Stack>

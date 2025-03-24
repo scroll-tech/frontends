@@ -4,7 +4,7 @@ import { motion, useCycle } from "motion/react"
 import { useMemo } from "react"
 import { makeStyles } from "tss-react/mui"
 
-import { Box, ButtonBase, ButtonProps, CircularProgress, IconButton, SvgIcon } from "@mui/material"
+import { Box, ButtonBase, ButtonProps, CircularProgress, Stack, SvgIcon } from "@mui/material"
 
 import ArrowRightIcon from "@/assets/svgs/common/arrow-right.svg"
 import useCheckViewport from "@/hooks/useCheckViewport"
@@ -129,6 +129,7 @@ const useStyles = makeStyles<any>()((theme, { width, color, whiteButton }) => ({
     position: "absolute",
     zIndex: 1,
     color: `${cColor(color, theme)} !important`,
+    cursor: "pointer",
     [theme.breakpoints.down("sm")]: {
       width: "4.8rem",
     },
@@ -193,9 +194,9 @@ const Button = (props: ScrollButtonProps) => {
       animate={isHover ? "expanding" : "normal"}
     >
       {!loading && (
-        <IconButton classes={{ root: classes.icon }} component="span" disabled>
+        <Stack className={classes.icon} sx={{ alignItems: "center", justifyContent: "center" }}>
           <SvgIcon component={ArrowRightIcon} inheritViewBox></SvgIcon>
-        </IconButton>
+        </Stack>
       )}
       <motion.div
         className={cx(classes.mask, loading && classes.maskLoading, innerDisabled && classes.maskDisabled)}

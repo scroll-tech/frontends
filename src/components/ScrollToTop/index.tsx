@@ -48,7 +48,7 @@ const ScrollToTop: React.FC = () => {
             zIndex: 100,
           }}
         >
-          <StyledFab color="primary" onClick={scrollToTop}>
+          <StyledFab color="primary" aria-label="scroll to top" onClick={scrollToTop}>
             <ArrowUpward />
           </StyledFab>
         </Box>

@@ -77,7 +77,7 @@ const Footer = () => {
             ],
           }}
         >
-          <Link href="/" style={{ gridArea: "logo" }}>
+          <Link href="/" style={{ gridArea: "logo" }} aria-label="Scroll Home">
             <ScrollLogoLightIcon></ScrollLogoLightIcon>
           </Link>
           <Stack direction="column" spacing="2.4rem" sx={{ gridArea: "legal" }}>
@@ -97,7 +97,7 @@ const Footer = () => {
             </Typography>
             <Stack direction="row" spacing="3rem">
               {SOCIAL_MEDIA_List.map(({ name, icon: Icon, href }) => (
-                <Link key={name} href={href}>
+                <Link key={name} href={href} aria-label={name}>
                   <Icon className="!text-[var(--mui-palette-primary-contrastText)] hover:!text-[var(--mui-palette-primary-dark)]"></Icon>
                 </Link>
               ))}
