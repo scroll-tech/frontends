@@ -3,8 +3,6 @@ import Marquee from "react-fast-marquee"
 
 import { Box } from "@mui/material"
 
-import Lido from "@/assets/images/home/Lido.png"
-import QuillFinance from "@/assets/images/home/QuillFinance.png"
 import Aave from "@/assets/svgs/landingpage/Aave.svg?url"
 import Ambient from "@/assets/svgs/landingpage/Ambient.svg?url"
 import Axiom from "@/assets/svgs/landingpage/Axiom.svg?url"
@@ -13,9 +11,11 @@ import Compound from "@/assets/svgs/landingpage/Compound.svg?url"
 import Ethena from "@/assets/svgs/landingpage/Ethena.svg?url"
 import EtherFi from "@/assets/svgs/landingpage/EtherFi.svg?url"
 import Kelp from "@/assets/svgs/landingpage/Kelp.svg?url"
+import Lido from "@/assets/svgs/landingpage/Lido.svg?url"
 import Mellow from "@/assets/svgs/landingpage/Mellow.svg?url"
 import Orbiter from "@/assets/svgs/landingpage/Orbiter.svg?url"
 import Puffer from "@/assets/svgs/landingpage/Puffer.svg?url"
+import QuillFinance from "@/assets/svgs/landingpage/QuillFinance.svg?url"
 import Symbiotic from "@/assets/svgs/landingpage/Symbiotic.svg?url"
 import Tempest from "@/assets/svgs/landingpage/Tempest.svg?url"
 import VIFI from "@/assets/svgs/landingpage/VIFI.svg?url"
@@ -42,7 +42,7 @@ const PROTOCOL_LIST = [
 const Protocols = () => {
   return (
     <Box sx={{ my: ["3.2rem", "9.6rem"] }}>
-      <Marquee autoFill>
+      <Marquee autoFill className="">
         {PROTOCOL_LIST.map(({ label, image, height }) => (
           <Image
             src={image}
@@ -51,7 +51,7 @@ const Protocols = () => {
             style={{ "--icon-height": height?.[1] ?? "32px", "--icon-height-xs": height?.[0] ?? "24px" }}
             title={label}
             loading="eager"
-            className="h-[var(--icon-height-xs)] sm:h-[var(--icon-height)] w-auto mr-[48px] sm:mr-[64px]"
+            className="h-[var(--icon-height-xs)] sm:h-[var(--icon-height)] w-auto pl-[4.8rem] sm:pl-[6.4rem]"
           ></Image>
         ))}
       </Marquee>
