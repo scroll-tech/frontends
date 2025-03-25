@@ -26,7 +26,7 @@ const Blocks = () => {
           maxWidth: "130rem",
           marginBottom: "16rem",
           "& *": {
-            fontFamily: "var(--developer-page-font-family) !important",
+            fontFamily: "var(--font-developer) !important",
           },
         }}
       >

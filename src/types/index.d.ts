@@ -150,6 +150,8 @@ declare module "@mui/material/Typography" {
     Body1: true
     Body2: true
     Body3: true
+    title: true
+    developer: true
   }
 }
 

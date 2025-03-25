@@ -15,7 +15,7 @@ const useStyles = makeStyles()(theme => ({
     padding: "1.2rem 1.4rem",
     fontSize: "1.8rem",
     lineHeight: "2.4rem",
-    fontFamily: "var(--developer-page-font-family)",
+    fontFamily: "var(--font-developer)",
 
     [theme.breakpoints.down("md")]: {
       marginTop: "0.8rem !important",

@@ -336,6 +336,11 @@ const lightTheme = {
       },
     },
   },
+  MuiStack: {
+    defaultProps: {
+      useFlexGap: true,
+    },
+  },
 }
 
 export default lightTheme

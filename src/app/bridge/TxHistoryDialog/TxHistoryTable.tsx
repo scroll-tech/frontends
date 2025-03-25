@@ -13,7 +13,7 @@ const TableBox = styled(Box)(({ theme }) => ({
   borderRadius: "2rem",
   padding: "0 3rem 3rem",
   "& *": {
-    fontFamily: "var(--developer-page-font-family) !important",
+    fontFamily: "var(--font-developer) !important",
   },
   [theme.breakpoints.down("sm")]: {
     padding: "0 2rem 2rem",

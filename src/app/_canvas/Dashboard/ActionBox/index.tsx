@@ -123,7 +123,7 @@ const BadgeCount = styled("span")(({ theme }) => ({
   padding: "0 3px",
   backgroundColor: theme.palette.primary.main,
   color: theme.palette.primary.contrastText,
-  fontFamily: "var(--developer-page-font-family)",
+  fontFamily: "var(--font-developer)",
   fontSize: "1rem",
   lineHeight: "1.6rem",
   textAlign: "center",

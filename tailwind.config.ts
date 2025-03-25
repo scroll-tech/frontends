@@ -130,7 +130,8 @@ const config: Config = {
     },
     fontFamily: {
       default: ["TransSansPremium", ...defaultTheme.fontFamily.sans],
-      developer: ["Roboto", ...defaultTheme.fontFamily.sans],
+      developer: ["var(--font-developer)", ...defaultTheme.fontFamily.sans],
+      title: ["var(--font-title)", ...defaultTheme.fontFamily.sans],
     },
     screens: {
       sm: "600px",
