@@ -34,10 +34,9 @@ const DECENTRALIZED_EXCHANGES_DATA: ProtocolData = {
     },
     {
       name: "iZUMi",
-      project: "Izumi",
+      project: "iZUMi",
       logoURL: "https://scroll-eco-list.netlify.app/logos/iZUMi%20Finance.png",
       href: "https://izumi.finance/trade/swap",
-      upcoming: true,
     },
     {
       name: "Maverick",
