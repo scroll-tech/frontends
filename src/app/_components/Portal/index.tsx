@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { Fragment } from "react"
 
 import { Box, Container, Typography } from "@mui/material"
 
@@ -36,7 +37,7 @@ const Portal = () => {
     <Box sx={{ backgroundColor: "themeBackground.light" }}>
       <Container sx={{ py: ["5.6rem", "10.6rem"] }}>
         {BUILDER_LIST.map(({ title, items }) => (
-          <>
+          <Fragment key={title}>
             <Typography
               sx={{
                 typography: "title",
@@ -55,7 +56,7 @@ const Portal = () => {
                 </Link>
               ))}
             </Box>
-          </>
+          </Fragment>
         ))}
         <Box></Box>
       </Container>

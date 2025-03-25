@@ -16,8 +16,8 @@ const FounderClub = () => {
       <Protocols />
       <Container>
         <Founders />
-        <Button color="primary" className="!w-[240px] md:!w-[250px] md:mx-auto">
-          Join Founders’ club
+        <Button color="primary" href={FOUNDER_CLUB_URL} target="_blank" className="!w-[240px] md:!w-[250px] md:mx-auto">
+          Join Telegram group
         </Button>
       </Container>
     </Box>

@@ -2,8 +2,7 @@
 
 import { motion } from "motion/react"
 import Image from "next/image"
-import Link from "next/link"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { Box, IconButton, Stack, Typography } from "@mui/material"
 
@@ -64,6 +63,13 @@ const Founders = () => {
   const currentFounder = FOUNDER_LIST[current]
 
   const OFFSET = isDesktop ? 24 : 16
+
+  useEffect(() => {
+    const interval = setTimeout(() => {
+      handleNext()
+    }, 5e3)
+    return () => clearTimeout(interval)
+  }, [current])
 
   const calc = index => {
     const predictedPosition = index - current + FOUNDER_LIST.length
