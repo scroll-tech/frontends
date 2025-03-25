@@ -18,13 +18,13 @@ const LandingHero = () => {
         height: ["calc(364px + 100vw * 0.96)", "calc(442px + 100vw * 0.96)", "calc(442px + 100vw * 0.96)", "100svh"],
         minHeight: "100svh",
         marginTop: `calc(-6.5rem - ${ANNOUNCEMENT_HEIGHT})`,
-        pt: ["9.6rem", "11.4rem", "16.2rem"],
+        pt: ["9.6rem", "11.4rem", "19.4rem"],
       }}
     >
       <Image
         src={HeroSvg}
         priority
-        className="absolute -z-1 right-0 bottom-0 h-[calc(100svh-6.5rem)] w-auto !hidden lg:!inline-block object-cover"
+        className="absolute -z-1 right-0 bottom-0 h-[calc(100svh-20rem)] w-auto !hidden lg:!inline-block object-cover"
         alt="Hero"
       />
       <Container>
