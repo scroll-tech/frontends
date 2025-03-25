@@ -1,10 +1,10 @@
 import { genMeta } from "@/utils"
 
-import Blog from "./_components/Blog"
-import BuildWithScroll from "./_components/BuildWithScroll"
-import ExploreEcosystem from "./_components/ExploreEcosystem"
-import Header from "./_components/Header"
-import StartBuilding from "./_components/StartBuilding"
+import FounderClub from "./_components/FounderClub"
+import Hero from "./_components/Hero"
+import Portal from "./_components/Portal"
+import Tech from "./_components/Tech"
+import Vision from "./_components/Vision"
 
 export const generateMetadata = genMeta(() => ({
   titleSuffix: "Native zkEVM Layer 2 for Ethereum",
@@ -13,11 +13,11 @@ export const generateMetadata = genMeta(() => ({
 const LandingPage = () => {
   return (
     <>
-      <Header />
-      <BuildWithScroll />
-      <ExploreEcosystem />
-      <Blog />
-      <StartBuilding />
+      <Hero />
+      <Vision />
+      <Tech />
+      <FounderClub />
+      <Portal />
     </>
   )
 }

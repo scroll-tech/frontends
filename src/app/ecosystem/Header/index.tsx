@@ -7,7 +7,7 @@ import { Box, Container, Stack, Typography } from "@mui/material"
 import { fetchEcosystemMetricsData } from "@/apis/ecosystem"
 import { fetchLastBatchIndexesUrl } from "@/apis/rollupscan"
 import Button from "@/components/Button"
-import { GET_IN_TOUCH_LINK } from "@/constants"
+import { GET_IN_TOUCH_URL } from "@/constants/link"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import { formatLargeNumber } from "@/utils"
 import { scrollRequest } from "@/utils/request"
@@ -81,7 +81,7 @@ const Header = () => {
           <Button
             width={isPortrait ? "18.5rem" : "25rem"}
             sx={{ backgroundColor: "#FFF8F3 !important" }}
-            href={GET_IN_TOUCH_LINK}
+            href={GET_IN_TOUCH_URL}
             target="_blank"
             color="primary"
           >

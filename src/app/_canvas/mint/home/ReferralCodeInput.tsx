@@ -42,7 +42,7 @@ const ReferralCodeBox = styled(Box)(() => ({
 const ReferralCodeInput = styled(InputBase)(({ theme }) => ({
   backgroundColor: "#101010",
   color: theme.palette.primary.contrastText,
-  fontFamily: "var(--developer-page-font-family)",
+  fontFamily: "var(--font-developer)",
   border: "1px solid #5b5b5b",
   borderRadius: "1rem",
   width: "7.2rem",

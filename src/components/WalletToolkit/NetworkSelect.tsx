@@ -57,7 +57,7 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
 
   listItemText: {
     fontSize: "1.6rem",
-    fontFamily: "var(--developer-page-font-family)",
+    fontFamily: "var(--font-developer)",
     cursor: "pointer",
     color: dark ? theme.vars.palette.primary.contrastText : "#473835",
   },

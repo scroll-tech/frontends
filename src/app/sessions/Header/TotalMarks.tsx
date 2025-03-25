@@ -69,7 +69,7 @@ const TotalPoints = () => {
                   fontSize: ["4rem", "5.6rem"],
                   lineHeight: ["4.8rem", "8rem"],
                   fontWeight: 600,
-                  fontFamily: "var(--developer-page-font-family)",
+                  fontFamily: "var(--font-developer)",
                 }}
               >
                 {session2Loading ? (
@@ -79,10 +79,10 @@ const TotalPoints = () => {
                 )}
               </Typography>
             </MarksTooltip>
-            <Typography sx={{ fontSize: "1.4rem", lineHeight: ["2rem", "2.4rem"], fontFamily: "var(--developer-page-font-family)" }}>
+            <Typography sx={{ fontSize: "1.4rem", lineHeight: ["2rem", "2.4rem"], fontFamily: "var(--font-developer)" }}>
               Marks are updated every 24 hrs
             </Typography>
-            <Typography sx={{ fontSize: "1.4rem", lineHeight: ["2rem", "2.4rem"], fontFamily: "var(--developer-page-font-family)" }}>
+            <Typography sx={{ fontSize: "1.4rem", lineHeight: ["2rem", "2.4rem"], fontFamily: "var(--font-developer)" }}>
               Marks carried over from Session 0 & 1:{" "}
               {session2Loading ? (
                 <Skeleton sx={{ borderRadius: "0.4rem", width: "3.2rem", height: "2rem", display: "inline-block" }}></Skeleton>
@@ -102,7 +102,7 @@ const TotalPoints = () => {
                 fontSize: ["4rem", "5.6rem"],
                 lineHeight: ["4.8rem", "8rem"],
                 fontWeight: 600,
-                fontFamily: "var(--developer-page-font-family)",
+                fontFamily: "var(--font-developer)",
               }}
             >
               {session2Loading ? (
@@ -112,9 +112,7 @@ const TotalPoints = () => {
               )}
             </Typography>
             <Stack direction="row" alignItems="center" spacing="4px">
-              <Typography sx={{ fontSize: "1.4rem", lineHeight: "2.4rem", fontFamily: "var(--developer-page-font-family)" }}>
-                How does this work
-              </Typography>
+              <Typography sx={{ fontSize: "1.4rem", lineHeight: "2.4rem", fontFamily: "var(--font-developer)" }}>How does this work</Typography>
               <QATooltip title="Providing liquidity in listed DEXs boosts your accrual rate. The more useful and volatile your liquidity pair, the higher the boost. Additional boosts will be introduced by Scroll’s upcoming LRTs soon.">
                 <QaSvg className="cursor-pointer"></QaSvg>
               </QATooltip>
@@ -127,9 +125,7 @@ const TotalPoints = () => {
       {!walletCurrentAddress && (
         <Stack direction="column" sx={{ gap: "1.6rem" }} justifyContent="space-between" alignItems="center">
           <Typography sx={{ fontSize: "1.8rem", lineHeight: "2.8rem", fontWeight: 600 }}>Your Marks</Typography>
-          <Typography
-            sx={{ fontSize: ["4rem", "5.6rem"], lineHeight: ["2rem", "2.8rem"], fontWeight: 600, fontFamily: "var(--developer-page-font-family)" }}
-          >
+          <Typography sx={{ fontSize: ["4rem", "5.6rem"], lineHeight: ["2rem", "2.8rem"], fontWeight: 600, fontFamily: "var(--font-developer)" }}>
             --
           </Typography>
           <Button color="primary" whiteButton onClick={connect}>

@@ -136,10 +136,7 @@ const MobileGasPriceViewer = props => {
           onClick={handleToggleGasPricePanel}
         >
           <GasPriveDotSvg></GasPriveDotSvg>
-          <Typography
-            component="span"
-            sx={{ color: "inherit", fontFamily: "var(--developer-page-font-family)", fontSize: "1.6rem", lineHeight: "2.4rem" }}
-          >
+          <Typography component="span" sx={{ color: "inherit", fontFamily: "var(--font-developer)", fontSize: "1.6rem", lineHeight: "2.4rem" }}>
             {displayedScrollGasPrice}
           </Typography>
           <Typography component="span" sx={{ color: "inherit", fontSize: "1.6rem", lineHeight: "2.4rem" }}>
@@ -169,7 +166,7 @@ const MobileGasPriceViewer = props => {
                 color: "inherit",
                 lineHeight: "inherit",
                 textAlign: "right",
-                fontFamily: "var(--developer-page-font-family)",
+                fontFamily: "var(--font-developer)",
               }}
             >
               {displayedScrollGasPrice}
@@ -182,7 +179,7 @@ const MobileGasPriceViewer = props => {
                 color: "inherit",
                 lineHeight: "inherit",
                 textAlign: "right",
-                fontFamily: "var(--developer-page-font-family)",
+                fontFamily: "var(--font-developer)",
               }}
             >
               {displayedEthereumGasPrice}

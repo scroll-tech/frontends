@@ -191,6 +191,14 @@ export const typographyOptions = {
   //   fontWeight: 700,
   //   textTransform: "capitalize",
   // },
+  title: {
+    fontFamily: "var(--font-title)",
+    letterSpacing: "-0.03em",
+    fontWeight: 500,
+  },
+  developer: {
+    fontFamily: "var(--font-developer)",
+  },
 
   H1: {
     fontSize: "6.4rem",

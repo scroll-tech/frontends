@@ -139,10 +139,8 @@ const MobileHeader = ({ currentMenu }) => {
       }}
     >
       <Stack sx={{ height: "6.4rem", px: "2rem", lineHeight: "3rem" }} direction="row" justifyContent="space-between" alignItems="center">
-        <Link href="/" className="flex">
-          <Box onClick={handleCloseMobileHeader}>
-            <Logo light={dark} />
-          </Box>
+        <Link href="/" className="flex" aria-label="Scroll Home" onClick={handleCloseMobileHeader}>
+          <Logo light={dark} />
         </Link>
         <Stack direction="row" spacing="1.6rem" alignItems="center">
           {showWalletConnector && <WalletToolkit dark={dark}></WalletToolkit>}

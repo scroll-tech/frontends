@@ -27,7 +27,7 @@ const Portal = () => {
           px: "0",
           margin: "0 auto",
           "& *": {
-            fontFamily: "var(--developer-page-font-family) !important",
+            fontFamily: "var(--font-developer) !important",
           },
         }}
       >

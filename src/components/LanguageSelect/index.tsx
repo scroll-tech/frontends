@@ -38,7 +38,7 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
   },
   listItemText: {
     fontSize: "1.6rem",
-    fontFamily: "var(--developer-page-font-family)",
+    fontFamily: "var(--font-developer)",
     cursor: "pointer",
     color: dark ? theme.palette.primary.contrastText : "#473835",
   },
@@ -75,7 +75,7 @@ const LanguageSelect = props => {
     <>
       <ButtonBase classes={{ root: classes.button }} sx={sx} onClick={handleClick}>
         <SvgIcon sx={{ fontSize: "1.6rem", mr: "0.8rem" }} component={GlobalSvg} inheritViewBox></SvgIcon>
-        <Typography sx={{ fontSize: "1.6rem", fontFamily: "var(--developer-page-font-family)", cursor: "pointer" }}>{currentLanguage}</Typography>
+        <Typography sx={{ fontSize: "1.6rem", fontFamily: "var(--font-developer)", cursor: "pointer" }}>{currentLanguage}</Typography>
       </ButtonBase>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose} TransitionComponent={Fade} classes={{ paper: classes.paper, list: classes.list }}>
         {BLOG_LANGUAGE_LIST.map(({ label, key }) => (
