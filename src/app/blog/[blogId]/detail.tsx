@@ -9,10 +9,9 @@ import rehypeRaw from "rehype-raw"
 import remarkGfm from "remark-gfm"
 import remarkMath from "remark-math"
 
-import { Box, Typography } from "@mui/material"
+import { Box } from "@mui/material"
 import { styled } from "@mui/system"
 
-import { fetchBlogDetailURL } from "@/apis/blog"
 import blogSource from "@/assets/blog/main.data.json"
 import LoadingPage from "@/components/LoadingPage"
 import { LANGUAGE_MAP } from "@/constants"
@@ -20,7 +19,8 @@ import useCheckViewport from "@/hooks/useCheckViewport"
 import useUserLanguage from "@/hooks/useUserLanguage"
 import { filterBlogsByLanguage } from "@/utils"
 
-import Articles from "./articles"
+import MoreBlogs from "./MoreBlogs"
+import { fetchBlogContent } from "./actions"
 import TOC from "./components/tableOfContents"
 
 const BlogContainer = styled(Box)(
@@ -61,36 +61,37 @@ const BlogDetail = props => {
   const blogsWithLang = useMemo(() => filterBlogsByLanguage(blogSource, language), [blogSource, language])
 
   useEffect(() => {
-    const regex = /([^_]*?)_lang_[^_]+/g
-    const blogIdMatch = blogId?.match(regex)
+    async function fetchCurrentBlog() {
+      const regex = /([^_]*?)_lang_[^_]+/g
+      const blogIdMatch = blogId?.match(regex)
 
-    const blogItemWithLang = blogSource.find(item => item.id === `${blogId}_lang_${language}`)
+      const blogItemWithLang = blogSource.find(item => item.id === `${blogId}_lang_${language}`)
 
-    if ((!blogIdMatch && language === "en") || (blogIdMatch && language !== "en") || (!blogIdMatch && language !== "en" && !blogItemWithLang)) {
-      let anchors = [...document.querySelectorAll("a")]
-      anchors.map(anchor => {
-        if (anchor.href.includes("/Content/")) {
-          anchor.setAttribute("target", "")
+      if ((!blogIdMatch && language === "en") || (blogIdMatch && language !== "en") || (!blogIdMatch && language !== "en" && !blogItemWithLang)) {
+        let anchors = [...document.querySelectorAll("a")]
+        anchors.map(anchor => {
+          if (anchor.href.includes("/Content/")) {
+            anchor.setAttribute("target", "")
+          }
+          return anchor
+        })
+        try {
+          setLoading(true)
+          const text = await fetchBlogContent(blogId)
+          setBlogContent(text)
+        } catch (_error) {
+          router.push("/404")
+        } finally {
+          setLoading(false)
         }
-        return anchor
-      })
-      try {
-        setLoading(true)
-        fetch(fetchBlogDetailURL(blogId))
-          .then(response => response.text())
-          .then(text => {
-            setLoading(false)
-            setBlogContent(text)
-          })
-      } catch (_error) {
-        router.push("/404")
+      } else if (blogIdMatch && language === "en") {
+        const nextBlogId = blogId.replace(regex, "$1")
+        router.push(`/blog/${nextBlogId}`)
+      } else if (blogItemWithLang) {
+        router.push(`/blog/${blogId}_lang_${language}`)
       }
-    } else if (blogIdMatch && language === "en") {
-      const nextBlogId = blogId.replace(regex, "$1")
-      router.push(`/blog/${nextBlogId}`)
-    } else if (blogItemWithLang) {
-      router.push(`/blog/${blogId}_lang_${language}`)
     }
+    fetchCurrentBlog()
   }, [blogId, language])
 
   useEffect(() => {
@@ -119,21 +120,8 @@ const BlogDetail = props => {
               className="markdown-body"
             />
           </BlogContainer>
-          {isPortrait ? (
-            <Box sx={{ paddingBottom: "10rem" }}>
-              <Typography
-                variant="h1"
-                sx={{
-                  textAlign: "center",
-                  mt: ["3rem", "5rem"],
-                  mb: ["2rem", "3rem"],
-                }}
-              >
-                {LANGUAGE_MAP[language].more_articles}
-              </Typography>
-              <Articles blogs={moreBlog} />
-            </Box>
-          ) : null}
+
+          {!!isPortrait && <MoreBlogs sx={{ pb: "10rem" }} blogs={moreBlog} title={LANGUAGE_MAP[language].more_articles}></MoreBlogs>}
         </Box>
       )}
     </Box>
