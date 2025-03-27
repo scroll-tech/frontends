@@ -16,7 +16,13 @@ const FounderClub = () => {
       <Protocols />
       <Container>
         <Founders />
-        <Button color="primary" href={FOUNDER_CLUB_URL} target="_blank" className="!w-[240px] md:!w-[250px] md:mx-auto">
+        <Button
+          color="primary"
+          href={FOUNDER_CLUB_URL}
+          target="_blank"
+          className="!w-[240px] md:!w-[250px] md:mx-auto"
+          gaEvent={{ event: "click_landing", label: "Join Telegram group" }}
+        >
           Join Telegram group
         </Button>
       </Container>
