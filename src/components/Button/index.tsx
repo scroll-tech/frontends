@@ -1,5 +1,6 @@
 "use client"
 
+import { sendGAEvent } from "@next/third-parties/google"
 import { motion, useCycle } from "motion/react"
 import { useMemo } from "react"
 import { makeStyles } from "tss-react/mui"
@@ -17,6 +18,7 @@ interface ScrollButtonProps extends Omit<ButtonProps, "color"> {
   disabled?: boolean
   whiteButton?: boolean
   download?: boolean
+  gaEvent?: { event: string; label: string }
 
   // compatibility
   target?: string
@@ -154,7 +156,7 @@ const maskMobile = {
   },
 }
 const Button = (props: ScrollButtonProps) => {
-  const { id, className, width, sx, color, loading, disabled, gloomy, children, whiteButton, ...restProps } = props
+  const { id, className, width, sx, color, loading, disabled, gloomy, children, whiteButton, gaEvent, onClick, ...restProps } = props
   const { classes, cx } = useStyles({
     color,
     width,
@@ -174,6 +176,16 @@ const Button = (props: ScrollButtonProps) => {
 
   const handleHover = () => {
     setIsHover()
+  }
+
+  const handleClick = e => {
+    if (gaEvent) {
+      const { event, ...props } = gaEvent
+      sendGAEvent("event", event, { ...props })
+    }
+    if (onClick) {
+      onClick(e)
+    }
   }
 
   return (
@@ -212,6 +224,7 @@ const Button = (props: ScrollButtonProps) => {
           ),
         }}
         disabled={innerDisabled || gloomy || loading}
+        onClick={handleClick}
         {...restProps}
       >
         {children} {loading && <CircularProgress sx={{ color: "inherit" }} size={isMobile ? 18 : 24} thickness={4}></CircularProgress>}

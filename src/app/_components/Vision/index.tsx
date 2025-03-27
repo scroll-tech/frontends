@@ -39,7 +39,12 @@ const Vision = () => {
             <VisionCard key={key} {...vision} />
           ))}
         </Box>
-        <Button color="primary" href={VISION_URL} className="!w-[240px] md:!w-[250px] justify-self-start md:justify-self-center">
+        <Button
+          color="primary"
+          href={VISION_URL}
+          className="!w-[240px] md:!w-[250px] justify-self-start md:justify-self-center"
+          gaEvent={{ event: "click_landing", label: "View vision details" }}
+        >
           View vision details
         </Button>
       </Container>

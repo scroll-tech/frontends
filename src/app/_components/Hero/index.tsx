@@ -34,11 +34,17 @@ const LandingHero = () => {
           Network for the Open Economy
         </Typography>
         <Stack direction={["column", "row"]} sx={{ gap: "16px" }}>
-          <Button href={DOC_URL} target="_blank" className="!w-[180px] sm:!w-[250px]" color="primary">
+          <Button
+            href={DOC_URL}
+            target="_blank"
+            className="!w-[180px] sm:!w-[250px]"
+            color="primary"
+            gaEvent={{ event: "click_landing", label: "Build now" }}
+          >
             Build now
           </Button>
 
-          <Button href={SESSIONS_URL} className="!w-[180px] sm:!w-[250px]">
+          <Button href={SESSIONS_URL} className="!w-[180px] sm:!w-[250px]" gaEvent={{ event: "click_landing", label: "Join Session 2" }}>
             Join Session 2
           </Button>
         </Stack>
