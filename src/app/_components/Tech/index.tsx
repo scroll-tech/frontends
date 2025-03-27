@@ -55,6 +55,7 @@ const Tech = () => {
           href={TECH_URL}
           target="_blank"
           className="!w-[24rem] md:!w-[25rem] justify-self-start md:justify-self-center col-span-1 md:col-span-2"
+          gaEvent={{ event: "click_landing", label: "View tech details" }}
         >
           View tech details
         </Button>

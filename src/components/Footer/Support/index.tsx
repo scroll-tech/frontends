@@ -27,7 +27,13 @@ const NeedSupport = () => {
             <Support className="w-[32px] sm:w-[36px] h-auto"></Support>
           </Stack>
           <Typography sx={{ typography: "title", fontSize: ["2rem", "2.4rem"], flex: 1 }}>Built a project and need more support?</Typography>
-          <Button href={GET_IN_TOUCH_URL} className="!w-[240px] md:!w-[250px]" whiteButton target="_blank">
+          <Button
+            href={GET_IN_TOUCH_URL}
+            className="!w-[240px] md:!w-[250px]"
+            whiteButton
+            target="_blank"
+            gaEvent={{ event: "click_landing", label: "Get in touch" }}
+          >
             Get in touch
           </Button>
         </Stack>
