@@ -61,6 +61,7 @@ const BlogDetail = props => {
   const blogsWithLang = useMemo(() => filterBlogsByLanguage(blogSource, language), [blogSource, language])
 
   useEffect(() => {
+    // TODO: no _lang_ in blogId
     async function fetchCurrentBlog() {
       const regex = /([^_]*?)_lang_[^_]+/g
       const blogIdMatch = blogId?.match(regex)
