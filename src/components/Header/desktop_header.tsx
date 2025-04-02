@@ -61,7 +61,7 @@ const DesktopHeader = ({ currentMenu }) => {
             onMouseEnter={e => handleMouseEnter(e, item.key)}
             onMouseLeave={handleMouseLeave}
           >
-            {item.label}
+            <span className="navbar-label">{item.label}</span>
             {item.key === hoveringNavbarItemKey && (
               <Popper
                 open={true}
