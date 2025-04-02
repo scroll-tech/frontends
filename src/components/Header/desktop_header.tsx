@@ -3,7 +3,6 @@ import React, { useState } from "react"
 
 import { Box, Container, Fade, Paper, Popper, Stack } from "@mui/material"
 
-import LanguageSelect from "@/components/LanguageSelect"
 import ScrollLink from "@/components/Link"
 import Logo from "@/components/ScrollLogo"
 import WalletToolkit from "@/components/WalletToolkit"
@@ -170,7 +169,6 @@ const DesktopHeader = ({ currentMenu }) => {
           <Stack direction="row" spacing={["0.8rem"]} sx={{ justifySelf: "flex-end" }} alignItems="center">
             {!isSepolia && <GasPriceViewer></GasPriceViewer>}
             {showWalletConnector && <WalletToolkit dark={dark}></WalletToolkit>}
-            {showLanguageSelect && <LanguageSelect></LanguageSelect>}
           </Stack>
         </Box>
       </Container>
