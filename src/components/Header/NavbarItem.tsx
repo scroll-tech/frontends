@@ -20,14 +20,17 @@ const NavbarItem = props => {
         display: "flex",
         alignItems: "center",
         "&:hover": {
-          // WebkitTextStroke: "0.2px var(--mui-palette-primary-main)",
-          fontWeight: 500,
           color: "primary.main",
         },
+        "&:hover .navbar-label": {
+          WebkitTextStroke: "0.4px var(--mui-palette-primary-main)",
+        },
         "&.active": {
-          // WebkitTextStroke: "0.4px var(--mui-palette-primary-main)",
           fontWeight: 600,
           color: "primary.main",
+        },
+        "&.active .navbar-label": {
+          WebkitTextStroke: "unset",
         },
       }}
       {...restProps}

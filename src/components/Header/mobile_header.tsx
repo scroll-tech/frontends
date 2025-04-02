@@ -4,7 +4,6 @@ import { Fragment, useEffect, useLayoutEffect, useState } from "react"
 import { Box, Collapse, List, Stack } from "@mui/material"
 import { styled } from "@mui/system"
 
-import LanguageSelect from "@/components/LanguageSelect"
 import Link from "@/components/Link"
 import WalletToolkit from "@/components/WalletToolkit"
 import useShowLanguageSelect from "@/hooks/useShowLanguageSelect"
@@ -144,7 +143,6 @@ const MobileHeader = ({ currentMenu }) => {
         </Link>
         <Stack direction="row" spacing="1.6rem" alignItems="center">
           {showWalletConnector && <WalletToolkit dark={dark}></WalletToolkit>}
-          {showLanguageSelect && <LanguageSelect></LanguageSelect>}
 
           <Box
             sx={{

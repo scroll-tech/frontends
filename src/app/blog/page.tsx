@@ -13,7 +13,6 @@ import ArticleCard from "@/components/ArticleCard"
 import SectionWrapper from "@/components/SectionWrapper"
 import { LANGUAGE_MAP, getBlogCategoryList, getBlogSortList } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
-import useUserLanguage from "@/hooks/useUserLanguage"
 import { filterBlogsByLanguage } from "@/utils"
 
 const BlogContainer = styled(Box)(({ theme }) => ({
@@ -165,7 +164,7 @@ const BlogList = styled("ul")(({ theme }) => ({
 const Blog = () => {
   const searchParams = useSearchParams()
   const { isDesktop } = useCheckViewport()
-  const [language] = useUserLanguage()
+  const language = "en"
   const BLOG_CATEGORY_LIST = useMemo(() => getBlogCategoryList(language), [language])
   const BLOG_SORT_LIST = useMemo(() => getBlogSortList(language), [language])
   const BLOG_COPY = useMemo(() => LANGUAGE_MAP[language], [language])
