@@ -149,7 +149,6 @@ const OTHERS_DATA: ProtocolData = {
       project: "Beefy",
       logoURL: "https://scroll-eco-list.netlify.app/logos/Beefy.png",
       href: "https://app.beefy.com/",
-      upcoming: true,
     },
     // {
     //   name: "Euler Finance",
