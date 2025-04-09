@@ -24,7 +24,6 @@ const GetSCRDialog = props => {
           "& .MuiDialog-paper": {
             width: "54.4rem",
             maxWidth: "100%",
-            padding: "4rem 3.2rem",
             borderRadius: "2rem",
           },
         },
@@ -33,11 +32,10 @@ const GetSCRDialog = props => {
             "& .MuiDialog-paper": {
               margin: 0,
               borderRadius: 0,
-              height: "calc(var(--vh, 1vh) * 100)",
+              height: "100dvh",
               maxHeight: "unset",
               minWidth: "unset",
               width: "100%",
-              padding: "1.6rem 2rem 2rem",
             },
           },
         }),
@@ -48,18 +46,18 @@ const GetSCRDialog = props => {
       <DialogTitle
         sx={{
           position: "relative",
-          height: ["3.2rem", "3.6rem"],
+          height: ["4.8rem", "7.6rem"],
           fontSize: ["2rem", "2.4rem"],
           lineHeight: "3.6rem",
           fontWeight: 600,
-          p: 0,
+          p: ["1.6rem 2rem 0", "4rem 3.2rem 0"],
           mb: ["0.8rem", "2.4rem"],
           textAlign: "center",
         }}
       >
         <span>Get SCR</span>
         <IconButton
-          sx={{ position: "absolute", right: "-0.8rem", top: ["-0.1rem", "-1.6rem"], "&:hover": { backgroundColor: "unset" } }}
+          sx={{ position: "absolute", right: ["0.8rem", "1.6rem"], top: ["0.8rem", "1.6rem"], "&:hover": { backgroundColor: "unset" } }}
           onClick={onClose}
         >
           <SvgIcon sx={{ fontSize: "1.8rem" }} component={CloseSvg} inheritViewBox></SvgIcon>
@@ -68,8 +66,9 @@ const GetSCRDialog = props => {
 
       <DialogContent
         sx={{
-          p: 0,
           minHeight: "50rem",
+          p: ["0 2rem 2rem", "0 3.2rem 3.2rem"],
+
           "&::-webkit-scrollbar-thumb": {
             backgroundColor: "rgba(209, 205, 204, 0.6)",
             borderRadius: "8px",
