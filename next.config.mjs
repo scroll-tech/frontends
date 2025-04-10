@@ -82,6 +82,17 @@ const nextConfig = {
 
       { source: "/sticker-vote", destination: "/sticker-winners", permanent: true },
       // { source: "/airdrop-faq", destination: "https://scroll-faqs.gitbook.io/faqs", permanent: false},
+
+      {
+        source: '/x',
+        destination: '/?utm_source=x&utm_medium=social',
+        permanent: false,
+      },
+      {
+        source: '/l',
+        destination: '/?utm_source=linkedin&utm_medium=social',
+        permanent: false,
+      },
     ]
   },
   async rewrites() {
