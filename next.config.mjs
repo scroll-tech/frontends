@@ -85,12 +85,12 @@ const nextConfig = {
 
       {
         source: '/x',
-        destination: 'https://scroll.io?utm_source=x&utm_medium=social',
+        destination: '/?utm_source=x&utm_medium=social',
         permanent: false,
       },
       {
         source: '/l',
-        destination: 'https://scroll.io?utm_source=linkedin&utm_medium=social',
+        destination: '/?utm_source=linkedin&utm_medium=social',
         permanent: false,
       },
     ]
