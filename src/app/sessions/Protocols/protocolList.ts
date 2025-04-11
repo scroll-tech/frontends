@@ -173,7 +173,6 @@ const OTHERS_DATA: ProtocolData = {
       project: "Rho Markets",
       logoURL: "https://scroll-eco-list.netlify.app/logos/Rho%20Markets.png",
       href: "https://www.rhomarkets.xyz/",
-      upcoming: true,
     },
     // {
     //   name: "Tranchess",
