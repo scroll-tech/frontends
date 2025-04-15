@@ -1,3 +1,4 @@
+import { BRIDGE_URL, LEVEL_UP_URL, SCROLL_OPEN_URL, SESSIONS_URL } from "@/constants/link"
 import { isSepolia } from "@/utils"
 
 interface MenuItem {
@@ -6,6 +7,7 @@ interface MenuItem {
   key: string
   href: string
   reload?: boolean
+  isNew?: boolean
 }
 
 interface Navigation {
@@ -13,7 +15,7 @@ interface Navigation {
   key: string
 
   children?: MenuItem[]
-  new?: boolean
+  isNew?: boolean
 
   href?: string
   reload?: boolean
@@ -34,13 +36,13 @@ const sepoliaNavigations: Navigation[] = [
         rootKey: "build",
         label: "Scroll Open",
         key: "scroll-open",
-        href: "https://open.scroll.io",
+        href: SCROLL_OPEN_URL,
       },
       {
         rootKey: "build",
         label: "Level Up",
         key: "level-up",
-        href: "https://www.levelup.xyz/",
+        href: LEVEL_UP_URL,
       },
       {
         rootKey: "build",
@@ -78,13 +80,13 @@ const mainnetNavigations: Navigation[] = [
         rootKey: "build",
         label: "Scroll Open",
         key: "scroll-open",
-        href: "https://open.scroll.io",
+        href: SCROLL_OPEN_URL,
       },
       {
         rootKey: "build",
         label: "Level Up",
         key: "level-up",
-        href: "https://www.levelup.xyz/",
+        href: LEVEL_UP_URL,
       },
       {
         rootKey: "build",
@@ -92,61 +94,68 @@ const mainnetNavigations: Navigation[] = [
         key: "block-explorer",
         href: process.env.NEXT_PUBLIC_EXTERNAL_EXPLORER_URI_L2,
       },
-    ],
-  },
-  {
-    label: "Explore",
-    key: "explore",
-    children: [
-      {
-        rootKey: "explore",
-        label: "Projects",
-        key: "projects",
-        href: "/ecosystem",
-      },
-      {
-        rootKey: "explore",
-        label: "Bridge",
-        key: "bridge",
-        href: "/bridge",
-      },
-      {
-        rootKey: "explore",
-        label: "SCR",
-        key: "scr",
-        href: "/SCR-sSCR",
-      },
-    ],
-  },
-  {
-    label: "Participate",
-    key: "participate",
-    children: [
-      {
-        rootKey: "participate",
-        label: "Session 2",
-        key: "session-2",
-        href: "/sessions",
-        reload: true,
-      },
-      {
-        rootKey: "participate",
-        label: "Governance",
-        key: "governance",
-        href: "https://gov.scroll.io/info",
-      },
-      {
-        rootKey: "participate",
-        label: "Community",
-        key: "community",
-        href: "/community",
-      },
       {
         rootKey: "participate",
         label: "Bug Bounty",
         key: "bug-bounty",
         href: "https://immunefi.com/bug-bounty/scroll/information/",
       },
+    ],
+  },
+  {
+    label: "Use",
+    key: "use",
+    children: [
+      {
+        rootKey: "use",
+        label: "User Portal",
+        key: "portal",
+        href: process.env.NEXT_PUBLIC_USER_PORTAL_BASE_URL,
+        isNew: true,
+      },
+      {
+        rootKey: "participate",
+        label: "Session 2",
+        key: "session-2",
+        href: SESSIONS_URL,
+        reload: true,
+      },
+      {
+        rootKey: "use",
+        label: "Projects",
+        key: "projects",
+        href: "/ecosystem",
+      },
+      {
+        rootKey: "use",
+        label: "Bridge",
+        key: "bridge",
+        href: BRIDGE_URL,
+      },
+      {
+        rootKey: "use",
+        label: "SCR & sSCR",
+        key: "scr",
+        href: "/SCR-sSCR",
+      },
+      {
+        rootKey: "use",
+        label: "scrETH",
+        key: "scrETH",
+        href: "/scrETH",
+      },
+      {
+        rootKey: "use",
+        label: "Governance",
+        key: "governance",
+        href: "https://gov.scroll.io/info",
+      },
+      // {
+      //   rootKey: "use",
+      //   label: "Community",
+      //   key: "community",
+      //   href: "/community",
+      // },
     ],
   },
   {

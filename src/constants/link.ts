@@ -2,9 +2,11 @@ export const DOC_URL = "https://docs.scroll.io/en/home/"
 export const SCROLL_OPEN_URL = "https://open.scroll.io"
 export const LEVEL_UP_URL = "https://www.levelup.xyz/"
 
-export const BRIDGE_URL = "/bridge"
+const USER_PORTAL_BASE_URL = process.env.NEXT_PUBLIC_USER_PORTAL_BASE_URL
+
+export const BRIDGE_URL = `${USER_PORTAL_BASE_URL}/bridge`
 export const ECOSYSTEM_URL = "/ecosystem"
-export const SESSIONS_URL = "/sessions"
+export const SESSIONS_URL = `${USER_PORTAL_BASE_URL}/sessions`
 
 export const VISION_URL = "/blog/vision-and-values"
 
