@@ -7,10 +7,10 @@ import ScrollLink from "@/components/Link"
 import Logo from "@/components/ScrollLogo"
 import WalletToolkit from "@/components/WalletToolkit"
 import useCheckViewport from "@/hooks/useCheckViewport"
-import useShowLanguageSelect from "@/hooks/useShowLanguageSelect"
 import useShowWalletConnector from "@/hooks/useShowWalletToolkit"
 import { isSepolia } from "@/utils"
 
+import AskAI from "./AskAI"
 import GasPriceViewer from "./GasPriceViewer"
 import MenuItem from "./MenuItem"
 import NavbarItem from "./NavbarItem"
@@ -27,7 +27,6 @@ const DesktopHeader = ({ currentMenu }) => {
   const [hoveringNavbarItemKey, setHoveringNavbarItemKey] = useState("")
 
   const showWalletConnector = useShowWalletConnector()
-  const showLanguageSelect = useShowLanguageSelect()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
@@ -170,6 +169,7 @@ const DesktopHeader = ({ currentMenu }) => {
           <Stack direction="row" spacing={["0.8rem"]} sx={{ justifySelf: "flex-end" }} alignItems="center">
             {!isSepolia && <GasPriceViewer></GasPriceViewer>}
             {showWalletConnector && <WalletToolkit dark={dark}></WalletToolkit>}
+            {!isSepolia && <AskAI></AskAI>}
           </Stack>
         </Box>
       </Container>

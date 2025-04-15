@@ -5,6 +5,8 @@
 
 @config "../../tailwind.config.ts";
 
+@import url(../assets/css/assistant-message.css);
+
 @theme {
   --breakpoint-sm: 600px;
   --breakpoint-md: 900px;
@@ -47,8 +49,15 @@ body {
   background-color: var(--theme-bg);
 }
 
-body.mobile-top-nav-open {
+body.disable-body-scroll {
   overflow: hidden !important;
+  padding-right: 15px !important;
+}
+
+@media screen and (max-width: 900px) {
+  body.disable-body-scroll {
+    padding-right: 0 !important;
+  }
 }
 
 @font-face {

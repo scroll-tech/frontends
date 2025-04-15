@@ -2,13 +2,14 @@ import { GoogleAnalytics } from "@next/third-parties/google"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import clsx from "clsx"
 import { Metadata } from "next"
-import { Roboto } from "next/font/google"
+import { Inter, Roboto } from "next/font/google"
 import localFont from "next/font/local"
 import React, { Suspense } from "react"
 
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter"
 import InitColorSchemeScript from "@mui/material/InitColorSchemeScript"
 
+import AIModal from "@/components/AIModal"
 import GlobalComponents from "@/components/GlobalComponents"
 import ScrollToTop from "@/components/ScrollToTop"
 import WebVitals from "@/components/WebVitals"
@@ -25,6 +26,13 @@ export const metadata: Metadata = ROOT_METADATA
 // same as scroll documnet
 const robotoFont = Roboto({
   variable: "--font-developer",
+  weight: ["400", "500", "700"],
+  display: "swap",
+  subsets: ["latin"],
+})
+
+const interFont = Inter({
+  variable: "--font-inter",
   weight: ["400", "500", "700"],
   display: "swap",
   subsets: ["latin"],
@@ -55,7 +63,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="dns-prefetch" href={process.env.NEXT_PUBLIC_API_BASE_URI} crossOrigin="anonymous" />
         {/* <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap" rel="stylesheet" /> */}
       </head>
-      <body className={clsx(titleFont.variable, robotoFont.variable)}>
+      <body className={clsx(titleFont.variable, robotoFont.variable, interFont.variable)}>
         <InitColorSchemeScript attribute="class"></InitColorSchemeScript>
         <AppRouterCacheProvider options={{ key: "css" }}>
           <ScrollThemeProvider>
@@ -64,6 +72,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <BridgeContextProvider>
                   {children}
                   <GlobalComponents></GlobalComponents>
+                  <AIModal></AIModal>
                 </BridgeContextProvider>
               </RainbowProvider>
             </VersionChecker>
