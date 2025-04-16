@@ -1,3 +1,4 @@
+import HoneyPop from "@/assets/images/sessions/HoneyPop.png"
 import QuillFinanceSvg from "@/assets/svgs/sessions/QuillFinance.svg?url"
 
 export interface ProtocolMarksMap {
@@ -31,6 +32,12 @@ const DECENTRALIZED_EXCHANGES_DATA: ProtocolData = {
       project: "Ambient",
       logoURL: "https://scroll-eco-list.netlify.app/logos/Ambient%20Finance.png",
       href: "https://ambient.finance/",
+    },
+    {
+      name: "HoneyPop",
+      project: "Honeypop",
+      logoURL: HoneyPop.src,
+      href: "https://honeypop.app/",
     },
     {
       name: "iZUMi",
