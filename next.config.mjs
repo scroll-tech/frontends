@@ -85,14 +85,30 @@ const nextConfig = {
 
       {
         source: '/x',
-        destination: '/?utm_source=x&utm_medium=social',
+        destination: '/?utm_source=x&utm_medium=social&utm_campaign=Sandy',
         permanent: false,
       },
       {
         source: '/l',
-        destination: '/?utm_source=linkedin&utm_medium=social',
+        destination: '/?utm_source=linkedin&utm_medium=social&utm_campaign=Sandy',
         permanent: false,
       },
+      {
+        source: '/x_Raza',
+        destination: '/?utm_source=x&utm_medium=social&utm_campaign=Raza',
+        permanent: false,
+      },
+      {
+        source: '/l_Raza',
+        destination: '/?utm_source=linkedin&utm_medium=social&utm_campaign=Raza',
+        permanent: false,
+      },
+      {
+        source: '/x_Emily',
+        destination: '/?utm_source=x&utm_medium=social&utm_campaign=Emily',
+        permanent: false,
+      },
+     
     ]
   },
   async rewrites() {
