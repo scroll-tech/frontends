@@ -5,7 +5,7 @@
 
 @config "../../tailwind.config.ts";
 
-@import url(../assets/css/assistant-message.css);
+@import "../assets/css/assistant-message.css";
 
 @theme {
   --breakpoint-sm: 600px;
