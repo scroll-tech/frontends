@@ -35,10 +35,9 @@ const DECENTRALIZED_EXCHANGES_DATA: ProtocolData = {
     },
     {
       name: "HoneyPop",
-      project: "HoneyPop",
+      project: "Honeypop",
       logoURL: HoneyPop.src,
-      href: "https://www.honeypop.xyz/",
-      upcoming: true,
+      href: "https://honeypop.app/",
     },
     {
       name: "iZUMi",
