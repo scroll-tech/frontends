@@ -1,6 +1,5 @@
 "use client"
 
-import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { AnimatePresence, motion } from "motion/react"
 import { nanoid } from "nanoid"
 import Image from "next/image"
@@ -20,6 +19,14 @@ import { chatWithAI } from "./actions"
 
 const MotionCard = motion(Card)
 
+interface Message {
+  id: string
+  type: "input_text" | "output_text" | "output_text_error"
+  text: string
+}
+
+type LoadingStatus = "none" | "fetching" | "streaming"
+
 const AIModal = () => {
   const { aiModalVisible, changeAIModalVisible } = useGlobalStore()
 
@@ -27,60 +34,30 @@ const AIModal = () => {
 
   const [searchText, setSearchText] = useState("")
 
+  const [messages, setMessages] = useState<Message[]>([])
+
   const [responseId, setResponseId] = useState<string>()
+
+  const [loadingStatus, setLoadingStatus] = useState<LoadingStatus>("none")
 
   useEffect(() => {
     if (aiModalVisible) {
-      queryClient.setQueryData(["messages"], [])
       window.document.body.classList.add("disable-body-scroll")
     } else {
       setResponseId(undefined)
       setSearchText("")
-      queryClient.removeQueries({ queryKey: ["messages"] })
+      setMessages([])
       window.document.body.classList.remove("disable-body-scroll")
     }
   }, [aiModalVisible])
-
-  const queryClient = useQueryClient()
-
-  const messages = queryClient.getQueryData(["messages"]) as any[]
-
-  const { mutateAsync: sendMessageAsync, isPending } = useMutation({
-    mutationFn: chatWithAI,
-    onError: error => {
-      queryClient.setQueryData(["messages"], (preMessages: any[]) => {
-        return preMessages.concat({
-          id: nanoid(),
-          type: "output_text_error",
-          text: "Something went wrong, please try again.",
-        })
-      })
-    },
-  })
-
-  // const {
-  //   data: messages,
-  //   isFetching,
-  //   refetch: refetchMessages,
-  // } = useQuery({
-  //   queryKey: ["messages"],
-  //   queryFn: async () => {
-  //     const response = await scrollRequest(`${AI_CHAT_URL}/${responseId}`)
-  //     return response
-  //   },
-  //   enabled: !!responseId,
-  //   initialData: [],
-  // })
-
-  // console.log(messages, "messages")
 
   const handleChangeSearchText = e => {
     setSearchText(e.target.value)
   }
 
   const handleSendMessage = async userMessage => {
-    queryClient.setQueryData(["messages"], (preMessages: any[]) => {
-      return preMessages.concat({
+    setMessages(preValue => {
+      return preValue.concat({
         id: nanoid(),
         type: "input_text",
         text: userMessage,
@@ -88,20 +65,78 @@ const AIModal = () => {
     })
     setSearchText("")
 
-    const response = await sendMessageAsync({
+    setLoadingStatus("fetching")
+    const stream = await chatWithAI({
       message: userMessage,
       prevId: responseId,
     })
 
-    // const msgResponse = response.output.find(item => item.type === "message")
-    queryClient.setQueryData(["messages"], (preMessages: any[]) => {
-      return preMessages.concat({
-        id: response.msgId,
-        type: "output_text",
-        text: response.message,
+    const reader = stream.getReader()
+    const decoder = new TextDecoder("utf-8")
+
+    let currentResponseId = nanoid()
+    try {
+      while (true) {
+        const { done, value } = await reader.read()
+
+        if (done) {
+          break
+        }
+        if (value) {
+          setLoadingStatus("streaming")
+          decodeValue(value, decoder, currentResponseId)
+        }
+      }
+    } catch (error) {
+      setMessages(preValue => {
+        return preValue.concat({
+          id: nanoid(),
+          type: "output_text_error",
+          text: error.message,
+        })
       })
-    })
-    setResponseId(response.id)
+      await reader.cancel()
+    } finally {
+      setLoadingStatus("none")
+      reader.releaseLock()
+    }
+  }
+
+  const decodeValue = async (value, decoder, currentResponseId) => {
+    const chunk = decoder.decode(value, { stream: true })
+
+    const lines = chunk.split("\n").filter(line => line.trim())
+
+    for (const line of lines) {
+      const event = JSON.parse(line)
+
+      if (event.type === "response.created") {
+        currentResponseId = event.response.id
+        setResponseId(currentResponseId)
+
+        setMessages(preValue => {
+          return preValue.concat({
+            id: currentResponseId,
+            type: "output_text",
+            text: "",
+          })
+        })
+      } else if (event.type === "response.failed") {
+        throw new Error("Failed to generate AI response, please try again.")
+      } else if (event.type === "response.output_text.delta") {
+        setMessages(preValue => {
+          const lastMessage = preValue[preValue.length - 1]
+          const newMessage = {
+            id: lastMessage.id,
+            type: "output_text",
+            text: lastMessage.text + event.delta,
+          } as Message
+          return [...preValue.slice(0, -1), newMessage]
+        })
+      } else if (event.type === "error") {
+        throw new Error("Connection error, please try again.")
+      }
+    }
   }
 
   return (
@@ -156,12 +191,13 @@ const AIModal = () => {
             </IconButton>
           </Stack>
           {messages?.length ? (
-            <MessagePanel data={messages} loading={isPending}></MessagePanel>
+            <MessagePanel data={messages} loading={loadingStatus === "fetching"}></MessagePanel>
           ) : (
             <InitialPanel onChat={handleSendMessage}></InitialPanel>
           )}
+          {/* {!!lastMessage && <AssistantMessage>{lastMessage}</AssistantMessage>} */}
           <Box sx={{ p: "0 1.6rem 2.4rem" }}>
-            <AIInput value={searchText} disabled={isPending} onChange={handleChangeSearchText} onChat={handleSendMessage}></AIInput>
+            <AIInput value={searchText} disabled={loadingStatus !== "none"} onChange={handleChangeSearchText} onChat={handleSendMessage}></AIInput>
           </Box>
         </MotionCard>
       ) : null}
