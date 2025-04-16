@@ -1,3 +1,4 @@
+import clsx from "clsx"
 import { useEffect, useRef } from "react"
 
 import { Box } from "@mui/material"
@@ -29,7 +30,7 @@ const MessagePanel = props => {
           </Box>
         ))}
       </Box>
-      {loading && <SpinSvg className="mb-[1.6rem]" />}
+      <SpinSvg className={clsx("", loading ? "visible" : "invisible")} />
       <div ref={bottomRef}></div>
     </Box>
   )

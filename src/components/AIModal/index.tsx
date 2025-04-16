@@ -47,6 +47,7 @@ const AIModal = () => {
       setResponseId(undefined)
       setSearchText("")
       setMessages([])
+      setLoadingStatus("none")
       window.document.body.classList.remove("disable-body-scroll")
     }
   }, [aiModalVisible])
@@ -83,7 +84,6 @@ const AIModal = () => {
           break
         }
         if (value) {
-          setLoadingStatus("streaming")
           decodeValue(value, decoder, currentResponseId)
         }
       }
@@ -124,6 +124,7 @@ const AIModal = () => {
       } else if (event.type === "response.failed") {
         throw new Error("Failed to generate AI response, please try again.")
       } else if (event.type === "response.output_text.delta") {
+        setLoadingStatus("streaming")
         setMessages(preValue => {
           const lastMessage = preValue[preValue.length - 1]
           const newMessage = {
@@ -195,7 +196,6 @@ const AIModal = () => {
           ) : (
             <InitialPanel onChat={handleSendMessage}></InitialPanel>
           )}
-          {/* {!!lastMessage && <AssistantMessage>{lastMessage}</AssistantMessage>} */}
           <Box sx={{ p: "0 1.6rem 2.4rem" }}>
             <AIInput value={searchText} disabled={loadingStatus !== "none"} onChange={handleChangeSearchText} onChat={handleSendMessage}></AIInput>
           </Box>

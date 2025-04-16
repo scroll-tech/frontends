@@ -14,7 +14,6 @@ type InputMessage = {
 }
 
 export const chatWithAI = async ({ message, prevId }: { message: string; prevId?: string }) => {
-  console.log(prevId, "prevId")
   const input = [...(prevId ? [] : [{ role: "developer", content: AI_PROMPT }]), { role: "user", content: message }]
 
   const response = await openai.responses.create({
