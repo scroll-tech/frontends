@@ -12,7 +12,7 @@ export type BinanceWalletOptions = DefaultWalletOptions
 export const BinanceWallet = ({ projectId, walletConnectParameters }: BinanceWalletOptions): Wallet => ({
   id: "binance",
   name: "Binance Wallet",
-  iconUrl: async () => (await import("./binanceWallet.svg")).default,
+  iconUrl: "/imgs/logo/binance.svg",
   iconBackground: "#000000",
   downloadUrls: {
     android: "https://play.google.com/store/apps/details?id=com.binance.dev",
