@@ -146,7 +146,7 @@ const MobileHeader = ({ currentMenu }) => {
         </Link>
         <Stack direction="row" spacing="1.6rem" alignItems="center">
           {showWalletConnector && <WalletToolkit dark={dark}></WalletToolkit>}
-          {!isSepolia && <AskAI isMobile></AskAI>}
+
           <Box
             sx={{
               display: "inline-block",
@@ -174,12 +174,14 @@ const MobileHeader = ({ currentMenu }) => {
           sx={{
             flex: 1,
             backgroundColor: dark ? "themeBackground.dark" : "themeBackground.light",
+            paddingBottom: "4.8rem",
             overflowY: "auto",
           }}
         >
           <Box sx={{ margin: "-0.8rem 2rem 0" }}>
             {renderList()}
             {!isSepolia && <MobileGasPriceViewer dark={dark}></MobileGasPriceViewer>}
+            {!isSepolia && <AskAI isMobile></AskAI>}
           </Box>
         </Box>
       )}

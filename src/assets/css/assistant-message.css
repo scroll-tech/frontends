@@ -29,7 +29,6 @@
   font-weight: 700;
 }
 .assistant-message > ol > li p {
-  display: inline-block;
   margin-bottom: 0;
 }
 
@@ -45,7 +44,8 @@
 
 .assistant-message blockquote:not(:empty) {
   border-left: 2px solid #9b9b9b;
-  background-color: #1010100d;
+  font-style: italic;
+  font-weight: 700;
   padding: 8px 8px 8px 16px;
   margin-bottom: 1.6rem;
 }
@@ -78,6 +78,7 @@
   color: #ff684b;
   font-weight: 500;
   text-decoration: underline;
+  text-underline-position: from-font;
 }
 
 .assistant-message img {

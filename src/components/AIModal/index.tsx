@@ -78,18 +78,18 @@ const AIModal = () => {
     setSearchText(e.target.value)
   }
 
-  const handleSendMessage = async () => {
+  const handleSendMessage = async userMessage => {
     queryClient.setQueryData(["messages"], (preMessages: any[]) => {
       return preMessages.concat({
         id: nanoid(),
         type: "input_text",
-        text: searchText.trim(),
+        text: userMessage,
       })
     })
     setSearchText("")
 
     const response = await sendMessageAsync({
-      message: searchText.trim(),
+      message: userMessage,
       prevId: responseId,
     })
 
@@ -115,7 +115,7 @@ const AIModal = () => {
             top: [0, "7.5rem"],
 
             width: ["100%", "46.8rem"],
-            height: ["100%", "66.8rem"],
+            height: ["100%", "calc(100svh - 7.5rem - 10rem)"],
             borderRadius: [0, "1.6rem"],
 
             display: "flex",
@@ -155,7 +155,11 @@ const AIModal = () => {
               <CloseSvg></CloseSvg>
             </IconButton>
           </Stack>
-          {messages?.length ? <MessagePanel data={messages} loading={isPending}></MessagePanel> : <InitialPanel></InitialPanel>}
+          {messages?.length ? (
+            <MessagePanel data={messages} loading={isPending}></MessagePanel>
+          ) : (
+            <InitialPanel onChat={handleSendMessage}></InitialPanel>
+          )}
           <Box sx={{ p: "0 1.6rem 2.4rem" }}>
             <AIInput value={searchText} disabled={isPending} onChange={handleChangeSearchText} onChat={handleSendMessage}></AIInput>
           </Box>

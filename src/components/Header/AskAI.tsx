@@ -25,11 +25,11 @@ const AskAI = props => {
         p: "0.8rem 1.6rem",
         bgcolor: "background.default",
         whiteSpace: "nowrap",
-        borderRadius: "0.8rem",
+        borderRadius: isMobile ? "0.5rem" : "0.8rem",
       }}
       onClick={handleToggleAIModal}
     >
-      {isMobile ? "Ask AI" : "Ask Scroll AI"}
+      Ask Scroll AI
     </ButtonBase>
   )
 }

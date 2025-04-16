@@ -1,23 +1,35 @@
+import { sampleSize } from "lodash"
 import Image from "next/image"
+import { useEffect, useState } from "react"
 
 import { Stack, Typography } from "@mui/material"
 
 import ScrollyCool from "@/assets/images/common/scrolly-cool.png"
 import EnterSvg from "@/assets/svgs/header/enter.svg"
+import { AI_QUESTION_LIST } from "@/constants"
+import useGlobalStore from "@/stores/globalStore"
 
-const LIST = [
-  "this could be a general question",
-  "this could be a very long long long long long",
-  "this could be a very long long long long long long long long long long long long long question",
-]
+const InitialPanel = props => {
+  const { onChat } = props
+  const [initialQuestionList, setInitialQuestionList] = useState<string[]>([])
+  const { aiModalVisible } = useGlobalStore()
 
-const InitialPanel = () => {
+  useEffect(() => {
+    if (aiModalVisible) {
+      setInitialQuestionList(sampleSize(AI_QUESTION_LIST, 5))
+    }
+  }, [aiModalVisible])
+
   return (
-    <Stack direction="column" sx={{ alignItems: "center", p: "0 2.4rem", flex: 1, overflowY: "auto" }}>
+    <Stack
+      direction="column"
+      sx={{ alignItems: "center", p: "0 2.4rem", flex: 1, overflowY: "auto", scrollbarColor: "#ececec transparent", scrollbarWidth: "thin" }}
+    >
       <Image src={ScrollyCool} alt="Scrolly" className="w-[72px] h-[72px]"></Image>
       <Typography sx={{ fontSize: "2rem", fontWeight: 500, lineHeight: "2.4rem", my: "3.2rem" }}>Welcome, Scroll AI is here to help!</Typography>
-      {LIST.map((item, index) => (
+      {initialQuestionList.map((item, index) => (
         <Stack
+          component="button"
           key={index}
           direction="row"
           sx={{
@@ -28,10 +40,12 @@ const InitialPanel = () => {
             bgcolor: "#1010100D",
             borderRadius: "4.4rem",
             mb: "1.6rem",
+            cursor: "pointer",
           }}
+          onClick={() => onChat(item)}
         >
           <EnterSvg></EnterSvg>
-          <Typography sx={{ fontSize: "1.6rem", lineHeight: "2.4rem", flex: 1 }}>{item}</Typography>
+          <Typography sx={{ fontSize: "1.6rem", lineHeight: "2.4rem", flex: 1, cursor: "inherit", textAlign: "left" }}>{item}</Typography>
         </Stack>
       ))}
     </Stack>

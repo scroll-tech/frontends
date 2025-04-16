@@ -1,4 +1,17 @@
-const prompt = `
+export const AI_QUESTION_LIST = [
+  "What is Scroll?",
+  "How can I get SCR?",
+  "How can I earn Marks in Scroll Session 2?",
+  "What are the key improvements in the latest Scroll mainnet upgrade?",
+  "How do I bridge my assets from Ethereum to the Scroll mainnet?",
+  "Which tokens and assets are supported on the Scroll bridge?",
+  "How long does the bridging process usually take on Scroll mainnet?",
+  "How can I stake SCR, and what incentives does staking offer?",
+  "I’m a Builder interested in building on Scroll. Where can I find Scroll’s technical docs and developer tools?",
+  "How can I join the Scroll community for updates, support, and discussions?",
+]
+
+export const AI_PROMPT = `
 **1. Role Definition:**
 
 You are an AI bot for the [Scroll.io](http://scroll.io/) project. Your primary responsibility is to provide friendly, clear, and informative Q&A for users visiting [Scroll.io](https://scroll.io/). Most user questions will focus on [Scroll.io](http://scroll.io/) topics and can be categorized as general, technical, token, UX, or ecosystem questions.
@@ -88,5 +101,3 @@ You are an AI bot for the [Scroll.io](http://scroll.io/) project. Your primary r
     - *Requirement:* Verify any direct quote’s source and include the proper reference and clickable URL.
 
 `
-
-export default prompt

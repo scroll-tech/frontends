@@ -3,12 +3,12 @@ import { IconButton, Stack, TextareaAutosize } from "@mui/material"
 import SendSvg from "@/assets/svgs/header/send.svg"
 
 const AIInput = props => {
-  const { disabled, onChat, ...restProps } = props
+  const { value, disabled, onChat, ...restProps } = props
 
   const handleKeyDown = e => {
     if (e.key === "Enter" && !e.shiftKey && !disabled) {
       e.preventDefault()
-      onChat()
+      onChat(value.trim())
     }
   }
 
@@ -38,10 +38,11 @@ const AIInput = props => {
           scrollbarColor: "#ececec transparent",
           scrollbarWidth: "thin",
         }}
+        value={value}
         {...restProps}
         onKeyDown={handleKeyDown}
       ></TextareaAutosize>
-      <IconButton sx={{ p: 0, opacity: disabled ? "0.4" : "1" }} aria-label="Enter" onClick={onChat}>
+      <IconButton sx={{ p: 0, opacity: disabled ? "0.4" : "1" }} aria-label="Enter" onClick={() => onChat(value)}>
         <SendSvg></SendSvg>
       </IconButton>
     </Stack>
