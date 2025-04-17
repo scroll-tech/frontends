@@ -22,7 +22,15 @@ const MessagePanel = props => {
   }
 
   return (
-    <Box sx={{ flex: 1, overflowY: "auto", padding: "1.6rem 1.6rem 0", scrollbarColor: "#ececec transparent", scrollbarWidth: "thin" }}>
+    <Box
+      sx={{
+        flex: 1,
+        overflowY: "auto",
+        padding: ["1.6rem 2rem 0", "1.6rem 1.6rem 0"],
+        scrollbarColor: "#ececec transparent",
+        scrollbarWidth: "thin",
+      }}
+    >
       <Box component="ul">
         {data.map(message => (
           <Box component="li" key={message.id}>
@@ -30,7 +38,7 @@ const MessagePanel = props => {
           </Box>
         ))}
       </Box>
-      <SpinSvg className={clsx("", loading ? "visible" : "invisible")} />
+      <SpinSvg className={clsx(loading ? "visible mb-[1.6rem]" : "invisible")} />
       <div ref={bottomRef}></div>
     </Box>
   )

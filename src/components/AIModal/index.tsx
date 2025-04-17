@@ -172,9 +172,9 @@ const AIModal = () => {
               height: "5.6rem",
               alignItems: "center",
               justifyContent: "space-between",
-              pl: "1.6rem",
+              pl: ["2rem", "1.6rem"],
               pr: "0.8rem",
-              gap: "1.4rem",
+              gap: "1.6rem",
               borderBottom: messages?.length ? "1px solid #1010101A" : "none",
             }}
           >
@@ -196,7 +196,7 @@ const AIModal = () => {
           ) : (
             <InitialPanel onChat={handleSendMessage}></InitialPanel>
           )}
-          <Box sx={{ p: "0 1.6rem 2.4rem" }}>
+          <Box sx={{ p: ["0 2rem 2.4rem", "0 1.6rem 2.4rem"] }}>
             <AIInput value={searchText} disabled={loadingStatus !== "none"} onChange={handleChangeSearchText} onChat={handleSendMessage}></AIInput>
           </Box>
         </MotionCard>

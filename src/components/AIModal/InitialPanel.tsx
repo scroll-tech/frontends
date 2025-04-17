@@ -23,7 +23,14 @@ const InitialPanel = props => {
   return (
     <Stack
       direction="column"
-      sx={{ alignItems: "center", p: "0 2.4rem", flex: 1, overflowY: "auto", scrollbarColor: "#ececec transparent", scrollbarWidth: "thin" }}
+      sx={{
+        alignItems: "center",
+        p: ["0 2rem", "0 2.4rem"],
+        flex: 1,
+        overflowY: "auto",
+        scrollbarColor: "#ececec transparent",
+        scrollbarWidth: "thin",
+      }}
     >
       <Image src={ScrollyCool} alt="Scrolly" className="w-[72px] h-[72px]"></Image>
       <Typography sx={{ fontSize: "2rem", fontWeight: 500, lineHeight: "2.4rem", my: "3.2rem" }}>Welcome, Scroll AI is here to help!</Typography>
