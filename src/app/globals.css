@@ -51,13 +51,6 @@ body {
 
 body.disable-body-scroll {
   overflow: hidden !important;
-  padding-right: 15px !important;
-}
-
-@media screen and (max-width: 900px) {
-  body.disable-body-scroll {
-    padding-right: 0 !important;
-  }
 }
 
 @font-face {

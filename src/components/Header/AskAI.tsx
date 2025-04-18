@@ -9,10 +9,8 @@ const AskAI = props => {
   const handleToggleAIModal = () => {
     if (aiModalVisible) {
       changeAIModalVisible(false)
-      window.document.body.classList.remove("disable-body-scroll")
     } else {
       changeAIModalVisible(true)
-      window.document.body.classList.add("disable-body-scroll")
     }
   }
 

@@ -11,6 +11,7 @@ import AIBot from "@/assets/images/common/ai-bot.png"
 import CloseSvg from "@/assets/svgs/header/close.svg"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useGlobalStore from "@/stores/globalStore"
+import { lockBodyScroll } from "@/utils"
 
 import AIInput from "./AIInput"
 import InitialPanel from "./InitialPanel"
@@ -42,13 +43,13 @@ const AIModal = () => {
 
   useEffect(() => {
     if (aiModalVisible) {
-      window.document.body.classList.add("disable-body-scroll")
+      lockBodyScroll(true)
     } else {
       setResponseId(undefined)
       setSearchText("")
       setMessages([])
       setLoadingStatus("none")
-      window.document.body.classList.remove("disable-body-scroll")
+      lockBodyScroll(false)
     }
   }, [aiModalVisible])
 
