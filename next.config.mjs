@@ -107,8 +107,32 @@ const nextConfig = {
         source: '/x_Emily',
         destination: '/?utm_source=x&utm_medium=social&utm_campaign=Emily',
         permanent: false,
+      },  
+      {
+        source: "/bridge",
+        destination: "https://portal.scroll.io/bridge",
+        permanent: true,
       },
-     
+      {
+        source: "/bridge/faq",
+        destination: "https://portal.scroll.io/bridge/faq",
+        permanent: true,
+      },
+      {
+        source: "/sessions",
+        destination: "https://portal.scroll.io/sessions",
+        permanent: true,
+      },
+      {
+        source: "/sessions-restricted",
+        destination: "https://portal.scroll.io/sessions-restricted",
+        permanent: true,
+      },
+      {
+        source: "/sessions-terms-of-use",
+        destination: "https://portal.scroll.io/sessions-terms-of-use",
+        permanent: true,
+      },
     ]
   },
   async rewrites() {

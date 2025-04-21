@@ -100,6 +100,12 @@ const mainnetNavigations: Navigation[] = [
     children: [
       {
         rootKey: "explore",
+        label: "User Portal",
+        key: "user-portal",
+        href: "https://portal.scroll.io",
+      },
+      {
+        rootKey: "explore",
         label: "Projects",
         key: "projects",
         href: "/ecosystem",
@@ -108,7 +114,7 @@ const mainnetNavigations: Navigation[] = [
         rootKey: "explore",
         label: "Bridge",
         key: "bridge",
-        href: "/bridge",
+        href: "https://portal.scroll.io/bridge",
       },
       {
         rootKey: "explore",
@@ -126,8 +132,7 @@ const mainnetNavigations: Navigation[] = [
         rootKey: "participate",
         label: "Session 2",
         key: "session-2",
-        href: "/sessions",
-        reload: true,
+        href: "https://portal.scroll.io/sessions",
       },
       {
         rootKey: "participate",
