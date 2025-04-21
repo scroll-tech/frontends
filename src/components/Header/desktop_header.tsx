@@ -55,7 +55,7 @@ const DesktopHeader = ({ currentMenu }) => {
           <NavbarItem
             isActive={currentMenu.includes(item.key)}
             isHovering={hoveringNavbarItemKey === item.key}
-            isNew={item.new}
+            isNew={item.isNew}
             dark={dark}
             onMouseEnter={e => handleMouseEnter(e, item.key)}
             onMouseLeave={handleMouseLeave}
@@ -89,12 +89,13 @@ const DesktopHeader = ({ currentMenu }) => {
                       }}
                     >
                       <Stack direction="column" onClick={handleMouseLeave}>
-                        {item.children.map(({ key, label, href, reload }) => (
+                        {item.children.map(({ key, label, isNew, href, reload }) => (
                           <MenuItem
                             mode="desktop"
                             key={key}
                             sx={{ p: "0.8rem" }}
                             isActive={key === currentMenu[0]}
+                            isNew={isNew}
                             label={label}
                             dark={isLandscape ? false : dark}
                             href={href}
@@ -117,7 +118,7 @@ const DesktopHeader = ({ currentMenu }) => {
     return (
       <ScrollLink href={item.href} reloadDocument={item.reload} external={item.href?.startsWith("https")}>
         <NavbarItem
-          isNew={item.new}
+          isNew={item.isNew}
           isActive={currentMenu.includes(item.key)}
           dark={dark}
           expendMore={false}

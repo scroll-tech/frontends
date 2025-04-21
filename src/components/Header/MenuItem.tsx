@@ -1,12 +1,12 @@
 import { sendGAEvent } from "@next/third-parties/google"
 
-import { ListItemButton } from "@mui/material"
+import { Box, ListItemButton, Typography } from "@mui/material"
 
 import ExternalLinkSvg from "@/assets/svgs/common/external-link.svg"
 import Link from "@/components/Link"
 
 const MenuItem = props => {
-  const { mode, children, label, href, reloadDocument, isActive, dark, sx } = props
+  const { mode, children, label, href, reloadDocument, isActive, isNew, dark, sx } = props
   const isExternal = href?.startsWith("http")
 
   const handleTrackEvent = () => {
@@ -17,7 +17,7 @@ const MenuItem = props => {
   }
 
   return (
-    <Link href={href} target={isExternal ? "_blank" : "_self"} reloadDocument={reloadDocument}>
+    <Link href={href} external={isExternal} reloadDocument={reloadDocument}>
       <ListItemButton
         className="group"
         sx={{
@@ -39,6 +39,11 @@ const MenuItem = props => {
         onClick={handleTrackEvent}
       >
         {children}
+        {isNew && (
+          <Box sx={{ backgroundColor: "#B5F5EC", padding: "0 0.8rem", height: "2rem", lineHeight: "2rem", borderRadius: "0.4rem", ml: "-0.4rem" }}>
+            <Typography sx={{ fontSize: "1.2rem", lineHeight: "2rem", fontWeight: 600 }}>NEW</Typography>
+          </Box>
+        )}
         {mode === "desktop" && isExternal && (
           <span className="invisible relative -translate-x-2 transition-transform group-hover:visible group-hover:translate-x-0">
             <ExternalLinkSvg className="w-[1rem] h-auto"></ExternalLinkSvg>
