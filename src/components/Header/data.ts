@@ -61,7 +61,7 @@ const sepoliaNavigations: Navigation[] = [
   {
     label: "Bridge",
     key: "bridge",
-    href: "/bridge",
+    href: BRIDGE_URL,
   },
 ]
 
