@@ -17,7 +17,7 @@ const MenuItem = props => {
   }
 
   return (
-    <Link href={href} target={isExternal ? "_blank" : "_self"} reloadDocument={reloadDocument}>
+    <Link href={href} external={isExternal} reloadDocument={reloadDocument}>
       <ListItemButton
         className="group"
         sx={{

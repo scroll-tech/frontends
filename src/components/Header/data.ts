@@ -118,7 +118,6 @@ const mainnetNavigations: Navigation[] = [
         label: "Session 2",
         key: "session-2",
         href: SESSIONS_URL,
-        reload: true,
       },
       {
         rootKey: "use",
