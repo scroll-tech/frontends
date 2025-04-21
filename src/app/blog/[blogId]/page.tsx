@@ -28,6 +28,8 @@ const BlogDetail = async ({ params }) => {
     notFound()
   }
   const { blogId } = await params
+  const { title, date, type } = blogSource.find(blog => blog.id === blogId) ?? {}
+
   return (
     <>
       <link
@@ -41,7 +43,7 @@ const BlogDetail = async ({ params }) => {
         href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.9.0/github-markdown.min.css"
         crossOrigin="anonymous"
       />
-      <Detail blogId={blogId?.toLowerCase()}></Detail>
+      <Detail blogId={blogId?.toLowerCase()} title={title} date={date} type={type}></Detail>
     </>
   )
 }

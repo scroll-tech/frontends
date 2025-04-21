@@ -1,24 +1,16 @@
+import Image from "next/image"
 import { useRouter } from "next/navigation"
 
 import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
-import WebpImage from "@/components/WebpImage"
-
-const ArticleTitle = styled(Typography)(() => ({
-  fontWeight: 700,
-  lineHeight: "2.8rem",
-  display: "table-cell",
-  verticalAlign: "bottom",
-  marginBottom: "0.6rem",
-}))
+// import WebpImage from "@/components/WebpImage"
 
 const Card = styled(Box)(({ theme }) => ({
   display: "grid",
   gridTemplateColumns: "1fr 1fr",
   gap: "3rem",
   textAlign: "left",
-  margin: "0 auto",
   overflow: "hidden",
   cursor: "pointer",
   color: theme.vars.palette.text.primary,
@@ -34,31 +26,19 @@ const Card = styled(Box)(({ theme }) => ({
   },
   [theme.breakpoints.down("sm")]: {
     gridTemplateColumns: "1fr",
+    gap: "0.8rem",
+    padding: "2.8rem 0",
+    "&:first-of-type": {
+      paddingTop: "0",
+    },
+    "&:last-of-type": {
+      paddingBottom: "0",
+    },
+    "&:not(:last-of-type)": {
+      borderBottom: `1px solid ${theme.vars.palette.themeBackground.highlight}`,
+    },
   },
 })) as typeof Box
-
-const ArticleDate = styled(Typography)(({ theme }) => ({
-  marginBottom: "0.5rem",
-  fontSize: "1.4rem",
-  fontWeight: 500,
-  [theme.breakpoints.down("md")]: {
-    marginTop: "1.4rem",
-  },
-}))
-
-const ArticleSummary = styled(Typography)(({ theme }) => ({
-  marginBottom: "2.2rem",
-  overflow: "hidden",
-  maxWidth: "44rem",
-  lineHeight: "2.8rem",
-  textOverflow: "ellipsis",
-  display: "-webkit-box",
-  WebkitLineClamp: 2,
-  WebkitBoxOrient: "vertical",
-  [theme.breakpoints.down("md")]: {
-    display: "none",
-  },
-}))
 
 const ArticleInfo = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
@@ -66,13 +46,15 @@ const ArticleInfo = styled(Box)(({ theme }) => ({
   },
 })) as typeof Box
 
-const ArticlePoster = styled(WebpImage)(({ theme }) => ({
+const ArticlePoster = styled(Image)(({ theme }) => ({
   width: "100%",
   maxWidth: "51.7rem",
-  height: "fit-content",
   borderRadius: "2.5rem",
   justifySelf: "flex-end",
-  overflow: "hidden",
+  objectFit: "cover",
+  [theme.breakpoints.down("lg")]: {
+    height: "auto",
+  },
   [theme.breakpoints.down("md")]: {
     gridRow: 1,
     borderRadius: "1.5rem",
@@ -93,13 +75,27 @@ const ArticleCard = props => {
   return (
     <Card onClick={handleClick}>
       <ArticleInfo>
-        <ArticleTitle variant="H4">{blog.title}</ArticleTitle>
-        <ArticleSummary variant="Body3">{blog.summary}</ArticleSummary>
-        <ArticleDate>
+        <Typography sx={{ typography: "title", fontSize: ["2rem", "2rem", "2.8rem"], lineHeight: ["3rem"] }}>{blog.title}</Typography>
+        <Typography
+          sx={{
+            fontSize: ["1.8rem"],
+            lineHeight: ["2.8rem"],
+            WebkitBoxOrient: "vertical",
+            WebkitLineClamp: 2,
+            overflow: "hidden",
+            mt: "1.6rem",
+            mb: "2.8rem",
+
+            display: ["none", "none", "-webkit-box"],
+          }}
+        >
+          {blog.summary}
+        </Typography>
+        <Typography sx={{ typography: "title", fontWeight: 400, color: "#6B6B6B", fontSize: "1.4rem", lineHeight: "normal", mt: ["4px", "8px", 0] }}>
           {blog.date} ・ {blog.type}
-        </ArticleDate>
+        </Typography>
       </ArticleInfo>
-      <ArticlePoster src={blog.posterImg}></ArticlePoster>
+      {blog.posterImg && <ArticlePoster src={blog.posterImg} alt={blog.title} width={1000} height={180}></ArticlePoster>}
     </Card>
   )
 }

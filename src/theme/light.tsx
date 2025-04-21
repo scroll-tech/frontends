@@ -16,6 +16,7 @@ const lightTheme = {
     WebkitLineClamp: "4",
     overflow: "hidden",
   },
+
   shape: {
     borderRadius: 27,
   },

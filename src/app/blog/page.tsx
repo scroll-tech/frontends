@@ -15,55 +15,6 @@ import { LANGUAGE_MAP, getBlogCategoryList, getBlogSortList } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import { filterBlogsByLanguage } from "@/utils"
 
-const BlogContainer = styled(Box)(({ theme }) => ({
-  padding: "0 6rem 14rem",
-  [theme.breakpoints.down("md")]: {
-    padding: "0 2rem 9rem",
-  },
-})) as typeof Box
-
-const BlogBox = styled(Box)(({ theme }) => ({
-  marginBottom: "9rem",
-  [theme.breakpoints.down("md")]: {
-    marginBottom: "0",
-    padding: "3rem 0",
-    "&:not(:last-of-type)": {
-      borderBottom: `1px solid ${theme.vars.palette.themeBackground.highlight}`,
-    },
-    "&:first-of-type": {
-      padding: "0 0 3rem",
-    },
-  },
-})) as typeof Box
-
-const Header = styled(Box)(({ theme }) => ({
-  padding: "15.5rem 0",
-  [theme.breakpoints.down("md")]: {
-    padding: "6.8rem 0 8rem",
-  },
-})) as typeof Box
-
-const Title = styled(Typography)(({ theme }) => ({
-  fontSize: "6.4rem",
-  lineHeight: 1,
-  fontWeight: 600,
-  [theme.breakpoints.down("sm")]: {
-    fontSize: "3.6rem",
-  },
-}))
-
-const Summary = styled(Typography)(({ theme }) => ({
-  fontSize: "2.6rem",
-  maxWidth: "56rem",
-  marginTop: "2.4rem",
-  [theme.breakpoints.down("md")]: {
-    marginTop: "2rem",
-  },
-  [theme.breakpoints.down("sm")]: {
-    fontSize: "2rem",
-  },
-}))
-
 const FilterContainer = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down("lg")]: {
     display: "flex",
@@ -113,8 +64,11 @@ const BlogBody = styled(Box)(({ theme }) => ({
 const FilterTypeName = styled(Typography)(({ theme }) => ({
   color: theme.vars.palette.text.primary,
   fontSize: "1.6rem",
-  fontWeight: 600,
-  marginBottom: "2rem",
+  fontFamily: "var(--font-title)",
+  lineHeight: 1,
+  fontWeight: 500,
+  marginBottom: "2.8rem",
+
   "&:nth-of-type(2)": {
     marginTop: "6.8rem",
   },
@@ -133,12 +87,13 @@ const FilterItem = styled(Typography)(({ theme }) => ({
   color: theme.vars.palette.text.primary,
   cursor: "pointer",
   fontSize: "1.6rem",
-  marginBottom: "1.2rem",
+  lineHeight: 1,
+  marginBottom: "2.2rem",
   "&.active": {
-    fontWeight: 700,
+    fontWeight: 600,
   },
   "&:hover": {
-    fontWeight: 700,
+    fontWeight: 600,
   },
   [theme.breakpoints.down("lg")]: {
     fontWeight: 500,
@@ -152,12 +107,17 @@ const FilterItem = styled(Typography)(({ theme }) => ({
 const BlogList = styled("ul")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  justifyContent: "space-between",
+  gap: "4.8rem",
   width: "100%",
+
   [theme.breakpoints.down("md")]: {
     borderRight: "none",
     marginBottom: "0",
     justifyContent: "center",
+  },
+
+  [theme.breakpoints.down("sm")]: {
+    gap: 0,
   },
 }))
 
@@ -201,9 +161,9 @@ const Blog = () => {
     return (
       <BlogList>
         {blogs.map(blog => (
-          <BlogBox key={blog.slug}>
-            <ArticleCard small={!isDesktop} blog={blog} />
-          </BlogBox>
+          // <BlogBox key={blog.slug}>
+          <ArticleCard key={blog.slug} small={!isDesktop} blog={blog} />
+          // </BlogBox>
         ))}
       </BlogList>
     )
@@ -270,18 +230,18 @@ const Blog = () => {
   }
 
   return (
-    <BlogContainer>
-      <SectionWrapper sx={{ pt: 0 }}>
-        <Header>
-          <Title>{BLOG_COPY.title}</Title>
-          <Summary>{BLOG_COPY.sub_title}</Summary>
-        </Header>
-        <BlogBody>
-          {renderFilter()}
-          {renderBlogs()}
-        </BlogBody>
-      </SectionWrapper>
-    </BlogContainer>
+    <SectionWrapper sx={{ pt: 0, pb: ["15rem", "25rem"] }}>
+      <Box sx={{ pt: ["65.rem", "15.5rem"], pb: ["4.4rem", "12.5rem"] }}>
+        <Typography sx={{ typography: "title", fontSize: ["2.8rem", "4.8rem"], lineHeight: ["3.8rem", "8rem"] }}>{BLOG_COPY.title}</Typography>
+        <Typography sx={{ fontSize: ["1.6rem", "2.6rem"], lineHeight: "normal", maxWidth: "54rem", mt: ["1.2rem", "2rem"] }}>
+          {BLOG_COPY.sub_title}
+        </Typography>
+      </Box>
+      <BlogBody>
+        {renderFilter()}
+        {renderBlogs()}
+      </BlogBody>
+    </SectionWrapper>
   )
 }
 

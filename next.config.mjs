@@ -37,6 +37,12 @@ const nextConfig = {
         port: "",
         pathname: "/logos/**",
       },
+      {
+        protocol: "https",
+        hostname: "scroll.ghost.io",
+        port: "",
+        pathname: "/content/**",
+      },
     ],
   },
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],

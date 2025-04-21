@@ -9,7 +9,7 @@ import rehypeRaw from "rehype-raw"
 import remarkGfm from "remark-gfm"
 import remarkMath from "remark-math"
 
-import { Box } from "@mui/material"
+import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 import blogSource from "@/assets/blog/main.data.json"
@@ -49,7 +49,7 @@ const BlogNavbar = styled(Box)(({ theme }) => ({
 })) as typeof Box
 
 const BlogDetail = props => {
-  const { blogId } = props
+  const { blogId, title, date, type } = props
   const router = useRouter()
 
   const [language] = useUserLanguage()
@@ -114,12 +114,18 @@ const BlogDetail = props => {
                 <TOC />
               </BlogNavbar>
             </Box>
-            <ReactMarkdown
-              children={blogContent as string}
-              remarkPlugins={[remarkMath, remarkGfm]}
-              rehypePlugins={[rehypeKatex, rehypeRaw]}
-              className="markdown-body"
-            />
+            <Box>
+              <Typography sx={{ typography: "title", fontSize: ["2.8rem", "3.6rem"], lineHeight: ["3.8rem", "5rem"] }}>{title}</Typography>
+              <Typography sx={{ typography: "title", color: "#6B6B6B", fontSize: "1.4rem", lineHeight: "2.4rem", mt: "1.6rem", mb: "4rem" }}>
+                {date} ・ {type}
+              </Typography>
+              <ReactMarkdown
+                children={blogContent as string}
+                remarkPlugins={[remarkMath, remarkGfm]}
+                rehypePlugins={[rehypeKatex, rehypeRaw]}
+                className="markdown-body blog-detail"
+              />
+            </Box>
           </BlogContainer>
 
           {!!isPortrait && <MoreBlogs sx={{ pb: "10rem" }} blogs={moreBlog} title={LANGUAGE_MAP[language].more_articles}></MoreBlogs>}

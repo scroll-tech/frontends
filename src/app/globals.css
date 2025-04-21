@@ -132,13 +132,36 @@ div.markdown-body {
 div.markdown-body p {
   margin: 0 0 16px;
   max-width: 100%;
-  line-height: 2.6rem;
+  line-height: 2.8rem;
 }
 
 div.markdown-body h1,
 div.markdown-body h2,
 div.markdown-body h3 {
   border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.markdown-body.blog-detail h1,
+.markdown-body.blog-detail h2,
+.markdown-body.blog-detail h3 {
+  font-family: var(--font-title);
+  font-weight: 500 !important;
+}
+.markdown-body.blog-detail h1 strong,
+.markdown-body.blog-detail h2 strong,
+.markdown-body.blog-detail h3 strong {
+  font-weight: 500 !important;
+}
+
+.markdown-body.blog-detail h1 {
+  margin-top: 52px;
+}
+.markdown-body.blog-detail h2 {
+  margin-top: 40px;
+}
+.markdown-body.blog-detail h3 {
+  margin-top: 28px;
 }
 
 .markdown-body ol {
@@ -164,8 +187,8 @@ div.markdown-body img {
   font-weight: 400;
   cursor: pointer;
   display: block;
-  line-height: 1.5;
-  margin: 1.2rem 0;
+  line-height: 2.4rem;
+  margin: 1.4rem 0;
   padding-right: 1.8em;
   transition: all 0.2s;
 }
@@ -181,7 +204,6 @@ div.markdown-body img {
   display: inline-flex;
   gap: 0.5em;
   width: 100%;
-  padding: 0.15em 0 0.15em 0;
 }
 
 .header-link.depth-3 {

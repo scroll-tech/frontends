@@ -1,3 +1,4 @@
 export const blogOrigin = "https://blog.scroll.cat"
 
-export const fetchBlogDetailURL = (blogId: string) => `${blogOrigin}/api/post/${blogId}.md?title=1`
+// ?title=1  with title
+export const fetchBlogDetailURL = (blogId: string) => `${blogOrigin}/api/post/${blogId}.md`

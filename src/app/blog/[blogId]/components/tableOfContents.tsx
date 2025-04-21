@@ -11,9 +11,8 @@ import BackSvg from "@/assets/svgs/common/back.svg"
 const Link = styled(RouterLink)({
   display: "flex",
   alignItems: "center",
-  "& *": {
-    fontWeight: 500,
-  },
+  gap: "0.8rem !important",
+  marginBottom: "1.6rem",
 })
 
 export interface Heading {
@@ -108,7 +107,9 @@ const TableOfContents: FC = () => {
         <li className="header-link hover:bg-transparent">
           <Link href="/blog">
             <SvgIcon sx={{ fontSize: "1.6rem" }} component={BackSvg} inheritViewBox></SvgIcon>
-            <Typography sx={{ color: "inherit", cursor: "inherit", fontWeight: 500 }}>All blogs</Typography>
+            <Typography sx={{ color: "inherit", cursor: "inherit", typography: "title", fontSize: "1.6rem", lineHeight: "2.4rem" }}>
+              All blogs
+            </Typography>
           </Link>
         </li>
         {headings.map(header => (
