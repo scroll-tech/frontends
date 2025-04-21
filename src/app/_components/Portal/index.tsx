@@ -34,7 +34,7 @@ const BUILDER_LIST = [
 
 const Portal = () => {
   return (
-    <Box sx={{ backgroundColor: "themeBackground.light" }}>
+    <Box sx={{ backgroundColor: theme => theme.palette.background.light }}>
       <Container sx={{ py: ["5.6rem", "10.6rem"] }}>
         {BUILDER_LIST.map(({ title, items }) => (
           <Fragment key={title}>
