@@ -44,8 +44,13 @@ const LandingHero = () => {
             Build now
           </Button>
 
-          <Button href={SESSIONS_URL} className="!w-[180px] sm:!w-[250px]" gaEvent={{ event: "click_landing", label: "Join Session 2" }}>
-            Join Session 2
+          <Button
+            href={process.env.NEXT_PUBLIC_USER_PORTAL_BASE_URL}
+            target="_blank"
+            className="!w-[180px] sm:!w-[250px]"
+            gaEvent={{ event: "click_landing", label: "Open User Portal" }}
+          >
+            Open User Portal
           </Button>
         </Stack>
       </Container>
