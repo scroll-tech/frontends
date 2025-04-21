@@ -69,9 +69,9 @@ const Header = () => {
         <OrientationToView className={classes.titleWrapper}>
           <Typography
             sx={{
-              fontSize: ["3.6rem", "6.4rem"],
-              lineHeight: ["5rem", "8.5rem"],
-              fontWeight: 600,
+              typography: "title",
+              fontSize: ["2.8rem", "4.8rem"],
+              lineHeight: ["3.8rem", "8rem"],
               textAlign: ["center", "left"],
               width: "max-content",
             }}

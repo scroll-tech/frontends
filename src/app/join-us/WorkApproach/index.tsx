@@ -37,21 +37,21 @@ const Photos = [
 
 const Container = styled(Box)(({ theme }) => ({
   borderRadius: "40px 40px 0px 0px",
-  paddingTop: "15.4rem",
+  paddingTop: "12rem",
   maxWidth: "152rem",
-  background: "transparent",
+  // background: "transparent",
   display: "flex !important",
   justifyContent: "center",
   position: "relative",
-  margin: "0 auto 16rem",
+  margin: "0 auto",
   "& .MuiContainer-root": {
     position: "relative",
     maxWidth: "152rem",
   },
   [theme.breakpoints.down("md")]: {
-    paddingTop: "5.4rem",
+    paddingTop: "4rem",
     paddingBottom: "0",
-    margin: "0 auto 4rem",
+    margin: "0 auto",
   },
 })) as typeof Box
 
@@ -137,7 +137,7 @@ const WorkApproach = () => {
         <FadeInUp>
           <SectionHeader
             dark
-            sx={{ mb: ["4rem", "10rem", "12.5rem"] }}
+            sx={{ mb: ["4.4rem", "5rem"] }}
             title="How we work"
             content={
               <>

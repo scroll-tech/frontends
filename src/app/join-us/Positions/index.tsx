@@ -23,8 +23,8 @@ const Positions = () => {
         borderRadius: "40px 40px 0px 0px",
         background: "#FFF0DD",
         pb: {
-          xs: "4rem",
-          sm: "12rem",
+          xs: "14rem",
+          sm: "15.5rem",
         },
       }}
     >
@@ -39,17 +39,14 @@ const Positions = () => {
       <FadeInUp>
         <Typography
           sx={{
-            fontWeight: 500,
+            typography: "title",
             textAlign: "center",
-            mb: {
-              sx: "2.8rem",
-              sm: "3.2rem",
-              md: "4.8rem",
-            },
+            mb: "2.4rem",
             fontSize: {
-              xs: "3.2rem",
-              sm: "4rem",
+              xs: "2rem",
+              sm: "3.2rem",
             },
+            lineHeight: ["3rem", "5.6rem"],
             padding: {
               xs: "0 2rem",
               md: 0,

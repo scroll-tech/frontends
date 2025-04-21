@@ -15,30 +15,6 @@ import IconSVG8 from "@/assets/svgs/career/perks/icon-8.svg"
 import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
 import SectionWrapper from "@/components/SectionWrapper"
 
-// import { Fragment } from "react"
-
-// import { Fragment } from "react"
-
-// import { Fragment } from "react"
-
-// import { Fragment } from "react"
-
-// import { Fragment } from "react"
-
-// import { Fragment } from "react"
-
-// import { Fragment } from "react"
-
-// import { Fragment } from "react"
-
-// import { Fragment } from "react"
-
-// import { Fragment } from "react"
-
-// import { Fragment } from "react"
-
-// import useCheckViewport from "@/hooks/useCheckViewport"
-
 const PERKS = [
   {
     icon: IconSVG1,
@@ -103,9 +79,9 @@ const useStyles = makeStyles()(theme => ({
   grid: {
     display: "grid",
     gridTemplateColumns: "repeat(4, 1fr)",
-    gridColumnGap: "5rem",
-    gridRowGap: "8rem",
-    marginTop: "8rem",
+    gridColumnGap: "3.2rem",
+    gridRowGap: "5.6rem",
+    marginTop: "5.6rem",
     [theme.breakpoints.down("md")]: {
       gridTemplateColumns: "repeat(1, 1fr 1fr)",
       gridRowGap: "5.6rem",
@@ -122,27 +98,26 @@ const useStyles = makeStyles()(theme => ({
 
 const Perks = () => {
   const { classes } = useStyles()
-  // const { isMobile } = useCheckViewport()
-  // <IconSvg className={`w-[width] h-[3.4rem]`}></IconSvg>
 
   return (
-    <SectionWrapper>
-      <Typography sx={{ fontSize: ["3.2rem", "4.8rem"], mb: ["3.2rem", "5.6rem"] }}>Perks & benefits</Typography>
+    <SectionWrapper sx={{ pt: ["12.2rem", "31.6rem"] }}>
+      <Typography sx={{ typography: "title", fontSize: ["2.4rem", "3.2rem"], lineHeight: ["4rem", "5.6rem"] }}>Perks & benefits</Typography>
       <SuccessionToView className={classes.grid}>
         {PERKS.map(({ icon: IconSvg, width, title, content }, index) => (
           <SuccessionItem key={index}>
             <IconSvg className={`w-[${width}] h-[3.4rem]`}></IconSvg>
             <Typography
               sx={{
-                fontSize: ["2rem", "2.4rem"],
-                fontWeight: 600,
-                mt: ["1.3rem", "1.8rem", "2.2rem"],
-                mb: ["0.8rem", "1.4rem", "2rem"],
+                typography: "title",
+                fontSize: "2rem",
+                lineHeight: "3rem",
+                mt: "1.4rem",
+                mb: "0.8rem",
               }}
             >
               {title}
             </Typography>
-            <Typography sx={{ fontSize: ["1.6rem", "2rem"] }}>{content}</Typography>
+            <Typography sx={{ fontSize: ["1.6rem", "1.8rem"] }}>{content}</Typography>
           </SuccessionItem>
         ))}
       </SuccessionToView>

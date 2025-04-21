@@ -39,9 +39,10 @@ const SectionHeader = props => {
       <Stack direction="column" sx={{ maxWidth: maxWidthValue }}>
         <Typography
           sx={{
-            fontSize: ["3.2rem", "4.6rem"],
-            fontWeight: 500,
-            mb: ["0.8rem", "1.4rem"],
+            typography: "title",
+            fontSize: ["2.4rem", "3.2rem"],
+            lineHeight: ["4rem", "5.6rem"],
+            mb: ["1.6rem", "2.4rem"],
             color: theme => (dark ? theme.vars.palette.primary.contrastText : "unset"),
           }}
         >

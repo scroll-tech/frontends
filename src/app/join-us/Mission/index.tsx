@@ -1,21 +1,11 @@
 "use client"
 
 import { Typography } from "@mui/material"
-import { styled } from "@mui/system"
+import { lineHeight, styled } from "@mui/system"
 
 import OrientationToView from "@/components/Motion/OrientationToView"
 import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
 import SectionWrapper from "@/components/SectionWrapper"
-
-const Container = styled(SectionWrapper)(({ theme }) => ({
-  paddingBottom: "16rem",
-  [theme.breakpoints.down("md")]: {
-    paddingBottom: "12rem",
-  },
-  [theme.breakpoints.down("sm")]: {
-    paddingBottom: "3.2rem",
-  },
-}))
 
 const Title = styled(Typography)(({ theme }) => ({
   maxWidth: "115.5rem",
@@ -23,12 +13,10 @@ const Title = styled(Typography)(({ theme }) => ({
   color: theme.vars.palette.text.primary,
   margin: "0 auto ",
   fontSize: "3.2rem",
-  [theme.breakpoints.down("md")]: {
-    marginBottom: "6.4rem",
-  },
+  lineHeight: "4.8rem",
   [theme.breakpoints.down("sm")]: {
     fontSize: "2rem",
-    marginBottom: "3.2rem",
+    lineHeight: 1.4,
   },
 }))
 
@@ -96,7 +84,7 @@ const MISSION = [
 
 const Mission = () => {
   return (
-    <Container>
+    <SectionWrapper sx={{ py: ["7.2rem", "16rem"] }}>
       <OrientationToView>
         <Title>
           Scroll’s mission is to provide an accessible scaling solution that preserves the essence of Ethereum – trust-minimized, secure and open
@@ -112,7 +100,7 @@ const Mission = () => {
           </MissionItem>
         ))}
       </Missions>
-    </Container>
+    </SectionWrapper>
   )
 }
 
