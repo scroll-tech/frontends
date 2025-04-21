@@ -86,7 +86,7 @@ const MobileHeader = ({ currentMenu }) => {
             <MobileNavbarItem
               dark={dark}
               label={item.label}
-              isNew={item.new}
+              isNew={item.isNew}
               isActive={activeCollapse === item.key}
               onClick={() => toggleCollapse(item.key)}
             ></MobileNavbarItem>
@@ -95,7 +95,7 @@ const MobileHeader = ({ currentMenu }) => {
               <MobileNavbarItem
                 dark={dark}
                 label={item.label}
-                isNew={item.new}
+                isNew={item.isNew}
                 isActive={activeCollapse === item.key}
                 expendMore={false}
                 onClick={() => handleClickMenuItem(item.label)}
@@ -105,12 +105,13 @@ const MobileHeader = ({ currentMenu }) => {
 
           <Collapse key={item.key} in={activeCollapse === item.key} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              {item.children?.map(({ key, label, href, reload }) => (
+              {item.children?.map(({ key, label, isNew, href, reload }) => (
                 <MenuItem
                   mode="mobile"
                   key={key}
                   sx={{ mb: "2.4rem" }}
                   isActive={key === currentMenu[0]}
+                  isNew={isNew}
                   label={label}
                   dark={dark}
                   href={href}

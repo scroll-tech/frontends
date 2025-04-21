@@ -81,6 +81,8 @@ const nextConfig = {
       { source: "/blog/scrollsFreshCoat", destination: "/blog/scrolls-fresh-coat", permanent: true },
 
       { source: "/sticker-vote", destination: "/sticker-winners", permanent: true },
+      { source: "/bridge", destination: `${process.env.NEXT_PUBLIC_USER_PORTAL_BASE_URL}/bridge`, permanent: true },
+      { source: "/sessions", destination: `${process.env.NEXT_PUBLIC_USER_PORTAL_BASE_URL}/sessions`, permanent: true },
       // { source: "/airdrop-faq", destination: "https://scroll-faqs.gitbook.io/faqs", permanent: false},
 
       {
