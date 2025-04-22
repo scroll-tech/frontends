@@ -1,3 +1,4 @@
+import clsx from "clsx"
 import Image from "next/image"
 import { makeStyles } from "tss-react/mui"
 
@@ -5,7 +6,7 @@ import { Box, SvgIcon, Typography } from "@mui/material"
 
 import DownloadIcon from "@/assets/images/brandkit/download.svg"
 
-const useStyles = makeStyles<any>()((theme, { type }) => ({
+const useStyles = makeStyles<any>()((theme, { type, noSubtitle }) => ({
   item: {
     marginBottom: "16rem",
     [theme.breakpoints.down("md")]: {
@@ -13,30 +14,35 @@ const useStyles = makeStyles<any>()((theme, { type }) => ({
     },
   },
   name: {
-    color: "#101010",
-    fontSize: "4.8rem",
-    fontWeight: 500,
-    lineHeight: "5rem",
-    letterSpacing: "0.48px",
-    marginBottom: "3.2rem",
+    fontSize: "3.2rem",
+    lineHeight: "5.6rem",
+    marginBottom: noSubtitle ? "4.8rem" : "5.6rem",
     [theme.breakpoints.down("md")]: {
-      fontSize: "3.2rem",
-      lineHeight: "4.3rem",
-      marginBottom: "1.4rem",
+      fontSize: "2.4rem",
+      lineHeight: "4rem",
+      marginBottom: "3.2rem",
     },
   },
   content: {
     display: "grid",
     gridTemplateColumns: type === "onlyImage" ? "repeat(2, 1fr)" : "1fr",
-    gap: "3rem",
+    columnGap: "3rem",
+
+    rowGap: type === "largeImage" ? "8rem" : 0,
+
     [theme.breakpoints.down("md")]: {
       gridTemplateColumns: "1fr",
-      gap: "2.4rem",
+      columnGap: "2.4rem",
+
+      rowGap: type === "largeImage" ? "9rem" : type === "onlyImage" ? "4rem" : 0,
     },
   },
   detail: {
     display: "grid",
     gap: "3rem",
+    [theme.breakpoints.down("md")]: {
+      gap: "2.4rem",
+    },
   },
   largeImage: {
     gridTemplateColumns: "2fr 1fr",
@@ -73,7 +79,7 @@ const useStyles = makeStyles<any>()((theme, { type }) => ({
     gridTemplateAreas: `
       "versionTitle sampleTitle sampleTitle"
       "cover sample1 sample2"
-      "download download download"
+      "download . ."
     `,
     [theme.breakpoints.down("md")]: {
       gridTemplateColumns: "1fr 1fr",
@@ -131,9 +137,13 @@ const useStyles = makeStyles<any>()((theme, { type }) => ({
     color: "#101010",
     fontSize: "2.4rem",
     fontWeight: 600,
-    lineHeight: "3.2rem",
+    lineHeight: "2.4rem",
     letterSpacing: "0.24px",
     gridArea: "versionTitle",
+    [theme.breakpoints.down("md")]: {
+      fontSize: "2rem",
+      lineHeight: "3.2rem",
+    },
   },
 
   cover: {
@@ -178,6 +188,10 @@ const useStyles = makeStyles<any>()((theme, { type }) => ({
     justifyContent: "center",
     alignItems: "flex-start",
     gridArea: "download",
+    marginTop: "-0.8rem",
+    [theme.breakpoints.down("md")]: {
+      marginTop: 0,
+    },
   },
   downloadNote: {
     color: "#101010",
@@ -190,7 +204,7 @@ const useStyles = makeStyles<any>()((theme, { type }) => ({
   downloadButtons: {
     display: "grid",
     gridTemplateColumns: "repeat(2, 1fr)",
-    gap: "1.8rem",
+    gap: "2rem",
     maxWidth: "44rem",
     width: "100%",
     "& a": {
@@ -217,6 +231,7 @@ const useStyles = makeStyles<any>()((theme, { type }) => ({
     },
     [theme.breakpoints.down("sm")]: {
       maxWidth: "100%",
+      gap: "1.8rem",
       justifyContent: "space-between",
       "& a": {
         width: "100%",
@@ -228,7 +243,7 @@ const useStyles = makeStyles<any>()((theme, { type }) => ({
     color: "#101010",
     fontSize: "2rem",
     fontWeight: 500,
-    lineHeight: "2.8rem",
+    lineHeight: "2.4rem",
     letterSpacing: "0.2px",
     listStyle: "none",
     display: "flex",
@@ -243,18 +258,29 @@ const useStyles = makeStyles<any>()((theme, { type }) => ({
       marginRight: "1.6rem",
       backgroundColor: "#D2FCF6",
     },
+
+    [theme.breakpoints.down("md")]: {
+      fontSize: "1.6rem",
+      marginTop: "1.6rem",
+
+      "&::before": {
+        marginRight: "1rem",
+      },
+    },
   },
 }))
 const AssetCard = props => {
   const { name, versions, type } = props.data
-  const { classes, cx } = useStyles({ name, type })
+  const { classes, cx } = useStyles({ type, noSubtitle: ["onlyImage", "onlyOneImage"].includes(type) })
 
   return (
     <Box className={classes.item}>
-      <Typography className={classes.name}>{name}</Typography>
+      <Typography className={classes.name} sx={{ typography: "title" }}>
+        {name}
+      </Typography>
       <Box className={classes.content}>
         {versions.map((version, index) => (
-          <Box key={index} className={cx(classes.detail, classes[type])} sx={{ marginTop: !index || type !== "largeImage" ? 0 : ["4rem", "8rem"] }}>
+          <Box key={index} className={cx(classes.detail, classes[type])}>
             {version.title ? <Typography className={classes.versionTitle}>{version.title}</Typography> : null}
             <Box className={cx(classes.cover, classes[version.coverClass], classes[`cover${version.type}`])}>
               <Image alt={version.title} src={version.cover} />
@@ -270,7 +296,7 @@ const AssetCard = props => {
             </Box>
             {version.samples.length ? <li className={classes.sampleTitle}>Examples</li> : null}
             {version.samples.map((sample, index) => (
-              <Image alt="" key={index} src={sample} className={classes["sampleImage" + index]} />
+              <Image alt="" key={index} src={sample} className={clsx(classes["sampleImage" + index], "border border-[#101010] rounded-[2.5rem]")} />
             ))}
           </Box>
         ))}

@@ -15,7 +15,7 @@ export const generateMetadata = genMeta(() => ({
 
 const BrandKit = () => {
   return (
-    <Box sx={{ overflow: "hidden", backgroundColor: "themeBackground.brand" }}>
+    <Box sx={{ overflow: "hidden" }}>
       <Header />
       <Assets />
     </Box>

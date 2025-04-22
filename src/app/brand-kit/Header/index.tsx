@@ -1,62 +1,42 @@
-"use client"
-
-import { makeStyles } from "tss-react/mui"
-
 import { Box, Typography } from "@mui/material"
 
 import Button from "@/components/Button"
 import OrientationToView from "@/components/Motion/OrientationToView"
 import SectionWrapper from "@/components/SectionWrapper"
 import { BRAND_ASSETS_LINK, FIGMA_LINK } from "@/constants"
-import useCheckViewport from "@/hooks/useCheckViewport"
-
-const useStyles = makeStyles()(theme => ({
-  root: {
-    display: "flex",
-    justifyContent: "space-between",
-    paddingBottom: "12rem",
-    alignItems: "center",
-    [theme.breakpoints.down("md")]: {
-      flexDirection: "column",
-      alignItems: "flex-start",
-      paddingBottom: "4rem",
-    },
-  },
-  titleWrapper: {
-    gridRow: "span 2",
-  },
-  subTitleWrapper: {
-    width: "68rem",
-  },
-  actionGroup: {
-    display: "flex",
-  },
-}))
 
 const Header = () => {
-  const { classes } = useStyles()
-  const { isPortrait, isMobile } = useCheckViewport()
   return (
-    <SectionWrapper transparent className={classes.root}>
-      <OrientationToView className={classes.titleWrapper}>
+    <SectionWrapper
+      sx={{
+        display: "flex",
+        flexDirection: ["column", "column", "row"],
+        justifyContent: "space-between",
+        pt: ["6.8rem", "6.8rem", "12rem"],
+        pb: ["4.2rem", "4.2rem", "12rem"],
+        alignItems: ["flex-start", "flex-start", "center"],
+      }}
+      transparent
+    >
+      <OrientationToView sx={{ gridRow: "span 2" }}>
         <Typography
           sx={{
-            fontSize: ["3.6rem", "6.4rem"],
-            lineHeight: ["5rem", "8.5rem"],
-            fontWeight: 600,
-            textAlign: ["left"],
-            marginBottom: ["2.4rem", "2.4rem", "0"],
+            typography: "title",
+            fontSize: ["2.8rem", "4.8rem"],
+            lineHeight: ["3.8rem", "8rem"],
+            textAlign: "left",
+            marginBottom: ["2.6rem", "2.6rem", 0],
           }}
         >
-          Brand Kit
+          Brand Assets
         </Typography>
       </OrientationToView>
-      <OrientationToView delay={0.3} className={classes.actionGroup}>
-        <Box sx={{ display: "flex", flexWrap: "wrap", gap: isPortrait ? "2rem" : "3rem" }}>
-          <Button href={BRAND_ASSETS_LINK} download color="primary" width={isMobile ? "18.5rem" : "20.7rem"}>
+      <OrientationToView delay={0.3} sx={{ display: "flex", width: ["100%", "auto"] }}>
+        <Box sx={{ display: "flex", gap: ["2rem", "2rem", "3rem"], width: "100%" }}>
+          <Button href={BRAND_ASSETS_LINK} download color="primary" className="!w-[50%] sm:!w-[20.7rem]">
             Download All
           </Button>
-          <Button href={FIGMA_LINK} target="_blank" width={isMobile ? "18.5rem" : "20.7rem"}>
+          <Button href={FIGMA_LINK} target="_blank" className="!w-[50%] sm:!w-[20.7rem]">
             Go to Figma
           </Button>
         </Box>

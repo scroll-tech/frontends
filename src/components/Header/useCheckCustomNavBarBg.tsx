@@ -9,7 +9,7 @@ import useCheckTheme from "./useCheckTheme"
 const TRANSPARENT_BG_PAGE_LIST = ["/", "/ecosystem", "/sessions"]
 // themeBackground
 const CUSTOM_BG_PAGE_MAP = {
-  "/brand-kit": "brand",
+  "/brand-kit": "light",
   "/join-us": "normal",
   "/sticker-vote": "brand",
   "/sticker-winners": "brand",
