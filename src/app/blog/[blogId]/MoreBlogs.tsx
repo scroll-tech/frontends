@@ -11,10 +11,11 @@ const MoreBlogs = props => {
   return (
     <Box {...restProps}>
       <Typography
-        variant="h1"
         sx={{
+          typography: "title",
           textAlign: "center",
-          mt: ["3rem", "5rem"],
+          fontSize: "2.4rem",
+          lineHeight: "4rem",
           mb: ["2rem", "3rem"],
         }}
       >
@@ -29,7 +30,7 @@ const MoreBlogs = props => {
           clickable: true,
         }}
         modules={[Pagination]}
-        className="!pb-[16px] !sm:pb-[28px]"
+        className="!pb-[26px] sm:!pb-[38px]"
       >
         {props.blogs.map(blog => (
           <SwiperSlide key={blog.title}>

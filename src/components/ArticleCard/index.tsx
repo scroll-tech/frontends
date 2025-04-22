@@ -92,7 +92,7 @@ const ArticleCard = props => {
           {blog.summary}
         </Typography>
         <Typography sx={{ typography: "title", fontWeight: 400, color: "#6B6B6B", fontSize: "1.4rem", lineHeight: "normal", mt: ["4px", "8px", 0] }}>
-          {blog.date} ・ {blog.type}
+          {blog.date} <span className="px-[10px]">•</span> {blog.type}
         </Typography>
       </ArticleInfo>
       {blog.posterImg && <ArticlePoster src={blog.posterImg} alt={blog.title} width={1000} height={180}></ArticlePoster>}

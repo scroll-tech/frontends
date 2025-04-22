@@ -161,9 +161,7 @@ const Blog = () => {
     return (
       <BlogList>
         {blogs.map(blog => (
-          // <BlogBox key={blog.slug}>
           <ArticleCard key={blog.slug} small={!isDesktop} blog={blog} />
-          // </BlogBox>
         ))}
       </BlogList>
     )
@@ -231,7 +229,7 @@ const Blog = () => {
 
   return (
     <SectionWrapper sx={{ pt: 0, pb: ["15rem", "25rem"] }}>
-      <Box sx={{ pt: ["65.rem", "15.5rem"], pb: ["4.4rem", "12.5rem"] }}>
+      <Box sx={{ pt: ["6.5rem", "15.5rem"], pb: ["4.4rem", "12.5rem"] }}>
         <Typography sx={{ typography: "title", fontSize: ["2.8rem", "4.8rem"], lineHeight: ["3.8rem", "8rem"] }}>{BLOG_COPY.title}</Typography>
         <Typography sx={{ fontSize: ["1.6rem", "2.6rem"], lineHeight: "normal", maxWidth: "54rem", mt: ["1.2rem", "2rem"] }}>
           {BLOG_COPY.sub_title}

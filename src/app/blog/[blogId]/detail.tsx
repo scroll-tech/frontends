@@ -32,7 +32,7 @@ const BlogContainer = styled(Box)(
     width: 100%;
     margin: auto;
   ${theme.breakpoints.down("md")} {
-    padding: 4rem 2rem;
+    padding: 6.5rem 2rem 12rem;
     display: block;
     overflow: hidden;
   };
@@ -115,9 +115,15 @@ const BlogDetail = props => {
               </BlogNavbar>
             </Box>
             <Box>
-              <Typography sx={{ typography: "title", fontSize: ["2.8rem", "3.6rem"], lineHeight: ["3.8rem", "5rem"] }}>{title}</Typography>
-              <Typography sx={{ typography: "title", color: "#6B6B6B", fontSize: "1.4rem", lineHeight: "2.4rem", mt: "1.6rem", mb: "4rem" }}>
-                {date} ・ {type}
+              <Typography sx={{ typography: "title", fontSize: ["2.8rem", "3.6rem"], lineHeight: ["3.8rem", "5rem"], maxWidth: "76rem" }}>
+                {title}
+              </Typography>
+              <Typography
+                sx={{ typography: "title", fontWeight: 400, color: "#6B6B6B", fontSize: "1.4rem", lineHeight: "2.4rem", mt: "1.6rem", mb: "4rem" }}
+              >
+                {date}
+                <span className="px-[14px]">•</span>
+                {type}
               </Typography>
               <ReactMarkdown
                 children={blogContent as string}

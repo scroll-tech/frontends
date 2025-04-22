@@ -12,7 +12,7 @@ const Link = styled(RouterLink)({
   display: "flex",
   alignItems: "center",
   gap: "0.8rem !important",
-  marginBottom: "1.6rem",
+  marginBottom: "0.8rem",
 })
 
 export interface Heading {
