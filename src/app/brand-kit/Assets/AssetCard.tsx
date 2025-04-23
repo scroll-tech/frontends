@@ -296,7 +296,7 @@ const AssetCard = props => {
             </Box>
             {version.samples.length ? <li className={classes.sampleTitle}>Examples</li> : null}
             {version.samples.map((sample, index) => (
-              <Image alt="" key={index} src={sample} className={clsx(classes["sampleImage" + index], "border border-[#101010] rounded-[2.5rem]")} />
+              <Image alt="" key={index} src={sample} className={clsx(classes["sampleImage" + index])} />
             ))}
           </Box>
         ))}

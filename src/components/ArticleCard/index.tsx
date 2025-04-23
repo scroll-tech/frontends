@@ -47,12 +47,13 @@ const ArticleInfo = styled(Box)(({ theme }) => ({
 })) as typeof Box
 
 const ArticlePoster = styled(Image)(({ theme }) => ({
-  width: "100%",
+  height: "100%",
   maxWidth: "51.7rem",
   borderRadius: "2.5rem",
   justifySelf: "flex-end",
   objectFit: "cover",
   [theme.breakpoints.down("lg")]: {
+    width: "100%",
     height: "auto",
   },
   [theme.breakpoints.down("md")]: {
@@ -75,24 +76,25 @@ const ArticleCard = props => {
   return (
     <Card onClick={handleClick}>
       <ArticleInfo>
-        <Typography sx={{ typography: "title", fontSize: ["2rem", "2rem", "2.8rem"], lineHeight: ["3rem"] }}>{blog.title}</Typography>
+        <Typography sx={{ typography: "title", fontSize: "2rem", lineHeight: "3rem" }}>{blog.title}</Typography>
         <Typography
           sx={{
-            fontSize: ["1.8rem"],
-            lineHeight: ["2.8rem"],
+            fontSize: "1.8rem",
+            lineHeight: "2.8rem",
             WebkitBoxOrient: "vertical",
             WebkitLineClamp: 2,
             overflow: "hidden",
-            mt: "1.6rem",
-            mb: "2.8rem",
-
+            mt: "1rem",
+            mb: "2rem",
             display: ["none", "none", "-webkit-box"],
           }}
         >
           {blog.summary}
         </Typography>
         <Typography sx={{ typography: "title", fontWeight: 400, color: "#6B6B6B", fontSize: "1.4rem", lineHeight: "normal", mt: ["4px", "8px", 0] }}>
-          {blog.date} <span className="px-[10px]">•</span> {blog.type}
+          {blog.date}
+          <span className="px-[10px]">•</span>
+          {blog.type}
         </Typography>
       </ArticleInfo>
       {blog.posterImg && <ArticlePoster src={blog.posterImg} alt={blog.title} width={1000} height={180}></ArticlePoster>}
