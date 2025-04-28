@@ -108,19 +108,6 @@ const mainnetNavigations: Navigation[] = [
     children: [
       {
         rootKey: "use",
-        label: "User Portal",
-        key: "portal",
-        href: process.env.NEXT_PUBLIC_USER_PORTAL_BASE_URL,
-        isNew: true,
-      },
-      {
-        rootKey: "participate",
-        label: "Session 2",
-        key: "session-2",
-        href: SESSIONS_URL,
-      },
-      {
-        rootKey: "use",
         label: "Projects",
         key: "projects",
         href: "/ecosystem",
@@ -148,6 +135,12 @@ const mainnetNavigations: Navigation[] = [
         label: "Governance",
         key: "governance",
         href: "https://gov.scroll.io/info",
+      },
+      {
+        rootKey: "participate",
+        label: "Session",
+        key: "session",
+        href: SESSIONS_URL,
       },
       // {
       //   rootKey: "use",

@@ -27,7 +27,7 @@ const BUILDER_LIST = [
     items: [
       { icon: Bridge, label: "Bridge", content: "Deposit your assets to Scroll", href: BRIDGE_URL },
       { icon: Ecosystem, label: "Projects", content: "Explore the dApps on Scroll", href: ECOSYSTEM_URL },
-      { icon: Sessions, label: "Session 2", content: "Receive Marks for your contributions", href: SESSIONS_URL },
+      { icon: Sessions, label: "Get SCR", content: "Receive Marks for your contributions", href: SESSIONS_URL },
     ],
   },
 ]
