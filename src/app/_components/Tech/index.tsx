@@ -4,9 +4,8 @@ import Button from "@/components/Button"
 import { TECH_URL } from "@/constants/link"
 
 const TECH_LIST = [
-  { label: "<18m", desc: "Time to finality" },
   { label: "100%", desc: "EVM-Compatible" },
-  { label: "<$0.01", desc: "Gas fees" },
+  { label: "<$0.005", desc: "Gas fees" },
   { label: "100+", desc: "dApps Built" },
   { label: "110M+", desc: "Total transactions" },
   { label: "700+", desc: "Active builders" },
