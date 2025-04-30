@@ -68,10 +68,23 @@ const AIModal = () => {
     setSearchText("")
 
     setLoadingStatus("fetching")
-    const stream = await chatWithAI({
-      message: userMessage,
-      prevId: responseId,
-    })
+
+    let stream
+    try {
+      stream = await chatWithAI({
+        message: userMessage,
+        prevId: responseId,
+      })
+    } catch (error) {
+      setMessages(preValue => {
+        return preValue.concat({
+          id: nanoid(),
+          type: "output_text_error",
+          text: "Network error, please try again.",
+        })
+      })
+      return
+    }
 
     const reader = stream.getReader()
     const decoder = new TextDecoder("utf-8")

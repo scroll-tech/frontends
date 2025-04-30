@@ -23,6 +23,8 @@ import "./globals.css"
 
 export const metadata: Metadata = ROOT_METADATA
 
+export const maxDuration = 90
+
 // same as scroll documnet
 const robotoFont = Roboto({
   variable: "--font-developer",
