@@ -83,6 +83,7 @@ const AIModal = () => {
           text: "Network error, please try again.",
         })
       })
+      setLoadingStatus("none")
       return
     }
 
