@@ -137,9 +137,9 @@ const mainnetNavigations: Navigation[] = [
         href: "https://gov.scroll.io/info",
       },
       {
-        rootKey: "participate",
-        label: "Session",
-        key: "session",
+        rootKey: "use",
+        label: "Sessions",
+        key: "sessions",
         href: SESSIONS_URL,
       },
       // {
