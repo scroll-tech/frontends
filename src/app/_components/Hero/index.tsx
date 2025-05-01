@@ -5,7 +5,7 @@ import { Box, Container, Stack, Typography } from "@mui/material"
 import HeroMobileSvg from "@/assets/svgs/landingpage/hero-bg-mobile.svg?url"
 import HeroSvg from "@/assets/svgs/landingpage/hero-bg.svg?url"
 import Button from "@/components/Button"
-import { DOC_URL, SESSIONS_URL } from "@/constants/link"
+import { BRIDGE_URL, DOC_URL } from "@/constants/link"
 
 const ANNOUNCEMENT_HEIGHT = "0rem"
 
@@ -45,12 +45,12 @@ const LandingHero = () => {
           </Button>
 
           <Button
-            href={process.env.NEXT_PUBLIC_USER_PORTAL_BASE_URL}
+            href={BRIDGE_URL}
             target="_blank"
             className="!w-[180px] sm:!w-[250px]"
-            gaEvent={{ event: "click_landing", label: "Open User Portal" }}
+            gaEvent={{ event: "click_landing", label: "Bridge to Scroll" }}
           >
-            Open User Portal
+            Bridge to Scroll
           </Button>
         </Stack>
       </Container>
