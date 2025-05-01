@@ -9,7 +9,7 @@ import Ecosystem from "@/assets/svgs/landingpage/ecosystem.svg"
 import Levelup from "@/assets/svgs/landingpage/levelup.svg"
 import ScrollOpen from "@/assets/svgs/landingpage/scroll-open.svg"
 import Sessions from "@/assets/svgs/landingpage/sessions.svg"
-import { BRIDGE_URL, DOC_URL, ECOSYSTEM_URL, LEVEL_UP_URL, SCROLL_OPEN_URL, SESSIONS_URL } from "@/constants/link"
+import { BRIDGE_URL, DOC_URL, ECOSYSTEM_URL, LEVEL_UP_URL, SCROLL_OPEN_URL } from "@/constants/link"
 
 import PortalCard from "./PortalCard"
 
@@ -27,7 +27,7 @@ const BUILDER_LIST = [
     items: [
       { icon: Bridge, label: "Bridge", content: "Deposit your assets to Scroll", href: BRIDGE_URL },
       { icon: Ecosystem, label: "Projects", content: "Explore the dApps on Scroll", href: ECOSYSTEM_URL },
-      { icon: Sessions, label: "Session 2", content: "Receive Marks for your contributions", href: SESSIONS_URL },
+      { icon: Sessions, label: "Get SCR", content: "Vote or propose on Scroll", href: "/SCR-sSCR" },
     ],
   },
 ]
