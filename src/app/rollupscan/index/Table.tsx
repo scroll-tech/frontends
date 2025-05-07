@@ -157,7 +157,7 @@ const RollupTable = function RollupTable(props) {
   const handleChangePage = (e, newPage) => {
     const params = new URLSearchParams(searchParams.toString())
     params.set("page", newPage)
-    router.push(`${pathname}?${params.toString()}}`)
+    router.push(`${pathname}?${params.toString()}`)
   }
 
   if (emptyBatch) {
