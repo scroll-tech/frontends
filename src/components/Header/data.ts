@@ -120,18 +120,6 @@ const mainnetNavigations: Navigation[] = [
       },
       {
         rootKey: "use",
-        label: "SCR & sSCR",
-        key: "scr",
-        href: "/SCR-sSCR",
-      },
-      {
-        rootKey: "use",
-        label: "scrETH",
-        key: "scrETH",
-        href: "/scrETH",
-      },
-      {
-        rootKey: "use",
         label: "Governance",
         key: "governance",
         href: "https://gov.scroll.io/info",
