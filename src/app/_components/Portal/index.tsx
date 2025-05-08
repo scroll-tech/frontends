@@ -1,8 +1,11 @@
+"use client"
+
 import Link from "next/link"
-import { Fragment } from "react"
+import { Fragment, useState } from "react"
 
 import { Box, Container, Typography } from "@mui/material"
 
+import GetSCRDialog from "@/app/SCR-sSCR/Header/GetSCRDialog"
 import Bridge from "@/assets/svgs/landingpage/bridge.svg"
 import Doc from "@/assets/svgs/landingpage/doc.svg"
 import Ecosystem from "@/assets/svgs/landingpage/ecosystem.svg"
@@ -13,26 +16,27 @@ import { BRIDGE_URL, DOC_URL, ECOSYSTEM_URL, LEVEL_UP_URL, SCROLL_OPEN_URL } fro
 
 import PortalCard from "./PortalCard"
 
-const BUILDER_LIST = [
-  {
-    title: "For builders",
-    items: [
-      { icon: Doc, label: "Developer Docs", content: "Everything you need to start building", href: DOC_URL },
-      { icon: Levelup, label: "Level Up", content: "Learn ZK and test your dev skills", href: LEVEL_UP_URL },
-      { icon: ScrollOpen, label: "Scroll open", content: "A six-week builder program with a $100,000 prize pool", href: SCROLL_OPEN_URL },
-    ],
-  },
-  {
-    title: "For users",
-    items: [
-      { icon: Bridge, label: "Bridge", content: "Deposit your assets to Scroll", href: BRIDGE_URL },
-      { icon: Ecosystem, label: "Projects", content: "Explore the dApps on Scroll", href: ECOSYSTEM_URL },
-      { icon: Sessions, label: "Get SCR", content: "Vote or propose on Scroll", href: "/SCR-sSCR" },
-    ],
-  },
-]
-
 const Portal = () => {
+  const [getSCROpen, setGetSCROpen] = useState(false)
+  const BUILDER_LIST = [
+    {
+      title: "For builders",
+      items: [
+        { icon: Doc, label: "Developer Docs", content: "Everything you need to start building", href: DOC_URL },
+        { icon: Levelup, label: "Level Up", content: "Learn ZK and test your dev skills", href: LEVEL_UP_URL },
+        { icon: ScrollOpen, label: "Scroll open", content: "A six-week builder program with a $100,000 prize pool", href: SCROLL_OPEN_URL },
+      ],
+    },
+    {
+      title: "For users",
+      items: [
+        { icon: Bridge, label: "Bridge", content: "Deposit your assets to Scroll", href: BRIDGE_URL },
+        { icon: Ecosystem, label: "Projects", content: "Explore the dApps on Scroll", href: ECOSYSTEM_URL },
+        { icon: Sessions, label: "Get SCR", content: "Vote or propose on Scroll", onClick: () => setGetSCROpen(true) },
+      ],
+    },
+  ]
+
   return (
     <Box sx={{ backgroundColor: "themeBackground.light" }}>
       <Container sx={{ py: ["5.6rem", "10.6rem"] }}>
@@ -50,17 +54,26 @@ const Portal = () => {
               {title}
             </Typography>
             <Box sx={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(33rem, 1fr))", gap: ["2.4rem", "2.8rem"] }}>
-              {items.map(({ icon: Icon, label, content, href }) => (
-                <Link href={href} key={label} target={href.startsWith("https:") ? "_blank" : ""} className="cursor-pointer">
-                  <PortalCard label={label} content={content}>
-                    <Icon></Icon>
-                  </PortalCard>
-                </Link>
-              ))}
+              {items.map(({ icon: Icon, label, content, href, onClick }) =>
+                onClick ? (
+                  <Box key={label} className="cursor-pointer" onClick={onClick}>
+                    <PortalCard label={label} content={content}>
+                      <Icon></Icon>
+                    </PortalCard>
+                  </Box>
+                ) : (
+                  <Link href={href} key={label} target={href.startsWith("https:") ? "_blank" : ""} className="cursor-pointer">
+                    <PortalCard label={label} content={content}>
+                      <Icon></Icon>
+                    </PortalCard>
+                  </Link>
+                ),
+              )}
             </Box>
           </Fragment>
         ))}
         <Box></Box>
+        <GetSCRDialog open={getSCROpen} onClose={() => setGetSCROpen(false)} />
       </Container>
     </Box>
   )
