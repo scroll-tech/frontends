@@ -48,13 +48,6 @@ const PERKS = [
     content: "We have always been a fully remote team and Scrollers have the flexibility to choose where and when they work.",
   },
   {
-    icon: IconSVG2,
-    title: "Home office set up",
-    width: "2.2rem",
-    // mobileScale: "0.87",
-    content: "A choice of equipment is provided through our onboarding partner Hofy, along with furniture needed to create a comfortable work space.",
-  },
-  {
     icon: IconSVG3,
     title: "Paid time off",
     width: "3.1rem",
@@ -62,19 +55,11 @@ const PERKS = [
     content: "A total of 25 days PTO per year, plus local public holidays, and we encourage everyone to use it.",
   },
   {
-    icon: IconSVG4,
-    title: "Growth budget",
-    width: "3rem",
-    // mobileScale: "0.785",
-    content: "Up to $3,000 USD per year to pursue learning and growth opportunities.",
-  },
-
-  {
     icon: IconSVG5,
     title: "Co-working allowance",
     width: "2.7rem",
     // mobileScale: "0.88",
-    content: "Up to $300 USD per month for co-working membership for those who prefer to work away from home.",
+    content: "Up to $200 USD per month for co-working membership for those who prefer to work away from home.",
   },
   {
     icon: IconSVG6,
@@ -84,18 +69,11 @@ const PERKS = [
     content: "Offered in selected countries, including the US, Canada and the UK.",
   },
   {
-    icon: IconSVG7,
-    title: "Global offsites",
-    width: "4.3rem",
-    // mobileScale: "0.73",
-    content: "We get together in a cool location at least once a year to get to know each other in person, work together, and have fun.",
-  },
-  {
     icon: IconSVG8,
     title: "Team meetups",
     width: "3.3rem",
     // mobileScale: "0.785",
-    content: "We encourage teams to meet and work together in person at least once a year.",
+    content: "We encourage small teams to meet and work together in person once in awhile.",
   },
 ]
 
@@ -127,7 +105,7 @@ const Perks = () => {
 
   return (
     <SectionWrapper>
-      <Typography sx={{ fontSize: ["3.2rem", "4.8rem"], mb: ["3.2rem", "5.6rem"] }}>Perks & benefits</Typography>
+      <Typography sx={{ fontSize: ["3.2rem", "4.8rem"], mb: ["3.2rem", "5.6rem"] }}>Perks and benefit</Typography>
       <SuccessionToView className={classes.grid}>
         {PERKS.map(({ icon: IconSvg, width, title, content }, index) => (
           <SuccessionItem key={index}>
