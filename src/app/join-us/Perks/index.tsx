@@ -52,7 +52,7 @@ const PERKS = [
     title: "Paid time off",
     width: "3.1rem",
     // mobileScale: "0.73",
-    content: "A total of 25 days PTO per year, plus local public holidays, and we encourage everyone to use it.",
+    content: "We offer discretionary paid time off and encourage people to take the time they need to rest and recharge when appropriate.",
   },
   {
     icon: IconSVG5,
