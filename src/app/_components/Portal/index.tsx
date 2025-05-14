@@ -5,19 +5,17 @@ import { Fragment, useState } from "react"
 
 import { Box, Container, Typography } from "@mui/material"
 
-import GetSCRDialog from "@/app/SCR-sSCR/Header/GetSCRDialog"
 import Bridge from "@/assets/svgs/landingpage/bridge.svg"
 import Doc from "@/assets/svgs/landingpage/doc.svg"
 import Ecosystem from "@/assets/svgs/landingpage/ecosystem.svg"
+import Governance from "@/assets/svgs/landingpage/governance.svg"
 import Levelup from "@/assets/svgs/landingpage/levelup.svg"
 import ScrollOpen from "@/assets/svgs/landingpage/scroll-open.svg"
-import Sessions from "@/assets/svgs/landingpage/sessions.svg"
 import { BRIDGE_URL, DOC_URL, ECOSYSTEM_URL, LEVEL_UP_URL, SCROLL_OPEN_URL } from "@/constants/link"
 
 import PortalCard from "./PortalCard"
 
 const Portal = () => {
-  const [getSCROpen, setGetSCROpen] = useState(false)
   const BUILDER_LIST = [
     {
       title: "For builders",
@@ -32,7 +30,12 @@ const Portal = () => {
       items: [
         { icon: Bridge, label: "Bridge", content: "Deposit your assets to Scroll", href: BRIDGE_URL },
         { icon: Ecosystem, label: "Projects", content: "Explore the dApps on Scroll", href: ECOSYSTEM_URL },
-        { icon: Sessions, label: "Get SCR", content: "Vote or propose on Scroll", onClick: () => setGetSCROpen(true) },
+        {
+          icon: Governance,
+          label: "SCR",
+          content: "Vote or propose on Scroll",
+          onClick: () => (window.location.href = "https://portal.scroll.io/scr"),
+        },
       ],
     },
   ]
@@ -73,7 +76,6 @@ const Portal = () => {
           </Fragment>
         ))}
         <Box></Box>
-        <GetSCRDialog open={getSCROpen} onClose={() => setGetSCROpen(false)} />
       </Container>
     </Box>
   )
