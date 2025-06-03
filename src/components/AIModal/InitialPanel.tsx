@@ -1,3 +1,4 @@
+import { sendGAEvent } from "@next/third-parties/google"
 import { sampleSize } from "lodash"
 import Image from "next/image"
 import { useEffect, useState } from "react"
@@ -19,6 +20,14 @@ const InitialPanel = props => {
       setInitialQuestionList(sampleSize(AI_QUESTION_LIST, 5))
     }
   }, [aiModalVisible])
+
+  const handleClickDefaultQuestion = (question: string) => {
+    onChat(question)
+
+    sendGAEvent("event", "click_ai_default_question", {
+      label: question,
+    })
+  }
 
   return (
     <Stack
@@ -49,7 +58,7 @@ const InitialPanel = props => {
             mb: "1.6rem",
             cursor: "pointer",
           }}
-          onClick={() => onChat(item)}
+          onClick={() => handleClickDefaultQuestion(item)}
         >
           <EnterSvg></EnterSvg>
           <Typography sx={{ fontSize: "1.6rem", lineHeight: "2.4rem", flex: 1, cursor: "inherit", textAlign: "left" }}>{item}</Typography>

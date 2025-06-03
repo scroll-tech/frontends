@@ -22,6 +22,9 @@ export const chatWithAI = async ({ message, prevId }: { message: string; prevId?
     input: input as InputMessage[],
     previous_response_id: prevId ?? null,
     stream: true,
+    metadata: {
+      env: process.env.NEXT_PUBLIC_SCROLL_ENVIRONMENT,
+    },
   })
 
   return response.toReadableStream()

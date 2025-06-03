@@ -1,3 +1,4 @@
+import { sendGAEvent } from "@next/third-parties/google"
 import clsx from "clsx"
 import { useEffect, useRef, useState } from "react"
 
@@ -18,7 +19,7 @@ const MessagePanel = props => {
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" })
-  }, [data])
+  }, [data[data.length - 1]?.text])
 
   if (!data || data.length === 0) {
     return null
@@ -27,11 +28,27 @@ const MessagePanel = props => {
   const handleThumbUp = id => {
     setFeedbackAlertVisible(true)
     onUpdateData({ id, feedback: "good" })
+
+    const messageIndex = data.findIndex(message => message.id === id)
+
+    sendGAEvent("event", "click_ai_feedback", {
+      label: data[messageIndex - 1].text,
+      id,
+      feedback: "good",
+    })
   }
 
   const handleThumbDown = id => {
     setFeedbackAlertVisible(true)
     onUpdateData({ id, feedback: "bad" })
+
+    const messageIndex = data.findIndex(message => message.id === id)
+
+    sendGAEvent("event", "click_ai_feedback", {
+      label: data[messageIndex - 1].text,
+      id,
+      feedback: "bad",
+    })
   }
   return (
     <Box
@@ -68,7 +85,7 @@ const MessagePanel = props => {
       <div ref={bottomRef}></div>
 
       <Box sx={{ position: "absolute", top: "2.4rem", left: "50%", transform: "translateX(-50%)" }}>
-        <FeedbackAlert open={feedbackAlertVisible} duration={3e3} onClose={() => setFeedbackAlertVisible(false)}>
+        <FeedbackAlert open={feedbackAlertVisible} duration={5e3} onClose={() => setFeedbackAlertVisible(false)}>
           Thanks for your feedback!
         </FeedbackAlert>
       </Box>

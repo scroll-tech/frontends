@@ -1,3 +1,6 @@
+import { sendGAEvent } from "@next/third-parties/google"
+import { useEffect, useRef } from "react"
+
 import { ButtonBase } from "@mui/material"
 
 import useGlobalStore from "@/stores/globalStore"
@@ -5,12 +8,26 @@ import useGlobalStore from "@/stores/globalStore"
 const AskAI = props => {
   const { isMobile } = props
   const { aiModalVisible, changeAIModalVisible } = useGlobalStore()
+  const aiDurationRef = useRef<number>(null)
+
+  useEffect(() => {
+    if (aiModalVisible) {
+      aiDurationRef.current = Date.now()
+    } else {
+      if (aiDurationRef.current) {
+        const duration = Date.now() - aiDurationRef.current
+        sendGAEvent("event", "ai_modal_duration", { duration })
+        aiDurationRef.current = null // reset the start time
+      }
+    }
+  }, [aiModalVisible])
 
   const handleToggleAIModal = () => {
     if (aiModalVisible) {
       changeAIModalVisible(false)
     } else {
       changeAIModalVisible(true)
+      sendGAEvent("event", "click_ask_ai")
     }
   }
 
