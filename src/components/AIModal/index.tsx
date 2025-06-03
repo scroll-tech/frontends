@@ -24,6 +24,7 @@ interface Message {
   id: string
   type: "input_text" | "output_text" | "output_text_error"
   text: string
+  feedback?: "good" | "bad"
 }
 
 type LoadingStatus = "none" | "fetching" | "streaming"
@@ -66,13 +67,23 @@ const AIModal = () => {
       })
     })
     setSearchText("")
+    chatWithScrollAI(userMessage)
+  }
 
+  const handleReSendMessage = async (id: string) => {
+    const messageIndex = messages.findIndex(message => message.id === id)
+    const reservedMessage = messages.slice(0, messageIndex)
+    setMessages(reservedMessage)
+    chatWithScrollAI(reservedMessage[messageIndex - 1].text)
+  }
+
+  const chatWithScrollAI = async (message: string) => {
     setLoadingStatus("fetching")
 
     let stream
     try {
       stream = await chatWithAI({
-        message: userMessage,
+        message,
         prevId: responseId,
       })
     } catch (error) {
@@ -149,10 +160,26 @@ const AIModal = () => {
           } as Message
           return [...preValue.slice(0, -1), newMessage]
         })
+      } else if (event.type === "response.completed") {
+        setLoadingStatus("none")
       } else if (event.type === "error") {
         throw new Error("Connection error, please try again.")
       }
     }
+  }
+
+  const handleUpdateData = ({ id, feedback }) => {
+    setMessages(preValue => {
+      return preValue.map(message => {
+        if (message.id === id) {
+          return {
+            ...message,
+            feedback: feedback,
+          }
+        }
+        return message
+      })
+    })
   }
 
   return (
@@ -207,7 +234,13 @@ const AIModal = () => {
             </IconButton>
           </Stack>
           {messages?.length ? (
-            <MessagePanel data={messages} loading={loadingStatus === "fetching"}></MessagePanel>
+            <MessagePanel
+              data={messages}
+              fetching={loadingStatus === "fetching"}
+              streaming={loadingStatus === "streaming"}
+              onUpdateData={handleUpdateData}
+              onRetry={handleReSendMessage}
+            ></MessagePanel>
           ) : (
             <InitialPanel onChat={handleSendMessage}></InitialPanel>
           )}
