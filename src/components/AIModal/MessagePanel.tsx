@@ -13,7 +13,6 @@ import UserMessage from "./UserMessage"
 const MessagePanel = props => {
   const { data, fetching, streaming, onRetry, onUpdateData } = props
 
-  const [feedbackAlertVisible, setFeedbackAlertVisible] = useState(false)
   // Reference to the bottom of the message panel for auto-scrolling
   const bottomRef = useRef<HTMLDivElement>(null)
 
@@ -26,7 +25,6 @@ const MessagePanel = props => {
   }
 
   const handleThumbUp = id => {
-    setFeedbackAlertVisible(true)
     onUpdateData({ id, feedback: "good" })
 
     const messageIndex = data.findIndex(message => message.id === id)
@@ -39,7 +37,6 @@ const MessagePanel = props => {
   }
 
   const handleThumbDown = id => {
-    setFeedbackAlertVisible(true)
     onUpdateData({ id, feedback: "bad" })
 
     const messageIndex = data.findIndex(message => message.id === id)
@@ -83,12 +80,6 @@ const MessagePanel = props => {
       </Box>
       <SpinSvg className={clsx(fetching ? "visible mb-[1.6rem]" : "invisible")} />
       <div ref={bottomRef}></div>
-
-      <Box sx={{ position: "absolute", top: "2.4rem", left: "50%", transform: "translateX(-50%)" }}>
-        <FeedbackAlert open={feedbackAlertVisible} duration={5e3} onClose={() => setFeedbackAlertVisible(false)}>
-          Thanks for your feedback!
-        </FeedbackAlert>
-      </Box>
     </Box>
   )
 }

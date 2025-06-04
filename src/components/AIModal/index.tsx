@@ -14,6 +14,7 @@ import useGlobalStore from "@/stores/globalStore"
 import { lockBodyScroll } from "@/utils"
 
 import AIInput from "./AIInput"
+import FeedbackAlert from "./FeedbackAlert"
 import InitialPanel from "./InitialPanel"
 import MessagePanel from "./MessagePanel"
 import { chatWithAI } from "./actions"
@@ -35,6 +36,7 @@ const AIModal = () => {
   const { isMobile } = useCheckViewport()
 
   const [searchText, setSearchText] = useState("")
+  const [feedbackAlertVisible, setFeedbackAlertVisible] = useState(false)
 
   const [messages, setMessages] = useState<Message[]>([])
 
@@ -169,6 +171,8 @@ const AIModal = () => {
   }
 
   const handleUpdateData = ({ id, feedback }) => {
+    // only feedback update the messages
+    setFeedbackAlertVisible(true)
     setMessages(preValue => {
       return preValue.map(message => {
         if (message.id === id) {
@@ -245,7 +249,17 @@ const AIModal = () => {
             <InitialPanel onChat={handleSendMessage}></InitialPanel>
           )}
           <Box sx={{ p: ["0 2rem 2.4rem", "0 1.6rem 2.4rem"] }}>
-            <AIInput value={searchText} disabled={loadingStatus !== "none"} onChange={handleChangeSearchText} onChat={handleSendMessage}></AIInput>
+            <AIInput
+              value={searchText}
+              disabled={loadingStatus !== "none" || !searchText.trim()}
+              onChange={handleChangeSearchText}
+              onChat={handleSendMessage}
+            ></AIInput>
+          </Box>
+          <Box sx={{ position: "absolute", top: "8rem", left: "50%", transform: "translateX(-50%)" }}>
+            <FeedbackAlert open={feedbackAlertVisible} duration={5e3} onClose={() => setFeedbackAlertVisible(false)}>
+              Thanks for your feedback!
+            </FeedbackAlert>
           </Box>
         </MotionCard>
       ) : null}

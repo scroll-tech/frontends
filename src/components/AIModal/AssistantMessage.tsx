@@ -31,9 +31,14 @@ const AssistantMessage = props => {
           className="assistant-message"
         />
         <Box sx={{ height: "2rem", marginTop: "-0.4rem", marginBottom: "1.6rem" }}>
-          {allowOperation && (isLast || operationVisible) && (
-            <Operation message={children as string} feedback={feedback} onThumbUp={onThumbUp} onThumbDown={onThumbDown} onRetry={onRetry}></Operation>
-          )}
+          <Operation
+            visible={allowOperation && (isLast || operationVisible)}
+            message={children as string}
+            feedback={feedback}
+            onThumbUp={onThumbUp}
+            onThumbDown={onThumbDown}
+            onRetry={onRetry}
+          ></Operation>
         </Box>
       </Box>
     </>
