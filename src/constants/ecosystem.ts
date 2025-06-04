@@ -7,7 +7,7 @@ export const ECOSYSTEM_PAGE_SYMBOL = "ecosystem"
 
 export const DIVERGENT_CATEGORY_MAP = {
   Community: ["Community", "DAO", "Governance"],
-  DeFi: ["DEX", "DeFi", "Launchpad", "Lending", "Marketplace", "Payment"],
+  DeFi: ["DEX", "DeFi", "Launchpad", "Lending", "Marketplace"],
   Gaming: ["Gaming"],
   Infra: ["Gateway", "Indexer", "Infrastructure", "Node Provider", "Oracle"],
   NFT: ["NFT"],
@@ -16,6 +16,7 @@ export const DIVERGENT_CATEGORY_MAP = {
   Tooling: ["Tooling"],
   Wallet: ["Wallet", "Hardware Wallet"],
   Bridge: ["Bridge"],
+  Payment: ["Payment"],
 }
 
 export const ECOSYSTEM_EXPLORER_LIST = [
