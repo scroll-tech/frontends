@@ -1,0 +1,91 @@
+.assistant-message {
+  font-size: 1.6rem;
+  line-height: 2.4rem;
+  font-family: var(--font-inter);
+}
+
+.assistant-message p {
+  margin: 0 0 16px;
+  max-width: 100%;
+  line-height: 2.6rem;
+}
+
+.assistant-message h1,
+.assistant-message h2,
+.assistant-message h3 {
+  font-weight: 700;
+  margin-bottom: 1.6rem;
+}
+
+.assistant-message ol {
+  list-style-type: decimal;
+  margin-left: 1.8rem;
+  margin-bottom: 1.6rem;
+}
+.assistant-message > ol > li {
+  margin-bottom: 1.6rem;
+}
+.assistant-message > ol > li::marker {
+  font-weight: 700;
+}
+.assistant-message > ol > li p {
+  margin-bottom: 0;
+}
+
+.assistant-message ul {
+  list-style-type: disc;
+  margin-left: 1.5rem;
+  margin-bottom: 1.6rem;
+}
+
+.assistant-message li {
+  margin-bottom: 0.8rem;
+}
+
+.assistant-message blockquote:not(:empty) {
+  border-left: 2px solid #9b9b9b;
+  font-style: italic;
+  font-size: 15px;
+  color: #777;
+  padding: 8px 8px 8px 16px;
+  margin-bottom: 1.6rem;
+}
+.assistant-message blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+.assistant-message pre {
+  background-color: #1010100d;
+  padding: 0.8rem 1.6rem;
+  border-radius: 0.4rem;
+  margin-bottom: 1.6rem;
+}
+
+.assistant-message pre code {
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.assistant-message code {
+  background-color: #1010100d;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.2rem;
+}
+
+.assistant-message a {
+  color: #ff684b;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-position: from-font;
+}
+
+.assistant-message img {
+  background-color: transparent;
+}
+
+.assistant-message strong {
+  font-weight: 700;
+}

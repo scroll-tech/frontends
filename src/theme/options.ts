@@ -200,6 +200,10 @@ export const typographyOptions = {
     fontFamily: "var(--font-developer)",
   },
 
+  inter: {
+    fontFamily: "var(--font-inter)",
+  },
+
   H1: {
     fontSize: "6.4rem",
     lineHeight: "normal",
