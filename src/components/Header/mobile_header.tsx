@@ -181,7 +181,7 @@ const MobileHeader = ({ currentMenu }) => {
           <Box sx={{ margin: "-0.8rem 2rem 0" }}>
             {renderList()}
             {!isSepolia && <MobileGasPriceViewer dark={dark}></MobileGasPriceViewer>}
-            {!isSepolia && <AskAI isMobile></AskAI>}
+            {/* {!isSepolia && <AskAI isMobile></AskAI>} */}
           </Box>
         </Box>
       )}

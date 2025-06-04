@@ -9,7 +9,6 @@ import React, { Suspense } from "react"
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter"
 import InitColorSchemeScript from "@mui/material/InitColorSchemeScript"
 
-import AIModal from "@/components/AIModal"
 import GlobalComponents from "@/components/GlobalComponents"
 import ScrollToTop from "@/components/ScrollToTop"
 import WebVitals from "@/components/WebVitals"
@@ -74,7 +73,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <BridgeContextProvider>
                   {children}
                   <GlobalComponents></GlobalComponents>
-                  <AIModal></AIModal>
                 </BridgeContextProvider>
               </RainbowProvider>
             </VersionChecker>

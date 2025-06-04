@@ -88,7 +88,7 @@ const Operation = props => {
                           lineHeight: "1.6rem",
                           padding: "0.4rem 0.8rem",
                           backgroundColor: "text.primary",
-                          marginTop: "0.8rem",
+                          marginTop: "0.8rem !important",
                           "& .MuiTooltip-arrow": {
                             color: "#101010",
                           },

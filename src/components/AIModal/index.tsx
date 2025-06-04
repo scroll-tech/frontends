@@ -56,6 +56,28 @@ const AIModal = () => {
     }
   }, [aiModalVisible])
 
+  // useLayoutEffect(() => {
+  //   function adjustLayout() {
+  //     const viewportHeight = window.visualViewport!.height || "100vh"
+  //     modalRef.current!.style.height = `${viewportHeight}px`
+  //   }
+  //   function preventTouchScroll(e) {
+  //     e.preventDefault()
+  //   }
+
+  //   if (isMobile) {
+  //     document.body.addEventListener("touchmove", preventTouchScroll)
+  //     window.visualViewport!.addEventListener("resize", adjustLayout)
+  //   }
+
+  //   return () => {
+  //     if (isMobile) {
+  //       window.visualViewport!.removeEventListener("resize", adjustLayout)
+  //       document.body.removeEventListener("touchmove", preventTouchScroll)
+  //     }
+  //   }
+  // }, [isMobile])
+
   const handleChangeSearchText = e => {
     setSearchText(e.target.value)
   }
@@ -185,7 +207,6 @@ const AIModal = () => {
       })
     })
   }
-
   return (
     <AnimatePresence>
       {aiModalVisible ? (
@@ -194,10 +215,11 @@ const AIModal = () => {
             position: "fixed",
             zIndex: "var(--mui-zIndex-modal)",
             right: [0, "2.5rem"],
-            top: [0, "7.5rem"],
+            top: ["unset", "7.5rem"],
+            bottom: [0, "unset"],
 
             width: ["100%", "46.8rem"],
-            height: ["100%", "calc(100svh - 7.5rem - 10rem)"],
+            height: ["100vh", "calc(100svh - 7.5rem - 10rem)"],
             borderRadius: [0, "1.6rem"],
 
             display: "flex",
