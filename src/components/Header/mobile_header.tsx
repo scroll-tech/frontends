@@ -8,8 +8,10 @@ import Link from "@/components/Link"
 import WalletToolkit from "@/components/WalletToolkit"
 import useShowLanguageSelect from "@/hooks/useShowLanguageSelect"
 import useShowWalletConnector from "@/hooks/useShowWalletToolkit"
+import { isSepolia } from "@/utils"
 
 import Logo from "../ScrollLogo"
+import AskAI from "./AskAI"
 import MenuItem from "./MenuItem"
 import MobileGasPriceViewer from "./MobileGasPriceViewer"
 import MobileNavbarItem from "./MobileNavBarItem"
@@ -40,9 +42,9 @@ const MobileHeader = ({ currentMenu }) => {
 
   useLayoutEffect(() => {
     if (open) {
-      window.document.body.classList.add("mobile-top-nav-open")
+      window.document.body.classList.add("disable-body-scroll")
     } else {
-      window.document.body.classList.remove("mobile-top-nav-open")
+      window.document.body.classList.remove("disable-body-scroll")
     }
   }, [open])
 
@@ -172,12 +174,14 @@ const MobileHeader = ({ currentMenu }) => {
           sx={{
             flex: 1,
             backgroundColor: dark ? "themeBackground.dark" : "themeBackground.light",
+            paddingBottom: "4.8rem",
             overflowY: "auto",
           }}
         >
           <Box sx={{ margin: "-0.8rem 2rem 0" }}>
             {renderList()}
-            <MobileGasPriceViewer dark={dark}></MobileGasPriceViewer>
+            {!isSepolia && <MobileGasPriceViewer dark={dark}></MobileGasPriceViewer>}
+            {/* {!isSepolia && <AskAI isMobile></AskAI>} */}
           </Box>
         </Box>
       )}

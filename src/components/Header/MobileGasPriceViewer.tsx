@@ -88,9 +88,7 @@ const MobileGasPriceViewer = props => {
         position: "relative",
         borderRadius: "0.5rem",
         width: "100%",
-        height: "21.6rem",
-        mt: "2.4rem",
-        mb: "4.8rem",
+        my: "2.4rem",
         overflow: "hidden",
       }}
       ref={gasPriceRef}
@@ -112,7 +110,7 @@ const MobileGasPriceViewer = props => {
               },
             },
             closed: {
-              clipPath: `polygon(0 0, 100px 0, 100px 50px, 0 50px)`,
+              clipPath: `polygon(0 0, 100px 0, 100px 30px, 0 30px)`,
               transition: {
                 ease: [0.165, 0.84, 0.44, 1],
                 delay: 0.2,
@@ -129,7 +127,7 @@ const MobileGasPriceViewer = props => {
             width: "min-content",
             alignItems: "center",
             borderRadius: "0.5rem",
-            padding: "1.6rem",
+            padding: "0.8rem 1.6rem",
             color: dark ? "primary.contrastText" : "text.primary",
             backgroundColor: dark ? "#333" : "background.default",
           }}
