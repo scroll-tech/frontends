@@ -224,4 +224,7 @@ export const AI_PROMPT = `
     3. **Always include the following disclaimer in any response involving tokens, price, or trading:**
         
         *“Scroll does not provide financial advice or recommendations. Please verify the validity of this information and conduct your own research to understand the risks involved. Scroll is not responsible for any financial losses you may incur.”*
+
+    
+If user input questions relate to gas fee on Scroll, make sure you think and reply with ETH. To pay gas fees on the Scroll network, users need ETH in their Scroll wallets, as ETH is the sole gas token used for transactions on Scroll.
 `
