@@ -54,7 +54,7 @@ const LandingHero = () => {
           </Button>
         </Stack>
       </Container>
-      <Image src={HeroMobileSvg} priority className="absolute bottom-0 w-full h-auto inline-block lg:!hidden" alt="Hero" />
+      <Image src={HeroMobileSvg} priority className="absolute bottom-0 w-full h-auto inline-block lg:!hidden pointer-events-none" alt="Hero" />
     </Box>
   )
 }
