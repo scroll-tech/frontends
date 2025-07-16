@@ -3,8 +3,6 @@ import { makeStyles } from "tss-react/mui"
 
 import { MenuItem, MenuList, Typography } from "@mui/material"
 
-import { DIVERGENT_CATEGORY_MAP } from "@/constants"
-
 const useStyles = makeStyles<any>()((theme, { top }) => ({
   menuListRoot: {
     [theme.breakpoints.up("md")]: {
@@ -63,9 +61,9 @@ const useStyles = makeStyles<any>()((theme, { top }) => ({
 }))
 
 const Category = props => {
-  const { top, value, onChange } = props
+  const { top, value, options, onChange } = props
   const { classes, cx } = useStyles({ top })
-  const allCategories = useRef(["All categories", ...Object.keys(DIVERGENT_CATEGORY_MAP)])
+  const allCategories = useRef(["All categories", ...Object.keys(options)])
 
   return (
     <MenuList classes={{ root: cx(classes.menuListRoot, "ecosystem-protocols-category") }}>

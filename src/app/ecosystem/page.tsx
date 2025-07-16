@@ -13,15 +13,18 @@ export const generateMetadata = genMeta(() => ({
   relativeURL: "/ecosystem",
 }))
 
-const Ecosystem = () => {
+const Ecosystem = async () => {
   if (isSepolia) {
     notFound()
   }
+
+  const categoryToTags = await fetch("https://scroll-eco-list.netlify.app/docs/category-to-tags.json").then(res => res.json())
+
   return (
     <>
       <Header></Header>
       <Highlights />
-      <Protocols></Protocols>
+      <Protocols categories={categoryToTags}></Protocols>
       <Contribute></Contribute>
     </>
   )
