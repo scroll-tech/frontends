@@ -5,20 +5,6 @@ import { GET_IN_TOUCH_URL, LEARN_BUILD_URL, REQUEST_A_DAPP_URL } from "@/constan
 
 export const ECOSYSTEM_PAGE_SYMBOL = "ecosystem"
 
-export const DIVERGENT_CATEGORY_MAP = {
-  Community: ["Community", "DAO", "Governance"],
-  DeFi: ["DEX", "DeFi", "Launchpad", "Lending", "Marketplace"],
-  Gaming: ["Gaming"],
-  Infra: ["Gateway", "Indexer", "Infrastructure", "Node Provider", "Oracle"],
-  NFT: ["NFT"],
-  Privacy: ["Privacy", "Identity"],
-  Social: ["Social"],
-  Tooling: ["Tooling"],
-  Wallet: ["Wallet", "Hardware Wallet"],
-  Bridge: ["Bridge"],
-  Payment: ["Payment"],
-}
-
 export const ECOSYSTEM_EXPLORER_LIST = [
   {
     icon: NoteIcon,

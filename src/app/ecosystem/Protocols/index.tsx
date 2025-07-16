@@ -34,7 +34,8 @@ const Grid = withStyles(Box, theme => ({
   },
 }))
 
-const Protocols = () => {
+const Protocols = props => {
+  const { categories } = props
   const trigger = useScrollTrigger()
   const { isLandscape } = useCheckViewport()
   const [searchInput, setSearchInput] = useState("")
@@ -110,7 +111,7 @@ const Protocols = () => {
         </Typography>
       </Stack>
       <Grid id={`${ECOSYSTEM_PAGE_SYMBOL}-protocols`}>
-        <Category top={stickyTop} value={searchParams.category} onChange={handleChangeCategory}></Category>
+        <Category top={stickyTop} value={searchParams.category} options={categories} onChange={handleChangeCategory}></Category>
         <SearchInput top={stickyTop} sticky={isSticky} value={searchInput} onChange={handleChangeKeyword}></SearchInput>
         <NetworkSelect top={stickyTop} sticky={isSticky} value={searchParams.network} onChange={handleChangeNetwork}></NetworkSelect>
         <ProtocolList searchParams={searchParams} onAddPage={handleChangePage}></ProtocolList>
