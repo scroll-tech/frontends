@@ -22,7 +22,7 @@ Check for compliance with predefined minting rules set by your platform. These r
 
 A scrolly can be placed in the corner of the page to remind the user to mint a badge.
 ![Canvas on Bridge](https://github.com/user-attachments/assets/3b8445f5-8890-453f-b92c-4834dad5846c)
-[Reference code](https://github.com/scroll-tech/frontends/blob/mainnet/src/pages/bridge/components/MintBadge/index.tsx)
+[Reference code](https://github.com/scroll-tech/frontends/blob/sepolia/src/app/bridge/components/MintBadge/index.tsx)
 
 After clicking the button, there are two ways to show the badge introduction:
 
@@ -31,7 +31,7 @@ After clicking the button, there are two ways to show the badge introduction:
   [Reference code](https://github.com/scroll-tech/frontends/blob/mainnet/src/pages/canvas/badgeContract/index.tsx)
 - Show a mint pop-up displaying badge introduction
   ![BadgeDetailDialog](https://github.com/user-attachments/assets/8a664aa2-9d17-4f38-a170-11bb0f413e20)
-  [Reference code](https://github.com/scroll-tech/frontends/blob/mainnet/src/pages/canvas/Dashboard/BadgeDetailDialog/index.tsx)
+  [Reference code](https://github.com/scroll-tech/frontends/blob/sepolia/src/app/_canvas/Dashboard/BadgeDetailDialog/index.tsx)
 
 ##### Main actions:
 
@@ -67,7 +67,7 @@ After minting successfully,
   [Reference code](https://github.com/scroll-tech/frontends/blob/mainnet/src/pages/canvas/badge/index.tsx)
 
 - Only display a success notification.
-  [Reference code](https://github.com/scroll-tech/frontends/blob/mainnet/src/pages/canvas/Dashboard/BadgeDetailDialog/index.tsx#L121)
+  [Reference code](https://github.com/scroll-tech/frontends/blob/sepolia/src/app/_canvas/Dashboard/BadgeDetailDialog/index.tsx#L121)
 
 ## Conclusion
 
