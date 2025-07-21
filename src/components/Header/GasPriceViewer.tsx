@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react"
-import { formatGwei } from "viem"
+import { formatUnits } from "viem"
 import { useGasPrice } from "wagmi"
 
 import { Box, Button, Fade, Paper, Popper, Stack, Typography } from "@mui/material"
@@ -25,14 +25,14 @@ const GasPriceViewer = () => {
 
   const displayedScrollGasPrice = useMemo(() => {
     if (scrollGasPrice) {
-      return Number(formatGwei(scrollGasPrice)).toFixed(3)
+      return Number(formatUnits(scrollGasPrice, 6)).toFixed(2)
     }
     return "-"
   }, [scrollGasPrice])
 
   const displayedEthereumGasPrice = useMemo(() => {
     if (ethereumGasPrice) {
-      return Number(formatGwei(ethereumGasPrice)).toFixed(3)
+      return Number(formatUnits(ethereumGasPrice, 6)).toFixed(2)
     }
     return "-"
   }, [ethereumGasPrice])
@@ -98,7 +98,7 @@ const GasPriceViewer = () => {
           {displayedScrollGasPrice}
         </Typography>
         <Typography component="span" sx={{ fontSize: "1.6rem", lineHeight: "2.4rem" }}>
-          Gwei
+          Mwei
         </Typography>
         <Popper
           open={Boolean(anchorEl)}
@@ -138,12 +138,12 @@ const GasPriceViewer = () => {
                 <Typography sx={{ fontSize: "inherit", lineHeight: "inherit", textAlign: "right", fontFamily: "var(--font-developer)" }}>
                   {displayedScrollGasPrice}
                 </Typography>
-                <span>Gwei</span>
+                <span>Mwei</span>
                 <span className="font-[600]">Ethereum</span>
                 <Typography sx={{ fontSize: "inherit", lineHeight: "inherit", textAlign: "right", fontFamily: "var(--font-developer)" }}>
                   {displayedEthereumGasPrice}
                 </Typography>
-                <span>Gwei</span>
+                <span>Mwei</span>
                 <Button
                   sx={{
                     fontSize: "1.6rem",

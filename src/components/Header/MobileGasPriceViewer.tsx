@@ -1,6 +1,6 @@
 import { motion } from "motion/react"
 import { useEffect, useMemo, useRef, useState } from "react"
-import { formatGwei } from "viem"
+import { formatUnits } from "viem"
 import { useGasPrice } from "wagmi"
 
 import { Box, Button, Collapse, Stack, Typography } from "@mui/material"
@@ -35,14 +35,14 @@ const MobileGasPriceViewer = props => {
 
   const displayedScrollGasPrice = useMemo(() => {
     if (scrollGasPrice) {
-      return commafy(formatGwei(scrollGasPrice).toString(), 3)
+      return commafy(formatUnits(scrollGasPrice, 6).toString(), 2)
     }
     return "-"
   }, [scrollGasPrice])
 
   const displayedEthereumGasPrice = useMemo(() => {
     if (ethereumGasPrice) {
-      return commafy(formatGwei(ethereumGasPrice).toString(), 3)
+      return commafy(formatUnits(ethereumGasPrice, 6).toString(), 2)
     }
     return "-"
   }, [ethereumGasPrice])
@@ -138,7 +138,7 @@ const MobileGasPriceViewer = props => {
             {displayedScrollGasPrice}
           </Typography>
           <Typography component="span" sx={{ color: "inherit", fontSize: "1.6rem", lineHeight: "2.4rem" }}>
-            Gwei
+            Mwei
           </Typography>
         </Stack>
         <Collapse in={gasPricePanelVisible} sx={{ width: "100%" }} timeout="auto" unmountOnExit>
@@ -169,7 +169,7 @@ const MobileGasPriceViewer = props => {
             >
               {displayedScrollGasPrice}
             </Typography>
-            <span>Gwei</span>
+            <span>Mwei</span>
             <span className="font-[600]">Ethereum</span>
             <Typography
               sx={{
@@ -182,7 +182,7 @@ const MobileGasPriceViewer = props => {
             >
               {displayedEthereumGasPrice}
             </Typography>
-            <span>Gwei</span>
+            <span>Mwei</span>
             <Button
               sx={{
                 fontSize: "1.6rem",
