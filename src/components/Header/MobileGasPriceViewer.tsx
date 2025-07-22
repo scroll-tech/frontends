@@ -35,7 +35,7 @@ const MobileGasPriceViewer = props => {
 
   const displayedScrollGasPrice = useMemo(() => {
     if (scrollGasPrice) {
-      return commafy(formatGwei(scrollGasPrice).toString(), 3)
+      return commafy(formatGwei(scrollGasPrice).toString(), 5)
     }
     return "-"
   }, [scrollGasPrice])

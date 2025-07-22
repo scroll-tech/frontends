@@ -25,7 +25,7 @@ const GasPriceViewer = () => {
 
   const displayedScrollGasPrice = useMemo(() => {
     if (scrollGasPrice) {
-      return Number(formatGwei(scrollGasPrice)).toFixed(3)
+      return Number(formatGwei(scrollGasPrice)).toFixed(5)
     }
     return "-"
   }, [scrollGasPrice])
