@@ -1,19 +1,16 @@
 import copy from "copy-to-clipboard"
-import { usePathname } from "next/navigation"
 import { useCallback, useMemo, useState } from "react"
 import { makeStyles } from "tss-react/mui"
 
 import { ButtonBase, Fade, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material"
 
 import CopySuccessSvg from "@/assets/svgs/bridge/copy-success.svg"
-import HistorySvg from "@/assets/svgs/bridge/history.svg"
 import BlockSvg from "@/assets/svgs/wallet-connector/block.svg"
 import CopySvg from "@/assets/svgs/wallet-connector/copy.svg"
 import DisconnectSvg from "@/assets/svgs/wallet-connector/disconnect.svg"
 import DownTriangleSvg from "@/assets/svgs/wallet-connector/down-triangle.svg"
 import { CHAIN_ID, EXPLORER_URL } from "@/constants"
 import { useRainbowContext } from "@/contexts/RainbowProvider"
-import useBridgeStore from "@/stores/bridgeStore"
 import { generateExploreLink, truncateAddress } from "@/utils"
 
 const useStyles = makeStyles<any>()((theme, { dark }) => ({
@@ -79,10 +76,8 @@ const useStyles = makeStyles<any>()((theme, { dark }) => ({
 const WalletDropdown = props => {
   const { sx, dark } = props
   const { classes, cx } = useStyles({ dark })
-  const pathname = usePathname()
 
   const { walletCurrentAddress, connect, disconnect, chainId } = useRainbowContext()
-  const { changeHistoryVisible } = useBridgeStore()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [copied, setCopied] = useState(false)
@@ -110,14 +105,6 @@ const WalletDropdown = props => {
   const operations = useMemo(
     () => [
       {
-        icon: HistorySvg,
-        label: "Transaction history",
-        action: () => {
-          changeHistoryVisible(true)
-          handleClose()
-        },
-      },
-      {
         icon: BlockSvg,
         label: "Block explorer",
         action: viewScan,
@@ -133,7 +120,7 @@ const WalletDropdown = props => {
         },
       },
     ],
-    [pathname, viewScan, copyAddress, copied, disconnect],
+    [viewScan, copyAddress, copied, disconnect],
   )
 
   const renderCurrentWallet = () => {

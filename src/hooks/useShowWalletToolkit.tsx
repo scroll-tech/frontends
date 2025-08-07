@@ -4,11 +4,7 @@ import { useMemo } from "react"
 const useShowWalletConnector = () => {
   const pathname = usePathname()
 
-  const showWalletConnector = useMemo(
-    () => pathname.startsWith("/developer-nft") || pathname.startsWith("/bridge") || pathname.startsWith("/sessions"),
-    // () => !pathname.startsWith("/blog"),
-    [pathname],
-  )
+  const showWalletConnector = useMemo(() => pathname.startsWith("/developer-nft"), [pathname])
   return showWalletConnector
 }
 

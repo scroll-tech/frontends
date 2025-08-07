@@ -13,7 +13,6 @@ import GlobalComponents from "@/components/GlobalComponents"
 import ScrollToTop from "@/components/ScrollToTop"
 import WebVitals from "@/components/WebVitals"
 import { ROOT_METADATA } from "@/constants/route"
-import BridgeContextProvider from "@/contexts/BridgeContextProvider"
 import RainbowProvider from "@/contexts/RainbowProvider"
 import { VersionChecker } from "@/hooks/useVersionCheck"
 import ScrollThemeProvider from "@/theme"
@@ -70,10 +69,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <ScrollThemeProvider>
             <VersionChecker>
               <RainbowProvider>
-                <BridgeContextProvider>
-                  {children}
-                  <GlobalComponents></GlobalComponents>
-                </BridgeContextProvider>
+                {children}
+                <GlobalComponents></GlobalComponents>
               </RainbowProvider>
             </VersionChecker>
             <ScrollToTop />

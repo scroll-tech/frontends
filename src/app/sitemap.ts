@@ -13,12 +13,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: "https://scroll.io/developer-nft", changeFrequency: "monthly", priority: 0.6 },
     { url: "https://scroll.io/developer-nft/mint", changeFrequency: "monthly", priority: 0.6 },
     { url: "https://scroll.io/sessions", changeFrequency: "weekly", priority: 0.7 },
-    { url: "https://scroll.io/SCR-sSCR", changeFrequency: "weekly", priority: 0.6 },
-    { url: "https://scroll.io/scrETH", changeFrequency: "weekly", priority: 0.6 },
     { url: "https://scroll.io/community", changeFrequency: "monthly", priority: 0.6 },
 
     { url: "https://scroll.io/airdrop-faq", changeFrequency: "monthly", priority: 0.4 },
-    { url: "https://scroll.io/bridge/faq", changeFrequency: "monthly", priority: 0.4 },
     { url: "https://scroll.io/sessions-terms-of-use", changeFrequency: "monthly", priority: 0.4 },
 
     { url: "https://scroll.io/terms-of-service", changeFrequency: "yearly", priority: 0.4 },

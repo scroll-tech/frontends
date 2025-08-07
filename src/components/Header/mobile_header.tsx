@@ -6,12 +6,10 @@ import { styled } from "@mui/system"
 
 import Link from "@/components/Link"
 import WalletToolkit from "@/components/WalletToolkit"
-import useShowLanguageSelect from "@/hooks/useShowLanguageSelect"
 import useShowWalletConnector from "@/hooks/useShowWalletToolkit"
 import { isSepolia } from "@/utils"
 
 import Logo from "../ScrollLogo"
-import AskAI from "./AskAI"
 import MenuItem from "./MenuItem"
 import MobileGasPriceViewer from "./MobileGasPriceViewer"
 import MobileNavbarItem from "./MobileNavBarItem"
@@ -30,7 +28,6 @@ const Bar = styled<any>("div", { shouldForwardProp: prop => prop !== "dark" })((
 const MobileHeader = ({ currentMenu }) => {
   useCheckCustomNavBarBg()
   const showWalletConnector = useShowWalletConnector()
-  const showLanguageSelect = useShowLanguageSelect()
 
   const dark = useCheckTheme()
   const [open, setOpen] = useState(false)
@@ -181,7 +178,6 @@ const MobileHeader = ({ currentMenu }) => {
           <Box sx={{ margin: "-0.8rem 2rem 0" }}>
             {renderList()}
             {!isSepolia && <MobileGasPriceViewer dark={dark}></MobileGasPriceViewer>}
-            {/* {!isSepolia && <AskAI isMobile></AskAI>} */}
           </Box>
         </Box>
       )}
