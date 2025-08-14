@@ -3,12 +3,12 @@ import Marquee from "react-fast-marquee"
 
 import { Box } from "@mui/material"
 
-import ChatterPay from "@/assets/images/home/ChatterPay.webp"
 import Polystream from "@/assets/images/home/Polystream.webp"
 import ProjectMocha from "@/assets/images/home/ProjectMocha.webp"
 import SynthOS from "@/assets/images/home/SynthOS.webp"
 import Aave from "@/assets/svgs/landingpage/Aave.svg?url"
 import Authgrow from "@/assets/svgs/landingpage/Authgrow.svg?url"
+import ChatterPay from "@/assets/svgs/landingpage/ChatterPay.svg?url"
 import Circle from "@/assets/svgs/landingpage/Circle.svg?url"
 import EtherFi from "@/assets/svgs/landingpage/EtherFi.svg?url"
 import Honeypop from "@/assets/svgs/landingpage/Honeypop.svg?url"
@@ -22,7 +22,7 @@ import VIFI from "@/assets/svgs/landingpage/VIFI.svg?url"
 const PROTOCOL_LIST = [
   { label: "VIFI", image: VIFI, height: ["18px", "24px"] },
   { label: "Quill Finance", image: QuillFinance, height: ["18px", "24px"] },
-  { label: "ChatterPay", image: ChatterPay },
+  { label: "ChatterPay", image: ChatterPay, height: ["20px", "26px"] },
   { label: "SynthOS", image: SynthOS },
   { label: "Project Mocha", image: ProjectMocha },
   { label: "Polystream", image: Polystream },

@@ -87,8 +87,7 @@ const FOUNDER_LIST = [
     name: "Sir Honeyworth B. Goldwing",
     title: "Chief Nectar Officer",
     prototol: "Honeypop",
-    content:
-      "Born in the lush Golden Hive of Scroll Valley, Honeyworth inherited his family’s centuries-old tradition of collecting the finest nectar from the richest flowers. When he discovered DeFi, he realized there was sweeter gold than honey. Now, he uses his knowledge of liquidity flows to guide others to prosperous harvests on Honeypop.",
+    content: "Scroll is like if zk-rollups and mainnet had a baby during a gas war and left it on your doorstep wrapped in alpha.",
     href: "https://honeypop.app/",
     image: JasonImage,
     bgColor: "#FAFDD4",
