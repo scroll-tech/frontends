@@ -144,9 +144,9 @@ const mainnetNavigations: Navigation[] = [
     children: [
       {
         rootKey: "vision",
-        label: "Research",
-        key: "research",
-        href: "https://scroll.io/research",
+        label: "Technology",
+        key: "technology",
+        href: "https://scroll.io/technology",
       },
       {
         rootKey: "vision",

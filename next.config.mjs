@@ -110,7 +110,7 @@ const nextConfig = {
         destination: '/?utm_source=x&utm_medium=social&utm_campaign=Emily',
         permanent: false,
       },
-     
+      { source: "/research", destination: "/technology", permanent: true },
     ]
   },
   async rewrites() {
@@ -120,12 +120,12 @@ const nextConfig = {
         destination: 'https://scroll-governance-documentation.vercel.app/:path*'
       },
       {
-        source: '/research',
-        destination: 'https://scroll-research.vercel.app/research'
+        source: '/technology',
+        destination: 'https://scroll-research.vercel.app/technology'
       },
       {
-        source: '/research/:path*',
-        destination: 'https://scroll-research.vercel.app/research/:path*'
+        source: '/technology/:path*',
+        destination: 'https://scroll-research.vercel.app/technology/:path*'
       }
     ]
   },
