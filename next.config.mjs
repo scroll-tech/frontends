@@ -110,8 +110,7 @@ const nextConfig = {
         destination: '/?utm_source=x&utm_medium=social&utm_campaign=Emily',
         permanent: false,
       },
-      { source: "/research", destination: "/technology", permanent: true },
-    ]
+      { source: "/research/:path*", destination: "/technology/:path*", permanent: true }    ]
   },
   async rewrites() {
     return [

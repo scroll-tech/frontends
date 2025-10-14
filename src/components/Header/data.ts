@@ -150,12 +150,6 @@ const mainnetNavigations: Navigation[] = [
       },
       {
         rootKey: "vision",
-        label: "Technology",
-        key: "technology",
-        href: "https://docs.scroll.io/en/technology/",
-      },
-      {
-        rootKey: "vision",
         label: "Strategy",
         key: "strategy",
         href: "https://scroll.io/blog/vision-and-values",
