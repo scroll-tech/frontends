@@ -262,7 +262,13 @@ const AssetCard = props => {
             <Box className={classes.downloadBox}>
               <Typography className={classes.downloadButtons}>
                 {Object.keys(version.formats).map((format, index) => (
-                  <a key={index} href={version.formats[format].src} download style={{ textTransform: "uppercase", cursor: "pointer" }}>
+                  <a
+                    key={index}
+                    href={version.formats[format].src ?? version.formats[format]}
+                    download
+                    target={format === "pdf" ? "_blank" : "_self"}
+                    style={{ textTransform: "uppercase", cursor: "pointer" }}
+                  >
                     {format} <SvgIcon sx={{ fontSize: "1.7rem" }} component={DownloadIcon} inheritViewBox />
                   </a>
                 ))}
