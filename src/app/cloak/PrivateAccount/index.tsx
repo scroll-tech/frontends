@@ -21,7 +21,7 @@ const PrivateAccount = () => {
   const [leftCard, ...rightCards] = CLOAK_PRIVATE_DESCS
 
   return (
-    <SectionWrapper title="Private Account Management" backgroundColor="text.primary" color="background.default" paddingY="6rem">
+    <SectionWrapper title="Private Account Management" backgroundColor="text.primary" color="background.default">
       <Box
         sx={{
           display: "grid",
