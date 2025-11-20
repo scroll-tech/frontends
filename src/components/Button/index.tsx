@@ -25,6 +25,19 @@ interface ScrollButtonProps extends Omit<ButtonProps, "color"> {
   rel?: string
 }
 
+const sizes = {
+  small: {
+    height: "4rem",
+    fontSize: { desktop: "1.4rem", mobile: "1.4rem" },
+    fontWeight: 500,
+  },
+  medium: {
+    height: "4.8rem",
+    fontSize: { desktop: "1.8rem", mobile: "1.6rem" },
+    fontWeight: 600,
+  },
+}
+
 const gColor = (color, theme) => {
   switch (color) {
     case "primary":
@@ -53,17 +66,17 @@ const cColor = (color, theme) => {
 
 const ButtonContainer = motion(Box)
 
-const useStyles = makeStyles<any>()((theme, { width, color, whiteButton }) => ({
+const useStyles = makeStyles<any>()((theme, { width, color, size, whiteButton }) => ({
   wrapper: {
     position: "relative",
-    height: "4.8rem",
+    height: sizes[size].height,
     overflow: "hidden",
     borderRadius: "1rem",
     backgroundColor: whiteButton ? "#ffffff" : "transparent",
     width: width ?? "24rem",
     [theme.breakpoints.down("sm")]: {
       width: width ?? "18.5rem",
-      height: "4.8rem",
+      height: sizes[size].height,
     },
   },
   wrapperLoading: {
@@ -79,19 +92,19 @@ const useStyles = makeStyles<any>()((theme, { width, color, whiteButton }) => ({
     pointerEvents: "none",
   },
   button: {
-    fontSize: "1.8rem",
-    fontWeight: 600,
+    fontSize: sizes[size].fontSize.desktop,
+    fontWeight: sizes[size].fontWeight,
     height: "100%",
     width: "100%",
-    paddingLeft: "4.8rem",
+    paddingLeft: sizes[size].height,
     borderWidth: "1.5px",
     borderStyle: "solid",
     borderColor: gColor(color, theme),
     color: gColor(color, theme),
     borderRadius: "1rem",
     [theme.breakpoints.down("sm")]: {
-      fontSize: "1.6rem",
-      paddingLeft: "4.8rem",
+      fontSize: sizes[size].fontSize.mobile,
+      paddingLeft: sizes[size].height,
     },
   },
   buttonDisabled: {
@@ -109,13 +122,13 @@ const useStyles = makeStyles<any>()((theme, { width, color, whiteButton }) => ({
     color: cColor(color, theme),
   },
   mask: {
-    width: "4.8rem",
+    width: sizes[size].height,
     height: "100%",
     position: "absolute",
     backgroundColor: gColor(color, theme),
     borderRadius: "1rem",
     [theme.breakpoints.down("sm")]: {
-      width: "4.8rem",
+      width: sizes[size].height,
     },
   },
   maskLoading: {
@@ -126,43 +139,44 @@ const useStyles = makeStyles<any>()((theme, { width, color, whiteButton }) => ({
   },
 
   icon: {
-    width: "4.8rem",
+    width: sizes[size].height,
     height: "100%",
     position: "absolute",
     zIndex: 1,
     color: `${cColor(color, theme)} !important`,
     cursor: "pointer",
     [theme.breakpoints.down("sm")]: {
-      width: "4.8rem",
+      width: sizes[size].height,
     },
   },
 }))
 
-const maskDesktop = {
+const maskDesktop = size => ({
   normal: {
-    width: "4.8rem",
+    width: sizes[size].height,
   },
   expanding: {
     width: "100%",
   },
-}
+})
 
-const maskMobile = {
+const maskMobile = size => ({
   normal: {
-    width: "4.8rem",
+    width: sizes[size].height,
   },
   expanding: {
     width: "100%",
   },
-}
+})
 const Button = (props: ScrollButtonProps) => {
-  const { id, className, width, sx, color, loading, disabled, gloomy, children, whiteButton, gaEvent, onClick, ...restProps } = props
+  const { id, className, size = "medium", width, sx, color, loading, disabled, gloomy, children, whiteButton, gaEvent, onClick, ...restProps } = props
   const { classes, cx } = useStyles({
     color,
     width,
     disabled,
     loading,
     whiteButton,
+    size,
   })
 
   const { isMobile } = useCheckViewport()
@@ -212,7 +226,7 @@ const Button = (props: ScrollButtonProps) => {
       )}
       <motion.div
         className={cx(classes.mask, loading && classes.maskLoading, innerDisabled && classes.maskDisabled)}
-        variants={isMobile ? maskMobile : maskDesktop}
+        variants={isMobile ? maskMobile(size) : maskDesktop(size)}
       ></motion.div>
       <ButtonBase
         classes={{
