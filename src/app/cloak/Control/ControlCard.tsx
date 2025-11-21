@@ -1,5 +1,3 @@
-import Image from "next/image"
-
 import { Stack, Typography } from "@mui/material"
 
 const ControlCard = props => {
@@ -9,8 +7,7 @@ const ControlCard = props => {
     <Stack
       sx={{
         gap: "1.2rem",
-        py: "3rem",
-        px: "2.4rem",
+        p: ["2rem", "3rem", "3rem", "4rem"],
         borderRadius: "2rem",
         ...sx,
       }}
@@ -18,6 +15,7 @@ const ControlCard = props => {
       <Icon></Icon>
       <Typography
         sx={{
+          mt: [0, 0, "1.2rem"],
           typography: "title",
           fontSize: ["1.8rem", "1.8rem"],
           lineHeight: ["2.8rem", "2.8rem"],
@@ -27,8 +25,8 @@ const ControlCard = props => {
       </Typography>
       <Typography
         sx={{
-          fontSize: ["1.4rem", "1.6rem"],
-          lineHeight: ["2.2rem", "2.4rem"],
+          fontSize: ["1.6rem", "1.6rem"],
+          lineHeight: ["2.4rem", "2.4rem"],
         }}
       >
         {content}

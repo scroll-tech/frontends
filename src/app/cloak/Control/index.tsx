@@ -21,7 +21,11 @@ const iconMap = {
 const Control = () => {
   return (
     <SectionWrapper
-      title="Sovereignty & Enterprise Control"
+      title={
+        <>
+          Sovereignty & <br className="inline md:hidden" /> Enterprise Control
+        </>
+      }
       subTitle="Cloak empowers you with full organizational control:"
       backgroundColor="#D2FCF6"
     >

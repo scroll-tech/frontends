@@ -8,28 +8,27 @@ const SeamlessCard = props => {
   return (
     <Stack
       sx={{
-        gap: "1.2rem",
-        maxWidth: "270px",
+        maxWidth: ["auto", "auto", "34rem"],
+        alignItems: "center",
         ...sx,
       }}
     >
-      <Stack sx={{ alignItems: "center" }}>
-        <Image src={imageURL} className="w-[18rem] h-[18rem]" alt={title} />
-        <Typography
-          sx={{
-            typography: "title",
-            fontSize: ["1.8rem", "1.8rem"],
-            lineHeight: ["2.8rem", "2.8rem"],
-            width: "100%",
-          }}
-        >
-          {title}
-        </Typography>
-      </Stack>
+      <Image src={imageURL} className="w-[18rem] h-[18rem] md:w-[22rem] md:h-[22rem]" alt={title} />
       <Typography
         sx={{
-          fontSize: ["1.4rem", "1.6rem"],
-          lineHeight: ["2.2rem", "2.4rem"],
+          typography: "title",
+          fontSize: ["1.8rem", "1.8rem"],
+          lineHeight: ["2.8rem", "2.8rem"],
+          width: "100%",
+          mb: "1.2rem",
+        }}
+      >
+        {title}
+      </Typography>
+      <Typography
+        sx={{
+          fontSize: ["1.6rem", "1.6rem"],
+          lineHeight: ["2.4rem", "2.4rem"],
         }}
       >
         {content}

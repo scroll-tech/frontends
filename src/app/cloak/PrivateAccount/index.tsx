@@ -1,8 +1,9 @@
 import Image from "next/image"
 
-import { Box, Container, Stack, Typography } from "@mui/material"
+import { Box, Stack } from "@mui/material"
 
-import PrivateAccountImage from "@/assets/images/cloak/cloak-private.png"
+import PrivateAccountMobileImage from "@/assets/images/cloak/cloak-private-mobile.webp"
+import PrivateAccountImage from "@/assets/images/cloak/cloak-private.webp"
 import BalanceSvg from "@/assets/svgs/cloak/balance.svg"
 import DepositSvg from "@/assets/svgs/cloak/deposit.svg"
 import HistorySvg from "@/assets/svgs/cloak/history.svg"
@@ -24,16 +25,40 @@ const PrivateAccount = () => {
     <SectionWrapper title="Private Account Management" backgroundColor="text.primary" color="background.default">
       <Box
         sx={{
+          pt: [0, 0, "1.8rem"],
           display: "grid",
-          width: "100%",
-          gridTemplateColumns: ["max-content", "1fr", "max-content max-content max-content"],
+          width: ["100%", "max-content", "100%"],
+          mx: "auto",
+          gridTemplateColumns: ["1fr", "1fr", "repeat(2, max-content)", "max-content max-content max-content"],
+          gridTemplateAreas: [
+            `
+            "leftCard"
+            "image"
+            "rightCards"
+          `,
+            `
+            "leftCard"
+            "image"
+            "rightCards"
+          `,
+            `
+            "leftCard image"
+            "rightCards image"
+          `,
+            `
+            "leftCard image rightCards"
+          `,
+          ],
+          alignItems: "center",
           justifyContent: "center",
+          gap: ["2rem", "2rem", "3.4rem", "4px"],
         }}
       >
         <PrivateCard
           sx={{
-            marginTop: "-18%",
             alignSelf: "center",
+            height: ["unset", "unset", "unset", "21.6rem"],
+            gridArea: "leftCard",
           }}
           key={leftCard.key}
           Icon={iconMap[leftCard.key]}
@@ -41,11 +66,25 @@ const PrivateAccount = () => {
           content={leftCard.content}
         ></PrivateCard>
 
-        <Image src={PrivateAccountImage} alt="Private Account Illustration" style={{ width: "auto", height: "100%", maxHeight: "380px" }} />
+        <Image src={PrivateAccountImage} alt="Private Account" className="!hidden lg:!block max-h-[500px] w-auto" />
+        <Image
+          src={PrivateAccountMobileImage}
+          alt="Private Account"
+          style={{ gridArea: "image" }}
+          className="block lg:!hidden w-full max-w-[400px]"
+        />
 
-        <Stack sx={{ gap: ["2.4rem", "4rem"] }}>
+        <Stack sx={{ gap: ["2rem", "3.4rem"], alignSelf: "center", gridArea: "rightCards" }}>
           {rightCards.map(({ key, title, content }) => (
-            <PrivateCard key={key} Icon={iconMap[key]} title={title} content={content}></PrivateCard>
+            <PrivateCard
+              key={key}
+              sx={{
+                height: ["unset", "unset", "unset", "16.8rem"],
+              }}
+              Icon={iconMap[key]}
+              title={title}
+              content={content}
+            ></PrivateCard>
           ))}
         </Stack>
       </Box>

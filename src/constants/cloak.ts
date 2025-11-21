@@ -1,6 +1,10 @@
 import Exp1Image from "@/assets/images/cloak/cloak-exp-1.webp"
 import Exp2Image from "@/assets/images/cloak/cloak-exp-2.webp"
 import Exp3Image from "@/assets/images/cloak/cloak-exp-3.webp"
+import Workflow1Image from "@/assets/images/cloak/cloak-workflow-1.svg?url"
+import Workflow2Image from "@/assets/images/cloak/cloak-workflow-2.svg?url"
+import Workflow3Image from "@/assets/images/cloak/cloak-workflow-3.svg?url"
+import Workflow4Image from "@/assets/images/cloak/cloak-workflow-4.svg?url"
 
 export const CLOAK_SIGNUP_URL = "https://forms.gle/kqpuFXfMNpZLiKrp7"
 
@@ -81,5 +85,40 @@ export const CLOAK_CONTROL_DESCS = [
     key: "disclosure",
     title: "Selective Disclosure",
     content: "Grant regulators or auditors limited, cryptographically certified visibility—without exposing everything.",
+  },
+]
+
+export const CLOAK_WORKFLOW_APPS = [
+  {
+    key: "bank",
+    imageURL: Workflow1Image,
+    title: "Application A:",
+    name: "Bank",
+    list: ["Indexer", "Prover", "Intent bridge", "Private RPC gateway"],
+  },
+  {
+    key: "payment",
+    imageURL: Workflow2Image,
+    title: "Application B:",
+    name: "Payment app",
+    list: ["Indexer", "Prover", "Intent bridge", "Private RPC gateway"],
+  },
+]
+
+export const CLOAK_WORKFLOW_STEPS = [
+  {
+    key: "step1",
+    imageURL: Workflow3Image,
+    content: "Scroll (Ethereum Layer 2):",
+    content2: "Verifier + Aggregator",
+    backgroundColor: "#F7F7AE",
+    stepMark: "Inherits Ethereum security",
+  },
+  {
+    key: "step2",
+    imageURL: Workflow4Image,
+    content: "Ethereum: L2 Verifier & Settlement",
+    content2: "+ Data Availability Layer",
+    backgroundColor: "#DAFDF8",
   },
 ]
