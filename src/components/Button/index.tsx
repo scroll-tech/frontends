@@ -29,7 +29,7 @@ const sizes = {
   small: {
     height: "4rem",
     fontSize: { desktop: "1.4rem", mobile: "1.4rem" },
-    fontWeight: 500,
+    fontWeight: 600,
   },
   medium: {
     height: "4.8rem",

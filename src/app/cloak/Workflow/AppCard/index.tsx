@@ -24,7 +24,7 @@ const AppCard = props => {
           "list image"
         `,
         ],
-        p: ["1.5rem 1.5rem 2rem", "2rem 3rem 2.4rem", "2rem 3rem 2.4rem", "2.7rem 4.5rem"],
+        p: ["1.5rem 1.1rem 2rem", "2rem 3rem 2.4rem", "2rem 3rem 2.4rem", "2.7rem 4.5rem 2.7rem 5.2rem"],
         borderRadius: "2rem",
         backgroundColor: "rgba(235, 194, 142, 0.23)",
         rowGap: ["0.8rem", "1.4rem"],
@@ -38,6 +38,7 @@ const AppCard = props => {
           lineHeight: 1.4,
           fontWeight: 500,
           pt: [0, 0, "0.5rem"],
+          pl: ["8px", 0],
           gridArea: "title",
         }}
       >
@@ -62,13 +63,12 @@ const AppCard = props => {
         component="ul"
         sx={{
           gridArea: "list",
-          gap: "3px",
+          gap: ["3px", "3px", "6px"],
           listStyle: "none",
           "& li": {
             position: "relative",
             whiteSpace: "nowrap",
             pl: ["10px", "12px"],
-            ml: ["-4px", "-8px"],
             "&::before": {
               content: '""',
               position: "absolute",

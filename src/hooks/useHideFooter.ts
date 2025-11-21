@@ -1,15 +1,13 @@
-// import { usePathname } from "next/navigation"
-// import { useMemo } from "react"
+"use client"
+
+import { usePathname } from "next/navigation"
+import { useMemo } from "react"
 
 const useHideFooter = () => {
-  // const pathname = usePathname()
+  const pathname = usePathname()
 
-  // const hidden = useMemo(
-  //   () => pathname.match(/^\/canvas(\/\w*)?$/g),
-  //   [pathname],
-  // )
-  // return hidden
-  return false
+  const hideSupport = useMemo(() => pathname.match(/^\/cloak(\/\w*)?$/g), [pathname])
+  return { hideSupport }
 }
 
 export default useHideFooter

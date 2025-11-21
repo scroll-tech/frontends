@@ -1,10 +1,20 @@
+"use client"
+
+import useHideFooter from "@/hooks/useHideFooter"
+import { isSepolia } from "@/utils"
+
 import PureFooter from "./PureFooter"
 import Support from "./Support"
 
 const Footer = () => {
+  const { hideSupport } = useHideFooter()
+
+  if (isSepolia) {
+    return null
+  }
   return (
     <>
-      <Support />
+      {!hideSupport && <Support />}
       <PureFooter></PureFooter>
     </>
   )
