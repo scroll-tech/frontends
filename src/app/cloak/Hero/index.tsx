@@ -39,7 +39,7 @@ const CloakHero = () => {
           <Button href={CLOAK_SIGNUP_URL} target="_blank" width="250px" className="my-[8px] md:my-0">
             Sign up for demo
           </Button>
-          <Stack direction={["column", "row"]} sx={{ gap: ["1.2rem", "3.2rem"] }}>
+          <Stack direction={["column", "row"]} sx={{ gap: ["1.2rem", "4.4rem"] }}>
             {CLOAK_HERO_LINKS.map(({ key, label, href }) => (
               <ScrollLink
                 key={key}

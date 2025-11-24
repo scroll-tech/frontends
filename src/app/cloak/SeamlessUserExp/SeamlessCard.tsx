@@ -9,6 +9,7 @@ const SeamlessCard = props => {
     <Stack
       sx={{
         maxWidth: ["auto", "auto", "34rem"],
+        pb: [0, 0, "2.4rem"],
         alignItems: "center",
         ...sx,
       }}

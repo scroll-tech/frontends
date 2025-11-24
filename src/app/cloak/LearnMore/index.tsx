@@ -16,7 +16,7 @@ const LearnMore = () => {
           justifyContent: "center",
         }}
       >
-        <Button size={isMobile ? "small" : "medium"} whiteButton href={CLOAK_HERO_LINKS[0].href} className="!w-[280px] md:!w-[340px]">
+        <Button target="_blank" size={isMobile ? "small" : "medium"} whiteButton href={CLOAK_HERO_LINKS[0].href} className="!w-[280px] md:!w-[340px]">
           Learn more about Cloak’s design
         </Button>
       </Container>
