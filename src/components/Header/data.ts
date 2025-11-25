@@ -50,6 +50,7 @@ const sepoliaNavigations: Navigation[] = [
         key: "block-explorer",
         href: process.env.NEXT_PUBLIC_EXTERNAL_EXPLORER_URI_L2,
       },
+
       // {
       //   label: "Rollup Explorer",
       //   key: "rollupscan",
@@ -95,10 +96,16 @@ const mainnetNavigations: Navigation[] = [
         href: process.env.NEXT_PUBLIC_EXTERNAL_EXPLORER_URI_L2,
       },
       {
-        rootKey: "participate",
+        rootKey: "build",
         label: "Bug Bounty",
         key: "bug-bounty",
         href: "https://immunefi.com/bug-bounty/scroll/information/",
+      },
+      {
+        rootKey: "build",
+        label: "Cloak",
+        key: "cloak",
+        href: "/cloak",
       },
     ],
   },
