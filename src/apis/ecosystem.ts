@@ -1,7 +1,9 @@
-export const ecosystemOrigin = "https://scroll-eco-list.netlify.app"
+export const ecosystemOrigin = process.env.NEXT_PUBLIC_ECOSYSTEM_BASE_URI
 export const ecosystemListHashUrl = ecosystemOrigin + "/docs/"
 export const ecosystemListLogoUrl = ecosystemOrigin + "/logos/"
 export const ecosystemListUrl = "https://ecosystem.scroll.cat/api/query"
+
+export const fetchEcosystemCategoryToTagsURL = ecosystemOrigin + "/docs/category-to-tags.json"
 
 export const fetchEcosystemMetricsData = "https://assets.scroll.cat/ecosystem/metrics"
 
