@@ -1,3 +1,4 @@
+import { ecosystemOrigin } from "@/apis/ecosystem"
 import Bithumb from "@/assets/images/defi/Bithumb.jpg"
 import OKX from "@/assets/images/defi/OKX.jpg"
 import BinanceSvg from "@/assets/svgs/defi/binance.svg?url"
@@ -9,20 +10,20 @@ const SWAP_IN_DEX = {
   data: [
     {
       name: "Ambient",
-      logoURL: "https://scroll-eco-list.netlify.app/logos/Ambient%20Finance.png",
+      logoURL: `${ecosystemOrigin}/logos/Ambient%20Finance.png`,
       href: "https://scroll-us.ambient.finance/swap/chain=0x82750&tokenA=0x0000000000000000000000000000000000000000&tokenB=0xd29687c813d741e2f938f4ac377128810e217b1b",
     },
     {
       name: "Maverick",
-      logoURL: "https://scroll-eco-list.netlify.app/logos/Maverick%20Protocol.jpg",
+      logoURL: `${ecosystemOrigin}/logos/Maverick%20Protocol.jpg`,
       href: "https://app.mav.xyz/?chain=534352&tokenB=0xd29687c813D741E2F938F4aC377128810E217b1b",
     },
     {
       name: "Oku Trade",
-      logoURL: "https://scroll-eco-list.netlify.app/logos/Oku%20Trade.jpeg",
+      logoURL: `${ecosystemOrigin}/logos/Oku%20Trade.jpeg`,
       href: "https://oku.trade/app/scroll/trade/0xd29687c813d741e2f938f4ac377128810e217b1b",
     },
-    { name: "SyncSwap", logoURL: "https://scroll-eco-list.netlify.app/logos/Syncswap.png", href: "https://syncswap.xyz/swap" },
+    { name: "SyncSwap", logoURL: `${ecosystemOrigin}/logos/Syncswap.png`, href: "https://syncswap.xyz/swap" },
   ],
 }
 

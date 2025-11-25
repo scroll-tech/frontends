@@ -1,3 +1,4 @@
+import { ecosystemOrigin } from "@/apis/ecosystem"
 import MainnetSvg from "@/assets/svgs/bridge/network-mainnet.svg"
 import ETHSvg from "@/assets/svgs/bridge/network-mainnet.svg?url"
 import ScrollSvg from "@/assets/svgs/bridge/network-scroll.svg"
@@ -163,7 +164,7 @@ export const EXTERNAL_BRIDGE_TOKEN_LIST = [
         bridgeUrl:
           "https://stargate.finance/bridge?srcChain=ethereum&srcToken=0x9D39A5DE30e57443BfF2A8307A4256c8797A3497&dstChain=scroll&dstToken=0x211Cc4DD073734dA055fbF44a2b4667d5E5fE5d2",
         bridgeName: "Stargate",
-        bridgeIcon: "https://scroll-eco-list.netlify.app/logos/stargate.png",
+        bridgeIcon: `${ecosystemOrigin}/logos/stargate.png`,
       },
     },
   },
@@ -181,7 +182,7 @@ export const EXTERNAL_BRIDGE_TOKEN_LIST = [
         bridgeUrl:
           "https://stargate.finance/bridge?srcChain=scroll&srcToken=0x211Cc4DD073734dA055fbF44a2b4667d5E5fE5d2&dstChain=ethereum&dstToken=0x9D39A5DE30e57443BfF2A8307A4256c8797A3497",
         bridgeName: "Stargate",
-        bridgeIcon: "https://scroll-eco-list.netlify.app/logos/stargate.png",
+        bridgeIcon: `${ecosystemOrigin}/logos/stargate.png`,
       },
     },
   },
@@ -199,7 +200,7 @@ export const EXTERNAL_BRIDGE_TOKEN_LIST = [
         bridgeUrl:
           "https://stargate.finance/bridge?srcChain=ethereum&srcToken=0x4c9EDD5852cd905f086C759E8383e09bff1E68B3&dstChain=scroll&dstToken=0x5d3a1Ff2b6BAb83b63cd9AD0787074081a52ef34",
         bridgeName: "Stargate",
-        bridgeIcon: "https://scroll-eco-list.netlify.app/logos/stargate.png",
+        bridgeIcon: `${ecosystemOrigin}/logos/stargate.png`,
       },
     },
   },
@@ -217,7 +218,7 @@ export const EXTERNAL_BRIDGE_TOKEN_LIST = [
         bridgeUrl:
           "https://stargate.finance/bridge?srcChain=scroll&srcToken=0x5d3a1Ff2b6BAb83b63cd9AD0787074081a52ef34&dstChain=ethereum&dstToken=0x4c9EDD5852cd905f086C759E8383e09bff1E68B3",
         bridgeName: "Stargate",
-        bridgeIcon: "https://scroll-eco-list.netlify.app/logos/stargate.png",
+        bridgeIcon: `${ecosystemOrigin}/logos/stargate.png`,
       },
     },
   },

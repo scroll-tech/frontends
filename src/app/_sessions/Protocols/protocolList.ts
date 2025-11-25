@@ -1,3 +1,4 @@
+import { ecosystemOrigin } from "@/apis/ecosystem"
 import HoneyPop from "@/assets/images/sessions/HoneyPop.png"
 import QuillFinanceSvg from "@/assets/svgs/sessions/QuillFinance.svg?url"
 
@@ -30,7 +31,7 @@ const DECENTRALIZED_EXCHANGES_DATA: ProtocolData = {
     {
       name: "Ambient",
       project: "Ambient",
-      logoURL: "https://scroll-eco-list.netlify.app/logos/Ambient%20Finance.png",
+      logoURL: `${ecosystemOrigin}/logos/Ambient%20Finance.png`,
       href: "https://ambient.finance/",
     },
     {
@@ -42,25 +43,25 @@ const DECENTRALIZED_EXCHANGES_DATA: ProtocolData = {
     {
       name: "iZUMi",
       project: "iZUMi",
-      logoURL: "https://scroll-eco-list.netlify.app/logos/iZUMi%20Finance.png",
+      logoURL: `${ecosystemOrigin}/logos/iZUMi%20Finance.png`,
       href: "https://izumi.finance/trade/swap",
     },
     {
       name: "Maverick",
       project: "Maverick",
-      logoURL: "https://scroll-eco-list.netlify.app/logos/Maverick%20Protocol.jpg",
+      logoURL: `${ecosystemOrigin}/logos/Maverick%20Protocol.jpg`,
       href: "https://www.mav.xyz/",
     },
     {
       name: "Nuri",
       project: "Nuri",
-      logoURL: "https://scroll-eco-list.netlify.app/logos/Nuri%20Exchange.png",
+      logoURL: `${ecosystemOrigin}/logos/Nuri%20Exchange.png`,
       href: "https://www.nuri.exchange/",
     },
     {
       name: "Oku Trade",
       project: "Oku Trade",
-      logoURL: "https://scroll-eco-list.netlify.app/logos/Oku%20Trade.jpeg",
+      logoURL: `${ecosystemOrigin}/logos/Oku%20Trade.jpeg`,
       href: "https://oku.trade/",
     },
 
@@ -73,33 +74,33 @@ const DECENTRALIZED_EXCHANGES_DATA: ProtocolData = {
     {
       name: "SyncSwap",
       project: "SyncSwap",
-      logoURL: "https://scroll-eco-list.netlify.app/logos/Syncswap.png",
+      logoURL: `${ecosystemOrigin}/logos/Syncswap.png`,
       href: "https://syncswap.xyz/",
       upcoming: true,
     },
     // {
     //   name: "Tempest",
     //   project: "Tempest",
-    //   logoURL: "https://scroll-eco-list.netlify.app/logos/Tempest%20Finance.png",
+    //   logoURL: `${ecosystemOrigin}/logos/Tempest%20Finance.png`,
     //   href: "https://app.tempestfinance.xyz/vaults",
     //   upcoming: true,
     // },
     // {
     //   name: "Vessel",
     //   project: "Vessel",
-    //   logoURL: "https://scroll-eco-list.netlify.app/logos/Vessel.jpg",
+    //   logoURL: `${ecosystemOrigin}/logos/Vessel.jpg`,
     //   href: "https://vessel.finance/",
     // },
     // {
     //   name: "Wombat",
     //   project: "Wombat",
-    //   logoURL: "https://scroll-eco-list.netlify.app/logos/Wombat%20Exchange.png",
+    //   logoURL: `${ecosystemOrigin}/logos/Wombat%20Exchange.png`,
     //   href: "https://www.wombat.exchange/",
     // },
     // {
     //   name: "Zebra",
     //   project: "Zebra",
-    //   logoURL: "https://scroll-eco-list.netlify.app/logos/Zebra.png",
+    //   logoURL: `${ecosystemOrigin}/logos/Zebra.png`,
     //   href: "https://app.zebra.xyz/#/swap",
     // },
   ],
@@ -114,13 +115,13 @@ const LENDING_BORROWING_DATA: ProtocolData = {
     {
       name: "Aave",
       project: "Aave",
-      logoURL: "https://scroll-eco-list.netlify.app/logos/Aave.svg",
+      logoURL: `${ecosystemOrigin}/logos/Aave.svg`,
       href: "https://app.aave.com/",
     },
     {
       name: "Compound",
       project: "Compound",
-      logoURL: "https://scroll-eco-list.netlify.app/logos/Compound%20Finance.png",
+      logoURL: `${ecosystemOrigin}/logos/Compound%20Finance.png`,
       href: "https://app.compound.finance/?market=usdc-scroll",
     },
     // Collateralized Debt Position
@@ -140,7 +141,7 @@ const LENDING_BORROWING_DATA: ProtocolData = {
     // {
     //   name: "Layer Bank",
     //   project: "Layerbank",
-    //   logoURL: "https://scroll-eco-list.netlify.app/logos/LayerBank.png",
+    //   logoURL: `${ecosystemOrigin}/logos/LayerBank.png`,
     //   href: "https://app.layerbank.finance/scroll/bank",
     // },
   ],
@@ -154,7 +155,7 @@ const OTHERS_DATA: ProtocolData = {
     {
       name: "Beefy",
       project: "Beefy",
-      logoURL: "https://scroll-eco-list.netlify.app/logos/Beefy.png",
+      logoURL: `${ecosystemOrigin}/logos/Beefy.png`,
       href: "https://app.beefy.com/",
     },
     // {
@@ -166,25 +167,25 @@ const OTHERS_DATA: ProtocolData = {
     {
       name: "Loopfi",
       project: "Loopfi",
-      logoURL: "https://scroll-eco-list.netlify.app/logos/Loop.jpg",
+      logoURL: `${ecosystemOrigin}/logos/Loop.jpg`,
       href: "https://app.loopfi.xyz/",
     },
     // {
     //   name: "Pencils",
     //   project: "Pencils",
-    //   logoURL: "https://scroll-eco-list.netlify.app/logos/Pencils%20Protocol.png",
+    //   logoURL: `${ecosystemOrigin}/logos/Pencils%20Protocol.png`,
     //   href: "https://app.pencilsprotocol.io/farming",
     // },
     {
       name: "Rho Markets",
       project: "Rho Markets",
-      logoURL: "https://scroll-eco-list.netlify.app/logos/Rho%20Markets.png",
+      logoURL: `${ecosystemOrigin}/logos/Rho%20Markets.png`,
       href: "https://www.rhomarkets.xyz/",
     },
     // {
     //   name: "Tranchess",
     //   project: "Tranchess",
-    //   logoURL: "https://scroll-eco-list.netlify.app/logos/Tranchess.png",
+    //   logoURL: `${ecosystemOrigin}/logos/Tranchess.png`,
     //   href: "https://www.tranchess.com/",
     // },
   ],

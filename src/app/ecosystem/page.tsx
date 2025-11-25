@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation"
 
+import { fetchEcosystemCategoryToTagsURL } from "@/apis/ecosystem"
 import { isSepolia } from "@/utils"
 import { genMeta } from "@/utils/route"
 
@@ -18,7 +19,7 @@ const Ecosystem = async () => {
     notFound()
   }
 
-  const categoryToTags = await fetch("https://scroll-eco-list.netlify.app/docs/category-to-tags.json").then(res => res.json())
+  const categoryToTags = await fetch(fetchEcosystemCategoryToTagsURL).then(res => res.json())
 
   return (
     <>
