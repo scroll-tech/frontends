@@ -33,7 +33,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "scroll-eco-list.netlify.app",
+        hostname: "ecosystem-list.vercel.app",
         port: "",
         pathname: "/logos/**",
       },
