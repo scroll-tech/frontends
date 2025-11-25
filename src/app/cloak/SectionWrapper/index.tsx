@@ -18,8 +18,9 @@ const SectionWrapper = (props: SectionWrapperProps) => {
           <Typography
             sx={{
               typography: "title",
-              fontSize: ["2.4rem", "3.2rem"],
+              fontSize: ["2.8rem", "3.2rem"],
               lineHeight: 1.4,
+              maxWidth: ["30rem", "30rem", "unset"],
               color,
             }}
           >

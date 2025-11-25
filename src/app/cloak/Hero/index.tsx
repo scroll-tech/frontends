@@ -26,8 +26,10 @@ const CloakHero = () => {
           flexDirection: ["column", "column", "column", "row"],
           justifyContent: "space-between",
           alignItems: "center",
-          gap: "60px",
+          gap: ["1.2rem", "1.2rem", "6rem"],
           pt: "5%",
+
+          pb: ["4rem", 0],
         }}
       >
         <Stack direction="column" sx={{ gap: ["1.2rem", "3rem"], maxWidth: ["auto", "78rem"] }}>

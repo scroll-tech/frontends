@@ -3,7 +3,7 @@
 import { Box, Container } from "@mui/material"
 
 import Button from "@/components/Button"
-import { CLOAK_HERO_LINKS } from "@/constants"
+import { CLOAK_SIGNUP_URL } from "@/constants"
 import useCheckViewport from "@/hooks/useCheckViewport"
 
 const LearnMore = () => {
@@ -16,8 +16,8 @@ const LearnMore = () => {
           justifyContent: "center",
         }}
       >
-        <Button target="_blank" size={isMobile ? "small" : "medium"} whiteButton href={CLOAK_HERO_LINKS[0].href} className="!w-[280px] md:!w-[340px]">
-          Learn more about Cloak’s design
+        <Button target="_blank" width="250px" whiteButton href={CLOAK_SIGNUP_URL}>
+          Sign up for demo
         </Button>
       </Container>
     </Box>
