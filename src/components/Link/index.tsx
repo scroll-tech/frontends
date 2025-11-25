@@ -7,6 +7,8 @@ const ScrollLink = props => {
   const { external, underline = "none", className, reloadDocument, children, href, ...restProps } = props
   const { cx } = useStyles()
 
+  const checkExternalLink = href.startsWith("http://") || href.startsWith("https://")
+
   const handleClick = e => {
     e.preventDefault()
     window.location.href = href
@@ -40,7 +42,7 @@ const ScrollLink = props => {
         className,
       )}
       href={href}
-      target={external ? "_blank" : ""}
+      target={external || checkExternalLink ? "_blank" : ""}
       rel="noopener noreferrer"
       {...restProps}
     >
