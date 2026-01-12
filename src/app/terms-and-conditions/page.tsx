@@ -242,7 +242,7 @@ const Terms = () => {
       <h2>
         <a id="Copyright Notice">Copyright Notice</a>
       </h2>
-      <p>Copyright (c) [2023] Scroll.</p>
+      <p>Copyright (c) [2026] Scroll.</p>
       <p>
         All text, graphics, design, content, feature and other works are copyrighted works of Scroll or third parties. We, together with our
         licensors, own and control all the copyright and other relevant intellectual property rights in the content and the material on our website.
