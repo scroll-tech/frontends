@@ -131,9 +131,10 @@ const Terms = () => {
       <h2>2. Changes to the Terms of Use</h2>
       <p>
         We reserve the right, in our sole discretion, to modify these Terms from time to time. If we make any material modifications, we will notify
-        you by updating the date at the top of the Agreement and by maintaining a current version of the Terms. All modifications will be effective
-        when they are posted, and your continued accessing or use of any of the Websites will serve as confirmation of your acceptance of those
-        modifications. If you do not agree with any modifications to these Terms, you must immediately stop accessing and using the Websites.
+        you by updating the date at the top of the Agreement and by maintaining a current version of the Terms at{" "}
+        <LinkStyled href="/terms-of-service">https://scroll.io/terms-of-service</LinkStyled>. All modifications will be effective when they are
+        posted, and your continued accessing or use of any of the Websites will serve as confirmation of your acceptance of those modifications. If
+        you do not agree with any modifications to these Terms, you must immediately stop accessing and using the Websites.
       </p>
 
       <h2>3. Description of the Websites</h2>
