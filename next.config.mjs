@@ -3,7 +3,6 @@ import {withSentryConfig} from "@sentry/nextjs";
 
 // eslint-disable-next-line prettier/prettier
 import packageJson from "./package.json" with { type: "json" };
-import "./scripts/download-blog-posts.data.json.mjs"
 import createMDX from "@next/mdx"
 import rehypeRaw from "rehype-raw"
 import rehypeKatex from "rehype-katex"
