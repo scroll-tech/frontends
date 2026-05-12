@@ -5,7 +5,7 @@ import { Box, Container, Stack, Typography } from "@mui/material"
 import HeroMobileSvg from "@/assets/svgs/landingpage/hero-bg-mobile.svg?url"
 import HeroSvg from "@/assets/svgs/landingpage/hero-bg.svg?url"
 import Button from "@/components/Button"
-import { DOC_URL, SWAP_URL } from "@/constants/link"
+import { BRIDGE_URL, DOC_URL } from "@/constants/link"
 
 const ANNOUNCEMENT_HEIGHT = "0rem"
 
@@ -44,8 +44,13 @@ const LandingHero = () => {
             Build now
           </Button>
 
-          <Button href={SWAP_URL} target="_blank" className="!w-[180px] sm:!w-[250px]" gaEvent={{ event: "click_landing", label: "Swap on Scroll" }}>
-            Swap on Scroll
+          <Button
+            href={BRIDGE_URL}
+            target="_blank"
+            className="!w-[180px] sm:!w-[250px]"
+            gaEvent={{ event: "click_landing", label: "Bridge to Scroll" }}
+          >
+            Bridge to Scroll
           </Button>
         </Stack>
       </Container>

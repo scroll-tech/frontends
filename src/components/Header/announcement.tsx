@@ -15,7 +15,7 @@ const Announcement = () => {
     if (!isSepolia && isHome) {
       return (
         <>
-          Join Scroll Open: Build the Future of the Open Economy{" "}
+          Join Open Economy: Build the Future of the Open Economy{" "}
           <div className="inline-block w-[5px] h-[5px] rounded-full bg-current mx-[20px] align-middle"></div>
           Jan 27 - March 17
           <div className="inline-block w-[5px] h-[5px] rounded-full bg-current mx-[20px] align-middle"></div>
@@ -27,7 +27,7 @@ const Announcement = () => {
 
   const rightHref = useMemo(() => {
     if (!isSepolia && isHome) {
-      return "https://open.scroll.io"
+      return "https://openeconomyos.com/"
     }
     return ""
   }, [isSepolia, isHome])
