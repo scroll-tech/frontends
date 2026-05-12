@@ -22,7 +22,7 @@ const Portal = () => {
       items: [
         { icon: Doc, label: "Developer Docs", content: "Everything you need to start building", href: DOC_URL },
         { icon: Levelup, label: "Level Up", content: "Learn ZK and test your dev skills", href: LEVEL_UP_URL },
-        { icon: ScrollOpen, label: "Scroll open", content: "A six-week builder program with a $100,000 prize pool", href: SCROLL_OPEN_URL },
+        { icon: ScrollOpen, label: "Open Economy", content: "Take the money test to see where your finances are", href: SCROLL_OPEN_URL },
       ],
     },
     {

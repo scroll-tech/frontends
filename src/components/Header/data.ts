@@ -34,7 +34,7 @@ const sepoliaNavigations: Navigation[] = [
       },
       {
         rootKey: "build",
-        label: "Scroll Open",
+        label: "Open Economy",
         key: "scroll-open",
         href: SCROLL_OPEN_URL,
       },
@@ -79,7 +79,7 @@ const mainnetNavigations: Navigation[] = [
       },
       {
         rootKey: "build",
-        label: "Scroll Open",
+        label: "Open Economy",
         key: "scroll-open",
         href: SCROLL_OPEN_URL,
       },
