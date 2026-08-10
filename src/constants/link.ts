@@ -1,6 +1,7 @@
 export const DOC_URL = "https://docs.scroll.io/en/home/"
 export const SCROLL_OPEN_URL = "https://openeconomyos.com/"
 export const LEVEL_UP_URL = "https://www.levelup.xyz/"
+export const ACCSEAL_URL = "https://accseal.cn/"
 
 const USER_PORTAL_BASE_URL = process.env.NEXT_PUBLIC_USER_PORTAL_BASE_URL
 

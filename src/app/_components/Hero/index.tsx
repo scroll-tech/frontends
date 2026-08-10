@@ -5,7 +5,7 @@ import { Box, Container, Stack, Typography } from "@mui/material"
 import HeroMobileSvg from "@/assets/svgs/landingpage/hero-bg-mobile.svg?url"
 import HeroSvg from "@/assets/svgs/landingpage/hero-bg.svg?url"
 import Button from "@/components/Button"
-import { BRIDGE_URL, DOC_URL } from "@/constants/link"
+import { ACCSEAL_URL } from "@/constants/link"
 
 const ANNOUNCEMENT_HEIGHT = "0rem"
 
@@ -29,28 +29,19 @@ const LandingHero = () => {
       />
       <Container>
         <Typography sx={{ typography: "title", fontSize: ["28px", "48px"], lineHeight: ["44px", "80px"], mb: ["24px", "40px"] }}>
-          Secure and Performant:
+          One Sub, Every Model,
           <br />
-          Network for the Open Economy
+          Secured by ZK
         </Typography>
         <Stack direction={["column", "row"]} sx={{ gap: "16px" }}>
           <Button
-            href={DOC_URL}
+            href={ACCSEAL_URL}
             target="_blank"
-            className="!w-[180px] sm:!w-[250px]"
+            className="!w-[240px] sm:!w-[290px]"
             color="primary"
-            gaEvent={{ event: "click_landing", label: "Build now" }}
+            gaEvent={{ event: "click_landing", label: "Explore AI Gateway" }}
           >
-            Build now
-          </Button>
-
-          <Button
-            href={BRIDGE_URL}
-            target="_blank"
-            className="!w-[180px] sm:!w-[250px]"
-            gaEvent={{ event: "click_landing", label: "Bridge to Scroll" }}
-          >
-            Bridge to Scroll
+            Explore AI Gateway
           </Button>
         </Stack>
       </Container>
