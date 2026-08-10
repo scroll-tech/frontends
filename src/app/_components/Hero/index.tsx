@@ -29,7 +29,10 @@ const LandingHero = () => {
       />
       <Container>
         <Typography sx={{ typography: "title", fontSize: ["28px", "48px"], lineHeight: ["44px", "80px"], mb: ["24px", "40px"] }}>
-          One Sub, Every Model,
+          {/* mobile breaks after every clause, desktop keeps "One Sub, Every Model," on one line */}
+          {"One Sub, "}
+          <Box component="br" sx={{ display: ["inline", "none"] }} />
+          Every Model,
           <br />
           Secured by ZK
         </Typography>
