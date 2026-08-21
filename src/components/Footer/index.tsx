@@ -1,5 +1,7 @@
 "use client"
 
+import { usePathname } from "next/navigation"
+
 import useHideFooter from "@/hooks/useHideFooter"
 import { isSepolia } from "@/utils"
 
@@ -8,8 +10,10 @@ import Support from "./Support"
 
 const Footer = () => {
   const { hideSupport } = useHideFooter()
+  const pathname = usePathname()
 
-  if (isSepolia) {
+  // the redesigned landing page renders its own footer
+  if (isSepolia || pathname === "/") {
     return null
   }
   return (

@@ -56,6 +56,11 @@ export default function Header() {
     return result
   }
 
+  // the redesigned landing page renders its own pill nav
+  if (pathname === "/") {
+    return null
+  }
+
   if (isLandscape) {
     return (
       <HideOnScroll>
