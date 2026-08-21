@@ -1,4 +1,4 @@
-import { ACCSEAL_URL } from "@/constants/link"
+import { COMPASS_API_URL } from "@/constants/link"
 
 import SectionDivider from "../SectionDivider"
 import { instrumentSerif } from "../fonts"
@@ -18,7 +18,7 @@ const CompassApiSection = () => (
       Keys to AI models secured natively by Zero Knowledge proofs.
     </p>
     <a
-      href={ACCSEAL_URL}
+      href={COMPASS_API_URL}
       target="_blank"
       rel="noopener noreferrer"
       className="rounded-[8px] border border-solid border-[#867B71] px-[28px] py-[14px] text-[16px] font-semibold text-black hover:bg-[#F4F3ED]"
