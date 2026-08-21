@@ -22,9 +22,9 @@ const FOOTER_COLUMNS = [
 const LandingFooter = () => (
   <footer className="flex w-full flex-col items-center justify-center gap-[19px] bg-[#F4F3ED] px-[24px] py-[24px] md:h-[290px]">
     <div className="flex w-full max-w-[1170px] flex-col items-start justify-between gap-[40px] md:h-[170px] md:flex-row md:items-center">
-      <div className="flex flex-col items-center gap-[6px]">
+      <div className="flex flex-col items-start gap-[6px] md:items-center">
         <ScrollMarkSvg className="size-[18px]" />
-        <p className="w-[120px] text-center text-[14px] font-medium text-black">
+        <p className="w-[120px] text-left text-[14px] font-medium text-black md:text-center">
           One Plan.
           <br />
           Every Model.
