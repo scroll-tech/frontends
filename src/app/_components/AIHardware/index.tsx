@@ -1,22 +1,13 @@
-"use client"
-
-import { FormEvent, useState } from "react"
+import { GET_IN_TOUCH_URL } from "@/constants/link"
 
 import { ArrowRightSmallIcon } from "../LandingIcons"
 import SectionDivider from "../SectionDivider"
 import { instrumentSerif } from "../fonts"
 
+// TODO: replace with a dedicated AI Hardware waitlist form once the team creates one
+const WAITLIST_FORM_URL = GET_IN_TOUCH_URL
+
 const AIHardwareSection = () => {
-  const [email, setEmail] = useState("")
-  const [submitted, setSubmitted] = useState(false)
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    if (!email) return
-    // TODO: wire up the waitlist endpoint once it exists
-    setSubmitted(true)
-  }
-
   return (
     <section
       id="ai-hardware"
@@ -28,30 +19,15 @@ const AIHardwareSection = () => {
         <p className="max-w-[680px] px-[24px] text-[15px] text-[#5E5E5E]">Your Agents stored locally. Unlimited prompting by staking SCR</p>
       </div>
       <SectionDivider />
-      {submitted ? (
-        <p className="text-[15px] text-[#5E5E5E]">Thanks — you're on the waitlist.</p>
-      ) : (
-        <form
-          onSubmit={handleSubmit}
-          className="flex h-[50px] w-full max-w-[476px] items-center gap-[8px] rounded-[8px] border border-solid border-[#867B71] py-[6px] pl-[28px] pr-[6px]"
-        >
-          <input
-            type="email"
-            required
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            placeholder="Enter your email for waitlist..."
-            className="min-w-0 flex-1 bg-transparent text-[15px] text-black outline-none placeholder:text-[#8F8CA0]"
-          />
-          <button
-            type="submit"
-            className="flex shrink-0 items-center gap-[8px] rounded-[100px] px-[20px] py-[10px] text-[13px] font-bold text-black hover:bg-[#F4F3ED]"
-          >
-            Submit
-            <ArrowRightSmallIcon className="size-[12px]" />
-          </button>
-        </form>
-      )}
+      <a
+        href={WAITLIST_FORM_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-[8px] rounded-[8px] border border-solid border-[#867B71] px-[28px] py-[14px] text-[16px] font-semibold text-black hover:bg-[#F4F3ED]"
+      >
+        Join the Waitlist
+        <ArrowRightSmallIcon className="size-[12px]" />
+      </a>
     </section>
   )
 }
