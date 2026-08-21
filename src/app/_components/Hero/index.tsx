@@ -50,7 +50,7 @@ const LandingHero = () => (
         Secured by ZK
       </p>
     </div>
-    <div className="flex flex-col items-stretch gap-[24px] px-[24px] lg:flex-row lg:gap-[40px] lg:px-0">
+    <div className="flex w-full max-w-[428px] flex-col items-center gap-[24px] px-[24px] lg:w-auto lg:max-w-none lg:flex-row lg:items-stretch lg:gap-[40px] lg:px-0">
       {MODEL_CARDS.map(({ status, dotColor, icon, title, description, href }) => (
         <div
           key={title}
