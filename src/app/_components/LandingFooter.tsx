@@ -1,3 +1,5 @@
+import Link from "next/link"
+
 import ScrollMarkSvg from "@/assets/svgs/common/scroll-logo-icon.svg"
 
 const FOOTER_COLUMNS = [
@@ -13,9 +15,9 @@ const FOOTER_COLUMNS = [
   {
     title: "Product",
     links: [
-      { label: "Scroll Compass", href: "#compass" },
-      { label: "Scroll Compass API", href: "#compass-api" },
-      { label: "AI Hardware", href: "#ai-hardware" },
+      { label: "Scroll Compass", href: "/#compass" },
+      { label: "Scroll Compass API", href: "/#compass-api" },
+      { label: "AI Hardware", href: "/#ai-hardware" },
     ],
   },
 ]
@@ -35,16 +37,23 @@ const LandingFooter = () => (
         {FOOTER_COLUMNS.map(({ title, links }) => (
           <div key={title} className="flex w-[151px] flex-col gap-[21px]">
             <p className="text-[15px] font-bold text-black">{title}</p>
-            {links.map(({ label, href }) => (
-              <a
-                key={label}
-                href={href}
-                {...(href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                className="text-[15px] text-[#5E5E5E] [font-family:var(--font-inter)] hover:text-black"
-              >
-                {label}
-              </a>
-            ))}
+            {links.map(({ label, href }) =>
+              href.startsWith("http") ? (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[15px] text-[#5E5E5E] [font-family:var(--font-inter)] hover:text-black"
+                >
+                  {label}
+                </a>
+              ) : (
+                <Link key={label} href={href} className="text-[15px] text-[#5E5E5E] [font-family:var(--font-inter)] hover:text-black">
+                  {label}
+                </Link>
+              ),
+            )}
           </div>
         ))}
       </div>
