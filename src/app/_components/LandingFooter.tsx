@@ -1,4 +1,4 @@
-import ScrollMarkSvg from "@/assets/svgs/landingpage/scroll-mark-mono.svg"
+import ScrollMarkSvg from "@/assets/svgs/common/scroll-logo-icon.svg"
 
 const FOOTER_COLUMNS = [
   {
@@ -20,10 +20,10 @@ const FOOTER_COLUMNS = [
 ]
 
 const LandingFooter = () => (
-  <footer className="flex w-full flex-col items-center gap-[19px] bg-[#F4F3ED] px-[24px] py-[40px]">
-    <div className="flex w-full max-w-[1170px] flex-col items-start justify-between gap-[40px] md:flex-row md:items-center">
+  <footer className="flex w-full flex-col items-center justify-center gap-[19px] bg-[#F4F3ED] px-[24px] py-[24px] md:h-[290px]">
+    <div className="flex w-full max-w-[1170px] flex-col items-start justify-between gap-[40px] md:h-[170px] md:flex-row md:items-center">
       <div className="flex flex-col items-center gap-[6px]">
-        <ScrollMarkSvg className="h-[16px] w-[14px]" />
+        <ScrollMarkSvg className="size-[18px]" />
         <p className="w-[120px] text-center text-[14px] font-medium text-black">
           One Plan.
           <br />
@@ -39,7 +39,7 @@ const LandingFooter = () => (
                 key={label}
                 href={href}
                 {...(href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                className="text-[15px] text-[#5E5E5E] hover:text-black"
+                className="text-[15px] text-[#5E5E5E] [font-family:var(--font-inter)] hover:text-black"
               >
                 {label}
               </a>

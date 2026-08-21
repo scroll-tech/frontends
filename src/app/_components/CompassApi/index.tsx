@@ -7,11 +7,13 @@ const BRANDS_ROW_1 = ["Qwen", "Grok", "Kimi", "Black Forest Labs", "NVIDIA", "Cl
 const BRANDS_ROW_2 = ["Gemma", "Kling", "Arcee", "PixVerse", "Vidu", "ElevenLabs", "Runway", "Bytedance", "MiniMax"]
 
 const CompassApiSection = () => (
-  <section id="compass-api" className="scroll-mt-[96px] flex w-full flex-col items-center gap-[56px] pb-[80px] pt-[32px]">
+  <section id="compass-api" className="scroll-mt-[96px] flex w-full flex-col items-center gap-[56px] pb-[80px] pt-[32px] md:min-h-[900px]">
     <h2 className={`${instrumentSerif.className} max-w-full px-[16px] text-center text-[40px] text-black sm:text-[48px] md:text-[60px]`}>
       Scroll Compass <span className="italic text-[#C8B195]">API</span>
     </h2>
-    <p className="max-w-[680px] px-[24px] text-center text-[18px] text-[#8F8CA0]">Keys to AI models secured natively by Zero Knowledge proofs.</p>
+    <p className="max-w-[680px] px-[24px] pt-[40px] text-center text-[18px] text-[#8F8CA0]">
+      Keys to AI models secured natively by Zero Knowledge proofs.
+    </p>
     <a
       href={ACCSEAL_URL}
       target="_blank"
