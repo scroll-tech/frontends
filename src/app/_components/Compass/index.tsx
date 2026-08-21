@@ -13,7 +13,7 @@ const FLOATING_MODELS = [
 ]
 
 const CompassSection = () => (
-  <section id="compass" className="flex w-full flex-col items-center gap-[56px] pb-[80px] pt-[32px]">
+  <section id="compass" className="scroll-mt-[96px] flex w-full flex-col items-center gap-[56px] pb-[80px] pt-[32px]">
     <div className="flex w-full flex-col items-center gap-[20px] pt-[40px] text-center">
       <h2 className={`${instrumentSerif.className} text-[48px] text-black md:text-[60px]`}>Scroll Compass</h2>
       <p className="max-w-[680px] text-[15px] text-[#959595]">Every AI model in one iOS app</p>
@@ -26,7 +26,7 @@ const CompassSection = () => (
     >
       Download
     </a>
-    <div className="relative h-[436px] w-full max-w-[553px] rounded-[20px] border border-solid border-[#D9D9D9] bg-white shadow-[0px_0px_7.35px_rgba(0,0,0,0.07)]">
+    <div className="relative mx-[16px] h-[320px] w-[calc(100%-32px)] max-w-[553px] rounded-[20px] border border-solid border-[#D9D9D9] bg-white shadow-[0px_0px_7.35px_rgba(0,0,0,0.07)] sm:mx-0 sm:h-[436px] sm:w-full">
       {FLOATING_MODELS.map(({ label, className }) => (
         <div key={label} className={`absolute hidden items-center gap-[9px] sm:flex ${className}`}>
           <span className="size-[5px] rounded-full bg-[#00FF40]" />
@@ -38,7 +38,7 @@ const CompassSection = () => (
         alt="Scroll Compass iOS app"
         width={176}
         height={381}
-        className="absolute left-1/2 top-[27px] h-[381px] w-[176px] -translate-x-1/2 rounded-[13px] border border-solid border-[#D9D9D9] object-cover shadow-[0px_0px_4px_rgba(0,0,0,0.07)]"
+        className="absolute left-1/2 top-1/2 h-[280px] w-[129px] -translate-x-1/2 -translate-y-1/2 rounded-[13px] border border-solid border-[#D9D9D9] object-cover shadow-[0px_0px_4px_rgba(0,0,0,0.07)] sm:h-[381px] sm:w-[176px]"
       />
     </div>
     <SectionDivider />

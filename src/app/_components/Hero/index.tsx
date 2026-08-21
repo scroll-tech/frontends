@@ -41,7 +41,7 @@ const MODEL_CARDS: ModelCard[] = [
 ]
 
 const LandingHero = () => (
-  <section id="home" className="flex w-full flex-col items-center gap-[56px] pb-[80px]">
+  <section id="home" className="scroll-mt-[96px] flex w-full flex-col items-center gap-[56px] pb-[80px]">
     <div className="flex w-full flex-col items-center gap-[20px] pt-[40px] text-center">
       <h1 className={`${instrumentSerif.className} text-[48px] text-black md:text-[60px]`}>Scroll</h1>
       <p className="max-w-[680px] text-[15px] text-[#959595]">

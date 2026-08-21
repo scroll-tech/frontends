@@ -15,7 +15,7 @@ export const generateMetadata = genMeta(() => ({
 const LandingPage = () => {
   return (
     <div className={`${geist.className} ${instrumentSerif.variable} flex w-full flex-col items-center bg-white`}>
-      <div className="w-full px-[16px] pt-[32px]">
+      <div className="sticky top-[16px] z-50 mt-[32px] w-full px-[16px]">
         <LandingNav />
       </div>
       <Hero />
