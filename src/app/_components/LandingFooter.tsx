@@ -5,6 +5,7 @@ const FOOTER_COLUMNS = [
     title: "Legal",
     links: [
       { label: "Privacy Policy", href: "/privacy-policy" },
+      { label: "App Privacy Policy", href: "/app-privacy-policy" },
       { label: "Terms of Service", href: "/terms-of-service" },
       { label: "Connect", href: "https://x.com/Scroll_ZKP" },
     ],

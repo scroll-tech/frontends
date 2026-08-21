@@ -3,7 +3,7 @@ import Image from "next/image"
 import SectionDivider from "../SectionDivider"
 import { instrumentSerif } from "../fonts"
 
-export const COMPASS_APP_STORE_URL = "https://apps.apple.com/us/app/pocketpal-travel-buddy/id6774113297"
+export const COMPASS_APP_STORE_URL = "https://apps.apple.com/gb/app/pocketpal-travel-buddy/id6774113297"
 
 const FLOATING_MODELS = [
   { label: "Gemini 3", className: "left-[78px] top-[108px]" },
