@@ -1,6 +1,6 @@
 import Link from "next/link"
 
-import ScrollMarkSvg from "@/assets/svgs/common/scroll-logo-icon.svg"
+import ScrollMarkSvg from "@/assets/svgs/landingpage/scroll-mark.svg"
 
 const FOOTER_COLUMNS = [
   {
@@ -10,7 +10,6 @@ const FOOTER_COLUMNS = [
       { label: "Privacy Policy", href: "/privacy-policy" },
       { label: "App Privacy Policy", href: "/app-privacy-policy" },
       { label: "Terms of Service", href: "/terms-of-service" },
-      { label: "Connect", href: "https://x.com/Scroll_ZKP" },
     ],
   },
   {
@@ -31,7 +30,7 @@ const LandingFooter = () => (
     <div className="flex w-full max-w-[1170px] flex-col gap-[20px]">
       <div className="flex flex-col gap-[40px] py-[32px] md:flex-row md:items-center md:justify-between">
         <div className="flex flex-col items-start gap-[8px] self-start md:items-center md:self-auto">
-          <ScrollMarkSvg className="size-[22px]" />
+          <ScrollMarkSvg className="h-[20px] w-auto" />
           <p className="max-w-[120px] text-left text-[14px] font-medium text-black md:text-center">
             One Plan.
             <br />

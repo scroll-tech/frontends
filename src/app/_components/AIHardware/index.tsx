@@ -11,7 +11,7 @@ const AIHardwareSection = () => {
   return (
     <section
       id="ai-hardware"
-      className="scroll-mt-[96px] flex w-full flex-col items-center gap-[40px] px-[16px] pb-[48px] pt-[32px] md:gap-[56px] md:pb-[80px] md:min-h-[900px]"
+      className="scroll-mt-[-92px] flex w-full flex-col items-center gap-[40px] px-[16px] pb-[48px] pt-[32px] md:gap-[56px] md:pb-[80px] md:min-h-[900px]"
     >
       <div className="flex w-full flex-col items-center gap-[20px] pt-[8px] md:pt-[40px] text-center">
         <p className="text-[12px] font-bold uppercase text-[#959595]">*coming soon*</p>

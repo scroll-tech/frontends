@@ -9,7 +9,7 @@ import LandingNav from "./_components/LandingNav"
 import { geist, instrumentSerif } from "./_components/fonts"
 
 export const generateMetadata = genMeta(() => ({
-  titleSuffix: "One Plan, Every Model, Secured by ZK",
+  titleSuffix: "Your Gateway to Frontier Models",
 }))
 
 const LandingPage = () => {

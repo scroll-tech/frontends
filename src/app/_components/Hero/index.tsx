@@ -45,20 +45,16 @@ const MODEL_CARDS: ModelCard[] = [
 ]
 
 const LandingHero = () => (
-  <section id="home" className="scroll-mt-[96px] flex w-full flex-col items-center gap-[40px] pb-[48px] md:gap-[56px] md:pb-[80px] md:min-h-[780px]">
+  <section id="home" className="scroll-mt-[-92px] flex w-full flex-col items-center gap-[40px] pb-[48px] md:gap-[56px] md:pb-[80px] md:min-h-[780px]">
     <div className="flex w-full flex-col items-center gap-[20px] pt-[8px] md:pt-[40px] text-center">
       <h1 className={`${instrumentSerif.className} text-[48px] text-black md:text-[60px]`}>Scroll</h1>
-      <p className="max-w-[680px] text-[15px] text-[#959595]">
-        One Plan, Every Model,
-        <br />
-        Secured by ZK
-      </p>
+      <p className="max-w-[680px] px-[24px] text-[15px] text-[#959595]">Your gateway to frontier models, cheaper and secured by ZK tech.</p>
     </div>
     <div className="flex w-full max-w-[428px] flex-col items-center gap-[24px] px-[24px] lg:w-auto lg:max-w-none lg:flex-row lg:items-stretch lg:gap-[40px] lg:px-0">
       {MODEL_CARDS.map(({ status, dotColor, icon, title, description, descWidthClass, href }) => (
         <div
           key={title}
-          className="flex min-h-[201px] w-full max-w-[380px] flex-col gap-[16px] rounded-[16px] border border-solid border-[#D9D9D9] bg-white p-[24px] shadow-[0px_8px_12px_rgba(30,26,21,0.07)] lg:h-[201px] lg:w-[380px] lg:shrink-0"
+          className="flex min-h-[201px] w-full max-w-[380px] flex-col gap-[16px] rounded-[16px] border border-solid border-[#D9D9D9] bg-white p-[24px] shadow-[0px_8px_12px_rgba(30,26,21,0.07)] transition-transform duration-200 ease-out hover:-translate-y-[4px] lg:h-[201px] lg:w-[380px] lg:shrink-0"
         >
           <div className="flex w-full items-center justify-between">
             <div className="flex items-center gap-[8px]">

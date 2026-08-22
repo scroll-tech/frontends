@@ -9,14 +9,14 @@ const BRANDS_ROW_2 = ["Gemma", "Kling", "Arcee", "PixVerse", "Vidu", "ElevenLabs
 const CompassApiSection = () => (
   <section
     id="compass-api"
-    className="scroll-mt-[96px] flex w-full flex-col items-center gap-[40px] pb-[48px] md:gap-[56px] md:pb-[80px] pt-[32px] md:min-h-[900px]"
+    className="scroll-mt-[-92px] flex w-full flex-col items-center gap-[40px] pb-[48px] md:gap-[56px] md:pb-[80px] pt-[32px] md:min-h-[900px]"
   >
-    <h2 className={`${instrumentSerif.className} max-w-full px-[16px] text-center text-[40px] text-black sm:text-[48px] md:text-[60px]`}>
-      Scroll Compass <span className="italic text-[#C8B195]">API</span>
-    </h2>
-    <p className="max-w-[680px] px-[24px] pt-[8px] text-center md:pt-[40px] text-[18px] text-[#8F8CA0]">
-      Keys to AI models secured natively by Zero Knowledge proofs.
-    </p>
+    <div className="flex w-full flex-col items-center gap-[20px] pt-[8px] text-center md:pt-[40px]">
+      <h2 className={`${instrumentSerif.className} max-w-full px-[16px] text-[40px] text-black sm:text-[48px] md:text-[60px]`}>
+        Compass <span className="italic text-[#C8B195]">API</span>
+      </h2>
+      <p className="max-w-[680px] px-[24px] text-[15px] text-[#959595]">Keys to AI models secured natively by Zero Knowledge proofs.</p>
+    </div>
     <a
       href={COMPASS_API_URL}
       target="_blank"
