@@ -16,8 +16,8 @@ const FOOTER_COLUMNS = [
     title: "Product",
     width: "w-[151px]",
     links: [
-      { label: "Scroll Compass", href: "/#compass" },
-      { label: "Scroll Compass API", href: "/#compass-api" },
+      { label: "Compass", href: "/#compass" },
+      { label: "Compass API", href: "/#compass-api" },
       { label: "AI Hardware", href: "/#ai-hardware" },
     ],
   },
