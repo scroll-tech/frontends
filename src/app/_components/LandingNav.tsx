@@ -1,7 +1,8 @@
 "use client"
 
 import Link from "next/link"
-import { useState } from "react"
+import { usePathname } from "next/navigation"
+import { MouseEvent, useState } from "react"
 
 import ScrollMarkSvg from "@/assets/svgs/landingpage/scroll-mark.svg"
 
@@ -13,22 +14,46 @@ const NAV_LINKS = [
 ]
 
 const LandingNav = () => {
+  const pathname = usePathname()
   const [open, setOpen] = useState(false)
+
+  // on the landing page itself, scroll smoothly instead of re-navigating (Home would jump otherwise)
+  const handleNavClick = (e: MouseEvent<HTMLAnchorElement>, href: string) => {
+    setOpen(false)
+    if (pathname !== "/") return
+    e.preventDefault()
+    const id = href.split("#")[1]
+    if (id) {
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+    history.replaceState(null, "", href)
+  }
 
   return (
     <div className="relative mx-auto w-full max-w-[828px]">
       <nav className="flex h-[64px] w-full items-center justify-between rounded-[32px] bg-white pl-[16px] pr-[24px] shadow-[0px_4px_12px_rgba(0,0,0,0.04)]">
         <div className="flex items-center gap-[12px]">
-          <Link href="/" aria-label="Scroll home" className="flex size-[36px] items-center justify-center rounded-[18px] bg-[#F4F3ED]">
+          <Link
+            href="/"
+            aria-label="Scroll home"
+            onClick={e => handleNavClick(e, "/")}
+            className="flex size-[36px] items-center justify-center rounded-[18px] bg-[#F4F3ED]"
+          >
             <ScrollMarkSvg className="h-[20px] w-auto" />
           </Link>
-          <Link href="/" className="flex h-[32px] items-center rounded-[16px] bg-[#F4F3ED] pl-[12px] pr-[8px] text-[14px] font-medium text-black">
+          <Link
+            href="/"
+            onClick={e => handleNavClick(e, "/")}
+            className="flex h-[32px] items-center rounded-[16px] bg-[#F4F3ED] pl-[12px] pr-[8px] text-[14px] font-medium text-black"
+          >
             Scroll
           </Link>
         </div>
         <div className="hidden items-center gap-[24px] md:flex">
           {NAV_LINKS.map(({ label, href }) => (
-            <Link key={label} href={href} className="text-[14px] font-medium text-[#0B192C] hover:opacity-70">
+            <Link key={label} href={href} onClick={e => handleNavClick(e, href)} className="text-[14px] font-medium text-[#0B192C] hover:opacity-70">
               {label}
             </Link>
           ))}
@@ -51,7 +76,7 @@ const LandingNav = () => {
             <Link
               key={label}
               href={href}
-              onClick={() => setOpen(false)}
+              onClick={e => handleNavClick(e, href)}
               className="rounded-[16px] px-[16px] py-[10px] text-[14px] font-medium text-[#0B192C] hover:bg-[#F4F3ED]"
             >
               {label}
