@@ -6,8 +6,8 @@ import { useParams } from "next/navigation"
 import NavigateNextIcon from "@mui/icons-material/NavigateNext"
 import { Box, Breadcrumbs, Typography } from "@mui/material"
 
-import Header from "@/app/rollupscan/components/Header"
-import Spinning from "@/app/rollupscan/components/Spinning"
+import Header from "@/app/_rollupscan/components/Header"
+import Spinning from "@/app/_rollupscan/components/Spinning"
 import { BLOCK_LIST_TYPE, useBatchBlocks, useChunkBlocks } from "@/hooks/useRollupInfo"
 
 import Table from "./Table"

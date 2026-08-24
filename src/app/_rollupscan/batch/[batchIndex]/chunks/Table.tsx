@@ -8,9 +8,9 @@ import TableHead from "@mui/material/TableHead"
 import TableRow from "@mui/material/TableRow"
 import { styled } from "@mui/material/styles"
 
-import Table from "@/app/rollupscan/components/Table"
-import TableCell from "@/app/rollupscan/components/TableCell"
-import Tooltip from "@/app/rollupscan/components/Tooltip"
+import Table from "@/app/_rollupscan/components/Table"
+import TableCell from "@/app/_rollupscan/components/TableCell"
+import Tooltip from "@/app/_rollupscan/components/Tooltip"
 import Link from "@/components/Link"
 
 const relativeTime = require("dayjs/plugin/relativeTime")

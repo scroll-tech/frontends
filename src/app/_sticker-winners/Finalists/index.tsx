@@ -4,8 +4,8 @@ import { useRef } from "react"
 
 import { Box, Typography } from "@mui/material"
 
-import Gallery from "@/app/sticker-vote/components/Gallery"
-import Title from "@/app/sticker-vote/components/Title"
+import Gallery from "@/app/_sticker-vote/components/Gallery"
+import Title from "@/app/_sticker-vote/components/Title"
 import FinalistsSvg from "@/assets/svgs/sticker-vote/finalists.svg"
 import Top2_5Svg from "@/assets/svgs/sticker-winners/top2-5.svg"
 import WinnerSvg from "@/assets/svgs/sticker-winners/winner.svg"

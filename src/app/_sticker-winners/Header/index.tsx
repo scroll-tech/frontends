@@ -4,7 +4,7 @@ import { makeStyles } from "tss-react/mui"
 
 import { Box, Container, Stack, SvgIcon, Typography } from "@mui/material"
 
-import GridBackground from "@/app/sticker-vote/components/GridBackground"
+import GridBackground from "@/app/_sticker-vote/components/GridBackground"
 import TadaSvg from "@/assets/svgs/sticker-winners/tada.svg"
 import useCheckViewport from "@/hooks/useCheckViewport"
 

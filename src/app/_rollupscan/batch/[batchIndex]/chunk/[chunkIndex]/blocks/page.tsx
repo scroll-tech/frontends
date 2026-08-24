@@ -6,16 +6,18 @@ import { useParams } from "next/navigation"
 import NavigateNextIcon from "@mui/icons-material/NavigateNext"
 import { Box, Breadcrumbs, Typography } from "@mui/material"
 
-import Header from "@/app/rollupscan/components/Header"
-import Spinning from "@/app/rollupscan/components/Spinning"
-import { useChunkList } from "@/hooks/useRollupInfo"
+import Header from "@/app/_rollupscan/components/Header"
+import Spinning from "@/app/_rollupscan/components/Spinning"
+import { BLOCK_LIST_TYPE, useBatchBlocks, useChunkBlocks } from "@/hooks/useRollupInfo"
 
 import Table from "./Table"
 
 const Blocks = () => {
   const params = useParams()
-  const index = params!.batchIndex
-  const { chunks, isLoading } = useChunkList(index)
+  const blocksType = !!params!.chunkIndex ? BLOCK_LIST_TYPE.CHUNK : BLOCK_LIST_TYPE.BATCH
+  const index = params!.chunkIndex || params!.batchIndex
+  const fn = blocksType === BLOCK_LIST_TYPE.CHUNK ? useChunkBlocks : useBatchBlocks
+  const { blocks, isLoading } = fn(index)
 
   return (
     <Box>
@@ -32,18 +34,23 @@ const Blocks = () => {
       >
         <Breadcrumbs aria-label="breadcrumb" sx={{ fontWeight: 600 }} separator={<NavigateNextIcon fontSize="large" />}>
           <Link href="/rollupscan?page=1&per_page=10">Batches</Link>
-          <Link href={`/rollupscan/batch/${index}`}>Batch {index}</Link>
+          <Link href={`/rollupscan/batch/${params!.batchIndex}`}> Batch {params!.batchIndex}</Link>
+          {blocksType === BLOCK_LIST_TYPE.CHUNK && <Link href={`/rollupscan/batch/${params!.batchIndex}/chunks`}>Chunks</Link>}
+          {blocksType === BLOCK_LIST_TYPE.CHUNK && (
+            <Link href={`/rollupscan/batch/${params!.batchIndex}/chunk/${params!.chunkIndex}`}>Chunk {params!.chunkIndex}</Link>
+          )}
+
           <Typography color="text.primary" sx={{ fontWeight: 600 }}>
-            Chunks
+            Blocks
           </Typography>
         </Breadcrumbs>
         {isLoading ? (
           <Spinning></Spinning>
         ) : (
           <>
-            {chunks ? (
+            {blocks ? (
               <>
-                <Table chunks={chunks} batchIndex={+(index ?? 0)} />
+                <Table blocks={blocks} />
               </>
             ) : null}
           </>

@@ -4,8 +4,8 @@ import { makeStyles } from "tss-react/mui"
 import { Typography } from "@mui/material"
 import { Stack } from "@mui/system"
 
-import ImageViewer from "@/app/sticker-vote/components/ImageViewer"
-import StickerPicture from "@/app/sticker-vote/components/StickerPicture"
+import ImageViewer from "@/app/_sticker-vote/components/ImageViewer"
+import StickerPicture from "@/app/_sticker-vote/components/StickerPicture"
 import SuccessionToView, { SuccessionItem } from "@/components/Motion/SuccessionToView"
 import useCheckViewport from "@/hooks/useCheckViewport"
 

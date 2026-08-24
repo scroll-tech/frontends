@@ -7,7 +7,7 @@ import { makeStyles } from "tss-react/mui"
 import { Box, Typography } from "@mui/material"
 import useScrollTrigger from "@mui/material/useScrollTrigger"
 
-import SearchInput from "@/app/ecosystem/Protocols/SearchInput"
+import SearchInput from "@/app/_ecosystem/Protocols/SearchInput"
 import SectionWrapper from "@/components/SectionWrapper"
 import { CANVAS_AND_BADGES_PAGE_SYMBOL, CATEGORY_LIST, NORMAL_HEADER_HEIGHT, SORT_LIST } from "@/constants"
 
