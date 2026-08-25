@@ -8,6 +8,7 @@ import { instrumentSerif } from "../fonts"
 
 // public form endpoint id from Loops (Forms -> Settings -> Form Endpoint)
 const LOOPS_FORM_ID = process.env.NEXT_PUBLIC_LOOPS_FORM_ID
+const LOOPS_MAILING_LIST_ID = process.env.NEXT_PUBLIC_LOOPS_MAILING_LIST_ID
 
 type Status = "idle" | "loading" | "success" | "error"
 
@@ -29,7 +30,13 @@ const AIHardwareSection = () => {
       const res = await fetch(`https://app.loops.so/api/newsletter-form/${LOOPS_FORM_ID}`, {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `email=${encodeURIComponent(email)}&userGroup=${encodeURIComponent("AI Hardware Waitlist")}`,
+        body: [
+          `email=${encodeURIComponent(email)}`,
+          `userGroup=${encodeURIComponent("AI Hardware Waitlist")}`,
+          LOOPS_MAILING_LIST_ID ? `mailingLists=${encodeURIComponent(LOOPS_MAILING_LIST_ID)}` : "",
+        ]
+          .filter(Boolean)
+          .join("&"),
       })
       if (res.status === 429) {
         setStatus("error")
