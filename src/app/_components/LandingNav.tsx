@@ -46,7 +46,7 @@ const LandingNav = () => {
           <Link
             href="/"
             onClick={e => handleNavClick(e, "/")}
-            className="flex h-[32px] items-center rounded-[16px] bg-[#F4F3ED] pl-[12px] pr-[8px] text-[14px] font-medium text-black"
+            className="flex h-[32px] items-center justify-center rounded-[16px] bg-[#F4F3ED] px-[14px] text-[14px] font-medium text-black"
           >
             Scroll
           </Link>
