@@ -7,10 +7,7 @@ const BRANDS_ROW_1 = ["Qwen", "Grok", "Kimi", "Black Forest Labs", "NVIDIA", "Cl
 const BRANDS_ROW_2 = ["Gemma", "Kling", "Arcee", "PixVerse", "Vidu", "ElevenLabs", "Runway", "Bytedance", "MiniMax"]
 
 const CompassApiSection = () => (
-  <section
-    id="compass-api"
-    className="scroll-mt-[-92px] flex w-full flex-col items-center gap-[40px] pb-[48px] md:gap-[56px] md:pb-[80px] pt-[32px] md:min-h-[900px]"
-  >
+  <section className="scroll-mt-[-92px] flex w-full flex-col items-center gap-[40px] pb-[48px] md:gap-[56px] md:pb-[80px] pt-[32px] md:min-h-[900px]">
     <div className="flex w-full flex-col items-center gap-[20px] pt-[8px] text-center md:pt-[40px]">
       <h2 className={`${instrumentSerif.className} max-w-full px-[16px] text-[40px] text-black sm:text-[48px] md:text-[60px]`}>
         Compass <span className="italic text-[#C8B195]">API</span>

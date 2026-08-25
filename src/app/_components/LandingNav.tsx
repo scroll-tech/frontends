@@ -23,6 +23,11 @@ const LandingNav = () => {
     if (pathname !== "/") return
     e.preventDefault()
     const id = href.split("#")[1]
+    const fullpageApi = (window as { fullpage_api?: { moveTo: (anchor: string) => void } }).fullpage_api
+    if (fullpageApi) {
+      fullpageApi.moveTo(id || "home")
+      return
+    }
     if (id) {
       document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
     } else {

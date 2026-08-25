@@ -13,10 +13,7 @@ const FLOATING_MODELS = [
 ]
 
 const CompassSection = () => (
-  <section
-    id="compass"
-    className="scroll-mt-[-92px] flex w-full flex-col items-center gap-[40px] pb-[48px] md:gap-[56px] md:pb-[80px] pt-[32px] md:min-h-[900px]"
-  >
+  <section className="scroll-mt-[-92px] flex w-full flex-col items-center gap-[40px] pb-[48px] md:gap-[56px] md:pb-[80px] pt-[32px] md:min-h-[900px]">
     <div className="flex w-full flex-col items-center gap-[20px] pt-[8px] md:pt-[40px] text-center">
       <h2 className={`${instrumentSerif.className} text-[48px] text-black md:text-[60px]`}>Compass</h2>
       <p className="max-w-[680px] text-[15px] text-[#959595]">Every AI model in one iOS app</p>
