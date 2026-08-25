@@ -4,6 +4,10 @@ export const LEVEL_UP_URL = "https://www.levelup.xyz/"
 // TODO: switch back to https://api.scroll.systems/ once it is publicly accessible (currently behind Cloudflare Access)
 export const COMPASS_API_URL = "https://acc-api-frontend.vercel.app/"
 
+// Loops newsletter form (public identifiers, safe to commit)
+export const LOOPS_FORM_ID = "cmbtm4r1201vb0t0i3xnafo6z"
+export const LOOPS_MAILING_LIST_ID = "cmt8ei1k2525g0j2o31nwfq51"
+
 const USER_PORTAL_BASE_URL = process.env.NEXT_PUBLIC_USER_PORTAL_BASE_URL
 
 export const BRIDGE_URL = `${USER_PORTAL_BASE_URL}/bridge`

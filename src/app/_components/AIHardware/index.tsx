@@ -2,13 +2,11 @@
 
 import { FormEvent, useState } from "react"
 
+import { LOOPS_FORM_ID, LOOPS_MAILING_LIST_ID } from "@/constants/link"
+
 import { ArrowRightSmallIcon } from "../LandingIcons"
 import SectionDivider from "../SectionDivider"
 import { instrumentSerif } from "../fonts"
-
-// public form endpoint id from Loops (Forms -> Settings -> Form Endpoint)
-const LOOPS_FORM_ID = process.env.NEXT_PUBLIC_LOOPS_FORM_ID
-const LOOPS_MAILING_LIST_ID = process.env.NEXT_PUBLIC_LOOPS_MAILING_LIST_ID
 
 type Status = "idle" | "loading" | "success" | "error"
 
@@ -20,11 +18,6 @@ const AIHardwareSection = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!email || status === "loading") return
-    if (!LOOPS_FORM_ID) {
-      setStatus("error")
-      setErrorMessage("The waitlist isn't open yet — please check back soon.")
-      return
-    }
     setStatus("loading")
     try {
       const res = await fetch(`https://app.loops.so/api/newsletter-form/${LOOPS_FORM_ID}`, {
@@ -33,10 +26,8 @@ const AIHardwareSection = () => {
         body: [
           `email=${encodeURIComponent(email)}`,
           `userGroup=${encodeURIComponent("Compass Waitlist")}`,
-          LOOPS_MAILING_LIST_ID ? `mailingLists=${encodeURIComponent(LOOPS_MAILING_LIST_ID)}` : "",
-        ]
-          .filter(Boolean)
-          .join("&"),
+          `mailingLists=${encodeURIComponent(LOOPS_MAILING_LIST_ID)}`,
+        ].join("&"),
       })
       if (res.status === 429) {
         setStatus("error")
