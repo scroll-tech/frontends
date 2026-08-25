@@ -1,7 +1,6 @@
 "use client"
 
 import ReactFullpage from "@fullpage/react-fullpage"
-
 import "fullpage.js/dist/fullpage.css"
 
 import AIHardwareSection from "./AIHardware"
