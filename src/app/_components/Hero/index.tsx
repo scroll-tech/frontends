@@ -45,10 +45,7 @@ const MODEL_CARDS: ModelCard[] = [
 ]
 
 const LandingHero = () => (
-  <section
-    id="home"
-    className="scroll-mt-[-92px] flex w-full flex-col items-center gap-[40px] pb-[48px] md:gap-[56px] md:pb-[80px] md:min-h-[780px]"
-  >
+  <section id="home" className="scroll-mt-[-92px] flex w-full flex-col items-center gap-[40px] pb-[48px] md:gap-[56px] md:pb-[80px] md:min-h-[780px]">
     <div className="flex w-full flex-col items-center gap-[20px] pt-[8px] md:pt-[40px] text-center">
       <h1 className={`${instrumentSerif.className} text-[48px] text-black md:text-[60px]`}>Scroll</h1>
       <p className="max-w-[680px] px-[24px] text-[15px] text-[#959595]">Your gateway to frontier models, cheaper and secured by ZK tech.</p>
