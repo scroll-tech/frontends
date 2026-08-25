@@ -32,7 +32,7 @@ const AIHardwareSection = () => {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: [
           `email=${encodeURIComponent(email)}`,
-          `userGroup=${encodeURIComponent("AI Hardware Waitlist")}`,
+          `userGroup=${encodeURIComponent("Compass Waitlist")}`,
           LOOPS_MAILING_LIST_ID ? `mailingLists=${encodeURIComponent(LOOPS_MAILING_LIST_ID)}` : "",
         ]
           .filter(Boolean)
