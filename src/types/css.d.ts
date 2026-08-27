@@ -13,7 +13,7 @@ declare module "*.sass" {
   export default content
 }
 
-// 为第三方库的 CSS 导入添加声明
+// declarations for third-party library CSS imports
 declare module "swiper/css" {
   const content: any
   export default content

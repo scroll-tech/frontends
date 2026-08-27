@@ -1,4 +1,4 @@
-// global.d.ts 或任何.d.ts文件中
+// in global.d.ts or any .d.ts file
 import "react"
 
 declare module "react" {

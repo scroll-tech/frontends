@@ -1,24 +1,29 @@
 import { genMeta } from "@/utils"
 
-import FounderClub from "./_components/FounderClub"
+import AIHardwareSection from "./_components/AIHardware"
+import CompassSection from "./_components/Compass"
+import CompassApiSection from "./_components/CompassApi"
 import Hero from "./_components/Hero"
-import Portal from "./_components/Portal"
-import Tech from "./_components/Tech"
-import Vision from "./_components/Vision"
+import LandingFooter from "./_components/LandingFooter"
+import LandingNav from "./_components/LandingNav"
+import { geist, instrumentSerif } from "./_components/fonts"
 
 export const generateMetadata = genMeta(() => ({
-  titleSuffix: "Native zkEVM Layer 2 for Ethereum",
+  titleSuffix: "Your Gateway to Frontier Models",
 }))
 
 const LandingPage = () => {
   return (
-    <>
+    <div className={`${geist.className} ${instrumentSerif.variable} flex w-full flex-col items-center gap-[32px] bg-white pt-[32px] md:gap-[56px]`}>
+      <div className="sticky top-[16px] z-50 w-full px-[16px]">
+        <LandingNav />
+      </div>
       <Hero />
-      <Vision />
-      <Tech />
-      <FounderClub />
-      <Portal />
-    </>
+      <CompassSection />
+      <CompassApiSection />
+      <AIHardwareSection />
+      <LandingFooter />
+    </div>
   )
 }
 
