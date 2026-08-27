@@ -6,18 +6,22 @@ import { styled } from "@mui/material/styles"
 import Link from "@/components/Link"
 
 const Container = styled(Box)(({ theme }) => ({
-  padding: "14rem 6rem",
+  padding: "2rem 0 0",
+  color: "#3D3D3D",
   "& *": {
-    fontSize: "2rem",
-    textAlign: "justify",
+    fontSize: "1.5rem",
+    lineHeight: 1.7,
+    textAlign: "left",
     [theme.breakpoints.down("sm")]: {
-      fontSize: "1.6rem",
+      fontSize: "1.4rem",
     },
   },
   "& h2": {
-    fontSize: "2.4rem",
-    fontWeight: "bold",
-    margin: "4rem 0 1.6rem 0",
+    fontSize: "2.2rem",
+    fontFamily: "var(--font-instrument-serif)",
+    fontWeight: 400,
+    color: "#000",
+    margin: "3.2rem 0 1.6rem 0",
     [theme.breakpoints.down("sm")]: {
       fontSize: "2rem",
       margin: "2.8rem 0 1.2rem 0",
@@ -47,7 +51,7 @@ const Container = styled(Box)(({ theme }) => ({
     },
   },
   [theme.breakpoints.down("md")]: {
-    padding: "8rem 1.6rem",
+    padding: "2rem 0 0",
     "& ul": {
       li: {
         paddingLeft: "0",
@@ -61,15 +65,18 @@ const Container = styled(Box)(({ theme }) => ({
 })) as typeof Box
 
 const LinkStyled = styled(Link)(({ theme }) => ({
-  fontSize: "2rem",
+  fontSize: "1.5rem",
   [theme.breakpoints.down("sm")]: {
-    fontSize: "1.6rem",
+    fontSize: "1.4rem",
   },
 }))
 
 const TitleTypography = styled(Typography)(() => ({
   textAlign: "center",
-  marginBottom: "2rem",
+  fontFamily: "var(--font-instrument-serif) !important",
+  fontSize: "3.6rem !important",
+  fontWeight: "400 !important",
+  marginBottom: "4rem",
 }))
 
 const Terms = () => {

@@ -4,19 +4,32 @@ import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
 const Container = styled(Box)(({ theme }) => ({
-  padding: "14rem 6rem",
-  [theme.breakpoints.down("md")]: {
-    padding: "8rem 2rem",
-  },
+  padding: "2rem 0 0",
+  color: "#3D3D3D",
   "& *": {
-    fontSize: "2rem",
-    textAlign: "justify",
+    fontSize: "1.5rem",
+    lineHeight: 1.7,
+    textAlign: "left",
     [theme.breakpoints.down("sm")]: {
-      fontSize: "1.6rem",
+      fontSize: "1.4rem",
     },
   },
+  "& h1": {
+    fontSize: "2.6rem",
+    marginTop: "3.6rem",
+  },
+  "& h2": {
+    fontSize: "2.2rem",
+    marginTop: "3.2rem",
+  },
+  "& h3": {
+    fontSize: "1.8rem",
+    marginTop: "2.8rem",
+  },
   "& h1, & h2, & h3": {
-    fontWeight: "bold",
+    fontFamily: "var(--font-instrument-serif)",
+    fontWeight: 400,
+    color: "#000",
     marginBottom: "2.8rem",
     [theme.breakpoints.down("md")]: {
       marginBottom: "2rem",
@@ -50,7 +63,10 @@ const Container = styled(Box)(({ theme }) => ({
 
 const TitleTypography = styled(Typography)(() => ({
   textAlign: "center",
-  fontWeight: "500 !important",
+  fontFamily: "var(--font-instrument-serif) !important",
+  fontSize: "3.6rem !important",
+  fontWeight: "400 !important",
+  marginBottom: "4rem",
 }))
 
 const DashTypography = styled("h3")(({ theme }) => ({

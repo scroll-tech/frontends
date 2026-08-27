@@ -1,7 +1,11 @@
 export const DOC_URL = "https://docs.scroll.io/en/home/"
 export const SCROLL_OPEN_URL = "https://openeconomyos.com/"
 export const LEVEL_UP_URL = "https://www.levelup.xyz/"
-export const ACCSEAL_URL = "https://accapi.accseal.cn:43443/"
+export const COMPASS_API_URL = "https://compass.scroll.io"
+
+// Loops newsletter form (public identifiers, safe to commit)
+export const LOOPS_FORM_ID = "cmbtm4r1201vb0t0i3xnafo6z"
+export const LOOPS_MAILING_LIST_ID = "cmt8ei1k2525g0j2o31nwfq51"
 
 const USER_PORTAL_BASE_URL = process.env.NEXT_PUBLIC_USER_PORTAL_BASE_URL
 
