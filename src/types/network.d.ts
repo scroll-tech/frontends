@@ -1,4 +1,4 @@
-type EmptyNetwork = ValidNetwork<string, never>
+type EmptyNetwork = Partial<ValidNetwork>
 
 type ValidNetwork = {
   name: string
