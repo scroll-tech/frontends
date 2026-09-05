@@ -1,14 +1,17 @@
+import { COMPASS_API_URL } from "@/constants/link"
+
 import ModelGlobe from "../ModelGlobe/lazy"
-import SmoothAnchor from "../SmoothAnchor"
 import { geistMono } from "../fonts"
 
 const CheckItOut = ({ className = "" }: { className?: string }) => (
-  <SmoothAnchor
-    href="#products"
+  <a
+    href={COMPASS_API_URL}
+    target="_blank"
+    rel="noopener noreferrer"
     className={`h-[49px] w-[149px] items-center justify-center rounded-[8px] border border-solid border-[#867B71] text-[15px] font-medium leading-[47px] text-black transition-colors hover:bg-[#F8F8F8] ${className}`}
   >
     Check it out
-  </SmoothAnchor>
+  </a>
 )
 
 /**
