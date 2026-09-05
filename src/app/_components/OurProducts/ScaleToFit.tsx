@@ -23,9 +23,15 @@ const ScaleToFit = ({ width, height, className = "", children }: ScaleToFitProps
     const el = ref.current
     if (!el) return
     const update = () => {
-      const rect = el.getBoundingClientRect()
-      if (!rect.width || !rect.height) return
-      setScale(Math.min(rect.width / width, rect.height / height))
+      // clientWidth/Height include padding, and getBoundingClientRect includes it too —
+      // measure the content box so a padded wrapper actually insets the children
+      const cs = getComputedStyle(el)
+      const available = {
+        w: el.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight),
+        h: el.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom),
+      }
+      if (available.w <= 0 || available.h <= 0) return
+      setScale(Math.min(available.w / width, available.h / height))
     }
     update()
     const observer = new ResizeObserver(update)
