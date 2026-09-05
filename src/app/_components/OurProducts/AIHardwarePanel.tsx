@@ -34,7 +34,7 @@ const Desktop = () => (
 // phone: scaling the desktop composition would render the callouts at ~6px, so the
 // labels come out of the artwork and sit above it at a readable size
 const Mobile = () => (
-  <div className="mx-auto flex w-full max-w-[440px] flex-col items-center gap-[16px] px-[20px] pb-[56px] pt-[24px] md:hidden">
+  <div className="mx-auto flex h-full w-full max-w-[440px] flex-col items-center justify-center gap-[16px] px-[20px] pb-[48px] pt-[24px] md:hidden">
     <div className="flex w-full items-center justify-between gap-[12px]">
       <div className="flex items-center gap-[8px]">
         <span className="size-[10px] shrink-0 rounded-full bg-[#5EFF86]" />

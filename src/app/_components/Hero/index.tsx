@@ -31,7 +31,7 @@ const LandingHero = () => (
         <span className="text-[#636363]">Frontier Models</span>
       </h1>
 
-      <div className="relative mt-[24px] flex aspect-[311/516] w-full flex-col items-center overflow-hidden rounded-[16px] bg-white pt-[24px] md:mt-0 md:aspect-auto md:rounded-none md:pt-0">
+      <div className="relative mt-[24px] flex aspect-[311/516] max-h-[600px] w-full flex-col items-center overflow-hidden rounded-[16px] bg-white pt-[24px] md:mt-0 md:aspect-auto md:max-h-none md:rounded-none md:pt-0">
         <p className="max-w-[343px] px-[16px] text-center text-[16px] leading-[25px] text-[#636363] md:mt-[45px]">
           Switch between 30+ providers through a single unified interface
         </p>

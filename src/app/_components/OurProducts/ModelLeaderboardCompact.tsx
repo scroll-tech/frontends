@@ -35,8 +35,8 @@ const ModelLeaderboardCompact = () => {
   const shown = rows.slice(0, visible)
 
   return (
-    <div className="flex w-full flex-col px-[16px] pb-[64px] pt-[16px]">
-      <div className="flex items-center gap-[20px] border-b border-solid border-[#EBE7E3] pb-[10px]">
+    <div className="flex h-full w-full flex-col px-[16px] pb-[52px] pt-[16px]">
+      <div className="flex shrink-0 items-center gap-[20px] border-b border-solid border-[#EBE7E3] pb-[10px]">
         {SORTS.map(s => (
           <button
             key={s.key}
@@ -52,7 +52,7 @@ const ModelLeaderboardCompact = () => {
         ))}
       </div>
 
-      <div className="flex flex-col">
+      <div className="min-h-0 flex-1 overflow-y-auto">
         {shown.map((row, i) => (
           <div key={row.slug} className="flex items-center gap-[10px] border-b border-solid border-[#F2F0ED] py-[12px]">
             <span className="w-[18px] shrink-0 text-[11px] tabular-nums text-[#C4C0BB]">{String(i + 1).padStart(2, "0")}</span>
@@ -76,7 +76,7 @@ const ModelLeaderboardCompact = () => {
         ))}
       </div>
 
-      <div className="mt-[16px] flex items-center justify-between">
+      <div className="mt-[12px] flex shrink-0 items-center justify-between">
         <p className="text-[11px] leading-[14px] text-[#B0ACA6]">
           showing {shown.length} of {TOTAL_MODELS}
         </p>

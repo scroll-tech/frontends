@@ -12,7 +12,7 @@ const CompassApiPanel = () => (
     </ScaleToFit>
 
     {/* phone: the 1220px table can't scale down and stay readable — stack the rows instead */}
-    <div className="md:hidden">
+    <div className="h-full md:hidden">
       <ModelLeaderboardCompact />
     </div>
   </>

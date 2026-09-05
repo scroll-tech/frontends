@@ -13,6 +13,11 @@ import CompassPanel from "./CompassPanel"
 
 export const COMPASS_APP_STORE_URL = "https://apps.apple.com/gb/app/pocketpal-travel-buddy/id6774113297"
 
+// every card is the same 311 x 516 sheet on phones — the design draws one component
+// (Frame 1948761911) for the hero and for the sections. The cap stops it turning into a
+// 1200px column on a tablet, where this layout is still the one in play (md = 900px).
+const MOBILE_CARD = "aspect-[311/516] max-h-[600px]"
+
 interface Product {
   id: string
   index: string
@@ -33,7 +38,7 @@ const PRODUCTS: Product[] = [
     description: "Every AI model in one iOS app",
     href: COMPASS_APP_STORE_URL,
     external: true,
-    mobileClass: "aspect-[311/516] max-h-[600px]",
+    mobileClass: MOBILE_CARD,
     panel: <CompassPanel />,
   },
   {
@@ -43,7 +48,7 @@ const PRODUCTS: Product[] = [
     description: "Keys to models secured by ZK proofs",
     href: COMPASS_API_URL,
     external: true,
-    mobileClass: "",
+    mobileClass: MOBILE_CARD,
     panel: <CompassApiPanel />,
   },
   {
@@ -53,7 +58,7 @@ const PRODUCTS: Product[] = [
     description: "Your Agents stored locally.",
     href: "/sign-up",
     external: false,
-    mobileClass: "",
+    mobileClass: MOBILE_CARD,
     panel: <AIHardwarePanel />,
   },
 ]
