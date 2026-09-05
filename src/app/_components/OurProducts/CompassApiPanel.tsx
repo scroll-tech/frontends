@@ -1,6 +1,7 @@
 "use client"
 
 import ModelLeaderboard from "./ModelLeaderboard"
+import ModelLeaderboardCompact from "./ModelLeaderboardCompact"
 import ScaleToFit from "./ScaleToFit"
 
 const CompassApiPanel = () => (
@@ -10,12 +11,9 @@ const CompassApiPanel = () => (
       <ModelLeaderboard />
     </ScaleToFit>
 
-    {/* mobile: keep it readable and let it scroll sideways, the way Glen asked for the
-        earlier table in this file */}
-    <div className="size-full overflow-x-auto md:hidden">
-      <div className="h-full w-[1220px]">
-        <ModelLeaderboard />
-      </div>
+    {/* phone: the 1220px table can't scale down and stay readable — stack the rows instead */}
+    <div className="md:hidden">
+      <ModelLeaderboardCompact />
     </div>
   </>
 )

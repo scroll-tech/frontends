@@ -41,7 +41,7 @@ const CompassPanel = () => (
     <Callout color="#F2915C" name="Qwen3 Max" badge="1M ctx" slug="alibaba/qwen3-max" className="left-[70%] top-[12%]" />
     <Callout color="#2F6BFF" name="DeepSeek V4 Chat" badge="Open" slug="deepseek/v4-chat" className="left-[70%] top-[66%]" />
 
-    <div className="pointer-events-none absolute bottom-[6%] left-[4%] w-[45%] max-w-[222px] md:w-[25%]">
+    <div className="pointer-events-none absolute bottom-[6%] left-[4%] hidden w-[25%] max-w-[222px] md:block">
       <p className="mb-[10px] text-[10px] font-medium uppercase leading-[12px] tracking-[0.6px] text-[#959595]">Modality</p>
       {MODALITIES.map(({ label, count }) => (
         <div key={label} className="flex items-center justify-between py-[4px] text-[13px] leading-[16px]">

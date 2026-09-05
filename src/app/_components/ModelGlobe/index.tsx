@@ -38,7 +38,8 @@ const fibonacciSphere = (n: number, r: number) => {
 
 interface ModelGlobeProps {
   className?: string
-  /** sphere diameter as a fraction of the container height */
+  /** sphere diameter as a fraction of the container's shorter side, so portrait phone
+   *  cards don't clip the globe left and right */
   fit?: number
   /** pushes the sphere down by this fraction of the container height (for the cropped hero) */
   offsetY?: number
@@ -125,8 +126,8 @@ const ModelGlobe = ({ className = "", fit = 0.66, offsetY = 0, interactive = tru
       width = Math.max(1, Math.round(rect.width))
       height = Math.max(1, Math.round(rect.height))
 
-      // distance that renders the sphere at `fit` × container height
-      const distance = (2 * RADIUS) / (VIEW_PER_DISTANCE * fit)
+      // distance that renders the sphere at `fit` × the container's shorter side
+      const distance = (2 * RADIUS * height) / (VIEW_PER_DISTANCE * fit * Math.min(width, height))
       const worldOffset = offsetY * VIEW_PER_DISTANCE * distance
 
       camera.aspect = width / height

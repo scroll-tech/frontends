@@ -20,6 +20,8 @@ interface Product {
   description: string
   href: string
   external: boolean
+  /** the phone card sizes itself per product — the design only draws the Compass one */
+  mobileClass: string
   panel: ReactNode
 }
 
@@ -31,6 +33,7 @@ const PRODUCTS: Product[] = [
     description: "Every AI model in one iOS app",
     href: COMPASS_APP_STORE_URL,
     external: true,
+    mobileClass: "aspect-[311/516] max-h-[600px]",
     panel: <CompassPanel />,
   },
   {
@@ -40,6 +43,7 @@ const PRODUCTS: Product[] = [
     description: "Keys to models secured by ZK proofs",
     href: COMPASS_API_URL,
     external: true,
+    mobileClass: "",
     panel: <CompassApiPanel />,
   },
   {
@@ -49,6 +53,7 @@ const PRODUCTS: Product[] = [
     description: "Your Agents stored locally.",
     href: "/sign-up",
     external: false,
+    mobileClass: "",
     panel: <AIHardwarePanel />,
   },
 ]
@@ -146,7 +151,7 @@ const OurProducts = () => {
                   <span className="block pl-[12px] text-[14px] leading-[18px] text-[#636363]">{product.description}</span>
                 </div>
 
-                <div className="relative aspect-[311/516] w-full overflow-hidden rounded-[12px] bg-white md:aspect-[886/572]">
+                <div className={`relative w-full overflow-hidden rounded-[12px] bg-white md:aspect-[886/572] ${product.mobileClass}`}>
                   {product.panel}
                   <a
                     href={product.href}
