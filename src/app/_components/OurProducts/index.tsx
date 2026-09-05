@@ -93,8 +93,9 @@ const OurProducts = () => {
         <div className="mt-[40px] flex gap-[73px] md:mt-[62px]">
           <div className="hidden w-[241px] shrink-0 md:block">
             {/* pinned at 20vh like diabrowser.com's rail, so its top sits level with the top of
-                the card beside it rather than floating at the vertical centre */}
-            <nav className="sticky top-[20vh] flex flex-col gap-[91px]" aria-label="Products">
+                the card beside it rather than floating at the vertical centre. The 64px gap
+                follows dia too — the figma draws 91px, which reads too airy in motion. */}
+            <nav className="sticky top-[20vh] flex flex-col gap-[64px]" aria-label="Products">
               {PRODUCTS.map((product, i) => {
                 const isActive = i === active
                 return (
