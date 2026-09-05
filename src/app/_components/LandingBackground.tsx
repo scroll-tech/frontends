@@ -1,20 +1,22 @@
-// Static line/wave backdrop exported from the DESIGN-CONTENT figma (SCROLL section).
-// Glen asked to keep this static for now — the animated version comes later.
+// Static line/wave backdrop. Glen asked to keep it static for now — the animated version
+// comes later.
+//
+// This is the vector original, pulled from USX - Master 2026 (node 2443:1358, "Layer_1"):
+// 118 stroked curves at #AEAEE5, group opacity 0.3. The copy sitting in DESIGN-CONTENT is
+// a raster export of the same artwork, and shipping that meant the linework resampled
+// itself blurry on any large retina screen. As vector it stays sharp at any size, and it's
+// smaller too — 99KB, ~39KB over the wire, against a 297KB webp.
 //
 // Deliberately a plain <img>, not next/image: this project caps `deviceSizes` at 1536px,
-// so the optimizer would hand a retina viewport a 1536px file stretched to ~3400 device
-// pixels and re-encode it a second time — the thin line work turns to mush. Served
-// straight, the 4096px webp (the native size of the figma fill, ~300KB) stays crisp.
+// so the optimizer would rasterize the svg back down to that.
 //
-// The scale zooms in towards the framing the figma uses (it places the backdrop at ~1.7x
-// the frame width rather than fitting it), but every step of zoom divides the pixels we
-// have: at 1.6x a 1724px retina viewport was resampling the 4096px source 1.35x and the
-// linework turned to mush. 1.15x keeps some of that crop and still renders ~1:1 on a
-// 2x display up to about 1900px wide. Going back to 1.6 needs a larger source from Glen.
+// The figma places this backdrop 2447px wide over a 1440px frame; object-cover fits it
+// to the viewport, so 1.7x puts it back at the size — and therefore the line weight — the
+// design draws. Free to do now that it is vector.
 const LandingBackground = () => (
   <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#F8F8F8]">
     {/* eslint-disable-next-line @next/next/no-img-element */}
-    <img src="/imgs/landing/line-bg.webp" alt="" fetchPriority="high" decoding="async" className="size-full scale-[1.15] object-cover" />
+    <img src="/imgs/landing/line-bg.svg" alt="" fetchPriority="high" decoding="async" className="size-full scale-[1.7] object-cover" />
   </div>
 )
 
