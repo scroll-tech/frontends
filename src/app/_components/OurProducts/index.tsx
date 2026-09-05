@@ -86,7 +86,7 @@ const OurProducts = () => {
   }
 
   return (
-    <section id="products" className="w-full scroll-mt-[96px] px-[16px] pt-[64px] md:pt-[96px]">
+    <section id="products" className="w-full scroll-mt-[96px] px-[16px] pt-[80px] md:pt-[200px]">
       <div className="mx-auto w-full max-w-[1200px]">
         <h2 className={`${geistMono.className} text-center text-[32px] font-semibold text-black md:text-[48px]`}>Our Products</h2>
 
@@ -139,7 +139,7 @@ const OurProducts = () => {
                 ref={node => {
                   panelRefs.current[i] = node
                 }}
-                className="flex scroll-mt-[96px] flex-col justify-center py-[24px] md:min-h-[76vh] md:py-[40px]"
+                className="flex scroll-mt-[96px] flex-col justify-center py-[40px] md:min-h-screen md:py-[40px]"
               >
                 <div className="mb-[20px] md:hidden">
                   <span className={`${geistMono.className} block text-[10px] leading-[10px] text-[#757575]`}>{product.index}</span>
