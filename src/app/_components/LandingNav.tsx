@@ -6,6 +6,8 @@ import { MouseEvent, useState } from "react"
 
 import ScrollMarkSvg from "@/assets/svgs/landingpage/scroll-mark.svg"
 
+import { smoothScrollTo, smoothScrollToTop } from "./smoothScroll"
+
 const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "Compass", href: "/#compass" },
@@ -24,29 +26,29 @@ const LandingNav = () => {
     e.preventDefault()
     const id = href.split("#")[1]
     if (id) {
-      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
+      smoothScrollToTop(document.getElementById(id))
     } else {
-      window.scrollTo({ top: 0, behavior: "smooth" })
+      smoothScrollTo(0)
     }
     history.replaceState(null, "", href)
   }
 
   return (
     <div className="relative mx-auto w-full max-w-[828px]">
-      <nav className="flex h-[64px] w-full items-center justify-between rounded-[32px] bg-white pl-[16px] pr-[24px] shadow-[0px_4px_12px_rgba(0,0,0,0.04)]">
+      <nav className="flex h-[48px] w-full items-center justify-between rounded-full bg-white pl-[16px] pr-[24px] shadow-[0px_4px_16px_rgba(17,17,17,0.06)]">
         <div className="flex items-center gap-[12px]">
           <Link
             href="/"
             aria-label="Scroll home"
             onClick={e => handleNavClick(e, "/")}
-            className="flex size-[36px] items-center justify-center rounded-[18px] bg-[#F4F3ED]"
+            className="flex size-[36px] items-center justify-center rounded-full bg-[#E4E4F4]"
           >
             <ScrollMarkSvg className="h-[20px] w-auto" />
           </Link>
           <Link
             href="/"
             onClick={e => handleNavClick(e, "/")}
-            className="flex h-[32px] items-center justify-center rounded-[16px] bg-[#F4F3ED] px-[14px] text-[14px] font-medium text-black"
+            className="flex h-[32px] items-center justify-center rounded-full bg-[#E4E4F4] px-[14px] text-[14px] font-medium text-black"
           >
             Scroll
           </Link>
@@ -63,7 +65,7 @@ const LandingNav = () => {
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
           onClick={() => setOpen(v => !v)}
-          className="flex size-[36px] flex-col items-center justify-center gap-[4px] rounded-[18px] md:hidden"
+          className="flex size-[36px] flex-col items-center justify-center gap-[4px] rounded-full md:hidden"
         >
           <span className={`h-[2px] w-[18px] rounded-full bg-black transition-transform ${open ? "translate-y-[6px] rotate-45" : ""}`} />
           <span className={`h-[2px] w-[18px] rounded-full bg-black transition-opacity ${open ? "opacity-0" : ""}`} />
@@ -71,13 +73,13 @@ const LandingNav = () => {
         </button>
       </nav>
       {open && (
-        <div className="absolute inset-x-0 top-[72px] z-50 flex flex-col gap-[4px] rounded-[24px] bg-white p-[12px] shadow-[0px_8px_24px_rgba(0,0,0,0.08)] md:hidden">
+        <div className="absolute inset-x-0 top-[60px] z-50 flex flex-col gap-[4px] rounded-[24px] bg-white p-[12px] shadow-[0px_8px_24px_rgba(0,0,0,0.08)] md:hidden">
           {NAV_LINKS.map(({ label, href }) => (
             <Link
               key={label}
               href={href}
               onClick={e => handleNavClick(e, href)}
-              className="rounded-[16px] px-[16px] py-[10px] text-[14px] font-medium text-[#0B192C] hover:bg-[#F4F3ED]"
+              className="rounded-[16px] px-[16px] py-[10px] text-[14px] font-medium text-[#0B192C] hover:bg-[#E4E4F4]"
             >
               {label}
             </Link>

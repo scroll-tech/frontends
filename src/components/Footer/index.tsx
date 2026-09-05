@@ -13,7 +13,7 @@ const Footer = () => {
   const pathname = usePathname()
 
   // the redesigned landing page and its legal pages render their own footer
-  if (isSepolia || ["/", "/privacy-policy", "/terms-of-service", "/app-privacy-policy"].includes(pathname)) {
+  if (isSepolia || ["/", "/sign-up", "/privacy-policy", "/terms-of-service", "/app-privacy-policy"].includes(pathname)) {
     return null
   }
   return (

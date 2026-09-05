@@ -26,7 +26,7 @@ const FOOTER_COLUMNS = [
 const linkClass = "text-[15px] text-[#5E5E5E] [font-family:var(--font-inter)] transition-colors hover:text-black"
 
 const LandingFooter = () => (
-  <footer className="flex w-full flex-col items-center bg-[#F4F3ED] px-[24px] py-[40px] md:px-[96px]">
+  <footer className="mt-[64px] flex w-full flex-col items-center px-[24px] py-[40px] md:mt-[96px] md:px-[96px]">
     <div className="flex w-full max-w-[1170px] flex-col gap-[20px]">
       <div className="flex flex-col gap-[40px] py-[32px] md:flex-row md:items-center md:justify-between">
         <div className="flex flex-col items-start gap-[8px] self-start md:items-center md:self-auto">
@@ -56,7 +56,7 @@ const LandingFooter = () => (
           ))}
         </div>
       </div>
-      <div className="h-px w-full bg-[#E3E1D5]" />
+      <div className="h-px w-full bg-[#E7E7E7]" />
       <p className="text-center text-[15px] text-[#959595]">© 2026 Scroll. All rights reserved</p>
     </div>
   </footer>

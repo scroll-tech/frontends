@@ -1,80 +1,50 @@
-import { ReactNode } from "react"
+import ModelGlobe from "../ModelGlobe/lazy"
+import SmoothAnchor from "../SmoothAnchor"
+import { geistMono } from "../fonts"
 
-import { ArrowCircleIcon, CodeIcon, CpuSmallIcon, SmartphoneIcon } from "../LandingIcons"
-import SectionDivider from "../SectionDivider"
-import { instrumentSerif } from "../fonts"
+const CheckItOut = ({ className = "" }: { className?: string }) => (
+  <SmoothAnchor
+    href="#products"
+    className={`h-[49px] w-[149px] items-center justify-center rounded-[8px] border border-solid border-[#867B71] text-[15px] font-medium leading-[47px] text-black transition-colors hover:bg-[#F8F8F8] ${className}`}
+  >
+    Check it out
+  </SmoothAnchor>
+)
 
-interface ModelCard {
-  status: string
-  dotColor: string
-  icon: ReactNode
-  title: string
-  description: string
-  descWidthClass: string
-  href: string
-}
-
-const MODEL_CARDS: ModelCard[] = [
-  {
-    status: "iOS App",
-    dotColor: "#000000",
-    icon: <SmartphoneIcon className="size-[16px] text-[#8F8CA0]" />,
-    title: "Compass",
-    description: "Every model under one place",
-    descWidthClass: "lg:w-[320px]",
-    href: "#compass",
-  },
-  {
-    status: "Enterprise API",
-    dotColor: "#C8B195",
-    icon: <CodeIcon className="size-[16px] text-[#8F8CA0]" />,
-    title: "Compass API",
-    description: "Keys to leading models secured with ZK proofs.",
-    descWidthClass: "lg:w-[320px]",
-    href: "#compass-api",
-  },
-  {
-    status: "Currently building",
-    dotColor: "#5F5C6E",
-    icon: <CpuSmallIcon className="size-[16px] text-[#8F8CA0]" />,
-    title: "AI Hardware",
-    description: "Run local agents. Unlimited prompts by staking SCR.",
-    descWidthClass: "lg:w-[338px]",
-    href: "#ai-hardware",
-  },
-]
-
+/**
+ * Desktop: the whole block sits inside one white card (SCROLL › Landing frame).
+ * Mobile: the headline sits on the background and the CTA drops below the card,
+ * matching the "Mobile version" frame.
+ */
 const LandingHero = () => (
-  <section id="home" className="scroll-mt-[-92px] flex w-full flex-col items-center gap-[40px] pb-[48px] md:gap-[56px] md:pb-[80px] md:min-h-[780px]">
-    <div className="flex w-full flex-col items-center gap-[20px] pt-[8px] md:pt-[40px] text-center">
-      <h1 className={`${instrumentSerif.className} text-[48px] text-black md:text-[60px]`}>Scroll</h1>
-      <p className="max-w-[680px] px-[24px] text-[15px] text-[#959595]">Your gateway to frontier models, cheaper and secured by ZK tech.</p>
-    </div>
-    <div className="flex w-full max-w-[428px] flex-col items-center gap-[24px] px-[24px] lg:w-auto lg:max-w-none lg:flex-row lg:items-stretch lg:gap-[40px] lg:px-0">
-      {MODEL_CARDS.map(({ status, dotColor, icon, title, description, descWidthClass, href }) => (
-        <div
-          key={title}
-          className="flex min-h-[201px] w-full max-w-[380px] flex-col gap-[16px] rounded-[16px] border border-solid border-[#D9D9D9] bg-white p-[24px] shadow-[0px_8px_12px_rgba(30,26,21,0.07)] transition-transform duration-200 ease-out hover:-translate-y-[4px] lg:h-[201px] lg:w-[380px] lg:shrink-0"
-        >
-          <div className="flex w-full items-center justify-between">
-            <div className="flex items-center gap-[8px]">
-              <span className="size-[8px] rounded-full" style={{ backgroundColor: dotColor }} />
-              <span className="text-[11px] font-semibold uppercase text-[#8F8CA0]">{status}</span>
-            </div>
-            {icon}
+  <section id="home" className="w-full scroll-mt-[96px] px-[16px]">
+    <div className="mx-auto flex w-full max-w-[1120px] flex-col items-center md:overflow-hidden md:rounded-[24px] md:bg-white md:pt-[45px]">
+      <h1
+        className={`${geistMono.className} px-[16px] text-center text-[32px] font-semibold leading-[1.375] text-black sm:text-[42px] md:text-[56px]`}
+      >
+        Your Gateway to
+        <br />
+        <span className="text-[#636363]">Frontier Models</span>
+      </h1>
+
+      <div className="mt-[24px] flex w-full flex-col items-center overflow-hidden rounded-[16px] bg-white pt-[24px] md:mt-0 md:rounded-none md:pt-0">
+        <p className="max-w-[343px] px-[16px] text-center text-[16px] leading-[25px] text-[#636363] md:mt-[45px]">
+          Switch between 30+ providers through a single unified interface
+        </p>
+
+        <CheckItOut className="mt-[45px] hidden text-center md:block" />
+
+        {/* Glen: "Crop the 3d asset like this for the landing page" — the globe is rendered
+            at full height and the card only reveals its top cap. */}
+        <div className="relative mt-[24px] h-[260px] w-full overflow-hidden md:mt-[45px] md:h-[310px]">
+          <div className="absolute inset-x-0 top-0 h-[560px] md:h-[720px]">
+            <ModelGlobe fit={1.05} offsetY={0} interactive={false} showCore={false} />
           </div>
-          <div className="flex flex-col gap-[2px]">
-            <h3 className={`${instrumentSerif.className} text-[22px] text-[#111]`}>{title}</h3>
-            <p className={`text-[14px] leading-[1.4] text-[#8F8CA0] ${descWidthClass}`}>{description}</p>
-          </div>
-          <div className="mt-auto h-px w-full bg-[#E5E2DD]" />
-          <a href={href} aria-label={`Go to ${title}`} className="block size-[34px] text-[#959595] hover:text-black">
-            <ArrowCircleIcon className="size-full" />
-          </a>
         </div>
-      ))}
+      </div>
+
+      <CheckItOut className="mt-[24px] block text-center md:hidden" />
     </div>
-    <SectionDivider />
   </section>
 )
 

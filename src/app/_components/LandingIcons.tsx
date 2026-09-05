@@ -54,3 +54,10 @@ export const ArrowCircleIcon = (props: SVGProps<SVGSVGElement>) => (
     />
   </svg>
 )
+
+export const SpeakerIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <path d="M8.5 2.83 4.96 5.67H2.83v5.66h2.13L8.5 14.17V2.83Z" fill="currentColor" />
+    <path d="M12.4 5.6a4.1 4.1 0 0 1 0 5.8M14.6 3.4a7.2 7.2 0 0 1 0 10.2" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+  </svg>
+)

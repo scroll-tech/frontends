@@ -57,7 +57,7 @@ export default function Header() {
   }
 
   // the redesigned landing page and its legal pages render their own pill nav
-  if (["/", "/privacy-policy", "/terms-of-service", "/app-privacy-policy"].includes(pathname)) {
+  if (["/", "/sign-up", "/privacy-policy", "/terms-of-service", "/app-privacy-policy"].includes(pathname)) {
     return null
   }
 
