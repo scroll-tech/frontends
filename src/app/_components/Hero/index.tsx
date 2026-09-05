@@ -41,7 +41,7 @@ const LandingHero = () => (
         {/* Glen: "Crop the 3d asset like this for the landing page" — the globe is rendered
             at full height and the card only reveals its top cap. On phones it hangs off the
             bottom edge of the card, which is where the design puts it. */}
-        <div className="absolute inset-x-0 bottom-0 h-[42%] overflow-hidden md:relative md:mt-[45px] md:h-[310px]">
+        <div className="absolute inset-x-0 bottom-0 h-[42%] w-full overflow-hidden md:relative md:mt-[45px] md:h-[310px]">
           <div className="absolute inset-x-0 top-0 h-[520px] md:h-[720px]">
             <ModelGlobe fit={1.05} offsetY={0} interactive={false} showCore={false} />
           </div>
