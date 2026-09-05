@@ -86,7 +86,7 @@ const OurProducts = () => {
   }
 
   return (
-    <section id="products" className="w-full scroll-mt-[96px] px-[16px] pt-[80px] md:pt-[200px]">
+    <section id="products" className="w-full scroll-mt-[96px] px-[16px] pt-[120px] md:pt-[320px]">
       <div className="mx-auto w-full max-w-[1200px]">
         <h2 className={`${geistMono.className} text-center text-[32px] font-semibold text-black md:text-[48px]`}>Our Products</h2>
 
@@ -144,10 +144,9 @@ const OurProducts = () => {
                 ref={node => {
                   panelRefs.current[i] = node
                 }}
-                className={`flex scroll-mt-[96px] flex-col justify-center py-[40px] md:py-[40px] ${
-                  // product 01 shares its screen with the section title, so it gives back
-                  // that height (48px heading + 62px gap) and hangs from the top
-                  i === 0 ? "md:min-h-[calc(100vh-110px)] md:justify-start md:pt-0" : "md:min-h-screen"
+                className={`flex scroll-mt-[96px] flex-col justify-center py-[40px] md:py-[32px] ${
+                  // card 01 sits directly under the section title
+                  i === 0 ? "md:pt-0" : ""
                 }`}
               >
                 <div className="mb-[20px] md:hidden">
