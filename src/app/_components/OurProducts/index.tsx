@@ -91,7 +91,9 @@ const OurProducts = () => {
         <h2 className={`${geistMono.className} text-center text-[32px] font-semibold text-black md:text-[48px]`}>Our Products</h2>
 
         <div className="mt-[40px] flex gap-[73px] md:mt-[62px]">
-          <div className="hidden w-[241px] shrink-0 md:block">
+          {/* the pt keeps the rail centred against card 01 before it sticks, the way the
+              design frames it — once stuck it rides the viewport centre */}
+          <div className="hidden w-[241px] shrink-0 md:block md:pt-[105px]">
             <nav className="sticky top-[50vh] flex -translate-y-1/2 flex-col gap-[91px]" aria-label="Products">
               {PRODUCTS.map((product, i) => {
                 const isActive = i === active
@@ -131,6 +133,8 @@ const OurProducts = () => {
             </nav>
           </div>
 
+          {/* the first card sits directly under the section title (62px in the design);
+              the others centre themselves in their own screen */}
           <div className="flex min-w-0 flex-1 flex-col">
             {PRODUCTS.map((product, i) => (
               <div
@@ -139,7 +143,11 @@ const OurProducts = () => {
                 ref={node => {
                   panelRefs.current[i] = node
                 }}
-                className="flex scroll-mt-[96px] flex-col justify-center py-[40px] md:min-h-screen md:py-[40px]"
+                className={`flex scroll-mt-[96px] flex-col justify-center py-[40px] md:py-[40px] ${
+                  // product 01 shares its screen with the section title, so it gives back
+                  // that height (48px heading + 62px gap) and hangs from the top
+                  i === 0 ? "md:min-h-[calc(100vh-110px)] md:justify-start md:pt-0" : "md:min-h-screen"
+                }`}
               >
                 <div className="mb-[20px] md:hidden">
                   <span className={`${geistMono.className} block text-[10px] leading-[10px] text-[#757575]`}>{product.index}</span>
