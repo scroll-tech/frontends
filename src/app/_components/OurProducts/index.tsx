@@ -91,10 +91,10 @@ const OurProducts = () => {
         <h2 className={`${geistMono.className} text-center text-[32px] font-semibold text-black md:text-[48px]`}>Our Products</h2>
 
         <div className="mt-[40px] flex gap-[73px] md:mt-[62px]">
-          {/* the pt keeps the rail centred against card 01 before it sticks, the way the
-              design frames it — once stuck it rides the viewport centre */}
-          <div className="hidden w-[241px] shrink-0 md:block md:pt-[105px]">
-            <nav className="sticky top-[50vh] flex -translate-y-1/2 flex-col gap-[91px]" aria-label="Products">
+          <div className="hidden w-[241px] shrink-0 md:block">
+            {/* pinned at 20vh like diabrowser.com's rail, so its top sits level with the top of
+                the card beside it rather than floating at the vertical centre */}
+            <nav className="sticky top-[20vh] flex flex-col gap-[91px]" aria-label="Products">
               {PRODUCTS.map((product, i) => {
                 const isActive = i === active
                 return (
