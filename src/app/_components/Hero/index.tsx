@@ -40,10 +40,15 @@ const LandingHero = () => (
 
         {/* Glen: "Crop the 3d asset like this for the landing page" — the globe is rendered
             at full height and the card only reveals its top cap. On phones it hangs off the
-            bottom edge of the card, which is where the design puts it. */}
-        <div className="absolute inset-x-0 bottom-0 h-[42%] w-full overflow-hidden md:relative md:mt-[45px] md:h-[310px]">
+            bottom edge of the card, which is where the design puts it.
+            offsetY drops the sphere far enough that the topmost card clears the crop: at 0
+            it was slicing through them, which is what read as "top half of graphic is cut"
+            and made the gap under the CTA look tighter than the 45px it actually is.
+            The height clamp keeps the design's 310px whenever the window is tall enough and
+            gives it back on short ones, so the whole hero lands in view. */}
+        <div className="absolute inset-x-0 bottom-0 h-[42%] w-full overflow-hidden md:relative md:mt-[45px] md:h-[clamp(180px,calc(100vh_-_611px),310px)]">
           <div className="absolute inset-x-0 top-0 h-[520px] md:h-[720px]">
-            <ModelGlobe fit={1.05} offsetY={0} interactive={false} showCore={false} />
+            <ModelGlobe fit={1.05} offsetY={0.085} interactive={false} showCore={false} />
           </div>
         </div>
       </div>

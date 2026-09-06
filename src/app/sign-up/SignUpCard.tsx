@@ -9,12 +9,10 @@ import { LOOPS_FORM_ID, LOOPS_MAILING_LIST_ID } from "@/constants/link"
 type Status = "idle" | "loading" | "done" | "error"
 
 const CardShell = ({ children }: { children: React.ReactNode }) => (
-  <div className="w-full max-w-[354px]">
-    <div className="flex flex-col items-center rounded-[16px] bg-white px-[24px] pb-[32px] pt-[28px] shadow-[0_18px_40px_rgba(17,17,17,0.06)]">
-      {children}
-    </div>
-    {/* the stacked lavender sheet from the design */}
-    <div className="mx-[6px] h-[56px] rounded-b-[16px] bg-[#E4E4F4]" />
+  <div className="w-full max-w-[354px] overflow-hidden rounded-[16px] shadow-[0_18px_40px_rgba(17,17,17,0.06)]">
+    <div className="flex flex-col items-center bg-white px-[24px] pb-[32px] pt-[28px]">{children}</div>
+    {/* card-footer in the design: same 354 width as the body, 68 tall, one card */}
+    <div className="h-[68px] bg-[#E4E4F4]" />
   </div>
 )
 
