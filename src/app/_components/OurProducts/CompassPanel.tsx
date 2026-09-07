@@ -10,12 +10,21 @@ import { MODALITY_COUNTS, MODALITY_ORDER, MODELS, type Modality, modelSlug, prov
  * (Slack, 2026-09-07): click a card to pin it to the list on the left, tick the
  * modalities at the bottom to filter what's on the sphere.
  */
+// Glen's prototype has no cap — his panel is a full window tall and fits ~8. Ours lives
+// in a 572px card that shows 3, and a list that silently clips is worse than a limit, so
+// picking a fourth drops the oldest.
+const MAX_SELECTED = 3
+
 const CompassPanel = () => {
   // click order is what the list shows, so an array rather than a Set
   const [selected, setSelected] = useState<number[]>([])
   const [visible, setVisible] = useState<Modality[]>(MODALITY_ORDER)
 
-  const toggleModel = (index: number) => setSelected(prev => (prev.includes(index) ? prev.filter(i => i !== index) : [...prev, index]))
+  const toggleModel = (index: number) =>
+    setSelected(prev => {
+      if (prev.includes(index)) return prev.filter(i => i !== index)
+      return [...prev, index].slice(-MAX_SELECTED)
+    })
 
   const toggleModality = (key: Modality) =>
     setVisible(prev => {
@@ -30,8 +39,8 @@ const CompassPanel = () => {
       <ModelGlobe className="size-full" fit={0.68} interactive selected={selected} onToggle={toggleModel} visibleModalities={visible} />
 
       {/* ---- selected models ---------------------------------------------- */}
-      <div className="absolute left-[24px] top-[24px] flex max-h-[46%] w-[38%] max-w-[230px] flex-col overflow-y-auto md:left-[32px] md:top-[32px]">
-        <p className="mb-[14px] shrink-0 text-[11px] font-bold uppercase leading-[13px] tracking-[1px] text-[rgba(17,17,17,0.4)]">Selected models</p>
+      <div className="absolute left-[24px] top-[24px] flex max-h-[64%] w-[58%] max-w-[230px] flex-col overflow-y-auto md:left-[32px] md:top-[32px] md:w-[38%]">
+        <p className="mb-[10px] shrink-0 text-[11px] font-bold uppercase leading-[13px] tracking-[1px] text-[rgba(17,17,17,0.4)]">Selected models</p>
 
         {selected.length === 0 ? (
           <p className="text-[12.5px] leading-[1.5] text-[rgba(17,17,17,0.35)]">Click any card in the sphere to see its details here.</p>
@@ -40,7 +49,7 @@ const CompassPanel = () => {
             {selected.map(index => {
               const model = MODELS[index]
               return (
-                <div key={model.name} className="border-b border-solid border-[rgba(17,17,17,0.09)] pb-[16px] not-last:mb-[16px] last:border-none">
+                <div key={model.name} className="border-b border-solid border-[rgba(17,17,17,0.09)] pb-[12px] not-last:mb-[12px] last:border-none">
                   <div className="flex items-center gap-[8px]">
                     <span className="size-[9px] shrink-0 rounded-full" style={{ backgroundColor: providerColor(model.provider) }} />
                     <span className="min-w-0 flex-1 truncate text-[16px] font-semibold text-[#111]">{model.name}</span>
@@ -58,7 +67,7 @@ const CompassPanel = () => {
                       ×
                     </button>
                   </div>
-                  <p className="ml-[17px] mt-[3px] font-mono text-[12px] text-[rgba(17,17,17,0.38)]">{modelSlug(model)}</p>
+                  <p className="ml-[17px] mt-[3px] truncate font-mono text-[12px] text-[rgba(17,17,17,0.38)]">{modelSlug(model)}</p>
                   <div className="ml-[17px] mt-[9px] flex gap-[18px]">
                     <div className="flex flex-col gap-[1px]">
                       <span className="text-[9px] tracking-[0.3px] text-[rgba(17,17,17,0.55)]">IN / 1M</span>
@@ -77,7 +86,7 @@ const CompassPanel = () => {
       </div>
 
       {/* ---- modality filter ---------------------------------------------- */}
-      <div className="absolute bottom-[24px] left-[24px] flex w-[34%] max-w-[190px] flex-col gap-[11px] md:bottom-[32px] md:left-[32px]">
+      <div className="absolute bottom-[24px] left-[24px] flex w-[44%] max-w-[190px] flex-col gap-[11px] md:bottom-[32px] md:left-[32px] md:w-[34%]">
         <p className="text-[11px] font-bold uppercase leading-[13px] tracking-[1px] text-[rgba(17,17,17,0.4)]">Modality</p>
         {MODALITY_ORDER.map(key => {
           const on = visible.includes(key)
