@@ -7,6 +7,7 @@ import { AppBar, Slide } from "@mui/material"
 import useScrollTrigger from "@mui/material/useScrollTrigger"
 
 import useCheckViewport from "@/hooks/useCheckViewport"
+import { hasLegacyChrome } from "@/utils"
 
 // import Announcement from "./announcement"
 import { navigations } from "./data"
@@ -56,8 +57,8 @@ export default function Header() {
     return result
   }
 
-  // the redesigned landing page and its legal pages render their own pill nav
-  if (["/", "/sign-up", "/privacy-policy", "/terms-of-service", "/app-privacy-policy"].includes(pathname)) {
+  // only the handful of remaining legacy routes still get this nav
+  if (!hasLegacyChrome(pathname)) {
     return null
   }
 

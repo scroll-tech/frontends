@@ -113,3 +113,13 @@ export function genMeta(fn: MetaGeneratorFn = defaultGenMetaFn) {
     return merged
   }
 }
+
+/**
+ * Routes that still render the old MUI Header/Footer. Everything else — the redesigned
+ * landing page, its legal pages, and any unmatched path (i.e. every 404) — renders its
+ * own chrome. This is deliberately a show-list: an allowlist of "hide it here" pages can
+ * never match a 404, so the old template used to leak onto them.
+ */
+const LEGACY_CHROME_ROUTES = ["/sessions-restricted", "/sessions-terms-of-use", "/terms-and-conditions"]
+
+export const hasLegacyChrome = (pathname: string) => LEGACY_CHROME_ROUTES.includes(pathname) || pathname.startsWith("/archive/")
