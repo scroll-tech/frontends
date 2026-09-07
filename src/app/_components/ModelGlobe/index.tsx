@@ -5,7 +5,7 @@ import { createPortal } from "react-dom"
 import * as THREE from "three"
 import { CSS3DObject, CSS3DRenderer } from "three/examples/jsm/renderers/CSS3DRenderer.js"
 
-import { MODELS, providerColor } from "./models"
+import { MODELS, type Modality, providerColor } from "./models"
 
 // Geometry is kept in the same world units as Glen's prototype so the card proportions
 // match his reference exactly; on-screen size is driven by `fit` instead of a fixed camera.
@@ -22,6 +22,10 @@ const AUTO_ROTATE_SPEED = 0.0015
 const MAX_SPEED = 0.008
 
 const clamp = (v: number, a: number, b: number) => Math.max(a, Math.min(b, v))
+
+// Glen's computeUIScale: full size from 900px, down to half on a small phone. His
+// prototype measured the window; the globe sits in a card here, so measure that.
+const computeUiScale = (w: number) => (w >= 900 ? 1 : w <= 360 ? 0.5 : 0.5 + ((w - 360) / 540) * 0.5)
 
 const fibonacciSphere = (n: number, r: number) => {
   const pts: THREE.Vector3[] = []
@@ -47,13 +51,35 @@ interface ModelGlobeProps {
   interactive?: boolean
   /** show the centre COMPASS node */
   showCore?: boolean
+  /** indices of the selected cards; the panel beside the globe owns this state */
+  selected?: number[]
+  /** click a card. Omit and the cards are inert. */
+  onToggle?: (index: number) => void
+  /** modalities currently ticked in the filter. Omit to show everything. */
+  visibleModalities?: Modality[]
 }
 
-const ModelGlobe = ({ className = "", fit = 0.66, offsetY = 0, interactive = true, showCore = true }: ModelGlobeProps) => {
+const ModelGlobe = ({
+  className = "",
+  fit = 0.66,
+  offsetY = 0,
+  interactive = true,
+  showCore = true,
+  selected,
+  onToggle,
+  visibleModalities,
+}: ModelGlobeProps) => {
   const hostRef = useRef<HTMLDivElement>(null)
   const glRef = useRef<HTMLCanvasElement>(null)
   const cssHostRef = useRef<HTMLDivElement>(null)
   const [ready, setReady] = useState(false)
+  const [uiScale, setUiScale] = useState(1)
+
+  // the animation loop is set up once; these let it read current state each frame
+  const selectedRef = useRef<number[]>([])
+  selectedRef.current = selected ?? []
+  const visibleRef = useRef<Modality[] | undefined>(undefined)
+  visibleRef.current = visibleModalities
 
   // one detached div per model; React renders the real markup into them through a portal
   const cardEls = useMemo(() => {
@@ -91,9 +117,8 @@ const ModelGlobe = ({ className = "", fit = 0.66, offsetY = 0, interactive = tru
 
     const positions = fibonacciSphere(MODELS.length, RADIUS)
     const cards = cardEls.map((div, i) => {
-      div.style.width = `${CARD_W}px`
-      div.style.height = `${CARD_H}px`
       div.style.pointerEvents = interactive ? "auto" : "none"
+      div.style.transition = "opacity .18s ease, filter .18s ease"
 
       const basePos = positions[i].clone()
       const obj = new CSS3DObject(div)
@@ -103,15 +128,14 @@ const ModelGlobe = ({ className = "", fit = 0.66, offsetY = 0, interactive = tru
       cssGroup.add(obj)
 
       const lineGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0, 0), basePos.clone().multiplyScalar(0.985)])
-      glGroup.add(new THREE.Line(lineGeo, new THREE.LineBasicMaterial({ color: 0xbbbbbb, transparent: true, opacity: 0.35 })))
+      const line = new THREE.Line(lineGeo, new THREE.LineBasicMaterial({ color: 0xbbbbbb, transparent: true, opacity: 0.35 }))
+      glGroup.add(line)
 
-      return { div, obj, basePos, phase: Math.random() * Math.PI * 2, speed: 0.3 + Math.random() * 0.08 }
+      return { div, obj, basePos, line, modality: MODELS[i].modality, phase: Math.random() * Math.PI * 2, speed: 0.3 + Math.random() * 0.08 }
     })
 
     let coreObj: CSS3DObject | null = null
     if (showCore) {
-      coreEl.style.width = `${CORE_W}px`
-      coreEl.style.height = `${CORE_H}px`
       coreEl.style.pointerEvents = "none"
       coreObj = new CSS3DObject(coreEl)
       // parented to the scene rather than the group so it stays upright while the sphere spins
@@ -125,6 +149,17 @@ const ModelGlobe = ({ className = "", fit = 0.66, offsetY = 0, interactive = tru
       const rect = host.getBoundingClientRect()
       width = Math.max(1, Math.round(rect.width))
       height = Math.max(1, Math.round(rect.height))
+
+      const scale = computeUiScale(width)
+      setUiScale(scale)
+      cards.forEach(({ div }) => {
+        div.style.width = `${CARD_W * scale}px`
+        div.style.height = `${CARD_H * scale}px`
+      })
+      if (showCore) {
+        coreEl.style.width = `${CORE_W * scale}px`
+        coreEl.style.height = `${CORE_H * scale}px`
+      }
 
       // distance that renders the sphere at `fit` × the container's shorter side
       const distance = (2 * RADIUS * height) / (VIEW_PER_DISTANCE * fit * Math.min(width, height))
@@ -230,7 +265,20 @@ const ModelGlobe = ({ className = "", fit = 0.66, offsetY = 0, interactive = tru
         camera.lookAt(0, worldOffset, 0)
       }
 
-      for (const card of cards) {
+      const visible = visibleRef.current
+      const selectedNow = selectedRef.current
+
+      for (const [i, card] of cards.entries()) {
+        // filtered-out cards fade away and take their spoke with them
+        const shown = !visible || visible.includes(card.modality)
+        card.line.visible = shown
+        if (!shown) {
+          card.div.style.opacity = "0"
+          card.div.style.pointerEvents = "none"
+          continue
+        }
+        card.div.style.pointerEvents = interactive ? "auto" : "none"
+
         const float = reduceMotion ? 0 : Math.sin(t * card.speed + card.phase) * 6
         const dir = card.basePos.clone().normalize()
         const floated = card.basePos.clone().add(dir.multiplyScalar(float))
@@ -250,7 +298,7 @@ const ModelGlobe = ({ className = "", fit = 0.66, offsetY = 0, interactive = tru
           blur = 0.6
         }
 
-        if (card.div.dataset.hovered === "true") {
+        if (card.div.dataset.hovered === "true" || selectedNow.includes(i)) {
           card.div.style.opacity = "1"
           card.div.style.filter = "none"
         } else {
@@ -295,44 +343,58 @@ const ModelGlobe = ({ className = "", fit = 0.66, offsetY = 0, interactive = tru
     >
       <canvas ref={glRef} className="pointer-events-none absolute inset-0 size-full" />
       <div ref={cssHostRef} className="pointer-events-none absolute inset-0 overflow-hidden" />
-      {cardEls.map((el, i) =>
-        createPortal(
-          <div
-            onPointerEnter={() => {
-              el.dataset.hovered = "true"
-            }}
-            onPointerLeave={() => {
-              el.dataset.hovered = "false"
-            }}
-            className="flex size-full select-none flex-col justify-center gap-[8px] rounded-[16px] bg-white px-[18px] py-[14px] shadow-[0_10px_24px_rgba(0,0,0,0.16),0_2px_6px_rgba(0,0,0,0.08)] transition-shadow duration-200 hover:shadow-[0_16px_34px_rgba(0,0,0,0.22),0_4px_10px_rgba(0,0,0,0.1)]"
-          >
-            <div className="flex min-w-0 items-center gap-[8px]">
-              <span className="size-[6px] shrink-0 rounded-full" style={{ backgroundColor: providerColor(MODELS[i].provider) }} />
-              <span className="flex size-[20px] shrink-0 items-center justify-center rounded-full bg-[#F2F2F2] text-[9px] font-bold tracking-[0.2px] text-[#111] shadow-[0_1px_3px_rgba(0,0,0,0.15)]">
-                {MODELS[i].initials}
-              </span>
-              <span className="truncate text-[14px] font-semibold tracking-[-0.1px] text-[#111]">{MODELS[i].name}</span>
-            </div>
-            <div className="flex gap-[14px] pl-[2px]">
-              <div className="flex flex-col gap-[1px]">
-                <span className="text-[9px] tracking-[0.3px] text-[rgba(17,17,17,0.55)]">IN / 1M</span>
-                <span className="text-[11.5px] font-medium tabular-nums text-[#111]">${MODELS[i].inPrice}</span>
+      {cardEls.map((el, i) => {
+        const model = MODELS[i]
+        const isSelected = (selected ?? []).includes(i)
+        return createPortal(
+          // authored at the base 250x168 and scaled as a whole, so every size inside the
+          // card follows the responsive scale without restating it
+          <div style={{ width: CARD_W, height: CARD_H, transform: `scale(${uiScale})`, transformOrigin: "top left" }}>
+            <button
+              type="button"
+              disabled={!onToggle}
+              onPointerEnter={() => {
+                el.dataset.hovered = "true"
+              }}
+              onPointerLeave={() => {
+                el.dataset.hovered = "false"
+              }}
+              onClick={() => onToggle?.(i)}
+              style={isSelected ? { boxShadow: `0 0 0 2.5px ${providerColor(model.provider)}, 0 16px 34px rgba(0,0,0,0.24)` } : undefined}
+              className={`flex size-full select-none flex-col justify-center gap-[8px] rounded-[16px] bg-white px-[18px] py-[14px] text-left transition-[transform,box-shadow] duration-200 ${
+                isSelected ? "" : "shadow-[0_10px_24px_rgba(0,0,0,0.16),0_2px_6px_rgba(0,0,0,0.08)]"
+              } ${onToggle ? "cursor-pointer hover:scale-[1.035] hover:shadow-[0_16px_34px_rgba(0,0,0,0.22),0_4px_10px_rgba(0,0,0,0.1)]" : "cursor-default"}`}
+            >
+              <div className="flex min-w-0 items-center gap-[8px]">
+                <span className="size-[6px] shrink-0 rounded-full" style={{ backgroundColor: providerColor(model.provider) }} />
+                <span className="flex size-[20px] shrink-0 items-center justify-center rounded-full bg-[#F2F2F2] text-[9px] font-bold tracking-[0.2px] text-[#111] shadow-[0_1px_3px_rgba(0,0,0,0.15)]">
+                  {model.initials}
+                </span>
+                <span className="truncate text-[14px] font-semibold tracking-[-0.1px] text-[#111]">{model.name}</span>
               </div>
-              <div className="flex flex-col gap-[1px]">
-                <span className="text-[9px] tracking-[0.3px] text-[rgba(17,17,17,0.55)]">OUT / 1M</span>
-                <span className="text-[11.5px] font-medium tabular-nums text-[#111]">${MODELS[i].outPrice}</span>
+              <div className="flex gap-[14px] pl-[2px]">
+                <div className="flex flex-col gap-[1px]">
+                  <span className="text-[9px] tracking-[0.3px] text-[rgba(17,17,17,0.55)]">IN / 1M</span>
+                  <span className="text-[11.5px] font-medium tabular-nums text-[#111]">${model.inPrice}</span>
+                </div>
+                <div className="flex flex-col gap-[1px]">
+                  <span className="text-[9px] tracking-[0.3px] text-[rgba(17,17,17,0.55)]">OUT / 1M</span>
+                  <span className="text-[11.5px] font-medium tabular-nums text-[#111]">${model.outPrice}</span>
+                </div>
               </div>
-            </div>
+            </button>
           </div>,
           el,
           `card-${i}`,
-        ),
-      )}
+        )
+      })}
       {showCore &&
         coreEl &&
         createPortal(
-          <div className="flex size-full items-center justify-center rounded-[26px] bg-white shadow-[0_10px_26px_rgba(0,0,0,0.10),0_2px_6px_rgba(0,0,0,0.05)]">
-            <span className="text-[20px] font-bold tracking-[3px] text-[#111]">COMPASS</span>
+          <div style={{ width: CORE_W, height: CORE_H, transform: `scale(${uiScale})`, transformOrigin: "top left" }}>
+            <div className="flex size-full items-center justify-center rounded-[26px] bg-white shadow-[0_10px_26px_rgba(0,0,0,0.10),0_2px_6px_rgba(0,0,0,0.05)]">
+              <span className="whitespace-nowrap text-[20px] font-bold tracking-[3px] text-[#111]">COMPASS</span>
+            </div>
           </div>,
           coreEl,
           "core",

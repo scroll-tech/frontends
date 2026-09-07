@@ -1,56 +1,112 @@
 "use client"
 
+import { useState } from "react"
+
 import ModelGlobe from "../ModelGlobe/lazy"
-import { instrumentSerif } from "../fonts"
+import { MODALITY_COUNTS, MODALITY_ORDER, MODELS, type Modality, modelSlug, providerColor } from "../ModelGlobe/models"
 
-const MODALITIES = [
-  { label: "Text", count: 284 },
-  { label: "Video", count: 96 },
-  { label: "Image", count: 31 },
-  { label: "Audio", count: 12 },
-]
+/**
+ * Compass panel — the interactive globe from Glen's second "Compass asset" prototype
+ * (Slack, 2026-09-07): click a card to pin it to the list on the left, tick the
+ * modalities at the bottom to filter what's on the sphere.
+ */
+const CompassPanel = () => {
+  // click order is what the list shows, so an array rather than a Set
+  const [selected, setSelected] = useState<number[]>([])
+  const [visible, setVisible] = useState<Modality[]>(MODALITY_ORDER)
 
-interface CalloutProps {
-  color: string
-  name: string
-  badge: string
-  slug: string
-  className: string
-}
+  const toggleModel = (index: number) => setSelected(prev => (prev.includes(index) ? prev.filter(i => i !== index) : [...prev, index]))
 
-const Callout = ({ color, name, badge, slug, className }: CalloutProps) => (
-  <div className={`absolute hidden items-start gap-[10px] md:flex ${className}`}>
-    <span className="mt-[3px] size-[12px] shrink-0 rounded-full" style={{ backgroundColor: color }} />
-    <div className="flex flex-col gap-[2px]">
-      <div className="flex items-center gap-[8px]">
-        <span className={`${instrumentSerif.className} whitespace-nowrap text-[16px] leading-[18px] text-black`}>{name}</span>
-        <span className="rounded-[4px] border border-solid border-[#D6D6D6] px-[5px] py-[1px] text-[9px] font-medium uppercase leading-[12px] tracking-[0.4px] text-[#8C8C8C]">
-          {badge}
-        </span>
+  const toggleModality = (key: Modality) =>
+    setVisible(prev => {
+      const next = prev.includes(key) ? prev.filter(m => m !== key) : [...prev, key]
+      // a card that just got filtered out shouldn't stay pinned in the list
+      setSelected(sel => sel.filter(i => next.includes(MODELS[i].modality)))
+      return next
+    })
+
+  return (
+    <div className="relative size-full">
+      <ModelGlobe className="size-full" fit={0.68} interactive selected={selected} onToggle={toggleModel} visibleModalities={visible} />
+
+      {/* ---- selected models ---------------------------------------------- */}
+      <div className="absolute left-[24px] top-[24px] flex max-h-[46%] w-[38%] max-w-[230px] flex-col overflow-y-auto md:left-[32px] md:top-[32px]">
+        <p className="mb-[14px] shrink-0 text-[11px] font-bold uppercase leading-[13px] tracking-[1px] text-[rgba(17,17,17,0.4)]">Selected models</p>
+
+        {selected.length === 0 ? (
+          <p className="text-[12.5px] leading-[1.5] text-[rgba(17,17,17,0.35)]">Click any card in the sphere to see its details here.</p>
+        ) : (
+          <div className="flex flex-col">
+            {selected.map(index => {
+              const model = MODELS[index]
+              return (
+                <div key={model.name} className="border-b border-solid border-[rgba(17,17,17,0.09)] pb-[16px] not-last:mb-[16px] last:border-none">
+                  <div className="flex items-center gap-[8px]">
+                    <span className="size-[9px] shrink-0 rounded-full" style={{ backgroundColor: providerColor(model.provider) }} />
+                    <span className="min-w-0 flex-1 truncate text-[16px] font-semibold text-[#111]">{model.name}</span>
+                    {model.open && (
+                      <span className="shrink-0 rounded-[5px] border border-solid border-[rgba(17,17,17,0.22)] px-[6px] py-[2px] text-[9.5px] font-bold tracking-[0.3px] text-[rgba(17,17,17,0.55)]">
+                        OPEN
+                      </span>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => toggleModel(index)}
+                      aria-label={`Remove ${model.name}`}
+                      className="shrink-0 px-[2px] text-[17px] leading-none text-[rgba(17,17,17,0.32)] transition-transform hover:rotate-90 hover:scale-125 hover:text-[#111]"
+                    >
+                      ×
+                    </button>
+                  </div>
+                  <p className="ml-[17px] mt-[3px] font-mono text-[12px] text-[rgba(17,17,17,0.38)]">{modelSlug(model)}</p>
+                  <div className="ml-[17px] mt-[9px] flex gap-[18px]">
+                    <div className="flex flex-col gap-[1px]">
+                      <span className="text-[9px] tracking-[0.3px] text-[rgba(17,17,17,0.55)]">IN / 1M</span>
+                      <span className="text-[11.5px] font-medium tabular-nums text-[#111]">${model.inPrice}</span>
+                    </div>
+                    <div className="flex flex-col gap-[1px]">
+                      <span className="text-[9px] tracking-[0.3px] text-[rgba(17,17,17,0.55)]">OUT / 1M</span>
+                      <span className="text-[11.5px] font-medium tabular-nums text-[#111]">${model.outPrice}</span>
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        )}
       </div>
-      <span className="whitespace-nowrap text-[11px] leading-[14px] text-[#959595]">{slug}</span>
+
+      {/* ---- modality filter ---------------------------------------------- */}
+      <div className="absolute bottom-[24px] left-[24px] flex w-[34%] max-w-[190px] flex-col gap-[11px] md:bottom-[32px] md:left-[32px]">
+        <p className="text-[11px] font-bold uppercase leading-[13px] tracking-[1px] text-[rgba(17,17,17,0.4)]">Modality</p>
+        {MODALITY_ORDER.map(key => {
+          const on = visible.includes(key)
+          return (
+            <button
+              key={key}
+              type="button"
+              onClick={() => toggleModality(key)}
+              className={`flex items-center gap-[9px] text-left transition-opacity ${on ? "opacity-100" : "opacity-[0.38]"}`}
+            >
+              <span
+                className={`flex size-[13px] shrink-0 items-center justify-center rounded-[3px] border border-solid transition-colors ${
+                  on ? "border-black bg-black" : "border-[#B9B9B9] bg-white"
+                }`}
+              >
+                {on && (
+                  <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
+                    <path d="M1 3.4L3.3 5.7L8 1" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                )}
+              </span>
+              <span className="flex-1 text-[14px] text-[#111]">{key}</span>
+              <span className="text-[13px] tabular-nums text-[rgba(17,17,17,0.4)]">{MODALITY_COUNTS[key]}</span>
+            </button>
+          )
+        })}
+      </div>
     </div>
-  </div>
-)
-
-const CompassPanel = () => (
-  <div className="relative size-full">
-    <ModelGlobe className="size-full" fit={0.68} interactive />
-
-    <Callout color="#5B72E4" name="Llama 4 405B Instruct" badge="Open" slug="meta/llama-4-405b-instruct" className="left-[5.5%] top-[13%]" />
-    <Callout color="#F2915C" name="Qwen3 Max" badge="1M ctx" slug="alibaba/qwen3-max" className="left-[70%] top-[12%]" />
-    <Callout color="#2F6BFF" name="DeepSeek V4 Chat" badge="Open" slug="deepseek/v4-chat" className="left-[70%] top-[66%]" />
-
-    <div className="pointer-events-none absolute bottom-[6%] left-[4%] hidden w-[25%] max-w-[222px] md:block">
-      <p className="mb-[10px] text-[10px] font-medium uppercase leading-[12px] tracking-[0.6px] text-[#959595]">Modality</p>
-      {MODALITIES.map(({ label, count }) => (
-        <div key={label} className="flex items-center justify-between py-[4px] text-[13px] leading-[16px]">
-          <span className="text-black">{label}</span>
-          <span className="tabular-nums text-[#959595]">{count}</span>
-        </div>
-      ))}
-    </div>
-  </div>
-)
+  )
+}
 
 export default CompassPanel
