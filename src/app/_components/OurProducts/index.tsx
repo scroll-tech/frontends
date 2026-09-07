@@ -164,7 +164,9 @@ const OurProducts = () => {
                   <span className="block pl-[12px] text-[14px] leading-[18px] text-[#636363]">{product.description}</span>
                 </div>
 
-                <div className={`relative w-full overflow-hidden rounded-[12px] bg-white md:aspect-[886/572] ${product.mobileClass}`}>
+                <div
+                  className={`relative w-full overflow-hidden rounded-[12px] bg-white shadow-[0_8px_32px_rgba(17,17,17,0.05)] md:aspect-[886/572] ${product.mobileClass}`}
+                >
                   {product.panel}
                   <a
                     href={product.href}
