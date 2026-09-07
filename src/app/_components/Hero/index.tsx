@@ -48,7 +48,7 @@ const LandingHero = () => (
             gives it back on short ones, so the whole hero lands in view. */}
         <div className="absolute inset-x-0 bottom-0 h-[42%] w-full overflow-hidden md:relative md:mt-[45px] md:h-[clamp(180px,calc(100vh_-_611px),310px)]">
           <div className="absolute inset-x-0 top-0 h-[520px] md:h-[720px]">
-            <ModelGlobe fit={1.05} offsetY={0.085} interactive={false} showCore={false} />
+            <ModelGlobe fit={1.05} fitCompact={1.35} offsetY={0.085} offsetYCompact={0} cardScaleCompact={1.8} interactive={false} showCore={false} />
           </div>
         </div>
       </div>

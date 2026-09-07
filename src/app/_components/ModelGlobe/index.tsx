@@ -45,8 +45,19 @@ interface ModelGlobeProps {
   /** sphere diameter as a fraction of the container's shorter side, so portrait phone
    *  cards don't clip the globe left and right */
   fit?: number
+  /** `fit` below the md breakpoint. The design crops the globe at the card's edges on a
+   *  phone — half-cards at the left, right and bottom — so it reads as something you can
+   *  keep spinning rather than a shrunken sphere sitting in the middle. Omit to reuse `fit`. */
+  fitCompact?: number
   /** pushes the sphere down by this fraction of the container height (for the cropped hero) */
   offsetY?: number
+  /** `offsetY` below the md breakpoint; pair it with `fitCompact` to keep the enlarged
+   *  sphere's top cap inside the window instead of cutting it off in mid-air */
+  offsetYCompact?: number
+  /** multiplies the computed card scale below the md breakpoint. Pulling the camera in
+   *  (`fitCompact`) enlarges the cards but leaves fewer of them in frame; the design wants
+   *  both, which only a bigger card relative to the sphere gives. */
+  cardScaleCompact?: number
   /** drag to rotate + hover highlight; the hero copy is decorative only */
   interactive?: boolean
   /** show the centre COMPASS node */
@@ -62,7 +73,10 @@ interface ModelGlobeProps {
 const ModelGlobe = ({
   className = "",
   fit = 0.66,
+  fitCompact,
   offsetY = 0,
+  offsetYCompact,
+  cardScaleCompact,
   interactive = true,
   showCore = true,
   selected,
@@ -150,7 +164,8 @@ const ModelGlobe = ({
       width = Math.max(1, Math.round(rect.width))
       height = Math.max(1, Math.round(rect.height))
 
-      const scale = computeUiScale(width)
+      const compact = !window.matchMedia("(min-width: 900px)").matches
+      const scale = computeUiScale(width) * ((compact ? cardScaleCompact : undefined) ?? 1)
       setUiScale(scale)
       cards.forEach(({ div }) => {
         div.style.width = `${CARD_W * scale}px`
@@ -161,9 +176,12 @@ const ModelGlobe = ({
         coreEl.style.height = `${CORE_H * scale}px`
       }
 
-      // distance that renders the sphere at `fit` × the container's shorter side
-      const distance = (2 * RADIUS * height) / (VIEW_PER_DISTANCE * fit * Math.min(width, height))
-      const worldOffset = offsetY * VIEW_PER_DISTANCE * distance
+      const activeFit = (compact ? fitCompact : undefined) ?? fit
+      const activeOffsetY = (compact ? offsetYCompact : undefined) ?? offsetY
+
+      // distance that renders the sphere at `activeFit` × the container's shorter side
+      const distance = (2 * RADIUS * height) / (VIEW_PER_DISTANCE * activeFit * Math.min(width, height))
+      const worldOffset = activeOffsetY * VIEW_PER_DISTANCE * distance
 
       camera.aspect = width / height
       camera.position.set(0, worldOffset, distance)
@@ -333,7 +351,7 @@ const ModelGlobe = ({
       glRenderer.dispose()
       cssRenderer.domElement.remove()
     }
-  }, [cardEls, coreEl, fit, offsetY, interactive, showCore])
+  }, [cardEls, coreEl, fit, fitCompact, offsetY, offsetYCompact, cardScaleCompact, interactive, showCore])
 
   return (
     <div
