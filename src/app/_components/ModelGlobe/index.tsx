@@ -195,12 +195,15 @@ const ModelGlobe = ({
     let pointerNY = 0
     let lastInteraction = performance.now()
 
+    // Drag exactly the way Glen's prototype does: pointerdown on the globe, move/up on
+    // the window. Do NOT setPointerCapture here — capturing retargets the whole pointer
+    // sequence to the host, and the card underneath never gets its click.
     const onPointerDown = (e: PointerEvent) => {
       dragging = true
       prevX = e.clientX
       prevY = e.clientY
-      host.setPointerCapture(e.pointerId)
-      lastInteraction = performance.now()
+      // lastInteraction deliberately untouched: selecting a card shouldn't pause the
+      // auto-rotate, only actual dragging should (his comment says the same)
     }
     const onPointerMove = (e: PointerEvent) => {
       const rect = host.getBoundingClientRect()
@@ -215,17 +218,15 @@ const ModelGlobe = ({
       rotX = clamp(rotX + velX, -1.1, 1.1)
       lastInteraction = performance.now()
     }
-    const onPointerUp = (e: PointerEvent) => {
+    const onPointerUp = () => {
       dragging = false
-      if (host.hasPointerCapture(e.pointerId)) host.releasePointerCapture(e.pointerId)
     }
 
     if (interactive) {
       host.addEventListener("pointerdown", onPointerDown)
-      host.addEventListener("pointermove", onPointerMove)
-      host.addEventListener("pointerup", onPointerUp)
-      host.addEventListener("pointercancel", onPointerUp)
-      host.addEventListener("pointerleave", onPointerUp)
+      window.addEventListener("pointermove", onPointerMove)
+      window.addEventListener("pointerup", onPointerUp)
+      window.addEventListener("pointercancel", onPointerUp)
     }
 
     // ---- render loop -------------------------------------------------------
@@ -318,10 +319,9 @@ const ModelGlobe = ({
       resizeObserver.disconnect()
       visibilityObserver.disconnect()
       host.removeEventListener("pointerdown", onPointerDown)
-      host.removeEventListener("pointermove", onPointerMove)
-      host.removeEventListener("pointerup", onPointerUp)
-      host.removeEventListener("pointercancel", onPointerUp)
-      host.removeEventListener("pointerleave", onPointerUp)
+      window.removeEventListener("pointermove", onPointerMove)
+      window.removeEventListener("pointerup", onPointerUp)
+      window.removeEventListener("pointercancel", onPointerUp)
       cards.forEach(c => cssGroup.remove(c.obj))
       if (coreObj) cssScene.remove(coreObj)
       glGroup.traverse(o => {
@@ -359,7 +359,16 @@ const ModelGlobe = ({
               onPointerLeave={() => {
                 el.dataset.hovered = "false"
               }}
-              onClick={() => onToggle?.(i)}
+              onClick={e => {
+                // restart the pop even on a rapid second click, the way his prototype
+                // forces a reflow between removing and re-adding the class
+                const el = e.currentTarget
+                el.classList.remove("model-card-pop")
+                void el.offsetWidth
+                el.classList.add("model-card-pop")
+                onToggle?.(i)
+              }}
+              onAnimationEnd={e => e.currentTarget.classList.remove("model-card-pop")}
               style={isSelected ? { boxShadow: `0 0 0 2.5px ${providerColor(model.provider)}, 0 16px 34px rgba(0,0,0,0.24)` } : undefined}
               className={`flex size-full select-none flex-col justify-center gap-[8px] rounded-[16px] bg-white px-[18px] py-[14px] text-left transition-[transform,box-shadow] duration-200 ${
                 isSelected ? "" : "shadow-[0_10px_24px_rgba(0,0,0,0.16),0_2px_6px_rgba(0,0,0,0.08)]"
