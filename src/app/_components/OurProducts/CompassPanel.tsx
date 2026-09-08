@@ -76,10 +76,24 @@ const CompassPanel = () => {
           instead of the 216px that 2.3 gave, which read as cards wearing the sphere.
           Result: name ~12px, prices ~10px, and the cards cover about the same 30% of their
           share of the sphere that Glen's 41 tiny ones did. */}
+      {/* The phone needs its own pair, and not just scaled-down versions: `compact` falls
+          back to 1 when cardScaleCompact is unset, so the desktop fix above did nothing
+          here and the names were back to ~1.6px (Zhengqi, 2026-09-08). The panel is
+          aspect-[311/516], about 358 x 594 on a 390px phone, where computeUiScale already
+          halves everything.
+
+          Cropping is what pays for it. fitCompact 1.2 pushes the sphere past the panel's
+          width, which magnifies the cards without packing the sphere any tighter — the
+          overflow is cut off, which is what the design draws on a phone anyway (half cards
+          at the edges). 1.0 with no crop would need cardScaleCompact 4.5 for the same
+          legibility and put coverage at 53%; this way 3.5 gets the name to ~11px at 32%,
+          the same crowding as desktop. */}
       <ModelGlobe
         className="size-full"
         fit={0.82}
         cardScale={1.7}
+        fitCompact={1.2}
+        cardScaleCompact={3.5}
         interactive
         selected={selected}
         onToggle={toggleModel}
