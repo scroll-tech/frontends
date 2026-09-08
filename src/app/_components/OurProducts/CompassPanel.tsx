@@ -6,34 +6,49 @@ import ModelGlobe from "../ModelGlobe/lazy"
 import { MODALITY_COUNTS, MODALITY_ORDER, MODELS, type Modality, modelSlug, providerColor } from "../ModelGlobe/models"
 
 /**
- * Compass panel — the interactive globe from Glen's second "Compass asset" prototype
- * (Slack, 2026-09-07): click a card to pin it to the list on the left, tick the
- * modalities at the bottom to filter what's on the sphere.
+ * Compass panel — the interactive globe from Glen's "Compass asset" prototype (Slack,
+ * 2026-09-07): click a card to pin it, tick the modalities to filter what's on the sphere.
+ *
+ * The 2026-09-08 frame (DESIGN-CONTENT 591:20506) drops the boxed list that used to hold
+ * the pinned models and floats each one straight on the card instead — a provider dot,
+ * the name with its badge, the slug underneath — parked in three fixed slots around the
+ * globe. Slot coordinates below are that frame's, as a fraction of its 886 x 572 card.
  */
-// Glen's prototype has no cap — his panel is a full window tall and fits ~8. Ours lives
-// in a 572px card that shows 3, and a list that silently clips is worse than a limit, so
-// picking a fourth drops the oldest.
-// how many fit, so it follows the layout: a column of 3 beside the globe on desktop,
-// a row of 2 across the top on a phone, where a 3-tall column ate 40% of the card
-const MAX_DESKTOP = 3
+const DESKTOP_SLOTS = [
+  { left: "7.2%", top: "12.4%" }, // 64 / 71
+  { left: "71.4%", top: "11.4%" }, // 633 / 65
+  { left: "71.7%", top: "64.9%" }, // 635 / 371
+]
+
+// Glen's prototype has no cap — his panel is a full window tall and fits ~8. Ours has
+// three slots on the card, and a pin that silently lands nowhere is worse than a limit,
+// so picking a fourth drops the oldest. The phone frame draws one row; two still read
+// cleanly stacked at the top, which is the count settled on earlier.
+const MAX_DESKTOP = DESKTOP_SLOTS.length
 const MAX_COMPACT = 2
 
+// the phone has no slots to scatter into, so pinned models stack down from the frame's
+// single row (594:20828, at 5.5% / 4.7% of its 311 x 550 card)
+const compactSlot = (i: number) => ({ left: "5.5%", top: `calc(4.7% + ${i * 46}px)` })
+
 const CompassPanel = () => {
-  // click order is what the list shows, so an array rather than a Set
+  // click order is what the slots show, so an array rather than a Set
   const [selected, setSelected] = useState<number[]>([])
   const [visible, setVisible] = useState<Modality[]>(MODALITY_ORDER)
-  const [maxSelected, setMaxSelected] = useState(MAX_DESKTOP)
+  const [isDesktop, setIsDesktop] = useState(true)
 
   // md is 900px in this project
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 900px)")
-    const sync = () => setMaxSelected(mq.matches ? MAX_DESKTOP : MAX_COMPACT)
+    const sync = () => setIsDesktop(mq.matches)
     sync()
     mq.addEventListener("change", sync)
     return () => mq.removeEventListener("change", sync)
   }, [])
 
-  // shrinking the window past the breakpoint shouldn't leave a hidden third row
+  const maxSelected = isDesktop ? MAX_DESKTOP : MAX_COMPACT
+
+  // shrinking the window past the breakpoint shouldn't leave a pin with nowhere to sit
   useEffect(() => setSelected(prev => prev.slice(-maxSelected)), [maxSelected])
 
   const toggleModel = (index: number) =>
@@ -45,7 +60,7 @@ const CompassPanel = () => {
   const toggleModality = (key: Modality) =>
     setVisible(prev => {
       const next = prev.includes(key) ? prev.filter(m => m !== key) : [...prev, key]
-      // a card that just got filtered out shouldn't stay pinned in the list
+      // a card that just got filtered out shouldn't stay pinned
       setSelected(sel => sel.filter(i => next.includes(MODELS[i].modality)))
       return next
     })
@@ -54,62 +69,46 @@ const CompassPanel = () => {
     <div className="relative size-full">
       <ModelGlobe className="size-full" fit={0.68} interactive selected={selected} onToggle={toggleModel} visibleModalities={visible} />
 
-      {/* ---- selected models ---------------------------------------------- */}
-      <div className="absolute inset-x-[16px] top-[16px] flex flex-col md:inset-x-auto md:left-[32px] md:top-[32px] md:max-h-[64%] md:w-[38%] md:max-w-[230px] md:overflow-y-auto">
-        <p className="mb-[10px] shrink-0 text-[9.5px] font-bold uppercase leading-[13px] tracking-[1px] text-[rgba(17,17,17,0.4)] md:text-[11px]">
-          Selected models
-        </p>
+      {/* ---- pinned models, floating in the frame's slots ------------------- */}
+      {selected.map((index, i) => {
+        const model = MODELS[index]
+        return (
+          <button
+            key={model.name}
+            type="button"
+            onClick={() => toggleModel(index)}
+            title={`Unpin ${model.name}`}
+            style={isDesktop ? DESKTOP_SLOTS[i] : compactSlot(i)}
+            className="absolute flex max-w-[62%] items-center gap-[12px] text-left transition-opacity hover:opacity-60 md:max-w-[220px]"
+          >
+            <span className="size-[12px] shrink-0 rounded-full md:size-[16px]" style={{ backgroundColor: providerColor(model.provider) }} />
+            <span className="min-w-0">
+              <span className="flex items-center gap-[8px]">
+                <span className="truncate text-[12px] font-semibold leading-[16px] text-[#111] md:text-[14px] md:leading-[18px]">{model.name}</span>
+                <span className="shrink-0 rounded-[4px] border border-solid border-[rgba(17,17,17,0.22)] px-[5px] py-[1px] text-[8px] font-bold uppercase leading-[12px] tracking-[0.3px] text-[rgba(17,17,17,0.55)] md:text-[9px]">
+                  {model.open ? "OPEN" : model.modality}
+                </span>
+              </span>
+              <span className="mt-[2px] block truncate font-mono text-[9.5px] leading-[14px] text-[rgba(17,17,17,0.38)] md:text-[11px]">
+                {modelSlug(model)}
+              </span>
+            </span>
+          </button>
+        )
+      })}
 
-        {selected.length === 0 ? (
-          <p className="text-[12.5px] leading-[1.5] text-[rgba(17,17,17,0.35)]">Click any card in the sphere to see its details here.</p>
-        ) : (
-          <div className="grid grid-cols-2 gap-x-[12px] md:flex md:flex-col">
-            {selected.map(index => {
-              const model = MODELS[index]
-              return (
-                <div
-                  key={model.name}
-                  className="md:border-b md:border-solid md:border-[rgba(17,17,17,0.09)] md:pb-[12px] md:not-last:mb-[12px] md:last:border-none"
-                >
-                  <div className="flex items-center gap-[8px]">
-                    <span className="size-[9px] shrink-0 rounded-full" style={{ backgroundColor: providerColor(model.provider) }} />
-                    <span className="min-w-0 flex-1 truncate text-[13px] font-semibold text-[#111] md:text-[16px]">{model.name}</span>
-                    {model.open && (
-                      <span className="shrink-0 rounded-[5px] border border-solid border-[rgba(17,17,17,0.22)] px-[5px] py-[1px] text-[8.5px] font-bold tracking-[0.3px] text-[rgba(17,17,17,0.55)] md:px-[6px] md:py-[2px] md:text-[9.5px]">
-                        OPEN
-                      </span>
-                    )}
-                    <button
-                      type="button"
-                      onClick={() => toggleModel(index)}
-                      aria-label={`Remove ${model.name}`}
-                      className="shrink-0 px-[2px] text-[17px] leading-none text-[rgba(17,17,17,0.32)] transition-transform hover:rotate-90 hover:scale-125 hover:text-[#111]"
-                    >
-                      ×
-                    </button>
-                  </div>
-                  <p className="ml-[15px] mt-[3px] truncate font-mono text-[10px] text-[rgba(17,17,17,0.38)] md:ml-[17px] md:text-[12px]">
-                    {modelSlug(model)}
-                  </p>
-                  <div className="ml-[15px] mt-[7px] flex gap-[14px] md:ml-[17px] md:mt-[9px] md:gap-[18px]">
-                    <div className="flex flex-col gap-[1px]">
-                      <span className="text-[9px] tracking-[0.3px] text-[rgba(17,17,17,0.55)]">IN / 1M</span>
-                      <span className="text-[11.5px] font-medium tabular-nums text-[#111]">${model.inPrice}</span>
-                    </div>
-                    <div className="flex flex-col gap-[1px]">
-                      <span className="text-[9px] tracking-[0.3px] text-[rgba(17,17,17,0.55)]">OUT / 1M</span>
-                      <span className="text-[11.5px] font-medium tabular-nums text-[#111]">${model.outPrice}</span>
-                    </div>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        )}
-      </div>
+      {/* the frame draws no hint, but without one nothing says the sphere is clickable */}
+      {selected.length === 0 && (
+        <p
+          style={isDesktop ? DESKTOP_SLOTS[0] : compactSlot(0)}
+          className="absolute max-w-[58%] text-[11.5px] leading-[1.5] text-[rgba(17,17,17,0.35)] md:max-w-[200px] md:text-[12.5px]"
+        >
+          Click any card in the sphere to pin it here.
+        </p>
+      )}
 
       {/* ---- modality filter ---------------------------------------------- */}
-      <div className="absolute bottom-[24px] left-[24px] flex w-[44%] max-w-[190px] flex-col gap-[11px] md:bottom-[32px] md:left-[32px] md:w-[34%]">
+      <div className="absolute bottom-[24px] left-[24px] flex w-[44%] max-w-[190px] flex-col gap-[11px] md:bottom-[32px] md:left-[29px] md:w-[34%]">
         <p className="text-[9.5px] font-bold uppercase leading-[13px] tracking-[1px] text-[rgba(17,17,17,0.4)] md:text-[11px]">Modality</p>
         {MODALITY_ORDER.map(key => {
           const on = visible.includes(key)
