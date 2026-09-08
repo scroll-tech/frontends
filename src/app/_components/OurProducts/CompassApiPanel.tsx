@@ -1,19 +1,25 @@
-"use client"
-
-import ModelLeaderboard from "./ModelLeaderboard"
-import ModelLeaderboardCompact from "./ModelLeaderboardCompact"
-import ScaleToFit from "./ScaleToFit"
-
+/**
+ * Glen 2026-09-08 replaced the leaderboard mock-up here with two animations: the routing
+ * hub up top and the AI MODEL → ZK API KEY → COMPASS chain under it.
+ *
+ * Both are pure SVG + CSS, so unlike the hero they need no iframe — a plain <img> renders
+ * them and still runs their animations. He authors the hub twice, landscape (346 x 290)
+ * and portrait (290 x 346), and the phone frame drops the chain, so each breakpoint gets
+ * the file the design actually draws.
+ */
 const CompassApiPanel = () => (
   <>
-    {/* desktop: the leaderboard is authored at its design size and scaled into the card */}
-    <ScaleToFit width={1220} height={706} className="hidden size-full px-[52px] py-[60px] md:flex">
-      <ModelLeaderboard />
-    </ScaleToFit>
+    <div className="hidden size-full flex-col items-center justify-center gap-[44px] px-[52px] py-[48px] md:flex">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      {/* 360px is the max-width Glen caps the hub at in his own stylesheet */}
+      <img src="/graphics/compass-api-hub-desktop.svg" alt="" className="w-[360px] max-w-full" />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/graphics/compass-api-chain.svg" alt="" className="w-full max-w-[760px]" />
+    </div>
 
-    {/* phone: the 1220px table can't scale down and stay readable — stack the rows instead */}
-    <div className="h-full md:hidden">
-      <ModelLeaderboardCompact />
+    <div className="flex h-full w-full flex-col items-center justify-center px-[24px] py-[24px] md:hidden">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/graphics/compass-api-hub-mobile.svg" alt="" className="w-full max-w-[320px]" />
     </div>
   </>
 )
