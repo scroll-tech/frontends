@@ -94,8 +94,11 @@ const OurProducts = () => {
     smoothScrollToCenter(panelRefs.current[index])
   }
 
+  // The 320 dated from when the hero was a short block on a tall page; now that the hero
+  // fills the first screen it read as a screen of nothing plus another 320. 160 is about
+  // where the Compass frame puts "Our Products" under the nav band (155).
   return (
-    <section id="products" className="w-full scroll-mt-[96px] px-[16px] pt-[120px] md:pt-[320px]">
+    <section id="products" className="w-full scroll-mt-[96px] px-[16px] pt-[120px] md:pt-[160px]">
       <div className="mx-auto w-full max-w-[1200px]">
         <h2 className={`${geistMono.className} text-center text-[32px] font-semibold text-black md:text-[48px]`}>Our Products</h2>
 
