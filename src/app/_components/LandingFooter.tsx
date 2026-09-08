@@ -26,7 +26,9 @@ const FOOTER_COLUMNS = [
 const linkClass = "text-[15px] text-[#5E5E5E] [font-family:var(--font-inter)] transition-colors hover:text-black"
 
 const LandingFooter = () => (
-  <footer className="mt-[96px] flex w-full flex-col items-center bg-[#F8F8F8] px-[24px] py-[40px] md:mt-[200px] md:px-[96px]">
+  // Glen 2026-09-08: "Change footer to white" + "Upper drop shadow on footer" — the shadow
+  // is cast upwards so the footer reads as a panel raised off the page behind it.
+  <footer className="mt-[96px] flex w-full flex-col items-center bg-white px-[24px] py-[40px] shadow-[0_-8px_32px_rgba(17,17,17,0.06)] md:mt-[200px] md:px-[96px]">
     <div className="flex w-full max-w-[1170px] flex-col gap-[20px]">
       <div className="flex flex-col gap-[40px] py-[32px] md:flex-row md:items-center md:justify-between">
         <div className="flex flex-col items-start gap-[8px] self-start md:items-center md:self-auto">

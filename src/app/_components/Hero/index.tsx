@@ -2,6 +2,7 @@ import { COMPASS_API_URL } from "@/constants/link"
 
 import GraphicFrame from "../GraphicFrame"
 import { geistMono } from "../fonts"
+import { SlideUp, Typed } from "../motion"
 
 const CheckItOut = ({ className = "" }: { className?: string }) => (
   <a
@@ -27,17 +28,19 @@ const CheckItOut = ({ className = "" }: { className?: string }) => (
 const LandingHero = () => (
   <section id="home" className="w-full scroll-mt-[96px] px-[16px]">
     <div className="mx-auto flex w-full max-w-[1120px] flex-col items-center md:overflow-hidden md:rounded-[24px] md:bg-white md:pt-[45px] md:shadow-[0_8px_32px_rgba(17,17,17,0.05)]">
-      <h1
-        className={`${geistMono.className} px-[16px] text-center text-[32px] font-semibold leading-[1.375] text-black sm:text-[42px] md:text-[56px]`}
-      >
-        Your Gateway to
-        <br />
-        <span className="text-[#636363]">Frontier Models</span>
-      </h1>
+      <SlideUp>
+        <h1
+          className={`${geistMono.className} px-[16px] text-center text-[32px] font-semibold leading-[1.375] text-black sm:text-[42px] md:text-[56px]`}
+        >
+          Your Gateway to
+          <br />
+          <span className="text-[#636363]">Frontier Models</span>
+        </h1>
+      </SlideUp>
 
       <div className="relative mt-[24px] flex aspect-[311/516] max-h-[600px] w-full flex-col items-center overflow-hidden rounded-[16px] bg-white pt-[24px] shadow-[0_8px_32px_rgba(17,17,17,0.05)] md:mt-0 md:shadow-none md:aspect-auto md:max-h-none md:rounded-none md:pt-0">
         <p className="max-w-[343px] px-[16px] text-center text-[16px] leading-[25px] text-[#636363] md:mt-[32px]">
-          Switch between 30+ providers through a single unified interface
+          <Typed text="Switch between 30+ providers through a single unified interface" />
         </p>
 
         <CheckItOut className="mt-[24px] block text-center md:mt-[32px]" />

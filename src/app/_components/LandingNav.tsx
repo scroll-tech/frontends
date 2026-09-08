@@ -35,7 +35,8 @@ const LandingNav = () => {
 
   return (
     <div className="relative mx-auto w-full max-w-[828px]">
-      <nav className="flex h-[48px] w-full items-center justify-between rounded-full bg-white pl-[16px] pr-[24px] shadow-[0px_4px_16px_rgba(17,17,17,0.06)]">
+      {/* Glen 2026-09-08: "Make nav bar pop. Up slightly when hovered" */}
+      <nav className="flex h-[48px] w-full items-center justify-between rounded-full bg-white pl-[16px] pr-[24px] shadow-[0px_4px_16px_rgba(17,17,17,0.06)] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(.2,.8,.2,1)] hover:-translate-y-[3px] hover:shadow-[0px_12px_28px_rgba(17,17,17,0.10)]">
         <div className="flex items-center gap-[12px]">
           <Link
             href="/"
