@@ -44,7 +44,9 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: "/(.*)",
+        // everything but /graphics: the negative lookahead keeps exactly one rule
+        // matching, so the two X-Frame-Options values can never both be sent
+        source: "/((?!graphics/).*)",
         headers: [
           {
             key: "X-Frame-Options",
@@ -53,6 +55,22 @@ const nextConfig = {
           {
             key: "Content-Security-Policy",
             value: "frame-ancestors 'none'",
+          },
+        ],
+      },
+      {
+        // Glen ships the landing animations as standalone HTML that drives itself
+        // with rAF, so they run in a same-origin iframe rather than being ported.
+        // Framing them needs SAMEORIGIN; they are decorative and read no data.
+        source: "/graphics/:path*",
+        headers: [
+          {
+            key: "X-Frame-Options",
+            value: "SAMEORIGIN",
+          },
+          {
+            key: "Content-Security-Policy",
+            value: "frame-ancestors 'self'",
           },
         ],
       },

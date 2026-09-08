@@ -1,6 +1,6 @@
 import { COMPASS_API_URL } from "@/constants/link"
 
-import ModelGlobe from "../ModelGlobe/lazy"
+import GraphicFrame from "../GraphicFrame"
 import { geistMono } from "../fonts"
 
 const CheckItOut = ({ className = "" }: { className?: string }) => (
@@ -17,8 +17,12 @@ const CheckItOut = ({ className = "" }: { className?: string }) => (
 /**
  * Desktop: the whole block sits inside one white card (SCROLL › Landing frame).
  * Mobile: the headline sits on the background and the card takes the same 311 x 516 the
- * "Mobile version" frame gives it — the same shape as the product cards below, with the
- * subtitle and the CTA at the top and the globe cropped at the foot.
+ * "Mobile version" frame gives it — the same shape as the product cards below.
+ *
+ * The graphic below the CTA is Glen's model-routing animation (Slack, 2026-09-08), which
+ * replaced the spinning globe here; the globe now only appears in Our Products › Compass.
+ * He ships a landscape file and a portrait one rather than one responsive file, so we
+ * mount whichever matches and let his own fit() scale the stage inside it.
  */
 const LandingHero = () => (
   <section id="home" className="w-full scroll-mt-[96px] px-[16px]">
@@ -32,25 +36,25 @@ const LandingHero = () => (
       </h1>
 
       <div className="relative mt-[24px] flex aspect-[311/516] max-h-[600px] w-full flex-col items-center overflow-hidden rounded-[16px] bg-white pt-[24px] shadow-[0_8px_32px_rgba(17,17,17,0.05)] md:mt-0 md:shadow-none md:aspect-auto md:max-h-none md:rounded-none md:pt-0">
-        <p className="max-w-[343px] px-[16px] text-center text-[16px] leading-[25px] text-[#636363] md:mt-[45px]">
+        <p className="max-w-[343px] px-[16px] text-center text-[16px] leading-[25px] text-[#636363] md:mt-[32px]">
           Switch between 30+ providers through a single unified interface
         </p>
 
-        <CheckItOut className="mt-[24px] block text-center md:mt-[45px]" />
+        <CheckItOut className="mt-[24px] block text-center md:mt-[32px]" />
 
-        {/* Glen: "Crop the 3d asset like this for the landing page" — the globe is rendered
-            at full height and the card only reveals its top cap. On phones it hangs off the
-            bottom edge of the card, which is where the design puts it.
-            offsetY drops the sphere far enough that the topmost card clears the crop: at 0
-            it was slicing through them, which is what read as "top half of graphic is cut"
-            and made the gap under the CTA look tighter than the 45px it actually is.
-            The height clamp keeps the design's 310px whenever the window is tall enough and
-            gives it back on short ones, so the whole hero lands in view. */}
-        <div className="absolute inset-x-0 bottom-0 h-[42%] w-full overflow-hidden md:relative md:mt-[45px] md:h-[clamp(180px,calc(100vh_-_611px),310px)]">
-          <div className="absolute inset-x-0 top-0 h-[520px] md:h-[720px]">
-            <ModelGlobe fit={1.05} fitCompact={1.35} offsetY={0.085} offsetYCompact={0} cardScaleCompact={1.8} interactive={false} showCore={false} />
-          </div>
-        </div>
+        {/* portrait file, filling what the card has left under the CTA */}
+        <GraphicFrame src="landing-hero-mobile.html" title="Model routing" className="mt-[16px] w-full min-h-0 flex-1 md:hidden" />
+
+        {/* Landscape file. 1248 x 508 is Glen's 1200 x 460 stage plus the 48px margin his
+            fit() reserves, so at that ratio the graphic lands at its intended size. The
+            clamp gives the height back on a short window instead of letting the hero run
+            past the fold with the model rail sliced in half — his fit() just scales the
+            whole stage down and centres it, so nothing is ever cut. */}
+        <GraphicFrame
+          src="landing-hero-desktop.html"
+          title="Model routing"
+          className="mt-[24px] hidden h-[clamp(280px,calc(100vh_-_580px),456px)] w-full md:block"
+        />
       </div>
     </div>
   </section>
