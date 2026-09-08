@@ -28,6 +28,8 @@ interface Product {
   external: boolean
   /** the phone card sizes itself per product — the design only draws the Compass one */
   mobileClass: string
+  /** Glen 2026-09-08 gives Compass a labelled button; the other two keep the arrow */
+  ctaLabel?: string
   panel: ReactNode
 }
 
@@ -40,6 +42,7 @@ const PRODUCTS: Product[] = [
     href: COMPASS_APP_STORE_URL,
     external: true,
     mobileClass: MOBILE_CARD,
+    ctaLabel: "Download",
     panel: <CompassPanel />,
   },
   {
@@ -170,14 +173,24 @@ const OurProducts = () => {
                   className={`relative w-full overflow-hidden rounded-[12px] bg-white shadow-[0_8px_32px_rgba(17,17,17,0.05)] md:aspect-[886/572] ${product.mobileClass}`}
                 >
                   {product.panel}
-                  <a
-                    href={product.href}
-                    {...(product.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                    aria-label={`Open ${product.title}`}
-                    className="absolute bottom-[16px] right-[16px] block size-[34px] text-[#959595] transition-colors hover:text-black md:bottom-[22px] md:right-[22px]"
-                  >
-                    <ArrowCircleIcon className="size-full" />
-                  </a>
+                  {product.ctaLabel ? (
+                    <a
+                      href={product.href}
+                      {...(product.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                      className="absolute bottom-[16px] right-[16px] flex h-[34px] items-center justify-center rounded-[8px] border border-solid border-[#867B71] px-[18px] text-[13px] font-medium text-black transition-colors hover:bg-[#F8F8F8] md:bottom-[22px] md:right-[22px] md:h-[38px] md:px-[22px] md:text-[14px]"
+                    >
+                      {product.ctaLabel}
+                    </a>
+                  ) : (
+                    <a
+                      href={product.href}
+                      {...(product.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                      aria-label={`Open ${product.title}`}
+                      className="absolute bottom-[16px] right-[16px] block size-[34px] text-[#959595] transition-colors hover:text-black md:bottom-[22px] md:right-[22px]"
+                    >
+                      <ArrowCircleIcon className="size-full" />
+                    </a>
+                  )}
                 </PopIn>
               </div>
             ))}
