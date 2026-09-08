@@ -84,7 +84,50 @@ export const providerColor = (provider: string) => PROVIDER_COLORS[provider] ?? 
 export const modelSlug = (m: ModelCardData) =>
   `${m.provider.toLowerCase().replace(/[^a-z0-9]+/g, "-")}/${m.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`
 
+/**
+ * What actually goes on the sphere.
+ *
+ * All 41 wouldn't read: a card has to be enough bigger for its name to clear ~12px on
+ * screen, and a sphere's surface is fixed, so at that size 41 of them pile onto each other.
+ * 20 lands at roughly the 30% coverage Glen's 41 tiny cards had — the same crowding, legible
+ * — once the card box itself is tightened rather than just scaled up (see CARD_H in ./index).
+ *
+ * Flagships first, one or two per provider, then every non-Text model so all four modality
+ * filters still do something. `MODELS` stays the full catalogue.
+ */
+const FEATURED = [
+  "GPT-5",
+  "o4",
+  "Claude Opus 5",
+  "Claude Sonnet 5",
+  "Gemini 3 Flash",
+  "Gemini 2.5 Flash",
+  "Llama 4 Maverick",
+  "Llama 3.3 70B",
+  "Mistral Large 2",
+  "DeepSeek R1",
+  "DeepSeek V3",
+  "Qwen 2.5 Max",
+  "Command R+",
+  "Nova Pro",
+  // non-Text, so Video / Image / Audio aren't empty checkboxes
+  "Gemini 3 Pro",
+  "Grok 4",
+  "Qwen 3 235B",
+  "Gemini 3 Ultra",
+  "GPT-4o",
+  "Sonar Pro",
+]
+
+export const SPHERE_MODELS = FEATURED.map(name => {
+  const m = MODELS.find(x => x.name === name)
+  if (!m) throw new Error(`FEATURED lists "${name}", which is not in MODELS`)
+  return m
+})
+
+// counted off the sphere, not the catalogue — a checkbox reading 35 next to 8 visible
+// cards is just wrong. The catalogue-size claim belongs in the copy, not here.
 export const MODALITY_COUNTS = MODALITY_ORDER.reduce<Record<Modality, number>>(
-  (acc, key) => ({ ...acc, [key]: MODELS.filter(m => m.modality === key).length }),
+  (acc, key) => ({ ...acc, [key]: SPHERE_MODELS.filter(m => m.modality === key).length }),
   {} as Record<Modality, number>,
 )

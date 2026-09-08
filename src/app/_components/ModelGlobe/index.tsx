@@ -5,13 +5,17 @@ import { createPortal } from "react-dom"
 import * as THREE from "three"
 import { CSS3DObject, CSS3DRenderer } from "three/examples/jsm/renderers/CSS3DRenderer.js"
 
-import { MODELS, type Modality, providerColor } from "./models"
+import { type Modality, SPHERE_MODELS, providerColor } from "./models"
 
 // Geometry is kept in the same world units as Glen's prototype so the card proportions
 // match his reference exactly; on-screen size is driven by `fit` instead of a fixed camera.
 const RADIUS = 900
 const CARD_W = 250
-const CARD_H = 168
+// 118, not Glen's 168. His card was mostly air below the prices, which only showed up once
+// the whole card was scaled to make the text readable — a big empty plate. Tightening the
+// box instead of scaling it means `cardScale` can stay modest (1.7, not 2.3) and the card
+// still reads, and the surface it frees is what pays for the extra models in SPHERE_MODELS.
+const CARD_H = 118
 const CORE_W = 300
 const CORE_H = 122
 const FOV = 42
@@ -54,9 +58,13 @@ interface ModelGlobeProps {
   /** `offsetY` below the md breakpoint; pair it with `fitCompact` to keep the enlarged
    *  sphere's top cap inside the window instead of cutting it off in mid-air */
   offsetYCompact?: number
-  /** multiplies the computed card scale below the md breakpoint. Pulling the camera in
-   *  (`fitCompact`) enlarges the cards but leaves fewer of them in frame; the design wants
-   *  both, which only a bigger card relative to the sphere gives. */
+  /** multiplies the computed card scale. `fit` moves the sphere and the cards together, so
+   *  it can't make the text on a card bigger relative to the sphere — only this can, and
+   *  the sphere's surface is what pays for it: see SPHERE_MODELS in ./models. */
+  cardScale?: number
+  /** `cardScale` below the md breakpoint. Pulling the camera in (`fitCompact`) enlarges the
+   *  cards but leaves fewer of them in frame; the design wants both, which only a bigger
+   *  card relative to the sphere gives. */
   cardScaleCompact?: number
   /** drag to rotate + hover highlight; the hero copy is decorative only */
   interactive?: boolean
@@ -76,6 +84,7 @@ const ModelGlobe = ({
   fitCompact,
   offsetY = 0,
   offsetYCompact,
+  cardScale,
   cardScaleCompact,
   interactive = true,
   showCore = true,
@@ -98,7 +107,7 @@ const ModelGlobe = ({
   // one detached div per model; React renders the real markup into them through a portal
   const cardEls = useMemo(() => {
     if (typeof document === "undefined") return []
-    return MODELS.map(() => document.createElement("div"))
+    return SPHERE_MODELS.map(() => document.createElement("div"))
   }, [])
   const coreEl = useMemo(() => (typeof document === "undefined" ? null : document.createElement("div")), [])
 
@@ -129,7 +138,7 @@ const ModelGlobe = ({
     glScene.add(glGroup)
     cssScene.add(cssGroup)
 
-    const positions = fibonacciSphere(MODELS.length, RADIUS)
+    const positions = fibonacciSphere(SPHERE_MODELS.length, RADIUS)
     const cards = cardEls.map((div, i) => {
       div.style.pointerEvents = interactive ? "auto" : "none"
       div.style.transition = "opacity .18s ease, filter .18s ease"
@@ -145,7 +154,7 @@ const ModelGlobe = ({
       const line = new THREE.Line(lineGeo, new THREE.LineBasicMaterial({ color: 0xbbbbbb, transparent: true, opacity: 0.35 }))
       glGroup.add(line)
 
-      return { div, obj, basePos, line, modality: MODELS[i].modality, phase: Math.random() * Math.PI * 2, speed: 0.3 + Math.random() * 0.08 }
+      return { div, obj, basePos, line, modality: SPHERE_MODELS[i].modality, phase: Math.random() * Math.PI * 2, speed: 0.3 + Math.random() * 0.08 }
     })
 
     let coreObj: CSS3DObject | null = null
@@ -165,7 +174,7 @@ const ModelGlobe = ({
       height = Math.max(1, Math.round(rect.height))
 
       const compact = !window.matchMedia("(min-width: 900px)").matches
-      const scale = computeUiScale(width) * ((compact ? cardScaleCompact : undefined) ?? 1)
+      const scale = computeUiScale(width) * ((compact ? cardScaleCompact : cardScale) ?? 1)
       setUiScale(scale)
       cards.forEach(({ div }) => {
         div.style.width = `${CARD_W * scale}px`
@@ -307,14 +316,19 @@ const ModelGlobe = ({
 
         const rotatedZ = floated.clone().applyEuler(cssGroup.rotation).z
         const nz = clamp((rotatedZ + RADIUS) / (RADIUS * 2), 0, 1)
-        let opacity = 0.28
-        let blur = 1.6
-        if (nz > 0.66) {
+        // Tommy 2026-09-08: "it'd be ideal if we could read whats on the cards that are
+        // moving around". Glen's depth cue was three bands at 0.28/0.75/1 opacity with up
+        // to 1.6px of blur, which left everything off the front face unreadable. Same
+        // three bands, but the sharp one starts halfway back, nothing between is blurred
+        // at all, and the far face only dims — depth still reads from scale and dimming.
+        let opacity = 0.5
+        let blur = 0.7
+        if (nz > 0.5) {
           opacity = 1
           blur = 0
-        } else if (nz > 0.33) {
-          opacity = 0.75
-          blur = 0.6
+        } else if (nz > 0.28) {
+          opacity = 0.85
+          blur = 0
         }
 
         if (card.div.dataset.hovered === "true" || selectedNow.includes(i)) {
@@ -351,7 +365,7 @@ const ModelGlobe = ({
       glRenderer.dispose()
       cssRenderer.domElement.remove()
     }
-  }, [cardEls, coreEl, fit, fitCompact, offsetY, offsetYCompact, cardScaleCompact, interactive, showCore])
+  }, [cardEls, coreEl, fit, fitCompact, offsetY, offsetYCompact, cardScale, cardScaleCompact, interactive, showCore])
 
   return (
     <div
@@ -362,7 +376,7 @@ const ModelGlobe = ({
       <canvas ref={glRef} className="pointer-events-none absolute inset-0 size-full" />
       <div ref={cssHostRef} className="pointer-events-none absolute inset-0 overflow-hidden" />
       {cardEls.map((el, i) => {
-        const model = MODELS[i]
+        const model = SPHERE_MODELS[i]
         const isSelected = (selected ?? []).includes(i)
         return createPortal(
           // authored at the base 250x168 and scaled as a whole, so every size inside the
@@ -392,21 +406,24 @@ const ModelGlobe = ({
                 isSelected ? "" : "shadow-[0_10px_24px_rgba(0,0,0,0.16),0_2px_6px_rgba(0,0,0,0.08)]"
               } ${onToggle ? "cursor-pointer hover:scale-[1.035] hover:shadow-[0_16px_34px_rgba(0,0,0,0.22),0_4px_10px_rgba(0,0,0,0.1)]" : "cursor-default"}`}
             >
+              {/* Type is sized against the 250px card, not Glen's original ratios: the same
+                  layout with the name at 19 instead of 14 and the prices at 15 instead of
+                  11.5. That is what lets the card itself stay small on the sphere. */}
               <div className="flex min-w-0 items-center gap-[8px]">
-                <span className="size-[6px] shrink-0 rounded-full" style={{ backgroundColor: providerColor(model.provider) }} />
-                <span className="flex size-[20px] shrink-0 items-center justify-center rounded-full bg-[#F2F2F2] text-[9px] font-bold tracking-[0.2px] text-[#111] shadow-[0_1px_3px_rgba(0,0,0,0.15)]">
+                <span className="size-[8px] shrink-0 rounded-full" style={{ backgroundColor: providerColor(model.provider) }} />
+                <span className="flex size-[22px] shrink-0 items-center justify-center rounded-full bg-[#F2F2F2] text-[10px] font-bold tracking-[0.2px] text-[#111] shadow-[0_1px_3px_rgba(0,0,0,0.15)]">
                   {model.initials}
                 </span>
-                <span className="truncate text-[14px] font-semibold tracking-[-0.1px] text-[#111]">{model.name}</span>
+                <span className="truncate text-[19px] font-semibold tracking-[-0.3px] text-[#111]">{model.name}</span>
               </div>
-              <div className="flex gap-[14px] pl-[2px]">
+              <div className="flex gap-[16px] pl-[2px]">
                 <div className="flex flex-col gap-[1px]">
-                  <span className="text-[9px] tracking-[0.3px] text-[rgba(17,17,17,0.55)]">IN / 1M</span>
-                  <span className="text-[11.5px] font-medium tabular-nums text-[#111]">${model.inPrice}</span>
+                  <span className="text-[11px] tracking-[0.3px] text-[rgba(17,17,17,0.55)]">IN / 1M</span>
+                  <span className="text-[15px] font-medium tabular-nums text-[#111]">${model.inPrice}</span>
                 </div>
                 <div className="flex flex-col gap-[1px]">
-                  <span className="text-[9px] tracking-[0.3px] text-[rgba(17,17,17,0.55)]">OUT / 1M</span>
-                  <span className="text-[11.5px] font-medium tabular-nums text-[#111]">${model.outPrice}</span>
+                  <span className="text-[11px] tracking-[0.3px] text-[rgba(17,17,17,0.55)]">OUT / 1M</span>
+                  <span className="text-[15px] font-medium tabular-nums text-[#111]">${model.outPrice}</span>
                 </div>
               </div>
             </button>

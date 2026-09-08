@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 
 import ModelGlobe from "../ModelGlobe/lazy"
-import { MODALITY_COUNTS, MODALITY_ORDER, MODELS, type Modality, modelSlug, providerColor } from "../ModelGlobe/models"
+import { MODALITY_COUNTS, MODALITY_ORDER, type Modality, SPHERE_MODELS, modelSlug, providerColor } from "../ModelGlobe/models"
 
 /**
  * Compass panel — the interactive globe from Glen's "Compass asset" prototype (Slack,
@@ -61,17 +61,34 @@ const CompassPanel = () => {
     setVisible(prev => {
       const next = prev.includes(key) ? prev.filter(m => m !== key) : [...prev, key]
       // a card that just got filtered out shouldn't stay pinned
-      setSelected(sel => sel.filter(i => next.includes(MODELS[i].modality)))
+      setSelected(sel => sel.filter(i => next.includes(SPHERE_MODELS[i].modality)))
       return next
     })
 
   return (
     <div className="relative size-full">
-      <ModelGlobe className="size-full" fit={0.68} interactive selected={selected} onToggle={toggleModel} visibleModalities={visible} />
+      {/* Glen's 0.68 / 1.0 drew a front-facing card 70px wide, so its 14px name landed at
+          3.9px on screen and the prices at 3.3px — unreadable (Tommy, 2026-09-08). `fit`
+          alone can't fix it: it scales the sphere and the cards together, and past ~0.85 the
+          sphere reaches under the slots on the right anyway. So most of the gain comes from
+          the card being tighter and its type bigger (see CARD_H in ../ModelGlobe), and
+          `cardScale` only has to carry the rest — 1.7 keeps the card at ~160px on screen
+          instead of the 216px that 2.3 gave, which read as cards wearing the sphere.
+          Result: name ~12px, prices ~10px, and the cards cover about the same 30% of their
+          share of the sphere that Glen's 41 tiny ones did. */}
+      <ModelGlobe
+        className="size-full"
+        fit={0.82}
+        cardScale={1.7}
+        interactive
+        selected={selected}
+        onToggle={toggleModel}
+        visibleModalities={visible}
+      />
 
       {/* ---- pinned models, floating in the frame's slots ------------------- */}
       {selected.map((index, i) => {
-        const model = MODELS[index]
+        const model = SPHERE_MODELS[index]
         return (
           <button
             key={model.name}
