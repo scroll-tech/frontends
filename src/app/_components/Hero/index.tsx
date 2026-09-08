@@ -47,9 +47,15 @@ const LandingHero = () => (
       {/* On the phone this is still the frame's white 311 x 516 card; on desktop nothing —
           the hero has no box at all now, see the note below. */}
       <div className="relative mt-[24px] flex aspect-[311/516] max-h-[600px] w-full flex-col items-center overflow-hidden rounded-[16px] bg-white pt-[24px] shadow-[0_8px_32px_rgba(17,17,17,0.05)] md:mt-0 md:rounded-none md:bg-transparent md:pt-0 md:shadow-none md:aspect-auto md:max-h-none">
-        <p className="max-w-[343px] px-[16px] text-center text-[16px] leading-[19px] text-[#636363] md:mt-[18px] md:text-[18px] md:leading-[23.4px]">
-          <Typed text="Switch between 30+ providers through a single unified interface" />
-        </p>
+        {/* 0, 250, 500 are monad's three delayVal buckets. Written out rather than imported
+            from motion.tsx: that file is "use client" and this one is a server component, so
+            a plain array crossing the boundary arrives as a module reference and indexes to
+            undefined — silently, straight back to no stagger at all. */}
+        <SlideUp delay={250}>
+          <p className="max-w-[343px] px-[16px] text-center text-[16px] leading-[19px] text-[#636363] md:mt-[18px] md:text-[18px] md:leading-[23.4px]">
+            <Typed text="Switch between 30+ providers through a single unified interface" />
+          </p>
+        </SlideUp>
 
         {/* No surface here on desktop. Glen's 21:30 mock looked like it kept a faint panel
             around the CTA and the graphic, so this briefly carried one at 70% white — but he
@@ -65,7 +71,9 @@ const LandingHero = () => (
             through the panel's removal deliberately — the rhythm was chosen by eye, not
             derived from the panel edge. */}
         <div className="mt-[24px] flex min-h-0 w-full flex-1 flex-col items-center md:mt-[18px] md:flex-none md:pb-[20px] md:pt-[30px]">
-          <CheckItOut />
+          <SlideUp delay={500}>
+            <CheckItOut />
+          </SlideUp>
 
           {/* portrait file, filling what the card has left under the CTA */}
           <GraphicFrame src="landing-hero-mobile.html" title="Model routing" className="mt-[16px] w-full min-h-0 flex-1 md:hidden" />
