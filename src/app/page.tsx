@@ -18,7 +18,7 @@ const LandingPage = () => {
       <div className="sticky top-[16px] z-50 w-full px-[16px]">
         <LandingNav />
       </div>
-      <div className="mt-[48px] w-full md:mt-[99px]">
+      <div className="mt-[48px] w-full md:mt-0 md:flex md:min-h-[calc(100vh_-_78px)] md:items-center md:py-[24px]">
         <Hero />
       </div>
       <OurProducts />
