@@ -156,7 +156,10 @@ const OurProducts = () => {
                 ref={node => {
                   panelRefs.current[i] = node
                 }}
-                className={`flex scroll-mt-[96px] flex-col justify-center py-[40px] md:py-[32px] ${
+                // 70 a side, so 140 between adjacent cards. Glen: "Can we increase the spacing
+                // for this? between the boxes. Let's copy Dia browser and how they did it" —
+                // 140 is what Zhengqi measured on diabrowser.com. Was 32 a side, i.e. 64.
+                className={`flex scroll-mt-[96px] flex-col justify-center py-[40px] md:py-[70px] ${
                   // card 01 sits directly under the section title
                   i === 0 ? "md:pt-0" : ""
                 }`}

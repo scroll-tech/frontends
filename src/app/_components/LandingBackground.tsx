@@ -15,14 +15,24 @@
 // design draws. Free to do now that it is vector.
 const SRC = "/imgs/landing/line-bg.svg"
 const ART = "absolute inset-0 size-full scale-[1.7] object-cover"
-// strongest at the bottom, gone by 62% of the way up
-const FADE = "linear-gradient(to top, #000 0%, rgba(0,0,0,0.55) 30%, transparent 62%)"
+// solid over the bottom sixth, then out by 58% — Glen's reference keeps the top half crisp
+const FADE = "linear-gradient(to top, #000 0%, #000 18%, rgba(0,0,0,0.5) 38%, transparent 58%)"
 
 interface LandingBackgroundProps {
   /**
    * Glen (Slack, 2026-09-08) asked for the hero's white box to go, then took it back half
    * an hour later: "It only works if it has a blur like this. Like it blur from bottom and
    * becomes weaker at the top. Only for the first page."
+   *
+   * Then named it and gave a reference (22:30): "This is what I meant by the progressive
+   * blur for the first page", attaching a shot whose linework is crisp through the top half
+   * and dissolved completely across the bottom third. Hence 14px rather than the 10 this
+   * started at, and a mask that holds solid over the bottom sixth before ramping out — the
+   * first pass faded from the very bottom pixel and read as barely there.
+   *
+   * The same message settled the box: "either all elements sit in the white box before the
+   * latest deployment, or try this style of progressive blur for the background." Zhengqi
+   * chose the blur, so the hero has no surface of its own and this carries the whole look.
    *
    * So not the flat blur his Figma comment implied (591:20252 carries a uniform LAYER_BLUR
    * r=10.6) but a gradient one: the linework stays sharp behind the headline and dissolves
@@ -45,7 +55,7 @@ const LandingBackground = ({ blur = false }: LandingBackgroundProps) => (
       // the same artwork again, blurred and faded upwards. Same URL, so it is already
       // cached — this costs a paint, not a request.
       /* eslint-disable-next-line @next/next/no-img-element */
-      <img src={SRC} alt="" decoding="async" className={`${ART} blur-[10px]`} style={{ maskImage: FADE, WebkitMaskImage: FADE }} />
+      <img src={SRC} alt="" decoding="async" className={`${ART} blur-[14px]`} style={{ maskImage: FADE, WebkitMaskImage: FADE }} />
     )}
   </div>
 )

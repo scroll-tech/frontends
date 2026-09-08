@@ -44,24 +44,27 @@ const LandingHero = () => (
         </h1>
       </SlideUp>
 
-      {/* On the phone this is still the frame's white 311 x 516 card; on desktop it is only
-          a column, because the panel Glen's mock keeps is the inner one below. */}
+      {/* On the phone this is still the frame's white 311 x 516 card; on desktop nothing —
+          the hero has no box at all now, see the note below. */}
       <div className="relative mt-[24px] flex aspect-[311/516] max-h-[600px] w-full flex-col items-center overflow-hidden rounded-[16px] bg-white pt-[24px] shadow-[0_8px_32px_rgba(17,17,17,0.05)] md:mt-0 md:rounded-none md:bg-transparent md:pt-0 md:shadow-none md:aspect-auto md:max-h-none">
         <p className="max-w-[343px] px-[16px] text-center text-[16px] leading-[19px] text-[#636363] md:mt-[18px] md:text-[18px] md:leading-[23.4px]">
           <Typed text="Switch between 30+ providers through a single unified interface" />
         </p>
 
-        {/* The panel from Glen's 21:30 mock — not the solid white box he asked to remove, a
-            translucent one. It holds the CTA and the graphic only: the subtitle sits above
-            it, on the background, which is where his mock draws the top edge. Transparent
-            on the phone, where the wrapper above is already the card.
+        {/* No surface here on desktop. Glen's 21:30 mock looked like it kept a faint panel
+            around the CTA and the graphic, so this briefly carried one at 70% white — but he
+            then spelled the choice out (22:30): "either all elements sit in the white box
+            before the latest deployment, or try this style of progressive blur for the
+            background." A translucent panel was neither, and it sat right on top of the part
+            of the backdrop the blur affects, hiding it. Zhengqi picked the blur, so this is
+            a bare group again and the backdrop does the work.
 
-            Padding is 30 top against 20 bottom rather than the frame's even 18: at 18 all
-            round the button was pinched between the panel's edge and the graphic, so it
-            sits lower now and closer to the graphic below it (14px, from 18) — Zhengqi's
-            call on the look, 2026-09-08. Deliberately not the frame's rhythm, since the
-            frame has no panel to have a rhythm with. */}
-        <div className="mt-[24px] flex min-h-0 w-full flex-1 flex-col items-center md:mt-[18px] md:flex-none md:rounded-[16px] md:bg-white/70 md:pb-[20px] md:pt-[30px]">
+            It still exists as a group because the CTA and the graphic move together: the
+            30/20 padding and the 14px under the button are what put the button lower and
+            closer to the graphic than to the copy above (Zhengqi's call on the look). Kept
+            through the panel's removal deliberately — the rhythm was chosen by eye, not
+            derived from the panel edge. */}
+        <div className="mt-[24px] flex min-h-0 w-full flex-1 flex-col items-center md:mt-[18px] md:flex-none md:pb-[20px] md:pt-[30px]">
           <CheckItOut />
 
           {/* portrait file, filling what the card has left under the CTA */}
