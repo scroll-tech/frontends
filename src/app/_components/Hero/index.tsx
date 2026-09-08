@@ -2,7 +2,7 @@ import { COMPASS_API_URL } from "@/constants/link"
 
 import GraphicFrame from "../GraphicFrame"
 import { geistMono } from "../fonts"
-import { SlideUp, Typed } from "../motion"
+import { SlideUp } from "../motion"
 
 const CheckItOut = ({ className = "" }: { className?: string }) => (
   <a
@@ -53,7 +53,7 @@ const LandingHero = () => (
             undefined — silently, straight back to no stagger at all. */}
         <SlideUp delay={250}>
           <p className="max-w-[343px] px-[16px] text-center text-[16px] leading-[19px] text-[#636363] md:mt-[18px] md:text-[18px] md:leading-[23.4px]">
-            <Typed text="Switch between 30+ providers through a single unified interface" />
+            Switch between 30+ providers through a single unified interface
           </p>
         </SlideUp>
 
