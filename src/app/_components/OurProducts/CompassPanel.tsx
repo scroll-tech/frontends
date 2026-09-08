@@ -76,24 +76,24 @@ const CompassPanel = () => {
           instead of the 216px that 2.3 gave, which read as cards wearing the sphere.
           Result: name ~12px, prices ~10px, and the cards cover about the same 30% of their
           share of the sphere that Glen's 41 tiny ones did. */}
-      {/* The phone needs its own pair, and not just scaled-down versions: `compact` falls
-          back to 1 when cardScaleCompact is unset, so the desktop fix above did nothing
-          here and the names were back to ~1.6px (Zhengqi, 2026-09-08). The panel is
-          aspect-[311/516], about 358 x 594 on a 390px phone, where computeUiScale already
-          halves everything.
+      {/* The phone needs its own cardScale, because `compact` reads cardScaleCompact and
+          falls back to 1 when it is unset — which is why the desktop fix above skipped the
+          phone entirely and left the names at about 1.6px there.
 
-          Cropping is what pays for it. fitCompact 1.2 pushes the sphere past the panel's
-          width, which magnifies the cards without packing the sphere any tighter — the
-          overflow is cut off, which is what the design draws on a phone anyway (half cards
-          at the edges). 1.0 with no crop would need cardScaleCompact 4.5 for the same
-          legibility and put coverage at 53%; this way 3.5 gets the name to ~11px at 32%,
-          the same crowding as desktop. */}
+          3.4 is not a look, it is 1.7 / 0.5: computeUiScale already halves everything on a
+          panel this narrow, so this cancels that out and nothing more, giving the phone the
+          same card-to-sphere ratio the desktop has. Aiming for readable text here instead
+          (3.5 with a cropped fitCompact 1.2) put a card at 40% of the panel's width against
+          desktop's 18%, and it looked exactly as bad as that sounds.
+
+          Which is the real constraint: on a ~358px panel a card cannot be both in
+          proportion and legible. This picks proportion, and the phone reads the model off
+          the pinned slot at 14px instead — the design's own answer. */}
       <ModelGlobe
         className="size-full"
         fit={0.82}
         cardScale={1.7}
-        fitCompact={1.2}
-        cardScaleCompact={3.5}
+        cardScaleCompact={3.4}
         interactive
         selected={selected}
         onToggle={toggleModel}

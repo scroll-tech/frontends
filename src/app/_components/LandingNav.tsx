@@ -40,7 +40,7 @@ const LandingNav = () => {
           lift is gone and only the shadow answers the pointer — the bar itself never
           moves. Its other movement, a 14px jump the moment you scrolled, was the sticky
           offset not matching the resting one; page.tsx holds that pair now. */}
-      <nav className="flex h-[48px] w-full items-center justify-between rounded-full bg-white pl-[16px] pr-[24px] shadow-[0px_4px_16px_rgba(17,17,17,0.06)] transition-[box-shadow] duration-300 ease-[cubic-bezier(.2,.8,.2,1)] hover:shadow-[0px_12px_28px_rgba(17,17,17,0.10)]">
+      <nav className="flex h-[48px] w-full items-center justify-between rounded-full bg-white pl-[6px] pr-[6px] shadow-[0px_4px_16px_rgba(17,17,17,0.06)] md:pr-[24px] transition-[box-shadow] duration-300 ease-[cubic-bezier(.2,.8,.2,1)] hover:shadow-[0px_12px_28px_rgba(17,17,17,0.10)]">
         <div className="flex items-center gap-[12px]">
           <Link
             href="/"
