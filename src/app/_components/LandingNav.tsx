@@ -35,8 +35,12 @@ const LandingNav = () => {
 
   return (
     <div className="relative mx-auto w-full max-w-[828px]">
-      {/* Glen 2026-09-08: "Make nav bar pop. Up slightly when hovered" */}
-      <nav className="flex h-[48px] w-full items-center justify-between rounded-full bg-white pl-[16px] pr-[24px] shadow-[0px_4px_16px_rgba(17,17,17,0.06)] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(.2,.8,.2,1)] hover:-translate-y-[3px] hover:shadow-[0px_12px_28px_rgba(17,17,17,0.10)]">
+      {/* Glen 2026-09-08 asked to "Make nav bar pop. Up slightly when hovered", then on
+          seeing it: "This popping up feels strange. It's not very smooth." So the hover
+          lift is gone and only the shadow answers the pointer — the bar itself never
+          moves. Its other movement, a 14px jump the moment you scrolled, was the sticky
+          offset not matching the resting one; page.tsx holds that pair now. */}
+      <nav className="flex h-[48px] w-full items-center justify-between rounded-full bg-white pl-[16px] pr-[24px] shadow-[0px_4px_16px_rgba(17,17,17,0.06)] transition-[box-shadow] duration-300 ease-[cubic-bezier(.2,.8,.2,1)] hover:shadow-[0px_12px_28px_rgba(17,17,17,0.10)]">
         <div className="flex items-center gap-[12px]">
           <Link
             href="/"
