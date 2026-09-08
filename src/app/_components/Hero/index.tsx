@@ -53,38 +53,44 @@ const LandingHero = () => (
 
         {/* The panel from Glen's 21:30 mock — not the solid white box he asked to remove, a
             translucent one. It holds the CTA and the graphic only: the subtitle sits above
-            it, on the background, which is where his mock draws the top edge. Its own 18px
-            padding gives the CTA the same gap inside the panel that the panel has from the
-            subtitle, so the rhythm stays the frame's 18 throughout. Transparent on the
-            phone, where the wrapper above is already the card. */}
-        <div className="mt-[24px] flex min-h-0 w-full flex-1 flex-col items-center md:mt-[18px] md:flex-none md:rounded-[16px] md:bg-white/70 md:py-[18px]">
+            it, on the background, which is where his mock draws the top edge. Transparent
+            on the phone, where the wrapper above is already the card.
+
+            Padding is 30 top against 20 bottom rather than the frame's even 18: at 18 all
+            round the button was pinched between the panel's edge and the graphic, so it
+            sits lower now and closer to the graphic below it (14px, from 18) — Zhengqi's
+            call on the look, 2026-09-08. Deliberately not the frame's rhythm, since the
+            frame has no panel to have a rhythm with. */}
+        <div className="mt-[24px] flex min-h-0 w-full flex-1 flex-col items-center md:mt-[18px] md:flex-none md:rounded-[16px] md:bg-white/70 md:pb-[20px] md:pt-[30px]">
           <CheckItOut />
 
           {/* portrait file, filling what the card has left under the CTA */}
           <GraphicFrame src="landing-hero-mobile.html" title="Model routing" className="mt-[16px] w-full min-h-0 flex-1 md:hidden" />
 
           {/* Landscape file. The hero is centred in the first screen by the wrapper in
-              page.tsx, so this only decides how much height the block asks for, and 547 is
+              page.tsx, so this only decides how much height the block asks for, and 557 is
               what everything else costs: 78 above (30 page + 48 nav), then the column's
-              45/45 padding, the 18px-gapped headline and subtitle, and the panel's own
-              18/18 padding around the CTA (421 all in), plus the wrapper's 24/24 minimum
-              breathing room.
+              45/45 padding, the 18px-gapped headline and subtitle, and the panel's 30/20
+              around the CTA (431 all in), plus the wrapper's 24/24 minimum breathing room.
 
               456 is where his stage stops getting bigger — it is 1200 x 460 plus the 48px
               margin his fit() reserves, so at 1120 wide the width caps the scale at
               1120/1248 = 0.897, which needs only 456px of height (456/508). Asking for
               more would grow the block without drawing the graphic any larger.
 
-              So from a 1003px viewport up the graphic sits at 456 and the centring shares
-              out the slack; between 811 and 1003 the graphic gives height back and the
-              gaps hold at the 24px minimum; below 811 the 264 floor takes over and the
-              hero runs past the fold rather than collapsing the stage further. His fit()
-              only ever scales it down and centres it, so the model rail is never sliced
+              So from a 1013px viewport up the graphic sits at 456 and the centring shares
+              out the slack; between 809 and 1013 the graphic gives height back and the
+              gaps hold at the 24px minimum; below 809 the floor takes over and the hero
+              runs past the fold rather than collapsing the stage further. That floor is
+              252, not a rounder number: the panel's extra 10px of padding had to come from
+              somewhere, and taking it off the floor is what keeps the block clearing the
+              fold on a 1440 x 900 laptop, whose viewport is ~790. His fit() only ever
+              scales the stage down and centres it, so the model rail is never sliced
               either way. */}
           <GraphicFrame
             src="landing-hero-desktop.html"
             title="Model routing"
-            className="mt-[18px] hidden h-[clamp(264px,calc(100vh_-_547px),456px)] w-full md:block"
+            className="mt-[14px] hidden h-[clamp(252px,calc(100vh_-_557px),456px)] w-full md:block"
           />
         </div>
       </div>
