@@ -1,0 +1,48 @@
+/* monad's logo row: one long track, slid by half its width (the second copy takes over
+   seamlessly), edges dissolved so the marks appear and leave softly */
+.fade {
+  mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+}
+
+.track {
+  width: max-content;
+  animation: strip-slide 48s linear infinite;
+}
+
+.fade:hover .track {
+  animation-play-state: paused;
+}
+
+@keyframes strip-slide {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* a stopped marquee would leave the marks past the edge hidden for good, so under reduced
+   motion the row stands still and wraps instead, without the duplicate and the fade */
+@media (prefers-reduced-motion: reduce) {
+  .fade {
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+
+  .track {
+    width: 100%;
+    animation: none;
+  }
+
+  .track > ul {
+    flex-wrap: wrap;
+    row-gap: 20px;
+    padding-right: 0;
+  }
+
+  .dup {
+    display: none;
+  }
+}

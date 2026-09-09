@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scroll AI Hardware — device layout</title>
+<!--
+  Glen's device_layout_v7.html (Slack, 2026-09-09 10:36, "ai hardware animation"), wrapped
+  as a standalone page so GraphicFrame can host it like the hero files. His markup and
+  script are verbatim below apart from three small additions marked "ours": this head,
+  the transparent body and size cap on #fig1wrap, keyboard access on the figure, and a
+  prefers-reduced-motion check — the cap keeps the frame inside the card's height (the square figure
+  plus the legend and padding otherwise ask for ~620px in a 572px card).
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{
+    background:transparent;
+    display:grid;place-items:center;
+    padding:24px;
+    -webkit-font-smoothing:antialiased;
+  }
+  #frame{ width:min(100%, 560px); }
+  /* the figure is the flexible part: never wider than Glen's 480, never taller than what
+     the viewport leaves after the legend (~2 rows on a phone) and the frame padding */
+  #fig1wrap{ max-width:min(480px, calc(100vh - 170px)) !important; }
+  @media (min-width: 700px){ #fig1wrap{ max-width:min(480px, calc(100vh - 140px)) !important; } }
+</style>
+</head>
+<body>
+<div style="font-family:'JetBrains Mono',ui-monospace,monospace; width:100%; display:flex; justify-content:center;">
+<div id="frame" style="display:flex; flex-direction:column; align-items:center; gap:16px; width:100%; border:1px solid rgba(16,24,36,0.10); border-radius:24px; padding:24px; box-sizing:border-box; background:#ffffff; box-shadow:0 2px 4px rgba(16,24,40,.07), 0 18px 44px rgba(16,24,40,.10);">
+
+  <div id="fig1wrap" role="button" tabindex="0" aria-label="Open the device to see its layers" style="position:relative; width:86%; max-width:480px; aspect-ratio:1/1; overflow:hidden; cursor:pointer; outline-offset:4px;">
+    <div id="fig1canvas" style="width:100%; height:100%;"></div>
+  </div>
+
+  <div id="sidebar" style="width:100%; display:flex; flex-wrap:wrap; justify-content:center; gap:8px;"></div>
+
+</div>
+</div>
+<!-- three r128, the copy already in node_modules (package.json pins ^0.128), served from /public so the card does not depend on a CDN -->
+<script src="/graphics/vendor/three.min.js"></script>
+<script>
+function initFig1(){
+  var container = document.getElementById('fig1canvas');
+  var wrap = document.getElementById('fig1wrap');
+  var sidebar = document.getElementById('sidebar');
+  if (!container || typeof THREE === 'undefined') { setTimeout(initFig1, 100); return; }
+
+  var COLORS = {
+    agent:   { hex:'#6D45E8', label:'AI Agent' },
+    board:   { hex:'#0FB07C', label:'Motherboard' },
+    cpu:     { hex:'#C08312', label:'CPU' },
+    storage: { hex:'#2F6FED', label:'Storage' },
+    usb:     { hex:'#D65DB1', label:'USB-C Connection' }
+  };
+  function hexToRgb(hex){
+    var v = parseInt(hex.slice(1),16);
+    return [(v>>16)&255, (v>>8)&255, v&255];
+  }
+  Object.keys(COLORS).forEach(function(k){ COLORS[k].rgbArr = hexToRgb(COLORS[k].hex); COLORS[k].rgb = COLORS[k].rgbArr.join(','); });
+
+  var pulseState = {};
+  Object.keys(COLORS).forEach(function(k){
+    var c = COLORS[k];
+    var row = document.createElement('div');
+    row.setAttribute('data-key', k);
+    row.style.cssText =
+      'flex:0 0 auto;display:flex;align-items:center;gap:8px;height:34px;padding:0 14px;border-radius:17px;'+
+      'background:#fff;border:1px solid rgba(16,24,36,0.10);'+
+      'font-size:10.5px;font-weight:500;letter-spacing:0.05em;color:#101820;text-transform:uppercase;'+
+      'box-shadow:0 1px 3px rgba(16,24,40,.05);white-space:nowrap;';
+    row.innerHTML =
+      '<span style="width:7px;height:7px;border-radius:50%;background:'+c.hex+';flex:none;"></span>'+
+      '<span>'+c.label+'</span>';
+    sidebar.appendChild(row);
+    pulseState[k] = row;
+  });
+
+  var size = container.clientWidth || 300;
+  var scene = new THREE.Scene();
+
+  var viewSize = 76;
+  var camera = new THREE.OrthographicCamera(-viewSize, viewSize, viewSize, -viewSize, 0.1, 2000);
+  camera.position.set(190, 190, -190);
+  camera.up.set(0,1,0);
+  camera.lookAt(0,0,0);
+
+  var renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
+  renderer.setClearColor(0x000000, 0);
+  renderer.setSize(size,size);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
+  container.innerHTML = '';
+  container.appendChild(renderer.domElement);
+
+  var spin = new THREE.Group();
+  scene.add(spin);
+  var root = new THREE.Group();
+  spin.add(root);
+
+  function roundedRectPath(ctx, x, y, w, h, r){
+    ctx.beginPath();
+    ctx.moveTo(x+r, y);
+    ctx.lineTo(x+w-r, y);
+    ctx.quadraticCurveTo(x+w, y, x+w, y+r);
+    ctx.lineTo(x+w, y+h-r);
+    ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+    ctx.lineTo(x+r, y+h);
+    ctx.quadraticCurveTo(x, y+h, x, y+h-r);
+    ctx.lineTo(x, y+r);
+    ctx.quadraticCurveTo(x, y, x+r, y);
+    ctx.closePath();
+  }
+
+  function shadowTexture(wPx, hPx, radiusPx, rgb, blur, alpha){
+    var pad = blur * 2;
+    var cw = wPx + pad*2, ch = hPx + pad*2;
+    var c = document.createElement('canvas');
+    c.width = cw; c.height = ch;
+    var ctx = c.getContext('2d');
+    var off = cw * 2;
+    ctx.save();
+    ctx.shadowColor = 'rgba('+rgb+','+alpha+')';
+    ctx.shadowBlur = blur;
+    ctx.shadowOffsetX = off;
+    ctx.shadowOffsetY = 0;
+    ctx.fillStyle = '#000';
+    roundedRectPath(ctx, pad - off, pad, wPx, hPx, radiusPx);
+    ctx.fill();
+    ctx.restore();
+    var t = new THREE.Texture(c);
+    t.needsUpdate = true;
+    return { tex: t, ratioW: cw/wPx, ratioH: ch/hPx };
+  }
+
+  function roundedRectShape(w,h,r){
+    var s = new THREE.Shape(); var x=-w/2, y=-h/2;
+    s.moveTo(x, y+r); s.lineTo(x, y+h-r);
+    s.quadraticCurveTo(x,y+h,x+r,y+h); s.lineTo(x+w-r,y+h);
+    s.quadraticCurveTo(x+w,y+h,x+w,y+h-r); s.lineTo(x+w,y+r);
+    s.quadraticCurveTo(x+w,y,x+w-r,y); s.lineTo(x+r,y);
+    s.quadraticCurveTo(x,y,x,y+r);
+    return s;
+  }
+
+  function tintColor(rgbArr, amount){
+    var c = new THREE.Color();
+    c.setRGB(
+      (255*(1-amount) + rgbArr[0]*amount) / 255,
+      (255*(1-amount) + rgbArr[1]*amount) / 255,
+      (255*(1-amount) + rgbArr[2]*amount) / 255
+    );
+    return c;
+  }
+
+  var pulsers = [];
+
+  function panel(w, h, r, colorKey, opts){
+    opts = opts || {};
+    var rgb = colorKey ? COLORS[colorKey].rgb : '180,184,192';
+    var g = new THREE.Group();
+
+    var px = 8;
+    var s = shadowTexture(w*px, h*px, r*px, rgb, opts.blur || 34, opts.alpha || 0.3);
+    var shadowMat = new THREE.MeshBasicMaterial({ map: s.tex, transparent:true, depthWrite:false });
+    var shadowMesh = new THREE.Mesh(new THREE.PlaneGeometry(w * s.ratioW, h * s.ratioH), shadowMat);
+    shadowMesh.rotation.x = -Math.PI/2;
+    shadowMesh.position.y = -(opts.lift || 1.6);
+    g.add(shadowMesh);
+
+    if (opts.pulse) {
+      pulsers.push({ mat: shadowMat, base: opts.alpha, amount: opts.pulseAmount || 0.5, speed: opts.pulseSpeed || 1, phase: Math.random()*Math.PI*2, key: colorKey });
+    }
+
+    var shape = roundedRectShape(w, h, r);
+    var faceGeo = new THREE.ShapeGeometry(shape, 20);
+    faceGeo.rotateX(-Math.PI/2);
+    var faceOpacity = opts.faceOpacity != null ? opts.faceOpacity : 1;
+    var faceColor = colorKey ? tintColor(COLORS[colorKey].rgbArr, opts.tintAmount != null ? opts.tintAmount : 0.16)
+                              : new THREE.Color(0xffffff);
+    g.add(new THREE.Mesh(faceGeo, new THREE.MeshBasicMaterial({
+      color: faceColor, side: THREE.DoubleSide,
+      transparent: true, opacity: faceOpacity, depthWrite: false
+    })));
+
+    var pts2d = shape.getPoints(48);
+    var linePts = pts2d.map(function(p){ return new THREE.Vector3(p.x, 0.03, -p.y); });
+    g.add(new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(linePts),
+      new THREE.LineBasicMaterial({ color:0x000000, transparent:true, opacity:0.1 })));
+
+    return g;
+  }
+
+  var layers = {
+    top: { w:84, h:84, r:16, closedY:9,  openY:40  },
+    pcb: { w:78, h:78, r:12, closedY:0,  openY:2   },
+    bot: { w:84, h:84, r:16, closedY:-9, openY:-38 }
+  };
+
+  // housing and board: white, low opacity, faint shadow - no grey tint
+  var topPanel = panel(layers.top.w, layers.top.h, layers.top.r, null, {blur:44, alpha:0.06, lift:1.6, faceOpacity:0.3});
+  topPanel.position.y = layers.top.closedY; root.add(topPanel);
+
+  var pcbPanel = panel(layers.pcb.w, layers.pcb.h, layers.pcb.r, null, {blur:38, alpha:0.06, lift:1.3, faceOpacity:0.3});
+  pcbPanel.position.y = layers.pcb.closedY; root.add(pcbPanel);
+
+  var botPanel = panel(layers.bot.w, layers.bot.h, layers.bot.r, null, {blur:48, alpha:0.07, lift:1.8, faceOpacity:0.3});
+  botPanel.position.y = layers.bot.closedY; root.add(botPanel);
+
+  // three chips on the middle board: AI Agent, Motherboard (chipset), CPU
+  (function(){
+    var g = panel(26, 20, 3.5, 'agent', {blur:30, alpha:0.7, lift:0.6, faceOpacity:1, tintAmount:0.34, pulse:true, pulseAmount:0.55, pulseSpeed:0.6});
+    g.position.set(2, 0.9, -2);
+    pcbPanel.add(g);
+  })();
+  (function(){
+    var g = panel(18, 14, 2.6, 'board', {blur:26, alpha:0.65, lift:0.5, faceOpacity:1, tintAmount:0.3, pulse:true, pulseAmount:0.5, pulseSpeed:0.5});
+    g.position.set(21, 0.9, 19);
+    pcbPanel.add(g);
+  })();
+  (function(){
+    var g = panel(14, 14, 2.4, 'cpu', {blur:26, alpha:0.65, lift:0.5, faceOpacity:1, tintAmount:0.32, pulse:true, pulseAmount:0.55, pulseSpeed:0.9});
+    g.position.set(-18, 0.9, -22);
+    pcbPanel.add(g);
+  })();
+
+  // storage - large module on the bottom layer
+  (function(){
+    var g = panel(62, 62, 14, 'storage', {blur:44, alpha:0.32, lift:1.0, faceOpacity:1, tintAmount:0.22, pulse:true, pulseAmount:0.5, pulseSpeed:0.55});
+    g.position.set(6, 0.7, 4);
+    botPanel.add(g);
+  })();
+
+  // usb-c connector
+  (function(){
+    var pw = 17, pd = 5.2;
+    var g = panel(pw, pd, pd/2, 'usb', {blur:30, alpha:0.7, lift:0.9, faceOpacity:1, tintAmount:0.3, pulse:true, pulseAmount:0.6, pulseSpeed:0.8});
+    g.position.set(-30, 1.8, -37);
+    botPanel.add(g);
+  })();
+
+  var parts = [
+    { group: topPanel, closed: layers.top.closedY, open: layers.top.openY },
+    { group: pcbPanel, closed: layers.pcb.closedY, open: layers.pcb.openY },
+    { group: botPanel, closed: layers.bot.closedY, open: layers.bot.openY }
+  ];
+
+  var isOpen=false, progress=0, target=0;
+  // ours: keyboard toggle to match the click, and reduced motion — no idle spin or
+  // pulsing when the visitor has asked for less movement (the open/close still eases)
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function toggle(){ isOpen=!isOpen; target=isOpen?1:0; }
+  wrap.addEventListener('click', toggle);
+  wrap.addEventListener('keydown', function(e){ if (e.key==='Enter' || e.key===' ') { e.preventDefault(); toggle(); } });
+  function ease(t){ return t<0.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2; }
+  function lerp(a,b,t){ return a+(b-a)*t; }
+
+  var lastTime=performance.now(), autoAngle=0.6, clock=0;
+  function animate(now){
+    requestAnimationFrame(animate);
+    var dt = Math.min((now-lastTime)/1000, 0.05); lastTime=now;
+    clock += dt;
+
+    if (!isOpen && !reduceMotion){ autoAngle += dt*0.35; spin.rotation.y = autoAngle; }
+    else if (!isOpen){ spin.rotation.y = autoAngle; }
+
+    if (progress<target) progress=Math.min(target, progress+dt*2.6);
+    else if (progress>target) progress=Math.max(target, progress-dt*2.6);
+    var e = ease(progress);
+    parts.forEach(function(p){ p.group.position.y = lerp(p.closed, p.open, e); });
+
+    pulsers.forEach(function(p){
+      var k = reduceMotion ? 0.5 : 0.5 + 0.5*Math.sin(clock*p.speed + p.phase);
+      p.mat.opacity = p.base * (1 - p.amount*0.5 + p.amount*k*0.5);
+      if (p.key) {
+        var el = pulseState[p.key];
+        var rgb = COLORS[p.key].rgb;
+        var a1 = (0.06 + k*0.12).toFixed(2);
+        el.style.boxShadow = '0 1px 3px rgba(16,24,40,.05), 0 0 0 1px rgba(0,0,0,0.02), 0 '+(1+k*2)+'px '+(10+k*8)+'px rgba('+rgb+','+a1+')';
+        el.style.borderColor = 'rgba('+rgb+','+(0.25+k*0.25).toFixed(2)+')';
+      }
+    });
+
+    var w = container.clientWidth;
+    if (renderer.domElement.clientWidth !== w) { renderer.setSize(w,w); }
+
+    renderer.render(scene, camera);
+  }
+  requestAnimationFrame(animate);
+}
+initFig1();
+</script>
+</body>
+</html>

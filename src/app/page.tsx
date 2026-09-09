@@ -4,6 +4,7 @@ import Hero from "./_components/Hero"
 import LandingBackground from "./_components/LandingBackground"
 import LandingFooter from "./_components/LandingFooter"
 import LandingNav from "./_components/LandingNav"
+import ModelStrip from "./_components/ModelStrip"
 import OurProducts from "./_components/OurProducts"
 import { geist } from "./_components/fonts"
 import { DropIn } from "./_components/motion"
@@ -28,6 +29,8 @@ const LandingPage = () => {
       <div className="mt-[48px] w-full md:mt-0 md:flex md:min-h-[calc(100vh_-_78px)] md:items-center md:py-[24px]">
         <Hero />
       </div>
+      {/* monad puts its logo row right under the first screen; ours lists the models */}
+      <ModelStrip />
       <OurProducts />
       <LandingFooter />
     </div>

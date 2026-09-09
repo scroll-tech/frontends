@@ -40,3 +40,18 @@ export const smoothScrollToTop = (el: HTMLElement | null, offset = 96) => {
   if (!el) return
   smoothScrollTo(window.scrollY + el.getBoundingClientRect().top - offset)
 }
+
+/**
+ * The product cards render twice — once in the desktop grid (`#compass` …) and once in the
+ * phone stack (`#compass-mobile` …), only one of which is displayed at a time. Links and
+ * hashes name the desktop id; this hands back whichever copy is actually on screen, so a
+ * phone tap on "Compass" in the nav or footer lands on the visible card rather than on a
+ * display:none one (Codex review, 2026-09-09).
+ */
+export const resolveAnchor = (id: string): HTMLElement | null => {
+  const el = document.getElementById(id)
+  if (el && el.getClientRects().length > 0) return el
+  const mobile = document.getElementById(`${id}-mobile`)
+  if (mobile && mobile.getClientRects().length > 0) return mobile
+  return el ?? mobile
+}

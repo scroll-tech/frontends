@@ -2,6 +2,8 @@ import Link from "next/link"
 
 import ScrollMarkSvg from "@/assets/svgs/landingpage/scroll-mark.svg"
 
+import AnchorLink from "./AnchorLink"
+
 const FOOTER_COLUMNS = [
   {
     title: "Legal",
@@ -48,6 +50,10 @@ const LandingFooter = () => (
                   <a key={label} href={href} target="_blank" rel="noopener noreferrer" className={linkClass}>
                     {label}
                   </a>
+                ) : href.includes("#") ? (
+                  <AnchorLink key={label} href={href} className={linkClass}>
+                    {label}
+                  </AnchorLink>
                 ) : (
                   <Link key={label} href={href} className={linkClass}>
                     {label}

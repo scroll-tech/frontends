@@ -6,7 +6,7 @@ import { MouseEvent, useState } from "react"
 
 import ScrollMarkSvg from "@/assets/svgs/landingpage/scroll-mark.svg"
 
-import { smoothScrollTo, smoothScrollToTop } from "./smoothScroll"
+import { resolveAnchor, smoothScrollTo, smoothScrollToTop } from "./smoothScroll"
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -26,7 +26,7 @@ const LandingNav = () => {
     e.preventDefault()
     const id = href.split("#")[1]
     if (id) {
-      smoothScrollToTop(document.getElementById(id))
+      smoothScrollToTop(resolveAnchor(id))
     } else {
       smoothScrollTo(0)
     }

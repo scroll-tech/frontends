@@ -7,6 +7,8 @@ interface GraphicFrameProps {
   src: string
   title: string
   className?: string
+  /** let the page inside take clicks — the AI hardware device opens up on click */
+  interactive?: boolean
 }
 
 /**
@@ -18,9 +20,9 @@ interface GraphicFrameProps {
  * is his own flag for hiding the BG/REPLAY debug buttons.
  *
  * Nothing is loaded until the frame is close to the viewport: each one runs a
- * permanent animation loop, and the page carries three of them.
+ * permanent animation loop, and the page carries four of them.
  */
-const GraphicFrame = ({ src, title, className = "" }: GraphicFrameProps) => {
+const GraphicFrame = ({ src, title, className = "", interactive = false }: GraphicFrameProps) => {
   const hostRef = useRef<HTMLDivElement>(null)
   const [show, setShow] = useState(false)
 
@@ -48,10 +50,10 @@ const GraphicFrame = ({ src, title, className = "" }: GraphicFrameProps) => {
           title={title}
           loading="lazy"
           scrolling="no"
-          // decorative: the surrounding copy already says what it shows
-          aria-hidden="true"
-          tabIndex={-1}
-          className="pointer-events-none size-full border-0 bg-transparent"
+          // decorative unless interactive: the surrounding copy already says what it shows
+          aria-hidden={!interactive}
+          tabIndex={interactive ? 0 : -1}
+          className={`size-full border-0 bg-transparent ${interactive ? "" : "pointer-events-none"}`}
         />
       )}
     </div>
