@@ -124,8 +124,11 @@ const Cta = ({ product }: { product: Product }) => {
  * project's md = 900, where the hero and nav also switch. Card radius stays our 12 (Dia
  * draws 20 on the phone) — the sheet is "our own asset", and it matches the hero card.
  *
- * Phone: image first, copy under it (number / title / body), 20 between them, 60 between
- * blocks. Theirs stacks in that order; ours used to put the copy above the card.
+ * Phone (measured at 390): image first, copy under it (number 12 / 16, title 24 / 30,
+ * body 16 / 24 — larger than the desktop rail's 14 / 20), 20 between image and copy, 60
+ * between blocks, 60 above the section, heading 32 with 40 under it. Theirs stacks in
+ * that order; ours used to put the copy above the card. Their page gutter is 10 to our
+ * 16, and their image radius 20 to our sheet's 12 — the sheet is ours.
  */
 const OurProducts = () => {
   const [active, setActive] = useState(0)
@@ -166,8 +169,8 @@ const OurProducts = () => {
   }
 
   return (
-    // dia puts 80 between sections (mt-80 / mb-100 on theirs)
-    <section id="products" className="w-full scroll-mt-[96px] px-[16px] pt-[80px] md:pt-[100px]">
+    // dia puts 80 between sections on desktop (mt-80 / mb-100 on theirs), 60 on the phone
+    <section id="products" className="w-full scroll-mt-[96px] px-[16px] pt-[60px] md:pt-[100px]">
       <div className="mx-auto w-full max-w-[1380px]">
         {/* dia: mb-40 on the phone, mb-50 on desktop */}
         <h2 className={`${geistMono.className} mb-[40px] text-center text-[32px] font-semibold text-black md:mb-[50px] md:text-[48px]`}>
@@ -258,7 +261,7 @@ const OurProducts = () => {
               <div className="px-[4px]">
                 <span className={`${geistMono.className} mb-[6px] block text-[12px] leading-[16px] text-[#757575]`}>{product.index}</span>
                 <span className={`${geistMono.className} mb-[10px] block text-[24px] font-semibold leading-[30px] text-black`}>{product.title}</span>
-                <span className="block max-w-[38ch] text-[14px] leading-[20px] text-[#636363]">{product.description}</span>
+                <span className="block max-w-[38ch] text-[16px] leading-[24px] text-[#636363]">{product.description}</span>
               </div>
             </div>
           ))}
