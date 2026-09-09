@@ -24,11 +24,15 @@
     padding:24px;
     -webkit-font-smoothing:antialiased;
   }
-  #frame{ width:min(100%, 560px); }
+  /* Glen's #frame draws its own white card with a border and a 44px shadow. Inside the
+     product sheet — itself white, rounded and shadowed — that read as a card in a card, and
+     the shadow was cut off at the iframe's edge (Zhengqi, 2026-09-09). So the sheet is the
+     frame: his chrome goes, the figure and legend stay. */
+  #frame{ width:min(100%, 640px); background:transparent !important; border:0 !important; box-shadow:none !important; border-radius:0 !important; padding:0 !important; }
   /* the figure is the flexible part: never wider than Glen's 480, never taller than what
-     the viewport leaves after the legend (~2 rows on a phone) and the frame padding */
-  #fig1wrap{ max-width:min(480px, calc(100vh - 170px)) !important; }
-  @media (min-width: 700px){ #fig1wrap{ max-width:min(480px, calc(100vh - 140px)) !important; } }
+     the viewport leaves after the legend (~2 rows on a phone) and the body padding */
+  #fig1wrap{ max-width:min(480px, calc(100vh - 130px)) !important; }
+  @media (min-width: 700px){ #fig1wrap{ max-width:min(480px, calc(100vh - 100px)) !important; } }
 </style>
 </head>
 <body>
