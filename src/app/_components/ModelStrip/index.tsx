@@ -48,7 +48,7 @@ const ModelStrip = () => (
     <div className="mx-auto w-full max-w-[1352px]">
       <PopIn>
         <p
-          className={`${geistMono.className} text-[14px] uppercase leading-[18px] tracking-[0.8px] text-[#636363] md:text-[16px] md:leading-[20.8px]`}
+          className={`${geistMono.className} text-[14px] uppercase leading-[18.2px] tracking-[0.8px] text-[#636363] md:text-[16px] md:leading-[20.8px]`}
         >
           Access these models
         </p>

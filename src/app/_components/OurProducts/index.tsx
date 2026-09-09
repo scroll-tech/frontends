@@ -169,11 +169,15 @@ const OurProducts = () => {
   }
 
   return (
-    // dia puts 80 between sections on desktop (mt-80 / mb-100 on theirs), 60 on the phone
+    // dia's sections carry mt-80 and mb-100 on desktop, mt-60 / mb-80 on the phone; adjacent
+    // margins collapse, so what you see between two sections is the larger one — 100 / 60.
+    // The gap to the footer below is the footer's own (Glen's), untouched here.
     <section id="products" className="w-full scroll-mt-[96px] px-[16px] pt-[60px] md:pt-[100px]">
       <div className="mx-auto w-full max-w-[1380px]">
         {/* dia: mb-40 on the phone, mb-50 on desktop */}
-        <h2 className={`${geistMono.className} mb-[40px] text-center text-[32px] font-semibold text-black md:mb-[50px] md:text-[48px]`}>
+        <h2
+          className={`${geistMono.className} mb-[40px] text-center text-[32px] font-semibold leading-[38px] text-black md:mb-[50px] md:text-[48px] md:leading-normal`}
+        >
           Our Products
         </h2>
 

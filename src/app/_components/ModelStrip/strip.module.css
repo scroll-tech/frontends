@@ -37,6 +37,8 @@
   }
 
   .track > ul {
+    width: 100%;
+    flex-shrink: 1;
     flex-wrap: wrap;
     row-gap: 20px;
     padding-right: 0;
