@@ -7,8 +7,11 @@ import styles from "./strip.module.css"
  * their hero: "let's also do this part too, but we'll just use ai models instead.
  * 'access these models' will be the copy".
  *
- * Same shape as theirs: a small mono eyebrow, left-aligned to the hero column, then one
- * row of marks that slides sideways and fades out at both edges. Models, as he said — the
+ * Same shape as theirs, measured off monad.com: 100 between the hero graphic and the
+ * eyebrow (50 of hero bottom + the slider's 50 top), eyebrow 16 / 20.8 with 0.8 of
+ * tracking, uppercase, 30 under it, then one row of marks 20–30 tall spaced 100 apart
+ * that slides sideways forever, all inside their 1352 content width. Ours fades at the
+ * edges where theirs runs to the container. Models, as he said — the
  * flagship line of each provider the Compass globe lists, named as a model (GPT-5, Claude,
  * Llama …) rather than as a company. Marks are the CC0 glyphs from simple-icons, rendered
  * black, with the name set beside each in mono. Grok is left out for now: simple-icons has
@@ -25,7 +28,7 @@ const MODELS = [
 ]
 
 const Row = ({ duplicate = false }: { duplicate?: boolean }) => (
-  <ul className={`flex shrink-0 items-center gap-[72px] pr-[72px] ${duplicate ? styles.dup : ""}`} aria-hidden={duplicate}>
+  <ul className={`flex shrink-0 items-center gap-[100px] pr-[100px] ${duplicate ? styles.dup : ""}`} aria-hidden={duplicate}>
     {MODELS.map(m => (
       <li key={m.name} className="flex shrink-0 items-center gap-[12px]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -37,13 +40,17 @@ const Row = ({ duplicate = false }: { duplicate?: boolean }) => (
 )
 
 const ModelStrip = () => (
-  <section aria-label="Models available through Scroll" className="w-full px-[16px] pt-[40px] md:pt-0">
-    <div className="mx-auto w-full max-w-[1120px]">
+  <section aria-label="Models available through Scroll" className="w-full px-[16px] pt-[40px] md:pt-[100px]">
+    <div className="mx-auto w-full max-w-[1352px]">
       <PopIn>
-        <p className={`${geistMono.className} text-[12px] uppercase leading-[16px] tracking-[0.08em] text-[#636363]`}>Access these models</p>
+        <p
+          className={`${geistMono.className} text-[14px] uppercase leading-[18px] tracking-[0.8px] text-[#636363] md:text-[16px] md:leading-[20.8px]`}
+        >
+          Access these models
+        </p>
         {/* the second row is what makes the loop seamless; under reduced motion the row
             stands still, wraps, and the copy is dropped (strip.module.css) */}
-        <div className={`mt-[24px] flex overflow-hidden ${styles.fade}`}>
+        <div className={`mt-[30px] flex overflow-hidden ${styles.fade}`}>
           <div className={`flex ${styles.track}`}>
             <Row />
             <Row duplicate />

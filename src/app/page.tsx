@@ -26,7 +26,11 @@ const LandingPage = () => {
           <LandingNav />
         </DropIn>
       </div>
-      <div className="mt-[48px] w-full md:mt-0 md:flex md:min-h-[calc(100vh_-_78px)] md:items-center md:py-[24px]">
+      {/* monad's hero is a top-padded flow, 102 from the nav's underside to the headline
+          (their 72 of hero padding plus 30 on the wrapper) — not centred in the first
+          screen, which is what this wrapper used to do. The nav's underside is 78 here
+          (30 page top + 48 bar). */}
+      <div className="mt-[48px] w-full md:mt-[102px]">
         <Hero />
       </div>
       {/* monad puts its logo row right under the first screen; ours lists the models */}
