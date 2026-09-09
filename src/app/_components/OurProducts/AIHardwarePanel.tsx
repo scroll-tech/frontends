@@ -9,8 +9,10 @@ import GraphicFrame from "../GraphicFrame"
  * them. It ships as a standalone page under /public/graphics like the hero files, so it
  * is hosted the same way. Interactive, because the click-to-open is part of the piece.
  *
- * His frame carries its own white card, border and legend, so the panel is just the
- * frame filling the sheet plus the "coming soon" line the old composition had.
+ * His frame's own card chrome is overridden inside the file — the sheet is the frame.
+ * The "coming soon" line that used to sit under it is gone (Glen 2026-09-09 21:23:
+ * "let's remove 'coming soon' from ai hardware"); the band it occupied stays clear so
+ * the legend never runs into the arrow in the corner.
  */
 const AIHardwarePanel = () => (
   <div className="relative size-full">
@@ -20,9 +22,6 @@ const AIHardwarePanel = () => (
       interactive
       className="absolute inset-x-0 bottom-[44px] top-0 md:bottom-[40px]"
     />
-    <p className="absolute inset-x-0 bottom-[16px] text-center text-[13px] leading-[17px] text-[#636363] md:bottom-[22px] md:text-[15px] md:leading-[19px]">
-      *COMING SOON*
-    </p>
   </div>
 )
 
