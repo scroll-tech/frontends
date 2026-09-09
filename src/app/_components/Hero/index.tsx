@@ -32,7 +32,9 @@ const CheckItOut = ({ className = "" }: { className?: string }) => (
  *   container   1432 max with 40 a side → 1352 of content
  *   nav → h1    72 of hero padding + 30 on the wrapper = 102
  *   h1          80 / 96, letter-spacing −1.6, centred, max-w 800
- *   → p         32;  p 20 / 27, max-w ~560, centred
+ *   → p         32;  p 20 / 27, centred. Theirs caps at ~560 and wraps to three lines; ours
+ *                is one sentence and Tommy wants it on one line (2026-09-09 18:31), so no
+ *                cap on desktop — at 20px it is ~640 wide, which fits from md up.
  *   → button    40;  48 tall, see CheckItOut
  *   → graphic   40;  full content width, 432 tall (the height of their SVG)
  *   → logo row  100 (50 of hero bottom + the slider's 50 top), see ModelStrip
@@ -67,7 +69,7 @@ const LandingHero = () => (
             a plain array crossing the boundary arrives as a module reference and indexes to
             undefined — silently, straight back to no stagger at all. */}
         <SlideUp delay={250}>
-          <p className="max-w-[343px] px-[16px] text-center text-[16px] leading-[19px] text-[#636363] md:mt-[32px] md:max-w-[560px] md:px-0 md:text-[20px] md:leading-[27px]">
+          <p className="max-w-[343px] px-[16px] text-center text-[16px] leading-[19px] text-[#636363] md:mt-[32px] md:max-w-none md:px-0 md:text-[20px] md:leading-[27px]">
             {/* Glen: "and this types in" — typed, inside monad's fade-and-rise */}
             <Typed text="Switch between 30+ providers through a single unified interface" />
           </p>
