@@ -172,3 +172,47 @@ export const SlideUp = ({ children, className = "", delay = 0 }: { children: Rea
     </div>
   )
 }
+
+/**
+ * Glen 2026-09-08, twice: the sub-head "has typed animation" (05:49 notes) and, on seeing
+ * the build, "and this types in" (21:37). It was dropped when monad.com became the
+ * reference for the text entrance, on the reading that monad has no typewriter — but his
+ * 2026-09-09 note says monad is "mostly for placement of elements", so the typing he asked
+ * for by name comes back. Restored from the pre-4b4dea6b version.
+ *
+ * Both copies of the text are laid out from the start, so the line never rewraps as it
+ * types: the visible prefix and an invisible remainder occupy the full final width.
+ */
+export const Typed = ({ text, className = "", speed = 26, delay = 400 }: { text: string; className?: string; speed?: number; delay?: number }) => {
+  const [count, setCount] = useState(0)
+
+  useEffect(() => {
+    if (prefersReducedMotion()) {
+      setCount(text.length)
+      return
+    }
+    let i = 0
+    let tick: ReturnType<typeof setInterval>
+    const start = setTimeout(() => {
+      tick = setInterval(() => {
+        i += 1
+        setCount(i)
+        if (i >= text.length) clearInterval(tick)
+      }, speed)
+    }, delay)
+    return () => {
+      clearTimeout(start)
+      clearInterval(tick)
+    }
+  }, [text, speed, delay])
+
+  return (
+    <span className={`block ${className}`}>
+      <span aria-hidden="true">
+        {text.slice(0, count)}
+        <span className="invisible">{text.slice(count)}</span>
+      </span>
+      <span className="sr-only">{text}</span>
+    </span>
+  )
+}

@@ -2,7 +2,7 @@ import { COMPASS_API_URL } from "@/constants/link"
 
 import GraphicFrame from "../GraphicFrame"
 import { geistMono } from "../fonts"
-import { SlideUp } from "../motion"
+import { SlideUp, Typed } from "../motion"
 
 /**
  * One button, at monad's size (Glen 2026-09-09: "we'll use their button sizing too (only
@@ -68,7 +68,8 @@ const LandingHero = () => (
             undefined — silently, straight back to no stagger at all. */}
         <SlideUp delay={250}>
           <p className="max-w-[343px] px-[16px] text-center text-[16px] leading-[19px] text-[#636363] md:mt-[32px] md:max-w-[560px] md:px-0 md:text-[20px] md:leading-[27px]">
-            Switch between 30+ providers through a single unified interface
+            {/* Glen: "and this types in" — typed, inside monad's fade-and-rise */}
+            <Typed text="Switch between 30+ providers through a single unified interface" />
           </p>
         </SlideUp>
 
