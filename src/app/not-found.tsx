@@ -1,43 +1,57 @@
 import Link from "next/link"
 
 import ScrollMarkSvg from "@/assets/svgs/landingpage/scroll-mark.svg"
-import { genMeta } from "@/utils"
+import { genMeta } from "@/utils/route"
 
-import LandingBackground from "./_components/LandingBackground"
+import Button from "./_components/Button"
+import DitherBackground from "./_components/DitherBackground"
 import LandingNav from "./_components/LandingNav"
-import { geist } from "./_components/fonts"
+import { CardShell } from "./_components/WaitlistCard"
+import { instrumentSerif, inter, jetbrainsMono } from "./_components/fonts"
+import styles from "./_components/landing.module.css"
 
 export const generateMetadata = genMeta(() => ({
   titleSuffix: "Page not found",
 }))
 
-// Same card the sign-up flow ends on, so a dead link lands somewhere that still looks
-// like the site rather than the old template.
+/**
+ * The 404, dressed like /sign-up: Glen's tokens, type and dither background (scroll.html,
+ * 2026-09-10), the nav as the folded pill, and his login card in the middle carrying the
+ * message — the same shell the waitlist card uses, so a dead link lands on something that
+ * looks like the rest of the site.
+ */
 const NotFound = () => (
-  <div className={`${geist.className} relative isolate flex min-h-screen w-full flex-col items-center bg-[#F8F8F8] pt-[24px] md:pt-[30px]`}>
-    <LandingBackground />
-    <div className="w-full px-[16px]">
+  <div
+    className={`${inter.className} ${instrumentSerif.variable} ${jetbrainsMono.variable} ${styles.theme} relative isolate flex min-h-screen w-full flex-col items-center overflow-x-clip`}
+  >
+    <DitherBackground />
+    <div className="w-full px-[16px] pt-[12px]">
       <LandingNav />
     </div>
-
-    <div className="flex w-full flex-1 items-center justify-center px-[16px] py-[64px]">
-      <div className="w-full max-w-[354px] overflow-hidden rounded-[16px] shadow-[0_18px_40px_rgba(17,17,17,0.06)]">
-        <div className="flex flex-col items-center bg-white px-[24px] pb-[32px] pt-[28px]">
-          <ScrollMarkSvg className="h-[24px] w-auto" />
-          <h1 className="mt-[16px] text-[20px] leading-[26px] text-black">Page not found</h1>
-          <p className="mt-[12px] max-w-[260px] text-center text-[13px] leading-[19px] text-[#8C8C8C]">
-            That page doesn&apos;t exist, or it has moved.
-          </p>
-          <Link
-            href="/"
-            className="mt-[24px] flex h-[40px] items-center justify-center rounded-[8px] border border-solid border-[#867B71] px-[24px] text-[14px] font-medium text-black transition-colors hover:bg-[#F8F8F8]"
-          >
-            Go home
-          </Link>
+    <main className="flex w-full flex-1 items-center justify-center px-[16px] py-[64px]">
+      <CardShell
+        foot={
+          <>
+            <p>If a link brought you here, it is out of date.</p>
+            <p>
+              <Link href="/">Back to Scroll.</Link>
+            </p>
+          </>
+        }
+      >
+        <div className={styles.cardHead}>
+          <ScrollMarkSvg className={styles.cardMark} aria-hidden="true" />
+          <span className={styles.panelNum}>ERROR 404</span>
+          <h1 className={styles.cardTitle}>Page not found</h1>
         </div>
-        <div className="h-[68px] bg-[#E4E4F4]" />
-      </div>
-    </div>
+        <p className={styles.cardText}>That page doesn&apos;t exist, or it has moved.</p>
+        <div className="self-center">
+          <Button href="/" solid>
+            Go home
+          </Button>
+        </div>
+      </CardShell>
+    </main>
   </div>
 )
 

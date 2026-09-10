@@ -22,7 +22,7 @@ interface WaitlistCardProps {
   titleId?: string
 }
 
-const CardShell = ({ children, foot, shown }: { children: ReactNode; foot: ReactNode; shown?: boolean }) => {
+export const CardShell = ({ children, foot, shown }: { children: ReactNode; foot: ReactNode; shown?: boolean }) => {
   const [mounted, setMounted] = useState(false)
   useEffect(() => {
     const id = requestAnimationFrame(() => setMounted(true))

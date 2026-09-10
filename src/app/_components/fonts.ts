@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono, Instrument_Serif, Inter, JetBrains_Mono } from "next/font/google"
+import { Geist, Instrument_Serif, Inter, JetBrains_Mono } from "next/font/google"
 
 // Glen's scroll.html (2026-09-10) sets the landing page in three faces: Instrument Serif for
 // the display lines, Inter for everything else, JetBrains Mono for labels, the product rail
@@ -30,10 +30,4 @@ export const geist = Geist({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-geist",
-})
-
-export const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-geist-mono",
 })
