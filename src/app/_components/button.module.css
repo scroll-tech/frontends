@@ -1,0 +1,118 @@
+/* Glen's `.btn` (scroll.html, 2026-09-10): a 44px pill, white with a hairline or solid
+   ink, that rises a pixel on hover while a soft white halo comes up behind it and the
+   label rolls up letter by letter. */
+.btn {
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --btn-bg: #fff;
+  --btn-ink: #0a0a0a;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 32px;
+  border-radius: 999px;
+  background: var(--btn-bg);
+  color: var(--btn-ink);
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid #e5e1dc;
+  isolation: isolate;
+  cursor: pointer;
+  transition:
+    transform 0.45s var(--ease),
+    box-shadow 0.5s var(--ease),
+    border-color 0.4s var(--ease);
+  will-change: transform;
+}
+
+.solid {
+  --btn-bg: #0a0a0a;
+  --btn-ink: #fff;
+  border-color: #0a0a0a;
+}
+
+/* the halo: layered white shadows on a pseudo-element behind the button. His file clips
+   it with overflow:hidden on the button, which hides all of it; the roll below carries its
+   own clip, so the halo is left free to show here. */
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.9),
+    0 0 18px 6px rgba(255, 255, 255, 0.95),
+    0 0 44px 18px rgba(255, 255, 255, 0.75),
+    0 0 90px 40px rgba(255, 255, 255, 0.45);
+  transition: opacity 0.5s var(--ease);
+}
+
+.btn:hover,
+.btn:focus-visible {
+  transform: translateY(-1px);
+}
+
+.btn:hover::before,
+.btn:focus-visible::before {
+  opacity: 1;
+}
+
+.btn:active {
+  transform: translateY(0) scale(0.985);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+  transform: none;
+}
+
+.btn:disabled::before {
+  opacity: 0;
+}
+
+/* each letter sits above a copy of itself; on hover the stack rolls up one line, the
+   letters 16ms apart */
+.roll {
+  display: inline-flex;
+  overflow: hidden;
+  line-height: 1.2;
+}
+
+.ch {
+  display: inline-block;
+  position: relative;
+  white-space: pre;
+  transition: transform 0.42s var(--ease);
+  transition-delay: calc(var(--i) * 16ms);
+}
+
+.ch::after {
+  content: attr(data-c);
+  position: absolute;
+  left: 0;
+  top: 100%;
+  white-space: pre;
+}
+
+.btn:hover .ch,
+.btn:focus-visible .ch {
+  transform: translateY(-100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .btn::before,
+  .ch {
+    transition: none;
+  }
+
+  .btn:hover .ch,
+  .btn:focus-visible .ch {
+    transform: none;
+  }
+}

@@ -1,6 +1,8 @@
-import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google"
+import { Geist, Geist_Mono, Instrument_Serif, Inter, JetBrains_Mono } from "next/font/google"
 
-// still used by the legal pages (privacy policy / terms)
+// Glen's scroll.html (2026-09-10) sets the landing page in three faces: Instrument Serif for
+// the display lines, Inter for everything else, JetBrains Mono for labels, the product rail
+// and the model band. The legal pages already used the serif for their headings.
 export const instrumentSerif = Instrument_Serif({
   weight: "400",
   style: ["normal", "italic"],
@@ -9,13 +11,27 @@ export const instrumentSerif = Instrument_Serif({
   variable: "--font-instrument-serif",
 })
 
+export const inter = Inter({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter-landing",
+})
+
+export const jetbrainsMono = JetBrains_Mono({
+  weight: ["400", "500", "700"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-jetbrains-mono",
+})
+
+// still the face of sign-up, the 404 and the legal shell
 export const geist = Geist({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-geist",
 })
 
-// display face for the landing page — headlines, section rail, numerals
 export const geistMono = Geist_Mono({
   subsets: ["latin"],
   display: "swap",

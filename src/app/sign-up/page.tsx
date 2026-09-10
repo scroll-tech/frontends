@@ -1,23 +1,33 @@
 import { genMeta } from "@/utils"
 
-import LandingBackground from "../_components/LandingBackground"
+import DitherBackground from "../_components/DitherBackground"
 import LandingNav from "../_components/LandingNav"
-import { geist } from "../_components/fonts"
-import SignUpCard from "./SignUpCard"
+import WaitlistCard from "../_components/WaitlistCard"
+import { instrumentSerif, inter, jetbrainsMono } from "../_components/fonts"
+import styles from "../_components/landing.module.css"
 
 export const generateMetadata = genMeta(() => ({
-  titleSuffix: "Sign up",
+  titleSuffix: "Join the waitlist",
 }))
 
+/**
+ * The waitlist as a page of its own, dressed as Glen's scroll.html (2026-09-10): his tokens,
+ * type and dither background, the nav as the folded pill, and his login card in the middle
+ * with the waitlist form inside. The landing page opens the same card as an overlay (his
+ * way, WaitlistOverlay); this route stays for direct links and for the day a real sign-up
+ * moves in here (Zhengqi 2026-09-10).
+ */
 const SignUpPage = () => (
-  <div className={`${geist.className} relative isolate flex min-h-screen w-full flex-col items-center bg-[#F8F8F8] pt-[24px] md:pt-[30px]`}>
-    <LandingBackground />
-    <div className="w-full px-[16px]">
+  <div
+    className={`${inter.className} ${instrumentSerif.variable} ${jetbrainsMono.variable} ${styles.theme} relative isolate flex min-h-screen w-full flex-col items-center overflow-x-clip`}
+  >
+    <DitherBackground />
+    <div className="w-full px-[16px] pt-[12px]">
       <LandingNav />
     </div>
-    <div className="flex w-full flex-1 items-center justify-center px-[16px] py-[64px]">
-      <SignUpCard />
-    </div>
+    <main className="flex w-full flex-1 items-center justify-center px-[16px] py-[64px]">
+      <WaitlistCard />
+    </main>
   </div>
 )
 

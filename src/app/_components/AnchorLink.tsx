@@ -10,6 +10,7 @@ interface AnchorLinkProps {
   /** "/#compass" style — a landing-page section */
   href: string
   className?: string
+  onClick?: (e: MouseEvent<HTMLAnchorElement>) => void
   children: ReactNode
 }
 
@@ -19,11 +20,12 @@ interface AnchorLinkProps {
  * resolveAnchor) instead of letting the router look the hash up by id, which on the phone
  * finds the hidden desktop card and goes nowhere.
  */
-const AnchorLink = ({ href, className, children }: AnchorLinkProps) => {
+const AnchorLink = ({ href, className, onClick, children }: AnchorLinkProps) => {
   const pathname = usePathname()
 
   const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
-    if (pathname !== "/") return
+    onClick?.(e)
+    if (e.defaultPrevented || pathname !== "/") return
     const id = href.split("#")[1]
     if (!id) return
     e.preventDefault()

@@ -1,0 +1,84 @@
+/* Glen's compass-interactive (2).html (2026-09-10): the sphere's cards are square logo
+   tiles now, and the centre node carries the Scroll mark. Both are authored at their base
+   size (150 / 220) and scaled as a whole by the globe, so nothing in here restates the
+   responsive scale. */
+.tile {
+  --ring: #111;
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.16),
+    0 2px 6px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 22px;
+  user-select: none;
+  transition:
+    box-shadow 0.25s ease,
+    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: scale(1);
+}
+
+.tile:not(:disabled) {
+  cursor: pointer;
+}
+
+.tile:not(:disabled):hover {
+  box-shadow:
+    0 16px 34px rgba(0, 0, 0, 0.22),
+    0 4px 10px rgba(0, 0, 0, 0.1);
+  transform: scale(1.035);
+}
+
+.selected,
+.selected:not(:disabled):hover {
+  box-shadow:
+    0 0 0 2.5px var(--ring),
+    0 16px 34px rgba(0, 0, 0, 0.24);
+}
+
+/* the provider mark, coloured through currentColor where the icon is monochrome */
+.badge {
+  width: 76px;
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.badge svg {
+  width: 100%;
+  height: 100%;
+}
+
+.core {
+  width: 100%;
+  height: 100%;
+  border-radius: 26px;
+  background: #fff;
+  box-shadow:
+    0 10px 26px rgba(0, 0, 0, 0.1),
+    0 2px 6px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.core svg {
+  width: 88px;
+  height: auto;
+  display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile {
+    transition: none;
+  }
+}

@@ -5,25 +5,37 @@ import { createPortal } from "react-dom"
 import * as THREE from "three"
 import { CSS3DObject, CSS3DRenderer } from "three/examples/jsm/renderers/CSS3DRenderer.js"
 
+import ScrollMarkSvg from "@/assets/svgs/landingpage/scroll-mark.svg"
+
+import styles from "./globe.module.css"
+import { LOGO_SVGS } from "./logos"
 import { type Modality, SPHERE_MODELS, providerColor } from "./models"
 
-// Geometry is kept in the same world units as Glen's prototype so the card proportions
-// match his reference exactly; on-screen size is driven by `fit` instead of a fixed camera.
+/**
+ * Glen's compass-interactive (2).html (2026-09-10). Geometry stays in his world units so the
+ * proportions match his file; on-screen size is driven by `fit` instead of his fixed camera
+ * distance, because the globe sits in a card here rather than filling a window.
+ *
+ * What changed from his 2026-09-07 prototype, all carried here: the cards are 150px square
+ * logo tiles ("now a square logo tile, not a text card"), the centre node is a 220px square
+ * with the Scroll mark, the sphere drifts instead of spinning ("much slower, lazy drift"),
+ * the wheel and a two-finger pinch zoom the camera, and hovering the globe eases it forward
+ * a touch ("subtle come-forward, not a lunge"). His three depth bands are back as written —
+ * a tile has nothing to read, so the far face can dim and blur again.
+ */
 const RADIUS = 900
-const CARD_W = 250
-// 118, not Glen's 168. His card was mostly air below the prices, which only showed up once
-// the whole card was scaled to make the text readable — a big empty plate. Tightening the
-// box instead of scaling it means `cardScale` can stay modest (1.7, not 2.3) and the card
-// still reads, and the surface it frees is what pays for the extra models in SPHERE_MODELS.
-const CARD_H = 118
-const CORE_W = 300
-const CORE_H = 122
+const CARD = 150
+const CORE = 220
 const FOV = 42
 // visible world height at the sphere's centre plane, per unit of camera distance
 const VIEW_PER_DISTANCE = 2 * Math.tan((FOV / 2) * (Math.PI / 180))
 
-const AUTO_ROTATE_SPEED = 0.0015
+const AUTO_ROTATE_SPEED = 0.00025
 const MAX_SPEED = 0.008
+// his zoom range, 900–4200 of camera distance, as a factor of his 2200 resting distance
+const ZOOM_MIN = 900 / 2200
+const ZOOM_MAX = 4200 / 2200
+const ZOOM_WHEEL = 0.6 / 2200
 
 const clamp = (v: number, a: number, b: number) => Math.max(a, Math.min(b, v))
 
@@ -46,36 +58,37 @@ const fibonacciSphere = (n: number, r: number) => {
 
 interface ModelGlobeProps {
   className?: string
-  /** sphere diameter as a fraction of the container's shorter side, so portrait phone
-   *  cards don't clip the globe left and right */
+  /** sphere diameter as a fraction of the container's shorter side */
   fit?: number
-  /** `fit` below the md breakpoint. The design crops the globe at the card's edges on a
-   *  phone — half-cards at the left, right and bottom — so it reads as something you can
-   *  keep spinning rather than a shrunken sphere sitting in the middle. Omit to reuse `fit`. */
+  /** `fit` below the md breakpoint. Omit to reuse `fit`. */
   fitCompact?: number
-  /** pushes the sphere down by this fraction of the container height (for the cropped hero) */
+  /** pushes the sphere down by this fraction of the container height */
   offsetY?: number
-  /** `offsetY` below the md breakpoint; pair it with `fitCompact` to keep the enlarged
-   *  sphere's top cap inside the window instead of cutting it off in mid-air */
+  /** `offsetY` below the md breakpoint */
   offsetYCompact?: number
-  /** multiplies the computed card scale. `fit` moves the sphere and the cards together, so
-   *  it can't make the text on a card bigger relative to the sphere — only this can, and
-   *  the sphere's surface is what pays for it: see SPHERE_MODELS in ./models. */
+  /** multiplies the computed tile scale — `fit` moves the sphere and the tiles together,
+   *  so only this can make a tile bigger relative to the sphere */
   cardScale?: number
-  /** `cardScale` below the md breakpoint. Pulling the camera in (`fitCompact`) enlarges the
-   *  cards but leaves fewer of them in frame; the design wants both, which only a bigger
-   *  card relative to the sphere gives. */
+  /** `cardScale` below the md breakpoint */
   cardScaleCompact?: number
-  /** drag to rotate + hover highlight; the hero copy is decorative only */
+  /** drag to rotate + hover highlight; off and the globe is decorative */
   interactive?: boolean
-  /** show the centre COMPASS node */
+  /** show the centre Scroll node */
   showCore?: boolean
-  /** indices of the selected cards; the panel beside the globe owns this state */
+  /** indices of the selected tiles; the panel beside the globe owns this state */
   selected?: number[]
-  /** click a card. Omit and the cards are inert. */
+  /** click a tile. Omit and the tiles are inert. */
   onToggle?: (index: number) => void
   /** modalities currently ticked in the filter. Omit to show everything. */
   visibleModalities?: Modality[]
+  /**
+   * The wheel zooms the camera and a one-finger drag rotates it instead of scrolling the
+   * page. Off by default: in a page a globe that eats the wheel is a trap, so the panel
+   * turns this on only after the visitor has clicked into it (its "Click to explore").
+   */
+  zoomable?: boolean
+  /** the pointer is over the globe — eases the camera forward, as his hover does */
+  hovered?: boolean
 }
 
 const ModelGlobe = ({
@@ -91,6 +104,8 @@ const ModelGlobe = ({
   selected,
   onToggle,
   visibleModalities,
+  zoomable = false,
+  hovered = false,
 }: ModelGlobeProps) => {
   const hostRef = useRef<HTMLDivElement>(null)
   const glRef = useRef<HTMLCanvasElement>(null)
@@ -103,6 +118,10 @@ const ModelGlobe = ({
   selectedRef.current = selected ?? []
   const visibleRef = useRef<Modality[] | undefined>(undefined)
   visibleRef.current = visibleModalities
+  const zoomableRef = useRef(false)
+  zoomableRef.current = zoomable
+  const hoveredRef = useRef(false)
+  hoveredRef.current = hovered
 
   // one detached div per model; React renders the real markup into them through a portal
   const cardEls = useMemo(() => {
@@ -110,6 +129,13 @@ const ModelGlobe = ({
     return SPHERE_MODELS.map(() => document.createElement("div"))
   }, [])
   const coreEl = useMemo(() => (typeof document === "undefined" ? null : document.createElement("div")), [])
+
+  // his `touch-action: none` — only while the visitor has opted in, or the globe would
+  // swallow every swipe over it
+  useEffect(() => {
+    const host = hostRef.current
+    if (host) host.style.touchAction = zoomable ? "none" : ""
+  }, [zoomable])
 
   useEffect(() => {
     const host = hostRef.current
@@ -177,12 +203,12 @@ const ModelGlobe = ({
       const scale = computeUiScale(width) * ((compact ? cardScaleCompact : cardScale) ?? 1)
       setUiScale(scale)
       cards.forEach(({ div }) => {
-        div.style.width = `${CARD_W * scale}px`
-        div.style.height = `${CARD_H * scale}px`
+        div.style.width = `${CARD * scale}px`
+        div.style.height = `${CARD * scale}px`
       })
       if (showCore) {
-        coreEl.style.width = `${CORE_W * scale}px`
-        coreEl.style.height = `${CORE_H * scale}px`
+        coreEl.style.width = `${CORE * scale}px`
+        coreEl.style.height = `${CORE * scale}px`
       }
 
       const activeFit = (compact ? fitCompact : undefined) ?? fit
@@ -221,6 +247,8 @@ const ModelGlobe = ({
     let pointerNX = 0
     let pointerNY = 0
     let lastInteraction = performance.now()
+    let zoom = 1
+    let hoverAmount = 0
 
     // Drag exactly the way Glen's prototype does: pointerdown on the globe, move/up on
     // the window. Do NOT setPointerCapture here — capturing retargets the whole pointer
@@ -249,15 +277,49 @@ const ModelGlobe = ({
       dragging = false
     }
 
+    // his wheel zoom, but only once the visitor has clicked in — and then it has to eat
+    // the event, or the page scrolls away under the zoom
+    const onWheel = (e: WheelEvent) => {
+      if (!zoomableRef.current) return
+      e.preventDefault()
+      zoom = clamp(zoom + e.deltaY * ZOOM_WHEEL, ZOOM_MIN, ZOOM_MAX)
+      lastInteraction = performance.now()
+    }
+
+    // pinch-to-zoom for touch, where the wheel never fires
+    let pinchStart: number | null = null
+    let pinchZoom = 1
+    const touchDist = (a: Touch, b: Touch) => Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY)
+    const onTouchStart = (e: TouchEvent) => {
+      if (e.touches.length !== 2) return
+      pinchStart = touchDist(e.touches[0], e.touches[1])
+      pinchZoom = zoom
+      dragging = false // a two-finger gesture is a zoom, not a rotate-drag
+    }
+    const onTouchMove = (e: TouchEvent) => {
+      if (!zoomableRef.current || e.touches.length !== 2 || pinchStart === null) return
+      const ratio = pinchStart / Math.max(touchDist(e.touches[0], e.touches[1]), 1) // fingers apart → zoom in
+      zoom = clamp(pinchZoom * ratio, ZOOM_MIN, ZOOM_MAX)
+      lastInteraction = performance.now()
+      e.preventDefault()
+    }
+    const onTouchEnd = (e: TouchEvent) => {
+      if (e.touches.length < 2) pinchStart = null
+    }
+
     if (interactive) {
       host.addEventListener("pointerdown", onPointerDown)
       window.addEventListener("pointermove", onPointerMove)
       window.addEventListener("pointerup", onPointerUp)
       window.addEventListener("pointercancel", onPointerUp)
+      host.addEventListener("wheel", onWheel, { passive: false })
+      host.addEventListener("touchstart", onTouchStart, { passive: true })
+      host.addEventListener("touchmove", onTouchMove, { passive: false })
+      host.addEventListener("touchend", onTouchEnd)
     }
 
     // ---- render loop -------------------------------------------------------
-    // two globes live on the page — only render the one you can actually see
+    // only render while on screen
     let onScreen = true
     const visibilityObserver = new IntersectionObserver(([entry]) => {
       onScreen = entry.isIntersecting
@@ -285,13 +347,18 @@ const ModelGlobe = ({
       glGroup.rotation.set(rotX, rotY, 0)
       cssGroup.rotation.set(rotX, rotY, 0)
 
+      // his numbers, read at his 2200 distance: 90 / 60 of parallax, a slow 0.035 ease on
+      // the hover, and 4.5% closer at most
+      hoverAmount += ((hoveredRef.current && interactive ? 1 : 0) - hoverAmount) * 0.035
+      const distance = baseDistance * zoom * (1 - hoverAmount * 0.045)
       if (interactive) {
-        const parallaxX = pointerNX * baseDistance * 0.04
-        const parallaxY = -pointerNY * baseDistance * 0.027
+        const parallaxX = pointerNX * baseDistance * (90 / 2200)
+        const parallaxY = -pointerNY * baseDistance * (60 / 2200)
         camera.position.x += (parallaxX - camera.position.x) * 0.02
         camera.position.y += (worldOffset + parallaxY - camera.position.y) * 0.02
-        camera.lookAt(0, worldOffset, 0)
       }
+      camera.position.z = distance
+      camera.lookAt(0, worldOffset, 0)
 
       const visible = visibleRef.current
       const selectedNow = selectedRef.current
@@ -314,21 +381,17 @@ const ModelGlobe = ({
         card.obj.lookAt(0, 0, 0)
         card.obj.rotateY(Math.PI)
 
+        // his three depth bands: sharp in front, dimmed in the middle, faded at the back
         const rotatedZ = floated.clone().applyEuler(cssGroup.rotation).z
         const nz = clamp((rotatedZ + RADIUS) / (RADIUS * 2), 0, 1)
-        // Tommy 2026-09-08: "it'd be ideal if we could read whats on the cards that are
-        // moving around". Glen's depth cue was three bands at 0.28/0.75/1 opacity with up
-        // to 1.6px of blur, which left everything off the front face unreadable. Same
-        // three bands, but the sharp one starts halfway back, nothing between is blurred
-        // at all, and the far face only dims — depth still reads from scale and dimming.
-        let opacity = 0.5
-        let blur = 0.7
-        if (nz > 0.5) {
+        let opacity = 0.28
+        let blur = 1.6
+        if (nz > 0.66) {
           opacity = 1
           blur = 0
-        } else if (nz > 0.28) {
-          opacity = 0.85
-          blur = 0
+        } else if (nz > 0.33) {
+          opacity = 0.75
+          blur = 0.6
         }
 
         if (card.div.dataset.hovered === "true" || selectedNow.includes(i)) {
@@ -354,6 +417,10 @@ const ModelGlobe = ({
       window.removeEventListener("pointermove", onPointerMove)
       window.removeEventListener("pointerup", onPointerUp)
       window.removeEventListener("pointercancel", onPointerUp)
+      host.removeEventListener("wheel", onWheel)
+      host.removeEventListener("touchstart", onTouchStart)
+      host.removeEventListener("touchmove", onTouchMove)
+      host.removeEventListener("touchend", onTouchEnd)
       cards.forEach(c => cssGroup.remove(c.obj))
       if (coreObj) cssScene.remove(coreObj)
       glGroup.traverse(o => {
@@ -377,14 +444,17 @@ const ModelGlobe = ({
       <div ref={cssHostRef} className="pointer-events-none absolute inset-0 overflow-hidden" />
       {cardEls.map((el, i) => {
         const model = SPHERE_MODELS[i]
+        const color = providerColor(model.provider)
+        const mark = LOGO_SVGS[model.icon]
         const isSelected = (selected ?? []).includes(i)
         return createPortal(
-          // authored at the base 250x168 and scaled as a whole, so every size inside the
-          // card follows the responsive scale without restating it
-          <div style={{ width: CARD_W, height: CARD_H, transform: `scale(${uiScale})`, transformOrigin: "top left" }}>
+          // authored at the base 150px square and scaled as a whole
+          <div style={{ width: CARD, height: CARD, transform: `scale(${uiScale})`, transformOrigin: "top left" }}>
             <button
               type="button"
               disabled={!onToggle}
+              aria-label={`${model.name} by ${model.provider}${isSelected ? ", selected" : ""}`}
+              aria-pressed={isSelected}
               onPointerEnter={() => {
                 el.dataset.hovered = "true"
               }}
@@ -394,38 +464,24 @@ const ModelGlobe = ({
               onClick={e => {
                 // restart the pop even on a rapid second click, the way his prototype
                 // forces a reflow between removing and re-adding the class
-                const el = e.currentTarget
-                el.classList.remove("model-card-pop")
-                void el.offsetWidth
-                el.classList.add("model-card-pop")
+                const btn = e.currentTarget
+                btn.classList.remove("model-card-pop")
+                void btn.offsetWidth
+                btn.classList.add("model-card-pop")
                 onToggle?.(i)
               }}
               onAnimationEnd={e => e.currentTarget.classList.remove("model-card-pop")}
-              style={isSelected ? { boxShadow: `0 0 0 2.5px ${providerColor(model.provider)}, 0 16px 34px rgba(0,0,0,0.24)` } : undefined}
-              className={`flex size-full select-none flex-col justify-center gap-[8px] rounded-[16px] bg-white px-[18px] py-[14px] text-left transition-[transform,box-shadow] duration-200 ${
-                isSelected ? "" : "shadow-[0_10px_24px_rgba(0,0,0,0.16),0_2px_6px_rgba(0,0,0,0.08)]"
-              } ${onToggle ? "cursor-pointer hover:scale-[1.035] hover:shadow-[0_16px_34px_rgba(0,0,0,0.22),0_4px_10px_rgba(0,0,0,0.1)]" : "cursor-default"}`}
+              style={{ "--ring": color } as React.CSSProperties}
+              className={`${styles.tile} ${isSelected ? styles.selected : ""}`}
             >
-              {/* Type is sized against the 250px card, not Glen's original ratios: the same
-                  layout with the name at 19 instead of 14 and the prices at 15 instead of
-                  11.5. That is what lets the card itself stay small on the sphere. */}
-              <div className="flex min-w-0 items-center gap-[8px]">
-                <span className="size-[8px] shrink-0 rounded-full" style={{ backgroundColor: providerColor(model.provider) }} />
-                <span className="flex size-[22px] shrink-0 items-center justify-center rounded-full bg-[#F2F2F2] text-[10px] font-bold tracking-[0.2px] text-[#111] shadow-[0_1px_3px_rgba(0,0,0,0.15)]">
+              {mark ? (
+                // the marks are static SVG from lobe-icons, copied out of Glen's file (see ./logos)
+                <span className={styles.badge} style={{ color }} dangerouslySetInnerHTML={{ __html: mark }} />
+              ) : (
+                <span className={styles.badge} style={{ color }}>
                   {model.initials}
                 </span>
-                <span className="truncate text-[19px] font-semibold tracking-[-0.3px] text-[#111]">{model.name}</span>
-              </div>
-              <div className="flex gap-[16px] pl-[2px]">
-                <div className="flex flex-col gap-[1px]">
-                  <span className="text-[11px] tracking-[0.3px] text-[rgba(17,17,17,0.55)]">IN / 1M</span>
-                  <span className="text-[15px] font-medium tabular-nums text-[#111]">${model.inPrice}</span>
-                </div>
-                <div className="flex flex-col gap-[1px]">
-                  <span className="text-[11px] tracking-[0.3px] text-[rgba(17,17,17,0.55)]">OUT / 1M</span>
-                  <span className="text-[15px] font-medium tabular-nums text-[#111]">${model.outPrice}</span>
-                </div>
-              </div>
+              )}
             </button>
           </div>,
           el,
@@ -435,9 +491,9 @@ const ModelGlobe = ({
       {showCore &&
         coreEl &&
         createPortal(
-          <div style={{ width: CORE_W, height: CORE_H, transform: `scale(${uiScale})`, transformOrigin: "top left" }}>
-            <div className="flex size-full items-center justify-center rounded-[26px] bg-white shadow-[0_10px_26px_rgba(0,0,0,0.10),0_2px_6px_rgba(0,0,0,0.05)]">
-              <span className="whitespace-nowrap text-[20px] font-bold tracking-[3px] text-[#111]">COMPASS</span>
+          <div style={{ width: CORE, height: CORE, transform: `scale(${uiScale})`, transformOrigin: "top left" }}>
+            <div className={styles.core}>
+              <ScrollMarkSvg aria-hidden="true" />
             </div>
           </div>,
           coreEl,

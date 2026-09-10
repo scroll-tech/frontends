@@ -1,83 +1,29 @@
 "use client"
 
-import { ReactNode, useEffect, useRef, useState } from "react"
+import { CSSProperties, Fragment, ReactNode, useEffect, useRef, useState } from "react"
+
+import styles from "./motion.module.css"
 
 /**
- * Glen 2026-09-08 pointed at monad.com for how text should appear. Read off their page —
- * they drive it with GSAP + ScrollTrigger, and the entrance is one recipe:
- *
- *   gsap.set("[data-fade]", { opacity: 0, y: 30 })
- *   gsap.to(el, { opacity: 1, y: 0, delay: delayVal, duration: 0.8, ease: "power2.out",
- *                 scrollTrigger: { start: "top 95%", toggleActions: "play none none none" } })
- *   delayVal = 0 | 0.25 | 0.5
- *
- * So: 30px of travel, 0.8s, GSAP's power2.out, three stagger buckets, fired once as the
- * element clears the bottom of the viewport. Their per-character roll — SplitType chars,
- * yPercent -100, stagger 0.03, power4.inOut — is a link hover, not this.
- *
- * power2.out is GSAP's cubic ease-out, hence the bezier below; the old one was nearer
- * quint and read snappier than theirs.
+ * Glen's scroll.html (2026-09-10) replaces the monad-derived entrances this file used to
+ * hold (a 30px / 0.8s power2.out rise, fired once) with one recipe for everything that
+ * moves on scroll — see motion.module.css for the values. What survives from the earlier
+ * rounds is the nav's drop-in, which his file does not animate but Zhengqi asked for.
  */
-const EASE = "cubic-bezier(0.215, 0.61, 0.355, 1)"
-const TRAVEL = 30
-const DURATION = 0.8
+
+const prefersReducedMotion = () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
 
 /**
- * The nav gets its own, opposite entrance, which is also monad's — Zhengqi spotted that
- * theirs drops in while the copy rises. Read off their page:
+ * The nav dropping in from above, on load — monad's `.navbar` step, read off their page:
  *
  *   .navbar { transform: translateY(-100px); opacity: 0 }          // in CSS
  *   tl.to('.navbar', { y: 0, opacity: 1, duration: 1, ease: 'quart.out' }, 0)
  *
- * quart.out is GSAP's quartic ease-out, hence this bezier; 1s, not the 0.8 the copy uses.
+ * Happens once, on arrival, and settles to transform:none so the sticky bar is untouched
+ * afterwards.
  */
 const EASE_QUART = "cubic-bezier(0.165, 0.84, 0.44, 1)"
-const DROP = 100
-const DROP_DURATION = 1
-// monad's delayVal buckets are 0 / 0.25 / 0.5s. Not exported: the only consumer is the
-// hero, which is a server component, and a plain array from a "use client" module crosses
-// that boundary as a module reference and indexes to undefined. It writes them out instead.
 
-const prefersReducedMotion = () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
-
-/** fires once, the first time the element comes within `margin` of the viewport.
- *  The default matches their ScrollTrigger `start: "top 95%"` — the element's top passing
- *  95% of the viewport height, i.e. just as it clears the bottom edge. */
-const useInView = (margin = "0px 0px -5%") => {
-  const ref = useRef<HTMLDivElement>(null)
-  const [seen, setSeen] = useState(false)
-
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    if (prefersReducedMotion()) {
-      setSeen(true)
-      return
-    }
-    const observer = new IntersectionObserver(
-      entries => {
-        if (entries.some(e => e.isIntersecting)) {
-          setSeen(true)
-          observer.disconnect()
-        }
-      },
-      { rootMargin: margin },
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [margin])
-
-  return { ref, seen }
-}
-
-/**
- * The nav dropping in from above, on load — monad's `.navbar` step, values by DROP above.
- *
- * Not the movement Glen objected to. "This popping up feels strange. It's not very smooth"
- * was about the hover lift and the 14px hop the sticky offset caused, both of which fired
- * every time you touched or scrolled the page; this happens once, on arrival, and settles
- * to transform:none so the sticky bar is untouched afterwards.
- */
 export const DropIn = ({ children, className = "" }: { children: ReactNode; className?: string }) => {
   const [on, setOn] = useState(false)
   useEffect(() => {
@@ -92,9 +38,9 @@ export const DropIn = ({ children, className = "" }: { children: ReactNode; clas
     <div
       className={className}
       style={{
-        transition: `opacity ${DROP_DURATION}s ${EASE_QUART}, transform ${DROP_DURATION}s ${EASE_QUART}`,
+        transition: `opacity 1s ${EASE_QUART}, transform 1s ${EASE_QUART}`,
         opacity: on ? 1 : 0,
-        transform: on ? "none" : `translateY(-${DROP}px)`,
+        transform: on ? "none" : "translateY(-100px)",
       }}
     >
       {children}
@@ -102,28 +48,63 @@ export const DropIn = ({ children, className = "" }: { children: ReactNode; clas
   )
 }
 
+interface RevealProps {
+  children: ReactNode
+  className?: string
+  /** ms before the entrance starts — Glen staggers the hero at 120 / 320 / 420 */
+  delay?: number
+  /** the panel variant: slides in from the right and never blurs */
+  plain?: boolean
+  /** play once, the first time the element is seen, and never hide it again — for the hero,
+   *  where a replay on scrolling back up reads as the page refreshing */
+  once?: boolean
+}
+
 /**
- * Glen 2026-09-08: "WHITE sections pop slightly when scrolled to", then monad.com as the
- * reference for how it should feel — so this is their recipe exactly: 30px, 0.8s,
- * power2.out, once, as the element clears the bottom of the viewport.
+ * Glen's `.reveal`: an element fades in from a blur and a short rise as it comes into
+ * view, and blurs out again as it leaves — his observer toggles the class in both
+ * directions rather than firing once. Thresholds are his: 10% visible, with the top 4%
+ * and bottom 8% of the viewport not counting, so nothing flickers at the very edge.
  *
- * No scale any more. Theirs is opacity and y alone, and the hair of scale was what made
- * ours read as a different, snappier gesture than the one he pointed at.
+ * The element keeps its layout box throughout — only transform, filter and opacity
+ * move — so nothing below it shifts and the sticky product rail is unaffected.
  *
- * The element keeps its layout box throughout — only transform and opacity move — so
- * nothing below it shifts and the sticky product rail is unaffected.
+ * Rendered server-side hidden (the class carries opacity 0) so there is no flash before
+ * hydration; the observer's first callback shows whatever is already on screen.
  */
-export const PopIn = ({ children, className = "", delay = 0 }: { children: ReactNode; className?: string; delay?: number }) => {
-  const { ref, seen } = useInView()
+export const Reveal = ({ children, className = "", delay = 0, plain = false, once = false }: RevealProps) => {
+  const ref = useRef<HTMLDivElement>(null)
+  const [on, setOn] = useState(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    if (prefersReducedMotion()) {
+      setOn(true)
+      return
+    }
+    const observer = new IntersectionObserver(
+      entries =>
+        entries.forEach(e => {
+          if (once) {
+            if (!e.isIntersecting) return
+            setOn(true)
+            observer.disconnect()
+          } else {
+            setOn(e.isIntersecting)
+          }
+        }),
+      { threshold: 0.1, rootMargin: "-4% 0px -8% 0px" },
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [once])
+
   return (
     <div
       ref={ref}
-      className={className}
-      style={{
-        transition: `opacity ${DURATION}s ${EASE} ${delay}ms, transform ${DURATION}s ${EASE} ${delay}ms`,
-        opacity: seen ? 1 : 0,
-        transform: seen ? "none" : `translateY(${TRAVEL}px)`,
-      }}
+      className={`${styles.reveal} ${plain ? styles.plain : ""} ${on ? styles.in : ""} ${className}`}
+      style={{ "--d": `${delay}ms` } as CSSProperties}
     >
       {children}
     </div>
@@ -131,23 +112,19 @@ export const PopIn = ({ children, className = "", delay = 0 }: { children: React
 }
 
 /**
- * Glen 2026-09-08: the headline "slides up to appear", then "can this pop up or blur in?
- * Like a html expression", then monad.com as the reference for the feel.
+ * The headline's entrance: each word rises out of its own clipped line and sharpens as it
+ * comes, the words 60ms apart, once, on load. This is the reveal Linear, Vercel and Apple's
+ * marketing pages use for a large serif or display line, and it replaces two motions Glen's
+ * file stacked on the same headline — a blur-in and, a second later, an "ascii pass" that
+ * scrambled "frontier models" into symbols. Zhengqi 2026-09-10: the pair read as the line
+ * refreshing twice, and the scramble, in a proportional serif, made the letters jump
+ * sideways as symbol widths changed. Gone; one calm entrance, and nothing ever replays.
  *
- * monad's is opacity and y only. The blur stays because he asked for it by name, but
- * everything else is theirs — 30px, 0.8s, power2.out — and the scale overshoot is gone,
- * since that was the part making ours read as a snappier gesture than the one he pointed
- * at. Blur keeps a shorter duration of its own so it resolves before the movement settles;
- * ending blurred-but-still would look like a rendering fault.
- *
- * Fires on mount rather than on scroll, unlike PopIn: this is the first thing on the page,
- * so there is no scroll to wait for. `delay` takes monad's buckets, which the hero passes
- * as literals — see the note by DURATION.
- *
- * Rendered server-side with its real text so it stays crawlable and readable without JS;
- * the animation only ever moves it.
+ * Each word's clip box is padded and pulled back with negative margins so it covers the
+ * serif's ascenders, descenders and the overhang of an "f" without adding to the layout.
+ * Words are inline blocks separated by real spaces, so the line still wraps and balances.
  */
-export const SlideUp = ({ children, className = "", delay = 0 }: { children: ReactNode; className?: string; delay?: number }) => {
+export const WordsIn = ({ text, delay = 120, stagger = 60 }: { text: string; delay?: number; stagger?: number }) => {
   const [on, setOn] = useState(false)
   useEffect(() => {
     if (prefersReducedMotion()) {
@@ -157,60 +134,132 @@ export const SlideUp = ({ children, className = "", delay = 0 }: { children: Rea
     const id = requestAnimationFrame(() => setOn(true))
     return () => cancelAnimationFrame(id)
   }, [])
+  const words = text.split(" ")
   return (
-    <div
-      className={className}
-      style={{
-        transition: `opacity ${DURATION}s ${EASE} ${delay}ms, transform ${DURATION}s ${EASE} ${delay}ms, filter .5s ${EASE} ${delay}ms`,
-        opacity: on ? 1 : 0,
-        transform: on ? "none" : `translateY(${TRAVEL}px)`,
-        filter: on ? "blur(0px)" : "blur(12px)",
-        willChange: on ? "auto" : "transform, filter, opacity",
-      }}
-    >
+    <>
+      {words.map((word, i) => (
+        <Fragment key={i}>
+          <span className={styles.wordMask}>
+            <span className={`${styles.word} ${on ? styles.wordIn : ""}`} style={{ "--d": `${delay + i * stagger}ms` } as CSSProperties}>
+              {word}
+            </span>
+          </span>
+          {/* the space lives between the clip boxes: inside one it would be a trailing
+              space at the end of an inline block, which the browser collapses away */}
+          {i < words.length - 1 ? " " : null}
+        </Fragment>
+      ))}
+    </>
+  )
+}
+
+/**
+ * Glen's `.lift`: the product sheet rises 8px and grows a hair on hover, with a long soft
+ * shadow. His file notes that phones have no hover, so there the sheet lifts as it scrolls
+ * into view (35% visible) and settles when it leaves.
+ */
+export const Lift = ({ children, className = "" }: { children: ReactNode; className?: string }) => {
+  const ref = useRef<HTMLDivElement>(null)
+  const [lifted, setLifted] = useState(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el || prefersReducedMotion() || window.matchMedia("(min-width: 900px)").matches) return
+    const observer = new IntersectionObserver(entries => entries.forEach(e => setLifted(e.isIntersecting)), { threshold: 0.35 })
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <div ref={ref} className={`${styles.lift} ${lifted ? styles.lifted : ""} ${className}`}>
       {children}
     </div>
   )
 }
 
 /**
- * Glen 2026-09-08, twice: the sub-head "has typed animation" (05:49 notes) and, on seeing
- * the build, "and this types in" (21:37). It was dropped when monad.com became the
- * reference for the text entrance, on the reading that monad has no typewriter — but his
- * 2026-09-09 note says monad is "mostly for placement of elements", so the typing he asked
- * for by name comes back. Restored from the pre-4b4dea6b version.
+ * Glen 2026-09-08, twice: the sub-head "has typed animation" and, on seeing the build,
+ * "and this types in". His 2026-09-10 file keeps it and adds the detail: the typing
+ * starts 820ms after the line comes into view, pauses longer on spaces, commas and full
+ * stops, and shows a blinking caret while it runs.
  *
- * Both copies of the text are laid out from the start, so the line never rewraps as it
- * types: the visible prefix and an invisible remainder occupy the full final width.
+ * His file also wipes the line and retypes it every time it scrolls back into view. That
+ * reads as the page glitching rather than as a flourish (Zhengqi 2026-09-10), so here the
+ * line types once, the first time it is seen, and then stays put — including if you scroll
+ * away mid-sentence; it finishes on its own.
+ *
+ * Every character is laid out from the start and the ones not yet typed are merely hidden,
+ * so the line's width never changes and it never rewraps. It used to be two spans — the
+ * typed prefix and an invisible remainder — but the browser does not kern across a span
+ * boundary, so the total width wobbled a fraction of a pixel as the split moved and the
+ * centred line shimmered. The caret is out of the flow altogether — positioned off the
+ * right edge of the last typed character — because even a zero-width inline bar nudged
+ * the line's width by a third of a pixel depending on where it sat.
  */
-export const Typed = ({ text, className = "", speed = 26, delay = 400 }: { text: string; className?: string; speed?: number; delay?: number }) => {
+export const Typed = ({ text, className = "", delay = 820 }: { text: string; className?: string; delay?: number }) => {
+  const ref = useRef<HTMLSpanElement>(null)
   const [count, setCount] = useState(0)
+  const [typing, setTyping] = useState(false)
 
   useEffect(() => {
+    const el = ref.current
+    if (!el) return
     if (prefersReducedMotion()) {
       setCount(text.length)
       return
     }
-    let i = 0
-    let tick: ReturnType<typeof setInterval>
-    const start = setTimeout(() => {
-      tick = setInterval(() => {
+
+    let start: ReturnType<typeof setTimeout> | undefined
+    let tick: ReturnType<typeof setTimeout> | undefined
+    const stop = () => {
+      clearTimeout(start)
+      clearTimeout(tick)
+    }
+    const run = () => {
+      let i = 0
+      setTyping(true)
+      const next = () => {
         i += 1
         setCount(i)
-        if (i >= text.length) clearInterval(tick)
-      }, speed)
-    }, delay)
-    return () => {
-      clearTimeout(start)
-      clearInterval(tick)
+        if (i >= text.length) {
+          setTyping(false)
+          return
+        }
+        const c = text[i - 1]
+        let d = 26 + Math.random() * 26
+        if (c === " ") d += 16
+        if (c === ",") d += 130
+        if (c === ".") d += 220
+        tick = setTimeout(next, d)
+      }
+      next()
     }
-  }, [text, speed, delay])
 
+    const observer = new IntersectionObserver(
+      entries => {
+        if (!entries[0].isIntersecting) return
+        observer.disconnect()
+        start = setTimeout(run, delay)
+      },
+      { threshold: 0.5 },
+    )
+    observer.observe(el)
+    return () => {
+      stop()
+      observer.disconnect()
+    }
+  }, [text, delay])
+
+  const chars = [...text]
   return (
-    <span className={`block ${className}`}>
+    <span ref={ref} className={`block whitespace-pre-wrap ${className}`}>
       <span aria-hidden="true">
-        {text.slice(0, count)}
-        <span className="invisible">{text.slice(count)}</span>
+        {chars.map((c, i) => (
+          <span key={i} className={i < count ? "relative" : "invisible"}>
+            {c}
+            {typing && i === count - 1 && <span className={styles.caret} />}
+          </span>
+        ))}
       </span>
       <span className="sr-only">{text}</span>
     </span>

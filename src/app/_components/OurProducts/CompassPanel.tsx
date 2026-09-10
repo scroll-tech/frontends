@@ -1,171 +1,214 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { CSSProperties, useEffect, useRef, useState } from "react"
 
 import ModelGlobe from "../ModelGlobe/lazy"
 import { MODALITY_COUNTS, MODALITY_ORDER, type Modality, SPHERE_MODELS, modelSlug, providerColor } from "../ModelGlobe/models"
+import styles from "./compass.module.css"
+
+type RowState = "entering" | "in" | "leaving"
+interface Row {
+  index: number
+  state: RowState
+}
 
 /**
- * Compass panel — the interactive globe from Glen's "Compass asset" prototype (Slack,
- * 2026-09-07): click a card to pin it, tick the modalities to filter what's on the sphere.
- *
- * The 2026-09-08 frame (DESIGN-CONTENT 591:20506) drops the boxed list that used to hold
- * the pinned models and floats each one straight on the card instead — a provider dot,
- * the name with its badge, the slug underneath — parked in three fixed slots around the
- * globe. Slot coordinates below are that frame's, as a fraction of its 886 x 572 card.
+ * Glen's selected list slides each row in from the left as it is picked and folds it away
+ * when it is removed. React drops a row the moment it leaves the array, so this keeps a
+ * shadow list: a new index mounts as `entering` and is promoted a frame later, a removed one
+ * is marked `leaving` and dropped once its transition has run. Picking a model again while
+ * it is still leaving simply brings it back.
  */
-const DESKTOP_SLOTS = [
-  { left: "7.2%", top: "12.4%" }, // 64 / 71
-  { left: "71.4%", top: "11.4%" }, // 633 / 65
-  { left: "71.7%", top: "64.9%" }, // 635 / 371
-]
+const useAnimatedRows = (selected: number[]) => {
+  const [rows, setRows] = useState<Row[]>([])
+  const timers = useRef(new Map<number, ReturnType<typeof setTimeout>>())
 
-// Glen's prototype has no cap — his panel is a full window tall and fits ~8. Ours has
-// three slots on the card, and a pin that silently lands nowhere is worse than a limit,
-// so picking a fourth drops the oldest. The phone frame draws one row; two still read
-// cleanly stacked at the top, which is the count settled on earlier.
-const MAX_DESKTOP = DESKTOP_SLOTS.length
-const MAX_COMPACT = 2
-
-// the phone has no slots to scatter into, so pinned models stack down from the frame's
-// single row (594:20828, at 5.5% / 4.7% of its 311 x 550 card)
-const compactSlot = (i: number) => ({ left: "5.5%", top: `calc(4.7% + ${i * 46}px)` })
-
-const CompassPanel = () => {
-  // click order is what the slots show, so an array rather than a Set
-  const [selected, setSelected] = useState<number[]>([])
-  const [visible, setVisible] = useState<Modality[]>(MODALITY_ORDER)
-  const [isDesktop, setIsDesktop] = useState(true)
-
-  // md is 900px in this project
   useEffect(() => {
-    const mq = window.matchMedia("(min-width: 900px)")
-    const sync = () => setIsDesktop(mq.matches)
-    sync()
-    mq.addEventListener("change", sync)
-    return () => mq.removeEventListener("change", sync)
+    setRows(prev => {
+      const next: Row[] = prev.map(r => {
+        if (selected.includes(r.index)) return r.state === "leaving" ? { ...r, state: "in" } : r
+        return r.state === "leaving" ? r : { ...r, state: "leaving" }
+      })
+      selected.forEach(i => {
+        if (!next.some(r => r.index === i)) next.push({ index: i, state: "entering" })
+      })
+      return next
+    })
+  }, [selected])
+
+  useEffect(() => {
+    let raf = 0
+    if (rows.some(r => r.state === "entering")) {
+      // two frames, like his prototype: the row has to paint hidden once before the transition
+      raf = requestAnimationFrame(() => {
+        raf = requestAnimationFrame(() => setRows(rs => rs.map(r => (r.state === "entering" ? { ...r, state: "in" } : r))))
+      })
+    }
+    rows.forEach(r => {
+      const pending = timers.current.get(r.index)
+      if (r.state === "leaving" && !pending) {
+        timers.current.set(
+          r.index,
+          setTimeout(() => {
+            timers.current.delete(r.index)
+            setRows(rs => rs.filter(x => !(x.index === r.index && x.state === "leaving")))
+          }, 400),
+        )
+      } else if (r.state !== "leaving" && pending) {
+        clearTimeout(pending)
+        timers.current.delete(r.index)
+      }
+    })
+    return () => cancelAnimationFrame(raf)
+  }, [rows])
+
+  useEffect(() => {
+    const map = timers.current
+    return () => map.forEach(clearTimeout)
   }, [])
 
-  const maxSelected = isDesktop ? MAX_DESKTOP : MAX_COMPACT
+  return rows
+}
 
-  // shrinking the window past the breakpoint shouldn't leave a pin with nowhere to sit
-  useEffect(() => setSelected(prev => prev.slice(-maxSelected)), [maxSelected])
+/**
+ * Compass panel: Glen's compass-interactive (2).html (2026-09-10) inside the sphere figure
+ * of his scroll.html. His file fills a window; here the globe fills the figure and the
+ * chrome floats over it the way his does — selected models top left with their slug and
+ * prices, the modality filter bottom left, a hint along the bottom — and hovering the globe
+ * eases it forward while the filter and hint blur out of the way.
+ *
+ * His figure sits under a "Click to explore" wash until it is clicked (scroll.html's
+ * `.figure--live`), because the sphere zooms on the wheel and would otherwise stop the page
+ * scrolling the moment the pointer crossed it. The wash comes back when the pointer leaves
+ * the figure or it scrolls mostly out of view, as his does. The globe still rotates on its
+ * own and reacts to the pointer underneath; only the wheel and touch gestures wait.
+ *
+ * Sizing: his iframe renders the sphere at 1.07× the figure's height, so `fit` says so. His
+ * tile scale is left alone on desktop; on the phone his formula leaves a 13px tile, which
+ * cannot be what he meant, so `cardScaleCompact` brings it back to roughly a 36px tile.
+ */
+const CompassPanel = () => {
+  const rootRef = useRef<HTMLDivElement>(null)
+  // click order is what the list shows, so an array rather than a Set
+  const [selected, setSelected] = useState<number[]>([])
+  const [visible, setVisible] = useState<Modality[]>(MODALITY_ORDER)
+  const [live, setLive] = useState(false)
+  const [hovered, setHovered] = useState(false)
+  const [touch, setTouch] = useState(false)
+  const rows = useAnimatedRows(selected)
 
-  const toggleModel = (index: number) =>
-    setSelected(prev => {
-      if (prev.includes(index)) return prev.filter(i => i !== index)
-      return [...prev, index].slice(-maxSelected)
-    })
+  useEffect(() => {
+    setTouch("ontouchstart" in window)
+  }, [])
+
+  // scrolled mostly away → hand the wheel back to the page
+  useEffect(() => {
+    const el = rootRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      entries => {
+        if (!entries[0].isIntersecting) setLive(false)
+      },
+      { threshold: 0.25 },
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  const toggleModel = (index: number) => setSelected(prev => (prev.includes(index) ? prev.filter(i => i !== index) : [...prev, index]))
 
   const toggleModality = (key: Modality) =>
     setVisible(prev => {
       const next = prev.includes(key) ? prev.filter(m => m !== key) : [...prev, key]
-      // a card that just got filtered out shouldn't stay pinned
+      // deselect cards that get filtered out so the side panel stays consistent
       setSelected(sel => sel.filter(i => next.includes(SPHERE_MODELS[i].modality)))
       return next
     })
 
+  const mouseOnly = (on: boolean) => (e: React.PointerEvent) => {
+    if (e.pointerType && e.pointerType !== "mouse") return
+    setHovered(on)
+  }
+
   return (
-    <div className="relative size-full">
-      {/* Glen's 0.68 / 1.0 drew a front-facing card 70px wide, so its 14px name landed at
-          3.9px on screen and the prices at 3.3px — unreadable (Tommy, 2026-09-08). `fit`
-          alone can't fix it: it scales the sphere and the cards together, and past ~0.85 the
-          sphere reaches under the slots on the right anyway. So most of the gain comes from
-          the card being tighter and its type bigger (see CARD_H in ../ModelGlobe), and
-          `cardScale` only has to carry the rest — 1.7 keeps the card at ~160px on screen
-          instead of the 216px that 2.3 gave, which read as cards wearing the sphere.
-          Result: name ~12px, prices ~10px, and the cards cover about the same 30% of their
-          share of the sphere that Glen's 41 tiny ones did. */}
-      {/* The phone needs its own cardScale, because `compact` reads cardScaleCompact and
-          falls back to 1 when it is unset — which is why the desktop fix above skipped the
-          phone entirely and left the names at about 1.6px there.
+    <div ref={rootRef} className="relative size-full" onMouseLeave={() => setLive(false)}>
+      {/* the scene: globe plus its shield. The panels are siblings above it, so moving onto
+          one of them counts as leaving the globe, as in his file */}
+      <div className="absolute inset-0" onPointerEnter={mouseOnly(true)} onPointerLeave={mouseOnly(false)}>
+        <ModelGlobe
+          className="size-full"
+          fit={1.07}
+          cardScale={1}
+          cardScaleCompact={2.75}
+          interactive
+          selected={selected}
+          onToggle={toggleModel}
+          visibleModalities={visible}
+          zoomable={live}
+          hovered={hovered}
+        />
+        <button type="button" className={`${styles.shield} ${live ? styles.shieldOff : ""}`} onClick={() => setLive(true)} tabIndex={live ? -1 : 0}>
+          <span className={styles.shieldPill}>Click to explore</span>
+        </button>
+      </div>
+      <div className={`${styles.ring} ${live ? styles.ringOn : ""}`} aria-hidden="true" />
 
-          3.4 is not a look, it is 1.7 / 0.5: computeUiScale already halves everything on a
-          panel this narrow, so this cancels that out and nothing more, giving the phone the
-          same card-to-sphere ratio the desktop has. Aiming for readable text here instead
-          (3.5 with a cropped fitCompact 1.2) put a card at 40% of the panel's width against
-          desktop's 18%, and it looked exactly as bad as that sounds.
-
-          Which is the real constraint: on a ~358px panel a card cannot be both in
-          proportion and legible. This picks proportion, and the phone reads the model off
-          the pinned slot at 14px instead — the design's own answer. */}
-      <ModelGlobe
-        className="size-full"
-        fit={0.82}
-        cardScale={1.7}
-        cardScaleCompact={3.4}
-        interactive
-        selected={selected}
-        onToggle={toggleModel}
-        visibleModalities={visible}
-      />
-
-      {/* ---- pinned models, floating in the frame's slots ------------------- */}
-      {selected.map((index, i) => {
-        const model = SPHERE_MODELS[index]
-        return (
-          <button
-            key={model.name}
-            type="button"
-            onClick={() => toggleModel(index)}
-            title={`Unpin ${model.name}`}
-            style={isDesktop ? DESKTOP_SLOTS[i] : compactSlot(i)}
-            className="absolute flex max-w-[62%] items-center gap-[12px] text-left transition-opacity hover:opacity-60 md:max-w-[220px]"
-          >
-            <span className="size-[12px] shrink-0 rounded-full md:size-[16px]" style={{ backgroundColor: providerColor(model.provider) }} />
-            <span className="min-w-0">
-              <span className="flex items-center gap-[8px]">
-                <span className="truncate text-[12px] font-semibold leading-[16px] text-[#111] md:text-[14px] md:leading-[18px]">{model.name}</span>
-                <span className="shrink-0 rounded-[4px] border border-solid border-[rgba(17,17,17,0.22)] px-[5px] py-[1px] text-[8px] font-bold uppercase leading-[12px] tracking-[0.3px] text-[rgba(17,17,17,0.55)] md:text-[9px]">
-                  {model.open ? "OPEN" : model.modality}
-                </span>
-              </span>
-              <span className="mt-[2px] block truncate font-mono text-[9.5px] leading-[14px] text-[rgba(17,17,17,0.38)] md:text-[11px]">
-                {modelSlug(model)}
-              </span>
-            </span>
-          </button>
-        )
-      })}
-
-      {/* the frame draws no hint, but without one nothing says the sphere is clickable */}
-      {selected.length === 0 && (
-        <p
-          style={isDesktop ? DESKTOP_SLOTS[0] : compactSlot(0)}
-          className="absolute max-w-[58%] text-[11.5px] leading-[1.5] text-[rgba(17,17,17,0.35)] md:max-w-[200px] md:text-[12.5px]"
-        >
-          Click any card in the sphere to pin it here.
-        </p>
-      )}
+      {/* ---- selected models ------------------------------------------------ */}
+      <div className={styles.selectedPanel}>
+        <p className={styles.panelLabel}>Selected models</p>
+        <div>
+          {rows.map(({ index, state }) => {
+            const model = SPHERE_MODELS[index]
+            const color = providerColor(model.provider)
+            return (
+              <div
+                key={index}
+                className={`${styles.item} ${state === "entering" ? styles.entering : ""} ${state === "leaving" ? styles.leaving : ""}`}
+                aria-hidden={state === "leaving"}
+              >
+                <div className={styles.itemTop}>
+                  <span className={styles.dot} style={{ background: color }} />
+                  <span className={styles.name}>{model.name}</span>
+                  {model.open && <span className={styles.badge}>OPEN</span>}
+                  <button type="button" className={styles.remove} onClick={() => toggleModel(index)} aria-label={`Remove ${model.name}`}>
+                    &times;
+                  </button>
+                </div>
+                <div className={styles.slug}>{modelSlug(model)}</div>
+                <div className={styles.prices}>
+                  <div className={styles.price}>
+                    <span className={styles.priceLabel}>IN / 1M</span>
+                    <span className={styles.priceValue}>${model.inPrice}</span>
+                  </div>
+                  <div className={styles.price}>
+                    <span className={styles.priceLabel}>OUT / 1M</span>
+                    <span className={styles.priceValue}>${model.outPrice}</span>
+                  </div>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+        {selected.length === 0 && <p className={styles.selectedEmpty}>Click any card in the sphere to see its details here.</p>}
+      </div>
 
       {/* ---- modality filter ---------------------------------------------- */}
-      <div className="absolute bottom-[24px] left-[24px] flex w-[44%] max-w-[190px] flex-col gap-[11px] md:bottom-[32px] md:left-[29px] md:w-[34%]">
-        <p className="text-[9.5px] font-bold uppercase leading-[13px] tracking-[1px] text-[rgba(17,17,17,0.4)] md:text-[11px]">Modality</p>
+      <div className={`${styles.modalityPanel} ${hovered ? styles.dim : ""}`}>
+        <p className={styles.panelLabel}>Modality</p>
         {MODALITY_ORDER.map(key => {
           const on = visible.includes(key)
           return (
-            <button
-              key={key}
-              type="button"
-              onClick={() => toggleModality(key)}
-              className={`flex items-center gap-[9px] text-left transition-opacity ${on ? "opacity-100" : "opacity-[0.38]"}`}
-            >
-              <span
-                className={`flex size-[13px] shrink-0 items-center justify-center rounded-[3px] border border-solid transition-colors ${
-                  on ? "border-black bg-black" : "border-[#B9B9B9] bg-white"
-                }`}
-              >
-                {on && (
-                  <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
-                    <path d="M1 3.4L3.3 5.7L8 1" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                )}
-              </span>
-              <span className="flex-1 text-[12.5px] text-[#111] md:text-[14px]">{key}</span>
-              <span className="text-[11.5px] tabular-nums text-[rgba(17,17,17,0.4)] md:text-[13px]">{MODALITY_COUNTS[key]}</span>
-            </button>
+            <label key={key} className={`${styles.modalityRow} ${on ? "" : styles.disabled}`}>
+              <input type="checkbox" checked={on} onChange={() => toggleModality(key)} />
+              <span className={styles.modalityName}>{key}</span>
+              <span className={styles.modalityCount}>{MODALITY_COUNTS[key]}</span>
+            </label>
           )
         })}
+      </div>
+
+      <div className={`${styles.hint} ${hovered ? styles.dim : ""}`} style={{ "--placeholder": 0 } as CSSProperties}>
+        {touch ? "drag to rotate · pinch to zoom · tap a model" : "drag to rotate · scroll to zoom · hover a model"}
       </div>
     </div>
   )

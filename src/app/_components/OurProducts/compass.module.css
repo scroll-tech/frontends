@@ -1,0 +1,395 @@
+/* Glen's compass-interactive (2).html (2026-09-10): the chrome that floats over the sphere —
+   the selected-models list top left, the modality filter bottom left, a hint at the bottom —
+   plus the "Click to explore" shield from his scroll.html, which keeps the globe from taking
+   the wheel until the visitor has asked for it. */
+.panelLabel {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: rgba(17, 17, 17, 0.4);
+  text-transform: uppercase;
+  margin: 0 0 14px;
+}
+
+/* his chrome lives in an iframe with the browser's normal line-height, not the page's 1.55,
+   which is what keeps his rows tight — so the panels set it back to normal here */
+.selectedPanel {
+  position: absolute;
+  left: 32px;
+  top: 32px;
+  width: 270px;
+  /* stops short of the modality panel below it; the list scrolls inside */
+  max-height: calc(100% - 210px);
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  line-height: normal;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.selectedPanel::-webkit-scrollbar {
+  width: 0;
+}
+
+.selectedEmpty {
+  font-size: 12.5px;
+  color: rgba(17, 17, 17, 0.35);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.item {
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid rgba(17, 17, 17, 0.09);
+  max-height: 220px;
+  overflow: hidden;
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    max-height 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    margin-bottom 0.32s ease,
+    padding-bottom 0.32s ease,
+    border-color 0.32s ease;
+}
+
+.item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.entering {
+  opacity: 0;
+  transform: translateX(-18px);
+}
+
+.leaving {
+  opacity: 0;
+  transform: translateX(-18px);
+  max-height: 0;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom-color: transparent;
+}
+
+.itemTop {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+
+.name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.badge {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: rgba(17, 17, 17, 0.55);
+  border: 1px solid rgba(17, 17, 17, 0.22);
+  border-radius: 5px;
+  padding: 2px 6px;
+  flex: 0 0 auto;
+}
+
+.remove {
+  cursor: pointer;
+  color: rgba(17, 17, 17, 0.32);
+  font-size: 17px;
+  line-height: 1;
+  padding: 0 2px;
+  flex: 0 0 auto;
+  display: inline-block;
+  transition:
+    color 0.15s ease,
+    transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.remove:hover {
+  color: #111;
+  transform: scale(1.25) rotate(90deg);
+}
+
+.slug {
+  font-size: 12px;
+  color: rgba(17, 17, 17, 0.38);
+  margin: 3px 0 0 17px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.prices {
+  display: flex;
+  gap: 18px;
+  margin: 9px 0 0 17px;
+}
+
+.price {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.priceLabel {
+  font-size: 11px;
+  color: rgba(17, 17, 17, 0.55);
+  letter-spacing: 0.3px;
+}
+
+.priceValue {
+  font-size: 14px;
+  color: #111;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.modalityPanel {
+  position: absolute;
+  left: 32px;
+  bottom: 32px;
+  width: 190px;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  line-height: normal;
+  transition:
+    filter 0.4s ease,
+    opacity 0.4s ease;
+}
+
+.modalityPanel .panelLabel {
+  margin-bottom: 0;
+}
+
+.modalityRow {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
+  user-select: none;
+  transition: opacity 0.25s ease;
+}
+
+.modalityRow.disabled {
+  opacity: 0.38;
+}
+
+.modalityRow input[type="checkbox"] {
+  width: 13px;
+  height: 13px;
+  margin: 0;
+  accent-color: #111;
+  cursor: pointer;
+  flex: 0 0 auto;
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modalityRow input[type="checkbox"]:active {
+  transform: scale(1.2);
+}
+
+.modalityName {
+  font-size: 14px;
+  color: #111;
+  flex: 1 1 auto;
+}
+
+.modalityCount {
+  font-size: 13px;
+  color: rgba(17, 17, 17, 0.4);
+  font-variant-numeric: tabular-nums;
+}
+
+.hint {
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%);
+  color: rgba(17, 17, 17, 0.4);
+  font-size: 11px;
+  line-height: normal;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 5;
+  transition:
+    filter 0.4s ease,
+    opacity 0.4s ease;
+}
+
+/* hovering the globe brings it forward and blurs the surrounding chrome — except the
+   selected-models list. The panel stays hit-testable on purpose: moving onto it has to
+   register as leaving the globe, or it would stay blurred and dead. */
+.dim {
+  filter: blur(6px);
+  opacity: 0.3;
+}
+
+/* his `.figure--live`: a wash over the globe until it is clicked, so a stray wheel over the
+   card scrolls the page and never the sphere */
+.shield {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.3));
+  transition:
+    opacity 0.4s var(--ease, ease),
+    visibility 0.4s var(--ease, ease);
+}
+
+.shieldOff {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.shieldPill {
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  background: #fff;
+  border: 1px solid var(--line, #e5e1dc);
+  border-radius: 999px;
+  padding: 8px 24px;
+  box-shadow: 0 4px 18px -8px rgba(46, 27, 112, 0.3);
+  color: var(--ink-2, #4a4845);
+}
+
+/* a faint violet ring says the globe is live */
+.ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px; /* the figure's radius; `inherit` would read the panel's wrapper */
+  pointer-events: none;
+  z-index: 7;
+  box-shadow: inset 0 0 0 1.5px var(--violet, #6d45e8);
+  opacity: 0;
+  transition: opacity 0.4s var(--ease, ease);
+}
+
+.ringOn {
+  opacity: 0.5;
+}
+
+@media (max-width: 640px) {
+  .selectedPanel {
+    left: 16px;
+    top: 16px;
+    width: min(58%, 230px);
+    max-height: calc(100% - 170px);
+  }
+
+  .modalityPanel {
+    left: 16px;
+    bottom: 16px;
+    width: min(46%, 160px);
+    gap: 9px;
+  }
+
+  .panelLabel {
+    font-size: 9.5px;
+    margin-bottom: 10px;
+  }
+
+  .name {
+    font-size: 13px;
+  }
+
+  .badge {
+    font-size: 8.5px;
+    padding: 1px 5px;
+  }
+
+  .slug {
+    font-size: 10px;
+    margin-left: 15px;
+  }
+
+  .prices {
+    gap: 14px;
+    margin-top: 7px;
+    margin-left: 15px;
+  }
+
+  .item {
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+  }
+
+  .modalityName {
+    font-size: 12.5px;
+  }
+
+  .modalityCount {
+    font-size: 11.5px;
+  }
+
+  .hint {
+    font-size: 10px;
+    bottom: 14px;
+  }
+}
+
+@media (max-width: 400px) {
+  .selectedPanel {
+    width: min(64%, 200px);
+  }
+
+  .modalityPanel {
+    width: min(50%, 140px);
+  }
+
+  .name {
+    font-size: 12px;
+  }
+
+  .prices {
+    gap: 10px;
+  }
+
+  .hint {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item,
+  .remove,
+  .modalityRow,
+  .modalityPanel,
+  .hint,
+  .shield,
+  .ring {
+    transition: none;
+  }
+
+  .dim {
+    filter: none;
+    opacity: 1;
+  }
+}

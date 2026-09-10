@@ -35,8 +35,8 @@ export const smoothScrollToCenter = (el: HTMLElement | null) => {
   smoothScrollTo(window.scrollY + rect.top + rect.height / 2 - window.innerHeight / 2)
 }
 
-/** brings the element's top just below the sticky nav */
-export const smoothScrollToTop = (el: HTMLElement | null, offset = 96) => {
+/** brings the element's top just below the sticky nav — Glen's scroll-margin-top, the 76 bar + 24 */
+export const smoothScrollToTop = (el: HTMLElement | null, offset = 100) => {
   if (!el) return
   smoothScrollTo(window.scrollY + el.getBoundingClientRect().top - offset)
 }
