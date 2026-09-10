@@ -29,14 +29,23 @@ async function fetchPosts() {
     console.log("[blog] SKIP_BLOG_FETCH set — keeping the existing data files")
     return
   }
-  await Promise.all([
-    fetch(buildPostURL("scroll.io"))
-      .then(res => res.json())
-      .then(json => fs.writeFileSync(mainFile, JSON.stringify(json, null, 2))),
-    fetch(buildPostURL("research.scroll.io"))
-      .then(res => res.json())
-      .then(json => fs.writeFileSync(researchFile, JSON.stringify(json, null, 2))),
-  ])
+  // node-fetch has no timeout of its own. Behind a proxy (Surge / Clash fake-ip) the TCP
+  // connection to the dead host opens but the TLS handshake never completes, and `next dev`
+  // sat on this line for good (Zhengqi, 2026-09-10). Five seconds is plenty for a JSON file.
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(new Error("timed out after 5s")), 5000)
+  try {
+    await Promise.all([
+      fetch(buildPostURL("scroll.io"), { signal: controller.signal })
+        .then(res => res.json())
+        .then(json => fs.writeFileSync(mainFile, JSON.stringify(json, null, 2))),
+      fetch(buildPostURL("research.scroll.io"), { signal: controller.signal })
+        .then(res => res.json())
+        .then(json => fs.writeFileSync(researchFile, JSON.stringify(json, null, 2))),
+    ])
+  } finally {
+    clearTimeout(timer)
+  }
 }
 
 try {
