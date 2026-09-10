@@ -44,11 +44,8 @@ const PRODUCTS: Product[] = [
     ctaLabel: "Download",
     href: COMPASS_APP_STORE_URL,
     external: true,
-    figure: (
-      <div className={`${styles.figure} ${styles.figureSphere}`}>
-        <CompassPanel />
-      </div>
-    ),
+    // draws its own figure: on a phone its panels stack under the sphere rather than over it
+    figure: <CompassPanel />,
   },
   {
     id: "compass-api",

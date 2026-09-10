@@ -71,6 +71,10 @@ interface ModelGlobeProps {
   cardScale?: number
   /** `cardScale` below the md breakpoint */
   cardScaleCompact?: number
+  /** a floor for a tile's on-screen size: where the sphere is small (a phone's square
+   *  figure) the tiles are scaled up until they reach this many pixels, and left alone
+   *  where they already exceed it. Glen's own scale leaves a 13px tile on a phone. */
+  minTilePx?: number
   /** drag to rotate + hover highlight; off and the globe is decorative */
   interactive?: boolean
   /** show the centre Scroll node */
@@ -99,6 +103,7 @@ const ModelGlobe = ({
   offsetYCompact,
   cardScale,
   cardScaleCompact,
+  minTilePx,
   interactive = true,
   showCore = true,
   selected,
@@ -130,11 +135,14 @@ const ModelGlobe = ({
   }, [])
   const coreEl = useMemo(() => (typeof document === "undefined" ? null : document.createElement("div")), [])
 
-  // his `touch-action: none` — only while the visitor has opted in, or the globe would
-  // swallow every swipe over it
+  // His `touch-action: none` — only while the visitor has opted in, or the globe would
+  // swallow every swipe over it. And `pan-y` rather than his `none`: on a phone the figure
+  // is most of the screen, and with `none` a visitor who has tapped in can no longer scroll
+  // past it. Sideways swipes still rotate the sphere and a pinch still zooms it; an
+  // up-or-down swipe scrolls the page, as it should.
   useEffect(() => {
     const host = hostRef.current
-    if (host) host.style.touchAction = zoomable ? "none" : ""
+    if (host) host.style.touchAction = zoomable ? "pan-y" : ""
   }, [zoomable])
 
   useEffect(() => {
@@ -200,7 +208,14 @@ const ModelGlobe = ({
       height = Math.max(1, Math.round(rect.height))
 
       const compact = !window.matchMedia("(min-width: 900px)").matches
-      const scale = computeUiScale(width) * ((compact ? cardScaleCompact : cardScale) ?? 1)
+      const activeFit = (compact ? fitCompact : undefined) ?? fit
+      let scale = computeUiScale(width) * ((compact ? cardScaleCompact : cardScale) ?? 1)
+      if (minTilePx) {
+        // the sphere is drawn `activeFit` × the shorter side wide, so a tile's on-screen size
+        // follows from its share of the sphere's diameter
+        const tilePx = (CARD * scale * activeFit * Math.min(width, height)) / (2 * RADIUS)
+        if (tilePx < minTilePx) scale *= minTilePx / tilePx
+      }
       setUiScale(scale)
       cards.forEach(({ div }) => {
         div.style.width = `${CARD * scale}px`
@@ -211,7 +226,6 @@ const ModelGlobe = ({
         coreEl.style.height = `${CORE * scale}px`
       }
 
-      const activeFit = (compact ? fitCompact : undefined) ?? fit
       const activeOffsetY = (compact ? offsetYCompact : undefined) ?? offsetY
 
       // distance that renders the sphere at `activeFit` × the container's shorter side
@@ -432,7 +446,7 @@ const ModelGlobe = ({
       glRenderer.dispose()
       cssRenderer.domElement.remove()
     }
-  }, [cardEls, coreEl, fit, fitCompact, offsetY, offsetYCompact, cardScale, cardScaleCompact, interactive, showCore])
+  }, [cardEls, coreEl, fit, fitCompact, offsetY, offsetYCompact, cardScale, cardScaleCompact, minTilePx, interactive, showCore])
 
   return (
     <div

@@ -480,6 +480,13 @@
   .figureChain {
     height: 120px;
   }
+
+  /* his 1 / 1.05 box cuts the device's legend off on a phone — the chips wrap to three
+     rows there and the third disappears under the edge, in his file too. Taller here so
+     the whole legend stays in the frame. */
+  .figureDevice {
+    aspect-ratio: 1 / 1.3;
+  }
 }
 
 /* ---- footer ---- */

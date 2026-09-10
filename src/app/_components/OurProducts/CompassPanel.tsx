@@ -1,9 +1,10 @@
 "use client"
 
-import { CSSProperties, useEffect, useRef, useState } from "react"
+import { ReactNode, useEffect, useRef, useState } from "react"
 
 import ModelGlobe from "../ModelGlobe/lazy"
 import { MODALITY_COUNTS, MODALITY_ORDER, type Modality, SPHERE_MODELS, modelSlug, providerColor } from "../ModelGlobe/models"
+import landing from "../landing.module.css"
 import styles from "./compass.module.css"
 
 type RowState = "entering" | "in" | "leaving"
@@ -72,10 +73,17 @@ const useAnimatedRows = (selected: number[]) => {
 
 /**
  * Compass panel: Glen's compass-interactive (2).html (2026-09-10) inside the sphere figure
- * of his scroll.html. His file fills a window; here the globe fills the figure and the
- * chrome floats over it the way his does — selected models top left with their slug and
- * prices, the modality filter bottom left, a hint along the bottom — and hovering the globe
- * eases it forward while the filter and hint blur out of the way.
+ * of his scroll.html. His file fills a window; here the globe fills the figure and, on a
+ * desktop, the chrome floats over it the way his does — selected models top left with
+ * their slug and prices, the modality filter bottom left, a hint along the bottom — and
+ * hovering the globe eases it forward while the filter and hint blur out of the way.
+ *
+ * On a phone that arrangement fails, in his file as much as here (Zhengqi 2026-09-10:
+ * "Compass 在移动端好像不能用了"): the figure is a 318px square the sphere fills edge to
+ * edge, and two panels laid over it cover most of the tiles and sit on top of the artwork.
+ * So under 640px the figure holds the sphere alone and the same two blocks — Modality
+ * first, then Selected models — stack under it in the panel's flow, where they can be read
+ * and tapped. The sphere also draws a little smaller there so its tiles clear the edges.
  *
  * His figure sits under a "Click to explore" wash until it is clicked (scroll.html's
  * `.figure--live`), because the sphere zooms on the wheel and would otherwise stop the page
@@ -84,8 +92,9 @@ const useAnimatedRows = (selected: number[]) => {
  * own and reacts to the pointer underneath; only the wheel and touch gestures wait.
  *
  * Sizing: his iframe renders the sphere at 1.07× the figure's height, so `fit` says so. His
- * tile scale is left alone on desktop; on the phone his formula leaves a 13px tile, which
- * cannot be what he meant, so `cardScaleCompact` brings it back to roughly a 36px tile.
+ * tile scale is left alone wherever it gives a tile of 36px or more (desktop, tablet); on
+ * the phone his formula leaves a 13px tile, which cannot be what he meant, so `minTilePx`
+ * lifts it to 36 there and nowhere else.
  */
 const CompassPanel = () => {
   const rootRef = useRef<HTMLDivElement>(null)
@@ -130,87 +139,112 @@ const CompassPanel = () => {
     setHovered(on)
   }
 
-  return (
-    <div ref={rootRef} className="relative size-full" onMouseLeave={() => setLive(false)}>
-      {/* the scene: globe plus its shield. The panels are siblings above it, so moving onto
-          one of them counts as leaving the globe, as in his file */}
-      <div className="absolute inset-0" onPointerEnter={mouseOnly(true)} onPointerLeave={mouseOnly(false)}>
-        <ModelGlobe
-          className="size-full"
-          fit={1.07}
-          cardScale={1}
-          cardScaleCompact={2.75}
-          interactive
-          selected={selected}
-          onToggle={toggleModel}
-          visibleModalities={visible}
-          zoomable={live}
-          hovered={hovered}
-        />
-        <button type="button" className={`${styles.shield} ${live ? styles.shieldOff : ""}`} onClick={() => setLive(true)} tabIndex={live ? -1 : 0}>
-          <span className={styles.shieldPill}>Click to explore</span>
-        </button>
-      </div>
-      <div className={`${styles.ring} ${live ? styles.ringOn : ""}`} aria-hidden="true" />
-
-      {/* ---- selected models ------------------------------------------------ */}
-      <div className={styles.selectedPanel}>
-        <p className={styles.panelLabel}>Selected models</p>
-        <div>
-          {rows.map(({ index, state }) => {
-            const model = SPHERE_MODELS[index]
-            const color = providerColor(model.provider)
-            return (
-              <div
-                key={index}
-                className={`${styles.item} ${state === "entering" ? styles.entering : ""} ${state === "leaving" ? styles.leaving : ""}`}
-                aria-hidden={state === "leaving"}
-              >
-                <div className={styles.itemTop}>
-                  <span className={styles.dot} style={{ background: color }} />
-                  <span className={styles.name}>{model.name}</span>
-                  {model.open && <span className={styles.badge}>OPEN</span>}
-                  <button type="button" className={styles.remove} onClick={() => toggleModel(index)} aria-label={`Remove ${model.name}`}>
-                    &times;
-                  </button>
+  // the two blocks of chrome, rendered once over the sphere (desktop) and once under it (phone)
+  const selectedList: ReactNode = (
+    <>
+      <div>
+        {rows.map(({ index, state }) => {
+          const model = SPHERE_MODELS[index]
+          const color = providerColor(model.provider)
+          return (
+            <div
+              key={index}
+              className={`${styles.item} ${state === "entering" ? styles.entering : ""} ${state === "leaving" ? styles.leaving : ""}`}
+              aria-hidden={state === "leaving"}
+            >
+              <div className={styles.itemTop}>
+                <span className={styles.dot} style={{ background: color }} />
+                <span className={styles.name}>{model.name}</span>
+                {model.open && <span className={styles.badge}>OPEN</span>}
+                <button type="button" className={styles.remove} onClick={() => toggleModel(index)} aria-label={`Remove ${model.name}`}>
+                  &times;
+                </button>
+              </div>
+              <div className={styles.slug}>{modelSlug(model)}</div>
+              <div className={styles.prices}>
+                <div className={styles.price}>
+                  <span className={styles.priceLabel}>IN / 1M</span>
+                  <span className={styles.priceValue}>${model.inPrice}</span>
                 </div>
-                <div className={styles.slug}>{modelSlug(model)}</div>
-                <div className={styles.prices}>
-                  <div className={styles.price}>
-                    <span className={styles.priceLabel}>IN / 1M</span>
-                    <span className={styles.priceValue}>${model.inPrice}</span>
-                  </div>
-                  <div className={styles.price}>
-                    <span className={styles.priceLabel}>OUT / 1M</span>
-                    <span className={styles.priceValue}>${model.outPrice}</span>
-                  </div>
+                <div className={styles.price}>
+                  <span className={styles.priceLabel}>OUT / 1M</span>
+                  <span className={styles.priceValue}>${model.outPrice}</span>
                 </div>
               </div>
-            )
-          })}
-        </div>
-        {selected.length === 0 && <p className={styles.selectedEmpty}>Click any card in the sphere to see its details here.</p>}
-      </div>
-
-      {/* ---- modality filter ---------------------------------------------- */}
-      <div className={`${styles.modalityPanel} ${hovered ? styles.dim : ""}`}>
-        <p className={styles.panelLabel}>Modality</p>
-        {MODALITY_ORDER.map(key => {
-          const on = visible.includes(key)
-          return (
-            <label key={key} className={`${styles.modalityRow} ${on ? "" : styles.disabled}`}>
-              <input type="checkbox" checked={on} onChange={() => toggleModality(key)} />
-              <span className={styles.modalityName}>{key}</span>
-              <span className={styles.modalityCount}>{MODALITY_COUNTS[key]}</span>
-            </label>
+            </div>
           )
         })}
       </div>
+      {selected.length === 0 && (
+        <p className={styles.selectedEmpty}>
+          {touch ? "Tap any card in the sphere to see its details here." : "Click any card in the sphere to see its details here."}
+        </p>
+      )}
+    </>
+  )
 
-      <div className={`${styles.hint} ${hovered ? styles.dim : ""}`} style={{ "--placeholder": 0 } as CSSProperties}>
-        {touch ? "drag to rotate · pinch to zoom · tap a model" : "drag to rotate · scroll to zoom · hover a model"}
+  const modalityRows: ReactNode = MODALITY_ORDER.map(key => {
+    const on = visible.includes(key)
+    return (
+      <label key={key} className={`${styles.modalityRow} ${on ? "" : styles.disabled}`}>
+        <input type="checkbox" checked={on} onChange={() => toggleModality(key)} />
+        <span className={styles.modalityName}>{key}</span>
+        <span className={styles.modalityCount}>{MODALITY_COUNTS[key]}</span>
+      </label>
+    )
+  })
+
+  return (
+    <>
+      <div ref={rootRef} className={`${landing.figure} ${landing.figureSphere}`} onMouseLeave={() => setLive(false)}>
+        {/* the scene: globe plus its shield. The panels are siblings above it, so moving onto
+            one of them counts as leaving the globe, as in his file */}
+        <div className="absolute inset-0" onPointerEnter={mouseOnly(true)} onPointerLeave={mouseOnly(false)}>
+          <ModelGlobe
+            className="size-full"
+            fit={1.07}
+            fitCompact={0.92}
+            cardScale={1}
+            minTilePx={36}
+            interactive
+            selected={selected}
+            onToggle={toggleModel}
+            visibleModalities={visible}
+            zoomable={live}
+            hovered={hovered}
+          />
+          <button type="button" className={`${styles.shield} ${live ? styles.shieldOff : ""}`} onClick={() => setLive(true)} tabIndex={live ? -1 : 0}>
+            <span className={styles.shieldPill}>{touch ? "Tap to explore" : "Click to explore"}</span>
+          </button>
+        </div>
+        <div className={`${styles.ring} ${live ? styles.ringOn : ""}`} aria-hidden="true" />
+
+        {/* ---- desktop chrome, floating over the sphere ---------------------- */}
+        <div className={`${styles.selectedPanel} ${styles.overlayOnly}`}>
+          <p className={styles.panelLabel}>Selected models</p>
+          {selectedList}
+        </div>
+        <div className={`${styles.modalityPanel} ${styles.overlayOnly} ${hovered ? styles.dim : ""}`}>
+          <p className={styles.panelLabel}>Modality</p>
+          {modalityRows}
+        </div>
+        <div className={`${styles.hint} ${hovered ? styles.dim : ""}`}>
+          {touch ? "drag to rotate · pinch to zoom · tap a model" : "drag to rotate · scroll to zoom · hover a model"}
+        </div>
       </div>
-    </div>
+
+      {/* ---- phone chrome, stacked under the sphere ---------------------------- */}
+      <div className={styles.stack}>
+        <div>
+          <p className={styles.panelLabel}>Modality</p>
+          <div className={styles.modalityGrid}>{modalityRows}</div>
+        </div>
+        <div>
+          <p className={styles.panelLabel}>Selected models</p>
+          {selectedList}
+        </div>
+      </div>
+    </>
   )
 }
 
