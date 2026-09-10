@@ -7,7 +7,7 @@ import { AppBar, Slide } from "@mui/material"
 import useScrollTrigger from "@mui/material/useScrollTrigger"
 
 import useCheckViewport from "@/hooks/useCheckViewport"
-import { hasLegacyChrome } from "@/utils"
+import { hasLegacyChrome } from "@/utils/route"
 
 // import Announcement from "./announcement"
 import { navigations } from "./data"

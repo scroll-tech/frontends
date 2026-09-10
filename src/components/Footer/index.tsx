@@ -3,7 +3,8 @@
 import { usePathname } from "next/navigation"
 
 import useHideFooter from "@/hooks/useHideFooter"
-import { hasLegacyChrome, isSepolia } from "@/utils"
+import { isSepolia } from "@/utils/common"
+import { hasLegacyChrome } from "@/utils/route"
 
 import PureFooter from "./PureFooter"
 import Support from "./Support"

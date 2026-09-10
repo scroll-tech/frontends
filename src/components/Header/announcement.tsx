@@ -4,7 +4,7 @@ import Marquee from "react-fast-marquee"
 
 import { Box } from "@mui/material"
 
-import { isSepolia } from "@/utils"
+import { isSepolia } from "@/utils/common"
 
 const Announcement = () => {
   const displayAnnouncement = true

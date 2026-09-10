@@ -1,4 +1,4 @@
-import { isMainnet } from "@/utils"
+import { isMainnet } from "@/utils/common"
 
 export const ETH_SYMBOL = process.env.NEXT_PUBLIC_ETH_SYMBOL
 export const WETH_SYMBOL = "WETH"

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation"
 
-import { isSepolia } from "@/utils"
+import { isSepolia } from "@/utils/common"
 import { genMeta } from "@/utils/route"
 
 export const generateMetadata = genMeta(() => ({

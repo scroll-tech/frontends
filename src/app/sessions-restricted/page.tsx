@@ -4,7 +4,7 @@ import { notFound } from "next/navigation"
 import { Container, Typography } from "@mui/material"
 
 import ScrollySad from "@/assets/images/common/scrolly-sad.png"
-import { isSepolia } from "@/utils"
+import { isSepolia } from "@/utils/common"
 import { genMeta } from "@/utils/route"
 
 export const generateMetadata = genMeta(() => ({

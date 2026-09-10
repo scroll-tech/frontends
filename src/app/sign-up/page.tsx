@@ -1,4 +1,4 @@
-import { genMeta } from "@/utils"
+import { genMeta } from "@/utils/route"
 
 import DitherBackground from "../_components/DitherBackground"
 import LandingNav from "../_components/LandingNav"
