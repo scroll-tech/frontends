@@ -40,24 +40,16 @@ const LandingNav = () => {
           lift is gone and only the shadow answers the pointer — the bar itself never
           moves. Its other movement, a 14px jump the moment you scrolled, was the sticky
           offset not matching the resting one; page.tsx holds that pair now. */}
-      <nav className="flex h-[48px] w-full items-center justify-between rounded-full bg-white pl-[6px] pr-[6px] shadow-[0px_4px_16px_rgba(17,17,17,0.06)] md:pr-[24px] transition-[box-shadow] duration-300 ease-[cubic-bezier(.2,.8,.2,1)] hover:shadow-[0px_12px_28px_rgba(17,17,17,0.10)]">
-        <div className="flex items-center gap-[12px]">
-          <Link
-            href="/"
-            aria-label="Scroll home"
-            onClick={e => handleNavClick(e, "/")}
-            className="flex size-[36px] items-center justify-center rounded-full bg-[#E4E4F4]"
-          >
-            <ScrollMarkSvg className="h-[20px] w-auto" />
-          </Link>
-          <Link
-            href="/"
-            onClick={e => handleNavClick(e, "/")}
-            className="flex h-[32px] items-center justify-center rounded-full bg-[#E4E4F4] px-[14px] text-[14px] font-medium text-black"
-          >
-            Scroll
-          </Link>
-        </div>
+      {/* Glen 2026-09-09 23:54, after Kevin's note that the "Scroll" brandmark looked wrong on
+          the purple badge: "remove purple from nav bar … Move logo and scroll together so they
+          sit closer and evenly spaced". So no #E4E4F4 pills any more — the mark and the word
+          are one lockup, 8 apart, inset from the bar's edge by the same 24 the links keep on
+          the right (16 on the phone, where the burger sits at 6). */}
+      <nav className="flex h-[48px] w-full items-center justify-between rounded-full bg-white pl-[16px] pr-[6px] shadow-[0px_4px_16px_rgba(17,17,17,0.06)] md:pl-[24px] md:pr-[24px] transition-[box-shadow] duration-300 ease-[cubic-bezier(.2,.8,.2,1)] hover:shadow-[0px_12px_28px_rgba(17,17,17,0.10)]">
+        <Link href="/" aria-label="Scroll home" onClick={e => handleNavClick(e, "/")} className="flex items-center gap-[8px]">
+          <ScrollMarkSvg className="h-[20px] w-auto" />
+          <span className="text-[14px] font-medium leading-none text-black">Scroll</span>
+        </Link>
         <div className="hidden items-center gap-[24px] md:flex">
           {NAV_LINKS.map(({ label, href }) => (
             <Link key={label} href={href} onClick={e => handleNavClick(e, href)} className="text-[14px] font-medium text-[#0B192C] hover:opacity-70">
@@ -84,7 +76,7 @@ const LandingNav = () => {
               key={label}
               href={href}
               onClick={e => handleNavClick(e, href)}
-              className="rounded-[16px] px-[16px] py-[10px] text-[14px] font-medium text-[#0B192C] hover:bg-[#E4E4F4]"
+              className="rounded-[16px] px-[16px] py-[10px] text-[14px] font-medium text-[#0B192C] hover:bg-[#F3F3F3]"
             >
               {label}
             </Link>

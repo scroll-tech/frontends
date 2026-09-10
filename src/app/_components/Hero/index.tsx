@@ -7,15 +7,17 @@ import { SlideUp, Typed } from "../motion"
 /**
  * One button, at monad's size (Glen 2026-09-09: "we'll use their button sizing too (only
  * one button)"). Read off monad.com: 48 tall, 12 / 32 padding, radius 100, 18px, 16 between
- * buttons when there are two; on the phone it runs the full width (358 at 390). The border
- * colour, text colour and case stay ours — that is the sizing, not the style.
+ * buttons when there are two; on the phone it runs the full width (358 at 390). The case
+ * stays ours — that is the sizing, not the style. Filled since Glen 2026-09-09 23:54
+ * ("Check It Button, Filled, with the grey color"): the grey is the one the button already
+ * had as its outline, #867B71, with white type; hover goes one step darker.
  */
 const CheckItOut = ({ className = "" }: { className?: string }) => (
   <a
     href={COMPASS_API_URL}
     target="_blank"
     rel="noopener noreferrer"
-    className={`inline-flex h-[48px] w-full items-center justify-center rounded-[100px] border border-solid border-[#867B71] text-[18px] font-semibold leading-normal text-black transition-colors hover:bg-[#F8F8F8] md:w-auto md:px-[32px] ${className}`}
+    className={`inline-flex h-[48px] w-full items-center justify-center rounded-[100px] border border-solid border-[#867B71] bg-[#867B71] text-[18px] font-semibold leading-normal text-white transition-colors hover:border-[#6F655C] hover:bg-[#6F655C] md:w-auto md:px-[32px] ${className}`}
   >
     Check it out
   </a>
