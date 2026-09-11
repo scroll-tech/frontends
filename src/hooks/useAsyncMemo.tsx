@@ -1,6 +1,6 @@
 import { DependencyList, useEffect, useRef, useState } from "react"
 
-import { shallowEquals } from "@/utils"
+import { shallowEquals } from "@/utils/common"
 
 function useAsyncMemo<T>(factory: () => Promise<T>, deps: DependencyList | undefined): T | undefined {
   const [res, setRes] = useState<T>()

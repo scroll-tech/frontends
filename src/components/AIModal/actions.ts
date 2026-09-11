@@ -2,7 +2,7 @@
 
 import OpenAI from "openai"
 
-import { AI_PROMPT } from "@/constants"
+import { AI_PROMPT } from "@/constants/ai-assistant"
 
 const openai = new OpenAI({
   apiKey: process.env.AI_KEY as string,

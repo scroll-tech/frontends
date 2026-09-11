@@ -44,7 +44,9 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: "/(.*)",
+        // everything but /graphics: the negative lookahead keeps exactly one rule
+        // matching, so the two X-Frame-Options values can never both be sent
+        source: "/((?!graphics/).*)",
         headers: [
           {
             key: "X-Frame-Options",
@@ -53,6 +55,22 @@ const nextConfig = {
           {
             key: "Content-Security-Policy",
             value: "frame-ancestors 'none'",
+          },
+        ],
+      },
+      {
+        // Glen ships the landing animations as standalone HTML that drives itself
+        // with rAF, so they run in a same-origin iframe rather than being ported.
+        // Framing them needs SAMEORIGIN; they are decorative and read no data.
+        source: "/graphics/:path*",
+        headers: [
+          {
+            key: "X-Frame-Options",
+            value: "SAMEORIGIN",
+          },
+          {
+            key: "Content-Security-Policy",
+            value: "frame-ancestors 'self'",
           },
         ],
       },
@@ -113,20 +131,28 @@ const nextConfig = {
       { source: "/research/:path*", destination: "/technology/:path*", permanent: true }    ]
   },
   async rewrites() {
-    return [
-      {
-        source: '/gov-docs/:path*',
-        destination: 'https://scroll-governance-documentation.vercel.app/:path*'
-      },
-      {
-        source: '/technology',
-        destination: 'https://scroll-research.vercel.app/technology'
-      },
-      {
-        source: '/technology/:path*',
-        destination: 'https://scroll-research.vercel.app/technology/:path*'
-      }
-    ]
+    return {
+      beforeFiles: [
+        // The front page is Glen's design file, served as it is: scripts/build-landing.mjs
+        // turns design/landing.html into public/landing.html (links, waitlist endpoint,
+        // <head> metadata) and this rewrite hands "/" to it before any app route.
+        { source: '/', destination: '/landing.html' },
+      ],
+      afterFiles: [
+        {
+          source: '/gov-docs/:path*',
+          destination: 'https://scroll-governance-documentation.vercel.app/:path*'
+        },
+        {
+          source: '/technology',
+          destination: 'https://scroll-research.vercel.app/technology'
+        },
+        {
+          source: '/technology/:path*',
+          destination: 'https://scroll-research.vercel.app/technology/:path*'
+        }
+      ],
+    }
   },
   // eslint-disable-next-line
   webpack: (config, { buildId, dev, isServer, defaultLoaders, nextRuntime, webpack }) => {

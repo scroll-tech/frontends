@@ -5,13 +5,10 @@ import { Box, Container, Fade, Paper, Popper, Stack } from "@mui/material"
 
 import ScrollLink from "@/components/Link"
 import Logo from "@/components/ScrollLogo"
-import WalletToolkit from "@/components/WalletToolkit"
 import useCheckViewport from "@/hooks/useCheckViewport"
-import useShowWalletConnector from "@/hooks/useShowWalletToolkit"
-import { isSepolia } from "@/utils"
+import { isSepolia } from "@/utils/common"
 
 import AskAI from "./AskAI"
-import GasPriceViewer from "./GasPriceViewer"
 import MenuItem from "./MenuItem"
 import NavbarItem from "./NavbarItem"
 import { navigations } from "./data"
@@ -25,8 +22,6 @@ const DesktopHeader = ({ currentMenu }) => {
   const dark = useCheckTheme()
 
   const [hoveringNavbarItemKey, setHoveringNavbarItemKey] = useState("")
-
-  const showWalletConnector = useShowWalletConnector()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
@@ -167,8 +162,6 @@ const DesktopHeader = ({ currentMenu }) => {
             ))}
           </Stack>
           <Stack direction="row" spacing={["0.8rem"]} sx={{ justifySelf: "flex-end" }} alignItems="center">
-            {!isSepolia && <GasPriceViewer></GasPriceViewer>}
-            {showWalletConnector && <WalletToolkit dark={dark}></WalletToolkit>}
             {!isSepolia && <AskAI></AskAI>}
           </Stack>
         </Box>

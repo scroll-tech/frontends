@@ -1,5 +1,5 @@
 import { BRIDGE_URL, LEVEL_UP_URL, SCROLL_OPEN_URL, SESSIONS_URL } from "@/constants/link"
-import { isSepolia } from "@/utils"
+import { isSepolia } from "@/utils/common"
 
 interface MenuItem {
   rootKey: string

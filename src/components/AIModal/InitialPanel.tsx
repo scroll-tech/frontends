@@ -7,7 +7,7 @@ import { Stack, Typography } from "@mui/material"
 
 import ScrollyCool from "@/assets/images/common/scrolly-cool.png"
 import EnterSvg from "@/assets/svgs/header/enter.svg"
-import { AI_QUESTION_LIST } from "@/constants"
+import { AI_QUESTION_LIST } from "@/constants/ai-assistant"
 import useGlobalStore from "@/stores/globalStore"
 
 const InitialPanel = props => {

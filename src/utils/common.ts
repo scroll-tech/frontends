@@ -1,4 +1,3 @@
-import { isHexString } from "ethers"
 import find from "lodash/find"
 import { DependencyList } from "react"
 
@@ -87,7 +86,7 @@ export const formatAmount = (value: number | string): string => {
 export function isValidTransactionHash(txHash: string): boolean {
   // A valid transaction hash is a hex string of length 66 characters (including the '0x' prefix)
   const isValidLength = txHash.length === 66
-  return isValidLength && isHexString(txHash)
+  return isValidLength && /^0x[0-9a-fA-F]*$/.test(txHash)
 }
 
 export const testAsyncFunc = value => {

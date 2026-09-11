@@ -17,12 +17,13 @@ const ScrollToTop: React.FC = () => {
   const pathname = usePathname()
   const [visible, setVisible] = useState<boolean>(false)
 
+  // the redesigned landing pages use a minimal circle-arrow button instead of the orange fab
+  const isCompassRoute = ["/", "/privacy-policy", "/terms-of-service", "/app-privacy-policy"].includes(pathname)
+
   const checkScrollPosition = () => {
-    if (window.pageYOffset > 300) {
-      setVisible(true)
-    } else {
-      setVisible(false)
-    }
+    // Glen's scroll.html (2026-09-10) shows its back-to-top once 80% of a screen has gone by
+    const threshold = isCompassRoute ? window.innerHeight * 0.8 : 300
+    setVisible(window.scrollY > threshold)
   }
 
   useEffect(() => {
@@ -39,26 +40,38 @@ const ScrollToTop: React.FC = () => {
     })
   }
 
-  // the redesigned landing pages use a minimal circle-arrow button instead of the orange fab
-  const isCompassRoute = ["/", "/privacy-policy", "/terms-of-service", "/app-privacy-policy"].includes(pathname)
-
-  if (!visible) {
-    return null
-  }
-
   if (isCompassRoute) {
+    // Glen's back-to-top (scroll.html, 2026-09-10): a 44px frosted disc at the corner that
+    // fades and rises in once 80% of a screen has gone by, instead of popping in and out
     return (
       <button
         type="button"
-        aria-label="scroll to top"
+        aria-label="Back to top"
+        aria-hidden={!visible}
+        tabIndex={visible ? 0 : -1}
         onClick={scrollToTop}
-        className="fixed bottom-[30px] right-[30px] z-[100] flex size-[40px] items-center justify-center rounded-full border border-solid border-[#959595] bg-white text-[#959595] shadow-[0px_4px_12px_rgba(0,0,0,0.06)] transition-colors hover:border-black hover:text-black"
+        className={`fixed bottom-[clamp(16px,3vw,32px)] right-[clamp(16px,3vw,32px)] z-[55] grid size-[44px] place-items-center rounded-full border border-solid border-[#E5E1DC] bg-white/90 text-[#4A4845] shadow-[0_8px_26px_-12px_rgba(46,27,112,0.35)] backdrop-blur-[14px] transition-[opacity,transform,visibility,color] duration-[450ms] ease-[cubic-bezier(.22,.61,.36,1)] hover:text-[#0A0A0A] ${
+          visible ? "translate-y-0 opacity-100" : "invisible translate-y-[10px] opacity-0"
+        }`}
       >
-        <svg width="14" height="14" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M6 9.5004V2.4996M2.4996 6L6 2.4996L9.5004 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M8 13V3M3.5 7.5 8 3l4.5 4.5" />
         </svg>
       </button>
     )
+  }
+
+  if (!visible) {
+    return null
   }
 
   return (
