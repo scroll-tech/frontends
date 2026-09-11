@@ -24,19 +24,33 @@ const once = (label, from, to) => {
   html = html.replace(from, to)
 }
 
-// ---- links his prototype leaves as "#" or guesses -------------------------------------
-once("privacy policy link", '<a href="#">Privacy policy</a>', '<a href="/privacy-policy">Privacy policy</a>')
-once("app privacy policy link", '<a href="#">App privacy policy</a>', '<a href="/app-privacy-policy">App privacy policy</a>')
-once("terms link", '<a href="#">Terms of service</a>', '<a href="/terms-of-service">Terms of service</a>')
-once("white paper link", 'href="/scroll-whitepaper.pdf"', 'href="/files/whitepaper.pdf"')
-
-// ---- the waitlist form: his submitEmail only pretends; this posts to Loops ------------
 const link = fs.readFileSync(path.join(root, "src", "constants", "link.ts"), "utf8")
 const constant = name => {
   const m = link.match(new RegExp(`export const ${name} = "([^"]+)"`))
   if (!m) throw new Error(`[landing] ${name} not found in src/constants/link.ts`)
   return m[1]
 }
+
+// ---- links his prototype leaves as "#" or guesses -------------------------------------
+once("privacy policy link", '<a href="#">Privacy policy</a>', '<a href="/privacy-policy">Privacy policy</a>')
+once("app privacy policy link", '<a href="#">App privacy policy</a>', '<a href="/app-privacy-policy">App privacy policy</a>')
+once("terms link", '<a href="#">Terms of service</a>', '<a href="/terms-of-service">Terms of service</a>')
+once("white paper link", 'href="/scroll-whitepaper.pdf"', 'href="/files/whitepaper.pdf"')
+
+// ---- requested on 2026-09-11 after the linkage review; drop each line once his file
+// carries the change itself (the script will say so: the anchor stops matching) ----
+// the Compass button on the Compass API panel goes to the Compass site, not to the section above
+const compassUrl = constant("COMPASS_API_URL")
+once(
+  "compass api → compass site",
+  '<a class="btn" href="#compass" data-roll>Compass</a>',
+  `<a class="btn" href="${compassUrl}" target="_blank" rel="noopener" data-roll>Compass</a>`,
+)
+// title case on the two headings ("to" stays lower-case); the <title> is his and unchanged
+once("headline caps", 'Your gateway to <span class="spark">frontier models</span>', 'Your Gateway to <span class="spark">Frontier Models</span>')
+once("products title caps", '<h2 class="section-title reveal">Scroll products</h2>', '<h2 class="section-title reveal">Scroll Products</h2>')
+
+// ---- the waitlist form: his submitEmail only pretends; this posts to Loops ------------
 const formId = constant("LOOPS_FORM_ID")
 const listId = constant("LOOPS_MAILING_LIST_ID")
 
