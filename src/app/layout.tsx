@@ -13,7 +13,6 @@ import GlobalComponents from "@/components/GlobalComponents"
 import ScrollToTop from "@/components/ScrollToTop"
 import WebVitals from "@/components/WebVitals"
 import { ROOT_METADATA } from "@/constants/route"
-import RainbowProvider from "@/contexts/RainbowProvider"
 import { VersionChecker } from "@/hooks/useVersionCheck"
 import ScrollThemeProvider from "@/theme"
 
@@ -67,11 +66,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <InitColorSchemeScript attribute="class"></InitColorSchemeScript>
         <AppRouterCacheProvider options={{ key: "css" }}>
           <ScrollThemeProvider>
+            {/* No wallet provider here any more: every route that needed one (bridge, canvas,
+                developer-nft, …) was taken off the site in 2025-08 (src/app/_*), and wrapping the
+                whole site in RainbowKit still cost every page ~530 KB of compressed JS and a
+                dozen WalletConnect requests on load. The provider and its hooks stay under
+                src/contexts/RainbowProvider for the day a wallet route comes back — mount it in
+                that route's own layout then. (Zhengqi 2026-09-10) */}
             <VersionChecker>
-              <RainbowProvider>
-                {children}
-                <GlobalComponents></GlobalComponents>
-              </RainbowProvider>
+              {children}
+              <GlobalComponents></GlobalComponents>
             </VersionChecker>
             <ScrollToTop />
           </ScrollThemeProvider>

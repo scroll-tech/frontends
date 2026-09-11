@@ -1,98 +1,58 @@
-"use client"
+import Link from "next/link"
 
-import { usePathname, useRouter } from "next/navigation"
-import { makeStyles } from "tss-react/mui"
+import ScrollMarkSvg from "@/assets/svgs/landingpage/scroll-mark.svg"
+import { genMeta } from "@/utils/route"
 
-import { Button } from "@mui/material"
+import Button from "./_components/Button"
+import DitherBackground from "./_components/DitherBackground"
+import LandingNav from "./_components/LandingNav"
+import { CardShell } from "./_components/WaitlistCard"
+import { instrumentSerif, inter, jetbrainsMono } from "./_components/fonts"
+import styles from "./_components/landing.module.css"
 
-import useCheckTheme from "@/components/Header/useCheckTheme"
+export const generateMetadata = genMeta(() => ({
+  titleSuffix: "Page not found",
+}))
 
-const useStyles = makeStyles<any>()((theme, { dark }) => {
-  return {
-    wrapper: {
-      width: "100%",
-      height: "calc(100vh - 44.6rem)",
-      minHeight: "30rem",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      [theme.breakpoints.down("sm")]: {
-        width: "100%",
-        height: "31rem",
-        padding: "0 3rem",
-      },
-    },
-
-    content: {
-      display: "grid",
-      width: "70rem",
-      gridTemplateColumns: "min-content 1fr",
-      gridTemplateRows: "repeat(2, min-content)",
-      gridColumnGap: "2.6rem",
-      gridRowGap: "4rem",
-      alignItems: "center",
-      color: dark ? theme.palette.primary.contrastText : theme.palette.text.primary,
-      [theme.breakpoints.down("sm")]: {
-        gridTemplateColumns: "1fr",
-        gridTemplateRows: "repeat(3, min-content)",
-        gridRowGap: "1rem",
-      },
-    },
-    status: {
-      fontSize: "10rem",
-      fontWeight: 600,
-      lineHeight: 1,
-      letterSpacing: "-4px",
-      [theme.breakpoints.down("sm")]: {
-        fontSize: "6rem",
-      },
-    },
-    message: {
-      fontSize: "3.2rem",
-      letterSpacing: "-1.4px",
-      fontWeight: 500,
-      [theme.breakpoints.down("sm")]: {
-        fontSize: "1.4rem",
-        letterSpacing: "unset",
-      },
-    },
-    action: {
-      justifySelf: "center",
-      gridColumn: "span 2",
-      [theme.breakpoints.down("sm")]: {
-        gridColumn: "unset",
-        justifySelf: "flex-start",
-        marginTop: "3.2rem",
-      },
-    },
-  }
-})
-
-const NotFound = () => {
-  const dark = useCheckTheme()
-  const { classes } = useStyles({ dark })
-  const pathname = usePathname()
-
-  const router = useRouter()
-
-  const handleReturnHome = () => {
-    if (pathname!.startsWith("/alpha")) {
-      router.push("/alpha/")
-      return
-    }
-    router.push("/")
-  }
-  return (
-    <div className={classes.wrapper}>
-      <div className={classes.content}>
-        <span className={classes.status}>404</span>
-        <span className={classes.message}>Sorry, the page you are looking for is not found</span>
-        <Button className={classes.action} variant="contained" onClick={handleReturnHome}>
-          Home
-        </Button>
-      </div>
+/**
+ * The 404, dressed like /sign-up: Glen's tokens, type and dither background (scroll.html,
+ * 2026-09-10), the nav as the folded pill, and his login card in the middle carrying the
+ * message — the same shell the waitlist card uses, so a dead link lands on something that
+ * looks like the rest of the site.
+ */
+const NotFound = () => (
+  <div
+    className={`${inter.className} ${instrumentSerif.variable} ${jetbrainsMono.variable} ${styles.theme} relative isolate flex min-h-screen w-full flex-col items-center overflow-x-clip`}
+  >
+    <DitherBackground />
+    <div className="w-full px-[16px] pt-[12px]">
+      <LandingNav />
     </div>
-  )
-}
+    <main className="flex w-full flex-1 items-center justify-center px-[16px] py-[64px]">
+      <CardShell
+        foot={
+          <>
+            <p>If a link brought you here, it is out of date.</p>
+            <p>
+              <Link href="/">Back to Scroll.</Link>
+            </p>
+          </>
+        }
+      >
+        <div className={styles.cardHead}>
+          <ScrollMarkSvg className={styles.cardMark} aria-hidden="true" />
+          <span className={styles.panelNum}>ERROR 404</span>
+          <h1 className={styles.cardTitle}>Page not found</h1>
+        </div>
+        <p className={styles.cardText}>That page doesn&apos;t exist, or it has moved.</p>
+        <div className="self-center">
+          <Button href="/" solid>
+            Go home
+          </Button>
+        </div>
+      </CardShell>
+    </main>
+  </div>
+)
 
 export default NotFound

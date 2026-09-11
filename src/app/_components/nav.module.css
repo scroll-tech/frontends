@@ -1,0 +1,118 @@
+/* Glen's nav (scroll.html, 2026-09-10). On the landing page the bar starts open — the
+   full content width, 76 tall, no surface, the brand at one edge and the links at the
+   other — and once the page has scrolled 24px it folds into a 700px frosted pill, 54 tall,
+   sitting 12 below the top. The wrapper's height never changes, so the page under it
+   does not move; only the pill inside it does. Phones skip the open state: the pill is
+   there from the start, 56 tall with a 20px radius. */
+.wrap {
+  --gutter: 0px;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.floating {
+  --gutter: clamp(16px, 4vw, 48px);
+  height: 68px;
+  padding-top: 12px;
+  transition: padding-top 0.5s var(--ease);
+}
+
+.nav {
+  pointer-events: auto;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: min(100% - var(--gutter) * 2, 700px);
+  height: 56px;
+  padding: 0 16px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.86);
+  -webkit-backdrop-filter: saturate(180%) blur(18px);
+  backdrop-filter: saturate(180%) blur(18px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 6px 28px -12px rgba(46, 27, 112, 0.22);
+  transition:
+    width 0.55s var(--ease),
+    height 0.45s var(--ease),
+    padding 0.45s var(--ease),
+    border-radius 0.45s var(--ease),
+    background-color 0.45s var(--ease),
+    border-color 0.45s var(--ease),
+    box-shadow 0.55s var(--ease),
+    backdrop-filter 0.45s var(--ease);
+}
+
+@media (min-width: 900px) {
+  .floating {
+    height: 76px;
+  }
+
+  .nav {
+    height: 54px;
+    padding: 0 24px;
+    border-radius: 999px;
+  }
+
+  .floating.open {
+    padding-top: 0;
+  }
+
+  .floating.open .nav {
+    width: min(100% - var(--gutter) * 2, 1560px);
+    height: 76px;
+    padding: 0;
+    background: transparent;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    border-color: transparent;
+    box-shadow: none;
+  }
+}
+
+/* the word beside the mark, on a faint wash of the ink */
+.brandName {
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: -0.01em;
+  line-height: 1.55;
+  background: rgba(10, 10, 10, 0.055);
+  color: #0a0a0a;
+  padding: 2px 12px;
+  border-radius: 999px;
+}
+
+/* a hairline grows under a link from the left on hover */
+.link {
+  position: relative;
+  padding-block: 8px;
+  transition: color 0.25s var(--ease);
+}
+
+.link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 2px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s var(--ease);
+}
+
+.link:hover::after {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floating,
+  .nav,
+  .link,
+  .link::after {
+    transition: none;
+  }
+}

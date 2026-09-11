@@ -1,6 +1,6 @@
 import { usePathname } from "next/navigation"
 
-import { checkMatchPath } from "@/utils"
+import { checkMatchPath } from "@/utils/route"
 
 const useMatch = pathReg => {
   const pathname = usePathname()

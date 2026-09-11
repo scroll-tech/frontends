@@ -11,7 +11,7 @@ import AIBot from "@/assets/images/common/ai-bot.png"
 import CloseSvg from "@/assets/svgs/header/close.svg"
 import useCheckViewport from "@/hooks/useCheckViewport"
 import useGlobalStore from "@/stores/globalStore"
-import { lockBodyScroll } from "@/utils"
+import { lockBodyScroll } from "@/utils/dom"
 
 import AIInput from "./AIInput"
 import FeedbackAlert from "./FeedbackAlert"

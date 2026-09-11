@@ -48,3 +48,6 @@ next-env.d.ts
 
 # Sentry Config File
 .env.sentry-build-plugin
+
+# built from design/landing.html by scripts/build-landing.mjs
+/public/landing.html

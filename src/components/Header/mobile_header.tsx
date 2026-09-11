@@ -5,13 +5,9 @@ import { Box, Collapse, List, Stack } from "@mui/material"
 import { styled } from "@mui/system"
 
 import Link from "@/components/Link"
-import WalletToolkit from "@/components/WalletToolkit"
-import useShowWalletConnector from "@/hooks/useShowWalletToolkit"
-import { isSepolia } from "@/utils"
 
 import Logo from "../ScrollLogo"
 import MenuItem from "./MenuItem"
-import MobileGasPriceViewer from "./MobileGasPriceViewer"
 import MobileNavbarItem from "./MobileNavBarItem"
 import { navigations } from "./data"
 import useCheckCustomNavBarBg from "./useCheckCustomNavBarBg"
@@ -27,8 +23,6 @@ const Bar = styled<any>("div", { shouldForwardProp: prop => prop !== "dark" })((
 
 const MobileHeader = ({ currentMenu }) => {
   useCheckCustomNavBarBg()
-  const showWalletConnector = useShowWalletConnector()
-
   const dark = useCheckTheme()
   const [open, setOpen] = useState(false)
   const [activeCollapse, setActiveCollapse] = useState("")
@@ -142,8 +136,6 @@ const MobileHeader = ({ currentMenu }) => {
           <Logo light={dark} />
         </Link>
         <Stack direction="row" spacing="1.6rem" alignItems="center">
-          {showWalletConnector && <WalletToolkit dark={dark}></WalletToolkit>}
-
           <Box
             sx={{
               display: "inline-block",
@@ -175,10 +167,7 @@ const MobileHeader = ({ currentMenu }) => {
             overflowY: "auto",
           }}
         >
-          <Box sx={{ margin: "-0.8rem 2rem 0" }}>
-            {renderList()}
-            {!isSepolia && <MobileGasPriceViewer dark={dark}></MobileGasPriceViewer>}
-          </Box>
+          <Box sx={{ margin: "-0.8rem 2rem 0" }}>{renderList()}</Box>
         </Box>
       )}
     </Stack>

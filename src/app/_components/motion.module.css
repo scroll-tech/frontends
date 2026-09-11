@@ -1,0 +1,141 @@
+/* The design's reveal (Glen's scroll.html, 2026-09-10): fade in from a 14px blur and a
+   short rise, and replay in both directions — an element that leaves the viewport blurs
+   out again. Timings and the soft ease are his. */
+.reveal {
+  --ease-soft: cubic-bezier(0.16, 0.84, 0.44, 1);
+  opacity: 0;
+  filter: blur(14px);
+  transform: translateY(14px);
+  transition:
+    opacity 0.95s var(--ease-soft) var(--d, 0ms),
+    filter 1.05s var(--ease-soft) var(--d, 0ms),
+    transform 1s var(--ease-soft) var(--d, 0ms);
+}
+
+/* `none` rather than his blur(0): a zero blur still leaves the text under a filter, and
+   Chrome then rasterises the headline a touch soft */
+.reveal.in {
+  opacity: 1;
+  filter: none;
+  transform: none;
+}
+
+/* panels fade and slide in from the right but never blur — they have to stay legible */
+.plain {
+  filter: none;
+  transform: translate3d(34px, 18px, 0);
+}
+
+.plain.in {
+  filter: none;
+  transform: none;
+}
+
+@media (max-width: 999px) {
+  .plain {
+    transform: translate3d(0, 18px, 0);
+  }
+}
+
+/* the headline's words: each clipped to its own line and lifted in. The clip box is padded
+   past the line box (and pulled back with negative margins, so the layout is untouched) to
+   keep ascenders, descenders and the serif's overhangs from being cut. */
+.wordMask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding: 0.18em 0.08em 0.22em;
+  margin: -0.18em -0.08em -0.22em;
+}
+
+.word {
+  --ease-soft: cubic-bezier(0.16, 0.84, 0.44, 1);
+  display: inline-block;
+  opacity: 0;
+  filter: blur(6px);
+  transform: translateY(120%);
+  transition:
+    transform 0.9s var(--ease-soft) var(--d, 0ms),
+    filter 0.7s var(--ease-soft) var(--d, 0ms),
+    opacity 0.6s var(--ease-soft) var(--d, 0ms);
+  will-change: transform, filter, opacity;
+}
+
+.wordIn {
+  opacity: 1;
+  filter: none;
+  transform: none;
+  will-change: auto;
+}
+
+/* the typed sub-head's caret, blinking while it types — absolutely positioned off the
+   right edge of the last typed letter, so it is no part of the line's width */
+.caret {
+  position: absolute;
+  left: 100%;
+  top: 0.08em;
+  width: 1px;
+  height: 0.95em;
+  margin-left: 2px;
+  background: currentColor;
+  animation: caret 0.75s steps(1) infinite;
+}
+
+@keyframes caret {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* the product sheets lift on hover; on the phone, where there is no hover, they lift as
+   they scroll into view instead (`.lifted`, toggled by Lift) */
+.lift {
+  transition:
+    transform 0.85s cubic-bezier(0.16, 0.84, 0.44, 1),
+    box-shadow 0.85s cubic-bezier(0.16, 0.84, 0.44, 1);
+  will-change: transform;
+}
+
+@media (hover: hover) and (min-width: 900px) {
+  .lift:hover {
+    transform: translateY(-8px) scale(1.006);
+    box-shadow:
+      0 4px 10px rgba(46, 27, 112, 0.04),
+      0 40px 80px -40px rgba(46, 27, 112, 0.3);
+  }
+}
+
+@media (max-width: 899px) {
+  .lift.lifted {
+    transform: translateY(-6px) scale(1.004);
+    box-shadow:
+      0 4px 10px rgba(46, 27, 112, 0.04),
+      0 34px 70px -40px rgba(46, 27, 112, 0.28);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .word {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    transition: none;
+  }
+
+  .caret {
+    animation: none;
+  }
+
+  .lift,
+  .lift:hover,
+  .lift.lifted {
+    transition: none;
+    transform: none;
+  }
+}

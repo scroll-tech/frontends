@@ -1,0 +1,39 @@
+/* Glen's footer ridge (scroll.html, 2026-09-10): eleven columns of six violets, dark at
+   the bottom, blurred into one soft hill that rises out of the bottom of the page as you
+   pull the last stretch of scroll. FooterRidge drives the rise; the footer's overflow clips
+   whatever is still below its edge. */
+.bands {
+  position: absolute;
+  left: -6%;
+  right: -6%;
+  bottom: 0;
+  height: clamp(260px, 42vh, 460px);
+  display: flex;
+  align-items: flex-end;
+  filter: blur(20px);
+  transform: translate3d(0, 100%, 0);
+  will-change: transform;
+  pointer-events: none;
+  opacity: 0.9;
+}
+
+.col {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+  transform: translate3d(0, var(--drop, 0%), 0);
+}
+
+.col > span {
+  display: block;
+  width: 100%;
+  flex: 1 1 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bands {
+    transform: translate3d(0, 22%, 0);
+  }
+}
