@@ -46,6 +46,18 @@ once(
   `<a class="btn" href="${compassUrl}" target="_blank" rel="noopener" data-roll>Compass</a>`,
 )
 
+// ---- the connect chain on the Compass API panel: the shadow under its cards was clipped
+// (Glen's screenshot, 2026-09-11 21:25). Cause: the iframe's demo <body> has min-height:100vh
+// plus 24px padding with the default content-box sizing, so it is 48px taller and wider than
+// the iframe and the centred SVG sits 24px too far down and right. border-box keeps the body
+// the size of the iframe; the 24px padding then gives the drop-shadow its room. His viewBox
+// and the graphic's scale are untouched. The strings are HTML-escaped (srcdoc attribute). ----
+once(
+  "connect chain body sizing",
+  "body {\n    margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px;\n    background: transparent;   /* the component paints no background of its own */\n    font-family: ui-sans-serif, -apple-system, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif;\n  }",
+  "body {\n    margin: 0; min-height: 100vh; box-sizing: border-box; display: grid; place-items: center; padding: 24px;\n    background: transparent;   /* the component paints no background of its own */\n    font-family: ui-sans-serif, -apple-system, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif;\n  }",
+)
+
 // ---- the waitlist form: his submitEmail only pretends; this posts to Loops ------------
 const formId = constant("LOOPS_FORM_ID")
 const listId = constant("LOOPS_MAILING_LIST_ID")
