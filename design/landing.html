@@ -119,6 +119,7 @@ ol,ul{margin:0;padding:0;list-style:none}
   font-size:clamp(0.95rem, 1.4vw, 1.0625rem);
   max-width:min(100%, 620px);
   margin-inline:auto;
+  text-wrap:balance;   /* redistributes the wrap evenly — no stray orphan word */
 }
 .lede--type{min-height:1.6em}
 @media (max-width:560px){.lede--type{min-height:3.2em}}
@@ -437,7 +438,7 @@ ol,ul{margin:0;padding:0;list-style:none}
   color:var(--ink-4);transition:color .4s var(--ease);
 }
 .rail__name{
-  font-family:var(--mono);font-size:1.0625rem;font-weight:500;
+  font-family:var(--serif);font-size:1.375rem;font-weight:400;
   color:var(--ink-4);transition:color .4s var(--ease);
 }
 .rail__desc{
@@ -450,7 +451,7 @@ ol,ul{margin:0;padding:0;list-style:none}
 .rail__item.is-active .rail__num{color:var(--ink-3)}
 .rail__item.is-active .rail__desc{max-height:4em;opacity:1;margin-top:var(--s2)}
 
-.panels{display:flex;flex-direction:column;gap:clamp(48px, 9vh, 112px);min-width:0}
+.panels{display:flex;flex-direction:column;gap:clamp(64px, 12vh, 128px);min-width:0}
 .panel,.figure,.api-stack{min-width:0}
 .panel{
   background:var(--surface);
@@ -462,7 +463,7 @@ ol,ul{margin:0;padding:0;list-style:none}
 }
 .panel__head{display:none;flex-direction:column;gap:var(--s1)}
 .panel__num{font-family:var(--mono);font-size:0.6875rem;letter-spacing:.14em;color:var(--ink-4)}
-.panel__name{font-family:var(--mono);font-size:1.0625rem;font-weight:500}
+.panel__name{font-family:var(--serif);font-size:1.5rem;font-weight:400}
 .panel__desc{font-size:0.8125rem;color:var(--ink-3)}
 .panel__foot{
   display:flex;align-items:center;justify-content:space-between;
@@ -680,7 +681,7 @@ ol,ul{margin:0;padding:0;list-style:none}
     </div>
 
     <div class="container hero__inner">
-      <h1 class="display reveal" style="--d:120ms">Your gateway to <span class="spark">frontier models</span></h1>
+      <h1 class="display reveal" style="--d:120ms">Your Gateway to <span class="spark">Frontier Models</span></h1>
       <p class="lede lede--type" id="heroLede">Switch between 30+ providers through a single unified interface.</p>
       <div class="hero__actions reveal" style="--d:320ms">
         <a class="btn btn--solid" href="#products" data-roll>Check it out</a>
@@ -1623,7 +1624,7 @@ ol,ul{margin:0;padding:0;list-style:none}
   <!-- ============ PRODUCTS ============ -->
   <section class="products" id="products">
     <div class="container products__head">
-      <h2 class="section-title reveal">Scroll products</h2>
+      <h2 class="section-title reveal">Scroll Products</h2>
       <p class="lede reveal" style="--d:120ms;margin-top:var(--s4)">An app, an API and a box on your desk. Same keys, same models, same proofs.</p>
     </div>
 
@@ -2689,7 +2690,7 @@ animate();
           </div>
           <div class="panel__foot">
             <p class="panel__note">One key. Every provider. No prompts stored.</p>
-            <a class="btn" href="#compass" data-roll>Compass</a>
+            <a class="btn" href="index.html" data-roll>Compass</a>
           </div>
         </article>
 
