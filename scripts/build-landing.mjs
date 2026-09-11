@@ -72,7 +72,11 @@ html = html.slice(0, fnStart) + submit + html.slice(fnEnd + 2)
 
 // ---- <head>: what the Next metadata used to add for "/" ------------------------------
 const site = (process.env.NEXT_PUBLIC_FRONTENDS_URL || "https://scroll.io").replace(/\/$/, "")
-const description = "Native zkEVM Layer 2 for Ethereum"
+// his sub-head, read from the file so it follows his copy (Zhengqi 2026-09-11: the old
+// "Native zkEVM Layer 2 for Ethereum" no longer describes the page)
+const subhead = html.match(/<p class="lede lede--type" id="heroLede">([^<]+)<\/p>/)?.[1]?.trim()
+if (!subhead) throw new Error("[landing] hero sub-head not found for the meta description")
+const description = subhead.replace(/"/g, "&quot;")
 const title = (html.match(/<title>([^<]*)<\/title>/) || [])[1] || "Scroll"
 const head = [
   `<meta name="description" content="${description}">`,
