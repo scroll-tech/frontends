@@ -12,8 +12,8 @@ import { resolveAnchor, smoothScrollTo, smoothScrollToTop } from "./smoothScroll
 const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "Compass", href: "/#compass" },
-  { label: "ZK API keys", href: "/#compass-api" },
-  { label: "AI hardware", href: "/#ai-hardware" },
+  { label: "ZK API keys", href: "/#api" },
+  { label: "AI hardware", href: "/#hardware" },
 ]
 
 /** true once the page has scrolled past `threshold`; read on a frame, not on every event */

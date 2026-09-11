@@ -131,20 +131,28 @@ const nextConfig = {
       { source: "/research/:path*", destination: "/technology/:path*", permanent: true }    ]
   },
   async rewrites() {
-    return [
-      {
-        source: '/gov-docs/:path*',
-        destination: 'https://scroll-governance-documentation.vercel.app/:path*'
-      },
-      {
-        source: '/technology',
-        destination: 'https://scroll-research.vercel.app/technology'
-      },
-      {
-        source: '/technology/:path*',
-        destination: 'https://scroll-research.vercel.app/technology/:path*'
-      }
-    ]
+    return {
+      beforeFiles: [
+        // The front page is Glen's design file, served as it is: scripts/build-landing.mjs
+        // turns design/landing.html into public/landing.html (links, waitlist endpoint,
+        // <head> metadata) and this rewrite hands "/" to it before any app route.
+        { source: '/', destination: '/landing.html' },
+      ],
+      afterFiles: [
+        {
+          source: '/gov-docs/:path*',
+          destination: 'https://scroll-governance-documentation.vercel.app/:path*'
+        },
+        {
+          source: '/technology',
+          destination: 'https://scroll-research.vercel.app/technology'
+        },
+        {
+          source: '/technology/:path*',
+          destination: 'https://scroll-research.vercel.app/technology/:path*'
+        }
+      ],
+    }
   },
   // eslint-disable-next-line
   webpack: (config, { buildId, dev, isServer, defaultLoaders, nextRuntime, webpack }) => {

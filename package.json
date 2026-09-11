@@ -4,13 +4,16 @@
   "private": false,
   "license": "MIT",
   "scripts": {
+    "predev": "node scripts/build-landing.mjs",
     "dev": "next dev",
+    "prebuild": "node scripts/build-landing.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "next lint --fix",
     "test": "next lint",
     "prepare": "husky install",
-    "fetch:bloglist": "node scripts/download-blog-posts.data.json.mjs"
+    "fetch:bloglist": "node scripts/download-blog-posts.data.json.mjs",
+    "build:landing": "node scripts/build-landing.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",

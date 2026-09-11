@@ -21,8 +21,8 @@ const FOOTER_COLUMNS = [
     title: "Product",
     links: [
       { label: "Compass", href: "/#compass" },
-      { label: "Compass API", href: "/#compass-api" },
-      { label: "AI hardware", href: "/#ai-hardware" },
+      { label: "Compass API", href: "/#api" },
+      { label: "AI hardware", href: "/#hardware" },
     ],
   },
 ]
