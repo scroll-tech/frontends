@@ -58,6 +58,24 @@ once(
   "body {\n    margin: 0; min-height: 100vh; box-sizing: border-box; display: grid; place-items: center; padding: 24px;\n    background: transparent;   /* the component paints no background of its own */\n    font-family: ui-sans-serif, -apple-system, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif;\n  }",
 )
 
+// ---- the product titles in the rail and the panel heads: Zhengqi 2026-09-12 asked for
+// "Compass API" and "AI Hardware" in bold — next to the active, ink-coloured "Compass" the
+// two faint serif names read thin. Instrument Serif has no bold cut, and the browser's
+// synthetic bold smears it, so this thickens the letters the way his own file does for
+// .display and .section-title: a hairline stroke in the text colour. 0.7px at 22–24px is
+// the semibold weight (0.5 barely showed, 0.9 went clumsy); all three names get it so the
+// rail stays one voice, the panel heads on phones likewise. ----
+once(
+  "rail names heavier",
+  ".rail__name{\n  font-family:var(--serif);font-size:1.375rem;font-weight:400;",
+  ".rail__name{\n  font-family:var(--serif);font-size:1.375rem;font-weight:400;-webkit-text-stroke:.7px currentColor;",
+)
+once(
+  "panel names heavier",
+  ".panel__name{font-family:var(--serif);font-size:1.5rem;font-weight:400}",
+  ".panel__name{font-family:var(--serif);font-size:1.5rem;font-weight:400;-webkit-text-stroke:.7px currentColor}",
+)
+
 // ---- the waitlist form: his submitEmail only pretends; this posts to Loops ------------
 const formId = constant("LOOPS_FORM_ID")
 const listId = constant("LOOPS_MAILING_LIST_ID")
