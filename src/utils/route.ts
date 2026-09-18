@@ -103,6 +103,7 @@ export function genMeta(fn: MetaGeneratorFn = defaultGenMetaFn) {
 
     const currentRoute: Metadata = {
       title,
+      description,
       openGraph: { title, description, url: relativeURL, images: openGraphImages },
       twitter: { title, description, images: twitterImages },
     }
