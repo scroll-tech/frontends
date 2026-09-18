@@ -35,6 +35,15 @@ const constant = name => {
 once("privacy policy link", '<a href="#">Privacy policy</a>', '<a href="/privacy-policy">Privacy policy</a>')
 once("app privacy policy link", '<a href="#">App privacy policy</a>', '<a href="/app-privacy-policy">App privacy policy</a>')
 once("terms link", '<a href="#">Terms of service</a>', '<a href="/terms-of-service">Terms of service</a>')
+// the Support link is not in his file: Tommy Thomas, Slack 2026-09-17 (C0BRZ8G1V50), asked for
+// a /support page, "hyperlink should be in footer" — it closes the Legal column, next to the
+// app privacy policy (the App Store listing's other URL; Zhengqi 2026-09-18), here and in
+// LandingFooter.tsx (the legal pages' footer) alike
+once(
+  "support link",
+  '<a href="/terms-of-service">Terms of service</a>',
+  '<a href="/terms-of-service">Terms of service</a>\n      <a href="/support">Support</a>',
+)
 once("white paper link", 'href="/scroll-whitepaper.pdf"', 'href="/files/whitepaper.pdf"')
 
 // ---- the Compass button on the Compass API panel: his file points it at his own Compass

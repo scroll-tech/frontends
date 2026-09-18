@@ -7,7 +7,9 @@ import FooterRidge from "./FooterRidge"
 import styles from "./landing.module.css"
 
 // Glen's footer copy (scroll.html, 2026-09-10); his links are placeholders, ours are the
-// real pages and sections
+// real pages and sections. Support is not in his file: Tommy Thomas, Slack 2026-09-17
+// (C0BRZ8G1V50), asked for a /support page, "hyperlink should be in footer". It sits with
+// the legal links because those are the App Store listing's other URL (Zhengqi 2026-09-18).
 const FOOTER_COLUMNS = [
   {
     title: "Legal",
@@ -15,6 +17,7 @@ const FOOTER_COLUMNS = [
       { label: "Privacy policy", href: "/privacy-policy" },
       { label: "App privacy policy", href: "/app-privacy-policy" },
       { label: "Terms of service", href: "/terms-of-service" },
+      { label: "Support", href: "/support" },
     ],
   },
   {
