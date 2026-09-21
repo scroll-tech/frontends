@@ -14,9 +14,6 @@ const NAV_LINKS = [
   { label: "Compass", href: "/#compass" },
   { label: "ZK API keys", href: "/#api" },
   { label: "AI hardware", href: "/#hardware" },
-  // the blog went off the site with the rest of the old pages in the redesign; it is a
-  // page of its own, not a section of the front page (Zhengqi 2026-09-21)
-  { label: "Blog", href: "/blog" },
 ]
 
 /** true once the page has scrolled past `threshold`; read on a frame, not on every event */
@@ -58,11 +55,10 @@ const LandingNav = ({ collapsible = false }: LandingNavProps) => {
   const [open, setOpen] = useState(false)
   const scrolled = useScrolled(24, collapsible)
 
-  // on the landing page itself, scroll smoothly instead of re-navigating (Home would jump
-  // otherwise). Links to another page — the blog — are left alone.
+  // on the landing page itself, scroll smoothly instead of re-navigating (Home would jump otherwise)
   const handleNavClick = (e: MouseEvent<HTMLAnchorElement>, href: string) => {
     setOpen(false)
-    if (pathname !== "/" || (href !== "/" && !href.startsWith("/#"))) return
+    if (pathname !== "/") return
     e.preventDefault()
     const id = href.split("#")[1]
     if (id) {
