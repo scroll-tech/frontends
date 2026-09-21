@@ -1,0 +1,513 @@
+/* The blog in the new brand — Glen's tokens (scroll.html, 2026-09-10): the ink ramp, the
+   hairlines and the violet, Instrument Serif for the titles, Inter for the running text and
+   JetBrains Mono for the small labels. Everything is in px: globals.css puts the root font
+   size at 62.5%, so a rem here would not mean what it says. */
+.page,
+.pageWide {
+  --ink: #0a0a0a;
+  --ink-2: #4a4845;
+  --ink-3: #8b8781;
+  --ink-4: #b6b2ac;
+  --line: #e5e1dc;
+  --line-2: #efebe6;
+  --violet: #6d45e8;
+  --serif: var(--font-instrument-serif);
+  --mono: var(--font-jetbrains-mono);
+
+  margin-inline: auto;
+  color: var(--ink);
+}
+
+.page {
+  width: min(100% - clamp(32px, 8vw, 96px), 1100px);
+}
+
+/* a post needs room for the article at its full 740 with a rail either side of it */
+.pageWide {
+  width: min(100% - clamp(32px, 8vw, 96px), 1280px);
+}
+
+/* ---- index header ---- */
+.header {
+  padding: clamp(40px, 7vw, 80px) 0 clamp(32px, 5vw, 56px);
+  border-bottom: 1px solid var(--line-2);
+}
+
+.title {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(44px, 8vw, 76px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.lede {
+  margin: 20px 0 0;
+  max-width: 560px;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+/* ---- category filter ---- */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 28px 0 0;
+}
+
+.filter {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  color: var(--ink-2);
+  padding: 7px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: none;
+  cursor: pointer;
+  transition:
+    color 0.25s,
+    background-color 0.25s,
+    border-color 0.25s;
+}
+
+.filter:hover {
+  color: var(--ink);
+  border-color: var(--ink-3);
+}
+
+.filterActive,
+.filterActive:hover {
+  color: #fff;
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+/* ---- post list ---- */
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.row {
+  border-bottom: 1px solid var(--line-2);
+}
+
+.card {
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 420px);
+  gap: clamp(24px, 4vw, 56px);
+  align-items: center;
+  padding: clamp(28px, 4vw, 44px) 0;
+}
+
+.cardInfo {
+  min-width: 0;
+}
+
+.meta {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  color: var(--ink-3);
+  margin: 0 0 14px;
+}
+
+.cardTitle {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(24px, 3vw, 32px);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0 1px;
+  transition: background-size 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.card:hover .cardTitle {
+  background-size: 100% 1px;
+}
+
+.excerpt {
+  margin: 14px 0 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ink-2);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* every poster the blog has is 3:1 (1332x447 out of Ghost), so the box is that shape and
+   anything else is cropped to it rather than stretching the row */
+.thumb {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 1;
+  object-fit: cover;
+  border-radius: 20px;
+  background: #faf9f8;
+  border: 1px solid var(--line-2);
+}
+
+.empty {
+  padding: 64px 0;
+  color: var(--ink-3);
+  font-size: 15px;
+}
+
+@media (max-width: 900px) {
+  .card {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .thumb {
+    grid-row: 1;
+    border-radius: 16px;
+  }
+
+  .excerpt {
+    display: none;
+  }
+}
+
+/* ---- article ---- */
+.articlePage {
+  display: flex;
+  justify-content: center;
+  gap: clamp(24px, 3vw, 48px);
+  padding-top: clamp(24px, 4vw, 48px);
+}
+
+.rail {
+  flex: 0 0 210px;
+  width: 210px;
+}
+
+@media (max-width: 1100px) {
+  .rail {
+    display: none;
+  }
+}
+
+.toc {
+  position: sticky;
+  top: 108px;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  color: var(--ink-2);
+  transition: color 0.25s;
+}
+
+.back:hover {
+  color: var(--ink);
+}
+
+.tocLabel {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  margin: 32px 0 12px;
+}
+
+.tocList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-left: 1px solid var(--line);
+}
+
+.tocList a {
+  display: block;
+  padding: 7px 0 7px 16px;
+  margin-left: -1px;
+  border-left: 1px solid transparent;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--ink-3);
+  transition:
+    color 0.25s,
+    border-color 0.25s;
+}
+
+.tocList a:hover {
+  color: var(--ink);
+}
+
+.tocActive a {
+  color: var(--ink);
+  border-left-color: var(--violet);
+}
+
+.article {
+  flex: 1 1 740px;
+  max-width: 740px;
+  min-width: 0;
+  font-size: 17px;
+  line-height: 1.72;
+  color: #2a2a2a;
+}
+
+/* the date and category, above the title the markdown itself carries */
+.articleMeta {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  color: var(--ink-3);
+  margin: 0;
+}
+
+/* the article's own back link, for the widths where the rail is gone. It sits inside the
+   prose, so it has to opt out of the link styling the prose gives everything else. */
+.backMobile {
+  margin-bottom: 28px;
+}
+
+.article .back {
+  color: var(--ink-2);
+  text-decoration: none;
+}
+
+.article .back:hover {
+  color: var(--ink);
+}
+
+@media (min-width: 1101px) {
+  .backMobile {
+    display: none;
+  }
+}
+
+.article > * + * {
+  margin-top: 22px;
+}
+
+.article h1,
+.article h2,
+.article h3,
+.article h4 {
+  font-family: var(--serif);
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
+.article h1 {
+  font-size: clamp(34px, 5.5vw, 54px);
+  line-height: 1.05;
+  margin-bottom: 8px;
+}
+
+.articleMeta + h1 {
+  margin-top: 12px;
+}
+
+.article h2 {
+  font-size: clamp(26px, 3.4vw, 34px);
+  scroll-margin-top: 110px;
+}
+
+.article h3 {
+  font-size: 24px;
+}
+
+.article h4 {
+  font-size: 20px;
+}
+
+.article h2,
+.article h3,
+.article h4 {
+  margin-top: 48px;
+}
+
+.article a {
+  color: var(--violet);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+
+.article strong {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* a bolded link keeps the link colour */
+.article a strong {
+  color: inherit;
+}
+
+.article ul,
+.article ol {
+  padding-left: 24px;
+}
+
+.article ul {
+  list-style: disc;
+}
+
+.article ol {
+  list-style: decimal;
+}
+
+.article li + li {
+  margin-top: 8px;
+}
+
+.article img,
+.article video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  margin-block: 36px;
+}
+
+.article figure {
+  margin: 36px 0;
+}
+
+.article figcaption {
+  margin-top: 12px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-3);
+  text-align: center;
+}
+
+.article blockquote {
+  margin-inline: 0;
+  padding-left: 22px;
+  border-left: 2px solid var(--line);
+  color: var(--ink-2);
+}
+
+.article code {
+  font-family: var(--mono);
+  font-size: 0.88em;
+  background: #f4f2f0;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+.article pre {
+  background: #faf9f8;
+  border: 1px solid var(--line-2);
+  border-radius: 12px;
+  padding: 18px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+.article pre code {
+  background: none;
+  padding: 0;
+  font-size: inherit;
+}
+
+.article table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  display: block;
+  overflow-x: auto;
+}
+
+.article th,
+.article td {
+  border: 1px solid var(--line);
+  padding: 10px 14px;
+  text-align: left;
+}
+
+.article th {
+  background: #faf9f8;
+  font-weight: 600;
+}
+
+.article hr {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin-block: 44px;
+}
+
+.article iframe {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-radius: 16px;
+}
+
+/* ---- more posts: the same card stacked — the poster on top, the title under it. The
+   markup keeps the text first (the list's reading order), so the column runs in reverse. ---- */
+.more {
+  border-top: 1px solid var(--line-2);
+  margin-top: clamp(64px, 9vw, 104px);
+  padding-top: clamp(40px, 5vw, 64px);
+}
+
+.moreTitle {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(26px, 3.4vw, 34px);
+  line-height: 1.15;
+  margin: 0 0 36px;
+}
+
+.moreGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(20px, 3vw, 36px);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@media (max-width: 900px) {
+  .moreGrid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+.moreCard {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  gap: 0;
+  padding: 0;
+}
+
+.moreCard .thumb {
+  margin-bottom: 18px;
+  border-radius: 16px;
+}
+
+.moreCard .cardTitle {
+  font-size: 22px;
+}
+
+.moreCard .excerpt {
+  display: none;
+}
