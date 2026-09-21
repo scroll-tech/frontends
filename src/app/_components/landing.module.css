@@ -510,8 +510,8 @@
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: 1fr auto auto;
-  gap: clamp(32px, 6vw, 96px);
+  grid-template-columns: 1fr repeat(3, auto);
+  gap: clamp(28px, 4vw, 72px);
   align-items: start;
 }
 

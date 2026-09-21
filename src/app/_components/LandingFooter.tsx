@@ -1,6 +1,7 @@
 import Link from "next/link"
 
 import ScrollMarkSvg from "@/assets/svgs/landingpage/scroll-mark.svg"
+import { DOC_URL } from "@/constants/link"
 
 import AnchorLink from "./AnchorLink"
 import FooterRidge from "./FooterRidge"
@@ -26,6 +27,17 @@ const FOOTER_COLUMNS = [
       { label: "Compass", href: "/#compass" },
       { label: "Compass API", href: "/#api" },
       { label: "AI hardware", href: "/#hardware" },
+    ],
+  },
+  {
+    title: "Resources",
+    links: [
+      // the blog, back on the site and opening the column (Zhengqi, 2026-09-21); the three
+      // under it are the ones his file carries, so the two footers finally say the same thing
+      { label: "Blog", href: "/blog" },
+      { label: "Documentation", href: DOC_URL, external: true },
+      { label: "White paper", href: "/files/whitepaper.pdf", external: true },
+      { label: "Scroll swap", href: "https://swap.scroll.io/swap?input=0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE", external: true },
     ],
   },
 ]
@@ -55,8 +67,12 @@ const LandingFooter = ({ ridge = false }: LandingFooterProps) => (
       {FOOTER_COLUMNS.map(({ title, links }) => (
         <nav key={title} className={styles.fcol} aria-label={title}>
           <h3>{title}</h3>
-          {links.map(({ label, href }) =>
-            href.includes("#") ? (
+          {links.map(({ label, href, external }: { label: string; href: string; external?: boolean }) =>
+            external ? (
+              <a key={label} href={href} target="_blank" rel="noopener noreferrer">
+                {label}
+              </a>
+            ) : href.includes("#") ? (
               <AnchorLink key={label} href={href}>
                 {label}
               </AnchorLink>

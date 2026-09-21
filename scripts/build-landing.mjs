@@ -45,6 +45,20 @@ once(
   '<a href="/terms-of-service">Terms of service</a>\n      <a href="/support">Support</a>',
 )
 once("white paper link", 'href="/scroll-whitepaper.pdf"', 'href="/files/whitepaper.pdf"')
+// the blog is a page of its own again (Zhengqi, 2026-09-21): it went off the site with the
+// rest of the old pages in the redesign, and the link people were sent to it with has been
+// dead since. It sits in the nav after the product sections and opens the footer's
+// Resources column, here and in LandingFooter.tsx (the other pages' footer) alike.
+once(
+  "blog nav link",
+  '<li><a class="nav__link" href="#hardware">AI hardware</a></li>',
+  '<li><a class="nav__link" href="#hardware">AI hardware</a></li>\n      <li><a class="nav__link" href="/blog">Blog</a></li>',
+)
+once(
+  "blog footer link",
+  '<a href="https://docs.scroll.io/en/home/" target="_blank" rel="noopener">Documentation</a>',
+  '<a href="/blog">Blog</a>\n      <a href="https://docs.scroll.io/en/home/" target="_blank" rel="noopener">Documentation</a>',
+)
 
 // ---- the Compass button on the Compass API panel: his file points it at his own Compass
 // prototype (index.html, 2026-09-11); here it opens the Compass site ----
