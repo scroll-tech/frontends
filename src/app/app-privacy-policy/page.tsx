@@ -143,7 +143,6 @@ const AppPrivacyPolicy = () => {
         paid for.
       </p>
 
-      {/* Tommy Thomas, Slack 2026-10-01 (C0BRZ8G1V50): VPN section rewritten, verbatim. */}
       <h3>VPN (Premium)</h3>
       <p>
         Before the VPN is set up, Compass shows you what it collects and asks you to agree. Nothing VPN-related is sent to us or our VPN provider
