@@ -67,7 +67,7 @@ const AppPrivacyPolicy = () => {
   return (
     <Container className="wrapper">
       <TitleTypography variant="h1">Compass Privacy Policy</TitleTypography>
-      <p>Last updated: September 15, 2026</p>
+      <p>Last updated: October 2, 2026</p>
       <p>
         Compass is an AI assistant app for iPhone. This policy explains what information Compass collects, how we use it, who we share it with, and
         the choices you have.
@@ -143,10 +143,33 @@ const AppPrivacyPolicy = () => {
         paid for.
       </p>
 
+      {/* Tommy Thomas, Slack 2026-10-01 (C0BRZ8G1V50): VPN section rewritten, verbatim. */}
       <h3>VPN (Premium)</h3>
       <p>
-        If you use the built-in VPN, we create a VPN account for you with our VPN infrastructure provider and store the account identifier and
-        connection configuration needed to connect you. We do not log the websites you visit or the traffic that passes through the VPN.
+        Before the VPN is set up, Compass shows you what it collects and asks you to agree. Nothing VPN-related is sent to us or our VPN provider
+        until you do. Buying Premium alone does not set up the VPN.
+      </p>
+      <p>
+        <strong>What we collect.</strong> When you agree and connect, we create a VPN account for you with our VPN provider, VPN Resellers. It uses an
+        ID made from your Compass account and a random password. We never send them your name, email address, phone number or payment details. We
+        store the VPN account's details (ID, username, password and status), your Premium status from Apple, and the server you pick. If product
+        analytics is on, PostHog also receives VPN connection events, with the server's country.
+      </p>
+      <p>
+        <strong>What we don't collect.</strong> We don't see, log or inspect your VPN traffic, including the sites and apps you use, your DNS lookups,
+        or how much data you use.
+      </p>
+      <p>
+        <strong>How we use it.</strong> Only to run your VPN: to set up your account, connect you, turn the account off if Premium ends, and fix
+        connection problems. Never for ads or tracking, and never sold.
+      </p>
+      <p>
+        <strong>Who receives it.</strong> VPN Resellers runs the VPN servers your traffic passes through and holds your VPN account. Supabase hosts
+        the database where the account details are stored.
+      </p>
+      <p>
+        <strong>Your choice.</strong> You can withdraw your agreement anytime in Settings › Privacy › VPN data use, or on the VPN screen. This turns
+        the VPN off and suspends your VPN account. Deleting your Compass account deletes the VPN account and its stored details.
       </p>
 
       <h3>eSIM (Premium)</h3>
