@@ -33,7 +33,13 @@ const constant = name => {
 
 // ---- links his prototype leaves as "#" or guesses -------------------------------------
 once("privacy policy link", '<a href="#">Privacy policy</a>', '<a href="/privacy-policy">Privacy policy</a>')
-once("app privacy policy link", '<a href="#">App privacy policy</a>', '<a href="/app-privacy-policy">App privacy policy</a>')
+// one app privacy policy per store listing (Tommy Thomas, Slack 2026-10-12): the iOS one stays
+// at /app-privacy-policy, the Android one is next to it — here and in LandingFooter.tsx alike
+once(
+  "app privacy policy links",
+  '<a href="#">App privacy policy</a>',
+  '<a href="/app-privacy-policy">App privacy policy (iOS)</a>\n      <a href="/app-privacy-policy-android">App privacy policy (Android)</a>',
+)
 once("terms link", '<a href="#">Terms of service</a>', '<a href="/terms-of-service">Terms of service</a>')
 // the Support link is not in his file: Tommy Thomas, Slack 2026-09-17 (C0BRZ8G1V50), asked for
 // a /support page, "hyperlink should be in footer" — it closes the Legal column, next to the
@@ -43,6 +49,13 @@ once(
   "support link",
   '<a href="/terms-of-service">Terms of service</a>',
   '<a href="/terms-of-service">Terms of service</a>\n      <a href="/support">Support</a>',
+)
+// the app's terms of use: Tommy Thomas, Slack 2026-10-12, "make a scroll.io/app-terms in the
+// footer" — after the site's terms (and before Support), here and in LandingFooter.tsx alike
+once(
+  "app terms link",
+  '<a href="/terms-of-service">Terms of service</a>',
+  '<a href="/terms-of-service">Terms of service</a>\n      <a href="/app-terms">App terms of use</a>',
 )
 once("white paper link", 'href="/scroll-whitepaper.pdf"', 'href="/files/whitepaper.pdf"')
 // the blog is a page of its own again (Zhengqi, 2026-09-21): it went off the site with the
