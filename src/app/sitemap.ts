@@ -14,6 +14,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     { url: "https://scroll.io/privacy-policy", changeFrequency: "yearly", priority: 0.4 },
     { url: "https://scroll.io/app-privacy-policy", changeFrequency: "yearly", priority: 0.4 },
+    { url: "https://scroll.io/app-privacy-policy-android", changeFrequency: "yearly", priority: 0.4 },
+    { url: "https://scroll.io/app-terms", changeFrequency: "yearly", priority: 0.4 },
+    { url: "https://scroll.io/app-account-deletion", changeFrequency: "yearly", priority: 0.4 },
     { url: "https://scroll.io/support", changeFrequency: "monthly", priority: 0.5 },
     { url: "https://scroll.io/terms-of-service", changeFrequency: "yearly", priority: 0.4 },
   ]

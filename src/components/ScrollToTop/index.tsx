@@ -19,7 +19,16 @@ const ScrollToTop: React.FC = () => {
 
   // the redesigned landing pages use a minimal circle-arrow button instead of the orange fab
   const isCompassRoute =
-    ["/", "/privacy-policy", "/terms-of-service", "/app-privacy-policy", "/support"].includes(pathname) || pathname.startsWith("/blog")
+    [
+      "/",
+      "/privacy-policy",
+      "/terms-of-service",
+      "/app-privacy-policy",
+      "/app-privacy-policy-android",
+      "/app-terms",
+      "/app-account-deletion",
+      "/support",
+    ].includes(pathname) || pathname.startsWith("/blog")
 
   const checkScrollPosition = () => {
     // Glen's scroll.html (2026-09-10) shows its back-to-top once 80% of a screen has gone by
