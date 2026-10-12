@@ -11,13 +11,18 @@ import styles from "./landing.module.css"
 // real pages and sections. Support is not in his file: Tommy Thomas, Slack 2026-09-17
 // (C0BRZ8G1V50), asked for a /support page, "hyperlink should be in footer". It sits with
 // the legal links because those are the App Store listing's other URL (Zhengqi 2026-09-18).
+// The app's terms of use: Tommy Thomas, Slack 2026-10-12, "make a scroll.io/app-terms in the
+// footer"; it follows the site's terms as the app privacy policies follow the site's policy.
+// Those are two from the same day, one per store listing: the iOS one stays where it was.
 const FOOTER_COLUMNS = [
   {
     title: "Legal",
     links: [
       { label: "Privacy policy", href: "/privacy-policy" },
-      { label: "App privacy policy", href: "/app-privacy-policy" },
+      { label: "App privacy policy (iOS)", href: "/app-privacy-policy" },
+      { label: "App privacy policy (Android)", href: "/app-privacy-policy-android" },
       { label: "Terms of service", href: "/terms-of-service" },
+      { label: "App terms of use", href: "/app-terms" },
       { label: "Support", href: "/support" },
     ],
   },
