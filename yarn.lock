@@ -3894,16 +3894,16 @@
     "@tanstack/query-core" "5.62.16"
 
 "@tanstack/react-virtual@^3.11.2":
-  version "3.11.2"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-virtual/-/react-virtual-3.11.2.tgz#d6b9bd999c181f0a2edce270c87a2febead04322"
-  integrity sha512-OuFzMXPF4+xZgx8UzJha0AieuMihhhaWG0tCqpp6tDzlFwOmNBPYMuLOtMJ1Tr4pXLHmgjcWhG6RlknY2oNTdQ==
+  version "3.14.24"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-virtual/-/react-virtual-3.14.24.tgz#cec5ccdf118449b357d0cd956dc6737756e88f6c"
+  integrity sha512-JoNsByXR68fNlB2NZuT3bSk8uYBxuOWl6YNJ7djTrw7IMwBWuaOtffxj/TcuMa80WmL6byb+80i1NEM/8Qmocw==
   dependencies:
-    "@tanstack/virtual-core" "3.11.2"
+    "@tanstack/virtual-core" "3.19.9"
 
-"@tanstack/virtual-core@3.11.2":
-  version "3.11.2"
-  resolved "https://registry.yarnpkg.com/@tanstack/virtual-core/-/virtual-core-3.11.2.tgz#00409e743ac4eea9afe5b7708594d5fcebb00212"
-  integrity sha512-vTtpNt7mKCiZ1pwU9hfKPhpdVO2sVzFQsxoVBGtOSHxlrRRzYr8iQ2TlwbAcRYCcEiZ9ECAM8kBzH0v2+VzfKw==
+"@tanstack/virtual-core@3.19.9":
+  version "3.19.9"
+  resolved "https://registry.yarnpkg.com/@tanstack/virtual-core/-/virtual-core-3.19.9.tgz#12ab5f5b2561ec2c44510bd72f190c5225dcda8f"
+  integrity sha512-Syiaf3w69dFyYv4o2mqJ1/2VtBJTNq5Hu5cVXfnzOuJKFpUojukQR13ZW+5NvdMJM7GFHeNPmveMNhoIubiFyA==
 
 "@trivago/prettier-plugin-sort-imports@^4.0.0":
   version "4.3.0"
